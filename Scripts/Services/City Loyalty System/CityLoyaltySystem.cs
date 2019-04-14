@@ -8,6 +8,7 @@ using System.Globalization;
 using Server.Network;
 using Server.Commands;
 using Server.Items;
+using Server.Engines.SeasonalEvents;
 
 namespace Server.Engines.CityLoyalty
 {
@@ -1156,6 +1157,11 @@ namespace Server.Engines.CityLoyalty
             }
 
             origin.CompletedTrades++;
+
+            if (CityTradeSystem.KrampusEncounterActive)
+            {
+                KrampusEncounter.Encounter.OnTradeComplete(from, entry);
+            }
 		}
 
         public static void OnSlimTradeComplete(Mobile from, TradeEntry entry)

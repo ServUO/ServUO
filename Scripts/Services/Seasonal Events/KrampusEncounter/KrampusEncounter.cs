@@ -8,9 +8,12 @@ using Server.Mobiles;
 using Server.Engines.CityLoyalty;
 using Server.Spells;
 using Server.Network;
+using Server.Commands;
+using Server.Gumps;
 
 namespace Server.Engines.SeasonalEvents
 {
+    [PropertyObject]
     public class KrampusEncounter
     {
         public static string FilePath = Path.Combine("Saves/Misc", "KrampusEncounter.bin");
@@ -24,6 +27,21 @@ namespace Server.Engines.SeasonalEvents
         {
             EventSink.WorldSave += OnSave;
             EventSink.WorldLoad += OnLoad;
+        }
+
+        public static void Initialize()
+        {
+            CommandSystem.Register("KrampusEncounter", AccessLevel.Administrator, e =>
+            {
+                if (Encounter != null)
+                {
+                    e.Mobile.SendGump(new PropertiesGump(e.Mobile, Encounter));
+                }
+                else
+                {
+                    e.Mobile.SendMessage("Encounter null");
+                }
+            });
         }
 
         public static void OnSave(WorldSaveEventArgs e)
@@ -58,13 +76,8 @@ namespace Server.Engines.SeasonalEvents
 
                     if (reader.ReadInt() == 1)
                     {
-                        var encounter = new KrampusEncounter();
-                        encounter.Deserialize(reader);
-
-                        if (Enabled)
-                        {
-                            Encounter = encounter;
-                        }
+                        Encounter = new KrampusEncounter();
+                        Encounter.Deserialize(reader);
                     }
                 });
         }
@@ -92,12 +105,24 @@ namespace Server.Engines.SeasonalEvents
             return Enabled && Encounter != null && Encounter.Krampus != null && !Encounter.Krampus.Deleted;
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public int TotalTradesComplete { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Wave { get { return (int)Math.Max(1, (int)Math.Min(6, (double)TotalTradesComplete / 4.1)); } }
+
         public Dictionary<PlayerMobile, int> CompleteTable { get; set; } = new Dictionary<PlayerMobile, int>();
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public Krampus Krampus { get; set; }
-        public bool SpawningKrampus { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public Point3D SpawnLocation { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool KrampusSpawning { get { return SpawnMap != null && SpawnLocation != Point3D.Zero; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public Map SpawnMap { get; set; }
 
         public KrampusEncounter()
@@ -131,6 +156,11 @@ namespace Server.Engines.SeasonalEvents
 
         public Type[] GetCreatureTypes(Mobile m, bool wet)
         {
+            if (Krampus != null || KrampusSpawning)
+            {
+                return null;
+            }
+
             if (wet)
             {
                 return _WetSpawnTypes;
@@ -181,7 +211,7 @@ namespace Server.Engines.SeasonalEvents
 
                 if (mob != null && CityTradeSystem.HasTrade(mob))
                 {
-                    mob.SendLocalizedMessage(1158832, String.Format("{0}\t{1}", WorldLocationInfo.GetLocationString(SpawnLocation, SpawnMap), Sextant.GetCoords(SpawnLocation, SpawnMap)), 1150); // *You sense Krampus has been spotted near ~2_where~ at ~1_coords~!*
+                    mob.LocalOverheadMessage(MessageType.Regular, 1150, 1158832, String.Format("{0}\t{1}", WorldLocationInfo.GetLocationString(SpawnLocation, SpawnMap), Sextant.GetCoords(SpawnLocation, SpawnMap))); // *You sense Krampus has been spotted near ~2_where~ at ~1_coords~!*
                 }
             }
 
@@ -199,6 +229,8 @@ namespace Server.Engines.SeasonalEvents
             Krampus.RangeHome = 5;
 
             Krampus.MoveToWorld(SpawnLocation, SpawnMap);
+            Krampus.Summon(Krampus, true);
+
             var rec = new Rectangle2D(SpawnLocation.X - 10, SpawnLocation.Y - 10, 20, 20);
 
             for (var i = 0; i < 2; i++)
@@ -218,6 +250,8 @@ namespace Server.Engines.SeasonalEvents
                 }
 
                 drake.MoveToWorld(p, SpawnMap);
+                drake.Home = p;
+                drake.RangeHome = 15;
             }
 
             SpawnLocation = Point3D.Zero;
@@ -294,7 +328,7 @@ namespace Server.Engines.SeasonalEvents
                 }
             }
 
-            if (SpawnLocation != Point3D.Zero && SpawnMap != null)
+            if (KrampusSpawning && Krampus == null)
             {
                 Timer.DelayCall(TimeSpan.FromMinutes(2), SpawnKrampus);
             }

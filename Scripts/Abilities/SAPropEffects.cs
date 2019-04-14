@@ -1,11 +1,13 @@
 using System;
-using Server;
+using System.Linq;
 using System.Collections.Generic;
+
+using Server;
 using Server.Mobiles;
 using Server.Spells;
 using Server.Spells.Ninjitsu;
 using Server.Network;
-using System.Linq;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Items
 {
@@ -391,11 +393,25 @@ namespace Server.Items
 
     public class SplinteringWeaponContext : PropertyEffect
     {
+        public static List<Mobile> BleedImmune { get; set; } = new List<Mobile>();
+
         public SplinteringWeaponContext(Mobile from, Mobile defender, Item weapon)
             : base(from, defender, weapon, EffectsType.Splintering, TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(4))
         {
             StartForceWalk(defender);
-            BleedAttack.BeginBleed(defender, from, true);
+
+            if (Core.EJ)
+            {
+                if (!(defender is PlayerMobile) || !IsBleedImmune(defender))
+                {
+                    BleedAttack.BeginBleed(defender, from, true);
+                    AddBleedImmunity(defender);
+                }
+            }
+            else
+            {
+                BleedAttack.BeginBleed(defender, from, true);
+            }
 
             defender.SendLocalizedMessage(1112486); // A shard of the brittle weapon has become lodged in you!
             from.SendLocalizedMessage(1113077); // A shard of your blade breaks off and sticks in your opponent!
@@ -431,9 +447,9 @@ namespace Server.Items
             base.RemoveEffects();
         }
 
-        public static bool CheckHit(Mobile attacker, Mobile defender, Item weapon)
+        public static bool CheckHit(Mobile attacker, Mobile defender, WeaponAbility ability, Item weapon)
         {
-            if (defender == null)
+            if (defender == null || (Core.EJ && (ability == WeaponAbility.Disarm || ability == WeaponAbility.InfectiousStrike || SkillMasterySpell.HasSpell(attacker, typeof(SkillMasterySpell)))))
                 return false;
 
             SplinteringWeaponContext context = PropertyEffect.GetContext<SplinteringWeaponContext>(attacker, defender, EffectsType.Splintering);
@@ -445,6 +461,20 @@ namespace Server.Items
             }
 
             return false;
+        }
+
+        public static bool IsBleedImmune(Mobile m)
+        {
+            return BleedImmune.Contains(m);
+        }
+
+        public static void AddBleedImmunity(Mobile m)
+        {
+            if (!(m is PlayerMobile) || BleedImmune.Contains(m))
+                return;
+
+            BleedImmune.Add(m);
+            Timer.DelayCall(TimeSpan.FromSeconds(16), () => BleedImmune.Remove(m));
         }
     }
 

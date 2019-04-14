@@ -722,6 +722,8 @@ namespace Server.Items
         public Mobile FocusWeilder { get; set; }
         public Mobile EnchantedWeilder { get; set; }
 
+        public int LastParryChance { get; set; }
+
         #region Stygian Abyss
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimesImbued
@@ -1292,7 +1294,9 @@ namespace Server.Items
 
                 XmlAttach.CheckOnRemoved(this, parent);
 			}
-		}
+
+            LastParryChance = 0;
+        }
 
         public void AddMysticMod(Mobile from)
         {
@@ -1778,8 +1782,16 @@ namespace Server.Items
 					chance = chance * (20 + defender.Dex) / 100;
 				}
 
-				return defender.CheckSkill(SkillName.Parry, chance);
-			}
+                bool success = defender.CheckSkill(SkillName.Parry, chance);
+
+                if (Core.EJ && success)
+                {
+                    shield.LastParryChance = (int)(chance * 100);
+                    shield.InvalidateProperties();
+                }
+
+                return success;
+            }
 			else if (!(defender.Weapon is Fists) && !(defender.Weapon is BaseRanged))
 			{
 				BaseWeapon weapon = defender.Weapon as BaseWeapon;
@@ -1818,15 +1830,25 @@ namespace Server.Items
 					chance = chance * (20 + defender.Dex) / 100;
 				}
 
+                bool success;
+
 				if (chance > aosChance)
 				{
-					return defender.CheckSkill(SkillName.Parry, chance);
+                    success = defender.CheckSkill(SkillName.Parry, chance);
 				}
 				else
 				{
-					return (aosChance > Utility.RandomDouble());
+                    success = (aosChance > Utility.RandomDouble());
 						// Only skillcheck if wielding a shield & there's no effect from Bushido
 				}
+
+                if (Core.EJ && success)
+                {
+                    weapon.LastParryChance = (int)(chance * 100);
+                    weapon.InvalidateProperties();
+                }
+
+                return success;
 			}
 
 			return false;
@@ -2263,9 +2285,10 @@ namespace Server.Items
             }
 
             bool splintering = false;
-            if (!(a is Disarm) && m_AosWeaponAttributes.SplinteringWeapon > 0 && m_AosWeaponAttributes.SplinteringWeapon > Utility.Random(100))
+
+            if (m_AosWeaponAttributes.SplinteringWeapon > 0 && m_AosWeaponAttributes.SplinteringWeapon > Utility.Random(100))
             {
-                if (SplinteringWeaponContext.CheckHit(attacker, defender, this))
+                if (SplinteringWeaponContext.CheckHit(attacker, defender, a, this))
                     splintering = true;
             }
 
@@ -6090,6 +6113,11 @@ namespace Server.Items
 				list.Add(1072378); // <br>Only when full set is present:
 				GetSetProperties(list);
 			}
+
+            if (Core.EJ && LastParryChance > 0)
+            {
+                list.Add(1158861, LastParryChance.ToString()); // Last Parry Chance: ~1_val~%
+            }
         }
 
         public override void AddItemPowerProperties(ObjectPropertyList list)

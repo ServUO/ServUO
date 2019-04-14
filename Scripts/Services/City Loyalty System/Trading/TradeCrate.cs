@@ -13,7 +13,7 @@ namespace Server.Engines.CityLoyalty
 {
 	public class TradeOrderCrate : Container
 	{
-        public override int LabelNumber { get { return 1123594; } } // Gift Box
+        public override int LabelNumber { get { return CityTradeSystem.KrampusEncounterActive ? 1123594 : base.LabelNumber; } }
         
         [CommandProperty(AccessLevel.GameMaster)]
 		public TradeEntry Entry { get; set; }
@@ -49,24 +49,26 @@ namespace Server.Engines.CityLoyalty
         public TradeOrderCrate(Mobile from, TradeEntry entry)
             : base(GetID())
 		{
-            Weight = 10.0;
-
-            Hue = Utility.Random(100);
-
             Owner = from;
 			Entry = entry;
+
+            if (CityTradeSystem.KrampusEncounterActive)
+            {
+                Weight = 10.0;
+                Hue = Utility.Random(100);
+            }
 
             Expires = DateTime.UtcNow + TimeSpan.FromHours(CityTradeSystem.CrateDuration);
 		}
 
         private static int GetID()
         {
-            if (KrampusEncounter.Enabled)
+            if (CityTradeSystem.KrampusEncounterActive)
             {
                 return Utility.Random(0x46A2, 6);
             }
 
-            return Utility.Random(0x46A2, 4);
+            return Utility.Random(0xE3C, 4);
         }
 
         public override int DefaultGumpID
@@ -76,6 +78,7 @@ namespace Server.Engines.CityLoyalty
                 switch(ItemID)
                 {
                     default:
+                        return base.DefaultGumpID;
                     case 0x46A2:
                         return 0x11B;
                     case 0x46A3:

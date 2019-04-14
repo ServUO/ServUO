@@ -4,7 +4,13 @@ namespace Server.Items
 {
     public class KrampusCoinPurse : Bag
     {
-        public KrampusCoinPurse(Mobile m)
+        [Constructable]
+        public KrampusCoinPurse()
+            : this(0)
+        {
+        }
+
+        public KrampusCoinPurse(int karma)
         {
             Name = "Krampus' Coin Purse"; // No Cliloc!
 
@@ -23,7 +29,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    if (m.Karma > 0)
+                    if (karma > 0)
                     {
                         DropItem(new GoldBranch());
                     }

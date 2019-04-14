@@ -8,7 +8,7 @@ namespace Server.Items
 
         [Constructable]
         public GoldBranch()
-            : base(0x234) // YFF, LGF
+            : base(Utility.RandomList(3458, 3473))
         {
             Hue = 2721;
         }
@@ -36,7 +36,7 @@ namespace Server.Items
 
         [Constructable]
         public SilverBranch()
-            : base(0x234) // YFF, LGF
+            : base(Utility.RandomList(3458, 3473))
         {
             Hue = 2500;
         }

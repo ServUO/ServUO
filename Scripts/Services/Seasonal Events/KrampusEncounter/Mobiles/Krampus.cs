@@ -5,6 +5,7 @@ using System.Linq;
 using Server;
 using Server.Items;
 using Server.Engines.SeasonalEvents;
+using Server.Spells;
 
 namespace Server.Mobiles
 {
@@ -14,14 +15,17 @@ namespace Server.Mobiles
         public override bool TeleportsTo { get { return true; } }
 
         public List<BaseCreature> SummonedHelpers { get; set; }
-        private DateTime _NextSummon;
-        private DateTime _NextArea;
-        public const int MaxSummons = 12;
+        public List<BaseCreature> InitialSpawn { get; set; }
+
+        private DateTime _NextSpecial;
+        public const int MaxSummons = 24;
 
         private DateTime _LastActivity;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D SpawnLocation { get; set; }
+
+        public bool IsKrampusEncounter { get { return KrampusEncounter.Encounter != null && KrampusEncounter.Encounter.Krampus == this; } }
 
         [Constructable]
         public Krampus()
@@ -66,28 +70,35 @@ namespace Server.Mobiles
                     SetMagicalAbility(MagicalAbility.Slashing); break;
             }
 
-            _NextSummon = DateTime.UtcNow;
+            _NextSpecial = DateTime.UtcNow;
         }
 
         public int TotalSummons()
         {
+            if (SummonedHelpers == null)
+            {
+                return 0;
+            }
+
             return SummonedHelpers.Where(bc => bc != null && bc.Alive).Count();
         }
 
-        public void Summon(Mobile target)
+        public void Summon(Mobile target, bool initial = false)
         {
-            if (target == null)
+            if (target == null || (!initial && InitialSpawn != null && InitialSpawn.Count > 0))
                 return;
 
-            int max = MaxSummons;
             var map = Map;
 
-            if (map == null || TotalSummons() > max)
+            if (map == null || TotalSummons() > MaxSummons)
                 return;
 
-            MovingEffect(target, 0xA271, 10, 0, false, false, 0, 0);
+            if (!initial)
+            {
+                MovingEffect(target, 0xA271, 10, 0, false, false, 0, 0);
+            }
 
-            Timer.DelayCall(TimeSpan.FromSeconds(2), com =>
+            Timer.DelayCall(TimeSpan.FromSeconds(initial ? 0.25 : 1.0), com =>
             {
                 if (!com.Alive)
                     return;
@@ -116,34 +127,55 @@ namespace Server.Mobiles
                     if (spawn != null)
                     {
                         spawn.MoveToWorld(p, map);
+                        spawn.Home = p;
+                        spawn.RangeHome = 5;
                         spawn.Team = this.Team;
                         spawn.SummonMaster = this;
 
-                        if (spawn.Combatant != null)
+                        if (!initial)
                         {
-                            if (!(spawn.Combatant is PlayerMobile) || !((PlayerMobile)spawn.Combatant).HonorActive)
+                            if (spawn.Combatant != null)
+                            {
+                                if (!(spawn.Combatant is PlayerMobile) || !((PlayerMobile)spawn.Combatant).HonorActive)
+                                    spawn.Combatant = com;
+                            }
+                            else
+                            {
                                 spawn.Combatant = com;
-                        }
-                        else
-                        {
-                            spawn.Combatant = com;
+                            }
                         }
 
-                        AddHelper(spawn);
+                        AddHelper(spawn, initial);
                     }
+                }
+
+                if (initial)
+                {
+                    Blessed = true;
                 }
             }, target);
 
-            _NextSummon = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 40));
+            _NextSpecial = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 40));
         }
 
-        protected virtual void AddHelper(BaseCreature bc)
+        protected virtual void AddHelper(BaseCreature bc, bool initial)
         {
-            if (SummonedHelpers == null)
-                SummonedHelpers = new List<BaseCreature>();
+            if (initial)
+            {
+                if (InitialSpawn == null)
+                    InitialSpawn = new List<BaseCreature>();
 
-            if (!SummonedHelpers.Contains(bc))
-                SummonedHelpers.Add(bc);
+                if (!InitialSpawn.Contains(bc))
+                    InitialSpawn.Add(bc);
+            }
+            else
+            {
+                if (SummonedHelpers == null)
+                    SummonedHelpers = new List<BaseCreature>();
+
+                if (!SummonedHelpers.Contains(bc))
+                    SummonedHelpers.Add(bc);
+            }
         }
 
         private Mobile _LastTeleported;
@@ -199,9 +231,29 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
+            if (Blessed)
+            {
+                if (InitialSpawn != null)
+                {
+                    if (InitialSpawn.All(s => s.Deleted))
+                    {
+                        ColUtility.Free(InitialSpawn);
+                        InitialSpawn = null;
+
+                        Blessed = false;
+                    }
+                }
+                else
+                {
+                    Blessed = false;
+                }
+            }
+
             if (Combatant == null)
             {
-                if (_LastActivity + TimeSpan.FromHours(2) < DateTime.UtcNow)
+                if (SpawnLocation != Point3D.Zero &&
+                    _LastActivity > DateTime.MinValue &&
+                    _LastActivity + TimeSpan.FromHours(2) < DateTime.UtcNow)
                 {
                     Delete();
                 }
@@ -211,20 +263,43 @@ namespace Server.Mobiles
 
             _LastActivity = DateTime.UtcNow;
 
-            if (_NextSummon < DateTime.UtcNow && 0.25 > Utility.RandomDouble())
+            if (_NextSpecial < DateTime.UtcNow && 0.25 > Utility.RandomDouble())
             {
-                var target = GetTeleportTarget();
-
-                if (target != null)
+                if (Utility.RandomBool())
                 {
-                    Summon(target);
+                    var target = GetTeleportTarget();
 
-                    _NextSummon = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 40));
+                    if (target != null)
+                    {
+                        Summon(target);
+                    }
                 }
-            }
-            else if (_NextArea < DateTime.UtcNow && 0.25 > Utility.RandomDouble())
-            {
+                else
+                {
+                    int baseDamage = 100;
+                    bool switched = false;
 
+                    PlaySound(0x20D);
+
+                    foreach (var m in SpellHelper.AcquireIndirectTargets(this, Location, Map, 10).OfType<Mobile>())
+                    {
+                        var range = (int)GetDistanceToSqrt(m);
+
+                        if (range < 1) range = 1;
+                        if (range > 4) range = 4;
+
+                        m.PlaySound(0x20D);
+                        AOS.Damage(this, m, baseDamage / range, 0, 0, 0, 0, 0, 100, 0);
+
+                        if (!switched && 0.2 > Utility.RandomDouble())
+                        {
+                            Combatant = m;
+                            switched = true;
+                        }
+                    }
+                }
+
+                _NextSpecial = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60));
             }
 
             if (Map != null && SpawnLocation != Point3D.Zero && !Utility.InRange(Location, SpawnLocation, 25))
@@ -235,7 +310,7 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-            if (KrampusEncounter.Encounter != null && KrampusEncounter.Encounter.Krampus == this)
+            if (IsKrampusEncounter)
             {
                 var rights = GetLootingRights();
 
@@ -251,11 +326,11 @@ namespace Server.Mobiles
 
                     if (ordersComplete >= 3 || Utility.RandomMinMax(0, 8) <= ordersComplete)
                     {
-                        Item item;
+                        Item item = null;
 
-                        switch (Utility.Random(8))
+                        switch (Utility.Random(13))
                         {
-                            case 0: item = new KrampusCoinPurse(m); break;
+                            case 0: item = new KrampusCoinPurse(m.Karma); break;
                             case 1: item = new CardOfSemidar(Utility.RandomMinMax(0, 6)); break;
                             case 2: item = new NiceTitleDeed(); break;
                             case 3: item = new NaughtyTitleDeed(); break;
@@ -269,6 +344,16 @@ namespace Server.Mobiles
                             case 11: item = new BarbedWhip(); break;
                             case 12: item = new BladedWhip(); break;
                         }
+
+                        if (item != null)
+                        {
+                            m.SendLocalizedMessage(1156269); // For your valor in defeating your foe a specialty item has been awarded to you!
+
+                            if (m.Backpack == null || !m.Backpack.TryDropItem(m, item, false))
+                            {
+                                m.BankBox.DropItem(item);
+                            }
+                        }
                     }
                 }
             }
@@ -280,14 +365,21 @@ namespace Server.Mobiles
         {
             base.Delete();
 
-            if (SpawnLocation != Point3D.Zero && KrampusEncounter.Encounter != null)
+            if (IsKrampusEncounter)
             {
                 KrampusEncounter.Encounter.OnKrampusKilled();
             }
 
             if (SummonedHelpers != null)
             {
+                ColUtility.SafeDelete(SummonedHelpers);
                 ColUtility.Free(SummonedHelpers);
+            }
+
+            if (InitialSpawn != null)
+            {
+                ColUtility.SafeDelete(InitialSpawn);
+                ColUtility.Free(InitialSpawn);
             }
         }
 
@@ -302,6 +394,11 @@ namespace Server.Mobiles
 
             if (SummonedHelpers != null)
                 SummonedHelpers.ForEach(m => writer.Write(m));
+
+            writer.Write(InitialSpawn == null ? 0 : InitialSpawn.Count);
+
+            if (InitialSpawn != null)
+                InitialSpawn.ForEach(m => writer.Write(m));
         }
 
         public override void Deserialize(GenericReader reader)
@@ -329,7 +426,25 @@ namespace Server.Mobiles
                 }
             }
 
-            _NextSummon = DateTime.UtcNow;
+            count = reader.ReadInt();
+
+            if (count > 0)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    BaseCreature summon = reader.ReadMobile() as BaseCreature;
+
+                    if (summon != null)
+                    {
+                        if (InitialSpawn == null)
+                            InitialSpawn = new List<BaseCreature>();
+
+                        InitialSpawn.Add(summon);
+                    }
+                }
+            }
+
+            _NextSpecial = DateTime.UtcNow;
         }
     }
 }

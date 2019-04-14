@@ -39,7 +39,6 @@ namespace Server.Engines.CityLoyalty
 
         public static bool KrampusEncounterActive { get { return KrampusEncounter.Enabled && KrampusEncounter.Encounter != null; } }
 
-
         public static Dictionary<Mobile, TradeOrderCrate> ActiveTrades { get; private set; }
         public static Dictionary<BaseCreature, DateTime> Ambushers { get; private set; }
 		
@@ -89,9 +88,18 @@ namespace Server.Engines.CityLoyalty
             {
                 minister.SayTo(from, 1151722); // It appears you are already delivering a trade order. Deliver your current order before requesting another.
             }
-            else if (KrampusEncounterActive && KrampusEncounter.Encounter.Krampus != null)
+            else if (KrampusEncounterActive && (KrampusEncounter.Encounter.Krampus != null || KrampusEncounter.Encounter.KrampusSpawning))
             {
-                minister.SayTo(from, 1158790, String.Format("{0}\t{1}", WorldLocationInfo.GetLocationString(from), Sextant.GetCoords(from)), 1150); // Take notice! The vile Krampus has been spotted near ~2_where~ at ~1_coords~!  New Trade Orders are suspended until Krampus has been defeated!
+                var p = KrampusEncounter.Encounter.SpawnLocation;
+                var map = KrampusEncounter.Encounter.SpawnMap;
+
+                minister.SayTo(
+                    from,
+                    1158790,
+                    String.Format("{0}\t{1}",
+                    WorldLocationInfo.GetLocationString(p, map),
+                    Sextant.GetCoords(p, map)), 1150);
+                    // Take notice! The vile Krampus has been spotted near ~2_where~ at ~1_coords~!  New Trade Orders are suspended until Krampus has been defeated!
             }
             else
             {
@@ -412,8 +420,6 @@ namespace Server.Engines.CityLoyalty
 
         public static void SpawnCreatures(Mobile m, double difficulty)
         {
-            m.SendLocalizedMessage(1155479, "", 1150); // *Your keen senses alert you to an incoming ambush of attackers!*
-
             BaseBoat boat = BaseBoat.FindBoatAt(m.Location, m.Map);
 
             Type[] types = GetCreatureType(m, boat != null);
@@ -528,6 +534,7 @@ namespace Server.Engines.CityLoyalty
                 }
             }
 
+            m.LocalOverheadMessage(Server.Network.MessageType.Regular, 1150, 1155479); // *Your keen senses alert you to an incoming ambush of attackers!*
             m.SendLocalizedMessage(1049330, "", 0x22); // You have been ambushed! Fight for your honor!!!
         }
 
