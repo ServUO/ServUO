@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Server.ContextMenus;
 using Server.Mobiles;
 using Server.Regions;
@@ -683,6 +684,25 @@ namespace Server.Engines.Quests
                 }
             }
 			
+            return false;
+        }
+
+        public static bool CheckRewardItem(PlayerMobile player, Item item)
+        {
+            foreach(var quest in player.Quests.Where(q => q.Objectives.Any(obj => obj is ObtainObjective)))
+            {
+                foreach (var obtain in quest.Objectives.OfType<ObtainObjective>())
+                {
+                    if (obtain.IsObjective(item))
+                    {
+                        obtain.CurProgress += item.Amount;
+                        quest.OnObjectiveUpdate(item);
+
+                        return true;
+                    }
+                }
+            }
+
             return false;
         }
 

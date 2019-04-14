@@ -153,16 +153,31 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
+            var coords = GetCoords(from);
+
+            if (!String.IsNullOrEmpty(coords))
+            {
+                from.LocalOverheadMessage(MessageType.Regular, from.SpeechHue, false, GetCoords(from));
+            }
+        }
+
+        public static string GetCoords(IEntity e)
+        {
+            return GetCoords(e.Location, e.Map);
+        }
+
+        public static string GetCoords(Point3D location, Map map)
+        {
             int xLong = 0, yLat = 0;
             int xMins = 0, yMins = 0;
             bool xEast = false, ySouth = false;
 
-            if (Sextant.Format(from.Location, from.Map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
+            if (Sextant.Format(location, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
             {
-                string location = String.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
-
-                from.LocalOverheadMessage(MessageType.Regular, from.SpeechHue, false, location);
+                return String.Format("{0}Â° {1}'{2}, {3}Â° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
             }
+
+            return String.Empty;
         }
     }
 }

@@ -7736,6 +7736,8 @@ namespace Server.Mobiles
                     toTeleport.PlaySound(0x1FE);
 
                     Combatant = toTeleport;
+
+                    OnAfterTeleport(toTeleport);
                 }
             }
         }
@@ -7764,6 +7766,10 @@ namespace Server.Mobiles
 
             ColUtility.Free(list);
             return mob;
+        }
+
+        public virtual void OnAfterTeleport(Mobile m)
+        {
         }
         #endregion
 

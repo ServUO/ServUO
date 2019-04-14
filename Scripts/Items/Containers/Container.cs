@@ -877,6 +877,40 @@ namespace Server.Items
             Weight = 2.0;
         }
 
+        /// <summary>
+        /// Due to popular demand, ServUO will be reproducing an EA bug that was never fixed.
+        /// </summary>
+        /// <param name="from"></param>
+        /// <returns></returns>
+        public override bool CheckLocked(Mobile from)
+        {
+            if (ItemID != 0xE7E)
+            {
+                return base.CheckLocked(from);
+            }
+
+            if (Locked && TrapType == TrapType.DartTrap && from.InRange(GetWorldLocation(), 2))
+            {
+                int damage;
+                var p = GetWorldLocation();
+                var map = Map;
+
+                if (TrapLevel > 0)
+                    damage = Utility.RandomMinMax(5, 15) * TrapLevel;
+                else
+                    damage = TrapPower;
+
+                AOS.Damage(from, damage, 100, 0, 0, 0, 0);
+
+                from.LocalOverheadMessage(Network.MessageType.Regular, 0x62, 502998); // A dart imbeds itself in your flesh!
+                Effects.PlaySound(p, map, 0x223);
+
+                return true;
+            }
+
+            return base.CheckLocked(from);
+        }
+
         public SmallCrate(Serial serial)
             : base(serial)
         {
