@@ -982,13 +982,13 @@ namespace Server.Engines.VendorSearching
             if (version > 0)
             {
                 PropLabel = reader.ReadInt();
+            }
 
-                ReadAttribute(reader);
+            ReadAttribute(reader);
 
-                Label = reader.ReadInt();
-                Value = reader.ReadInt();
-                Category = (Category)reader.ReadInt();
-            }            
+            Label = reader.ReadInt();
+            Value = reader.ReadInt();
+            Category = (Category)reader.ReadInt();
         }
 
         public void Serialize(GenericWriter writer)
