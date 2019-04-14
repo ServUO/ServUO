@@ -36,7 +36,8 @@ namespace Server
             TrinsicPaladins = 0x00000010,
             HonestyItems    = 0x00000020,
             TramKhaldun     = 0x00000040,
-            FixAddonDeco    = 0x00000080
+            FixAddonDeco    = 0x00000080,
+            LifeStealers    = 0x00000100,
         }
 
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
@@ -162,6 +163,12 @@ namespace Server
             {
                 case 12:
                 case 11:
+                    if ((VersionFlag & SpawnerVersion.LifeStealers) == 0)
+                    {
+                        SpawnLifeStealers();
+                        VersionFlag |= SpawnerVersion.LifeStealers;
+                    }
+
                     if ((VersionFlag & SpawnerVersion.FixAddonDeco) == 0)
                     {
                         FixAddonDeco();
@@ -250,6 +257,13 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Spawn Lifestealers
+        public static void SpawnLifeStealers()
+        {
+            LoadFromXmlSpawner("Spawns/termur.xml", Map.TerMur, "LifeStealer");
+        }
+        #endregion
 
         #region Addon Decoraction Fix
         public static void FixAddonDeco()

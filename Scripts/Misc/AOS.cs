@@ -185,7 +185,7 @@ namespace Server
                 }
 
                 if (m != null)
-                    BaseFishPie.ScaleDamage(m, ref totalDamage, phys, fire, cold, pois, nrgy, direct);
+                    BaseFishPie.ScaleDamage(from, m, ref totalDamage, phys, fire, cold, pois, nrgy, direct);
 
                 if (Core.HS && ArmorPierce.IsUnderEffects(m))
                 {
@@ -2375,6 +2375,11 @@ namespace Server
 
         public void AddTo(Mobile m)
         {
+            if (Discordance.UnderPVPEffects(m))
+            {
+                return;
+            }
+
             Remove();
 
             for (int i = 0; i < 5; ++i)
