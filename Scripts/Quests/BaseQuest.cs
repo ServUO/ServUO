@@ -447,7 +447,13 @@ namespace Server.Engines.Quests
                         if (m_Rewards[i].Name is int)
                             m_Owner.SendLocalizedMessage(1074360, "#" + (int)m_Rewards[i].Name); // You receive a reward: ~1_REWARD~
                         else if (m_Rewards[i].Name is string)
-                            m_Owner.SendLocalizedMessage(1074360, (string)m_Rewards[i].Name); // You receive a reward: ~1_REWARD~		
+                            m_Owner.SendLocalizedMessage(1074360, (string)m_Rewards[i].Name); // You receive a reward: ~1_REWARD~
+
+                        // already marked, we need to see if this gives progress to another quest.
+                        if (reward.QuestItem)
+                        {
+                            QuestHelper.CheckRewardItem(Owner, reward);
+                        }
                     }
                 }
             }

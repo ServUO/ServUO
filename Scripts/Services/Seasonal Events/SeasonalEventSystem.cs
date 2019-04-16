@@ -21,7 +21,8 @@ namespace Server.Engines.SeasonalEvents
         TreasuresOfKotlCity,
         SorcerersDungeon,
         TreasuresOfDoom,
-        TreasuresOfKhaldun
+        TreasuresOfKhaldun,
+        KrampusEncounter
     }
 
     public enum EventStatus
@@ -63,6 +64,7 @@ namespace Server.Engines.SeasonalEvents
             Entries.Add(new SeasonalEventEntry(EventType.SorcerersDungeon, "Sorcerer's Dungeon", EventStatus.Seasonal, 10, 1, 60));
             Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfDoom, "Treasures of Doom", EventStatus.Seasonal, 10, 1, 60));
             Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfKhaldun, "Treasures of Khaldun", EventStatus.Seasonal, 10, 1, 60));
+            Entries.Add(new SeasonalEventEntry(EventType.KrampusEncounter, "Krampus Encounter", EventStatus.Seasonal, 12, 1, 60));
         }
 
         [Usage("SeasonSystemGump")]
@@ -251,6 +253,9 @@ namespace Server.Engines.SeasonalEvents
                     break;
                 case EventType.SorcerersDungeon:
                     SorcerersDungeonGenerate.CheckEnabled();
+                    break;
+                case EventType.KrampusEncounter:
+                    KrampusEncounter.CheckEnabled();
                     break;
             }
         }
