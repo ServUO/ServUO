@@ -1784,7 +1784,7 @@ namespace Server.Items
 
                 bool success = defender.CheckSkill(SkillName.Parry, chance);
 
-                if (Core.EJ && success)
+                if (shield != null && Core.EJ && success)
                 {
                     shield.LastParryChance = (int)(chance * 100);
                     shield.InvalidateProperties();
