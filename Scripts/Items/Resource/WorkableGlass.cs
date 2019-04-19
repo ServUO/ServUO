@@ -19,6 +19,7 @@ namespace Server.Items
 		public WorkableGlass( int amount ) : base( 19328 )
 		{
 			Stackable = true;
+            Amount = amount;
 			Weight = 1.0;
 		}
 

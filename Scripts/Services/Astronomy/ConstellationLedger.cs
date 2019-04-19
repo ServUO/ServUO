@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,6 +11,8 @@ namespace Server.Engines.Astronomy
 {
     public class ConstellationLedger : Item
     {
+        public override int LabelNumber { get { return 1158520; } } // Constellation Ledger
+
         [Constructable]
         public ConstellationLedger()
             : base(0xFF4)

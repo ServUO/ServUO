@@ -41,6 +41,16 @@ namespace Server.Items
             Weight = 1.0;
         }
 
+        public override bool WillStack(Mobile from, Item item)
+        {
+            if (item is IQuality && ((IQuality)item).Quality != _Quality)
+            {
+                return false;
+            }
+
+            return base.WillStack(from, item);
+        }
+
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             Quality = (ItemQuality)quality;

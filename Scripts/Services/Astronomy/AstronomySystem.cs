@@ -171,14 +171,14 @@ namespace Server.Engines.Astronomy
                 return TimeCoordinate.NineToEleven;
             }
 
-            if (hours >= 24 && hours < 1)
+            if ((hours >= 24 && hours < 1) || hours == 0)
             {
                 return TimeCoordinate.Midnight;
             }
 
             if (hours >= 1 && hours <= 4)
             {
-                return TimeCoordinate.Midnight;
+                return TimeCoordinate.OneToFour;
             }
 
             return TimeCoordinate.Day;

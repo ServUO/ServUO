@@ -6,18 +6,12 @@ namespace Server.Items
     {
         [Constructable]
         public AlchemyBag()
-            : this(1)
         {
-            this.Movable = true;
-            this.Hue = 0x250;
-        }
+            Hue = 0x250;
 
-        [Constructable]
-        public AlchemyBag(int amount)
-        {
-            this.DropItem(new MortarPestle(5));
-            this.DropItem(new BagOfReagents(5000));
-            this.DropItem(new Bottle(5000));
+            DropItem(new MortarPestle(5));
+            DropItem(new BagOfReagents(5000));
+            DropItem(new Bottle(5000));
         }
 
         public AlchemyBag(Serial serial)

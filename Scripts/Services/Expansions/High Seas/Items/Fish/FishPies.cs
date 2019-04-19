@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using System;
 using Server.Mobiles;
 using Server.Engines.Craft;
@@ -90,21 +90,26 @@ namespace Server.Items
             from.Delta(MobileDelta.WeaponDamage);
         }
 
-        public static void ScaleDamage(Mobile from, ref int totalDamage, int phys, int fire, int cold, int pois, int nrgy, int direct)
+        public static void ScaleDamage(Mobile from, Mobile to, ref int totalDamage, int phys, int fire, int cold, int pois, int nrgy, int direct)
         {
-            if (IsUnderEffects(from, FishPieEffect.PhysicalSoak) && phys > 0)
+            if (Core.EJ && from is PlayerMobile && to is PlayerMobile)
+            {
+                return;
+            }
+
+            if (IsUnderEffects(to, FishPieEffect.PhysicalSoak) && phys > 0)
                 totalDamage -= (int)Math.Min(5.0, totalDamage * ((double)phys / 100.0));
 
-            if (IsUnderEffects(from, FishPieEffect.FireSoak) && fire > 0)
+            if (IsUnderEffects(to, FishPieEffect.FireSoak) && fire > 0)
                 totalDamage -= (int)Math.Min(5.0, totalDamage * ((double)fire / 100.0));
 
-            if (IsUnderEffects(from, FishPieEffect.ColdSoak) && cold > 0)
+            if (IsUnderEffects(to, FishPieEffect.ColdSoak) && cold > 0)
                 totalDamage -= (int)Math.Min(5.0, totalDamage * ((double)cold / 100.0));
 
-            if (IsUnderEffects(from, FishPieEffect.PoisonSoak) && pois > 0)
+            if (IsUnderEffects(to, FishPieEffect.PoisonSoak) && pois > 0)
                 totalDamage -= (int)Math.Min(5.0, totalDamage * ((double)pois / 100.0));
 
-            if (IsUnderEffects(from, FishPieEffect.EnergySoak) && nrgy > 0)
+            if (IsUnderEffects(to, FishPieEffect.EnergySoak) && nrgy > 0)
                 totalDamage -= (int)Math.Min(5.0, totalDamage * ((double)nrgy / 100.0));
         }
 

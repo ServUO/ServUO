@@ -20,6 +20,7 @@ namespace Server.Engines.BulkOrders
     {
         int AmountMax { get; set; }
         bool RequireExceptional { get; set; }
+        bool Complete { get; }
         BulkMaterialType Material { get; set; }
         BODType BODType { get; }
     }
@@ -305,6 +306,22 @@ namespace Server.Engines.BulkOrders
             }
         }
 
+        public static int GetBodHue(BODType type)
+        {
+            switch (type)
+            {
+                default:
+                case BODType.Smith: return 0x44E;
+                case BODType.Tailor: return 0x483;
+                case BODType.Alchemy: return 2505;
+                case BODType.Inscription: return 2598;
+                case BODType.Tinkering: return 1109;
+                case BODType.Cooking: return 1169;
+                case BODType.Fletching: return 1425;
+                case BODType.Carpentry: return 1512;
+            }
+        }
+
         public static BOBFilter GetBOBFilter(PlayerMobile pm)
         {
             return GetContext(pm).BOBFilter;
@@ -422,28 +439,16 @@ namespace Server.Engines.BulkOrders
             }
         }
 
-        public static bool CanClaimRewards(Mobile m, BODType type)
+        public static bool CanClaimRewards(Mobile m)
         {
             BODContext context = GetContext(m);
 
             if (context != null)
             {
-                return context.CanClaimRewards(type);
+                return context.CanClaimRewards();
             }
 
             return true;
-        }
-
-        public static int GetPendingRewardFor(Mobile m, BODType type)
-        {
-            BODContext context = GetContext(m);
-
-            if (context != null && context.Entries.ContainsKey(type))
-            {
-                return context.Entries[type].PendingRewardPoints;
-            }
-
-            return 0;
         }
 
         public static bool CanExchangeBOD(Mobile from, BaseVendor vendor, IBOD bod, int cost)
@@ -727,12 +732,24 @@ namespace Server.Engines.BulkOrders
             }
         }
 
-        public bool CanClaimRewards(BODType type)
+        public int GetPendingRewardFor(BODType type)
         {
-            foreach (KeyValuePair<BODType, BODEntry> kvp in Entries)
+            if (Entries.ContainsKey(type))
             {
-                if (kvp.Value.PendingRewardPoints > 0 && kvp.Key != type)
+                return Entries[type].PendingRewardPoints;
+            }
+
+            return 0;
+        }
+
+        public bool CanClaimRewards()
+        {
+            foreach (var kvp in Entries)
+            {
+                if (kvp.Value.PendingRewardPoints > 0)
+                {
                     return false;
+                }
             }
 
             return true;
@@ -811,22 +828,6 @@ namespace Server.Engines.BulkOrders
                 int old = _CachedDeeds;
 
                 _CachedDeeds = Math.Max(0, Math.Min(BulkOrderSystem.MaxCachedDeeds, value));
-
-                /*if (_CachedDeeds < old)
-                {
-                    if (LastBulkOrder + TimeSpan.FromHours(BulkOrderSystem.Delay) < DateTime.UtcNow)
-                    {
-                        LastBulkOrder = DateTime.UtcNow - (DateTime.UtcNow - (LastBulkOrder + TimeSpan.FromHours(BulkOrderSystem.Delay)));
-                    }
-                    else
-                    {
-                        LastBulkOrder = DateTime.UtcNow;
-                    }
-                }
-                else if (_CachedDeeds > old)
-                {
-                    LastBulkOrder = DateTime.UtcNow; //LastBulkOrder + TimeSpan.FromHours(BulkOrderSystem.Delay);
-                }*/
             }
         }
 

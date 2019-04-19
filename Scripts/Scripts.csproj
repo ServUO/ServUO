@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abilities\ColdWind.cs" />
+    <Compile Include="Abilities\Focus.cs" />
     <Compile Include="Accounting\AccessRestrictions.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -600,6 +601,7 @@
     <Compile Include="Items\Decorative\FlamingScarecrow.cs" />
     <Compile Include="Items\Decorative\SilverSaplingReplica.cs" />
     <Compile Include="Items\Decorative\ValentineBear.cs" />
+    <Compile Include="Items\Resource\FocusingGemOfVirtueBane.cs" />
     <Compile Include="Items\Functional\SerpentsJawbone.cs" />
     <Compile Include="Items\Internal\ItemSockets\Caddellite.cs" />
     <Compile Include="Items\Internal\ItemSockets\EnchantedHotItem.cs" />
@@ -741,6 +743,10 @@
     <Compile Include="Mobiles\Normal\Triton.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
     <Compile Include="Multis\ContestHouses.cs" />
+    <Compile Include="Quests\The Ritual\Items.cs" />
+    <Compile Include="Quests\The Ritual\Mobiles.cs" />
+    <Compile Include="Quests\The Ritual\Puzzle.cs" />
+    <Compile Include="Quests\The Ritual\Quests.cs" />
     <Compile Include="Services\Astronomy\21st Anniversary Gifts\Anniversary21Card.cs" />
     <Compile Include="Services\Astronomy\21st Anniversary Gifts\Anniversary21GiftToken.cs" />
     <Compile Include="Services\Astronomy\21st Anniversary Gifts\AnniversaryBag21st.cs" />
@@ -9884,16 +9890,6 @@
     <Compile Include="Services\Revamped Dungeons\DespiseRevamped\DespiseController.cs" />
     <Compile Include="Services\Revamped Dungeons\DespiseRevamped\Region.cs" />
     <Compile Include="Services\Revamped Dungeons\DespiseRevamped\Setup.cs" />
-    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\BarbedWhip.cs" />
-    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\KrampusMinionBoots.cs" />
-    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\NiceTitleDeed.cs" />
-    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\NaughtyTitleDeed.cs" />
-    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\PunisherTitleDeed.cs" />
-    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\SpikedWhip.cs" />
-    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\BladedWhip.cs" />
-    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\KrampusMinionTalons.cs" />
-    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\KrampusMinionHat.cs" />
-    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\KrampusMinionEarrings.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\Generate.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\Items\CorrosiveAsh.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\Items\CursedOilstone.cs" />
@@ -9970,6 +9966,23 @@
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\MysteriousTunnel.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\WrongMazeWall.cs" />
     <Compile Include="Services\RunicReforging\ReforgingContext.cs" />
+    <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\BarbedWhip.cs" />
+    <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\BladedWhip.cs" />
+    <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\Branch.cs" />
+    <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\DirtySnowballs.cs" />
+    <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\KrampusCoinPurse.cs" />
+    <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\KrampusMinionBoots.cs" />
+    <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\KrampusMinionEarrings.cs" />
+    <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\KrampusMinionHat.cs" />
+    <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\KrampusMinionTalons.cs" />
+    <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\KrampusPunishinList.cs" />
+    <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\NaughtyTitleDeed.cs" />
+    <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\NiceTitleDeed.cs" />
+    <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\PunisherTitleDeed.cs" />
+    <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\SpikedWhip.cs" />
+    <Compile Include="Services\Seasonal Events\KrampusEncounter\KrampusEncounter.cs" />
+    <Compile Include="Services\Seasonal Events\KrampusEncounter\Mobiles\Krampus.cs" />
+    <Compile Include="Services\Seasonal Events\KrampusEncounter\Mobiles\KrampusMinion.cs" />
     <Compile Include="Services\Seasonal Events\SeasonalEventGump.cs" />
     <Compile Include="Services\Seasonal Events\SeasonalEventSystem.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfDoom\DoomData.cs" />
@@ -10130,6 +10143,7 @@
     <Compile Include="Services\UltimaStore\UltimaStoreGump.cs" />
     <Compile Include="Services\Underworld\Navrey%27s Lair\NavreysController.cs" />
     <Compile Include="Services\Underworld\Navrey%27s Lair\NavreysPillar.cs" />
+    <Compile Include="Services\Vendor Searching\VendorSearchCriteria.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearch.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearchGump.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearchMap.cs" />
