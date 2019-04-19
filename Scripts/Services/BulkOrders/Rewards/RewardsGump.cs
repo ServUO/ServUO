@@ -16,11 +16,6 @@ namespace Server.Engines.BulkOrders
         {
             BODType = type;
 
-            if (points > 0)
-                BulkOrderSystem.AddToPending(User, type, points);
-            else
-                UsingBanked = true;
-
             var entry = new GumpLabel(230, 65, 0x64, GetPoints(user).ToString("0.000000"));
             entry.Parent = this;
 
