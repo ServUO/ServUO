@@ -98,7 +98,7 @@ namespace Server.Items
     {
         [Constructable]
         public Granite()
-            : base(1)
+            : this(1)
         {
         }
 
