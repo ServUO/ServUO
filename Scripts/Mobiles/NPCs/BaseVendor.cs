@@ -273,29 +273,34 @@ namespace Server.Mobiles
 				m_Vendor = vendor;
 			}
 
-			public override void OnClick()
-			{
+            public override void OnClick()
+            {
                 if (!m_From.InRange(m_Vendor.Location, 3) || !(m_From is PlayerMobile))
                     return;
 
-                if (!BulkOrderSystem.CanClaimRewards(m_From, m_Vendor.BODType))
+                var context = BulkOrderSystem.GetContext(m_From);
+                int pending = context.GetPendingRewardFor(m_Vendor.BODType);
+
+                if (pending > 0)
+                {
+                    if (context.PointsMode == PointsMode.Enabled)
+                    {
+                        m_From.SendGump(new ConfirmBankPointsGump((PlayerMobile)m_From, m_Vendor, m_Vendor.BODType, pending, (double)pending * 0.02));
+                    }
+                    else
+                    {
+                        m_From.SendGump(new RewardsGump(m_Vendor, (PlayerMobile)m_From, m_Vendor.BODType, pending));
+                    }
+                }
+                else if (!BulkOrderSystem.CanClaimRewards(m_From))
                 {
                     m_Vendor.SayTo(m_From, 1157083, 0x3B2); // You must claim your last turn-in reward in order for us to continue doing business.
                 }
                 else
                 {
-                    int pending = BulkOrderSystem.GetPendingRewardFor(m_From, m_Vendor.BODType);
-
-                    if (pending > 0)
-                    {
-                        m_From.SendGump(new RewardsGump(m_Vendor, (PlayerMobile)m_From, m_Vendor.BODType, pending));
-                    }
-                    else
-                    {
-                        m_From.SendGump(new RewardsGump(m_Vendor, (PlayerMobile)m_From, m_Vendor.BODType));
-                    }
+                    m_From.SendGump(new RewardsGump(m_Vendor, (PlayerMobile)m_From, m_Vendor.BODType));
                 }
-			}
+            }
         }
 
 		public BaseVendor(string title)
@@ -1171,7 +1176,7 @@ namespace Server.Mobiles
 
 			if (dropped is SmallBOD || dropped is LargeBOD)
 			{
-				PlayerMobile pm = from as PlayerMobile;
+                PlayerMobile pm = from as PlayerMobile;
                 IBOD bod = dropped as IBOD;
 
                 if (bod != null && BulkOrderSystem.NewSystemEnabled && Bribes != null && Bribes.ContainsKey(from) && Bribes[from].BOD == bod)
@@ -1193,8 +1198,12 @@ namespace Server.Mobiles
                     SayTo(from, 1045130, 0x3B2); // That order is for some other shopkeeper.
 					return false;
 				}
-				else if ((dropped is SmallBOD && !((SmallBOD)dropped).Complete) ||
-						 (dropped is LargeBOD && !((LargeBOD)dropped).Complete))
+                else if (!BulkOrderSystem.CanClaimRewards(from))
+                {
+                    SayTo(from, 1157083, 0x3B2); // You must claim your last turn-in reward in order for us to continue doing business.
+                    return false;
+                }
+                else if (bod == null || !bod.Complete)
 				{
                     SayTo(from, 1045131, 0x3B2); // You have not completed the order yet.
 					return false;
@@ -1228,19 +1237,19 @@ namespace Server.Mobiles
                     else
                         BulkOrderSystem.ComputePoints((LargeBOD)dropped, out points, out banked);
 
+                    context.AddPending(BODType, points);
+
                     switch (context.PointsMode)
                     {
                         case PointsMode.Enabled:
-                            from.SendGump(new ConfirmBankPointsGump((PlayerMobile)from, this, (Item)bod, this.BODType, points, banked));
+                            from.SendGump(new ConfirmBankPointsGump((PlayerMobile)from, this, this.BODType, points, banked));
                             break;
                         case PointsMode.Disabled:
                             from.SendGump(new RewardsGump(this, (PlayerMobile)from, this.BODType, points));
                             break;
                         case PointsMode.Automatic:
-                            {
-                                BulkOrderSystem.SetPoints(from, this.BODType, banked);
-                                from.SendGump(new RewardsGump(this, (PlayerMobile)from, this.BODType));
-                            }
+                            BulkOrderSystem.SetPoints(from, this.BODType, banked);
+                            from.SendGump(new RewardsGump(this, (PlayerMobile)from, this.BODType));
                             break;
                     }
 
