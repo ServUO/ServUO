@@ -607,6 +607,8 @@
     <Compile Include="Items\Internal\ItemSockets\EnchantedHotItem.cs" />
     <Compile Include="Items\Internal\ItemSockets\HonestyItem.cs" />
     <Compile Include="Items\Internal\ItemSockets\SlayerSocket.cs" />
+    <Compile Include="Items\StoreBought\BarrelMailbox.cs" />
+    <Compile Include="Items\StoreBought\SquirrelMailbox.cs" />
     <Compile Include="Items\Tools\SteamPoweredBeverageMaker.cs" />
     <Compile Include="Items\Addons\ClawFootTub.cs" />
     <Compile Include="Items\Addons\GreenMarbleFireplace.cs" />
