@@ -130,7 +130,7 @@ namespace Server.Mobiles
             c.DropItem(new StygianDragonHead());
 			
 			if ( Paragon.ChestChance > Utility.RandomDouble() )
-            	c.DropItem( new ParagonChest( Name, TreasureMapLevel ) );
+            	c.DropItem( new ParagonChest( Name, 5 ) );
         }
 
         public override void Serialize(GenericWriter writer)

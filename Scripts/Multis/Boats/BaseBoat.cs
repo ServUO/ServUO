@@ -1603,6 +1603,11 @@ namespace Server.Multis
             return Boats.Any(boat => boat.Owner == from && !boat.Deleted && boat.Map != Map.Internal && !(boat is RowBoat));
         }
 
+        public static BaseBoat GetBoat(Mobile from)
+        {
+            return Boats.FirstOrDefault(boat => boat.Owner == from && !boat.Deleted && boat.Map != Map.Internal && !(boat is RowBoat));
+        }
+
         public static bool IsValidLocation(Point3D p, Map map)
         {
             Rectangle2D[] wrap = GetWrapFor(map);
