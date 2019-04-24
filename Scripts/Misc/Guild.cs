@@ -1584,7 +1584,9 @@ namespace Server.Guilds
 				m_Members.Add(m);
 				m.Guild = this;
 
-				if (!NewGuildSystem)
+                EventSink.InvokeJoinGuild(new JoinGuildEventArgs(m, this));
+
+                if (!NewGuildSystem)
 				{
 					m.GuildFealty = m_Leader;
 				}

@@ -1525,8 +1525,6 @@ namespace Server.Mobiles
 			{
 				Item item = (Item)o;
 
-                bii.OnBought(this, amount);
-
 				if (item.Stackable)
 				{
 					item.Amount = amount;
@@ -1560,12 +1558,14 @@ namespace Server.Mobiles
 						}
 					}
 				}
-			}
+
+                bii.OnBought(buyer, this, item, amount);
+            }
 			else if (o is Mobile)
 			{
 				Mobile m = (Mobile)o;
 
-                bii.OnBought(this, amount);
+                bii.OnBought(buyer, this, m, amount);
 
 				m.Direction = (Direction)Utility.Random(8);
 				m.MoveToWorld(buyer.Location, buyer.Map);
@@ -2199,8 +2199,12 @@ namespace Server.Mobiles
 							}
 						}
 
-						GiveGold += ssi.GetSellPriceFor(resp.Item, this) * amount;
-						break;
+                        var singlePrice = ssi.GetSellPriceFor(resp.Item, this);
+                        GiveGold += singlePrice * amount;
+
+                        EventSink.InvokeValidVendorSell(new ValidVendorSellEventArgs(seller, this, resp.Item, singlePrice));
+
+                        break;
 					}
 				}
 			}
@@ -2739,7 +2743,7 @@ namespace Server
         int TotalBought { get; set; }
         int TotalSold { get; set; }
 
-        void OnBought(BaseVendor vendor, int amount);
+        void OnBought(Mobile buyer, BaseVendor vendor, IEntity entity, int amount);
         void OnSold(BaseVendor vendor, int amount);
 
 		//display price of the item

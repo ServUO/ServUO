@@ -135,6 +135,8 @@ namespace Server
 
     public delegate void SkillGainEventHandler(SkillGainEventArgs e);
 
+    public delegate void SkillCheckEventHandler(SkillCheckEventArgs e);
+
     public delegate void SkillCapChangeEventHandler(SkillCapChangeEventArgs e);
 
     public delegate void StatCapChangeEventHandler(StatCapChangeEventArgs e);
@@ -161,7 +163,23 @@ namespace Server
 
     public delegate void TargetByResourceMacroEventHandler(TargetByResourceMacroEventArgs e);
 
-	public class OnItemObtainedEventArgs : EventArgs
+    public delegate void JoinGuildEventHandler(JoinGuildEventArgs e);
+
+    public delegate void TameCreatureEventHandler(TameCreatureEventArgs e);
+
+    public delegate void ValidVendorPurchaseEventHandler(ValidVendorPurchaseEventArgs e);
+
+    public delegate void ValidVendorSellEventHandler(ValidVendorSellEventArgs e);
+
+    public delegate void CorpseLootEventHandler(CorpseLootEventArgs e);
+
+    public delegate void RepairItemEventHandler(RepairItemEventArgs e);
+
+    public delegate void AlterItemEventHandler(AlterItemEventArgs e);
+
+    public delegate void PlacePlayerVendorEventHandler(PlacePlayerVendorEventArgs e);
+
+    public class OnItemObtainedEventArgs : EventArgs
 	{
 		private readonly Mobile m_Mobile;
 		private readonly Item m_Item;
@@ -1222,16 +1240,28 @@ namespace Server
     public class SkillGainEventArgs : EventArgs
     {
         public int Gained { get; private set; }
-
         public Mobile From { get; private set; }
         public Skill Skill { get; private set; }
-
 
         public SkillGainEventArgs(Mobile from, Skill skill, int toGain)
         {
             From = from;
             Skill = skill;
             Gained = toGain;
+        }
+    }
+
+    public class SkillCheckEventArgs : EventArgs
+    {
+        public bool Success { get; set; }
+        public Mobile From { get; set; }
+        public Skill Skill { get; set; }
+
+        public SkillCheckEventArgs(Mobile from, Skill skill, bool success)
+        {
+            From = from;
+            Skill = skill;
+            Success = success;
         }
     }
 
@@ -1419,6 +1449,118 @@ namespace Server
         }
     }
 
+    public class JoinGuildEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public BaseGuild Guild { get; set; }
+
+        public JoinGuildEventArgs(Mobile m, BaseGuild g)
+        {
+            Mobile = m;
+            Guild = g;
+        }
+    }
+
+    public class TameCreatureEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Mobile Creature { get; set; }
+
+        public TameCreatureEventArgs(Mobile m, Mobile creature)
+        {
+            Mobile = m;
+            Creature = creature;
+        }
+    }
+
+    public class ValidVendorPurchaseEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Mobile Vendor { get; set; }
+        public IEntity Bought { get; set; }
+        public int AmountPerUnit { get; set; }
+
+        public ValidVendorPurchaseEventArgs(Mobile m, Mobile vendor, IEntity bought, int costPer)
+        {
+            Mobile = m;
+            Vendor = vendor;
+            Bought = bought;
+            AmountPerUnit = costPer;
+        }
+    }
+
+    public class ValidVendorSellEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Mobile Vendor { get; set; }
+        public IEntity Sold { get; set; }
+        public int AmountPerUnit { get; set; }
+
+        public ValidVendorSellEventArgs(Mobile m, Mobile vendor, IEntity sold, int costPer)
+        {
+            Mobile = m;
+            Vendor = vendor;
+            Sold = sold;
+            AmountPerUnit = costPer;
+        }
+    }
+
+    public class CorpseLootEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Container Corpse { get; set; }
+        public Item Looted { get; set; }
+
+        public CorpseLootEventArgs(Mobile m, Container c, Item looted)
+        {
+            Mobile = m;
+            Corpse = c;
+            Looted = looted;
+        }
+    }
+
+    public class RepairItemEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Item Tool { get; set; }
+        public IEntity Repaired { get; set; }
+
+        public RepairItemEventArgs(Mobile m, Item tool, IEntity repaired)
+        {
+            Mobile = m;
+            Tool = tool;
+            Repaired = repaired;
+        }
+    }
+
+    public class AlterItemEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Item Tool { get; set; }
+        public Item OldItem { get; set; }
+        public Item NewItem { get; set; }
+
+        public AlterItemEventArgs(Mobile m, Item tool, Item oldItem, Item newItem)
+        {
+            Mobile = m;
+            Tool = tool;
+            OldItem = oldItem;
+            NewItem = newItem;
+        }
+    }
+
+    public class PlacePlayerVendorEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Mobile Vendor { get; set; }
+
+        public PlacePlayerVendorEventArgs(Mobile m, Mobile vendor)
+        {
+            Mobile = m;
+            Vendor = vendor;
+        }
+    }
+
     public static class EventSink
 	{
 		public static event OnItemObtainedEventHandler OnItemObtained;
@@ -1482,6 +1624,7 @@ namespace Server
 		public static event ResourceHarvestSuccessEventHandler ResourceHarvestSuccess;
 		public static event CraftSuccessEventHandler CraftSuccess;
         public static event SkillGainEventHandler SkillGain;
+        public static event SkillCheckEventHandler SkillCheck;
         public static event SkillCapChangeEventHandler SkillCapChange;
         public static event StatCapChangeEventHandler StatCapChange;
         public static event QuestCompleteEventHandler QuestComplete;
@@ -1498,7 +1641,16 @@ namespace Server
         public static event UnequipMacroEventHandler UnequipMacro;
         public static event TargetByResourceMacroEventHandler TargetByResourceMacro;
 
-		public static void InvokeOnItemObtained(OnItemObtainedEventArgs e)
+        public static event JoinGuildEventHandler JoinGuild;
+        public static event TameCreatureEventHandler TameCreature;
+        public static event ValidVendorPurchaseEventHandler ValidVendorPurchase;
+        public static event ValidVendorSellEventHandler ValidVendorSell;
+        public static event CorpseLootEventHandler CorpseLoot;
+        public static event RepairItemEventHandler RepairItem;
+        public static event AlterItemEventHandler AlterItem;
+        public static event PlacePlayerVendorEventHandler PlacePlayerVendor;
+
+        public static void InvokeOnItemObtained(OnItemObtainedEventArgs e)
 		{
 			if (OnItemObtained != null)
 			{
@@ -1986,6 +2138,14 @@ namespace Server
             }
         }
 
+        public static void InvokeSkillCheck(SkillCheckEventArgs e)
+        {
+            if (SkillCheck != null)
+            {
+                SkillCheck(e);
+            }
+        }
+
         public static void InvokeSkillCapChange(SkillCapChangeEventArgs e)
         {
             if (SkillCapChange != null)
@@ -2090,6 +2250,70 @@ namespace Server
             }
         }
 
+        public static void InvokeJoinGuild(JoinGuildEventArgs e)
+        {
+            if (JoinGuild != null)
+            {
+                JoinGuild(e);
+            }
+        }
+
+        public static void InvokeTameCreature(TameCreatureEventArgs e)
+        {
+            if (TameCreature != null)
+            {
+                TameCreature(e);
+            }
+        }
+
+        public static void InvokeValidVendorPurchase(ValidVendorPurchaseEventArgs e)
+        {
+            if (ValidVendorPurchase != null)
+            {
+                ValidVendorPurchase(e);
+            }
+        }
+
+        public static void InvokeValidVendorSell(ValidVendorSellEventArgs e)
+        {
+            if (ValidVendorSell != null)
+            {
+                ValidVendorSell(e);
+            }
+        }
+
+        public static void InvokeCorpseLoot(CorpseLootEventArgs e)
+        {
+            if (CorpseLoot != null)
+            {
+                CorpseLoot(e);
+            }
+        }
+
+        public static void InvokeRepairItem(RepairItemEventArgs e)
+        {
+            if (RepairItem != null)
+            {
+                RepairItem(e);
+            }
+        }
+
+        public static void InvokeAlterItem(AlterItemEventArgs e)
+        {
+            if (AlterItem != null)
+            {
+                AlterItem(e);
+            }
+        }
+
+        public static void InvokePlacePlayerVendor(PlacePlayerVendorEventArgs e)
+        {
+            if (PlacePlayerVendor != null)
+            {
+                PlacePlayerVendor(e);
+            }
+        }
+
         public static void Reset()
 		{
 			OnItemObtained = null;
@@ -2146,6 +2370,7 @@ namespace Server
 			ResourceHarvestSuccess = null;
 			CraftSuccess = null;
 			SkillGain = null;
+            SkillCheck = null;
 
 			ItemCreated = null;
 			ItemDeleted = null;
@@ -2155,6 +2380,15 @@ namespace Server
             TargetedSpell = null;
             TargetedSkill = null;
             TargetedItemUse = null;
+
+            JoinGuild = null;
+            TameCreature = null;
+            ValidVendorPurchase = null;
+            ValidVendorSell = null;
+            CorpseLoot = null;
+            RepairItem = null;
+            AlterItem = null;
+            PlacePlayerVendor = null;
         }
 	}
 }
