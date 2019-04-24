@@ -396,7 +396,6 @@ namespace Server.Engines.BulkOrders
             }
 
             banked = (double)points * 0.02;
-            Console.WriteLine("Points: {0}, Banked: {1}", points, banked);
         }
 
         public static void ComputePoints(LargeBOD bod, out int points, out double banked)
