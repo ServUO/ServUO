@@ -467,7 +467,10 @@ namespace Server.SkillHandlers
                             }
 
                             PetTrainingHelper.GetAbilityProfile(m_Creature, true).OnTame();
-						}
+
+                            EventSink.InvokeTameCreature(new TameCreatureEventArgs(m_Tamer, m_Creature));
+
+                        }
 						else
 						{
 							m_Creature.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502798, m_Tamer.NetState);

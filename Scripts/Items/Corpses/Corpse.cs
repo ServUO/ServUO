@@ -1026,15 +1026,22 @@ namespace Server.Items
 			return true;
 		}
 
-		public override bool CheckLift(Mobile from, Item item, ref LRReason reject)
-		{
-			if (!base.CheckLift(from, item, ref reject))
-			{
-				return false;
-			}
+        public override bool CheckLift(Mobile from, Item item, ref LRReason reject)
+        {
+            if (!base.CheckLift(from, item, ref reject))
+            {
+                return false;
+            }
 
-			return CanLoot(from, item);
-		}
+            var canLoot = CanLoot(from, item);
+
+            if (canLoot)
+            {
+                EventSink.InvokeCorpseLoot(new CorpseLootEventArgs(from, this, item));
+            }
+
+            return canLoot;
+        }
 
 		public override void OnItemUsed(Mobile from, Item item)
 		{

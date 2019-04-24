@@ -363,7 +363,7 @@ namespace Server.Mobiles
             return false;
         }
 
-        public void OnBought(BaseVendor vendor, int amount)
+        public void OnBought(Mobile buyer, BaseVendor vendor, IEntity entity, int amount)
         {
             if (EconomyItem)
             {
@@ -375,6 +375,8 @@ namespace Server.Mobiles
                     }
                 }
             }
+
+            EventSink.InvokeValidVendorPurchase(new ValidVendorPurchaseEventArgs(buyer, vendor, entity, m_Price));
         }
 
         public void OnSold(BaseVendor vendor, int amount)

@@ -213,7 +213,9 @@ namespace Server.Misc
 				}
 			}
 
-			return success;
+            EventSink.InvokeSkillCheck(new SkillCheckEventArgs(from, skill, success));
+
+            return success;
 		}
 
 		public static bool Mobile_SkillCheckTarget(

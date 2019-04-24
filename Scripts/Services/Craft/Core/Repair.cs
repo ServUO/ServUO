@@ -196,6 +196,8 @@ namespace Server.Engines.Craft
                     if (TryRepairMobile(from, (IRepairableMobile)targeted, usingDeed, out toDelete))
                     {
                         number = 1044279; // You repair the item.
+
+                        m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, (IRepairableMobile)targeted);
                     }
                     else
                     {
@@ -294,6 +296,8 @@ namespace Server.Engines.Craft
                                     number = 1044279; // You repair the item.
                                     m_CraftSystem.PlayCraftEffect(from);
                                     weapon.HitPoints = weapon.MaxHitPoints;
+
+                                    m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, weapon);
                                 }
                                 else
                                 {
@@ -359,6 +363,8 @@ namespace Server.Engines.Craft
                                     number = 1044279; // You repair the item.
                                     m_CraftSystem.PlayCraftEffect(from);
                                     armor.HitPoints = armor.MaxHitPoints;
+
+                                    m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, armor);
                                 }
                                 else
                                 {
@@ -424,6 +430,8 @@ namespace Server.Engines.Craft
                                     number = 1044279; // You repair the item.
                                     m_CraftSystem.PlayCraftEffect(from);
                                     jewel.HitPoints = jewel.MaxHitPoints;
+
+                                    m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, jewel);
                                 }
                                 else
                                 {
@@ -489,6 +497,8 @@ namespace Server.Engines.Craft
                                     number = 1044279; // You repair the item.
                                     m_CraftSystem.PlayCraftEffect(from);
                                     clothing.HitPoints = clothing.MaxHitPoints;
+
+                                    m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, clothing);
                                 }
                                 else
                                 {
@@ -554,6 +564,8 @@ namespace Server.Engines.Craft
                                     number = 1044279; // You repair the item.
                                     m_CraftSystem.PlayCraftEffect(from);
                                     talisman.HitPoints = talisman.MaxHitPoints;
+
+                                    m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, talisman);
                                 }
                                 else
                                 {
