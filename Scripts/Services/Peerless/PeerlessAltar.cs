@@ -465,16 +465,18 @@ namespace Server.Items
             }
 
             // teleport party to exit if not already there
-            Fighters.ForEach(x => Exit(x));
+            if (Fighters != null)
+            {
+                Fighters.ForEach(x => Exit(x));
+                Fighters.Clear();
+            }
 
             // delete master keys
-            MasterKeys.ForEach(x => x.Delete());
-
             if (MasterKeys != null)
+            {
+                MasterKeys.ForEach(x => x.Delete());
                 MasterKeys.Clear();
-
-            if (Fighters != null)
-                Fighters.Clear();
+            }
 
             // delete any remaining helpers
             CleanupHelpers();
@@ -487,6 +489,9 @@ namespace Server.Items
 
         public virtual void Exit(Mobile fighter)
         {
+            if (fighter == null)
+                return;
+
             // teleport fighter
             if (fighter.NetState == null && MobileIsInBossArea(fighter.LogoutLocation))
             {
@@ -507,7 +512,8 @@ namespace Server.Items
             // teleport his pets
             if (fighter is PlayerMobile)
             {
-                foreach (var pet in ((PlayerMobile)fighter).AllFollowers.OfType<BaseCreature>().Where(pet => (pet.Alive || pet.IsBonded) &&
+                foreach (var pet in ((PlayerMobile)fighter).AllFollowers.OfType<BaseCreature>().Where(pet => pet != null &&
+                                                                                                             (pet.Alive || pet.IsBonded) &&
                                                                                                              pet.Map != Map.Internal &&
                                                                                                              MobileIsInBossArea(pet)))
                 {

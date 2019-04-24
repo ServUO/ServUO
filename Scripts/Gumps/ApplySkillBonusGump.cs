@@ -59,10 +59,10 @@ namespace Server.Gumps
                     }
                     else
                     {
-                        text = "Are you sure you wish to apply the selected skill bonus to this item?";
+                        text = 1155611; // Are you sure you wish to apply the selected skill bonus to this item?
                     }
 
-                    BaseGump.SendGump(new GenericConfirmCallbackGump<ApplySkillBonusGump>(User, string.Empty, text, this, null,
+                    BaseGump.SendGump(new GenericConfirmCallbackGump<ApplySkillBonusGump>(User, User.Skills[Selection].Info.Name, text, this, null,
                     (m, gump) =>
                     {
                         if (gump.Item.IsChildOf(gump.User.Backpack) || gump.User.Items.Contains(gump.Item))
