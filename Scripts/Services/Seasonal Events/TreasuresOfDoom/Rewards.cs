@@ -25,7 +25,7 @@ namespace Server.Engines.TreasuresOfDoom
             Rewards.Add(new CollectionItem(typeof(TreasuresOfDoomRewardDeed), 0x14EF, 1155602, 0, 50));
             Rewards.Add(new CollectionItem(typeof(CrookOfHumility), 0xE81, 1155624, 0, 50));
             Rewards.Add(new CollectionItem(typeof(ScepterOfPride), 0x26BC, 1155623, 0, 50));
-            Rewards.Add(new CollectionItem(typeof(CloakOfLight), 0x1515, 1155608, 0, 10));
+            Rewards.Add(new CollectionItem(typeof(CloakOfLight), 0x1515, 1155608, 0, 50));
             Rewards.Add(new CollectionItem(typeof(BootsOfEscaping), 0x1711, 1155607, 0, 50));
             Rewards.Add(new CollectionItem(typeof(SterlingSilverRing), 0x1F09, 1155606, 0, 50));
         }
