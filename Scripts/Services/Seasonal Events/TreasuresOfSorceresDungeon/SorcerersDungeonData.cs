@@ -34,24 +34,29 @@ namespace Server.Engines.SorcerersDungeon
             from.SendLocalizedMessage(1156902, ((int)points).ToString()); // You have turned in ~1_COUNT~ artifacts of the Kotl
         }
 
-        public override void ProcessKill(BaseCreature victim, Mobile damager, int index)
+        public override void ProcessKill(Mobile victim, Mobile damager)
         {
-            if (TOSDSpawner.Instance != null && victim is BaseCreature)
+            var bc = victim as BaseCreature;
+
+            if (bc == null)
+                return;
+
+            if (TOSDSpawner.Instance != null)
             {
-                TOSDSpawner.Instance.OnCreatureDeath((BaseCreature)victim);
+                TOSDSpawner.Instance.OnCreatureDeath(bc);
             }
 
-            if (!Enabled || victim.Controlled || victim.Summoned || !damager.Alive)
+            if (!Enabled || bc.Controlled || bc.Summoned || !damager.Alive)
                 return;
                 
-            Region r = victim.Region;
+            Region r = bc.Region;
 
             if (damager is PlayerMobile && r.IsPartOf("Sorcerer's Dungeon"))
             {
                 if (!DungeonPoints.ContainsKey(damager))
                     DungeonPoints[damager] = 0;
 
-                int fame = victim.Fame / 4;
+                int fame = bc.Fame / 4;
                 int luck = Math.Max(0, ((PlayerMobile)damager).RealLuck);
 
                 DungeonPoints[damager] += (int)(fame * (1 + Math.Sqrt(luck) / 100));
@@ -64,11 +69,11 @@ namespace Server.Engines.SorcerersDungeon
 
                 if (chance > Utility.RandomDouble())
                 {
-                    Item i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(victim), LootPackEntry.IsMondain(victim), LootPackEntry.IsStygian(victim));
+                    Item i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(bc), LootPackEntry.IsMondain(bc), LootPackEntry.IsStygian(bc));
 
                     if (i != null)
                     {
-                        RunicReforging.GenerateRandomItem(i, damager, Math.Max(100, RunicReforging.GetDifficultyFor(victim)), RunicReforging.GetLuckForKiller(victim), ReforgedPrefix.None, ReforgedSuffix.EnchantedOrigin);
+                        RunicReforging.GenerateRandomItem(i, damager, Math.Max(100, RunicReforging.GetDifficultyFor(bc)), RunicReforging.GetLuckForKiller(bc), ReforgedPrefix.None, ReforgedSuffix.EnchantedOrigin);
 
                         damager.PlaySound(0x5B4);
                         damager.SendLocalizedMessage(1157613); // You notice some of your fallen foes' equipment to be of enchanted origin and decide it may be of some value...

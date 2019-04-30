@@ -29,12 +29,17 @@ namespace Server.Engines.Points
 			InitializeEntries();
 		}
 		
-		public override void ProcessKill(BaseCreature victim, Mobile damager, int index)
+		public override void ProcessKill(Mobile victim, Mobile damager)
 		{
-			if(victim.Map != Map.TerMur || damager.Map != Map.TerMur)
+            var bc = victim as BaseCreature;
+
+			if(bc == null || bc.Map != Map.TerMur || damager.Map != Map.TerMur)
 				return;
 				
-			Type type = victim.GetType();
+			Type type = bc.GetType();
+
+            if (!Entries.ContainsKey(type))
+                return;
 
             if (damager is BaseCreature && (((BaseCreature)damager).Controlled || ((BaseCreature)damager).Summoned))
                 damager = ((BaseCreature)damager).GetMaster();
@@ -42,15 +47,13 @@ namespace Server.Engines.Points
             if (damager == null)
                 return;
 
-			if(index == 0)
+			if(bc.GetHighestDamager() == damager)
 			{
-				if(Entries.ContainsKey(type))
-					AwardPoints(damager, Entries[type].Item1, false);
+			    AwardPoints(damager, Entries[type].Item1, false);
 			}
 			else
 			{
-				if(Entries.ContainsKey(type))
-					AwardPoints(damager, Entries[type].Item2, false);
+				AwardPoints(damager, Entries[type].Item2, false);
 			}
 		}
 		

@@ -157,26 +157,7 @@ namespace Server.Items
 
             ItemFlags.SetTaken(dropped, true);
 
-            var honestySocket = dropped.GetSocket<HonestyItemSocket>();
-
-            if (honestySocket != null && honestySocket.HonestyPickup == DateTime.MinValue)
-            {
-                honestySocket.HonestyPickup = DateTime.UtcNow;
-                honestySocket.StartHonestyTimer();
-
-                if (honestySocket.HonestyOwner == null)
-                    Server.Services.Virtues.HonestyVirtue.AssignOwner(honestySocket);
-
-                from.SendLocalizedMessage(1151536); // You have three hours to turn this item in for Honesty credit, otherwise it will cease to be a quest item.
-            }
-
-            if (Siege.SiegeShard && this != from.Backpack && from is PlayerMobile && ((PlayerMobile)from).BlessedItem != null && ((PlayerMobile)from).BlessedItem == dropped)
-            {
-                ((PlayerMobile)from).BlessedItem = null;
-                dropped.LootType = LootType.Regular;
-
-                from.SendLocalizedMessage(1075292, dropped.Name != null ? dropped.Name : "#" + dropped.LabelNumber.ToString()); // ~1_NAME~ has been unblessed.
-            }
+            EventSink.InvokeContainerDroppedTo(new ContainerDroppedToEventArgs(from, this, dropped));
 
             if (!EnchantedHotItemSocket.CheckDrop(from, this, dropped))
                 return false;
@@ -217,26 +198,7 @@ namespace Server.Items
 
             ItemFlags.SetTaken(item, true);
 
-            var honestySocket = item.GetSocket<HonestyItemSocket>();
-
-            if (honestySocket != null && honestySocket.HonestyPickup == DateTime.MinValue)
-            {
-                honestySocket.HonestyPickup = DateTime.UtcNow;
-                honestySocket.StartHonestyTimer();
-
-                if (honestySocket.HonestyOwner == null)
-                    Server.Services.Virtues.HonestyVirtue.AssignOwner(honestySocket);
-
-                from.SendLocalizedMessage(1151536); // You have three hours to turn this item in for Honesty credit, otherwise it will cease to be a quest item.
-            }
-
-            if (Siege.SiegeShard && this != from.Backpack && from is PlayerMobile && ((PlayerMobile)from).BlessedItem != null && ((PlayerMobile)from).BlessedItem == item)
-            {
-                ((PlayerMobile)from).BlessedItem = null;
-                item.LootType = LootType.Regular;
-
-                from.SendLocalizedMessage(1075292, item.Name != null ? item.Name : "#" + item.LabelNumber.ToString()); // ~1_NAME~ has been unblessed.
-            }
+            EventSink.InvokeContainerDroppedTo(new ContainerDroppedToEventArgs(from, this, item));
 
             if (!EnchantedHotItemSocket.CheckDrop(from, this, item))
                 return false;

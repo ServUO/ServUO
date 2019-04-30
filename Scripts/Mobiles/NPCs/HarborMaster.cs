@@ -37,6 +37,7 @@ namespace Server.Mobiles
                 Name = NameList.RandomName("male");
                 Title = "the Harbor Master";
             }
+
             AddItem(new Shirt(Utility.RandomDyedHue()));
             AddItem(new Boots());
             AddItem(new LongPants(Utility.RandomNeutralHue()));
@@ -44,13 +45,7 @@ namespace Server.Mobiles
 
             Utility.AssignRandomHair(this);
 
-            Container pack = new Backpack();
-
-            pack.DropItem(new Gold(250, 300));
-
-            pack.Movable = false;
-
-            AddItem(pack);
+            PackGold(250, 300);
         }
 
         public HarborMaster(Serial serial)

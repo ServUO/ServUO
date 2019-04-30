@@ -10,7 +10,12 @@ using Server.Targeting;
 namespace Server.Engines.Quests
 {
     public class QuestHelper
-    { 
+    {
+        public static void Initialize()
+        {
+            EventSink.OnKilledBy += OnKilledBy;
+        }
+
         public static void RemoveAcceleratedSkillgain(PlayerMobile from)
         {
             Region region = from.Region;
@@ -629,7 +634,15 @@ namespace Server.Engines.Quests
             }
         }
 
-        public static bool CheckCreature(PlayerMobile player, BaseCreature creature)
+        public static void OnKilledBy(OnKilledByEventArgs e)
+        {
+            if (e.KilledBy is PlayerMobile)
+            {
+                CheckCreature((PlayerMobile)e.KilledBy, e.Killed);
+            }
+        }
+
+        public static bool CheckCreature(PlayerMobile player, Mobile creature)
         {
             for (int i = player.Quests.Count - 1; i >= 0; i --)
             {

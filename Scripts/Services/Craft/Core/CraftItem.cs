@@ -1845,10 +1845,7 @@ namespace Server.Engines.Craft
                         from.AddToBackpack(item);
                     }
 
-                    if (tool is Item) // sanity check
-                    {
-                        EventSink.InvokeCraftSuccess(new CraftSuccessEventArgs(from, item, (Item)tool));
-                    }
+                    EventSink.InvokeCraftSuccess(new CraftSuccessEventArgs(from, item, tool is Item ? (Item)tool : null));
 
 					if (from.IsStaff())
 					{
@@ -1857,7 +1854,6 @@ namespace Server.Engines.Craft
 					}
 
                     AutoCraftTimer.OnSuccessfulCraft(from);
-					//from.PlaySound( 0x57 );
 				}
 
                 tool.UsesRemaining--;

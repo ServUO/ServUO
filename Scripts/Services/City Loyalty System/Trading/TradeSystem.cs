@@ -548,9 +548,9 @@ namespace Server.Engines.CityLoyalty
             return wet ? _SeaTypes : _LandTypes;
         }
 
-        public override void ProcessKill(BaseCreature victim, Mobile damager, int index)
+        public override void ProcessKill(Mobile victim, Mobile damager)
         {
-            if (Ambushers != null && Ambushers.ContainsKey(victim))
+            if (victim is BaseCreature && Ambushers != null && Ambushers.ContainsKey((BaseCreature)victim))
             {
                 if (ActiveTrades.ContainsKey(damager))
                 {
@@ -560,7 +560,7 @@ namespace Server.Engines.CityLoyalty
                         crate.Entry.Kills++;
                 }
 
-                Ambushers.Remove(victim);
+                Ambushers.Remove((BaseCreature)victim);
             }
         }
 

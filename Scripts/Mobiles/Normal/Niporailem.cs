@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Server.Items;
 using Server.Targeting;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -57,7 +58,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.SpiritSpeak, 120.0);
             SetSkill(SkillName.Focus, 30.0, 40.0);
 
-            // TO-DO add Detect Hidden 40 - 50
             PackNecroReg(12, 24); /// Stratics didn't specify
 
             Fame = 15000;
@@ -86,143 +86,48 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
+
+            writer.WriteMobileList(Helpers, true);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    Helpers = reader.ReadStrongMobileList<BaseCreature>();
+                    break;
+            }
         }
+
+        public List<BaseCreature> Helpers { get; set; } = new List<BaseCreature>();
+        private DateTime m_NextTreasure;
+        private int m_Thrown;
+        private DateTime m_NextSpawn;
 
         public override void OnGotMeleeAttack(Mobile attacker)
         {
             base.OnGotMeleeAttack(attacker);
 
+            if (m_NextSpawn > DateTime.UtcNow || Helpers.Where(bc => bc.Deleted).Count() > 10)
+                return;
+
             if (this.Hits > (this.HitsMax / 4))
             {
                 if (0.25 >= Utility.RandomDouble())
+                {
                     SpawnSpectralArmour(attacker);
+                }
             }
             else if (0.10 >= Utility.RandomDouble())
             {
                 SpawnSpectralArmour(attacker);
             }
         }
-
-        public void SpawnSpectralArmour(Mobile m)
-        {
-            Map map = this.Map;
-
-            if (map == null)
-                return;
-
-            SpectralArmour spawned = new SpectralArmour();
-
-            spawned.Team = this.Team;
-
-            bool validLocation = false;
-            Point3D loc = this.Location;
-
-            for (int j = 0; !validLocation && j < 10; ++j)
-            {
-                int x = X + Utility.Random(3) - 1;
-                int y = Y + Utility.Random(3) - 1;
-                int z = map.GetAverageZ(x, y);
-
-                if (validLocation = map.CanFit(x, y, this.Z, 16, false, false))
-                    loc = new Point3D(x, y, Z);
-                else if (validLocation = map.CanFit(x, y, z, 16, false, false))
-                    loc = new Point3D(x, y, z);
-            }
-
-            spawned.MoveToWorld(loc, map);
-            spawned.Combatant = m;
-
-            IPooledEnumerable eable = GetMobilesInRange(20);
-
-            foreach (Mobile anim in eable)
-            {
-                if (anim is SpectralArmour && (anim is BaseCreature))
-                {
-                    ((BaseCreature)anim).SummonMaster = this;
-                }
-            }
-
-            eable.Free();
-        }
-
-        public void DeleteSpectralArmour(Mobile target)
-        {
-            ArrayList list = new ArrayList();
-
-            IPooledEnumerable eable = GetMobilesInRange(30);
-
-            foreach (Mobile m in eable)
-            {
-
-                if (m is SpectralArmour)
-                    list.Add(m);
-
-            }
-
-            eable.Free();
-
-            foreach (Mobile m in list)
-            {
-                m.Delete();
-            }
-        }
-
-
-        public void DeleteNipoTreasure()
-        {
-
-            ArrayList items = new ArrayList(World.Items.Values);
-            ArrayList list = new ArrayList();
-
-            foreach (Item item in items)
-            {
-                if (item is NiporailemsTreasure || item is TreasureSand)
-                    list.Add(item);
-
-            }
-
-            foreach (Item item in list)
-                item.Delete();
-
-        }
-
-        public override void OnAfterDelete()
-        {
-            DeleteSpectralArmour(this);
-
-            DeleteNipoTreasure();
-
-            base.OnAfterDelete();
-        }
-
-        public override bool OnBeforeDeath()
-        {
-            DeleteSpectralArmour(this);
-
-            DeleteNipoTreasure();
-
-            return base.OnBeforeDeath();
-
-        }
-
-        public override void OnDelete()
-        {
-            DeleteSpectralArmour(this);
-
-            DeleteNipoTreasure();
-
-            base.OnDelete();
-        }
-
-        private DateTime m_NextTreasure;
-        private int m_Thrown;
 
         public override void OnActionCombat()
         {
@@ -244,34 +149,72 @@ namespace Server.Mobiles
             }
         }
 
-        public void ThrowTreasure(Mobile m)
+        public void SpawnSpectralArmour(Mobile m)
+        {
+            Map map = this.Map;
+
+            if (map == null)
+                return;
+
+            SpectralArmour spawned = new SpectralArmour();
+
+            spawned.Team = this.Team;
+            spawned.SummonMaster = this;
+
+            bool validLocation = false;
+            Point3D loc = this.Location;
+
+            for (int j = 0; !validLocation && j < 10; ++j)
+            {
+                int x = X + Utility.Random(3) - 1;
+                int y = Y + Utility.Random(3) - 1;
+                int z = map.GetAverageZ(x, y);
+
+                if (validLocation = map.CanFit(x, y, this.Z, 16, false, false))
+                    loc = new Point3D(x, y, Z);
+                else if (validLocation = map.CanFit(x, y, z, 16, false, false))
+                    loc = new Point3D(x, y, z);
+            }
+
+            spawned.MoveToWorld(loc, map);
+            spawned.Combatant = m; spawned.SummonMaster = this;
+
+            m_NextSpawn = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60));
+
+            Helpers.Add(spawned);
+        }
+
+        public void DeleteSpectralArmour(Mobile target)
+        {
+            foreach (var m in Helpers.Where(bc => bc != null && !bc.Deleted))
+            {
+                m.Delete();
+            }
+
+            ColUtility.Free(Helpers);
+        }
+
+        public override void OnDelete()
+        {
+            DeleteSpectralArmour(this);
+
+            base.OnDelete();
+        }
+
+        private void ThrowTreasure(Mobile m)
         {
             DoHarmful(m);
 
-            this.MovingParticles(m, 0xEEF, 1, 0, false, true, 0, 0, 9502, 6014, 0x11D, EffectLayer.Waist, 0);
+            this.MovingParticles(m, 0xEEF, 9, 0, false, true, 0, 0, 9502, 6014, 0x11D, EffectLayer.Waist, 0);
 
-            new InternalTimer(m, this).Start();
-        }
-
-        private class InternalTimer : Timer
-        {
-            private Mobile m_Mobile, m_From;
-
-            public InternalTimer(Mobile m, Mobile from)
-                : base(TimeSpan.FromSeconds(1.0))
+            Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
             {
-                m_Mobile = m;
-                m_From = from;
-                Priority = TimerPriority.TwoFiftyMS;
-            }
+                var treasure = new NiporailemsTreasure(this);
 
-            protected override void OnTick()
-            {
-                m_Mobile.PlaySound(0x033);
-                m_Mobile.AddToBackpack(new NiporailemsTreasure());
-                m_Mobile.SendLocalizedMessage(1112111); // To steal my gold? To give it freely!
-            }
+                m.PlaySound(0x033);
+                m.AddToBackpack(treasure);
+                m.SendLocalizedMessage(1112111); // To steal my gold? To give it freely!
+            });
         }
-
     }
 }
