@@ -6681,12 +6681,8 @@ namespace Server.Mobiles
 
                         OnKilledBy(ds.m_Mobile);
 
-                        // TODO: Move this to XmlQuest.cs OnKilledBy Event Handler
                         if (HumilityVirtue.IsInHunt(ds.m_Mobile) && Karma < 0)
                             HumilityVirtue.RegisterKill(ds.m_Mobile, this, list.Count);
-
-                        // TODO: Move this to XmlQuest.cs OnKilledBy Event Handler
-                        XmlQuest.RegisterKill(this, ds.m_Mobile);
 
                         if (!givenFactionKill)
                         {
@@ -6704,30 +6700,6 @@ namespace Server.Mobiles
                         if (!givenVASKill && VirtueArtifactsSystem.HandleKill(this, ds.m_Mobile))
                         {
                             givenVASKill = true;
-                        }
-
-                        // TODO: Move this to DemonKnight.cs OnKilledBy Event Handler
-                        if (region.IsPartOf("Doom Gauntlet") || region.Name == "GauntletRegion")
-                        {
-                            DemonKnight.HandleKill(this, ds.m_Mobile);
-                        }
-
-                        // TODO: Move this to PointsSystem.cs OnKilledBy Event Handler
-                        Server.Engines.Points.PointsSystem.HandleKill(this, ds.m_Mobile, i);
-
-                        PlayerMobile pm = ds.m_Mobile as PlayerMobile;
-
-                        if (pm != null)
-                        {
-                            // TODO: Move this to QuestHelper.cs OnKilledBy Event Handler
-                            QuestHelper.CheckCreature(pm, this); // This line moved up...
-
-                            QuestSystem qs = pm.Quest;
-
-                            if (qs != null)
-                            {
-                                qs.OnKill(this, c);
-                            }
                         }
                     }
 

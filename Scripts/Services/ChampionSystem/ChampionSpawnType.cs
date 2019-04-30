@@ -144,7 +144,6 @@ namespace Server.Engines.CannedEvil
                 new Type[] { typeof(FetidEssence), typeof(PestilentBandage) }
             }),
 
-            #region SA
             new ChampionSpawnInfo("Terror", typeof(AbyssalInfernal), new string[] { "Banisher", "Enforcer", "Eradicator" }, new Type[][]
             { // Terror
                 new Type[] { typeof(HordeMinion), typeof(ChaosDaemon) }, // Level 1
@@ -159,9 +158,7 @@ namespace Server.Engines.CannedEvil
                 new Type[] { typeof(UndeadGargoyle), typeof(Wight) }, // Level 3
                 new Type[] { typeof(SkeletalDrake), typeof(DreamWraith) }// Level 4
             }),
-            #endregion
 
-            #region TOL
             new ChampionSpawnInfo( "Valley", typeof( DragonTurtle ), new string[]{ "Explorer", "Huntsman", "Msafiri", } , new Type[][]
             {																											// DragonTurtle
 				new Type[]{ typeof( MyrmidexDrone ), typeof( MyrmidexLarvae ) },										// Level 1
@@ -169,7 +166,6 @@ namespace Server.Engines.CannedEvil
 				new Type[]{ typeof( GreaterPhoenix  ), typeof( Infernus ) },										    // Level 3
 				new Type[]{ typeof( Dimetrosaur ), typeof( Allosaurus ) }											    // Level 4
 			} ),
-            #endregion
 
             new ChampionSpawnInfo( "Khaldun", typeof( KhalAnkur ), new string[]{ "Banisher", "Enforcer", "Eradicator" } , new Type[][]
             {																					                        // KhalAnkur

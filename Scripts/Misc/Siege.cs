@@ -221,8 +221,31 @@ namespace Server
 				Utility.PopColor();
 
 				ColUtility.Free(toReset);
-			}
+
+                EventSink.ContainerDroppedTo += OnDropped;
+            }
 		}
+
+        public static void OnDropped(ContainerDroppedToEventArgs e)
+        {
+            if (!SiegeShard)
+                return;
+
+            var item = e.Dropped;
+            var from = e.Mobile;
+            var cont = e.Container;
+
+            if (item != null)
+            {
+                if (cont != from.Backpack && from is PlayerMobile && ((PlayerMobile)from).BlessedItem != null && ((PlayerMobile)from).BlessedItem == item)
+                {
+                    ((PlayerMobile)from).BlessedItem = null;
+                    item.LootType = LootType.Regular;
+
+                    from.SendLocalizedMessage(1075292, item.Name != null ? item.Name : "#" + item.LabelNumber.ToString()); // ~1_NAME~ has been unblessed.
+                }
+            }
+        }
 
         /// <summary>
         ///     Called in SpellHelper.cs CheckTravel method

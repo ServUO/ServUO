@@ -82,6 +82,7 @@ namespace Server.Gumps
                 Titles.AwardKarma(g, karmaAward, true);
 
                 Server.Items.XmlQuest.RegisterKill(m, g);
+                EventSink.InvokePlayerMurdered(new PlayerMurderedEventArgs(g, m));
             }
 
             if (m is PlayerMobile && ((PlayerMobile)m).NpcGuild == NpcGuild.ThievesGuild)

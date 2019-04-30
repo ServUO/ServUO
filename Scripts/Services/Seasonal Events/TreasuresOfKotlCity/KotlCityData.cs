@@ -32,22 +32,24 @@ namespace Server.Engines.Points
             from.SendLocalizedMessage(1156902, ((int)points).ToString()); // You have turned in ~1_COUNT~ artifacts of the Kotl
         }
 
-        public override void ProcessKill(BaseCreature victim, Mobile damager, int index)
+        public override void ProcessKill(Mobile victim, Mobile damager)
         {
-            if (!Enabled || victim.Controlled || victim.Summoned || !damager.Alive)
+            var bc = victim as BaseCreature;
+
+            if (!Enabled || bc == null || bc.Controlled || bc.Summoned || !damager.Alive)
                 return;
                 
-            Region r = victim.Region;
+            Region r = bc.Region;
 
             if (damager is PlayerMobile && r.IsPartOf("KotlCity"))
             {
                 if (!DungeonPoints.ContainsKey(damager))
                     DungeonPoints[damager] = 0;
 
-                int fame = victim.Fame / 2;
+                int fame = bc.Fame / 2;
                 int luck = Math.Max(0, ((PlayerMobile)damager).RealLuck);
 
-                if (victim.Spawner is KotlBattleSimulator)
+                if (bc.Spawner is KotlBattleSimulator)
                 {
                     fame *= 4;
                 }
@@ -62,11 +64,11 @@ namespace Server.Engines.Points
 
                 if (chance > Utility.RandomDouble())
                 {
-                    Item i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(victim), LootPackEntry.IsMondain(victim), LootPackEntry.IsStygian(victim));
+                    Item i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(bc), LootPackEntry.IsMondain(bc), LootPackEntry.IsStygian(bc));
 
                     if (i != null)
                     {
-                        RunicReforging.GenerateRandomItem(i, damager, Math.Max(100, RunicReforging.GetDifficultyFor(victim)), RunicReforging.GetLuckForKiller(victim), ReforgedPrefix.None, ReforgedSuffix.Kotl);
+                        RunicReforging.GenerateRandomItem(i, damager, Math.Max(100, RunicReforging.GetDifficultyFor(bc)), RunicReforging.GetLuckForKiller(bc), ReforgedPrefix.None, ReforgedSuffix.Kotl);
 
                         damager.PlaySound(0x5B4);
                         damager.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.

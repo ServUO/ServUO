@@ -88,7 +88,13 @@ namespace Server.Services.Virtues
 
 			from.Virtues.SetValue((int)virtue, current + amount);
 
-			gainedPath = (GetLevel(from, virtue) != oldLevel);
+            var newLevel = GetLevel(from, virtue);
+            gainedPath = (newLevel != oldLevel);
+
+            if (gainedPath)
+            {
+                EventSink.InvokeVirtueLevelChange(new VirtueLevelChangeEventArgs(from, (int)oldLevel, (int)newLevel, (int)virtue));
+            }
 
 			return true;
 		}
