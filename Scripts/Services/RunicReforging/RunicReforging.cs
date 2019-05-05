@@ -3468,7 +3468,7 @@ namespace Server.Items
 
         protected override void OnTarget(Mobile from, object targeted)
         {
-            if (targeted is Item && m_Tool != null)
+            if (targeted is Item && BaseTool.CheckAccessible(m_Tool, from, true))
             {
                 Item item = targeted as Item;
 
