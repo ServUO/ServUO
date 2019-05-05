@@ -52,7 +52,7 @@ namespace Server.Spells.SkillMasteries
         }
 
         public override double RequiredSkill { get { return 90; } }
-        public override int RequiredMana { get { return 30; } }
+        public override int RequiredMana { get { return 40; } }
         public override bool PartyEffects { get { return false; } }
         public override SkillName CastSkill { get { return SkillName.AnimalTaming; } }
 
@@ -103,7 +103,7 @@ namespace Server.Spells.SkillMasteries
 
         public void OnSelected(TrainingType type, Mobile target)
         {
-            if (type == TrainingType.AsOne && Caster is PlayerMobile && ((PlayerMobile)Caster).AllFollowers.Where(mob => mob != target).Count() == 0)
+            if (!CheckSequence() || (type == TrainingType.AsOne && Caster is PlayerMobile && ((PlayerMobile)Caster).AllFollowers.Where(mob => mob != target).Count() == 0))
             {
                 FinishSequence();
                 return;
