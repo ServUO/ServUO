@@ -71,7 +71,7 @@ namespace Server.Items
             {
                 m_Value = value;
 
-                m_Value = (double)Math.Floor(m_Value * 10) / 10.0; //(double)decimal.Round((decimal)m_Value, 1);
+                m_Value = (double)Math.Floor(m_Value * 10) / 10.0;
             }
         }
 
@@ -165,7 +165,7 @@ namespace Server.Items
 
             if (version == 1)
             {
-                m_Value = (double)Math.Floor(m_Value * 10) / 10.0; //(double)decimal.Round((decimal)m_Value, 1);
+                m_Value = (double)Math.Floor(m_Value * 10) / 10.0;
             }
         }
 
