@@ -141,9 +141,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (BaseSoundID == 660)
-                BaseSoundID = -1;
         }
     }
 }

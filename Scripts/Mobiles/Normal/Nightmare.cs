@@ -168,11 +168,6 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (Core.AOS && this.BaseSoundID == 0x16A)
-                this.BaseSoundID = 0xA8;
-            else if (!Core.AOS && this.BaseSoundID == 0xA8)
-                this.BaseSoundID = 0x16A;
         }
     }
 }
