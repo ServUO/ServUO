@@ -114,9 +114,6 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            if (this.BaseSoundID == -1)
-                this.BaseSoundID = 219;
-
             if (version == 0 && !_FixedSpawners)
             {
                 _FixedSpawners = true;

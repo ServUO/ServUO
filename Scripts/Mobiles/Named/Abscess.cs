@@ -78,14 +78,7 @@ namespace Server.Mobiles
             {
                 return true;
             }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        }       
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.AosUltraRich, 4);
@@ -97,8 +90,8 @@ namespace Server.Mobiles
 			
             c.DropItem(new AbscessTail());			
 			
-            if (Paragon.ChestChance > Utility.RandomDouble())
-                c.DropItem(new ParagonChest(this.Name, this.TreasureMapLevel));
+            if ( Paragon.ChestChance > Utility.RandomDouble() )
+            c.DropItem( new ParagonChest( Name, 5 ) );
         }
 
         public override void Serialize(GenericWriter writer)

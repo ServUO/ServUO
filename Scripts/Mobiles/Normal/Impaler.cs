@@ -127,9 +127,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (BaseSoundID == 1200)
-                BaseSoundID = 0x2A7;
         }
     }
 }

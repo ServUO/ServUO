@@ -11,7 +11,7 @@ namespace Server.Mobiles
         public AbyssalAbomination()
             : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "an Abyssal abomination";
+            Name = "an Abyssal Abomination";
             Body = 742;
             Hue = 769;
             BaseSoundID = 0x451;
@@ -107,9 +107,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (BaseSoundID == 357)
-                BaseSoundID = 0x451;
         }
     }
 }

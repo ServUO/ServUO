@@ -40,9 +40,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (Hue != 1155)
-                Hue = 1155;
         }
     }
 }
