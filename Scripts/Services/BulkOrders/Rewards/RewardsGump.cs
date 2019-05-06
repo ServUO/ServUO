@@ -15,7 +15,8 @@ namespace Server.Engines.BulkOrders
             : base(owner, user, BulkOrderSystem.GetRewardCollection(type), 1157082, points == 0 ? BulkOrderSystem.GetPoints(user, type) : points)
         {
             BODType = type;
-
+            UsingBanked = points == 0;
+            
             var entry = new GumpLabel(230, 65, 0x64, GetPoints(user).ToString("0.000000"));
             entry.Parent = this;
 
