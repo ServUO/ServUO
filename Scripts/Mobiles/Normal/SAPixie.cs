@@ -57,10 +57,8 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            #region Mondain's Legacy
             if (Utility.RandomDouble() < 0.3)
                 c.DropItem(new PixieLeg());
-            #endregion
         }
 
         public override void GenerateLoot()
@@ -113,7 +111,6 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

@@ -59,7 +59,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.2 > Utility.RandomDouble())
+            if (!Controlled && 0.2 > Utility.RandomDouble())
                 c.DropItem(new LeatherWolfSkin());         
         }
 

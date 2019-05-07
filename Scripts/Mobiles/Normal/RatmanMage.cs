@@ -117,13 +117,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
-
-            if (this.Body == 42)
-            {
-                this.Body = 0x8F;
-                this.Hue = 0;
-            }
+            int version = reader.ReadInt();           
         }
     }
 }
