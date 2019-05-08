@@ -68,7 +68,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.AOS ? 3 : 1;
+                return Core.AOS ? 4 : 1;
             }
         }
         public override void GenerateLoot()
