@@ -59,6 +59,8 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
+		
+		public override int TreasureMapLevel { get { return 3; } }
 
         public override bool Uncalmable
         {
