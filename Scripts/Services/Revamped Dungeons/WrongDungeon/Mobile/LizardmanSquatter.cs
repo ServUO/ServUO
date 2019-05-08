@@ -73,6 +73,13 @@ namespace Server.Mobiles
                 return 12;
             }
         }
+		public override int TreasureMapLevel
+        {
+            get
+            {
+                return 2;
+            }
+        }
         public override HideType HideType
         {
             get
@@ -83,7 +90,6 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
-            // TODO: weapon
         }
 
         public override void Serialize(GenericWriter writer)
