@@ -5,8 +5,7 @@ namespace Server.Mobiles
     [CorpseName("a trapdoor spider corpse")]
     public class TrapdoorSpider : BaseCreature
     {
-
-        public override bool CanStealth { get { return true; } } //Stays Hidden until Combatant in range.
+        public override bool CanStealth { get { return true; } } 
 
         [Constructable]
         public TrapdoorSpider()
@@ -14,7 +13,7 @@ namespace Server.Mobiles
         {
             Name = "a trapdoor spider";
             Body = 737;
-            Hidden = true; //Spawns Hidden
+            Hidden = true; 
 
             SetStr(100, 104);
             SetDex(162, 165);
@@ -47,7 +46,6 @@ namespace Server.Mobiles
         {
         }
 
-        //Can Flush them out of Hiding
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
             RevealingAction();
