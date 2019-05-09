@@ -62,7 +62,7 @@ namespace Server.Gumps
                 User.Skills.CurrentMastery = SkillName.Alchemy;
                 MasteryInfo.OnMasteryChanged(User, current);
             }
-            else if (User.Skills[n].Value >= MasteryInfo.MinSkillRequirement)
+            else if (User.Skills[n].Base >= MasteryInfo.MinSkillRequirement)
             {
                 User.SendLocalizedMessage(1155886, User.Skills[n].Info.Name); // Your active skill mastery is now set to ~1_MasterySkill~!
                 User.Skills.CurrentMastery = n;

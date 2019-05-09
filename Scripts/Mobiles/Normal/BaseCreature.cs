@@ -1315,11 +1315,6 @@ namespace Server.Mobiles
             }
         }
 
-        /*
-        Solen Style, override me for other mobiles/items:
-        kappa+acidslime, grizzles+whatever, etc.
-        */
-
         public virtual Item NewHarmfulItem()
         {
             return new PoolOfAcid(TimeSpan.FromSeconds(10), 30, 30);
@@ -7352,15 +7347,9 @@ namespace Server.Mobiles
 
             for (int i = 0; i < 10; i++)
             {
-                int x = from.X + Utility.Random(range);
-                int y = from.Y + Utility.Random(range);
+                int x = from.X + Utility.RandomMinMax(-range, range);
+                int y = from.Y + Utility.RandomMinMax(-range, range);
                 int z = map.GetAverageZ(x, y);
-
-                if (Utility.RandomBool())
-                    x *= -1;
-
-                if (Utility.RandomBool())
-                    y *= -1;
 
                 Point3D p = new Point3D(x, y, from.Z);
 

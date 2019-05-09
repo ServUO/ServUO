@@ -2986,7 +2986,7 @@ namespace Server.Mobiles
 						}
 
 						// Don't ignore hostile mobiles
-						if (!IsHostile(m))
+						if (!IsHostile(m, acqType))
 						{
 							// Ignore anyone if we don't want enemies
 							if (!bFacFoe)
@@ -3019,14 +3019,14 @@ namespace Server.Mobiles
 			return (m_Mobile.FocusMob != null);
 		}
 
-		public bool IsHostile(Mobile from)
+		public virtual bool IsHostile(Mobile from, FightMode mode)
 		{
 			if (m_Mobile.Combatant == from || from.Combatant == m_Mobile)
 			{
 				return true;
 			}
 
-			var count = Math.Max(m_Mobile.Aggressors.Count, m_Mobile.Aggressed.Count);
+            /*var count = Math.Max(m_Mobile.Aggressors.Count, m_Mobile.Aggressed.Count);
 
 			if (count > 0)
 			{
@@ -3042,7 +3042,7 @@ namespace Server.Mobiles
 						return true;
 					}
 				}
-			}
+			}*/
 
 			return false;
 		}

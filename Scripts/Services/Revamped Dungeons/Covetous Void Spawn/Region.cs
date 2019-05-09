@@ -1,6 +1,8 @@
-using Server;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
+using Server;
 using Server.Mobiles;
 using Server.Items;
 using Server.Spells;
@@ -12,7 +14,8 @@ namespace Server.Engines.VoidPool
 	{
 		private static Rectangle2D[] Bounds = new Rectangle2D[]
 		{
-			new Rectangle2D(5383, 1948, 234, 95),
+            new Rectangle2D(5383, 1960, 236, 80),
+			new Rectangle2D(5429, 1948, 12, 10),
 		};
 		
 		public VoidPoolController Controller { get; private set; }
@@ -24,26 +27,34 @@ namespace Server.Engines.VoidPool
 		
 		public void SendRegionMessage(int localization)
 		{
-			List<Mobile> list = GetPlayers();
-			list.ForEach(m => m.SendLocalizedMessage(localization));
-			list.Clear();
-			list.TrimExcess();
+            foreach (var m in GetEnumeratedMobiles().Where(m => m.Player))
+            {
+                m.SendLocalizedMessage(localization);
+            }
 		}
-		
-		public void SendRegionMessage(int localization, string args)
+
+        public void SendRegionMessage(int localization, int hue)
+        {
+            foreach (var m in GetEnumeratedMobiles().Where(m => m.Player))
+            {
+                m.SendLocalizedMessage(localization, "", hue);
+            }
+        }
+
+        public void SendRegionMessage(int localization, string args)
 		{
-			List<Mobile> list = GetPlayers();
-			list.ForEach(m => m.SendLocalizedMessage(localization, args));
-			list.Clear();
-			list.TrimExcess();
-		}
+            foreach (var m in GetEnumeratedMobiles().Where(m => m.Player))
+            {
+                m.SendLocalizedMessage(localization, args);
+            }
+        }
 
         public void SendRegionMessage(string message)
         {
-            List<Mobile> list = GetPlayers();
-            list.ForEach(m => m.SendMessage(0x25, message));
-            list.Clear();
-            list.TrimExcess();
+            foreach (var m in GetEnumeratedMobiles().Where(m => m.Player))
+            {
+                m.SendMessage(0x25, message);
+            }
         }
 		
 		public override void OnDeath(Mobile m)
