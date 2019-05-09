@@ -10,31 +10,31 @@ namespace Server.Mobiles
         public Gregorio()
             : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         { 
-            this.Race = Race.Human;
-            this.Name = "Gregorio";
-            this.Title = "the brigand";
+            Race = Race.Human;
+            Name = "Gregorio";
+            Title = "the brigand";
 			
-            this.InitBody();
-            this.InitOutfit();
+            InitBody();
+            InitOutfit();
 			
-            this.SetStr(86, 100);
-            this.SetDex(81, 95);
-            this.SetInt(61, 75);
+            SetStr(86, 100);
+            SetDex(81, 95);
+            SetInt(61, 75);
 
-            this.SetDamage(15, 27);
+            SetDamage(15, 27);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 10, 15);
-            this.SetResistance(ResistanceType.Fire, 10, 15);
-            this.SetResistance(ResistanceType.Poison, 10, 15);
-            this.SetResistance(ResistanceType.Energy, 10, 15);
+            SetResistance(ResistanceType.Physical, 10, 15);
+            SetResistance(ResistanceType.Fire, 10, 15);
+            SetResistance(ResistanceType.Poison, 10, 15);
+            SetResistance(ResistanceType.Energy, 10, 15);
 
-            this.SetSkill(SkillName.MagicResist, 25.0, 50.0);
-            this.SetSkill(SkillName.Tactics, 80.0, 100.0);
-            this.SetSkill(SkillName.Wrestling, 80.0, 100.0);	
+            SetSkill(SkillName.MagicResist, 25.0, 50.0);
+            SetSkill(SkillName.Tactics, 80.0, 100.0);
+            SetSkill(SkillName.Wrestling, 80.0, 100.0);	
 			
-            this.PackGold(50, 150);
+            PackGold(50, 150);
         }
 
         public Gregorio(Serial serial)
@@ -42,46 +42,82 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool InitialInnocent
+        /*public override bool InitialInnocent
         {
             get
             {
                 return true;
             }
-        }
-        public static bool IsMurderer(Mobile from)
-        { 
-            if (from != null && from is PlayerMobile)
-            {
-                BaseQuest quest = QuestHelper.GetQuest((PlayerMobile)from, typeof(GuiltyQuest));
+        }*/
 
-                if (quest != null)
-                    return !quest.Completed;
+        public override bool AlwaysMurderer { get { return true; } }
+
+        public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
+        {
+            if (from is BaseCreature && ((BaseCreature)from).GetMaster() is PlayerMobile)
+                from = ((BaseCreature)from).GetMaster();
+
+            if (from is PlayerMobile)
+            {
+                var pm = (PlayerMobile)from;
+
+                BaseQuest quest = QuestHelper.GetQuest(pm, typeof(GuiltyQuest));
+
+                if (quest != null && !quest.Completed)
+                {
+                    return base.Damage(amount, from, informMount, checkDisrupt);
+                }
             }
-				
+
+            from.SendLocalizedMessage(1075456); // You are not allowed to damage this NPC unless your on the Guilty Quest
+            return 0;
+        }
+
+        public override bool CanBeHarmedBy(Mobile from, bool message)
+        {
+            if (from is BaseCreature && ((BaseCreature)from).GetMaster() is PlayerMobile)
+                from = ((BaseCreature)from).GetMaster();
+
+            if (from is PlayerMobile)
+            {
+                var pm = (PlayerMobile)from;
+
+                BaseQuest quest = QuestHelper.GetQuest(pm, typeof(GuiltyQuest));
+
+                if (quest != null && !quest.Completed)
+                {
+                    return base.CanBeHarmedBy(from, message);
+                }
+            }
+
+            if (message)
+            {
+                from.SendLocalizedMessage(1075456); // You are not allowed to damage this NPC unless your on the Guilty Quest
+            }
+
             return false;
         }
 
-        public virtual void InitBody()
+        public void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 				
-            this.Hue = 0x8412;
-            this.Female = false;		
+            Hue = 0x8412;
+            Female = false;		
 			
-            this.HairItemID = 0x203C;
-            this.HairHue = 0x47A;
-            this.FacialHairItemID = 0x204D;
-            this.FacialHairHue = 0x47A;
+            HairItemID = 0x203C;
+            HairHue = 0x47A;
+            FacialHairItemID = 0x204D;
+            FacialHairHue = 0x47A;
         }
 
-        public virtual void InitOutfit()
+        public void InitOutfit()
         { 
-            this.AddItem(new Sandals(0x75E));
-            this.AddItem(new Shirt());
-            this.AddItem(new ShortPants(0x66C));
-            this.AddItem(new SkullCap(0x649));
-            this.AddItem(new Pitchfork());
+            AddItem(new Sandals(0x75E));
+            AddItem(new Shirt());
+            AddItem(new ShortPants(0x66C));
+            AddItem(new SkullCap(0x649));
+            AddItem(new Pitchfork());
         }
 
         public override void Serialize(GenericWriter writer)

@@ -70,7 +70,7 @@ namespace Server.Spells.SkillMasteries
         {
         }
 
-        public override bool CheckCast()
+        public override bool Cast()
         {
             CombatTrainingSpell spell = GetSpell(Caster, typeof(CombatTrainingSpell)) as CombatTrainingSpell;
 
@@ -80,6 +80,11 @@ namespace Server.Spells.SkillMasteries
                 return false;
             }
 
+            return base.Cast();
+        }
+
+        public override bool CheckCast()
+        {
             if (Caster is PlayerMobile && ((PlayerMobile)Caster).AllFollowers == null || ((PlayerMobile)Caster).AllFollowers.Count == 0)
             {
                 Caster.SendLocalizedMessage(1156112); // This ability requires you to have pets.

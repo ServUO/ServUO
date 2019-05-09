@@ -2,24 +2,24 @@ using System;
 
 namespace Server.Items
 {
-    public class ObsidianEarrings : GoldEarrings // Should be Gargish Earrings 
+    public class ObsidianEarrings : GargishEarrings
 	{
 		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber { get { return 1113820; } } // Obsidian Earrings
-		
+
+        public override int BasePhysicalResistance { get { return 4; } }
+        public override int BaseFireResistance { get { return 10; } }
+        public override int BaseColdResistance { get { return 10; } }
+        public override int BasePoisonResistance { get { return 3; } }
+        public override int BaseEnergyResistance { get { return 13; } }
+
         [Constructable]
         public ObsidianEarrings()
-            : base()
         {	
             Attributes.BonusMana = 8;
             Attributes.RegenMana = 2;
             Attributes.RegenStam = 2;
             Attributes.SpellDamage = 8;
-            Resistances.Physical = 4;
-            Resistances.Fire = 10;
-            Resistances.Cold = 10;
-            Resistances.Poison = 3;
-            Resistances.Energy = 13;
             AbsorptionAttributes.CastingFocus = 4;
         }
 
