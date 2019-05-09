@@ -81,6 +81,13 @@ namespace Server.Mobiles
                 return true;
             }
         }
+		public override int TreasureMapLevel
+        {
+            get
+            {
+                return 2;
+            }
+        }
         public override int Meat
         {
             get

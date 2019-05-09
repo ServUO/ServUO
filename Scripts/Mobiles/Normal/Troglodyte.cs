@@ -12,43 +12,43 @@ namespace Server.Mobiles
         public Troglodyte()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)// NEED TO CHECK
         {
-            this.Name = "a troglodyte";
-            this.Body = 267;
-            this.BaseSoundID = 0x59F; 
+            Name = "a troglodyte";
+            Body = 267;
+            BaseSoundID = 0x59F; 
 
-            this.SetStr(148, 217);
-            this.SetDex(91, 120);
-            this.SetInt(51, 70);
+            SetStr(148, 217);
+            SetDex(91, 120);
+            SetInt(51, 70);
 
-            this.SetHits(302, 340);
+            SetHits(302, 340);
 
-            this.SetDamage(11, 14);
+            SetDamage(11, 14);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 30, 35);
-            this.SetResistance(ResistanceType.Fire, 20, 30);
-            this.SetResistance(ResistanceType.Cold, 35, 40);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 30, 40);
+            SetResistance(ResistanceType.Physical, 30, 35);
+            SetResistance(ResistanceType.Fire, 20, 30);
+            SetResistance(ResistanceType.Cold, 35, 40);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.Anatomy, 70.5, 94.8);
-            this.SetSkill(SkillName.MagicResist, 51.8, 65.0);
-            this.SetSkill(SkillName.Tactics, 80.4, 94.7);
-            this.SetSkill(SkillName.Wrestling, 70.2, 93.5);
-            this.SetSkill(SkillName.Healing, 70.0, 95.0);
+            SetSkill(SkillName.Anatomy, 70.5, 94.8);
+            SetSkill(SkillName.MagicResist, 51.8, 65.0);
+            SetSkill(SkillName.Tactics, 80.4, 94.7);
+            SetSkill(SkillName.Wrestling, 70.2, 93.5);
+            SetSkill(SkillName.Healing, 70.0, 95.0);
 
-            this.Fame = 5000;
-            this.Karma = -5000;
+            Fame = 5000;
+            Karma = -5000;
 
-            this.VirtualArmor = 28; // Don't know what it should be
+            VirtualArmor = 28; // Don't know what it should be
 
-            this.PackItem(new Bandage(5));  // How many?
-            this.PackItem(new Ribs());
+            PackItem(new Bandage(5));  // How many?
+            PackItem(new Ribs());
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
         }
 
@@ -56,10 +56,26 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
+		
+		public override int TreasureMapLevel
+        {
+            get
+            {
+                return 2;
+            }
+        }
 
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich);  // Need to verify
+        }
+		
+		public override void OnDeath( Container c )
+        {
+        base.OnDeath( c );
+
+            if ( Utility.RandomDouble() < 0.1 )
+            c.DropItem( new PrimitiveFetish() );
         }
 
         public override void Serialize(GenericWriter writer)

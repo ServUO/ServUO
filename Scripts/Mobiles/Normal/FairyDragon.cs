@@ -9,7 +9,7 @@ namespace Server.Mobiles
     {
 
         public override bool AutoDispel { get { return !Controlled; } }
-        public override int TreasureMapLevel { get { return 4; } }
+        public override int TreasureMapLevel { get { return 3; } }
         public override int Meat { get { return 9; } }
         public override Poison HitPoison { get { return Poison.Greater; } }
         public override double HitPoisonChance { get { return 0.75; } }

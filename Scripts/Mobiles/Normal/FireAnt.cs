@@ -46,6 +46,8 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Average, 2);
         }
+		
+		public override int TreasureMapLevel { get { return 3; } }
 
         public override int GetIdleSound()
         {

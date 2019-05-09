@@ -62,7 +62,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return Utility.RandomList(2, 3);
+                return 2;
             }
         }
 
