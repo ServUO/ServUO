@@ -49,6 +49,8 @@ namespace Server.Mobiles
 		{
 			AddLoot( LootPack.UltraRich, 2 );
 		}
+		
+		public override int TreasureMapLevel { get { return 4; } }
 
         public MinotaurGeneral(Serial serial)
             : base(serial)

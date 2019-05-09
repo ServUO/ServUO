@@ -51,7 +51,7 @@ namespace Server.Mobiles
         public override int BreathFireDamage{ get{ return 0; } }
         public override int BreathEffectHue{ get{ return 0x1ED; } }
         public override double BreathDamageScalar{ get{ return 0.55; } }
-        //public override int TreasureMapLevel{ get{ return 3; } } //Can't get conformation as to if this is true, commented out for now.
+        public override int TreasureMapLevel { get { return 3; } }
         public override int Meat{ get{ return 10; } }
         public override int Hides{ get{ return 11; } }
         public override HideType HideType{ get{ return HideType.Horned; } }
