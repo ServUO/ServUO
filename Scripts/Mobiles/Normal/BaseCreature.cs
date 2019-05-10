@@ -745,7 +745,7 @@ namespace Server.Mobiles
             double minSkill = Math.Ceiling(MinTameSkill);
             double current = 0;
 
-            if (currentControlSlots <= ControlSlots)
+            if (currentControlSlots <= ControlSlotsMin)
             {
                 current = MinTameSkill;
             }
@@ -2743,7 +2743,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(26); // version
+            writer.Write(27); // version
 
             writer.Write(CanMove);
             writer.Write(_LockDirection);
@@ -2925,6 +2925,7 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 27: // Pet Slot Fix
                 case 26:
                 {
                     CanMove = reader.ReadBool();
@@ -3255,6 +3256,11 @@ namespace Server.Mobiles
             if (version >= 25)
             {
                 CurrentTameSkill = reader.ReadDouble();
+
+                if (Controlled && version == 26)
+                {
+                    AdjustTameRequirements();
+                }
             }
             else
             {

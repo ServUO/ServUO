@@ -61,6 +61,8 @@ namespace Server.Items
                         case PotionEffect.Invisibility: return 1080071;
                         case PotionEffect.Conflagration: return 1072658;
                         case PotionEffect.ConflagrationGreater: return 1072659;
+                        case PotionEffect.ConfusionBlast: return 1072662;
+                        case PotionEffect.ConfusionBlastGreater: return 1072663;
                     }
                 }
 
