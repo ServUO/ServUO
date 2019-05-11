@@ -137,6 +137,14 @@ namespace Server.Mobiles
             if (0.15 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
         }
+		
+		public override int TreasureMapLevel
+        {
+            get
+            {
+                return 2;
+            }
+        }
 
         public override void GenerateLoot()
         {
@@ -230,6 +238,14 @@ namespace Server.Mobiles
 
             if (0.10 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
+        }
+		
+		public override int TreasureMapLevel
+        {
+            get
+            {
+                return 1;
+            }
         }
 
         public override void GenerateLoot()
@@ -637,6 +653,14 @@ namespace Server.Mobiles
 
             if (0.10 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
+        }
+		
+		public override int TreasureMapLevel
+        {
+            get
+            {
+                return 2;
+            }
         }
 
         public override void GenerateLoot()
@@ -1221,6 +1245,14 @@ namespace Server.Mobiles
 
             if (0.33 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal(3));
+        }
+		
+		public override int TreasureMapLevel
+        {
+            get
+            {
+                return 2;
+            }
         }
 
         public override void GenerateLoot()

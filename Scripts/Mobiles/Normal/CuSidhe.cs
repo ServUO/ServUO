@@ -58,14 +58,7 @@ namespace Server.Mobiles
             ControlSlots = 4;
             MinTameSkill = 101.1;
 
-            if (Utility.RandomDouble() < 0.2)
-                PackItem(new TreasureMap(5, Map.Trammel));
-
-            //if ( Utility.RandomDouble() < 0.1 )
-            //PackItem( new ParrotItem() );
-
             PackGold(500, 800);
-            // TODO 0-2 spellweaving scroll
 
             SetWeaponAbility(WeaponAbility.BleedAttack);
         }
@@ -73,6 +66,11 @@ namespace Server.Mobiles
         public CuSidhe(Serial serial)
             : base(serial)
         {
+        }
+
+        public override int TreasureMapLevel
+        {
+            get { return 5; }
         }
 
         public override bool CanHealOwner

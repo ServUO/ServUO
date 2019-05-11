@@ -65,6 +65,8 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.FilthyRich);
         }
+		
+		public override int TreasureMapLevel { get { return 4; } }
 
         public override void OnDeath(Container c)
         {

@@ -745,7 +745,7 @@ namespace Server.Mobiles
             double minSkill = Math.Ceiling(MinTameSkill);
             double current = 0;
 
-            if (currentControlSlots <= ControlSlots)
+            if (currentControlSlots <= ControlSlotsMin)
             {
                 current = MinTameSkill;
             }
@@ -1314,11 +1314,6 @@ namespace Server.Mobiles
                 acid.MoveToWorld(loc, map);
             }
         }
-
-        /*
-        Solen Style, override me for other mobiles/items:
-        kappa+acidslime, grizzles+whatever, etc.
-        */
 
         public virtual Item NewHarmfulItem()
         {
@@ -2748,7 +2743,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(26); // version
+            writer.Write(27); // version
 
             writer.Write(CanMove);
             writer.Write(_LockDirection);
@@ -2930,6 +2925,7 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 27: // Pet Slot Fix
                 case 26:
                 {
                     CanMove = reader.ReadBool();
@@ -3260,6 +3256,11 @@ namespace Server.Mobiles
             if (version >= 25)
             {
                 CurrentTameSkill = reader.ReadDouble();
+
+                if (Controlled && version == 26)
+                {
+                    AdjustTameRequirements();
+                }
             }
             else
             {
@@ -6681,12 +6682,8 @@ namespace Server.Mobiles
 
                         OnKilledBy(ds.m_Mobile);
 
-                        // TODO: Move this to XmlQuest.cs OnKilledBy Event Handler
                         if (HumilityVirtue.IsInHunt(ds.m_Mobile) && Karma < 0)
                             HumilityVirtue.RegisterKill(ds.m_Mobile, this, list.Count);
-
-                        // TODO: Move this to XmlQuest.cs OnKilledBy Event Handler
-                        XmlQuest.RegisterKill(this, ds.m_Mobile);
 
                         if (!givenFactionKill)
                         {
@@ -6704,30 +6701,6 @@ namespace Server.Mobiles
                         if (!givenVASKill && VirtueArtifactsSystem.HandleKill(this, ds.m_Mobile))
                         {
                             givenVASKill = true;
-                        }
-
-                        // TODO: Move this to DemonKnight.cs OnKilledBy Event Handler
-                        if (region.IsPartOf("Doom Gauntlet") || region.Name == "GauntletRegion")
-                        {
-                            DemonKnight.HandleKill(this, ds.m_Mobile);
-                        }
-
-                        // TODO: Move this to PointsSystem.cs OnKilledBy Event Handler
-                        Server.Engines.Points.PointsSystem.HandleKill(this, ds.m_Mobile, i);
-
-                        PlayerMobile pm = ds.m_Mobile as PlayerMobile;
-
-                        if (pm != null)
-                        {
-                            // TODO: Move this to QuestHelper.cs OnKilledBy Event Handler
-                            QuestHelper.CheckCreature(pm, this); // This line moved up...
-
-                            QuestSystem qs = pm.Quest;
-
-                            if (qs != null)
-                            {
-                                qs.OnKill(this, c);
-                            }
                         }
                     }
 
@@ -7380,15 +7353,9 @@ namespace Server.Mobiles
 
             for (int i = 0; i < 10; i++)
             {
-                int x = from.X + Utility.Random(range);
-                int y = from.Y + Utility.Random(range);
+                int x = from.X + Utility.RandomMinMax(-range, range);
+                int y = from.Y + Utility.RandomMinMax(-range, range);
                 int z = map.GetAverageZ(x, y);
-
-                if (Utility.RandomBool())
-                    x *= -1;
-
-                if (Utility.RandomBool())
-                    y *= -1;
 
                 Point3D p = new Point3D(x, y, from.Z);
 

@@ -37,6 +37,7 @@ namespace Server.Mobiles
                 Name = NameList.RandomName("male");
                 Title = "the Harbor Master";
             }
+
             AddItem(new Shirt(Utility.RandomDyedHue()));
             AddItem(new Boots());
             AddItem(new LongPants(Utility.RandomNeutralHue()));
@@ -44,13 +45,7 @@ namespace Server.Mobiles
 
             Utility.AssignRandomHair(this);
 
-            Container pack = new Backpack();
-
-            pack.DropItem(new Gold(250, 300));
-
-            pack.Movable = false;
-
-            AddItem(pack);
+            PackGold(250, 300);
         }
 
         public HarborMaster(Serial serial)
@@ -104,12 +99,12 @@ namespace Server.Mobiles
                 if (m_Vendor == null || m_Vendor.Deleted)
                     return;
 
-                if (BaseBoat.HasBoat(m_From))
+                var boat = BaseBoat.GetBoat(m_From);
+
+                if (boat != null)
                 {
                     if (Banker.Withdraw(m_From, 100, true))
                     {
-                        BaseBoat boat = World.Items.Values.OfType<BaseBoat>().Where(x => x.Owner == m_From).FirstOrDefault();
-
                         if (IsSpecialShip(boat))
                         {
                             ShipRune newRune = new ShipRune((BaseGalleon)boat);
@@ -191,9 +186,10 @@ namespace Server.Mobiles
                         }
                     case 1:
                         {
-                            if (BaseBoat.HasBoat(from) && !_Table.ContainsKey(from))
-                            {                                
-                                BaseBoat boat = World.Items.Values.OfType<BaseBoat>().Where(x => x.Owner == from).FirstOrDefault();
+                            var boat = BaseBoat.GetBoat(from);
+
+                            if (boat != null && !_Table.ContainsKey(from))
+                            {
                                 _Table[from] = new AbandonTimer(from, boat);
                                 from.SendLocalizedMessage(1150111); // Your ship has been abandoned. It will decay within five minutes.
                             }

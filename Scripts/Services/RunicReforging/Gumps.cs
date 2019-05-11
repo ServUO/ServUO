@@ -249,6 +249,11 @@ namespace Server.Gumps
         {
             Mobile from = state.Mobile;
 
+            if (!BaseTool.CheckAccessible(m_Tool, from, true))
+            {
+                return;
+            }
+
             switch (info.ButtonID)
             {
                 case 0: break;

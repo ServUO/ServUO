@@ -8,8 +8,17 @@ namespace Server.Mobiles
     [CorpseName("a demon knight corpse")]
     public class DemonKnight : BaseCreature
     {
-        private DateTime m_NextArea;
         private bool m_InHere;
+
+        public static void Initialize()
+        {
+            EventSink.OnKilledBy += OnKilledBy;
+        }
+
+        public static void OnKilledBy(OnKilledByEventArgs e)
+        {
+            HandleKill(e.Killed, e.KilledBy);
+        }
 
         public static Type[] DoomArtifact { get { return m_DoomArtifact; } }
         private static Type[] m_DoomArtifact = new Type[]
@@ -98,8 +107,6 @@ namespace Server.Mobiles
 
             VirtualArmor = 64;
 
-            m_NextArea = DateTime.UtcNow;
-
             SetWeaponAbility(WeaponAbility.CrushingBlow);
             SetWeaponAbility(WeaponAbility.WhirlwindAttack);
         }
@@ -173,11 +180,12 @@ namespace Server.Mobiles
             if (!Core.AOS)
                 return;
 
-            if ( pm == null || bc == null || bc.NoKillAwards || !pm.Alive/*|| !CheckLocation(bc) || !CheckLocation(pm)*/)
+            if ( pm == null || bc == null || bc.NoKillAwards || !pm.Alive)
                 return;
 
             //Make sure its a boss we killed!!
             bool boss = bc is Impaler || bc is DemonKnight || bc is DarknightCreeper || bc is FleshRenderer  || bc is ShadowKnight || bc is AbysmalHorror;
+
             if (!boss)
                 return;
              
@@ -291,48 +299,7 @@ namespace Server.Mobiles
             return null;
         }
 
-        public override void OnThink()
-        {
-            if (Core.TOL && DateTime.UtcNow > m_NextArea)
-                Teleport();
-        }
-
-        private void Teleport()
-        {
-            System.Collections.Generic.List<Mobile> toTele = new System.Collections.Generic.List<Mobile>();
-
-            IPooledEnumerable eable = GetMobilesInRange(12);
-            foreach (Mobile mob in eable)
-            {
-                if (mob is BaseCreature)
-                {
-                    BaseCreature bc = mob as BaseCreature;
-
-                    if (!bc.Controlled)
-                        continue;
-                }
-
-                if (mob != this && mob.Alive && mob.Player && CanBeHarmful(mob, false) && mob.AccessLevel == AccessLevel.Player)
-                    toTele.Add(mob);
-            }
-            eable.Free();
-
-            if (toTele.Count > 0)
-            {
-                Mobile from = toTele[Utility.Random(toTele.Count)];
-
-                if (from != null)
-                {
-                    Combatant = from;
-
-                    from.MoveToWorld(GetSpawnPosition(1), Map);
-                    from.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
-                    from.PlaySound(0x1FE);
-                }
-            }
-
-            m_NextArea = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30)); // too much
-        }
+        public override bool TeleportsTo { get { return true; } }
 
         public override void GenerateLoot()
         {
@@ -401,8 +368,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            m_NextArea = DateTime.UtcNow;
         }
     }
 }

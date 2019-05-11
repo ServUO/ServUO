@@ -1,4 +1,5 @@
 using System;
+using Server.Services.Virtues;
 
 namespace Server.Items
 {
@@ -105,6 +106,39 @@ namespace Server.Items
             if (HonestyTimerTicking)
             {
                 BeginTimer();
+            }
+        }
+
+        public static void Initialize()
+        {
+            if (HonestyVirtue.Enabled)
+            {
+                EventSink.ContainerDroppedTo += OnDropped;
+            }
+        }
+
+        public static void OnDropped(ContainerDroppedToEventArgs e)
+        {
+            var dropped = e.Dropped;
+            var from = e.Mobile;
+
+            if (dropped != null)
+            {
+                var honestySocket = dropped.GetSocket<HonestyItemSocket>();
+
+                if (honestySocket != null && honestySocket.HonestyPickup == DateTime.MinValue)
+                {
+                    honestySocket.HonestyPickup = DateTime.UtcNow;
+                    honestySocket.StartHonestyTimer();
+
+                    if (honestySocket.HonestyOwner == null)
+                        Server.Services.Virtues.HonestyVirtue.AssignOwner(honestySocket);
+
+                    if (from != null)
+                    {
+                        from.SendLocalizedMessage(1151536); // You have three hours to turn this item in for Honesty credit, otherwise it will cease to be a quest item.
+                    }
+                }
             }
         }
     }

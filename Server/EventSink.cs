@@ -179,6 +179,18 @@ namespace Server
 
     public delegate void PlacePlayerVendorEventHandler(PlacePlayerVendorEventArgs e);
 
+    public delegate void FameChangeEventHandler(FameChangeEventArgs e);
+
+    public delegate void KarmaChangeEventHandler(KarmaChangeEventArgs e);
+
+    public delegate void VirtueLevelChangeEventHandler(VirtueLevelChangeEventArgs e);
+
+    public delegate void PlayerMurderedEventHandler(PlayerMurderedEventArgs e);
+
+    public delegate void AccountGoldChangeEventHandler(AccountGoldChangeEventArgs e);
+
+    public delegate void ContainerDroppedToEventHandler(ContainerDroppedToEventArgs e);
+
     public class OnItemObtainedEventArgs : EventArgs
 	{
 		private readonly Mobile m_Mobile;
@@ -1561,6 +1573,90 @@ namespace Server
         }
     }
 
+    public class FameChangeEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public int OldValue { get; set; }
+        public int NewValue { get; set; }
+
+        public FameChangeEventArgs(Mobile m, int oldValue, int newValue)
+        {
+            Mobile = m;
+            OldValue = oldValue;
+            NewValue = newValue;
+        }
+    }
+
+    public class KarmaChangeEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public int OldValue { get; set; }
+        public int NewValue { get; set; }
+
+        public KarmaChangeEventArgs(Mobile m, int oldValue, int newValue)
+        {
+            Mobile = m;
+            OldValue = oldValue;
+            NewValue = newValue;
+        }
+    }
+
+    public class VirtueLevelChangeEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public int OldLevel { get; set; }
+        public int NewLevel { get; set; }
+        public int Virtue { get; set; }
+
+        public VirtueLevelChangeEventArgs(Mobile m, int oldLevel, int newLevel, int virtue)
+        {
+            Mobile = m;
+            OldLevel = oldLevel;
+            NewLevel = newLevel;
+            Virtue = virtue;
+        }
+    }
+
+    public class PlayerMurderedEventArgs : EventArgs
+    {
+        public Mobile Murderer { get; set; }
+        public Mobile Victim { get; set; }
+
+        public PlayerMurderedEventArgs(Mobile murderer, Mobile victim)
+        {
+            Murderer = murderer;
+            Victim = victim;
+        }
+    }
+
+    public class AccountGoldChangeEventArgs : EventArgs
+    {
+        public IAccount Account { get; set; }
+        public double OldAmount { get; set; }
+        public double NewAmount { get; set; }
+
+        public AccountGoldChangeEventArgs(IAccount account, double oldAmount, double newAmount)
+        {
+            Account = account;
+            OldAmount = oldAmount;
+            NewAmount = newAmount;
+        }
+    }
+
+    public class ContainerDroppedToEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Container Container { get; set; }
+        public Item Dropped { get; set; }
+
+        public ContainerDroppedToEventArgs(Mobile m, Container container, Item dropped)
+        {
+            Mobile = m;
+            Container = container;
+            Dropped = dropped;
+        }
+    }
+
     public static class EventSink
 	{
 		public static event OnItemObtainedEventHandler OnItemObtained;
@@ -1649,6 +1745,12 @@ namespace Server
         public static event RepairItemEventHandler RepairItem;
         public static event AlterItemEventHandler AlterItem;
         public static event PlacePlayerVendorEventHandler PlacePlayerVendor;
+        public static event FameChangeEventHandler FameChange;
+        public static event KarmaChangeEventHandler KarmaChange;
+        public static event VirtueLevelChangeEventHandler VirtueLevelChange;
+        public static event PlayerMurderedEventHandler PlayerMurdered;
+        public static event AccountGoldChangeEventHandler AccountGoldChange;
+        public static event ContainerDroppedToEventHandler ContainerDroppedTo;
 
         public static void InvokeOnItemObtained(OnItemObtainedEventArgs e)
 		{
@@ -2314,6 +2416,54 @@ namespace Server
             }
         }
 
+        public static void InvokeFameChange(FameChangeEventArgs e)
+        {
+            if (FameChange != null)
+            {
+                FameChange(e);
+            }
+        }
+
+        public static void InvokeKarmaChange(KarmaChangeEventArgs e)
+        {
+            if (KarmaChange != null)
+            {
+                KarmaChange(e);
+            }
+        }
+
+        public static void InvokeVirtueLevelChange(VirtueLevelChangeEventArgs e)
+        {
+            if (VirtueLevelChange != null)
+            {
+                VirtueLevelChange(e);
+            }
+        }
+
+        public static void InvokePlayerMurdered(PlayerMurderedEventArgs e)
+        {
+            if (PlayerMurdered != null)
+            {
+                PlayerMurdered(e);
+            }
+        }
+
+        public static void InvokeAccountGoldChange(AccountGoldChangeEventArgs e)
+        {
+            if (AccountGoldChange != null)
+            {
+                AccountGoldChange(e);
+            }
+        }
+
+        public static void InvokeContainerDroppedTo(ContainerDroppedToEventArgs e)
+        {
+            if (ContainerDroppedTo != null)
+            {
+                ContainerDroppedTo(e);
+            }
+        }
+
         public static void Reset()
 		{
 			OnItemObtained = null;
@@ -2389,6 +2539,12 @@ namespace Server
             RepairItem = null;
             AlterItem = null;
             PlacePlayerVendor = null;
+            FameChange = null;
+            KarmaChange = null;
+            VirtueLevelChange = null;
+            PlayerMurdered = null;
+            AccountGoldChange = null;
+            ContainerDroppedTo = null;
         }
 	}
 }

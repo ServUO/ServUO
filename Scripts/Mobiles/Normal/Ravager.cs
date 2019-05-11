@@ -47,6 +47,8 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
+		
+		public override int TreasureMapLevel { get { return 4; } }
 
         public override void GenerateLoot()
         {

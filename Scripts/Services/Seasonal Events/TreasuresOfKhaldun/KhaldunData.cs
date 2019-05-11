@@ -33,19 +33,21 @@ namespace Server.Engines.Points
             from.SendLocalizedMessage(1158674, ((int)points).ToString()); // You have turned in ~1_COUNT~ artifacts of the Cult         
         }
 
-        public override void ProcessKill(BaseCreature victim, Mobile damager, int index)
+        public override void ProcessKill(Mobile victim, Mobile damager)
         {
-            if (!InSeason || victim.Controlled || victim.Summoned || !damager.Alive || damager.Deleted || !victim.IsChampionSpawn)
+            var bc = victim as BaseCreature;
+
+            if (!InSeason || bc == null || bc.Controlled || bc.Summoned || !damager.Alive || damager.Deleted || !bc.IsChampionSpawn)
                 return;
 
-            Region r = victim.Region;
+            Region r = bc.Region;
 
             if (damager is PlayerMobile && r.IsPartOf("Khaldun"))
             {
                 if (!DungeonPoints.ContainsKey(damager))
                     DungeonPoints[damager] = 0;
 
-                int fame = victim.Fame / 4;
+                int fame = bc.Fame / 4;
                 int luck = Math.Max(0, ((PlayerMobile)damager).RealLuck);
 
                 DungeonPoints[damager] += (int)(fame * (1 + Math.Sqrt(luck) / 100)) * PotionOfGloriousFortune.GetBonus(damager);
@@ -58,11 +60,11 @@ namespace Server.Engines.Points
 
                 if (chance > Utility.RandomDouble())
                 {
-                    Item i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(victim), LootPackEntry.IsMondain(victim), LootPackEntry.IsStygian(victim));
+                    Item i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(bc), LootPackEntry.IsMondain(bc), LootPackEntry.IsStygian(bc));
 
                     if (i != null)
                     {
-                        RunicReforging.GenerateRandomItem(i, damager, Math.Max(100, RunicReforging.GetDifficultyFor(victim)), RunicReforging.GetLuckForKiller(victim), ReforgedPrefix.None, ReforgedSuffix.Khaldun);
+                        RunicReforging.GenerateRandomItem(i, damager, Math.Max(100, RunicReforging.GetDifficultyFor(bc)), RunicReforging.GetLuckForKiller(bc), ReforgedPrefix.None, ReforgedSuffix.Khaldun);
 
                         damager.PlaySound(0x5B4);
                         damager.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.

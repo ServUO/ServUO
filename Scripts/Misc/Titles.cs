@@ -15,31 +15,33 @@ namespace Server.Misc
 
         public static void AwardFame(Mobile m, int offset, bool message)
         {
+            var fame = m.Fame;
+
             if (offset > 0)
             {
-                if (m.Fame >= MaxFame)
+                if (fame >= MaxFame)
                     return;
 
-                offset -= m.Fame / 100;
+                offset -= fame / 100;
 
                 if (offset < 0)
                     offset = 0;
             }
             else if (offset < 0)
             {
-                if (m.Fame <= MinFame)
+                if (fame <= MinFame)
                     return;
 
-                offset -= m.Fame / 100;
+                offset -= fame / 100;
 
                 if (offset > 0)
                     offset = 0;
             }
 
-            if ((m.Fame + offset) > MaxFame)
-                offset = MaxFame - m.Fame;
-            else if ((m.Fame + offset) < MinFame)
-                offset = MinFame - m.Fame;
+            if ((fame + offset) > MaxFame)
+                offset = MaxFame - fame;
+            else if ((fame + offset) < MinFame)
+                offset = MinFame - fame;
 
             m.Fame += offset;
 
@@ -69,7 +71,8 @@ namespace Server.Misc
 
         public static void AwardKarma(Mobile m, int offset, bool message)
         {
-            #region Mondain's Legacy
+            var karma = m.Karma;
+
             if (m.Talisman is BaseTalisman)
             {
                 BaseTalisman talisman = (BaseTalisman)m.Talisman;
@@ -79,47 +82,44 @@ namespace Server.Misc
                 else if (talisman.KarmaLoss < 0)
                     offset *= (1 - (int)(((double)-talisman.KarmaLoss) / 100));
             }
-            #endregion
 
-            #region Heritage Items
             int karmaLoss = AosAttributes.GetValue(m, AosAttribute.IncreasedKarmaLoss);
 
             if (karmaLoss != 0 && offset < 0)
             {
                 offset -= (int)(offset * (karmaLoss / 100.0));
             }
-            #endregion
 
             if (offset > 0)
             {
                 if (m is PlayerMobile && ((PlayerMobile)m).KarmaLocked)
                     return;
 
-                if (m.Karma >= MaxKarma)
+                if (karma >= MaxKarma)
                     return;
 
-                offset -= m.Karma / 100;
+                offset -= karma / 100;
 
                 if (offset < 0)
                     offset = 0;
             }
             else if (offset < 0)
             {
-                if (m.Karma <= MinKarma)
+                if (karma <= MinKarma)
                     return;
 
-                offset -= m.Karma / 100;
+                offset -= karma / 100;
 
                 if (offset > 0)
                     offset = 0;
             }
 
-            if ((m.Karma + offset) > MaxKarma)
-                offset = MaxKarma - m.Karma;
-            else if ((m.Karma + offset) < MinKarma)
-                offset = MinKarma - m.Karma;
+            if ((karma + offset) > MaxKarma)
+                offset = MaxKarma - karma;
+            else if ((karma + offset) < MinKarma)
+                offset = MinKarma - karma;
 
-            bool wasPositiveKarma = (m.Karma >= 0);
+            bool wasPositiveKarma = (karma >= 0);
 
             m.Karma += offset;
 

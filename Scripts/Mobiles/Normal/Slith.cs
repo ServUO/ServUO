@@ -44,14 +44,20 @@ namespace Server.Mobiles
         public override bool HasBreath
         {
             get { return true; }
-        } // fire breath enabled
-
+        }
+		
+		public override int TreasureMapLevel
+        {
+            get
+            {
+                return 2;
+            }
+        }
         public override int Meat
         {
             get { return 6; }
         }
 
-        // public override int DragonBlood { get { return 6; } }
         public override int Hides
         {
             get { return 10; }

@@ -59,7 +59,7 @@ namespace Server.Mobiles
             base.OnDeath( c );
 
             if ( Paragon.ChestChance > Utility.RandomDouble() )
-            c.DropItem( new ParagonChest( Name, TreasureMapLevel ) );
+            c.DropItem( new ParagonChest( Name, 5 ) );
 
             if ( Utility.RandomDouble() < 0.025 )
             {
@@ -93,14 +93,7 @@ namespace Server.Mobiles
             {
                 return true;
             }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        }        
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 2);

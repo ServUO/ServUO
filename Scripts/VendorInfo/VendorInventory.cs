@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Server.Multis;
+using Server.Accounting;
 
 namespace Server.Mobiles
 {
@@ -181,10 +182,17 @@ namespace Server.Mobiles
                 {
                     if (m_Inventory.Gold > 0)
                     {
-                        if (house.MovingCrate == null)
-                            house.MovingCrate = new MovingCrate(house);
+                        if (AccountGold.Enabled && m_Inventory.Owner != null)
+                        {
+                            Banker.Deposit(m_Inventory.Owner, m_Inventory.Gold, true);
+                        }
+                        else
+                        {
+                            if (house.MovingCrate == null)
+                                house.MovingCrate = new MovingCrate(house);
 
-                        Banker.Deposit(house.MovingCrate, m_Inventory.Gold);
+                            Banker.Deposit(house.MovingCrate, m_Inventory.Gold);
+                        }
                     }
 
                     foreach (Item item in m_Inventory.Items)
