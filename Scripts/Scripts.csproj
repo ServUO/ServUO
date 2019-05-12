@@ -558,7 +558,6 @@
     <Compile Include="Gumps\YoungGumps.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Addons\StrangeContraption.cs" />
     <Compile Include="Items\Addons\AdvancedTrainingDummy.cs" />
     <Compile Include="Items\Addons\Crystal Furniture Set\CrystalAltar.cs" />
     <Compile Include="Items\Addons\Crystal Furniture Set\CrystalBrazier.cs" />
