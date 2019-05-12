@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public abstract class BaseIngot : Item, ICommodity
+    public abstract class BaseIngot : Item, ICommodity, IResource
     {
         protected virtual CraftResource DefaultResource { get { return CraftResource.Iron; } }
 
@@ -15,11 +15,11 @@ namespace Server.Items
         public BaseIngot(CraftResource resource, int amount)
             : base(0x1BF2)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-            this.Hue = CraftResources.GetHue(resource);
+            Stackable = true;
+            Amount = amount;
+            Hue = CraftResources.GetHue(resource);
 
-            this.m_Resource = resource;
+            m_Resource = resource;
         }
 
         public BaseIngot(Serial serial)
@@ -32,12 +32,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Resource;
+                return m_Resource;
             }
             set
             {
-                this.m_Resource = value;
-                this.InvalidateProperties();
+                m_Resource = value;
+                InvalidateProperties();
             }
         }
         public override double DefaultWeight
@@ -51,8 +51,8 @@ namespace Server.Items
         {
             get
             {
-                if (this.m_Resource >= CraftResource.DullCopper && this.m_Resource <= CraftResource.Valorite)
-                    return 1042684 + (int)(this.m_Resource - CraftResource.DullCopper);
+                if (m_Resource >= CraftResource.DullCopper && m_Resource <= CraftResource.Valorite)
+                    return 1042684 + (int)(m_Resource - CraftResource.DullCopper);
 
                 return 1042692;
             }
@@ -61,7 +61,7 @@ namespace Server.Items
         {
             get
             {
-                return this.LabelNumber;
+                return LabelNumber;
             }
         }
         bool ICommodity.IsDeedable
@@ -77,7 +77,7 @@ namespace Server.Items
 
             writer.Write((int)1); // version
 
-            writer.Write((int)this.m_Resource);
+            writer.Write((int)m_Resource);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -89,12 +89,12 @@ namespace Server.Items
             switch ( version )
             {
                 case 2: // Reset from Resource System
-                    this.m_Resource = this.DefaultResource;
+                    m_Resource = DefaultResource;
                     reader.ReadString();
                     break;
                 case 1:
                     {
-                        this.m_Resource = (CraftResource)reader.ReadInt();
+                        m_Resource = (CraftResource)reader.ReadInt();
                         break;
                     }
                 case 0:
@@ -135,7 +135,7 @@ namespace Server.Items
                                 break;
                         }
 
-                        this.m_Resource = CraftResources.GetFromOreInfo(info);
+                        m_Resource = CraftResources.GetFromOreInfo(info);
                         break;
                     }
             }
@@ -143,8 +143,8 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            if (this.Amount > 1)
-                list.Add(1050039, "{0}\t#{1}", this.Amount, 1027154); // ~1_NUMBER~ ~2_ITEMNAME~
+            if (Amount > 1)
+                list.Add(1050039, "{0}\t#{1}", Amount, 1027154); // ~1_NUMBER~ ~2_ITEMNAME~
             else
                 list.Add(1027154); // ingots
         }
@@ -153,14 +153,14 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (!CraftResources.IsStandard(this.m_Resource))
+            if (!CraftResources.IsStandard(m_Resource))
             {
-                int num = CraftResources.GetLocalizationNumber(this.m_Resource);
+                int num = CraftResources.GetLocalizationNumber(m_Resource);
 
                 if (num > 0)
                     list.Add(num);
                 else
-                    list.Add(CraftResources.GetName(this.m_Resource));
+                    list.Add(CraftResources.GetName(m_Resource));
             }
         }
     }

@@ -9,6 +9,8 @@ namespace Server.Items
 {
 	public class TillerMan : Item
 	{
+        public virtual bool Babbles { get { return true; } }
+
 		private BaseBoat m_Boat;
         public BaseBoat Boat { get { return m_Boat; } }
 
@@ -124,10 +126,13 @@ namespace Server.Items
 
         public void Babble()
         {
-            PublicOverheadMessage(MessageType.Regular, 0x3B2, 1114137, RandomBabbleArgs());
-            // Ar! Did I ever tell thee about the time I was in ~1_CITY~ and I met ~2_GENDER~ ~3_STORY~ Anyway, 'tis a dull story.
+            if (Babbles)
+            {
+                PublicOverheadMessage(MessageType.Regular, 0x3B2, 1114137, RandomBabbleArgs());
+                // Ar! Did I ever tell thee about the time I was in ~1_CITY~ and I met ~2_GENDER~ ~3_STORY~ Anyway, 'tis a dull story.
 
-            _NextBabble = DateTime.UtcNow + TimeSpan.FromMinutes(Utility.RandomMinMax(3, 10));
+                _NextBabble = DateTime.UtcNow + TimeSpan.FromMinutes(Utility.RandomMinMax(3, 10));
+            }
         }
 
         private string RandomBabbleArgs()

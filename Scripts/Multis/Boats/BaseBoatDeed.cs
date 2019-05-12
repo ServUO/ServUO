@@ -81,7 +81,7 @@ namespace Server.Multis
 			{
 				from.SendLocalizedMessage( 1010567, null, 0x25 ); // You may not place a boat from this location.
 			}
-            else if (Core.HS && BaseBoat.HasBoat(from))
+            else if (Core.HS && BaseBoat.HasBoat(from) && !(this is RowBoatDeed))
             {
                 from.SendLocalizedMessage(1116758); //You already have a ship deployed!
             }
