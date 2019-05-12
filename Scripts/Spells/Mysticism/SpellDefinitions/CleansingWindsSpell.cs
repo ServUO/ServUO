@@ -89,7 +89,6 @@ namespace Server.Spells.Mysticism
                     // Cleansing Winds will not heal the target after removing mortal wound.
                     if (MortalStrike.IsWounded(target))
                     {
-                        MortalStrike.EndWound(target);
                         toHealMod = 0;
                     }
 
@@ -205,6 +204,12 @@ namespace Server.Spells.Mysticism
             {
                 WeakenSpell.RemoveEffects(m);
                 curseLevel += 1;
+            }
+
+            if (MortalStrike.IsWounded(m))
+            {
+                MortalStrike.EndWound(m);
+                curseLevel += 2;
             }
 
             BuffInfo.RemoveBuff(m, BuffIcon.Clumsy);

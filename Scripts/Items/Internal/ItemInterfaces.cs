@@ -31,7 +31,7 @@ namespace Server.Items
         bool PlayerConstructed { get; }
     }
 
-    public interface IResource : IQuality
+    public interface IResource
     {
         CraftResource Resource { get; set; }
     }
