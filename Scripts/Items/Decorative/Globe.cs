@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class Globe : Item, IResource
+    public class Globe : Item, IResource, IQuality
     {
         private CraftResource _Resource;
         private Mobile _Crafter;

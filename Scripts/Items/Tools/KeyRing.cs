@@ -5,7 +5,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class KeyRing : Item, IResource
+    public class KeyRing : Item, IResource, IQuality
     {
         private CraftResource _Resource;
         private Mobile _Crafter;

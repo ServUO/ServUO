@@ -4,7 +4,7 @@ using Server.Network;
 
 namespace Server.Items
 {
-    public abstract class LockableContainer : TrapableContainer, ILockable, ILockpickable, IShipwreckedItem, IResource
+    public abstract class LockableContainer : TrapableContainer, ILockable, ILockpickable, IShipwreckedItem, IResource, IQuality
     {
         private bool m_Locked;
         private int m_LockLevel, m_MaxLockLevel, m_RequiredSkill;
