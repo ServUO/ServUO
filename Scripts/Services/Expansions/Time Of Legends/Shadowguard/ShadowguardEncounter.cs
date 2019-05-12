@@ -36,6 +36,9 @@ namespace Server.Engines.Shadowguard
 		public bool DoneWarning { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
+        public bool Completed { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
 		public DateTime StartTime { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -258,14 +261,10 @@ namespace Server.Engines.Shadowguard
                     Reset(true);
                 });
 		}
-
-        public bool Completed { get { return _Completed; } }
-
-        private bool _Completed;
 		
 		public virtual void CompleteEncounter()
 		{
-            if (_Completed)
+            if (Completed)
                 return;
 
 			Timer.DelayCall(ResetDuration, () =>
@@ -278,7 +277,7 @@ namespace Server.Engines.Shadowguard
             else
                 SendPartyMessage(1156244); //You have bested this tower of Shadowguard! You will be teleported out of the tower in 60 seconds!
 
-            _Completed = true;
+            Completed = true;
 		}
 		
 		public virtual void Reset(bool expired = false)
@@ -375,7 +374,11 @@ namespace Server.Engines.Shadowguard
 		
 		public virtual void Serialize(GenericWriter writer)
 		{
-			writer.Write(0);
+			writer.Write(1);
+
+            writer.WriteDeltaTime(StartTime);
+            writer.Write(Completed);
+            writer.Write(HasBegun);
 
             writer.Write(Instance.Index);
 			writer.Write(PartyLeader);
@@ -386,15 +389,32 @@ namespace Server.Engines.Shadowguard
 		{
 			int version = reader.ReadInt();
 
-            Instance = Controller.Instances[reader.ReadInt()];
-			PartyLeader = reader.ReadMobile();
-            Addon = reader.ReadItem() as BaseAddon;
+            switch (version)
+            {
+                case 1:
+                    StartTime = reader.ReadDeltaTime();
+                    Completed = reader.ReadBool();
+                    HasBegun = reader.ReadBool();
+                    goto case 0;
+                case 0:
+                    Instance = Controller.Instances[reader.ReadInt()];
+                    PartyLeader = reader.ReadMobile();
+                    Addon = reader.ReadItem() as BaseAddon;
+                    break;
+            }
 
             if (Instance != null)
+            {
                 Instance.Encounter = this;
+            }
 
-			StartTime = DateTime.UtcNow;
-            HasBegun = true;
+            if (Completed)
+            {
+                Timer.DelayCall(ResetDuration, () =>
+                {
+                    Reset();
+                });
+            }
 		}
 
         public static Dictionary<EncounterType, EncounterDef> Defs { get; set; }

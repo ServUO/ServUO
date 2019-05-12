@@ -27,7 +27,7 @@ namespace Server.Spells.Necromancy
         {
             get
             {
-                return TimeSpan.FromSeconds(1.0);
+                return TimeSpan.FromSeconds(1.25);
             }
         }
         public override double RequiredSkill
