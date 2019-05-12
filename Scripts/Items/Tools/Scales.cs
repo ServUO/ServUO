@@ -4,7 +4,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class Scales : Item, IResource
+    public class Scales : Item, IResource, IQuality
     {
         private CraftResource _Resource;
         private Mobile _Crafter;

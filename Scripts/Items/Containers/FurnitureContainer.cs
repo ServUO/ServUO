@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    public class FurnitureContainer : BaseContainer, IResource
+    public class FurnitureContainer : BaseContainer, IResource, IQuality
     {
         #region Old Item Serialization Vars
         /* DO NOT USE! Only used in serialization of old furniture that originally derived from BaseContainer */
