@@ -373,7 +373,10 @@ namespace Server.Items
 
                     from.Stabled.Add(pet);
 
-                    UsesRemaining -= 1;
+                    if (m_Replica)
+                    {
+                        UsesRemaining -= 1;
+                    }
 
                     from.SendLocalizedMessage(502679); // Very well, thy pet is stabled. Thou mayst recover it by saying 'claim' to me. In one real world week, I shall sell it off if it is not claimed!
                 }

@@ -17,12 +17,12 @@ namespace Server.Engines.Shadowguard
     [Flags]
     public enum EncounterType
     {
-        Bar = 0x00000001,
-        Orchard = 0x00000002,
-        Armory = 0x00000004,
-        Fountain = 0x00000008,
-        Belfry = 0x00000010,
-        Roof = 0x00000020,
+        Bar         = 0x00000001,
+        Orchard     = 0x00000002,
+        Armory      = 0x00000004,
+        Fountain    = 0x00000008,
+        Belfry      = 0x00000010,
+        Roof        = 0x00000020,
 
         Required = Bar | Orchard | Armory | Fountain | Belfry
     }
@@ -140,19 +140,7 @@ namespace Server.Engines.Shadowguard
             if(Table == null)
                 return;
 
-            Party p = Party.Get(m);
-
-            if (p != null)
-            {
-                foreach (PartyMemberInfo info in p.Members)
-                {
-                    Mobile mobile = info.Mobile;
-
-                    if (Table.ContainsKey(mobile))
-                        Table.Remove(mobile);
-                }
-            }
-            else if (Table.ContainsKey(m))
+            if (Table.ContainsKey(m))
             {
                 Table.Remove(m);
             }
@@ -168,23 +156,9 @@ namespace Server.Engines.Shadowguard
 
             if (!expired)
             {
-                Mobile m = encounter.PartyLeader;
-
-                if (m == null)
-                    return;
-
-                Party p = Party.Get(m);
-
-                if (p != null)
+                foreach (var pm in encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
                 {
-                    foreach (PartyMemberInfo info in p.Members)
-                    {
-                        AddToTable(info.Mobile, encounter.Encounter);
-                    }
-                }
-                else
-                {
-                    AddToTable(m, encounter.Encounter);
+                    AddToTable(pm, encounter.Encounter);
                 }
             }
         }

@@ -21,7 +21,7 @@ namespace Server.Items
         Diamond
     }
 
-    public abstract class BaseJewel : Item, ICraftable, ISetItem, IWearableDurability, IResource, IVvVItem, IOwnerRestricted, ITalismanProtection, IFactionItem, IArtifact, ICombatEquipment
+    public abstract class BaseJewel : Item, ICraftable, ISetItem, IWearableDurability, IResource, IVvVItem, IOwnerRestricted, ITalismanProtection, IFactionItem, IArtifact, ICombatEquipment, IQuality
     {
         #region Factions
         private FactionItem m_FactionState;

@@ -8,7 +8,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Flipable(0x14F5, 0x14F6)]
-    public class Spyglass : Item, IResource
+    public class Spyglass : Item, IResource, IQuality
     {
         private CraftResource _Resource;
         private Mobile _Crafter;

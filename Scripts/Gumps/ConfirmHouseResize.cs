@@ -99,7 +99,7 @@ namespace Server.Gumps
                         {
                             if (m_House.Price > 0)
                             {
-                                if (Core.TOL)
+                                if (!Core.TOL)
                                 {
                                     toGive = new BankCheck(m_House.Price);
                                 }

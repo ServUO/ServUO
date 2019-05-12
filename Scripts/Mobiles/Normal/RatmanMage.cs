@@ -81,6 +81,13 @@ namespace Server.Mobiles
                 return true;
             }
         }
+		public override int TreasureMapLevel
+        {
+            get
+            {
+                return 2;
+            }
+        }
         public override int Meat
         {
             get
@@ -117,13 +124,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
-
-            if (this.Body == 42)
-            {
-                this.Body = 0x8F;
-                this.Hue = 0;
-            }
+            int version = reader.ReadInt();           
         }
     }
 }

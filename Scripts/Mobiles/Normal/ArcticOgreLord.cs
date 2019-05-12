@@ -55,13 +55,9 @@ namespace Server.Mobiles
                 return Poison.Regular;
             }
         }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 3;
-            }
-        }
+        
+		public override int TreasureMapLevel { get { return 3; } }
+		
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich);

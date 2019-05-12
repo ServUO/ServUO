@@ -81,6 +81,8 @@ namespace Server.Mobiles
             Fame = 8000;
             Karma = -8000;
         }
+		
+		public override int TreasureMapLevel { get { return 3; } }
 
         public override void GenerateLoot()
         {

@@ -91,9 +91,6 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            if (BaseSoundID <= 0)
-                BaseSoundID = 0xA8;
-
             if (version < 1)
             {
                 for (int i = 0; i < Skills.Length; ++i)

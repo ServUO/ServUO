@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class BarrelLid : Item, IResource
+    public class BarrelLid : Item, IResource, IQuality
     {
         private CraftResource _Resource;
         private ItemQuality _Quality;

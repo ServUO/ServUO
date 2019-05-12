@@ -88,6 +88,8 @@ namespace Server.Mobiles
                 c.DropItem(new RecipeScroll(603));
             } 
         }
+		
+		public override int TreasureMapLevel { get { return 3; } }
 
         public override void GenerateLoot()
         {

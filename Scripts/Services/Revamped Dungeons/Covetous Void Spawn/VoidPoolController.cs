@@ -208,7 +208,7 @@ namespace Server.Engines.VoidPool
 				CurrentScore = new Dictionary<Mobile, long>();
 				Waves = new List<WaveInfo>();
 				
-				Region.SendRegionMessage(1152527); // The battle for the Void Pool is beginning now!
+				Region.SendRegionMessage(1152527, 0x2B); // The battle for the Void Pool is beginning now!
 
                 if (WaypointACount != WaypointsA.Count || WaypointBCount != WaypointsB.Count)
                     Generate.AddWaypoints();
@@ -244,7 +244,7 @@ namespace Server.Engines.VoidPool
             int toSpawn = (int)Math.Ceiling(Math.Max(5, Math.Sqrt(Wave) * 2) * 1.5);
 			List<BaseCreature> creatures = new List<BaseCreature>();
 
-			for(int i = 0; i < toSpawn; i++)
+            for (int i = 0; i < toSpawn; i++)
 			{
 				Point3D start = i % 2 == 0 ? StartPoint1 : StartPoint2;
 				
@@ -296,8 +296,28 @@ namespace Server.Engines.VoidPool
 					});
 				}
 			}
-			
-			Waves.Add(new WaveInfo(Wave, creatures));
+
+            var gate1 = new VoidPoolGate();
+            gate1.MoveToWorld(StartPoint1, Map);
+            Effects.PlaySound(StartPoint1, Map, 0x20E);
+
+            var gate2 = new VoidPoolGate();
+            gate2.MoveToWorld(StartPoint2, Map);
+            Effects.PlaySound(StartPoint2, Map, 0x20E);
+
+            Timer.DelayCall(TimeSpan.FromSeconds(toSpawn * .80), () =>
+            {
+                Effects.SendLocationParticles(EffectItem.Create(gate1.Location, gate1.Map, EffectItem.DefaultDuration), 0x376A, 9, 20, 5042);
+                Effects.PlaySound(gate1.GetWorldLocation(), gate1.Map, 0x201);
+
+                Effects.SendLocationParticles(EffectItem.Create(gate2.Location, gate2.Map, EffectItem.DefaultDuration), 0x376A, 9, 20, 5042);
+                Effects.PlaySound(gate2.GetWorldLocation(), gate2.Map, 0x201);
+
+                gate1.Delete();
+                gate2.Delete();
+            });
+
+            Waves.Add(new WaveInfo(Wave, creatures));
 			NextWave = GetNextWaveTime();
 		}
 
@@ -671,6 +691,7 @@ namespace Server.Engines.VoidPool
                     WaypointsB = new List<WayPoint>();
 
                     Active = reader.ReadBool();
+                    NextStart = DateTime.UtcNow;
 
                     int counta = reader.ReadInt();
                     int countb = reader.ReadInt();
@@ -702,6 +723,34 @@ namespace Server.Engines.VoidPool
             Timer.DelayCall(TimeSpan.FromSeconds(10), () => { ClearSpawn(); ClearSpawners(); } );
         }
 	}
+
+    public class VoidPoolGate : Static
+    {
+        public VoidPoolGate()
+            : base(0xF6C)
+        {
+            Light = LightType.Circle300;
+        }
+
+        public VoidPoolGate(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+
+            Delete();
+        }
+    }
 }
 
 /*

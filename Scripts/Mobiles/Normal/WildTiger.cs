@@ -88,11 +88,11 @@ namespace Server.Mobiles
         public override double WeaponAbilityChance { get { return 0.5; } }
 
         public override int Meat { get { return 2; } }
-        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
+        public override FoodType FavoriteFood { get { return FoodType.Meat; } }	
+		public override int TreasureMapLevel { get { return 1; } }
 
         public override void GenerateLoot()
         {
-            //this.AddLoot(LootPack.NewRandom(230, 400, 2, 300, 550, 75));
             AddLoot(LootPack.Rich, 1);
         }
 

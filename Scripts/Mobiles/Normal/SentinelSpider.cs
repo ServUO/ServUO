@@ -53,11 +53,8 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
-
-	        if (Controlled)
-		        return;
 			
-			if (Utility.RandomDouble() < 0.03)            
+			if (!Controlled && Utility.RandomDouble() < 0.03)            
                 c.DropItem(new LuckyCoin());
         }
 

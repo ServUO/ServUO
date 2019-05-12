@@ -214,8 +214,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
-            //AddLoot( LootPack.Gems );	
+            AddLoot(LootPack.Rich);
         }
 
         public override bool OnBeforeDeath()

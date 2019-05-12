@@ -62,7 +62,6 @@ namespace Server.Mobiles
 
             if (Core.ML)
             {
-                PackResources(8);
                 PackTalismans(5);
             }
 
@@ -112,44 +111,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return new MonsterStatuetteType[]
-                {
-                    MonsterStatuetteType.PlagueBeast,
-                    MonsterStatuetteType.RedDeath
-                };
+                return new MonsterStatuetteType[] { };         
             }
         }
         public override bool Unprovokable { get { return true; } }
         public override bool Uncalmable { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
         public override int TreasureMapLevel { get { return 5; } }
-        public override bool HasBreath { get { return true; } }
-
-        public virtual void PackResources(int amount)
-        {
-            for (int i = 0; i < amount; i++)
-                switch( Utility.Random(6) )
-                {
-                    case 0:
-                        PackItem(new Blight());
-                        break;
-                    case 1:
-                        PackItem(new Scourge());
-                        break;
-                    case 2:
-                        PackItem(new Taint());
-                        break;
-                    case 3:
-                        PackItem(new Putrefication());
-                        break;
-                    case 4:
-                        PackItem(new Corruption());
-                        break;
-                    case 5:
-                        PackItem(new Muculent());
-                        break;
-                }
-        }
+        public override bool HasBreath { get { return true; } }       
 
         public virtual void PackTalismans(int amount)
         {
@@ -164,23 +133,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.UltraRich, 4);
             AddLoot(LootPack.FilthyRich);
         }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Core.ML)
-            {
-                c.DropItem(new GrizzledBones());
-
-                if (Utility.RandomDouble() < 0.05)
-                    c.DropItem(new GrizzledMareStatuette());
-
-                if (Utility.RandomDouble() < 0.025)
-                    c.DropItem(new CrimsonCincture());
-            }
-        }
-
+  
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
             if (Utility.RandomDouble() < 0.1)

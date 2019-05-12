@@ -10,7 +10,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class FishingPole : Item, ICraftable, IUsesRemaining, IResource
+    public class FishingPole : Item, ICraftable, IUsesRemaining, IResource, IQuality
     {
         private Type m_BaitType;
         private bool m_EnhancedBait;

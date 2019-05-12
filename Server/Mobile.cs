@@ -8008,6 +8008,10 @@ namespace Server
 
                     return false;
                 }
+                else if (!((Mobile)target).CanBeHarmedBy(this, message))
+                {
+                    return false;
+                }
             }
 
 			if (target == this)
@@ -8029,6 +8033,11 @@ namespace Server
 
 			return true;
 		}
+
+        public virtual bool CanBeHarmedBy(Mobile from, bool message)
+        {
+            return true;
+        }
 
 		public virtual bool IsHarmfulCriminal(IDamageable target)
 		{
