@@ -16,8 +16,6 @@
 /Docs
 /Reports
 /VitaNexCore
-NoCommit
-CUSTOM
 /.vs/
 /staffHistory.xml
 /reportHistory.xml
@@ -25,6 +23,8 @@ CUSTOM
 /drng64.dll
 /drng32.dll
 /libdrng.so
+NoCommit
+CUSTOM
 *.pdb
 *.exe
 *.exe.mdb
