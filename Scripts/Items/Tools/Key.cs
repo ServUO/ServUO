@@ -20,7 +20,7 @@ namespace Server.Items
         uint KeyValue { get; set; }
     }
 
-    public class Key : Item, IResource
+    public class Key : Item, IResource, IQuality
     {
         private string m_Description;
         private uint m_KeyVal;

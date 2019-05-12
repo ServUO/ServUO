@@ -21,7 +21,7 @@ namespace Server.Spells.Necromancy
         {
             get
             {
-                return TimeSpan.FromSeconds(2.0);
+                return TimeSpan.FromSeconds(2.25);
             }
         }
         public override double RequiredSkill
@@ -95,7 +95,7 @@ namespace Server.Spells.Necromancy
             m.PlaySound(0x17F);
             m.FixedParticles(0x374A, 1, 15, 9902, 1108, 4, EffectLayer.Waist);
 
-            int manadrain = (int)(5 + ((15 * m.Skills.SpiritSpeak.Value) / 100));
+            int manadrain = (int)(m.Skills.SpiritSpeak.Value / 5);
 
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.WraithForm, 1060524, 1153829, String.Format("15\t5\t5\t{0}", manadrain)));
         }

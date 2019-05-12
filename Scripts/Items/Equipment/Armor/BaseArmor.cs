@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Server.Items
 {
-    public abstract class BaseArmor : Item, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, ITalismanProtection, IEngravable, IArtifact, ICombatEquipment
+    public abstract class BaseArmor : Item, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, ITalismanProtection, IEngravable, IArtifact, ICombatEquipment, IQuality
     {
         #region Factions
         private FactionItem m_FactionState;

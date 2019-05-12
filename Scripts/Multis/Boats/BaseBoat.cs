@@ -1827,7 +1827,9 @@ namespace Server.Multis
                 NoMoveHS = true;
 
                 foreach (var e in toMove)
+                {
                     e.NoMoveHS = true;
+                }
 
                 // packet created
                 MoveBoatHS smooth = new MoveBoatHS(this, d, clientSpeed, xOffset, yOffset);
@@ -2193,7 +2195,7 @@ namespace Server.Multis
             return false;
         }
 
-        public IEnumerable<IEntity> GetEntitiesOnBoard()
+        public virtual IEnumerable<IEntity> GetEntitiesOnBoard()
         {
             Map map = Map;
 

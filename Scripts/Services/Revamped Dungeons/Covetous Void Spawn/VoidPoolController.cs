@@ -244,26 +244,6 @@ namespace Server.Engines.VoidPool
             int toSpawn = (int)Math.Ceiling(Math.Max(5, Math.Sqrt(Wave) * 2) * 1.5);
 			List<BaseCreature> creatures = new List<BaseCreature>();
 
-            var gate1 = new VoidPoolGate();
-            gate1.MoveToWorld(StartPoint1, Map);
-            Effects.PlaySound(StartPoint1, Map, 0x20E);
-
-            var gate2 = new VoidPoolGate();
-            gate2.MoveToWorld(StartPoint2, Map);
-            Effects.PlaySound(StartPoint2, Map, 0x20E);
-
-            Timer.DelayCall(TimeSpan.FromSeconds(toSpawn * .80), () =>
-            {
-                Effects.SendLocationParticles(EffectItem.Create(gate1.Location, gate1.Map, EffectItem.DefaultDuration), 0x376A, 9, 20, 5042);
-                Effects.PlaySound(gate1.GetWorldLocation(), gate1.Map, 0x201);
-
-                Effects.SendLocationParticles(EffectItem.Create(gate2.Location, gate2.Map, EffectItem.DefaultDuration), 0x376A, 9, 20, 5042);
-                Effects.PlaySound(gate2.GetWorldLocation(), gate2.Map, 0x201);
-
-                gate1.Delete();
-                gate2.Delete();
-            });
-
             for (int i = 0; i < toSpawn; i++)
 			{
 				Point3D start = i % 2 == 0 ? StartPoint1 : StartPoint2;
@@ -316,8 +296,28 @@ namespace Server.Engines.VoidPool
 					});
 				}
 			}
-			
-			Waves.Add(new WaveInfo(Wave, creatures));
+
+            var gate1 = new VoidPoolGate();
+            gate1.MoveToWorld(StartPoint1, Map);
+            Effects.PlaySound(StartPoint1, Map, 0x20E);
+
+            var gate2 = new VoidPoolGate();
+            gate2.MoveToWorld(StartPoint2, Map);
+            Effects.PlaySound(StartPoint2, Map, 0x20E);
+
+            Timer.DelayCall(TimeSpan.FromSeconds(toSpawn * .80), () =>
+            {
+                Effects.SendLocationParticles(EffectItem.Create(gate1.Location, gate1.Map, EffectItem.DefaultDuration), 0x376A, 9, 20, 5042);
+                Effects.PlaySound(gate1.GetWorldLocation(), gate1.Map, 0x201);
+
+                Effects.SendLocationParticles(EffectItem.Create(gate2.Location, gate2.Map, EffectItem.DefaultDuration), 0x376A, 9, 20, 5042);
+                Effects.PlaySound(gate2.GetWorldLocation(), gate2.Map, 0x201);
+
+                gate1.Delete();
+                gate2.Delete();
+            });
+
+            Waves.Add(new WaveInfo(Wave, creatures));
 			NextWave = GetNextWaveTime();
 		}
 

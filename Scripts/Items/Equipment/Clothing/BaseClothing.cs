@@ -15,7 +15,7 @@ namespace Server.Items
         int MaxArcaneCharges { get; set; }
     }
 
-    public abstract class BaseClothing : Item, IDyable, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, IArtifact, ICombatEquipment, IEngravable
+    public abstract class BaseClothing : Item, IDyable, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, IArtifact, ICombatEquipment, IEngravable, IQuality
     {
         private string m_EngravedText;
 
