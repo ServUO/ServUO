@@ -760,7 +760,7 @@ namespace Server.Mobiles
                     double level = currentControlSlots - ControlSlotsMin;
                     double levelFactor = (double)(1 + (ControlSlotsMax - ControlSlotsMin)) / minSkill;
 
-                    current = Math.Ceiling(Math.Min(108.0, minSkill + (minSkill * ((levelFactor * 7) * level))));
+                    current = Math.Ceiling(Math.Min(108.0, minSkill + (minSkill * ((levelFactor * .7) * level))));
                 }
             }
 
