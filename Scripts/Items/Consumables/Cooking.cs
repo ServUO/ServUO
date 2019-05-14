@@ -433,7 +433,6 @@ namespace Server.Items
     }
 
     // ********** SackFlour **********
-    [TypeAlias("Server.Items.SackFlourOpen")]
     public class SackFlour : Item, IQuality
     {
         private ItemQuality _Quality;

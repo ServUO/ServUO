@@ -596,6 +596,7 @@
     <Compile Include="Items\Consumables\ValentineChocolate.cs" />
     <Compile Include="Items\Containers\HeartShapedBox.cs" />
     <Compile Include="Items\Addons\Shadow Furniture Set\ObsidianPillar.cs" />
+    <Compile Include="Items\Decorative\GypsyWagonLamp.cs" />
     <Compile Include="Items\Decorative\UltimaBanner.cs" />
     <Compile Include="Items\Decorative\EnchantedWheelbarrow.cs" />
     <Compile Include="Items\Decorative\FlamingScarecrow.cs" />

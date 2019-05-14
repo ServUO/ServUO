@@ -4,6 +4,7 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -552,7 +553,7 @@ namespace Server
 
 		public static Type FindTypeByFullName(string fullName, bool ignoreCase)
 		{
-			if (String.IsNullOrWhiteSpace(fullName))
+			if (string.IsNullOrWhiteSpace(fullName))
 			{
 				return null;
 			}
@@ -567,14 +568,40 @@ namespace Server
 			return type ?? GetTypeCache(Core.Assembly).GetTypeByFullName(fullName, ignoreCase);
 		}
 
-		public static Type FindTypeByName(string name)
+		public static IEnumerable<Type> FindTypesByFullName(string name)
+		{
+			return FindTypesByFullName(name, true);
+		}
+
+		public static IEnumerable<Type> FindTypesByFullName(string name, bool ignoreCase)
+		{
+			if (string.IsNullOrWhiteSpace(name))
+			{
+				yield break;
+			}
+
+			for (var i = 0; i < Assemblies.Length; ++i)
+			{
+				foreach (var t in GetTypeCache(Assemblies[i]).GetTypesByFullName(name, ignoreCase))
+				{
+					yield return t;
+				}
+			}
+
+			foreach (var t in GetTypeCache(Core.Assembly).GetTypesByFullName(name, ignoreCase))
+			{
+				yield return t;
+			}
+		}
+
+        public static Type FindTypeByName(string name)
 		{
 			return FindTypeByName(name, true);
 		}
 
 		public static Type FindTypeByName(string name, bool ignoreCase)
 		{
-			if (String.IsNullOrWhiteSpace(name))
+			if (string.IsNullOrWhiteSpace(name))
 			{
 				return null;
 			}
@@ -588,6 +615,32 @@ namespace Server
 
 			return type ?? GetTypeCache(Core.Assembly).GetTypeByName(name, ignoreCase);
 		}
+
+		public static IEnumerable<Type> FindTypesByName(string name)
+		{
+			return FindTypesByName(name, true);
+		}
+
+		public static IEnumerable<Type> FindTypesByName(string name, bool ignoreCase)
+		{
+			if (string.IsNullOrWhiteSpace(name))
+			{
+                yield break;
+			}
+
+			for (var i = 0; i < Assemblies.Length; ++i)
+			{
+				foreach (var t in GetTypeCache(Assemblies[i]).GetTypesByName(name, ignoreCase))
+				{
+                    yield return t;
+				}
+			}
+
+			foreach (var t in GetTypeCache(Core.Assembly).GetTypesByName(name, ignoreCase))
+			{
+				yield return t;
+			}
+        }
 
 		public static void EnsureDirectory(string dir)
 		{
@@ -631,21 +684,21 @@ namespace Server
 
 		public Type GetTypeByName(string name, bool ignoreCase)
 		{
-			if (String.IsNullOrWhiteSpace(name))
-			{
-				return null;
-			}
+			return GetTypesByName(name, ignoreCase).FirstOrDefault(t => t != null);
+		}
 
+		public IEnumerable<Type> GetTypesByName(string name, bool ignoreCase)
+		{
 			return m_Names.Get(name, ignoreCase);
 		}
 
 		public Type GetTypeByFullName(string fullName, bool ignoreCase)
 		{
-			if (String.IsNullOrWhiteSpace(fullName))
-			{
-				return null;
-			}
+			return GetTypesByFullName(fullName, ignoreCase).FirstOrDefault(t => t != null);
+		}
 
+		public IEnumerable<Type> GetTypesByFullName(string fullName, bool ignoreCase)
+		{
 			return m_FullNames.Get(fullName, ignoreCase);
 		}
 
@@ -663,53 +716,194 @@ namespace Server
 			m_Names = new TypeTable(m_Types.Length);
 			m_FullNames = new TypeTable(m_Types.Length);
 
-			var typeofTypeAliasAttribute = typeof(TypeAliasAttribute);
-
-			foreach (var type in m_Types)
+			foreach (var g in m_Types.ToLookup(t => t.Name))
 			{
-				m_Names.Add(type.Name, type);
-				m_FullNames.Add(type.FullName, type);
-
-				if (type.IsDefined(typeofTypeAliasAttribute, false))
+				m_Names.Add(g.Key, g);
+				
+				foreach (var type in g)
 				{
-					var attrs = type.GetCustomAttributes(typeofTypeAliasAttribute, false);
+					m_FullNames.Add(type.FullName, type);
 
-					if (attrs.Length > 0)
+					var attr = type.GetCustomAttribute<TypeAliasAttribute>(false);
+
+					if (attr != null)
 					{
-						var attr = attrs[0] as TypeAliasAttribute;
-
-						if (attr != null)
+						foreach (var a in attr.Aliases)
 						{
-							foreach (var a in attr.Aliases)
-							{
-								m_FullNames.Add(a, type);
-							}
+							m_FullNames.Add(a, type);
 						}
 					}
 				}
 			}
+
+			m_Names.Prune();
+			m_FullNames.Prune();
+
+			m_Names.Sort();
+			m_FullNames.Sort();
 		}
 	}
 
 	public class TypeTable
 	{
-		private readonly Dictionary<string, Type> m_Sensitive;
-		private readonly Dictionary<string, Type> m_Insensitive;
+		private readonly Dictionary<string, List<Type>> m_Sensitive;
+		private readonly Dictionary<string, List<Type>> m_Insensitive;
 
-		public void Add(string key, Type type)
+		public void Prune()
 		{
-			m_Sensitive[key] = type;
-			m_Insensitive[key] = type;
+			Prune(m_Sensitive);
+			Prune(m_Insensitive);
 		}
 
-		public Type Get(string key, bool ignoreCase)
+		private static void Prune(Dictionary<string, List<Type>> types)
 		{
-			if (String.IsNullOrWhiteSpace(key))
+			var buffer = new List<Type>();
+
+            foreach (var list in types.Values)
 			{
-				return null;
+				if (list.Count == 1)
+				{
+                    continue;
+				}
+
+				buffer.AddRange(list.Distinct());
+
+				list.Clear();
+				list.AddRange(buffer);
+
+				buffer.Clear();
 			}
 
-			Type t = null;
+			buffer.TrimExcess();
+		}
+
+		public void Sort()
+		{
+			Sort(m_Sensitive);
+			Sort(m_Insensitive);
+        }
+
+		private static void Sort(Dictionary<string, List<Type>> types)
+		{
+			foreach (var list in types.Values)
+			{
+				list.Sort(InternalSort);
+			}
+		}
+
+		private static int InternalSort(Type l, Type r)
+		{
+			if (l == r)
+			{
+				return 0;
+			}
+
+			if (l != null && r == null)
+			{
+				return -1;
+			}
+
+			if (l == null && r != null)
+			{
+				return 1;
+			}
+
+			var a = IsEntity(l);
+			var b = IsEntity(r);
+
+			if (a && b)
+			{
+				a = IsConstructable(l, out var x);
+				b = IsConstructable(r, out var y);
+
+				if (a && !b)
+				{
+					return -1;
+				}
+
+				if (!a && b)
+				{
+					return 1;
+				}
+
+				return x > y ? -1 : x < y ? 1 : 0;
+			}
+
+			return a ? -1 : b ? 1 : 0;
+		}
+
+		private static bool IsEntity(Type type)
+		{
+			return type.GetInterface("IEntity") != null;
+		}
+
+		private static bool IsConstructable(Type type, out AccessLevel access)
+		{
+			foreach (var ctor in type.GetConstructors().OrderBy(o => o.GetParameters().Length))
+			{
+				var attr = ctor.GetCustomAttribute<ConstructableAttribute>(false);
+
+				if (attr != null)
+				{
+					access = attr.AccessLevel;
+					return true;
+				}
+			}
+
+			access = 0;
+			return false;
+		}
+
+		public void Add(string key, IEnumerable<Type> types)
+		{
+			if (!string.IsNullOrWhiteSpace(key) && types != null)
+			{
+				Add(key, types.ToArray());
+			}
+		}
+
+		public void Add(string key, params Type[] types)
+		{
+			if (string.IsNullOrWhiteSpace(key) || types == null || types.Length == 0)
+			{
+                return;
+			}
+			
+			if (!m_Sensitive.TryGetValue(key, out var sensitive) || sensitive == null)
+			{
+				m_Sensitive[key] = new List<Type>(types);
+			}
+			else if (types.Length == 1)
+			{
+				sensitive.Add(types[0]);
+			}
+			else
+			{
+				sensitive.AddRange(types);
+			}
+
+            if (!m_Insensitive.TryGetValue(key, out var insensitive) || insensitive == null)
+			{
+				m_Insensitive[key] = new List<Type>(types);
+			}
+			else if (types.Length == 1)
+			{
+				insensitive.Add(types[0]);
+			}
+			else
+			{
+				insensitive.AddRange(types);
+			}
+		}
+
+		public IEnumerable<Type> Get(string key, bool ignoreCase)
+		{
+			if (string.IsNullOrWhiteSpace(key))
+			{
+				return Type.EmptyTypes;
+			}
+
+			List<Type> t;
 
 			if (ignoreCase)
 			{
@@ -720,13 +914,18 @@ namespace Server
 				m_Sensitive.TryGetValue(key, out t);
 			}
 
-			return t;
+			if (t == null)
+			{
+				return Type.EmptyTypes;
+			}
+
+			return t.AsEnumerable();
 		}
 
 		public TypeTable(int capacity)
 		{
-			m_Sensitive = new Dictionary<string, Type>(capacity);
-			m_Insensitive = new Dictionary<string, Type>(capacity, StringComparer.OrdinalIgnoreCase);
+			m_Sensitive = new Dictionary<string, List<Type>>(capacity);
+			m_Insensitive = new Dictionary<string, List<Type>>(capacity, StringComparer.OrdinalIgnoreCase);
 		}
 	}
 }

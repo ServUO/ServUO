@@ -95,7 +95,12 @@ namespace Server.Gumps
             types = ScriptCompiler.GetTypeCache(Core.Assembly).Types;
             Match(match, types, results);
 
-            results.Sort(new TypeNameComparer());
+            results.RemoveAll(t => t == null);
+
+            if (results.Count > 1)
+            {
+                results.Sort((l, r) => Insensitive.Compare(l.Name, r.Name));
+            }
 
             return results;
         }
@@ -189,7 +194,7 @@ namespace Server.Gumps
             {
                 Type t = types[i];
 
-                if ((typeofMobile.IsAssignableFrom(t) || typeofItem.IsAssignableFrom(t)) && t.Name.ToLower().IndexOf(match) >= 0 && !results.Contains(t))
+                if ((typeofMobile.IsAssignableFrom(t) || typeofItem.IsAssignableFrom(t)) && Insensitive.Contains(t.Name, match) && !results.Contains(t))
                 {
                     ConstructorInfo[] ctors = t.GetConstructors();
 
@@ -241,14 +246,6 @@ namespace Server.Gumps
             {
                 if (cancelType == TargetCancelType.Canceled)
                     from.SendGump(new AddGump(from, this.m_SearchString, this.m_Page, this.m_SearchResults, true));
-            }
-        }
-
-        private class TypeNameComparer : IComparer<Type>
-        {
-            public int Compare(Type x, Type y)
-            {
-                return x.Name.CompareTo(y.Name);
             }
         }
     }
