@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using System;
 using System.Collections.Generic;
 using Server.Mobiles;
@@ -35,7 +35,7 @@ namespace Server.Items
                 from.SendLocalizedMessage(1151813, "#1151810"); // You do not have a required component: ~1_val~
             else
             {
-                from.Backpack.ConsumeTotal(new Type[] { typeof(CursedOilstone), typeof(CorrosiveAsh) },
+                from.Backpack.ConsumeTotal(new Type[] { typeof(CursedOilstone), typeof(QuartzGrit) },
                                            new int[] { 1, 1 });
 
                 this.Consume();

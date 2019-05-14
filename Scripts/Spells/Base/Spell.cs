@@ -726,7 +726,7 @@ namespace Server.Spells
 		{
 			m_StartCastTime = Core.TickCount;
 
-			if (Core.AOS && m_Caster.Spell is Spell && ((Spell)m_Caster.Spell).State == SpellState.Sequencing)
+            if (Core.AOS && m_Caster.Spell is Spell && ((Spell)m_Caster.Spell).State == SpellState.Sequencing)
 			{
 				((Spell)m_Caster.Spell).Disturb(DisturbType.NewCast);
 			}
@@ -799,7 +799,13 @@ namespace Server.Spells
 
                     SayMantra();
 
-                    TimeSpan castDelay = GetCastDelay();
+                    /*
+                     * EA seems to use some type of spell variation, of -100 ms + timer resolution.
+                     * Using the below millisecond dropoff with a 50ms timer resolution seems to be exact
+                     * to EA.
+                     */
+
+                    TimeSpan castDelay = GetCastDelay().Subtract(TimeSpan.FromMilliseconds(100));
 
                     if (ShowHandMovement && !(m_Scroll is SpellStone) && (m_Caster.Body.IsHuman || (m_Caster.Player && m_Caster.Body.IsMonster)))
                     {
@@ -1070,12 +1076,10 @@ namespace Server.Spells
 				delay = CastDelayMinimum;
 			}
 
-			#region Mondain's Legacy
-			if (DreadHorn.IsUnderInfluence(m_Caster))
+            if (DreadHorn.IsUnderInfluence(m_Caster))
 			{
 				delay.Add(delay);
 			}
-			#endregion
 
 			//return TimeSpan.FromSeconds( (double)delay / CastDelayPerSecond );
 			return delay;
@@ -1332,7 +1336,7 @@ namespace Server.Spells
 			{
 				m_Spell = spell;
 
-				Priority = TimerPriority.TwentyFiveMS;
+				Priority = TimerPriority.FiftyMS;
 			}
 
 			protected override void OnTick()
