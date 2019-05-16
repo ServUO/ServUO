@@ -964,7 +964,7 @@ namespace Server.Mobiles
         #region Training Helpers
         public static bool CanControl(Mobile m, BaseCreature bc, TrainingProfile trainProfile)
         {
-            return m.Skills[SkillName.AnimalTaming].Value >= bc.CurrentTameSkill + trainProfile.GetRequirementIncrease(!trainProfile.HasIncreasedControlSlot);
+            return m.Skills[SkillName.AnimalTaming].Value >= bc.CurrentTameSkill + trainProfile.GetRequirementIncrease(trainProfile.HasIncreasedControlSlot);
             /*double skill = m.Skills[SkillName.AnimalTaming].Value;
 
             if (trainProfile.HasIncreasedControlSlot)
