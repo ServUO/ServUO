@@ -743,7 +743,7 @@ namespace Server.Mobiles
             }
             else
             {
-                CurrentTameSkill = ((ControlSlots - ControlSlotsMin) * 21) + 1;
+                CurrentTameSkill = ((ControlSlots - ControlSlotsMin) * 21) + 1; // ToDo: Serious Bug! All pets have the same value depend on slot.
             }
         }
         #endregion
