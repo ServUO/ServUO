@@ -28,6 +28,9 @@ namespace Server.Mobiles
         public bool HasIncreasedControlSlot { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
+        public int TrainedThisLevel { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public bool HasRecievedControlSlotWarning { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -160,20 +163,58 @@ namespace Server.Mobiles
 
         public void OnTrain(PlayerMobile pm, int points)
         {
+            int reqInc;
+
             if (!HasIncreasedControlSlot)
             {
+                reqInc = GetRequirementIncrease(true);
+
                 Creature.RemoveFollowers();
                 Creature.ControlSlots++;
                 Creature.AddFollowers();
+                TrainedThisLevel = 0;
 
                 pm.SendLocalizedMessage(1157537); // Your pet's control slot have been updated.
-
                 HasIncreasedControlSlot = true;
-
-                Creature.AdjustTameRequirements();
+            }
+            else
+            {
+                TrainedThisLevel++;
+                reqInc = GetRequirementIncrease(false);
             }
 
+            Creature.CurrentTameSkill = Math.Min(108, Creature.CurrentTameSkill + reqInc);
             TrainingPoints -= points;
+        }
+
+        public int GetRequirementIncrease(bool slotIncreased)
+        {
+            if (slotIncreased)
+            {
+                // First level
+                if (ControlSlotsMin + 1 == ControlSlots)
+                {
+                    return 21;
+                }
+                // subsequent trains of that level
+                else
+                {
+                    return  22;
+                }
+            }
+            else
+            {
+                // First train of that level (after level increase, so actually 2nd train)
+                if (TrainedThisLevel == 1)
+                {
+                    return 3;
+                }
+                // subsequent trains of that level
+                else
+                {
+                    return 2;
+                }
+            }
         }
 
         public void EndTraining()
@@ -308,6 +349,9 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 2:
+                    TrainedThisLevel = reader.ReadInt();
+                    goto case 1;
                 case 1:
                     PowerHourBegin = reader.ReadDateTime();
                     InPowerHour = reader.ReadBool();
@@ -336,7 +380,9 @@ namespace Server.Mobiles
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(1);
+            writer.Write(2);
+
+            writer.Write(TrainedThisLevel);
 
             writer.Write(PowerHourBegin);
             writer.Write(InPowerHour);

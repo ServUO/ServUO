@@ -737,37 +737,14 @@ namespace Server.Mobiles
 
         public void AdjustTameRequirements()
         {
-            CurrentTameSkill = CalculateCurrentTameSkill(ControlSlots);
-        }
-
-        public double CalculateCurrentTameSkill(int currentControlSlots)
-        {
-            double minSkill = Math.Ceiling(MinTameSkill);
-            double current = 0;
-
-            if (currentControlSlots <= ControlSlotsMin)
+            if (ControlSlots <= ControlSlotsMin)
             {
-                current = MinTameSkill;
+                CurrentTameSkill = MinTameSkill;
             }
-            else if (MinTameSkill < 108) // Currently, with increased control slots, taming skill does not seem to pass 108.0
+            else
             {
-                if (MinTameSkill <= 0)
-                {
-                    current = Math.Ceiling(Math.Min(108.0, Math.Max(0, CurrentTameSkill) + (Math.Abs(minSkill) * .7)));
-                }
-                else
-                {
-                    double level = currentControlSlots - ControlSlotsMin;
-                    double levelFactor = (double)(1 + (ControlSlotsMax - ControlSlotsMin)) / minSkill;
-
-                    current = Math.Ceiling(Math.Min(108.0, minSkill + (minSkill * ((levelFactor * 7) * level))));
-                }
+                CurrentTameSkill = ((ControlSlots - ControlSlotsMin) * 21) + 1;
             }
-
-            if (current < MinTameSkill)
-                current = MinTameSkill;
-
-            return current;
         }
         #endregion
 
@@ -4066,12 +4043,19 @@ namespace Server.Mobiles
             {
                 double skill = m_dMinTameSkill;
 
-                m_dMinTameSkill = value;
-
-                if (skill != m_dMinTameSkill)
+                if (skill != value)
                 {
-                    m_CurrentTameSkill = value;
-                    AdjustTameRequirements();
+                    m_dMinTameSkill = value;
+                    var adjusted = CurrentTameSkill - skill;
+
+                    if (adjusted > 0)
+                    {
+                        m_CurrentTameSkill = value + adjusted;
+                    }
+                    else
+                    {
+                        m_CurrentTameSkill = value;
+                    }
                 }
             } 
         }
