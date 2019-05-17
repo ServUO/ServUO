@@ -183,7 +183,7 @@ namespace Server.Mobiles
                 reqInc = GetRequirementIncrease(false);
             }
 
-            Creature.CurrentTameSkill = Math.Min(108, Creature.CurrentTameSkill + reqInc);
+            Creature.CurrentTameSkill = Math.Min(BaseCreature.MaxTameRequirement, Creature.CurrentTameSkill + reqInc);
             TrainingPoints -= points;
         }
 

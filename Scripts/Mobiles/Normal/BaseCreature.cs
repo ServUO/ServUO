@@ -568,6 +568,8 @@ namespace Server.Mobiles
         #endregion
 
         #region Pet Training
+        public static double MaxTameRequirement = 108.0;
+
         private AbilityProfile _Profile;
         private TrainingProfile _TrainingProfile;
 
@@ -744,6 +746,11 @@ namespace Server.Mobiles
             else
             {
                 CurrentTameSkill = ((ControlSlots - ControlSlotsMin) * 21) + 1;
+            }
+
+            if (CurrentTameSkill > MaxTameRequirement)
+            {
+                CurrentTameSkill = MaxTameRequirement;
             }
         }
         #endregion
@@ -3237,6 +3244,10 @@ namespace Server.Mobiles
                 if (Controlled && version == 26)
                 {
                     AdjustTameRequirements();
+                }
+                else if (Controlled && CurrentTameSkill > MaxTameRequirement)
+                {
+                    CurrentTameSkill = MaxTameRequirement;
                 }
             }
             else

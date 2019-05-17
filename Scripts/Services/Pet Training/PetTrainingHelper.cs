@@ -964,15 +964,9 @@ namespace Server.Mobiles
         #region Training Helpers
         public static bool CanControl(Mobile m, BaseCreature bc, TrainingProfile trainProfile)
         {
-            return m.Skills[SkillName.AnimalTaming].Value >= bc.CurrentTameSkill + trainProfile.GetRequirementIncrease(!trainProfile.HasIncreasedControlSlot);
-            /*double skill = m.Skills[SkillName.AnimalTaming].Value;
+            var projected = Math.Min(BaseCreature.MaxTameRequirement, bc.CurrentTameSkill + trainProfile.GetRequirementIncrease(!trainProfile.HasIncreasedControlSlot));
 
-            if (trainProfile.HasIncreasedControlSlot)
-            {
-                return skill >= bc.CalculateCurrentTameSkill(bc.ControlSlots);
-            }
-
-            return skill >= bc.CalculateCurrentTameSkill(bc.ControlSlots + 1);*/
+            return m.Skills[SkillName.AnimalTaming].Value >= projected;
         }
 
         public static int GetTrainingCapTotal(PetStat stat)
