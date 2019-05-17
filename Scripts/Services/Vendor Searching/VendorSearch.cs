@@ -649,8 +649,6 @@ namespace Server.Engines.VendorSearching
             //read number property from the packet data
             number = (uint)(data[index++] << 24 | data[index++] << 16 | data[index++] << 8 | data[index++]);
 
-            Console.WriteLine("{1} Number: {0}", number, item);
-
             //reset the length property
             ushort length = 0;
 
