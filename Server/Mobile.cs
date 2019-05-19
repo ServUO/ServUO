@@ -10132,7 +10132,10 @@ namespace Server
 					}
 
 					ClearFastwalkStack();
-				}
+
+                    EventSink.InvokeTeleportMovement(new TeleportMovementEventArgs(this, oldLocation, newLocation));
+
+                }
 
 				Map map = m_Map;
 

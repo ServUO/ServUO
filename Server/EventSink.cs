@@ -191,6 +191,8 @@ namespace Server
 
     public delegate void ContainerDroppedToEventHandler(ContainerDroppedToEventArgs e);
 
+    public delegate void TeleportMovementEventHandler(TeleportMovementEventArgs e);
+
     public class OnItemObtainedEventArgs : EventArgs
 	{
 		private readonly Mobile m_Mobile;
@@ -1657,6 +1659,20 @@ namespace Server
         }
     }
 
+    public class TeleportMovementEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Point3D OldLocation { get; set; }
+        public Point3D NewLocation { get; set; }
+
+        public TeleportMovementEventArgs(Mobile m, Point3D oldLoc, Point3D newLoc)
+        {
+            Mobile = m;
+            OldLocation = oldLoc;
+            NewLocation = newLoc;
+        }
+    }
+
     public static class EventSink
 	{
 		public static event OnItemObtainedEventHandler OnItemObtained;
@@ -1751,6 +1767,7 @@ namespace Server
         public static event PlayerMurderedEventHandler PlayerMurdered;
         public static event AccountGoldChangeEventHandler AccountGoldChange;
         public static event ContainerDroppedToEventHandler ContainerDroppedTo;
+        public static event TeleportMovementEventHandler TeleportMovement;
 
         public static void InvokeOnItemObtained(OnItemObtainedEventArgs e)
 		{
@@ -2464,6 +2481,14 @@ namespace Server
             }
         }
 
+        public static void InvokeTeleportMovement(TeleportMovementEventArgs e)
+        {
+            if (TeleportMovement != null)
+            {
+                TeleportMovement(e);
+            }
+        }
+
         public static void Reset()
 		{
 			OnItemObtained = null;
@@ -2545,6 +2570,7 @@ namespace Server
             PlayerMurdered = null;
             AccountGoldChange = null;
             ContainerDroppedTo = null;
+            TeleportMovement = null;
         }
 	}
 }

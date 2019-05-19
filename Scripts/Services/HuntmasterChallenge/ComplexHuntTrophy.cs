@@ -118,11 +118,43 @@ namespace Server.Items
 
         public class HuntTrophyComponent : AddonComponent
         {
-            public override int LabelNumber { get { return 1084024 + ItemID; } }
+            public override int LabelNumber
+            {
+                get
+                {
+                    if (Info != null)
+                    {
+                        return Info.TrophyName.Number;
+                    }
+                    else
+                    {
+                        return base.LabelNumber;
+                    }
+                }
+            }
+
+            public HuntingTrophyInfo Info
+            {
+                get
+                {
+                    var addon = Addon as HuntTrophyAddon;
+
+                    if (addon != null)
+                    {
+                        return addon.Info;
+                    }
+
+                    return null;
+                }
+            }
 
             public HuntTrophyComponent(int id)
                 : base(id)
             {
+                if (Info != null && !String.IsNullOrEmpty(Info.TrophyName.String))
+                {
+                    Name = Info.TrophyName.String;
+                }
             }
 
             public override void GetProperties(ObjectPropertyList list)
@@ -243,6 +275,9 @@ namespace Server.Items
         public TextDefinition Species { get { return Info.Species; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
+        public TextDefinition TrophyName { get { return Info.TrophyName; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public MeasuredBy MeasuredBy { get { return Info.MeasuredBy; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -298,11 +333,11 @@ namespace Server.Items
             list.Add(1155718, Species.ToString());
 
             if (MeasuredBy == MeasuredBy.Length)
-                list.Add(1155711, MeasuredBy.ToString()); // Length: ~1_VAL~
+                list.Add(1155711, m_Measurement.ToString()); // Length: ~1_VAL~
             else if (MeasuredBy == MeasuredBy.Wingspan)
-                list.Add(1155710, MeasuredBy.ToString());	// Wingspan: ~1_VAL~
+                list.Add(1155710, m_Measurement.ToString());	// Wingspan: ~1_VAL~
             else
-                list.Add(1072225, MeasuredBy.ToString()); // Weight: ~1_WEIGHT~ stones
+                list.Add(1072225, m_Measurement.ToString()); // Weight: ~1_WEIGHT~ stones
         }
 
         public HuntTrophyAddonDeed(Serial serial)

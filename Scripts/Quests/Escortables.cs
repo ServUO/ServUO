@@ -841,10 +841,6 @@ namespace Server.Engines.Quests
 
             AddItem(new ThighBoots());
 
-            if (Female)
-                AddItem(new FancyDress(lowHue));
-            else
-                AddItem(new FancyShirt(lowHue));
             AddItem(new LongPants(lowHue));
 
             if (!Female)
