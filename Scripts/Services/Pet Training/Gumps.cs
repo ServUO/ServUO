@@ -35,7 +35,7 @@ namespace Server.Mobiles
             AddImage(40, 62, 0x82B);
             AddImage(40, 258, 0x82B);
 
-            if (Creature.Controlled && Creature.ControlMaster == User && PetTrainingHelper.CanControl(User, Creature, trainProfile))
+            if (Creature.Controlled && Creature.ControlMaster == User)
             {
                 AddImage(28, 272, 0x826);
 
@@ -1675,6 +1675,10 @@ namespace Server.Mobiles
                             {
                                 ResendGumps(profile.HasBegunTraining);
                             }));
+                    }
+                    else
+                    {
+                        User.SendLocalizedMessage(1157550); // You lack the taming skill required to train this creature.
                     }
                     break;
                 case 9:

@@ -9,6 +9,8 @@ namespace Server.Mobiles
         public ParoxysmusSwampDragon()
             : base()
         {
+            Name = "Chief Paroxysmus' Swamp Dragon";
+
             BardingResource = CraftResource.Iron;
             BardingExceptional = true;
             BardingHP = BardingMaxHP;

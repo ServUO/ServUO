@@ -184,7 +184,7 @@ namespace Server.Mobiles
                     {
                         if (AccountGold.Enabled && m_Inventory.Owner != null)
                         {
-                            Banker.Deposit(m_Inventory.Owner, m_Inventory.Gold, true);
+                            Banker.Deposit(house.Owner, m_Inventory.Gold, true);
                         }
                         else
                         {

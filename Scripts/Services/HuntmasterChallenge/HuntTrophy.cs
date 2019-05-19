@@ -8,7 +8,7 @@ using Server.Engines.HuntsmasterChallenge;
 
 namespace Server.Items
 {
-	public class HuntTrophy : Item, IAddon
+	public class HuntTrophy : Item, IFlipable
 	{
 		private string m_Owner;
 		private int m_Measurement;
@@ -65,62 +65,38 @@ namespace Server.Items
         {
             get
             {
-                if (Species.Number > 0)
-                    return Species.Number;
-
-                return 1084024 + ItemID;
-            }
-        }
-
-        public virtual Item Deed
-        { 
-            get 
-            {
-                if (Info.RequiresWall)
-                {
-                    return new HuntTrophyDeed(m_Owner, Index, m_Measurement, m_DateKilled, m_Location);
-                }
-                else
-                {
-                    return new HuntTrophyAddonDeed(m_Owner, Index, m_Measurement, m_DateKilled, m_Location);
-                }
+                return Info.TrophyName.Number;
             }
         }
 
         public HuntTrophy(string name, int index, int measurement, string killed, string location)
 		{
             Index = index;
+            ItemID = Info.SouthID;
 
             m_Owner = name;
 			m_Location = location;
 			m_DateKilled = killed;
             m_Measurement = measurement;
 
-			switch(MeasuredBy)
-			{
-				case MeasuredBy.Weight:
-					Weight = measurement;
-					break;
-				case MeasuredBy.Length:
-				case MeasuredBy.Wingspan:
-					Weight = 5.0;
-					break;
-			}
-
-            Movable = false;
+            if (!String.IsNullOrEmpty(Info.TrophyName.String))
+            {
+                Name = Info.TrophyName.String;
+            }
 		}
 
-        public bool CouldFit(IPoint3D p, Map map)
+        public void OnFlip(Mobile m)
         {
-            if (!map.CanFit(p.X, p.Y, p.Z, this.ItemData.Height))
-                return false;
-
-            if (this.ItemID == EastID)
-                return BaseAddon.IsWall(p.X, p.Y - 1, p.Z, map); // North wall
+            if (ItemID == Info.SouthID)
+            {
+                ItemID = Info.EastID;
+            }
             else
-                return BaseAddon.IsWall(p.X - 1, p.Y, p.Z, map); // West wall
+            {
+                ItemID = Info.SouthID;
+            }
         }
-		
+
 		public override void GetProperties(ObjectPropertyList list)
 		{
 			base.GetProperties(list);
@@ -137,35 +113,11 @@ namespace Server.Items
                 list.Add(1155711, m_Measurement.ToString()); // Length: ~1_VAL~
             else if (MeasuredBy == MeasuredBy.Wingspan)
                 list.Add(1155710, m_Measurement.ToString());	// Wingspan: ~1_VAL~
-		}
-
-        void IChopable.OnChop(Mobile user)
-        {
-            OnDoubleClick(user);
-        }
-
-        public override void OnDoubleClick(Mobile from)
-        {
-            BaseHouse house = BaseHouse.FindHouseAt(this);
-
-            if (house != null && (house.IsCoOwner(from) || (house.Addons.ContainsKey(this) && house.Addons[this] == from)))
-            {
-                if (from.InRange(GetWorldLocation(), 1))
-                {
-                    from.AddToBackpack(this.Deed);
-                    Delete();
-                }
-                else
-                {
-                    from.SendLocalizedMessage(500295); // You are too far away to do that.
-                }
-            }
             else
-            {
-                from.SendLocalizedMessage(502092); // You must be in your house to do this.
-            }
+                list.Add(1072225, m_Measurement.ToString()); // Weight: ~1_WEIGHT~ stones
+
         }
-		
+
 		public HuntTrophy(Serial serial) : base(serial)
 		{
 		}
@@ -328,14 +280,14 @@ namespace Server.Items
                     {
                         Item trophy;
 
-                        if (Info.RequiresWall)
+                        if (Info.Complex)
                         {
-                            trophy = new HuntTrophy(m_Owner, Index, m_Measurement, m_DateKilled, m_Location);
-                            trophy.ItemID = itemID;
+                            trophy = new HuntTrophyAddon(m_Owner, Index, m_Measurement, m_DateKilled, m_Location);
                         }
                         else
                         {
-                            trophy = new HuntTrophyAddon(m_Owner, Index, m_Measurement, m_DateKilled, m_Location);
+                            trophy = new HuntTrophy(m_Owner, Index, m_Measurement, m_DateKilled, m_Location);
+                            trophy.ItemID = itemID;
                         }
 
                         trophy.MoveToWorld(from.Location, from.Map);
@@ -422,6 +374,40 @@ namespace Server.Items
                         });
                     break;
             }
+
+            Timer.DelayCall(TimeSpan.FromSeconds(30), Replace);
+        }
+
+        private void Replace()
+        {
+            var trophy = new HuntTrophy(m_Owner, Index, m_Measurement, m_DateKilled, m_Location);
+
+            if (Parent is Container)
+            {
+                ((Container)Parent).DropItem(trophy);
+            }
+            else
+            {
+                BaseHouse house = BaseHouse.FindHouseAt(this);
+                trophy.MoveToWorld(GetWorldLocation(), Map);
+
+                trophy.IsLockedDown = IsLockedDown;
+                trophy.IsSecure = IsSecure;
+                trophy.Movable = Movable;
+
+                if (house != null && house.LockDowns.ContainsKey(this))
+                {
+                    house.LockDowns.Remove(this);
+                    house.LockDowns.Add(trophy, house.Owner);
+                }
+                else if (house != null && house.IsSecure(this))
+                {
+                    house.ReleaseSecure(house.Owner, this);
+                    house.AddSecure(house.Owner, trophy);
+                }
+            }
+
+            Delete();
         }
     }
 }

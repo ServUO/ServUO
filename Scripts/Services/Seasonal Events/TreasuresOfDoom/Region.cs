@@ -15,6 +15,8 @@ namespace Server.Regions
         public MonestaryRegion()
             : base("Doom Monestary", Map.Malas, Region.DefaultPriority, new Rectangle2D(64, 204, 99, 37))
         {
+            GoLocation = new Point3D(79, 223, -1);
+
             Register();
         }
 

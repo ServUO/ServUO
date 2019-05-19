@@ -366,8 +366,9 @@ namespace Server.Engines.CityLoyalty
 		public virtual void AwardLove(Mobile from, double love, bool message = true)
 		{
             CityLoyaltyEntry entry = GetPlayerEntry<CityLoyaltyEntry>(from, true);
-			
-			if(entry.Hate > 10)
+
+            // TODO: Re-Enable this for The Awakening Event
+			/*if(entry.Hate > 10)
 			{
 				double convert = entry.Hate / 75;
                 entry.Neutrality += (int)convert;
@@ -384,7 +385,7 @@ namespace Server.Engines.CityLoyalty
                     e.Love -= (int)convert;
                     e.Neutrality += (int)convert;
 				}
-			}
+			}*/
 
             if (message && entry.ShowGainMessage)
             {
@@ -825,7 +826,8 @@ namespace Server.Engines.CityLoyalty
 
                 if (DateTime.UtcNow > _NextAtrophy)
                 {
-                    sys.PlayerTable.ForEach(t =>
+                    // TODO: Re-Enable this for The Awakening Event
+                    /*sys.PlayerTable.ForEach(t =>
                     {
                         CityLoyaltyEntry entry = t as CityLoyaltyEntry;
 
@@ -839,7 +841,7 @@ namespace Server.Engines.CityLoyalty
                             if (owner.LastOnline + LoveAtrophyDuration < DateTime.UtcNow)
                                 entry.Love -= entry.Love / 75;
                         }
-                    });
+                    });*/
 
                     _NextAtrophy = DateTime.UtcNow + TimeSpan.FromDays(1);
                 }

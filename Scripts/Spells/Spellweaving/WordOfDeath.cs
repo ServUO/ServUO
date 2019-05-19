@@ -57,10 +57,11 @@ namespace Server.Spells.Spellweaving
                 Effects.SendMovingParticles(new Entity(Serial.Zero, loc, m.Map), new Entity(Serial.Zero, m.Location, m.Map), 0xF5F, 1, 0, true, false, 0x21, 0x3F, 0x251D, 0, 0, EffectLayer.Head, 0);
 
                 double percentage = 0.05 * this.FocusLevel;
+                bool pvmThreshold = !m.Player && (((double)m.Hits / (double)m.HitsMax) < percentage);
 
                 int damage;
 
-                if (!m.Player && (((double)m.Hits / (double)m.HitsMax) < percentage))
+                if (pvmThreshold)
                 {
                     damage = 300;
                 }
@@ -76,10 +77,7 @@ namespace Server.Spells.Spellweaving
                 damage *= damageBonus + 100;
                 damage /= 100;
 
-                int[] types = new int[4];
-                types[Utility.Random(types.Length)] = 100;
-
-                SpellHelper.Damage(this, m, damage, 0, types[0], types[1], types[2], types[3]);	//Chaos damage.  Random elemental damage
+                SpellHelper.Damage(this, m, damage, 0, 0, 0, 0, 0, !pvmThreshold ? 100 : 0, pvmThreshold ? 100 : 0);
             }
 
             this.FinishSequence();
