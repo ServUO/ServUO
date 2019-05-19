@@ -293,6 +293,12 @@ namespace Server.Engines.Craft
                     }
                 case 1: // Make Button
                     {
+                        if (m_CraftItem.TryCraft != null)
+                        {
+                            m_CraftItem.TryCraft(m_From, m_CraftItem, m_Tool);
+                            return;
+                        }
+                        
                         int num = m_CraftSystem.CanCraft(m_From, m_Tool, m_CraftItem.ItemType);
 
                         if (num > 0)
