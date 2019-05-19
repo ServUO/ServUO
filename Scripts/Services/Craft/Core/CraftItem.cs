@@ -1538,7 +1538,7 @@ namespace Server.Engines.Craft
 		{
 			int badCraft = craftSystem.CanCraft(from, tool, m_Type);
 
-			if (badCraft > 0)
+            if (badCraft > 0)
 			{
 				if (tool != null && !tool.Deleted && tool.UsesRemaining > 0)
 				{
@@ -1852,8 +1852,6 @@ namespace Server.Engines.Craft
 						CommandLogging.WriteLine(
 							from, "Crafting {0} with craft system {1}", CommandLogging.Format(item), craftSystem.GetType().Name);
 					}
-
-                    AutoCraftTimer.OnSuccessfulCraft(from);
 				}
 
                 tool.UsesRemaining--;
