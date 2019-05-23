@@ -1237,14 +1237,14 @@ namespace Server.Mobiles
                     else
                         BulkOrderSystem.ComputePoints((LargeBOD)dropped, out points, out banked);
 
-                    context.AddPending(BODType, points);
-
                     switch (context.PointsMode)
                     {
                         case PointsMode.Enabled:
+                            context.AddPending(BODType, points);
                             from.SendGump(new ConfirmBankPointsGump((PlayerMobile)from, this, this.BODType, points, banked));
                             break;
                         case PointsMode.Disabled:
+                            context.AddPending(BODType, points);
                             from.SendGump(new RewardsGump(this, (PlayerMobile)from, this.BODType, points));
                             break;
                         case PointsMode.Automatic:
