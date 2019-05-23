@@ -25,6 +25,7 @@
 /libdrng.so
 NoCommit
 CUSTOM
+TheBox
 *.pdb
 *.exe
 *.exe.mdb

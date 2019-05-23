@@ -1547,9 +1547,19 @@ namespace Server
 			{
 				return true;
 			}
-			else if (target is Item && ((Item)target).RootParent == this)
+			else if (target is Item)
 			{
-				return true;
+                var item = (Item)target;
+
+                if (item.RootParent == this)
+                {
+                    return true;
+                }
+
+                if (item.Parent is Container)
+                {
+                    return InLOS(item.Parent);
+                }
 			}
 
 			return m_Map.LineOfSight(this, target);
@@ -4542,11 +4552,11 @@ namespace Server
 					else if (from.AccessLevel < AccessLevel.GameMaster && !from.InRange(item.GetWorldLocation(), 2))
 					{
 						reject = LRReason.OutOfRange;
-					}
+                    }
 					else if (!from.CanSee(item) || !from.InLOS(item))
 					{
 						reject = LRReason.OutOfSight;
-					}
+                    }
 					else if (!item.VerifyMove(from))
 					{
 						reject = LRReason.CannotLift;

@@ -77,6 +77,9 @@ namespace Server.Engines.Despise
                 if (m_Progress >= m_Power)
                 {
                     Power++;
+
+                    IncreaseResists();
+
                     m_Progress = 0;
                 }
 
@@ -131,6 +134,11 @@ namespace Server.Engines.Despise
         public override bool IsBondable { get { return false; } }
         public override bool GivesFameAndKarmaAward { get { return false; } }
         public override bool CanAutoStable { get { return false; } }
+
+        public override Poison GetHitPoison()
+        {
+            return null;
+        }
 
         public override TimeSpan ReacquireDelay
         { 
@@ -359,6 +367,15 @@ namespace Server.Engines.Despise
 
             FixedEffect(0x373A, 10, 30);
             PlaySound(0x209);
+        }
+
+        private void IncreaseResists()
+        {
+            SetResistance(ResistanceType.Physical, Math.Min(80, PhysicalResistanceSeed + Utility.RandomMinMax(5, 15)));
+            SetResistance(ResistanceType.Fire, Math.Min(80, FireResistSeed + Utility.RandomMinMax(5, 15)));
+            SetResistance(ResistanceType.Cold, Math.Min(80, ColdResistSeed + Utility.RandomMinMax(5, 15)));
+            SetResistance(ResistanceType.Poison, Math.Min(80, PoisonResistSeed + Utility.RandomMinMax(5, 15)));
+            SetResistance(ResistanceType.Energy, Math.Min(80, EnergyResistSeed + Utility.RandomMinMax(5, 15)));
         }
 
         public static int GetPowerLabel(int power)
