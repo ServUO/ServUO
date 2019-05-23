@@ -1431,7 +1431,7 @@ namespace Server.Items
                 HardCap = hardcap;
             }
 
-            public int Min(int resIndex, int preIndex, Item item, bool random = false)
+            public int Min(int resIndex, int preIndex, Item item)
             {
                 if (HardCap == 1)
                     return 1;
@@ -1440,9 +1440,11 @@ namespace Server.Items
 
                 if (resIndex != -1 && preIndex != -1)
                 {
-                    double mod = random ? .66 : .8;
+                    //double mod = .8;
 
-                    return (int)((double)max * mod);
+                    //return (int)((double)max * mod);
+                    // TODO: Check
+                    return item is BaseRanged && SecondaryInfo != null ? ? SecondaryInfo[resIndex][0] : Info[resIndex][0];
                 }
 
                 return (int)((double)max * .5);
