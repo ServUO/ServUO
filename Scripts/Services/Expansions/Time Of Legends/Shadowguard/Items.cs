@@ -252,8 +252,11 @@ namespace Server.Engines.Shadowguard
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ShadowguardCypressFoilage Foilage { get; set; }
-		
-		public ShadowguardCypress(ShadowguardEncounter encounter, VirtueType type) : base(Utility.RandomList(3320, 3323, 3326, 3329))
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ShadowguardApple Apple { get; set; }
+
+        public ShadowguardCypress(ShadowguardEncounter encounter, VirtueType type) : base(Utility.RandomList(3320, 3323, 3326, 3329))
 		{
 			VirtueType = type;
 			Encounter = encounter;
@@ -281,12 +284,11 @@ namespace Server.Engines.Shadowguard
 		{
 			if(from.Backpack != null && from.InRange(this.Location, 3))
 			{
-				foreach(Item item in from.Backpack.Items.Where(i => i is ShadowguardApple && ((ShadowguardApple)i).Tree == this))
-				{
-					return;
-				}
-				
-				from.Backpack.DropItem(new ShadowguardApple(Encounter, this));
+                if (Apple == null || Apple.Deleted)
+                {
+                    Apple = new ShadowguardApple(Encounter, this);
+                    from.Backpack.DropItem(Apple);
+                }
 			}
 		}
 		
@@ -323,6 +325,9 @@ namespace Server.Engines.Shadowguard
 
 			if(Encounter != null)
 				Encounter.CheckEncounter();
+
+            if (Apple != null && !Apple.Deleted)
+                Apple.Delete();
 		}
 
         public class ShadowguardCypressFoilage : Item
@@ -368,8 +373,9 @@ namespace Server.Engines.Shadowguard
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write(0);
+			writer.Write(1);
 
+            writer.Write(Apple);
             writer.Write(Foilage);
 		}
 		
@@ -378,10 +384,20 @@ namespace Server.Engines.Shadowguard
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
 
-            Foilage = reader.ReadItem() as ShadowguardCypressFoilage;
+            switch (version)
+            {
+                case 1:
+                    Apple = reader.ReadItem() as ShadowguardApple;
+                    goto case 0;
+                case 0:
+                    Foilage = reader.ReadItem() as ShadowguardCypressFoilage;
+                    break;
+            }
 
             if (Foilage != null)
+            {
                 Foilage.Tree = this;
+            }
 		}
 	}
 	

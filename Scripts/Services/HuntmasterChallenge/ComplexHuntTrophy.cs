@@ -177,6 +177,8 @@ namespace Server.Items
                         list.Add(1155711, addon.Measurement.ToString()); // Length: ~1_VAL~
                     else if (addon.MeasuredBy == MeasuredBy.Wingspan)
                         list.Add(1155710, addon.Measurement.ToString());	// Wingspan: ~1_VAL~
+                    else
+                        list.Add(1072225, addon.Measurement.ToString()); // Weight: ~1_WEIGHT~ stones
                 }
             }
 

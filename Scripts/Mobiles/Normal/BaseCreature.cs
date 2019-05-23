@@ -4249,7 +4249,7 @@ namespace Server.Mobiles
             }
         }
 
-        public Poison GetHitPoison()
+        public virtual Poison GetHitPoison()
         {
             if (!PetTrainingHelper.Enabled || !Controlled)
                 return HitPoison;

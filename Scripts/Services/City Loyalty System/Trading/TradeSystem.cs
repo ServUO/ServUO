@@ -714,6 +714,11 @@ namespace Server.Engines.CityLoyalty
 			public CityTradeEntry(PlayerMobile pm) : base(pm)
 			{
 			}
+
+            public override string ToString()
+            {
+                return "...";
+            }
 			
 			public override void Serialize(GenericWriter writer)
 			{

@@ -90,7 +90,12 @@ namespace Server.Engines.CityLoyalty
             City = city;
             ShowGainMessage = true;
 		}
-		
+
+        public override string ToString()
+        {
+            return String.Format("{0} {1}", City.ToString(), IsCitizen ? "[Citizen]" : String.Empty);
+        }
+
 		public void DeclareCitizenship()
 		{
 			IsCitizen = true;

@@ -367,15 +367,15 @@ namespace Server.Engines.CityLoyalty
 		{
             CityLoyaltyEntry entry = GetPlayerEntry<CityLoyaltyEntry>(from, true);
 
-            // TODO: Re-Enable this for The Awakening Event
-			/*if(entry.Hate > 10)
+			if(entry.Hate > 10)
 			{
 				double convert = entry.Hate / 75;
                 entry.Neutrality += (int)convert;
                 entry.Hate -= (int)convert;
 			}
-			
-			foreach(CityLoyaltySystem sys in Cities.Where(s => s.City != this.City))
+
+            // TODO: Re-Enable this for The Awakening Event
+            /*foreach (CityLoyaltySystem sys in Cities.Where(s => s.City != this.City))
 			{
                 CityLoyaltyEntry e = sys.GetPlayerEntry<CityLoyaltyEntry>(from, true);
 

@@ -394,8 +394,11 @@ namespace Server.Engines.Points
 
     public class PointsEntry
 	{
-		public PlayerMobile Player { get; set; }
-		public double Points { get; set; }
+        [CommandProperty(AccessLevel.GameMaster)]
+		public PlayerMobile Player { get; private set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double Points { get; set; }
 
         public PointsEntry(PlayerMobile pm)
         {

@@ -26,6 +26,7 @@ namespace Server.Engines.Despise
             Karma = GetKarmaEvil;
 
             Power = powerLevel;
+            SetMagicalAbility(MagicalAbility.Discordance);
         }
 
         protected override BaseAI ForcedAI { get { return new DespiseMeleeAI(this); } }
