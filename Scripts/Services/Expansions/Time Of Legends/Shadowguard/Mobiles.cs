@@ -67,7 +67,7 @@ namespace Server.Engines.Shadowguard
         {
             int dam = base.Damage(amount, from, informMount, checkDisrupt);
 
-            if (dam > 0)
+            if (from != null && dam > 0)
             {
                 AOS.Damage(from, this, Math.Max(1, (int)((double)dam * .37)), 0, 0, 0, 0, 0, 0, 100);
                 from.PlaySound(0x1F1);
