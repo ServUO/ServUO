@@ -78,7 +78,7 @@ namespace Server.Mobiles
         {
             int dam = base.Damage(amount, from, informMount, checkDisrupt);
 
-            if (dam > 0)
+            if (from != null && dam > 0)
             {
                 AOS.Damage(from, this, dam, 0, 0, 0, 0, 0, 0, 100);
                 from.PlaySound(0x1F1);
