@@ -757,6 +757,7 @@ namespace Server.Multis
             PacketHandlers.RegisterEncoded(0x0C, true, new OnEncodedPacketReceive(Designer_Close));
             PacketHandlers.RegisterEncoded(0x0D, true, new OnEncodedPacketReceive(Designer_Stairs));
             PacketHandlers.RegisterEncoded(0x0E, true, new OnEncodedPacketReceive(Designer_Sync));
+            PacketHandlers.RegisterEncoded(0x0F, true, new OnEncodedPacketReceive(Designer_Action)); // WTF does this do?
             PacketHandlers.RegisterEncoded(0x10, true, new OnEncodedPacketReceive(Designer_Clear));
             PacketHandlers.RegisterEncoded(0x12, true, new OnEncodedPacketReceive(Designer_Level));
 
@@ -792,6 +793,11 @@ namespace Server.Multis
                 // Resend full house state
                 design.SendDetailedInfoTo(state);
             }
+        }
+
+        public static void Designer_Action(NetState state, IEntity e, EncodedReader pvSrc)
+        {
+            // TODO: What does this do?
         }
 
         public static void Designer_Clear(NetState state, IEntity e, EncodedReader pvSrc)

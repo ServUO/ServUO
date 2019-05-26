@@ -1237,14 +1237,14 @@ namespace Server.Mobiles
                     else
                         BulkOrderSystem.ComputePoints((LargeBOD)dropped, out points, out banked);
 
-                    context.AddPending(BODType, points);
-
                     switch (context.PointsMode)
                     {
                         case PointsMode.Enabled:
+                            context.AddPending(BODType, points);
                             from.SendGump(new ConfirmBankPointsGump((PlayerMobile)from, this, this.BODType, points, banked));
                             break;
                         case PointsMode.Disabled:
+                            context.AddPending(BODType, points);
                             from.SendGump(new RewardsGump(this, (PlayerMobile)from, this.BODType, points));
                             break;
                         case PointsMode.Automatic:
@@ -2519,7 +2519,7 @@ namespace Server.Mobiles
 
         protected virtual bool CanConvertArmor(Mobile from, BaseArmor armor)
         {
-            if (armor == null || armor is BaseShield || armor.ArtifactRarity != 0 || armor.IsArtifact)
+            if (armor == null || armor is BaseShield/*|| armor.ArtifactRarity != 0 || armor.IsArtifact*/)
             {
                 from.SendLocalizedMessage(1113044); // You can't convert that.
                 return false;

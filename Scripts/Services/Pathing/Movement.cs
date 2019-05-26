@@ -178,8 +178,10 @@ namespace Server.Movement
             {
                 StaticTile tile = tiles[i];
                 ItemData itemData = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
-				#region SA
-                if (m != null && m.Flying && (itemData.Name == "hover over"))
+                TileFlag flags = itemData.Flags;
+
+                #region SA
+                if (m != null && m.Flying && (itemData.Name == "hover over" || (flags & TileFlag.HoverOver) != 0))
                 {
                     newZ = tile.Z;
                     return true;
@@ -205,8 +207,6 @@ namespace Server.Movement
                     }
                 }
 				#endregion
-
-                TileFlag flags = itemData.Flags;
 
                 if ((flags & ImpassableSurface) == TileFlag.Surface || (canSwim && (flags & TileFlag.Wet) != 0)) // Surface && !Impassable
                 {
@@ -263,7 +263,7 @@ namespace Server.Movement
                 TileFlag flags = itemData.Flags;
 
 				#region SA
-                if (m != null && m.Flying && (itemData.Name == "hover over"))
+                if (m != null && m.Flying && (itemData.Name == "hover over" || (flags & TileFlag.HoverOver) != 0))
                 {
                     newZ = item.Z;
                     return true;

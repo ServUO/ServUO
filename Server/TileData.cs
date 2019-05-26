@@ -154,7 +154,7 @@ namespace Server
 		Wearable = 0x00400000,
 		LightSource = 0x00800000,
 		Animation = 0x01000000,
-		NoDiagonal = 0x02000000,
+        HoverOver = 0x02000000,
 		Unknown3 = 0x04000000,
 		Armor = 0x08000000,
 		Roof = 0x10000000,

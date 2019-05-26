@@ -99,7 +99,7 @@ namespace Server.Items
         {
             get
             {
-                return ArmorMaterialType.Leather;
+                return ArmorMaterialType.Bone;
             }
         }
         public override CraftResource DefaultResource
