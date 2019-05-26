@@ -2143,6 +2143,7 @@ namespace Server.SkillHandlers
             return 0;
         }
 
+        // needs obsolete attribute
         public static int GetMod(object attr)
         {
             int mod = -1;

@@ -834,7 +834,18 @@ namespace Server.Items
         private static int CalculateValue(object attribute, int min, int max, int perclow, int perchigh, ref int budget, int luckchance, bool playerMade)
 		{
             int scale = ScaleAttribute(attribute);
+
+            if (scale > 0)
+            {
+                min = (min / scale) * scale;
+                max = (max / scale) * scale;
+
+                if (playerMade)
+                    Console.WriteLine("{0}: {1} - {2}", attribute.ToString(), min, max);
+            }
+
             int value = Scale(min / scale, max / scale, perclow, perchigh, luckchance, playerMade) * scale;
+
             int totalweight = GetTotalWeight(attribute, value);
 
             if (value > max) value = max;
@@ -854,8 +865,8 @@ namespace Server.Items
 
                 totalweight = GetTotalWeight(attribute, value);
 			}
-			
-			return value;
+
+            return value;
 		}
 		
 		private static int GetWeight(object attr)
@@ -1440,11 +1451,7 @@ namespace Server.Items
 
                 if (resIndex != -1 && preIndex != -1)
                 {
-                    //double mod = .8;
-
-                    //return (int)((double)max * mod);
-                    // TODO: Check
-                    return item is BaseRanged && SecondaryInfo != null ? ? SecondaryInfo[resIndex][0] : Info[resIndex][0];
+                    return item is BaseRanged && SecondaryInfo != null ? SecondaryInfo[resIndex][0] : Info[resIndex][0];
                 }
 
                 return (int)((double)max * .5);
@@ -1484,14 +1491,14 @@ namespace Server.Items
         {
             object attr;
 
-            switch (Utility.Random(5))
+            switch (Utility.Random(4))
             {
                 default:
                 case 0: attr = AosWeaponAttribute.HitMagicArrow; break;
                 case 1: attr = AosWeaponAttribute.HitFireball; break;
                 case 2: attr = AosWeaponAttribute.HitHarm; break;
                 case 3: attr = AosWeaponAttribute.HitLightning; break;
-                case 4: attr = AosWeaponAttribute.HitCurse; break;
+                //case 4: attr = AosWeaponAttribute.HitCurse; break;
             }
 
             int value = CalculateValue(attr, min, max, perclow, perchigh, ref budget, luckchance, playerMade);
@@ -1549,7 +1556,7 @@ namespace Server.Items
         private static bool HasHitSpell(BaseWeapon wep)
         {
             return wep.WeaponAttributes.HitFireball > 0 || wep.WeaponAttributes.HitLightning > 0 || wep.WeaponAttributes.HitMagicArrow > 0
-                || wep.WeaponAttributes.HitCurse > 0 || wep.WeaponAttributes.HitHarm > 0;
+                /*|| wep.WeaponAttributes.HitCurse > 0*/ || wep.WeaponAttributes.HitHarm > 0;
         }
 
         private static bool HasHitArea(BaseWeapon wep)
@@ -2855,7 +2862,9 @@ namespace Server.Items
                 AosAttribute attr = (AosAttribute)o;
 
                 if (attr == AosAttribute.Luck)
+                {
                     return 10;
+                }
 
                 if (attr == AosAttribute.WeaponSpeed || attr == AosAttribute.EnhancePotions)
                     return 5;
