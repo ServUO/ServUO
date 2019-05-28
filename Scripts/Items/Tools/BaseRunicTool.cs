@@ -386,7 +386,7 @@ namespace Server.Items
                         ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitDispel, 2, 50, 2);
                         break;
                     case 11:
-                        ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechHits, 2, Server.SkillHandlers.Imbuing.GetPropRange(weapon, AosWeaponAttribute.HitLeechHits)[1], 2);
+                        ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechHits, 2, ItemPropertyInfo.GetMaxIntensity(weapon, AosWeaponAttribute.HitLeechHits), 2);
                         break;
                     case 12:
                         ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLowerAttack, 2, 50, 2);
@@ -395,7 +395,7 @@ namespace Server.Items
                         ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLowerDefend, 2, 50, 2);
                         break;
                     case 14:
-                        ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechMana, 2, Server.SkillHandlers.Imbuing.GetPropRange(weapon, AosWeaponAttribute.HitLeechMana)[1], 2);
+                        ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechMana, 2, ItemPropertyInfo.GetMaxIntensity(weapon, AosWeaponAttribute.HitLeechMana), 2);
                         break;
                     case 15:
                         ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechStam, 2, 50, 2);
