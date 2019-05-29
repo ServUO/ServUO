@@ -236,6 +236,10 @@ namespace Server.Items
                                 isDecorableComponent = true;
                         }
                     }
+                    else if (item is Banner && m_Decorator.Command != DecorateCommand.Turn)
+                    {
+                        isDecorableComponent = true;
+                    }
 
                     if (house == null || !house.IsCoOwner(from))
                     {

@@ -62,12 +62,13 @@ namespace Server.Engines.Shadowguard
         }
 
         public override bool AlwaysMurderer { get { return true; } }
+        public bool BlockReflect { get; set; }
 
         public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
         {
             int dam = base.Damage(amount, from, informMount, checkDisrupt);
 
-            if (from != null && dam > 0)
+            if (!BlockReflect && from != null && dam > 0)
             {
                 AOS.Damage(from, this, Math.Max(1, (int)((double)dam * .37)), 0, 0, 0, 0, 0, 0, 100);
                 from.PlaySound(0x1F1);
