@@ -1062,7 +1062,7 @@ namespace Server.Engines.Craft
 				m_ResHue = 0;
 				m_ResAmount = 0;
 				m_System = craftSystem;
-                m_CaddelliteCraft = true;
+                CaddelliteCraft = true;
 
 				if (IsQuantityType(types))
 				{
@@ -1190,10 +1190,11 @@ namespace Server.Engines.Craft
         private int m_ClothHue;
 		private int m_ResAmount;
 		private CraftSystem m_System;
-        private bool m_CaddelliteCraft;
 
-		#region Plant Pigments
-		private PlantHue m_PlantHue = PlantHue.None;
+        public bool CaddelliteCraft { get; private set; }
+
+        #region Plant Pigments
+        private PlantHue m_PlantHue = PlantHue.None;
 		private PlantPigmentHue m_PlantPigmentHue = PlantPigmentHue.None;
 		#endregion
 
@@ -1226,9 +1227,9 @@ namespace Server.Engines.Craft
 				m_ResAmount = amount;
 			}
 
-            if (m_CaddelliteCraft && (!item.HasSocket<Caddellite>() || !Server.Engines.Points.PointsSystem.Khaldun.InSeason))
+            if (CaddelliteCraft && (!item.HasSocket<Caddellite>() || !Server.Engines.Points.PointsSystem.Khaldun.InSeason))
             {
-                m_CaddelliteCraft = false;
+                CaddelliteCraft = false;
             }
 		}
 
@@ -1823,7 +1824,7 @@ namespace Server.Engines.Craft
                     m_PlantPigmentHue = PlantPigmentHue.None;
 					#endregion
 
-                    if (m_CaddelliteCraft)
+                    if (CaddelliteCraft)
                     {
                         Caddellite.TryInfuse(from, item, craftSystem);
                     }
