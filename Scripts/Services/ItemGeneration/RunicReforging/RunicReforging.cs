@@ -135,20 +135,26 @@ namespace Server.Items
             return goodtogo;
         }
 
-        public static void ApplyReforgedProperties(Item item, ReforgedPrefix prefix, ReforgedSuffix suffix, bool playermade, int budget, int perclow, int perchigh, int maxmods)
+        public static void ApplyReforgedProperties(Item item, ReforgedPrefix prefix, ReforgedSuffix suffix, int budget, int perclow, int perchigh, int maxmods)
         {
-            ApplyReforgedProperties(item, prefix, suffix, playermade, budget, perclow, perchigh, maxmods, 0);
+            ApplyReforgedProperties(item, prefix, suffix, budget, perclow, perchigh, maxmods, 0);
         }
 
-        public static void ApplyReforgedProperties(Item item, ReforgedPrefix prefix, ReforgedSuffix suffix, bool playermade, int budget, int perclow, int perchigh, int maxmods, int luckchance, BaseRunicTool tool = null, ReforgingOption option = ReforgingOption.None)
+        public static void ApplyReforgedProperties(Item item, ReforgedPrefix prefix, ReforgedSuffix suffix, int budget, int perclow, int perchigh, int maxmods, int luckchance, BaseRunicTool tool = null, ReforgingOption option = ReforgingOption.None)
         {
+            bool reforged = false;
+
             if (prefix == ReforgedPrefix.None && (suffix == ReforgedSuffix.None || suffix > ReforgedSuffix.Aegis))
             {
                 for (int i = 0; i < maxmods; i++)
+                {
                     ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, tool != null);
+                }
 
                 if (suffix != ReforgedSuffix.None)
+                {
                     ApplySuffixName(item, suffix);
+                }
             }
             else
             {
@@ -158,9 +164,12 @@ namespace Server.Items
                 int index = GetCollectionIndex(item);
                 int resIndex = -1;
                 int preIndex = -1;
+                // both -1 indicates is not reforged
 
                 if (tool != null)
                 {
+                    reforged = true;
+
                     resIndex = GetResourceIndex(tool.Resource);
                     preIndex = GetPrerequisiteIndex(option);
                 }
@@ -200,8 +209,8 @@ namespace Server.Items
                 }
 
                 //Removes things like blood drinking/balanced/splintering
-                CheckAttributes(item, prefixCol, playermade);
-                CheckAttributes(item, suffixCol, playermade);
+                CheckAttributes(item, prefixCol, reforged);
+                CheckAttributes(item, suffixCol, reforged);
 
                 int i = 0;
                 int mods = 0;
@@ -217,7 +226,8 @@ namespace Server.Items
                         if (prefixCol.Count > 0 && specialAdd > 0) 
                         {
                             int random = Utility.Random(prefixCol.Count);
-                            if (ApplyPrefixSuffixAttribute(item, prefixCol[random].Attribute, prefixCol[random].Min(resIndex, preIndex, item), prefixCol[random].Max(resIndex, preIndex, item), perclow, perchigh, ref budget, luckchance, playermade))
+
+                            if (ApplyPrefixSuffixAttribute(item, prefixCol[random].Attribute, prefixCol[random].Min(resIndex, preIndex, item), prefixCol[random].Max(resIndex, preIndex, item), perclow, perchigh, ref budget, luckchance, reforged))
                             {
                                 specialAdd--;
                                 mods++;
@@ -225,8 +235,8 @@ namespace Server.Items
 
                             prefixCol.RemoveAt(random);
                         }
-                        else if (((playermade || Utility.RandomBool()) && ApplyNewAttributes(item, prefixID, suffixID, index, perclow, perchigh, resIndex, preIndex, luckchance, playermade, ref budget)) ||
-                            ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, playermade))
+                        else if (((reforged || Utility.RandomBool()) && ApplyNewAttributes(item, prefixID, suffixID, index, perclow, perchigh, resIndex, preIndex, luckchance, reforged, ref budget)) ||
+                            ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, reforged))
                         {
                             mods++;
                         }
@@ -235,7 +245,9 @@ namespace Server.Items
                     }
 
                     if (prefix != ReforgedPrefix.None)
+                    {
                         ApplyPrefixName(item, prefix);
+                    }
                 }
                 else if (prefix == ReforgedPrefix.None && suffix != ReforgedSuffix.None && suffixCol != null)
                 {
@@ -248,7 +260,7 @@ namespace Server.Items
                         if (suffixCol.Count > 0 && specialAdd > 0)
                         {
                             int random = Utility.Random(suffixCol.Count);
-                            if (ApplyPrefixSuffixAttribute(item, suffixCol[random].Attribute, suffixCol[random].Min(resIndex, preIndex, item), suffixCol[random].Max(resIndex, preIndex, item), perclow, perchigh, ref budget, luckchance, playermade))
+                            if (ApplyPrefixSuffixAttribute(item, suffixCol[random].Attribute, suffixCol[random].Min(resIndex, preIndex, item), suffixCol[random].Max(resIndex, preIndex, item), perclow, perchigh, ref budget, luckchance, reforged))
                             {
                                 specialAdd--;
                                 mods++;
@@ -256,8 +268,8 @@ namespace Server.Items
 
                             suffixCol.RemoveAt(random);
                         }
-                        else if (((playermade || Utility.RandomBool()) && ApplyNewAttributes(item, prefixID, suffixID, index, perclow, perchigh, resIndex, preIndex, luckchance, playermade, ref budget)) ||
-                            ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, playermade))
+                        else if (((reforged || Utility.RandomBool()) && ApplyNewAttributes(item, prefixID, suffixID, index, perclow, perchigh, resIndex, preIndex, luckchance, reforged, ref budget)) ||
+                            ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, reforged))
                         {
                             mods++;
                         }
@@ -280,7 +292,7 @@ namespace Server.Items
                         if (prefixCol.Count > 0 && specialAddPrefix > 0)
                         {
                             int random = Utility.Random(prefixCol.Count);
-                            if (ApplyPrefixSuffixAttribute(item, prefixCol[random].Attribute, prefixCol[random].Min(resIndex, preIndex, item), prefixCol[random].Max(resIndex, preIndex, item), perclow, perchigh, ref budget, luckchance, playermade))
+                            if (ApplyPrefixSuffixAttribute(item, prefixCol[random].Attribute, prefixCol[random].Min(resIndex, preIndex, item), prefixCol[random].Max(resIndex, preIndex, item), perclow, perchigh, ref budget, luckchance, reforged))
                             {
                                 specialAddPrefix--;
                                 mods++;
@@ -291,15 +303,15 @@ namespace Server.Items
                         else if (suffixCol.Count > 0 && specialAddSuffix > 0)
                         {
                             int random = Utility.Random(suffixCol.Count);
-                            if (ApplyPrefixSuffixAttribute(item, suffixCol[random].Attribute, suffixCol[random].Min(resIndex, preIndex, item), suffixCol[random].Max(resIndex, preIndex, item), perclow, perchigh, ref budget, luckchance, playermade))
+                            if (ApplyPrefixSuffixAttribute(item, suffixCol[random].Attribute, suffixCol[random].Min(resIndex, preIndex, item), suffixCol[random].Max(resIndex, preIndex, item), perclow, perchigh, ref budget, luckchance, reforged))
                             {
                                 specialAddSuffix--;
                                 mods++;
                             }
                             suffixCol.RemoveAt(random);
                         }
-                        else if (((playermade || Utility.RandomBool()) && ApplyNewAttributes(item, prefixID, suffixID, index, perclow, perchigh, resIndex, preIndex, luckchance, playermade, ref budget)) ||
-                            ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, playermade))
+                        else if (((reforged || Utility.RandomBool()) && ApplyNewAttributes(item, prefixID, suffixID, index, perclow, perchigh, resIndex, preIndex, luckchance, reforged, ref budget)) ||
+                            ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, reforged))
                         {
                             mods++;
                         }
@@ -424,7 +436,7 @@ namespace Server.Items
             return true;
         }
 
-        private static void CheckAttributes(Item item, List<NamedInfoCol> list, bool playermade)
+        private static void CheckAttributes(Item item, List<NamedInfoCol> list, bool reforged)
         {
             if (list == null || list.Count == 0)
                 return;
@@ -440,7 +452,7 @@ namespace Server.Items
                     }
                     else if (col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.SplinteringWeapon)
                     {
-                        if (playermade || item is BaseRanged)
+                        if (reforged || item is BaseRanged)
                             list.Remove(col);
                     }
                     else if (col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.ReactiveParalyze)
@@ -524,14 +536,14 @@ namespace Server.Items
                 suffixCount = suffixcolcount;
         }
 
-        private static bool ApplyPrefixSuffixAttribute(Item item, object attribute, int min, int max, int percLow, int percHigh, ref int budget, int luckchance, bool playerMade, bool named = true)
+        private static bool ApplyPrefixSuffixAttribute(Item item, object attribute, int min, int max, int percLow, int percHigh, ref int budget, int luckchance, bool reforged, bool named = true)
 		{
             int start = budget;
 
             if (CheckConflictingNegative(item, attribute))
                 return false;
 
-            if(playerMade)
+            if(reforged)
             {
                 percLow = 100;
                 percHigh = 100;
@@ -545,15 +557,15 @@ namespace Server.Items
 				string str = attribute as string;
                 if (str == "RandomEater" && !HasEater(item) && (item is BaseArmor || item is BaseJewel || item is BaseWeapon))
 				{
-                    budget -= ApplyRandomEater(item, min, max, percLow, percHigh, budget, luckchance, playerMade);
+                    budget -= ApplyRandomEater(item, min, max, percLow, percHigh, budget, luckchance, reforged);
 				}
 				else if (str == "HitSpell" && item is BaseWeapon && !HasHitSpell((BaseWeapon)item))
 				{
-                    budget -= ApplyRandomHitSpell((BaseWeapon)item, min, max, percLow, percHigh, budget, luckchance, playerMade);
+                    budget -= ApplyRandomHitSpell((BaseWeapon)item, min, max, percLow, percHigh, budget, luckchance, reforged);
 				}
                 else if (str == "HitArea" && item is BaseWeapon && !HasHitArea((BaseWeapon)item))
 				{
-                    budget -= ApplyRandomHitArea((BaseWeapon)item, min, max, percLow, percHigh, budget, luckchance, playerMade);
+                    budget -= ApplyRandomHitArea((BaseWeapon)item, min, max, percLow, percHigh, budget, luckchance, reforged);
 				}
                 else if (str == "Slayer" && item is BaseWeapon && ((BaseWeapon)item).Slayer == SlayerName.None)
                 {
@@ -568,14 +580,14 @@ namespace Server.Items
                 }
                 else if (str == "WeaponVelocity" && item is BaseRanged && ((BaseRanged)item).Velocity == 0)
                 {
-                    int value = CalculateValue(item, attribute, min, max, percLow, percHigh, ref budget, luckchance, playerMade);
+                    int value = CalculateValue(item, attribute, min, max, percLow, percHigh, ref budget, luckchance, reforged);
 
                     ((BaseRanged)item).Velocity = value;
                     budget -= Imbuing.GetIntensityForAttribute(item, str, -1, value);
                 }
                 else if (str == "ElementalDamage" && item is BaseWeapon)
                 {
-                    int value = CalculateValue(item, attribute, min, max, percLow, percHigh, ref budget, luckchance, playerMade);
+                    int value = CalculateValue(item, attribute, min, max, percLow, percHigh, ref budget, luckchance, reforged);
 
                     BaseRunicTool.ApplyElementalDamage(((BaseWeapon)item), value, value);
 
@@ -584,7 +596,7 @@ namespace Server.Items
 			}
 			else if (attribute is AosAttribute)
 			{
-                int value = CalculateValue(item, attribute, min, max, percLow, percHigh, ref budget, luckchance, playerMade);
+                int value = CalculateValue(item, attribute, min, max, percLow, percHigh, ref budget, luckchance, reforged);
                 AosAttributes attrs = GetAosAttributes(item);
 
                 if ((AosAttribute)attribute == AosAttribute.BalancedWeapon && (!(item is BaseWeapon) || item.Layer != Layer.TwoHanded))
@@ -629,7 +641,7 @@ namespace Server.Items
                 }
 
 
-                int value = CalculateValue(item, attribute, min, max, percLow, percHigh, ref budget, luckchance, playerMade);
+                int value = CalculateValue(item, attribute, min, max, percLow, percHigh, ref budget, luckchance, reforged);
                 AosWeaponAttributes attrs = GetAosWeaponAttributes(item);
 				
 				if(attrs != null && value > 0 && attrs[wepattr] == 0)
@@ -640,7 +652,7 @@ namespace Server.Items
 			}
             else if (attribute is AosArmorAttribute)
             {
-                int value = CalculateValue(item, attribute, min, max, percLow, percHigh, ref budget, luckchance, playerMade);
+                int value = CalculateValue(item, attribute, min, max, percLow, percHigh, ref budget, luckchance, reforged);
                 AosArmorAttributes attrs = GetAosArmorAttributes(item);
 
                 if (attrs != null && value > 0 && attrs[(AosArmorAttribute)attribute] == 0)
@@ -651,7 +663,7 @@ namespace Server.Items
             }
             else if (attribute is SAAbsorptionAttribute)
             {
-                int value = CalculateValue(item, attribute, min, max, percLow, percHigh, ref budget, luckchance, playerMade);
+                int value = CalculateValue(item, attribute, min, max, percLow, percHigh, ref budget, luckchance, reforged);
                 SAAbsorptionAttributes attrs = GetSAAbsorptionAttributes(item);
 
                 if (attrs != null && value > 0 && attrs[(SAAbsorptionAttribute)attribute] == 0)
@@ -662,7 +674,7 @@ namespace Server.Items
             }
             else if (attribute is AosElementAttribute)
             {
-                int value = CalculateValue(item, attribute, min, max, percLow, percHigh, ref budget, luckchance, playerMade);
+                int value = CalculateValue(item, attribute, min, max, percLow, percHigh, ref budget, luckchance, reforged);
 
                 if (value > 0)
                 {
@@ -797,11 +809,11 @@ namespace Server.Items
             return false;
         }
 
-        public static int Scale(int min, int max, int perclow, int perchigh, int luckchance, bool playerMade)
+        public static int Scale(int min, int max, int perclow, int perchigh, int luckchance, bool reforged)
         {
             int percent;
 
-            if (playerMade)
+            if (reforged)
             {
                 percent = Utility.RandomMinMax(perclow, perchigh);
             }
@@ -831,7 +843,7 @@ namespace Server.Items
             return CalculateValue(item, attribute, min, max, perclow, perchigh, ref budget, luckchance, false);
         }
 
-        private static int CalculateValue(Item item, object attribute, int min, int max, int perclow, int perchigh, ref int budget, int luckchance, bool playerMade)
+        private static int CalculateValue(Item item, object attribute, int min, int max, int perclow, int perchigh, ref int budget, int luckchance, bool reforged)
 		{
             int scale = Math.Max(1, ItemPropertyInfo.GetScale(item, attribute)); //ScaleAttribute(attribute);
 
@@ -841,7 +853,7 @@ namespace Server.Items
                 max = (max / scale) * scale;
             }
 
-            int value = Scale(min / scale, max / scale, perclow, perchigh, luckchance, playerMade) * scale;
+            int value = Scale(min / scale, max / scale, perclow, perchigh, luckchance, reforged) * scale;
             int totalweight = ItemPropertyInfo.GetTotalWeight(item, attribute, value);
 
             if (value > max) value = max;
@@ -1463,7 +1475,7 @@ namespace Server.Items
             }
         }
 
-        private static int ApplyRandomHitSpell(BaseWeapon weapon, int min, int max, int perclow, int perchigh, int budget, int luckchance, bool playerMade)
+        private static int ApplyRandomHitSpell(BaseWeapon weapon, int min, int max, int perclow, int perchigh, int budget, int luckchance, bool reforged)
         {
             object attr;
 
@@ -1477,13 +1489,13 @@ namespace Server.Items
                 //case 4: attr = AosWeaponAttribute.HitCurse; break;
             }
 
-            int value = CalculateValue(weapon, attr, min, max, perclow, perchigh, ref budget, luckchance, playerMade);
+            int value = CalculateValue(weapon, attr, min, max, perclow, perchigh, ref budget, luckchance, reforged);
             weapon.WeaponAttributes[(AosWeaponAttribute)attr] = value;
 
 			return (140 / 50) * value;
         }
 
-        private static int ApplyRandomHitArea(BaseWeapon weapon, int min, int max, int perclow, int perchigh, int budget, int luckchance, bool playerMade)
+        private static int ApplyRandomHitArea(BaseWeapon weapon, int min, int max, int perclow, int perchigh, int budget, int luckchance, bool reforged)
         {
             object attr;
 
@@ -1497,13 +1509,13 @@ namespace Server.Items
                 case 4: attr = AosWeaponAttribute.HitEnergyArea; break;
             }
 
-            int value = CalculateValue(weapon, attr, min, max, perclow, perchigh, ref budget, luckchance, playerMade);
+            int value = CalculateValue(weapon, attr, min, max, perclow, perchigh, ref budget, luckchance, reforged);
             weapon.WeaponAttributes[(AosWeaponAttribute)attr] = value;
 
             return (100 / 50) * value;
         }
 
-        private static int ApplyRandomEater(Item item, int min, int max, int perclow, int perchigh, int budget, int luckchance, bool playerMade)
+        private static int ApplyRandomEater(Item item, int min, int max, int perclow, int perchigh, int budget, int luckchance, bool reforged)
         {
             object attr;
 
@@ -1517,7 +1529,7 @@ namespace Server.Items
                 case 4: attr = SAAbsorptionAttribute.EaterEnergy; break;
             }
 
-            int value = CalculateValue(item, attr, min, max, perclow, perchigh, ref budget, luckchance, playerMade);
+            int value = CalculateValue(item, attr, min, max, perclow, perchigh, ref budget, luckchance, reforged);
 
             if(item is BaseWeapon)
                 ((BaseWeapon)item).AbsorptionAttributes[(SAAbsorptionAttribute)attr] = value;
@@ -1949,7 +1961,7 @@ namespace Server.Items
                 if (mods < RandomItemGenerator.MaxProps - 1 && LootPack.CheckLuck(luckchance))
                     mods++;
 
-                ApplyReforgedProperties(item, prefix, suffix, false, budget, perclow, perchigh, mods, luckchance);
+                ApplyReforgedProperties(item, prefix, suffix, budget, perclow, perchigh, mods, luckchance);
 
                 int addonbudget = 0;
 
@@ -2336,9 +2348,9 @@ namespace Server.Items
             }
         }
 
-        public static ItemPower ApplyItemPower(Item item, bool playermade)
+        public static ItemPower ApplyItemPower(Item item, bool reforged)
         {
-            ItemPower ip = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), playermade);
+            ItemPower ip = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), reforged);
 
             if (item is ICombatEquipment)
             {
@@ -2348,7 +2360,7 @@ namespace Server.Items
             return ip;
         }
 
-        public static ItemPower GetItemPower(Item item, int weight, int totalMods, bool playermade)
+        public static ItemPower GetItemPower(Item item, int weight, int totalMods, bool reforged)
         {
             // pre-arty uses max imbuing weight + 100
             // arty ranges from pre-arty to a flat 1200
@@ -2359,36 +2371,36 @@ namespace Server.Items
                 return ItemPower.None;
 
             if (weight < preArty * .4)
-                return playermade ? ItemPower.ReforgedMinor : ItemPower.Minor;
+                return reforged ? ItemPower.ReforgedMinor : ItemPower.Minor;
 
             if (weight < preArty * .6)
-                return playermade ? ItemPower.ReforgedLesser : ItemPower.Lesser;
+                return reforged ? ItemPower.ReforgedLesser : ItemPower.Lesser;
 
             if (weight < preArty * .8)
-                return playermade ? ItemPower.ReforgedGreater : ItemPower.Greater;
+                return reforged ? ItemPower.ReforgedGreater : ItemPower.Greater;
 
             if (weight <= preArty)
-                return playermade ? ItemPower.ReforgedGreater : ItemPower.Major;
+                return reforged ? ItemPower.ReforgedGreater : ItemPower.Major;
 
             if (weight < preArty + (arty * .2))
-                return playermade ? ItemPower.ReforgedMajor : ItemPower.LesserArtifact;
+                return reforged ? ItemPower.ReforgedMajor : ItemPower.LesserArtifact;
 
             if (weight < preArty + (arty * .4))
-                return playermade ? ItemPower.ReforgedMajor : ItemPower.GreaterArtifact;
+                return reforged ? ItemPower.ReforgedMajor : ItemPower.GreaterArtifact;
 
             if (weight < preArty + (arty * .7) || totalMods <= 5)
                 return ItemPower.MajorArtifact;
 
-            return playermade ? ItemPower.ReforgedLegendary : ItemPower.LegendaryArtifact;
+            return reforged ? ItemPower.ReforgedLegendary : ItemPower.LegendaryArtifact;
         }
 
-        private static bool ApplyNewAttributes(Item item, int prefixID, int suffixID, int colIndex, int percLow, int percHigh, int resIndex, int preIndex, int luckchance, bool playermade, ref int budget)
+        private static bool ApplyNewAttributes(Item item, int prefixID, int suffixID, int colIndex, int percLow, int percHigh, int resIndex, int preIndex, int luckchance, bool reforged, ref int budget)
         {
             int randomCol;
 
             if (item is BaseWeapon)
             {
-                if (playermade)
+                if (reforged)
                 {
                     randomCol = m_ReforgedWeapon[Utility.Random(m_ReforgedWeapon.Length)];
                 }
@@ -2413,17 +2425,17 @@ namespace Server.Items
                 return false;
             }
 
-            CheckAttributes(item, collection, playermade);
+            CheckAttributes(item, collection, reforged);
 
             int random = Utility.Random(collection.Count);
 
             return ApplyPrefixSuffixAttribute(item, 
                 collection[random].Attribute, 
                 collection[random].Min(resIndex, preIndex, item), 
-                collection[random].Max(resIndex, preIndex, item), percLow, percHigh, ref budget, luckchance, playermade);
+                collection[random].Max(resIndex, preIndex, item), percLow, percHigh, ref budget, luckchance, reforged);
         }
 
-        private static bool ApplyRunicAttributes(Item item, int perclow, int perchigh, ref int budget, int idx, int luckchance, bool playerMade)
+        private static bool ApplyRunicAttributes(Item item, int perclow, int perchigh, ref int budget, int idx, int luckchance, bool reforged)
         {
             List<object> attrList = null;
             AosWeaponAttributes wepattrs = GetAosWeaponAttributes(item);
@@ -2502,7 +2514,7 @@ namespace Server.Items
                     if (item is BaseJewel && (AosAttribute)attr == AosAttribute.WeaponDamage)
                         max = 25;
 
-                    value = CalculateValue(item, attr, min, max, perclow, perchigh, ref budget, luckchance, playerMade);
+                    value = CalculateValue(item, attr, min, max, perclow, perchigh, ref budget, luckchance, reforged);
 
                     bool hasValue;
 
@@ -2523,7 +2535,7 @@ namespace Server.Items
                 else if (wepattrs != null && attr is AosWeaponAttribute)
                 {
                     //minmax = Imbuing.GetPropRange(item, (AosWeaponAttribute)attr);
-                    value = CalculateValue(item, attr, min, max, perclow, perchigh, ref budget, luckchance, playerMade);
+                    value = CalculateValue(item, attr, min, max, perclow, perchigh, ref budget, luckchance, reforged);
 
                     if (wepattrs[(AosWeaponAttribute)attr] == 0)
                     {
@@ -2534,7 +2546,7 @@ namespace Server.Items
                 else if (armorattrs != null && attr is AosArmorAttribute)
                 {
                     //minmax = Imbuing.GetPropRange((AosArmorAttribute)attr);
-                    value = CalculateValue(item, attr, min, max, perclow, perchigh, ref budget, luckchance, playerMade);
+                    value = CalculateValue(item, attr, min, max, perclow, perchigh, ref budget, luckchance, reforged);
 
                     if (armorattrs[(AosArmorAttribute)attr] == 0)
                     {
@@ -2544,7 +2556,7 @@ namespace Server.Items
                 }
                 else if (attr is AosElementAttribute)
                 {
-                    value = CalculateValue(item, attr, min, max, perclow, perchigh, ref budget, luckchance, playerMade);
+                    value = CalculateValue(item, attr, min, max, perclow, perchigh, ref budget, luckchance, reforged);
 
                     if (value > 0)
                     {
@@ -2577,7 +2589,7 @@ namespace Server.Items
                         }
                         else if (item is BaseRanged && str == "WeaponVelocity")
                         {
-                            value = CalculateValue(item, attr, min, max, perclow, perchigh, ref budget, luckchance, playerMade);
+                            value = CalculateValue(item, attr, min, max, perclow, perchigh, ref budget, luckchance, reforged);
 
                             if (((BaseRanged)item).Velocity == 0)
                             {
@@ -2606,7 +2618,7 @@ namespace Server.Items
                                 found = (skillbonuses.GetValues(i, out check, out bonus) && check == sk);
                         } while (found);
 
-                        value = CalculateValue(item, sk, min, max, perclow, perchigh, ref budget, luckchance, playerMade);
+                        value = CalculateValue(item, sk, min, max, perclow, perchigh, ref budget, luckchance, reforged);
                         skillbonuses.SetValues(skillIdx, sk, value);
                         budget -= Imbuing.GetIntensityForAttribute(item, sk, -1, value);
                     }

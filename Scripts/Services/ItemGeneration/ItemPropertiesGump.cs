@@ -30,10 +30,11 @@ namespace Server.Gumps
             SkillName,
             SAAbsorption,
             ExtendedWeapon,
-            Other
+            Other,
         }
 
         public PropFilter Filter { get; set; }
+        public ItemType TypeFilter { get; set; }
         public List<ItemPropertyInfo> Infos { get; set; }
 
         public ItemPropertiesGump(PlayerMobile pm)
@@ -49,8 +50,27 @@ namespace Server.Gumps
             AddHtml(0, 5, 900, 20, String.Format("Item Properties: {0}", Filter.ToString()), false, false);
             AddHtml(275, 15, 625, 20, Center("Item Description: (Imbuing/Runic Cap) - (Loot Cap) [Scale]"), false, false);
 
-            AddButton(5, 575, 4005, 4007, 1, GumpButtonType.Reply, 0);
-            AddHtml(40, 575, 200, 20, String.Format("Filter: {0}", Filter.ToString()), false, false);
+            AddButton(5, 550, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            AddHtml(40, 550, 200, 20, String.Format("Filter: {0}", Filter.ToString()), false, false);
+
+            //
+            AddButton(105, 575, TypeFilter == ItemType.Melee ? 4006 : 4005, 4007, 2, GumpButtonType.Reply, 0);
+            AddHtml(140, 575, 200, 20, "Melee", false, false);
+
+            AddButton(205, 575, TypeFilter == ItemType.Ranged ? 4006 : 4005, 4007, 3, GumpButtonType.Reply, 0);
+            AddHtml(240, 575, 200, 20, "Ranged", false, false);
+
+            AddButton(305, 575, TypeFilter == ItemType.Armor ? 4006 : 4005, 4007, 4, GumpButtonType.Reply, 0);
+            AddHtml(340, 575, 200, 20, "Armor", false, false);
+
+            AddButton(405, 575, TypeFilter == ItemType.Shield ? 4006 : 4005, 4007, 5, GumpButtonType.Reply, 0);
+            AddHtml(440, 575, 200, 20, "Shields", false, false);
+
+            AddButton(505, 575, TypeFilter == ItemType.Hat ? 4006 : 4005, 4007, 6, GumpButtonType.Reply, 0);
+            AddHtml(540, 575, 200, 20, "Hats", false, false);
+
+            AddButton(605, 575, TypeFilter == ItemType.Jewel ? 4006 : 4005, 4007, 7, GumpButtonType.Reply, 0);
+            AddHtml(640, 575, 200, 20, "Jewels", false, false);
 
             AddLabel(5, 30, 0, "Property");
             AddLabel(125, 30, 0, "Max");
@@ -94,9 +114,9 @@ namespace Server.Gumps
                 if (++index % perPage == 0)
                 {
                     y = 50;
-                    AddButton(402, 575, 4005, 4007, 0, GumpButtonType.Page, page + 1);
+                    AddButton(868, 0, 4005, 4007, 0, GumpButtonType.Page, page + 1);
                     AddPage(++page);
-                    AddButton(368, 575, 4014, 4016, 0, GumpButtonType.Page, page - 1);
+                    AddButton(838, 0, 4014, 4016, 0, GumpButtonType.Page, page - 1);
                 }
                 else
                 {
@@ -111,7 +131,7 @@ namespace Server.Gumps
 
             if (typeInfo != null)
             {
-                AddLabel(x, y, 0, String.Format("{0}-{1}[{2}]", typeInfo.StandardMax, typeInfo.LootMax, typeInfo.Scale > 1 ? typeInfo.Scale.ToString() : scale.ToString()));
+                AddLabel(x, y, TypeFilter == type ? 0x9E : 0, String.Format("{0}-{1}[{2}]", typeInfo.StandardMax, typeInfo.LootMax, typeInfo.Scale > 1 ? typeInfo.Scale.ToString() : scale.ToString()));
             }
             else
             {
@@ -121,6 +141,16 @@ namespace Server.Gumps
 
         private IEnumerable<ItemPropertyInfo> CompileList()
         {
+            if (TypeFilter > ItemType.Invalid)
+            {
+                foreach (var i in ItemPropertyInfo.LootTable[TypeFilter])
+                {
+                    yield return ItemPropertyInfo.GetInfo(i);
+                }
+
+                yield break;
+            }
+
             foreach (var info in ItemPropertyInfo.Table.Values)
             {
                 switch (Filter)
@@ -203,6 +233,33 @@ namespace Server.Gumps
                     Filter++;
                 }
 
+                TypeFilter = ItemType.Invalid;
+                Refresh();
+            }
+            else if (info.ButtonID < 10)
+            {
+                switch (info.ButtonID)
+                {
+                    case 2:
+                        TypeFilter = ItemType.Melee;
+                        break;
+                    case 3:
+                        TypeFilter = ItemType.Ranged;
+                        break;
+                    case 4:
+                        TypeFilter = ItemType.Armor;
+                        break;
+                    case 5:
+                        TypeFilter = ItemType.Shield;
+                        break;
+                    case 6:
+                        TypeFilter = ItemType.Hat;
+                        break;
+                    case 7:
+                        TypeFilter = ItemType.Jewel;
+                        break;
+                }
+
                 Refresh();
             }
             else
@@ -215,7 +272,7 @@ namespace Server.Gumps
                 {
                     var propInfo = Infos[id];
 
-                    BaseGump.SendGump(new InfoSpecificGump(User, propInfo));
+                    BaseGump.SendGump(new InfoSpecificGump(User, propInfo, TypeFilter));
                 }
             }
         }
@@ -224,11 +281,13 @@ namespace Server.Gumps
     public class InfoSpecificGump : BaseGump
     {
         public ItemPropertyInfo Info { get; set; }
+        public ItemType ItemType { get; set; }
 
-        public InfoSpecificGump(PlayerMobile pm, ItemPropertyInfo info)
+        public InfoSpecificGump(PlayerMobile pm, ItemPropertyInfo info, ItemType type)
             : base(pm, 100, 100)
         {
             Info = info;
+            ItemType = type;
         }
 
         public override void AddGumpLayout()
@@ -264,7 +323,7 @@ namespace Server.Gumps
             {
                 var type = (ItemType)i;
 
-                if (type == ItemType.Invalid)
+                if (type == ItemType.Invalid || (ItemType != ItemType.Invalid && type != ItemType))
                 {
                     continue;
                 }

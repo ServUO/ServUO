@@ -1013,5 +1013,38 @@ namespace Server.Items
                 }
             }
         }
+
+        /// <summary>
+        /// Loot Validator
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="attribute"></param>
+        /// <returns></returns>
+        public static bool ValidateProperty(Item item, object attribute)
+        {
+            return ValidateProperty(item, GetID(attribute));
+        }
+
+        public static bool ValidateProperty(Item item, int id)
+        {
+            var info = GetInfo(id);
+
+            if (info != null)
+            {
+                var typeInfo = info.GetItemTypeInfo(GetItemType(item));
+
+                if (typeInfo != null)
+                {
+                    if (NewLootSystem)
+                    {
+                        return typeInfo.LootMax > 0;
+                    }
+
+                    return typeInfo.StandardMax > 0;
+                }
+            }
+
+            return false;
+        }
     }
 }
