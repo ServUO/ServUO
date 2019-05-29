@@ -873,18 +873,18 @@ namespace Server.Multis
                 MovingCrate.Hide();
 
             if (m_Trash != null && m_Trash.Map != Map.Internal)
-                list.Add(m_Trash, Owner);
+                list[m_Trash] = Owner;
 
             foreach (Item item in LockDowns.Keys)
             {
                 if (item.Parent == null && item.Map != Map.Internal)
-                    list.Add(item, LockDowns[item]);
+                    list[item] = LockDowns[item];
             }
 
             foreach (Item item in VendorRentalContracts)
             {
                 if (item.Parent == null && item.Map != Map.Internal)
-                    list.Add(item, Owner);
+                    list[item] = Owner;
             }
 
             foreach (SecureInfo info in Secures.Where(i => !LockDowns.ContainsKey(i.Item)))
@@ -892,13 +892,13 @@ namespace Server.Multis
                 Item item = info.Item;
 
                 if (item.Parent == null && item.Map != Map.Internal)
-                    list.Add(item, Owner);
+                    list[item] = Owner;
             }
 
             foreach (Item item in Addons.Keys)
             {
                 if (item.Parent == null && item.Map != Map.Internal)
-                    list.Add(item, Owner);
+                    list[item] = Owner;
             }
 
             foreach (var mobile in PlayerVendors.OfType<PlayerVendor>())
@@ -906,13 +906,13 @@ namespace Server.Multis
                 mobile.Return();
 
                 if (mobile.Map != Map.Internal)
-                    list.Add(mobile, Owner);
+                    list[mobile] = Owner;
             }
 
             foreach (Mobile mobile in PlayerBarkeepers)
             {
                 if (mobile.Map != Map.Internal)
-                    list.Add(mobile, Owner);
+                    list[mobile] = Owner;
             }
 
             return list;
