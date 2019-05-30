@@ -1319,28 +1319,30 @@ namespace Server.Mobiles
         {
             foreach (Mobile m in SpellHelper.AcquireIndirectTargets(this, this, Map, 2).OfType<Mobile>())
             {
-                DoHarmful(m);
-
-                m.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
-                m.PlaySound(0x231);
-
-                m.SendMessage("You feel the life drain out of you!");
-
-                int toDrain = GetDrainAmount(m);
-
-                //Monster Stealables
-                if (m is PlayerMobile)
-                {
-                    PlayerMobile pm = m as PlayerMobile;
-                    toDrain = (int)LifeShieldLotion.HandleLifeDrain(pm, toDrain);
-                }
-                //end
-
-
-                Hits += toDrain;
-                m.Damage(toDrain, this);
+                DoLifeDrain(m);
             }
         }
+
+        public virtual void DoLifeDrain(Mobile m)
+        {
+            DoHarmful(m);
+
+            m.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
+            m.PlaySound(0x231);
+
+            m.SendMessage("You feel the life drain out of you!");
+
+            int toDrain = GetDrainAmount(m);
+
+            if (m is PlayerMobile)
+            {
+                toDrain = (int)LifeShieldLotion.HandleLifeDrain((PlayerMobile)m, toDrain);
+            }
+
+            Hits += toDrain;
+            AOS.Damage(m, this, toDrain, 0, 0, 0, 0, 0, 0, 100);
+        }
+
         #endregion
 
         #region Colossal Blow

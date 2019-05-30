@@ -1,5 +1,9 @@
 using System;
+using System.Linq;
 using System.Collections;
+
+using Server.Items;
+using Server.Spells;
 
 namespace Server.Mobiles
 {
@@ -70,6 +74,14 @@ namespace Server.Mobiles
         }
 
         public override bool DrainsLife { get { return true; } }
+
+        public override void DoLifeDrain(Mobile m)
+        {
+            if (!m.Female)
+            {
+                base.DoLifeDrain(m);
+            }
+        }
 
         public override void Serialize(GenericWriter writer)
         {

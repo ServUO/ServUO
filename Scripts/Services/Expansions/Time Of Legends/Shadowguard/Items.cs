@@ -59,7 +59,10 @@ namespace Server.Engines.Shadowguard
 							{
                                 if (pirate.Alive)
                                 {
+                                    // this is gay, but can't figure out a better way to do!
+                                    pirate.BlockReflect = true;
                                     AOS.Damage(pirate, m, 300, 0, 0, 0, 0, 0, 0, 100);
+                                    pirate.BlockReflect = false;
                                     pirate.FixedParticles(0x3728, 20, 10, 5044, EffectLayer.Head);
 
                                     pirate.PlaySound(Utility.Random(0x3E, 3));
