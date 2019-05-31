@@ -1047,6 +1047,9 @@ namespace Server.Network
 					}
 				case 0x01: // edit request
 					{
+                        //prevent write access from forged packets
+                        if (beholder != beheld && beholder.AccessLevel <= AccessLevel.GameMaster)
+                            return;
 						pvSrc.ReadInt16(); // Skip
 						int length = pvSrc.ReadUInt16();
 
