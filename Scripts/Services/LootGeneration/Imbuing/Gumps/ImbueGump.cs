@@ -52,7 +52,7 @@ namespace Server.Gumps
             int minInt = ItemPropertyInfo.GetMinIntensity(m_Item, m_ID);
             int maxInt = ItemPropertyInfo.GetMaxIntensity(m_Item, m_ID);
             int weight = m_Info.Weight;
-            Console.WriteLine(minInt.ToString());
+
             if (m_Value < minInt)
             {
                 m_Value = minInt;
@@ -353,7 +353,7 @@ namespace Server.Gumps
         // =========== Check if Choosen Attribute Replaces Another =================
         public static TextDefinition WhatReplacesWhat(int id, Item item)
         {
-            if (Imbuing.GetValueForMod(item, id) > 0)
+            if (Imbuing.GetValueForID(item, id) > 0)
             {
                 return ItemPropertyInfo.GetAttributeName(id);
             }

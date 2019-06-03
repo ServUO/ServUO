@@ -283,7 +283,7 @@ namespace Server.Items
                 new PropInfo(1, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(4, 0, 35), new PropInfo(6, 25, 25, new int[] { 30, 35 })));
 
             Register(13, new ItemPropertyInfo(AosAttribute.WeaponSpeed, 1075629, 110, typeof(RelicFragment), typeof(Tourmaline), typeof(EssenceControl), 5, 5, 30, 1112045,
-                new PropInfo(1, 30, 30, new int[] { 35, 40 }), new PropInfo(4, 0, 10), new PropInfo(6, 0, 10)));
+                new PropInfo(1, 30, 30, new int[] { 35, 40 }), new PropInfo(4, 0, 5, new int[] { 10 }), new PropInfo(6, 0, 5, new int[] { 10 })));
 
             Register(14, new ItemPropertyInfo(AosAttribute.SpellDamage, 1075628, 100, typeof(EnchantedEssence), typeof(Emerald), typeof(CrystalShards), 1, 1, 12, 1112041,
                 new PropInfo(6, 12, 12, new int[] { 14, 16, 18 })));
@@ -292,7 +292,7 @@ namespace Server.Items
                 new PropInfo(6, 3, 3, new int[] { 4 })));
 
             Register(16, new ItemPropertyInfo(AosAttribute.CastSpeed, 1075617, 140,typeof(RelicFragment), typeof(Ruby), typeof(EssenceAchievement), 0, 1, 1, 1111951,
-                new PropInfo(6, 1, 1)));
+                new PropInfo(1, 1, 1), new PropInfo(2, 1, 1), new PropInfo(4, 1, 1), new PropInfo(6, 1, 1)));
 
             Register(17, new ItemPropertyInfo(AosAttribute.LowerManaCost, 1075621, 110, typeof(RelicFragment), typeof(Tourmaline), typeof(EssenceOrder), 1, 1, 8, 1111996,
                 new PropInfo(1, 0, 5), new PropInfo(2, 0, 5), new PropInfo(3, 8, 8, new int[] { 10 }), new PropInfo(4, 0, 5), new PropInfo(5, 8, 8, new int[] { 10 }), new PropInfo(6, 8, 8, new int[] { 10 })));
@@ -306,7 +306,7 @@ namespace Server.Items
             Register(20, new ItemPropertyInfo(AosAttribute.EnhancePotions, 1075624, 100, typeof(EnchantedEssence), typeof(Citrine), typeof(CrushedGlass), 5, 5, 25, 1111950,
                 new PropInfo(1, 0, 15), new PropInfo(2, 0, 15), new PropInfo(3, 0, 5), new PropInfo(5, 0, 5), new PropInfo(6, 25, 25, new int[] { 30, 35 })));
 
-            Register(21, new ItemPropertyInfo(AosAttribute.Luck, 1061153, 100, typeof(MagicalResidue), typeof(Citrine), typeof(ChagaMushroom), 10, 1, 100, 1111999, 
+            Register(21, new ItemPropertyInfo(AosAttribute.Luck, 1061153, 100, typeof(MagicalResidue), typeof(Citrine), typeof(ChagaMushroom), 10, 10, 100, 1111999, 
                 new PropInfo(1, 100, 100, new int[] { 110, 120, 130, 140, 150 }), new PropInfo(2, 120, 120, new int[] { 130, 140, 150, 160, 170 }), new PropInfo(3, 100, 100, new int[] { 110, 120, 130, 140, 150 }), new PropInfo(4, 100, 100, new int[] { 110, 120, 130, 140, 150 }), new PropInfo(5, 100, 100, new int[] { 110, 120, 130, 140, 150 }), new PropInfo(6, 100, 100, new int[] { 110, 120, 130, 140, 150 })));
 
             Register(22, new ItemPropertyInfo(AosAttribute.SpellChanneling, 1079766, 100, typeof(MagicalResidue), typeof(Diamond), typeof(SilverSnakeSkin), 0, 1, 1, 1112040,
@@ -376,19 +376,19 @@ namespace Server.Items
                 new PropInfo(3, 1, 1)));
 
             Register(51, new ItemPropertyInfo(AosElementAttribute.Physical, 1061158, 100, typeof(MagicalResidue), typeof(Diamond), typeof(BouraPelt), 1, 1, 15, 1112010,
-                new PropInfo(3, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(4, 15, 15), new PropInfo(5, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(6, 15, 15, new int[] { 20 })));
+                new PropInfo(1, 10, 100, 100), new PropInfo(2, 10, 100, 100), new PropInfo(3, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(4, 15, 15), new PropInfo(5, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(6, 15, 15, new int[] { 20 })));
 
             Register(52, new ItemPropertyInfo(AosElementAttribute.Fire, 1061159, 100, typeof(MagicalResidue), typeof(Ruby), typeof(BouraPelt), 1, 1, 15, 1112009,
-                new PropInfo(3, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(4, 15, 15), new PropInfo(5, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(6, 15, 15, new int[] { 20 })));
+                new PropInfo(1, 10, 100, 100), new PropInfo(2, 10, 100, 100), new PropInfo(3, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(4, 15, 15), new PropInfo(5, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(6, 15, 15, new int[] { 20 })));
 
             Register(53, new ItemPropertyInfo(AosElementAttribute.Cold, 1061160, 100, typeof(MagicalResidue), typeof(Sapphire), typeof(BouraPelt), 1, 1, 15, 1112007,
-                new PropInfo(3, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(4, 15, 15), new PropInfo(5, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(6, 15, 15, new int[] { 20 })));
+                new PropInfo(1, 10, 100, 100), new PropInfo(2, 10, 100, 100), new PropInfo(3, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(4, 15, 15), new PropInfo(5, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(6, 15, 15, new int[] { 20 })));
 
             Register(54, new ItemPropertyInfo(AosElementAttribute.Poison, 1061161, 100, typeof(MagicalResidue), typeof(Emerald), typeof(BouraPelt), 1, 1, 15, 1112011,
-                new PropInfo(3, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(4, 15, 15), new PropInfo(5, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(6, 15, 15, new int[] { 20 })));
+                new PropInfo(1, 10, 100, 100), new PropInfo(2, 10, 100, 100), new PropInfo(3, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(4, 15, 15), new PropInfo(5, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(6, 15, 15, new int[] { 20 })));
 
             Register(55, new ItemPropertyInfo(AosElementAttribute.Energy, 1061162, 100, typeof(MagicalResidue), typeof(Amethyst), typeof(BouraPelt), 1, 1, 15, 1112008,
-                new PropInfo(3, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(4, 15, 15), new PropInfo(5, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(6, 15, 15, new int[] { 20 })));
+                new PropInfo(1, 10, 100, 100), new PropInfo(2, 10, 100, 100), new PropInfo(3, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(4, 15, 15), new PropInfo(5, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(6, 15, 15, new int[] { 20 })));
 
             Register(60, new ItemPropertyInfo("WeaponVelocity", 1080416, 130, typeof(RelicFragment), typeof(Tourmaline),	typeof(EssenceDirection), 1, 2, 15, 1112048,
                 new PropInfo(1, 50, 50), new PropInfo(2, 50, 50)));
@@ -502,8 +502,8 @@ namespace Server.Items
             Register(204, new ItemPropertyInfo(AosWeaponAttribute.HitManaDrain, 1154669, 140, 1, 2, 50, 1152436,
                  new PropInfo(1, 0, 70), new PropInfo(2, 0, 70)));
 
-            Register(205, new ItemPropertyInfo(AosWeaponAttribute.SplinteringWeapon, 1154670, 140, 1, 1, 50, 1152396, // TODO: Check MaxInt
-                 new PropInfo(1, 0, 70)));
+            Register(205, new ItemPropertyInfo(AosWeaponAttribute.SplinteringWeapon, 1154670, 140, 5, 5, 30, 1152396,
+                 new PropInfo(1, 0, 20, new int[] { 25, 30 })));
 
             Register(206, new ItemPropertyInfo(AosWeaponAttribute.ReactiveParalyze, 1154660, 140, 0, 1, 1, 1152400,
                  new PropInfo(1, 0, 1)));
@@ -639,6 +639,16 @@ namespace Server.Items
             return null;
         }
 
+        public static int GetWeight(int id)
+        {
+            if (Table.ContainsKey(id))
+            {
+                return Table[id].Weight;
+            }
+
+            return 0;
+        }
+
         /// <summary>
         /// Maximum intensity in regards to imbuing weight calculation. Some items may be over this 'cap'
         /// </summary>
@@ -678,6 +688,21 @@ namespace Server.Items
             }
 
             return 0;
+        }
+
+        public static int[] GetMaxOvercappedRange(Item item, int id)
+        {
+            if (Table.ContainsKey(id))
+            {
+                var info = Table[id].GetItemTypeInfo(GetItemType(item));
+
+                if (info != null && info.PowerfulLootRange != null && info.PowerfulLootRange.Length > 0)
+                {
+                    return info.PowerfulLootRange;
+                }
+            }
+
+            return null;
         }
 
         public static int GetSpecialMaxIntensity(BaseWeapon wep)
@@ -740,14 +765,13 @@ namespace Server.Items
             {
                 var info = Table[id].GetItemTypeInfo(GetItemType(item));
 
-                // returns default value
-                if (info == null || info.Scale < 1)
+                if (info != null && info.Scale >= 0)
                 {
-                    return Table[id].Scale;
+                    return info.Scale;
                 }
                 else
                 {
-                    return info.Scale;
+                    return Table[id].Scale;
                 }
             }
 
@@ -802,39 +826,39 @@ namespace Server.Items
 
         public static int GetID(object attr)
         {
-            int mod = -1;
+            int id = -1;
 
             if (attr is AosAttribute)
-                mod = GetIDForAttribute((AosAttribute)attr);
+                id = GetIDForAttribute((AosAttribute)attr);
 
             else if (attr is AosWeaponAttribute)
-                mod = GetIDForAttribute((AosWeaponAttribute)attr);
+                id = GetIDForAttribute((AosWeaponAttribute)attr);
 
             else if (attr is ExtendedWeaponAttribute)
-                mod = GetIDForAttribute((ExtendedWeaponAttribute)attr);
+                id = GetIDForAttribute((ExtendedWeaponAttribute)attr);
 
             else if (attr is SkillName)
-                mod = GetIDForAttribute((SkillName)attr);
+                id = GetIDForAttribute((SkillName)attr);
 
             else if (attr is SlayerName)
-                mod = GetIDForAttribute((SlayerName)attr);
+                id = GetIDForAttribute((SlayerName)attr);
 
             else if (attr is SAAbsorptionAttribute)
-                mod = GetIDForAttribute((SAAbsorptionAttribute)attr);
+                id = GetIDForAttribute((SAAbsorptionAttribute)attr);
 
             else if (attr is AosArmorAttribute)
-                mod = GetIDForAttribute((AosArmorAttribute)attr);
+                id = GetIDForAttribute((AosArmorAttribute)attr);
 
             else if (attr is AosElementAttribute)
-                mod = GetIDForAttribute((AosElementAttribute)attr);
+                id = GetIDForAttribute((AosElementAttribute)attr);
 
             else if (attr is TalismanSlayerName)
-                mod = GetIDForAttribute((TalismanSlayerName)attr);
+                id = GetIDForAttribute((TalismanSlayerName)attr);
 
             else if (attr is string)
-                mod = GetIDForAttribute((string)attr);
+                id = GetIDForAttribute((string)attr);
 
-            return mod;
+            return id;
         }
 
         public static int GetIDForAttribute(AosAttribute attr)
@@ -972,9 +996,16 @@ namespace Server.Items
             return -1;
         }
 
-        public static bool ValidateProperty(object attribute)
+        public static List<int> LookupLootTable(Item item)
         {
-            return GetID(attribute) > 0;
+            var type = GetItemType(item);
+
+            if (type != ItemType.Invalid)
+            {
+                return LootTable[type];
+            }
+
+            return null;
         }
 
         public static void BuildLootTables()
@@ -992,6 +1023,11 @@ namespace Server.Items
 
                 foreach (var prop in Table.Values)
                 {
+                    if (prop.Attribute is SlayerName || prop.Attribute is SkillName)
+                    {
+                        continue;
+                    }
+
                     var info = prop.GetItemTypeInfo(type);
 
                     if (info != null)
@@ -1010,22 +1046,51 @@ namespace Server.Items
                 if (list.Count > 0)
                 {
                     LootTable[type] = list;
+                    AddSpecial(type, list);
                 }
             }
         }
 
         /// <summary>
-        /// Loot Validator
+        /// These are a group of properties that can only count as limited property slots. This will prevent slayers and skills from dominating the property roll
+        /// </summary>
+        /// <param name="type"></param>
+        private static void AddSpecial(ItemType type, List<int> list)
+        {
+            switch (type)
+            {
+                case ItemType.Melee:
+                case ItemType.Ranged:
+                    list.Add(1000); // Placeholder for random slayers
+                    break;
+                case ItemType.Jewel:
+                    list.Add(1001); // Placeholders for random skills
+                    list.Add(1002);
+                    list.Add(1003);
+                    list.Add(1004);
+                    list.Add(1005);
+                    break;
+            }
+        }
+
+        #region Validator
+        public static bool ValidateProperty(object attribute)
+        {
+            return GetID(attribute) > 0;
+        }
+
+        /// <summary>
+        /// Loot/Reforged Validator
         /// </summary>
         /// <param name="item"></param>
         /// <param name="attribute"></param>
         /// <returns></returns>
-        public static bool ValidateProperty(Item item, object attribute)
+        public static bool ValidateProperty(Item item, object attribute, bool reforged)
         {
-            return ValidateProperty(item, GetID(attribute));
+            return ValidateProperty(item, GetID(attribute), reforged);
         }
 
-        public static bool ValidateProperty(Item item, int id)
+        public static bool ValidateProperty(Item item, int id, bool reforged)
         {
             var info = GetInfo(id);
 
@@ -1035,16 +1100,94 @@ namespace Server.Items
 
                 if (typeInfo != null)
                 {
-                    if (NewLootSystem)
+                    // reforged follows its own set of guidelines
+                    if (!reforged)
                     {
-                        return typeInfo.LootMax > 0;
+                        if (NewLootSystem && typeInfo.LootMax <= 0)
+                        {
+                            return false;
+                        }
+                        else if (!NewLootSystem && typeInfo.StandardMax <= 0)
+                        {
+                            return false;
+                        }
                     }
 
-                    return typeInfo.StandardMax > 0;
+                    switch (id)
+                    {
+                        case 200: // Blood Drinking
+                            return item is BaseWeapon && (((BaseWeapon)item).PrimaryAbility == WeaponAbility.BleedAttack || ((BaseWeapon)item).SecondaryAbility == WeaponAbility.BleedAttack);
+                        case 205: // Splintering
+                            return !reforged;
+                        case 206: // Reactive Paralyze Weapon
+                            return item is BaseWeapon && item.Layer == Layer.TwoHanded;
+                        case 207: // Reactive Paralyze Armor
+                            return item is BaseShield;
+                        case 61:  // Balanced
+                            return item.Layer == Layer.TwoHanded;
+                        case 40:  // UBWS
+                            return GetItemType(item) == ItemType.Melee;
+                        case 30:
+                        case 31:
+                        case 32:
+                        case 33:
+                        case 34: // Hit Area Cannot be applied if it already has one present
+                            return item is BaseWeapon && !HasHitArea((BaseWeapon)item);
+                        case 35:
+                        case 36:
+                        case 37:
+                        case 38:
+                        case 39: // Hit Spell Cannot be applied if it already has one present
+                            return item is BaseWeapon && !HasHitSpell((BaseWeapon)item);
+                        case 208:
+                        case 209:
+                        case 210:
+                        case 211:
+                        case 212:
+                        case 213: // Eaters Cannot be applied if it already has one present
+                            return (item is BaseArmor || item is BaseJewel || item is BaseWeapon) && !HasEater(item);
+                        case 500:
+                        case 501: // Self Repair cannot be added to items with brittle/antique/no repair or items that have been imbued
+                            if (item is IImbuableEquipement && ((IImbuableEquipement)item).TimesImbued > 0)
+                            {
+                                return false;
+                            }
+
+                            NegativeAttributes neg = RunicReforging.GetNegativeAttributes(item);
+
+                            if (neg != null && (neg.Brittle > 0 || neg.Antique > 0 || neg.NoRepair > 0))
+                            {
+                                return false;
+                            }
+
+                            break;
+                    }
+
+                    return true;
                 }
             }
 
             return false;
         }
+
+        public static bool HasHitSpell(BaseWeapon wep)
+        {
+            return wep.WeaponAttributes.HitFireball > 0 || wep.WeaponAttributes.HitLightning > 0 || wep.WeaponAttributes.HitMagicArrow > 0
+                /*|| wep.WeaponAttributes.HitCurse > 0*/ || wep.WeaponAttributes.HitHarm > 0;
+        }
+
+        public static bool HasHitArea(BaseWeapon wep)
+        {
+            return wep.WeaponAttributes.HitPhysicalArea > 0 || wep.WeaponAttributes.HitFireArea > 0 || wep.WeaponAttributes.HitColdArea > 0
+                || wep.WeaponAttributes.HitPoisonArea > 0 || wep.WeaponAttributes.HitEnergyArea > 0;
+        }
+
+        public static bool HasEater(Item item)
+        {
+            SAAbsorptionAttributes attr = RunicReforging.GetSAAbsorptionAttributes(item);
+
+            return attr != null && (attr.EaterKinetic > 0 || attr.EaterFire > 0 || attr.EaterCold > 0 || attr.EaterPoison > 0 || attr.EaterEnergy > 0 || attr.EaterDamage > 0);
+        }
+        #endregion
     }
 }
