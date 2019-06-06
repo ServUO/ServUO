@@ -89,7 +89,7 @@ namespace Server.SkillHandlers
             {
                 // According to uoherald bard must remain alive, visible, and 
                 // within range of the target or the effect ends in 15 seconds.
-                if (!targ.Alive || targ.Deleted || !from.Alive || from.Hidden || targ.Hidden)
+                if (!targ.Alive || targ.Deleted || targ.IsDeadBondedPet || !from.Alive || from.Hidden || targ.Hidden || from.IsDeadBondedPet)
                 {
                     ends = true;
                 }

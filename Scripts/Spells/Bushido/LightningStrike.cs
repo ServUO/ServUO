@@ -57,7 +57,7 @@ namespace Server.Spells.Bushido
                 var ThePlayer = from as PlayerMobile;
                 if(ThePlayer != null)
                 {
-                    ThePlayer.ExecutesLightningStrike = this.BaseMana;
+                    ThePlayer.ExecutesLightningStrike = BaseMana;
                 }
             }
             return isValid;
@@ -73,26 +73,42 @@ namespace Server.Spells.Bushido
         public override bool OnBeforeSwing(Mobile attacker, Mobile defender)
         {
             /* no mana drain before actual hit */
-            bool enoughMana = this.CheckMana(attacker, false);
-            return this.Validate(attacker);
+            bool enoughMana = CheckMana(attacker, false);
+            return Validate(attacker);
         }
 
         public override bool OnBeforeDamage(Mobile attacker, Mobile defender)
         {
             ClearCurrentMove(attacker);
 
-            if (this.CheckMana(attacker, true))
+            if (CheckMana(attacker, true))
             {
                 attacker.SendLocalizedMessage(1063168); // You attack with lightning precision!
                 defender.SendLocalizedMessage(1063169); // Your opponent's quick strike causes extra damage!
                 defender.FixedParticles(0x3818, 1, 11, 0x13A8, 0, 0, EffectLayer.Waist);
                 defender.PlaySound(0x51D);
 
-                this.CheckGain(attacker);
-                this.SetContext(attacker);
+                CheckGain(attacker);
+                SetContext(attacker);
             }
 
             return base.OnBeforeDamage(attacker, defender);
+        }
+
+        public override void CheckGain(Mobile m)
+        {
+            // Lighning strike will gain to 120, albeit slow
+            if (Core.SA && m.Skills[MoveSkill].Value >= 87.5)
+            {
+                if (0.25 > Utility.RandomDouble())
+                {
+                    m.CheckSkill(MoveSkill, 0, m.Skills[MoveSkill].Cap);
+                }
+            }
+            else
+            {
+                base.CheckGain(m);
+            }
         }
 
         public override void OnUse(Mobile m)

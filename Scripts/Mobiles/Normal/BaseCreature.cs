@@ -1831,14 +1831,13 @@ namespace Server.Mobiles
 
             double dMinTameSkill = m_CurrentTameSkill;
 
-            if (dMinTameSkill > -24.9 && AnimalTaming.CheckMastery(m, this))
+            if (dMinTameSkill > -24.9 && DarkWolfFamiliar.CheckMastery(m, this))
             {
                 dMinTameSkill = -24.9;
             }
 
-            int taming =
-                (int)((useBaseSkill ? m.Skills[SkillName.AnimalTaming].Base : m.Skills[SkillName.AnimalTaming].Value) * 10);
-            int lore = (int)((useBaseSkill ? m.Skills[SkillName.AnimalLore].Base : m.Skills[SkillName.AnimalLore].Value) * 10);
+            int taming = (int)((useBaseSkill ? m.Skills[SkillName.AnimalTaming].Base : m.Skills[SkillName.AnimalTaming].Value) * 10);
+            int lore =   (int)((useBaseSkill ? m.Skills[SkillName.AnimalLore].Base : m.Skills[SkillName.AnimalLore].Value) * 10);
             int bonus = 0, chance = 700;
 
             if (Core.ML)

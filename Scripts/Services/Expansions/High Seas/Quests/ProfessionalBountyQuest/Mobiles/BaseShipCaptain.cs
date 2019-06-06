@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using System;
 using Server.Items;
 using Server.Multis;
@@ -131,15 +131,20 @@ namespace Server.Mobiles
             else
                 gal = new GargishGalleon(Direction.North);
 
-            if (gal.CanFit(this.Location, this.Map, gal.ItemID))
+            var p = Location;
+            Map map = Map;
+
+            // Move this sucka out of the way!
+            Internalize();
+
+            if (gal.CanFit(p, map, gal.ItemID))
             {
                 gal.Owner = this;
-                gal.MoveToWorld(this.Location, this.Map);
+                gal.MoveToWorld(p, map);
                 m_Galleon = gal;
 
                 Server.Engines.Quests.BountyQuestSpawner.FillHold(m_Galleon);
-
-                this.MoveToWorld(new Point3D(gal.X, gal.Y - 1, gal.ZSurface), this.Map);
+                MoveToWorld(new Point3D(p.X, p.Y - 1, gal.Z + gal.ZSurface), map);
 
                 int crewCount = Utility.RandomMinMax(3, 5);
 
@@ -151,7 +156,7 @@ namespace Server.Mobiles
                         crew.Title = "the orc captain";
 
                     AddToCrew(crew);
-                    crew.MoveToWorld(new Point3D(gal.X + Utility.RandomList(-1, 1), gal.Y + Utility.RandomList(-1, 0, 1), gal.ZSurface), this.Map);
+                    crew.MoveToWorld(new Point3D(gal.X + Utility.RandomList(-1, 1), gal.Y + Utility.RandomList(-1, 0, 1), gal.ZSurface), map);
                 }
 
                 gal.AutoAddCannons(this);

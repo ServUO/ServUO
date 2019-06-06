@@ -127,11 +127,11 @@ namespace Server.Engines.Shadowguard
 		public ShadowguardCypress Tree { get; set; }
 	
 		[CommandProperty(AccessLevel.GameMaster)]
-		public ShadowguardEncounter Encounter { get; set; }
+		public OrchardEncounter Encounter { get; set; }
 		
 		public override int Lifespan { get { return 60; } }
 	
-		public ShadowguardApple(ShadowguardEncounter encounter, ShadowguardCypress tree) : base(0x9D0)
+		public ShadowguardApple(OrchardEncounter encounter, ShadowguardCypress tree) : base(0x9D0)
 		{
 			Encounter = encounter;
 			Tree = tree;
@@ -223,7 +223,17 @@ namespace Server.Engines.Shadowguard
 				});
 			}
 		}
-		
+
+        public override void Delete()
+        {
+            base.Delete();
+
+            if (Encounter != null)
+            {
+                Encounter.OnAppleDeleted();
+            }
+        }
+
 		public ShadowguardApple(Serial serial) : base(serial)
 		{
 		}
@@ -248,7 +258,7 @@ namespace Server.Engines.Shadowguard
 	public class ShadowguardCypress : Item
 	{
 		[CommandProperty(AccessLevel.GameMaster)]
-		public ShadowguardEncounter Encounter { get; set; }
+		public OrchardEncounter Encounter { get; set; }
 		
 		[CommandProperty(AccessLevel.GameMaster)]
 		public VirtueType VirtueType { get; set; }
@@ -256,15 +266,15 @@ namespace Server.Engines.Shadowguard
         [CommandProperty(AccessLevel.GameMaster)]
         public ShadowguardCypressFoilage Foilage { get; set; }
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public ShadowguardApple Apple { get; set; }
+        // 0xD96, 0xD9A, 
 
-        public ShadowguardCypress(ShadowguardEncounter encounter, VirtueType type) : base(Utility.RandomList(3320, 3323, 3326, 3329))
+        public ShadowguardCypress(OrchardEncounter encounter, VirtueType type)
+            : base(3329)
 		{
 			VirtueType = type;
 			Encounter = encounter;
 
-            Foilage = new ShadowguardCypressFoilage(Utility.RandomMinMax(this.ItemID + 1, this.ItemID + 2), this);
+            Foilage = new ShadowguardCypressFoilage(Utility.RandomBool() ? 0xD96 : 0xD9A, this);
 
 			Movable = false;
 		}
@@ -274,7 +284,7 @@ namespace Server.Engines.Shadowguard
             base.OnLocationChange(oldLocation);
 
             if (Foilage != null)
-                Foilage.Location = this.Location;
+                Foilage.Location = new Point3D(X, Y, Z + 6);
         }
 
         public override void OnMapChange()
@@ -287,10 +297,12 @@ namespace Server.Engines.Shadowguard
 		{
 			if(from.Backpack != null && from.InRange(this.Location, 3))
 			{
-                if (Apple == null || Apple.Deleted)
+                if (Encounter.Apple == null || Encounter.Apple.Deleted)
                 {
-                    Apple = new ShadowguardApple(Encounter, this);
-                    from.Backpack.DropItem(Apple);
+                    Encounter.Apple = new ShadowguardApple(Encounter, this);
+                    from.Backpack.DropItem(Encounter.Apple);
+
+                    Encounter.OnApplePicked();
                 }
 			}
 		}
@@ -328,9 +340,6 @@ namespace Server.Engines.Shadowguard
 
 			if(Encounter != null)
 				Encounter.CheckEncounter();
-
-            if (Apple != null && !Apple.Deleted)
-                Apple.Delete();
 		}
 
         public class ShadowguardCypressFoilage : Item
@@ -376,26 +385,17 @@ namespace Server.Engines.Shadowguard
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write(1);
+			writer.Write(0);
 
-            writer.Write(Apple);
             writer.Write(Foilage);
 		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
 
-            switch (version)
-            {
-                case 1:
-                    Apple = reader.ReadItem() as ShadowguardApple;
-                    goto case 0;
-                case 0:
-                    Foilage = reader.ReadItem() as ShadowguardCypressFoilage;
-                    break;
-            }
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+            Foilage = reader.ReadItem() as ShadowguardCypressFoilage;
 
             if (Foilage != null)
             {

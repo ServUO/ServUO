@@ -7,7 +7,6 @@ using Server.Factions;
 using Server.Mobiles;
 using Server.Network;
 using Server.Spells;
-using Server.Spells.Necromancy;
 using Server.Spells.Spellweaving;
 using Server.Targeting;
 #endregion
@@ -53,22 +52,6 @@ namespace Server.SkillHandlers
             // We're not sure why this is getting hung up. Now, its 30 second timeout + 10 seconds (max) to tame
 			return TimeSpan.FromSeconds(40.0);
 		}
-		
-		public static bool CheckMastery(Mobile tamer, BaseCreature creature)
-		{
-			BaseCreature familiar = (BaseCreature)SummonFamiliarSpell.Table[tamer];
-
-			if (familiar != null && !familiar.Deleted && familiar is DarkWolfFamiliar)
-			{
-				if (creature is DireWolf || creature is GreyWolf || creature is TimberWolf || creature is WhiteWolf ||
-					creature is BakeKitsune)
-				{
-					return true;
-				}
-			}
-
-			return false;
-		}
 
 		public static bool MustBeSubdued(BaseCreature bc)
 		{
@@ -109,16 +92,20 @@ namespace Server.SkillHandlers
 			}
 		}
 
-		public static void ScaleSkills(BaseCreature bc, double scalar)
+		public static void ScaleSkills(BaseCreature bc, double scalar, bool firstTame)
 		{
-			ScaleSkills(bc, scalar, scalar);
+			ScaleSkills(bc, scalar, scalar, firstTame);
 		}
 
-		public static void ScaleSkills(BaseCreature bc, double scalar, double capScalar)
+		public static void ScaleSkills(BaseCreature bc, double scalar, double capScalar, bool firstTame)
 		{
 			for (int i = 0; i < bc.Skills.Length; ++i)
 			{
-                bc.Skills[i].Cap = Math.Max(100.0, bc.Skills[i].Base * capScalar);
+                if (!Core.TOL || firstTame)
+                {
+                    bc.Skills[i].Cap = Math.Max(100.0, bc.Skills[i].Base * capScalar);
+                }
+
 				bc.Skills[i].Base *= scalar;
 
 				if (bc.Skills[i].Base > bc.Skills[i].Cap)
@@ -194,7 +181,7 @@ namespace Server.SkillHandlers
 							creature.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1054025, from.NetState);
 								// You must subdue this creature before you can tame it!
 						}
-						else if (CheckMastery(from, creature) || from.Skills[SkillName.AnimalTaming].Value >= creature.CurrentTameSkill)
+						else if (DarkWolfFamiliar.CheckMastery(from, creature) || from.Skills[SkillName.AnimalTaming].Value >= creature.CurrentTameSkill)
 						{
 							FactionWarHorse warHorse = creature as FactionWarHorse;
 
@@ -323,7 +310,7 @@ namespace Server.SkillHandlers
 					}
 					else if (!m_Tamer.CanSee(m_Creature) || !m_Tamer.InLOS(m_Creature) || !CanPath())
 					{
-						m_BeingTamed.Remove(m_Creature);
+                        m_BeingTamed.Remove(m_Creature);
 						m_Tamer.NextSkillTime = Core.TickCount;
 						m_Tamer.SendLocalizedMessage(1049654);
 							// You do not have a clear path to the animal you are taming, and must cease your attempt.
@@ -413,37 +400,38 @@ namespace Server.SkillHandlers
 						}
 
 						double minSkill = m_Creature.CurrentTameSkill + (m_Creature.Owners.Count * 6.0);
+                        bool necroMastery = DarkWolfFamiliar.CheckMastery(m_Tamer, m_Creature);
 
-						if (minSkill > -24.9 && CheckMastery(m_Tamer, m_Creature))
+                        if (minSkill > -24.9 && necroMastery)
 						{
 							minSkill = -24.9; // 50% at 0.0?
 						}
 
 						minSkill += 24.9;
 
-						if (CheckMastery(m_Tamer, m_Creature) || alreadyOwned ||
+						if (necroMastery || alreadyOwned ||
 							m_Tamer.CheckTargetSkill(SkillName.AnimalTaming, m_Creature, minSkill - 25.0, minSkill + 25.0))
 						{
                             if (m_Creature.Owners.Count == 0) // First tame
                             {
                                 if (m_Creature is GreaterDragon)
                                 {
-                                    ScaleSkills(m_Creature, 0.72, 0.90); // 72% of original skills trainable to 90%
+                                    ScaleSkills(m_Creature, 0.72, 0.90, true); // 72% of original skills trainable to 90%
                                     m_Creature.Skills[SkillName.Magery].Base = m_Creature.Skills[SkillName.Magery].Cap;
                                     // Greater dragons have a 90% cap reduction and 90% skill reduction on magery
                                 }
                                 else if (m_Paralyzed)
                                 {
-                                    ScaleSkills(m_Creature, 0.86); // 86% of original skills if they were paralyzed during the taming
+                                    ScaleSkills(m_Creature, 0.86, true); // 86% of original skills if they were paralyzed during the taming
                                 }
                                 else
                                 {
-                                    ScaleSkills(m_Creature, 0.90); // 90% of original skills
+                                    ScaleSkills(m_Creature, 0.90, true); // 90% of original skills
                                 }
                             }
                             else
                             {
-                                ScaleSkills(m_Creature, 0.90); // 90% of original skills
+                                ScaleSkills(m_Creature, 0.90, false); // 90% of original skills
                             }
 
 							if (alreadyOwned)
