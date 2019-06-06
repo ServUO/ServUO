@@ -27,6 +27,7 @@ namespace Server.Engines.Shadowguard
         Required = Bar | Orchard | Armory | Fountain | Belfry
     }
 
+    [DeleteConfirm("Are you sure you want to delete this? Deleting this will delete any saved encounter data your players have.")]
     public class ShadowguardController : Item
     {
         public static readonly TimeSpan ReadyDuration = TimeSpan.FromSeconds(Config.Get("Shadowguard.ReadyDuration", 30));
@@ -54,6 +55,21 @@ namespace Server.Engines.Shadowguard
         {
             EventSink.Login += new LoginEventHandler(OnLogin);
             EventSink.Disconnected += new DisconnectedEventHandler(OnDisconnected);
+
+            CommandSystem.Register("AddController", AccessLevel.Administrator, e =>
+                {
+                    if (Instance == null)
+                    {
+                        var controller = new ShadowguardController();
+                        controller.MoveToWorld(new Point3D(501, 2192, 50), Map.TerMur);
+
+                        e.Mobile.SendMessage("Shadowguard controller setup!");
+                    }
+                    else
+                    {
+                        e.Mobile.SendMessage("A Shadowguard controller already exists!");
+                    }
+                });
 
             CommandSystem.Register("CompleteAllRooms", AccessLevel.GameMaster, e =>
                 {
@@ -500,16 +516,42 @@ namespace Server.Engines.Shadowguard
 
             EndTimer();
 
-            Encounters.ForEach(e =>
-                {
-                    e.Reset();
+            if (Encounters != null)
+            {
+                Encounters.ForEach(e =>
+                    {
+                        e.Reset();
+                    });
 
-                    if (e.Instance.Region != null)
-                        e.Instance.Region.Unregister();
+                ColUtility.Free(Encounters);
+                Encounters = null;
+            }
+
+            if (Addons != null)
+            {
+                Addons.IterateReverse(addon =>
+                {
+                    addon.Delete();
                 });
 
-            ColUtility.Free(Encounters);
-            Encounters = null;
+                ColUtility.Free(Addons);
+                Addons = null;
+            }
+
+            if (Instances != null)
+            {
+                Instances.ForEach(inst =>
+                {
+                    if (inst.Region != null)
+                    {
+                        inst.ClearRegion();
+                        inst.Region.Unregister();
+                    }
+                });
+
+                ColUtility.Free(Instances);
+                Instances = null;
+            }
 
             if (Queue != null)
             {
@@ -522,6 +564,8 @@ namespace Server.Engines.Shadowguard
                 Table.Clear();
                 Table = null;
             }
+
+            Instance = null;
         }
 
         public ShadowguardController(Serial serial)

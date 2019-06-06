@@ -1720,13 +1720,13 @@ namespace Server.Mobiles
 
                                 if (bc is GreaterDragon)
                                 {
-                                    AnimalTaming.ScaleSkills(bc, 0.72, 0.90); // 72% of original skills trainable to 90%
+                                    AnimalTaming.ScaleSkills(bc, 0.72, 0.90, true); // 72% of original skills trainable to 90%
                                     bc.Skills[SkillName.Magery].Base = bc.Skills[SkillName.Magery].Cap;
                                     // Greater dragons have a 90% cap reduction and 90% skill reduction on magery
                                 }
                                 else
                                 {
-                                    AnimalTaming.ScaleSkills(bc, 0.90);
+                                    AnimalTaming.ScaleSkills(bc, 0.90, true);
                                 }
 
                                 Timer.DelayCall(TimeSpan.FromSeconds(.25), () =>
