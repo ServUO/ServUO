@@ -192,7 +192,7 @@ namespace Server.Mobiles
         {
             base.OnAfterTame(tamer);
 
-            if (PetTrainingHelper.Enabled)
+            if (Owners.Count == 0 && PetTrainingHelper.Enabled)
             {
                 SetInt(500);
             }

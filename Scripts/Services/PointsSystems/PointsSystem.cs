@@ -111,10 +111,9 @@ namespace Server.Engines.Points
 
             if (entry != null)
             {
-                SetPoints((PlayerMobile)from, Math.Min(MaxPoints, entry.Points + points));
-
                 double old = entry.Points;
 
+                SetPoints((PlayerMobile)from, Math.Min(MaxPoints, entry.Points + points));
                 SendMessage((PlayerMobile)from, old, points, quest);
             }
         }

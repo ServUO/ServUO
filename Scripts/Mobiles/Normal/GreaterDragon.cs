@@ -156,35 +156,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)3);
+            writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-			switch(version)
-			{
-                case 3:
-				case 2:
-					break;
-				case 1:
-					SetDamage(24, 33);
-					SetStam(0);
-					break;
-				case 0:
-					Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.50);
-					Server.SkillHandlers.AnimalTaming.ScaleSkills(this, 0.80, 0.90); // 90% * 80% = 72% of original skills trainable to 90%
-					Skills[SkillName.Magery].Base = Skills[SkillName.Magery].Cap; // Greater dragons have a 90% cap reduction and 90% skill reduction on magery
-					SetStam(0);
-					break;
-			}
-
-            if (version == 2)
-            {
-                SetWeaponAbility(WeaponAbility.BleedAttack);
-            }
         }
     }
 }

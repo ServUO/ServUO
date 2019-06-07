@@ -48,9 +48,9 @@ namespace Server.Items
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
 
-        public override void AppendChildNameProperties(ObjectPropertyList list)
+        public override void AddWeightProperty(ObjectPropertyList list)
         {
-            base.AppendChildNameProperties(list);
+            base.AddWeightProperty(list);
 
             int prop;
 

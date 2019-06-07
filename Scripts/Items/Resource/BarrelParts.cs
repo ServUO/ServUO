@@ -21,7 +21,7 @@ namespace Server.Items
         public BarrelLid()
             : base(0x1DB8)
         {
-            this.Weight = 2;
+            Weight = 2;
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -84,7 +84,7 @@ namespace Server.Items
     }
 
     [FlipableAttribute(0x1EB1, 0x1EB2, 0x1EB3, 0x1EB4)]
-    public class BarrelStaves : Item, IResource
+    public class BarrelStaves : Item, IResource, IQuality
     {
         private CraftResource _Resource;
         private ItemQuality _Quality;
@@ -102,7 +102,7 @@ namespace Server.Items
         public BarrelStaves()
             : base(0x1EB1)
         {
-            this.Weight = 1;
+            Weight = 1;
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -164,7 +164,7 @@ namespace Server.Items
         }
     }
 
-    public class BarrelHoops : Item, IResource
+    public class BarrelHoops : Item, IResource, IQuality
     {
         private CraftResource _Resource;
         private ItemQuality _Quality;
@@ -182,7 +182,7 @@ namespace Server.Items
         public BarrelHoops()
             : base(0x1DB7)
         {
-            this.Weight = 5;
+            Weight = 5;
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -255,7 +255,7 @@ namespace Server.Items
         }
     }
 
-    public class BarrelTap : Item, IResource
+    public class BarrelTap : Item, IResource, IQuality
     {
         private CraftResource _Resource;
         private ItemQuality _Quality;
@@ -273,7 +273,7 @@ namespace Server.Items
         public BarrelTap()
             : base(0x1004)
         {
-            this.Weight = 1;
+            Weight = 1;
         }
 
         public override void GetProperties(ObjectPropertyList list)

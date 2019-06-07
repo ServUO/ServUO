@@ -211,6 +211,7 @@ namespace Server.Engines.Shadowguard
         public List<BaseCreature> Spawn { get; set; }
 
         public Item Bones { get; set; }
+        public ShadowguardApple Apple { get; set; }
 
         public override Type AddonType { get { return typeof(OrchardAddon); } }
 
@@ -316,6 +317,11 @@ namespace Server.Engines.Shadowguard
 		{
             ClearSpawn();
 
+            if (Apple != null)
+            {
+                Apple.Delete();
+            }
+
             if (Trees != null)
             {
                 List<ShadowguardCypress> list = new List<ShadowguardCypress>(Trees.Where(t => t != null && !t.Deleted));
@@ -335,6 +341,34 @@ namespace Server.Engines.Shadowguard
                 Bones = null;
             }
 		}
+
+        public void OnApplePicked()
+        {
+            if (Trees == null)
+                return;
+
+            foreach (var tree in Trees.Where(t => t != null && !t.Deleted))
+            {
+                if (tree.Foilage != null)
+                {
+                    tree.Foilage.ItemID--;
+                }
+            }
+        }
+
+        public void OnAppleDeleted()
+        {
+            if (Trees == null)
+                return;
+
+            foreach (var tree in Trees.Where(t => t != null && !t.Deleted))
+            {
+                if (tree.Foilage != null)
+                {
+                    tree.Foilage.ItemID++;
+                }
+            }
+        }
 
         public override void Serialize(GenericWriter writer)
         {

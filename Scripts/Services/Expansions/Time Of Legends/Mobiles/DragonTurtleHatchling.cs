@@ -56,14 +56,17 @@ namespace Server.Mobiles
 
         public override void OnAfterTame(Mobile tamer)
         {
-            SkillsCap = this.Skills.Total;
-
-            foreach (Skill sk in this.Skills)
+            if (Owners.Count == 0)
             {
-                if (sk.Base > 0)
+                SkillsCap = this.Skills.Total;
+
+                foreach (Skill sk in this.Skills)
                 {
-                    sk.Cap = Math.Max(100, sk.Base - (sk.Base * 10));
-                    sk.Base = sk.Base - (sk.Base * .55);
+                    if (sk.Base > 0)
+                    {
+                        sk.Cap = Math.Max(100, sk.Base - (sk.Base * 10));
+                        sk.Base = sk.Base - (sk.Base * .55);
+                    }
                 }
             }
         }
