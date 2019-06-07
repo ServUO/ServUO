@@ -6943,7 +6943,7 @@ namespace Server.Mobiles
 
         public virtual void OnAfterTame(Mobile tamer)
         {
-            if (StatLossAfterTame && Owners.Count == 0)
+            if (StatLossAfterTame && (!PetTrainingHelper.Enabled || Owners.Count == 0))
             {
                 AnimalTaming.ScaleStats(this, 0.5);
             }

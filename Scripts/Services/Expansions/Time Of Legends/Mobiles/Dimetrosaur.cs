@@ -86,11 +86,18 @@ namespace Server.Mobiles
 
         public override void OnAfterTame(Mobile tamer)
         {
-            int hits = HitsMax;
+            if (Owners.Count == 0)
+            {
+                int hits = HitsMax;
 
-            base.OnAfterTame(tamer);
+                base.OnAfterTame(tamer);
 
-            SetHits(hits / 4);
+                SetHits(hits / 4);
+            }
+            else
+            {
+                base.OnAfterTame(tamer);
+            }
         }
 
         public override bool CanAngerOnTame { get { return true; } }
