@@ -1378,6 +1378,11 @@ namespace Server
                 AddLockedDownProperty(list);
             }
 
+            if (DisplayWeight)
+            {
+                AddWeightProperty(list);
+            }
+
             Mobile blessedFor = BlessedFor;
 
             if (blessedFor != null && !blessedFor.Deleted)
@@ -1388,11 +1393,6 @@ namespace Server
             if (DisplayLootType)
             {
                 AddLootTypeProperty(list);
-            }
-
-            if (DisplayWeight)
-            {
-                AddWeightProperty(list);
             }
 
             if (QuestItem)

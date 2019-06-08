@@ -1204,6 +1204,21 @@ namespace Server.Items
 
         public override void AddWeightProperty(ObjectPropertyList list)
         {
+            if (OwnerName != null)
+                list.Add(1153213, OwnerName);
+
+            if (m_Crafter != null)
+                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+
+            if (m_Quality == ItemQuality.Exceptional)
+                list.Add(1018303); // Exceptional
+
+            if (IsImbued == true)
+                list.Add(1080418); // (Imbued)
+
+            if (m_Altered)
+                list.Add(1111880); // Altered
+
             base.AddWeightProperty(list);
 
             if (IsVvVItem)
@@ -1218,23 +1233,6 @@ namespace Server.Items
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);
-
-            if (OwnerName != null)
-            {
-                list.Add(1153213, OwnerName);
-            }
-
-            if (m_Crafter != null)
-                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
-
-            if (m_Quality == ItemQuality.Exceptional)
-                list.Add(1018303); // Exceptional
-            
-            if (IsImbued == true)
-                list.Add(1080418); // (Imbued)
-
-            if (m_Altered)
-                list.Add(1111880); // Altered
 
             #region Factions
             FactionEquipment.AddFactionProperties(this, list);
