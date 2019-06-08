@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using System;
 
 namespace Server.Items
@@ -88,6 +88,26 @@ namespace Server.Items
             typeof(RockCrab),        	typeof(SnowCrab),          	typeof(AppleCrab),
             typeof(SpineyLobster),   	typeof(RockLobster),       	typeof(HummerLobster),
             typeof(FredLobster),     	typeof(CrustyLobster), 		typeof(ShovelNoseLobster),
+        };
+
+        public static Type[] Lobsters { get { return m_Lobsters; } }
+        private static Type[] m_Lobsters = new Type[]
+        {
+            typeof(Lobster),
+            typeof(SpineyLobster),      typeof(RockLobster),        typeof(HummerLobster),
+            typeof(FredLobster),        typeof(CrustyLobster),      typeof(ShovelNoseLobster),
+            typeof(BlueLobster),        typeof(BloodLobster),       typeof(DreadLobster),
+            typeof(VoidLobster),
+        };
+
+        public static Type[] Crabs { get { return m_Crabs; } }
+        private static Type[] m_Crabs = new Type[]
+        {
+            typeof(Crab),
+            typeof(DungeonessCrab),     typeof(BlueCrab),           typeof(KingCrab),
+            typeof(RockCrab),           typeof(SnowCrab),           typeof(AppleCrab),
+            typeof(VoidCrab),           typeof(TunnelCrab),         typeof(SpiderCrab),
+            typeof(StoneCrab)
         };
 
         public BaseHighseasFish(Serial serial) : base(serial) { }

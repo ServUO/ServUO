@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server.Items;
 using Server.Mobiles;
 using Server.Prompts;
@@ -132,13 +134,14 @@ namespace Server.Gumps
             while (offset + next < 330 && m_Index < m_Collection.Donations.Count)
             {
                 CollectionItem item = m_Collection.Donations[m_Index];
+                Type type = item.Type;
                 Account acct = m_Owner.Account as Account;
 
                 int height = Math.Max(item.Height, 20);
 
                 int amount = 0;
 
-                if (item.Type == typeof(Gold) && acct != null)
+                /*if (item.Type == typeof(Gold) && acct != null)
                     amount = acct.TotalGold + m_Owner.Backpack.GetAmount(item.Type);
                 else if (item.Type == typeof(RedScales))
                     amount = GetScales(m_Owner.Backpack);
@@ -147,8 +150,16 @@ namespace Server.Gumps
                 else if (item.Type == typeof(Crab) || item.Type == typeof(Lobster))
                     amount = GetCrabsAndLobsters(m_Owner.Backpack);
                 else if (m_Owner.Backpack != null)
-                    amount = m_Owner.Backpack.GetAmount(item.Type);
-                
+                    amount = m_Owner.Backpack.GetAmount(item.Type);*/
+                if (item.Type == typeof(Gold) && acct != null)
+                {
+                    amount = acct.TotalGold + m_Owner.Backpack.GetAmount(item.Type);
+                }
+                else
+                {
+                    amount = GetTypes(m_Owner, item);
+                }
+
                 if (amount > 0)
                 {
                     AddButton(35, offset + (int)(height / 2) - 5, 0x837, 0x838, 300 + m_Index, GumpButtonType.Reply, 0);
@@ -454,10 +465,23 @@ namespace Server.Gumps
                         return;
                     }
 
+                    from.Backpack.ConsumeTotal(m_Selected.Type, amount, true, true);
                     m_Collection.Donate((PlayerMobile)from, m_Selected, amount);
-                    return;
                 }
-                else if (m_Selected.Type == typeof(Fish) || m_Selected.Type == typeof(Crab) || m_Selected.Type == typeof(Lobster) || m_Selected.Type == typeof(RedScales))
+                else if(m_Selected.Type == typeof(BankCheck))
+                {
+                    int count = from.Backpack.GetChecksWorth(true);
+
+                    if(count < amount)
+                    {
+                        from.SendLocalizedMessage(1073182); // You do not have enough to make a donation of that magnitude!
+                        return;
+                    }
+
+                    from.Backpack.TakeFromChecks(amount, true);
+                    m_Collection.Donate((PlayerMobile)from, m_Selected, amount);
+                }
+                else
                 {
                     if (amount * m_Selected.Points < 1)
                     {
@@ -466,23 +490,20 @@ namespace Server.Gumps
                         return;
                     }
 
-                    Item[] items;
+                    var items = FindTypes((PlayerMobile)from, m_Selected);
 
-                    if (m_Selected.Type == typeof(Fish))
-                        items = CommunityCollectionGump.FindFishyItems(from.Backpack);
-                    else if (m_Selected.Type == typeof(RedScales))
-                        items = CommunityCollectionGump.FindScales(from.Backpack);
-                    else
-                        items = CommunityCollectionGump.FindCrabsAndLobsters(from.Backpack);
-
-                    if (items != null)
+                    if (items.Count > 0)
                     {
                         // count items
                         int count = 0;
 
-                        for (int i = 0; i < items.Length; i++)
-                            if (m_Selected.Validate((PlayerMobile)from, items[i]) && !items[i].Deleted)
-                                count += items[i].Amount;
+                        for (int i = 0; i < items.Count; i++)
+                        {
+                            var item = GetActual(items[i]);
+
+                            if (item != null && !item.Deleted)
+                                count += item.Amount;
+                        }
 
                         // check
                         if (amount > count)
@@ -493,7 +514,7 @@ namespace Server.Gumps
                         }
                         else if (amount * m_Selected.Points < 1)
                         {
-                            from.SendLocalizedMessage(1073167); // You do not have enough of that item to make a donation!
+                            from.SendLocalizedMessage(m_Selected.Type == typeof(Gold) ? 1073182 : 1073167); // You do not have enough of that item to make a donation!
                             from.SendGump(new CommunityCollectionGump((PlayerMobile)from, m_Collection, m_Location));
                             return;
                         }
@@ -501,60 +522,41 @@ namespace Server.Gumps
                         // donate
                         int deleted = 0;
 
-                        for (int i = 0; i < items.Length && deleted < amount; i++)
+                        for (int i = 0; i < items.Count && deleted < amount; i++)
                         {
-                            if (m_Selected.Validate((PlayerMobile)from, items[i]) && items[i].Stackable && items[i].Amount + deleted > amount && !items[i].Deleted)
+                            var item = GetActual(items[i]);
+
+                            if (item == null || item.Deleted)
                             {
-                                items[i].Amount -= amount - deleted;
+                                continue;
+                            }
+
+                            if (item.Stackable && item.Amount + deleted > amount && !item.Deleted)
+                            {
+                                item.Amount -= amount - deleted;
                                 deleted += amount - deleted;
                             }
-                            else if (m_Selected.Validate((PlayerMobile)from, items[i]) && !items[i].Deleted)
+                            else if (!item.Deleted)
                             {
-                                deleted += items[i].Amount;
+                                deleted += item.Amount;
                                 items[i].Delete();
+                            }
+
+                            if (items[i] is CommodityDeed && !items[i].Deleted)
+                            {
+                                items[i].InvalidateProperties();
                             }
                         }
 
                         m_Collection.Donate((PlayerMobile)from, m_Selected, amount);
-                        return;
                     }
                     else
-                        from.SendLocalizedMessage(1073182); // You do not have enough to make a donation of that magnitude!
-
-                }
-                if(m_Selected.Type == typeof(BankCheck))
-                {
-                    int count = from.Backpack.GetChecksWorth(true);
-                    if(count < amount)
                     {
                         from.SendLocalizedMessage(1073182); // You do not have enough to make a donation of that magnitude!
-                        return;
                     }
-                }
-                else
-                {
-                    int count = from.Backpack.GetAmount(m_Selected.Type, true, true);
-                    if(count < amount)
-                    {
-                        if(m_Selected.Type == typeof(Gold))
-                            from.SendLocalizedMessage(1073182); // You do not have enough to make a donation of that magnitude!
-                        else
-                            from.SendLocalizedMessage(1073167); // You do not have enough of that item to make a donation!
-                        return;
-                    }
-                }
 
-                // Donate
-                if(m_Selected.Type == typeof(BankCheck))
-                {
-                    from.Backpack.TakeFromChecks(amount, true);
+                    ColUtility.Free(items);
                 }
-                else
-                {
-                    from.Backpack.ConsumeTotal(m_Selected.Type, amount, true, true);
-                }
-
-                m_Collection.Donate((PlayerMobile)from, m_Selected, amount);
             }
 
             public override void OnCancel(Mobile from)
@@ -693,6 +695,104 @@ namespace Server.Gumps
                 return fishies.ToArray();
             return null;
         }
+
+        public static bool CheckType(Item item, Type type, bool checkDerives)
+        {
+            if (item is CommodityDeed && ((CommodityDeed)item).Commodity != null)
+            {
+                item = ((CommodityDeed)item).Commodity;
+            }
+
+            var t = item.GetType();
+
+            if (type == t)
+            {
+                return true;
+            }
+            else if (!checkDerives)
+            {
+                return false;
+            }
+            else
+            {
+                if (type == typeof(Lobster) && BaseHighseasFish.Lobsters.Any(x => x == t))
+                {
+                    return true;
+                }
+                else if (type == typeof(Crab) && BaseHighseasFish.Crabs.Any(x => x == t))
+                {
+                    return true;
+                }
+                else if (type == typeof(Fish) && t != typeof(BaseCrabAndLobster) && !t.IsSubclassOf(typeof(BaseCrabAndLobster)) && (t.IsSubclassOf(type) || t == typeof(BaseHighseasFish) || t.IsSubclassOf(typeof(BaseHighseasFish))))
+                {
+                    return true;
+                }
+                else
+                {
+                    return t.IsSubclassOf(type);
+                }
+            }
+
+            return false;
+        }
+
+        public static int GetTypes(PlayerMobile pm, CollectionItem colItem)
+        {
+            var type = colItem.Type;
+            bool derives = type == typeof(RedScales) || type == typeof(Fish) || type == typeof(Crab) || type == typeof(Lobster);
+
+            int count = 0;
+
+            foreach (var item in pm.Backpack.Items)
+            {
+                if (CheckType(item, type, derives) && colItem.Validate(pm, GetActual(item)))
+                {
+                    if (type == typeof(BankCheck))
+                    {
+                        count += pm.Backpack.GetChecksWorth(true);
+                    }
+                    else if (item is CommodityDeed)
+                    {
+                        count += ((CommodityDeed)item).Commodity.Amount;
+                    }
+                    else
+                    {
+                        count += item.Amount;
+                    }
+                }
+            }
+
+            return count;
+        }
+
+        public static List<Item> FindTypes(PlayerMobile pm, CollectionItem colItem)
+        {
+            var type = colItem.Type;
+            bool derives = type == typeof(RedScales) || type == typeof(Fish) || type == typeof(Crab) || type == typeof(Lobster);
+
+            var list = new List<Item>();
+
+            foreach (var item in pm.Backpack.Items)
+            {
+                if (CheckType(item, type, derives) && colItem.Validate(pm, GetActual(item)))
+                {
+                    list.Add(item);
+                }
+            }
+
+            return list;
+        }
+
+        public static Item GetActual(Item item)
+        {
+            if (item is CommodityDeed)
+            {
+                return ((CommodityDeed)item).Commodity;
+            }
+
+            return item;
+        }
+
         #endregion
     }
 }
