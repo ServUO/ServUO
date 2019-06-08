@@ -97,8 +97,8 @@ namespace Server.Items
 
             bool goodtogo = true;
             int mods = GetTotalMods(item);
-            int maxmods = item is JukaBow || 
-                (item is BaseWeapon && !((BaseWeapon)item).DImodded) || 
+            int maxmods = item is JukaBow ||
+                (item is BaseWeapon && !((BaseWeapon)item).DImodded) ||
                 (item is BaseArmor && ((BaseArmor)item).ArmorAttributes.MageArmor > 0 && BaseArmor.IsMageArmorType((BaseArmor)item)) ? 1 : 0;
 
             if (item is BaseWeapon &&
@@ -112,7 +112,7 @@ namespace Server.Items
 
             if (mods > maxmods)
                 goodtogo = false;
-            else if(m_AllowableTable.ContainsKey(item.GetType()) && m_AllowableTable[item.GetType()] != crsystem)
+            else if (m_AllowableTable.ContainsKey(item.GetType()) && m_AllowableTable[item.GetType()] != crsystem)
                 goodtogo = false;
             else if (item is IResource && !CraftResources.IsStandard(((IResource)item).Resource))
                 goodtogo = false;
@@ -229,7 +229,7 @@ namespace Server.Items
 
                     while (budget > 25 && mods < maxmods && i < 25)
                     {
-                        if (prefixCol.Count > 0 && specialAdd > 0) 
+                        if (prefixCol.Count > 0 && specialAdd > 0)
                         {
                             int random = Utility.Random(prefixCol.Count);
 
@@ -408,7 +408,7 @@ namespace Server.Items
                         if (index == 5 && (options & ReforgingOption.Structural) != 0)
                             return false;
 
-                        if (index == 12 &&  (options & ReforgingOption.Structural) != 0 &&
+                        if (index == 12 && (options & ReforgingOption.Structural) != 0 &&
                                             (options & ReforgingOption.Fundamental) != 0)
                             return false;
                     }
@@ -517,7 +517,7 @@ namespace Server.Items
         }
 
         private static bool ApplyPrefixSuffixAttribute(Item item, NamedInfoCol col, int resIndex, int preIndex, int percLow, int percHigh, ref int budget, int luckchance, bool reforged, bool powerful)
-		{
+        {
             int start = budget;
             object attribute = col.Attribute;
 
@@ -536,7 +536,7 @@ namespace Server.Items
                     case "ElementalDamage": attribute = GetRandomElemental(); break;
                 }
             }
-            
+
             int id = ItemPropertyInfo.GetID(attribute);
 
             // prop is invalid, or the item already has a value for this prop
@@ -554,8 +554,8 @@ namespace Server.Items
                 ApplyProperty(item, id, percLow, percHigh, ref budget, luckchance, reforged, powerful); // TODO: powerful
             }
 
-			return start != budget;
-		}
+            return start != budget;
+        }
 
         private static Dictionary<Item, int[]> _Elements = new Dictionary<Item, int[]>();
 
@@ -576,7 +576,7 @@ namespace Server.Items
                 }
                 else if (resists != null)
                 {
-                    _Elements[item] = new int[] { resists[AosElementAttribute.Physical], resists[AosElementAttribute.Fire], resists[AosElementAttribute.Cold], 
+                    _Elements[item] = new int[] { resists[AosElementAttribute.Physical], resists[AosElementAttribute.Fire], resists[AosElementAttribute.Cold],
                         resists[AosElementAttribute.Poison], resists[AosElementAttribute.Energy] };
                 }
                 else
@@ -747,15 +747,15 @@ namespace Server.Items
 
             return value;
         }
-	
+
         private static int GetTotalMods(Item item)
         {
             return Imbuing.GetTotalMods(item);
         }
 
-		private static ItemPropertyInfo GetItemProps(object attr)
-		{
-			int id = -1;
+        private static ItemPropertyInfo GetItemProps(object attr)
+        {
+            int id = -1;
 
             if (attr is AosAttribute)
                 id = ItemPropertyInfo.GetIDForAttribute((AosAttribute)attr);
@@ -777,30 +777,30 @@ namespace Server.Items
 
             else if (attr is AosElementAttribute)
                 id = ItemPropertyInfo.GetIDForAttribute((AosElementAttribute)attr);
-				
-			if(ItemPropertyInfo.Table.ContainsKey(id))
-				return ItemPropertyInfo.Table[id];
-				
-			return null;
-		}
-		
-		private static int GetCollectionIndex(Item item)
-		{
-			if(item is BaseWeapon)
-				return 0;
-			if(item is BaseShield)
-				return 2;
-			if(item is BaseArmor || item is BaseClothing)
-				return 1;
-			if(item is BaseJewel)
-				return 3;
-				
-			return -1;
-		}
+
+            if (ItemPropertyInfo.Table.ContainsKey(id))
+                return ItemPropertyInfo.Table[id];
+
+            return null;
+        }
+
+        private static int GetCollectionIndex(Item item)
+        {
+            if (item is BaseWeapon)
+                return 0;
+            if (item is BaseShield)
+                return 2;
+            if (item is BaseArmor || item is BaseClothing)
+                return 1;
+            if (item is BaseJewel)
+                return 3;
+
+            return -1;
+        }
 
         private static int GetResourceIndex(CraftResource resource)
         {
-           // RunicIndex 0 - dullcopper; 1 - shadow; 2 - copper; 3 - spined; 4 - Oak; 5 - ash
+            // RunicIndex 0 - dullcopper; 1 - shadow; 2 - copper; 3 - spined; 4 - Oak; 5 - ash
             switch (resource)
             {
                 default:
@@ -858,9 +858,9 @@ namespace Server.Items
 
             return perclow + (int)((double)(perchi - perclow) * ((double)(GetPrerequisiteIndex(option) * 5.0) / 100.0));
         }
-		
-		private static Dictionary<Type, CraftSystem> m_AllowableTable = new Dictionary<Type, CraftSystem>();
-		private static Dictionary<int, NamedInfoCol[][]> m_PrefixSuffixInfo = new Dictionary<int, NamedInfoCol[][]>();
+
+        private static Dictionary<Type, CraftSystem> m_AllowableTable = new Dictionary<Type, CraftSystem>();
+        private static Dictionary<int, NamedInfoCol[][]> m_PrefixSuffixInfo = new Dictionary<int, NamedInfoCol[][]>();
 
         public static Dictionary<int, NamedInfoCol[][]> PrefixSuffixInfo { get { return m_PrefixSuffixInfo; } }
 
@@ -895,10 +895,10 @@ namespace Server.Items
                         });
                 });
 
-			// TypeIndex 0 - Weapon; 1 - Armor; 2 - Shield; 3 - Jewels
+            // TypeIndex 0 - Weapon; 1 - Armor; 2 - Shield; 3 - Jewels
             // RunicIndex 0 - dullcopper; 1 - shadow; 2 - copper; 3 - spined; 4 - Oak; 5 - ash
-			m_PrefixSuffixInfo[0] = null;
-			m_PrefixSuffixInfo[1] = new NamedInfoCol[][] 	//Might
+            m_PrefixSuffixInfo[0] = null;
+            m_PrefixSuffixInfo[1] = new NamedInfoCol[][] 	//Might
 				{
                     new NamedInfoCol[] // Weapon
                     {
@@ -915,7 +915,7 @@ namespace Server.Items
                         new NamedInfoCol(AosAttribute.BonusStr, ArmorStrTable),
                         new NamedInfoCol(AosAttribute.RegenHits, ArmorRegenTable),
                     },
-					
+
                     new NamedInfoCol[] // shield
                     {
                         new NamedInfoCol("RandomEater", EaterTable),
@@ -929,9 +929,9 @@ namespace Server.Items
                         new NamedInfoCol(AosAttribute.BonusHits, ArmorHitsTable),
                         new NamedInfoCol(AosAttribute.BonusStr, ArmorStrTable),
                     }
-				};
-				
-			m_PrefixSuffixInfo[2] = new NamedInfoCol[][] 	//Mystic
+                };
+
+            m_PrefixSuffixInfo[2] = new NamedInfoCol[][] 	//Mystic
 				{
                     new NamedInfoCol[] // Weapon
                     {
@@ -962,9 +962,9 @@ namespace Server.Items
                         new NamedInfoCol(AosAttribute.LowerManaCost, ArmorStamManaLMCTable),
                         new NamedInfoCol(AosAttribute.LowerRegCost, LowerRegTable),
                     },
-				};
-				
-			m_PrefixSuffixInfo[3] = new NamedInfoCol[][]	// Animated
+                };
+
+            m_PrefixSuffixInfo[3] = new NamedInfoCol[][]	// Animated
 				{
                     new NamedInfoCol[] // Weapon
                     {
@@ -993,8 +993,8 @@ namespace Server.Items
                         new NamedInfoCol(AosAttribute.BonusDex, DexIntTable),
                         new NamedInfoCol(AosAttribute.WeaponSpeed, ShieldWeaponSpeedTable),
                     },
-				};
-			m_PrefixSuffixInfo[4] = new NamedInfoCol[][]	//Arcane
+                };
+            m_PrefixSuffixInfo[4] = new NamedInfoCol[][]	//Arcane
 				{
                     new NamedInfoCol[] // Weapon
                     {
@@ -1034,8 +1034,8 @@ namespace Server.Items
                         new NamedInfoCol(AosAttribute.CastRecovery, 4),
                         new NamedInfoCol(AosAttribute.SpellDamage, 18),
                     },
-				};
-			m_PrefixSuffixInfo[5] = new NamedInfoCol[][]	// Exquisite
+                };
+            m_PrefixSuffixInfo[5] = new NamedInfoCol[][]	// Exquisite
 				{
                     new NamedInfoCol[] // Weapon
                     {
@@ -1064,8 +1064,8 @@ namespace Server.Items
                     new NamedInfoCol[]
                     {
                     },
-				};
-			m_PrefixSuffixInfo[6] = new NamedInfoCol[][]	//Vampiric
+                };
+            m_PrefixSuffixInfo[6] = new NamedInfoCol[][]	//Vampiric
 				{
                     new NamedInfoCol[] // Weapon
                     {
@@ -1085,8 +1085,8 @@ namespace Server.Items
                     new NamedInfoCol[]
                     {
                     },
-				};
-			m_PrefixSuffixInfo[7] = new NamedInfoCol[][]	// Invigorating
+                };
+            m_PrefixSuffixInfo[7] = new NamedInfoCol[][]	// Invigorating
 				{
                     new NamedInfoCol[] // Weapon
                     {
@@ -1116,8 +1116,8 @@ namespace Server.Items
                         new NamedInfoCol(AosAttribute.RegenStam, ArmorRegenTable),
                         new NamedInfoCol(AosAttribute.RegenMana, ArmorRegenTable),
                     },
-				};
-			m_PrefixSuffixInfo[8] = new NamedInfoCol[][]	// Fortified
+                };
+            m_PrefixSuffixInfo[8] = new NamedInfoCol[][]	// Fortified
 				{
                     new NamedInfoCol[] // Weapon
                     {
@@ -1153,14 +1153,14 @@ namespace Server.Items
                         new NamedInfoCol(AosElementAttribute.Poison, ResistTable),
                         new NamedInfoCol(AosElementAttribute.Energy, ResistTable),
                     },
-				};
-			m_PrefixSuffixInfo[9] = new NamedInfoCol[][]	// Auspicious
+                };
+            m_PrefixSuffixInfo[9] = new NamedInfoCol[][]	// Auspicious
 				{
                     new NamedInfoCol[] // Weapon
                     {
                         new NamedInfoCol(AosAttribute.Luck, LuckTable, RangedLuckTable),
                     },
-					new NamedInfoCol[] // armor
+                    new NamedInfoCol[] // armor
                     {
                         new NamedInfoCol(AosAttribute.Luck, LuckTable),
                     },
@@ -1172,8 +1172,8 @@ namespace Server.Items
                     {
                         new NamedInfoCol(AosAttribute.Luck, LuckTable),
                     },
-				};
-			m_PrefixSuffixInfo[10] = new NamedInfoCol[][]	// Charmed
+                };
+            m_PrefixSuffixInfo[10] = new NamedInfoCol[][]	// Charmed
 				{
                     new NamedInfoCol[] // Weapon
                     {
@@ -1191,8 +1191,8 @@ namespace Server.Items
                     {
                         new NamedInfoCol(AosAttribute.EnhancePotions, ArmorEnhancePotsTable),
                     },
-				};
-			m_PrefixSuffixInfo[11] = new NamedInfoCol[][]	//Vicious
+                };
+            m_PrefixSuffixInfo[11] = new NamedInfoCol[][]	//Vicious
 				{
                     new NamedInfoCol[] // Weapon
                     {
@@ -1216,9 +1216,9 @@ namespace Server.Items
                     {
                         new NamedInfoCol(AosAttribute.AttackChance, WeaponHCITable),
                         new NamedInfoCol(AosAttribute.SpellDamage, 18),
-                    }, 
-				};
-			m_PrefixSuffixInfo[12] = new NamedInfoCol[][]	// Towering
+                    },
+                };
+            m_PrefixSuffixInfo[12] = new NamedInfoCol[][]	// Towering
 				{
                     new NamedInfoCol[] // Weapon
                     {
@@ -1242,9 +1242,9 @@ namespace Server.Items
                         new NamedInfoCol(AosAttribute.DefendChance, ArmorHCIDCITable),
                         //new NamedInfoCol(SAAbsorptionAttribute.CastingFocus, ArmorCastingFocusTable),
                     },
-				};
+                };
 
-            m_PrefixSuffixInfo[250] = new NamedInfoCol[][] // Reforge Only
+            /*m_PrefixSuffixInfo[250] = new NamedInfoCol[][] // Reforge Only
                 {
                     new NamedInfoCol[] // Weapon
                     {
@@ -1260,7 +1260,7 @@ namespace Server.Items
                     new NamedInfoCol[]
                     {
                     },
-                };
+                };*/
         }
 
         public class NamedInfoCol
@@ -1368,7 +1368,7 @@ namespace Server.Items
                 case 1: return AosWeaponAttribute.HitFireball;
                 case 2: return AosWeaponAttribute.HitHarm;
                 case 3: return AosWeaponAttribute.HitLightning;
-                //case 4: return AosWeaponAttribute.HitCurse;
+                    //case 4: return AosWeaponAttribute.HitCurse;
             }
         }
 
@@ -1489,7 +1489,7 @@ namespace Server.Items
 
             else if (item is BaseArmor)
                 ((BaseArmor)item).ReforgedSuffix = suffix;
-				
+
             else if (item is BaseJewel)
                 ((BaseJewel)item).ReforgedSuffix = suffix;
 
@@ -1614,10 +1614,10 @@ namespace Server.Items
         public static bool GenerateRandomArtifactItem(Item item, int luck, int budget, ReforgedPrefix prefix = ReforgedPrefix.None, ReforgedSuffix suffix = ReforgedSuffix.None)
         {
             if (prefix == ReforgedPrefix.None)
-                prefix = ChooseRandomPrefix(item);
+                prefix = ChooseRandomPrefix(item, budget);
 
             if (suffix == ReforgedSuffix.None)
-                suffix = ChooseRandomSuffix(item);
+                suffix = ChooseRandomSuffix(item, budget);
 
             if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
             {
@@ -1762,10 +1762,10 @@ namespace Server.Items
                         suffix = ReforgedSuffix.None;
 
                     if (forcedprefix == ReforgedPrefix.None && budget >= Utility.Random(2700) && suffix < ReforgedSuffix.Minax)
-                        prefix = ChooseRandomPrefix(item);
+                        prefix = ChooseRandomPrefix(item, budget);
 
                     if (forcedsuffix == ReforgedSuffix.None && budget >= Utility.Random(2700))
-                        suffix = ChooseRandomSuffix(item, prefix);
+                        suffix = ChooseRandomSuffix(item, budget, prefix);
 
                     if (!IsPowerful(budget))
                     {
@@ -1795,6 +1795,8 @@ namespace Server.Items
 
                 var props = new List<int>(ItemPropertyInfo.LookupLootTable(item));
                 bool powerful = IsPowerful(budget);
+
+                Commands.TestStuff.GlobalBaseBudget += budget;
 
                 ApplyReforgedProperties(item, props, prefix, suffix, budget, perclow, perchigh, mods, luckchance);
 
@@ -1972,40 +1974,147 @@ namespace Server.Items
             return 0;
         }
 
-        private static int[] m_Standard = new int[] { 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12 };
-        private static int[] m_Weapon = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-        private static int[] m_ReforgedWeapon = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 250 };
-
-        public static ReforgedPrefix ChooseRandomPrefix(Item item)
+        private static Dictionary<int, int> _Standard = new Dictionary<int, int>()
         {
-            return ChooseRandomPrefix(item, ReforgedSuffix.None);
+            { 1,  10 },
+            { 2,  10 },
+            { 3,  10 },
+            { 4,  10 },
+            { 5,  10 },
+            { 7,  10 },
+            { 8,  10 },
+            { 9,  2 },
+            { 10, 2 },
+            { 11, 5 },
+            { 12, 5 },
+        };
+
+        private static Dictionary<int, int> _StandardPowerful = new Dictionary<int, int>()
+        {
+            { 1,  10 },
+            { 2,  10 },
+            { 3,  10 },
+            { 4,  10 },
+            { 5,  10 },
+            { 7,  10 },
+            { 8,  10 },
+            { 9,  0 },
+            { 10, 0 },
+            { 11, 2 },
+            { 12, 2 },
+        };
+
+        private static Dictionary<int, int> _Weapon = new Dictionary<int, int>()
+        {
+            { 1,  10 },
+            { 2,  10 },
+            { 3,  10 },
+            { 4,  10 },
+            { 5,  10 },
+            { 6,  10 },
+            { 7,  10 },
+            { 8,  10 },
+            { 9,  2 },
+            { 10, 2 },
+            { 11, 5 },
+            { 12, 5 },
+        };
+
+        private static Dictionary<int, int> _WeaponPowerful = new Dictionary<int, int>()
+        {
+            { 1,  10 },
+            { 2,  10 },
+            { 3,  10 },
+            { 4,  10 },
+            { 5,  10 },
+            { 6,  10 },
+            { 7,  10 },
+            { 8,  10 },
+            { 9,  0 },
+            { 10, 0 },
+            { 11, 2 },
+            { 12, 2 },
+        };
+
+        public static ReforgedPrefix ChooseRandomPrefix(Item item, int budget)
+        {
+            return ChooseRandomPrefix(item, budget, ReforgedSuffix.None);
         }
 
-        public static ReforgedPrefix ChooseRandomPrefix(Item item, ReforgedSuffix suffix)
+        public static ReforgedPrefix ChooseRandomPrefix(Item item, int budget, ReforgedSuffix suffix)
         {
-            int random = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
+            Dictionary<int, int> table;
+            bool powerful = budget > 600;
+
+            if (item is BaseWeapon)
+            {
+                table = powerful ? _WeaponPowerful : _Weapon;
+            }
+            else
+            {
+                table = powerful ? _StandardPowerful : _Standard;
+            }
+
+            int random = GetRandomName(table);
 
             while ((int)suffix != 0 && random == (int)suffix)
-                random = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
+                random = GetRandomName(table);
 
             return (ReforgedPrefix)random;
-
         }
 
-        public static ReforgedSuffix ChooseRandomSuffix(Item item)
+        public static ReforgedSuffix ChooseRandomSuffix(Item item, int budget)
         {
-            return ChooseRandomSuffix(item, ReforgedPrefix.None);
+            return ChooseRandomSuffix(item, budget, ReforgedPrefix.None);
         }
 
-        public static ReforgedSuffix ChooseRandomSuffix(Item item, ReforgedPrefix prefix)
+        public static ReforgedSuffix ChooseRandomSuffix(Item item, int budget, ReforgedPrefix prefix)
         {
-            int random = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
+            //int random = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
+            Dictionary<int, int> table;
+            bool powerful = budget > 600;
+
+            if (item is BaseWeapon)
+            {
+                table = powerful ? _WeaponPowerful : _Weapon;
+            }
+            else
+            {
+                table = powerful ? _StandardPowerful : _Standard;
+            }
+
+            int random = GetRandomName(table);
 
             while ((int)prefix != 0 && random == (int)prefix)
-                random = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
+                random = GetRandomName(table);
 
             return (ReforgedSuffix)random;
+        }
 
+        private static int GetRandomName(Dictionary<int, int> table)
+        {
+            int total = 0;
+
+            foreach (var kvp in table)
+            {
+                total += kvp.Value;
+            }
+
+            var random = Utility.RandomMinMax(1, total);
+            total = 0;
+
+            foreach (var kvp in table)
+            {
+                total += kvp.Value;
+
+                if (total >= random)
+                {
+                    return kvp.Key;
+                }
+            }
+
+            Console.WriteLine("Should not reach this!");
+            return 0;
         }
 
         public static int GetDifficultyFor(BaseCreature bc)
@@ -2236,47 +2345,6 @@ namespace Server.Items
 
             return reforged ? ItemPower.ReforgedLegendary : ItemPower.LegendaryArtifact;
         }
-
-        /*private static bool ApplyNewAttributes(Item item, int prefixID, int suffixID, int colIndex, int percLow, int percHigh, int resIndex, int preIndex, int luckchance, bool reforged, ref int budget)
-        {
-            int randomCol;
-
-            if (item is BaseWeapon)
-            {
-                if (reforged)
-                {
-                    randomCol = m_ReforgedWeapon[Utility.Random(m_ReforgedWeapon.Length)];
-                }
-                else
-                {
-                    randomCol = m_Weapon[Utility.Random(m_Weapon.Length)];
-                }
-            }
-            else
-            {
-                randomCol = m_Standard[Utility.Random(m_Standard.Length)];
-            }
-
-            while (prefixID != 0 && randomCol == prefixID && suffixID != 0 && randomCol == suffixID)
-                randomCol = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
-
-            ReforgedPrefix prefix = (ReforgedPrefix)randomCol;
-            var collection = new List<NamedInfoCol>(m_PrefixSuffixInfo[randomCol][colIndex]);
-
-            if (collection == null || collection.Count == 0)
-            {
-                return false;
-            }
-
-            CheckAttributes(item, collection, reforged);
-
-            int random = Utility.Random(collection.Count);
-
-            return ApplyPrefixSuffixAttribute(item, 
-                collection[random].Attribute, 
-                collection[random].Min(resIndex, preIndex, item), 
-                collection[random].Max(resIndex, preIndex, item), percLow, percHigh, ref budget, luckchance, reforged);
-        }*/
 
         private static bool ApplyRandomProperty(Item item, List<int> props, int perclow, int perchigh, ref int budget, int luckchance, bool reforged, bool powerful)
         {

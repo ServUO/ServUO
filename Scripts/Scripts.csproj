@@ -792,7 +792,6 @@
     <Compile Include="Services\LootGeneration\ItemPropertyInfo.cs" />
     <Compile Include="Services\LootGeneration\RandomItemGenerator.cs" />
     <Compile Include="Services\LootGeneration\RunicReforging\Gumps.cs" />
-    <Compile Include="Services\LootGeneration\RunicReforging\NamedPropertyCollection.cs" />
     <Compile Include="Services\LootGeneration\RunicReforging\ReforgingContext.cs" />
     <Compile Include="Services\LootGeneration\RunicReforging\RunicReforging.cs" />
     <Compile Include="Services\Plants\PottedCoffeePlant.cs" />
