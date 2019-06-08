@@ -1391,7 +1391,7 @@ namespace Server.Mobiles
         #endregion
 
         #region Flee!!!
-        public virtual bool CanFlee { get { return !m_Paragon; } }
+        public virtual bool CanFlee { get { return !m_Paragon && !GivesMLMinorArtifact; } }
 
         private DateTime m_EndFlee;
 
@@ -1743,7 +1743,7 @@ namespace Server.Mobiles
             {
                 var master = c.GetMaster();
 
-                if (!(master is BaseCreature))
+                if (master != null && !(master is BaseCreature))
                 {
                     return true;
                 }
