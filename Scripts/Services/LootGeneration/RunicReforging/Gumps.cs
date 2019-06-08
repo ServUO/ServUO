@@ -49,7 +49,7 @@ namespace Server.Gumps
             : base(100, 100)
         {
             from.CloseGump(typeof(RunicReforgingGump));
-            from.CloseGump(typeof(ImbuingGumpC));
+            from.CloseGump(typeof(ImbueGump));
 
             m_Context = ReforgingContext.GetContext(from);
 
@@ -325,18 +325,18 @@ namespace Server.Gumps
                                         // random prefix AND suffix
                                         if ((m_Options & ReforgingOption.ExaltedArtifice) != 0)
                                         {
-                                            prefix = RunicReforging.ChooseRandomPrefix(m_ToReforge);
-                                            suffix = RunicReforging.ChooseRandomSuffix(m_ToReforge, m_Prefix);
+                                            prefix = RunicReforging.ChooseRandomPrefix(m_ToReforge, budget);
+                                            suffix = RunicReforging.ChooseRandomSuffix(m_ToReforge, budget, m_Prefix);
                                         }
                                         else // random prefix OR suffix
                                         {
                                             if (0.5 > Utility.RandomDouble())
                                             {
-                                                prefix = RunicReforging.ChooseRandomPrefix(m_ToReforge);
+                                                prefix = RunicReforging.ChooseRandomPrefix(m_ToReforge, budget);
                                             }
                                             else
                                             {
-                                                suffix = RunicReforging.ChooseRandomSuffix(m_ToReforge, m_Prefix);
+                                                suffix = RunicReforging.ChooseRandomSuffix(m_ToReforge, budget, m_Prefix);
                                             }
                                         }
                                     }
@@ -357,7 +357,7 @@ namespace Server.Gumps
                                 }
                                 else
                                 {
-                                    suffix = RunicReforging.ChooseRandomSuffix(m_ToReforge, m_Prefix);
+                                    suffix = RunicReforging.ChooseRandomSuffix(m_ToReforge, budget, m_Prefix);
                                     budget = Math.Min(800, budget + 50);
                                 }
                             }
@@ -372,11 +372,11 @@ namespace Server.Gumps
                                 suffix = (ReforgedSuffix)pre;
                             }
 
-                            RunicReforging.ApplyReforgedProperties(m_ToReforge, prefix, suffix, true, budget, min, max, maxprops, 0, m_Tool, m_Options);
+                            RunicReforging.ApplyReforgedProperties(m_ToReforge, prefix, suffix, budget, min, max, maxprops, 0, m_Tool, m_Options);
 
                             OnAfterReforged(m_ToReforge);
                             from.SendLocalizedMessage(1152286); // You re-forge the item!
-                            //from.FixedParticles(0x374A, 10, 30, 5021, EffectLayer.Head);
+
                             from.PlaySound(0x665);
 
                             m_Tool.UsesRemaining -= totalCharges;
