@@ -1704,7 +1704,7 @@ namespace Server.Mobiles
 
         public bool ValidGuardTarget(Mobile combatant)
         {
-            return combatant != null && combatant != m_Mobile && combatant != m_Mobile.ControlMaster && !combatant.Deleted &&
+            return combatant != null && combatant != m_Mobile && combatant != m_Mobile.ControlMaster && !combatant.Deleted && m_Mobile.CanSee(combatant) &&
                 combatant.Alive && (!(combatant is Mobile) || !combatant.IsDeadBondedPet) &&
                 m_Mobile.CanBeHarmful(combatant, false) && combatant.Map == m_Mobile.Map && combatant.GetDistanceToSqrt(m_Mobile) <= m_Mobile.RangePerception;
         }
@@ -2970,9 +2970,11 @@ namespace Server.Mobiles
 							if (m == m_Mobile.SummonMaster)
 								continue;
 
-							// It also must abide by harmful spell rules if the master is a player.
-							if (m_Mobile.SummonMaster is PlayerMobile && !SpellHelper.ValidIndirectTarget(m_Mobile.SummonMaster, m))
-								continue;
+                            // It also must abide by harmful spell rules if the master is a player.
+                            if (m_Mobile.SummonMaster is PlayerMobile && !SpellHelper.ValidIndirectTarget(m_Mobile.SummonMaster, m))
+                            {
+                                continue;
+                            }
 
 							// Players animated creatures cannot attack other players directly.
 							if (m is PlayerMobile && m_Mobile.IsAnimatedDead && m_Mobile.SummonMaster is PlayerMobile)
@@ -2982,7 +2984,7 @@ namespace Server.Mobiles
 						// Ignore anyone we can't hurt
 						if (!m_Mobile.CanBeHarmful(m, false))
 						{
-							continue;
+                            continue;
 						}
 
 						// Don't ignore hostile mobiles
@@ -3025,24 +3027,6 @@ namespace Server.Mobiles
 			{
 				return true;
 			}
-
-            /*var count = Math.Max(m_Mobile.Aggressors.Count, m_Mobile.Aggressed.Count);
-
-			if (count > 0)
-			{
-				for (var a = 0; a < count; ++a)
-				{
-					if (a < m_Mobile.Aggressed.Count && m_Mobile.Aggressed[a].Defender == from)
-					{
-						return true;
-					}
-
-					if (a < m_Mobile.Aggressors.Count && m_Mobile.Aggressors[a].Attacker == from)
-					{
-						return true;
-					}
-				}
-			}*/
 
 			return false;
 		}
