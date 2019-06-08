@@ -137,9 +137,9 @@ namespace Server
 
         public override bool Validate(PlayerMobile from, Item item)
         {
-            TreasureMap map = (TreasureMap)item;
+            TreasureMap map = item as TreasureMap;
 			
-            if (map.Level == m_Level)
+            if (map != null && map.Level == m_Level)
                 return true;
 			
             return false;
@@ -160,9 +160,9 @@ namespace Server
 
         public override bool Validate(PlayerMobile from, Item item)
         {
-            Spellbook spellbook = (Spellbook)item;
+            Spellbook spellbook = item as Spellbook;
 			
-            if (spellbook.SpellbookType == m_Type && spellbook.Content == 0)
+            if (spellbook != null && spellbook.SpellbookType == m_Type && spellbook.Content == 0)
                 return true;
 			
             return false;
