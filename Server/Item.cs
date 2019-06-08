@@ -1260,6 +1260,13 @@ namespace Server
         /// </summary>
         public virtual void AddLootTypeProperty(ObjectPropertyList list)
         {
+            Mobile blessedFor = BlessedFor;
+
+            if (blessedFor != null && !blessedFor.Deleted)
+            {
+                AddBlessedForProperty(list, blessedFor);
+            }
+
             if (m_LootType == LootType.Blessed)
             {
                 list.Add(1038021); // blessed
@@ -1378,22 +1385,17 @@ namespace Server
                 AddLockedDownProperty(list);
             }
 
+            if (DisplayLootType)
+            {
+                AddLootTypeProperty(list);
+            }
+
             if (DisplayWeight)
             {
                 AddWeightProperty(list);
             }
 
-            Mobile blessedFor = BlessedFor;
-
-            if (blessedFor != null && !blessedFor.Deleted)
-            {
-                AddBlessedForProperty(list, blessedFor);
-            }
-
-            if (DisplayLootType)
-            {
-                AddLootTypeProperty(list);
-            }
+            AppendChildNameProperties(list);
 
             if (QuestItem)
             {
@@ -1471,8 +1473,6 @@ namespace Server
             }
 
             AddItemPowerProperties(list);
-
-            AppendChildNameProperties(list);
         }
 
         /// <summary>

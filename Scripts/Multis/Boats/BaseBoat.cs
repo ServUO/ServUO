@@ -1182,7 +1182,7 @@ namespace Server.Multis
 
                     int keyword = e.Keywords[i];
 
-                    if ((keyword >= 0x42 && keyword <= 0x6B) || keyword == 0x28 || keyword == 0xF)  // TG - added 0x28
+                    if ((keyword >= 0x42 && keyword <= 0x6B) || keyword == 0xF)
                     {
                         switch (keyword)
                         {
@@ -1221,14 +1221,14 @@ namespace Server.Multis
                             case 0x67: StartTurn(-4, true); break; // turn around, come about
                             case 0x68: StartMove(Forward, true); break;
                             case 0x69: StopMove(true); break;
-                            //case 0x6A: LowerAnchor( true ); break;
-                            //case 0x6B: RaiseAnchor( true ); break;
+                            case 0x6A: if(!Core.HS) LowerAnchor( true ); break;
+                            case 0x6B: if(!Core.HS) RaiseAnchor( true ); break;
                             case 0x60: GiveNavPoint(); break; // nav
                             case 0x61: NextNavPoint = 0; StartCourse(false, true); break; // start
                             case 0x62: StartCourse(false, true); break; // continue
                             case 0x63: StartCourse(e.Speech, false, true); break; // goto*
                             case 0x64: StartCourse(e.Speech, true, true); break; // single*
-                            case 0xF: TryTrack(from, e.Speech); break;
+                            case 0xF: if(Core.HS) TryTrack(from, e.Speech); break;
                         }
 
                         e.Handled = true;
@@ -1322,6 +1322,46 @@ namespace Server.Multis
                 if (!m_Boat.Deleted)
                     m_Boat.Turn(m_Offset, true);
             }
+        }
+
+        public bool LowerAnchor(bool message)
+        {
+            if (CheckDecay())
+                return false;
+
+            if (m_Anchored)
+            {
+                TillerManSay(501445); // Ar, the anchor was already dropped sir.
+
+                return false;
+            }
+
+            StopMove(false);
+
+            m_Anchored = true;
+
+            TillerManSay(501444); // Ar, anchor dropped sir.
+
+            return true;
+        }
+
+        public bool RaiseAnchor(bool message)
+        {
+            if (CheckDecay())
+                return false;
+
+            if (!m_Anchored)
+            {
+                TillerManSay(501447); // Ar, the anchor has not been dropped sir.
+
+                return false;
+            }
+
+            m_Anchored = false;
+
+            TillerManSay(501446); // Ar, anchor raised sir.
+
+            return true;
         }
 
         public bool StartMove(Direction dir, bool fast)

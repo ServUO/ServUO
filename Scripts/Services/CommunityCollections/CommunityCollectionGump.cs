@@ -627,8 +627,6 @@ namespace Server.Gumps
                     return t.IsSubclassOf(type);
                 }
             }
-
-            return false;
         }
 
         public static int GetTypes(PlayerMobile pm, CollectionItem colItem)
