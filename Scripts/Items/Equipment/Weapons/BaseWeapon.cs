@@ -5600,6 +5600,11 @@ namespace Server.Items
             int prop;
             double fprop;
 
+            if ((prop = m_AosWeaponAttributes.DurabilityBonus) != 0)
+            {
+                list.Add(1060410, prop.ToString()); // durability ~1_val~%
+            }
+
             if (Core.TOL)
             {
                 if (m_ExtendedWeaponAttributes.Bane > 0)

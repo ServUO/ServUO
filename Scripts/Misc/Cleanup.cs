@@ -117,7 +117,10 @@ namespace Server.Misc
                     Console.WriteLine("Cleanup: Detected {0} inaccessible items, removing..", items.Count);
 
                 for (int i = 0; i < items.Count; ++i)
+                {
+                    Console.WriteLine(items[i].ToString());
                     items[i].Delete();
+                }
             }
 
             if (hairCleanup.Count > 0)

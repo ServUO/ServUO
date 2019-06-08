@@ -9,17 +9,20 @@ using System.Linq;
 
 namespace Server.Gumps
 {
-    public class ImbuingGump : Gump
+    public class ImbuingGump : BaseGump
     {
         private const int LabelColor = 0x7FFF;
 
-        public ImbuingGump(Mobile from)
-            : base(25, 50)
+        public ImbuingGump(PlayerMobile pm)
+            : base(pm, 25, 50)
         {
-            from.CloseGump(typeof(ImbuingGumpB));
-            from.CloseGump(typeof(ImbuingGumpC));
+            User.CloseGump(typeof(ImbueSelectGump));
+            User.CloseGump(typeof(ImbueGump));
+        }
 
-            ImbuingContext context = Imbuing.GetContext(from);
+        public override void AddGumpLayout()
+        {
+            ImbuingContext context = Imbuing.GetContext(User);
 
             context.Imbue_ModVal = 0;
             context.ImbMenu_Cat = 0;
@@ -46,7 +49,7 @@ namespace Server.Gumps
             AddHtmlLocalized(50, 150, 430, 20, 1114274, LabelColor, false, false); //Imbue Last Property - Imbues a new item with the last property
 
             AddButton(15, 180, 4005, 4007, 10010, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(50, 180, 470, 20, 1080431, LabelColor, false, false); //Unravel Item - Extracts magical ingredients from an item, destroying it
+            AddHtmlLocalized(50, 180, 470, 20, 1080431, LabelColor, false, false); //Unravel Item - Extracts magical ingredients User an item, destroying it
 
             AddButton(15, 210, 4005, 4007, 10011, GumpButtonType.Reply, 0);
             AddHtmlLocalized(50, 210, 430, 20, 1114275, LabelColor, false, false); //Unravel Container - Unravels all items in a container
@@ -55,47 +58,45 @@ namespace Server.Gumps
             AddHtmlLocalized(50, 280, 50, 20, 1011012, LabelColor, false, false); //CANCEL
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
-            Mobile from = state.Mobile;
-
-            ImbuingContext context = Imbuing.GetContext(from);
+            ImbuingContext context = Imbuing.GetContext(User);
 
             switch (info.ButtonID)
             {
                 case 0: // Close
                 case 1:
                     {
-                        from.EndAction(typeof(Imbuing));
+                        User.EndAction(typeof(Imbuing));
 
                         break;
                     }
                 case 10005:  // Imbue Item
                     {
-                        from.SendLocalizedMessage(1079589);  //Target an item you wish to imbue.
+                        User.SendLocalizedMessage(1079589);  //Target an item you wish to imbue.
 
-                        from.Target = new ImbueItemTarget();
-                        from.Target.BeginTimeout(from, TimeSpan.FromSeconds(10.0));
+                        User.Target = new ImbueItemTarget();
+                        User.Target.BeginTimeout(User, TimeSpan.FromSeconds(10.0));
 
                         break;
                     }
                 case 10006:  // Reimbue Last
                     {
-                        Item it = context.LastImbued;
+                        Item item = context.LastImbued;
                         int mod = context.Imbue_Mod;
                         int modint = context.Imbue_ModInt;        
 
-                        if (it == null || mod < 0 || modint == 0)
+                        if (item == null || mod < 0 || modint == 0)
                         {
-                            from.SendLocalizedMessage(1113572); // You haven't imbued anything yet!
-                            from.EndAction(typeof(Imbuing));
+                            User.SendLocalizedMessage(1113572); // You haven't imbued anything yet!
+                            User.EndAction(typeof(Imbuing));
                             break;
                         }
 
-                        if (Imbuing.CanImbueItem(from, it) && Imbuing.OnBeforeImbue(from, it, mod, modint))
+                        if (Imbuing.CanImbueItem(User, item) && Imbuing.OnBeforeImbue(User, item, mod, modint))
                         {
-                            Imbuing.TryImbueItem(from, it, mod, modint);
-                            ImbuingGumpC.SendGumpDelayed(from);
+                            Imbuing.TryImbueItem(User, item, mod, modint);
+                            ImbueGump.SendGumpDelayed(User);
                         }
                         break;
                     }
@@ -108,13 +109,13 @@ namespace Server.Gumps
                         
                         if (context.LastImbued == null)
                         {
-                            from.SendLocalizedMessage(1113572); // You haven't imbued anything yet!
-                            from.EndAction(typeof(Imbuing));
+                            User.SendLocalizedMessage(1113572); // You haven't imbued anything yet!
+                            User.EndAction(typeof(Imbuing));
                             break;
                         }
                         else
                         {
-                            ImbueStep1(from, item);
+                            ImbueStep1(User, item);
                         }
                         break;
                     }
@@ -125,34 +126,36 @@ namespace Server.Gumps
                         int modint = context.Imbue_ModInt;
 
                         if (modint < 0)
-                            modint = 0;                        
+                            modint = 0;
 
                         if (mod < 0)
                         {
-                            from.SendLocalizedMessage(1113572); // You haven't imbued anything yet!
-                            from.EndAction(typeof(Imbuing));
+                            User.SendLocalizedMessage(1113572); // You haven't imbued anything yet!
+                            User.EndAction(typeof(Imbuing));
                             break;
                         }
                         else
-                            ImbuingGump.ImbueLastProp(from, mod, modint);
+                        {
+                            ImbueLastProp(User, mod, modint);
+                        }
 
                         break;
                     }
                 case 10010:  // Unravel Item
                     {
-                        from.SendLocalizedMessage(1080422); // Target an item you wish to magically unravel.
+                        User.SendLocalizedMessage(1080422); // Target an item you wish to magically unravel.
 
-                        from.Target = new UnravelTarget();
-                        from.Target.BeginTimeout(from, TimeSpan.FromSeconds(10.0));
+                        User.Target = new UnravelTarget();
+                        User.Target.BeginTimeout(User, TimeSpan.FromSeconds(10.0));
 
                         break;
                     }
                 case 10011:  // Unravel Container
                     {
-                        from.SendLocalizedMessage(1080422); // Target an item you wish to magically unravel.
+                        User.SendLocalizedMessage(1080422); // Target an item you wish to magically unravel.
 
-                        from.Target = new UnravelContainerTarget();
-                        from.Target.BeginTimeout(from, TimeSpan.FromSeconds(10.0));
+                        User.Target = new UnravelContainerTarget();
+                        User.Target.BeginTimeout(User, TimeSpan.FromSeconds(10.0));
 
                         break;
                     }
@@ -169,36 +172,40 @@ namespace Server.Gumps
                 AllowNonlocal = true;
             }
 
-            protected override void OnTarget(Mobile from, object o)
+            protected override void OnTarget(Mobile m, object o)
             {
-                from.EndAction(typeof(Imbuing));
+                m.EndAction(typeof(Imbuing));
 
-                if (!(o is Item))
+                Item item = o as Item;
+
+                if (item == null)
                 {
-                    from.SendLocalizedMessage(1080425); // You cannot magically unravel this item.
-                    return;
+                    m.SendLocalizedMessage(1080425); // You cannot magically unravel this item.
                 }
-
-                if (Imbuing.CanUnravelItem(from, (Item)o))
+                else if (m is PlayerMobile && Imbuing.CanUnravelItem(m, item))
                 {
-                    from.BeginAction(typeof(Imbuing));
-                    from.SendGump(new UnravelGump((Item)o));
+                    m.BeginAction(typeof(Imbuing));
+                    BaseGump.SendGump(new UnravelGump((PlayerMobile)m, item));
                 }
             }
 
-            protected override void OnTargetCancel(Mobile from, TargetCancelType cancelType)
+            protected override void OnTargetCancel(Mobile User, TargetCancelType cancelType)
             {
-                from.EndAction(typeof(Imbuing));
+                User.EndAction(typeof(Imbuing));
             }
 
-            private class UnravelGump : Gump
+            private class UnravelGump : BaseGump
             {
                 private Item m_Item;
 
-                public UnravelGump(Item item) : base(60, 36)
+                public UnravelGump(PlayerMobile pm, Item item)
+                    : base(pm, 60, 36)
                 {
                     m_Item = item;
+                }
 
+                public override void AddGumpLayout()
+                {
                     AddPage(0);
                     AddBackground(0, 0, 520, 245, 5054);
                     AddImageTiled(10, 10, 500, 225, 2624);
@@ -217,21 +224,20 @@ namespace Server.Gumps
                     AddHtmlLocalized(45, 212, 50, 20, 1011012, LabelColor, false, false); // CANCEL
                 }
 
-                public override void OnResponse(NetState sender, RelayInfo info)
+                public override void OnResponse(RelayInfo info)
                 {                    
-                    Mobile from = sender.Mobile;
-                    from.EndAction(typeof(Imbuing));
+                    User.EndAction(typeof(Imbuing));
 
                     if (info.ButtonID == 0 || m_Item.Deleted)
                         return;
                     
-                    if (Imbuing.CanUnravelItem(from, m_Item) && Imbuing.UnravelItem(from, m_Item))
+                    if (Imbuing.CanUnravelItem(User, m_Item) && Imbuing.UnravelItem(User, m_Item))
                     {
-                        Effects.SendPacket(from, from.Map, new GraphicalEffect(EffectType.FixedFrom, from.Serial, Server.Serial.Zero, 0x375A, from.Location, from.Location, 1, 17, true, false));
-                        from.PlaySound(0x1EB);
+                        Effects.SendPacket(User, User.Map, new GraphicalEffect(EffectType.FixedFrom, User.Serial, Server.Serial.Zero, 0x375A, User.Location, User.Location, 1, 17, true, false));
+                        User.PlaySound(0x1EB);
 
-                        from.SendLocalizedMessage(1080429); // You magically unravel the item!
-                        from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
+                        User.SendLocalizedMessage(1080429); // You magically unravel the item!
+                        User.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
                     }
                 }
             }
@@ -243,71 +249,67 @@ namespace Server.Gumps
             {
             }
 
-            protected override void OnTarget(Mobile from, object o)
+            protected override void OnTarget(Mobile m, object o)
             {
-                from.EndAction(typeof(Imbuing));
-
-                if (!(o is Container) || (o is LockableContainer && ((LockableContainer)o).Locked))
-                {
-                    from.SendLocalizedMessage(1080425); // You cannot magically unravel this item.
-                    return;
-                }
-
+                m.EndAction(typeof(Imbuing));
                 Container cont = o as Container;
 
-                if (!cont.IsChildOf(from.Backpack))
+                if (!cont.IsChildOf(m.Backpack))
                 {
-                    from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
-                    from.EndAction(typeof(Imbuing));
+                    m.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
+                    m.EndAction(typeof(Imbuing));
                 }
-                else if (cont == null)
+                else if (cont == null || (cont is LockableContainer && ((LockableContainer)cont).Locked))
                 {
-                    from.SendLocalizedMessage(1111814, "0\t0"); // Unraveled: ~1_COUNT~/~2_NUM~ items
-                    from.EndAction(typeof(Imbuing));
+                    m.SendLocalizedMessage(1111814, "0\t0"); // Unraveled: ~1_COUNT~/~2_NUM~ items
+                    m.EndAction(typeof(Imbuing));
                 }
-                else
+                else if (m is PlayerMobile)
                 {
-                    bool unraveled = cont.Items.FirstOrDefault(x => Imbuing.CanUnravelItem(from, x, false)) != null;
+                    bool unraveled = cont.Items.FirstOrDefault(x => Imbuing.CanUnravelItem(m, x, false)) != null;
 
                     if (unraveled)
                     {
-                        from.BeginAction(typeof(Imbuing));
-                        from.SendGump(new UnravelContainerGump(cont));                        
+                        m.BeginAction(typeof(Imbuing));
+                        BaseGump.SendGump(new UnravelContainerGump((PlayerMobile)m, cont));
                     }
                     else
                     {
-                        TryUnravelContainer(from, cont);
-                        from.EndAction(typeof(Imbuing));
+                        TryUnravelContainer(m, cont);
+                        m.EndAction(typeof(Imbuing));
                     }
                 }
             }
 
-            protected override void OnTargetCancel(Mobile from, TargetCancelType cancelType)
+            protected override void OnTargetCancel(Mobile User, TargetCancelType cancelType)
             {
-                from.EndAction(typeof(Imbuing));
+                User.EndAction(typeof(Imbuing));
             }
 
-            public static void TryUnravelContainer(Mobile from, Container c)
+            public static void TryUnravelContainer(Mobile User, Container c)
             {
                 c.Items.ForEach(y =>
                 {
-                    Imbuing.CanUnravelItem(from, y, true);
+                    Imbuing.CanUnravelItem(User, y, true);
                 });
 
-                from.SendLocalizedMessage(1111814, String.Format("{0}\t{1}", 0, c.Items.Count)); // Unraveled: ~1_COUNT~/~2_NUM~ items
+                User.SendLocalizedMessage(1111814, String.Format("{0}\t{1}", 0, c.Items.Count)); // Unraveled: ~1_COUNT~/~2_NUM~ items
             }            
 
-            private class UnravelContainerGump : Gump
+            private class UnravelContainerGump : BaseGump
             {
                 private Container m_Container;
                 private List<Item> m_List;
 
-                public UnravelContainerGump(Container c) 
-                    : base(25, 50)
+                public UnravelContainerGump(PlayerMobile pm, Container c)
+                    : base(pm, 25, 50)
                 {
                     m_Container = c;
                     m_List = new List<Item>(c.Items);
+                }
 
+                public override void AddGumpLayout()
+                {
                     AddPage(0);
                     AddBackground(0, 0, 520, 245, 5054);
                     AddImageTiled(10, 10, 500, 225, 2624);
@@ -326,17 +328,16 @@ namespace Server.Gumps
                     AddHtmlLocalized(45, 212, 50, 20, 1049718, LabelColor, false, false); // NO
                 }
 
-                public override void OnResponse(NetState sender, RelayInfo info)
+                public override void OnResponse(RelayInfo info)
                 {
-                    Mobile from = sender.Mobile;
-                    from.EndAction(typeof(Imbuing));
+                    User.EndAction(typeof(Imbuing));
 
                     if (m_Container == null || m_List == null)
                         return;
 
                     if (info.ButtonID == 0)
                     {
-                        TryUnravelContainer(from, m_Container);
+                        TryUnravelContainer(User, m_Container);
                         return;
                     }
 
@@ -344,7 +345,7 @@ namespace Server.Gumps
 
                     m_List.ForEach(x =>
                     {
-                        if (Imbuing.CanUnravelItem(from, x, true) && Imbuing.UnravelItem(from, x, true))
+                        if (Imbuing.CanUnravelItem(User, x, true) && Imbuing.UnravelItem(User, x, true))
                         {
                             count++;
                         }
@@ -352,14 +353,13 @@ namespace Server.Gumps
 
                     if (count > 0)
                     {
-                        from.SendLocalizedMessage(1080429); // You magically unravel the item!
-                        from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
+                        User.SendLocalizedMessage(1080429); // You magically unravel the item!
+                        User.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
                     }
 
-                    from.SendLocalizedMessage(1111814, String.Format("{0}\t{1}", count, m_List.Count));
+                    User.SendLocalizedMessage(1111814, String.Format("{0}\t{1}", count, m_List.Count));
 
-                    m_List.Clear();
-                    m_List.TrimExcess();
+                    ColUtility.Free(m_List);
                 }
             }
         }
@@ -372,66 +372,52 @@ namespace Server.Gumps
                 AllowNonlocal = true;
             }
 
-            protected override void OnTarget(Mobile from, object o)
+            protected override void OnTarget(Mobile m, object o)
             {
-                if (!(o is Item))
+                Item item = o as Item;
+
+                if (item == null)
                 {
-                    from.SendLocalizedMessage(1079576); // You cannot imbue this item.
+                    m.SendLocalizedMessage(1079576); // You cannot imbue this item.
                     return;
                 }
                 
-                Item item = (Item)o;
-                ImbuingContext context = Imbuing.GetContext(from);
+                ImbuingContext context = Imbuing.GetContext(m);
+                var itemType = ItemPropertyInfo.GetItemType(item);
 
-                int itemRef = ImbuingGump.GetItemRef(o);
-
-                if (itemRef == 0)
+                if (itemType == ItemType.Invalid)
                 {
-                    from.SendLocalizedMessage(1079576); // You cannot imbue this item.
+                    m.SendLocalizedMessage(1079576); // You cannot imbue this item.
                     return;
                 }
 
-                ImbuingGump.ImbueStep1(from, item);
+                ImbueStep1(m, item);
             }
 
-            protected override void OnTargetCancel(Mobile from, TargetCancelType cancelType)
+            protected override void OnTargetCancel(Mobile m, TargetCancelType cancelType)
             {
-                from.EndAction(typeof(Imbuing));
+                m.EndAction(typeof(Imbuing));
             }
         }
 
-        public static int GetItemRef(object i)
+        public static void ImbueStep1(Mobile m, Item item)
         {
-            if (i is BaseRanged) return 2;
-            if (i is BaseWeapon) return 1;
-            if (i is BaseShield) return 4;
-            if (i is BaseArmor) return 3;
-            if (i is BaseHat) return 5;
-            if (i is BaseJewel) return 6;
-
-            return 0;
-        }
-
-        public static void ImbueStep1(Mobile from, Item it)
-        {
-            ImbuingContext context = Imbuing.GetContext(from);
-
-            if (Imbuing.CanImbueItem(from, it))
+            if (m is PlayerMobile && Imbuing.CanImbueItem(m, item))
             {
-                context.LastImbued = it;
+                ImbuingContext context = Imbuing.GetContext(m);
+                context.LastImbued = item;
 
                 if (context.ImbMenu_Cat == 0)
                     context.ImbMenu_Cat = 1;
 
-                from.CloseGump(typeof(ImbuingGump));
-                from.SendGump(new ImbuingGumpB(from, it));
+                m.CloseGump(typeof(ImbuingGump));
+                BaseGump.SendGump(new ImbueSelectGump((PlayerMobile)m, item));
             }
         }
 
-        public static void ImbueLastProp(Mobile from, int Mod, int Mint)
+        public static void ImbueLastProp(Mobile m, int Mod, int Mint)
         {
-            from.Target = new ImbueLastModTarget();
-            return;
+            m.Target = new ImbueLastModTarget();
         }
 
         private class ImbueLastModTarget : Target
@@ -442,34 +428,35 @@ namespace Server.Gumps
                 AllowNonlocal = true;
             }
 
-            protected override void OnTarget(Mobile from, object o)
+            protected override void OnTarget(Mobile m, object o)
             {
-                if (!(o is Item))
+                Item item = o as Item;
+
+                if (item == null || !(m is PlayerMobile))
                 {
-                    from.SendLocalizedMessage(1079576); // You cannot imbue this item.
+                    m.SendLocalizedMessage(1079576); // You cannot imbue this item.
                     return;
                 }                    
                 
-                ImbuingContext context = Imbuing.GetContext(from);
+                ImbuingContext context = Imbuing.GetContext(m);
 
                 int mod = context.Imbue_Mod;
                 int modInt = context.Imbue_ModInt;
 
-                Item it = o as Item;
-
-                if (!Imbuing.CanImbueItem(from, it) || !Imbuing.OnBeforeImbue(from, it, mod, modInt) || !Imbuing.CanImbueProperty(from, it, mod))
+                if (!Imbuing.CanImbueItem(m, item) || !Imbuing.OnBeforeImbue(m, item, mod, modInt) || !Imbuing.CanImbueProperty(m, item, mod))
                 {
-                    ImbuingGumpC.SendGumpDelayed(from);
-                    return;
+                    ImbueGump.SendGumpDelayed((PlayerMobile)m);
                 }
-
-                Imbuing.TryImbueItem(from, it, mod, modInt);
-                ImbuingGumpC.SendGumpDelayed(from);
+                else
+                {
+                    Imbuing.TryImbueItem(m, item, mod, modInt);
+                    ImbueGump.SendGumpDelayed((PlayerMobile)m);
+                }
             }
 
-            protected override void OnTargetCancel(Mobile from, TargetCancelType cancelType)
+            protected override void OnTargetCancel(Mobile m, TargetCancelType cancelType)
             {
-                from.EndAction(typeof(Imbuing));
+                m.EndAction(typeof(Imbuing));
             }
         }
     }

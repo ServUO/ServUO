@@ -781,6 +781,19 @@
     <Compile Include="Services\Harvest\Lumberjacking.cs" />
     <Compile Include="Services\Harvest\Mining.cs" />
     <Compile Include="Services\HuntmasterChallenge\ResourceSatchels.cs" />
+    <Compile Include="Services\LootGeneration\Imbuing\Core\Imbuing.cs" />
+    <Compile Include="Services\LootGeneration\Imbuing\Core\ImbuingContext.cs" />
+    <Compile Include="Services\LootGeneration\Imbuing\Core\ImbuingDefinition.cs" />
+    <Compile Include="Services\LootGeneration\Imbuing\Gumps\ImbueGump.cs" />
+    <Compile Include="Services\LootGeneration\Imbuing\Gumps\ImbueSelectGump.cs" />
+    <Compile Include="Services\LootGeneration\Imbuing\Gumps\ImbuingGump.cs" />
+    <Compile Include="Services\LootGeneration\Imbuing\ResourceDrops.cs" />
+    <Compile Include="Services\LootGeneration\ItemPropertiesGump.cs" />
+    <Compile Include="Services\LootGeneration\ItemPropertyInfo.cs" />
+    <Compile Include="Services\LootGeneration\RandomItemGenerator.cs" />
+    <Compile Include="Services\LootGeneration\RunicReforging\Gumps.cs" />
+    <Compile Include="Services\LootGeneration\RunicReforging\ReforgingContext.cs" />
+    <Compile Include="Services\LootGeneration\RunicReforging\RunicReforging.cs" />
     <Compile Include="Services\Plants\PottedCoffeePlant.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\GlovesOfFeudalGrip.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\BritchesOfWarding.cs" />
@@ -9969,7 +9982,6 @@
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Mobile\WrongPrisoner.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\MysteriousTunnel.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\WrongMazeWall.cs" />
-    <Compile Include="Services\RunicReforging\ReforgingContext.cs" />
     <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\BarbedWhip.cs" />
     <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\BladedWhip.cs" />
     <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\Branch.cs" />
@@ -10219,7 +10231,6 @@
     <Compile Include="Services\Virtue Artifacts\VirtueArtifactsSystem.cs" />
     <Compile Include="Services\Virtues\Spirituality.cs" />
     <Compile Include="Services\Mannequin.cs" />
-    <Compile Include="Skills\Imbuing\ResourceDrops.cs" />
     <Compile Include="Services\Help\HelpGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10246,24 +10257,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Help\StuckMenu.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Skills\Imbuing\Core\Imbuing.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Skills\Imbuing\Core\ImbuingContext.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Skills\Imbuing\Core\ImbuingDefinition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Skills\Imbuing\Gumps\ImbuingB.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Skills\Imbuing\Gumps\ImbuingC.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Skills\Imbuing\Gumps\ImbuingGump.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\InstancedPeerless\ConfirmExitInstanceGump.cs">
@@ -10929,15 +10922,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Reports\Reports.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\RunicReforging\Gumps.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\RunicReforging\RandomItemGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\RunicReforging\RunicReforging.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\SARegionDrops.cs" />
@@ -12164,10 +12148,10 @@
     <Compile Include="VendorInfo\VendorInventory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Services\LootGeneration\RunicReforging\ReadMe.txt" />
     <Content Include="Services\New Magincia\ReadMe.txt" />
     <Content Include="Services\Revamped Dungeons\DespiseRevamped\Read Me.txt" />
     <Content Include="Services\Revamped Dungeons\Shame Revamped\Read Me.txt" />
-    <Content Include="Services\RunicReforging\ReadMe.txt" />
     <Content Include="Services\UltimaStore\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>

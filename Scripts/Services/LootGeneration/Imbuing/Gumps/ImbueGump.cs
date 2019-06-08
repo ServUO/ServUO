@@ -7,7 +7,7 @@ using Server.SkillHandlers;
 
 namespace Server.Gumps
 {
-    public class ImbuingGumpC : Gump
+    public class ImbueGump : BaseGump
     {
         private const int LabelColor = 0x7FFF;
         private const int IceHue = 0x481;
@@ -16,74 +16,69 @@ namespace Server.Gumps
         private const int DarkYellow = 0x2E;
         private const int Red = 0x26;
 
-        private int m_Mod, m_Value;
+        private int m_ID, m_Value;
         private Item m_Item;
-        private int m_GemAmount = 0, m_PrimResAmount = 0, m_SpecResAmount = 0;
         private int m_TotalItemWeight;
         private int m_TotalProps;
-        private int m_PropWeight;
         private int m_MaxWeight;
 
-        private ImbuingDefinition m_Definition;
+        private ItemPropertyInfo m_Info;
 
-        public ImbuingGumpC(Mobile from, Item item, int mod, int value) 
-            : base(50, 50)
+        public ImbueGump(PlayerMobile pm, Item item, int id, int value)
+            : base(pm, 50, 50)
         {
-            PlayerMobile m = from as PlayerMobile;
+            pm.CloseGump(typeof(ImbuingGump));
+            pm.CloseGump(typeof(ImbueSelectGump));
+            pm.CloseGump(typeof(RunicReforgingGump));
 
-            from.CloseGump(typeof(ImbuingGump));
-            from.CloseGump(typeof(ImbuingGumpB));
-            from.CloseGump(typeof(RunicReforgingGump));
-
-            // SoulForge Check
-            if (!Imbuing.CheckSoulForge(from, 2))
-                return;
-
-            ImbuingContext context = Imbuing.GetContext(m);
-
-            // Check Type of Ingredients Needed 
-            if (!Imbuing.Table.ContainsKey(mod))
-                return;
-
-            m_Definition = Imbuing.Table[mod];
-
-            if (value == -1)
-                value = m_Definition.IncAmount;
-
-            m_Item = item;
-            m_Mod = mod;
+            m_ID = id;
             m_Value = value;
+            m_Item = item;
+        }
 
-            int maxInt = Imbuing.GetMaxIntensity(item, m_Definition);
-            int inc = m_Definition.IncAmount;
-            int weight = m_Definition.Weight;
+        public override void AddGumpLayout()
+        {
+            // SoulForge Check
+            if (!Imbuing.CheckSoulForge(User, 2))
+                return;
 
-            if (m_Item is BaseJewel && m_Mod == 12)
-                maxInt /= 2;
+            ImbuingContext context = Imbuing.GetContext(User);
 
-            if (m_Value < inc) m_Value = inc;
-            if (m_Value > maxInt) m_Value = maxInt;
+            if (!ItemPropertyInfo.Table.ContainsKey(m_ID))
+                return;
 
-            if (m_Value <= 0)
-                m_Value = 1;
+            m_Info = ItemPropertyInfo.Table[m_ID];
+
+            int minInt = ItemPropertyInfo.GetMinIntensity(m_Item, m_ID);
+            int maxInt = ItemPropertyInfo.GetMaxIntensity(m_Item, m_ID);
+            int weight = m_Info.Weight;
+
+            if (m_Value < minInt)
+            {
+                m_Value = minInt;
+            }
+
+            if (m_Value > maxInt)
+            {
+                m_Value = maxInt;
+            }
 
             double currentIntensity = Math.Floor((m_Value / (double)maxInt) * 100);
 
             // Set context
-            context.LastImbued = item;
-            context.Imbue_Mod = mod;
+            context.LastImbued = m_Item;
+            context.Imbue_Mod = m_ID;
             context.Imbue_ModVal = weight;
-            context.ImbMenu_ModInc = inc;
-            context.Imbue_ModInt = value;
+            context.ImbMenu_ModInc = ItemPropertyInfo.GetScale(m_Item, m_ID);
 
             // Current Mod Weight
-            m_TotalItemWeight = Imbuing.GetTotalWeight(m_Item, m_Mod);
-            m_TotalProps = Imbuing.GetTotalMods(m_Item, m_Mod);
+            m_TotalItemWeight = Imbuing.GetTotalWeight(m_Item, m_ID);
+            m_TotalProps = Imbuing.GetTotalMods(m_Item, m_ID);
 
             if (maxInt <= 1)
                 currentIntensity = 100;
 
-            m_PropWeight = (int)Math.Floor(((double)weight / (double)maxInt) * m_Value);
+            var propWeight = (int)Math.Floor(((double)weight / (double)maxInt) * m_Value);
 
             // Maximum allowed Property Weight & Item Mod Count
             m_MaxWeight = Imbuing.GetMaxWeight(m_Item);
@@ -92,11 +87,10 @@ namespace Server.Gumps
             int timesImbued = Imbuing.TimesImbued(m_Item);
 
             // Check Ingredients needed at the current Intensity
-            m_GemAmount = Imbuing.GetGemAmount(m_Item, m_Mod, m_Value);
-            m_PrimResAmount = Imbuing.GetPrimaryAmount(m_Item, m_Mod, m_Value);
-            m_SpecResAmount = Imbuing.GetSpecialAmount(m_Item, m_Mod, m_Value);
+            var gemAmount = Imbuing.GetGemAmount(m_Item, m_ID, m_Value);
+            var primResAmount = Imbuing.GetPrimaryAmount(m_Item, m_ID, m_Value);
+            var specResAmount = Imbuing.GetSpecialAmount(m_Item, m_ID, m_Value);
 
-            // ------------------------------ Gump Menu -------------------------------------------------------------
             AddPage(0);
             AddBackground(0, 0, 520, 440, 5054);
             AddImageTiled(10, 10, 500, 420, 2624);
@@ -113,19 +107,23 @@ namespace Server.Gumps
             AddHtmlLocalized(50, 50, 200, 20, 1114269, LabelColor, false, false); // PROPERTY INFORMATION
 
             AddHtmlLocalized(25, 80, 80, 20, 1114270, LabelColor, false, false);  // Property:
-            AddHtmlLocalized(95, 80, 150, 20, m_Definition.AttributeName, LabelColor, false, false);
+
+            if (m_Info.AttributeName != null)
+            {
+                AddHtmlLocalized(95, 80, 150, 20, 1114057, m_Info.AttributeName.ToString(), LabelColor, false, false);
+            }
 
             AddHtmlLocalized(25, 100, 80, 20, 1114271, LabelColor, false, false); // Replaces:
-            int replace = WhatReplacesWhat(m_Mod, m_Item);
+            var replace = WhatReplacesWhat(m_ID, m_Item);
 
-            if (replace > 0)
+            if (replace != null)
             {
-                AddHtmlLocalized(95, 100, 150, 20, replace, LabelColor, false, false);
+                AddHtmlLocalized(95, 100, 150, 20, 1114057, replace.ToString(), LabelColor, false, false);
             }
 
             // Weight Modifier
             AddHtmlLocalized(25, 120, 80, 20, 1114272, 0xFFFFFF, false, false); // Weight:
-            AddLabel(95, 120, IceHue, String.Format("{0}x", ((double)m_Definition.Weight / 100.0).ToString("0.0")));
+            AddLabel(95, 120, IceHue, String.Format("{0}x", ((double)m_Info.Weight / 100.0).ToString("0.0")));
 
             AddHtmlLocalized(25, 140, 80, 20, 1114273, LabelColor, false, false); // Intensity:
             AddLabel(95, 140, IceHue, String.Format("{0}%", currentIntensity));
@@ -133,27 +131,27 @@ namespace Server.Gumps
             // Materials needed
             AddHtmlLocalized(10, 200, 245, 20, 1044055, LabelColor, false, false); // <CENTER>MATERIALS</CENTER>
 
-            AddHtmlLocalized(40, 230, 180, 20, m_Definition.PrimaryName, LabelColor, false, false);
-            AddLabel(210, 230, IceHue, m_PrimResAmount.ToString());
+            AddHtmlLocalized(40, 230, 180, 20, m_Info.PrimaryName, LabelColor, false, false);
+            AddLabel(210, 230, IceHue, primResAmount.ToString());
 
-            AddHtmlLocalized(40, 255, 180, 20, m_Definition.GemName, LabelColor, false, false);
-            AddLabel(210, 255, IceHue, m_GemAmount.ToString());
+            AddHtmlLocalized(40, 255, 180, 20, m_Info.GemName, LabelColor, false, false);
+            AddLabel(210, 255, IceHue, gemAmount.ToString());
 
-            if (m_SpecResAmount > 0)
+            if (specResAmount > 0)
             {
-                AddHtmlLocalized(40, 280, 180, 17, m_Definition.SpecialName, LabelColor, false, false);
-                AddLabel(210, 280, IceHue, m_SpecResAmount.ToString());
+                AddHtmlLocalized(40, 280, 180, 17, m_Info.SpecialName, LabelColor, false, false);
+                AddLabel(210, 280, IceHue, specResAmount.ToString());
             }
 
             // Mod Description
-            AddHtmlLocalized(280, 55, 200, 110, m_Definition.Description, LabelColor, false, false);
+            AddHtmlLocalized(280, 55, 200, 110, m_Info.Description, LabelColor, false, false);
 
             AddHtmlLocalized(350, 200, 150, 20, 1113650, LabelColor, false, false); // RESULTS
 
             AddHtmlLocalized(280, 220, 150, 20, 1113645, LabelColor, false, false); // Properties:
-            AddLabel(430, 220, GetColor(m_TotalProps + 1, 5), String.Format("{0}/{1}", m_TotalProps + 1, Imbuing.GetMaxProps(item)));
+            AddLabel(430, 220, GetColor(m_TotalProps + 1, 5), String.Format("{0}/{1}", m_TotalProps + 1, Imbuing.GetMaxProps(m_Item)));
 
-            int projWeight = m_TotalItemWeight + m_PropWeight;
+            int projWeight = m_TotalItemWeight + propWeight;
             AddHtmlLocalized(280, 240, 150, 20, 1113646, LabelColor, false, false); // Total Property Weight:
             AddLabel(430, 240, GetColor(projWeight, m_MaxWeight), String.Format("{0}/{1}", projWeight, m_MaxWeight));
 
@@ -162,7 +160,7 @@ namespace Server.Gumps
 
             // ===== CALCULATE DIFFICULTY =====
             double dif;
-            double suc = Imbuing.GetSuccessChance(from, item, m_TotalItemWeight, m_PropWeight, out dif);
+            double suc = Imbuing.GetSuccessChance(User, m_Item, m_TotalItemWeight, propWeight, out dif);
 
             AddHtmlLocalized(300, 300, 150, 20, 1044057, 0xFFFFFF, false, false); // Success Chance:
             AddLabel(420, 300, GetSuccessChanceHue(suc), String.Format("{0}%", suc.ToString("0.0")));
@@ -170,17 +168,13 @@ namespace Server.Gumps
             // - Attribute Level
             if (maxInt > 1)
             {
-                // - Set Intesity to Minimum
-                if (m_Value <= 0)
-                    m_Value = 1;
-
                 AddHtmlLocalized(235, 350, 100, 17, 1062300, LabelColor, false, false); // New Value:
 
-                if (m_Mod == 41)                                                    // - Mage Weapon Value ( i.e [Mage Weapon -25] )
+                if (m_ID == 41)                                                    // - Mage Weapon Value ( i.e [Mage Weapon -25] )
                 {
                     AddLabel(250, 370, IceHue, String.Format("-{0}", 30 - m_Value));
                 }
-                else if (maxInt <= 8 || m_Mod == 21 || m_Mod == 17)                 // - Show Property Value as just Number ( i.e [Mana Regen 2] )
+                else if (maxInt <= 8 || m_ID == 21 || m_ID == 17)                 // - Show Property Value as just Number ( i.e [Mana Regen 2] )
                 {
                     AddLabel(256, 370, IceHue, String.Format("{0}", m_Value));      // - Show Property Value as % ( i.e [Hit Fireball 25%] )
                 }
@@ -188,11 +182,11 @@ namespace Server.Gumps
                 {
                     int val = m_Value;
 
-                    if (m_Mod >= 51 && m_Mod <= 55)
+                    if (m_ID >= 51 && m_ID <= 55)
                     {
-                        var resistances = Imbuing.GetBaseResists(item);
+                        var resistances = Imbuing.GetBaseResists(m_Item);
 
-                        switch (m_Mod)
+                        switch (m_ID)
                         {
                             case 51: val += resistances[0]; break;
                             case 52: val += resistances[1]; break;
@@ -274,111 +268,73 @@ namespace Server.Gumps
                 return Red;
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
-            Mobile from = state.Mobile;
-            ImbuingContext context = Imbuing.GetContext(from);
+            ImbuingContext context = Imbuing.GetContext(User);
 
             switch (info.ButtonID)
             {
                 case 0: //Close
                     {
-                        from.EndAction(typeof(Imbuing));
+                        User.EndAction(typeof(Imbuing));
                         break;
                     }
                 case 10051: // Decrease Mod Value [<]
                     {
-                        if (context.Imbue_ModInt > m_Definition.IncAmount)
-                            context.Imbue_ModInt -= m_Definition.IncAmount;
+                        m_Value = Math.Max(ItemPropertyInfo.GetMinIntensity(m_Item, m_Info.ID), m_Value - 1);
+                        Refresh();
 
-                        from.SendGump(new ImbuingGumpC(from, m_Item, context.Imbue_Mod, context.Imbue_ModInt));
                         break;
                     }
                 case 10052:// Decrease Mod Value [<<]
                     {
-                        if ((m_Mod == 42 || m_Mod == 24) && context.Imbue_ModInt > 20)
-                            context.Imbue_ModInt -= 20;
-                        if ((m_Mod == 13 || m_Mod == 20 || m_Mod == 21) && context.Imbue_ModInt > 10)
-                            context.Imbue_ModInt -= 10;
-                        else if (context.Imbue_ModInt > 5)
-                            context.Imbue_ModInt -= 5;
-
-                        from.SendGump(new ImbuingGumpC(from, context.LastImbued, context.Imbue_Mod, context.Imbue_ModInt));
+                        m_Value = Math.Max(ItemPropertyInfo.GetMinIntensity(m_Item, m_Info.ID), m_Value - 10);
+                        Refresh();
+                        
                         break;
                     }
                 case 10053:// Minimum Mod Value [<<<]
                     {
-                        context.Imbue_ModInt = 1;
-                        from.SendGump(new ImbuingGumpC(from, context.LastImbued, context.Imbue_Mod, context.Imbue_ModInt));
+                        m_Value = ItemPropertyInfo.GetMinIntensity(m_Item, m_Info.ID);
+                        Refresh();
+                        
                         break;
                     }
                 case 10054: // Increase Mod Value [>]
                     {
-                        int max = Imbuing.GetMaxIntensity(m_Item, m_Definition);
+                        m_Value = Math.Min(ItemPropertyInfo.GetMaxIntensity(m_Item, m_Info.ID), m_Value + 1);
+                        Refresh();
 
-                        if (m_Mod == 12 && context.LastImbued is BaseJewel)
-                            max /= 2;
-
-                        if (context.Imbue_ModInt + m_Definition.IncAmount <= max)
-                            context.Imbue_ModInt += m_Definition.IncAmount;
-
-                        from.SendGump(new ImbuingGumpC(from, context.LastImbued, context.Imbue_Mod, context.Imbue_ModInt));
                         break;
                     }
                 case 10055: // Increase Mod Value [>>]
                     {
-                        int max = Imbuing.GetMaxIntensity(m_Item, m_Definition);
-
-                        if (m_Mod == 12 && context.LastImbued is BaseJewel)
-                            max /= 2;
-
-                        if (m_Mod == 42 || m_Mod == 24)
-                        {
-                            if (context.Imbue_ModInt + 20 <= max)
-                                context.Imbue_ModInt += 20;
-                            else
-                                context.Imbue_ModInt = max;
-                        }
-                        if (m_Mod == 13 || m_Mod == 20 || m_Mod == 21)
-                        {
-                            if (context.Imbue_ModInt + 10 <= max)
-                                context.Imbue_ModInt += 10;
-                            else
-                                context.Imbue_ModInt = max;
-                        }
-                        else if (context.Imbue_ModInt + 5 <= max)
-                            context.Imbue_ModInt += 5;
-                        else
-                            context.Imbue_ModInt = Imbuing.GetMaxIntensity(m_Item, m_Definition);
-
-                        from.SendGump(new ImbuingGumpC(from, context.LastImbued, context.Imbue_Mod, context.Imbue_ModInt));
+                        m_Value = Math.Min(ItemPropertyInfo.GetMaxIntensity(m_Item, m_Info.ID), m_Value + 10);
+                        Refresh();
+                        
                         break;
                     }
                 case 10056: // Maximum Mod Value [>>>]
                     {
-                        int max = Imbuing.GetMaxIntensity(m_Item, m_Definition);
-
-                        if (m_Mod == 12 && context.LastImbued is BaseJewel)
-                            max /= 2;
-
-                        context.Imbue_ModInt = max;
-                        from.SendGump(new ImbuingGumpC(from, context.LastImbued, context.Imbue_Mod, context.Imbue_ModInt));
+                        m_Value = ItemPropertyInfo.GetMaxIntensity(m_Item, m_Info.ID);
+                        Refresh();
+                        
                         break;
                     }
 
                 case 10099: // Back
                     {
-                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
+                        BaseGump.SendGump(new ImbueSelectGump(User, context.LastImbued));
                         break;
                     }
                 case 10100:  // Imbue the Item
                     {
                         context.Imbue_IWmax = m_MaxWeight;
 
-                        if (Imbuing.OnBeforeImbue(from, m_Item, m_Mod, m_Value, m_TotalProps, Imbuing.GetMaxProps(m_Item), m_TotalItemWeight, m_MaxWeight))
+                        if (Imbuing.OnBeforeImbue(User, m_Item, m_ID, m_Value, m_TotalProps, Imbuing.GetMaxProps(m_Item), m_TotalItemWeight, m_MaxWeight))
                         {
-                            Imbuing.TryImbueItem(from, m_Item, m_Mod, m_Value);
-                            SendGumpDelayed(from);
+                            Imbuing.TryImbueItem(User, m_Item, m_ID, m_Value);
+                            SendGumpDelayed(User);
                         }
 
                         break;
@@ -386,25 +342,20 @@ namespace Server.Gumps
             }
         }
 
-        public static void SendGumpDelayed(Mobile from)
+        public static void SendGumpDelayed(PlayerMobile pm)
         {
-            Timer.DelayCall(TimeSpan.FromSeconds(1.5), new TimerStateCallback(SendGump_Callback), from);
-        }
-
-        public static void SendGump_Callback(object o)
-        {
-            Mobile from = o as Mobile;
-
-            if (from != null)
-                from.SendGump(new ImbuingGump(from));
+            Timer.DelayCall(TimeSpan.FromSeconds(1.5), () =>
+            {
+                BaseGump.SendGump(new ImbuingGump(pm));
+            });
         }
 
         // =========== Check if Choosen Attribute Replaces Another =================
-        public static int WhatReplacesWhat(int mod, Item item)
+        public static TextDefinition WhatReplacesWhat(int id, Item item)
         {
-            if (Imbuing.GetValueForMod(item, mod) > 0)
+            if (Imbuing.GetValueForID(item, id) > 0)
             {
-                return Imbuing.GetAttributeName(mod);
+                return ItemPropertyInfo.GetAttributeName(id);
             }
 
             if (item is BaseWeapon)
@@ -412,7 +363,7 @@ namespace Server.Gumps
                 BaseWeapon i = item as BaseWeapon;
 
                 // Slayers replace Slayers
-                if (mod >= 101 && mod <= 127)
+                if (id >= 101 && id <= 127)
                 {
                     if (i.Slayer != SlayerName.None)
                         return GetNameForAttribute(i.Slayer);
@@ -421,7 +372,7 @@ namespace Server.Gumps
                         return GetNameForAttribute(i.Slayer2);
                 }
                 // OnHitEffect replace OnHitEffect
-                if (mod >= 35 && mod <= 39)
+                if (id >= 35 && id <= 39)
                 {
                     if (i.WeaponAttributes.HitMagicArrow > 0)
                         return GetNameForAttribute(AosWeaponAttribute.HitMagicArrow);
@@ -435,7 +386,7 @@ namespace Server.Gumps
                         return GetNameForAttribute(AosWeaponAttribute.HitDispel);
                 }
                 // OnHitArea replace OnHitArea
-                if (mod >= 30 && mod <= 34)
+                if (id >= 30 && id <= 34)
                 {
                     if (i.WeaponAttributes.HitPhysicalArea > 0)
                         return GetNameForAttribute(AosWeaponAttribute.HitPhysicalArea);
@@ -454,7 +405,7 @@ namespace Server.Gumps
                 BaseJewel i = item as BaseJewel;
 
                 // SkillGroup1 replace SkillGroup1
-                if (mod >= 151 && mod <= 155)
+                if (id >= 151 && id <= 155)
                 {
                     if (i.SkillBonuses.GetBonus(0) > 0)
                     {
@@ -466,7 +417,7 @@ namespace Server.Gumps
                     }
                 }
                 // SkillGroup2 replace SkillGroup2
-                if (mod >= 156 && mod <= 160)
+                if (id >= 156 && id <= 160)
                 {
                     if (i.SkillBonuses.GetBonus(1) > 0)
                     {
@@ -478,7 +429,7 @@ namespace Server.Gumps
                     }
                 }
                 // SkillGroup3 replace SkillGroup3
-                if (mod >= 161 && mod <= 166)
+                if (id >= 161 && id <= 166)
                 {
                     if (i.SkillBonuses.GetBonus(2) > 0)
                     {
@@ -490,7 +441,7 @@ namespace Server.Gumps
                     }
                 }
                 // SkillGroup4 replace SkillGroup4
-                if (mod >= 167 && mod <= 172)
+                if (id >= 167 && id <= 172)
                 {
                     if (i.SkillBonuses.GetBonus(3) > 0)
                     {
@@ -502,7 +453,7 @@ namespace Server.Gumps
                     }
                 }
                 // SkillGroup5 replace SkillGroup5
-                if (mod >= 173 && mod <= 178)
+                if (id >= 173 && id <= 178)
                 {
                     if (i.SkillBonuses.GetBonus(4) > 0)
                     {
@@ -515,10 +466,10 @@ namespace Server.Gumps
                 }
             }
 
-            return -1;
+            return null;
         }
 
-        public static int GetNameForAttribute(object attribute)
+        public static TextDefinition GetNameForAttribute(object attribute)
         {
             if (attribute is AosArmorAttribute && (AosArmorAttribute)attribute == AosArmorAttribute.LowerStatReq)
                 attribute = AosWeaponAttribute.LowerStatReq;
@@ -526,25 +477,25 @@ namespace Server.Gumps
             if (attribute is AosArmorAttribute && (AosArmorAttribute)attribute == AosArmorAttribute.DurabilityBonus)
                 attribute = AosWeaponAttribute.DurabilityBonus;
 
-            foreach (ImbuingDefinition def in Imbuing.Table.Values)
+            foreach (var info in ItemPropertyInfo.Table.Values)
             {
-                if (attribute is SlayerName && def.Attribute is SlayerName && (SlayerName)attribute == (SlayerName)def.Attribute)
-                    return def.AttributeName;
+                if (attribute is SlayerName && info.Attribute is SlayerName && (SlayerName)attribute == (SlayerName)info.Attribute)
+                    return info.AttributeName;
 
-                if (attribute is AosAttribute && def.Attribute is AosAttribute && (AosAttribute)attribute == (AosAttribute)def.Attribute)
-                    return def.AttributeName;
+                if (attribute is AosAttribute && info.Attribute is AosAttribute && (AosAttribute)attribute == (AosAttribute)info.Attribute)
+                    return info.AttributeName;
 
-                if (attribute is AosWeaponAttribute && def.Attribute is AosWeaponAttribute && (AosWeaponAttribute)attribute == (AosWeaponAttribute)def.Attribute)
-                    return def.AttributeName;
+                if (attribute is AosWeaponAttribute && info.Attribute is AosWeaponAttribute && (AosWeaponAttribute)attribute == (AosWeaponAttribute)info.Attribute)
+                    return info.AttributeName;
 
-                if (attribute is SkillName && def.Attribute is SkillName && (SkillName)attribute == (SkillName)def.Attribute)
-                    return def.AttributeName;
+                if (attribute is SkillName && info.Attribute is SkillName && (SkillName)attribute == (SkillName)info.Attribute)
+                    return info.AttributeName;
 
-                if (def.Attribute == attribute)
-                    return def.AttributeName;
+                if (info.Attribute == attribute)
+                    return info.AttributeName;
             }
 
-            return -1;
+            return null;
         }
     }
 }

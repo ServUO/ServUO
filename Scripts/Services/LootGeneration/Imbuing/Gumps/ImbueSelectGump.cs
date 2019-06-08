@@ -7,30 +7,31 @@ using Server.SkillHandlers;
 
 namespace Server.Gumps
 {
-    public class ImbuingGumpB : Gump
+    public class ImbueSelectGump : BaseGump
     {
         public Item m_Item;
         private const int LabelColor = 0x7FFF;
 
-        public ImbuingGumpB(Mobile from, Item item)
-            : base(50, 50)
+        public ImbueSelectGump(PlayerMobile pm, Item item)
+            : base(pm, 50, 50)
         {
-            from.CloseGump(typeof(ImbuingGump));
-            from.CloseGump(typeof(ImbuingGumpC));
+            pm.CloseGump(typeof(ImbuingGump));
+            pm.CloseGump(typeof(ImbueGump));
 
+            m_Item = item;
+        }
+
+        public override void AddGumpLayout()
+        {
             // SoulForge Check
-            if (!Imbuing.CheckSoulForge(from, 2))
+            if (!Imbuing.CheckSoulForge(User, 2))
                 return;
 
-            Mobile m = from;
-            PlayerMobile pm = from as PlayerMobile;
+            ImbuingContext context = Imbuing.GetContext(User);
+            context.LastImbued = m_Item;
 
-            ImbuingContext context = Imbuing.GetContext(m);
-
-            m_Item = context.LastImbued;
-
-            int itemRef = ImbuingGump.GetItemRef(m_Item);
-            bool twoHanded = item.Layer == Layer.TwoHanded;
+            var itemType = ItemPropertyInfo.GetItemType(m_Item);
+            bool twoHanded = m_Item.Layer == Layer.TwoHanded;
 
             AddPage(0);
             AddBackground(0, 0, 520, 520, 5054);
@@ -51,6 +52,8 @@ namespace Server.Gumps
             AddButton(15, 90 + (yOffset * 25), 4005, 4007, 10001, GumpButtonType.Reply, 0);
             AddHtmlLocalized(50, 90 + (yOffset * 25), 150, 18, 1114248, LabelColor, false, false);       //Casting
             yOffset += 1;
+
+            int itemRef = (int)itemType;
 
             if (itemRef == 1 || itemRef == 2 || itemRef == 4 || itemRef == 6)
             {
@@ -132,7 +135,7 @@ namespace Server.Gumps
                     AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1079759, LabelColor, false, false);       //Mage Weapon 
                     yOffset += 1;
 
-                    if (item is BaseWeapon && (((BaseWeapon)item).Attributes.SpellChanneling == 0 || ((BaseWeapon)item).Attributes.CastSpeed < 0))
+                    if (m_Item is BaseWeapon && (((BaseWeapon)m_Item).Attributes.SpellChanneling == 0 || ((BaseWeapon)m_Item).Attributes.CastSpeed < 0))
                     {
                         AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10116, GumpButtonType.Reply, 0);
                         AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1075617, LabelColor, false, false);       //Faster Casting
@@ -156,7 +159,7 @@ namespace Server.Gumps
                     AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1079766, LabelColor, false, false);       //Spell Channeling 
                     yOffset += 1;
 
-                    if (item is BaseShield && (((BaseShield)item).Attributes.SpellChanneling == 0 || ((BaseShield)item).Attributes.CastSpeed < 0))
+                    if (m_Item is BaseShield && (((BaseShield)m_Item).Attributes.SpellChanneling == 0 || ((BaseShield)m_Item).Attributes.CastSpeed < 0))
                     {
                         AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10116, GumpButtonType.Reply, 0);
                         AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1075617, LabelColor, false, false);       //Faster Casting
@@ -698,124 +701,121 @@ namespace Server.Gumps
             AddHtmlLocalized(50, 490, 150, 20, 1011012, LabelColor, false, false); //Cancel
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
-            Mobile from = state.Mobile;
-            ImbuingContext context = Imbuing.GetContext(from);
-
-            m_Item = context.LastImbued;
+            ImbuingContext context = Imbuing.GetContext(User);
 
             switch (info.ButtonID)
             {
                 case 0: // Close/Cancel
                 case 1:
                     {
-                        from.EndAction(typeof(Imbuing));
+                        User.EndAction(typeof(Imbuing));
                         break;
                     }                
                 case 10001:
                     {
                         context.ImbMenu_Cat = 1;
 
-                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
+                        Refresh();
                         break;
                     }
                 case 10002:
                     {
                         context.ImbMenu_Cat = 2;
 
-                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
+                        Refresh();
                         break;
                     }
                 case 10003:
                     {
                         context.ImbMenu_Cat = 3;
 
-                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
+                        Refresh();
                         break;
                     }
                 case 10004:
                     {
                         context.ImbMenu_Cat = 4;
 
-                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
+                        Refresh();
                         break;
                     }
                 case 10005:
                     {
                         context.ImbMenu_Cat = 5;
 
-                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
+                        Refresh();
                         break;
                     }
                 case 10006:
                     {
                         context.ImbMenu_Cat = 6;
 
-                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
+                        Refresh();
                         break;
                     }
                 case 10007:
                     {
                         context.ImbMenu_Cat = 7;
 
-                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
+                        Refresh();
                         break;
                     }
                 case 10008:
                     {
                         context.ImbMenu_Cat = 8;
 
-                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
+                        Refresh();
                         break;
                     }
                 case 10009:
                     {
                         context.ImbMenu_Cat = 9;
 
-                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
+                        Refresh();
                         break;
                     }
                 case 10010:
                     {
                         context.ImbMenu_Cat = 10;
 
-                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
+                        Refresh();
                         break;
                     }
                 case 10011:
                     {
                         context.ImbMenu_Cat = 11;
 
-                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
+                        Refresh();
                         break;
                     }
                 case 10012:
                     {
                         context.ImbMenu_Cat = 12;
 
-                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
+                        Refresh();
                         break;
                     }
                 case 10013:
                     {
                         context.ImbMenu_Cat = 13;
 
-                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
+                        Refresh();
                         break;
                     }
                 case 10014:
                     {
                         context.ImbMenu_Cat = 14;
 
-                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
+                        Refresh();
                         break;
                     }
                 case 10015:
                     {
                         context.ImbMenu_Cat = 15;
 
-                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
+                        Refresh();
                         break;
                     }
                 default:  // = Proceed to Attribute Intensity Menu [ImbuingC.cs]
@@ -823,9 +823,9 @@ namespace Server.Gumps
                         int buttonNum = info.ButtonID - 10100;
                         context.Imbue_Mod = buttonNum;
 
-                        if (Imbuing.OnBeforeImbue(from, context.LastImbued, buttonNum, -1))
+                        if (Imbuing.OnBeforeImbue(User, context.LastImbued, buttonNum, -1))
                         {
-                            from.SendGump(new ImbuingGumpC(from, context.LastImbued, buttonNum, -1));
+                            BaseGump.SendGump(new ImbueGump(User, context.LastImbued, buttonNum, -1));
                         }
                         
                         break;
