@@ -809,6 +809,8 @@ namespace Server.Items
             if (IsImbued)
                 list.Add(1080418); // (Imbued)
 
+            AddLootTypeProperty(list);
+
             base.AddWeightProperty(list);
 
             if (IsVvVItem)

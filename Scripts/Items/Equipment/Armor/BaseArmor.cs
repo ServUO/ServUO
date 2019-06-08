@@ -2786,6 +2786,8 @@ namespace Server.Items
             if (m_Altered)
                 list.Add(1111880); // Altered
 
+            AddLootTypeProperty(list);
+
             base.AddWeightProperty(list);
 
             if (IsVvVItem)

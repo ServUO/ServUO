@@ -51,6 +51,15 @@ namespace Server.Misc
 
                             break;
                         }
+                    case 0x6: // guild
+                        {
+                            if (from is PlayerMobile && from.Guild != null)
+                            {
+                                ((PlayerMobile)from).SendGump(new GuildInfoGump((PlayerMobile)from, from.Guild as Guild));
+                            }
+
+                            break;
+                        }
                 }
             }
         }

@@ -646,12 +646,12 @@ namespace Server.Engines.Craft
             ForceNonExceptional(index);
             SetNeededThemePack(index, ThemePack.Gothic);
 
-            index = AddCraft(typeof(DistillerySouthAddonDeed), 1044051, 1150663, 90.0, 120.0, typeof(MetalKeg), 1150675, 2, 1044253);
+            index = AddCraft(typeof(DistillerySouthAddonDeed), 1044051, 1150663, 90.0, 110.0, typeof(MetalKeg), 1150675, 2, 1044253);
             AddRes(index, typeof(HeatingStand), 1011224, 4, 1044253);
             AddRes(index, typeof(CopperWire), 1026265, 1, 1044253);
             ForceNonExceptional(index);
 
-            index = AddCraft(typeof(DistilleryEastAddonDeed), 1044051, 1150664, 90.0, 120.0, typeof(MetalKeg), 1150675, 2, 1044253);
+            index = AddCraft(typeof(DistilleryEastAddonDeed), 1044051, 1150664, 90.0, 110.0, typeof(MetalKeg), 1150675, 2, 1044253);
             AddRes(index, typeof(HeatingStand), 1011224, 4, 1044253);
             AddRes(index, typeof(CopperWire), 1026265, 1, 1044253);
             ForceNonExceptional(index);
