@@ -591,111 +591,6 @@ namespace Server.Gumps
             return true;
         }
 
-        public int GetScales(Container c)
-        {
-            if (c == null)
-                return 0;
-
-            int count = 0;
-
-            foreach (Item item in c.Items)
-            {
-                if (item is BaseScales)
-                    count += item.Amount;
-            }
-
-            return count;
-        }
-
-        public static Item[] FindScales(Container c)
-        {
-            if (c == null)
-                return null;
-
-            List<Item> scales = new List<Item>();
-
-            foreach (Item item in c.Items)
-            {
-                if (item is BaseScales)
-                    scales.Add(item);
-            }
-
-            if (scales.Count > 0)
-                return scales.ToArray();
-
-            return null;
-        }
-
-        #region High Seas
-        public static int GetFishyItems(Container c)
-        {
-            if (c == null)
-                return 0;
-
-            int count = 0;
-
-            foreach (Item item in c.Items)
-            {
-                if (item is Fish || (item is BaseHighseasFish && !(item is BaseCrabAndLobster)))
-                    count += item.Amount;
-            }
-
-            return count;
-        }
-
-        public static Item[] FindFishyItems(Container c)
-        {
-            if (c == null)
-                return null;
-
-            List<Item> list = new List<Item>(c.Items);
-            List<Item> fishies = new List<Item>();
-
-            foreach (Item item in list)
-            {
-                if (item is Fish || (item is BaseHighseasFish && !(item is BaseCrabAndLobster)))
-                    fishies.Add(item);
-            }
-
-            if (fishies.Count > 0)
-                return fishies.ToArray();
-            return null;
-        }
-
-        public static int GetCrabsAndLobsters(Container c)
-        {
-            if (c == null)
-                return 0;
-
-            int count = 0;
-            foreach (Item item in c.Items)
-            {
-                if (item is BaseCrabAndLobster)
-                    count += item.Amount;
-            }
-
-            return count;
-        }
-
-        public static Item[] FindCrabsAndLobsters(Container c)
-        {
-            if (c == null)
-                return null;
-
-            List<Item> list = new List<Item>(c.Items);
-            List<Item> fishies = new List<Item>();
-
-            foreach (Item item in list)
-            {
-                if (item is BaseCrabAndLobster)
-                    fishies.Add(item);
-            }
-
-            if (fishies.Count > 0)
-                return fishies.ToArray();
-            return null;
-        }
-
         public static bool CheckType(Item item, Type type, bool checkDerives)
         {
             if (item is CommodityDeed && ((CommodityDeed)item).Commodity != null)
@@ -792,7 +687,5 @@ namespace Server.Gumps
 
             return item;
         }
-
-        #endregion
     }
 }
