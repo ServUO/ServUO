@@ -1735,10 +1735,19 @@ namespace Server.Mobiles
 				return false;
 			}
 
-			if (!(m is BaseCreature))
-			{
-				return true;
-			}
+            if (c == null)
+            {
+                return true;
+            }
+            else
+            {
+                var master = c.GetMaster();
+
+                if (!(master is BaseCreature))
+                {
+                    return true;
+                }
+            }
 
             if (c is Server.Engines.Quests.Haven.MilitiaFighter)
 			{
