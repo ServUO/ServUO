@@ -42,6 +42,8 @@ namespace Server.Multis
             : base(multiID, owner, MaxLockDown, MaxSecure)
         {
             HouseType = type;
+
+            AutoAddFixtures();
         }
 
         protected void SetSign(int xOffset, int yOffset, int zOffset, bool post)
@@ -105,24 +107,6 @@ namespace Server.Multis
             }
         }
 
-        public void AddLinkedSouthDoors(int id1, int id2, int x, int y, int z)
-        {
-            var door1 = AddDoor(id1, x, y, z);
-            var door2 = AddDoor(id2, x + 1, y, z);
-
-            door1.Link = door2;
-            door2.Link = door1;
-        }
-
-        public void AddLinkedEastDoors(int id1, int id2, int x, int y, int z)
-        {
-            var door1 = AddDoor(id1, x, y, z);
-            var door2 = AddDoor(id2, x, y - 1, z);
-
-            door1.Link = door2;
-            door2.Link = door1;
-        }
-
         public void AddTeleporters(int id, Point3D offset1, Point3D offset2)
         {
             var tele1 = new HouseTeleporter(id);
@@ -158,6 +142,75 @@ namespace Server.Multis
             }
 
             return isInside;
+        }
+
+        public virtual void AutoAddFixtures()
+        {
+            var components = MultiData.GetComponents(ItemID);
+
+            var teleporters = new Dictionary<int, List<MultiTileEntry>>();
+
+            foreach (var entry in components.List.Where(e => e.m_Flags == 0))
+            {
+                // Telepoters
+                if (entry.m_ItemID >= 0x181D && entry.m_ItemID <= 0x1828)
+                {
+                    if (teleporters.ContainsKey(entry.m_ItemID))
+                    {
+                        teleporters[entry.m_ItemID].Add(entry);
+                    }
+                    else
+                    {
+                        teleporters[entry.m_ItemID] = new List<MultiTileEntry>();
+                        teleporters[entry.m_ItemID].Add(entry);
+                    }
+                }
+                else
+                {
+                    ItemData data = TileData.ItemTable[entry.m_ItemID & TileData.MaxItemValue];
+
+                    if ((data.Flags & TileFlag.Door) != 0)
+                    {
+                        //doors.Add(entry);
+                        AddDoor(entry.m_ItemID, entry.m_OffsetX, entry.m_OffsetY, entry.m_OffsetZ);
+                    }
+                    else
+                    {
+                        Item st = new Static((int)entry.m_ItemID);
+
+                        st.MoveToWorld(new Point3D(X + entry.m_OffsetX, Y + entry.m_OffsetY, entry.m_OffsetZ), Map);
+                        AddFixture(st);
+                    }
+                }
+            }
+
+            foreach (var door in Doors.OfType<BaseDoor>())
+            {
+                foreach (var check in Doors.OfType<BaseDoor>().Where(d => d != door))
+                {
+                    if (door.InRange(check.Location, 1))
+                    {
+                        door.Link = check;
+                        check.Link = door;
+                    }
+                }
+            }
+
+            foreach (var kvp in teleporters)
+            {
+                if (kvp.Value.Count > 2)
+                {
+                    Utility.WriteConsoleColor(ConsoleColor.Yellow, String.Format("Warning: More than 2 teleporters detected for {0}!", kvp.Key.ToString("X")));
+                }
+                else if (kvp.Value.Count <= 1)
+                {
+                    Utility.WriteConsoleColor(ConsoleColor.Yellow, String.Format("Warning: 1 or less teleporters detected for {0}!", kvp.Key.ToString("X")));
+
+                    continue;
+                }
+
+                AddTeleporters(kvp.Key, new Point3D(kvp.Value[0].m_OffsetX, kvp.Value[0].m_OffsetY, kvp.Value[0].m_OffsetZ), new Point3D(kvp.Value[1].m_OffsetX, kvp.Value[1].m_OffsetY, kvp.Value[1].m_OffsetZ));
+            }
         }
 
         public BaseContestHouse(Serial serial)
@@ -215,25 +268,7 @@ namespace Server.Multis
         public TrinsicKeep(Mobile owner)
             : base(ContestHouseType.Keep, 0x147E, owner, 2113, 18)
         {
-            AddSouthDoors(false, 0, 10, 7);
-            AddEastDoors(false, -9, 0, 7);
-            AddEastDoors(false, 10, 0, 7, 0, false, true);
-
             SetSign(-11, 13, 7, false);
-
-            AddSouthDoors(false, 6, 5, 7);
-            AddSouthDoors(false, -6, 5, 7);
-
-            AddSouthDoor(false, -7, 4, 47);
-            AddSouthDoor(false, 8, 4, 47);
-            AddSouthDoor(false, -6, -2, 47);
-            AddSouthDoor(false, 8, -2, 47);
-
-            AddSouthDoors(false, 0, -2, 47);
-
-            AddTeleporters(0x181E, new Point3D(9, 4, 7), new Point3D(9, 3, 47));
-            AddTeleporters(0x181D, new Point3D(8, 4, 7), new Point3D(9, 4, 27));
-            AddTeleporters(0x181F, new Point3D(9, 3, 7), new Point3D(-10, -6, 67));
         }
 
         public TrinsicKeep(Serial serial)
@@ -275,9 +310,6 @@ namespace Server.Multis
         public GothicRoseCastle(Mobile owner)
             : base(ContestHouseType.Castle, 0x147F, owner, 3281, 28)
         {
-            AddDoor(0x41CF, 0, 15, 7);
-            AddDoor(0x41D1, 2, 15, 7);
-
             SetSign(-15, 16, 7, false);
         }
 
@@ -304,29 +336,6 @@ namespace Server.Multis
         public ElsaCastle(Mobile owner)
             : base(ContestHouseType.Castle, 0x1480, owner, 3281, 28)
         {
-            AddDoor(0x31A0, -13, 9, 7);
-            AddDoor(0x31A0, 14, 9, 7);
-
-            AddLinkedEastDoors(0x2D63, 0x31A2, -8, 6, 7);
-            AddLinkedEastDoors(0x2D63, 0x31A2, 6, 6, 7);
-            AddLinkedEastDoors(0x2D63, 0x31A2, -8, -10, 7);
-            AddLinkedEastDoors(0x2D63, 0x31A2, 6, -10, 7);
-
-            AddDoor(0x1FF9, -12, 14, 7);
-            AddDoor(0x1FF5, 12, 14, 7);
-
-            AddDoor(0x854, 4, 14, 7);
-            AddDoor(0x858, -3, 14, 7);
-
-            AddLinkedSouthDoors(0x2D65, 0x31A0, 0, 9, 27);
-            AddLinkedSouthDoors(0x2D65, 0x31A0, -7, -1, 27);
-            AddLinkedSouthDoors(0x2D65, 0x31A0, 8, -1, 27);
-
-            AddDoor(0x2D65, -13, 9, 27);
-            AddDoor(0x2D65, 14, 9, 27);
-
-            AddDoor(0x1FF3, 2, -13, 47);
-
             SetSign(-15, 16, 7, false);
         }
 
@@ -353,20 +362,6 @@ namespace Server.Multis
         public Spires(Mobile owner)
             : base(ContestHouseType.Castle, 0x1481, owner, 3281, 28)
         {
-            AddSouthDoors(true, 0, 12, 7);
-
-            AddEastDoor(false, -7, 13, 27);
-            AddEastDoors(false, 7, 6, 27, false, true);
-            AddSouthDoors(false, 13, 1, 27);
-
-            AddEastDoors(false, 7, -4, 47, false, true);
-            AddDoor(0x32A, -13, 12, 47);
-            AddDoor(0x32A, -13, 1, 47);
-            AddDoor(0x32A, -13, -2, 47);
-            AddDoor(0x32A, -13, -12, 47);
-            AddDoor(0x330, -7, -13, 47);
-            AddDoor(0x330, 4, -13, 47);
-
             SetSign(-15, 16, 7, false);
         }
 
@@ -393,29 +388,6 @@ namespace Server.Multis
         public CastleOfOceania(Mobile owner)
             : base(ContestHouseType.Castle, 0x1482, owner, 3281, 28)
         {
-            AddLinkedSouthDoors(0x50C8, 0x50CA, 0, 10, 7);
-            AddLinkedEastDoors(0x5146, 0x5148, -10, -12, 7);
-            AddLinkedEastDoors(0x5146, 0x5148, 9, -12, 7);
-
-            AddLinkedEastDoors(0x2D6B, 0x31A8, -8, -10, 27);
-            AddLinkedEastDoors(0x2D6B, 0x31A8, -8, -4, 27);
-            AddLinkedEastDoors(0x2D6B, 0x31A8, -8, 1, 27);
-            AddLinkedEastDoors(0x2D6B, 0x31A8, 7, -7, 27);
-            AddLinkedEastDoors(0x2D6B, 0x31A8, 7, -1, 27);
-            AddLinkedSouthDoors(0x2D6D, 0x31AA, 10, -5, 27);
-
-            AddDoor(0x31AA, 11, 3, 27);
-            AddDoor(0x31AA, -11, 3, 27);
-            AddDoor(0x2D6D, -11, -7, 27);
-
-            AddDoor(0x2D6B, -6, -10, 47);
-            AddDoor(0x2D6B, -6, -5, 47);
-            AddDoor(0x2D6B, -6, 0, 47);
-            AddDoor(0x31A8, 1, -10, 47);
-            AddDoor(0x31A8, 1, -1, 47);
-
-            AddLinkedEastDoors(0x2D6B, 0x31A8, 5, -5, 47);
-
             SetSign(-15, 16, 7, false);
         }
 
@@ -450,18 +422,6 @@ namespace Server.Multis
         public FeudalCastle(Mobile owner)
             : base(ContestHouseType.Castle, 0x1483, owner, 3281, 28)
         {
-            AddLinkedSouthDoors(0x2A0D, 0x2A0F, -5, -1, 7);
-
-            AddDoor(0x2A0F, 4, -7, 7);
-            AddDoor(0x2A0F, 7, -7, 7);
-            AddDoor(0x2A0D, -12, -1, 7);
-
-            AddDoor(0x2A0D, -11, -1, 27);
-            AddDoor(0x2A0F, -10, -1, 27);
-            AddDoor(0x2A11, 4, -12, 27);
-
-            AddDoor(0x2A11, 4, -9, 47);
-
             SetSign(-15, 16, 7, true);
         }
 
@@ -496,18 +456,6 @@ namespace Server.Multis
         public RobinsNest(Mobile owner)
             : base(ContestHouseType.Keep, 0x1484, owner, 2113, 18)
         {
-            AddLinkedSouthDoors(0x6E5, 0x6E7, -3, 11, 7);
-            AddLinkedSouthDoors(0x6E5, 0x6E7, 8, 5, 7);
-            AddLinkedEastDoors(0x6ED, 0x6EF, 10, -2, 7);
-
-            AddLinkedSouthDoors(0x6E5, 0x6E7, -3, 5, 27);
-
-            AddLinkedEastDoors(0x6ED, 0x6EF, 5, 3, 47);
-
-            AddTeleporters(0x181E, new Point3D(4, 10, 7), new Point3D(9, 4, 27));
-            AddTeleporters(0x181F, new Point3D(4, 4, 47), new Point3D(9, 3, 27));
-            AddTeleporters(0x1822, new Point3D(4, 3, 47), new Point3D(11, -10, 67));
-
             SetSign(-11, 13, 7, false);
         }
 
@@ -547,11 +495,6 @@ namespace Server.Multis
         public TraditionalKeep(Mobile owner)
             : base(ContestHouseType.Keep, 0x1485, owner, 2113, 18)
         {
-            AddSouthDoors(false, 0, 10, 7);
-            AddDoor(0x328, -9, 12, 7);
-            AddDoor(0x328, 11, 12, 7);
-            AddDoor(0x32C, -7, -3, 7);
-
             SetSign(-11, 13, 7, false);
         }
 
@@ -586,18 +529,6 @@ namespace Server.Multis
         public VillaCrowley(Mobile owner)
             : base(ContestHouseType.Keep, 0x1486, owner, 2113, 18)
         {
-            AddSouthDoors(0, 4, 7);
-            AddSouthDoor(-10, 4, 7);
-
-            AddEastDoor(3, -6, 27);
-
-            AddDoor(0x6AB, -6, -4, 47);
-            AddDoor(0x6AB, 1, -9, 47);
-            AddDoor(0x6AB, 8, -9, 47);
-
-            AddSouthDoor(1, -3, 47);
-            AddDoor(0x6AD, -3, 1, 47);
-
             SetSign(-11, 13, 7, true);
         }
 
@@ -624,9 +555,6 @@ namespace Server.Multis
         public DarkthornKeep(Mobile owner)
             : base(ContestHouseType.Keep, 0x1487, owner, 2113, 18)
         {
-            AddLinkedSouthDoors(0x41CF, 0x41D1, 0, 10, 7);
-            AddLinkedSouthDoors(0x41CF, 0x41D1, 0, 6, 27);
-
             SetSign(-11, 13, 7, false);
         }
 
@@ -655,23 +583,6 @@ namespace Server.Multis
         public SandalwoodKeep(Mobile owner)
             : base(ContestHouseType.Keep, 0x1488, owner, 2113, 18)
         {
-            AddLinkedSouthDoors(0x9B3C, 0x9B3E, 1, 6, 7);
-            AddLinkedEastDoors(0x9B48, 0x9B4A, -6, -8, 7);
-            AddLinkedEastDoors(0x9B44, 0x9B46, 8, -8, 7);
-            AddLinkedEastDoors(0x9B44, 0x9B46, 10, 1, 7);
-            AddLinkedSouthDoors(0x86A, 0x86C, -6, 12, 7);
-            AddLinkedSouthDoors(0x86A, 0x86C, 7, 12, 7);
-
-            AddDoor(0x86C, 11, 6, 7);
-            AddDoor(0x86C, 11, -6, 7);
-
-            AddTeleporters(0x1820, new Point3D(9, 5, 7), new Point3D(7, -7, 47));
-            AddTeleporters(0x181E, new Point3D(8, 5, 7), new Point3D(9, 5, 27));
-
-            AddLinkedSouthDoors(0x9B3C, 0x9B3E, -10, 2, 27);
-
-            AddDoor(0x9B42, 1, 3, 47);
-
             SetSign(-11, 13, 7, true);
         }
 
@@ -704,18 +615,186 @@ namespace Server.Multis
         public CasaMoga(Mobile owner)
             : base(ContestHouseType.Keep, 0x1489, owner, 2113, 18)
         {
-            AddLinkedSouthDoors(0x6D5, 0x6D7, 0, 8, 7);
-            AddDoor(0x6DF, -2, 5, 7);
-            AddLinkedEastDoors(0x6DD, 0x6DF, -2, -7, 7);
-            AddLinkedEastDoors(0x6E1, 0x6E3, 3, -7, 7);
-
-            AddTeleporters(0x1822, new Point3D(-1, 9, 7), new Point3D(4, -9, 7));
-            AddTeleporters(0x1821, new Point3D(-2, -9, 27), new Point3D(-10, 0, 67));
-
             SetSign(-11, 13, 7, false);
         }
         
         public CasaMoga(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class RobinsRoost : BaseContestHouse
+    {
+        public RobinsRoost(Mobile owner)
+            : base(ContestHouseType.Castle, 0x148A, owner, 3281, 28)
+        {
+            SetSign(-15, 16, 7, true);
+        }
+
+        public RobinsRoost(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class Camelot : BaseContestHouse
+    {
+        public Camelot(Mobile owner)
+            : base(ContestHouseType.Castle, 0x148B, owner, 3281, 28)
+        {
+            SetSign(-15, 16, 7, false);
+        }
+
+        public Camelot(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class LacrimaeInCaelo : BaseContestHouse
+    {
+        public LacrimaeInCaelo(Mobile owner)
+            : base(ContestHouseType.Castle, 0x148C, owner, 3281, 28)
+        {
+            SetSign(-15, 16, 7, false);
+        }
+
+        public LacrimaeInCaelo(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class OkinawaSweetDreamCastle : BaseContestHouse
+    {
+        public static Rectangle2D[] AreaArray = new Rectangle2D[]
+        {
+            new Rectangle2D(-15, -15, 31, 31),
+            new Rectangle2D(-14, 16, 6, 1),
+            new Rectangle2D(-7, 16, 8, 1),
+            new Rectangle2D(10, 16, 5, 1)
+        };
+
+        public override Rectangle2D[] Area { get { return AreaArray; } }
+
+        public OkinawaSweetDreamCastle(Mobile owner)
+            : base(ContestHouseType.Castle, 0x148D, owner, 3281, 28)
+        {
+            SetSign(-15, 16, 7, true);
+        }
+
+        public OkinawaSweetDreamCastle(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class TheSandstoneCastle : BaseContestHouse
+    {
+        public TheSandstoneCastle(Mobile owner)
+            : base(ContestHouseType.Castle, 0x148E, owner, 3281, 28)
+        {
+            SetSign(-15, 16, 7, true);
+        }
+
+        public TheSandstoneCastle(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class GrimswindSisters : BaseContestHouse
+    {
+        public static Rectangle2D[] AreaArray = new Rectangle2D[]
+        {
+            new Rectangle2D(-15, -15, 31, 31),
+            new Rectangle2D(-14, 16, 9, 1),
+            new Rectangle2D(-3, 16, 8, 1),
+            new Rectangle2D(7, 16, 9, 1)
+        };
+
+        public override Rectangle2D[] Area { get { return AreaArray; } }
+
+        public GrimswindSisters(Mobile owner)
+            : base(ContestHouseType.Castle, 0x148F, owner, 3281, 28)
+        {
+            SetSign(-15, 16, 7, false);
+        }
+
+        public GrimswindSisters(Serial serial)
             : base(serial)
         {
         }

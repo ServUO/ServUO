@@ -221,9 +221,14 @@ namespace Server.Items
                         page = 3;
                         index = 0;
                     }
-                    else if (i > 20)
+                    else if (i == 32)
                     {
-                        page = 3 + ((i - 20) / 14);
+                        page = 4;
+                        index = 0;
+                    }
+                    else if (i > 44)
+                    {
+                        page = 4 + ((i - 20) / 14);
                         index = (i - 20) % 14;
                     }
                     else
@@ -406,6 +411,13 @@ namespace Server.Items
             new HousePlacementEntry(typeof(DarkthornKeep),      1158853,	2625,	1312,	3019,	1509,	52,	27990000, 0, 11,	0,	0x1487),
             new HousePlacementEntry(typeof(SandalwoodKeep),     1158854,	2625,	1312,	3019,	1509,	52,	23456250, 0, 11,	0,	0x1488),
             new HousePlacementEntry(typeof(CasaMoga),           1158855,	2625,	1312,	3019,	1509,	52,	26313750, 0, 11,	0,	0x1489),
+
+            new HousePlacementEntry(typeof(RobinsRoost),                1158960,    4076,   2038,   4688,   2344,   78,	43863750, 0, 16,	0,	0x148A),
+            new HousePlacementEntry(typeof(Camelot),                    1158961,    4076,   2038,   4688,   2344,   78,	47092500, 0, 16,	0,  0x148B),
+            new HousePlacementEntry(typeof(LacrimaeInCaelo),            1158962,    4076,   2038,   4688,   2344,   78,	45315000, 0, 16,	0,  0x148C),
+            new HousePlacementEntry(typeof(OkinawaSweetDreamCastle),    1158963,    4076,   2038,   4688,   2344,   78,	40128750, 0, 16,	0,  0x148D),
+            new HousePlacementEntry(typeof(TheSandstoneCastle),         1158964,    4076,   2038,   4688,   2344,   78,	48690000, 0, 16,	0,  0x148E),
+            new HousePlacementEntry(typeof(GrimswindSisters),           1158965,    4076,   2038,   4688,   2344,   78, 42142500, 0, 16,    0,  0x148F),
         };
 
         private static readonly HousePlacementEntry[] m_CustomHouseContest = new HousePlacementEntry[]
