@@ -144,7 +144,8 @@ namespace Server.Items
                     typeof(PutridUndeadGuardian), typeof(Juonar),
                     typeof(Spellbinder), typeof(AngeredSpirit),
                     typeof(BoneSwordSlinger), typeof(CovetousRevenant),
-                    typeof(DiseasedLich), typeof(VileCadaver)
+                    typeof(DiseasedLich), typeof(VileCadaver),
+                    typeof(GrizzledMare)
                 );
 
             undead.Entries = new SlayerEntry[0];
