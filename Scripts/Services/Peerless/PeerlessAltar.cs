@@ -375,17 +375,6 @@ namespace Server.Items
         public virtual void BeginSequence(Mobile from)
         {
             SpawnBoss();
-
-            // teleport fighters
-            /*Fighters.ForEach(x =>
-            {
-                int counter = 0;
-
-                if (x.InRange(from.Location, 15) && CanEnter(x))
-                {
-                    Timer.DelayCall(TimeSpan.FromSeconds(counter++), () => { Enter(x); });
-                }
-            });*/
         }
 
         public virtual void SpawnBoss()

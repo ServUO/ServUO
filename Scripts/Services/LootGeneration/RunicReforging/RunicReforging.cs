@@ -1243,24 +1243,6 @@ namespace Server.Items
                         //new NamedInfoCol(SAAbsorptionAttribute.CastingFocus, ArmorCastingFocusTable),
                     },
                 };
-
-            /*m_PrefixSuffixInfo[250] = new NamedInfoCol[][] // Reforge Only
-                {
-                    new NamedInfoCol[] // Weapon
-                    {
-                        new NamedInfoCol(AosWeaponAttribute.HitLowerDefend, HitWeaponTable2),
-                        new NamedInfoCol(AosWeaponAttribute.UseBestSkill, 1),
-                    },
-                    new NamedInfoCol[] // armor
-                    {
-                    },
-                    new NamedInfoCol[]
-                    {
-                    },
-                    new NamedInfoCol[]
-                    {
-                    },
-                };*/
         }
 
         public class NamedInfoCol
@@ -2403,10 +2385,11 @@ namespace Server.Items
         public static bool ApplyProperty(Item item, int id, int perclow, int perchigh, ref int budget, int luckchance, bool reforged, bool powerful)
         {
             int min = ItemPropertyInfo.GetMinIntensity(item, id);
-            int max = ItemPropertyInfo.GetMaxIntensity(item, id);
+            int naturalMax = ItemPropertyInfo.GetMaxIntensity(item, id);
+            int max = naturalMax;
             int[] overcap = null;
 
-            if (powerful && 0.25 > Utility.RandomDouble())
+            if (powerful)
             {
                 overcap = ItemPropertyInfo.GetMaxOvercappedRange(item, id);
 
@@ -2418,11 +2401,18 @@ namespace Server.Items
 
             int value = CalculateValue(item, ItemPropertyInfo.GetAttribute(id), min, max, perclow, perchigh, ref budget, luckchance, reforged);
 
-            if (overcap != null && overcap.Length > 0 && value < max)
+            // We're using overcap, so the value must have gone over the natural max, but under the overrcap max
+            if (overcap != null && overcap.Length > 0 && value > naturalMax && value < max)
             {
-                value = AdjustOvercap(overcap, value);
+                if (overcap.Length > 1)
+                {
+                    value = AdjustOvercap(overcap, value);
+                }
+                else
+                {
+                    value = naturalMax;
+                }
             }
-
             Imbuing.SetProperty(item, id, value);
 
             budget -= Imbuing.GetIntensityForID(item, id, -1, value);
@@ -2445,7 +2435,7 @@ namespace Server.Items
         {
             for (int i = overcap.Length - 1; i >= 0; i--)
             {
-                if (value > overcap[i])
+                if (value >= overcap[i])
                 {
                     return overcap[i];
                 }

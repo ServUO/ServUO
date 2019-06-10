@@ -124,12 +124,12 @@ namespace Server.Items
 
         public override bool TryDropItem(Mobile from, Item dropped, bool sendFullMessage)
         {
-            BaseHouse house = BaseHouse.FindHouseAt(this);
-
             if (!CheckHold(from, dropped, true, true))
             {
                 return false;
             }
+
+            BaseHouse house = BaseHouse.FindHouseAt(this);
 
             if (house != null && IsLockedDown)
             {
@@ -165,7 +165,7 @@ namespace Server.Items
 
             BaseHouse house = BaseHouse.FindHouseAt(this);
 
-            if (house != null && IsLockedDown)
+            if (house != null && IsSecure)
             {
                 var secure = house.GetSecureInfoFor(this);
 

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server;
 using Server.Items;
 using Server.Misc;
@@ -162,20 +164,12 @@ namespace Server.Mobiles
 
         private void Teleport()
         {
-            System.Collections.Generic.List<Mobile> toTele = new System.Collections.Generic.List<Mobile>();
-
-            IPooledEnumerable eable = this.GetMobilesInRange(StrikingRange);
-            foreach (Mobile mob in eable)
-            {
-                if (mob != this && mob.Alive && mob.Player && this.CanBeHarmful(mob, false))
-                    toTele.Add(mob);
-            }
-            eable.Free();
+            var toTele = SpellHelper.AcquireIndirectTargets(this, Location, Map, StrikingRange).OfType<PlayerMobile>().ToList();
 
             if (toTele.Count > 0)
             {
-                Mobile from = toTele[Utility.Random(toTele.Count)];
-
+                var from = toTele[Utility.Random(toTele.Count)];
+                
                 if (from != null)
                 {
                     Combatant = from;
@@ -188,104 +182,105 @@ namespace Server.Mobiles
                 }
             }
 
+            ColUtility.Free(toTele);
             m_Teleport = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(40, 60));
         }
-		
-		public void ChangeOpponent()
-		{
-			Mobile agro, best = null;
-			double distance, random = Utility.RandomDouble();
-			
-			if ( random < 0.75 )
-			{			
-				// find random target relatively close
-				for ( int i = 0; i < Aggressors.Count && best == null; i ++ )
-				{
-					agro = Validate( Aggressors[ i ].Attacker );
-					
-					if ( agro == null )
-						continue;				
-				
-					distance = StrikingRange - GetDistanceToSqrt( agro );
-					
-					if ( distance > 0 && distance < StrikingRange - 2 && InLOS( agro.Location ) )
-					{
-						distance /= StrikingRange;
-						
-						if ( random < distance )
-							best = agro;
-					}
-				}		
-			}	
-			else
-			{
-				int damage = 0;
-				
-				// find a player who dealt most damage
-				for ( int i = 0; i < DamageEntries.Count; i ++ )
-				{
-					agro = Validate( DamageEntries[ i ].Damager );
-					
-					if ( agro == null )
-						continue;
-					
-					distance = GetDistanceToSqrt( agro );
-						
-					if ( distance < StrikingRange && DamageEntries[ i ].DamageGiven > damage && InLOS( agro.Location ) )
-					{
-						best = agro;
-						damage = DamageEntries[ i ].DamageGiven;
-					}
-				}
-			}
-			
-			if ( best != null )
-			{
-				// teleport
-				best.Location = BasePeerless.GetSpawnPosition( Location, Map, 1 );
-				best.FixedParticles( 0x376A, 9, 32, 0x13AF, EffectLayer.Waist );
-				best.PlaySound( 0x1FE );
-				
-				Timer.DelayCall( TimeSpan.FromSeconds( 1 ), new TimerCallback( delegate()
-				{
-					// poison
-					best.ApplyPoison( this, HitPoison );
-					best.FixedParticles( 0x374A, 10, 15, 5021, EffectLayer.Waist );
-					best.PlaySound( 0x474 );
-				} ) );
-				
-				m_Change = DateTime.UtcNow + TimeSpan.FromSeconds( Utility.RandomMinMax( 5, 10 ) );
-			}
-		}
+
+        public void ChangeOpponent()
+        {
+            Mobile agro, best = null;
+            double distance, random = Utility.RandomDouble();
+
+            if (random < 0.75)
+            {
+                // find random target relatively close
+                for (int i = 0; i < Aggressors.Count && best == null; i++)
+                {
+                    agro = Validate(Aggressors[i].Attacker);
+
+                    if (agro == null)
+                        continue;
+
+                    distance = StrikingRange - GetDistanceToSqrt(agro);
+
+                    if (distance > 0 && distance < StrikingRange - 2 && InLOS(agro.Location))
+                    {
+                        distance /= StrikingRange;
+
+                        if (random < distance)
+                            best = agro;
+                    }
+                }
+            }
+            else
+            {
+                int damage = 0;
+
+                // find a player who dealt most damage
+                for (int i = 0; i < DamageEntries.Count; i++)
+                {
+                    agro = Validate(DamageEntries[i].Damager);
+
+                    if (agro == null)
+                        continue;
+
+                    distance = GetDistanceToSqrt(agro);
+
+                    if (distance < StrikingRange && DamageEntries[i].DamageGiven > damage && InLOS(agro.Location))
+                    {
+                        best = agro;
+                        damage = DamageEntries[i].DamageGiven;
+                    }
+                }
+            }
+
+            if (best != null)
+            {
+                // teleport
+                best.Location = BasePeerless.GetSpawnPosition(Location, Map, 1);
+                best.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
+                best.PlaySound(0x1FE);
+
+                Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                 {
+                     best.ApplyPoison(this, HitPoison);
+                     best.FixedParticles(0x374A, 10, 15, 5021, EffectLayer.Waist);
+                     best.PlaySound(0x474);
+                 });
+
+                m_Change = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(5, 10));
+            }
+        }
 		
 		public void HoofStomp()
 		{
-            IPooledEnumerable eable = this.GetMobilesInRange( StrikingRange );
-			foreach ( Mobile m in eable )
-			{
-				Mobile valid = Validate( m );
+            if (Map == null)
+                return;
 
-                if (valid != null && Affect(valid))
+            foreach (Mobile m in SpellHelper.AcquireIndirectTargets(this, Location, Map, StrikingRange).OfType<Mobile>())
+            {
+                if (m.GetStatMod("DreadHornStr") == null)
                 {
                     double percent = m.Skills.MagicResist.Value / 100;
-                    double malas = -20 + (percent * 5.2);
+                    int malas = (int)(-20 + (percent * 5.2));
 
-                    m.AddStatMod(new StatMod(StatType.Str, "DreadHornStr", (int)malas, TimeSpan.FromSeconds(60)));
-                    m.AddStatMod(new StatMod(StatType.Dex, "DreadHornDex", (int)malas, TimeSpan.FromSeconds(60)));
-                    m.AddStatMod(new StatMod(StatType.Int, "DreadHornInt", (int)malas, TimeSpan.FromSeconds(60)));
-
-                    valid.SendLocalizedMessage(1075081); // *Dreadhorns eyes light up, his mouth almost a grin, as he slams one hoof to the ground!*
+                    m.AddStatMod(new StatMod(StatType.Str, "DreadHornStr", m.Str < malas ? m.Str / 2 : malas, TimeSpan.FromSeconds(60)));
+                    m.AddStatMod(new StatMod(StatType.Dex, "DreadHornDex", m.Dex < malas ? m.Dex / 2 : malas, TimeSpan.FromSeconds(60)));
+                    m.AddStatMod(new StatMod(StatType.Int, "DreadHornInt", m.Int < malas ? m.Int / 2 : malas, TimeSpan.FromSeconds(60)));
                 }
-			}
-            eable.Free();
+
+                m.SendLocalizedMessage(1075081); // *Dreadhorns eyes light up, his mouth almost a grin, as he slams one hoof to the ground!*
+            }
 
 			// earthquake
 			PlaySound( 0x2F3 );
-				
-			Timer.DelayCall( TimeSpan.FromSeconds( 30 ), new TimerCallback( delegate{ StopAffecting(); } ) );
-						
 			m_Stomp = DateTime.UtcNow + TimeSpan.FromSeconds( Utility.RandomMinMax( 60, 80 ) );
 		}
+
+        public static bool IsUnderInfluence(Mobile m)
+        {
+            return m.GetStatMod("DreadHornStr") != null;
+        }
 		
 		public Mobile Validate( Mobile m )
 		{			
@@ -300,39 +295,6 @@ namespace Server.Mobiles
 				return null;	
 			
 			return agro;
-		}
-		
-		private static Dictionary<Mobile,bool> m_Affected;
-		
-		public static bool IsUnderInfluence( Mobile mobile )
-		{
-			if ( m_Affected != null )
-			{
-				if ( m_Affected.ContainsKey( mobile ) )
-					return true;
-			}
-			
-			return false;
-		}
-		
-		public static bool Affect( Mobile mobile )
-		{
-			if ( m_Affected == null )
-				m_Affected = new Dictionary<Mobile,bool>();
-				
-			if ( !m_Affected.ContainsKey( mobile ) )
-			{
-				m_Affected.Add( mobile, true );
-				return true;
-			}
-			
-			return false;
-		}
-		
-		public static void StopAffecting()
-		{
-			if ( m_Affected != null )
-				m_Affected.Clear();
 		}
 	}
 }

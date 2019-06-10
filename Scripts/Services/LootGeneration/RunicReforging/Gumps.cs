@@ -20,6 +20,10 @@ namespace Server.Gumps
         InspiredArtifice    = 0x00000040,
         ExaltedArtifice     = 0x00000080,
         SublimeArtifice     = 0x00000100,
+
+        PowerfulAndStructural = Powerful | Structural,
+        PowerfulAndFundamental = Powerful | Fundamental,
+        PowerfulStructuralAndFundamental = PowerfulAndStructural | Fundamental
     }
 
     public class RunicReforgingGump : Gump

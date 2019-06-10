@@ -169,9 +169,9 @@ namespace Server.Multis
                 {
                     ItemData data = TileData.ItemTable[entry.m_ItemID & TileData.MaxItemValue];
 
+                    // door
                     if ((data.Flags & TileFlag.Door) != 0)
                     {
-                        //doors.Add(entry);
                         AddDoor(entry.m_ItemID, entry.m_OffsetX, entry.m_OffsetY, entry.m_OffsetZ);
                     }
                     else
@@ -211,6 +211,8 @@ namespace Server.Multis
 
                 AddTeleporters(kvp.Key, new Point3D(kvp.Value[0].m_OffsetX, kvp.Value[0].m_OffsetY, kvp.Value[0].m_OffsetZ), new Point3D(kvp.Value[1].m_OffsetX, kvp.Value[1].m_OffsetY, kvp.Value[1].m_OffsetZ));
             }
+
+            teleporters.Clear();
         }
 
         public BaseContestHouse(Serial serial)
