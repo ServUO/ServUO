@@ -2587,7 +2587,7 @@ namespace Server.Multis
                 if (info != null)
                 {
                     m.CloseGump(typeof (SetSecureLevelGump));
-                    m.SendGump(new Gumps.SetSecureLevelGump(m_Owner, info, this));
+                    m.SendGump(new Gumps.SetSecureLevelGump(m, info, this));
                 }
                 else if (item.Parent != null)
                 {
@@ -2643,7 +2643,7 @@ namespace Server.Multis
                     }
 
                     m.CloseGump(typeof (SetSecureLevelGump));
-                    m.SendGump(new Gumps.SetSecureLevelGump(m_Owner, info, this));
+                    m.SendGump(new Gumps.SetSecureLevelGump(m, info, this));
                 }
             }
         }
@@ -5204,13 +5204,12 @@ namespace Server.Multis
             }
 
             ISecurable sec = GetSecurable(Owner.From, m_Item);
+            BaseHouse house = BaseHouse.FindHouseAt(m_Item);
 
-            if (sec != null)
+            if (house != null && sec != null)
             {
-                Mobile owner = sec is SecureInfo ? ((SecureInfo)sec).Owner : Owner.From;
-
                 Owner.From.CloseGump(typeof (SetSecureLevelGump));
-                Owner.From.SendGump(new SetSecureLevelGump(owner, sec, BaseHouse.FindHouseAt(m_Item)));
+                Owner.From.SendGump(new SetSecureLevelGump(Owner.From, sec, house));
             }
         }
     }

@@ -315,9 +315,6 @@ namespace Server.Items
             Register(23, new ItemPropertyInfo(AosAttribute.NightSight, 1015168, 50, typeof(MagicalResidue), typeof(Tourmaline), typeof(BottleIchor), 0, 1, 1, 1112004,
                 new PropInfo(3, 1, 1), new PropInfo(5, 1, 1), new PropInfo(6, 1, 1)));
 
-            Register(24, new ItemPropertyInfo(AosWeaponAttribute.LowerStatReq, 1079757, 100, typeof(EnchantedEssence), typeof(Amethyst), typeof(ElvenFletching), 10, 10, 100, 1111998,
-                new PropInfo(1, 0, 100), new PropInfo(2, 1, 1), new PropInfo(3, 0, 100), new PropInfo(4, 100, 100), new PropInfo(5, 0, 100)));
-
             Register(25, new ItemPropertyInfo(AosWeaponAttribute.HitLeechHits, 1079698, 110, typeof(MagicalResidue), typeof(Ruby), typeof(VoidOrb), 1, 2, 50, 1111964,
                 new PropInfo(1, 10, 50, 50), new PropInfo(2, 10, 50, 50)));
 
@@ -370,7 +367,16 @@ namespace Server.Items
                 new PropInfo(1, 10, 10, new int[] { 11, 12, 13, 14, 15 }), new PropInfo(2, 10, 10, new int[] { 11, 12, 13, 14, 15 })));
 
             Register(42, new ItemPropertyInfo(AosWeaponAttribute.DurabilityBonus, 1017323, 100, typeof(EnchantedEssence), typeof(Diamond), typeof(PowderedIron), 10, 10, 100, 1111949,
-                new PropInfo(1, 0, 100, new int[] { 110, 120, 130, 140, 150 }), new PropInfo(2, 0, 100, new int[] { 110, 120, 130, 140, 150 }), new PropInfo(3, 0, 100, new int[] { 110, 120, 130, 140, 150 }), new PropInfo(4, 100, 100, new int[] { 110, 120, 130, 140, 150 }), new PropInfo(5, 0, 100, new int[] { 110, 120, 130, 140, 150 })));
+                new PropInfo(1, 0, 100, new int[] { 110, 120, 130, 140, 150 }), new PropInfo(2, 0, 100, new int[] { 110, 120, 130, 140, 150 })));
+
+            Register(43, new ItemPropertyInfo(AosArmorAttribute.DurabilityBonus, 1017323, 100, typeof(EnchantedEssence), typeof(Diamond), typeof(PowderedIron), 10, 10, 100, 1111949,
+               new PropInfo(3, 0, 100, new int[] { 110, 120, 130, 140, 150 }), new PropInfo(4, 100, 100, new int[] { 110, 120, 130, 140, 150 }), new PropInfo(5, 0, 100, new int[] { 110, 120, 130, 140, 150 })));
+
+            Register(44, new ItemPropertyInfo(AosWeaponAttribute.LowerStatReq, 1079757, 100, typeof(EnchantedEssence), typeof(Amethyst), typeof(ElvenFletching), 10, 10, 100, 1111998,
+                new PropInfo(1, 0, 100), new PropInfo(2, 0, 100)));
+
+            Register(45, new ItemPropertyInfo(AosArmorAttribute.LowerStatReq, 1079757, 100, typeof(EnchantedEssence), typeof(Amethyst), typeof(ElvenFletching), 10, 10, 100, 1111998,
+                new PropInfo(3, 0, 100), new PropInfo(4, 0, 100), new PropInfo(5, 0, 100)));
 
             Register(49, new ItemPropertyInfo(AosArmorAttribute.MageArmor, 1079758, 0, typeof(EnchantedEssence), typeof(Diamond), typeof(AbyssalCloth), 0, 1, 1, 1112000,
                 new PropInfo(3, 1, 1)));
@@ -915,12 +921,6 @@ namespace Server.Items
 
         public static int GetIDForAttribute(AosArmorAttribute attr)
         {
-            if (attr == AosArmorAttribute.LowerStatReq)
-                return GetIDForAttribute(AosWeaponAttribute.LowerStatReq);
-
-            if (attr == AosArmorAttribute.DurabilityBonus)
-                return GetIDForAttribute(AosWeaponAttribute.DurabilityBonus);
-
             foreach (var kvp in Table)
             {
                 var info = kvp.Value;
@@ -1139,6 +1139,8 @@ namespace Server.Items
                         case 38:
                         case 39: // Hit Spell Cannot be applied if it already has one present
                             return item is BaseWeapon && !HasHitSpell((BaseWeapon)item);
+                        case 49: // MageArmor cannot be applied if the armor is already meddable
+                            return item is BaseArmor && ((BaseArmor)item).MeditationAllowance != ArmorMeditationAllowance.All;
                         case 208:
                         case 209:
                         case 210:
