@@ -345,102 +345,334 @@ namespace Server.Items
                 return false;
 
             // Cannot choose same suffix/prefix
-            if (index != 0 && (index == prefix || index == suffix))
-                return false;
+            //if (index != 0 && (index == prefix || index == suffix))
+            //    return false;HasOption(options, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulAndFundamental)
 
-            switch (tool.Resource)
+            var type = ItemPropertyInfo.GetItemType(toreforge);
+
+            if (type == ItemType.Melee)
             {
-                default:
-                case CraftResource.DullCopper:
-                    {
-                        if ((index == 10 || index == 11) && (options & ReforgingOption.Powerful) != 0 &&
-                                                            (options & ReforgingOption.Fundamental) != 0)
+                switch (tool.Resource)
+                {
+                    case CraftResource.DullCopper:
+                        if (index == 8 && HasOption(options, ReforgingOption.PowerfulStructuralAndFundamental))
                             return false;
-                    }
-                    break;
-                case CraftResource.ShadowIron:
-                case CraftResource.SpinedLeather:
-                case CraftResource.OakWood:
-                    {
-                        if ((index == 10 || index == 11) && ((options & ReforgingOption.Structural) != 0 ||
-                                                             (options & ReforgingOption.Fundamental) != 0))
+                        break;
+                    case CraftResource.ShadowIron:
+                        if (index == 8 && HasOption(options, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental))
                             return false;
+                        else if (index >= 8 && index <= 10 && HasOption(options, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.Copper:
+                        if (index == 8 && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental))
+                            return false;
+                        if (index >= 8 && index <= 10 && HasOption(options, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.Bronze:
+                        if (index == 8)
+                            return false;
+                        if (index == 9 && HasOption(options, ReforgingOption.Powerful))
+                            return false;
+                        if (index >= 8 && index <= 10 && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.Gold:
+                        if (index == 8)
+                            return false;
+                        if (index >= 8 && index <= 10 && HasOption(options, ReforgingOption.Powerful, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.Agapite:
+                    case CraftResource.Verite:
+                        if (index >= 8 && index <= 10)
+                            return false;
+                        if (index == 12 && HasOption(options, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.Valorite:
+                        if (index >= 8 && index <= 10)
+                            return false;
+                        if (index == 12 && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
 
-                        if (index == 5 && (options & ReforgingOption.Powerful) != 0 &&
-                                          (options & ReforgingOption.Fundamental) != 0)
+                    case CraftResource.OakWood:
+                        if (index == 8 && HasOption(options, ReforgingOption.StructuralAndFundamental))
                             return false;
+                        if (index >= 8 && index <= 10 && HasOption(options, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.AshWood:
+                        if (index == 8)
+                            return false;
+                        if (index >= 8 && index <= 10 && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.YewWood:
+                        if (index >= 8 && index <= 10)
+                            return false;
+                        if (index == 12 && HasOption(options, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.Heartwood:
+                        if (index >= 8 && index <= 10)
+                            return false;
+                        if (index == 12 && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                }
+            }
+            else if (type == ItemType.Ranged)
+            {
+                switch (tool.Resource)
+                {
+                    case CraftResource.OakWood:
+                        if (index == 10 && HasOption(options, ReforgingOption.PowerfulAndStructural))
+                            return false;
+                        if ((index == 8 || index == 10) && HasOption(options, ReforgingOption.PowerfulAndFundamental))
+                            return false;
+                        if (index >= 8 && index <= 10 && (HasOption(options, ReforgingOption.PowerfulStructuralAndFundamental) || HasOption(options, ReforgingOption.StructuralAndFundamental)))
+                            return false;
+                        break;
+                    case CraftResource.AshWood:
+                        if (index == 8 || index == 10)
+                            return false;
+                        if (index >= 8 && index <= 10 && HasOption(options, ReforgingOption.PowerfulAndStructural))
+                            return false;
+                        if (index >= 8 && index <= 11 && HasOption(options, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental)) 
+                            return false;
+                        break;
+                    case CraftResource.YewWood:
+                        if (index >= 8 && index <= 11)
+                            return false;
+                        break;
+                    case CraftResource.Heartwood:
+                        if (index >= 8 && index <= 11)
+                            return false;
+                        if (index == 12 && HasOption(options, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                }
+            }
+            else if (type == ItemType.Shield)
+            {
+                if (index == 10)
+                    return false;
 
-                        return true;
-                    }
-                case CraftResource.Copper:
-                case CraftResource.HornedLeather:
-                case CraftResource.AshWood:
-                    {
+                switch (tool.Resource)
+                {
+                    case CraftResource.DullCopper:
+                        if (index == 8 && HasOption(options, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.ShadowIron:
+                        if (index == 8 && HasOption(options, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental))
+                            return false;
+                        if ((index == 8 || index == 9) && HasOption(options, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.Copper:
+                        if (index == 8 && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental))
+                            return false;
+                        else if ((index == 8 || index == 9) && HasOption(options, ReforgingOption.StructuralAndFundamental))
+                            return false;
+                        else if ((index == 5 || index == 8 || index == 9) && HasOption(options, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.Bronze:
+                        if (index == 8)
+                            return false;
+                        else if (index == 9 && HasOption(options, ReforgingOption.PowerfulAndStructural))
+                            return false;
+                        else if ((index == 9 || index == 5) && HasOption(options, ReforgingOption.PowerfulAndFundamental))
+                            return false;
+                        else if ((index == 9 || index == 5 || index == 11) && HasOption(options, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.Gold:
+                        if (index == 8)
+                            return false;
+                        else if (index == 9 && HasOption(options, ReforgingOption.Powerful))
+                            return false;
+                        else if ((index == 5 || index == 9) && HasOption(options, ReforgingOption.PowerfulAndStructural))
+                            return false;
+                        else if ((index == 9 || index == 5 || index == 11) && HasOption(options, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.Agapite:
+                        if (index == 8 || index == 9)
+                            return false;
+                        else if ((index == 5 || index == 11) && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.Verite:
+                    case CraftResource.Valorite:
+                        if (index == 8 || index == 9 || index == 11)
+                            return false;
+                        else if (index == 5 && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+
+                    case CraftResource.OakWood:
+                        if (index == 8 && HasOption(options, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental))
+                            return false;
+                        if ((index == 8 || index == 9) && HasOption(options, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.AshWood:
+                        if (index == 8)
+                            return false;
+                        else if (index == 9 && HasOption(options, ReforgingOption.PowerfulAndStructural))
+                            return false;
+                        else if ((index == 9 || index == 5) && HasOption(options, ReforgingOption.PowerfulAndFundamental))
+                            return false;
+                        else if ((index == 9 || index == 5 || index == 11) && HasOption(options, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.YewWood:
+                        if (index == 8 || index == 9)
+                            return false;
+                        else if ((index == 5 || index == 11) && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.Heartwood:
+                        if (index == 8 || index == 9 || index == 11)
+                            return false;
+                        else if (index == 5 && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                }
+            }
+            else if (type == ItemType.Armor)
+            {
+                switch (tool.Resource)
+                {
+                    case CraftResource.DullCopper:
+                        if ((index == 10 || index == 11) && HasOption(options, ReforgingOption.PowerfulAndFundamental))
+                            return false;
+                        else if ((index == 5 || index == 10 || index == 11) && HasOption(options, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.ShadowIron:
+                        if ((index == 10 || index == 11) && HasOption(options, ReforgingOption.PowerfulAndStructural))
+                            return false;
+                        else if ((index == 5 || index == 10 || index == 11) && HasOption(options, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental))
+                            return false;
+                        else if ((index == 5 || index == 9 || index == 10 || index == 11) && HasOption(options, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.Copper:
                         if (index == 10 || index == 11)
                             return false;
-
-                        if (index == 5 && ((options & ReforgingOption.Structural) != 0 ||
-                                           (options & ReforgingOption.Fundamental) != 0))
+                        else if (index == 5 && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental))
                             return false;
-
-                        if (index == 9 && (options & ReforgingOption.Fundamental) != 0)
+                        else if ((index == 5 || index == 9) && HasOption(options, ReforgingOption.StructuralAndFundamental))
                             return false;
-
-                        if (index == 12 && tool.Resource == CraftResource.Copper && (options & ReforgingOption.Structural) != 0 &&
-                                                                                    (options & ReforgingOption.Fundamental) != 0)
+                        else if ((index == 5 || index == 9 || index == 5) && HasOption(options, ReforgingOption.PowerfulStructuralAndFundamental))
                             return false;
-
-                        if (index == 12 && (options & ReforgingOption.Structural) != 0 &&
-                                           (options & ReforgingOption.Fundamental) != 0)
-                            return false;
-                    }
-                    break;
-                case CraftResource.Bronze:
-                case CraftResource.Gold:
-                    {
+                        break;
+                    case CraftResource.Bronze:
                         if (index == 10 || index == 11)
                             return false;
-
-                        if ((index == 5 || index == 9) && (options & ReforgingOption.Powerful) != 0 &&
-                                                          (options & ReforgingOption.Structural) != 0)
+                        else if ((index == 5 || index == 9) && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental))
                             return false;
-
-                        if (index == 5 && (options & ReforgingOption.Structural) != 0)
+                        else if ((index == 5 || index == 9 || index == 12) && HasOption(options, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
                             return false;
-
-                        if (index == 12 && (options & ReforgingOption.Structural) != 0 &&
-                                            (options & ReforgingOption.Fundamental) != 0)
+                        break;
+                    case CraftResource.Gold:
+                        if (index == 10 || index == 11)
                             return false;
-                    }
-                    break;
-                case CraftResource.Agapite:
-                case CraftResource.YewWood:
-                    {
+                        else if (index == 9 && HasOption(options, ReforgingOption.Powerful))
+                            return false;
+                        else if ((index == 5 || index == 9 || index == 12) && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.Agapite:
+                        if (index >= 9 && index <= 11)
+                            return false;
+                        else if (index == 12 && HasOption(options, ReforgingOption.Powerful))
+                            return false;
+                        else if ((index == 12 || index == 5) && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.Verite:
+                    case CraftResource.Valorite:
+                        if (index >= 9 && index <= 12)
+                            return false;
+                        else if (index == 5 && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+
+                    case CraftResource.SpinedLeather:
+                        if ((index == 10 || index == 11) && HasOption(options, ReforgingOption.PowerfulAndStructural))
+                            return false;
+                        else if ((index == 10 || index == 11 || index == 5) && HasOption(options, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental))
+                            return false;
+                        else if ((index == 9 || index == 10 || index == 11 || index == 5) && HasOption(options, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.HornedLeather:
+                        if (index == 10 || index == 11)
+                            return false;
+                        else if (index == 9 && HasOption(options, ReforgingOption.Powerful))
+                            return false;
+                        else if ((index == 5 || index == 9 || index == 12) && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.BarbedLeather:
+                        if (index >= 9 && index <= 12)
+                            return false;
+                        else if (index == 5 && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+
+                    case CraftResource.OakWood:
+                        if ((index == 10 || index == 11) && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental))
+                            return false;
+                        else if (index == 9 && HasOption(options, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.AshWood:
+                        if (index == 10 || index == 11)
+                            return false;
+                        else if ((index == 5 || index == 9) && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental))
+                            return false;
+                        else if ((index == 5 || index == 9 || index == 12) && HasOption(options, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
+                            return false;
+                        break;
+                    case CraftResource.YewWood:
                         if (index == 9 || index == 10 || index == 11)
                             return false;
-
-                        if (index == 12 && (options & ReforgingOption.Powerful) != 0)
+                        else if (index == 12 && HasOption(options, ReforgingOption.Powerful))
                             return false;
-
-                        if ((index == 5 || index == 12) && (options & ReforgingOption.Structural) != 0)
+                        else if ((index == 5 || index == 12) && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
                             return false;
-                    }
-                    break;
-                case CraftResource.Heartwood:
-                case CraftResource.Verite:
-                case CraftResource.BarbedLeather:
-                case CraftResource.Valorite:
-                    {
-                        if (index == 9 || index == 10 || index == 11 || index == 12)
+                        break;
+                    case CraftResource.Heartwood:
+                        if (index >= 9 && index <= 12)
                             return false;
-
-                        if (index == 5 && (options & ReforgingOption.Structural) != 0)
+                        else if (index == 5 && HasOption(options, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndStructural, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
                             return false;
-                    }
-                    break;
+                        break;
+                }
             }
 
             return true;
+        }
+
+        public static bool HasOption(ReforgingOption options, params ReforgingOption[] optionArray)
+        {
+            foreach (var option in optionArray)
+            {
+                if ((options & option) == option)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static void CheckAttributes(Item item, List<NamedInfoCol> list, bool reforged)
@@ -514,6 +746,32 @@ namespace Server.Items
 
             if (suffixCount > suffixcolcount)
                 suffixCount = suffixcolcount;
+        }
+
+        public static int GetPropertyCount(BaseRunicTool tool)
+        {
+            switch (tool.Resource)
+            {
+                case CraftResource.DullCopper:
+                case CraftResource.ShadowIron: return Utility.RandomMinMax(1, 2);
+                case CraftResource.Copper: return Utility.RandomMinMax(2, 3);
+                case CraftResource.Bronze:
+                case CraftResource.Gold: return 3;
+                case CraftResource.Agapite:
+                case CraftResource.Verite: return Utility.RandomMinMax(3, 4);
+                case CraftResource.Valorite: return 5;
+
+                case CraftResource.SpinedLeather: return Utility.RandomMinMax(1, 2);
+                case CraftResource.HornedLeather: return 3;
+                case CraftResource.BarbedLeather: return 5;
+
+                case CraftResource.OakWood: return Utility.RandomMinMax(1, 2);
+                case CraftResource.AshWood: return 2;
+                case CraftResource.YewWood: return 3;
+                case CraftResource.Heartwood: return 5;
+            }
+
+            return 1;
         }
 
         private static bool ApplyPrefixSuffixAttribute(Item item, NamedInfoCol col, int resIndex, int preIndex, int percLow, int percHigh, ref int budget, int luckchance, bool reforged, bool powerful)
@@ -812,14 +1070,14 @@ namespace Server.Items
                 case CraftResource.Verite:
                 case CraftResource.Valorite:
                 case CraftResource.Copper: return 2;
-                case CraftResource.HornedLeather:
-                case CraftResource.BarbedLeather:
                 case CraftResource.SpinedLeather: return 3;
                 case CraftResource.OakWood: return 4;
                 case CraftResource.YewWood:
                 case CraftResource.Heartwood:
                 case CraftResource.Bloodwood:
                 case CraftResource.Frostwood:
+                case CraftResource.HornedLeather:
+                case CraftResource.BarbedLeather:
                 case CraftResource.AshWood: return 5;
             }
         }
@@ -1266,34 +1524,31 @@ namespace Server.Items
                 HardCap = hardcap;
             }
 
-            public int RandomRangedIntensity(Item item, int resIndex, int preIndex)
+            public int RandomRangedIntensity(Item item, int id, int resIndex, int preIndex)
             {
                 int[] range = item is BaseRanged && SecondaryInfo != null ? SecondaryInfo[resIndex] : Info[resIndex];
 
-                if (preIndex == 0)
+                var max = range[preIndex];
+                var min = Math.Max(ItemPropertyInfo.GetMinIntensity(item, id), (int)((double)range[0] * .75));
+                int value;
+
+                if (Utility.RandomBool())
                 {
-                    return range[0];
+                    value = Utility.RandomBool() ? min : max;
+                }
+                else
+                {
+                    value = Utility.RandomMinMax(min, max);
                 }
 
-                if (preIndex == 1)
+                var scale = ItemPropertyInfo.GetScale(item, id);
+
+                if (scale > 1 && value > scale)
                 {
-                    return Utility.RandomBool() ? range[0] : range[1];
+                    value = (value / scale) * scale;
                 }
 
-                // EA seems to favor the minimum and the maximum intensity equally, while fucking everything in the middle. Sounds like the government!
-                int[] weightedRange;
-
-                switch (preIndex)
-                {
-                    default: weightedRange = range; break;
-                    case 2: weightedRange = new int[] { range[0], range[0], range[1], range[2], range[2] }; break;
-                    case 3: weightedRange = new int[] { range[0], range[0], range[1], range[2], range[3], range[3] }; break;
-                    case 4: weightedRange = new int[] { range[0], range[0], range[1], range[2], range[3], range[4], range[4] }; break;
-                    case 5: weightedRange = new int[] { range[0], range[0], range[0], range[1], range[2], range[3], range[4], range[5], range[5], range[5] }; break;
-                    case 6: weightedRange = new int[] { range[0], range[0], range[0], range[1], range[2], range[3], range[4], range[5], range[6], range[6], range[6] }; break;
-                }
-
-                return weightedRange[Utility.Random(weightedRange.Length)];
+                return value;
             }
 
             public int Min(int resIndex, int preIndex, Item item)
@@ -2093,7 +2348,6 @@ namespace Server.Items
                 }
             }
 
-            Console.WriteLine("Should not reach this!");
             return 0;
         }
 
@@ -2422,7 +2676,7 @@ namespace Server.Items
 
         public static bool ApplyReforgedNameProperty(Item item, int id, NamedInfoCol info, int resIndex, int preIndex, int perclow, int perchigh, ref int budget, int luckchance, bool reforged, bool powerful)
         {
-            int value = info.RandomRangedIntensity(item, resIndex, preIndex);
+            int value = info.RandomRangedIntensity(item, id, resIndex, preIndex);
 
             Imbuing.SetProperty(item, id, value);
 
@@ -2745,6 +2999,29 @@ namespace Server.Items
             new int[] { 100, 120, 140, 150, 150, 150, 150 },
             new int[] { 150, 150, 150, 150, 150, 150, 150 },
         };
+
+        //30% LOW IN MIN
+        /* switch (resource)
+ {
+     default:
+     case CraftResource.DullCopper: return 0;
+     case CraftResource.ShadowIron: return 1;
+     case CraftResource.Bronze:
+     case CraftResource.Gold:
+     case CraftResource.Agapite:
+     case CraftResource.Verite:
+     case CraftResource.Valorite:
+     case CraftResource.Copper: return 2;
+     case CraftResource.SpinedLeather: return 3;
+     case CraftResource.OakWood: return 4;
+     case CraftResource.YewWood:
+     case CraftResource.Heartwood:
+     case CraftResource.Bloodwood:
+     case CraftResource.Frostwood:
+     case CraftResource.HornedLeather:
+     case CraftResource.BarbedLeather:
+     case CraftResource.AshWood: return 5;
+ }*/
 
         public static int[][] MageWeaponTable = new int[][]
         {

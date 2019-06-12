@@ -54,11 +54,9 @@ namespace Server.Items
                 m_ShowUsesRemaining = true;
 		}
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
-            if(m_Crafter != null)
+            if (m_Crafter != null)
                 list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
             if (m_Quality == ItemQuality.Exceptional)

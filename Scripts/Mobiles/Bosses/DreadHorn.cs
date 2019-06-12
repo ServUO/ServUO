@@ -264,9 +264,9 @@ namespace Server.Mobiles
                     double percent = m.Skills.MagicResist.Value / 100;
                     int malas = (int)(-20 + (percent * 5.2));
 
-                    m.AddStatMod(new StatMod(StatType.Str, "DreadHornStr", m.Str < malas ? m.Str / 2 : malas, TimeSpan.FromSeconds(60)));
-                    m.AddStatMod(new StatMod(StatType.Dex, "DreadHornDex", m.Dex < malas ? m.Dex / 2 : malas, TimeSpan.FromSeconds(60)));
-                    m.AddStatMod(new StatMod(StatType.Int, "DreadHornInt", m.Int < malas ? m.Int / 2 : malas, TimeSpan.FromSeconds(60)));
+                    m.AddStatMod(new StatMod(StatType.Str, "DreadHornStr", m.Str < Math.Abs(malas) ? m.Str / 2 : malas, TimeSpan.FromSeconds(60)));
+                    m.AddStatMod(new StatMod(StatType.Dex, "DreadHornDex", m.Dex < Math.Abs(malas) ? m.Dex / 2 : malas, TimeSpan.FromSeconds(60)));
+                    m.AddStatMod(new StatMod(StatType.Int, "DreadHornInt", m.Int < Math.Abs(malas) ? m.Int / 2 : malas, TimeSpan.FromSeconds(60)));
                 }
 
                 m.SendLocalizedMessage(1075081); // *Dreadhorns eyes light up, his mouth almost a grin, as he slams one hoof to the ground!*

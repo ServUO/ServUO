@@ -144,10 +144,8 @@ namespace Server.Items
             return Eat(from);
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
@@ -1661,10 +1659,8 @@ namespace Server.Items
             }
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
@@ -1698,6 +1694,8 @@ namespace Server.Items
 
     public class Hamburger : Food
     {
+        public override int LabelNumber { get { return 1125202; } } // hamburger
+
         [Constructable]
         public Hamburger()
             : this(1)
@@ -1734,6 +1732,8 @@ namespace Server.Items
     [Flipable(0xA0D8, 0xA0D9)]
     public class HotDog : Food
     {
+        public override int LabelNumber { get { return 1125201; } } // hot dog
+
         [Constructable]
         public HotDog()
             : this(1)
@@ -1770,6 +1770,8 @@ namespace Server.Items
     [Flipable(0xA0D6, 0xA0D7)]
     public class CookableSausage : Food
     {
+        public override int LabelNumber { get { return 1125198; } } // sausage
+
         [Constructable]
         public CookableSausage()
             : base(0xA0D6)
