@@ -1028,6 +1028,14 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
+            if (ShowQuantity)
+            {
+                list.Add(GetQuantityDescription());
+            }
+        }
+
+        public override void AddCraftedProperties(ObjectPropertyList list)
+        {
             if (_Crafter != null)
             {
                 list.Add(1050043, _Crafter.TitleName); // crafted by ~1_NAME~
@@ -1036,11 +1044,6 @@ namespace Server.Items
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
-            }
-
-            if (ShowQuantity)
-            {
-                list.Add(GetQuantityDescription());
             }
         }
 

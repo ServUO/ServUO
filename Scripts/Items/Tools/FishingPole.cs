@@ -347,18 +347,21 @@ namespace Server.Items
             }
         }
 
+        public override void AddCraftedProperties(ObjectPropertyList list)
+        {
+            if (m_Crafter != null)
+                list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
+
+            if (m_Quality == ItemQuality.Exceptional)
+                list.Add(1060636); // exceptional
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
             if (m_AosAttributes.Brittle != 0)
                 list.Add(1116209); // Brittle
-
-            if (m_Crafter != null)
-                list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
-
-            if (m_Quality == ItemQuality.Exceptional)
-                list.Add(1060636); // exceptional
 
             if (m_AosSkillBonuses != null)
                 m_AosSkillBonuses.GetProperties(list);

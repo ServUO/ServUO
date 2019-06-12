@@ -23,6 +23,7 @@ namespace Server.Gumps
 
         PowerfulAndStructural = Powerful | Structural,
         PowerfulAndFundamental = Powerful | Fundamental,
+        StructuralAndFundamental = Structural | Fundamental,
         PowerfulStructuralAndFundamental = PowerfulAndStructural | Fundamental
     }
 
@@ -287,29 +288,17 @@ namespace Server.Gumps
 
                             int min = 10;
                             int max = 80;
-                            int maxprops = 5;
-
-                            if (attrs != null)
-                            {
-                                min = attrs.RunicMinIntensity;
-                                max = attrs.RunicMaxIntensity;
-
-                                maxprops = Utility.RandomMinMax(attrs.RunicMinAttributes, attrs.RunicMaxAttributes);
-                            }
 
                             if (min < 10) min = 10;
                             if (max > 100) max = 100;
 
-                            int budget = GetBudget(ref maxprops);
+                            int budget = GetBudget();
                             
                             ReforgedPrefix prefix = ReforgedPrefix.None;
                             ReforgedSuffix suffix = ReforgedSuffix.None;
 
                             if ((m_Options & ReforgingOption.GrandArtifice) != 0)
                             {
-                                if (0.2 > Utility.RandomDouble())
-                                    maxprops++;
-
                                 // choosing name 1
                                 if ((m_Options & ReforgingOption.InspiredArtifice) != 0)
                                 {
@@ -376,7 +365,7 @@ namespace Server.Gumps
                                 suffix = (ReforgedSuffix)pre;
                             }
 
-                            RunicReforging.ApplyReforgedProperties(m_ToReforge, prefix, suffix, budget, min, max, maxprops, 0, m_Tool, m_Options);
+                            RunicReforging.ApplyReforgedProperties(m_ToReforge, prefix, suffix, budget, min, max, RunicReforging.GetPropertyCount(m_Tool), 0, m_Tool, m_Options);
 
                             OnAfterReforged(m_ToReforge);
                             from.SendLocalizedMessage(1152286); // You re-forge the item!
@@ -434,7 +423,7 @@ namespace Server.Gumps
             }
         }
 
-        private int GetBudget(ref int maxprops)
+        private int GetBudget()
         {
             int budget;
 
@@ -532,6 +521,10 @@ namespace Server.Gumps
             private ReforgedSuffix m_Suffix;
             private bool m_IsPrefix;
 
+            private static int White = 0x6F7B;
+            private static int Green = 0x4BB2;
+            private static int Yellow = 0x6B55;
+
             public ItemNameGump(Item toreforge, BaseRunicTool tool, ReforgingOption options, ReforgedPrefix prefix, ReforgedSuffix suffix, bool isprefix)
                 : base(100, 100)
             {
@@ -558,12 +551,12 @@ namespace Server.Gumps
                     if ((isprefix && prefix == (ReforgedPrefix)i) || (!isprefix && suffix == (ReforgedSuffix)i))
                     {
                         buttonID = 4006;
-                        buttonHue = 0x7652;
+                        buttonHue = Green;
                     }
                     else
                     {
                         buttonID = 4005;
-                        buttonHue = 0x4BB2;
+                        buttonHue = White;
                     }
 
                     if (RunicReforging.HasSelection(i, toreforge, tool, m_Options, (int)m_Prefix, (int)m_Suffix))
@@ -572,7 +565,7 @@ namespace Server.Gumps
                     }
                     else
                     {
-                        buttonHue = 0x7652;
+                        buttonHue = Yellow;
                     }
 
                     AddHtmlLocalized(55, y, 250, 20, RunicReforging.GetName(i), buttonHue, false, false);
@@ -580,7 +573,7 @@ namespace Server.Gumps
                     y += 25;
                 }
 
-                AddHtmlLocalized(45, 412, 100, 20, 1060675, 0x6F7B, false, false);
+                AddHtmlLocalized(45, 412, 100, 20, 1060675, White, false, false);
                 AddButton(10, 412, 4017, 4019, 0, GumpButtonType.Reply, 0);
             }
 

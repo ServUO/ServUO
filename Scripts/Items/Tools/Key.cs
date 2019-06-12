@@ -288,10 +288,8 @@ namespace Server.Items
             from.Target = t;
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             string desc;
 
             if (m_KeyVal == 0)

@@ -179,14 +179,17 @@ namespace Server.Items
             }
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
             }
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
 
             list.Add(BuffName, BuffAmount.ToString());
         }

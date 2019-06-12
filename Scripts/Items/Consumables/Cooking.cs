@@ -58,10 +58,8 @@ namespace Server.Items
             return quality;
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
@@ -187,10 +185,8 @@ namespace Server.Items
             Hue = 150;
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
@@ -492,10 +488,8 @@ namespace Server.Items
             return quality;
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional

@@ -1755,7 +1755,7 @@ namespace Server.Mobiles
 
 						var aggrScore = m_Mobile.GetFightModeRanking(aggr, FightMode.Closest, false);
 
-						if ((newCombatant == null || aggrScore > newScore) && m_Mobile.InLOS(aggr))
+						if ((newCombatant == null || aggrScore > newScore || (aggrScore == newScore && !aggr.Player && newCombatant.Player)) && m_Mobile.InLOS(aggr))
 						{
 							newCombatant = aggr;
 							newScore = aggrScore;
@@ -3006,7 +3006,7 @@ namespace Server.Mobiles
 
 					theirVal = m_Mobile.GetFightModeRanking(m, acqType, bPlayerOnly);
 
-					if (theirVal > val)
+					if (theirVal > val || (theirVal == val && newFocusMob.Player && !m.Player))
 					{
 						newFocusMob = m;
 						val = theirVal;

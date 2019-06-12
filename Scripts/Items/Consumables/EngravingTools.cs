@@ -598,7 +598,7 @@ namespace Server.Items
             {
                 return new Type[]
                 {
-                    typeof(ParagonChest), typeof(MetalChest), typeof(MetalGoldenChest)
+                    typeof(ParagonChest), typeof(MetalChest), typeof(MetalGoldenChest), typeof(MetalBox)
                 };
             }
         }

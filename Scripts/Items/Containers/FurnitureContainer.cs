@@ -69,10 +69,8 @@ namespace Server.Items
         {
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             if (m_Crafter != null)
             {
                 list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~

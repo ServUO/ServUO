@@ -5415,7 +5415,7 @@ namespace Server.Items
 			return attrInfo.WeaponLuck;
 		}
 
-        public override void AddWeightProperty(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
             if (OwnerName != null)
             {
@@ -5442,8 +5442,11 @@ namespace Server.Items
                 list.Add(1111880); // Altered
             }
 
-            AddLootTypeProperty(list);
+            base.AddCraftedProperties(list);
+        }
 
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
             base.AddWeightProperty(list);
 
             if (IsVvVItem)

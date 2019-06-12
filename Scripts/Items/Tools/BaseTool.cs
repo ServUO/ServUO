@@ -126,17 +126,20 @@ namespace Server.Items
         {
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             if (m_Crafter != null)
                 list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
             if (m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
+        }
 
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
             list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+
+            base.AddWeightProperty(list);
         }
 
         public virtual void DisplayDurabilityTo(Mobile m)

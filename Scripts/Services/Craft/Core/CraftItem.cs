@@ -978,6 +978,7 @@ namespace Server.Engines.Craft
 				{
 					int tempAmount = ourPack.GetAmount(types[i]);
 					tempAmount /= amounts[i];
+
 					if (tempAmount < maxAmount)
 					{
 						maxAmount = tempAmount;
@@ -1017,7 +1018,7 @@ namespace Server.Engines.Craft
             }
 
 			// We adjust the amount of each resource to consume the max posible
-			if (UseAllRes)
+			if (UseAllRes && consumeType != ConsumeType.Half)
 			{
 				for (int i = 0; i < amounts.Length; ++i)
 				{
@@ -1305,15 +1306,15 @@ namespace Server.Engines.Craft
 		}
 
 		public bool CheckSkills(
-			Mobile from, Type typeRes, CraftSystem craftSystem, ref int quality, ref bool allRequiredSkills)
+			Mobile from, Type typeRes, CraftSystem craftSystem, ref int quality, ref bool allRequiredSkills, int maxAmount)
 		{
-			return CheckSkills(from, typeRes, craftSystem, ref quality, ref allRequiredSkills, true);
+			return CheckSkills(from, typeRes, craftSystem, ref quality, ref allRequiredSkills, true, maxAmount);
 		}
 
 		public bool CheckSkills(
-			Mobile from, Type typeRes, CraftSystem craftSystem, ref int quality, ref bool allRequiredSkills, bool gainSkills)
+			Mobile from, Type typeRes, CraftSystem craftSystem, ref int quality, ref bool allRequiredSkills, bool gainSkills, int maxAmount)
 		{
-			double chance = GetSuccessChance(from, typeRes, craftSystem, gainSkills, ref allRequiredSkills);
+			double chance = GetSuccessChance(from, typeRes, craftSystem, gainSkills, ref allRequiredSkills, maxAmount);
 
 			if (GetExceptionalChance(craftSystem, chance, from) > Utility.RandomDouble())
 			{
@@ -1323,8 +1324,12 @@ namespace Server.Engines.Craft
 			return (chance > Utility.RandomDouble());
 		}
 
-		public double GetSuccessChance(
-			Mobile from, Type typeRes, CraftSystem craftSystem, bool gainSkills, ref bool allRequiredSkills)
+        public double GetSuccessChance(Mobile from, Type typeRes, CraftSystem craftSystem, bool gainSkills, ref bool allRequiredSkills)
+        {
+            return GetSuccessChance(from, typeRes, craftSystem, gainSkills, ref allRequiredSkills, 1);
+        }
+
+        public double GetSuccessChance(Mobile from, Type typeRes, CraftSystem craftSystem, bool gainSkills, ref bool allRequiredSkills, int maxAmount)
 		{
             if (ForceSuccessChance > -1)
             {
@@ -1337,31 +1342,41 @@ namespace Server.Engines.Craft
 
 			allRequiredSkills = true;
 
-			for (int i = 0; i < m_arCraftSkill.Count; i++)
-			{
-				CraftSkill craftSkill = m_arCraftSkill.GetAt(i);
+            for (int i = 0; i < m_arCraftSkill.Count; i++)
+            {
+                CraftSkill craftSkill = m_arCraftSkill.GetAt(i);
 
-				double minSkill = craftSkill.MinSkill - MinSkillOffset;
-				double maxSkill = craftSkill.MaxSkill;
-				double valSkill = from.Skills[craftSkill.SkillToMake].Value;
+                double minSkill = craftSkill.MinSkill - MinSkillOffset;
+                double maxSkill = craftSkill.MaxSkill;
+                double valSkill = from.Skills[craftSkill.SkillToMake].Value;
 
-				if (valSkill < minSkill)
-				{
-					allRequiredSkills = false;
-				}
+                if (valSkill < minSkill)
+                {
+                    allRequiredSkills = false;
+                }
 
-				if (craftSkill.SkillToMake == craftSystem.MainSkill)
-				{
-					minMainSkill = minSkill;
-					maxMainSkill = maxSkill;
-					valMainSkill = valSkill;
-				}
+                if (craftSkill.SkillToMake == craftSystem.MainSkill)
+                {
+                    minMainSkill = minSkill;
+                    maxMainSkill = maxSkill;
+                    valMainSkill = valSkill;
+                }
 
-				if (gainSkills) // This is a passive check. Success chance is entirely dependant on the main skill
-				{
-					from.CheckSkill(craftSkill.SkillToMake, minSkill, maxSkill);
-				}
-			}
+                if (gainSkills) // This is a passive check. Success chance is entirely dependant on the main skill
+                {
+                    if (maxAmount > 1 && UseAllRes)
+                    {
+                        for (int j = 0; j < maxAmount; j++)
+                        {
+                            from.CheckSkill(craftSkill.SkillToMake, minSkill, maxSkill);
+                        }
+                    }
+                    else
+                    {
+                        from.CheckSkill(craftSkill.SkillToMake, minSkill, maxSkill);
+                    }
+                }
+            }
 
 			double chance;
 
@@ -1605,7 +1620,7 @@ namespace Server.Engines.Craft
 
 			bool allRequiredSkills = true;
 
-			if (CheckSkills(from, typeRes, craftSystem, ref ignored, ref allRequiredSkills))
+			if (CheckSkills(from, typeRes, craftSystem, ref ignored, ref allRequiredSkills, checkMaxAmount))
 			{
 				// Resource
 				int resHue = 0;
@@ -2062,7 +2077,7 @@ namespace Server.Engines.Craft
 					int quality = 1;
 					bool allRequiredSkills = true;
 
-					m_CraftItem.CheckSkills(m_From, m_TypeRes, m_CraftSystem, ref quality, ref allRequiredSkills, false);
+					m_CraftItem.CheckSkills(m_From, m_TypeRes, m_CraftSystem, ref quality, ref allRequiredSkills, false, 1);
 
 					CraftContext context = m_CraftSystem.GetContext(m_From);
 
