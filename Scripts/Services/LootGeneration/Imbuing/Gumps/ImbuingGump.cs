@@ -254,6 +254,9 @@ namespace Server.Gumps
                 m.EndAction(typeof(Imbuing));
                 Container cont = o as Container;
 
+                if (cont == null)
+                    return;
+
                 if (!cont.IsChildOf(m.Backpack))
                 {
                     m.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
