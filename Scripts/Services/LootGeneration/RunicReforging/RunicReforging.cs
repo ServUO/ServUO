@@ -1526,6 +1526,9 @@ namespace Server.Items
 
             public int RandomRangedIntensity(Item item, int id, int resIndex, int preIndex)
             {
+                if (Info == null || HardCap == 1)
+                    return HardCap;
+
                 int[] range = item is BaseRanged && SecondaryInfo != null ? SecondaryInfo[resIndex] : Info[resIndex];
 
                 var max = range[preIndex];
@@ -1551,7 +1554,7 @@ namespace Server.Items
                 return value;
             }
 
-            public int Min(int resIndex, int preIndex, Item item)
+            /*public int Min(int resIndex, int preIndex, Item item)
             {
                 if (HardCap == 1)
                     return 1;
@@ -1593,7 +1596,7 @@ namespace Server.Items
                 }
 
                 return info[Info.Length - 1][Info[Info.Length - 1].Length - 1];
-            }
+            }*/
         }
 
         public static object GetRandomHitSpell()
