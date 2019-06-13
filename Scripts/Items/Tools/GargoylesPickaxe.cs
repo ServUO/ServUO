@@ -15,10 +15,10 @@ namespace Server.Items
         public GargoylesPickaxe(int uses)
             : base(0xE85 + Utility.Random(2))
         {
-            this.Weight = 11.0;
-            this.UsesRemaining = uses;
-            this.ShowUsesRemaining = true;
-		 this.Hue = 0x76c;
+            Weight = 11.0;
+            UsesRemaining = uses;
+            ShowUsesRemaining = true;
+            Hue = 0x76c;
         }
 
         public GargoylesPickaxe(Serial serial)
@@ -150,12 +150,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-			
-            if (this.Hue == 0x973 ||
-                this.Hue == 0)
-            {
-                this.Hue = 0x76c;
-            }
         }
     }
 }

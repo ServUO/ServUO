@@ -4,6 +4,12 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
+    public interface IUsesRemaining
+    {
+        int UsesRemaining { get; set; }
+        bool ShowUsesRemaining { get; set; }
+    }
+
     public interface IAccountRestricted
     {
         string Account { get; set; }

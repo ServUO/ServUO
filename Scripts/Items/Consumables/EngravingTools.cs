@@ -249,11 +249,16 @@ namespace Server.Items
             base.GetProperties(list);
 
             if (m_IsRewardItem)
-                list.Add(VeteranRewardCliloc);
-
-            if (ShowUsesRemaining)
-                list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~			
+                list.Add(VeteranRewardCliloc);	
         }
+
+        public override void AddUsesRemainingProperties(ObjectPropertyList list)
+        {
+            if (ShowUsesRemaining)
+            {
+                list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+            }
+        }   
 
         public override void Serialize(GenericWriter writer)
         {

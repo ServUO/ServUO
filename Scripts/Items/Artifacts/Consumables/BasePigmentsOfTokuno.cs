@@ -68,7 +68,10 @@ namespace Server.Items
 
             if (m_Label != null && m_Label > 0)
                 TextDefinition.AddTo(list, m_Label);
+        }
 
+        public override void AddUsesRemainingProperties(ObjectPropertyList list)
+        {
             list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
         }
 

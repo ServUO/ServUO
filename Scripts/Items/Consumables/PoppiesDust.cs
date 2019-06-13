@@ -68,10 +68,8 @@ namespace Server.Items
             }
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddUsesRemainingProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             list.Add(1060741, m_UsesRemaining.ToString()); // charges: ~1_val~
         }
 

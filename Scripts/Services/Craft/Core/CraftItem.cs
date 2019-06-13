@@ -1362,19 +1362,9 @@ namespace Server.Engines.Craft
                     valMainSkill = valSkill;
                 }
 
-                if (gainSkills) // This is a passive check. Success chance is entirely dependant on the main skill
+                if (gainSkills && !UseAllRes) // This is a passive check. Success chance is entirely dependant on the main skill
                 {
-                    if (maxAmount > 1 && UseAllRes)
-                    {
-                        for (int j = 0; j < maxAmount; j++)
-                        {
-                            from.CheckSkill(craftSkill.SkillToMake, minSkill, maxSkill);
-                        }
-                    }
-                    else
-                    {
-                        from.CheckSkill(craftSkill.SkillToMake, minSkill, maxSkill);
-                    }
+                    from.CheckSkill(craftSkill.SkillToMake, minSkill, maxSkill);
                 }
             }
 
@@ -1412,6 +1402,16 @@ namespace Server.Engines.Craft
 
 			return chance;
 		}
+
+        private void MultipleSkillCheck(Mobile from, int amount)
+        {
+            for (int i = 0; i < m_arCraftSkill.Count; i++)
+            {
+                CraftSkill craftSkill = m_arCraftSkill.GetAt(i);
+
+                Server.Misc.SkillCheck.CheckSkill(from, craftSkill.SkillToMake, craftSkill.MinSkill - MinSkillOffset, craftSkill.MaxSkill, amount);
+            }
+        }
 
         public void Craft(Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool)
 		{
@@ -1667,6 +1667,11 @@ namespace Server.Engines.Craft
 
 					return;
 				}
+
+                if (UseAllRes && maxAmount > 0)
+                {
+                    MultipleSkillCheck(from, maxAmount);
+                }
 
 				if (craftSystem is DefBlacksmithy)
 				{
@@ -2014,7 +2019,7 @@ namespace Server.Engines.Craft
 				{
 					from.SendLocalizedMessage(num);
 				}
-			}
+            }
 		}
 
 		private class InternalTimer : Timer

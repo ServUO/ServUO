@@ -154,9 +154,7 @@ namespace Server.Misc
 
 			CrystalBallOfKnowledge.TellSkillDifficulty(from, skillName, chance);
 
-			var loc = new Point2D(from.Location.X / LocationSize, from.Location.Y / LocationSize);
-
-			return CheckSkill(from, skill, loc, chance);
+			return CheckSkill(from, skill, new Point2D(from.Location.X / LocationSize, from.Location.Y / LocationSize), chance);
 		}
 
 		public static bool Mobile_SkillCheckDirectLocation(Mobile from, SkillName skillName, double chance)
@@ -174,39 +172,58 @@ namespace Server.Misc
 			if (chance >= 1.0)
 				return true; // No challenge
 
-			var loc = new Point2D(from.Location.X / LocationSize, from.Location.Y / LocationSize);
-
-			return CheckSkill(from, skill, loc, chance);
+			return CheckSkill(from, skill, new Point2D(from.Location.X / LocationSize, from.Location.Y / LocationSize), chance);
 		}
 
-		public static bool CheckSkill(Mobile from, Skill skill, object amObj, double chance)
+        /// <summary>
+        /// This should be a successful skill check, where a system can register several skill gains at once. Only system
+        /// using this currently is UseAllRes for CraftItem.cs
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="skill"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        public static bool CheckSkill(Mobile from, SkillName sk, double minSkill, double maxSkill, int amount)
+        {
+            if (from.Skills.Cap == 0)
+                return false;
+
+            var skill = from.Skills[sk];
+            var gains = 0;
+
+            for (int i = 0; i < amount; i++)
+            {
+                var gc = GetGainChance(from, skill, (skill.Value - minSkill) / (maxSkill - minSkill), true);
+
+                if (AllowGain(from, skill, new Point2D(from.Location.X / LocationSize, from.Location.Y / LocationSize)))
+                {
+                    if (from.Alive && (skill.Base < 10.0 || Utility.RandomDouble() <= gc || CheckGGS(from, skill)))
+                    {
+                        gains++;
+                    }
+                }
+
+            }
+
+            if (gains > 0)
+            {
+                Gain(from, skill, gains);
+                EventSink.InvokeSkillCheck(new SkillCheckEventArgs(from, skill, true));
+                return true;
+            }
+
+            return false;
+        }
+
+		public static bool CheckSkill(Mobile from, Skill skill, object obj, double chance)
 		{
 			if (from.Skills.Cap == 0)
 				return false;
 
-            //var success = Utility.RandomDouble() <= chance;
             var success = Utility.Random(100) <= (int)(chance * 100);
-			var gc = (double)(from.Skills.Cap - from.Skills.Total) / from.Skills.Cap;
+            var gc = GetGainChance(from, skill, chance, success);
 
-			gc += (skill.Cap - skill.Base) / skill.Cap;
-			gc /= 2;
-
-			gc += (1.0 - chance) * (success ? 0.5 : (Core.AOS ? 0.0 : 0.2));
-			gc /= 2;
-
-			gc *= skill.Info.GainFactor;
-
-			if (gc < 0.01)
-				gc = 0.01;
-
-			// Pets get a 100% bonus
-			if (from is BaseCreature && ((BaseCreature)from).Controlled)
-				gc += gc * 1.00;
-
-			if (gc > 1.00)
-				gc = 1.00;
-
-			if (AllowGain(from, skill, amObj))
+			if (AllowGain(from, skill, obj))
 			{
 				if (from.Alive && (skill.Base < 10.0 || Utility.RandomDouble() <= gc || CheckGGS(from, skill)))
 				{
@@ -218,6 +235,31 @@ namespace Server.Misc
 
             return success;
 		}
+
+        private static double GetGainChance(Mobile from, Skill skill, double chance, bool success)
+        {
+            var gc = (double)(from.Skills.Cap - from.Skills.Total) / from.Skills.Cap;
+
+            gc += (skill.Cap - skill.Base) / skill.Cap;
+            gc /= 2;
+
+            gc += (1.0 - chance) * (success ? 0.5 : (Core.AOS ? 0.0 : 0.2));
+            gc /= 2;
+
+            gc *= skill.Info.GainFactor;
+
+            if (gc < 0.01)
+                gc = 0.01;
+
+            // Pets get a 100% bonus
+            if (from is BaseCreature && ((BaseCreature)from).Controlled)
+                gc += gc * 1.00;
+
+            if (gc > 1.00)
+                gc = 1.00;
+
+            return gc;
+        }
 
 		public static bool Mobile_SkillCheckTarget(
 			Mobile from,
@@ -292,7 +334,12 @@ namespace Server.Misc
 			Int
 		}
 
-		public static void Gain(Mobile from, Skill skill)
+        public static void Gain(Mobile from, Skill skill)
+        {
+            Gain(from, skill, (int)(from.Region.SkillGain(from) * 10));
+        }
+
+        public static void Gain(Mobile from, Skill skill, int toGain)
 		{
 			if (from.Region.IsPartOf<Jail>())
 				return;
@@ -306,7 +353,6 @@ namespace Server.Misc
 
 			if (skill.Base < skill.Cap && skill.Lock == SkillLock.Up)
 			{
-				var toGain = 1;
 				var skills = from.Skills;
 
 				if (from is PlayerMobile && Siege.SiegeShard)
@@ -329,7 +375,7 @@ namespace Server.Misc
 					}
 				}
 
-				if (skill.Base <= 10.0)
+				if (toGain == 1 && skill.Base <= 10.0)
 					toGain = Utility.Random(4) + 1;
 
 				#region Mondain's Legacy

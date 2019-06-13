@@ -216,10 +216,8 @@ namespace Server.Items
             }
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddUsesRemainingProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             if(ShowUsesRemaining)
                 list.Add(1049116, m_UsesRemaining.ToString()); // [ Charges: ~1_CHARGES~ ]
         }
