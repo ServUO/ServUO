@@ -135,11 +135,9 @@ namespace Server.Items
                 list.Add(1060636); // exceptional
         }
 
-        public override void AddWeightProperty(ObjectPropertyList list)
+        public override void AddUsesRemainingProperties(ObjectPropertyList list)
         {
-            list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
-
-            base.AddWeightProperty(list);
+            list.Add(1060584, UsesRemaining.ToString()); // uses remaining: ~1_val~
         }
 
         public virtual void DisplayDurabilityTo(Mobile m)

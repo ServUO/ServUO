@@ -1370,6 +1370,7 @@ namespace Server
 
             AddCraftedProperties(list);
             AddLootTypeProperty(list);
+            AddUsesRemainingProperties(list);
             AddWeightProperty(list);
 
             AppendChildNameProperties(list);
@@ -1385,6 +1386,14 @@ namespace Server
         /// </summary>
         /// <param name="list"></param>
         public virtual void AddCraftedProperties(ObjectPropertyList list)
+        {
+        }
+
+        /// <summary>
+        /// Overrideable, used for IUsesRemaining UsesRemaining property
+        /// </summary>
+        /// <param name="list"></param>
+        public virtual void AddUsesRemainingProperties(ObjectPropertyList list)
         {
         }
 

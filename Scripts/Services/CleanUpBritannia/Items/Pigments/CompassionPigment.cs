@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Targeting;
 using Server.Mobiles;
@@ -178,10 +178,8 @@ namespace Server.Items
 			from.Target = new DyeTarget( this );
 		}
 
-		public override void GetProperties( ObjectPropertyList list )
-		{
-			base.GetProperties( list );
-
+        public override void AddUsesRemainingProperties(ObjectPropertyList list)
+        {
 			list.Add( 1060584, m_UsesRemaining.ToString() ); // uses remaining: ~1_val~
 		}
 

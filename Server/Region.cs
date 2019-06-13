@@ -238,7 +238,7 @@ namespace Server
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual double InsuranceMultiplier { get { return 1.0; } }
 
-		public Region(string name, Map map, int priority, params Rectangle2D[] area)
+        public Region(string name, Map map, int priority, params Rectangle2D[] area)
 			: this(name, map, priority, ConvertTo3D(area))
 		{ }
 
@@ -970,7 +970,12 @@ namespace Server
 			return true;
 		}
 
-		public virtual bool OnBeginSpellCast(Mobile m, ISpell s)
+        public virtual double SkillGain(Mobile from)
+        {
+            return 0.1;
+        }
+
+        public virtual bool OnBeginSpellCast(Mobile m, ISpell s)
 		{
 			if (m_Parent != null)
 			{

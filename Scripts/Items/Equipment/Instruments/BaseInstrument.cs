@@ -9,13 +9,14 @@ namespace Server.Items
 {
     public delegate void InstrumentPickedCallback(Mobile from, BaseInstrument instrument);
 
-    public abstract class BaseInstrument : Item, ICraftable, ISlayer, IQuality
+    public abstract class BaseInstrument : Item, ISlayer, IQuality, IResource
     {
         private int m_WellSound, m_BadlySound;
         private SlayerName m_Slayer, m_Slayer2;
         private ItemQuality m_Quality;
         private Mobile m_Crafter;
         private int m_UsesRemaining;
+        private CraftResource m_Resource;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int SuccessSound
@@ -100,6 +101,18 @@ namespace Server.Items
             set
             {
                 m_Crafter = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CraftResource Resource
+        {
+            get { return m_Resource; }
+            set
+            {
+                m_Resource = value;
+                Hue = CraftResources.GetHue(m_Resource);
                 InvalidateProperties();
             }
         }
@@ -468,14 +481,17 @@ namespace Server.Items
                 list.Add(1060636); // exceptional
         }
 
+        public override void AddUsesRemainingProperties(ObjectPropertyList list)
+        {
+            list.Add(1060584, UsesRemaining.ToString()); // uses remaining: ~1_val~
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             int oldUses = m_UsesRemaining;
             CheckReplenishUses(false);
 
             base.GetProperties(list);
-
-            list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
 
             if (m_ReplenishesCharges)
                 list.Add(1070928); // Replenish Charges
@@ -492,6 +508,16 @@ namespace Server.Items
                 SlayerEntry entry = SlayerGroup.GetEntryByName(m_Slayer2);
                 if (entry != null)
                     list.Add(entry.Title);
+            }
+
+            if (!CraftResources.IsStandard(m_Resource))
+            {
+                int num = CraftResources.GetLocalizationNumber(m_Resource);
+
+                if (num > 0)
+                    list.Add(num);
+                else
+                    list.Add(CraftResources.GetName(m_Resource));
             }
 
             if (m_UsesRemaining != oldUses)
@@ -560,7 +586,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)3); // version
+            writer.Write((int)4); // version
+
+            writer.Write((int)m_Resource);
 
             writer.Write(m_ReplenishesCharges);
             if (m_ReplenishesCharges)
@@ -586,6 +614,11 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 4:
+                    {
+                        m_Resource = (CraftResource)reader.ReadInt();
+                        goto case 3;
+                    }
                 case 3:
                     {
                         m_ReplenishesCharges = reader.ReadBool();
@@ -688,6 +721,14 @@ namespace Server.Items
 
             if (makersMark)
                 Crafter = from;
+
+            if (!craftItem.ForceNonExceptional)
+            {
+                if (typeRes == null)
+                    typeRes = craftItem.Resources.GetAt(0).ItemType;
+
+                Resource = CraftResources.GetFromType(typeRes);
+            }
 
             return quality;
         }

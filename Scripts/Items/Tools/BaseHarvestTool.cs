@@ -8,12 +8,6 @@ using Server.Network;
 
 namespace Server.Items
 {
-    public interface IUsesRemaining
-    {
-        int UsesRemaining { get; set; }
-        bool ShowUsesRemaining { get; set; }
-    }
-
     public enum MiningType
     {
         OreOnly,
@@ -118,13 +112,14 @@ namespace Server.Items
             m_Quality = ItemQuality.Normal;
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             if (m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
+        }
 
+        public override void AddUsesRemainingProperties(ObjectPropertyList list)
+        {
             list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
         }
 

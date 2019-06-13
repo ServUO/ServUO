@@ -356,6 +356,14 @@ namespace Server.Items
                 list.Add(1060636); // exceptional
         }
 
+        public override void AddUsesRemainingProperties(ObjectPropertyList list)
+        {
+            if (Siege.SiegeShard && m_ShowUsesRemaining)
+            {
+                list.Add(1060584, UsesRemaining.ToString()); // uses remaining: ~1_val~
+            }
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
@@ -366,11 +374,6 @@ namespace Server.Items
             if (m_AosSkillBonuses != null)
                 m_AosSkillBonuses.GetProperties(list);
 
-            if(Siege.SiegeShard && m_ShowUsesRemaining)
-            {
-                list.Add(1060584, ((IUsesRemaining)this).UsesRemaining.ToString()); // uses remaining: ~1_val~
-            }
-            
             base.AddResistanceProperties(list);
 
             int prop = 0;

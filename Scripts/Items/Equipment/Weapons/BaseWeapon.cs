@@ -5453,14 +5453,17 @@ namespace Server.Items
                 list.Add(1154937); // VvV Item
         }
 
+        public override void AddUsesRemainingProperties(ObjectPropertyList list)
+        {
+            if (ShowUsesRemaining)
+            {
+                list.Add(1060584, UsesRemaining.ToString()); // uses remaining: ~1_val~
+            }
+        }
+
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);
-
-            if (this is IUsesRemaining && ((IUsesRemaining)this).ShowUsesRemaining)
-            {
-                list.Add(1060584, ((IUsesRemaining)this).UsesRemaining.ToString()); // uses remaining: ~1_val~
-            }
 
             #region Factions
             FactionEquipment.AddFactionProperties(this, list);

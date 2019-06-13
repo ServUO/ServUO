@@ -61,12 +61,17 @@ namespace Server.Items
 
             if (m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
-
-            if(Siege.SiegeShard)
-                list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
         }
 
-		public Scissors(Serial serial)
+        public override void AddUsesRemainingProperties(ObjectPropertyList list)
+        {
+            if (Siege.SiegeShard)
+            {
+                list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+            }
+        }
+
+        public Scissors(Serial serial)
 			: base(serial)
 		{ }
 

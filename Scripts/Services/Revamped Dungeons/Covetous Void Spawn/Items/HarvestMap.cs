@@ -121,6 +121,11 @@ namespace Server.Items
             list.Add(1152598, String.Format("#{0}\t#{1}", CraftResources.GetLocalizationNumber(Resource), IsMinerMap ? "1152604" : "1152605")); // ~1_RES~ ~2_TYPE~ Map
         }
 
+        public override void AddUsesRemainingProperties(ObjectPropertyList list)
+        {
+            list.Add(1060584, UsesRemaining.ToString()); // uses remaining: ~1_val~
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
@@ -129,7 +134,6 @@ namespace Server.Items
             if (DateTime.UtcNow < Expires)
                 left = (int)(Expires - DateTime.UtcNow).TotalSeconds;
 
-            list.Add(1060584, UsesRemaining.ToString()); // uses remaining: ~1_val~
             list.Add(1072517, left.ToString()); // Lifespan: ~1_val~ seconds
             list.Add(1061114, GetSextantLocation()); // Location: ~1_val~
 
@@ -153,7 +157,7 @@ namespace Server.Items
 
             if (Sextant.Format(new Point3D(x, y, TargetMap.GetAverageZ(x, y)), TargetMap, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
             {
-                return String.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+                return String.Format("{0}Â° {1}'{2}, {3}Â° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
             }
 
             return "Unknown";
