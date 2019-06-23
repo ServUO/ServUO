@@ -4838,6 +4838,9 @@ namespace Server
         }
 
         [CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
+        public Point3D EffectsLocation { get { return new Point3D(X, Y, Z + 5); } }
+
+        [CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
         public int X { get { return m_Location.m_X; } set { Location = new Point3D(value, m_Location.m_Y, m_Location.m_Z); } }
 
         [CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]

@@ -61,7 +61,7 @@ namespace Server.Engines.TreasuresOfDoom
             }
         }
 
-        public override void AwardPoints(PlayerMobile pm, int amount)
+        public override void AwardPoints(PlayerMobile pm, Item item, int amount)
         {
             PointsSystem.TreasuresOfDoom.AwardPoints(pm, amount);
         }

@@ -625,7 +625,7 @@ namespace Server.Engines.Blackthorn
             list.Add(1154517); // Minax Artifact Turn in Officer
         }
 
-        public override void AwardPoints(PlayerMobile pm, int amount)
+        public override void AwardPoints(PlayerMobile pm, Item item, int amount)
         {
             PointsSystem.Blackthorn.AwardPoints(pm, amount);
         }

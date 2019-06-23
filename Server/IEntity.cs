@@ -9,6 +9,7 @@ namespace Server
 		Serial Serial { get; }
 
         Point3D Location { get; set; }
+        Point3D EffectsLocation { get; }
 		Map Map { get; set; }
 
         bool NoMoveHS { get; set; }
@@ -32,6 +33,7 @@ namespace Server
 		public Serial Serial { get; private set; }
 
 		public Point3D Location { get; set; }
+        public Point3D EffectsLocation { get { return Location; } }
 		public Map Map { get; set; }
 
 		public int X { get { return Location.X; } }

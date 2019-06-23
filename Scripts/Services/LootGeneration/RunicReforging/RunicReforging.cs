@@ -2058,10 +2058,27 @@ namespace Server.Items
 
                 NegativeAttributes neg = GetNegativeAttributes(item);
 
-                if (neg != null && item is IDurability && (neg.Antique == 1 || neg.Brittle == 1 || item is BaseJewel))
+                if (neg != null)
                 {
-                    ((IDurability)item).MaxHitPoints = 255;
-                    ((IDurability)item).HitPoints = 255;
+                    if (item is IDurability && (neg.Antique == 1 || neg.Brittle == 1 || item is BaseJewel))
+                    {
+                        ((IDurability)item).MaxHitPoints = 255;
+                        ((IDurability)item).HitPoints = 255;
+                    }
+
+                    var wepAttrs = GetAosWeaponAttributes(item);
+
+                    if (wepAttrs != null && wepAttrs[AosWeaponAttribute.SelfRepair] > 0)
+                    {
+                        wepAttrs[AosWeaponAttribute.SelfRepair] = 0;
+                    }
+
+                    var armAttrs = GetAosArmorAttributes(item);
+
+                    if (armAttrs != null && armAttrs[AosArmorAttribute.SelfRepair] > 0)
+                    {
+                        armAttrs[AosArmorAttribute.SelfRepair] = 0;
+                    }
                 }
 
                 var power = ApplyItemPower(item, false);

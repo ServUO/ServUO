@@ -186,11 +186,20 @@ namespace Server.Engines.Craft
 
             if (Core.HS)
             {
-                index = AddCraft(typeof(LightPowderCharge), 1044457, 1116159, 0.0, 50.0, typeof(Cloth), 1044455, 1, 1044253);
-                AddRes(index, typeof(BlackPowder), 1095826, 1, 1044253);
+                if (Core.EJ)
+                {
+                    index = AddCraft(typeof(PowderCharge), 1044457, 1116160, 0.0, 50.0, typeof(Cloth), 1044455, 1, 1044253);
+                    AddRes(index, typeof(BlackPowder), 1095826, 4, 1044253);
+                    SetUseAllRes(index, true);
+                }
+                else
+                {
+                    index = AddCraft(typeof(LightPowderCharge), 1044457, 1116159, 0.0, 50.0, typeof(Cloth), 1044455, 1, 1044253);
+                    AddRes(index, typeof(BlackPowder), 1095826, 1, 1044253);
 
-                index = AddCraft(typeof(HeavyPowderCharge), 1044457, 1116160, 0.0, 50.0, typeof(Cloth), 1044455, 1, 1044253);
-                AddRes(index, typeof(BlackPowder), 1095826, 4, 1044253);
+                    index = AddCraft(typeof(HeavyPowderCharge), 1044457, 1116160, 0.0, 50.0, typeof(Cloth), 1044455, 1, 1044253);
+                    AddRes(index, typeof(BlackPowder), 1095826, 4, 1044253);
+                }
             }
 
             if (Core.SA)

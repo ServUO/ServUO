@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Multis;
 using Server.Items;
@@ -251,7 +251,7 @@ namespace Server.Mobiles
         {
         }
 
-        public virtual void OnHitByCannon(BaseCannon cannon, int damage)
+        public virtual void OnHitByCannon(IShipCannon cannon, int damage)
         {
         }
 

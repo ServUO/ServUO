@@ -74,7 +74,7 @@ namespace Server.Engines.SorcerersDungeon
             list.Add(1157617); // Artifacts of Enchanted Origin Trader
         }
 
-        public override void AwardPoints(PlayerMobile pm, int amount)
+        public override void AwardPoints(PlayerMobile pm, Item item, int amount)
         {
             PointsSystem.SorcerersDungeon.AwardPoints(pm, amount);
         }

@@ -852,15 +852,31 @@ namespace Server.Engines.Craft
 
             if (Core.HS)
             {
-                index = AddCraft(typeof(LightCannonball), 1116354, 1116266, 0.0, 50.0, typeof(IronIngot), 1044036, 6, 1044037);
+                if (Core.EJ)
+                {
+                    index = AddCraft(typeof(Cannonball), 1116354, 1116029, 10.0, 60.0, typeof(IronIngot), 1044036, 12, 1044037);
+                    SetUseAllRes(index, true);
+                }
+                else
+                {
+                    AddCraft(typeof(LightCannonball), 1116354, 1116266, 0.0, 50.0, typeof(IronIngot), 1044036, 6, 1044037);
+                    AddCraft(typeof(HeavyCannonball), 1116354, 1116267, 10.0, 60.0, typeof(IronIngot), 1044036, 12, 1044037);
+                }
 
-                index = AddCraft(typeof(HeavyCannonball), 1116354, 1116267, 10.0, 60.0, typeof(IronIngot), 1044036, 12, 1044037);
+                if (Core.EJ)
+                {
+                    index = AddCraft(typeof(Grapeshot), 1116354, 1116030, 0.0, 15.0, 70.0, typeof(IronIngot), 1044036, 12, 1044037);
+                    AddRes(index, typeof(Cloth), 1044286, 2, 1044287);
+                    SetUseAllRes(index, true);
+                }
+                else
+                {
+                    index = AddCraft(typeof(LightGrapeshot), 1116354, 1116030, 0.0, 50.0, typeof(IronIngot), 1044036, 6, 1044037);
+                    AddRes(index, typeof(Cloth), 1044286, 1, 1044287);
 
-                index = AddCraft(typeof(LightGrapeshot), 1116354, 1116030, 0.0, 50.0, typeof(IronIngot), 1044036, 6, 1044037);
-                AddRes(index, typeof(Cloth), 1044286, 1, 1044287);
-
-                index = AddCraft(typeof(HeavyGrapeshot), 1116354, 1116166, 15.0, 70.0, typeof(IronIngot), 1044036, 12, 1044037);
-                AddRes(index, typeof(Cloth), 1044286, 2, 1044287);
+                    index = AddCraft(typeof(HeavyGrapeshot), 1116354, 1116166, 15.0, 70.0, typeof(IronIngot), 1044036, 12, 1044037);
+                    AddRes(index, typeof(Cloth), 1044286, 2, 1044287);
+                }
 
                 index = AddCraft(typeof(LightShipCannonDeed), 1116354, 1095790, 65.0, 120.0, typeof(IronIngot), 1044036, 900, 1044037);
                 AddRes(index, typeof(Board), 1044041, 50, 1044351);

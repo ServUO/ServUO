@@ -104,6 +104,12 @@ namespace Server.ContextMenus
 		public virtual void OnClick()
 		{ }
 
+        /// <summary>
+        ///     Overridable. Virtual event invoked when the entry is clicked and the entry is disabled.
+        /// </summary>
+        public virtual void OnClickDisabled()
+        { }
+
 		public void Dispose()
 		{
 			if (IsDisposed)

@@ -79,7 +79,7 @@ namespace Server.Engines.Khaldun
             list.Add(1158678); // Artifacts of the Cult Trader
         }
 
-        public override void AwardPoints(PlayerMobile pm, int amount)
+        public override void AwardPoints(PlayerMobile pm, Item item, int amount)
         {
             PointsSystem.Khaldun.AwardPoints(pm, amount);
         }

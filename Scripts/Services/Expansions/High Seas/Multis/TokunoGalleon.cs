@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using System.Collections.Generic;
 using Server.Items;
@@ -21,7 +21,7 @@ namespace Server.Multis
         public override int MaxCannons { get { return 5; } }
 
         public override double TurnDelay { get { return 3; } }
-        public override int MaxHits { get { return 100; } }
+        public override int MaxHits { get { return 100000; } }
 
         public override int ZSurface { get { return 7; } }
 

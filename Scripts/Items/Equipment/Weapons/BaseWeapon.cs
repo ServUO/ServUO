@@ -2856,6 +2856,7 @@ namespace Server.Items
 				int fireballChance = (int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitFireball) * propertyBonus);
 				int lightningChance = (int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLightning) * propertyBonus);
 				int dispelChance = (int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitDispel) * propertyBonus);
+                int explosChance = (int)(ExtendedWeaponAttributes.GetValue(attacker, ExtendedWeaponAttribute.HitExplosion) * propertyBonus);
 
                 #region Mondains Legacy
                 int velocityChance = this is BaseRanged ? (int)((BaseRanged)this).Velocity : 0;
@@ -2890,6 +2891,11 @@ namespace Server.Items
 				if (dispelChance != 0 && dispelChance > Utility.Random(100))
 				{
 					DoDispel(attacker, defender);
+                }
+
+                if (explosChance != 0 && explosChance > Utility.Random(100))
+                {
+                    DoExplosion(attacker, defender);
                 }
 
                 #region Mondains Legacy
@@ -3177,6 +3183,26 @@ namespace Server.Items
 				defender.Delete();
 			}
 		}
+
+        public virtual void DoExplosion(Mobile attacker, Mobile defender)
+        {
+            if (!attacker.CanBeHarmful(defender, false))
+            {
+                return;
+            }
+
+            attacker.DoHarmful(defender);
+
+            double damage = GetAosSpellDamage(attacker, defender, 40, 1, 5);
+
+            defender.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
+            defender.PlaySound(0x307);
+
+            SpellHelper.Damage(TimeSpan.FromSeconds(1.0), defender, attacker, damage, 0, 100, 0, 0, 0);
+
+            if (ProcessingMultipleHits)
+                BlockHitEffects = true;
+        }
 
         public virtual void DoHitVelocity(Mobile attacker, IDamageable damageable)
         {
@@ -5441,8 +5467,6 @@ namespace Server.Items
             {
                 list.Add(1111880); // Altered
             }
-
-            base.AddCraftedProperties(list);
         }
 
         public override void AddWeightProperty(ObjectPropertyList list)
@@ -5682,6 +5706,11 @@ namespace Server.Items
             else if (bonus == AosWeaponAttribute.HitHarm && enchantBonus != 0)
             {
                 list.Add(1060421, ((int)(enchantBonus * focusBonus)).ToString()); // hit harm ~1_val~%
+            }
+
+            if ((fprop = (double)m_ExtendedWeaponAttributes.HitExplosion * focusBonus) != 0)
+            {
+                list.Add(1158922, ((int)fprop).ToString()); // hit explosion ~1_val~%
             }
 
             if (m_SearingWeapon)

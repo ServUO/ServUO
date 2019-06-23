@@ -1,18 +1,14 @@
 using System;
-using Server;
 using System.Collections.Generic;
 using System.Linq;
+
+using Server;
 using Server.Mobiles;
-using Server.Items;
-using Server.Engines.CityLoyalty;
 
-namespace Server.Engines.Blackthorn
+namespace Server.Items
 {
-    public class InvasionBeacon : DamageableItem
+    public class Beacon : DamageableItem
     {
-        [CommandProperty(AccessLevel.GameMaster)]
-        public InvasionController Controller { get; set; }
-
         [CommandProperty(AccessLevel.GameMaster)]
         public BeaconItem Component { get; set; }
 
@@ -48,15 +44,11 @@ namespace Server.Engines.Blackthorn
 
         public override bool DeleteOnDestroy { get { return false; } }
         public override double IDChange { get { return 0.50; } }
-        public override bool CanDamage { get { return Controller == null || Controller.BeaconVulnerable; } }
 
-        public InvasionBeacon(InvasionController controller)
+        public Beacon()
             : base(18212, 39299, 1)
         {
-            Controller = controller;
             Component = new BeaconItem(this);
-
-            Name = "lighthouse";
 
             ResistBasePhys = 50;
             ResistBaseFire = 85;
@@ -93,9 +85,6 @@ namespace Server.Engines.Blackthorn
 
         public override bool OnBeforeDestroyed()
         {
-            if (Controller != null)
-                Controller.OnBeaconDestroyed();
-
             List<Item> delete = new List<Item>();
 
             if (Rubble != null)
@@ -193,19 +182,6 @@ namespace Server.Engines.Blackthorn
 
             if (this.ItemID == IDHalfHits && this.Hits <= (HitsMax * .25))
             {
-                IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, 20);
-
-                foreach (Mobile m in eable)
-                {
-                    if (m.NetState != null)
-                        m.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1154551, m.NetState); // *Minax's Beacon surges with energy into an invulnerable state! Defeat her Captains to weaken the Beacon's defenses!*
-                }
-
-                eable.Free();
-
-                if (Controller != null)
-                    Timer.DelayCall(TimeSpan.FromSeconds(1), () => Controller.SpawnWave());
-
                 AddRubble(new Static(14732), new Point3D(this.X - 1, this.Y + 1, this.Z));
                 AddRubble(new Static(14742), new Point3D(this.X + 1, this.Y - 1, this.Z));
                 AddRubble(new Static(14742), new Point3D(this.X, this.Y, this.Z + 63));
@@ -213,12 +189,23 @@ namespace Server.Engines.Blackthorn
                 AddRubble(new Static(6571), new Point3D(this.X + 1, this.Y + 1, this.Z + 42));
                 AddRubble(new Static(6571), new Point3D(this.X + 1, this.Y, this.Z + 59));
 
+                OnHalfDamage();
+
                 this.ItemID = 39300;
             }
-            else if (0.02 > Utility.RandomDouble())
+            else if (CheckAreaDamage(from, amount))
             {
                 DoAreaAttack();
             }
+        }
+
+        public virtual bool CheckAreaDamage(Mobile from, int amount)
+        {
+            return 0.02 > Utility.RandomDouble();
+        }
+
+        public virtual void OnHalfDamage()
+        {
         }
 
         private void AddRubble(Item i, Point3D p)
@@ -247,7 +234,7 @@ namespace Server.Engines.Blackthorn
             }
         }
 
-        private void DoAreaAttack()
+        public virtual void DoAreaAttack()
         {
             List<Mobile> list = new List<Mobile>();
             IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, 8);
@@ -275,7 +262,7 @@ namespace Server.Engines.Blackthorn
             ColUtility.Free(list);
         }
 
-        public InvasionBeacon(Serial serial)
+        public Beacon(Serial serial)
             : base(serial)
 		{
 		}
@@ -322,11 +309,11 @@ namespace Server.Engines.Blackthorn
     public class BeaconItem : Item
     {
         [CommandProperty(AccessLevel.GameMaster)]
-        public InvasionBeacon Beacon { get; set; }
+        public Beacon Beacon { get; set; }
 
         public override bool ForceShowProperties { get { return true; } }
 
-        public BeaconItem(InvasionBeacon beacon)
+        public BeaconItem(Beacon beacon)
             : base(18223)
         {
             Movable = false;

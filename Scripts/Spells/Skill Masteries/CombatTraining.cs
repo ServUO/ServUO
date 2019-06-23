@@ -433,17 +433,34 @@ namespace Server.Spells.SkillMasteries
 
             AddHtmlLocalized(20, 20, 150, 16, 1156113, Hue, false, false); // Select Training
 
-            AddButton(20, 40, 9762, 9763, 1, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(43, 40, 150, 16, 1156109, Hue, false, false); // Empowerment
+            int y = 40;
+            if (MasteryInfo.HasLearned(caster, SkillName.AnimalTaming, 1))
+            {
+                AddButton(20, y, 9762, 9763, 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(43, y, 150, 16, 1156109, Hue, false, false); // Empowerment
+                y += 20;
+            }
 
-            AddButton(20, 60, 9762, 9763, 2, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(43, 60, 150, 16, 1153271, Hue, false, false); // Berserk
+            if (MasteryInfo.HasLearned(caster, SkillName.AnimalTaming, 2))
+            {
+                AddButton(20, y, 9762, 9763, 2, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(43, y, 150, 16, 1153271, Hue, false, false); // Berserk
+                y += 20;
+            }
 
-            AddButton(20, 80, 9762, 9763, 3, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(43, 80, 150, 16, 1156108, Hue, false, false); // Consume Damage
+            if (MasteryInfo.HasLearned(caster, SkillName.AnimalTaming, 3))
+            {
+                AddButton(20, y, 9762, 9763, 3, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(43, y, 150, 16, 1156108, Hue, false, false); // Consume Damage
+                y += 20;
+            }
 
-            AddButton(20, 100, 9762, 9763, 4, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(43, 100, 150, 16, 1157544, Hue, false, false); // As One
+            if (MasteryInfo.HasLearned(caster, SkillName.AnimalTaming, 1))
+            {
+                AddButton(20, y, 9762, 9763, 4, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(43, y, 150, 16, 1157544, Hue, false, false); // As One
+                y += 20;
+            }
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
