@@ -141,7 +141,7 @@ namespace Server
                     {
                         if (postEffect == null)
                         {
-                            postEffect = Packet.Acquire(new GraphicalEffect(EffectType.FixedFrom, e.Serial, Serial.Zero, 0, e.EffectsLocation, e.EffectsLocation, 0, 0, false, 0));
+                            postEffect = Packet.Acquire(new GraphicalEffect(EffectType.FixedFrom, e.Serial, Serial.Zero, 0, e.Location, e.Location, 0, 0, false, 0));
                         }
 
                         state.Send(postEffect);

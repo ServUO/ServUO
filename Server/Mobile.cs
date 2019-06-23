@@ -9851,9 +9851,6 @@ namespace Server
 		[CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
 		public Point3D Location { get { return m_Location; } set { SetLocation(value, true); } }
 
-        [CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
-        public Point3D EffectsLocation { get { return m_Location; } }
-
         [CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
 		public Point3D LogoutLocation { get { return m_LogoutLocation; } set { m_LogoutLocation = value; } }
 
