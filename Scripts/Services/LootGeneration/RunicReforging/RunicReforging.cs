@@ -3280,6 +3280,36 @@ namespace Server.Items
         #endregion
 
         #region Updates
+        public static void LootNerf2()
+        {
+            int fix = 0;
+
+            foreach (var item in World.Items.Values)
+            {
+                var neg = GetNegativeAttributes(item);
+
+                if (neg != null && (neg.Brittle > 0 || neg.Antique > 0 || neg.NoRepair > 0))
+                {
+                    var wep = GetAosWeaponAttributes(item);
+                    var armor = GetAosArmorAttributes(item);
+
+                    if (wep != null && wep.SelfRepair > 0)
+                    {
+                        wep.SelfRepair = 0;
+                        fix++;
+                    }
+
+                    if (armor != null && armor.SelfRepair > 0)
+                    {
+                        armor.SelfRepair = 0;
+                        fix++;
+                    }
+                }
+            }
+
+            SpawnerPersistence.ToConsole(String.Format("Removed Self Repair from {0} items.", fix));
+        }
+
         public static void ItemNerfVersion6()
         {
             int fc2 = 0;

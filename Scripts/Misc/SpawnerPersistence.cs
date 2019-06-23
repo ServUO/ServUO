@@ -38,6 +38,7 @@ namespace Server
             TramKhaldun     = 0x00000040,
             FixAddonDeco    = 0x00000080,
             LifeStealers    = 0x00000100,
+            LootNerf2       = 0x00000200
         }
 
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
@@ -163,6 +164,12 @@ namespace Server
             {
                 case 12:
                 case 11:
+                    if ((VersionFlag & SpawnerVersion.LootNerf2) == 0)
+                    {
+                        LootNerf2();
+                        VersionFlag |= SpawnerVersion.LootNerf2;
+                    }
+
                     if ((VersionFlag & SpawnerVersion.LifeStealers) == 0)
                     {
                         SpawnLifeStealers();
@@ -257,6 +264,13 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Loot Nerf 2
+        public static void LootNerf2()
+        {
+            RunicReforging.LootNerf2();
+        }
+        #endregion
 
         #region Spawn Lifestealers
         public static void SpawnLifeStealers()
