@@ -397,6 +397,12 @@ namespace Server.Engines.Craft
             craftItem.NeedMaker = needMaker;
         }
 
+        public void SetNeedWater(int index, bool needWater)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.NeedWater = needWater;
+        }
+
         public void SetBeverageType(int index, BeverageType requiredBeverage)
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);

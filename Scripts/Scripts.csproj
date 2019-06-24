@@ -590,6 +590,8 @@
     <Compile Include="Items\Addons\GadgetryTable.cs" />
     <Compile Include="Items\Consumables\DecorativeKitchenSet.cs" />
     <Compile Include="Items\Consumables\EmbroideryTool.cs" />
+    <Compile Include="Items\Damageable\Beacon.cs" />
+    <Compile Include="Items\Damageable\DamageableItem.cs" />
     <Compile Include="Items\Decorative\Countertop.cs" />
     <Compile Include="Items\Decorative\ButcherBlock.cs" />
     <Compile Include="Items\Decorative\CupidStatue.cs" />
@@ -744,6 +746,7 @@
     <Compile Include="Items\StoreBought\MysticalPolymorphTotem.cs" />
     <Compile Include="Items\Tools\WhiteLeatherDyeTub.cs" />
     <Compile Include="Misc\Aggression.cs" />
+    <Compile Include="Misc\Replacer.cs" />
     <Compile Include="Mobiles\Normal\Triton.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
     <Compile Include="Multis\ContestHouses.cs" />
@@ -766,6 +769,7 @@
     <Compile Include="Services\Astronomy\Tent.cs" />
     <Compile Include="Services\Astronomy\Willebrord.cs" />
     <Compile Include="Services\DailyRares.cs" />
+    <Compile Include="Services\Expansions\High Seas\Items\Cannons and Ammo\ShipCannon.cs" />
     <Compile Include="Services\Expansions\MondainsLegacy.cs" />
     <Compile Include="Services\Expansions\Time Of Legends\AuctionSafe\AuctionMap.cs" />
     <Compile Include="Services\GiftGiving\HolidayGiftBox2018.cs" />
@@ -909,7 +913,6 @@
     <Compile Include="Items\Decorative\ClownMask.cs" />
     <Compile Include="Items\Decorative\ColoredSmallWebs.cs" />
     <Compile Include="Items\Decorative\DaemonMask.cs" />
-    <Compile Include="Items\Decorative\DamageableItem.cs" />
     <Compile Include="Items\Decorative\DragonLamp.cs" />
     <Compile Include="Items\Decorative\EvilJesterMask.cs" />
     <Compile Include="Items\Decorative\ExcellentIronMaiden.cs" />
@@ -9731,8 +9734,8 @@
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Creatures\AgentoftheCrown.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Generate.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Gumps.cs" />
-    <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\InvasionSpawner\Beacon.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\InvasionSpawner\Creatures.cs" />
+    <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\InvasionSpawner\InvasionBeacon.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\InvasionSpawner\InvasionController.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\InvasionSpawner\InvasionDefinition.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\BlackthornPainting.cs" />
@@ -9999,6 +10002,16 @@
     <Compile Include="Services\Seasonal Events\KrampusEncounter\KrampusEncounter.cs" />
     <Compile Include="Services\Seasonal Events\KrampusEncounter\Mobiles\Krampus.cs" />
     <Compile Include="Services\Seasonal Events\KrampusEncounter\Mobiles\KrampusMinion.cs" />
+    <Compile Include="Services\Seasonal Events\RisingTide\BlackMarketMerchant.cs" />
+    <Compile Include="Services\Seasonal Events\RisingTide\Generation.cs" />
+    <Compile Include="Services\Seasonal Events\RisingTide\MannedCannon.cs" />
+    <Compile Include="Services\Seasonal Events\RisingTide\MaritimeCargo.cs" />
+    <Compile Include="Services\Seasonal Events\RisingTide\PlunderBeacon.cs" />
+    <Compile Include="Services\Seasonal Events\RisingTide\PlunderBeaconAddon.cs" />
+    <Compile Include="Services\Seasonal Events\RisingTide\PlunderBeaconSpawner.cs" />
+    <Compile Include="Services\Seasonal Events\RisingTide\Rewards.cs" />
+    <Compile Include="Services\Seasonal Events\RisingTide\RewardsGump.cs" />
+    <Compile Include="Services\Seasonal Events\RisingTide\RisingTideData.cs" />
     <Compile Include="Services\Seasonal Events\SeasonalEventGump.cs" />
     <Compile Include="Services\Seasonal Events\SeasonalEventSystem.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfDoom\DoomData.cs" />

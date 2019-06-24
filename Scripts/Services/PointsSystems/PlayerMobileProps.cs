@@ -155,6 +155,19 @@ namespace Server.Mobiles
             }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double Doubloons
+        {
+            get
+            {
+                return (int)PointsSystem.RisingTide.GetPoints(Player);
+            }
+            set
+            {
+                PointsSystem.RisingTide.SetPoints(Player, value);
+            }
+        }
+
         private CityLoyaltyProps _CityLoyaltyProps;
 
         [CommandProperty(AccessLevel.GameMaster)]

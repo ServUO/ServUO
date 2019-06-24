@@ -525,7 +525,7 @@ namespace Server.Engines.Blackthorn
 
             Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
             {
-                if (Beacon != null && Beacon.Destroyed)
+                if (Beacon == null || Beacon.Destroyed)
                 {
                     Timer.DelayCall(TimeSpan.FromMinutes(2), () =>
                     {

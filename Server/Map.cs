@@ -967,10 +967,138 @@ namespace Server
 
 			return !requireSurface || hasSurface;
 		}
-		#endregion
 
-		#region CanSpawnMobile
-		public bool CanSpawnMobile(Point3D p)
+        public bool CanFit(int x, int y, int z, int height, bool checkBlocksFit, bool checkMobiles, bool requireSurface, Mobile mob)
+        {
+            if (this == Internal)
+                return false;
+
+            if (x < 0 || y < 0 || x >= Width || y >= Height)
+                return false;
+
+            bool hasSurface = false;
+            bool checkmob = false;
+            bool canswim = false;
+            bool cantwalk = false;
+
+            if (mob != null)
+            {
+                checkmob = true;
+                canswim = mob.CanSwim;
+                cantwalk = mob.CantWalk;
+            }
+
+            LandTile lt = Tiles.GetLandTile(x, y);
+            int lowZ = 0, avgZ = 0, topZ = 0;
+
+            bool surface, impassable;
+            bool wet = false;
+
+            GetAverageZ(x, y, ref lowZ, ref avgZ, ref topZ);
+            TileFlag landFlags = TileData.LandTable[lt.ID & TileData.MaxLandValue].Flags;
+
+            impassable = (landFlags & TileFlag.Impassable) != 0;
+
+            if (checkmob)
+            {
+                wet = (landFlags & TileFlag.Wet) != 0;
+                // dont allow wateronly creatures on land
+                if (cantwalk && !wet)
+                    impassable = true;
+                // allow water creatures on water
+                if (canswim && wet)
+                {
+                    impassable = false;
+                }
+            }
+
+
+            if (impassable && avgZ > z && (z + height) > lowZ)
+                return false;
+            else if (!impassable && z == avgZ && !lt.Ignored)
+                hasSurface = true;
+
+            StaticTile[] staticTiles = Tiles.GetStaticTiles(x, y, true);
+
+            for (int i = 0; i < staticTiles.Length; ++i)
+            {
+                ItemData id = TileData.ItemTable[staticTiles[i].ID & TileData.MaxItemValue];
+                surface = id.Surface;
+                impassable = id.Impassable;
+                if (checkmob)
+                {
+                    wet = (id.Flags & TileFlag.Wet) != 0;
+                    // dont allow wateronly creatures on land
+                    if (cantwalk && !wet)
+                        impassable = true;
+                    // allow water creatures on water
+                    if (canswim && wet)
+                    {
+                        surface = true;
+                        impassable = false;
+                    }
+                }
+
+                if ((surface || impassable) && (staticTiles[i].Z + id.CalcHeight) > z && (z + height) > staticTiles[i].Z)
+                    return false;
+                else if (surface && !impassable && z == (staticTiles[i].Z + id.CalcHeight))
+                    hasSurface = true;
+
+
+            }
+
+            Sector sector = GetSector(x, y);
+            List<Item> items = sector.Items;
+            List<Mobile> mobs = sector.Mobiles;
+
+            for (int i = 0; i < items.Count; ++i)
+            {
+                Item item = items[i];
+
+                if (item.ItemID < 0x4000 && item.AtWorldPoint(x, y))
+                {
+                    ItemData id = item.ItemData;
+                    surface = id.Surface;
+                    impassable = id.Impassable;
+                    if (checkmob)
+                    {
+                        wet = (id.Flags & TileFlag.Wet) != 0;
+                        // dont allow wateronly creatures on land
+                        if (cantwalk && !wet)
+                            impassable = true;
+                        // allow water creatures on water
+                        if (canswim && wet)
+                        {
+                            surface = true;
+                            impassable = false;
+                        }
+                    }
+
+                    if ((surface || impassable || (checkBlocksFit && item.BlocksFit)) && (item.Z + id.CalcHeight) > z && (z + height) > item.Z)
+                        return false;
+                    else if (surface && !impassable && !item.Movable && z == (item.Z + id.CalcHeight))
+                        hasSurface = true;
+                }
+            }
+
+            if (checkMobiles)
+            {
+                for (int i = 0; i < mobs.Count; ++i)
+                {
+                    Mobile m = mobs[i];
+
+                    if (m.Location.X == x && m.Location.Y == y && (m.AccessLevel == AccessLevel.Player || !m.Hidden))
+                        if ((m.Z + 16) > z && (z + height) > m.Z)
+                            return false;
+                }
+            }
+
+            return !requireSurface || hasSurface;
+        }
+        #endregion
+
+        #region CanSpawnMobile
+        public bool CanSpawnMobile(Point3D p)
 		{
 			return CanSpawnMobile(p.m_X, p.m_Y, p.m_Z);
 		}

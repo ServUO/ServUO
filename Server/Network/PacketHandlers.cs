@@ -2205,9 +2205,16 @@ namespace Server.Network
 									}
 								}
 
-								if (e.Enabled && user.InRange(p, range))
+								if (user.InRange(p, range))
 	                            {
-									e.OnClick();
+                                    if (e.Enabled)
+                                    {
+                                        e.OnClick();
+                                    }
+                                    else
+                                    {
+                                        e.OnClickDisabled();
+                                    }
 	                            }
 							}
 						}

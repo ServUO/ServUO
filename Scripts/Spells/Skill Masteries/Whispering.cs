@@ -23,8 +23,9 @@ namespace Server.Spells.SkillMasteries
 		
         public override SkillName CastSkill { get { return SkillName.AnimalTaming; } }
 		public override SkillName DamageSkill { get { return SkillName.AnimalLore; } }
- 
-		private int _EnhancedGainChance;
+        public override bool RevealOnTick { get { return false; } }
+
+        private int _EnhancedGainChance;
 		public int EnhancedGainChance { get { return _EnhancedGainChance; } }
  
         public WhisperingSpell(Mobile caster, Item scroll)

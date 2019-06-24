@@ -251,47 +251,44 @@ namespace Server.SkillHandlers
             return false;
         }
 
-        public static double GetSuccessChance(Mobile from, Item item, int totalItemWeight, int propWeight, out double dif)
+        public static double GetSuccessChance(Mobile from, Item item, int totalItemIntensity, int propintensity, out double dif)
         {
             double suc = 0;     // display difficulty
             double bonus = 0;   // bonuses
+            double a = 1554.96118;
+            double b = 53.81743328;
+            double c = 230.0038452;
+            double w = -1664.857794;
+            double e = Math.E;
+            double i = 1;
 
             ImbuingContext context = GetContext(from);
             double skill = from.Skills[SkillName.Imbuing].Value;
 
             // - Racial Bonus - SA ONLY -
             if (from.Race == Race.Gargoyle)
-                bonus = 10;
-
+            {
+                a = 1362.281555;
+                b = 66.32801518;
+                c = 235.2223147;
+                w = -1481.037561;
+            }
             // Queen Soul Forge Bonus
             if (context.Imbue_SFBonus > 0)
-                bonus += context.Imbue_SFBonus;
-
-            bonus += GetQualityBonus(item);
-            bonus /= 100;
-
-            double resultWeight = totalItemWeight + propWeight;
-
-            if (resultWeight <= 500)
             {
-                dif = ((resultWeight) / 22) + (resultWeight / 8);
-                suc = ((skill - dif) * 1);
-            }
-            else
-            {
-                dif = (((resultWeight) - 500) / 75) + (((resultWeight) - 500) / 64);
-                suc = (skill - (dif + 64)) + bonus;
+                bonus = 6;
             }
 
-            suc += suc * bonus;
+            if (item is BaseJewel)
+            {
+                i = 0.9162;
+            }
 
-            if (suc < 0)
-                suc = 0;
+            double resultWeight = totalItemIntensity + propintensity;
 
-            if (suc > 100 && from.AccessLevel == AccessLevel.Player) //display purposes
-                suc = 100;
+            suc = Math.Round(Math.Floor(20 * skill + 10 * a * Math.Pow(e, (b / (resultWeight + c))) + 10 * w - 2400) / 1000 * (i) + bonus, 3) * 100;
 
-            suc = Math.Round(suc, 2);
+            dif = skill - suc;
 
             return suc;
         }
@@ -355,13 +352,15 @@ namespace Server.SkillHandlers
                 var maxWeight = GetMaxWeight(i);
                 context.Imbue_IWmax = maxWeight;
 
-                var totalItemWeight = GetTotalWeight(i, id);
+                var trueWeight = GetTotalWeight(i, id, false);
+                var imbuingWeight = GetTotalWeight(i, id, true);
                 var totalItemMods = GetTotalMods(i, id);
-                var maxint = ItemPropertyInfo.GetMaxIntensity(i, def);
+                var maxint = ItemPropertyInfo.GetMaxIntensity(i, id);
 
-                int propweight = (int)(((double)def.Weight / (double)maxint) * value);
+                var propImbuingweight = (int)(((double)def.Weight / (double)maxint) * value);
+                var propTrueWeight = (int)(((double)propImbuingweight / (double)def.Weight) * 100);
 
-                if ((totalItemWeight + propweight) > maxWeight)
+                if ((imbuingWeight + propImbuingweight) > maxWeight)
                 {
                     from.SendLocalizedMessage(1079772); // You cannot imbue this item with any more item properties.
                     from.CloseGump(typeof(ImbueGump));
@@ -369,11 +368,16 @@ namespace Server.SkillHandlers
                 }
 
                 double difficulty = 0;
-                double success = GetSuccessChance(from, i, totalItemWeight, propweight, out difficulty);
+                double skill = from.Skills[SkillName.Imbuing].Value;
+                double success = GetSuccessChance(from, i, trueWeight, propTrueWeight, out difficulty);
 
-                if (TimesImbued(i) < 20)
+                if (TimesImbued(i) < 20 && skill < from.Skills[SkillName.Imbuing].Cap)
                 {
-                    from.CheckSkill(SkillName.Imbuing, difficulty - 50, difficulty + 50);
+                    double s = Math.Min(100, success);
+                    double mins = 120 - (s * 1.2);
+                    double maxs = Math.Max(120 / (s / 100), skill);
+
+                    from.CheckSkill(SkillName.Imbuing, mins, maxs);
                 }
 
                 success /= 100;
@@ -1326,7 +1330,17 @@ namespace Server.SkillHandlers
 
         public static Dictionary<Type, int[]> ResistBuffer { get; private set; }
 
-        public static int GetTotalWeight(Item item, int id = -1)
+        public static int GetTotalWeight(Item item)
+        {
+            return GetTotalWeight(item, -1);
+        }
+
+        public static int GetTotalWeight(Item item, int id)
+        {
+            return GetTotalWeight(item, id, true);
+        }
+
+        public static int GetTotalWeight(Item item, int id, bool imbuingWeight)
         {
             double weight = 0;
 
@@ -1340,23 +1354,23 @@ namespace Server.SkillHandlers
             if (item is BaseWeapon)
             {
                 if(((BaseWeapon)item).Slayer != SlayerName.None)
-                    weight += GetIntensityForAttribute(item, ((BaseWeapon)item).Slayer, id, 1);
+                    weight += GetIntensityForAttribute(item, ((BaseWeapon)item).Slayer, id, 1, imbuingWeight);
 
                 if (((BaseWeapon)item).Slayer2 != SlayerName.None)
-                    weight += GetIntensityForAttribute(item, ((BaseWeapon)item).Slayer2, id, 1);
+                    weight += GetIntensityForAttribute(item, ((BaseWeapon)item).Slayer2, id, 1, imbuingWeight);
 
                 if (((BaseWeapon)item).Slayer3 != TalismanSlayerName.None)
-                    weight += GetIntensityForAttribute(item, ((BaseWeapon)item).Slayer3, id, 1);
+                    weight += GetIntensityForAttribute(item, ((BaseWeapon)item).Slayer3, id, 1, imbuingWeight);
 
                 if(((BaseWeapon)item).SearingWeapon)
-                    weight += GetIntensityForAttribute(item, "SearingWeapon", id, 1);
+                    weight += GetIntensityForAttribute(item, "SearingWeapon", id, 1, imbuingWeight);
 
                 if (item is BaseRanged)
                 {
                     BaseRanged ranged = item as BaseRanged;
 
                     if(ranged.Velocity > 0)
-                        weight += GetIntensityForAttribute(item, "WeaponVelocity", id, ranged.Velocity);
+                        weight += GetIntensityForAttribute(item, "WeaponVelocity", id, ranged.Velocity, imbuingWeight);
                 }
             }
             else if (item is BaseArmor)
@@ -1421,29 +1435,29 @@ namespace Server.SkillHandlers
 
             if (aosAttrs != null)
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
-                    weight += GetIntensityForAttribute(item, (AosAttribute)i, id, aosAttrs[(AosAttribute)i]);
+                    weight += GetIntensityForAttribute(item, (AosAttribute)i, id, aosAttrs[(AosAttribute)i], imbuingWeight);
 
             if (wepAttrs != null)
                 foreach (long i in Enum.GetValues(typeof(AosWeaponAttribute)))
-                    weight += GetIntensityForAttribute(item, (AosWeaponAttribute)i, id, wepAttrs[(AosWeaponAttribute)i]);
+                    weight += GetIntensityForAttribute(item, (AosWeaponAttribute)i, id, wepAttrs[(AosWeaponAttribute)i], imbuingWeight);
 
             if (saAttrs != null)
                 foreach (int i in Enum.GetValues(typeof(SAAbsorptionAttribute)))
-                    weight += GetIntensityForAttribute(item, (SAAbsorptionAttribute)i, id, saAttrs[(SAAbsorptionAttribute)i]);
+                    weight += GetIntensityForAttribute(item, (SAAbsorptionAttribute)i, id, saAttrs[(SAAbsorptionAttribute)i], imbuingWeight);
 
             if (armorAttrs != null)
                 foreach (int i in Enum.GetValues(typeof(AosArmorAttribute)))
-                    weight += GetIntensityForAttribute(item, (AosArmorAttribute)i, id, armorAttrs[(AosArmorAttribute)i]);
+                    weight += GetIntensityForAttribute(item, (AosArmorAttribute)i, id, armorAttrs[(AosArmorAttribute)i], imbuingWeight);
 
             if (resistAttrs != null && !(item is BaseWeapon))
                 foreach (int i in Enum.GetValues(typeof(AosElementAttribute)))
-                    weight += GetIntensityForAttribute(item, (AosElementAttribute)i, id, resistAttrs[(AosElementAttribute)i]);
+                    weight += GetIntensityForAttribute(item, (AosElementAttribute)i, id, resistAttrs[(AosElementAttribute)i], imbuingWeight);
 
             if(extattrs != null)
                 foreach (int i in Enum.GetValues(typeof(ExtendedWeaponAttribute)))
-                    weight += GetIntensityForAttribute(item, (ExtendedWeaponAttribute)i, id, extattrs[(ExtendedWeaponAttribute)i]);
+                    weight += GetIntensityForAttribute(item, (ExtendedWeaponAttribute)i, id, extattrs[(ExtendedWeaponAttribute)i], imbuingWeight);
 
-            weight += CheckSkillBonuses(item, id);
+            weight += CheckSkillBonuses(item, id, imbuingWeight);
 
             return (int)weight;
         }
@@ -1558,7 +1572,7 @@ namespace Server.SkillHandlers
                 type != typeof(BaseCloak);
         }
 
-        private static int CheckSkillBonuses(Item item, int check)
+        private static int CheckSkillBonuses(Item item, int check, bool imbuingWeight)
         {
             double weight = 0;
             int id = -1;
@@ -1571,7 +1585,7 @@ namespace Server.SkillHandlers
             }
 
             // Place Holder. THis is in case the skill weight/max intensity every changes
-            int totalWeight = ItemPropertyInfo.GetWeight(151);
+            int totalWeight = imbuingWeight ? ItemPropertyInfo.GetWeight(151) : 100;
             int maxInt = ItemPropertyInfo.GetMaxIntensity(item, 151);
 
             if (skills != null)
@@ -1924,10 +1938,20 @@ namespace Server.SkillHandlers
 
         public static int GetIntensityForAttribute(Item item, object attr, int checkID, int value)
         {
-            return GetIntensityForID(item, ItemPropertyInfo.GetID(attr), checkID, value);
+            return GetIntensityForAttribute(item, ItemPropertyInfo.GetID(attr), checkID, value, true);
+        }
+
+        public static int GetIntensityForAttribute(Item item, object attr, int checkID, int value, bool imbuingWeight)
+        {
+            return GetIntensityForID(item, ItemPropertyInfo.GetID(attr), checkID, value, imbuingWeight);
         }
 
         public static int GetIntensityForID(Item item, int id, int checkID, int value)
+        {
+            return GetIntensityForID(item, id, checkID, value, true);
+        }
+
+        public static int GetIntensityForID(Item item, int id, int checkID, int value, bool imbuingWeight)
         {
             // This is terribly clunky, however we're accomidating 1 out of 50+ attributes that acts differently
             if (value <= 0 && id != 16)
@@ -1948,7 +1972,7 @@ namespace Server.SkillHandlers
 
             if (id != checkID)
             {
-                var weight = ItemPropertyInfo.GetWeight(id);
+                var weight = imbuingWeight  ? ItemPropertyInfo.GetWeight(id) : 100;
 
                 if (weight == 0)
                 {

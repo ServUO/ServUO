@@ -75,6 +75,8 @@ namespace Server.Items
     {
         None = 0,
         South = 1,
-        East = 2
+        East = 2,
+        North = 3,
+        West = 4
     }
 }

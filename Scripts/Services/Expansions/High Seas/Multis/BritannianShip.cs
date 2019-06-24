@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using System.Collections.Generic;
 using Server.Items;
@@ -19,8 +19,7 @@ namespace Server.Multis
         public override int WheelDistance { get { return 3; } }
         public override int CaptiveOffset { get { return 5; } }
         public override int MaxCannons { get { return 9; } }
-        public override double CannonDamageMod { get { return 1.0; } }
-        public override int MaxHits { get { return 150; } }
+        public override int MaxHits { get { return 200000; } }
 
         public override double TurnDelay { get { return 3; } }
         public override TimeSpan BoatDecayDelay { get { return TimeSpan.FromDays(30); } }

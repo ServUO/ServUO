@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using System;
 using Server.Multis;
 using System.Collections.Generic;
@@ -464,7 +464,7 @@ namespace Server.Engines.Quests
                 hold.DropItem(new LightGrapeshot(Utility.RandomMinMax(7, 10)));
                 hold.DropItem(new HeavyPowderCharge(Utility.RandomMinMax(7, 10)));
                 hold.DropItem(new LightPowderCharge(Utility.RandomMinMax(7, 10)));
-                hold.DropItem(new Fusecord(Utility.RandomMinMax(7, 10)));
+                hold.DropItem(new FuseCord(Utility.RandomMinMax(7, 10)));
 
                 if (.10 >= Utility.RandomDouble())
                     hold.DropItem(new SmugglersCache());

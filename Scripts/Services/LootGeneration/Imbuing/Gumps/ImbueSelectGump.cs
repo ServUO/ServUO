@@ -820,12 +820,19 @@ namespace Server.Gumps
                     }
                 default:  // = Proceed to Attribute Intensity Menu [ImbuingC.cs]
                     {
-                        int buttonNum = info.ButtonID - 10100;
-                        context.Imbue_Mod = buttonNum;
+                        int id = info.ButtonID - 10100;
 
-                        if (Imbuing.OnBeforeImbue(User, context.LastImbued, buttonNum, -1))
+                        // Converts AosElementalAttribute (used as elemental damage on weapons) to WeaponAttributes Elemental resists
+                        if (m_Item is BaseWeapon && id >= 51 && id <= 55)
                         {
-                            BaseGump.SendGump(new ImbueGump(User, context.LastImbued, buttonNum, -1));
+                            id += 182;
+                        }
+
+                        context.Imbue_Mod = id;
+
+                        if (Imbuing.OnBeforeImbue(User, context.LastImbued, id, -1))
+                        {
+                            BaseGump.SendGump(new ImbueGump(User, context.LastImbued, id, -1));
                         }
                         
                         break;

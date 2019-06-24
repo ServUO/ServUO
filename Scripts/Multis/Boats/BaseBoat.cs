@@ -1259,16 +1259,29 @@ namespace Server.Multis
                 return false;
             }
 
-            if (m_MoveTimer != null && Order != BoatOrder.Move)
+            bool resume = false;
+            bool fast = false;
+            var resumeDir = Direction.North;
+
+            if (m_MoveTimer != null)
             {
+                if (Order == BoatOrder.Move)
+                {
+                    resume = true;
+                    resumeDir = m_Moving;
+                    fast = m_ClientSpeed == 0x4;
+                }
+
                 m_MoveTimer.Stop();
                 m_MoveTimer = null;
             }
 
             if (m_TurnTimer != null)
+            {
                 m_TurnTimer.Stop();
+            }
 
-            m_TurnTimer = new TurnTimer(this, offset);
+            m_TurnTimer = new TurnTimer(this, offset, resume, resumeDir, fast);
             m_TurnTimer.Start();
 
             if (message && TillerMan != null)
@@ -1278,6 +1291,11 @@ namespace Server.Multis
         }
 
         public bool Turn(int offset, bool message)
+        {
+            return Turn(offset, message, false, Direction.North, false);
+        }
+
+        public bool Turn(int offset, bool message, bool resume, Direction resumeDir, bool fast)
         {
             if (m_TurnTimer != null)
             {
@@ -1289,18 +1307,23 @@ namespace Server.Multis
                 return false;
 
             Direction d = IsPiloted ? (Direction)offset : (Direction)(((int)m_Facing + offset) & 0x7);
+            bool success = false;
 
             if (SetFacing(d))
             {
-                return true;
+                success = true;
             }
-            else
+            else if (message)
             {
-                if (message)
-                    TillerManSay(501423); // Ar, can't turn sir.
-
-                return false;
+                TillerManSay(501423); // Ar, can't turn sir.
             }
+
+            if (resume && !IsPiloted)
+            {
+                StartMove(resumeDir, fast);
+            }
+
+            return success;
         }
 
         private class TurnTimer : Timer
@@ -1308,11 +1331,19 @@ namespace Server.Multis
             private BaseBoat m_Boat;
             private int m_Offset;
 
-            public TurnTimer(BaseBoat boat, int offset)
+            private bool m_Resume;
+            private Direction m_ResumeDirection;
+            private bool m_Fast;
+
+            public TurnTimer(BaseBoat boat, int offset, bool resume, Direction resumeDir, bool fast)
                 : base(TimeSpan.FromSeconds(0.5))
             {
                 m_Boat = boat;
                 m_Offset = offset;
+
+                m_Resume = resume;
+                m_ResumeDirection = resumeDir;
+                m_Fast = fast;
 
                 Priority = TimerPriority.TenMS;
             }
@@ -1320,7 +1351,7 @@ namespace Server.Multis
             protected override void OnTick()
             {
                 if (!m_Boat.Deleted)
-                    m_Boat.Turn(m_Offset, true);
+                    m_Boat.Turn(m_Offset, true, m_Resume, m_ResumeDirection, m_Fast);
             }
         }
 
@@ -1764,9 +1795,13 @@ namespace Server.Multis
                 }
 
                 if (dir == Left || dir == BackwardLeft || dir == Backward)
-                    return Turn(-2, true);
+                {
+                    return Turn(-2, true, true, dir, true);
+                }
                 else if (dir == Right || dir == BackwardRight)
-                    return Turn(2, true);
+                {
+                    return Turn(2, true, true, dir, true);
+                }
 
                 speed = Math.Min(Speed, maxSpeed);
                 clientSpeed = 0x4;

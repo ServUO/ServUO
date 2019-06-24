@@ -159,8 +159,11 @@ namespace Server.Gumps
             AddLabel(430, 260, GetColor(timesImbued, 20), String.Format("{0}/20", timesImbued));
 
             // ===== CALCULATE DIFFICULTY =====
+            var truePropWeight = (int)(((double)propWeight / (double)weight) * 100);
+            var trueTotalWeight = Imbuing.GetTotalWeight(m_Item, -1, false);
+
             double dif;
-            double suc = Imbuing.GetSuccessChance(User, m_Item, m_TotalItemWeight, propWeight, out dif);
+            double suc = Imbuing.GetSuccessChance(User, m_Item, trueTotalWeight, truePropWeight, out dif);
 
             AddHtmlLocalized(300, 300, 150, 20, 1044057, 0xFFFFFF, false, false); // Success Chance:
             AddLabel(420, 300, GetSuccessChanceHue(suc), String.Format("{0}%", suc.ToString("0.0")));

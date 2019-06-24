@@ -261,8 +261,11 @@ namespace Server.Engines.Craft
             {
                 AddCraft(typeof(Ramrod), 1044042, 1095839, 0.0, 50.0, typeof(Board), 1044041, 8, 1044253);
 
-                index = AddCraft(typeof(Swab), 1044042, 1095840, 0.0, 50.0, typeof(Cloth), 1044286, 1, 1044253);
-                AddRes(index, typeof(Board), 1044041, 4, 1044253);
+                if (!Core.EJ)
+                {
+                    index = AddCraft(typeof(Swab), 1044042, 1095840, 0.0, 50.0, typeof(Cloth), 1044286, 1, 1044253);
+                    AddRes(index, typeof(Board), 1044041, 4, 1044253);
+                }
             }
             
             if (Core.SA)
@@ -443,8 +446,9 @@ namespace Server.Engines.Craft
             {
                 index = AddCraft(typeof(TerMurStyleCandelabra), 1044050, 1095313, 55.0, 105.0, typeof(IronIngot), 1044036, 4, 1044037);
             }
-            
-            if (Core.HS)
+
+            // Removed for Dark Tides Cannon Changes
+            if (Core.HS && !Core.EJ)
             {
                 index = AddCraft(typeof(Matches), 1044050, 1096648, 15.0, 70.0, typeof(Matchcord), 1095184, 10, 1044367);
                 AddRes(index, typeof(Board), 1044041, 4, 1044351);

@@ -18,6 +18,9 @@ namespace Server.Gumps
         public double Points { get; protected set; }
         public List<CollectionItem> Collection { get; protected set; }
 
+        public virtual int PointsName { get { return 1072843; } } // Your Reward Points:
+        public virtual int RewardLabel { get { return 1072844; } } // Please Choose a Reward:
+
         public BaseRewardGump(Mobile owner, PlayerMobile user, List<CollectionItem> col, int title, double points = -1.0)
             : base(50, 50)
 		{
@@ -53,10 +56,10 @@ namespace Server.Gumps
                 Points = points;
 
 			AddHtmlLocalized(70, 35, 270, 20, Title, 0x1, false, false);
-            AddHtmlLocalized(50, 65, 150, 20, 1072843, 0x1, false, false); // Your Reward Points:
+            AddHtmlLocalized(50, 65, 150, 20, PointsName, 0x1, false, false);
             AddPoints();		
             AddImageTiled(35, 85, 270, 2, 0x23C5);			
-            AddHtmlLocalized(35, 90, 270, 20, 1072844, 0x1, false, false); // Please Choose a Reward:
+            AddHtmlLocalized(35, 90, 270, 20, RewardLabel, 0x1, false, false);
 
             while (Collection != null && Index < Collection.Count)
                 DisplayRewardPage();
@@ -110,7 +113,7 @@ namespace Server.Gumps
                 else if (item.Tooltip > 0)
                     AddTooltip(item.Tooltip);
 
-                AddLabel(65 + max, offset + (int)(height / 2) - 10, Points >= item.Points ? 0x64 : 0x21, item.Points.ToString());
+                AddLabel(80 + max, offset + (int)(height / 2) - 10, Points >= item.Points ? 0x64 : 0x21, item.Points.ToString("N0"));
 
                 offset += GetYOffset(item.ItemID) + height;
                 Index++;

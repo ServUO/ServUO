@@ -45,7 +45,8 @@ namespace Server.Engines.Points
 
         Khaldun,
         Doom,
-        SorcerersDungeon
+        SorcerersDungeon,
+        RisingTide
     }
 
     public abstract class PointsSystem
@@ -347,6 +348,7 @@ namespace Server.Engines.Points
         public static KhaldunData Khaldun { get; set; }
         public static DoomData TreasuresOfDoom { get; set; }
         public static SorcerersDungeonData SorcerersDungeon { get; set; }
+        public static RisingTide RisingTide { get; set; }
 
         public static void Configure()
         {
@@ -372,6 +374,7 @@ namespace Server.Engines.Points
             Khaldun = new KhaldunData();
             TreasuresOfDoom = new DoomData();
             SorcerersDungeon = new SorcerersDungeonData();
+            RisingTide = new RisingTide();
         }
 
         public static void OnKilledBy(OnKilledByEventArgs e)

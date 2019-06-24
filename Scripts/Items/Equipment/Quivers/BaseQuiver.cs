@@ -539,20 +539,25 @@ namespace Server.Items
                 list.Add(1154937); // VvV Item
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             if (OwnerName != null)
             {
                 list.Add(1153213, OwnerName);
             }
 
             if (m_Crafter != null)
-				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+            {
+                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+            }
 
             if (m_Quality == ItemQuality.Exceptional)
                 list.Add(1063341); // exceptional
+        }
+
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
 
             m_AosSkillBonuses.GetProperties(list);
 

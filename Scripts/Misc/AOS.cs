@@ -1948,7 +1948,8 @@ namespace Server
         Bane            = 0x00000008,
         MysticWeapon    = 0x00000010,
         AssassinHoned   = 0x00000020,
-        Focus            = 0x00000040,
+        Focus           = 0x00000040,
+        HitExplosion    = 0x00000080
     }
 
     public sealed class ExtendedWeaponAttributes : BaseAttributes
@@ -1968,7 +1969,7 @@ namespace Server
         {
         }
 
-        public static int GetValue(Mobile m, AosWeaponAttribute attribute)
+        public static int GetValue(Mobile m, ExtendedWeaponAttribute attribute)
         {
             if (!Core.AOS)
                 return 0;
@@ -1986,7 +1987,7 @@ namespace Server
 
                 if (obj is BaseWeapon)
                 {
-                    AosWeaponAttributes attrs = ((BaseWeapon)obj).WeaponAttributes;
+                    ExtendedWeaponAttributes attrs = ((BaseWeapon)obj).ExtendedWeaponAttributes;
 
                     if (attrs != null)
                         value += attrs[attribute];
@@ -2101,6 +2102,19 @@ namespace Server
             set
             {
                 this[ExtendedWeaponAttribute.Focus] = value;
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int HitExplosion
+        {
+            get
+            {
+                return this[ExtendedWeaponAttribute.HitExplosion];
+            }
+            set
+            {
+                this[ExtendedWeaponAttribute.HitExplosion] = value;
             }
         }
     }

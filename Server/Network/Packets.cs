@@ -81,10 +81,10 @@ namespace Server.Network
 
 	public sealed class DamagePacket : Packet
 	{
-		public DamagePacket(IDamageable damageable, int amount)
+		public DamagePacket(IEntity entity, int amount)
 			: base(0x0B, 7)
 		{
-            m_Stream.Write(damageable.Serial);
+            m_Stream.Write(entity.Serial);
 
 			if (amount > 0xFFFF)
 			{

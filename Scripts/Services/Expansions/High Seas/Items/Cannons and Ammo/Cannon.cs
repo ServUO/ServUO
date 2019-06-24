@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using System;
 using Server.Mobiles;
 using Server.ContextMenus;
@@ -24,14 +24,26 @@ namespace Server.Items
         Aft
     }
 
-    public enum AmmoType
+    public interface IShipCannon : IEntity
     {
-        Empty,
-        Cannonball,
-        Grapeshot
+        int Hits { get; set; }
+        int Range { get; }
+        AmmunitionType AmmoType { get; set; }
+        BaseGalleon Galleon { get; set; }
+        DamageLevel DamageState { get; set; }
+        Direction Facing { get; }
+        ShipPosition Position { get; set; }
+        ShipCannonDeed GetDeed { get; }
+        bool CanLight { get; }
+
+        Direction GetFacing();
+        void OnDamage(int damage, Mobile shooter);
+        void LightFuse(Mobile from);
+        void Shoot(object cannoneer);
+        void DoAreaMessage(int cliloc, int range, Mobile from);
     }
 
-    public class BaseCannon : Item
+    public abstract class BaseCannon : Item, IShipCannon
     {
         private int m_Hits;
         private bool m_Cleaned;
@@ -39,7 +51,7 @@ namespace Server.Items
         private bool m_Primed;
         private Type m_LoadedAmmo;
         private BaseGalleon m_Galleon;
-        private AmmoType m_AmmoType;
+        private AmmunitionType m_AmmoType;
         private ShipPosition m_Position;
         private DamageLevel m_DamageState;
 
@@ -62,7 +74,7 @@ namespace Server.Items
         public BaseGalleon Galleon { get { return m_Galleon; } set { m_Galleon = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AmmoType AmmoType { get { return m_AmmoType; } set { m_AmmoType = value; } }
+        public AmmunitionType AmmoType { get { return m_AmmoType; } set { m_AmmoType = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ShipPosition Position { get { return m_Position; } set { m_Position = value; } }
@@ -83,7 +95,7 @@ namespace Server.Items
         public virtual Type[] LoadTypes { get { return null; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool CanLight { get { return m_Cleaned && m_Charged && m_Primed && m_AmmoType != AmmoType.Empty && m_LoadedAmmo != null; } }
+        public bool CanLight { get { return m_Cleaned && m_Charged && m_Primed && m_AmmoType != AmmunitionType.Empty && m_LoadedAmmo != null; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double Durability { get { return ((double)m_Hits / (double)MaxHits) * 100.0; } }
@@ -97,7 +109,7 @@ namespace Server.Items
             m_Charged = false;
             m_Primed = false;
             m_Galleon = galleon;
-            m_AmmoType = AmmoType.Empty;
+            m_AmmoType = AmmunitionType.Empty;
             m_Hits = MaxHits;
             m_DamageState = DamageLevel.Pristine;
         }
@@ -144,6 +156,11 @@ namespace Server.Items
             return Direction.North;
         }
 
+        public virtual int GetDamage(AmmoInfo info)
+        {
+            return Utility.RandomMinMax(info.MinDamage, info.MaxDamage);
+        }
+
         public virtual bool TryLoadAmmo(Item ammo)
         {
             return false;
@@ -175,13 +192,13 @@ namespace Server.Items
 
             Container pack = from.Backpack;
 
-            if(pack != null)
+            if (pack != null)
             {
                 Item[] items = pack.FindItemsByType(typeof(Matches));
 
                 if (items != null)
                 {
-                    foreach(Item item in items)
+                    foreach (Item item in items)
                     {
                         if (item is Matches && ((Matches)item).IsLight)
                         {
@@ -269,11 +286,11 @@ namespace Server.Items
                 return;
 
             Mobile shooter = null;
-            
-            if(cannoneer is Mobile)
+
+            if (cannoneer is Mobile)
                 shooter = (Mobile)cannoneer;
 
-            if(shooter != null && shooter.Player)
+            if (shooter != null && shooter.Player)
                 m_Hits -= Utility.RandomMinMax(0, 4);
 
             DoShootEffects();
@@ -319,8 +336,8 @@ namespace Server.Items
 
                 switch (m_AmmoType)
                 {
-                    case AmmoType.Empty: break;
-                    case AmmoType.Cannonball:
+                    case AmmunitionType.Empty: break;
+                    case AmmunitionType.Cannonball:
                         {
                             Point3D newPoint = pnt;
                             List<IEntity> list = new List<IEntity>();
@@ -367,7 +384,7 @@ namespace Server.Items
                             }
                         }
                         break;
-                    case AmmoType.Grapeshot:
+                    case AmmunitionType.Grapeshot:
                         {
                             Point3D newPoint = pnt;
                             List<Mobile> mobiles = new List<Mobile>();
@@ -414,7 +431,7 @@ namespace Server.Items
 
             if (galleon != null && info.RequiresSurface)
             {
-                int d = galleon is BritannianShip ? 3 : 2; 
+                int d = galleon is BritannianShip ? 3 : 2;
                 switch (galleon.Facing)
                 {
                     case Direction.North:
@@ -458,9 +475,9 @@ namespace Server.Items
             switch (Facing)
             {
                 case Direction.North: p.Y--; break;
-                case Direction.East:  p.X++; break;
+                case Direction.East: p.X++; break;
                 case Direction.South: p.Y++; break;
-                case Direction.West:  p.X--; break;
+                case Direction.West: p.X--; break;
             }
 
             Effects.SendLocationEffect(p, map, 14120, 15, 10);
@@ -510,7 +527,7 @@ namespace Server.Items
             CheckDirty();
             m_Charged = false;
             m_Primed = false;
-            m_AmmoType = AmmoType.Empty;
+            m_AmmoType = AmmunitionType.Empty;
             m_LoadedAmmo = null;
             InvalidateProperties();
         }
@@ -525,7 +542,7 @@ namespace Server.Items
 
             if (target != null && m_Galleon != null)
             {
-                int damage = (int)(Utility.RandomMinMax(ammoInfo.MinDamage, ammoInfo.MaxDamage) * m_Galleon.CannonDamageMod);
+                int damage = (int)(GetDamage(ammoInfo) * m_Galleon.CannonDamageMod);
                 damage /= 7;
                 target.OnTakenDamage(shooter, damage);
 
@@ -609,8 +626,6 @@ namespace Server.Items
 
                     eable.Free();
                 }
-
-                AmmoInfo.OnHit(shooter, pnt, this.Map, ammoInfo);
             }
         }
 
@@ -635,7 +650,7 @@ namespace Server.Items
                 {
                     toHit = mob;
 
-                    if (toHit is BaseSeaChampion && info.AmmoType != null && (info.AmmoType == typeof(LightCannonball) || info.AmmoType == typeof(HeavyCannonball)))
+                    if (toHit is BaseSeaChampion && info.AmmoType != AmmunitionType.Empty && info.AmmoType == AmmunitionType.Cannonball)
                         damage *= 100;
 
                     shooter.DoHarmful(toHit);
@@ -651,7 +666,7 @@ namespace Server.Items
                 if (toHit != null)
                 {
                     //only cannonballs will get the damage bonus
-                    if (toHit is BaseSeaChampion && info.AmmoType != null && (info.AmmoType == typeof(LightCannonball) || info.AmmoType == typeof(HeavyCannonball)))
+                    if (toHit is BaseSeaChampion && info.AmmoType != AmmunitionType.Empty && info.AmmoType == AmmunitionType.Cannonball)
                         damage *= 75;
 
                     shooter.DoHarmful(toHit);
@@ -660,8 +675,6 @@ namespace Server.Items
                     Effects.PlaySound(toHit.Location, toHit.Map, 0x207);
                 }
             }
-
-            AmmoInfo.OnHit(shooter, toHit, this.Map, info);
         }
 
         public List<Mobile> FindMobiles(Mobile shooter, Point3D pnt, Map map, bool player, bool pet, bool monsters, bool seacreature)
@@ -698,13 +711,13 @@ namespace Server.Items
 
         public void TryRepairCannon(Mobile from)
         {
-			Container pack = from.Backpack;
+            Container pack = from.Backpack;
             Container hold = m_Galleon.GalleonHold;
-			
-			if(pack == null)
-				return;
-			
-			double ingotsNeeded = 36 * (100 - Durability);
+
+            if (pack == null)
+                return;
+
+            double ingotsNeeded = 36 * (100 - Durability);
 
             ingotsNeeded -= ((double)from.Skills[SkillName.Blacksmith].Value / 200.0) * ingotsNeeded;
 
@@ -714,22 +727,22 @@ namespace Server.Items
             double ingots = ingots1 + ingots2;
             double ingotsUsed, percRepaired;
 
-			if(ingots < min)
+            if (ingots < min)
             {
-				from.SendLocalizedMessage(1116603, ((int)min).ToString()); //You need a minimum of ~1_METAL~ iron ingots to repair this cannon.
+                from.SendLocalizedMessage(1116603, ((int)min).ToString()); //You need a minimum of ~1_METAL~ iron ingots to repair this cannon.
                 return;
             }
-					
-			if(ingots >= ingotsNeeded)
-			{
-				ingotsUsed = ingotsNeeded;
-				percRepaired = 100;
-			}
-			else
-			{
-				ingotsUsed = ingots;
-				percRepaired = (ingots / ingotsNeeded) * 100;
-			}
+
+            if (ingots >= ingotsNeeded)
+            {
+                ingotsUsed = ingotsNeeded;
+                percRepaired = 100;
+            }
+            else
+            {
+                ingotsUsed = ingots;
+                percRepaired = (ingots / ingotsNeeded) * 100;
+            }
 
             double toConsume = 0;
             double temp = ingotsUsed;
@@ -747,14 +760,14 @@ namespace Server.Items
                 hold.ConsumeTotal(typeof(IronIngot), (int)toConsume);
             }
 
-			m_Hits += (int)((MaxHits - m_Hits) * (percRepaired / 100));
-			if(m_Hits > MaxHits) m_Hits = MaxHits;
-			InvalidateDamageState();
-					
-			percRepaired += Durability;
-			if(percRepaired > 100) percRepaired = 100;
-				
-			from.SendLocalizedMessage(1116605, String.Format("{0}\t{1}", ((int)temp).ToString(), ((int)percRepaired).ToString())); //You make repairs to the cannon using ~1_METAL~ ingots. The cannon is now ~2_DMGPCT~% repaired.
+            m_Hits += (int)((MaxHits - m_Hits) * (percRepaired / 100));
+            if (m_Hits > MaxHits) m_Hits = MaxHits;
+            InvalidateDamageState();
+
+            percRepaired += Durability;
+            if (percRepaired > 100) percRepaired = 100;
+
+            from.SendLocalizedMessage(1116605, String.Format("{0}\t{1}", ((int)temp).ToString(), ((int)percRepaired).ToString())); //You make repairs to the cannon using ~1_METAL~ ingots. The cannon is now ~2_DMGPCT~% repaired.
         }
 
         public bool VerifyAmmo(Type type)
@@ -833,14 +846,14 @@ namespace Server.Items
             if (m_Primed)
                 from.SendLocalizedMessage(1116019); //The cannon is already primed and ready to be fired.
 
-            else if (!m_Charged || m_AmmoType == AmmoType.Empty)
+            else if (!m_Charged || m_AmmoType == AmmunitionType.Empty)
                 from.SendLocalizedMessage(1116021); //The cannon needs to be charged and loaded before it can be primed.
 
-            else if (CheckForItem(typeof(Fusecord), from))
+            else if (CheckForItem(typeof(FuseCord), from))
             {
                 AddAction(from, 1149650); //Priming started
                 DoAreaMessage(1116038, 10, from); //~1_NAME~ begins priming the cannon with a cannon fuse.
-                Timer.DelayCall(ActionTime, new TimerStateCallback(Prime), new object[] { from, typeof(Fusecord) });
+                Timer.DelayCall(ActionTime, new TimerStateCallback(Prime), new object[] { from, typeof(FuseCord) });
                 return true;
             }
             else
@@ -854,7 +867,7 @@ namespace Server.Items
         public void DoLoad(Mobile from, Item ammo)
         {
             Timer.DelayCall(ActionTime, new TimerStateCallback(Load), new object[] { from, ammo });
-            int cliloc = ammo is ICannonAmmo && ((ICannonAmmo)ammo).AmmoType == AmmoType.Cannonball ? 1116036 : 1116037;
+            int cliloc = ammo is ICannonAmmo && ((ICannonAmmo)ammo).AmmoType == AmmunitionType.Cannonball ? 1116036 : 1116037;
             AddAction(from, 1149647); //loading started.
             DoAreaMessage(cliloc, 10, from);
         }
@@ -943,10 +956,10 @@ namespace Server.Items
             Item ammo = obj[1] as Item;
             int cliloc = 1116062;
 
-            if (ammo is ICannonAmmo && ((ICannonAmmo)ammo).AmmoType == AmmoType.Grapeshot)
+            if (ammo is ICannonAmmo && ((ICannonAmmo)ammo).AmmoType == AmmunitionType.Grapeshot)
                 cliloc = 1116063;
 
-            if (m_AmmoType != AmmoType.Empty)
+            if (m_AmmoType != AmmunitionType.Empty)
             {
                 AddAction(from, 1149663); //Must unload first.
                 from.SendLocalizedMessage(1149663);
@@ -964,7 +977,7 @@ namespace Server.Items
             }
             else
             {
-                cliloc = ammo is ICannonAmmo && ((ICannonAmmo)ammo).AmmoType == AmmoType.Cannonball ? 1116057 : 1116058;
+                cliloc = ammo is ICannonAmmo && ((ICannonAmmo)ammo).AmmoType == AmmunitionType.Cannonball ? 1116057 : 1116058;
                 AddAction(from, 1149648); //Loading canceled.
                 DoAreaMessage(cliloc, 10, from); //~1_NAME~ cancels the effort of loading the cannon and retrieves the cannonball.
             }
@@ -1003,7 +1016,7 @@ namespace Server.Items
 
         public void RemoveLoad(Mobile from)
         {
-            if (from == null || m_AmmoType == AmmoType.Empty)
+            if (from == null || m_AmmoType == AmmunitionType.Empty)
                 return;
 
             if (m_Charged)
@@ -1014,10 +1027,10 @@ namespace Server.Items
 
                 switch (m_AmmoType)
                 {
-                    case AmmoType.Cannonball:
+                    case AmmunitionType.Cannonball:
                         cliloc = 1116066; //~1_NAME~ carefully removes the cannonball from the cannon.
                         break;
-                    case AmmoType.Grapeshot:
+                    case AmmunitionType.Grapeshot:
                         cliloc = 1116067; //~1_NAME~ carefully removes the grapeshot from the cannon.
                         break;
                 }
@@ -1031,7 +1044,7 @@ namespace Server.Items
                         item.MoveToWorld(from.Location, from.Map);
                 }
 
-                m_AmmoType = AmmoType.Empty;
+                m_AmmoType = AmmunitionType.Empty;
                 AddAction(from, 1149685); //Ammunition removed.
                 m_LoadedAmmo = null;
 
@@ -1050,10 +1063,10 @@ namespace Server.Items
             if (from == null || !m_Primed)
                 return;
 
-            if (m_AmmoType != AmmoType.Empty)
+            if (m_AmmoType != AmmunitionType.Empty)
                 AddAction(from, 1149663); //Must unload first.
 
-            Item item = Loot.Construct(typeof(Fusecord));
+            Item item = Loot.Construct(typeof(FuseCord));
 
             if (item != null)
             {
@@ -1116,7 +1129,7 @@ namespace Server.Items
 
             list.Add(1116025, String.Format("#{0}", m_Cleaned ? 1116031 : 1116032)); //Cleaned: ~1_VALUE~
             list.Add(1116026, String.Format("#{0}", m_Charged ? 1116031 : 1116032)); //Charged: ~1_VALUE~
-            list.Add(1116027, m_AmmoType == AmmoType.Empty ? "None" : m_AmmoType.ToString()); //Ammo: ~1_VALUE~
+            list.Add(1116027, AmmoInfo.GetAmmoName(this).ToString()); //Ammo: ~1_VALUE~
             list.Add(1116028, String.Format("#{0}", m_Primed ? 1116031 : 1116032)); //Primed: ~1_VALUE~
             list.Add(1116580 + (int)m_DamageState);
         }
@@ -1127,16 +1140,16 @@ namespace Server.Items
 
             if (m_Galleon.GetSecurityLevel(from) >= SecurityLevel.Officer)
             {
-                if(!m_Cleaned)
+                if (!m_Cleaned)
                     list.Add(new CleanContext(this, from));
 
-                if(!m_Charged)
+                if (!m_Charged)
                     list.Add(new ChargeContext(this, from));
 
-                if(m_AmmoType == AmmoType.Empty)
+                if (m_AmmoType == AmmunitionType.Empty)
                     list.Add(new LoadContext(this, from));
 
-                if(!m_Primed)
+                if (!m_Primed)
                     list.Add(new PrimeContext(this, from));
 
                 list.Add(new DismantleContext(this, from));
@@ -1232,7 +1245,7 @@ namespace Server.Items
             {
                 if (m_Cannon != null)
                 {
-                    if (!m_Cannon.Cleaned || m_Cannon.Primed || m_Cannon.Charged || m_Cannon.AmmoType != AmmoType.Empty)
+                    if (!m_Cannon.Cleaned || m_Cannon.Primed || m_Cannon.Charged || m_Cannon.AmmoType != AmmunitionType.Empty)
                         m_From.SendLocalizedMessage(1116321); //The ship cannon must be cleaned and fully unloaded before it can be dismantled.
                     else if (m_Cannon.DamageState != DamageLevel.Pristine)
                         m_From.SendLocalizedMessage(1116322); //The ship cannon must be fully repaired before it can be dismantled.
@@ -1270,16 +1283,6 @@ namespace Server.Items
                 else
                 {
                     m_Cannon.TryRepairCannon(m_From);
-                    /*int toRepair = (int)m_Cannon.DamageState * 36;
-
-                    Container pack = m_From.Backpack;
-                    if (pack != null)
-                    {
-                        if (pack.ConsumeTotal(typeof(IronIngot), toRepair))
-                            m_Cannon.OnRepair(m_From, toRepair);
-                        else
-                            m_From.SendLocalizedMessage(1116603, toRepair.ToString()); //You need a minimum of ~1_METAL~ iron ingots to repair this cannon.
-                    }*/
                 }
             }
         }
@@ -1328,7 +1331,7 @@ namespace Server.Items
 
             writer.Write(m_Cleansliness);
             writer.Write(m_LoadedAmmo != null);
-            if(m_LoadedAmmo != null)
+            if (m_LoadedAmmo != null)
                 writer.Write(m_LoadedAmmo.Name);
             writer.Write(m_Cleaned);
             writer.Write(m_Charged);
@@ -1366,13 +1369,54 @@ namespace Server.Items
             m_Primed = reader.ReadBool();
             m_Galleon = reader.ReadItem() as BaseGalleon;
             m_Hits = reader.ReadInt();
-            m_AmmoType = (AmmoType)reader.ReadInt();
+            m_AmmoType = (AmmunitionType)reader.ReadInt();
             m_Position = (ShipPosition)reader.ReadInt();
 
-            if (m_LoadedAmmo == null && m_AmmoType != AmmoType.Empty)
-                m_AmmoType = AmmoType.Empty;
+            if (m_LoadedAmmo == null && m_AmmoType != AmmunitionType.Empty)
+                m_AmmoType = AmmunitionType.Empty;
 
             InvalidateDamageState();
+
+            if (Core.EJ)
+            {
+                Timer.DelayCall(() => Replace());
+            }
+        }
+
+        private void Replace()
+        {
+            if (m_Galleon != null && !m_Galleon.Deleted)
+            {
+                BaseShipCannon newCannon = null;
+                var loc = Location;
+                Delete();
+
+                if (this is HeavyShipCannon)
+                {
+                    newCannon = new Carronade(m_Galleon);
+                }
+                else if (this is LightShipCannon)
+                {
+                    newCannon = new Culverin(m_Galleon);
+                }
+
+                if (newCannon != null)
+                {
+                    if (!m_Galleon.TryAddCannon(null, loc, newCannon, null))
+                    {
+                        var deed = GetDeed;
+
+                        if (deed != null)
+                        {
+                            m_Galleon.GalleonHold.DropItem(deed);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Delete();
+            }
         }
     }
 
@@ -1383,9 +1427,7 @@ namespace Server.Items
         public override ShipCannonDeed GetDeed { get { return new LightShipCannonDeed(); } }
 
         public override Type[] LoadTypes { get { return new Type[] {    typeof(LightCannonball),        typeof(LightGrapeshot),
-                                                                        typeof(LightFlameCannonball),   typeof(LightFrostCannonball),
-                                                                        /*typeof(LightScatterShot),       typeof(LightFragShot),
-                                                                        typeof(LightHotShot),*/    }; } }
+                                                                        typeof(LightFlameCannonball),   typeof(LightFrostCannonball) }; } }
 
         public LightShipCannon(BaseGalleon g) : base(g)
         {
@@ -1393,7 +1435,7 @@ namespace Server.Items
 
         public override bool TryLoadAmmo(Item ammo)
         {
-            return ammo is LightCannonball || ammo is LightGrapeshot /*|| ammo is LightScatterShot || ammo is LightFragShot || ammo is LightHotShot*/;
+            return ammo is LightCannonball || ammo is LightGrapeshot;
         }
 
         public LightShipCannon(Serial serial) : base(serial) { }
@@ -1416,12 +1458,10 @@ namespace Server.Items
         public override int Range { get { return 10; } }
         public override TimeSpan ActionTime { get { return TimeSpan.FromSeconds(2.0); } }
 
-        public override ShipCannonDeed GetDeed { get { return new HeavyShipCannonDeed(); } }
+        public override int LabelNumber { get { return 0; } }
 
         public override Type[] LoadTypes { get { return new Type[] {    typeof(HeavyCannonball),        typeof(HeavyGrapeshot), 
-                                                                        typeof(HeavyFrostCannonball),   typeof(HeavyFlameCannonball),
-                                                                        /*typeof(HeavyScatterShot),       typeof(HeavyFragShot),
-                                                                        typeof(HeavyHotShot)*/     }; } }
+                                                                        typeof(HeavyFrostCannonball),   typeof(HeavyFlameCannonball) }; } }
 
         public HeavyShipCannon(BaseGalleon g) : base(g)
         {
@@ -1429,7 +1469,7 @@ namespace Server.Items
 
         public override bool TryLoadAmmo(Item ammo)
         {
-            return ammo is HeavyCannonball || ammo is HeavyGrapeshot /*|| ammo is HeavyScatterShot || ammo is HeavyFragShot || ammo is HeavyHotShot*/;
+            return ammo is HeavyCannonball || ammo is HeavyGrapeshot;
         }
 
         public HeavyShipCannon(Serial serial) : base(serial) { }
