@@ -871,10 +871,7 @@ namespace Server.Items
                     list.Add(mob);
 
                 if (seacreature && mob is BaseSeaChampion)
-                {
-                    Console.WriteLine("Adding: {0}", mob);
                     list.Add(mob);
-                }
             }
 
             eable.Free();
