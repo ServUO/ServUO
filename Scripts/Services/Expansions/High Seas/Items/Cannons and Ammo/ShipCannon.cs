@@ -534,7 +534,7 @@ namespace Server.Items
 
                                 if (toHit is Mobile)
                                 {
-                                    Timer.DelayCall(delay, new TimerStateCallback(OnMobileHit), new object[] { list, newPoint, ammo, shooter });
+                                    Timer.DelayCall(delay, new TimerStateCallback(OnMobileHit), new object[] { (Mobile)toHit, newPoint, ammo, shooter });
                                     hit = true;
                                 }
                                 else if (toHit is BaseGalleon)
@@ -797,7 +797,7 @@ namespace Server.Items
         public virtual void OnMobileHit(object obj)
         {
             object[] objects = (object[])obj;
-            var mobsToHit = objects[0] as List<Mobile>;
+            var toHit = objects[0] as Mobile;
             var pnt = (Point3D)objects[1];
             var info = objects[2] as AmmoInfo;
             var shooter = objects[3] as Mobile;
@@ -807,38 +807,16 @@ namespace Server.Items
             if (info == null)
                 return;
 
-            Mobile toHit = null;
-
-            if (!info.SingleTarget)
+            if (toHit != null)
             {
-                foreach (Mobile mob in mobsToHit)
-                {
-                    toHit = mob;
+                //only cannonballs will get the damage bonus
+                //if (toHit is BaseSeaChampion && info.AmmoType != AmmunitionType.Empty && info.AmmoType == AmmunitionType.Cannonball)
+                 //   damage *= 75;
 
-                    if (toHit is BaseSeaChampion && info.AmmoType != AmmunitionType.Empty && info.AmmoType == AmmunitionType.Cannonball)
-                        damage *= 100;
-
-                    shooter.DoHarmful(toHit);
-                    AOS.Damage(toHit, shooter, damage, info.PhysicalDamage, info.FireDamage, info.ColdDamage, info.PoisonDamage, info.EnergyDamage);
-                    Effects.SendLocationEffect(toHit.Location, toHit.Map, Utility.RandomBool() ? 14000 : 14013, 15, 10);
-                    Effects.PlaySound(toHit.Location, toHit.Map, 0x207);
-                }
-            }
-            else
-            {
-                toHit = mobsToHit[Utility.Random(mobsToHit.Count)];
-
-                if (toHit != null)
-                {
-                    //only cannonballs will get the damage bonus
-                    if (toHit is BaseSeaChampion && info.AmmoType != AmmunitionType.Empty && info.AmmoType == AmmunitionType.Cannonball)
-                        damage *= 75;
-
-                    shooter.DoHarmful(toHit);
-                    AOS.Damage(toHit, shooter, damage, info.PhysicalDamage, info.FireDamage, info.ColdDamage, info.PoisonDamage, info.EnergyDamage);
-                    Effects.SendLocationEffect(toHit.Location, toHit.Map, Utility.RandomBool() ? 14000 : 14013, 15, 10);
-                    Effects.PlaySound(toHit.Location, toHit.Map, 0x207);
-                }
+                shooter.DoHarmful(toHit);
+                AOS.Damage(toHit, shooter, damage, info.PhysicalDamage, info.FireDamage, info.ColdDamage, info.PoisonDamage, info.EnergyDamage);
+                Effects.SendLocationEffect(toHit.Location, toHit.Map, Utility.RandomBool() ? 14000 : 14013, 15, 10);
+                Effects.PlaySound(toHit.Location, toHit.Map, 0x207);
             }
         }
 
@@ -893,7 +871,10 @@ namespace Server.Items
                     list.Add(mob);
 
                 if (seacreature && mob is BaseSeaChampion)
+                {
+                    Console.WriteLine("Adding: {0}", mob);
                     list.Add(mob);
+                }
             }
 
             eable.Free();
