@@ -124,7 +124,14 @@ namespace Server.Engines.CityLoyalty
         {
             if (system != null)
             {
-                system.AddToTreasury(null, cargo.GetAwardAmount() * 100);
+                if (cargo.City == City)
+                {
+                    system.AddToTreasury(null, cargo.GetAwardAmount() * 1000);
+                }
+                else;
+                {
+                    system.AddToTreasury(null, 100);
+                }
             }
         }
 		
