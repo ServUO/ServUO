@@ -557,7 +557,7 @@ namespace Server.Items
 
         public override void AddNameProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
+            base.AddNameProperties(list);
 
             m_AosSkillBonuses.GetProperties(list);
 
