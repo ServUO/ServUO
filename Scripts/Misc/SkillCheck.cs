@@ -481,14 +481,7 @@ namespace Server.Misc
 
             if (from is BaseCreature && ((BaseCreature)from).Controlled)
             {
-                if (PetTrainingHelper.Enabled)
-                {
-                    chance = 0.0;
-                }
-                else
-                {
-                    chance = _PetChanceToGainStats / 100.0;
-                }
+                chance = _PetChanceToGainStats / 100.0;
             }
             else
             {
