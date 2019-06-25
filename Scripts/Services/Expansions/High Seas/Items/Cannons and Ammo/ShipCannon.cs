@@ -1125,7 +1125,9 @@ namespace Server.Items
                 Galleon.RemoveCannon(this);
             }
 
-            foreach (var pm in Viewing.OfType<PlayerMobile>())
+            var list = new List<PlayerMobile>(Viewing.OfType<PlayerMobile>());
+            
+            foreach (var pm in list)
             {
                 var gump = BaseGump.GetGump<ShipCannonGump>(pm, g => g.Cannon == this);
 
@@ -1134,7 +1136,8 @@ namespace Server.Items
                     gump.Close();
                 }
             }
-
+            
+            ColUtility.Free(list);
             base.Delete();
         }
 
