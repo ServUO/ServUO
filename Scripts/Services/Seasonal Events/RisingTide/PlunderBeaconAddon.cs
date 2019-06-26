@@ -213,7 +213,7 @@ namespace Server.Items
             }
             else if (CannonsOperational && NextShoot < DateTime.UtcNow)
             {
-                foreach (var cannon in Cannons.Where(c => c.CanFireUnmanned || (c.Operator != null && !c.Operator.Deleted && c.Operator.Alive)))
+                foreach (var cannon in Cannons.Where(c => c != null && !c.Deleted && (c.CanFireUnmanned || (c.Operator != null && !c.Operator.Deleted && c.Operator.Alive))))
                 {
                     cannon.Scan(true);
                 }
