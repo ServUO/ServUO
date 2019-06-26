@@ -1938,7 +1938,7 @@ namespace Server.SkillHandlers
 
         public static int GetIntensityForAttribute(Item item, object attr, int checkID, int value)
         {
-            return GetIntensityForAttribute(item, ItemPropertyInfo.GetID(attr), checkID, value, true);
+            return GetIntensityForAttribute(item, attr, checkID, value, true);
         }
 
         public static int GetIntensityForAttribute(Item item, object attr, int checkID, int value, bool imbuingWeight)

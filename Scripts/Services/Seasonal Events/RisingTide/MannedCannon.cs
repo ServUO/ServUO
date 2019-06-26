@@ -20,12 +20,12 @@ namespace Server.Items
         public Direction Facing { get { return GetFacing(); } }
 
         public DateTime NextScan { get; set; }
+        public bool CanFireUnmanned { get; set; }
 
         public abstract CannonPower Power { get; }
         public abstract int Range { get; }
 
         public virtual AmmunitionType AmmoType { get { return AmmunitionType.Cannonball; } }
-        public virtual bool CanFireUnmanned { get { return true; } }
         public virtual int LateralOffset { get { return 1; } }
 
         public MannedCannon(Mobile opera, Direction facing)
@@ -166,7 +166,7 @@ namespace Server.Items
 
                                 BaseGalleon g = FindValidBoatTarget(newPoint, map, ammo);
 
-                                if (g != null && !g.Scuttled && g.Owner is PlayerMobile)
+                                if (g != null && g.DamageTaken < DamageLevel.Severely && g.Owner is PlayerMobile)
                                 {
                                     var target = new Target();
                                     target.Entity = g;
@@ -211,15 +211,10 @@ namespace Server.Items
                             if (mobiles.Count > 0)
                             {
                                 return mobiles.ToArray();
-                                //Timer.DelayCall(delay, new TimerStateCallback(OnMobileHit), new object[] { mobiles, newPoint, ammo });
-                                //hit = true;
                             }
                         }
                         break;
                 }
-
-                //if (hit && ammo.SingleTarget)
-                //    break;
             }
 
             return null;
@@ -413,33 +408,6 @@ namespace Server.Items
                 Effects.SendLocationEffect(toHit.Location, toHit.Map, Utility.RandomBool() ? 14000 : 14013, 15, 10);
                 Effects.PlaySound(toHit.Location, toHit.Map, 0x207);
             }
-
-            /*Mobile toHit = null;
-
-            if (!info.SingleTarget)
-            {
-                foreach (Mobile mob in mobsToHit)
-                {
-                    toHit = mob;
-
-                    Operator.DoHarmful(toHit);
-                    AOS.Damage(toHit, Operator, damage, info.PhysicalDamage, info.FireDamage, info.ColdDamage, info.PoisonDamage, info.EnergyDamage);
-                    Effects.SendLocationEffect(toHit.Location, toHit.Map, Utility.RandomBool() ? 14000 : 14013, 15, 10);
-                    Effects.PlaySound(toHit.Location, toHit.Map, 0x207);
-                }
-            }
-            else
-            {
-                toHit = mobsToHit[Utility.Random(mobsToHit.Count)];
-
-                if (toHit != null)
-                {
-                    Operator.DoHarmful(toHit);
-                    AOS.Damage(toHit, Operator, damage, info.PhysicalDamage, info.FireDamage, info.ColdDamage, info.PoisonDamage, info.EnergyDamage);
-                    Effects.SendLocationEffect(toHit.Location, toHit.Map, Utility.RandomBool() ? 14000 : 14013, 15, 10);
-                    Effects.PlaySound(toHit.Location, toHit.Map, 0x207);
-                }
-            }*/
         }
 
         public void DoShootEffects()
@@ -466,13 +434,24 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
+
+            writer.Write(Operator);
+            writer.Write(CanFireUnmanned);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    Operator = reader.ReadMobile();
+                    CanFireUnmanned = reader.ReadBool();
+                    break;
+            }
         }
     }
 

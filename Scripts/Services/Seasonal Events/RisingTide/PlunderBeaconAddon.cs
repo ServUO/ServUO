@@ -88,6 +88,11 @@ namespace Server.Items
                     cannon = new MannedBlundercannon(mob, d); break;
             }
 
+            if (mob == null)
+            {
+                cannon.CanFireUnmanned = true;
+            }
+
             cannon.MoveToWorld(new Point3D(X + xOffset, Y + yOffset, Z + zOffset), Map);
             Cannons.Add(cannon);
 
@@ -181,6 +186,23 @@ namespace Server.Items
             }
         }
 
+        public override void OnSectorActivate()
+        {
+            if (Timer == null)
+            {
+                Timer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), OnTick);
+            }
+        }
+
+        public override void OnSectorDeactivate()
+        {
+            if (Timer != null && SpawnCount() >= MaxSpawn)
+            {
+                Timer.Stop();
+                Timer = null;
+            }
+        }
+
         public void OnTick()
         {
             var map = Map;
@@ -191,7 +213,7 @@ namespace Server.Items
             }
             else if (CannonsOperational && NextShoot < DateTime.UtcNow)
             {
-                foreach (var cannon in Cannons)
+                foreach (var cannon in Cannons.Where(c => c != null && !c.Deleted && (c.CanFireUnmanned || (c.Operator != null && !c.Operator.Deleted && c.Operator.Alive))))
                 {
                     cannon.Scan(true);
                 }
@@ -201,7 +223,7 @@ namespace Server.Items
 
             if (NextSpawn < DateTime.UtcNow)
             {
-                if (Spawn.Where(s => s.Alive).Count() < MaxSpawn)
+                if (SpawnCount() < MaxSpawn)
                 {
                     Point3D p = Location;
                     var range = 15;
@@ -237,6 +259,11 @@ namespace Server.Items
                     creature.Delete();
                 }
             }
+        }
+
+        private int SpawnCount()
+        {
+            return Spawn.Where(s => s.Alive).Count();
         }
 
         private Type[] _SpawnTypes =

@@ -159,7 +159,7 @@ namespace Server.Multis
         public virtual int CaptiveOffset { get { return 0; } }
         public virtual double CannonDamageMod { get { return 1.0; } }
         public virtual int MaxHits { get { return 100; } }
-        public virtual double ScuttleLevel { get { return 33.0; } }
+        public virtual double ScuttleLevel { get { return 25.0; } }
         public virtual int RuneOffset { get { return 0; } }
         public virtual int ZSurface { get { return 0; } }
 
@@ -645,14 +645,17 @@ namespace Server.Multis
                         }
                     }
 
-                    TryAddCannon(captain, item.Location, cannon, null);
+                    if (!TryAddCannon(captain, item.Location, cannon, null))
+                    {
+                        cannon.Delete();
+                    }
                 }
             }
         }
 
-        public bool TryAddCannon(Mobile from, Point3D pnt, ShipCannonDeed deed)
+        public bool TryAddCannon(Mobile from, Point3D pnt, ShipCannonDeed deed, bool force = false)
         {
-            if (!IsNearLandOrDocks(this))
+            if (!IsNearLandOrDocks(this) && !force)
             {
                 if (from != null)
                 {

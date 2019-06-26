@@ -499,26 +499,6 @@ namespace Server.Engines.Quests
                     hold.DropItem(steaks);
                 }
 
-                /*if (0.10 > Utility.RandomDouble())
-                {
-                    Item item = null;
-                    switch (Utility.Random(6))
-                    {
-                        case 0: item = new LightScatterShot(); break;
-                        case 1: item = new HeavyScatterShot(); break;
-                        case 2: item = new LightFragShot(); break;
-                        case 3: item = new HeavyFragShot(); break;
-                        case 4: item = new LightHotShot(); break;
-                        case 5: item = new HeavyHotShot(); break;
-                    }
-
-                    if (item != null)
-                    {
-                        item.Amount = Utility.RandomMinMax(2, 10);
-                        hold.DropItem(item);
-                    }
-                }*/
-
                 hold.DropItem(new Gold(Utility.RandomMinMax(5000, 25000)));
 
                 if (0.50 > Utility.RandomDouble())
@@ -663,10 +643,32 @@ namespace Server.Engines.Quests
                 //Rares
                 if (0.8 > Utility.RandomDouble())
                 {
+                    Item deed;
+
                     if (Utility.RandomBool())
-                        hold.DropItem(new HeavyShipCannonDeed());
+                    {
+                        if (Core.EJ)
+                        {
+                            deed = new CarronadeDeed();
+                        }
+                        else
+                        {
+                            deed = new HeavyShipCannonDeed();
+                        }
+                    }
                     else
-                        hold.DropItem(new LightShipCannonDeed());
+                    {
+                        if (Core.EJ)
+                        {
+                            deed = new CulverinDeed();
+                        }
+                        else
+                        {
+                            deed = new LightShipCannonDeed();
+                        }
+                    }
+
+                    hold.DropItem(deed);
                 }
 
                 if (0.025 > Utility.RandomDouble())
@@ -678,6 +680,23 @@ namespace Server.Engines.Quests
                 }
 
                 RefinementComponent.Roll(hold, 3, 0.25);
+
+                if (Server.Engines.Points.PointsSystem.RisingTide.Enabled)
+                {
+                    if (0.25 > Utility.RandomDouble())
+                    {
+                        hold.DropItem(new MaritimeCargo());
+
+                        if (0.1 > Utility.RandomDouble())
+                        {
+                            hold.DropItem(new MaritimeCargo());
+                        }
+                    }
+                    else if (0.25 > Utility.RandomDouble())
+                    {
+                        hold.DropItem(new MaritimeCargo());
+                    }
+                }
             }
         }
 

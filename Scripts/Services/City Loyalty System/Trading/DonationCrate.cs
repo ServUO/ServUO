@@ -128,7 +128,7 @@ namespace Server.Engines.CityLoyalty
                 {
                     system.AddToTreasury(null, cargo.GetAwardAmount() * 1000);
                 }
-                else;
+                else
                 {
                     system.AddToTreasury(null, 100);
                 }

@@ -287,7 +287,6 @@ namespace Server.Engines.Craft
 
                 index = AddCraft(typeof(FuseCord), 1116351, 1116305, 55.0, 105.0, typeof(DarkYarn), 1023615, 1, 1044253);
                 AddRes(index, typeof(BlackPowder), 1095826, 1, 1044253);
-                AddRes(index, typeof(DarkYarn), 1023613, 1, 1044253);
                 AddRes(index, typeof(Potash), 1116319, 1, 1044253);
                 SetNeedWater(index, true);
             }
