@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Server;
 using Server.Items;
@@ -37,13 +38,40 @@ namespace Server.Engines.Points
                 var bc = victim as BaseCreature;
                 var beacon = GetPlunderBeaconAt(bc);
 
-                if (beacon != null && CargoChance > Utility.RandomDouble())
+                if (beacon != null)
                 {
-                    damager.AddToBackpack(new MaritimeCargo());
-                    damager.SendLocalizedMessage(1158907); // You recover maritime trade cargo!
+                    if (CargoChance > Utility.RandomDouble())
+                    {
+                        damager.AddToBackpack(new MaritimeCargo());
+                        damager.SendLocalizedMessage(1158907); // You recover maritime trade cargo!
+                    }
+                }
+                else if (CargoDropsTypes.Any(type => type == bc.GetType()))
+                {
+                    double chance = 0.1;
+
+                    if (bc is BaseShipCaptain)
+                    {
+                        chance = 0.33;
+                    }
+
+                    if (chance > Utility.RandomDouble())
+                    {
+                        var corpse = victim.Corpse;
+
+                        if (corpse != null)
+                        {
+                            corpse.DropItem(new MaritimeCargo());
+                        }
+                    }
                 }
             }
         }
+
+        private Type[] CargoDropsTypes =
+        {
+            typeof(PirateCaptain), typeof(MerchantCaptain), typeof(PirateCrew), typeof(MerchantCrew)
+        };
 
         public static PlunderBeaconAddon GetPlunderBeaconAt(IEntity e)
         {

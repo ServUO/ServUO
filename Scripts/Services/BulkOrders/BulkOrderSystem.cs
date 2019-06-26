@@ -27,7 +27,8 @@ namespace Server.Engines.BulkOrders
 
     public class BulkOrderSystem
     {
-        public static readonly int MaxCachedDeeds = 3;
+        // Logic (EA says 3 cached): 2 cached, 1 in the pipe if the last bod > 6 hours = 3
+        public static readonly int MaxCachedDeeds = 2;
         public static readonly int Delay = 6;
 
         public static bool NewSystemEnabled = Core.TOL;
@@ -174,20 +175,17 @@ namespace Server.Engines.BulkOrders
 
                 if (entry != null)
                 {
-                    if (entry.CachedDeeds > 0)
+                    entry.CheckCache();
+
+                    if (entry.LastBulkOrder + TimeSpan.FromHours(Delay) < DateTime.UtcNow)
                     {
-                        entry.CachedDeeds--;
+                        entry.LastBulkOrder = DateTime.UtcNow;
 
                         return true;
                     }
-                    else if (entry.LastBulkOrder + TimeSpan.FromHours(Delay) < DateTime.UtcNow)
+                    else if (entry.CachedDeeds > 0)
                     {
-                        if (entry.LastBulkOrder == DateTime.MinValue)
-                        {
-                            entry.LastBulkOrder = DateTime.UtcNow - TimeSpan.FromHours(Delay);
-                        }
-
-                        entry.LastBulkOrder = entry.LastBulkOrder + TimeSpan.FromHours(Delay);
+                        entry.CachedDeeds--;
 
                         return true;
                     }
@@ -651,7 +649,7 @@ namespace Server.Engines.BulkOrders
         {
             foreach (var kvp in Instance.BODPlayerData)
             {
-                kvp.Value.CheckNextBulkOrder();
+                kvp.Value.CheckCache();
             }
         }
 
@@ -805,11 +803,11 @@ namespace Server.Engines.BulkOrders
             Entries[BODType.Inscription] = new BODEntry();
         }
 
-        public void CheckNextBulkOrder()
+        public void CheckCache()
         {
             foreach (var kvp in Entries)
             {
-                kvp.Value.CheckNextBulkOrder();
+                kvp.Value.CheckCache();
             }
         }
     }
@@ -865,36 +863,22 @@ namespace Server.Engines.BulkOrders
             _CachedDeeds = BulkOrderSystem.MaxCachedDeeds;
         }
 
-        public void CheckNextBulkOrder()
+        public void CheckCache()
         {
             if (_CachedDeeds >= BulkOrderSystem.MaxCachedDeeds)
             {
-                // cache is full, resets
-                if (LastBulkOrder + TimeSpan.FromHours(BulkOrderSystem.Delay) < DateTime.UtcNow)
-                {
-                    LastBulkOrder = DateTime.UtcNow;
-                }
-
                 return;
             }
 
-            int deeds = Math.Min(BulkOrderSystem.MaxCachedDeeds, (int)((DateTime.UtcNow - LastBulkOrder).TotalHours / (double)BulkOrderSystem.Delay));
-
-            if (deeds > 0)
+            if (LastBulkOrder == DateTime.MinValue)
             {
-                // cache is not full, gives proper amount and resets
-                for (int i = 0; i < deeds; i++)
-                {
-                    CachedDeeds++;
-
-                    // this auto-corrects, in the event a bone-head shard owner sets it to min value, or on new server
-                    if (LastBulkOrder == DateTime.MinValue)
-                    {
-                        LastBulkOrder = DateTime.UtcNow - TimeSpan.FromHours(BulkOrderSystem.Delay * deeds);
-                    }
-
-                    LastBulkOrder = LastBulkOrder + TimeSpan.FromHours(BulkOrderSystem.Delay);
-                }
+                CachedDeeds = BulkOrderSystem.MaxCachedDeeds;
+                LastBulkOrder = DateTime.UtcNow - TimeSpan.FromHours(BulkOrderSystem.Delay);
+            }
+            else if (LastBulkOrder + TimeSpan.FromHours(BulkOrderSystem.Delay) < DateTime.UtcNow)
+            {
+                CachedDeeds++;
+                LastBulkOrder = LastBulkOrder + TimeSpan.FromHours(BulkOrderSystem.Delay);
             }
         }
 
@@ -906,6 +890,7 @@ namespace Server.Engines.BulkOrders
             {
                 switch (version)
                 {
+                    case 1:
                     case 0:
                         _CachedDeeds = reader.ReadInt();
                         LastBulkOrder = reader.ReadDateTime();
@@ -918,11 +903,16 @@ namespace Server.Engines.BulkOrders
             {
                 _NextBulkOrder = reader.ReadDateTime();
             }
+
+            if (version == 0 && _CachedDeeds > BulkOrderSystem.MaxCachedDeeds)
+            {
+                _CachedDeeds = BulkOrderSystem.MaxCachedDeeds;
+            }
         }
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(0);
+            writer.Write(1);
 
             if (BulkOrderSystem.NewSystemEnabled)
             {
