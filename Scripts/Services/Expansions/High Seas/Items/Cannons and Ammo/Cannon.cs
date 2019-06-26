@@ -1410,6 +1410,8 @@ namespace Server.Items
                         {
                             m_Galleon.GalleonHold.DropItem(deed);
                         }
+
+                        newCannon.Delete();
                     }
                 }
             }
