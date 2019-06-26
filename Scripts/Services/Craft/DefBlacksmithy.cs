@@ -865,7 +865,7 @@ namespace Server.Engines.Craft
 
                 if (Core.EJ)
                 {
-                    index = AddCraft(typeof(Grapeshot), 1116354, 1116030, 0.0, 15.0, 70.0, typeof(IronIngot), 1044036, 12, 1044037);
+                    index = AddCraft(typeof(Grapeshot), 1116354, 1116030, 15.0, 70.0, typeof(IronIngot), 1044036, 12, 1044037);
                     AddRes(index, typeof(Cloth), 1044286, 2, 1044287);
                     SetUseAllRes(index, true);
                 }
