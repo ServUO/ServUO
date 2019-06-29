@@ -182,6 +182,8 @@ namespace Server.Engines.Harvest
                         if (item is BaseGranite)
                             feluccaAmount = 3;
 
+                        Caddellite.OnHarvest(from, tool, this, item);
+
                         //The whole harvest system is kludgy and I'm sure this is just adding to it.
                         if (item.Stackable)
                         {
@@ -227,10 +229,11 @@ namespace Server.Engines.Harvest
 							if (bonus.RequiredMap == null || bonus.RequiredMap == from.Map)
 							{
 							    bonusItem = Construct(bonus.Type, from, tool);
+                                Caddellite.OnHarvest(from, tool, this, bonusItem);
 
-								if (Give(from, bonusItem, true))	//Bonuses always allow placing at feet, even if pack is full irregrdless of def
+                                if (Give(from, bonusItem, true))	//Bonuses always allow placing at feet, even if pack is full irregrdless of def
 								{
-									bonus.SendSuccessTo(from);
+                                    bonus.SendSuccessTo(from);
 								}
 								else
 								{
