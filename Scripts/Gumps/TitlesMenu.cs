@@ -560,7 +560,7 @@ namespace Server.Gumps
                     {
                         AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
 
-                        User.OverheadTitle = TitleSelected == 999999 ? MasteryInfo.GetTitle(User) : "the " + User.Skills[(SkillName)TitleSelected].Info.Title; ;
+                        User.OverheadTitle = TitleSelected == 999999 ? MasteryInfo.GetTitle(User) : "the " + User.Skills[(SkillName)TitleSelected].Info.Title;
 
                         Refresh(false);
                     });

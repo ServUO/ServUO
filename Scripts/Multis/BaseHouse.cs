@@ -1326,6 +1326,12 @@ namespace Server.Multis
             if (from.AccessLevel >= AccessLevel.GameMaster || IsOwner(from) || !IsLockedDown(item))
                 return true;
 
+            bool lockedDown = m_LockDowns.ContainsKey(item);
+
+            // lockdown owner can access it
+            if (lockedDown && CheckLockdownOwnership(from, item))
+                return true;
+
             // ISecurable will set its own rules
             if (item is ISecurable)
                 return HasSecureAccess(from, ((ISecurable)item).Level);
@@ -1334,7 +1340,7 @@ namespace Server.Multis
                 return true;
 
             // locked down
-            if (m_LockDowns.ContainsKey(item))
+            if (lockedDown)
             {
                 // non friend, but item is on friends only list
                 if (!IsFriend(from) && IsInList(item, _AccessibleToFriends))
@@ -2495,7 +2501,7 @@ namespace Server.Multis
             if(IsOwner(m))
                 return true;
 
-            if(item is Container || item.Parent is Container)
+            if(item is BaseContainer || item.Parent is BaseContainer)
             {
                 Item check = item.Parent is BaseContainer ? (Item)item.Parent : item;
 
@@ -5152,7 +5158,7 @@ namespace Server.Multis
             if (house == null || !house.IsAosRules)
                 return null;
 
-            bool owner = house.IsOwner(from);
+            bool owner = house.IsOwner(from) || (house.IsLockedDown(item) && house.CheckLockdownOwnership(from, item));
             ISecurable sec = null;
 
             if (item is ISecurable)

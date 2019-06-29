@@ -43,6 +43,8 @@ namespace Server.Gumps
                     m.MoveToWorld(from.Location, from.Map);
                     m_Item.Delete();
 
+                    PetTrainingHelper.GetAbilityProfile(m, true).OnTame();
+
                     Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
                     {
                         m.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502799, from.NetState); // It seems to accept you as master.
