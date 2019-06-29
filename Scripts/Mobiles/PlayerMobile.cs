@@ -5755,33 +5755,52 @@ namespace Server.Mobiles
             BaseGuild guild = Guild;
             bool vvv = Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(this) && (ViceVsVirtueSystem.EnhancedRules || this.Map == Faction.Facet);
 
-            if (!vvv && m_OverheadTitle != null)
+            if (m_OverheadTitle != null)
             {
-                int loc = Utility.ToInt32(m_OverheadTitle);
-
-                if (loc > 0)
+                if (vvv)
                 {
-                    if (CityLoyaltySystem.ApplyCityTitle(this, list, prefix, loc))
-                        return;
+                    suffix = "[VvV]";
                 }
-                else if (suffix.Length > 0)
-                    suffix = String.Format("{0} {1}", suffix, m_OverheadTitle);
                 else
-                    suffix = String.Format("{0}", m_OverheadTitle);
+                {
+                    int loc = Utility.ToInt32(m_OverheadTitle);
+
+                    if (loc > 0)
+                    {
+                        if (CityLoyaltySystem.ApplyCityTitle(this, list, prefix, loc))
+                            return;
+                    }
+                    else if (suffix.Length > 0)
+                    {
+                        suffix = String.Format("{0} {1}", suffix, m_OverheadTitle);
+                    }
+                    else
+                    {
+                        suffix = String.Format("{0}", m_OverheadTitle);
+                    }
+                }
             }
-            else if (vvv || (guild != null && DisplayGuildAbbr))
+            else if (DisplayGuildAbbr)
             {
                 if (vvv)
                 {
                     if (guild != null && DisplayGuildAbbr)
+                    {
                         suffix = String.Format("[{0}] [VvV]", Utility.FixHtml(guild.Abbreviation));
+                    }
                     else
+                    {
                         suffix = "[VvV]";
+                    }
                 }
                 else if (suffix.Length > 0)
+                {
                     suffix = String.Format("{0} [{1}]", suffix, Utility.FixHtml(guild.Abbreviation));
+                }
                 else
+                {
                     suffix = String.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));
+                }
             }
 
             suffix = ApplyNameSuffix(suffix);
