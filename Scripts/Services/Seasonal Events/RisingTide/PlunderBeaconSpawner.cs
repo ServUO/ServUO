@@ -96,7 +96,7 @@ namespace Server.Items
             if (Spawner == null)
             {
                 Spawner = this;
-                Timer = Timer.DelayCall(TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10), TickTock);
+                Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), TickTock);
 
                 PlunderBeacons = new Dictionary<PlunderZone, List<PlunderBeaconAddon>>();
                 PlunderBeacons[PlunderZone.Tram] = new List<PlunderBeaconAddon>();

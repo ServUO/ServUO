@@ -140,7 +140,7 @@ namespace Server.Engines.Auction
             if (Auction.AuctionItem != null)
             {
                 Item i = Auction.AuctionItem;
-                AddImageTiledButton(102, 212, 0x918, 0x918, 0x0, GumpButtonType.Page, 0, i.ItemID, 0x0, 23, 5);
+                AddImageTiledButton(102, 212, 0x918, 0x918, 0x0, GumpButtonType.Page, 0, i.ItemID, i.Hue, 23, 5);
                 AddItemProperty(i.Serial);
             }
 
@@ -383,19 +383,22 @@ namespace Server.Engines.Auction
                     }
                 case 2:
                     {
-                        TextRelay relay = info.GetTextEntry(1);
-                        string str = null;
-
-                        if (relay != null)
-                            str = relay.Text;
-
-                        if (str != null || Guilds.BaseGuildGump.CheckProfanity(str, 140))
+                        if (Auction.CheckModifyAuction(User))
                         {
-                            Auction.Description = Utility.FixHtml(str.Trim());
-                        }
-                        else
-                        {
-                            from.SendLocalizedMessage(1150315); // That text is unacceptable.
+                            TextRelay relay = info.GetTextEntry(1);
+                            string str = null;
+
+                            if (relay != null)
+                                str = relay.Text;
+
+                            if (str != null || Guilds.BaseGuildGump.CheckProfanity(str, 140))
+                            {
+                                Auction.Description = Utility.FixHtml(str.Trim());
+                            }
+                            else
+                            {
+                                from.SendLocalizedMessage(1150315); // That text is unacceptable.
+                            }
                         }
 
                         Refresh();
@@ -435,75 +438,81 @@ namespace Server.Engines.Auction
                     }
                 case 7:
                     {
-                        TextRelay relay1 = info.GetTextEntry(2);
-
-                        string plat1 = null;
-                        string gold1 = null;
-
-                        if (relay1 != null)
-                            plat1 = relay1.Text;
-
-                        relay1 = info.GetTextEntry(3);
-
-                        if (relay1 != null)
-                            gold1 = relay1.Text;
-
-                        long platAmnt = Utility.ToInt64(plat1);
-                        long goldAmnt = Utility.ToInt64(gold1);
-                        
-                        if (platAmnt >= 0 && goldAmnt >= 0)
+                        if (Auction.CheckModifyAuction(User))
                         {
-                            _TempBid += platAmnt * Account.CurrencyThreshold;
-                            _TempBid += goldAmnt;
-                        }
-                        else
-                        {
-                            from.SendLocalizedMessage(1150315); // That text is unacceptable.
-                            _NoBid = true;
-                        }
+                            TextRelay relay1 = info.GetTextEntry(2);
 
-                        if (!_NoBid)
-                        {
-                            if (Auction.OnGoing && Auction.BidHistory == null)
+                            string plat1 = null;
+                            string gold1 = null;
+
+                            if (relay1 != null)
+                                plat1 = relay1.Text;
+
+                            relay1 = info.GetTextEntry(3);
+
+                            if (relay1 != null)
+                                gold1 = relay1.Text;
+
+                            long platAmnt = Utility.ToInt64(plat1);
+                            long goldAmnt = Utility.ToInt64(gold1);
+
+                            if (platAmnt >= 0 && goldAmnt >= 0)
                             {
-                                Auction.CurrentBid = _TempBid;
+                                _TempBid += platAmnt * Account.CurrencyThreshold;
+                                _TempBid += goldAmnt;
+                            }
+                            else
+                            {
+                                from.SendLocalizedMessage(1150315); // That text is unacceptable.
+                                _NoBid = true;
                             }
 
-                            Auction.StartBid = _TempBid;
-                        }                       
+                            if (!_NoBid)
+                            {
+                                if (Auction.OnGoing && Auction.BidHistory == null)
+                                {
+                                    Auction.CurrentBid = _TempBid;
+                                }
+
+                                Auction.StartBid = _TempBid;
+                            }
+                        }
 
                         Refresh();
                         break;
                     }
                 case 8:
                     {
-                        TextRelay relay2 = info.GetTextEntry(4);
-
-                        string plat2 = null;
-                        string gold2 = null;
-
-                        if (relay2 != null)
-                            plat2 = relay2.Text;
-
-                        relay2 = info.GetTextEntry(5);
-
-                        if (relay2 != null)
-                            gold2 = relay2.Text;
-
-                        long platAmnt2 = Utility.ToInt64(plat2);
-                        long goldAmnt2 = Utility.ToInt64(gold2);
-                        
-                        if (platAmnt2 >= 0 && goldAmnt2 >= 0)
+                        if (Auction.CheckModifyAuction(User))
                         {
-                            _TempBuyout += platAmnt2 * Account.CurrencyThreshold;
-                            _TempBuyout += goldAmnt2;
-                        }
-                        else
-                        {
-                            from.SendLocalizedMessage(1150315); // That text is unacceptable.
-                        }
+                            TextRelay relay2 = info.GetTextEntry(4);
 
-                        Auction.Buyout = _TempBuyout;
+                            string plat2 = null;
+                            string gold2 = null;
+
+                            if (relay2 != null)
+                                plat2 = relay2.Text;
+
+                            relay2 = info.GetTextEntry(5);
+
+                            if (relay2 != null)
+                                gold2 = relay2.Text;
+
+                            long platAmnt2 = Utility.ToInt64(plat2);
+                            long goldAmnt2 = Utility.ToInt64(gold2);
+
+                            if (platAmnt2 >= 0 && goldAmnt2 >= 0)
+                            {
+                                _TempBuyout += platAmnt2 * Account.CurrencyThreshold;
+                                _TempBuyout += goldAmnt2;
+                            }
+                            else
+                            {
+                                from.SendLocalizedMessage(1150315); // That text is unacceptable.
+                            }
+
+                            Auction.Buyout = _TempBuyout;
+                        }
 
                         Refresh();
                         break;
@@ -554,7 +563,7 @@ namespace Server.Engines.Auction
             if (Auction.AuctionItem != null)
             {
                 Item i = Auction.AuctionItem;
-                AddImageTiledButton(200, 166, 0x918, 0x918, 0x0, GumpButtonType.Page, 0, i.ItemID, 0x0, 23, 5);
+                AddImageTiledButton(200, 166, 0x918, 0x918, 0x0, GumpButtonType.Page, 0, i.ItemID, i.Hue, 23, 5);
                 AddItemProperty(i.Serial);
             }
 

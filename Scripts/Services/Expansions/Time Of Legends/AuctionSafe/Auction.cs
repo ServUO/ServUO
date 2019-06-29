@@ -529,7 +529,7 @@ namespace Server.Engines.Auction
             Buyout = reader.ReadLong();
             Description = reader.ReadString();
 
-            if (version == 1)
+            if (version >= 1)
             {
                 Duration = reader.ReadInt();
             }

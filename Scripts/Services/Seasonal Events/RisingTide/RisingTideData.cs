@@ -36,10 +36,11 @@ namespace Server.Engines.Points
             if (Enabled && victim is BaseCreature && damager is PlayerMobile)
             {
                 var bc = victim as BaseCreature;
-                var beacon = GetPlunderBeaconAt(bc);
+                var beacon = GetPlunderBeacon(bc);
 
                 if (beacon != null)
                 {
+                    Console.WriteLine("Checking Cargo: {0}", bc);
                     if (CargoChance > Utility.RandomDouble())
                     {
                         damager.AddToBackpack(new MaritimeCargo());
@@ -48,7 +49,7 @@ namespace Server.Engines.Points
                 }
                 else if (CargoDropsTypes.Any(type => type == bc.GetType()))
                 {
-                    double chance = 0.1;
+                    double chance = CargoChance;
 
                     if (bc is BaseShipCaptain)
                     {
@@ -73,28 +74,21 @@ namespace Server.Engines.Points
             typeof(PirateCaptain), typeof(MerchantCaptain), typeof(PirateCrew), typeof(MerchantCrew)
         };
 
-        public static PlunderBeaconAddon GetPlunderBeaconAt(IEntity e)
+        public static PlunderBeaconAddon GetPlunderBeacon(BaseCreature bc)
         {
-            if (e == null || e.Map == null || e.Map == Map.Internal)
-                return null;
-
-            IPooledEnumerable eable = e.Map.GetItemsInRange(e.Location, 0);
-
-            foreach (Item item in eable)
+            if (PlunderBeaconSpawner.Spawner != null)
             {
-                if (item is PlunderBeaconAddon)
+                foreach (var list in PlunderBeaconSpawner.Spawner.PlunderBeacons.Values)
                 {
-                    eable.Free();
-                    return (PlunderBeaconAddon)item;
-                }
-                else if (item is AddonComponent && ((AddonComponent)item).Addon is PlunderBeaconAddon)
-                {
-                    eable.Free();
-                    return (PlunderBeaconAddon)((AddonComponent)item).Addon;
+                    var addon = list.FirstOrDefault(beacon => beacon.Crew.Contains(bc) || (beacon.Spawn.ContainsKey(bc) && beacon.Spawn[bc]));
+
+                    if (addon != null)
+                    {
+                        return addon;
+                    }
                 }
             }
 
-            eable.Free();
             return null;
         }
 
