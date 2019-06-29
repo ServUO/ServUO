@@ -16,7 +16,7 @@ namespace Server.Items
         public PlunderBeacon Beacon { get; set; }
 
         public List<BaseCreature> Crew { get; set; }
-        public List<BaseCreature> Spawn { get; set; }
+        public Dictionary<BaseCreature, bool> Spawn { get; set; }
         public List<MannedCannon> Cannons { get; set; }
 
         public bool CannonsOperational { get { return Crew.Any(c => c.Alive && !c.Deleted); } }
@@ -27,6 +27,7 @@ namespace Server.Items
         public Timer Timer { get; set; }
         public DateTime NextShoot { get; set; }
         public DateTime NextSpawn { get; set; }
+        public bool InitialSpawn { get; set; }
 
         [Constructable]
         public PlunderBeaconAddon()
@@ -38,7 +39,7 @@ namespace Server.Items
             AddComplexComponent((BaseAddon)this, 2567, 2, 0, 37, 0, 5, "", 1);
 
             Crew = new List<BaseCreature>();
-            Spawn = new List<BaseCreature>();
+            Spawn = new Dictionary<BaseCreature, bool>();
             Cannons = new List<MannedCannon>();
 
             Beacon = new PlunderBeacon(this);
@@ -131,7 +132,7 @@ namespace Server.Items
                 c.Location = new Point3D(X + (c.X - old.X), Y + (c.Y - old.Y), Z + (c.Z - old.Z));
             }
 
-            foreach (var c in Spawn)
+            foreach (var c in Spawn.Keys.Where(c => c != null && !c.Deleted))
             {
                 c.Location = new Point3D(X + (c.X - old.X), Y + (c.Y - old.Y), Z + (c.Z - old.Z));
             }
@@ -151,12 +152,12 @@ namespace Server.Items
                 c.Map = Map;
             }
 
-            foreach (var c in Crew)
+            foreach (var c in Crew.Where(c => c != null && !c.Deleted))
             {
                 c.Map = Map;
             }
 
-            foreach (var c in Spawn)
+            foreach (var c in Spawn.Keys.Where(c => c != null && !c.Deleted))
             {
                 c.Map = Map;
             }
@@ -211,6 +212,14 @@ namespace Server.Items
             {
                 return;
             }
+            else if (!InitialSpawn)
+            {
+                for (int i = 0; i < MaxSpawn; i++)
+                {
+                    SpawnHelper(true);
+                    InitialSpawn = true;
+                }
+            }
             else if (CannonsOperational && NextShoot < DateTime.UtcNow)
             {
                 foreach (var cannon in Cannons.Where(c => c != null && !c.Deleted && (c.CanFireUnmanned || (c.Operator != null && !c.Operator.Deleted && c.Operator.Alive))))
@@ -223,47 +232,59 @@ namespace Server.Items
 
             if (NextSpawn < DateTime.UtcNow)
             {
-                if (SpawnCount() < MaxSpawn)
+                Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
                 {
-                    Point3D p = Location;
-                    var range = 15;
-
-                    if (Beacon.LastDamager != null && Beacon.LastDamager.InRange(Location, 20))
+                    if (SpawnCount() < MaxSpawn)
                     {
-                        p = Beacon.LastDamager.Location;
-                        range = 8;
+                        SpawnHelper(false);
                     }
+                });
+            }
+        }
 
-                    BaseCreature creature = Activator.CreateInstance(_SpawnTypes[Utility.Random(_SpawnTypes.Length)]) as BaseCreature;
+        private void SpawnHelper(bool initial)
+        {
+            if (Map == null || Beacon == null)
+                return;
 
-                    for (int i = 0; i < 50; i++)
+            Point3D p = Location;
+            var map = Map;
+            var range = 15;
+
+            if (Beacon.LastDamager != null && Beacon.LastDamager.InRange(Location, 20))
+            {
+                p = Beacon.LastDamager.Location;
+                range = 8;
+            }
+
+            BaseCreature creature = Activator.CreateInstance(_SpawnTypes[Utility.Random(_SpawnTypes.Length)]) as BaseCreature;
+
+            for (int i = 0; i < 50; i++)
+            {
+                var spawnLoc = new Point3D(Utility.RandomMinMax(p.X - range, p.X + range), Utility.RandomMinMax(p.Y - range, p.Y + range), -5);
+
+                if (map.CanFit(spawnLoc.X, spawnLoc.Y, spawnLoc.Z, 16, true, true, false, creature))
+                {
+                    if (creature != null)
                     {
-                        var spawnLoc = new Point3D(Utility.RandomMinMax(p.X - range, p.X + range), Utility.RandomMinMax(p.Y - range, p.Y + range), -5);
+                        creature.MoveToWorld(spawnLoc, map);
+                        creature.Home = spawnLoc;
+                        creature.RangeHome = 10;
 
-                        if (map.CanFit(spawnLoc.X, spawnLoc.Y, spawnLoc.Z, 16, true, true, false, creature))
-                        {
-                            if (creature != null)
-                            {
-                                creature.MoveToWorld(spawnLoc, map);
-                                creature.Home = spawnLoc;
-                                creature.RangeHome = 10;
+                        Spawn.Add(creature, initial);
 
-                                Spawn.Add(creature);
-
-                                NextSpawn = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60));
-                                return;
-                            }
-                        }
+                        NextSpawn = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60));
+                        return;
                     }
-
-                    creature.Delete();
                 }
             }
+
+            creature.Delete();
         }
 
         private int SpawnCount()
         {
-            return Spawn.Where(s => s.Alive).Count();
+            return Spawn.Keys.Where(s => s != null && !s.Deleted).Count();
         }
 
         private Type[] _SpawnTypes =
@@ -288,12 +309,12 @@ namespace Server.Items
                 Timer = null;
             }
 
-            foreach (var bc in Crew.Where(c => !c.Deleted))
+            foreach (var bc in Crew.Where(c => c != null && !c.Deleted))
             {
                 bc.Kill();
             }
 
-            foreach (var bc in Spawn.Where(sp => !sp.Deleted))
+            foreach (var bc in Spawn.Keys.Where(sp => sp != null && !sp.Deleted))
             {
                 bc.Kill();
             }
@@ -318,16 +339,26 @@ namespace Server.Items
 		{
 		}
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-			writer.Write( 0 ); // Version
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(1); // Version
+
+            writer.Write(InitialSpawn);
 
             writer.WriteItem<PlunderBeacon>(Beacon);
 
             writer.WriteItemList(Cannons, true);
             writer.WriteMobileList(Crew, true);
-            writer.WriteMobileList(Spawn, true);
+            //writer.WriteMobileList(Spawn, true);
+
+            writer.Write(Spawn.Count);
+
+            foreach (var kvp in Spawn)
+            {
+                writer.WriteMobile(kvp.Key);
+                writer.Write(kvp.Value);
+            }
         }
 
         public override void Deserialize(GenericReader reader)
@@ -335,11 +366,46 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            Beacon = reader.ReadItem<PlunderBeacon>();
+            switch (version)
+            {
+                case 1:
+                    InitialSpawn = reader.ReadBool();
+                    goto case 0;
+                case 0:
+                    Beacon = reader.ReadItem<PlunderBeacon>();
 
-            Cannons = reader.ReadStrongItemList<MannedCannon>();
-            Crew = reader.ReadStrongMobileList<BaseCreature>();
-            Spawn = reader.ReadStrongMobileList<BaseCreature>();
+                    Cannons = reader.ReadStrongItemList<MannedCannon>();
+                    Crew = reader.ReadStrongMobileList<BaseCreature>();
+                    Spawn = new Dictionary<BaseCreature, bool>();
+
+                    if (version == 0)
+                    {
+                        //Spawn = reader.ReadStrongMobileList<BaseCreature>();
+                        List<BaseCreature> list = reader.ReadStrongMobileList<BaseCreature>();
+
+                        foreach (var bc in list)
+                        {
+                            Spawn[bc] = true;
+                        }
+                    }
+                    else
+                    {
+                        int count = reader.ReadInt();
+
+                        for (int i = 0; i < count; i++)
+                        {
+                            var bc = reader.ReadMobile<BaseCreature>();
+                            var initial = reader.ReadBool();
+
+                            if (bc != null)
+                            {
+                                Spawn[bc] = initial;
+                            }
+                        }
+                    }
+
+                    break;
+            }
 
             Timer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), OnTick);
         }
