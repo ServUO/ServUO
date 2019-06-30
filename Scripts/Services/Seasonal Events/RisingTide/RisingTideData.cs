@@ -40,7 +40,6 @@ namespace Server.Engines.Points
 
                 if (beacon != null)
                 {
-                    Console.WriteLine("Checking Cargo: {0}", bc);
                     if (CargoChance > Utility.RandomDouble())
                     {
                         damager.AddToBackpack(new MaritimeCargo());
