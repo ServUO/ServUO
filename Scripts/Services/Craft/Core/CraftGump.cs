@@ -738,7 +738,6 @@ namespace Server.Engines.Craft
 
                                     break;
                                 }
-                            #region Stygian Abyss
                             case 9: // Alter Item (Gargoyle)
                                 {
                                     if (system.CanAlter)
@@ -775,7 +774,6 @@ namespace Server.Engines.Craft
                                     AutoCraftTimer.EndTimer(m_From);
                                     break;
                                 }
-                            #endregion
                         }
                         break;
                     }
