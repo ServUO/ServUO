@@ -2652,7 +2652,7 @@ namespace Server.Mobiles
 
         public int GetInsuranceCost(Item item)
         {
-            var imbueWeight = Imbuing.GetTotalWeight(item);
+            var imbueWeight = Imbuing.GetTotalWeight(item, -1, false, false);
             int cost = 600; // this handles old items, set items, etc
 
             if (item.GetType().IsAssignableFrom(typeof(Factions.FactionItem)))

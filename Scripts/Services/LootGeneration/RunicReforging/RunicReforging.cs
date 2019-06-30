@@ -2385,7 +2385,7 @@ namespace Server.Items
                 return 0;
 
             int max = Imbuing.GetMaxWeight(item);
-            ItemPower power = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), false);
+            ItemPower power = GetItemPower(item, Imbuing.GetTotalWeight(item, -1, false, false), Imbuing.GetTotalMods(item), false);
             double chance = Utility.RandomDouble();
 
             if (item is BaseJewel && power >= ItemPower.MajorArtifact)
@@ -2556,7 +2556,7 @@ namespace Server.Items
 
         public static ItemPower ApplyItemPower(Item item, bool reforged)
         {
-            ItemPower ip = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), reforged);
+            ItemPower ip = GetItemPower(item, Imbuing.GetTotalWeight(item, -1, false, false), Imbuing.GetTotalMods(item), reforged);
 
             if (item is ICombatEquipment)
             {
@@ -2659,7 +2659,7 @@ namespace Server.Items
         public static bool ApplyProperty(Item item, int id, int perclow, int perchigh, ref int budget, int luckchance, bool reforged, bool powerful)
         {
             int min = ItemPropertyInfo.GetMinIntensity(item, id);
-            int naturalMax = ItemPropertyInfo.GetMaxIntensity(item, id);
+            int naturalMax = ItemPropertyInfo.GetMaxIntensity(item, id, false);
             int max = naturalMax;
             int[] overcap = null;
 

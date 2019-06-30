@@ -291,7 +291,7 @@ namespace Server.Mobiles
                     }
                 }
 
-                m_ItemTable[item] = (int)((weight + Server.SkillHandlers.Imbuing.GetTotalWeight(item)) * 31.5);
+                m_ItemTable[item] = (int)((weight + Server.SkillHandlers.Imbuing.GetTotalWeight(item, -1, false, true)) * 31.5);
                 item.Movable = false;
                 this.Backpack.DropItem(item);
             }

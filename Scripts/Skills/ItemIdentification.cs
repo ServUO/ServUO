@@ -91,7 +91,7 @@ namespace Server.Items
                         }
                         else
                         {
-                            int weight = Imbuing.GetTotalWeight(item);
+                            int weight = Imbuing.GetTotalWeight(item, -1, false, true);
                             string imbIngred = null;
                             double skill = from.Skills[SkillName.Imbuing].Base;
                             bool badSkill = false;
