@@ -128,7 +128,7 @@ namespace Server.Mobiles
                         PackItem(new Taint());
                         break;
                     case 3:
-                        PackItem(new Putrefication());
+                        PackItem(new Putrefaction());
                         break;
                     case 4:
                         PackItem(new Corruption());

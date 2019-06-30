@@ -20,29 +20,50 @@ namespace Server.Engines.VendorSearching
         public static string FilePath = Path.Combine("Saves/Misc", "VendorSearch.bin");
         public static Ultima.StringList StringList { get; private set; }
 
-        public static List<VendorItem> DoSearch(Mobile m, SearchCriteria criteria)
+        public static List<SearchItem> DoSearch(Mobile m, SearchCriteria criteria)
         {
             if (criteria == null || PlayerVendor.PlayerVendors == null || PlayerVendor.PlayerVendors.Count == 0)
                 return null;
 
-            List<VendorItem> list = new List<VendorItem>();
+            List<SearchItem> list = new List<SearchItem>();
             bool excludefel = criteria.Details.FirstOrDefault(d => d.Attribute is Misc && (Misc)d.Attribute == Misc.ExcludeFel) != null;
 
             foreach (PlayerVendor pv in PlayerVendor.PlayerVendors.Where(pv => pv.Map != Map.Internal &&
                                                                                pv.Map != null &&
                                                                                pv.Backpack != null && 
-                                                                              pv.Backpack.Items.Count > 0 && 
-                                                                              (!excludefel || pv.Map != Map.Felucca)))
+                                                                               pv.Backpack.Items.Count > 0 && 
+                                                                               (!excludefel || pv.Map != Map.Felucca)))
             {
                 List<Item> items = GetItems(pv);
 
-                foreach (Item item in items.Where(it => CheckMatch(pv.GetVendorItem(it), criteria)))
+                foreach (Item item in items)
                 {
-                    list.Add(pv.GetVendorItem(item));
+                    VendorItem vendorItem = pv.GetVendorItem(item);
+                    int price = 0;
+                    bool isChild = false;
+
+                    if (vendorItem != null)
+                    {
+                        price = vendorItem.Price;
+                    }
+                    else if (item.Parent is Container)
+                    {
+                        vendorItem = GetParentVendorItem(pv, (Container)item.Parent);
+
+                        if (vendorItem != null)
+                        {
+                            isChild = true;
+                            price = vendorItem.Price;
+                        }
+                    }
+
+                    if (price > 0 && CheckMatch(item, price, criteria))
+                    {
+                        list.Add(new SearchItem(item, price, isChild));
+                    }
                 }
 
-                items.Clear();
-                items.TrimExcess();
+                ColUtility.Free(items);
             }
 
             switch (criteria.SortBy)
@@ -53,23 +74,33 @@ namespace Server.Engines.VendorSearching
 
             return list;
         }
-		
-		public static bool CheckMatch(VendorItem vitem, SearchCriteria searchCriteria)
-		{
-			if (vitem == null)
-				return false;
-			
-			Item item = vitem.Item;
 
+        private static VendorItem GetParentVendorItem(PlayerVendor pv, Container parent)
+        {
+            VendorItem vendorItem = pv.GetVendorItem(parent);
+
+            if (vendorItem == null)
+            {
+                if (parent.Parent is Container)
+                {
+                    return GetParentVendorItem(pv, (Container)parent.Parent);
+                }
+            }
+
+            return vendorItem;
+        }
+
+		public static bool CheckMatch(Item item, int price, SearchCriteria searchCriteria)
+		{
             if (item is CommodityDeed && ((CommodityDeed)item).Commodity != null)
             {
                 item = ((CommodityDeed)item).Commodity;
             }
 
-            if (searchCriteria.MinPrice > -1 && vitem.Price < searchCriteria.MinPrice)
+            if (searchCriteria.MinPrice > -1 && price < searchCriteria.MinPrice)
 				return false;
 
-            if (searchCriteria.MaxPrice > -1 && vitem.Price > searchCriteria.MaxPrice)
+            if (searchCriteria.MaxPrice > -1 && price > searchCriteria.MaxPrice)
 				return false;
 			
 			if (!String.IsNullOrEmpty(searchCriteria.SearchName))
@@ -1173,6 +1204,20 @@ namespace Server.Engines.VendorSearching
             {
                 BaseGump.SendGump(new VendorSearchGump(Player));
             }
+        }
+    }
+
+    public class SearchItem
+    {
+        public Item Item { get; set; }
+        public int Price { get; set; }
+        public bool IsChild { get; set; }
+
+        public SearchItem(Item item, int price, bool isChild)
+        {
+            Item = item;
+            Price = price;
+            IsChild = isChild;
         }
     }
 }

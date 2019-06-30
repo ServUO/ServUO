@@ -213,7 +213,7 @@ namespace Server.Engines.VendorSearching
                         {
                             var resultsTask = FindVendorItemsAsync(User, Criteria);
 
-                            var pollingTimer = new TaskPollingTimer<List<VendorItem>>(resultsTask, (results) =>
+                            var pollingTimer = new TaskPollingTimer<List<SearchItem>>(resultsTask, (results) =>
                             {
                                 User.CloseGump(typeof(SearchWaitGump));
 
@@ -323,9 +323,9 @@ namespace Server.Engines.VendorSearching
             }
         }
 
-        public Task<List<VendorItem>> FindVendorItemsAsync(Mobile m, SearchCriteria criteria)
+        public Task<List<SearchItem>> FindVendorItemsAsync(Mobile m, SearchCriteria criteria)
         {
-            return new Task<List<VendorItem>>(() =>
+            return new Task<List<SearchItem>>(() =>
             {
                 return VendorSearch.DoSearch(m, criteria);
             });
@@ -385,10 +385,10 @@ namespace Server.Engines.VendorSearching
         public int LabelColor { get { return 0x4BBD; } }
         public int TextColor { get { return 0x6B55; } }
 
-        public List<VendorItem> Items { get; set; }
+        public List<SearchItem> Items { get; set; }
         public int Index { get; set; }
 
-        public SearchResultsGump(PlayerMobile pm, List<VendorItem> items)
+        public SearchResultsGump(PlayerMobile pm, List<SearchItem> items)
             : base(pm, 30, 30)
         {
             Items = items;
@@ -413,18 +413,20 @@ namespace Server.Engines.VendorSearching
 
             for (int i = start; i < start + PerPage && i < Items.Count; i++)
             {
-                VendorItem item = Items[i];
-                Rectangle2D bounds = ItemBounds.Table[item.Item.ItemID];
+                var item = Items[i].Item;
+                var price = Items[i].Price;
+
+                Rectangle2D bounds = ItemBounds.Table[item.ItemID];
                 int y = 101 + (index * 75);
-                Map map = item.Item.Map;
+                Map map = item.Map;
 
-                if (map == null && item.Item.RootParentEntity is Mobile)
-                    map = ((Mobile)item.Item.RootParentEntity).Map;
+                if (map == null && item.RootParentEntity is Mobile)
+                    map = ((Mobile)item.RootParentEntity).Map;
 
-                AddImageTiledButton(50, y, 0x918, 0x918, 0x0, GumpButtonType.Page, 0, item.Item.ItemID, item.Item.Hue, 40 - bounds.Width / 2 - bounds.X, 30 - bounds.Height / 2 - bounds.Y);
-                AddItemProperty(item.Item);
+                AddImageTiledButton(50, y, 0x918, 0x918, 0x0, GumpButtonType.Page, 0, item.ItemID, item.Hue, 40 - bounds.Width / 2 - bounds.X, 30 - bounds.Height / 2 - bounds.Y);
+                AddItemProperty(item);
 
-                AddHtmlLocalized(162, y, 102, 72, 1154645, String.Format("{0}", item.Price == -1 ? "0" : item.FormattedPrice), TextColor, false, false); // <center>~1_val~</center>
+                AddHtmlLocalized(162, y, 102, 72, Items[i].IsChild ? 1154598 : 1154645, String.Format("{0}", price <= 0 ? "0" : FormatPrice(price)), TextColor, false, false); // <center>~1_val~</center>
 
                 if (map != null)
                     AddHtmlLocalized(274, y, 102, 72, 1060643, String.Format("{0}", map.ToString()), TextColor, false, false);
@@ -447,24 +449,29 @@ namespace Server.Engines.VendorSearching
             }
         }
 
+        private string FormatPrice(int price)
+        {
+            return price.ToString("N0", CultureInfo.GetCultureInfo("en-US"));
+        }
+
         public override void OnResponse(RelayInfo info)
         {
             switch (info.ButtonID)
             {
                 case 0: break;
                 default: // Buy Map
-                    VendorItem item = Items[info.ButtonID - 100];
+                    SearchItem item = Items[info.ButtonID - 100];
                     PlayerVendor vendor = item.Item.RootParentEntity as PlayerVendor;
 
                     if (vendor != null && vendor.Map != null && vendor.Map != Map.Internal)
                     {
                         if (_GivenTo == null)
-                            _GivenTo = new Dictionary<VendorItem, List<PlayerMobile>>();
+                            _GivenTo = new Dictionary<Item, List<PlayerMobile>>();
 
-                        if (!_GivenTo.ContainsKey(item))
-                            _GivenTo[item] = new List<PlayerMobile>();
+                        if (!_GivenTo.ContainsKey(item.Item))
+                            _GivenTo[item.Item] = new List<PlayerMobile>();
 
-                        if (!_GivenTo[item].Contains(User))
+                        if (!_GivenTo[item.Item].Contains(User))
                         {
                             VendorSearchMap map = new VendorSearchMap(vendor, item.Item);
 
@@ -473,7 +480,7 @@ namespace Server.Engines.VendorSearching
                             else
                             {
                                 User.SendLocalizedMessage(1154690); // The vendor map has been placed in your backpack.
-                                _GivenTo[item].Add(User);
+                                _GivenTo[item.Item].Add(User);
                             }
                         }
                     }
@@ -505,7 +512,7 @@ namespace Server.Engines.VendorSearching
             t.Priority = TimerPriority.OneMinute;
         }
 
-        public static Dictionary<VendorItem, List<PlayerMobile>> _GivenTo;
+        public static Dictionary<Item, List<PlayerMobile>> _GivenTo;
     }
 
     public class ConfirmTeleportGump : BaseGump

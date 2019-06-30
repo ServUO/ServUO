@@ -5802,6 +5802,10 @@ namespace Server.Mobiles
                     suffix = String.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));
                 }
             }
+            else if (vvv)
+            {
+                suffix = "[VvV]";
+            }
 
             suffix = ApplyNameSuffix(suffix);
 

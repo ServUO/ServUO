@@ -159,7 +159,7 @@ namespace Server.Items
 			int min = Scale(from, MinDamage);
 			int max = Scale(from, MaxDamage);
 
-            var list = SpellHelper.AcquireIndirectTargets(from, loc, map, ExplosionRange).OfType<Mobile>().ToList();
+            var list = SpellHelper.AcquireIndirectTargets(from, loc, map, ExplosionRange, false).OfType<Mobile>().ToList();
 
             foreach (var m in list)
             {
