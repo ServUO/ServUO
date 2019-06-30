@@ -5780,7 +5780,7 @@ namespace Server.Mobiles
                     }
                 }
             }
-            else if (DisplayGuildAbbr)
+            else if (guild != null && DisplayGuildAbbr)
             {
                 if (vvv)
                 {

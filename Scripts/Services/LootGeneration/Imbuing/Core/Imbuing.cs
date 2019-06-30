@@ -1981,8 +1981,6 @@ namespace Server.SkillHandlers
 
                 if (attrs != null && attrs.SpellChanneling > 0)
                     value++;
-
-                Console.WriteLine("Value: {0}", value);
             }
             
             if (value <= 0)
