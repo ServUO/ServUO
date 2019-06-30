@@ -183,7 +183,7 @@ namespace Server.Items
 
             BaseHouse house = BaseHouse.FindHouseAt(from);
 
-            if (house != null && (house.IsOwner(from) || (house.LockDowns.ContainsKey(this) && house.LockDowns[this] == from)))
+            if (house != null && (house.IsFriend(from) || (house.LockDowns.ContainsKey(this) && house.LockDowns[this] == from)))
             {
                 from.CloseGump(typeof(HarpsichordSongGump));
                 from.SendGump(new HarpsichordSongGump(List));

@@ -655,25 +655,26 @@ namespace Server.Items
             return 0;
         }
 
+        public static int GetMaxIntensity(Item item, object attribute)
+        {
+            return GetMaxIntensity(item, GetID(attribute), false);
+        }
+
         /// <summary>
         /// Maximum intensity in regards to imbuing weight calculation. Some items may be over this 'cap'
         /// </summary>
-        /// <param name="item"></param>
-        /// <param name="attribute"></param>
+        /// <param name="item">item to check</param>
+        /// <param name="id">property id</param>
+        /// <param name="imbuing">true for imbuing, false for loot</param>
         /// <returns></returns>
-        public static int GetMaxIntensity(Item item, object attribute)
-        {
-            return GetMaxIntensity(item, GetID(attribute));
-        }
-
-        public static int GetMaxIntensity(Item item, int id)
+        public static int GetMaxIntensity(Item item, int id, bool imbuing)
         {
             if (Table.ContainsKey(id))
             {
                 var info = Table[id].GetItemTypeInfo(GetItemType(item));
 
-                // First, we try to get the max intensity from the PropInfo. If null, we go to the default MaxIntenity
-                if (info == null)
+                // First, we try to get the max intensity from the PropInfo. If null or we're getting an intensity for imbuing purpopses, we go to the default MaxIntenity
+                if (info == null || imbuing)
                 {
                     if (Core.SA && item is BaseWeapon && (id == 25 || id == 27))
                     {
@@ -785,7 +786,7 @@ namespace Server.Items
         }
 
         /// <summary>
-        /// Gets teh associated attribute, ie AosAttribute, etc
+        /// Gets the associated attribute, ie AosAttribute, etc
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

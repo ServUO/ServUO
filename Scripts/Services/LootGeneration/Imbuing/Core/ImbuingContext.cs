@@ -10,7 +10,6 @@ namespace Server
         public int Imbue_Mod { get; set; }
         public int Imbue_ModInt { get; set; }
         public int Imbue_ModVal { get; set; }
-        public int Imbue_SFBonus { get; set; }
         public int ImbMenu_Cat { get; set; }
         public int ImbMenu_ModInc { get; set; }
         public int Imbue_IWmax { get; set; }

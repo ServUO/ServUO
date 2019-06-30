@@ -38,8 +38,9 @@ namespace Server.Gumps
 
         public override void AddGumpLayout()
         {
-            // SoulForge Check
-            if (!Imbuing.CheckSoulForge(User, 2))
+            double bonus = 0.0;
+
+            if (!Imbuing.CheckSoulForge(User, 2, out bonus))
                 return;
 
             ImbuingContext context = Imbuing.GetContext(User);
@@ -50,7 +51,7 @@ namespace Server.Gumps
             m_Info = ItemPropertyInfo.Table[m_ID];
 
             int minInt = ItemPropertyInfo.GetMinIntensity(m_Item, m_ID);
-            int maxInt = ItemPropertyInfo.GetMaxIntensity(m_Item, m_ID);
+            int maxInt = ItemPropertyInfo.GetMaxIntensity(m_Item, m_ID, true);
             int weight = m_Info.Weight;
 
             if (m_Value < minInt)
@@ -72,7 +73,7 @@ namespace Server.Gumps
             context.ImbMenu_ModInc = ItemPropertyInfo.GetScale(m_Item, m_ID);
 
             // Current Mod Weight
-            m_TotalItemWeight = Imbuing.GetTotalWeight(m_Item, m_ID);
+            m_TotalItemWeight = Imbuing.GetTotalWeight(m_Item, m_ID, false, true);
             m_TotalProps = Imbuing.GetTotalMods(m_Item, m_ID);
 
             if (maxInt <= 1)
@@ -160,10 +161,9 @@ namespace Server.Gumps
 
             // ===== CALCULATE DIFFICULTY =====
             var truePropWeight = (int)(((double)propWeight / (double)weight) * 100);
-            var trueTotalWeight = Imbuing.GetTotalWeight(m_Item, -1, false);
+            var trueTotalWeight = Imbuing.GetTotalWeight(m_Item, -1, false, true);
 
-            double dif;
-            double suc = Imbuing.GetSuccessChance(User, m_Item, trueTotalWeight, truePropWeight, out dif);
+            double suc = Imbuing.GetSuccessChance(User, m_Item, trueTotalWeight, truePropWeight, bonus);
 
             AddHtmlLocalized(300, 300, 150, 20, 1044057, 0xFFFFFF, false, false); // Success Chance:
             AddLabel(420, 300, GetSuccessChanceHue(suc), String.Format("{0}%", suc.ToString("0.0")));
@@ -305,21 +305,21 @@ namespace Server.Gumps
                     }
                 case 10054: // Increase Mod Value [>]
                     {
-                        m_Value = Math.Min(ItemPropertyInfo.GetMaxIntensity(m_Item, m_Info.ID), m_Value + 1);
+                        m_Value = Math.Min(ItemPropertyInfo.GetMaxIntensity(m_Item, m_Info.ID, true), m_Value + 1);
                         Refresh();
 
                         break;
                     }
                 case 10055: // Increase Mod Value [>>]
                     {
-                        m_Value = Math.Min(ItemPropertyInfo.GetMaxIntensity(m_Item, m_Info.ID), m_Value + 10);
+                        m_Value = Math.Min(ItemPropertyInfo.GetMaxIntensity(m_Item, m_Info.ID, true), m_Value + 10);
                         Refresh();
                         
                         break;
                     }
                 case 10056: // Maximum Mod Value [>>>]
                     {
-                        m_Value = ItemPropertyInfo.GetMaxIntensity(m_Item, m_Info.ID);
+                        m_Value = ItemPropertyInfo.GetMaxIntensity(m_Item, m_Info.ID, true);
                         Refresh();
                         
                         break;
