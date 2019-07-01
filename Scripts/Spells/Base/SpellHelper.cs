@@ -631,6 +631,11 @@ namespace Server.Spells
         }
 
         public static IEnumerable<IDamageable> AcquireIndirectTargets(Mobile caster, IPoint3D p, Map map, int range)
+        {
+            return AcquireIndirectTargets(caster, p, map, range, true);
+        }
+
+        public static IEnumerable<IDamageable> AcquireIndirectTargets(Mobile caster, IPoint3D p, Map map, int range, bool losCheck)
         {  
             if (map == null)
             {
@@ -646,7 +651,7 @@ namespace Server.Spells
                     continue;
                 }
 
-                if (!id.Alive || !caster.InLOS(id) || !caster.CanBeHarmful(id, false))
+                if (!id.Alive || (losCheck && !caster.InLOS(id)) || !caster.CanBeHarmful(id, false))
                 {
                     continue;
                 }
