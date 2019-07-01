@@ -2021,8 +2021,13 @@ namespace Server.Engines.Craft
 					tool.Delete();
 				}
 
-				// SkillCheck failed.
-				int num = craftSystem.PlayEndingEffect(from, true, true, toolBroken, endquality, false, this);
+                if (UseAllRes)
+                {
+                    MultipleSkillCheck(from, 1);
+                }
+
+                // SkillCheck failed.
+                int num = craftSystem.PlayEndingEffect(from, true, true, toolBroken, endquality, false, this);
 
 				if (tool != null && !tool.Deleted && tool.UsesRemaining > 0)
 				{
