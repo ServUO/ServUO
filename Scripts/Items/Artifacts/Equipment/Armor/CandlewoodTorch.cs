@@ -40,6 +40,25 @@ namespace Server.Items
                     ItemID = 0xF6B;
                 }
             }
+
+            var parent = Parent as Mobile;
+
+            if (parent == from && Burning)
+            {
+                Mobiles.MeerMage.StopEffect((Mobile)parent, true);
+                SwarmContext.CheckRemove((Mobile)parent);
+            }
+        }
+
+        public override void OnAdded(object parent)
+        {
+            base.OnAdded(parent);
+
+            if (parent is Mobile && Burning)
+            {
+                Mobiles.MeerMage.StopEffect((Mobile)parent, true);
+                SwarmContext.CheckRemove((Mobile)parent);
+            }
         }
 
         public override void Serialize(GenericWriter writer)
