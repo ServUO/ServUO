@@ -6,8 +6,10 @@ using Server.Engines.BulkOrders;
 
 namespace Server.Engines.Quests
 {
-    public class Thepem : MondainQuester
+    public class Thepem : MondainQuester, ITierQuester
     {
+        public TierQuestInfo TierInfo { get { return TierQuestInfo.Thepem; } }
+
         [Constructable]
         public Thepem()
             : base("Thepem", "the Apprentice")
@@ -25,7 +27,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] { typeof(AllThatGlitters) };
+                return new Type[] { };
             }
         }
 

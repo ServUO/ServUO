@@ -11,6 +11,8 @@ namespace Server.Items
 
     public abstract class BaseInstrument : Item, ISlayer, IQuality, IResource
     {
+        public static readonly double MaxBardingDifficulty = 160.0;
+
         private int m_WellSound, m_BadlySound;
         private SlayerName m_Slayer, m_Slayer2;
         private ItemQuality m_Quality;
@@ -396,8 +398,8 @@ namespace Server.Items
             if (bc != null && bc.IsParagon)
                 val += 40.0;
 
-            if (Core.SE && val > 160.0)
-                val = 160.0;
+            if (Core.SE && val > MaxBardingDifficulty)
+                val = MaxBardingDifficulty;
 
             return val;
         }

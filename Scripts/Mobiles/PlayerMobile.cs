@@ -1304,6 +1304,8 @@ namespace Server.Mobiles
                 }, 
                 (EtherealMount)from.Mount);
             }
+
+            from.CheckStatTimers();
         }
 
 		private bool m_NoDeltaRecursion;
@@ -4197,8 +4199,8 @@ namespace Server.Mobiles
 			m_AutoStabled = new List<Mobile>();
 
 			#region Mondain's Legacy
-			m_Quests = new List<BaseQuest>();
-			m_Chains = new Dictionary<QuestChain, BaseChain>();
+			//m_Quests = new List<BaseQuest>();
+			//m_Chains = new Dictionary<QuestChain, BaseChain>();
 			m_DoneQuests = new List<QuestRestartInfo>();
 			m_Collections = new Dictionary<Collection, int>();
 			m_RewardTitles = new List<object>();
@@ -4512,6 +4514,7 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
+                case 39: // Version 39, removed ML quest save/load
                 case 38:
                     NextGemOfSalvationUse = reader.ReadDateTime();
                     goto case 37;
@@ -4569,10 +4572,19 @@ namespace Server.Mobiles
 
                         m_VASTotalMonsterFame = reader.ReadInt();
 
-						m_Quests = QuestReader.Quests(reader, this);
-						m_Chains = QuestReader.Chains(reader);
+                        if (version < 39)
+                        {
+                            List<BaseQuest> quests = QuestReader.Quests(reader, this);
+                            Dictionary<QuestChain, BaseChain> dic = QuestReader.Chains(reader);
 
-						m_Collections = new Dictionary<Collection, int>();
+                            if (quests != null && quests.Count > 0)
+                                MondainQuestData.QuestData[this] = quests;
+
+                            if (dic != null && dic.Count > 0)
+                                MondainQuestData.ChainData[this] = dic;
+                        }
+
+                        m_Collections = new Dictionary<Collection, int>();
 						m_RewardTitles = new List<object>();
 
 						for (int i = reader.ReadInt(); i > 0; i--)
@@ -4842,7 +4854,7 @@ namespace Server.Mobiles
 			}
 
 			#region Mondain's Legacy
-			if (m_Quests == null)
+			/*if (m_Quests == null)
 			{
 				m_Quests = new List<BaseQuest>();
 			}
@@ -4850,7 +4862,7 @@ namespace Server.Mobiles
 			if (m_Chains == null)
 			{
 				m_Chains = new Dictionary<QuestChain, BaseChain>();
-			}
+			}*/
 
 			if (m_DoneQuests == null)
 			{
@@ -4959,7 +4971,7 @@ namespace Server.Mobiles
 
 			base.Serialize(writer);
 
-			writer.Write(38); // version
+			writer.Write(39); // version
 
             writer.Write((DateTime)NextGemOfSalvationUse);
 
@@ -4999,11 +5011,12 @@ namespace Server.Mobiles
 
             writer.Write(m_VASTotalMonsterFame);
 
-			#region Mondain's Legacy
-			QuestWriter.Quests(writer, m_Quests);
-			QuestWriter.Chains(writer, m_Chains);
+            #region Mondain's Legacy
+            // Quest save/load moved to Scripts\Services\MondainsLegacyQuests\Helpers\Persistence.cs
+            //QuestWriter.Quests(writer, m_Quests);
+            //QuestWriter.Chains(writer, m_Chains);
 
-			if (m_Collections == null)
+            if (m_Collections == null)
 			{
 				writer.Write(0);
 			}
@@ -5523,15 +5536,29 @@ namespace Server.Mobiles
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public SolenFriendship SolenFriendship { get { return m_SolenFriendship; } set { m_SolenFriendship = value; } }
-		#endregion
+        #endregion
 
-		#region Mondain's Legacy
-		private List<BaseQuest> m_Quests;
+        #region Mondain's Legacy
+        /*private List<BaseQuest> m_Quests;
 		private Dictionary<QuestChain, BaseChain> m_Chains;
 
 		public List<BaseQuest> Quests { get { return m_Quests; } }
+        public Dictionary<QuestChain, BaseChain> Chains { get { return m_Chains; } }*/
+        public List<BaseQuest> Quests
+        {
+            get
+            {
+                return MondainQuestData.GetQuests(this);
+            }
+        }
 
-		public Dictionary<QuestChain, BaseChain> Chains { get { return m_Chains; } }
+        public Dictionary<QuestChain, BaseChain> Chains
+        {
+            get
+            {
+                return MondainQuestData.GetChains(this);
+            }
+        }
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool Peaced

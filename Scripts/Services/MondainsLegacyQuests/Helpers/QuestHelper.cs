@@ -39,40 +39,46 @@ namespace Server.Engines.Quests
 
         public static BaseQuest RandomQuest(PlayerMobile from, Type[] quests, object quester, bool message)
         {
-            if (quests == null || (quests != null && quests.Length == 0))
+            if (quests == null)
                 return null;
-				
-            // give it 10 tries to generate quest
-            for (int i = 0; i < 10; i ++)
-            {
-                BaseQuest quest = Construct(quests[Utility.Random(quests.Length)]) as BaseQuest;
-				
-                if (quest != null)
-                {
-                    quest.Owner = from;
-                    quest.Quester = quester;
 
-                    if (CanOffer(from, quest, message))
+            BaseQuest quest = null;
+
+            if (quester is ITierQuester)
+            {
+                quest = TierQuestInfo.RandomQuest(from, (ITierQuester)quester);
+            }
+            else if (quests.Length > 0)
+            {
+                // give it 10 tries to generate quest
+                for (int i = 0; i < 10; i++)
+                {
+                    quest = Construct(quests[Utility.Random(quests.Length)]) as BaseQuest;
+                }
+            }
+
+            if (quest != null)
+            {
+                quest.Owner = from;
+                quest.Quester = quester;
+
+                if (CanOffer(from, quest, message))
+                {
+                    return quest;
+                }
+                else if (quester is Mobile && message)
+                {
+                    if (quester is MondainQuester)
                     {
-                        return quest;
+                        ((MondainQuester)quester).OnOfferFailed();
                     }
-                    else if (quester is Mobile && message)
+                    else if (quester is Mobile)
                     {
-                        if (quester is MondainQuester)
-                        {
-                            ((MondainQuester)quester).OnOfferFailed();
-                        }
-                        else if (quester is Mobile)
-                        {
-                            ((Mobile)quester).Say(1080107); // I'm sorry, I have nothing for you at this time.
-                        }
+                        ((Mobile)quester).Say(1080107); // I'm sorry, I have nothing for you at this time.
                     }
                 }
-				
-                if (quests.Length == 1)
-                    return null;
             }
-			
+
             return null;
         }
 

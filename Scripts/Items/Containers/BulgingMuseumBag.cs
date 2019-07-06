@@ -10,49 +10,17 @@ namespace Server.Items
         public BulgingMuseumBag()
         {
             DropItem(new Gold(10000));
+            DropItem(new TerMurQuestRewardBook());
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < Utility.RandomMinMax(10, 15); i++)
             {
-                switch (Utility.Random(9))
-                {
-                    case 0:
-                        DropItem(new Amber());
-                        break;
-                    case 1:
-                        DropItem(new Amethyst());
-                        break;
-                    case 2:
-                        DropItem(new Citrine());
-                        break;
-                    case 3:
-                        DropItem(new Ruby());
-                        break;
-                    case 4:
-                        DropItem(new Emerald());
-                        break;
-                    case 5:
-                        DropItem(new Diamond());
-                        break;
-                    case 6:
-                        DropItem(new Sapphire());
-                        break;
-                    case 7:
-                        DropItem(new StarSapphire());
-                        break;
-                    case 8:
-                        DropItem(new Tourmaline());
-                        break;
-                }
+                DropItemStacked(Loot.RandomGem());
             }
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < Utility.RandomMinMax(5, 7); i++)
             {
-                var type = Imbuing.IngredTypes[Utility.Random(Imbuing.IngredTypes.Length)];
-
-                DropItem(Loot.Construct(type));
+                DropItemStacked(Loot.RandomMLResource());
             }
-
-            // TODO: Book http://www.uoguide.com/Ter_Mur_Quest_Reward_Books
         }
 
         public BulgingMuseumBag(Serial serial)
