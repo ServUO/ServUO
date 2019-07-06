@@ -1304,6 +1304,8 @@ namespace Server.Mobiles
                 }, 
                 (EtherealMount)from.Mount);
             }
+
+            from.CheckStatTimers();
         }
 
 		private bool m_NoDeltaRecursion;
