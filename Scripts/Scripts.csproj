@@ -40,6 +40,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -605,6 +606,7 @@
     <Compile Include="Items\Decorative\SilverSaplingReplica.cs" />
     <Compile Include="Items\Decorative\ValentineBear.cs" />
     <Compile Include="Items\Functional\StrangeContraption.cs" />
+    <Compile Include="Items\Quest\RewardBooks.cs" />
     <Compile Include="Items\Resource\FocusingGemOfVirtueBane.cs" />
     <Compile Include="Items\Functional\SerpentsJawbone.cs" />
     <Compile Include="Items\Internal\ItemSockets\Caddellite.cs" />
@@ -746,6 +748,7 @@
     <Compile Include="Items\StoreBought\MysticalPolymorphTotem.cs" />
     <Compile Include="Items\Tools\WhiteLeatherDyeTub.cs" />
     <Compile Include="Misc\Aggression.cs" />
+    <Compile Include="Misc\ArchivedSaves.cs" />
     <Compile Include="Misc\Replacer.cs" />
     <Compile Include="Mobiles\Normal\Triton.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
@@ -754,6 +757,9 @@
     <Compile Include="Quests\The Ritual\Mobiles.cs" />
     <Compile Include="Quests\The Ritual\Puzzle.cs" />
     <Compile Include="Quests\The Ritual\Quests.cs" />
+    <Compile Include="Quests\TieredQuests\PercolemTieredQuests.cs" />
+    <Compile Include="Quests\TieredQuests\ThepemTieredQuests.cs" />
+    <Compile Include="Quests\TieredQuests\ZosilemTieredQuests.cs" />
     <Compile Include="Services\Astronomy\21st Anniversary Gifts\Anniversary21Card.cs" />
     <Compile Include="Services\Astronomy\21st Anniversary Gifts\Anniversary21GiftToken.cs" />
     <Compile Include="Services\Astronomy\21st Anniversary Gifts\AnniversaryBag21st.cs" />
@@ -798,6 +804,8 @@
     <Compile Include="Services\LootGeneration\RunicReforging\Gumps.cs" />
     <Compile Include="Services\LootGeneration\RunicReforging\ReforgingContext.cs" />
     <Compile Include="Services\LootGeneration\RunicReforging\RunicReforging.cs" />
+    <Compile Include="Services\MondainsLegacyQuests\Helpers\Persistence.cs" />
+    <Compile Include="Services\MondainsLegacyQuests\TierQuest.cs" />
     <Compile Include="Services\Plants\PottedCoffeePlant.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\GlovesOfFeudalGrip.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\BritchesOfWarding.cs" />
@@ -2955,12 +2963,10 @@
     <Compile Include="Items\Equipment\Talismans\TalismanofGoblinSlaying.cs" />
     <Compile Include="Mobiles\NPCs\Neville.cs" />
     <Compile Include="Items\Containers\RewardBackpack.cs" />
-    <Compile Include="Quests\Percolem.cs" />
     <Compile Include="Items\Containers\EssenceBox.cs" />
     <Compile Include="Mobiles\NPCs\Sliem.cs" />
     <Compile Include="Quests\TheExodusEncounter\Generate.cs" />
     <Compile Include="Quests\UnusualGoods.cs" />
-    <Compile Include="Quests\AllThatGlitters.cs" />
     <Compile Include="Items\Quest\BouraSkin.cs" />
     <Compile Include="Items\Artifacts\Consumables\ElixirofAgapiteConversion.cs" />
     <Compile Include="Items\Artifacts\Consumables\ElixirofGoldConversion.cs" />
@@ -2971,16 +2977,11 @@
     <Compile Include="Items\Quest\PileofInspectedDullCopperIngots.cs" />
     <Compile Include="Items\Quest\PileofInspectedGoldIngots.cs" />
     <Compile Include="Items\Quest\PileofInspectedShadowIronIngots.cs" />
-    <Compile Include="Quests\MetalHead.cs" />
-    <Compile Include="Quests\PinkistheNewBlack.cs" />
-    <Compile Include="Quests\TastyTreats.cs" />
     <Compile Include="Mobiles\NPCs\Thepem.cs" />
     <Compile Include="Items\Books\GargishDocuments.cs" />
     <Compile Include="Quests\JourneyToTheAthenaeumIsleQuest.cs" />
     <Compile Include="Mobiles\Normal\MinionOfScelestus.cs" />
     <Compile Include="Mobiles\NPCs\Zhah.cs" />
-    <Compile Include="Quests\ArmorUp.cs" />
-    <Compile Include="Quests\DabblingontheDarkSide.cs" />
     <Compile Include="Items\Artifacts\Consumables\ElixirofValoriteConversion.cs" />
     <Compile Include="Items\Artifacts\Consumables\ElixirofVeriteConversion.cs" />
     <Compile Include="Items\Artifacts\Consumables\InfusedAlchemistsGem.cs" />
@@ -2993,10 +2994,6 @@
     <Compile Include="Quests\TreefellowWood.cs" />
     <Compile Include="Quests\UndeadGargoyleMedallions.cs" />
     <Compile Include="Items\Artifacts\Consumables\VialofArmorEssence.cs" />
-    <Compile Include="Quests\PureValorite.cs" />
-    <Compile Include="Quests\TheBrainyAlchemist.cs" />
-    <Compile Include="Quests\TheForbiddenFruit.cs" />
-    <Compile Include="Quests\ToTurnBaseMetalIntoVerite.cs" />
     <Compile Include="Mobiles\NPCs\Zosilem.cs" />
     <Compile Include="Items\Quest\MudPuppy.cs" />
     <Compile Include="Mobiles\NPCs\Xenrr.cs" />
