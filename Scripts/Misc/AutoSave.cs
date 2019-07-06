@@ -156,7 +156,16 @@ namespace Server.Misc
             string saves = Path.Combine(Core.BaseDirectory, "Saves");
 
             if (Directory.Exists(saves))
-                Directory.Move(saves, FormatDirectory(root, m_Backups[m_Backups.Length - 1], GetTimeStamp()));
+            {
+                var saveDir = FormatDirectory(root, m_Backups[m_Backups.Length - 1], GetTimeStamp());
+
+                Directory.Move(saves, saveDir);
+
+                if (ArchivedSaves.Enabled)
+                {
+                    ArchivedSaves.Archive(saveDir);
+                }
+            }
         }
 
         private static DirectoryInfo Match(string[] paths, string match)
@@ -192,9 +201,9 @@ namespace Server.Misc
             return null;
         }
 
-        private static string GetTimeStamp()
+        public static string GetTimeStamp()
         {
-            DateTime now = DateTime.UtcNow;
+            DateTime now = DateTime.Now;
 
             return String.Format("{0}-{1}-{2} {3}-{4:D2}-{5:D2}",
                 now.Day,

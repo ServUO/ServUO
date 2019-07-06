@@ -25,9 +25,13 @@ namespace Server.Engines.Auction
                 Auctions.ForEach(a =>
                 {
                     if (a.OnGoing && a.EndTime < DateTime.Now && !a.InClaimPeriod)
+                    {
                         a.EndAuction();
+                    }
                     else if (a.InClaimPeriod && DateTime.UtcNow > a.ClaimPeriod)
+                    {
                         a.EndClaimPeriod();
+                    }
 
                 });
             });
@@ -522,52 +526,51 @@ namespace Server.Engines.Auction
 
             int version = reader.ReadInt();
 
-            Owner = reader.ReadMobile();
-            AuctionItem = reader.ReadItem();
-            CurrentBid = reader.ReadLong();
-            StartBid = reader.ReadLong();
-            Buyout = reader.ReadLong();
-            Description = reader.ReadString();
-
-            if (version >= 1)
+            switch (version)
             {
-                Duration = reader.ReadInt();
-            }
-            else
-            {
-                int TempDuration = reader.ReadInt();
+                case 2:
+                    ClaimPeriod = reader.ReadDateTime();
+                    goto case 1;
+                case 1:
+                    Owner = reader.ReadMobile();
+                    AuctionItem = reader.ReadItem();
+                    CurrentBid = reader.ReadLong();
+                    StartBid = reader.ReadLong();
+                    Buyout = reader.ReadLong();
+                    Description = reader.ReadString();
+                    Duration = reader.ReadInt();
 
-                Duration = TempDuration == 7 ? 10080 : TempDuration == 5 ? 7200 : 4320;
-            }            
+                    StartTime = reader.ReadDateTime();
+                    OnGoing = reader.ReadBool();
 
-            StartTime = reader.ReadDateTime();
-            OnGoing = reader.ReadBool();
+                    Bids = new List<BidEntry>();
 
-            Bids = new List<BidEntry>();
+                    int count = reader.ReadInt();
+                    for (int i = 0; i < count; i++)
+                    {
+                        PlayerMobile m = reader.ReadMobile() as PlayerMobile;
+                        BidEntry entry = new BidEntry(m, reader);
 
-            int count = reader.ReadInt();
-            for (int i = 0; i < count; i++)
-            {
-                PlayerMobile m = reader.ReadMobile() as PlayerMobile;
-                BidEntry entry = new BidEntry(m, reader);
+                        if (m != null)
+                        {
+                            Bids.Add(entry);
 
-                if (m != null)
-                {
-                    Bids.Add(entry);
+                            if (entry.CurrentBid > 0 && (HighestBid == null || entry.CurrentBid > HighestBid.CurrentBid))
+                                HighestBid = entry;
+                        }
+                    }
 
-                    if (entry.CurrentBid > 0 && (HighestBid == null || entry.CurrentBid > HighestBid.CurrentBid))
-                        HighestBid = entry;
-                }
-            }
+                    count = reader.ReadInt();
 
-            count = reader.ReadInt();
+                    if (count > 0)
+                        BidHistory = new List<HistoryEntry>();
 
-            if (count > 0)
-                BidHistory = new List<HistoryEntry>();
+                    for (int i = 0; i < count; i++)
+                    {
+                        BidHistory.Add(new HistoryEntry(reader));
+                    }
 
-            for (int i = 0; i < count; i++)
-            {
-                BidHistory.Add(new HistoryEntry(reader));
+                    break;
             }
 
             if (HasBegun)
@@ -576,7 +579,9 @@ namespace Server.Engines.Auction
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(1);
+            writer.Write(2);
+
+            writer.Write(ClaimPeriod);
 
             writer.Write(Owner);
             writer.Write(AuctionItem);

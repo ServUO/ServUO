@@ -63,7 +63,7 @@ namespace Server.Engines.Quests
 			return Utility.RandomMinMax(0x898, 0x8B0);
 		}
 
-		private static void ApplyMods(Item item)
+		public static void ApplyMods(Item item)
 		{
 			if (item != null)
 			{

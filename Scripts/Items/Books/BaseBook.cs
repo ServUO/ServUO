@@ -112,6 +112,13 @@ namespace Server.Items
             }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public string BookString
+        {
+            get { return ContentAsString; }
+            set { BuildBookFromString(value); }
+        }
+
         public BookPageInfo[] Pages
         {
             get
@@ -182,7 +189,59 @@ namespace Server.Items
                 return null;
             }
         }
-	
+
+        public void BuildBookFromString(string content)
+        {
+            if (content == null)
+                return;
+
+            const int cpl = 22; //characters per line
+            int pos = 0, nextpos;
+            List<string[]> newpages = new List<string[]>();
+
+            while (newpages.Count < m_Pages.Length && pos < content.Length)
+            {
+                List<string> lines = new List<string>();
+
+                for (int i = 0; i < 8; ++i)
+                {
+                    if (content.Length - pos < cpl)
+                    {
+                        lines.Add(content.Substring(pos));
+                        pos = content.Length;
+                        break;
+                    }
+                    else
+                    {
+                        if ((nextpos = content.LastIndexOfAny(" /|\\.!@#$%^&*()_+=-".ToCharArray(), pos + cpl, cpl)) > 0)
+                        {
+                            lines.Add(content.Substring(pos, (nextpos - pos) + 1));
+                            pos = nextpos + 1;
+                        }
+                        else
+                        {
+                            lines.Add(content.Substring(pos, cpl));
+                            pos += cpl;
+                        }
+                    }
+                }
+
+                newpages.Add(lines.ToArray());
+            }
+
+            for (int i = 0; i < m_Pages.Length; ++i)
+            {
+                if (i < newpages.Count)
+                {
+                    m_Pages[i] = new BookPageInfo(newpages[i]);
+                }
+                else
+                {
+                    m_Pages[i] = new BookPageInfo();
+                }
+            }
+        }
+
         public BaseBook(Serial serial)
             : base(serial)
         {
@@ -333,20 +392,6 @@ namespace Server.Items
             else
                 base.AddNameProperty(list);
         }
-
-        /*public override void GetProperties( ObjectPropertyList list )
-        {
-        base.GetProperties( list );
-
-        if ( m_Title != null && m_Title.Length > 0 )
-        list.Add( 1060658, "Title\t{0}", m_Title ); // ~1_val~: ~2_val~
-
-        if ( m_Author != null && m_Author.Length > 0 )
-        list.Add( 1060659, "Author\t{0}", m_Author ); // ~1_val~: ~2_val~
-
-        if ( m_Pages != null && m_Pages.Length > 0 )
-        list.Add( 1060660, "Pages\t{0}", m_Pages.Length ); // ~1_val~: ~2_val~
-        }*/
 		
         public override void OnSingleClick(Mobile from)
         {

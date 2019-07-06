@@ -169,6 +169,21 @@ namespace Server
 
         public static Type[] GemTypes { get { return m_GemTypes; } }
 
+        private static readonly Type[] m_RareGemTypes =
+        {
+            typeof(BlueDiamond), typeof(DarkSapphire), typeof(EcruCitrine), typeof(FireRuby), typeof(PerfectEmerald), typeof(Turquoise), typeof(WhitePearl), typeof(BrilliantAmber)
+        };
+
+        public static Type[] RareGemTypes { get { return m_RareGemTypes; } }
+
+        private static readonly Type[] m_MLResources =
+{
+            typeof(BlueDiamond), typeof(DarkSapphire), typeof(EcruCitrine), typeof(FireRuby), typeof(PerfectEmerald), typeof(Turquoise), typeof(WhitePearl), typeof(BrilliantAmber),
+            typeof(LuminescentFungi), typeof(BarkFragment), typeof(SwitchItem), typeof(ParasiticPlant), 
+        };
+
+        public static Type[] MLResources { get { return m_MLResources; } }
+
         private static readonly Type[] m_JewelryTypes = new[]
 		{
 			typeof(GoldRing), typeof(GoldBracelet), typeof(SilverRing), typeof(SilverBracelet),
@@ -859,6 +874,16 @@ namespace Server
         public static Item RandomGem()
         {
             return Construct(m_GemTypes);
+        }
+
+        public static Item RandomRareGem()
+        {
+            return Construct(m_RareGemTypes);
+        }
+
+        public static Item RandomMLResource()
+        {
+            return Construct(m_MLResources);
         }
 
         public static Item RandomReagent()

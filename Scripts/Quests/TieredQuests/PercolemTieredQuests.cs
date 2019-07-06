@@ -4,81 +4,34 @@ using Server.Mobiles;
 
 namespace Server.Engines.Quests
 {
-    public class PercolemTheHunterTierOneQuest : BaseQuest
-    { 
-        public PercolemTheHunterTierOneQuest()
+    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierOneQuest")]
+    public class BouraBouraQuest : BaseQuest, ITierQuest
+    {
+        public BouraBouraQuest()
             : base()
-        { 
+        {
             if (0.50 > Utility.RandomDouble())
             {
-                this.AddObjective(new SlayObjective(typeof(LowlandBoura), "Lowland Boura's", 15));
+                AddObjective(new SlayObjective(typeof(LowlandBoura), "Lowland Boura's", 15));
             }
             else
             {
-                this.AddObjective(new SlayObjective(typeof(RuddyBoura), "Ruddy Boura's", 20));
+                AddObjective(new SlayObjective(typeof(RuddyBoura), "Ruddy Boura's", 20));
             }
 
-            this.AddReward(new BaseReward(typeof(DustyAdventurersBackpack), 1113189)); // Dusty Adventurers Backpack
+            AddReward(new BaseReward(typeof(DustyAdventurersBackpack), 1113189)); // Dusty Adventurers Backpack
         }
 
-        public override QuestChain ChainID
-        {
-            get
-            {
-                return QuestChain.PercolemTheHunter;
-            }
-        }
-        ///////////////////////////
-        public override Type NextQuest
-        {
-            get
-            {
-                return typeof(PercolemTheHunterTierOne2Quest);
-            }
-        }
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.FromMinutes(30);
-            }
-        }
+        public TierQuestInfo TierInfo { get { return TierQuestInfo.Percolem; } }
+        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+
         /* Boura,Boura */
-        public override object Title
-        {
-            get
-            {
-                return 1112784;
-            }
-        }
-        public override object Description
-        {
-            get
-            {
-                return 1112798;
-            }
-        }
-        public override object Refuse
-        {
-            get
-            {
-                return 1112799;
-            }
-        }
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1112800;
-            }
-        }
-        public override object Complete
-        {
-            get
-            {
-                return 1112801;
-            }
-        }
+        public override object Title { get { return 1112784; } }
+        public override object Description { get { return 1112798; } }
+        public override object Refuse { get { return 1112799; } }
+        public override object Uncomplete { get { return 1112800; } }
+        public override object Complete { get { return 1112801; } }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -94,37 +47,20 @@ namespace Server.Engines.Quests
         }
     }
 
-    public class PercolemTheHunterTierOne2Quest : BaseQuest
+    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierOne2Quest")]
+    public class RaptorliciousQuest : BaseQuest, ITierQuest
     { 
-        public PercolemTheHunterTierOne2Quest()
+        public RaptorliciousQuest()
             : base()
         { 
-            this.AddObjective(new SlayObjective(typeof(Raptor), "Raptor's", 20));
+            AddObjective(new SlayObjective(typeof(Raptor), "Raptor's", 20));
 
-            this.AddReward(new BaseReward(typeof(DustyAdventurersBackpack), 1113189)); // Dusty Adventurers Backpack
+            AddReward(new BaseReward(typeof(DustyAdventurersBackpack), 1113189)); // Dusty Adventurers Backpack
         }
 
-        public override QuestChain ChainID
-        {
-            get
-            {
-                return QuestChain.PercolemTheHunter;
-            }
-        }
-        public override Type NextQuest
-        {
-            get
-            {
-                return typeof(PercolemTheHunterTierOne3Quest);
-            }
-        }
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.FromMinutes(30);
-            }
-        }
+        public TierQuestInfo TierInfo { get { return TierQuestInfo.Percolem; } }
+        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+
         /* Raptorlicious */
         public override object Title
         {
@@ -176,37 +112,20 @@ namespace Server.Engines.Quests
         }
     }
 
-    public class PercolemTheHunterTierOne3Quest : BaseQuest
+    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierOne3Quest")]
+    public class TheSlithWarsQuest : BaseQuest, ITierQuest
     {
-        public PercolemTheHunterTierOne3Quest()
+        public TheSlithWarsQuest()
             : base()
         { 
-            this.AddObjective(new SlayObjective(typeof(Slith), "Slith's", 20));		
+            AddObjective(new SlayObjective(typeof(Slith), "Slith's", 20));		
 							
-            this.AddReward(new BaseReward(typeof(DustyAdventurersBackpack), 1113189)); // Dusty Adventurers Backpack
+            AddReward(new BaseReward(typeof(DustyAdventurersBackpack), 1113189)); // Dusty Adventurers Backpack
         }
 
-        public override QuestChain ChainID
-        {
-            get
-            {
-                return QuestChain.PercolemTheHunter;
-            }
-        }
-        public override Type NextQuest
-        {
-            get
-            {
-                return typeof(PercolemTheHunterTierTwo1Quest);
-            }
-        }
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.FromMinutes(30);
-            }
-        }
+        public TierQuestInfo TierInfo { get { return TierQuestInfo.Percolem; } }
+        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+
         /* The Slith Wars */
         public override object Title
         {
@@ -258,38 +177,22 @@ namespace Server.Engines.Quests
         }
     }
 
-    /////////////////////////////////////////Tier 2//////////////////////////////////////////
-    public class PercolemTheHunterTierTwo1Quest : BaseQuest
+    // Tier 2
+    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierTwo1Quest")]
+    public class BouraBouraAndMoreBouraQuest : BaseQuest, ITierQuest
     {
-        public PercolemTheHunterTierTwo1Quest()
+        public BouraBouraAndMoreBouraQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(HighPlainsBoura), "High Plains Boura", 20));
+            AddObjective(new SlayObjective(typeof(HighPlainsBoura), "High Plains Boura", 20));
 
-            this.AddReward(new BaseReward(typeof(DustyExplorersBackpack), 1113190)); // Dusty Explorers Backpack
+            AddReward(new BaseReward(typeof(DustyExplorersBackpack), 1113190)); // Dusty Explorers Backpack
         }
 
-        public override QuestChain ChainID
-        {
-            get
-            {
-                return QuestChain.PercolemTheHunter;
-            }
-        }
-        public override Type NextQuest
-        {
-            get
-            {
-                return typeof(PercolemTheHunterTierTwo2Quest);
-            }
-        }
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.FromHours(2);
-            }
-        }
+
+        public TierQuestInfo TierInfo { get { return TierQuestInfo.Percolem; } }
+        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+
         /* Boura, Boura, and more Boura */
         public override object Title
         {
@@ -341,37 +244,21 @@ namespace Server.Engines.Quests
         }
     }
 
-    public class PercolemTheHunterTierTwo2Quest : BaseQuest
+    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierTwo2Quest")]
+    public class RevengeOfTheSlithQuest : BaseQuest, ITierQuest
     {
-        public PercolemTheHunterTierTwo2Quest()
+        public RevengeOfTheSlithQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(ToxicSlith), "Toxic Slith's", 20));
+            AddObjective(new SlayObjective(typeof(ToxicSlith), "Toxic Slith's", 20));
 
-            this.AddReward(new BaseReward(typeof(DustyExplorersBackpack), 1113190)); // Dusty Explorers Backpack
+            AddReward(new BaseReward(typeof(DustyExplorersBackpack), 1113190)); // Dusty Explorers Backpack
         }
 
-        public override QuestChain ChainID
-        {
-            get
-            {
-                return QuestChain.PercolemTheHunter;
-            }
-        }
-        public override Type NextQuest
-        {
-            get
-            {
-                return typeof(PercolemTheHunterTierTwo3Quest);
-            }
-        }
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.FromHours(2);
-            }
-        }
+
+        public TierQuestInfo TierInfo { get { return TierQuestInfo.Percolem; } }
+        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+
         /* Revenge of the Slith */
         public override object Title
         {
@@ -423,38 +310,21 @@ namespace Server.Engines.Quests
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public class PercolemTheHunterTierTwo3Quest : BaseQuest
+    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierTwo3Quest")]
+    public class WeveGotAnAntProblemQuest : BaseQuest, ITierQuest
     {
-        public PercolemTheHunterTierTwo3Quest()
+        public WeveGotAnAntProblemQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(FireAnt), "Fire Ant's", 20));
+            AddObjective(new SlayObjective(typeof(FireAnt), "Fire Ant's", 20));
 
-            this.AddReward(new BaseReward(typeof(DustyExplorersBackpack), 1113190)); // Dusty Explorers Backpack
+            AddReward(new BaseReward(typeof(DustyExplorersBackpack), 1113190)); // Dusty Explorers Backpack
         }
 
-        public override QuestChain ChainID
-        {
-            get
-            {
-                return QuestChain.PercolemTheHunter;
-            }
-        }
-        public override Type NextQuest
-        {
-            get
-            {
-                return typeof(PercolemTheHunterTierTwo4Quest);
-            }
-        }
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.FromHours(2);
-            }
-        }
+
+        public TierQuestInfo TierInfo { get { return TierQuestInfo.Percolem; } }
+        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+
         /* Weve got an Ant Problem */
         public override object Title
         {
@@ -506,37 +376,21 @@ namespace Server.Engines.Quests
         }
     }
 
-    public class PercolemTheHunterTierTwo4Quest : BaseQuest
+    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierTwo4Quest")]
+    public class AmbushingTheAmbushersQuest : BaseQuest, ITierQuest
     {
-        public PercolemTheHunterTierTwo4Quest()
+        public AmbushingTheAmbushersQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(KepetchAmbusher), "Kepetch Ambusher's", 20));////////////////
+            AddObjective(new SlayObjective(typeof(KepetchAmbusher), "Kepetch Ambusher's", 20));////////////////
 
-            this.AddReward(new BaseReward(typeof(DustyExplorersBackpack), 1113190)); // Dusty Explorers Backpack
+            AddReward(new BaseReward(typeof(DustyExplorersBackpack), 1113190)); // Dusty Explorers Backpack
         }
 
-        public override QuestChain ChainID
-        {
-            get
-            {
-                return QuestChain.PercolemTheHunter;
-            }
-        }
-        public override Type NextQuest
-        {
-            get
-            {
-                return typeof(PercolemTheHunterTierThree1Quest);
-            }
-        }
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.FromHours(2);
-            }
-        }
+
+        public TierQuestInfo TierInfo { get { return TierQuestInfo.Percolem; } }
+        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+
         /* Ambushing the Ambusher's */
         public override object Title
         {
@@ -588,38 +442,21 @@ namespace Server.Engines.Quests
         }
     }
 
-    ////////////////////////////////////////Tier 3///////////////////////////////////////
-    public class PercolemTheHunterTierThree1Quest : BaseQuest
+    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierThree1Quest")]
+    public class ItMakesMeSickQuest : BaseQuest, ITierQuest
     {
-        public PercolemTheHunterTierThree1Quest()
+        public ItMakesMeSickQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(PutridUndeadGargoyle), "Putrid Undead Gargoyle's", 20));
+            AddObjective(new SlayObjective(typeof(PutridUndeadGargoyle), "Putrid Undead Gargoyle's", 20));
 
-            this.AddReward(new BaseReward(typeof(DustyHuntersBackpack), 1113191)); // Dusty Hunter's Backpack
+            AddReward(new BaseReward(typeof(DustyHuntersBackpack), 1113191)); // Dusty Hunter's Backpack
         }
 
-        public override QuestChain ChainID
-        {
-            get
-            {
-                return QuestChain.PercolemTheHunter;
-            }
-        }
-        public override Type NextQuest
-        {
-            get
-            {
-                return typeof(PercolemTheHunterTierThree2Quest);
-            }
-        }
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.FromHours(12);
-            }
-        }
+
+        public TierQuestInfo TierInfo { get { return TierQuestInfo.Percolem; } }
+        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+
         /* It Makes Me Sick */
         public override object Title
         {
@@ -671,38 +508,20 @@ namespace Server.Engines.Quests
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public class PercolemTheHunterTierThree2Quest : BaseQuest
+    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierThree2Quest")]
+    public class ItsAMadMadWorldQuest : BaseQuest, ITierQuest
     {
-        public PercolemTheHunterTierThree2Quest()
+        public ItsAMadMadWorldQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(MaddeningHorror), "Maddening Horror's", 20));/////////////
+            AddObjective(new SlayObjective(typeof(MaddeningHorror), "Maddening Horror's", 20));/////////////
 
-            this.AddReward(new BaseReward(typeof(DustyHuntersBackpack), 1113191)); // Dusty Hunter's Backpack
+            AddReward(new BaseReward(typeof(DustyHuntersBackpack), 1113191)); // Dusty Hunter's Backpack
         }
 
-        public override QuestChain ChainID
-        {
-            get
-            {
-                return QuestChain.PercolemTheHunter;
-            }
-        }
-        public override Type NextQuest
-        {
-            get
-            {
-                return typeof(PercolemTheHunterTierThree3Quest);
-            }
-        }
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.FromHours(12);
-            }
-        }
+        public TierQuestInfo TierInfo { get { return TierQuestInfo.Percolem; } }
+        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+
         /* It's A Mad, Mad, World */
         public override object Title
         {
@@ -754,30 +573,20 @@ namespace Server.Engines.Quests
         }
     }
 
-    public class PercolemTheHunterTierThree3Quest : BaseQuest
+    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierThree3Quest")]
+    public class TheDreamersQuest : BaseQuest, ITierQuest
     {
-        public PercolemTheHunterTierThree3Quest()
+        public TheDreamersQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(DreamWraith), "Dream Wraith's", 20));
+            AddObjective(new SlayObjective(typeof(DreamWraith), "Dream Wraith's", 20));
 
-            this.AddReward(new BaseReward(typeof(DustyHuntersBackpack), 1113191)); // Dusty Hunter's Backpack
+            AddReward(new BaseReward(typeof(DustyHuntersBackpack), 1113191)); // Dusty Hunter's Backpack
         }
 
-        public override QuestChain ChainID
-        {
-            get
-            {
-                return QuestChain.PercolemTheHunter;
-            }
-        }
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.FromHours(12);
-            }
-        }
+        public TierQuestInfo TierInfo { get { return TierQuestInfo.Percolem; } }
+        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+
         /* The Dreamer's */
         public override object Title
         {

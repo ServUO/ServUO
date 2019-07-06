@@ -473,6 +473,11 @@ namespace Server.Engines.Quests
                     m_Owner.SendGump(new MondainQuestGump(quest));
             }
 
+            if (this is ITierQuest)
+            {
+                TierQuestInfo.CompleteQuest(Owner, (ITierQuest)this);
+            }
+
             EventSink.InvokeQuestComplete(new QuestCompleteEventArgs(Owner, GetType()));
         }
 
@@ -530,7 +535,7 @@ namespace Server.Engines.Quests
             if (removeChain)
                 m_Owner.Chains.Remove(ChainID);
 			
-            if (Completed && (RestartDelay > TimeSpan.Zero || ForceRemember || DoneOnce) && NextQuest == null)
+            if (Completed && (RestartDelay > TimeSpan.Zero || ForceRemember || DoneOnce) && NextQuest == null && Owner.AccessLevel == AccessLevel.Player)
             {
                 Type type = GetType();	
 				
@@ -541,15 +546,10 @@ namespace Server.Engines.Quests
             }
 			
             QuestHelper.RemoveAcceleratedSkillgain(Owner);
-				
-            for (int i = m_Owner.Quests.Count - 1; i >= 0; i --)
+
+            if (m_Owner.Quests.Contains(this))
             {
-                if (m_Owner.Quests[i] == this)
-                {
-                    m_Owner.Quests.RemoveAt(i);
-					
-                    break;
-                }
+                m_Owner.Quests.Remove(this);
             }
         }
 

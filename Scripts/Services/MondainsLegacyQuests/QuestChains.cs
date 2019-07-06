@@ -23,7 +23,7 @@ namespace Server.Engines.Quests
 		Spellweaving = 13,
 		SpellweavingS = 14,
 		UnfadingMemories = 15,
-		PercolemTheHunter = 16,
+		Empty = 16,
 		KingVernixQuests = 17,
 		DoughtyWarriors = 18,
 		HonorOfDeBoors = 19,
