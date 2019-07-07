@@ -22,7 +22,7 @@ namespace Server.Mobiles
             SetInt(373, 435);
 
             SetDamage(18, 21);
-            SetHits(5300, 5400);
+            SetHits(5300, 6000);
 
             SetResistance(ResistanceType.Physical, 80, 90);
             SetResistance(ResistanceType.Fire, 60, 70);
@@ -92,7 +92,7 @@ namespace Server.Mobiles
 
                 base.OnAfterTame(tamer);
 
-                SetHits(hits / 4);
+                SetHits(hits / 8);
             }
             else
             {
@@ -138,7 +138,7 @@ namespace Server.Mobiles
             {
                 if (Controlled)
                 {
-                    SetHits(HitsMax / 4);
+                    SetHits(HitsMax / 8);
                 }
 
                 SetAreaEffect(AreaEffect.PoisonBreath);
