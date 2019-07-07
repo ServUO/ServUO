@@ -674,19 +674,27 @@ namespace Server.Engines.Shadowguard
 
                 if (encounter == null)
                 {
-                    StormLevelGump menu = new StormLevelGump(m);
-                    menu.BeginClose();
-                    m.SendGump(menu);
+                    Timer.DelayCall(TimeSpan.FromSeconds(1), mob =>
+                    {
+                        ShadowguardEncounter.MovePlayer(mob, Instance.KickLocation, true);
+                        /*StormLevelGump menu = new StormLevelGump(mob);
+                        menu.BeginClose();
+                        mob.SendGump(menu);*/
+                    }, m);
                 }
                 else if (m != encounter.PartyLeader)
                 {
                     Party p = Party.Get(encounter.PartyLeader);
 
-                    if (p == null || !p.Contains(m))
+                    if (m is PlayerMobile && !encounter.Participants.Contains((PlayerMobile)m))
                     {
-                        StormLevelGump menu = new StormLevelGump(m);
-                        menu.BeginClose();
-                        m.SendGump(menu);
+                        Timer.DelayCall(TimeSpan.FromSeconds(1), mob =>
+                        {
+                            ShadowguardEncounter.MovePlayer(mob, Instance.KickLocation, true);
+                            /*StormLevelGump menu = new StormLevelGump(mob);
+                            menu.BeginClose();
+                            mob.SendGump(menu);*/
+                        }, m);
                     }
                 }
             }

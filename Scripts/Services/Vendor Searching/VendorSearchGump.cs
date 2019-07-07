@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Globalization;
 
 using Server;
 using Server.Items;
 using Server.Mobiles;
-using System.Globalization;
 using Server.Gumps;
-using System.Threading.Tasks;
 
 namespace Server.Engines.VendorSearching
 {
@@ -354,28 +354,6 @@ namespace Server.Engines.VendorSearching
         public override void OnResponse(RelayInfo info)
         {
             m_PollingTimer.Stop();
-        }
-    }
-
-    public class TaskPollingTimer<T> : Timer
-    {
-        private Task<T> m_Task;
-        private Action<T> m_Callback;
-
-        public TaskPollingTimer(Task<T> task, Action<T> callback)
-            : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
-        {
-            m_Task = task;
-            m_Callback = callback;
-        }
-
-        protected override void OnTick()
-        {
-            if (m_Task.IsCompleted)
-            {
-                m_Callback(m_Task.Result);
-                Stop();
-            }
         }
     }
 
