@@ -413,7 +413,7 @@ namespace Server.Mobiles
 
         public static void LoadDefinitions()
         {
-            #region Special Ability Defs
+            #region Special Ability Packages
             SpecialAbilityNone = new SpecialAbility[] { };
 
             SpecialAbilityMagical1 = new SpecialAbility[]
@@ -605,7 +605,7 @@ namespace Server.Mobiles
             };
             #endregion
 
-            #region Area Effect Defs
+            #region Area Effect Packages
             AreaEffectNone = new AreaEffect[] { };
 
             AreaEffectExplosiveGoo = new AreaEffect[]
@@ -647,7 +647,7 @@ namespace Server.Mobiles
             };
             #endregion
 
-            #region Creature Training Definitions
+            #region Creature Training Defs
             Definitions = new TrainingDefinition[]
             {
                 new TrainingDefinition(typeof(Alligator), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 4),  
