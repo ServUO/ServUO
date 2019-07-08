@@ -81,6 +81,8 @@ namespace Server.Engines.Shadowguard
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active { get { return Controller != null && Controller.Encounters.Contains(this); } }
 
+        public List<PlayerMobile> Participants { get; private set; } = new List<PlayerMobile>();
+
 		public ShadowguardEncounter(EncounterType encounter, ShadowguardInstance instance = null)
 		{
 			Encounter = encounter;
@@ -234,6 +236,11 @@ namespace Server.Engines.Shadowguard
 
 			MovePlayer(m, p);
             m.CloseGump(typeof(ShadowguardGump));
+
+            if (m is PlayerMobile)
+            {
+                Participants.Add((PlayerMobile)m);
+            }
 		}
 		
 		public void DoWarning()
@@ -312,6 +319,11 @@ namespace Server.Engines.Shadowguard
                 m =>
 			    {
 				    MovePlayer(m, Controller.KickLocation, false);
+
+                    if (m is PlayerMobile && Participants.Contains((PlayerMobile)m))
+                    {
+                        Participants.Remove((PlayerMobile)m);
+                    }
 			    });
 		}
 
@@ -374,7 +386,9 @@ namespace Server.Engines.Shadowguard
 		
 		public virtual void Serialize(GenericWriter writer)
 		{
-			writer.Write(1);
+			writer.Write(2);
+
+            writer.WriteMobileList<PlayerMobile>(Participants);
 
             writer.WriteDeltaTime(StartTime);
             writer.Write(Completed);
@@ -391,6 +405,9 @@ namespace Server.Engines.Shadowguard
 
             switch (version)
             {
+                case 2:
+                    Participants = reader.ReadStrongMobileList<PlayerMobile>();
+                    goto case 1;
                 case 1:
                     StartTime = reader.ReadDeltaTime();
                     Completed = reader.ReadBool();

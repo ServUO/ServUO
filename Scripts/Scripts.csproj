@@ -750,6 +750,7 @@
     <Compile Include="Misc\Aggression.cs" />
     <Compile Include="Misc\ArchivedSaves.cs" />
     <Compile Include="Misc\Replacer.cs" />
+    <Compile Include="Misc\TaskPollingTimer.cs" />
     <Compile Include="Mobiles\Normal\Triton.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
     <Compile Include="Multis\ContestHouses.cs" />

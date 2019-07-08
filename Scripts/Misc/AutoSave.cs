@@ -163,7 +163,7 @@ namespace Server.Misc
 
                 if (ArchivedSaves.Enabled)
                 {
-                    ArchivedSaves.Archive(saveDir);
+                    ArchivedSaves.RunArchive(saveDir);
                 }
             }
         }
