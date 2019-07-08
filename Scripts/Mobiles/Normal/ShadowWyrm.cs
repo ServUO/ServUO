@@ -48,6 +48,8 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 5;
             MinTameSkill = 105.0;
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public ShadowWyrm(Serial serial)
@@ -57,7 +59,6 @@ namespace Server.Mobiles
 
         public override bool CanAngerOnTame { get { return true; } }
         public override bool ReacquireOnMovement { get { return !Controlled; } }
-        public override bool HasBreath { get { return true; } } // fire breath enabled
         public override bool AutoDispel { get { return !Controlled; } }
         public override Poison PoisonImmune { get { return Poison.Deadly; } }
         public override Poison HitPoison { get { return Poison.Deadly; } }

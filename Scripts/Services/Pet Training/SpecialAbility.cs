@@ -115,7 +115,12 @@ namespace Server.Mobiles
             {
                 SpecialAbility ability = null;
 
-                var abilties = profile.EnumerateSpecialAbilities().Where(m => m.TriggerOnThink && !m.IsInCooldown(bc) && !m.RequiresCombatant).ToArray();
+                var abilties =
+                    profile.EnumerateSpecialAbilities().Where(
+                        m =>
+                        m.TriggerOnThink &&
+                        !m.IsInCooldown(bc) &&
+                        !m.RequiresCombatant).ToArray();
 
                 if (abilties != null && abilties.Length > 0)
                 {
@@ -192,14 +197,46 @@ namespace Server.Mobiles
 		{
 			_Cooldown.Remove(m);
 		}
-		
+
+        public static SpecialAbility[] Abilities { get { return _Abilities; } }
+        private static SpecialAbility[] _Abilities;
+
+        static SpecialAbility()
+        {
+            _Abilities = new SpecialAbility[25];
+
+            _Abilities[0] = new AngryFire();
+            _Abilities[1] = new ConductiveBlast();
+            _Abilities[2] = new DragonBreath();
+            _Abilities[3] = new GraspingClaw();
+            _Abilities[4] = new Inferno();
+            _Abilities[5] = new LightningForce();
+            _Abilities[6] = new ManaDrain();
+            _Abilities[7] = new RagingBreath();
+            _Abilities[8] = new Repel();
+            _Abilities[9] = new SearingWounds();
+            _Abilities[10] = new StealLife();
+
+            _Abilities[11] = new VenomousBite();
+            _Abilities[12] = new ViciousBite();
+            _Abilities[13] = new RuneCorruption();
+            _Abilities[14] = new LifeLeech();
+            _Abilities[15] = new StickySkin();
+            _Abilities[16] = new TailSwipe();
+            _Abilities[17] = new FlurryForce();
+            _Abilities[18] = new Rage();
+            _Abilities[19] = new Heal();
+            _Abilities[20] = new HowlOfCacophony();
+            _Abilities[21] = new Webbing();
+            _Abilities[22] = new Anemia();
+            _Abilities[23] = new BloodDisease();
+            _Abilities[24] = new PoisonSpit();
+        }
+
 		public static SpecialAbility AngryFire
         {
             get
             {
-                if (_Abilities[0] == null)
-                    _Abilities[0] = new AngryFire();
-
                 return _Abilities[0];
             }
         }
@@ -208,9 +245,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[1] == null)
-                    _Abilities[1] = new ConductiveBlast();
-
                 return _Abilities[1];
             }
         }
@@ -219,9 +253,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[2] == null)
-                    _Abilities[2] = new DragonBreath();
-
                 return _Abilities[2];
             }
         }
@@ -230,9 +261,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[3] == null)
-                    _Abilities[3] = new GraspingClaw();
-
                 return _Abilities[3];
             }
         }
@@ -241,9 +269,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[4] == null)
-                    _Abilities[4] = new Inferno();
-
                 return _Abilities[4];
             }
         }
@@ -252,9 +277,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[5] == null)
-                    _Abilities[5] = new LightningForce();
-
                 return _Abilities[5];
             }
         }
@@ -263,9 +285,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[6] == null)
-                    _Abilities[6] = new ManaDrain();
-
                 return _Abilities[6];
             }
         }
@@ -274,9 +293,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[7] == null)
-                    _Abilities[7] = new RagingBreath();
-
                 return _Abilities[7];
             }
         }
@@ -285,9 +301,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[8] == null)
-                    _Abilities[8] = new Repel();
-
                 return _Abilities[8];
             }
         }
@@ -296,9 +309,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[9] == null)
-                    _Abilities[9] = new SearingWounds();
-
                 return _Abilities[9];
             }
         }
@@ -307,9 +317,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[10] == null)
-                    _Abilities[10] = new StealLife();
-
                 return _Abilities[10];
             }
         }
@@ -318,9 +325,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[13] == null)
-                    _Abilities[13] = new RuneCorruption();
-
                 return _Abilities[13];
             }
         }
@@ -329,9 +333,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[14] == null)
-                    _Abilities[14] = new LifeLeech();
-
                 return _Abilities[14];
             }
         }
@@ -340,9 +341,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[15] == null)
-                    _Abilities[15] = new StickySkin();
-
                 return _Abilities[15];
             }
         }
@@ -351,9 +349,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[16] == null)
-                    _Abilities[16] = new TailSwipe();
-
                 return _Abilities[16];
             }
         }
@@ -362,9 +357,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[11] == null)
-                    _Abilities[11] = new VenomousBite();
-
                 return _Abilities[11];
             }
         }
@@ -373,9 +365,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[12] == null)
-                    _Abilities[12] = new ViciousBite();
-
                 return _Abilities[12];
             }
         }
@@ -384,9 +373,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[17] == null)
-                    _Abilities[17] = new FlurryForce();
-
                 return _Abilities[17];
             }
         }
@@ -395,9 +381,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[18] == null)
-                    _Abilities[18] = new Rage();
-
                 return _Abilities[18];
             }
         }
@@ -406,9 +389,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[19] == null)
-                    _Abilities[19] = new Heal();
-
                 return _Abilities[19];
             }
         }
@@ -417,9 +397,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[20] == null)
-                    _Abilities[20] = new HowlOfCacophony();
-
                 return _Abilities[20];
             }
         }
@@ -428,9 +405,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[21] == null)
-                    _Abilities[21] = new Webbing();
-
                 return _Abilities[21];
             }
         }
@@ -439,9 +413,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[22] == null)
-                    _Abilities[22] = new Anemia();
-
                 return _Abilities[22];
             }
         }
@@ -450,15 +421,17 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[23] == null)
-                    _Abilities[23] = new BloodDisease();
-
                 return _Abilities[23];
             }
         }
 
-        public static SpecialAbility[] Abilities { get { return _Abilities; } }
-        private static SpecialAbility[] _Abilities = new SpecialAbility[24];
+        public static SpecialAbility PoisonSpit
+        {
+            get
+            {
+                return _Abilities[24];
+            }
+        }
     }
 	
 	public class AngryFire : SpecialAbility
@@ -642,21 +615,20 @@ namespace Server.Mobiles
             }
         }
     }
-	
-	public class DragonBreath : SpecialAbility
-	{
-        public override int MaxRange { get { return 12; } }
 
+    public class DragonBreath : SpecialAbility
+    {
+        public override int MaxRange { get { return 12; } }
         public override bool TriggerOnThink { get { return true; } }
-        
-		public DragonBreath()
-		{
-		}
-		
-		public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
-		{
-            creature.BreathStart(defender);
-		}
+
+        public DragonBreath()
+        {
+        }
+
+        public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
+        {
+            DoBreath(creature, defender);
+        }
 
         public override void AddToCooldown(BaseCreature m)
         {
@@ -665,11 +637,492 @@ namespace Server.Mobiles
                 if (_Cooldown == null)
                     _Cooldown = new List<Mobile>();
 
+                var def = DragonBreathDefinition.GetDefinition(m);
+
                 _Cooldown.Add(m);
-                Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(Utility.RandomMinMax(m.BreathMinDelay, m.BreathMaxDelay)), RemoveFromCooldown, m);
+                Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(Utility.RandomMinMax(def.MinDelay, def.MaxDelay)), RemoveFromCooldown, m);
             }
         }
-	}
+
+        public virtual void DoBreath(BaseCreature creature, Mobile target)
+        {
+            var def = DragonBreathDefinition.GetDefinition(creature);
+
+            creature.RevealingAction();
+
+            if (creature.AIObject != null)
+            {
+                creature.AIObject.NextMove = Core.TickCount + (int)(def.StallTime * 1000);
+            }
+
+            creature.PlaySound(creature.GetAngerSound());
+
+            if (Core.SA)
+            {
+                creature.Animate(AnimationType.Pillage, 0);
+            }
+            else
+            {
+                creature.Animate(def.AngerAnimation, 5, 1, true, false, 0);
+            }
+
+            creature.Direction = creature.GetDirectionTo(target);
+
+            if (def.AttacksMultipleTargets)
+            {
+                var list = Server.Spells.SpellHelper.AcquireIndirectTargets(creature, target, creature.Map, 5).OfType<Mobile>().Where(m => m.InRange(creature.Location, MaxRange)).ToList();
+
+                for (int i = 0; i < 5; i++)
+                {
+                    if (list.Count == 0)
+                        break;
+
+                    var m = i == 0 ? target : list[Utility.Random(list.Count)];
+
+                    list.Remove(m);
+                    Timer.DelayCall(TimeSpan.FromSeconds(def.EffectDelay), new TimerStateCallback<BaseCreature, Mobile, DragonBreathDefinition>(BreathEffect_Callback), creature, m, def);
+                }
+
+                ColUtility.Free(list);
+            }
+            else
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(def.EffectDelay), new TimerStateCallback<BaseCreature, Mobile, DragonBreathDefinition>(BreathEffect_Callback), creature, target, def);
+            }
+        }
+
+        public void BreathEffect_Callback(BaseCreature creature, Mobile target, DragonBreathDefinition def)
+        {
+            creature.RevealingAction();
+
+            if (!target.Alive || !creature.CanBeHarmful(target))
+            {
+                return;
+            }
+
+            creature.PlaySound(def.EffectSound);
+
+            Effects.SendMovingEffect(
+                creature,
+                target,
+                def.EffectItemID,
+                def.EffectSpeed,
+                def.EffectDuration,
+                def.EffectFixedDir,
+                def.EffectExplodes,
+                def.EffectHue,
+                def.EffectRenderMode);
+
+            Timer.DelayCall(TimeSpan.FromSeconds(def.DamageDelay), new TimerStateCallback<BaseCreature, Mobile, DragonBreathDefinition>(BreathDamage_Callback), creature, target, def);
+        }
+
+        public void BreathDamage_Callback(BaseCreature creature, Mobile target, DragonBreathDefinition def)
+        {
+            if (target is BaseCreature && ((BaseCreature)target).BreathImmune)
+            {
+                return;
+            }
+
+            if (creature.CanBeHarmful(target))
+            {
+                creature.DoHarmful(target);
+                BreathDealDamage(creature, target, def);
+            }
+        }
+
+        public void BreathDealDamage(BaseCreature creature, Mobile target, DragonBreathDefinition def)
+        {
+            if (!Server.Spells.Bushido.Evasion.CheckSpellEvasion(target))
+            {
+                AOS.Damage(
+                    target,
+                    creature,
+                    BreathComputeDamage(creature, def),
+                    def.GetElementalDamage(creature, ElementType.Physical),
+                    def.GetElementalDamage(creature, ElementType.Fire),
+                    def.GetElementalDamage(creature, ElementType.Cold),
+                    def.GetElementalDamage(creature, ElementType.Poison),
+                    def.GetElementalDamage(creature, ElementType.Energy),
+                    def.GetElementalDamage(creature, ElementType.Chaos),
+                    def.GetElementalDamage(creature, ElementType.Direct));
+            }
+        }
+
+        public int BreathComputeDamage(BaseCreature creature, DragonBreathDefinition def)
+        {
+            int damage = (int)(creature.Hits * def.DamageScalar);
+
+            if (creature.IsParagon)
+            {
+                damage = (int)(damage / Paragon.HitsBuff);
+            }
+
+            if (damage > 200)
+            {
+                damage = 200;
+            }
+
+            return damage;
+        }
+
+        public class DragonBreathDefinition
+        {
+            public Type[] Uses { get; private set; }
+
+            // Base damage given is: CurrentHitPoints * BreathDamageScalar
+            public double DamageScalar { get; private set; }
+
+            // Creature stops moving for 1.0 seconds while breathing
+            public double StallTime { get; private set; }
+
+            // Effect is sent 1.3 seconds after BreathAngerSound and BreathAngerAnimation is played
+            public double EffectDelay { get; private set; }
+
+            // Damage is given 1.0 seconds after effect is sent
+            public double DamageDelay { get; private set; }
+
+            // Damage types
+            public int PhysicalDamage { get; private set; }
+            public int FireDamage { get; private set; }
+            public int ColdDamage { get; private set; }
+            public int PoisonDamage { get; private set; }
+            public int EnergyDamage { get; private set; }
+            public int ChaosDamage { get; private set; }
+            public int DirectDamage { get; private set; }
+
+            public double MinDelay { get; private set; }
+            public double MaxDelay { get; private set; }
+
+            // Effect details and sound
+            public int EffectItemID { get; private set; }
+            public int EffectSpeed { get; private set; }
+            public int EffectDuration { get; private set; }
+            public bool EffectExplodes { get; private set; }
+            public bool EffectFixedDir { get; private set; }
+            public int EffectHue { get; private set; }
+            public int EffectRenderMode { get; private set; }
+
+            public int EffectSound { get; private set; }
+
+            // Anger sound/animations
+            public int AngerAnimation { get; private set; }
+
+            public bool AttacksMultipleTargets { get; private set; }
+
+            public static List<DragonBreathDefinition> Definitions { get; private set; } = new List<DragonBreathDefinition>();
+
+            public static void Initialize()
+            {
+                Definitions.Add(new DragonBreathDefinition(
+                    Core.AOS ? 0.16 : 0.05,
+                    1.0,
+                    1.3,
+                    1.0,
+                    0, 100, 0, 0, 0, 0, 0,
+                    30.0, 45.0,
+                    0x36D4,
+                    5,
+                    0,
+                    false,
+                    false,
+                    0,
+                    0,
+                    0x227,
+                    12));
+
+                // Skeletal Dragon / Renowned
+                Definitions.Add(new DragonBreathDefinition(
+                    Core.AOS ? 0.16 : 0.05,
+                    1.0,
+                    1.3,
+                    1.0,
+                    0, 0, 100, 0, 0, 0, 0,
+                    30.0, 45.0,
+                    0x36D4,
+                    5,
+                    0,
+                    false,
+                    false,
+                    0x480,
+                    0,
+                    0x227,
+                    12,
+                    false,
+                    new Type[] { typeof(SkeletalDragonRenowned), typeof(SkeletalDragon) }));
+
+                // Leviathan
+                Definitions.Add(new DragonBreathDefinition(
+                    0.05,
+                    1.0,
+                    1.3,
+                    1.0,
+                    70, 0, 30, 0, 0, 0, 0,
+                    5.0, 7.5,
+                    0x36D4,
+                    5,
+                    0,
+                    false,
+                    false,
+                    0x1ED,
+                    0,
+                    0x227,
+                    12,
+                    false,
+                    new Type[] { typeof(Leviathan) }));
+
+                // Red Death
+                Definitions.Add(new DragonBreathDefinition(
+                    0.16,
+                    1.0,
+                    1.3,
+                    1.0,
+                    0, 0, 0, 0, 0, 100, 0,
+                    5.0, 7.5,
+                    0x36D4,
+                    5,
+                    0,
+                    false,
+                    false,
+                    0x1ED,
+                    0,
+                    0x227,
+                    12,
+                    false,
+                    new Type[] { typeof(RedDeath) }));
+
+                // Frost Dragon/Drake
+                Definitions.Add(new DragonBreathDefinition(
+                    Core.AOS ? 0.16 : 0.05,
+                    1.0,
+                    1.3,
+                    1.0,
+                    0, 0, 100, 0, 0, 0, 0,
+                    30.0, 45.0,
+                    0x36D4,
+                    5,
+                    0,
+                    false,
+                    false,
+                    1264,
+                    0,
+                    0x227,
+                    12,
+                    false,
+                    new Type[] { typeof(FrostDragon), typeof(ColdDrake) }));
+
+                // Antlion
+                Definitions.Add(new DragonBreathDefinition(
+                    Core.AOS ? 0.16 : 0.05,
+                    1.0,
+                    1.3,
+                    1.0,
+                    0, 0, 0, 100, 0, 0, 0,
+                    30.0, 45.0,
+                    0x36D4,
+                    5,
+                    0,
+                    false,
+                    false,
+                    0x3F,
+                    0,
+                    0,
+                    12,
+                    false,
+                    new Type[] { typeof(AntLion) }));
+
+                // Rend
+                Definitions.Add(new DragonBreathDefinition(
+                    0.06,
+                    1.0,
+                    1.3,
+                    1.0,
+                    0, 100, 0, 0, 0, 0, 0,
+                    30.0, 45.0,
+                    0x36D4,
+                    5,
+                    0,
+                    false,
+                    false,
+                    0,
+                    0,
+                    0x227,
+                    12,
+                    false,
+                    new Type[] { typeof(Rend) }));
+
+                // Crystal Sea Serpent
+                Definitions.Add(new DragonBreathDefinition(
+                   0.55,
+                   1.0,
+                   1.3,
+                   1.0,
+                   0, 0, 50, 0, 50, 0, 0,
+                   30.0, 45.0,
+                   0x36D4,
+                   5,
+                   0,
+                   false,
+                   false,
+                   0x1ED,
+                   0,
+                   0x227,
+                   12,
+                   false,
+                   new Type[] { typeof(CrystalSeaSerpent) }));
+
+                // Crystal Hydra
+                Definitions.Add(new DragonBreathDefinition(
+                    0.13,
+                    1.0,
+                    1.3,
+                    1.0,
+                    0, 0, 100, 0, 0, 0, 0,
+                    5.0, 7.0,
+                    0x36D4,
+                    5,
+                    0,
+                    false,
+                    false,
+                    0x47E,
+                    0,
+                    0x56D,
+                    12,
+                    true,
+                    new Type[] { typeof(CrystalHydra) }));
+            }
+
+            public static DragonBreathDefinition GetDefinition(BaseCreature bc)
+            {
+                var def = Definitions.FirstOrDefault(d => d.Uses != null && d.Uses.Any(type => type == bc.GetType()));
+
+                if (def == null)
+                {
+                    return Definitions[0]; // default
+                }
+
+                return def;
+            }
+
+            public DragonBreathDefinition(
+                double scalar,
+                double stallTime,
+                double effectDelay,
+                double damageDelay,
+                int physDamage, int fireDamage, int coldDamage, int poisonDamage, int energyDamage, int chaosDamage, int directDamage,
+                double minDelay, double maxDelay,
+                int effectID,
+                int effectDuration,
+                int effectSpeed,
+                bool explodes,
+                bool fixedDirection,
+                int effectHue,
+                int renderMode,
+                int effectSound,
+                int angerAnimation,
+                bool attacksMultiples = false,
+                Type[] uses = null)
+            {
+                DamageScalar = scalar;
+                StallTime = stallTime;
+                EffectDelay = effectDelay;
+                DamageDelay = damageDelay;
+
+                PhysicalDamage = physDamage;
+                FireDamage = fireDamage;
+                ColdDamage = coldDamage;
+                PoisonDamage = poisonDamage;
+                EnergyDamage = energyDamage;
+                ChaosDamage = chaosDamage;
+                DirectDamage = directDamage;
+
+                MinDelay = minDelay;
+                MaxDelay = maxDelay;
+
+                EffectItemID = effectID;
+                EffectSpeed = effectDuration;
+                EffectExplodes = explodes;
+                EffectFixedDir = fixedDirection;
+                EffectHue = effectHue;
+                EffectRenderMode = renderMode;
+                EffectSound = effectSound;
+                AngerAnimation = angerAnimation;
+                AttacksMultipleTargets = attacksMultiples;
+
+                Uses = uses;
+            }
+
+            public int GetElementalDamage(BaseCreature bc, ElementType element)
+            {
+                switch (element)
+                {
+                    default:
+                    case ElementType.Physical:
+                        if (bc is IElementalCreature)
+                        {
+                            return ((IElementalCreature)bc).ElementType == ElementType.Physical ? 100 : 0;
+                        }
+                        else
+                        {
+                            return PhysicalDamage;
+                        }
+                    case ElementType.Fire:
+                        if (bc is IElementalCreature)
+                        {
+                            return ((IElementalCreature)bc).ElementType == ElementType.Fire ? 100 : 0;
+                        }
+                        else
+                        {
+                            return FireDamage;
+                        }
+                    case ElementType.Cold:
+                        if (bc is IElementalCreature)
+                        {
+                            return ((IElementalCreature)bc).ElementType == ElementType.Cold ? 100 : 0;
+                        }
+                        else
+                        {
+                            return ColdDamage;
+                        }
+                    case ElementType.Poison:
+                        if (bc is IElementalCreature)
+                        {
+                            return ((IElementalCreature)bc).ElementType == ElementType.Poison ? 100 : 0;
+                        }
+                        else
+                        {
+                            return PoisonDamage;
+                        }
+                    case ElementType.Energy:
+                        if (bc is IElementalCreature)
+                        {
+                            return ((IElementalCreature)bc).ElementType == ElementType.Energy ? 100 : 0;
+                        }
+                        else
+                        {
+                            return EnergyDamage;
+                        }
+                    case ElementType.Chaos:
+                        if (bc is IElementalCreature)
+                        {
+                            return ((IElementalCreature)bc).ElementType == ElementType.Chaos ? 100 : 0;
+                        }
+                        else
+                        {
+                            return ChaosDamage;
+                        }
+                    case ElementType.Direct:
+                        if (bc is IElementalCreature)
+                        {
+                            return ((IElementalCreature)bc).ElementType == ElementType.Direct ? 100 : 0;
+                        }
+                        else
+                        {
+                            return DirectDamage;
+                        }
+                }
+            }
+        }
+    }
 
     public class HowlOfCacophony : SpecialAbility
     {
@@ -1900,6 +2353,32 @@ namespace Server.Mobiles
         public override void DoEffects(BaseCreature creature, Mobile target, ref int damage)
         {
             creature.CheckHeal();
+        }
+    }
+
+    public class PoisonSpit : SpecialAbility
+    {
+        public override bool TriggerOnGotMeleeDamage { get { return true; } }
+        public override bool TriggerOnGotSpellDamage { get { return true; } }
+        public override int MaxRange { get { return 10; } }
+
+        public override bool NaturalAbility { get { return true; } }
+        public override int ManaCost { get { return 0; } }
+
+        public PoisonSpit()
+        {
+        }
+
+        public override void DoEffects(BaseCreature creature, Mobile target, ref int damage)
+        {
+            Effects.SendMovingEffect(creature, target, 0x36D4, 5, 0, false, true, 63, 0);
+
+            Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+            {
+                creature.DoHarmful(target);
+                target.ApplyPoison(creature, creature.HitPoison ?? Poison.Regular);
+                target.SendLocalizedMessage(1070821, creature.Name); // ~1_CREATURE~ spits a poisonous substance at you!
+            });
         }
     }
 }

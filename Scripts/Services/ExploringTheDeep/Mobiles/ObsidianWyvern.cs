@@ -58,6 +58,8 @@ namespace Server.Mobiles
 
             Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
             SelfDeleteTimer.Start();
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public static ObsidianWyvern Spawn(Point3D platLoc, Map platMap)
@@ -129,7 +131,6 @@ namespace Server.Mobiles
             base.OnDeath(c);
         }
 
-        public override bool HasBreath { get { return true; } }
         public override bool ReacquireOnMovement { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Deadly; } }
         public override Poison HitPoison { get { return Poison.Deadly; } }

@@ -42,6 +42,8 @@ namespace Server.Mobiles
             Karma = -22500;
 
             VirtualArmor = 80;
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public SkeletalDragon(Serial serial)
@@ -51,12 +53,8 @@ namespace Server.Mobiles
 
         public override bool AutoDispel { get { return !Controlled; } }
         public override bool BleedImmune { get { return true; } }
-        public override bool HasBreath { get { return true; } } // fire breath enabled
         public override bool ReacquireOnMovement { get { return !Controlled; } }
         public override double BonusPetDamageScalar { get { return (Core.SE) ? 3.0 : 1.0; } }
-        public override int BreathFireDamage { get { return 0; } }
-        public override int BreathColdDamage { get { return 100; } }
-        public override int BreathEffectHue { get { return 0x480; } }
         public override int Hides { get { return 20; } }
         public override int Meat { get { return 19; } } // where's it hiding these? :)
         public override HideType HideType { get { return HideType.Barbed; } }

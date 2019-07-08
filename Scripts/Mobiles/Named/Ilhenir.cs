@@ -65,7 +65,9 @@ namespace Server.Mobiles
                 PackTalismans(5);
             }
 
-            AddItem(new Gold(2000, 2500));
+            PackGold(2000, 2500);
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public Ilhenir(Serial serial)
@@ -117,8 +119,7 @@ namespace Server.Mobiles
         public override bool Unprovokable { get { return true; } }
         public override bool Uncalmable { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
-        public override int TreasureMapLevel { get { return 5; } }
-        public override bool HasBreath { get { return true; } }       
+        public override int TreasureMapLevel { get { return 5; } }   
 
         public virtual void PackTalismans(int amount)
         {

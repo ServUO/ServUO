@@ -50,6 +50,7 @@ namespace Server.Mobiles
             MinTameSkill = 105.0;
 
             SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public override void GenerateLoot()
@@ -75,11 +76,6 @@ namespace Server.Mobiles
         public override HideType HideType { get { return HideType.Barbed; } }
         public override int DragonBlood { get { return 8; } }
         public override FoodType FavoriteFood { get { return FoodType.Meat; } }
-
-        public override bool HasBreath { get { return true; } } // fire breath enabled
-        public override int BreathFireDamage { get { return 0; } }
-        public override int BreathColdDamage { get { return 100; } }
-        public override int BreathEffectHue { get { return 1264; } }
 
         public override int AuraBaseDamage { get { return 10; } }
         public override bool HasAura { get { return true; } }

@@ -44,6 +44,7 @@ namespace Server.Mobiles
             SetSpecialAbility(SpecialAbility.GraspingClaw);
             SetWeaponAbility(WeaponAbility.BleedAttack);
             SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public Rend(Serial serial)
@@ -51,8 +52,6 @@ namespace Server.Mobiles
         {
         }
 		public override bool CanBeParagon { get { return false; } }
-        public override bool HasBreath{ get{ return true; } } // fire breath enabled
-        public override double BreathDamageScalar{ get{ return 0.06; } }
         public override bool GivesMLMinorArtifact{get{ return true; } }
 		
 		public override void OnDeath( Container c )

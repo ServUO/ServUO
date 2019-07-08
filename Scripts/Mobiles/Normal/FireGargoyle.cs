@@ -42,6 +42,7 @@ namespace Server.Mobiles
             Karma = -3500;
 
             VirtualArmor = 32;
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public FireGargoyle(Serial serial)
@@ -49,13 +50,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }// fire breath enabled
         public override int TreasureMapLevel
         {
             get

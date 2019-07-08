@@ -5,8 +5,10 @@ using Server.Engines.VoidPool;
 
  namespace Server.Mobiles
  {
-	public class CoraTheSorceress : BaseCreature
+	public class CoraTheSorceress : BaseCreature, IElementalCreature
 	{
+        public ElementType ElementType { get { return ElementType.Chaos; } }
+
         public DateTime NextManaDrain { get; set; }
 
         public TimeSpan ManaDrainInterval { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(15, 120)); } }
@@ -53,10 +55,10 @@ using Server.Engines.VoidPool;
             AddAndEquip(new ChainLegs(), 1936);
             AddAndEquip(new LeatherGloves(), 1910);
             AddAndEquip(new LeatherBustierArms(), 1947);
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
-        public override int BreathChaosDamage { get { return 100; } }
-        public override bool HasBreath { get { return true; } }
         public override bool AlwaysMurderer { get { return true; } }
         public override bool ClickTitle { get { return false; } }
         public override bool ShowFameTitle { get { return false; } }

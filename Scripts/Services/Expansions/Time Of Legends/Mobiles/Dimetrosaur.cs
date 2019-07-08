@@ -107,9 +107,6 @@ namespace Server.Mobiles
         public override HideType HideType { get { return HideType.Spined; } }
         public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
 
-        public override Poison HitAreaPoison { get { return Poison.Lethal; } }
-        public override int AreaPoisonDamage { get { return 50; } }
-
         public override void GenerateLoot()
         {
             if (IsChampionSpawn)

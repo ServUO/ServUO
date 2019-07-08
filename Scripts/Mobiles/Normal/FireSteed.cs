@@ -49,6 +49,8 @@ namespace Server.Mobiles
 
             PackItem(new SulfurousAsh(Utility.RandomMinMax(151, 300)));
             PackItem(new Ruby(Utility.RandomMinMax(16, 30)));
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public FireSteed(Serial serial)
@@ -56,13 +58,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }// fire breath enabled
         public override FoodType FavoriteFood
         {
             get

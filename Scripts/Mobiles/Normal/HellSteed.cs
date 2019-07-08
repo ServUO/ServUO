@@ -3,8 +3,10 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("a hellsteed corpse")]
-    public class HellSteed : BaseMount
+    public class HellSteed : BaseMount, IElementalCreature
     {
+        public ElementType ElementType { get { return ElementType.Chaos; } }
+
         [Constructable] 
         public HellSteed()
             : this("a hellsteed")
@@ -35,6 +37,8 @@ namespace Server.Mobiles
 
             Fame = 0;
             Karma = 0;
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public HellSteed(Serial serial)
@@ -42,8 +46,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool HasBreath { get { return true; } }
-        public override int BreathChaosDamage { get { return 100; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
 
         public override void Serialize(GenericWriter writer)

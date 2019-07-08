@@ -798,6 +798,8 @@ namespace Server.Mobiles
 
             Fame = 12500;
             Karma = -12500;
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public override void GenerateLoot()
@@ -810,14 +812,6 @@ namespace Server.Mobiles
         public VolcanoElemental(Serial serial)
             : base(serial)
         {
-        }
-
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
         }
 
         public override int GetIdleSound()

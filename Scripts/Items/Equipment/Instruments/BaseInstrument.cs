@@ -343,7 +343,14 @@ namespace Server.Items
             if (bc == null)
                 return false;
 
-            return bc.HasBreath;
+            var profile = bc.AbilityProfile;
+
+            if (profile != null)
+            {
+                return profile.HasAbility(SpecialAbility.DragonBreath);
+            }
+
+            return false;
         }
 
         public static bool IsPoisonImmune(BaseCreature bc)

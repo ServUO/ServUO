@@ -65,23 +65,6 @@ namespace Server.Mobiles
                 return Poison.Lethal;
             }
         }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-
-        public override Poison HitAreaPoison
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-
-        public override int AreaPoisonDamage { get { return 50; } }
 
         public override void GenerateLoot()
         {

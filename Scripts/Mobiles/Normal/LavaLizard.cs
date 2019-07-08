@@ -46,17 +46,14 @@ namespace Server.Mobiles
             MinTameSkill = 80.7;
 
             PackItem(new SulfurousAsh(Utility.Random(4, 10)));
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public LavaLizard(Serial serial)
             : base(serial)
         {
         }
-
-        public override bool HasBreath
-        {
-            get { return true; }
-        } // fire breath enabled
 
         public override int Hides
         {

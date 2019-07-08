@@ -613,11 +613,6 @@ namespace Server.Mobiles
                 case AIType.AI_Paladin: SetMagicalAbility(MagicalAbility.Chivalry); break;
             }
 
-            if (HasBreath)
-            {
-                SetSpecialAbility(SpecialAbility.DragonBreath);
-            }
-
             if (HealChance > 0.0 && HealChance >= Utility.RandomDouble())
             {
                 SetSpecialAbility(SpecialAbility.Heal);
@@ -1066,200 +1061,8 @@ namespace Server.Mobiles
 			}
 		}
 
-        #region High Seas
         public virtual bool TaintedLifeAura { get { return false; } }
-        #endregion
-
-        #region Special Abilities and Area Effects overrides
-        public virtual int AreaPoisonDamage { get { return 0; } }
-        public virtual Poison HitAreaPoison { get { return Poison.Deadly; } }
-
-        #region Dragon Breath
-
-        // Old way of enabling. Kept for compatibility and construction
-        public virtual bool HasBreath { get { return false; } }
-
-        // Base damage given is: CurrentHitPoints * BreathDamageScalar
-        public virtual double BreathDamageScalar { get { return (Core.AOS ? 0.16 : 0.05); } }
-
-        // Creature stops moving for 1.0 seconds while breathing
-        public virtual double BreathStallTime { get { return 1.0; } }
-
-        // Effect is sent 1.3 seconds after BreathAngerSound and BreathAngerAnimation is played
-        public virtual double BreathEffectDelay { get { return 1.3; } }
-
-        // Damage is given 1.0 seconds after effect is sent
-        public virtual double BreathDamageDelay { get { return 1.0; } }
-
-        // Damage types
-        public virtual int BreathChaosDamage { get { return 0; } }
-        public virtual int BreathPhysicalDamage { get { return 0; } }
-        public virtual int BreathFireDamage { get { return 100; } }
-        public virtual int BreathColdDamage { get { return 0; } }
-        public virtual int BreathPoisonDamage { get { return 0; } }
-        public virtual int BreathEnergyDamage { get { return 0; } }
-
-        // Is immune to breath damages
         public virtual bool BreathImmune { get { return false; } }
-
-        public virtual double BreathMinDelay { get { return 30.0; } }
-        public virtual double BreathMaxDelay { get { return 45.0; } }
-
-        // Effect details and sound
-        public virtual int BreathEffectItemID { get { return 0x36D4; } }
-        public virtual int BreathEffectSpeed { get { return 5; } }
-        public virtual int BreathEffectDuration { get { return 0; } }
-        public virtual bool BreathEffectExplodes { get { return false; } }
-        public virtual bool BreathEffectFixedDir { get { return false; } }
-        public virtual int BreathEffectHue { get { return 0; } }
-        public virtual int BreathEffectRenderMode { get { return 0; } }
-
-        public virtual int BreathEffectSound { get { return 0x227; } }
-
-        // Anger sound/animations
-        public virtual int BreathAngerSound { get { return GetAngerSound(); } }
-        public virtual int BreathAngerAnimation { get { return 12; } }
-
-        public virtual void BreathStart(IDamageable target)
-        {
-            RevealingAction();
-            BreathStallMovement();
-            BreathPlayAngerSound();
-            BreathPlayAngerAnimation();
-
-            Direction = GetDirectionTo(target);
-
-            Timer.DelayCall(TimeSpan.FromSeconds(BreathEffectDelay), new TimerStateCallback(BreathEffect_Callback), target);
-        }
-
-        public virtual void BreathStallMovement()
-        {
-            if (m_AI != null)
-            {
-                m_AI.NextMove = Core.TickCount + (int)(BreathStallTime * 1000);
-            }
-        }
-
-        public virtual void BreathPlayAngerSound()
-        {
-            PlaySound(BreathAngerSound);
-        }
-
-        public virtual void BreathPlayAngerAnimation()
-        {
-            if (Core.SA)
-            {
-                Animate(AnimationType.Pillage, 0);
-            }
-            else
-            {
-                Animate(BreathAngerAnimation, 5, 1, true, false, 0);
-            }
-        }
-
-        public virtual void BreathEffect_Callback(object state)
-        {
-            RevealingAction();
-            IDamageable target = (IDamageable)state;
-
-            if (!target.Alive || !CanBeHarmful(target))
-            {
-                return;
-            }
-
-            BreathPlayEffectSound();
-            BreathPlayEffect(target);
-
-            Timer.DelayCall(TimeSpan.FromSeconds(BreathDamageDelay), new TimerStateCallback(BreathDamage_Callback), target);
-        }
-
-        public virtual void BreathPlayEffectSound()
-        {
-            PlaySound(BreathEffectSound);
-        }
-
-        public virtual void BreathPlayEffect(IDamageable target)
-        {
-            Effects.SendMovingEffect(
-                this,
-                target,
-                BreathEffectItemID,
-                BreathEffectSpeed,
-                BreathEffectDuration,
-                BreathEffectFixedDir,
-                BreathEffectExplodes,
-                BreathEffectHue,
-                BreathEffectRenderMode);
-        }
-
-        public virtual void BreathDamage_Callback(object state)
-        {
-            IDamageable target = (IDamageable)state;
-
-            if (target is BaseCreature && ((BaseCreature)target).BreathImmune)
-            {
-                return;
-            }
-
-            if (CanBeHarmful(target))
-            {
-                DoHarmful(target);
-                BreathDealDamage(target);
-            }
-        }
-
-        public virtual void BreathDealDamage(IDamageable target)
-        {
-            if (!(target is Mobile) || !Evasion.CheckSpellEvasion((Mobile)target))
-            {
-                int physDamage = BreathPhysicalDamage;
-                int fireDamage = BreathFireDamage;
-                int coldDamage = BreathColdDamage;
-                int poisDamage = BreathPoisonDamage;
-                int nrgyDamage = BreathEnergyDamage;
-
-                if (BreathChaosDamage > 0)
-                {
-                    switch (Utility.Random(5))
-                    {
-                        case 0: physDamage += BreathChaosDamage; break;
-                        case 1: fireDamage += BreathChaosDamage; break;
-                        case 2: coldDamage += BreathChaosDamage; break;
-                        case 3: poisDamage += BreathChaosDamage; break;
-                        case 4: nrgyDamage += BreathChaosDamage; break;
-                    }
-                }
-
-                if (physDamage == 0 && fireDamage == 0 && coldDamage == 0 && poisDamage == 0 && nrgyDamage == 0)
-                {
-                    AOS.Damage(target, this, BreathComputeDamage(), 0, 0, 0, 0, 0, 0, 100);
-                }
-                else
-                {
-                    AOS.Damage(target, this, BreathComputeDamage(), physDamage, fireDamage, coldDamage, poisDamage, nrgyDamage);
-                }
-            }
-        }
-
-        public virtual int BreathComputeDamage()
-        {
-            int damage = (int)(Hits * BreathDamageScalar);
-
-            if (IsParagon)
-            {
-                damage = (int)(damage / Paragon.HitsBuff);
-            }
-
-            if (damage > 200)
-            {
-                damage = 200;
-            }
-
-            return damage;
-        }
-        #endregion
-
-        #endregion
 
         #region Spill Acid
         public void SpillAcid(int Amount)
@@ -7642,6 +7445,7 @@ namespace Server.Mobiles
         public virtual TimeSpan TeleportDuration { get { return TimeSpan.FromSeconds(5); } }
         public virtual int TeleportRange { get { return 16; } }
         public virtual double TeleportProb { get { return 0.25; } }
+
         public virtual bool TeleportsPets { get { return false; } }
 
         private static int[] m_Offsets = new int[]

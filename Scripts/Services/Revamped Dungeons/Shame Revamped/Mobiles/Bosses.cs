@@ -211,9 +211,10 @@ namespace Server.Mobiles
             Karma = -4500;
 
             PackItem(new SulfurousAsh(5));
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
-        public override bool HasBreath { get { return true; } } // fire breath enabled
         public override bool HasAura { get { return true; } }
         public override int AuraRange { get { return 5; } }
         public override int AuraBaseDamage { get { return 7; } }

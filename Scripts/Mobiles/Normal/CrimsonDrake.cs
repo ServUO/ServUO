@@ -3,50 +3,50 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("a crimson drake corpse")]
-    public class CrimsonDrake : BaseCreature
+    public class CrimsonDrake : BaseCreature, IElementalCreature
     {
-        private DrakeType m_Type;
+        private ElementType m_Type;
 
-        public DrakeType DrakeType { get { return m_Type; } }
+        public ElementType ElementType { get { return m_Type; } }
 
         [Constructable]
         public CrimsonDrake()
-            : this((DrakeType)Utility.Random(5))
+            : this((ElementType)Utility.Random(5))
         {
         }
 
         [Constructable]
-        public CrimsonDrake(DrakeType type)
+        public CrimsonDrake(ElementType type)
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             m_Type = type;
 
             switch (type)
             {
-                case DrakeType.Physical:
+                case ElementType.Physical:
                     Body = 0x58B;
                     Hue = 0;
                     SetDamageType(ResistanceType.Physical, 100);
                     break;
-                case DrakeType.Fire:
+                case ElementType.Fire:
                     Body = 0x58C;
                     Hue = 33929;
                     SetDamageType(ResistanceType.Physical, 0);
                     SetDamageType(ResistanceType.Fire, 100);
                     break;
-                case DrakeType.Cold:
+                case ElementType.Cold:
                     Body = 0x58C;
                     Hue = 34134;
                     SetDamageType(ResistanceType.Physical, 0);
                     SetDamageType(ResistanceType.Cold, 100);
                     break;
-                case DrakeType.Poison:
+                case ElementType.Poison:
                     Body = 0x58C;
                     Hue = 34136;
                     SetDamageType(ResistanceType.Physical, 0);
                     SetDamageType(ResistanceType.Poison, 100);
                     break;
-                case DrakeType.Energy:
+                case ElementType.Energy:
                     Body = 0x58C;
                     Hue = 34141;
                     SetDamageType(ResistanceType.Physical, 0);
@@ -88,6 +88,7 @@ namespace Server.Mobiles
             MinTameSkill = 85.0;
 
             PackReg(3);
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public CrimsonDrake(Serial serial)
@@ -101,7 +102,7 @@ namespace Server.Mobiles
         {
             get
             {
-                if (m_Type == DrakeType.Poison)
+                if (m_Type == ElementType.Poison)
                 {
                     if (_PoisonDrakeDefinition == null)
                     {
@@ -116,12 +117,6 @@ namespace Server.Mobiles
         }
 
         public override bool ReacquireOnMovement { get { return !Controlled; } }
-        public override bool HasBreath { get { return true; } }
-        public override int BreathPhysicalDamage { get { return m_Type == DrakeType.Physical ? 100 : 0; } }
-        public override int BreathFireDamage { get { return m_Type == DrakeType.Fire ? 100 : 0; } }
-        public override int BreathColdDamage { get { return m_Type == DrakeType.Cold ? 100 : 0; } }
-        public override int BreathPoisonDamage { get { return m_Type == DrakeType.Poison ? 100 : 0; } }
-        public override int BreathEffectHue { get { return m_Type == DrakeType.Cold ? 0x480 : 0; } }
         public override int TreasureMapLevel { get { return 2; } }
         public override int Meat { get { return 10; } }
         public override int DragonBlood { get { return 8; } }
@@ -151,7 +146,7 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            m_Type = (DrakeType)reader.ReadInt();
+            m_Type = (ElementType)reader.ReadInt();
         }
     }
 }
