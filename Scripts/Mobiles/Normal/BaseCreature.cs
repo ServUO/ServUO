@@ -250,6 +250,9 @@ namespace Server.Mobiles
 
         private int m_iTeam; // Monster Team
 
+        private double m_ForceActiveSpeed;
+        private double m_ForcePassiveSpeed;
+
         private double m_dActiveSpeed; // Timer speed when active
         private double m_dPassiveSpeed; // Timer speed when not active
         private double m_dCurrentSpeed; // The current speed, lets say it could be changed by something;
@@ -2458,6 +2461,11 @@ namespace Server.Mobiles
         public const int DefaultRangePerception = 16;
         public const int OldRangePerception = 10;
 
+        public BaseCreature(AIType ai, FightMode mode, int iRangePerception, int iRangeFight)
+            : this(ai, mode, iRangePerception, iRangeFight, .2, .4)
+        {
+        }
+
         public BaseCreature(
             AIType ai, FightMode mode, int iRangePerception, int iRangeFight, double dActiveSpeed, double dPassiveSpeed)
         {
@@ -2539,7 +2547,10 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(27); // version
+            writer.Write(28); // version
+
+            writer.Write(m_ForceActiveSpeed);
+            writer.Write(m_ForcePassiveSpeed);
 
             writer.Write(CanMove);
             writer.Write(_LockDirection);
@@ -2721,6 +2732,10 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 28:
+                    m_ForceActiveSpeed = reader.ReadDouble();
+                    m_ForcePassiveSpeed = reader.ReadDouble();
+                    goto case 27;
                 case 27: // Pet Slot Fix
                 case 26:
                 {
@@ -2925,37 +2940,47 @@ namespace Server.Mobiles
             double activeSpeed = m_dActiveSpeed;
             double passiveSpeed = m_dPassiveSpeed;
 
-            SpeedInfo.GetSpeeds(this, ref activeSpeed, ref passiveSpeed);
+            if (version >= 28)
+            {
+                SpeedInfo.GetSpeedsNew(this, ref activeSpeed, ref passiveSpeed);
 
-            bool isStandardActive = false;
-            for (int i = 0; !isStandardActive && i < m_StandardActiveSpeeds.Length; ++i)
-            {
-                isStandardActive = (m_dActiveSpeed == m_StandardActiveSpeeds[i]);
-            }
-
-            bool isStandardPassive = false;
-            for (int i = 0; !isStandardPassive && i < m_StandardPassiveSpeeds.Length; ++i)
-            {
-                isStandardPassive = (m_dPassiveSpeed == m_StandardPassiveSpeeds[i]);
-            }
-
-            if (isStandardActive && m_dCurrentSpeed == m_dActiveSpeed)
-            {
-                m_dCurrentSpeed = activeSpeed;
-            }
-            else if (isStandardPassive && m_dCurrentSpeed == m_dPassiveSpeed)
-            {
-                m_dCurrentSpeed = passiveSpeed;
-            }
-
-            if (isStandardActive && !m_Paragon)
-            {
                 m_dActiveSpeed = activeSpeed;
-            }
-
-            if (isStandardPassive && !m_Paragon)
-            {
                 m_dPassiveSpeed = passiveSpeed;
+            }
+            else
+            {
+                SpeedInfo.GetSpeeds(this, ref activeSpeed, ref passiveSpeed);
+
+                bool isStandardActive = false;
+                for (int i = 0; !isStandardActive && i < m_StandardActiveSpeeds.Length; ++i)
+                {
+                    isStandardActive = (m_dActiveSpeed == m_StandardActiveSpeeds[i]);
+                }
+
+                bool isStandardPassive = false;
+                for (int i = 0; !isStandardPassive && i < m_StandardPassiveSpeeds.Length; ++i)
+                {
+                    isStandardPassive = (m_dPassiveSpeed == m_StandardPassiveSpeeds[i]);
+                }
+
+                if (isStandardActive && m_dCurrentSpeed == m_dActiveSpeed)
+                {
+                    m_dCurrentSpeed = activeSpeed;
+                }
+                else if (isStandardPassive && m_dCurrentSpeed == m_dPassiveSpeed)
+                {
+                    m_dCurrentSpeed = passiveSpeed;
+                }
+
+                if (isStandardActive && !m_Paragon)
+                {
+                    m_dActiveSpeed = activeSpeed;
+                }
+
+                if (isStandardPassive && !m_Paragon)
+                {
+                    m_dPassiveSpeed = passiveSpeed;
+                }
             }
 
             if (version >= 14)
@@ -3550,10 +3575,16 @@ namespace Server.Mobiles
         public int RangeHome { get { return m_iRangeHome; } set { m_iRangeHome = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double ActiveSpeed { get { return m_dActiveSpeed; } set { m_dActiveSpeed = value; } }
+        public double ForceActiveSpeed { get { return m_ForceActiveSpeed; } set { m_ForceActiveSpeed = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double PassiveSpeed { get { return m_dPassiveSpeed; } set { m_dPassiveSpeed = value; } }
+        public double ForcePassiveSpeed { get { return m_ForcePassiveSpeed; } set { m_ForcePassiveSpeed = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double ActiveSpeed { get { return m_ForceActiveSpeed != 0.0 ? m_ForceActiveSpeed : m_dActiveSpeed; } set { m_dActiveSpeed = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double PassiveSpeed { get { return m_ForcePassiveSpeed != 0.0 ? m_ForcePassiveSpeed : m_dPassiveSpeed; } set { m_dPassiveSpeed = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double CurrentSpeed
@@ -5399,6 +5430,20 @@ namespace Server.Mobiles
                 case 5:
                     Karma = -Utility.RandomMinMax(10000, 10000);
                     break;
+            }
+        }
+
+        public override void OnRawDexChange(int oldDex)
+        {
+            if (Core.ML && oldDex != RawDex)
+            {
+                double activeSpeed = 0.0;
+                double passiveSpeed = 0.0;
+
+                SpeedInfo.GetSpeedsNew(this, ref activeSpeed, ref passiveSpeed);
+
+                m_dActiveSpeed = activeSpeed;
+                m_dPassiveSpeed = passiveSpeed;
             }
         }
         #endregion

@@ -54,8 +54,6 @@ namespace Server.Mobiles
 
 	public abstract class BaseAI
 	{
-		public const double FollowSpeed = 0.2;
-
 		public Timer m_Timer;
 		protected ActionType m_Action;
 		private long m_NextStopGuard;
@@ -1238,7 +1236,7 @@ namespace Server.Mobiles
 					break;
 				case OrderType.Come:
 					//m_Mobile.ControlMaster.RevealingAction();
-					m_Mobile.CurrentSpeed = FollowSpeed;
+					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = false;
 					m_Mobile.Combatant = null;
@@ -1256,7 +1254,7 @@ namespace Server.Mobiles
 					break;
 				case OrderType.Guard:
 					//m_Mobile.ControlMaster.RevealingAction();
-					m_Mobile.CurrentSpeed = FollowSpeed;
+					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = true;
 					m_Mobile.Combatant = null;
@@ -1303,7 +1301,7 @@ namespace Server.Mobiles
 					break;
 				case OrderType.Follow:
 					//m_Mobile.ControlMaster.RevealingAction();
-					m_Mobile.CurrentSpeed = FollowSpeed;
+					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 
 					m_Mobile.Warmode = false;
@@ -1497,8 +1495,8 @@ namespace Server.Mobiles
 
 							if (Core.AOS)
 							{
-								m_Mobile.CurrentSpeed = FollowSpeed;
-							}
+								m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
+                            }
 						}
 					}
 				}
@@ -1693,8 +1691,8 @@ namespace Server.Mobiles
 
 				if (Core.AOS)
 				{
-					m_Mobile.CurrentSpeed = FollowSpeed;
-				}
+					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
+                }
 
 				WalkMobileRange(controlMaster, 1, false, 0, 1);
 			}
@@ -2315,7 +2313,7 @@ namespace Server.Mobiles
 
 			if (!m_Mobile.IsDeadPet && (m_Mobile.ReduceSpeedWithDamage || m_Mobile.IsSubdued))
 			{
-				var offset = (double)m_Mobile.Hits / m_Mobile.HitsMax;
+				var offset = (double)m_Mobile.Stam / m_Mobile.StamMax;
 
 				if (offset < 0.0)
 				{

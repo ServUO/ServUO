@@ -171,6 +171,12 @@ namespace Server.Items
 		public override int InitMinHits{ get{ return 255; } }
 		public override int InitMaxHits{ get{ return 255; } }
 
+        public override int PhysicalResistance { get { return PhysicalBonus; } }
+        public override int FireResistance { get { return FireBonus; } }
+        public override int ColdResistance { get { return ColdBonus; } }
+        public override int PoisonResistance { get { return PoisonBonus; } }
+        public override int EnergyResistance { get { return EnergyBonus; } }
+
         [Constructable]
 		public UnforgivenVeil()
 		{

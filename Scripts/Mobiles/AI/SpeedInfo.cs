@@ -10,8 +10,33 @@ namespace Server
 {
 	public class SpeedInfo
 	{
-		// Should we use the new method of speeds?
-		private static readonly bool Enabled = true;
+        public static readonly double MinDelay = 0.1;
+        public static readonly double MaxDelay = 0.5;
+
+        public static bool GetSpeedsNew(BaseCreature bc, ref double activeSpeed, ref double passiveSpeed)
+        {
+            var max = GetMaxMovementDex(bc);
+            var dex = Math.Min(max, Math.Max(25, bc.Dex));
+
+            activeSpeed = MaxDelay - ((MaxDelay - MinDelay) * ((double)dex / 150.0));
+
+            if (activeSpeed < 0.08)
+            {
+                activeSpeed = 0.08;
+            }
+
+            passiveSpeed = activeSpeed * 2;
+
+            return true;
+        }
+
+        private static int GetMaxMovementDex(BaseCreature bc)
+        {
+            return bc.Controlled ? 150 : 190;
+        }
+
+        // Should we use the new method of speeds?
+        private static readonly bool Enabled = true;
 
 		public double ActiveSpeed { get; set; }
 
@@ -39,7 +64,7 @@ namespace Server
 			return (sp != null);
 		}
 
-		public static bool GetSpeeds(object obj, ref double activeSpeed, ref double passiveSpeed)
+        public static bool GetSpeeds(object obj, ref double activeSpeed, ref double passiveSpeed)
 		{
 			if (!Enabled)
 				return false;

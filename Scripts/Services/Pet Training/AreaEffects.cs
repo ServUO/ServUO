@@ -403,19 +403,18 @@ namespace Server.Mobiles
 
         public override void DoEffect(BaseCreature creature, Mobile m)
         {
-            var def = PoisonBreathDefinition.GetDefinition(creature);
-
-            m.ApplyPoison(creature, def.Poison);
+            m.ApplyPoison(creature, GetPoison(creature));
 
             Server.Effects.SendLocationParticles(
                 EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x36B0, 1, 14, 63, 7, 9915, 0);
 
             Server.Effects.PlaySound(m.Location, m.Map, 0x229);
+            var damage = GetDamage(creature);
 
-            if (def.Damage > 0)
+            if (damage > 0)
             {
                 creature.DoHarmful(m);
-                AOS.Damage(m, creature, def.Damage, 0, 0, 0, 100, 0);
+                AOS.Damage(m, creature, damage, 0, 0, 0, 100, 0);
             }
         }
 
@@ -430,39 +429,34 @@ namespace Server.Mobiles
             }
         }
 
-        public class PoisonBreathDefinition
+        public Poison GetPoison(BaseCreature bc)
         {
-            public Type[] Uses { get; private set; }
-            public int Damage { get; private set; }
-            public Poison Poison { get; private set; }
+            int level = 1;
+            double total = bc.Skills[SkillName.Poisoning].Value;
 
-            public PoisonBreathDefinition(int damage, Poison poison, Type[] uses)
-            {
-                Damage = damage;
-                Poison = poison;
-                Uses = uses;
-            }
+            if (total >= 100)
+                level = 5;
+            else if (total > 60)
+                level = 4;
+            else if (total > 40)
+                level = 3;
+            else if (total > 20)
+                level = 2;
 
-            public static PoisonBreathDefinition GetDefinition(BaseCreature bc)
-            {
-                var def = Definitions.FirstOrDefault(d => d.Uses != null && d.Uses.Any(t => t == bc.GetType()));
-
-                if (def == null)
-                {
-                    return Definitions[0];
-                }
-
-                return def;
-            }
-
-            public static List<PoisonBreathDefinition> Definitions { get; set; } = new List<PoisonBreathDefinition>();
-
-            public static void Initialize()
-            {
-                Definitions.Add(new PoisonBreathDefinition(0, Poison.Deadly, new Type[] { })); // default
-                Definitions.Add(new PoisonBreathDefinition(50, Poison.Lethal, new Type[] { typeof(Dimetrosaur), typeof(ChiefParoxysmus) }));
-                Definitions.Add(new PoisonBreathDefinition(50, Poison.Greater, new Type[] { typeof(ValoriteElemental), typeof(BronzeElemental) }));
-            }
+            return Poison.GetPoison(level);
         }
+
+        public int GetDamage(BaseCreature bc)
+        {
+            if (_DamageCreatures.Any(t => t == bc.GetType()))
+                return 50;
+
+            return 0;
+        }
+
+        private Type[] _DamageCreatures =
+        {
+            typeof(ValoriteElemental), typeof(BronzeElemental), typeof(Dimetrosaur), typeof(ChiefParoxysmus)
+        };
     }
 }
