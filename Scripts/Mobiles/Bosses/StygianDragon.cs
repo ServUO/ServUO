@@ -54,6 +54,7 @@ namespace Server.Mobiles
 
             SetWeaponAbility(WeaponAbility.Bladeweave);
             SetWeaponAbility(WeaponAbility.TalonStrike);
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public StygianDragon(Serial serial)
@@ -87,7 +88,6 @@ namespace Server.Mobiles
         public override bool AlwaysMurderer { get { return true; } }
         public override bool Unprovokable { get { return false; } }
         public override bool BardImmune { get { return false; } }
-        public override bool HasBreath { get { return true; } } // fire breath enabled
         public override bool AutoDispel { get { return !Controlled; } }
         public override int Meat { get { return 19; } }
         public override int Hides { get { return 30; } }

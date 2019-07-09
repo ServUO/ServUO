@@ -45,9 +45,8 @@ namespace Server.Mobiles
             MinTameSkill = 104.7;
 
             SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
-
-        public override bool HasBreath { get { return true; } }
 
         public override void GenerateLoot()
         {

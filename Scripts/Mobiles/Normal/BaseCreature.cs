@@ -250,6 +250,9 @@ namespace Server.Mobiles
 
         private int m_iTeam; // Monster Team
 
+        private double m_ForceActiveSpeed;
+        private double m_ForcePassiveSpeed;
+
         private double m_dActiveSpeed; // Timer speed when active
         private double m_dPassiveSpeed; // Timer speed when not active
         private double m_dCurrentSpeed; // The current speed, lets say it could be changed by something;
@@ -611,11 +614,6 @@ namespace Server.Mobiles
                 case AIType.AI_Samurai: SetMagicalAbility(MagicalAbility.Bushido); break;
                 case AIType.AI_Ninja: SetMagicalAbility(MagicalAbility.Ninjitsu); break;
                 case AIType.AI_Paladin: SetMagicalAbility(MagicalAbility.Chivalry); break;
-            }
-
-            if (HasBreath)
-            {
-                SetSpecialAbility(SpecialAbility.DragonBreath);
             }
 
             if (HealChance > 0.0 && HealChance >= Utility.RandomDouble())
@@ -1066,200 +1064,8 @@ namespace Server.Mobiles
 			}
 		}
 
-        #region High Seas
         public virtual bool TaintedLifeAura { get { return false; } }
-        #endregion
-
-        #region Special Abilities and Area Effects overrides
-        public virtual int AreaPoisonDamage { get { return 0; } }
-        public virtual Poison HitAreaPoison { get { return Poison.Deadly; } }
-
-        #region Dragon Breath
-
-        // Old way of enabling. Kept for compatibility and construction
-        public virtual bool HasBreath { get { return false; } }
-
-        // Base damage given is: CurrentHitPoints * BreathDamageScalar
-        public virtual double BreathDamageScalar { get { return (Core.AOS ? 0.16 : 0.05); } }
-
-        // Creature stops moving for 1.0 seconds while breathing
-        public virtual double BreathStallTime { get { return 1.0; } }
-
-        // Effect is sent 1.3 seconds after BreathAngerSound and BreathAngerAnimation is played
-        public virtual double BreathEffectDelay { get { return 1.3; } }
-
-        // Damage is given 1.0 seconds after effect is sent
-        public virtual double BreathDamageDelay { get { return 1.0; } }
-
-        // Damage types
-        public virtual int BreathChaosDamage { get { return 0; } }
-        public virtual int BreathPhysicalDamage { get { return 0; } }
-        public virtual int BreathFireDamage { get { return 100; } }
-        public virtual int BreathColdDamage { get { return 0; } }
-        public virtual int BreathPoisonDamage { get { return 0; } }
-        public virtual int BreathEnergyDamage { get { return 0; } }
-
-        // Is immune to breath damages
         public virtual bool BreathImmune { get { return false; } }
-
-        public virtual double BreathMinDelay { get { return 30.0; } }
-        public virtual double BreathMaxDelay { get { return 45.0; } }
-
-        // Effect details and sound
-        public virtual int BreathEffectItemID { get { return 0x36D4; } }
-        public virtual int BreathEffectSpeed { get { return 5; } }
-        public virtual int BreathEffectDuration { get { return 0; } }
-        public virtual bool BreathEffectExplodes { get { return false; } }
-        public virtual bool BreathEffectFixedDir { get { return false; } }
-        public virtual int BreathEffectHue { get { return 0; } }
-        public virtual int BreathEffectRenderMode { get { return 0; } }
-
-        public virtual int BreathEffectSound { get { return 0x227; } }
-
-        // Anger sound/animations
-        public virtual int BreathAngerSound { get { return GetAngerSound(); } }
-        public virtual int BreathAngerAnimation { get { return 12; } }
-
-        public virtual void BreathStart(IDamageable target)
-        {
-            RevealingAction();
-            BreathStallMovement();
-            BreathPlayAngerSound();
-            BreathPlayAngerAnimation();
-
-            Direction = GetDirectionTo(target);
-
-            Timer.DelayCall(TimeSpan.FromSeconds(BreathEffectDelay), new TimerStateCallback(BreathEffect_Callback), target);
-        }
-
-        public virtual void BreathStallMovement()
-        {
-            if (m_AI != null)
-            {
-                m_AI.NextMove = Core.TickCount + (int)(BreathStallTime * 1000);
-            }
-        }
-
-        public virtual void BreathPlayAngerSound()
-        {
-            PlaySound(BreathAngerSound);
-        }
-
-        public virtual void BreathPlayAngerAnimation()
-        {
-            if (Core.SA)
-            {
-                Animate(AnimationType.Pillage, 0);
-            }
-            else
-            {
-                Animate(BreathAngerAnimation, 5, 1, true, false, 0);
-            }
-        }
-
-        public virtual void BreathEffect_Callback(object state)
-        {
-            RevealingAction();
-            IDamageable target = (IDamageable)state;
-
-            if (!target.Alive || !CanBeHarmful(target))
-            {
-                return;
-            }
-
-            BreathPlayEffectSound();
-            BreathPlayEffect(target);
-
-            Timer.DelayCall(TimeSpan.FromSeconds(BreathDamageDelay), new TimerStateCallback(BreathDamage_Callback), target);
-        }
-
-        public virtual void BreathPlayEffectSound()
-        {
-            PlaySound(BreathEffectSound);
-        }
-
-        public virtual void BreathPlayEffect(IDamageable target)
-        {
-            Effects.SendMovingEffect(
-                this,
-                target,
-                BreathEffectItemID,
-                BreathEffectSpeed,
-                BreathEffectDuration,
-                BreathEffectFixedDir,
-                BreathEffectExplodes,
-                BreathEffectHue,
-                BreathEffectRenderMode);
-        }
-
-        public virtual void BreathDamage_Callback(object state)
-        {
-            IDamageable target = (IDamageable)state;
-
-            if (target is BaseCreature && ((BaseCreature)target).BreathImmune)
-            {
-                return;
-            }
-
-            if (CanBeHarmful(target))
-            {
-                DoHarmful(target);
-                BreathDealDamage(target);
-            }
-        }
-
-        public virtual void BreathDealDamage(IDamageable target)
-        {
-            if (!(target is Mobile) || !Evasion.CheckSpellEvasion((Mobile)target))
-            {
-                int physDamage = BreathPhysicalDamage;
-                int fireDamage = BreathFireDamage;
-                int coldDamage = BreathColdDamage;
-                int poisDamage = BreathPoisonDamage;
-                int nrgyDamage = BreathEnergyDamage;
-
-                if (BreathChaosDamage > 0)
-                {
-                    switch (Utility.Random(5))
-                    {
-                        case 0: physDamage += BreathChaosDamage; break;
-                        case 1: fireDamage += BreathChaosDamage; break;
-                        case 2: coldDamage += BreathChaosDamage; break;
-                        case 3: poisDamage += BreathChaosDamage; break;
-                        case 4: nrgyDamage += BreathChaosDamage; break;
-                    }
-                }
-
-                if (physDamage == 0 && fireDamage == 0 && coldDamage == 0 && poisDamage == 0 && nrgyDamage == 0)
-                {
-                    AOS.Damage(target, this, BreathComputeDamage(), 0, 0, 0, 0, 0, 0, 100);
-                }
-                else
-                {
-                    AOS.Damage(target, this, BreathComputeDamage(), physDamage, fireDamage, coldDamage, poisDamage, nrgyDamage);
-                }
-            }
-        }
-
-        public virtual int BreathComputeDamage()
-        {
-            int damage = (int)(Hits * BreathDamageScalar);
-
-            if (IsParagon)
-            {
-                damage = (int)(damage / Paragon.HitsBuff);
-            }
-
-            if (damage > 200)
-            {
-                damage = 200;
-            }
-
-            return damage;
-        }
-        #endregion
-
-        #endregion
 
         #region Spill Acid
         public void SpillAcid(int Amount)
@@ -2655,6 +2461,11 @@ namespace Server.Mobiles
         public const int DefaultRangePerception = 16;
         public const int OldRangePerception = 10;
 
+        public BaseCreature(AIType ai, FightMode mode, int iRangePerception, int iRangeFight)
+            : this(ai, mode, iRangePerception, iRangeFight, .2, .4)
+        {
+        }
+
         public BaseCreature(
             AIType ai, FightMode mode, int iRangePerception, int iRangeFight, double dActiveSpeed, double dPassiveSpeed)
         {
@@ -2736,7 +2547,10 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(27); // version
+            writer.Write(28); // version
+
+            writer.Write(m_ForceActiveSpeed);
+            writer.Write(m_ForcePassiveSpeed);
 
             writer.Write(CanMove);
             writer.Write(_LockDirection);
@@ -2918,6 +2732,10 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 28:
+                    m_ForceActiveSpeed = reader.ReadDouble();
+                    m_ForcePassiveSpeed = reader.ReadDouble();
+                    goto case 27;
                 case 27: // Pet Slot Fix
                 case 26:
                 {
@@ -3122,37 +2940,47 @@ namespace Server.Mobiles
             double activeSpeed = m_dActiveSpeed;
             double passiveSpeed = m_dPassiveSpeed;
 
-            SpeedInfo.GetSpeeds(this, ref activeSpeed, ref passiveSpeed);
+            if (version >= 28)
+            {
+                SpeedInfo.GetSpeedsNew(this, ref activeSpeed, ref passiveSpeed);
 
-            bool isStandardActive = false;
-            for (int i = 0; !isStandardActive && i < m_StandardActiveSpeeds.Length; ++i)
-            {
-                isStandardActive = (m_dActiveSpeed == m_StandardActiveSpeeds[i]);
-            }
-
-            bool isStandardPassive = false;
-            for (int i = 0; !isStandardPassive && i < m_StandardPassiveSpeeds.Length; ++i)
-            {
-                isStandardPassive = (m_dPassiveSpeed == m_StandardPassiveSpeeds[i]);
-            }
-
-            if (isStandardActive && m_dCurrentSpeed == m_dActiveSpeed)
-            {
-                m_dCurrentSpeed = activeSpeed;
-            }
-            else if (isStandardPassive && m_dCurrentSpeed == m_dPassiveSpeed)
-            {
-                m_dCurrentSpeed = passiveSpeed;
-            }
-
-            if (isStandardActive && !m_Paragon)
-            {
                 m_dActiveSpeed = activeSpeed;
-            }
-
-            if (isStandardPassive && !m_Paragon)
-            {
                 m_dPassiveSpeed = passiveSpeed;
+            }
+            else
+            {
+                SpeedInfo.GetSpeeds(this, ref activeSpeed, ref passiveSpeed);
+
+                bool isStandardActive = false;
+                for (int i = 0; !isStandardActive && i < m_StandardActiveSpeeds.Length; ++i)
+                {
+                    isStandardActive = (m_dActiveSpeed == m_StandardActiveSpeeds[i]);
+                }
+
+                bool isStandardPassive = false;
+                for (int i = 0; !isStandardPassive && i < m_StandardPassiveSpeeds.Length; ++i)
+                {
+                    isStandardPassive = (m_dPassiveSpeed == m_StandardPassiveSpeeds[i]);
+                }
+
+                if (isStandardActive && m_dCurrentSpeed == m_dActiveSpeed)
+                {
+                    m_dCurrentSpeed = activeSpeed;
+                }
+                else if (isStandardPassive && m_dCurrentSpeed == m_dPassiveSpeed)
+                {
+                    m_dCurrentSpeed = passiveSpeed;
+                }
+
+                if (isStandardActive && !m_Paragon)
+                {
+                    m_dActiveSpeed = activeSpeed;
+                }
+
+                if (isStandardPassive && !m_Paragon)
+                {
+                    m_dPassiveSpeed = passiveSpeed;
+                }
             }
 
             if (version >= 14)
@@ -3747,10 +3575,16 @@ namespace Server.Mobiles
         public int RangeHome { get { return m_iRangeHome; } set { m_iRangeHome = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double ActiveSpeed { get { return m_dActiveSpeed; } set { m_dActiveSpeed = value; } }
+        public double ForceActiveSpeed { get { return m_ForceActiveSpeed; } set { m_ForceActiveSpeed = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double PassiveSpeed { get { return m_dPassiveSpeed; } set { m_dPassiveSpeed = value; } }
+        public double ForcePassiveSpeed { get { return m_ForcePassiveSpeed; } set { m_ForcePassiveSpeed = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double ActiveSpeed { get { return m_ForceActiveSpeed != 0.0 ? m_ForceActiveSpeed : m_dActiveSpeed; } set { m_dActiveSpeed = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double PassiveSpeed { get { return m_ForcePassiveSpeed != 0.0 ? m_ForcePassiveSpeed : m_dPassiveSpeed; } set { m_dPassiveSpeed = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double CurrentSpeed
@@ -5596,6 +5430,20 @@ namespace Server.Mobiles
                 case 5:
                     Karma = -Utility.RandomMinMax(10000, 10000);
                     break;
+            }
+        }
+
+        public override void OnRawDexChange(int oldDex)
+        {
+            if (Core.ML && oldDex != RawDex)
+            {
+                double activeSpeed = 0.0;
+                double passiveSpeed = 0.0;
+
+                SpeedInfo.GetSpeedsNew(this, ref activeSpeed, ref passiveSpeed);
+
+                m_dActiveSpeed = activeSpeed;
+                m_dPassiveSpeed = passiveSpeed;
             }
         }
         #endregion
@@ -7642,6 +7490,7 @@ namespace Server.Mobiles
         public virtual TimeSpan TeleportDuration { get { return TimeSpan.FromSeconds(5); } }
         public virtual int TeleportRange { get { return 16; } }
         public virtual double TeleportProb { get { return 0.25; } }
+
         public virtual bool TeleportsPets { get { return false; } }
 
         private static int[] m_Offsets = new int[]

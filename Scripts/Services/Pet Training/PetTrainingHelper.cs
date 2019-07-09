@@ -247,8 +247,6 @@ namespace Server.Mobiles
         #endregion
 
         #region SpecialAbility Defs
-        public static SpecialAbility[] Abilities;
-
         public static SpecialAbility[] SpecialAbilityNone;
         public static SpecialAbility[] SpecialAbilityUnicorn;
         public static SpecialAbility[] SpecialAbilityMagical1;
@@ -284,8 +282,6 @@ namespace Server.Mobiles
         #endregion
 
         #region AreaEffect Defs
-        public static AreaEffect[] AreaEffects;
-
         public static AreaEffect[] AreaEffectNone;
         public static AreaEffect[] AreaEffectExplosiveGoo;
         public static AreaEffect[] AreaEffectEarthen;
@@ -417,35 +413,7 @@ namespace Server.Mobiles
 
         public static void LoadDefinitions()
         {
-            #region Special Ability Defs
-            Abilities = new SpecialAbility[]
-            {
-                SpecialAbility.AngryFire,
-                SpecialAbility.ConductiveBlast,
-                SpecialAbility.DragonBreath,
-                SpecialAbility.GraspingClaw,
-                SpecialAbility.Inferno,
-                SpecialAbility.LightningForce,
-                SpecialAbility.ManaDrain,
-                SpecialAbility.RagingBreath,
-                SpecialAbility.Repel,
-                SpecialAbility.SearingWounds,
-                SpecialAbility.StealLife,
-                SpecialAbility.RuneCorruption,
-                SpecialAbility.LifeLeech,
-                SpecialAbility.StickySkin,
-                SpecialAbility.TailSwipe,
-                SpecialAbility.VenomousBite,
-                SpecialAbility.ViciousBite,
-                SpecialAbility.FlurryForce,
-                SpecialAbility.Rage,
-                SpecialAbility.Heal,
-                SpecialAbility.HowlOfCacophony,
-                SpecialAbility.Webbing,
-                SpecialAbility.Anemia,
-                SpecialAbility.BloodDisease,
-            };
-
+            #region Special Ability Packages
             SpecialAbilityNone = new SpecialAbility[] { };
 
             SpecialAbilityMagical1 = new SpecialAbility[]
@@ -637,18 +605,7 @@ namespace Server.Mobiles
             };
             #endregion
 
-            #region Area Effect Defs
-            AreaEffects = new AreaEffect[]
-            {
-                AreaEffect.AuraOfEnergy,
-                AreaEffect.Firestorm,
-                AreaEffect.ExplosiveGoo,
-                AreaEffect.EssenceOfEarth,
-                AreaEffect.AuraOfNausea,
-                AreaEffect.EssenceOfDisease,
-                AreaEffect.PoisonBreath
-            };
-
+            #region Area Effect Packages
             AreaEffectNone = new AreaEffect[] { };
 
             AreaEffectExplosiveGoo = new AreaEffect[]
@@ -690,7 +647,7 @@ namespace Server.Mobiles
             };
             #endregion
 
-            #region Creature Training Definitions
+            #region Creature Training Defs
             Definitions = new TrainingDefinition[]
             {
                 new TrainingDefinition(typeof(Alligator), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 4),  
@@ -946,7 +903,7 @@ namespace Server.Mobiles
             loc = _SpecialAbilityLocalizations;
             int index = 0;
 
-            foreach (var abil in Abilities)
+            foreach (var abil in SpecialAbility.Abilities)
             {
                 _TrainingPoints.Add(new TrainingPoint(abil, 1.0, 100, 100, loc[index][0], loc[index][1]));
                 index++;
@@ -955,7 +912,7 @@ namespace Server.Mobiles
             loc = _AreaEffectLocalizations;
             index = 0;
 
-            foreach (var effect in AreaEffects)
+            foreach (var effect in AreaEffect.Effects)
             {
                 _TrainingPoints.Add(new TrainingPoint(effect, 1.0, 100, 100, loc[index][0], loc[index][1]));
                 index++;
@@ -1487,12 +1444,12 @@ namespace Server.Mobiles
             new TextDefinition[] { 1157434, 1157435 }, // Repel //
             new TextDefinition[] { 1157422, 1157423 }, // Searing Wounds
             new TextDefinition[] { 1157410, 1157411 }, // Steal Life
+            new TextDefinition[] { 1157430, 1157431 }, // Venomous Bite
+            new TextDefinition[] { 1157420, 1157421 }, // Vicious Bite
             new TextDefinition[] { 1157398, 1157399 }, // Rune Corruption
             new TextDefinition[] { 1157424, 1157425 }, // Life Leech
             new TextDefinition[] { 1157426, 1157427 }, // Sticky Skin
             new TextDefinition[] { 1157428, 1157429 }, // Tail Swipe
-            new TextDefinition[] { 1157430, 1157431 }, // Venomous Bite
-            new TextDefinition[] { 1157420, 1157421 }, // Vicious Bite
             new TextDefinition[] { 1157418, 1157419 }, // Flurry Force
             new TextDefinition[] { 1150005, 0       }, // Rage
             new TextDefinition[] { 1151311, 0       }, // Heal
@@ -1500,17 +1457,18 @@ namespace Server.Mobiles
             new TextDefinition[] { 1153789, 0       }, // Webbing
             new TextDefinition[] { 1153797, 0       }, // Anemia
             new TextDefinition[] { 1153798, 0       }, // Blood Disease
+            new TextDefinition[] { null,    null    }, // Poison Spit
         };
 
         public static TextDefinition[][] AreaEffectLocalizations { get { return _AreaEffectLocalizations; } }
         private static TextDefinition[][] _AreaEffectLocalizations =
         {
             new TextDefinition[] { 1157459, 1157460 }, // Aura of Energy
-            new TextDefinition[] { 1157461, 1157462 }, // Firestorm
-            new TextDefinition[] { 1157463, 1157464 }, // Explosive Goo
-            new TextDefinition[] { 1157465, 1157466 }, // Essence of Earth
             new TextDefinition[] { 1157467, 1157468 }, // Aura of Nausea
             new TextDefinition[] { 1157469, 1157470 }, // Essence of Disease
+            new TextDefinition[] { 1157465, 1157466 }, // Essence of Earth
+            new TextDefinition[] { 1157463, 1157464 }, // Explosive Goo
+            new TextDefinition[] { 1157461, 1157462 }, // Firestorm
             new TextDefinition[] { 1157475, 1157476 }, // Poison Breath
         };
 
@@ -1614,9 +1572,9 @@ namespace Server.Mobiles
 
         public static TextDefinition[] GetLocalization(SpecialAbility ability)
         {
-            int index = Array.IndexOf(Abilities, ability);
+            int index = Array.IndexOf(SpecialAbility.Abilities, ability);
 
-            if (index < 0 || index >= Abilities.Length)
+            if (index < 0 || index >= SpecialAbility.Abilities.Length)
             {
                 string error = String.Format("Invalid Loc: {0}", ability.ToString());
                 return new TextDefinition[] { error, error };
@@ -1629,7 +1587,7 @@ namespace Server.Mobiles
         {
             int index = Array.IndexOf(WeaponAbilities, effect);
 
-            if (index < 0 && index >= AreaEffects.Length)
+            if (index < 0 && index >= WeaponAbilities.Length)
             {
                 string error = String.Format("Invalid Loc: {0}", effect.ToString());
                 return new TextDefinition[] { error, error };
@@ -1640,9 +1598,9 @@ namespace Server.Mobiles
 
         public static TextDefinition[] GetLocalization(AreaEffect effect)
         {
-            int index = Array.IndexOf(AreaEffects, effect);
+            int index = Array.IndexOf(AreaEffect.Effects, effect);
 
-            if (index < 0 && index >= AreaEffects.Length)
+            if (index < 0 && index >= AreaEffect.Effects.Length)
             {
                 string error = String.Format("Invalid Loc: {0}", effect.ToString());
                 return new TextDefinition[] { error, error };

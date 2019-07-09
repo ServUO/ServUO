@@ -61,6 +61,8 @@ namespace Server.Mobiles
 
                 PackItem(item);
             }
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public override void GenerateLoot()
@@ -76,11 +78,6 @@ namespace Server.Mobiles
         public override HideType HideType { get { return HideType.Horned; } }
         public override int DragonBlood { get { return 8; } }
         public override FoodType FavoriteFood { get { return FoodType.Fish; } }
-
-        public override bool HasBreath { get { return true; } } // fire breath enabled
-        public override int BreathFireDamage { get { return 0; } }
-        public override int BreathColdDamage { get { return 100; } }
-        public override int BreathEffectHue { get { return 1264; } }
 
         public override bool HasAura { get { return !Controlled; } }
         public override int AuraRange { get { return 2; } }

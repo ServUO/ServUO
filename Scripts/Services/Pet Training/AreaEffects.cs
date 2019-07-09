@@ -70,9 +70,9 @@ namespace Server.Mobiles
 					defender.Map == attacker.Map && attacker.InLOS(defender) && !attacker.BardPacified;
 		}
 		
-		public bool CheckMana(Mobile m)
+		public bool CheckMana(BaseCreature bc)
 		{
-			return m.Mana >= ManaCost;
+			return !bc.Controlled || bc.Mana >= ManaCost;
 		}
 
         public virtual void DoEffects(BaseCreature creature, Mobile combatant)
@@ -149,13 +149,26 @@ namespace Server.Mobiles
 			_Cooldown.Remove(m);
 		}
 
+        public static AreaEffect[] Effects { get { return _Effects; } }
+        private static AreaEffect[] _Effects;
+
+        static AreaEffect()
+        {
+            _Effects = new AreaEffect[7];
+
+            _Effects[0] = new AuraOfEnergy();
+            _Effects[1] = new AuraOfNausea();
+            _Effects[2] = new EssenceOfDisease();
+            _Effects[3] = new EssenceOfEarth();
+            _Effects[4] = new ExplosiveGoo();
+            _Effects[5] = new Firestorm();
+            _Effects[6] = new PoisonBreath();
+        }
+
         public static AreaEffect AuraOfEnergy
         {
             get
             {
-                if (_Effects[0] == null)
-                    _Effects[0] = new AuraOfEnergy();
-
                 return _Effects[0];
             }
         }
@@ -164,9 +177,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Effects[1] == null)
-                    _Effects[1] = new AuraOfNausea();
-
                 return _Effects[1];
             }
         }
@@ -175,9 +185,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Effects[2] == null)
-                    _Effects[2] = new EssenceOfDisease();
-
                 return _Effects[2];
             }
         }
@@ -186,9 +193,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Effects[3] == null)
-                    _Effects[3] = new EssenceOfEarth();
-
                 return _Effects[3];
             }
         }
@@ -197,9 +201,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Effects[4] == null)
-                    _Effects[4] = new ExplosiveGoo();
-
                 return _Effects[4];
             }
         }
@@ -208,9 +209,6 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Effects[5] == null)
-                    _Effects[5] = new Firestorm();
-
                 return _Effects[5];
             }
         }
@@ -219,15 +217,9 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Effects[6] == null)
-                    _Effects[6] = new PoisonBreath();
-
                 return _Effects[6];
             }
         }
-
-        public static AreaEffect[] Effects { get { return _Effects; } }
-        private static AreaEffect[] _Effects = new AreaEffect[7];
     }
 
     public class AuraOfEnergy : AreaEffect
@@ -411,17 +403,18 @@ namespace Server.Mobiles
 
         public override void DoEffect(BaseCreature creature, Mobile m)
         {
-            m.ApplyPoison(creature, creature.HitAreaPoison);
+            m.ApplyPoison(creature, GetPoison(creature));
 
             Server.Effects.SendLocationParticles(
                 EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x36B0, 1, 14, 63, 7, 9915, 0);
 
             Server.Effects.PlaySound(m.Location, m.Map, 0x229);
+            var damage = GetDamage(creature);
 
-            if (creature.AreaPoisonDamage > 0)
+            if (damage > 0)
             {
                 creature.DoHarmful(m);
-                AOS.Damage(m, creature, creature.AreaPoisonDamage, 0, 0, 0, 100, 0);
+                AOS.Damage(m, creature, damage, 0, 0, 0, 100, 0);
             }
         }
 
@@ -435,5 +428,35 @@ namespace Server.Mobiles
                     creature.CheckSkill(SkillName.Poisoning, 0, creature.Skills[SkillName.Poisoning].Cap);
             }
         }
+
+        public Poison GetPoison(BaseCreature bc)
+        {
+            int level = 1;
+            double total = bc.Skills[SkillName.Poisoning].Value;
+
+            if (total >= 100)
+                level = 5;
+            else if (total > 60)
+                level = 4;
+            else if (total > 40)
+                level = 3;
+            else if (total > 20)
+                level = 2;
+
+            return Poison.GetPoison(level);
+        }
+
+        public int GetDamage(BaseCreature bc)
+        {
+            if (_DamageCreatures.Any(t => t == bc.GetType()))
+                return 50;
+
+            return 0;
+        }
+
+        private Type[] _DamageCreatures =
+        {
+            typeof(ValoriteElemental), typeof(BronzeElemental), typeof(Dimetrosaur), typeof(ChiefParoxysmus)
+        };
     }
 }

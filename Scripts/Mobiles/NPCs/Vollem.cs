@@ -39,6 +39,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.Magery, 25.6, 38.6);
 
             ControlSlots = 2;
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public override bool IsScaredOfScaryThings { get { return false; } }
@@ -49,7 +51,6 @@ namespace Server.Mobiles
         public override bool BleedImmune { get { return true; } }
         public override bool BardImmune { get { return !Core.AOS || Controlled; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
-        public override bool HasBreath { get { return true; } }
 
         public override FoodType FavoriteFood { get { return FoodType.Meat; } }
         public override int Meat { get { return 5; } }

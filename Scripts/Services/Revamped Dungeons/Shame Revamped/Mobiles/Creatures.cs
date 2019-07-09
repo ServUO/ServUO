@@ -561,6 +561,7 @@ namespace Server.Mobiles
             Karma = -5000;
 
             SetSpecialAbility(SpecialAbility.SearingWounds);
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public override void OnDeath(Container c)
@@ -575,8 +576,6 @@ namespace Server.Mobiles
         {
             this.AddLoot(LootPack.Rich, 2);
         }
-
-        public override bool HasBreath { get { return true; } }
 
         public MoltenEarthElemental(Serial serial)
             : base(serial)
@@ -638,9 +637,9 @@ namespace Server.Mobiles
             Karma = -3500;
 
             PackItem(new SulfurousAsh(5));
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
-        public override bool HasBreath { get { return true; } } // fire breath enabled
         public override bool HasAura { get { return true; } }
         public override int AuraRange { get { return 5; } }
         public override int AuraBaseDamage { get { return 7; } }
@@ -883,11 +882,12 @@ namespace Server.Mobiles
 
             Fame = 22000;
             Karma = -22000;
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public override bool CanRummageCorpses { get { return true; } }
         public override bool AlwaysMurderer { get { return true; } }
-        public override bool HasBreath { get { return true; } }
 
         public override void OnDeath(Container c)
         {

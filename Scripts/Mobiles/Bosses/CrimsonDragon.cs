@@ -13,43 +13,45 @@ namespace Server.Mobiles
         public CrimsonDragon()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a crimson dragon";
-            this.Body = 197;
+            Name = "a crimson dragon";
+            Body = 197;
 
-            this.BaseSoundID = 362;
-            this.SetStr(2034, 2140);
-            this.SetDex(215, 256);
-            this.SetInt(1025, 1116);
+            BaseSoundID = 362;
+            SetStr(2034, 2140);
+            SetDex(215, 256);
+            SetInt(1025, 1116);
 
-            this.SetHits(25000);
+            SetHits(25000);
 
-            this.SetDamage(8, 10);
+            SetDamage(8, 10);
 
-            this.SetDamageType(ResistanceType.Physical, 50);
-            this.SetDamageType(ResistanceType.Fire, 50);
+            SetDamageType(ResistanceType.Physical, 50);
+            SetDamageType(ResistanceType.Fire, 50);
 
-            this.SetResistance(ResistanceType.Physical, 80, 85);
-            this.SetResistance(ResistanceType.Fire, 100);
-            this.SetResistance(ResistanceType.Cold, 50, 60);
-            this.SetResistance(ResistanceType.Poison, 80, 85);
-            this.SetResistance(ResistanceType.Energy, 80, 85);
+            SetResistance(ResistanceType.Physical, 80, 85);
+            SetResistance(ResistanceType.Fire, 100);
+            SetResistance(ResistanceType.Cold, 50, 60);
+            SetResistance(ResistanceType.Poison, 80, 85);
+            SetResistance(ResistanceType.Energy, 80, 85);
 
-            this.SetSkill(SkillName.EvalInt, 110.2, 125.3);
-            this.SetSkill(SkillName.Magery, 110.9, 125.5);
-            this.SetSkill(SkillName.MagicResist, 116.3, 125.0);
-            this.SetSkill(SkillName.Tactics, 111.7, 126.3);
-            this.SetSkill(SkillName.Wrestling, 120.5, 128.0);
-            this.SetSkill(SkillName.Meditation, 119.4, 130.0);
-            this.SetSkill(SkillName.Anatomy, 118.7, 125.0);
-            this.SetSkill(SkillName.DetectHidden, 120.0);
+            SetSkill(SkillName.EvalInt, 110.2, 125.3);
+            SetSkill(SkillName.Magery, 110.9, 125.5);
+            SetSkill(SkillName.MagicResist, 116.3, 125.0);
+            SetSkill(SkillName.Tactics, 111.7, 126.3);
+            SetSkill(SkillName.Wrestling, 120.5, 128.0);
+            SetSkill(SkillName.Meditation, 119.4, 130.0);
+            SetSkill(SkillName.Anatomy, 118.7, 125.0);
+            SetSkill(SkillName.DetectHidden, 120.0);
 
             // ingredients
-            this.PackResources(8);
+            PackResources(8);
 
-            this.Fame = 20000;
-            this.Karma = -20000;
+            Fame = 20000;
+            Karma = -20000;
 
-            this.VirtualArmor = 70;
+            VirtualArmor = 70;
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public CrimsonDragon(Serial serial)
@@ -86,13 +88,6 @@ namespace Server.Mobiles
                 return true;
             }
         }
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }// fire breath enabled
         public override bool AutoDispel
         {
             get
@@ -172,8 +167,8 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.AosSuperBoss, 8);
-            this.AddLoot(LootPack.Gems, 12);
+            AddLoot(LootPack.AosSuperBoss, 8);
+            AddLoot(LootPack.Gems, 12);
         }
 
         public override int GetIdleSound()
@@ -188,12 +183,12 @@ namespace Server.Mobiles
 
         public override void OnDamagedBySpell(Mobile caster)
         {
-            if (this.Map != null && caster != this && 0.50 > Utility.RandomDouble())
+            if (Map != null && caster != this && 0.50 > Utility.RandomDouble())
             {
-                this.Map = caster.Map;
-                this.Location = caster.Location;
-                this.Combatant = caster;
-                Effects.PlaySound(this.Location, this.Map, 0x1FE);
+                Map = caster.Map;
+                Location = caster.Location;
+                Combatant = caster;
+                Effects.PlaySound(Location, Map, 0x1FE);
             }
 
             base.OnDamagedBySpell(caster);
@@ -203,10 +198,10 @@ namespace Server.Mobiles
         {
             base.OnMovement(m, oldLocation);
 
-            if (this.m_NextTerror < DateTime.UtcNow && m != null && this.InRange(m.Location, 3) && m.IsPlayer())
+            if (m_NextTerror < DateTime.UtcNow && m != null && InRange(m.Location, 3) && m.IsPlayer())
             {
                 m.Frozen = true;
-                m.SendLocalizedMessage(1080342, this.Name, 33); // Terror slices into your very being, destroying any chance of resisting ~1_name~ you might have had
+                m.SendLocalizedMessage(1080342, Name, 33); // Terror slices into your very being, destroying any chance of resisting ~1_name~ you might have had
 
                 Timer.DelayCall(TimeSpan.FromSeconds(5), new TimerStateCallback(Terrorize), m);
             }
@@ -214,16 +209,16 @@ namespace Server.Mobiles
 
         public override void OnGotMeleeAttack(Mobile attacker)
         {
-            if (this.Map != null && attacker != this && 0.1 > Utility.RandomDouble())
+            if (Map != null && attacker != this && 0.1 > Utility.RandomDouble())
             {
                 if (attacker is BaseCreature)
                 {
                     BaseCreature pet = (BaseCreature)attacker;
                     if (pet.ControlMaster != null && (attacker is Dragon || attacker is GreaterDragon || attacker is SkeletalDragon || attacker is WhiteWyrm || attacker is Drake))
                     {
-                        this.Combatant = null;
+                        Combatant = null;
                         pet.Combatant = null;
-                        this.Combatant = null;
+                        Combatant = null;
                         pet.ControlMaster = null;
                         pet.Controlled = false;
                         attacker.Emote(String.Format("* {0} decided to go wild *", attacker.Name));
@@ -231,9 +226,9 @@ namespace Server.Mobiles
 
                     if (pet.ControlMaster != null && 0.1 > Utility.RandomDouble())
                     {
-                        this.Combatant = null;
+                        Combatant = null;
                         pet.Combatant = pet.ControlMaster;
-                        this.Combatant = null;
+                        Combatant = null;
                         attacker.Emote(String.Format("* {0} is being angered *", attacker.Name));
                     }
                 }
@@ -256,11 +251,11 @@ namespace Server.Mobiles
 
         public override bool OnBeforeDeath()
         {
-            this.Hue = 16385;
+            Hue = 16385;
 
-            if (!this.NoKillAwards)
+            if (!NoKillAwards)
             {
-                Map map = this.Map;
+                Map map = Map;
 
                 if (map != null)
                 {
@@ -271,7 +266,7 @@ namespace Server.Mobiles
                             double dist = Math.Sqrt(x * x + y * y);
 
                             if (dist <= 12)
-                                new GoodiesTimer(map, this.X + x, this.Y + y).Start();
+                                new GoodiesTimer(map, X + x, Y + y).Start();
                         }
                     }
                 }
@@ -300,7 +295,7 @@ namespace Server.Mobiles
                 m.Frozen = false;
                 m.SendLocalizedMessage(1005603); // You can move again!
 
-                this.m_NextTerror = DateTime.UtcNow + TimeSpan.FromMinutes(5);
+                m_NextTerror = DateTime.UtcNow + TimeSpan.FromMinutes(5);
             }
         }
 
@@ -312,19 +307,19 @@ namespace Server.Mobiles
             public GoodiesTimer(Map map, int x, int y)
                 : base(TimeSpan.FromSeconds(Utility.RandomDouble() * 10.0))
             {
-                this.m_Map = map;
-                this.m_X = x;
-                this.m_Y = y;
+                m_Map = map;
+                m_X = x;
+                m_Y = y;
             }
 
             protected override void OnTick()
             {
-                int z = this.m_Map.GetAverageZ(this.m_X, this.m_Y);
-                bool canFit = this.m_Map.CanFit(this.m_X, this.m_Y, z, 6, false, false);
+                int z = m_Map.GetAverageZ(m_X, m_Y);
+                bool canFit = m_Map.CanFit(m_X, m_Y, z, 6, false, false);
 
                 for (int i = -3; !canFit && i <= 3; ++i)
                 {
-                    canFit = this.m_Map.CanFit(this.m_X, this.m_Y, z + i, 6, false, false);
+                    canFit = m_Map.CanFit(m_X, m_Y, z + i, 6, false, false);
 
                     if (canFit)
                         z += i;
@@ -335,7 +330,7 @@ namespace Server.Mobiles
 
                 Gold g = new Gold(300, 500);
 
-                g.MoveToWorld(new Point3D(this.m_X, this.m_Y, z), this.m_Map);
+                g.MoveToWorld(new Point3D(m_X, m_Y, z), m_Map);
 
                 if (0.5 >= Utility.RandomDouble())
                 {

@@ -69,6 +69,7 @@ namespace Server.Mobiles
             ControlSlots = 1;
 
             SetWeaponAbility(WeaponAbility.CrushingBlow);
+            SetSpecialAbility(SpecialAbility.PoisonSpit);
         }
 
         public DeathwatchBeetle(Serial serial)
@@ -113,27 +114,6 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.LowScrolls, 1);
             AddLoot(LootPack.Potions, 1);
-        }
-
-        public override void OnDamage(int amount, Mobile from, bool willKill)
-        {
-            Mobile combatant = Combatant as Mobile;
-
-            if (combatant == null || combatant.Deleted || combatant.Map != Map || !InRange(combatant, 12) || !CanBeHarmful(combatant) || !InLOS(combatant))
-                return;
-
-            if (Utility.Random(10) == 0)
-                PoisonAttack(combatant);
-
-            base.OnDamage(amount, from, willKill);
-        }
-
-        public void PoisonAttack(Mobile m)
-        {
-            DoHarmful(m);
-            MovingParticles(m, 0x36D4, 1, 0, false, false, 0x3F, 0, 0x1F73, 1, 0, (EffectLayer)255, 0x100);
-            m.ApplyPoison(this, Poison.Regular);
-            m.SendLocalizedMessage(1070821, Name); // %s spits a poisonous substance at you!
         }
 
         public override void Serialize(GenericWriter writer)

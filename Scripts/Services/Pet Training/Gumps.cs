@@ -343,11 +343,14 @@ namespace Server.Mobiles
                 {
                     var loc = PetTrainingHelper.GetLocalization(o);
 
+                    if (loc[0] == null)
+                        continue;
+
                     if (loc[0].Number > 0)
                     {
                         AddHtmlLocalized(53, y, 180, 18, loc[0].Number, _Label, false, false);
                     }
-                    else if (loc[1].String != null)
+                    else if (loc[0].String != null)
                     {
                         AddHtml(53, y, 180, 18, loc[0].String, false, false);
                     }

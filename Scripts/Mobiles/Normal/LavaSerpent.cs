@@ -43,7 +43,9 @@ namespace Server.Mobiles
 
             PackItem(new SulfurousAsh(3));
             PackItem(new Bone());
-            // TODO: body parts, armour
+            PackBodyPart();
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public LavaSerpent(Serial serial)
@@ -58,13 +60,6 @@ namespace Server.Mobiles
                 return true;
             }
         }
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }// fire breath enabled
         public override int Meat
         {
             get

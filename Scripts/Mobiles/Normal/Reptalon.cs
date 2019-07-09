@@ -40,6 +40,7 @@ namespace Server.Mobiles
             MinTameSkill = 101.1;
 
             SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public Reptalon(Serial serial)
@@ -66,13 +67,6 @@ namespace Server.Mobiles
             get
             {
                 return 10;
-            }
-        }
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
             }
         }
         public override bool CanAngerOnTame

@@ -284,7 +284,7 @@ namespace Server.Items
             {
                 m_From.Target = new NewHousePlacementTarget(m_Tool, m_Entries, m_Entries[index], m_Classic);
             }
-            else
+            else if (m_Tool != null && m_Tool.GetType() == typeof(HousePlacementTool))
             {
                 m_From.SendGump(new HousePlacementCategoryGump(m_Tool, m_From));
             }

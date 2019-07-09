@@ -49,6 +49,7 @@ namespace Server.Mobiles
             MinTameSkill = 104.7;
 
             SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public GreaterDragon(Serial serial)
@@ -70,13 +71,6 @@ namespace Server.Mobiles
                 return !Controlled;
             }
         }
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }// fire breath enabled
         public override bool AutoDispel
         {
             get

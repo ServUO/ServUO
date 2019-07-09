@@ -83,16 +83,6 @@ namespace Server.Mobiles
             }
         }
 
-        public override Poison HitAreaPoison
-        {
-            get
-            {
-                return Poison.Greater;
-            }
-        }
-
-        public override int AreaPoisonDamage { get { return 50; } }
-
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich);

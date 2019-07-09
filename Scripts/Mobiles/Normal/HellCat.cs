@@ -45,6 +45,8 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 1;
             MinTameSkill = 71.1;
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public HellCat(Serial serial)
@@ -52,13 +54,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }// fire breath enabled
         public override int Hides
         {
             get
