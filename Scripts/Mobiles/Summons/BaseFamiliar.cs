@@ -1,6 +1,8 @@
 #region References
 using System.Collections.Generic;
 using System;
+using System.Linq;
+
 using Server.ContextMenus;
 using Server.Items;
 using Server.Spells.Necromancy;
@@ -78,9 +80,9 @@ namespace Server.Mobiles
                 m_SeperationStart = DateTime.MinValue;
             }
 
-            int range = (RangeHome / 2);
+            int range = 4;
 
-            if (!InRange(ControlMaster.Location, RangeHome))
+            if (!InRange(ControlMaster.Location, RangeHome) && InLOS(ControlMaster))
             {
                 Point3D loc = Point3D.Zero;
 
@@ -109,6 +111,8 @@ namespace Server.Mobiles
                         SetLocation(loc, true);
                     }
                 }
+
+                return false;
             }
 
             return true;
@@ -234,6 +238,14 @@ namespace Server.Mobiles
             if (check != null && check is BaseFamiliar && check.Weapon != null && check.InRange(defender.Location, check.Weapon.MaxRange))
             {
                 check.Weapon.OnSwing(check, defender);
+            }
+
+            if (attacker is PlayerMobile)
+            {
+                foreach (var ts in ((PlayerMobile)attacker).AllFollowers.Where(m => m is BaseTalismanSummon && m.InRange(defender.Location, m.Weapon.MaxRange)))
+                {
+                    ts.Weapon.OnSwing(ts, defender);
+                }
             }
         }
 
