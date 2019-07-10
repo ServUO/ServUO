@@ -73,11 +73,11 @@ namespace Server.Mobiles
             Hue = 2713;
             BaseSoundID = 0x5A;
 
-            SetStr(120, 250);
+            SetStr(103, 250);
             SetDex(150, 250);
-            SetInt(100, 150);
+            SetInt(101, 121);
 
-            SetHits(650, 700);
+            SetHits(651, 700);
             SetStam(150);
 
             SetDamage(13, 24);
@@ -93,7 +93,7 @@ namespace Server.Mobiles
 
             SetSkill(SkillName.MagicResist, 150.0, 190.0);
             SetSkill(SkillName.Tactics, 80.0, 95.0);
-            SetSkill(SkillName.Wrestling, 85.0, 130.0);
+            SetSkill(SkillName.Wrestling, 110.0, 130.0);
             SetSkill(SkillName.Healing, 70.0, 99.0);
             SetSkill(SkillName.DetectHidden, 50.1);
             SetSkill(SkillName.Parry, 55.0, 70.0);

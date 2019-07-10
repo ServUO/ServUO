@@ -174,11 +174,15 @@ namespace Server.Mobiles
 
         public override void OnDamagedBySpell(Mobile caster)
         {
-            if (Map != null && caster != this && 0.70 > Utility.RandomDouble())
+            if (Map != null && caster.Alive && caster != this && caster.Map != null && 0.70 > Utility.RandomDouble())
             {
-                Map = caster.Map;
-                Location = caster.Location;
-                Combatant = caster;
+                MoveToWorld(caster.Location, caster.Map);
+
+                Timer.DelayCall(() =>
+                {
+                    Combatant = caster;
+                });
+
                 Effects.PlaySound(Location, Map, 0x1FE);
             }
 
