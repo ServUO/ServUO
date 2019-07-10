@@ -660,6 +660,8 @@ namespace Server.Items
             return GetMaxIntensity(item, GetID(attribute), false);
         }
 
+        private static int[] _ForceUseNewTable = { 12 };
+
         /// <summary>
         /// Maximum intensity in regards to imbuing weight calculation. Some items may be over this 'cap'
         /// </summary>
@@ -674,7 +676,7 @@ namespace Server.Items
                 var info = Table[id].GetItemTypeInfo(GetItemType(item));
 
                 // First, we try to get the max intensity from the PropInfo. If null or we're getting an intensity for imbuing purpopses, we go to the default MaxIntenity
-                if (info == null || imbuing)
+                if (info == null || (imbuing && !_ForceUseNewTable.Any(i => i == id)))
                 {
                     if (Core.SA && item is BaseWeapon && (id == 25 || id == 27))
                     {
