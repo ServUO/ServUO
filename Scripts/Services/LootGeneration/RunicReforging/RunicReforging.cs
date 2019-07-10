@@ -1627,7 +1627,7 @@ namespace Server.Items
 
         private static object GetRandomEater()
         {
-            switch (Utility.Random(5))
+            switch (Utility.Random(6))
             {
                 default:
                 case 0: return SAAbsorptionAttribute.EaterKinetic;
@@ -1635,6 +1635,7 @@ namespace Server.Items
                 case 2: return SAAbsorptionAttribute.EaterCold;
                 case 3: return SAAbsorptionAttribute.EaterPoison;
                 case 4: return SAAbsorptionAttribute.EaterEnergy;
+                case 5: return SAAbsorptionAttribute.EaterDamage;
             }
         }
 
