@@ -135,7 +135,7 @@ namespace Server.Mobiles
 			private readonly BaseVendor m_Vendor;
 
 			public BulkOrderInfoEntry(Mobile from, BaseVendor vendor)
-				: base(6152, 3)
+				: base(6152, 10)
 			{
                 Enabled = vendor.CheckVendorAccess(from);
 
