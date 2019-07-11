@@ -28,11 +28,11 @@ namespace Server.Mobiles
             Name = "The Slasher of Veils";
             Body = 741;
 
-            SetStr(967, 1145);
-            SetDex(129, 139);
-            SetInt(967, 1145);
+            SetStr(901, 1010);
+            SetDex(127, 153);
+            SetInt(1078, 1263);
 
-            SetHits(100000);
+            SetHits(50000, 65000);
             SetMana(10000);
 
             SetDamage(10, 15);
@@ -43,20 +43,21 @@ namespace Server.Mobiles
             SetDamageType(ResistanceType.Poison, 20);
             SetDamageType(ResistanceType.Energy, 20);
 
-            SetResistance(ResistanceType.Physical, 65, 75);
+            SetResistance(ResistanceType.Physical, 65, 80);
             SetResistance(ResistanceType.Fire, 70, 80);
             SetResistance(ResistanceType.Cold, 70, 80);
             SetResistance(ResistanceType.Poison, 70, 80);
             SetResistance(ResistanceType.Energy, 70, 80);
 
-            SetSkill(SkillName.Anatomy, 116.1, 120.6);
-            SetSkill(SkillName.EvalInt, 113.8, 124.7);
-            SetSkill(SkillName.Magery, 110.1, 123.2);
-            SetSkill(SkillName.Spellweaving, 110.1, 123.2);
-            SetSkill(SkillName.Meditation, 118.2, 127.8);
-            SetSkill(SkillName.MagicResist, 110.0, 123.2);
-            SetSkill(SkillName.Tactics, 112.2, 122.6);
-            SetSkill(SkillName.Wrestling, 118.9, 128.6);
+            SetSkill(SkillName.Anatomy, 110.8, 129.7);
+            SetSkill(SkillName.EvalInt, 113.4, 130);
+            SetSkill(SkillName.Magery, 111.7, 130);
+            SetSkill(SkillName.Spellweaving, 111.1, 125);
+            SetSkill(SkillName.Meditation, 113.5, 129.9);
+            SetSkill(SkillName.MagicResist, 110, 129.8);
+            SetSkill(SkillName.Tactics, 110.5, 126.3);
+            SetSkill(SkillName.Wrestling, 110.1, 130);
+            SetSkill(SkillName.DetectHidden, 127.1);
 
             Fame = 35000;
             Karma = -35000;
