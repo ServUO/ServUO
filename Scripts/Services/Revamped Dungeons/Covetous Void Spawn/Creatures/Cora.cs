@@ -24,7 +24,7 @@ using Server.Engines.VoidPool;
             HairHue = 452;
 
             SetStr(909, 949);
-            SetDex(901, 948);
+            SetDex(125);
             SetInt(903, 947);
 
             SetHits(35000);

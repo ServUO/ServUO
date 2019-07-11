@@ -119,13 +119,13 @@ namespace Server.Mobiles
             AddHtmlLocalized(47, 74, 160, 18, 1049593, 0xC8, false, false); // Attributes
 
             AddHtmlLocalized(53, 92, 160, 18, 1075627, _Label, false, false); // Hit Point Regeneration
-            AddHtml(180, 92, 75, 18, FormatStat(RegenRates.HitPointRegen(Creature)), false, false);
+            AddHtml(180, 92, 75, 18, FormatStat((int)RegenRates.HitPointRegen(Creature)), false, false);
 
             AddHtmlLocalized(53, 110, 160, 18, 1079411, _Label, false, false); // Stamina Regeneration
-            AddHtml(180, 110, 75, 18, FormatStat(RegenRates.StamRegen(Creature)), false, false);
+            AddHtml(180, 110, 75, 18, FormatStat((int)RegenRates.StamRegen(Creature)), false, false);
 
             AddHtmlLocalized(53, 128, 160, 18, 1079410, _Label, false, false); // Mana Regeneration
-            AddHtml(180, 128, 75, 18, FormatStat(RegenRates.ManaRegen(Creature)), false, false);
+            AddHtml(180, 128, 75, 18, FormatStat((int)RegenRates.ManaRegen(Creature)), false, false);
 
             AddButton(240, 328, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 3);
             AddButton(217, 328, 0x15E3, 0x15E7, 0, GumpButtonType.Page, 1);

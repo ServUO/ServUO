@@ -477,9 +477,9 @@ namespace Server
                 case 13: return Math.Min(4, AosAttributes.GetValue(from, AosAttribute.CastSpeed));
                 case 14: return Math.Min(40, AosAttributes.GetValue(from, AosAttribute.LowerManaCost)) + BaseArmor.GetInherentLowerManaCost(from);
                 
-                case 15: return RegenRates.HitPointRegen(from); // HP   REGEN
-                case 16: return RegenRates.StamRegen(from); // Stam REGEN
-                case 17: return RegenRates.ManaRegen(from); // MANA REGEN
+                case 15: return (int)RegenRates.HitPointRegen(from); // HP   REGEN
+                case 16: return (int)RegenRates.StamRegen(from); // Stam REGEN
+                case 17: return (int)RegenRates.ManaRegen(from); // MANA REGEN
                 case 18: return Math.Min(105, AosAttributes.GetValue(from, AosAttribute.ReflectPhysical)); // reflect phys
                 case 19: return Math.Min(50, AosAttributes.GetValue(from, AosAttribute.EnhancePotions)); // enhance pots
 

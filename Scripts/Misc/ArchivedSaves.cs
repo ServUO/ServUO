@@ -10,7 +10,7 @@ namespace Server.Misc
 {
     public static class ArchivedSaves
     {
-        public static bool Enabled = Config.Get("AutoSave.Enabled", false);
+        public static bool Enabled = Config.Get("AutoSave.ArchivesEnabled", false);
         public static int ArchiveDuration = Config.Get("AutoSave.Duration", 3);
         public static string Destination = Config.Get("AutoSave.ArchiveDestination", DefaultDestination);
 

@@ -1329,8 +1329,8 @@ namespace Server.Mobiles
 			{
 				m_Mobile.Warmode = true;
 
-				if (!DirectionLocked)
-					m_Mobile.Direction = m_Mobile.GetDirectionTo(m_Mobile.Combatant);
+				//if (!DirectionLocked)
+				//	m_Mobile.Direction = m_Mobile.GetDirectionTo(m_Mobile.Combatant);
 			}
 			else
 			{
@@ -1366,8 +1366,8 @@ namespace Server.Mobiles
 						{
 							m_Mobile.Warmode = true;
 
-							if (!DirectionLocked)
-								m_Mobile.Direction = m_Mobile.GetDirectionTo(m_Mobile.Combatant);
+							//if (!DirectionLocked)
+							//	m_Mobile.Direction = m_Mobile.GetDirectionTo(m_Mobile.Combatant);
 						}
 						else
 						{
@@ -1464,8 +1464,8 @@ namespace Server.Mobiles
 					{
 						m_Mobile.Warmode = true;
 
-						if (!DirectionLocked)
-							m_Mobile.Direction = m_Mobile.GetDirectionTo(m_Mobile.Combatant);
+						//if (!DirectionLocked)
+						//	m_Mobile.Direction = m_Mobile.GetDirectionTo(m_Mobile.Combatant);
 					}
 					else
 					{
@@ -1486,8 +1486,8 @@ namespace Server.Mobiles
 						{
 							m_Mobile.Warmode = true;
 
-							if (!DirectionLocked)
-								m_Mobile.Direction = m_Mobile.GetDirectionTo(m_Mobile.Combatant);
+							//if (!DirectionLocked)
+							//	m_Mobile.Direction = m_Mobile.GetDirectionTo(m_Mobile.Combatant);
 						}
 						else
 						{
@@ -1868,8 +1868,8 @@ namespace Server.Mobiles
 
 			m_Mobile.DebugSay("My master told me to stop.");
 
-			if (!DirectionLocked)
-				m_Mobile.Direction = m_Mobile.GetDirectionTo(m_Mobile.ControlMaster);
+			//if (!DirectionLocked)
+			//	m_Mobile.Direction = m_Mobile.GetDirectionTo(m_Mobile.ControlMaster);
 
 			m_Mobile.Home = m_Mobile.Location;
 
@@ -2251,90 +2251,9 @@ namespace Server.Mobiles
 
 		public virtual double TransformMoveDelay(double delay)
 		{
-			var isPassive = (delay == m_Mobile.PassiveSpeed);
-			var isControlled = (m_Mobile.Controlled || m_Mobile.Summoned);
-
-			if (delay == 0.2)
-			{
-				delay = 0.3;
-			}
-			else if (delay == 0.25)
-			{
-				delay = 0.45;
-			}
-			else if (delay == 0.3)
-			{
-				delay = 0.6;
-			}
-			else if (delay == 0.4)
-			{
-				delay = 0.9;
-			}
-			else if (delay == 0.5)
-			{
-				delay = 1.05;
-			}
-			else if (delay == 0.6)
-			{
-				delay = 1.2;
-			}
-			else if (delay == 0.8)
-			{
-				delay = 1.5;
-			}
-
-			if (isPassive)
-			{
-				delay += 0.2;
-			}
-
-			if (!isControlled)
-			{
-				delay += 0.1;
-			}
-			else if (m_Mobile.Controlled)
-			{
-				if (m_Mobile.ControlOrder == OrderType.Follow && m_Mobile.ControlTarget == m_Mobile.ControlMaster)
-				{
-					delay *= 0.5;
-				}
-
-				delay -= 0.075;
-			}
-
-			var speedfactor = 0.8;
-
-			var a = (XmlValue)XmlAttach.FindAttachment(m_Mobile, typeof(XmlValue), "DamagedSpeedFactor");
-
-			if (a != null)
-			{
-				speedfactor = a.Value / 100.0;
-			}
-
-			if (!m_Mobile.IsDeadPet && (m_Mobile.ReduceSpeedWithDamage || m_Mobile.IsSubdued))
-			{
-				var offset = (double)m_Mobile.Stam / m_Mobile.StamMax;
-
-				if (offset < 0.0)
-				{
-					offset = 0.0;
-				}
-				else if (offset > 1.0)
-				{
-					offset = 1.0;
-				}
-
-				offset = 1.0 - offset;
-
-				delay += (offset * speedfactor);
-			}
-
-			if (delay < 0.0)
-			{
-				delay = 0.0;
-			}
-
-			if (double.IsNaN(delay))
+            delay = SpeedInfo.TransformMoveDelay(m_Mobile, delay);
+            
+            if (double.IsNaN(delay))
 			{
 				using (var op = new StreamWriter("nan_transform.txt", true))
 				{
@@ -2343,7 +2262,7 @@ namespace Server.Mobiles
 						DateTime.UtcNow,
 						GetType(),
 						m_Mobile == null ? "null" : m_Mobile.GetType().ToString(),
-						m_Mobile.HitsMax);
+						m_Mobile.StamMax);
 				}
 
 				return 1.0;
