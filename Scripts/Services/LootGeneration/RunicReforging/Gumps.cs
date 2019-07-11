@@ -241,9 +241,9 @@ namespace Server.Gumps
         {
             int count = 1;
 
-            foreach (int i in Enum.GetValues(typeof(ReforgingOption)))
+            foreach (var option in Options)
             {
-                if ((m_Options & (ReforgingOption)i) != 0)
+                if ((m_Options & option) != 0)
                     count++;
             }
 

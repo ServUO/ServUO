@@ -12,7 +12,24 @@ namespace Server.Mobiles
         { 
             Name = NameList.RandomName("evil mage");
             Title = "the evil mage";
-            Body = 124;
+
+            var robe = new Robe(Utility.RandomNeutralHue());
+            var sandals = new Sandals();
+
+            if (!Core.UOTD)
+            {
+                Body = Race.Human.MaleBody;
+
+                AddItem(robe);
+                AddItem(sandals);
+            }
+            else
+            {
+                Body = 124;
+
+                PackItem(robe);
+                PackItem(sandals);
+            }
 
             SetStr(81, 105);
             SetDex(91, 115);
@@ -40,14 +57,16 @@ namespace Server.Mobiles
 
             VirtualArmor = 16;
             PackReg(6);
-            PackItem(new Robe(Utility.RandomNeutralHue())); // TODO: Proper hue
-            PackItem(new Sandals());
-			switch (Utility.Random(18))
+
+            if (Core.AOS)
             {
-                case 0: PackItem(new BloodOathScroll()); break;
-                case 1: PackItem(new CurseWeaponScroll()); break;
-                case 2: PackItem(new StrangleScroll()); break;
-			}
+                switch (Utility.Random(18))
+                {
+                    case 0: PackItem(new BloodOathScroll()); break;
+                    case 1: PackItem(new CurseWeaponScroll()); break;
+                    case 2: PackItem(new StrangleScroll()); break;
+                }
+            }
         }
 
         public override int GetDeathSound()

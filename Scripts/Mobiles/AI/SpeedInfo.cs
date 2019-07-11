@@ -12,17 +12,18 @@ namespace Server
 	{
         public static readonly double MinDelay = 0.1;
         public static readonly double MaxDelay = 0.5;
+        public static readonly double MaxAdjustedSpeed = 0.7;
 
         public static bool GetSpeedsNew(BaseCreature bc, ref double activeSpeed, ref double passiveSpeed)
         {
-            var max = GetMaxMovementDex(bc);
-            var dex = Math.Min(max, Math.Max(25, bc.Dex));
+            var maxDex = GetMaxMovementDex(bc);
+            var dex = Math.Min(maxDex, Math.Max(25, bc.Dex));
 
             activeSpeed = MaxDelay - ((MaxDelay - MinDelay) * ((double)dex / 150.0));
 
-            if (activeSpeed < 0.08)
+            if (activeSpeed < MinDelay)
             {
-                activeSpeed = 0.08;
+                activeSpeed = MinDelay;
             }
 
             passiveSpeed = activeSpeed * 2;
@@ -32,7 +33,40 @@ namespace Server
 
         private static int GetMaxMovementDex(BaseCreature bc)
         {
-            return bc.Controlled ? 150 : 190;
+            return bc.IsMonster ? 150 : 190;
+        }
+
+        public static double TransformMoveDelay(BaseCreature bc, double delay)
+        {
+            if (bc.IsMonster)
+            {
+                double monsterDelay = 0.0;
+                var dex = bc.Dex;
+
+                if (dex > 150)
+                {
+                    monsterDelay += ((dex - 150) / 100.0); // this
+                }
+
+                delay = delay * (1.5 + (monsterDelay * 1.5));
+            }
+
+            if (!bc.IsDeadPet && (bc.ReduceSpeedWithDamage || bc.IsSubdued))
+            {
+                var offset = (double)bc.Stam / (double)bc.StamMax;
+
+                if (offset < 1.0)
+                {
+                    delay = delay + ((MaxAdjustedSpeed - delay) * (1.0 - offset));
+                }
+            }
+
+            if (delay > MaxAdjustedSpeed)
+            {
+                delay = MaxAdjustedSpeed;
+            }
+
+            return delay;
         }
 
         // Should we use the new method of speeds?
