@@ -12,18 +12,24 @@ namespace Server
 	{
         public static readonly double MinDelay = 0.1;
         public static readonly double MaxDelay = 0.5;
-        public static readonly double MaxAdjustedSpeed = 0.7;
+        public static readonly double MinDelayWild = 0.4;
+        public static readonly double MaxDelayWild = 0.8;
+
+        //public static readonly double MaxAdjustedSpeed = 0.7;
 
         public static bool GetSpeedsNew(BaseCreature bc, ref double activeSpeed, ref double passiveSpeed)
         {
             var maxDex = GetMaxMovementDex(bc);
             var dex = Math.Min(maxDex, Math.Max(25, bc.Dex));
 
-            activeSpeed = MaxDelay - ((MaxDelay - MinDelay) * ((double)dex / 150.0));
+            var min = bc.IsMonster ? MinDelayWild : MinDelay;
+            var max = bc.IsMonster ? MaxDelayWild : MaxDelay;
 
-            if (activeSpeed < MinDelay)
+            activeSpeed = max - ((max - min) * ((double)dex / maxDex));
+
+            if (activeSpeed < min)
             {
-                activeSpeed = MinDelay;
+                activeSpeed = min;
             }
 
             passiveSpeed = activeSpeed * 2;
@@ -38,18 +44,7 @@ namespace Server
 
         public static double TransformMoveDelay(BaseCreature bc, double delay)
         {
-            if (bc.IsMonster)
-            {
-                double monsterDelay = 0.0;
-                var dex = bc.Dex;
-
-                if (dex > 150)
-                {
-                    monsterDelay += ((dex - 150) / 100.0); // this
-                }
-
-                delay = delay * (1.5 + (monsterDelay * 1.5));
-            }
+            var adjusted = bc.IsMonster ? MaxDelayWild : MaxDelay;
 
             if (!bc.IsDeadPet && (bc.ReduceSpeedWithDamage || bc.IsSubdued))
             {
@@ -57,13 +52,13 @@ namespace Server
 
                 if (offset < 1.0)
                 {
-                    delay = delay + ((MaxAdjustedSpeed - delay) * (1.0 - offset));
+                    delay = delay + ((adjusted - delay) * (1.0 - offset));
                 }
             }
 
-            if (delay > MaxAdjustedSpeed)
+            if (delay > adjusted)
             {
-                delay = MaxAdjustedSpeed;
+                delay = adjusted;
             }
 
             return delay;
