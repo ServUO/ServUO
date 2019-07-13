@@ -5,7 +5,7 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("a beetle corpse")]
-    public class FrostMite : BaseCreature
+    public class FrostMite : BaseCreature, IAuraCreature
     {
         [Constructable]
         public FrostMite() : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -42,6 +42,7 @@ namespace Server.Mobiles
             MinTameSkill = 102.0;
 
             SetWeaponAbility(WeaponAbility.ColdWind);
+            SetAreaEffect(AreaEffect.AuraDamage);
         }
 
         public override int GetAngerSound()
@@ -71,16 +72,15 @@ namespace Server.Mobiles
 
         public override int Meat { get { return 5; } }
         public override FoodType FavoriteFood { get { return FoodType.Meat; } }
-        public override bool HasAura { get { return !Controlled; } }
-        public override int AuraRange { get { return 2; } }
-        public override int AuraBaseDamage { get { return 15; } }
-        public override int AuraFireDamage { get { return 0; } }
-        public override int AuraColdDamage { get { return 100; } }
+
         public override bool CanAngerOnTame { get { return true; } }
         public override bool StatLossAfterTame { get { return true; } }
 
-        public override void AuraEffect(Mobile m)
+        public void AuraEffect(Mobile m)
         {
+            m.FixedParticles(0x374A, 10, 30, 5052, Hue, 0, EffectLayer.Waist);
+            m.PlaySound(0x5C6);
+
             m.SendLocalizedMessage(1008111, false, Name); //  : The intense cold is damaging you!
         }
 

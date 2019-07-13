@@ -3,7 +3,7 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("a fire daemon corpse")]
-    public class FireDaemon : BaseCreature
+    public class FireDaemon : BaseCreature, IAuraCreature
     {
         [Constructable]
         public FireDaemon()
@@ -46,6 +46,7 @@ namespace Server.Mobiles
             VirtualArmor = 58;
 
             SetSpecialAbility(SpecialAbility.DragonBreath);
+            SetAreaEffect(AreaEffect.AuraDamage);
         }        
 
         public FireDaemon(Serial serial)
@@ -53,12 +54,15 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool HasAura { get { return true; } }
-        public override int AuraRange { get { return 5; } }
         public override bool CanRummageCorpses { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Regular; } }
         public override int TreasureMapLevel { get { return 4; } }
         public override int Meat { get { return 1; } }
+
+        public void AuraEffect(Mobile m)
+        {
+            m.SendLocalizedMessage(1008112); // The intense heat is damaging you!
+        }
 
         public override void GenerateLoot()
         {

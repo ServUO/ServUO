@@ -3,7 +3,7 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("a phoenix corpse")]
-    public class Phoenix : BaseCreature
+    public class Phoenix : BaseCreature, IAuraCreature
     {
         [Constructable]
         public Phoenix()
@@ -45,6 +45,8 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 4;
             MinTameSkill = 102.0;
+
+            SetAreaEffect(AreaEffect.AuraDamage);
         }
 
         public Phoenix(Serial serial)
@@ -57,8 +59,23 @@ namespace Server.Mobiles
         public override MeatType MeatType { get { return MeatType.Bird; } }
         public override int Feathers { get { return 36; } }
         public override bool CanFly { get { return true; } }
-        public override bool HasAura { get { return !Controlled; } }
-        public override int AuraRange { get { return 2; } }
+
+        public void AuraEffect(Mobile m)
+        {
+            m.SendLocalizedMessage(1008112); // The intense heat is damaging you!
+        }
+
+        public override void OnAfterTame(Mobile tamer)
+        {
+            base.OnAfterTame(tamer);
+
+            var profile = PetTrainingHelper.GetAbilityProfile(this);
+
+            if (profile != null)
+            {
+                profile.RemoveAbility(AreaEffect.AuraDamage);
+            }
+        }
 
         public override void GenerateLoot()
         {

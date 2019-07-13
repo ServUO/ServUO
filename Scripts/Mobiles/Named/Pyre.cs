@@ -68,13 +68,6 @@ namespace Server.Mobiles
             c.DropItem( new ParagonChest( Name, 5 ) );
 
         }
-        public override bool HasAura { get { return false; } }
-        public override int AuraRange { get { return 2; } }
-
-        public override void AuraEffect(Mobile m)
-        {
-            m.SendMessage("The radiating heat scorches your skin!");
-        }
 
         public override void GenerateLoot()
         {

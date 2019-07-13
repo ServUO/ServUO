@@ -47,6 +47,7 @@ namespace Server.Mobiles
             VirtualArmor = 16;
 
             SetSpecialAbility(SpecialAbility.TailSwipe);
+            SetSpecialAbility(SpecialAbility.ColossalBlow);
         }
 
         public HighPlainsBoura(Serial serial) : base(serial)
@@ -64,7 +65,6 @@ namespace Server.Mobiles
         }
 
         public override int DragonBlood { get { return 8; } }
-        public override bool DoesColossalBlow { get { return true; } }
 
         public override HideType HideType
         {

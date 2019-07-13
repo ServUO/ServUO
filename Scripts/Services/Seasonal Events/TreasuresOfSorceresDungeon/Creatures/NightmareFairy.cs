@@ -45,6 +45,7 @@ namespace Server.Engines.SorcerersDungeon
             Karma = -12000;
 
             SetSpecialAbility(SpecialAbility.LifeLeech);
+            SetSpecialAbility(SpecialAbility.LifeDrain);
         }
 
         public NightmareFairy(Serial serial)
@@ -52,7 +53,6 @@ namespace Server.Engines.SorcerersDungeon
         {
         }
 
-        public override bool DrainsLife { get { return true; } }
         public override bool AlwaysMurderer { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Deadly; } }
 

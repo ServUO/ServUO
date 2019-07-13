@@ -46,6 +46,7 @@ namespace Server.Mobiles
             Karma = -2500;
 
             VirtualArmor = 16;
+            SetSpecialAbility(SpecialAbility.ColossalBlow);
         }
 
         public RuddyBoura(Serial serial) : base(serial)
@@ -63,7 +64,6 @@ namespace Server.Mobiles
         }
 
         public override int DragonBlood{ get{ return 8; } }
-        public override bool DoesColossalBlow { get { return true; } }
 
         public override HideType HideType
         {

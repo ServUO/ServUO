@@ -65,6 +65,7 @@ namespace Server.Mobiles
             SetSpecialAbility(SpecialAbility.AngryFire);
             SetSpecialAbility(SpecialAbility.ManaDrain);
             SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            SetSpecialAbility(SpecialAbility.TrueFear);
         }
 
         public SlasherOfVeils(Serial serial)
@@ -122,7 +123,6 @@ namespace Server.Mobiles
         }
 
 		public override bool AlwaysMurderer { get { return true; } }
-        public override bool CausesTrueFear { get { return true; } }
 
         public override void GenerateLoot()
         {
@@ -135,11 +135,11 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
-            if (Combatant == null)
-                return;
+            //if (Combatant == null)
+            //    return;
 
-            if (Hits > 0.6 * HitsMax && Utility.RandomDouble() < 0.05)
-                FireRing();
+            //if (Hits > 0.6 * HitsMax && Utility.RandomDouble() < 0.05)
+            //    FireRing();
         }
 
         public override void FireRing()
@@ -175,9 +175,9 @@ namespace Server.Mobiles
 
         public override void OnDamagedBySpell(Mobile caster)
         {
-            if (Map != null && caster.Alive && caster != this && caster.Map != null && 0.70 > Utility.RandomDouble())
+            if (0.5 > Utility.RandomDouble() && caster.InRange(Location, 10) && Map != null && caster.Alive && caster != this && caster.Map == Map)
             {
-                MoveToWorld(caster.Location, caster.Map);
+                MoveToWorld(caster.Location, Map);
 
                 Timer.DelayCall(() =>
                 {

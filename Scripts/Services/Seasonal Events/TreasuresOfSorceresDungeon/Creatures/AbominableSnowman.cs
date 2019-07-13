@@ -46,6 +46,7 @@ namespace Server.Engines.SorcerersDungeon
 
             SetWeaponAbility(WeaponAbility.ConcussionBlow);
             SetWeaponAbility(WeaponAbility.CrushingBlow);
+            SetSpecialAbility(SpecialAbility.TrueFear);
         }
 
         public AbominableSnowman(Serial serial)
@@ -53,7 +54,6 @@ namespace Server.Engines.SorcerersDungeon
         {
         }
 
-        public override bool CausesTrueFear { get { return true; } }
         public override bool AlwaysMurderer { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Deadly; } }
 

@@ -740,10 +740,9 @@ namespace Server.Mobiles
             SetSkill(SkillName.Meditation, 100.0);
             SetSkill(SkillName.Focus, 100.0);
             SetSkill(SkillName.Spellweaving, 100.0);
-        }
 
-        public override bool HasAura { get { return true; } }
-        public override int AuraEnergyDamage { get { return 100; } }
+            SetAreaEffect(AreaEffect.AuraOfEnergy);
+        }
 
         public IgnisFatalis(Serial serial)
             : base(serial)

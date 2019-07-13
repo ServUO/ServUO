@@ -87,6 +87,7 @@ namespace Server.Mobiles
             Instances.Add(this);
 
             SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetAreaEffect(AreaEffect.AuraOfEnergy);
         }        
 
         public static void DistributeRandomArtifact(BaseCreature bc, Type[] typelist)
@@ -168,18 +169,6 @@ namespace Server.Mobiles
             target.SendLocalizedMessage(1152693); // The power of the Void surges around you! 
 
             m_LastTarget = target.Location;
-        }
-
-        public override bool HasAura { get { return true; } }
-        public override TimeSpan AuraInterval { get { return TimeSpan.FromSeconds(3); } }
-        public override int AuraRange { get { return 3; } }
-        public override int AuraBaseDamage { get { return 25; } }
-        public override int AuraEnergyDamage { get { return 100; } }
-
-        public override void AuraEffect(Mobile m)
-        {
-            if (m.NetState != null)
-                m.SendLocalizedMessage(1151112, String.Format("{0}\t#1072073", Name)); // : The creature's aura of energy is damaging you!
         }
 
         public void DoSpecialAbility(Mobile target)

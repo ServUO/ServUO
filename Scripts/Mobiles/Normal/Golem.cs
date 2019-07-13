@@ -94,6 +94,8 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Energy, 30, 45);
 
             ControlSlots = 3;
+
+            SetSpecialAbility(SpecialAbility.ColossalBlow);
         }
 
         public virtual void SpawnPackItems()
@@ -128,7 +130,6 @@ namespace Server.Mobiles
         public override bool BleedImmune { get { return true; } }
         public override bool BardImmune { get { return !Core.AOS || !Controlled; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
-        public override bool DoesColossalBlow { get { return true; } }
 
         public override void OnDeath(Container c)
         {

@@ -5,7 +5,7 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("a dragon corpse")]
-    public class FrostDragon : BaseCreature
+    public class FrostDragon : BaseCreature, IAuraCreature
     {
         [Constructable]
         public FrostDragon() : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -51,6 +51,7 @@ namespace Server.Mobiles
 
             SetWeaponAbility(WeaponAbility.BleedAttack);
             SetSpecialAbility(SpecialAbility.DragonBreath);
+            SetAreaEffect(AreaEffect.AuraDamage);
         }
 
         public override void GenerateLoot()
@@ -77,16 +78,12 @@ namespace Server.Mobiles
         public override int DragonBlood { get { return 8; } }
         public override FoodType FavoriteFood { get { return FoodType.Meat; } }
 
-        public override int AuraBaseDamage { get { return 10; } }
-        public override bool HasAura { get { return true; } }
-        public override int AuraRange { get { return 10; } }
-        public override int AuraFireDamage { get { return 0; } }
-        public override int AuraColdDamage { get { return 100; } }
-
-        public override void AuraEffect(Mobile m)
+        public void AuraEffect(Mobile m)
         {
             m.FixedParticles(0x374A, 10, 30, 5052, Hue, 0, EffectLayer.Waist);
             m.PlaySound(0x5C6);
+
+            m.SendLocalizedMessage(1008111); //  : The intense cold is damaging you!
         }
 
         public FrostDragon(Serial serial) : base(serial)
