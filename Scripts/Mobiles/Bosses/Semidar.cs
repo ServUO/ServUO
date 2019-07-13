@@ -45,6 +45,9 @@ namespace Server.Mobiles
 
             VirtualArmor = 20;
             SetSpecialAbility(SpecialAbility.LifeDrain);
+
+            ForceActiveSpeed = 0.3;
+            ForcePassiveSpeed = 0.6;
         }
 
         public Semidar(Serial serial)

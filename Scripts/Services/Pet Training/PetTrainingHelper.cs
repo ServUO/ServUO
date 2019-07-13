@@ -1411,7 +1411,7 @@ namespace Server.Mobiles
 
         #region Localizations
         /// <summary>
-        /// Localizations are in indexxed order, so DO NOT switch the orderes around.
+        /// Localizations are in indexxed order, so DO NOT switch the orderes around or remove.
         /// Haveing an Int32 cliloc or string definition will show the particular ability in the animal lore gump.
         /// Omit or make null to keep it from showing in the animal lore gump
         /// </summary>

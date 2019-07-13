@@ -6,6 +6,8 @@ namespace Server.Mobiles
     [CorpseName("a fleshrenderer corpse")]
     public class FleshRenderer : BaseCreature
     {
+        public override bool SupportsRunAnimation { get { return false; } }
+
         [Constructable]
         public FleshRenderer()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -44,6 +46,9 @@ namespace Server.Mobiles
 
             SetWeaponAbility(WeaponAbility.Dismount);
             SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+
+            ForceActiveSpeed = 0.3;
+            ForcePassiveSpeed = 0.6;
         }
 
         public FleshRenderer(Serial serial)

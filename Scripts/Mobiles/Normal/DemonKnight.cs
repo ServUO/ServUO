@@ -109,6 +109,9 @@ namespace Server.Mobiles
 
             SetWeaponAbility(WeaponAbility.CrushingBlow);
             SetWeaponAbility(WeaponAbility.WhirlwindAttack);
+
+            ForceActiveSpeed = 0.38;
+            ForcePassiveSpeed = 0.66;
         }
 
         public DemonKnight(Serial serial)

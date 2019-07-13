@@ -42,6 +42,9 @@ namespace Server.Mobiles
             Karma = -22500;
 
             VirtualArmor = 130;
+
+            ForceActiveSpeed = 0.35;
+            ForcePassiveSpeed = 0.7;
         }
 
         public Rikktor(Serial serial)

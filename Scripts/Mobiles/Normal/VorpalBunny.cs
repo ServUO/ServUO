@@ -36,6 +36,9 @@ namespace Server.Mobiles
             VirtualArmor = 4;
 
             DelayBeginTunnel();
+
+            ForceActiveSpeed = 0.2;
+            ForcePassiveSpeed = 0.4;
         }
 		
 		public virtual void SpawnPackItems()
