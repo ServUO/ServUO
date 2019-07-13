@@ -46,6 +46,9 @@ namespace Server.Mobiles
             SetWeaponAbility(WeaponAbility.BleedAttack);
             SetWeaponAbility(WeaponAbility.MortalStrike);
             SetWeaponAbility(WeaponAbility.ArmorIgnore);
+
+            ForceActiveSpeed = 0.38;
+            ForcePassiveSpeed = 0.66;
         }
 
         public Impaler(Serial serial)

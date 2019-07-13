@@ -47,6 +47,9 @@ namespace Server.Mobiles
             }
 
             SetWeaponAbility(WeaponAbility.MortalStrike);
+
+            ForceActiveSpeed = 0.3;
+            ForcePassiveSpeed = 0.6;
         }
 
         public Miasma(Serial serial)

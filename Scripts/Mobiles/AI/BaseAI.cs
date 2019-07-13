@@ -68,7 +68,7 @@ namespace Server.Mobiles
 		/// </summary>
 		public bool DirectionLocked { get; set; }
 
-		public BaseAI(BaseCreature m)
+        public BaseAI(BaseCreature m)
 		{
 			m_Mobile = m;
 
@@ -101,7 +101,12 @@ namespace Server.Mobiles
 			Action = ActionType.Wander;
 		}
 
-		public ActionType Action
+        public bool CanRun
+        {
+            get { return m_Mobile.SupportsRunAnimation; }
+        }
+
+        public ActionType Action
 		{
 			get { return m_Action; }
 			set
@@ -1357,7 +1362,7 @@ namespace Server.Mobiles
 					m_Mobile.DebugSay("My master told me come");
 
 					// Not exactly OSI style, but better than nothing.
-					var bRun = (iCurrDist > 5);
+					var bRun = CanRun && (iCurrDist > 5);
 
 					if (WalkMobileRange(m_Mobile.ControlMaster, 1, bRun, 0, 1))
 					{
@@ -2309,7 +2314,7 @@ namespace Server.Mobiles
 			var delay = (int)(TransformMoveDelay(m_Mobile.CurrentSpeed) * 1000);
 
 			var mounted = (m_Mobile.Mounted || m_Mobile.Flying);
-			var running = mounted ? (delay < Mobile.WalkMount) : (delay < Mobile.WalkFoot);
+            var running = CanRun && (mounted ? (delay < Mobile.WalkMount) : (delay < Mobile.WalkFoot));
 
 			if (running)
 			{

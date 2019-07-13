@@ -15,8 +15,6 @@ namespace Server
         public static readonly double MinDelayWild = 0.4;
         public static readonly double MaxDelayWild = 0.8;
 
-        //public static readonly double MaxAdjustedSpeed = 0.7;
-
         public static bool GetSpeedsNew(BaseCreature bc, ref double activeSpeed, ref double passiveSpeed)
         {
             var maxDex = GetMaxMovementDex(bc);
@@ -24,6 +22,12 @@ namespace Server
 
             var min = bc.IsMonster ? MinDelayWild : MinDelay;
             var max = bc.IsMonster ? MaxDelayWild : MaxDelay;
+
+            if (bc.IsParagon)
+            {
+                min /= 2;
+                max = min + .4;
+            }
 
             activeSpeed = max - ((max - min) * ((double)dex / maxDex));
 

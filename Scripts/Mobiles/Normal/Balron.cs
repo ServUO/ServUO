@@ -53,6 +53,11 @@ namespace Server.Mobiles
         {
         }
 
+        public override bool CanFly
+        {
+            get { return true; }
+        }
+
         public override bool CanRummageCorpses
         {
             get

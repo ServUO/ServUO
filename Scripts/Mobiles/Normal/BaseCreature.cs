@@ -4826,6 +4826,7 @@ namespace Server.Mobiles
         }
 
         public virtual bool CanStealth { get { return false; } }
+        public virtual bool SupportsRunAnimation { get { return true; } }
 
         protected override bool OnMove(Direction d)
         {
@@ -5280,14 +5281,19 @@ namespace Server.Mobiles
         {
             if (Core.ML && oldDex != RawDex)
             {
-                double activeSpeed = 0.0;
-                double passiveSpeed = 0.0;
-
-                SpeedInfo.GetSpeedsNew(this, ref activeSpeed, ref passiveSpeed);
-
-                m_dActiveSpeed = activeSpeed;
-                m_dPassiveSpeed = passiveSpeed;
+                AdjustSpeeds();
             }
+        }
+
+        public void AdjustSpeeds()
+        {
+            double activeSpeed = 0.0;
+            double passiveSpeed = 0.0;
+
+            SpeedInfo.GetSpeedsNew(this, ref activeSpeed, ref passiveSpeed);
+
+            m_dActiveSpeed = activeSpeed;
+            m_dPassiveSpeed = passiveSpeed;
         }
         #endregion
 
@@ -6609,6 +6615,9 @@ namespace Server.Mobiles
                 ControlTarget = null;
                 ControlOrder = OrderType.Come;
                 Guild = null;
+
+                AdjustSpeeds();
+                CurrentSpeed = m_dActiveSpeed;
 
                 if (m_DeleteTimer != null)
                 {
