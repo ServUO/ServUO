@@ -556,9 +556,8 @@ namespace Server.Mobiles
             {
                 AuraDefinition defaul;
                 AuraDefinition cora;
-                AuraDefinition flameEle;
+                AuraDefinition fireAura;
                 AuraDefinition coldAura;
-                AuraDefinition reaper;
 
                 defaul = new AuraDefinition();
                 Definitions.Add(defaul);
@@ -569,23 +568,16 @@ namespace Server.Mobiles
                 cora.Fire = 0;
                 Definitions.Add(cora);
 
-                flameEle = new AuraDefinition(typeof(FlameElemental), typeof(FireDaemon), typeof(LesserFlameElemental));
-                flameEle.Range = 5;
-                flameEle.Damage = 7;
-                Definitions.Add(flameEle);
+                fireAura = new AuraDefinition(typeof(FlameElemental), typeof(FireDaemon), typeof(LesserFlameElemental));
+                fireAura.Range = 5;
+                fireAura.Damage = 7;
+                Definitions.Add(fireAura);
 
                 coldAura = new AuraDefinition(typeof(ColdDrake), typeof(FrostDrake), typeof(FrostDragon), typeof(SnowElemental), typeof(FrostMite), typeof(IceFiend), typeof(IceElemental), typeof(CorporealBrume));
                 coldAura.Damage = 15;
                 coldAura.Fire = 0;
                 coldAura.Cold = 100;
                 Definitions.Add(coldAura);
-
-                reaper = new AuraDefinition();
-                reaper.Cooldown = TimeSpan.FromSeconds(2);
-                reaper.Damage = 15;
-                reaper.Fire = 0;
-                reaper.Poison = 100;
-                Definitions.Add(reaper);
             }
 
             public static AuraDefinition GetDefinition(BaseCreature bc)
