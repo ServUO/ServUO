@@ -1410,6 +1410,12 @@ namespace Server.Mobiles
         #endregion
 
         #region Localizations
+        /// <summary>
+        /// Localizations are in indexxed order, so DO NOT switch the orderes around.
+        /// Haveing an Int32 cliloc or string definition will show the particular ability in the animal lore gump.
+        /// Omit or make null to keep it from showing in the animal lore gump
+        /// </summary>
+
         public static TextDefinition[][] MagicalAbilityLocalizations { get { return _MagicalAbilityLocalizations; } }
         private static TextDefinition[][] _MagicalAbilityLocalizations =
         {
@@ -1451,6 +1457,13 @@ namespace Server.Mobiles
             new TextDefinition[] { 1157424, 1157425 }, // Life Leech
             new TextDefinition[] { 1157426, 1157427 }, // Sticky Skin
             new TextDefinition[] { 1157428, 1157429 }, // Tail Swipe
+            new TextDefinition[] { 1157418, 1157419 }, // Flurry Force
+            new TextDefinition[] { 1150005, 0       }, // Rage
+            new TextDefinition[] { 1151311, 0       }, // Heal
+            new TextDefinition[] { 1153793, 0       }, // Howl of Cacophony
+            new TextDefinition[] { 1153789, 0       }, // Webbing
+            new TextDefinition[] { 1153797, 0       }, // Anemia
+            new TextDefinition[] { 1153798, 0       }, // Blood Disease
         };
 
         public static TextDefinition[][] AreaEffectLocalizations { get { return _AreaEffectLocalizations; } }
@@ -1461,7 +1474,7 @@ namespace Server.Mobiles
             new TextDefinition[] { 1157469, 1157470 }, // Essence of Disease
             new TextDefinition[] { 1157465, 1157466 }, // Essence of Earth
             new TextDefinition[] { 1157463, 1157464 }, // Explosive Goo
-            new TextDefinition[] { 1157461, 1157462 }, // Firestorm
+            new TextDefinition[] { null,    null },    // Aura Damage
             new TextDefinition[] { 1157475, 1157476 }, // Poison Breath
         };
 
@@ -1559,18 +1572,16 @@ namespace Server.Mobiles
                 case MagicalAbility.Magery: return _MagicalAbilityLocalizations[15];
             }
 
-            string error = String.Format("Invalid Loc: {0}", ability.ToString());
-            return new TextDefinition[] { error, error };
+            return new TextDefinition[] { null, null };
         }
 
         public static TextDefinition[] GetLocalization(SpecialAbility ability)
         {
             int index = Array.IndexOf(SpecialAbility.Abilities, ability);
 
-            if (index < 0 || index >= SpecialAbility.Abilities.Length)
+            if (index < 0 || index >= _SpecialAbilityLocalizations.Length)
             {
-                string error = String.Format("Invalid Loc: {0}", ability.ToString());
-                return new TextDefinition[] { error, error };
+                return new TextDefinition[] { null, null };
             }
 
             return _SpecialAbilityLocalizations[index];
@@ -1580,10 +1591,9 @@ namespace Server.Mobiles
         {
             int index = Array.IndexOf(WeaponAbilities, effect);
 
-            if (index < 0 && index >= WeaponAbilities.Length)
+            if (index < 0 && index >= _WeaponAbilityLocalizations.Length)
             {
-                string error = String.Format("Invalid Loc: {0}", effect.ToString());
-                return new TextDefinition[] { error, error };
+                return new TextDefinition[] { null, null };
             }
 
             return _WeaponAbilityLocalizations[index];
@@ -1593,10 +1603,9 @@ namespace Server.Mobiles
         {
             int index = Array.IndexOf(AreaEffect.Effects, effect);
 
-            if (index < 0 && index >= AreaEffect.Effects.Length)
+            if (index < 0 && index >= _AreaEffectLocalizations.Length)
             {
-                string error = String.Format("Invalid Loc: {0}", effect.ToString());
-                return new TextDefinition[] { error, error };
+                return new TextDefinition[] { null, null };
             }
 
             return _AreaEffectLocalizations[index];
