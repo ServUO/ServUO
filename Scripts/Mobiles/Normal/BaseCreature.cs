@@ -1111,90 +1111,9 @@ namespace Server.Mobiles
         }
         #endregion
 
-        #region Life Drain
-        public virtual bool DrainsLife { get { return false; } }
-        public virtual double DrainsLifeChance { get { return 0.1; } }
-        public virtual int DrainAmount { get { return Utility.RandomMinMax(10, 40); } }
-
-        public virtual int GetDrainAmount(Mobile target)
+        public virtual void OnDrainLife(Mobile victim)
         {
-            return DrainAmount;
         }
-
-        public virtual void DrainLife()
-        {
-            foreach (Mobile m in SpellHelper.AcquireIndirectTargets(this, this, Map, 2).OfType<Mobile>())
-            {
-                DoLifeDrain(m);
-            }
-        }
-
-        public virtual void DoLifeDrain(Mobile m)
-        {
-            DoHarmful(m);
-
-            m.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
-            m.PlaySound(0x231);
-
-            m.SendMessage("You feel the life drain out of you!");
-
-            int toDrain = GetDrainAmount(m);
-
-            if (m is PlayerMobile)
-            {
-                toDrain = (int)LifeShieldLotion.HandleLifeDrain((PlayerMobile)m, toDrain);
-            }
-
-            Hits += toDrain;
-            AOS.Damage(m, this, toDrain, 0, 0, 0, 0, 0, 0, 100);
-        }
-
-        #endregion
-
-        #region Colossal Blow
-        public virtual bool DoesColossalBlow { get { return false; } }
-        public virtual double ColossalBlowChance { get { return 0.3; } }
-        public virtual TimeSpan ColossalBlowDuration { get { return TimeSpan.FromSeconds(5); } }
-
-        public bool _Stunning;
-
-        public virtual void DoColossalBlow(Mobile defender)
-        {
-            _Stunning = true;
-
-            if (Core.SA)
-            {
-                defender.Animate(AnimationType.Die, 0);
-            }
-            else
-            {
-                defender.Animate(21, 6, 1, true, false, 0);
-            }
-
-            PlaySound(0xEE);
-            defender.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1070696); // You have been stunned by a colossal blow!
-
-            BaseWeapon weapon = Weapon as BaseWeapon;
-
-            if (weapon != null)
-                weapon.OnHit(this, defender);
-
-            if (defender.Alive)
-            {
-                defender.Frozen = true;
-
-                Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(5.0), victim =>
-                    {
-                        victim.Frozen = false;
-                        victim.Combatant = null;
-                        victim.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1070695); // You recover your senses.
-
-                        _Stunning = false;
-
-                    }, defender);
-            }
-        }
-        #endregion
 
         #region Flee!!!
         public virtual bool CanFlee { get { return !m_Paragon && !GivesMLMinorArtifact; } }
@@ -1232,61 +1151,6 @@ namespace Server.Mobiles
         public virtual void BeginFlee(TimeSpan maxDuration)
         {
             m_EndFlee = DateTime.UtcNow + maxDuration;
-        }
-        #endregion
-
-        #region True Fear
-        public virtual bool CausesTrueFear { get { return false; } }
-
-        private static List<Mobile> m_TrueFearCooldown = new List<Mobile>();
-
-        private const int TrueFearRange = 8;
-
-        public virtual void CauseTrueFear(Mobile m, Point3D oldLocation)
-        {
-            base.OnMovement(m, oldLocation);
-
-            if (m.Alive && m.Player && InRange(m.Location, TrueFearRange) && !InRange(oldLocation, TrueFearRange))
-            {
-                if (!m_TrueFearCooldown.Contains(m))
-                {
-                    int seconds = (int)(13.0 - (m.Skills[SkillName.MagicResist].Value / 10.0));
-
-                    if (seconds < 1)
-                        seconds = 1;
-
-                    int number;
-
-                    if (seconds <= 2)
-                        number = 1080339; // A sense of discomfort passes through you, but it fades quickly
-                    else if (seconds <= 4)
-                        number = 1080340; // An unfamiliar fear washes over you, and for a moment you're unable to move
-                    else if (seconds <= 7)
-                        number = 1080341; // Panic grips you! You're unable to move, to think, to feel anything but fear!
-                    else if (seconds <= 10)
-                        number = 1080342; // Terror slices into your very being, destroying any chance of resisting ~1_name~ you might have had
-                    else
-                        number = 1080343; // Everything around you dissolves into darkness as ~1_name~'s burning eyes fill your vision
-
-                    m.SendLocalizedMessage(number, Name, 0x21);
-
-                    m_TrueFearCooldown.Add(m);
-
-                    m.Frozen = true;
-
-                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.TrueFear, 1153791, 1153827, TimeSpan.FromSeconds(seconds), m));
-
-                    Timer.DelayCall(TimeSpan.FromSeconds(seconds), new TimerCallback(
-                        delegate
-                        {
-                            m.Frozen = false;
-                            m.SendLocalizedMessage(1005603); // You can move again!
-                        }));
-
-                    Timer.DelayCall(TimeSpan.FromMinutes(5.0), new TimerCallback(
-                        delegate { m_TrueFearCooldown.Remove(m); }));
-                }
-            }
         }
         #endregion
 
@@ -4011,16 +3875,6 @@ namespace Server.Mobiles
             {
                 Dispel(attacker);
             }
-
-            if (!m_InRage && CanDoRage)
-            {
-                DoRage(attacker);
-            }
-
-            if (DrainsLife && DrainsLifeChance >= Utility.RandomDouble())
-            {
-                DrainLife();
-            }
         }
 
         public virtual void Dispel(Mobile m)
@@ -4076,19 +3930,9 @@ namespace Server.Mobiles
                 Dispel(defender);
             }
 
-            if (DrainsLife && DrainsLifeChance >= Utility.RandomDouble())
-            {
-                DrainLife();
-            }
-
-            if (m_InRage && RageProbability >= Utility.RandomDouble())
+            if (ColossalRage.HasRage(this) && 0.33 >= Utility.RandomDouble())
             {
                 DoRageHit(defender);
-            }
-
-            if (DoesColossalBlow && !_Stunning && ColossalBlowChance > Utility.RandomDouble())
-            {
-                DoColossalBlow(defender);
             }
         }
 
@@ -5036,8 +4880,7 @@ namespace Server.Mobiles
                 ForceReacquire();
             }
 
-            if (CausesTrueFear)
-                CauseTrueFear(m, oldLocation);
+            SpecialAbility.CheckApproachTrigger(this, m, oldLocation);
 
             InhumanSpeech speechType = SpeechType;
 
@@ -6921,20 +6764,6 @@ namespace Server.Mobiles
 
         #region Healing
         public virtual double HealChance { get { return 0.0; } }
-        public virtual bool CanHealOwner { get { return PetTrainingHelper.Enabled; } }
-        public virtual double HealScalar { get { return 1.0; } }
-
-        public virtual int HealSound { get { return 0x57; } }
-        public virtual int HealStartRange { get { return 2; } }
-        public virtual int HealEndRange { get { return RangePerception; } }
-        public virtual double HealTrigger { get { return 0.78; } }
-        public virtual double HealDelay { get { return 6.5; } }
-        public virtual double HealInterval { get { return 0.0; } }
-        public virtual bool HealFully { get { return true; } }
-        public virtual double HealOwnerTrigger { get { return 0.78; } }
-        public virtual double HealOwnerDelay { get { return 6.5; } }
-        public virtual double HealOwnerInterval { get { return 30.0; } }
-        public virtual bool HealOwnerFully { get { return PetTrainingHelper.Enabled; } }
 
         private long m_NextHealTime = Core.TickCount;
         private long m_NextHealOwnerTime = Core.TickCount;
@@ -6950,18 +6779,18 @@ namespace Server.Mobiles
             {
                 Mobile owner = ControlMaster;
 
-                if (owner != null && CanHealOwner && tc >= m_NextHealOwnerTime && CanBeBeneficial(owner, true, true) &&
-                    owner.Map == Map && InRange(owner, HealStartRange) && InLOS(owner) && owner.Hits < HealOwnerTrigger * owner.HitsMax)
+                if (owner != null && tc >= m_NextHealOwnerTime && CanBeBeneficial(owner, true, true) &&
+                    owner.Map == Map && InRange(owner, 2) && InLOS(owner) && owner.Hits < .78 * owner.HitsMax)
                 {
                     HealStart(owner);
-                    m_NextHealOwnerTime = tc + (int)TimeSpan.FromSeconds(HealOwnerInterval).TotalMilliseconds;
+                    m_NextHealOwnerTime = tc + (int)TimeSpan.FromSeconds(30).TotalMilliseconds;
 
                     return true;
                 }
-                else if (tc >= m_NextHealTime && CanBeBeneficial(this) && (Hits < HealTrigger * HitsMax || Poisoned))
+                else if (tc >= m_NextHealTime && CanBeBeneficial(this) && (Hits < .78 * HitsMax || Poisoned))
                 {
                     HealStart(this);
-                    m_NextHealTime = tc + (int)TimeSpan.FromSeconds(HealInterval).TotalMilliseconds;
+                    m_NextHealTime = tc + (int)TimeSpan.FromSeconds(1.0).TotalMilliseconds;
 
                     return true;
                 }
@@ -6984,7 +6813,7 @@ namespace Server.Mobiles
                 patient.SendLocalizedMessage(1008078, false, Name); //  : Attempting to heal you.
             }
 
-            double seconds = (onSelf ? HealDelay : HealOwnerDelay) + (patient.Alive ? 0.0 : 5.0);
+            double seconds = 6.5 + (patient.Alive ? 0.0 : 5.0);
 
             m_HealTimer = Timer.DelayCall(TimeSpan.FromSeconds(seconds), new TimerStateCallback(Heal_Callback), patient);
         }
@@ -7000,7 +6829,7 @@ namespace Server.Mobiles
         public virtual void Heal(Mobile patient)
         {
             if (!Alive || Map == Map.Internal || !CanBeBeneficial(patient, true, true) || patient.Map != Map ||
-                !InRange(patient, HealEndRange))
+                !InRange(patient, RangePerception))
             {
                 StopHeal();
                 return;
@@ -7054,8 +6883,6 @@ namespace Server.Mobiles
 
                     double toHeal = min + (Utility.RandomDouble() * (max - min));
 
-                    toHeal *= HealScalar;
-
                     patient.Heal((int)toHeal, this);
 
                     CheckSkill(SkillName.Healing, 0.0, Skills[SkillName.Healing].Cap);
@@ -7072,8 +6899,8 @@ namespace Server.Mobiles
 
             StopHeal();
 
-            if ((onSelf && HealFully && Hits >= HealTrigger * HitsMax && Hits < HitsMax) ||
-                (!onSelf && HealOwnerFully && patient.Hits >= HealOwnerTrigger * patient.HitsMax && patient.Hits < patient.HitsMax))
+            if ((onSelf && Hits >= .78 * HitsMax && Hits < HitsMax) ||
+                (!onSelf && patient.Hits >= .78 * patient.HitsMax && patient.Hits < patient.HitsMax))
             {
                 HealStart(patient);
             }
@@ -7091,7 +6918,7 @@ namespace Server.Mobiles
 
         public virtual void HealEffect(Mobile patient)
         {
-            patient.PlaySound(HealSound);
+            patient.PlaySound(0x57);
         }
         #endregion
 
@@ -7136,62 +6963,6 @@ namespace Server.Mobiles
             }
         }
 
-        #region Damaging Aura
-        private long m_NextAura;
-
-        public virtual bool HasAura { get { return false; } }
-        public virtual TimeSpan AuraInterval { get { return TimeSpan.FromSeconds(5); } }
-        public virtual int AuraRange { get { return 4; } }
-
-        public virtual int AuraBaseDamage { get { return 5; } }
-        public virtual int AuraPhysicalDamage { get { return 0; } }
-        public virtual int AuraFireDamage { get { return 100; } }
-        public virtual int AuraColdDamage { get { return 0; } }
-        public virtual int AuraPoisonDamage { get { return 0; } }
-        public virtual int AuraEnergyDamage { get { return 0; } }
-        public virtual int AuraChaosDamage { get { return 0; } }
-
-        public virtual int GetAuraDamage(Mobile from)
-        {
-            if(from is PlayerMobile)
-                return (int)BalmOfProtection.HandleDamage((PlayerMobile)from, AuraBaseDamage);
-
-            return AuraBaseDamage;
-        }
-
-        public virtual void AuraDamage()
-        {
-            if (!Alive || IsDeadBondedPet)
-            {
-                return;
-            }
-
-            foreach (Mobile m in SpellHelper.AcquireIndirectTargets(this, this, Map, AuraRange).OfType<Mobile>())
-            {
-                int damage = GetAuraDamage(m);
-
-                AOS.Damage(
-                    m,
-                    this,
-                    damage,
-                    AuraPhysicalDamage,
-                    AuraFireDamage,
-                    AuraColdDamage,
-                    AuraPoisonDamage,
-                    AuraEnergyDamage,
-                    AuraChaosDamage,
-                    0,
-                    DamageType.SpellAOE);
-
-                m.RevealingAction();
-                AuraEffect(m);
-            }
-        }
-
-        public virtual void AuraEffect(Mobile m)
-        { }
-        #endregion
-
         #region Spawn Position
         public virtual Point3D GetSpawnPosition(int range)
         {
@@ -7225,53 +6996,14 @@ namespace Server.Mobiles
         #endregion
 
         #region Rage
-        public virtual bool CanDoRage { get { return false; } }
-        public virtual TimeSpan RageDuration { get { return TimeSpan.FromSeconds(5); } }
-        public virtual double RageProbability { get { return 0.20; } }
-        public virtual int RageHue { get { return 1157; } }
-
-        private bool m_InRage;
-
-        public virtual void DoRage(Mobile attacker)
+        public virtual void DoRageHit(Mobile defender)
         {
-            m_InRage = true;
-
-            HueMod = RageHue;
-            Stam = StamMax;
-
-            Timer.DelayCall(TimeSpan.FromSeconds(.25), DoRageMessage);
-        }
-
-        public virtual void DoRageHit(Mobile attacker)
-        {
-            if (attacker != null && attacker.Alive)
+            if (defender != null && defender.Alive)
             {
-                if (Core.SA)
-                {
-                    attacker.Animate(AnimationType.Pillage, 0);
-                }
-                else
-                {
-                    attacker.Animate(21, 6, 1, true, false, 0);
-                }
+                var damage = 0;
 
-                PlaySound(0xEE);
-                attacker.LocalOverheadMessage(MessageType.Regular, 0x20, 1070696); // You have been stunned by a colossal blow!
-
-                attacker.Frozen = true;
-                Timer.DelayCall(RageDuration, () =>
-                {
-                    attacker.Frozen = false;
-                    attacker.Combatant = null;
-                    attacker.LocalOverheadMessage(MessageType.Regular, 0x20, 1070695); // You recover your senses.
-                    HueMod = -1;
-                });
+                SpecialAbility.ColossalBlow.DoEffects(this, defender, ref damage);
             }
-        }
-
-        public virtual void DoRageMessage()
-        {
-            PublicOverheadMessage(MessageType.Regular, 0x20, 1113587); // The creature goes into a frenzied rage!
         }
         #endregion
 
@@ -7635,12 +7367,6 @@ namespace Server.Mobiles
         public virtual void OnThink()
         {
             long tc = Core.TickCount;
-
-            if (HasAura && tc >= m_NextAura)
-            {
-                AuraDamage();
-                m_NextAura = tc + (int)AuraInterval.TotalMilliseconds;
-            }
 
             if (Paralyzed || Frozen)
             {

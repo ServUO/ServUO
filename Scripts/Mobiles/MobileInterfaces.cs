@@ -19,6 +19,11 @@ namespace Server.Mobiles
         ElementType ElementType { get; }
     }
 
+    public interface IAuraCreature
+    {
+        void AuraEffect(Mobile victim);
+    }
+
     public enum ElementType
     {
         Physical,

@@ -44,6 +44,7 @@ namespace Server.Mobiles
             Karma = -3500;
 
             VirtualArmor = 16;
+            SetSpecialAbility(SpecialAbility.ColossalBlow);
         }
 
         public LowlandBoura(Serial serial) : base(serial)
@@ -53,7 +54,6 @@ namespace Server.Mobiles
         public override int Meat { get { return 10; } }
         public override int Hides { get { return 20; } }
         public override int DragonBlood { get { return 8; } }
-        public override bool DoesColossalBlow { get { return true; } }
         public override HideType HideType { get { return HideType.Horned; } }
         public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
         public override int Fur { get { return GatheredFur ? 0 : 30; } }

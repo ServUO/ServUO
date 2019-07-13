@@ -80,9 +80,8 @@ namespace Server.Spells.SkillMasteries
     }
 
     [CorpseName("a reapers corpse")]
-    public class SummonedReaper : BaseCreature
+    public class SummonedReaper : BaseCreature, IAuraCreature
     {
-        private DateTime _StartTime;
         private int m_DispelDifficulty;
 
         public override double DispelDifficulty { get { return m_DispelDifficulty; } }
@@ -138,7 +137,11 @@ namespace Server.Spells.SkillMasteries
                 });
 
             m_DispelDifficulty = 91 + (int)((caster.Skills[SkillName.Spellweaving].Base * 83) / 5.2);
-            _StartTime = DateTime.UtcNow + TimeSpan.FromSeconds(3);
+
+            Timer.DelayCall(TimeSpan.FromSeconds(3), () =>
+            {
+                SetAreaEffect(AreaEffect.AuraDamage);
+            });
 
             SetWeaponAbility(WeaponAbility.WhirlwindAttack);
         }
@@ -147,25 +150,17 @@ namespace Server.Spells.SkillMasteries
         public override bool DisallowAllMoves { get { return true; } }
         public override bool AlwaysMurderer { get { return true; } }
 
-        public override bool HasAura { get { return _StartTime < DateTime.UtcNow; } }
-        public override TimeSpan AuraInterval { get { return TimeSpan.FromSeconds(2); } }
-        public override int AuraBaseDamage { get { return Utility.RandomMinMax(10, 20); } }
-        public override int AuraFireDamage { get { return 0; } }
-        public override int AuraPoisonDamage { get { return 100; } }
-
-        public override void AuraDamage()
+        public void AuraEffect(Mobile m)
         {
-            Server.Misc.Geometry.Circle2D(Location, Map, AuraRange, (pnt, map) =>
+            Server.Misc.Geometry.Circle2D(Location, Map, 4, (pnt, map) =>
             {
                 Effects.SendLocationEffect(pnt, map, 0x3709, 0x14, 0x1, 0x8AF, 4);
             });
 
-            Server.Misc.Geometry.Circle2D(this.Location, this.Map, AuraRange + 1, (pnt, map) =>
+            Server.Misc.Geometry.Circle2D(this.Location, this.Map, 5, (pnt, map) =>
             {
                 Effects.SendLocationEffect(pnt, map, 0x3709, 0x14, 0x1, 0x8AF, 4);
             });
-
-            base.AuraDamage();
         }
 
         public SummonedReaper(Serial serial)

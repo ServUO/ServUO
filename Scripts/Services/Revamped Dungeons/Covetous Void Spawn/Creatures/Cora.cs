@@ -5,7 +5,7 @@ using Server.Engines.VoidPool;
 
  namespace Server.Mobiles
  {
-	public class CoraTheSorceress : BaseCreature, IElementalCreature
+	public class CoraTheSorceress : BaseCreature, IElementalCreature, IAuraCreature
 	{
         public ElementType ElementType { get { return ElementType.Chaos; } }
 
@@ -57,18 +57,14 @@ using Server.Engines.VoidPool;
             AddAndEquip(new LeatherBustierArms(), 1947);
 
             SetSpecialAbility(SpecialAbility.DragonBreath);
+            SetAreaEffect(AreaEffect.AuraDamage);
         }
 
         public override bool AlwaysMurderer { get { return true; } }
         public override bool ClickTitle { get { return false; } }
         public override bool ShowFameTitle { get { return false; } }
 
-        public override bool HasAura { get { return true; } }
-        public override int AuraRange { get { return 3; } }
-        public override int AuraBaseDamage { get { return 0; } }
-        public override int AuraFireDamage { get { return 0; } }
-
-        public override void AuraEffect(Mobile m)
+        public void AuraEffect(Mobile m)
         {
             int mana = Utility.Random(1, m.Mana);
             m.Mana -= mana;

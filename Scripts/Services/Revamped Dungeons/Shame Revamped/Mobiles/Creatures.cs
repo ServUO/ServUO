@@ -126,9 +126,9 @@ namespace Server.Mobiles
 
             PackItem(new Granite());
             PackItem(new Sand());
-        }
 
-        public override bool CanDoRage { get { return Hits < (HitsMax / 3); } }
+            SetSpecialAbility(SpecialAbility.ColossalRage);
+        }
 
         public override void OnDeath(Container c)
         {
@@ -368,6 +368,8 @@ namespace Server.Mobiles
 
             Fame = 2500;
             Karma = -2500;
+
+            SetSpecialAbility(SpecialAbility.ColossalRage);
         }
 
         public override void OnDeath(Container c)
@@ -382,8 +384,6 @@ namespace Server.Mobiles
         {
             this.AddLoot(LootPack.Rich, 1);
         }
-
-        public override bool CanDoRage { get { return Hits < (HitsMax / 3); } }
 
         public GreaterEarthElemental(Serial serial)
             : base(serial)
@@ -435,6 +435,8 @@ namespace Server.Mobiles
 
             PackItem(new FertileDirt());
             PackItem(new ExecutionersCap());
+
+            SetSpecialAbility(SpecialAbility.ColossalRage);
         }
 
         public override void OnDeath(Container c)
@@ -449,8 +451,6 @@ namespace Server.Mobiles
         {
             this.AddLoot(LootPack.Rich, 2);
         }
-
-        public override bool CanDoRage { get { return Hits < (HitsMax / 3); } }
 
         public MudElemental(Serial serial)
             : base(serial)
@@ -596,7 +596,7 @@ namespace Server.Mobiles
     }
 	
 	[CorpseName("a flame elemental corpse")]
-    public class LesserFlameElemental : BaseCreature
+    public class LesserFlameElemental : BaseCreature, IAuraCreature
     {
         [Constructable]
         public LesserFlameElemental()
@@ -638,13 +638,13 @@ namespace Server.Mobiles
 
             PackItem(new SulfurousAsh(5));
             SetSpecialAbility(SpecialAbility.DragonBreath);
+            SetAreaEffect(AreaEffect.AuraDamage);
         }
 
-        public override bool HasAura { get { return true; } }
-        public override int AuraRange { get { return 5; } }
-        public override int AuraBaseDamage { get { return 7; } }
-        public override int AuraFireDamage { get { return 100; } }
-        public override int AuraEnergyDamage { get { return 100; } }
+        public void AuraEffect(Mobile m)
+        {
+            m.SendLocalizedMessage(1008112); // The intense heat is damaging you!
+        }
 
         public override void OnDeath(Container c)
         {

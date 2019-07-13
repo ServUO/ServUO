@@ -4,7 +4,7 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("a charred corpse")]
-    public class FireGargoyle : BaseCreature
+    public class FireGargoyle : BaseCreature, IAuraCreature
     {
         [Constructable]
         public FireGargoyle()
@@ -43,6 +43,7 @@ namespace Server.Mobiles
 
             VirtualArmor = 32;
             SetSpecialAbility(SpecialAbility.DragonBreath);
+            SetAreaEffect(AreaEffect.AuraDamage);
         }
 
         public FireGargoyle(Serial serial)
@@ -72,12 +73,9 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool HasAura { get { return true; } }
-        public override int AuraRange { get { return 2; } }
-
-        public override void AuraEffect(Mobile m)
+        public void AuraEffect(Mobile m)
         {
-            m.SendMessage("The radiating heat scorches your skin!");
+            m.SendLocalizedMessage(1008112); // The intense heat is damaging you!
         }
 
         public override void GenerateLoot()

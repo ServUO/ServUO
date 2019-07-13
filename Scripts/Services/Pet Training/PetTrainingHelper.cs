@@ -901,31 +901,33 @@ namespace Server.Mobiles
                 new TrainingPointRequirement(SkillName.SpiritSpeak, 100, 1044092)));
 
             loc = _SpecialAbilityLocalizations;
-            int index = 0;
 
-            foreach (var abil in SpecialAbility.Abilities)
+            for (int i = 0; i < SpecialAbility.Abilities.Length; i++)
             {
-                _TrainingPoints.Add(new TrainingPoint(abil, 1.0, 100, 100, loc[index][0], loc[index][1]));
-                index++;
+                if (i >= loc.Length)
+                    break;
+
+                _TrainingPoints.Add(new TrainingPoint(SpecialAbility.Abilities[i], 1.0, 100, 100, loc[i][0], loc[i][1]));
             }
 
             loc = _AreaEffectLocalizations;
-            index = 0;
 
-            foreach (var effect in AreaEffect.Effects)
+            for (int i = 0; i < AreaEffect.Effects.Length; i++)
             {
-                _TrainingPoints.Add(new TrainingPoint(effect, 1.0, 100, 100, loc[index][0], loc[index][1]));
-                index++;
+                if (i >= loc.Length)
+                    break;
+
+                _TrainingPoints.Add(new TrainingPoint(AreaEffect.Effects[i], 1.0, 100, 100, loc[i][0], loc[i][1]));
             }
 
             loc = _WeaponAbilityLocalizations;
-            index = 0;
 
-            foreach (var ability in WeaponAbilities)
+            for (int i = 0; i < WeaponAbilities.Length; i++)
             {
+                var ability = WeaponAbilities[i];
                 TrainingPointRequirement requirement = null;
 
-                if(ability == WeaponAbility.NerveStrike)
+                if (ability == WeaponAbility.NerveStrike)
                     requirement = new TrainingPointRequirement(SkillName.Bushido, 500, 1044112);
                 else if (ability == WeaponAbility.TalonStrike)
                     requirement = new TrainingPointRequirement(SkillName.Ninjitsu, 500, 1044113);
@@ -938,8 +940,7 @@ namespace Server.Mobiles
                 else if (ability == WeaponAbility.Block)
                     requirement = new TrainingPointRequirement(SkillName.Bushido, 500, 1044112);
 
-                _TrainingPoints.Add(new TrainingPoint(ability, 1.0, 100, 100, loc[index][0], loc[index][1], requirement));
-                index++;
+                _TrainingPoints.Add(new TrainingPoint(ability, 1.0, 100, 100, loc[i][0], loc[i][1], requirement));
             }
         }
         #endregion
@@ -1441,7 +1442,7 @@ namespace Server.Mobiles
             new TextDefinition[] { 1157408, 1157409 }, // Lightning Force
             new TextDefinition[] { 1157432, 1157433 }, // Mana Drain
             new TextDefinition[] { 1157404, 1157405 }, // Raging Breath
-            new TextDefinition[] { 1157434, 1157435 }, // Repel //
+            new TextDefinition[] { 1157434, 1157435 }, // Repel
             new TextDefinition[] { 1157422, 1157423 }, // Searing Wounds
             new TextDefinition[] { 1157410, 1157411 }, // Steal Life
             new TextDefinition[] { 1157430, 1157431 }, // Venomous Bite
@@ -1450,14 +1451,6 @@ namespace Server.Mobiles
             new TextDefinition[] { 1157424, 1157425 }, // Life Leech
             new TextDefinition[] { 1157426, 1157427 }, // Sticky Skin
             new TextDefinition[] { 1157428, 1157429 }, // Tail Swipe
-            new TextDefinition[] { 1157418, 1157419 }, // Flurry Force
-            new TextDefinition[] { 1150005, 0       }, // Rage
-            new TextDefinition[] { 1151311, 0       }, // Heal
-            new TextDefinition[] { 1153793, 0       }, // Howl of Cacophony
-            new TextDefinition[] { 1153789, 0       }, // Webbing
-            new TextDefinition[] { 1153797, 0       }, // Anemia
-            new TextDefinition[] { 1153798, 0       }, // Blood Disease
-            new TextDefinition[] { null,    null    }, // Poison Spit
         };
 
         public static TextDefinition[][] AreaEffectLocalizations { get { return _AreaEffectLocalizations; } }
