@@ -117,14 +117,17 @@ namespace Server.Mobiles
         {
             if (Owners.Count == 0 && PetTrainingHelper.Enabled)
             {
-                RawStr = (int)Math.Max(1, RawStr * 0.5);
-                RawDex = (int)Math.Max(1, RawDex * 0.5);
+                if (RawStr > 0)
+                    RawStr = (int)Math.Max(1, RawStr * 0.5);
 
-                HitsMaxSeed = (int)Math.Max(1, HitsMaxSeed * 0.5);
-                StamMaxSeed = (int)Math.Max(1, StamMaxSeed * 0.5);
+                if (RawDex > 0)
+                    RawDex = (int)Math.Max(1, RawDex * 0.5);
+
+                if (HitsMaxSeed > 0)
+                    HitsMaxSeed = (int)Math.Max(1, HitsMaxSeed * 0.5);
 
                 Hits = Math.Min(HitsMaxSeed, Hits);
-                Stam = Math.Min(StamMaxSeed, Stam);
+                Stam = Math.Min(RawDex, Stam);
             }
             else
             {
