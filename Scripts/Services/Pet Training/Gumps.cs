@@ -355,7 +355,7 @@ namespace Server.Mobiles
                         AddHtml(53, y, 180, 18, loc[0].String, false, false);
                     }
 
-                    if (loc[1].Number > 0)
+                    if (loc[1] != null && loc[1].Number > 0)
                     {
                         AddTooltip(loc[1]);
                     }
@@ -396,18 +396,21 @@ namespace Server.Mobiles
                             var loc = PetTrainingHelper.GetLocalization(profile.Advancements[i]);
                             bool skill = profile.Advancements[i] is SkillName; // ? "#228B22" : "#FF4500";
 
-                            if (loc[0].Number > 0)
+                            if (loc[0] != null)
                             {
-                                AddHtmlLocalized(53, y, 180, 18, loc[0], C32216(skill ? 0x008000 : 0xFF4500), false, false);
-
-                                if (skill)
+                                if (loc[0].Number > 0)
                                 {
-                                    AddHtml(180, y, 75, 18, String.Format("<div align=right>{0:F1}</div>", Creature.Skills[(SkillName)profile.Advancements[i]].Cap), false, false);
+                                    AddHtmlLocalized(53, y, 180, 18, loc[0], C32216(skill ? 0x008000 : 0xFF4500), false, false);
+
+                                    if (skill)
+                                    {
+                                        AddHtml(180, y, 75, 18, String.Format("<div align=right>{0:F1}</div>", Creature.Skills[(SkillName)profile.Advancements[i]].Cap), false, false);
+                                    }
                                 }
-                            }
-                            else if (loc[0].String != null)
-                            {
-                                AddHtml(53, y, 180, 18, Color(skill ? "#008000" : "#FF4500", loc[0]), false, false);
+                                else if (loc[0].String != null)
+                                {
+                                    AddHtml(53, y, 180, 18, Color(skill ? "#008000" : "#FF4500", loc[0]), false, false);
+                                }
                             }
 
                             AddTooltip(PetTrainingHelper.GetCategoryLocalization(profile.Advancements[i]));
@@ -1796,10 +1799,17 @@ namespace Server.Mobiles
                 
                 var loc = PetTrainingHelper.GetLocalization(entry.TrainPoint);
 
-                if (loc[0].Number > 0)
-                    AddHtmlLocalized(260, y, 200, 18, loc[0], false, false);
-                else if (loc[0].String != null)
-                    AddHtml(260, y, 200, 18, loc[0].String, false, false);
+                if (loc[0] != null)
+                {
+                    if (loc[0].Number > 0)
+                    {
+                        AddHtmlLocalized(260, y, 200, 18, loc[0], false, false);
+                    }
+                    else if (loc[0].String != null)
+                    {
+                        AddHtml(260, y, 200, 18, loc[0].String, false, false);
+                    }
+                }
 
                 var value = entry.TrainPoint is SkillName ? entry.Value + 1000 : entry.Value;
 

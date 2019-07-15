@@ -6,6 +6,7 @@ using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Network;
+using Server.Engines.Points;
 
 namespace Server.Misc
 {
@@ -17,8 +18,20 @@ namespace Server.Misc
         ToTThree
     }
 	
-    public class TreasuresOfTokuno
+    public class TreasuresOfTokuno : PointsSystem
     {
+        public override PointsType Loyalty { get { return PointsType.TOT; } }
+        public override TextDefinition Name { get { return m_Name; } }
+        public override bool AutoAdd { get { return true; } }
+        public override double MaxPoints { get { return double.MaxValue; } }
+        public override bool ShowOnLoyaltyGump { get { return false; } }
+
+        private TextDefinition m_Name = new TextDefinition("Treasures of Tokuno");
+
+        public TreasuresOfTokuno()
+        {
+        }
+
         public const int ItemsPerReward = 10;
 		
         private static readonly Type[] m_LesserArtifactsTotal = new Type[]
@@ -131,13 +144,12 @@ namespace Server.Misc
             }
         }
 
-        private static bool CheckLocation(Mobile m)
+        private bool CheckLocation(Mobile m)
         {
             Region r = m.Region;
 
             if (r.IsPartOf<Server.Regions.HouseRegion>() || Server.Multis.BaseBoat.FindBoatAt(m, m.Map) != null)
                 return false;
-            //TODO: a CanReach of something check as opposed to above?
 
             if (r.IsPartOf("Yomotsu Mines") || r.IsPartOf("Fan Dancer's Dojo"))
                 return true;
@@ -145,26 +157,67 @@ namespace Server.Misc
             return (m.Map == Map.Tokuno);
         }
 
-        public static bool HandleKill(Mobile victim, Mobile killer)
+        public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
+        {
+        }
+
+        public override TextDefinition GetTitle(PlayerMobile from)
+        {
+            return new TextDefinition("Treasures of Tokuno");
+        }
+
+        public override PointsEntry GetSystemEntry(PlayerMobile pm)
+        {
+            return new TOTEntry(pm);
+        }
+
+        public int GetTurnIns(PlayerMobile pm)
+        {
+            if (pm == null)
+            {
+                return 0;
+            }
+
+            return GetPlayerEntry<TOTEntry>(pm).TurnIns;
+        }
+
+        public int TurnIn(PlayerMobile pm)
+        {
+            if (pm == null)
+            {
+                return 0;
+            }
+
+            return GetPlayerEntry<TOTEntry>(pm).TurnIns++;
+        }
+
+        public void RemoveTurnIns(PlayerMobile pm, int amount)
+        {
+            var entry = GetPlayerEntry<TOTEntry>(pm);
+
+            entry.TurnIns = Math.Max(0, entry.TurnIns - amount);
+        }
+
+        public override void ProcessKill(Mobile victim, Mobile killer)
         {
             PlayerMobile pm = killer as PlayerMobile;
             BaseCreature bc = victim as BaseCreature;
 
-            if (DropEra == TreasuresOfTokunoEra.None || pm == null || bc == null || !CheckLocation(bc) || !CheckLocation(pm) || !killer.InRange(victim, 18) || !pm.Alive)
-                return false;
+            if (DropEra == TreasuresOfTokunoEra.None || pm == null || bc == null || !CheckLocation(bc) || !CheckLocation(pm) || !killer.InRange(victim, 18) || !pm.Alive || bc.GivenSpecialArtifact)
+                return;
 
             if (bc.Controlled || bc.Owners.Count > 0 || bc.Fame <= 0)
-                return false;
+                return;
 
             //25000 for 1/100 chance, 10 hyrus
             //1500, 1/1000 chance, 20 lizard men for that chance.
             int luck = Math.Max(0, pm.RealLuck);
-            pm.ToTTotalMonsterFame += (int)Math.Max(0, (bc.Fame * (1 + Math.Sqrt(luck) / 100)));
+            AwardPoints(pm, (int)Math.Max(0, (bc.Fame * (1 + Math.Sqrt(luck) / 100))));
 
             //This is the Exponentional regression with only 2 datapoints.
             //A log. func would also work, but it didn't make as much sense.
             //This function isn't OSI exact beign that I don't know OSI's func they used ;p
-            int x = pm.ToTTotalMonsterFame;
+            var x = GetPoints(pm);
 
             //const double A = 8.63316841 * Math.Pow( 10, -4 );
             const double A = 0.000863316841;
@@ -183,7 +236,7 @@ namespace Server.Misc
                 }
                 catch
                 {
-                    return false;
+                    return;
                 }
 
                 if (i != null)
@@ -201,14 +254,61 @@ namespace Server.Misc
                             i.MoveToWorld(pm.Location, pm.Map);
                         }
                     }
-					
-                    pm.ToTTotalMonsterFame = 0;
 
-                    return true;
+                    bc.GivenSpecialArtifact = true;
+                    SetPoints(pm, 0);
                 }
             }
+        }
 
-            return false;
+        /// <summary>
+        /// PlayerMobile.cs version 40 deserializationn
+        /// </summary>
+        /// <param name="pm"></param>
+        /// <param name="turnIns"></param>
+        /// <param name="points"></param>
+        public void Convert(PlayerMobile pm, int turnIns, int points)
+        {
+            var entry = GetPlayerEntry<TOTEntry>(pm);
+
+            entry.TurnIns = turnIns;
+            entry.Points = points;
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            reader.ReadInt();
+        }
+
+        public class TOTEntry : PointsEntry
+        {
+            public int TurnIns { get; set; }
+
+            public TOTEntry(PlayerMobile pm)
+                : base(pm)
+            {
+            }
+
+            public override void Serialize(GenericWriter writer)
+            {
+                writer.Write(0);
+                writer.Write(TurnIns);
+            }
+
+            public override void Deserialize(GenericReader reader)
+            {
+                int version = reader.ReadInt();
+                TurnIns = reader.ReadInt();
+            }
         }
     }
 }
@@ -319,10 +419,11 @@ namespace Server.Mobiles
                 PlayerMobile pm = (PlayerMobile)m;
 
                 int range = 3;
+                var turnIns = PointsSystem.TreasuresOfTokuno.GetTurnIns(pm);
 
                 if (m.Alive && Math.Abs(this.Z - m.Z) < 16 && this.InRange(m, range) && !this.InRange(oldLocation, range))
                 {
-                    if (pm.ToTItemsTurnedIn >= TreasuresOfTokuno.ItemsPerReward)
+                    if (turnIns >= TreasuresOfTokuno.ItemsPerReward)
                     {
                         this.SayTo(pm, 1070980); // Congratulations! You have turned in enough minor treasures to earn a greater reward.
 
@@ -333,10 +434,10 @@ namespace Server.Mobiles
                     }
                     else
                     {
-                        if (pm.ToTItemsTurnedIn == 0)
+                        if (turnIns == 0)
                             this.SayTo(pm, 1071013); // Bring me 10 of the lost treasures of Tokuno and I will reward you with a valuable item.
                         else
-                            this.SayTo(pm, 1070981, String.Format("{0}\t{1}", pm.ToTItemsTurnedIn, TreasuresOfTokuno.ItemsPerReward)); // You have turned in ~1_COUNT~ minor artifacts. Turn in ~2_NUM~ to receive a reward.
+                            this.SayTo(pm, 1070981, String.Format("{0}\t{1}", turnIns, TreasuresOfTokuno.ItemsPerReward)); // You have turned in ~1_COUNT~ minor artifacts. Turn in ~2_NUM~ to receive a reward.
 
                         ArrayList buttons = ToTTurnInGump.FindRedeemableItems(pm);
 
@@ -440,7 +541,10 @@ namespace Server.Gumps
 
             item.Delete();
 
-            if (++pm.ToTItemsTurnedIn >= TreasuresOfTokuno.ItemsPerReward)
+            PointsSystem.TreasuresOfTokuno.TurnIn(pm);
+            var turnIns = PointsSystem.TreasuresOfTokuno.GetTurnIns(pm);
+
+            if (turnIns >= TreasuresOfTokuno.ItemsPerReward)
             {
                 this.m_Collector.SayTo(pm, 1070980); // Congratulations! You have turned in enough minor treasures to earn a greater reward.
 
@@ -451,7 +555,7 @@ namespace Server.Gumps
             }
             else
             {
-                this.m_Collector.SayTo(pm, 1070981, String.Format("{0}\t{1}", pm.ToTItemsTurnedIn, TreasuresOfTokuno.ItemsPerReward)); // You have turned in ~1_COUNT~ minor artifacts. Turn in ~2_NUM~ to receive a reward.
+                this.m_Collector.SayTo(pm, 1070981, String.Format("{0}\t{1}", turnIns, TreasuresOfTokuno.ItemsPerReward)); // You have turned in ~1_COUNT~ minor artifacts. Turn in ~2_NUM~ to receive a reward.
 
                 ArrayList buttons = FindRedeemableItems(pm);
 
@@ -468,11 +572,13 @@ namespace Server.Gumps
 
             if (pm == null || !pm.InRange(this.m_Collector.Location, 7))
                 return;
-			
-            if (pm.ToTItemsTurnedIn == 0)
+
+            var turnIns = PointsSystem.TreasuresOfTokuno.GetTurnIns(pm);
+
+            if (turnIns == 0)
                 this.m_Collector.SayTo(pm, 1071013); // Bring me 10 of the lost treasures of Tokuno and I will reward you with a valuable item.
-            else if (pm.ToTItemsTurnedIn < TreasuresOfTokuno.ItemsPerReward)	//This case should ALWAYS be true with this gump, jsut a sanity check
-                this.m_Collector.SayTo(pm, 1070981, String.Format("{0}\t{1}", pm.ToTItemsTurnedIn, TreasuresOfTokuno.ItemsPerReward)); // You have turned in ~1_COUNT~ minor artifacts. Turn in ~2_NUM~ to receive a reward.
+            else if (turnIns < TreasuresOfTokuno.ItemsPerReward)	//This case should ALWAYS be true with this gump, jsut a sanity check
+                this.m_Collector.SayTo(pm, 1070981, String.Format("{0}\t{1}", turnIns, TreasuresOfTokuno.ItemsPerReward)); // You have turned in ~1_COUNT~ minor artifacts. Turn in ~2_NUM~ to receive a reward.
             else
                 this.m_Collector.SayTo(pm, 1070982); // When you wish to choose your reward, you have but to approach me again.
         }
@@ -657,8 +763,9 @@ namespace Server.Gumps
         public override void HandleButtonResponse(NetState sender, int adjustedButton, ImageTileButtonInfo buttonInfo)
         {
             PlayerMobile pm = sender.Mobile as PlayerMobile;
+            var turnIns = PointsSystem.TreasuresOfTokuno.GetTurnIns(pm);
 
-            if (pm == null || !pm.InRange(this.m_Collector.Location, 7) || !(pm.ToTItemsTurnedIn >= TreasuresOfTokuno.ItemsPerReward))
+            if (pm == null || !pm.InRange(this.m_Collector.Location, 7) || !(turnIns >= TreasuresOfTokuno.ItemsPerReward))
                 return;
 
             bool pigments = (buttonInfo is PigmentsTileButtonInfo);
@@ -699,7 +806,7 @@ namespace Server.Gumps
 
             if (pm.AddToBackpack(item))
             {
-                pm.ToTItemsTurnedIn -= TreasuresOfTokuno.ItemsPerReward;
+                PointsSystem.TreasuresOfTokuno.RemoveTurnIns(pm, TreasuresOfTokuno.ItemsPerReward);
                 this.m_Collector.SayTo(pm, 1070984, (item.Name == null || item.Name.Length <= 0) ? String.Format("#{0}", item.LabelNumber) : item.Name); // You have earned the gratitude of the Empire. I have placed the ~1_OBJTYPE~ in your backpack.
             }
             else
@@ -717,10 +824,12 @@ namespace Server.Gumps
             if (pm == null || !pm.InRange(this.m_Collector.Location, 7))
                 return;
 
-            if (pm.ToTItemsTurnedIn == 0)
+            var turnIns = PointsSystem.TreasuresOfTokuno.GetTurnIns(pm);
+
+            if (turnIns == 0)
                 this.m_Collector.SayTo(pm, 1071013); // Bring me 10 of the lost treasures of Tokuno and I will reward you with a valuable item.
-            else if (pm.ToTItemsTurnedIn < TreasuresOfTokuno.ItemsPerReward)	//This and above case should ALWAYS be FALSE with this gump, jsut a sanity check
-                this.m_Collector.SayTo(pm, 1070981, String.Format("{0}\t{1}", pm.ToTItemsTurnedIn, TreasuresOfTokuno.ItemsPerReward)); // You have turned in ~1_COUNT~ minor artifacts. Turn in ~2_NUM~ to receive a reward.
+            else if (turnIns < TreasuresOfTokuno.ItemsPerReward)	//This and above case should ALWAYS be FALSE with this gump, jsut a sanity check
+                this.m_Collector.SayTo(pm, 1070981, String.Format("{0}\t{1}", turnIns, TreasuresOfTokuno.ItemsPerReward)); // You have turned in ~1_COUNT~ minor artifacts. Turn in ~2_NUM~ to receive a reward.
             else
                 this.m_Collector.SayTo(pm, 1070982); // When you wish to choose your reward, you have but to approach me again.
         }

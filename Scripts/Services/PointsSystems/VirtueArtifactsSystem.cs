@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,10 +9,11 @@ using Server.Mobiles;
 using Server.Network;
 using Server.Engines.CannedEvil;
 using Server.Engines.SeasonalEvents;
+using Server.Engines.Points;
 
 namespace Server.Misc
 {
-    public class VirtueArtifactsSystem
+    public class VirtueArtifactsSystem : PointsSystem
     {
         public static bool Enabled { get { return SeasonalEventSystem.IsActive(EventType.VirtueArtifacts); } }
 
@@ -24,9 +25,21 @@ namespace Server.Misc
                 typeof( SpiritualityHelm ), typeof( HonorLegs ), typeof( SacrificeSollerets )
             };
 
-        public static Type[] VirtueArtifacts { get { return m_VirtueArtifacts; } }
+        public static Type[] Artifacts { get { return m_VirtueArtifacts; } }
 
-        private static bool CheckLocation(Mobile m)
+        public override PointsType Loyalty { get { return PointsType.VAS; } }
+        public override TextDefinition Name { get { return m_Name; } }
+        public override bool AutoAdd { get { return true; } }
+        public override double MaxPoints { get { return double.MaxValue; } }
+        public override bool ShowOnLoyaltyGump { get { return false; } }
+
+        private TextDefinition m_Name = new TextDefinition("Virtue Artifact System");
+
+        public VirtueArtifactsSystem()
+        {
+        }
+
+        private bool CheckLocation(Mobile m)
         {
             Region r = m.Region;
 
@@ -40,22 +53,30 @@ namespace Server.Misc
                 r.IsPartOf("Hythloth") || r.IsPartOf("Shame") || r.IsPartOf("Wrong"));
         }
 
-        public static bool HandleKill(Mobile victim, Mobile killer)
+        public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
+        {
+        }
+
+        public override TextDefinition GetTitle(PlayerMobile from)
+        {
+            return new TextDefinition("Virtue Artifact System");
+        }
+
+        public override void ProcessKill(Mobile victim, Mobile killer)
         {
             PlayerMobile pm = killer as PlayerMobile;
             BaseCreature bc = victim as BaseCreature;
 
-            if (!Enabled || pm == null || bc == null || !CheckLocation(bc) || !CheckLocation(pm) || !killer.InRange(victim, 18) || !killer.Alive)
-                return false;
+            if (!Enabled || pm == null || bc == null || !CheckLocation(bc) || !CheckLocation(pm) || !killer.InRange(victim, 18) || !killer.Alive || bc.GivenSpecialArtifact)
+                return;
 
             if (bc.Controlled || bc.Owners.Count > 0 || bc.Fame <= 0)
-                return false;
-            
-            double vapoints = pm.VASTotalMonsterFame;
+                return;
+
             int luck = Math.Max(0, pm.RealLuck);
+            AwardPoints(pm, (int)Math.Max(0, (bc.Fame * (1 + Math.Sqrt(luck) / 100))));
 
-            pm.VASTotalMonsterFame += (int)Math.Max(0, (bc.Fame * (1 + Math.Sqrt(luck) / 100)));
-
+            var vapoints = GetPoints(pm);
             const double A = 0.000863316841;
             const double B = 0.00000425531915;
 
@@ -73,7 +94,7 @@ namespace Server.Misc
                 }
                 catch
                 {
-                    return false;
+                    return;
                 }
 
                 if (i != null)
@@ -92,13 +113,10 @@ namespace Server.Misc
                         }
                     }
 
-                    pm.VASTotalMonsterFame = 0;
-
-                    return true;
+                    bc.GivenSpecialArtifact = true;
+                    SetPoints(pm, 0);
                 }
             }
-
-            return false;
         }
     }
 }

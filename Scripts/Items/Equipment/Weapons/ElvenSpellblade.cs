@@ -110,14 +110,21 @@ namespace Server.Items
             {
                 return 30;
             }
-        }// TODO
+        }
         public override int InitMaxHits
         {
             get
             {
                 return 60;
             }
-        }// TODO
+        }
+        public override SkillName DefSkill
+        {
+            get
+            {
+                return SkillName.Fencing;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
