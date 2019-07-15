@@ -92,7 +92,7 @@ namespace Server.Items
 
         private static readonly Type[] m_Bandage = new Type[]
         {
-            typeof(Bandage)
+            typeof(Bandage), typeof(EnhancedBandage)
         };
 
         public bool CheckType(Item item)

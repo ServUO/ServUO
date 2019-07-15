@@ -9700,10 +9700,12 @@
     <Compile Include="Services\PointsSystems\BlackthornData.cs" />
     <Compile Include="Services\PointsSystems\CasinoData.cs" />
     <Compile Include="Services\PointsSystems\DespiseCrystals.cs" />
+    <Compile Include="Services\PointsSystems\GauntletPoints.cs" />
     <Compile Include="Services\PointsSystems\PlayerMobileProps.cs" />
     <Compile Include="Services\PointsSystems\PointsSystem.cs" />
     <Compile Include="Services\PointsSystems\QueensLoyalty.cs" />
     <Compile Include="Services\PointsSystems\ShameCrystals.cs" />
+    <Compile Include="Services\PointsSystems\VirtueArtifactsSystem.cs" />
     <Compile Include="Services\PointsSystems\VoidPool.cs" />
     <Compile Include="Services\PVP Arena System\ArenaDuel.cs" />
     <Compile Include="Services\PVP Arena System\ArenaExitBanner.cs" />
@@ -10239,7 +10241,6 @@
     <Compile Include="Services\ViceVsVirtue\VvVRewards.cs" />
     <Compile Include="Services\Virtues\Honesty.cs" />
     <Compile Include="Services\Virtues\Humility.cs" />
-    <Compile Include="Services\Virtue Artifacts\VirtueArtifactsSystem.cs" />
     <Compile Include="Services\Virtues\Spirituality.cs" />
     <Compile Include="Services\Mannequin.cs" />
     <Compile Include="Services\Help\HelpGump.cs">

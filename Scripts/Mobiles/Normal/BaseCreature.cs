@@ -6320,8 +6320,6 @@ namespace Server.Mobiles
                     var karma = new List<int>();
 
                     bool givenFactionKill = false;
-                    bool givenToTKill = false;
-                    bool givenVASKill = false;
 
                     for (int i = 0; i < list.Count; ++i)
                     {
@@ -6393,16 +6391,6 @@ namespace Server.Mobiles
                         }
 
                         Region region = ds.m_Mobile.Region;
-
-                        if (!givenToTKill && TreasuresOfTokuno.HandleKill(this, ds.m_Mobile))
-                        {
-                            givenToTKill = true;
-                        }
-
-                        if (!givenVASKill && VirtueArtifactsSystem.HandleKill(this, ds.m_Mobile))
-                        {
-                            givenVASKill = true;
-                        }
                     }
 
                     for (int i = 0; i < titles.Count; ++i)
@@ -6494,6 +6482,8 @@ namespace Server.Mobiles
                 }
             }
         }
+
+        public bool GivenSpecialArtifact { get; set; }
 
         /* To save on cpu usage, RunUO creatures only reacquire creatures under the following circumstances:
         *  - 10 seconds have elapsed since the last time it tried

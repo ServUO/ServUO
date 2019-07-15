@@ -1,4 +1,5 @@
 using System;
+
 using Server;
 using Server.Items;
 using Server.Mobiles;
@@ -7,6 +8,7 @@ using Server.Engines.Points;
 using Server.Accounting;
 using Server.Engines.BulkOrders;
 using Server.Engines.CityLoyalty;
+using Server.Misc;
 
 namespace Server.Mobiles
 {
@@ -165,6 +167,58 @@ namespace Server.Mobiles
             set
             {
                 PointsSystem.RisingTide.SetPoints(Player, value);
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double GauntletPoints
+        {
+            get
+            {
+                return (int)PointsSystem.DoomGauntlet.GetPoints(Player);
+            }
+            set
+            {
+                PointsSystem.DoomGauntlet.SetPoints(Player, value);
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double TOTPoints
+        {
+            get
+            {
+                return (int)PointsSystem.TreasuresOfTokuno.GetPoints(Player);
+            }
+            set
+            {
+                PointsSystem.TreasuresOfTokuno.SetPoints(Player, value);
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int TOTurnIns
+        {
+            get
+            {
+                return PointsSystem.TreasuresOfTokuno.GetTurnIns(Player);
+            }
+            set
+            {
+                PointsSystem.TreasuresOfTokuno.GetPlayerEntry<TreasuresOfTokuno.TOTEntry>(Player).TurnIns = value;
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double VASPoints
+        {
+            get
+            {
+                return (int)PointsSystem.VirtueArtifacts.GetPoints(Player);
+            }
+            set
+            {
+                PointsSystem.VirtueArtifacts.SetPoints(Player, value);
             }
         }
 
