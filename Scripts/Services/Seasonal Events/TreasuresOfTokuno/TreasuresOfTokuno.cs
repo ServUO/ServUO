@@ -300,13 +300,21 @@ namespace Server.Misc
 
             public override void Serialize(GenericWriter writer)
             {
-                writer.Write(0);
+                writer.Write(1);
+                base.Serialize(writer);
+
                 writer.Write(TurnIns);
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 int version = reader.ReadInt();
+
+                if (version > 0)
+                {
+                    base.Deserialize(reader);
+                }
+
                 TurnIns = reader.ReadInt();
             }
         }
