@@ -3,47 +3,47 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a jukan corpse")]
+    [CorpseName("a juka corpse")]
     public class JukaWarrior : BaseCreature
     {
         [Constructable]
         public JukaWarrior()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a juka warrior";
-            this.Body = 764;
+            Name = "a juka warrior";
+            Body = 764;
 
-            this.SetStr(251, 350);
-            this.SetDex(61, 80);
-            this.SetInt(101, 150);
+            SetStr(251, 350);
+            SetDex(61, 80);
+            SetInt(101, 150);
 
-            this.SetHits(151, 210);
+            SetHits(151, 210);
 
-            this.SetDamage(7, 9);
+            SetDamage(7, 9);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 40, 50);
-            this.SetResistance(ResistanceType.Fire, 30, 40);
-            this.SetResistance(ResistanceType.Cold, 25, 35);
-            this.SetResistance(ResistanceType.Poison, 10, 20);
-            this.SetResistance(ResistanceType.Energy, 10, 20);
+            SetResistance(ResistanceType.Physical, 40, 50);
+            SetResistance(ResistanceType.Fire, 30, 40);
+            SetResistance(ResistanceType.Cold, 25, 35);
+            SetResistance(ResistanceType.Poison, 10, 20);
+            SetResistance(ResistanceType.Energy, 10, 20);
 
-            this.SetSkill(SkillName.Anatomy, 80.1, 90.0);
-            this.SetSkill(SkillName.Fencing, 80.1, 90.0);
-            this.SetSkill(SkillName.Macing, 80.1, 90.0);
-            this.SetSkill(SkillName.MagicResist, 120.1, 130.0);
-            this.SetSkill(SkillName.Swords, 80.1, 90.0);
-            this.SetSkill(SkillName.Tactics, 80.1, 90.0);
-            this.SetSkill(SkillName.Wrestling, 80.1, 90.0);
+            SetSkill(SkillName.Anatomy, 80.1, 90.0);
+            SetSkill(SkillName.Fencing, 80.1, 90.0);
+            SetSkill(SkillName.Macing, 80.1, 90.0);
+            SetSkill(SkillName.MagicResist, 120.1, 130.0);
+            SetSkill(SkillName.Swords, 80.1, 90.0);
+            SetSkill(SkillName.Tactics, 80.1, 90.0);
+            SetSkill(SkillName.Wrestling, 80.1, 90.0);
 
-            this.Fame = 10000;
-            this.Karma = -10000;
+            Fame = 10000;
+            Karma = -10000;
 
-            this.VirtualArmor = 22;
+            VirtualArmor = 22;
 
             if (Utility.RandomDouble() < 0.1)
-                this.PackItem(new ArcaneGem());
+                PackItem(new ArcaneGem());
         }
 
         public JukaWarrior(Serial serial)
@@ -74,9 +74,9 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average);
-            this.AddLoot(LootPack.Meager);
-            this.AddLoot(LootPack.Gems, 1);
+            AddLoot(LootPack.Average);
+            AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Gems, 1);
         }
 
         public override int GetIdleSound()
