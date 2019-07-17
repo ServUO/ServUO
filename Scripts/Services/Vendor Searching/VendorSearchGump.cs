@@ -407,7 +407,7 @@ namespace Server.Engines.VendorSearching
                 AddHtmlLocalized(162, y, 102, 72, Items[i].IsChild ? 1154598 : 1154645, String.Format("{0}", price <= 0 ? "0" : FormatPrice(price)), TextColor, false, false); // <center>~1_val~</center>
 
                 if (map != null)
-                    AddHtmlLocalized(274, y, 102, 72, 1060643, String.Format("{0}", map.ToString()), TextColor, false, false);
+                    AddHtmlLocalized(274, y, 102, 72, 1114513, String.Format("{0}", map.ToString()), TextColor, false, false);
 
                 AddButton(386, y, 30533, 30533, 100 + i, GumpButtonType.Reply, 0);
 
