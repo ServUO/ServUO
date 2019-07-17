@@ -435,17 +435,17 @@ namespace Server.Mobiles
 
         public Poison GetPoison(BaseCreature bc)
         {
-            int level = 1;
+            int level = 0;
             double total = bc.Skills[SkillName.Poisoning].Value;
 
             if (total >= 100)
-                level = 5;
-            else if (total > 60)
                 level = 4;
-            else if (total > 40)
+            else if (total > 60)
                 level = 3;
-            else if (total > 20)
+            else if (total > 40)
                 level = 2;
+            else if (total > 20)
+                level = 1;
 
             return Poison.GetPoison(level);
         }
