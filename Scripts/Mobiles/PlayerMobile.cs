@@ -4314,7 +4314,7 @@ namespace Server.Mobiles
 
         public override ApplyPoisonResult ApplyPoison(Mobile from, Poison poison)
 		{
-			if (!Alive)
+			if (!Alive || poison == null)
 			{
 				return ApplyPoisonResult.Immune;
 			}

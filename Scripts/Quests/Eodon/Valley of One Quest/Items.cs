@@ -272,7 +272,7 @@ namespace Server.Items
                 AddComponent(new LocalizedAddonComponent(40056, cliloc), -2, -1, 0);
 			}
 
-            Hue = hue;
+            Timer.DelayCall(() => Hue = hue);
 		}
 		
 		public TigerRugAddon(Serial serial) : base(serial)
