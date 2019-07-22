@@ -45,8 +45,6 @@ namespace Server.Engines.Khaldun
                     m.SendLocalizedMessage(1158612, null, 0x23); // You have identified a clue! This item seems pertinent to the investigation!
 
                     m.SendSound(quest.UpdateSound);
-
-                    var gump = new Gump(50, 50);
                     m.SendSound(m.Female ? 0x30B : 0x41A);
 
                     m.CloseGump(typeof(GumshoeItemGump));
