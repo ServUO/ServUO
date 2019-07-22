@@ -12,18 +12,24 @@ namespace Server.Engines.Khaldun
 {
     public class BaseGumshoeForensicItem : Item, IForensicTarget
     {
-        readonly string m_ItemName;
-        readonly int m_Cliloc;
+        /*private string m_ItemName;
+        private int m_Cliloc;
+
+        public string ItemName { get { return m_ItemName; } }
+        public int Cliloc { get { return m_Cliloc; } }*/
+
+        public virtual string ItemName { get { return null; } }
+        public virtual int Cliloc { get { return 0; } }
 
         public override bool DisplayWeight { get { return false; } }
 
-        public BaseGumshoeForensicItem(int itemID, string itemName, int cliloc)
+        public BaseGumshoeForensicItem(int itemID/*, string itemName, int cliloc*/)
             : base(itemID)
         {
             Movable = false;
 
-            m_ItemName = itemName;
-            m_Cliloc = cliloc;
+            /*ItemName = itemName;
+            Cliloc = cliloc;*/
         }
 
         public void OnForensicEval(Mobile m)
@@ -42,7 +48,7 @@ namespace Server.Engines.Khaldun
                 m.SendSound(m.Female ? 0x30B : 0x41A);
 
                 m.CloseGump(typeof(GumshoeItemGump));
-                m.SendGump(new GumshoeItemGump(m, ItemID, Hue, m_ItemName, m_Cliloc, null));
+                m.SendGump(new GumshoeItemGump(m, ItemID, Hue, ItemName, Cliloc, null));
             }
         }
 
@@ -56,6 +62,9 @@ namespace Server.Engines.Khaldun
             base.Serialize(writer);
 
             writer.Write((int)0); // version
+
+            /*writer.Write(m_ItemName);
+            writer.Write(m_Cliloc);*/
         }
 
         public override void Deserialize(GenericReader reader)
@@ -63,14 +72,20 @@ namespace Server.Engines.Khaldun
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            /*m_ItemName = reader.ReadString();
+            m_Cliloc = reader.ReadInt();*/
         }
     }
 
     public class GumshoeBottles : BaseGumshoeForensicItem
     {
+        public override string ItemName { get { return "bottles of wine"; } }
+        public override int Cliloc { get { return 1158572; } }
+
         [Constructable]
         public GumshoeBottles()
-            : base(0x9C5, "bottles of wine", 1158572)
+            : base(0x9C5)
         {
         }
 
@@ -96,9 +111,12 @@ namespace Server.Engines.Khaldun
 
     public class GumshoeDeed : BaseGumshoeForensicItem
     {
+        public override string ItemName { get { return "deed"; } }
+        public override int Cliloc { get { return 1158575; } }
+
         [Constructable]
         public GumshoeDeed()
-            : base(0x14EF, "deed", 1158575)
+            : base(0x14EF)
         {
         }
 
@@ -124,9 +142,12 @@ namespace Server.Engines.Khaldun
 
     public class GumshoeRope : BaseGumshoeForensicItem
     {
+        public override string ItemName { get { return "rope"; } }
+        public override int Cliloc { get { return 1158573; } }
+
         [Constructable]
         public GumshoeRope()
-            : base(0x14FA, "rope", 1158573)
+            : base(0x14FA)
         {
         }
 
@@ -152,9 +173,12 @@ namespace Server.Engines.Khaldun
 
     public class GumshoeMap : BaseGumshoeForensicItem
     {
+        public override string ItemName { get { return "map"; } }
+        public override int Cliloc { get { return 1158574; } }
+
         [Constructable]
         public GumshoeMap()
-            : base(0x14EB, "map", 1158574)
+            : base(0x14EB)
         {
         }
 
@@ -180,9 +204,12 @@ namespace Server.Engines.Khaldun
 
     public class GumshoeTools : BaseGumshoeForensicItem
     {
+        public override string ItemName { get { return "tools"; } }
+        public override int Cliloc { get { return 1158576; } }
+
         [Constructable]
         public GumshoeTools()
-            : base(0x1EBB, "tools", 1158576)
+            : base(0x1EBB)
         {
         }
 
