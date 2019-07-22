@@ -12,24 +12,15 @@ namespace Server.Engines.Khaldun
 {
     public class BaseGumshoeForensicItem : Item, IForensicTarget
     {
-        /*private string m_ItemName;
-        private int m_Cliloc;
-
-        public string ItemName { get { return m_ItemName; } }
-        public int Cliloc { get { return m_Cliloc; } }*/
-
         public virtual string ItemName { get { return null; } }
         public virtual int Cliloc { get { return 0; } }
 
         public override bool DisplayWeight { get { return false; } }
 
-        public BaseGumshoeForensicItem(int itemID/*, string itemName, int cliloc*/)
+        public BaseGumshoeForensicItem(int itemID)
             : base(itemID)
         {
             Movable = false;
-
-            /*ItemName = itemName;
-            Cliloc = cliloc;*/
         }
 
         public void OnForensicEval(Mobile m)
@@ -62,9 +53,6 @@ namespace Server.Engines.Khaldun
             base.Serialize(writer);
 
             writer.Write((int)0); // version
-
-            /*writer.Write(m_ItemName);
-            writer.Write(m_Cliloc);*/
         }
 
         public override void Deserialize(GenericReader reader)
@@ -72,9 +60,6 @@ namespace Server.Engines.Khaldun
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            /*m_ItemName = reader.ReadString();
-            m_Cliloc = reader.ReadInt();*/
         }
     }
 
