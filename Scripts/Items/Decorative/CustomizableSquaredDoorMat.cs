@@ -25,8 +25,8 @@ namespace Server.Items
                     AddComponent(new CustomizableSquaredDoorMatComponent(0x4AB7), 1, 0, 0);
                     break;
                 case DirectionType.East:
-                    AddComponent(new CustomizableSquaredDoorMatComponent(0x4AB4), 0, 0, 0);
-                    AddComponent(new CustomizableSquaredDoorMatComponent(0x4AB5), 0, 1, 0);
+                    AddComponent(new CustomizableSquaredDoorMatComponent(0x4AB4), 0, 1, 0);
+                    AddComponent(new CustomizableSquaredDoorMatComponent(0x4AB5), 0, 0, 0);
                     break;
             }
         }
