@@ -55,7 +55,10 @@ namespace Server.Engines.Khaldun
         public override void InitOutfit()
         {
             AddItem(new Backpack());
-            SetWearable(new DeathRobe());
+
+            var robe = new DeathRobe();
+            robe.ItemID = 9863;
+            SetWearable(robe);
         }
 
         public bool OnSpiritSpeak(Mobile m)
