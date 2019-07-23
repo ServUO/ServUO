@@ -197,7 +197,7 @@ namespace Server.Engines.Khaldun
 
             door.MoveToWorld(new Point3D(2762, 848, 0), Map.Trammel);
             book.MoveToWorld(new Point3D(6167, 2896, 6), Map.Trammel);
-            dust.MoveToWorld(new Point3D(6163, 2886, 0), Map.Trammel);
+            dust.MoveToWorld(new Point3D(6163, 2885, 0), Map.Trammel);
             teleporter.MoveToWorld(new Point3D(6154, 2898, 17), Map.Trammel);
 
             new GumshoeBottles().MoveToWorld(new Point3D(6240, 2884, 6), Map.Trammel);
