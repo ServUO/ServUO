@@ -86,17 +86,14 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Burning
         {
-            get
-            {
-                return this.m_Burning;
-            }
+            get { return m_Burning; }
             set
             {
-                if (this.m_Burning != value)
-                {
-                    this.m_Burning = true;
-                    this.DoTimer(this.m_Duration);
-                }
+                if (m_Burning == value) return;
+                if (value)
+                    Ignite();
+                else
+                    Douse();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
