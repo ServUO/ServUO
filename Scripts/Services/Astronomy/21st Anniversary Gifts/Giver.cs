@@ -12,7 +12,7 @@ namespace Server.Misc
         }
 
         public override DateTime Start { get { return new DateTime(2019, 4, 05); } }
-        public override DateTime Finish { get { return new DateTime(2019, 12, 31); } }
+        public override DateTime Finish { get { return new DateTime(2019, 5, 31); } }
         public override TimeSpan MinimumAge { get { return TimeSpan.FromHours(12); } }
 
         public override void GiveGift(Mobile mob)
