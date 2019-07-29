@@ -67,29 +67,29 @@ namespace Server.Multis
         public Mobile GalleonPilot { get { return m_GalleonPilot; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SecurityEntry SecurityEntry 
-        { 
-            get 
+        public SecurityEntry SecurityEntry
+        {
+            get
             {
                 if (m_SecurityEntry == null)
                     m_SecurityEntry = new SecurityEntry(this);
-                return m_SecurityEntry; 
+                return m_SecurityEntry;
             }
-            set 
-            { 
-                m_SecurityEntry = value; 
-                m_SecurityEntry.Galleon = this; 
-            } 
+            set
+            {
+                m_SecurityEntry = value;
+                m_SecurityEntry.Galleon = this;
+            }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DamageLevel DamageTaken
-        { 
+        {
             get { return m_DamageTaken; }
-            set 
+            set
             {
                 DamageLevel oldDamage = m_DamageTaken;
-                
+
                 m_DamageTaken = value;
 
                 if (m_DamageTaken != oldDamage)
@@ -104,7 +104,7 @@ namespace Server.Multis
                             m_GalleonPilot.Say(1116687); //Arr, we be scuttled!
                     }
                 }
-            } 
+            }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -184,6 +184,12 @@ namespace Server.Multis
 
             AddGalleonPilotAndWheel(direction);
             Timer.DelayCall(TimeSpan.FromSeconds(2), new TimerCallback(MarkRunes));
+        }
+
+        public void InvalidateHoldPorperties()
+        {
+            foreach(Item hold in m_HoldTiles)
+                hold.InvalidateProperties();
         }
 
         public void AddGalleonPilotAndWheel(Direction direction)
@@ -1021,7 +1027,7 @@ namespace Server.Multis
             int dirMod = newdir + (DamageValue * 4);
             int temp = dirMod;
 
-            if (dirMod < 0) 
+            if (dirMod < 0)
                 dirMod = 0;
 
             if (m_CannonTiles != null)
@@ -1182,7 +1188,7 @@ namespace Server.Multis
 
         public static int[][] CannonIDs { get { return m_CannonIDs; } }
         private static int[][] m_CannonIDs = new int[][]
-        { 
+        {
                       //Light  Heavy, Blunder
             new int[] { 16918, 16922, 41664 }, //South
             new int[] { 16919, 16923, 41665 }, //West
@@ -1361,14 +1367,14 @@ namespace Server.Multis
 
         private Type[] WoodTypes = new Type[] { typeof(Board),  typeof(OakBoard), typeof(AshBoard), typeof(YewBoard), typeof(HeartwoodBoard), typeof(BloodwoodBoard), typeof(FrostwoodBoard),
                                                 typeof(Log), typeof(OakLog), typeof(AshLog), typeof(YewLog), typeof(HeartwoodLog), typeof(BloodwoodLog), typeof(FrostwoodLog), };
-        
+
         private Type[] ClothTypes = new Type[] { typeof(Cloth), typeof(UncutCloth) };
 
         public void TryRepairs(Mobile from)
         {
 			if(from == null || from.Backpack == null)
 				return;
-				
+
 			Container pack = from.Backpack;
             Container hold = m_GalleonHold;
             Container secure = SecureContainer;
@@ -1397,11 +1403,11 @@ namespace Server.Multis
 			//Now, how much do they need for 100% repair
             double woodNeeded = WoodPer * (100.0 - durability);
             double clothNeeded = ClothPer * (100.0 - durability);
-			
+
 			//Apply skill bonus
 			woodNeeded -= ((double)from.Skills[SkillName.Carpentry].Value / 200.0) * woodNeeded;
 			clothNeeded -= ((double)from.Skills[SkillName.Tailoring].Value / 200.0) * clothNeeded;
-			
+
 			//get 10% of needed repairs
 			double minWood = woodNeeded / 10;
 			double minCloth = clothNeeded / 10;
@@ -1411,9 +1417,9 @@ namespace Server.Multis
                 from.SendLocalizedMessage(1116593, String.Format("{0}\t{1}", ((int)minCloth).ToString(), ((int)minWood).ToString())); //You need a minimum of ~1_CLOTH~ yards of cloth and ~2_WOOD~ pieces of lumber to effect repairs to this ship.
 				return;
 			}
-			
+
 			double percWood, percCloth, woodUsed, clothUsed;
-			
+
 			if(wood >= woodNeeded)
 			{
 				woodUsed = woodNeeded;
@@ -1424,7 +1430,7 @@ namespace Server.Multis
 				woodUsed = wood;
 				percWood = (wood / woodNeeded) * 100;
 			}
-            
+
 			if(cloth >= clothNeeded)
 			{
 				clothUsed = clothNeeded;
@@ -1513,7 +1519,7 @@ namespace Server.Multis
 			if(m_Hits > MaxHits) m_Hits = MaxHits;
 			ComputeDamage();
 
-			if(totalPerc > 100) 
+			if(totalPerc > 100)
                 totalPerc = 100;
 
             if (m_EmergencyRepairTimer != null)
@@ -1521,7 +1527,7 @@ namespace Server.Multis
                 m_EmergencyRepairTimer.Stop();
                 m_EmergencyRepairTimer = null;
             }
-		
+
             string args = String.Format("{0}\t{1}\t{2}", ((int)clothTemp).ToString(), ((int)woodTemp).ToString(), ((int)Durability).ToString());
             from.SendLocalizedMessage(1116598, args); //You effect permanent repairs using ~1_CLOTH~ yards of cloth and ~2_WOOD~ pieces of lumber. The ship is now ~3_DMGPCT~% repaired.
         }
@@ -1565,8 +1571,8 @@ namespace Server.Multis
         private DateTime m_NextPaintDecay;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int BaseBoatHue 
-        { 
+        public int BaseBoatHue
+        {
             get { return m_BaseBoatHue; }
             set
             {
@@ -1876,7 +1882,7 @@ namespace Server.Multis
             writer.Write(m_CannonTiles.Count);
             for(int i = 0; i < m_CannonTiles.Count; i++)
                 writer.Write(m_CannonTiles[i]);
-            
+
             writer.Write(m_Cannons.Count);
             for (int i = 0; i < m_Cannons.Count; i++)
                 writer.Write(m_Cannons[i]);
@@ -2035,7 +2041,7 @@ namespace Server.Multis
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SecurityLevel DefaultGuildAccess { get { return m_DefaultGuildAccess; } set { m_DefaultGuildAccess = value; } }
-        
+
         public Dictionary<Mobile, SecurityLevel> Manifest { get { return m_Manifest; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -2256,12 +2262,12 @@ namespace Server.Multis
 
         [CommandProperty(AccessLevel.GameMaster)]
 		public int SpeechHue { get { return m_SpeechHue; } }
-		
+
 		public override string ToString()
 		{
 			return "...";
 		}
-		
+
 		public PilotEntry(Mobile pilot)
 		{
 			m_Name = pilot.Name;
@@ -2271,7 +2277,7 @@ namespace Server.Multis
 			m_HairID = pilot.HairItemID;
 			m_SpeechHue = pilot.SpeechHue;
 		}
-		
+
 		public void Serialize(GenericWriter writer)
 		{
 			writer.Write((int)0);
@@ -2282,7 +2288,7 @@ namespace Server.Multis
 			writer.Write(m_HairID);
 			writer.Write(m_SpeechHue);
 		}
-		
+
 		public PilotEntry(GenericReader reader)
 		{
 			int version = reader.ReadInt();

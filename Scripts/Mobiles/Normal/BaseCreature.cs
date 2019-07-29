@@ -6734,18 +6734,7 @@ namespace Server.Mobiles
             creature.Hits = creature.HitsMaxSeed;
 
             return true;
-        }
-
-        private static readonly Type[] m_MinorArtifactsMl = new[]
-        {
-            typeof(AegisOfGrace), typeof(BladeDance), typeof(Bonesmasher), typeof(Boomstick), typeof(FeyLeggings),
-            typeof(FleshRipper), typeof(HelmOfSwiftness), typeof(PadsOfTheCuSidhe), typeof(QuiverOfRage),
-            typeof(QuiverOfElements), typeof(RaedsGlory), typeof(RighteousAnger), typeof(RobeOfTheEclipse),
-            typeof(RobeOfTheEquinox), typeof(SoulSeeker), typeof(TalonBite), typeof(WildfireBow), typeof(Windsong),
-			// TODO: Brightsight lenses, Bloodwood spirit, Totem of the void
-		};
-
-        public static Type[] MinorArtifactsMl { get { return m_MinorArtifactsMl; } }
+        }        
 
         private static bool EnableRummaging = true;
 
