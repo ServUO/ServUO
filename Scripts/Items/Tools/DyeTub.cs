@@ -217,7 +217,8 @@ namespace Server.Items
                     else if (m_Tub.AllowLeather)
                     {
                         if ((item is BaseArmor && (((BaseArmor)item).MaterialType == ArmorMaterialType.Leather || ((BaseArmor)item).MaterialType == ArmorMaterialType.Studded)) ||
-                            (item is BaseClothing && (((BaseClothing)item).DefaultResource == CraftResource.RegularLeather || item is WoodlandBelt)))
+                            (item is BaseClothing && (((BaseClothing)item).DefaultResource == CraftResource.RegularLeather || item is WoodlandBelt || item is BarbedWhip 
+							|| item is BladedWhip || item is SpikedWhip)))
                         {
                             if (!from.InRange(m_Tub.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
                             {
