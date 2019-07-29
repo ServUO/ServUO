@@ -17,23 +17,7 @@ namespace Server
     }
 
     public static class MondainsLegacy
-    {
-        private static readonly Type[] m_PigmentList = new Type[]
-        {
-            typeof(RoyalZooLeatherLegs), typeof(RoyalZooLeatherGloves), typeof(RoyalZooLeatherGorget), typeof(RoyalZooLeatherArms),
-            typeof(RoyalZooLeatherChest), typeof(RoyalZooLeatherFemaleChest), typeof(RoyalZooStuddedLegs), typeof(RoyalZooStuddedGloves),
-            typeof(RoyalZooStuddedGorget), typeof(RoyalZooStuddedArms), typeof(RoyalZooStuddedChest), typeof(RoyalZooStuddedFemaleChest),
-            typeof(RoyalZooPlateHelm), typeof(RoyalZooPlateFemaleChest), typeof(RoyalZooPlateChest), typeof(RoyalZooPlateArms),
-            typeof(RoyalZooPlateGorget), typeof(RoyalZooPlateGloves), typeof(RoyalZooPlateLegs), typeof(MinaxsArmor),
-            typeof(KeeoneansChainMail), typeof(VesperOrderShield), typeof(VesperChaosShield), typeof(ClaininsSpellbook),
-            typeof(BlackthornsKryss), typeof(SwordOfJustice), typeof(GeoffreysAxe), typeof(TreatiseonAlchemyTalisman),
-            typeof(PrimerOnArmsTalisman), typeof(MyBookTalisman), typeof(TalkingtoWispsTalisman), typeof(GrammarOfOrchishTalisman),
-            typeof(BirdsofBritanniaTalisman), typeof(TheLifeOfTravelingMinstrelTalisman), typeof(MaceAndShieldGlasses), typeof(GlassesOfTheArts),
-            typeof(FoldedSteelGlasses), typeof(TradesGlasses), typeof(LyricalGlasses), typeof(AnthropomorphistGlasses),
-            typeof(LightOfWayGlasses), typeof(NecromanticGlasses), typeof(WizardsCrystalGlasses), typeof(MaritimeGlasses),
-            typeof(TreasuresAndTrinketsGlasses), typeof(PoisonedGlasses), typeof(GypsyHeaddress), typeof(NystulsWizardsHat),
-            typeof(JesterHatOfChuckles)
-        };
+    {      
         private static readonly Type[] m_Artifacts = new Type[]
         {
             typeof(AegisOfGrace), typeof(BladeDance), typeof(BloodwoodSpirit), typeof(Bonesmasher),
@@ -199,14 +183,7 @@ namespace Server
             {
                 m_PublicDonations = value;
             }
-        }
-        public static Type[] PigmentList
-        {
-            get
-            {
-                return m_PigmentList;
-            }
-        }
+        }       
         public static Type[] Artifacts
         {
             get
