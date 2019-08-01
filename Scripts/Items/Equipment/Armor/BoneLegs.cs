@@ -9,7 +9,7 @@ namespace Server.Items
         public BoneLegs()
             : base(0x1452)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public BoneLegs(Serial serial)

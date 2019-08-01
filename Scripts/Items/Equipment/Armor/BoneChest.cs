@@ -9,7 +9,7 @@ namespace Server.Items
         public BoneChest()
             : base(0x144F)
         {
-            this.Weight = 6.0;
+            Weight = 6.0;
         }
 
         public BoneChest(Serial serial)
@@ -119,9 +119,6 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write((int)0);
-
-            if (this.Weight == 1.0)
-                this.Weight = 6.0;
         }
 
         public override void Deserialize(GenericReader reader)

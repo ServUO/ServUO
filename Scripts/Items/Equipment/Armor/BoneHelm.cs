@@ -9,7 +9,7 @@ namespace Server.Items
         public BoneHelm()
             : base(0x1451)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public BoneHelm(Serial serial)
@@ -98,9 +98,6 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write((int)0);
-
-            if (this.Weight == 1.0)
-                this.Weight = 3.0;
         }
 
         public override void Deserialize(GenericReader reader)

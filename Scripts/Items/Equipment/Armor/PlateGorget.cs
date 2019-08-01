@@ -8,7 +8,7 @@ namespace Server.Items
         public PlateGorget()
             : base(0x1413)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public PlateGorget(Serial serial)

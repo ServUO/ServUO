@@ -9,7 +9,7 @@ namespace Server.Items
         public DragonGloves()
             : base(0x2643)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public DragonGloves(Serial serial)
@@ -118,9 +118,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (this.Weight == 1.0)
-                this.Weight = 2.0;
         }
     }
 }

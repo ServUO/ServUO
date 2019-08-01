@@ -9,7 +9,7 @@ namespace Server.Items
         public RingmailLegs()
             : base(0x13F0)
         {
-            this.Weight = 15.0;
+            Weight = 15.0;
         }
 
         public RingmailLegs(Serial serial)

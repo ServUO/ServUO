@@ -9,7 +9,7 @@ namespace Server.Items
         public StuddedArms()
             : base(0x13DC)
         {
-            this.Weight = 4.0;
+            Weight = 4.0;
         }
 
         public StuddedArms(Serial serial)
@@ -118,9 +118,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (this.Weight == 1.0)
-                this.Weight = 4.0;
         }
     }
 }

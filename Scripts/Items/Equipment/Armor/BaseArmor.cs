@@ -2855,7 +2855,7 @@ namespace Server.Items
                 list.Add(1061078, prop.ToString()); // artifact rarity ~1_val~
 
             if ((prop = m_AosArmorAttributes.DurabilityBonus) != 0)
-                list.Add(1060410, prop.ToString()); // durability ~1_val~%
+                list.Add(1151780, prop.ToString()); // durability +~1_VAL~%
 
             if (m_TalismanProtection != null && !m_TalismanProtection.IsEmpty && m_TalismanProtection.Amount > 0)
                 list.Add(1072387, "{0}\t{1}", m_TalismanProtection.Name != null ? m_TalismanProtection.Name.ToString() : "Unknown", m_TalismanProtection.Amount); // ~1_NAME~ Protection: +~2_val~%
