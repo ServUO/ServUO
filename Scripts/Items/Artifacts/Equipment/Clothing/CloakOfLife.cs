@@ -6,6 +6,7 @@ namespace Server.Items
     public class CloakOfLife : BaseOuterTorso
     {
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber {get {return 1112880;} }// Cloak of Life
 		
         [Constructable]
         public CloakOfLife()
@@ -20,9 +21,7 @@ namespace Server.Items
         public CloakOfLife(Serial serial)
             : base(serial)
         {
-        }
-		
-		public override int LabelNumber {get {return 1112880;} }// Cloak of Life
+        }			
 
         public override void Serialize(GenericWriter writer)
         {

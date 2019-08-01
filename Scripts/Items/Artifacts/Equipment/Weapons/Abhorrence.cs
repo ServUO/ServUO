@@ -6,6 +6,8 @@ namespace Server.Items
 	{
 		public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1154472; } } // Abhorrence
+		public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
 
         [Constructable]
         public Abhorrence()
@@ -24,10 +26,7 @@ namespace Server.Items
         {
             nrgy = 100;
             phys = pois = cold = chaos = direct = fire = 0;
-        }
-
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        }        
 
         public Abhorrence(Serial serial)
             : base(serial)

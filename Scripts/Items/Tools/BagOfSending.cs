@@ -29,9 +29,7 @@ namespace Server.Items
             : base(0xE76)
         {
             Weight = 2.0;
-
             BagOfSendingHue = hue;
-
             m_Charges = Utility.RandomMinMax(3, 9);
         }
 

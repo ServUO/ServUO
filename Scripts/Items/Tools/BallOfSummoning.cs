@@ -20,12 +20,10 @@ namespace Server.Items
         public BallOfSummoning()
             : base(0xE2E)
         {
-            this.Weight = 10.0;
-            this.Light = LightType.Circle150;
-
-            this.m_Charges = Utility.RandomMinMax(3, 9);
-
-            this.m_PetName = "";
+            Weight = 10.0;
+            Light = LightType.Circle150;
+            m_Charges = Utility.RandomMinMax(3, 9);
+            m_PetName = "";
         }
 
         public BallOfSummoning(Serial serial)
@@ -34,6 +32,7 @@ namespace Server.Items
         }
 
         private delegate void BallCallback(Mobile from);
+		
         [CommandProperty(AccessLevel.GameMaster)]
         public int Charges
         {

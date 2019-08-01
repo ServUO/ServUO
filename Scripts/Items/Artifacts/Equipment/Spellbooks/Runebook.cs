@@ -241,12 +241,6 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            LootType = LootType.Blessed;
-
-            if (Core.SE && Weight == 3.0)
-                Weight = 1.0;
-
             int version = reader.ReadInt();
 
             switch ( version )

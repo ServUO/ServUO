@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public LeatherDyeTub()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public LeatherDyeTub(Serial serial)

@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public OrcChieftainHelm()
         {
-            Hue = 0x2a3;
+            Hue = 0x2A3;
 
             Attributes.Luck = 100;
             Attributes.RegenHits = 3;
@@ -90,20 +90,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-
-            if (version < 1 && this.Hue == 0x3f) /* Pigmented? */
-            {
-                this.Hue = 0x2a3;
-            }
+            int version = reader.ReadInt();            
         }
     }
 }

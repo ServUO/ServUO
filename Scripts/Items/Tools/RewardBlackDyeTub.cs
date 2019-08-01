@@ -8,9 +8,9 @@ namespace Server.Items
         [Constructable]
         public RewardBlackDyeTub()
         {
-            this.Hue = this.DyedHue = 0x0001;
-            this.Redyable = false;
-            this.LootType = LootType.Blessed;
+            Hue = this.DyedHue = 0x0001;
+            Redyable = false;
+            LootType = LootType.Blessed;
         }
 
         public RewardBlackDyeTub(Serial serial)

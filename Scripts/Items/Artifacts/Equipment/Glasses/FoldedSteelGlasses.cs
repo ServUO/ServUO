@@ -7,6 +7,8 @@ namespace Server.Items
     public class FoldedSteelGlasses : ElvenGlasses
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
 
         [Constructable]
         public FoldedSteelGlasses()
@@ -64,20 +66,7 @@ namespace Server.Items
                 return 10;
             }
         }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -88,15 +77,14 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version == 0 && this.Hue == 0)
-                this.Hue = 0x47E;
         }
     }
 
     public class GargishFoldedSteelGlasses : GargishGlasses
     {
         public override bool IsArtifact { get { return true; } }
+		public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
 
         [Constructable]
         public GargishFoldedSteelGlasses()
@@ -154,20 +142,7 @@ namespace Server.Items
                 return 10;
             }
         }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

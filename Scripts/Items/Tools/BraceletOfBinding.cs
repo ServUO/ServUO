@@ -24,7 +24,6 @@ namespace Server.Items
         {
             Hue = 0x489;
             Weight = 1.0;
-
             m_Inscription = "";
         }
 

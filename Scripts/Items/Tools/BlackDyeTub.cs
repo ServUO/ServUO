@@ -7,8 +7,8 @@ namespace Server.Items
         [Constructable]
         public BlackDyeTub()
         {
-            this.Hue = this.DyedHue = 0x0001;
-            this.Redyable = false;
+            Hue = this.DyedHue = 0x0001;
+            Redyable = false;
         }
 
         public BlackDyeTub(Serial serial)
@@ -19,14 +19,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

@@ -12,8 +12,8 @@ namespace Server.Items
         public NewPlayerTicket()
             : base(0x14EF)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public NewPlayerTicket(Serial serial)
@@ -57,7 +57,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
 
             writer.Write((Mobile)this.m_Owner);
@@ -66,7 +65,6 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch ( version )
@@ -77,9 +75,6 @@ namespace Server.Items
                         break;
                     }
             }
-
-            if (this.Name == "a young player ticket")
-                this.Name = null;
         }
 
         public override void OnDoubleClick(Mobile from)

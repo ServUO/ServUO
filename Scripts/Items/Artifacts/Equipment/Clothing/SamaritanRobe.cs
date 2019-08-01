@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public SamaritanRobe()
         {
-            Hue = 0x2a3;
+            Hue = 0x2A3;
         }
 
         public SamaritanRobe(Serial serial)

@@ -12,7 +12,7 @@ namespace Server.Items
         public Bedroll()
             : base(0xA57)
         {
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         public Bedroll(Serial serial)
@@ -57,14 +57,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
         }
 

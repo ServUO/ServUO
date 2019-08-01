@@ -6,6 +6,13 @@ namespace Server.Items
     {
 		public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1115444; } } // Basilisk Hide Breastplate
+		public override int BasePhysicalResistance { get { return 12; } }
+        public override int BaseFireResistance { get { return 14; } }
+        public override int BaseColdResistance { get { return 6; } }
+        public override int BasePoisonResistance { get { return 11; } }
+        public override int BaseEnergyResistance { get { return 5; } }       
+		public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
 
         [Constructable]
         public BasiliskHideBreastplate() 
@@ -25,56 +32,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 12;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 14;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 6;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+       
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -84,13 +42,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                Resource = CraftResource.None;
-                this.Hue = 1366;
-            }
+            int version = reader.ReadInt();            
         }
     }
 }

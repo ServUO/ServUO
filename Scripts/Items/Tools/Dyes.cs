@@ -10,7 +10,7 @@ namespace Server.Items
         public Dyes()
             : base(0xFA9)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public Dyes(Serial serial)
@@ -21,18 +21,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (this.Weight == 0.0)
-                this.Weight = 3.0;
         }
 
         public override void OnDoubleClick(Mobile from)

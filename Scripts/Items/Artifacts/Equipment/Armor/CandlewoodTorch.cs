@@ -70,13 +70,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
-
-            if (version < 1)
-            {
-                LootType = LootType.Blessed;
-                Weight = 1.0;
-            }
+            int version = reader.ReadEncodedInt();            
         }
     }
 }

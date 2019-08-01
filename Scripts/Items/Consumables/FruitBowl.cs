@@ -8,8 +8,8 @@ namespace Server.Items
         public FruitBowl()
             : base(0x2D4F)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 20;
+            Weight = 1.0;
+            FillFactor = 20;
         }
 
         public FruitBowl(Serial serial)

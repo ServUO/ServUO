@@ -80,7 +80,6 @@ namespace Server.Items
             }
         }
 
-
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);

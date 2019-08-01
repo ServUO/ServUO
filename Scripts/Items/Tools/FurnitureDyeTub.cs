@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public FurnitureDyeTub()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public FurnitureDyeTub(Serial serial)
@@ -102,9 +102,6 @@ namespace Server.Items
                         break;
                     }
             }
-
-            if (this.LootType == LootType.Regular)
-                this.LootType = LootType.Blessed;
         }
     }
 }

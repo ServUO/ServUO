@@ -6,27 +6,22 @@ namespace Server.Items
 {
     public class TribalPaint : Item
     {
+		public override int LabelNumber { get { return 1040000; } }// savage kin paint
+		
         [Constructable]
         public TribalPaint()
             : base(0x9EC)
         {
-            this.Hue = 2101;
-            this.Weight = 2.0;
-            this.Stackable = Core.ML;
+            Hue = 2101;
+            Weight = 2.0;
+            Stackable = Core.ML;
         }
 
         public TribalPaint(Serial serial)
             : base(serial)
         {
         }
-
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1040000;
-            }
-        }// savage kin paint
+        
         public override void OnDoubleClick(Mobile from)
         {
             if (this.IsChildOf(from.Backpack))
@@ -77,14 +72,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

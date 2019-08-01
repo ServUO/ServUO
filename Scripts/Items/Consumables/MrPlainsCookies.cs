@@ -4,6 +4,8 @@ namespace Server.Items
 {
     public class MrPlainsCookies : Food
     {
+		public override int LabelNumber { get { return 1153774; } }// Mr. Plain's Cookies
+		
         [Constructable]
         public MrPlainsCookies()
             : base(0x160C)
@@ -18,29 +20,17 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override string DefaultName
-        {
-            get
-            {
-                return "Mr Plain's Cookies";
-            }
-        }
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-                Stackable = false;
         }
     }
 }

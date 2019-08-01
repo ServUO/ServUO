@@ -6,7 +6,6 @@ namespace Server.Items
 	[FlipableAttribute( 0x1541, 0x1542 )] 
 	public class SashOfMight : BodySash 
 	{
-
 		public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1075412; } } // Sash of Might
      		

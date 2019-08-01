@@ -59,14 +59,7 @@ namespace Server.Mobiles
             {
                 return InhumanSpeech.Wisp;
             }
-        }
-        /*public override Ethics.Ethic EthicAllegiance
-        {
-            get
-            {
-                return Ethics.Ethic.Evil;
-            }
-        }*/
+        }       
         public override TimeSpan ReacquireDelay
         {
             get

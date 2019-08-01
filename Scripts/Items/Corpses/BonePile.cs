@@ -9,8 +9,8 @@ namespace Server.Items
         public BonePile()
             : base(0x1B09 + Utility.Random(8))
         {
-            this.Stackable = false;
-            this.Weight = 10.0;
+            Stackable = false;
+            Weight = 10.0;
         }
 
         public BonePile(Serial serial)
@@ -21,14 +21,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
 

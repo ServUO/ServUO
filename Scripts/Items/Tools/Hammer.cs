@@ -9,14 +9,13 @@ namespace Server.Items
         public Hammer()
             : base(0x102A)
         {
-            this.Weight = 2.0;
         }
 
         [Constructable]
         public Hammer(int uses)
             : base(uses, 0x102A)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public Hammer(Serial serial)

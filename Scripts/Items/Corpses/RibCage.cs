@@ -9,8 +9,8 @@ namespace Server.Items
         public RibCage()
             : base(0x1B17 + Utility.Random(2))
         {
-            this.Stackable = false;
-            this.Weight = 5.0;
+            Stackable = false;
+            Weight = 5.0;
         }
 
         public RibCage(Serial serial)
@@ -21,14 +21,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
 

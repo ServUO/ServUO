@@ -105,14 +105,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
-
-            switch (version)
-            {
-                case 0:
-                    Body = 158;
-                    break;
-            }
+            int version = reader.ReadInt();           
         }
     }
 }

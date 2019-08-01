@@ -12,7 +12,6 @@ namespace Server.Items
             Attributes.SpellChanneling = 1;
             Attributes.DefendChance = 10;				
             Attributes.CastRecovery = 1;
-            //Random Resonance:
             switch (Utility.Random(5))
             {
                 case 0:
@@ -31,7 +30,6 @@ namespace Server.Items
                     AbsorptionAttributes.ResonanceEnergy = 10;
                     break;
             }
-            //Random Resist:
             switch (Utility.Random(5))
             {
                 case 0:
@@ -50,7 +48,6 @@ namespace Server.Items
                     EnergyBonus = 10;
                     break;
             }
-
         }
 
         public DefenderOfTheMagus(Serial serial)

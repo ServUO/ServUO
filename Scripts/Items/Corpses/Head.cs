@@ -29,8 +29,8 @@ namespace Server.Items
         public Head(HeadType headType, string playerName)
             : base(0x1DA0)
         {
-            this.m_HeadType = headType;
-            this.m_PlayerName = playerName;
+            m_HeadType = headType;
+            m_PlayerName = playerName;
         }
 
         public Head(Serial serial)

@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public RunebookDyeTub()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public RunebookDyeTub(Serial serial)
