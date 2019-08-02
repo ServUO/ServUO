@@ -45,15 +45,10 @@ namespace Server.Engines.Khaldun
                     m.SendLocalizedMessage(1158612, null, 0x23); // You have identified a clue! This item seems pertinent to the investigation!
 
                     m.SendSound(quest.UpdateSound);
+                    m.SendSound(m.Female ? 0x30B : 0x41A);
 
-                    var gump = new Gump(50, 50);
-                    gump.AddBackground(0, 0, 500, 500, 9380);
-
-                    gump.AddItem(84, 130, ItemID, Hue);
-                    gump.AddHtml(167, 50, 310, 20, "<center><basefont color=#B22222>a dust pile</center>", false, false);
-                    gump.AddHtmlLocalized(167, 70, 310, 380, 1158617, true, false);
-
-                    m.SendGump(gump);
+                    m.CloseGump(typeof(GumshoeItemGump));
+                    m.SendGump(new GumshoeItemGump(m, ItemID, Hue, "a dust pile", 1158617, null));
 
                     /*The dust seems to have have settled in a distinct pattern around whatever once was placed at this location.
                      * Whatever it was, it was certainly small enough to be taken away in a hurry.*/

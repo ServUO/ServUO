@@ -21,10 +21,11 @@ namespace Server.Engines.Khaldun
         public TrapDoor Door { get; set; }
 
         public MysteriousBook(TrapDoor door)
-            : base(0xFF2)
+            : base(0x42b8)
         {
             Movable = false;
             Door = door;
+            Hue = 1950;
         }
 
         public void OnForensicEval(Mobile m)
@@ -46,15 +47,10 @@ namespace Server.Engines.Khaldun
                     m.SendLocalizedMessage(1158612, null, 0x23); // You have identified a clue! This item seems pertinent to the investigation!
 
                     m.SendSound(quest.UpdateSound);
+                    m.SendSound(m.Female ? 0x30B : 0x41A);
 
-                    var gump = new Gump(50, 50);
-                    gump.AddBackground(0, 0, 500, 500, 9380);
-
-                    gump.AddItem(84, 130, ItemID, Hue);
-                    gump.AddHtml(167, 50, 310, 20, "<center><basefont color=#B22222>Book</center>", false, false);
-                    gump.AddHtmlLocalized(167, 70, 310, 380, 1158577, true, false);
-
-                    m.SendGump(gump);
+                    m.CloseGump(typeof(GumshoeItemGump));
+                    m.SendGump(new GumshoeItemGump(m, ItemID, Hue, "book", 1158577, null));
 
                     SetFoundClue1(quest);
                 }

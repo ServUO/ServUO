@@ -55,7 +55,10 @@ namespace Server.Engines.Khaldun
         public override void InitOutfit()
         {
             AddItem(new Backpack());
-            SetWearable(new DeathRobe());
+
+            var robe = new DeathRobe();
+            robe.ItemID = 9863;
+            SetWearable(robe);
         }
 
         public bool OnSpiritSpeak(Mobile m)
@@ -89,7 +92,7 @@ namespace Server.Engines.Khaldun
                 : base(50, 50)
             {
                 AddBackground(0, 0, 400, 600, 9300);
-                AddImage(58, 30, 1744);
+                AddImage(58, 30, 1746);
 
                 AddHtmlLocalized(0, 340, 400, 20, 1154645, "#1158623", 0x0, false, false); // The Prophecy
                 AddHtmlLocalized(5, 365, 390, 200, 1158622, BaseGump.C32216(0x0D0D0D), false, true);

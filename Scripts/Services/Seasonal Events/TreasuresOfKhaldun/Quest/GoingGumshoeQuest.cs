@@ -148,6 +148,18 @@ namespace Server.Engines.Khaldun
             AddObjective(new InternalObjective());
         }
 
+        public override void OnAccept()
+        {
+            base.OnAccept();
+
+            Item book = new DetectiveBook();
+
+            if (Owner.Backpack == null || !Owner.Backpack.TryDropItem(Owner, book, false))
+            {
+                Owner.BankBox.DropItem(book);
+            }
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
