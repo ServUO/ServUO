@@ -58,6 +58,16 @@ namespace Server.Engines.Khaldun
             }
         }
 
+        public override void OnDoubleClick(Mobile m)
+        {
+            if (m.InRange(GetWorldLocation(), 2))
+            {
+                m.PrivateOverheadMessage(MessageType.Regular, 0x47E, 1158563, m.NetState); // *It appears to be a normal, yet oddly damaged, headstone. The epitaph is illegible..*
+            }
+            else
+                m.PrivateOverheadMessage(MessageType.Regular, 0x47E, 1019045, m.NetState); // I can't reach that.
+        }
+
         public void SetPrerequisite(GoingGumshoeQuest2 quest)
         {
             switch (GumpLocalization)
