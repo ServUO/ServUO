@@ -371,13 +371,13 @@ namespace Server.Items
 
             Container pack = from.Backpack;
 
-            if(pack != null)
+            if (pack != null)
             {
                 Item[] items = pack.FindItemsByType(typeof(Matches));
 
                 if (items != null)
                 {
-                    foreach(Item item in items)
+                    foreach (Item item in items)
                     {
                         if (item is Matches && ((Matches)item).IsLight)
                         {
@@ -450,11 +450,11 @@ namespace Server.Items
                 return;
 
             Mobile shooter = null;
-            
-            if(cannoneer is Mobile)
+
+            if (cannoneer is Mobile)
                 shooter = (Mobile)cannoneer;
 
-            if(shooter != null && shooter.Player)
+            if (shooter != null && shooter.Player)
                 m_Hits -= Utility.RandomMinMax(0, 4);
 
             DoShootEffects();
@@ -537,9 +537,9 @@ namespace Server.Items
                                     Timer.DelayCall(delay, new TimerStateCallback(OnMobileHit), new object[] { (Mobile)toHit, newPoint, ammo, shooter });
                                     hit = true;
                                 }
-                                else if (toHit is BaseGalleon)
+                                else if (toHit is BaseBoat)
                                 {
-                                    Timer.DelayCall(delay, new TimerStateCallback(OnShipHit), new object[] { (BaseGalleon)toHit, newPoint, ammo, shooter });
+                                    Timer.DelayCall(delay, new TimerStateCallback(OnShipHit), new object[] { (BaseBoat)toHit, newPoint, ammo, shooter });
                                     hit = true;
                                 }
                                 else if (toHit is DamageableItem)
@@ -593,7 +593,7 @@ namespace Server.Items
 
             if (galleon != null && info.RequiresSurface)
             {
-                int d = galleon is BritannianShip ? 3 : 2; 
+                int d = galleon is BritannianShip ? 3 : 2;
                 switch (galleon.Facing)
                 {
                     case Direction.North:
@@ -637,9 +637,9 @@ namespace Server.Items
             switch (Facing)
             {
                 case Direction.North: p.Y--; break;
-                case Direction.East:  p.X++; break;
+                case Direction.East: p.X++; break;
                 case Direction.South: p.Y++; break;
-                case Direction.West:  p.X--; break;
+                case Direction.West: p.X--; break;
             }
 
             Effects.SendLocationEffect(p, map, 14120, 15, 10);
@@ -811,7 +811,7 @@ namespace Server.Items
             {
                 //only cannonballs will get the damage bonus
                 //if (toHit is BaseSeaChampion && info.AmmoType != AmmunitionType.Empty && info.AmmoType == AmmunitionType.Cannonball)
-                 //   damage *= 75;
+                //   damage *= 75;
 
                 shooter.DoHarmful(toHit);
                 AOS.Damage(toHit, shooter, damage, info.PhysicalDamage, info.FireDamage, info.ColdDamage, info.PoisonDamage, info.EnergyDamage);
@@ -880,11 +880,11 @@ namespace Server.Items
 
         public void TryRepairCannon(Mobile from)
         {
-			Container pack = from.Backpack;
+            Container pack = from.Backpack;
             Container hold = Galleon.GalleonHold;
-			
-			if(pack == null)
-				return;
+
+            if (pack == null)
+                return;
 
             //double ingotsNeeded = 36 * (100 - Durability);
             double ingotsNeeded = 36 * (int)DamageState;
@@ -897,22 +897,22 @@ namespace Server.Items
             double ingots = ingots1 + ingots2;
             double ingotsUsed, percRepaired;
 
-			if(ingots < min)
+            if (ingots < min)
             {
-				from.SendLocalizedMessage(1116603, ((int)min).ToString()); //You need a minimum of ~1_METAL~ iron ingots to repair this cannon.
+                from.SendLocalizedMessage(1116603, ((int)min).ToString()); //You need a minimum of ~1_METAL~ iron ingots to repair this cannon.
                 return;
             }
-					
-			if(ingots >= ingotsNeeded)
-			{
-				ingotsUsed = ingotsNeeded;
-				percRepaired = 100;
-			}
-			else
-			{
-				ingotsUsed = ingots;
-				percRepaired = (ingots / ingotsNeeded) * 100;
-			}
+
+            if (ingots >= ingotsNeeded)
+            {
+                ingotsUsed = ingotsNeeded;
+                percRepaired = 100;
+            }
+            else
+            {
+                ingotsUsed = ingots;
+                percRepaired = (ingots / ingotsNeeded) * 100;
+            }
 
             double toConsume = 0;
             double temp = ingotsUsed;
@@ -930,14 +930,14 @@ namespace Server.Items
                 hold.ConsumeTotal(typeof(IronIngot), (int)toConsume);
             }
 
-			m_Hits += (int)((MaxHits - m_Hits) * (percRepaired / 100));
-			if(m_Hits > MaxHits) m_Hits = MaxHits;
-			InvalidateDamageState();
-					
-			percRepaired += Durability;
-			if(percRepaired > 100) percRepaired = 100;
-				
-			from.SendLocalizedMessage(1116605, String.Format("{0}\t{1}", ((int)temp).ToString(), ((int)percRepaired).ToString())); //You make repairs to the cannon using ~1_METAL~ ingots. The cannon is now ~2_DMGPCT~% repaired.
+            m_Hits += (int)((MaxHits - m_Hits) * (percRepaired / 100));
+            if (m_Hits > MaxHits) m_Hits = MaxHits;
+            InvalidateDamageState();
+
+            percRepaired += Durability;
+            if (percRepaired > 100) percRepaired = 100;
+
+            from.SendLocalizedMessage(1116605, String.Format("{0}\t{1}", ((int)temp).ToString(), ((int)percRepaired).ToString())); //You make repairs to the cannon using ~1_METAL~ ingots. The cannon is now ~2_DMGPCT~% repaired.
         }
 
         public void ResendGump(Mobile from)
@@ -1127,7 +1127,7 @@ namespace Server.Items
             }
 
             var list = new List<PlayerMobile>(Viewing.OfType<PlayerMobile>());
-            
+
             foreach (var pm in list)
             {
                 var gump = BaseGump.GetGump<ShipCannonGump>(pm, g => g.Cannon == this);
@@ -1137,7 +1137,7 @@ namespace Server.Items
                     gump.Close();
                 }
             }
-            
+
             ColUtility.Free(list);
             base.Delete();
         }

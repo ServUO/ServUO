@@ -11,7 +11,6 @@ namespace Server.Items
     {
         public virtual bool Babbles { get { return true; } }
         public BaseBoat Boat { get; private set; }
-
         private DateTime _NextBabble;
 
         public TillerMan(BaseBoat boat)
@@ -21,7 +20,8 @@ namespace Server.Items
             Movable = false;
         }
 
-        public TillerMan(Serial serial) : base(serial)
+        public TillerMan(Serial serial)
+            : base(serial)
         {
         }
 
@@ -41,6 +41,7 @@ namespace Server.Items
             base.GetProperties(list);
 
             list.Add(Boat.Status);
+            list.Add(1116580 + (int)Boat.DamageTaken); //State: Prisine
         }
 
         public virtual void Say(int number)
@@ -76,7 +77,7 @@ namespace Server.Items
             BaseBoat boat = BaseBoat.FindBoatAt(from, from.Map);
             Item mount = from.FindItemOnLayer(Layer.Mount);
 
-            if (!from.InRange(this.Location, 3))
+            if (!from.InRange(Location, 3))
                 from.SendLocalizedMessage(500295); //You are too far away to do that.
             else if (boat == null || Boat != boat || Boat == null)
                 from.SendLocalizedMessage(1116724); //You cannot pilot a ship unless you are aboard it!
@@ -88,6 +89,8 @@ namespace Server.Items
                 from.SendLocalizedMessage(1010097); //You cannot use this while mounted or flying. 
             else if (from != Pilot && Pilot != null && Pilot == Boat.Owner)
                 from.SendMessage("Someone is already piloting this vessle!");
+            else if (Pilot == null && Boat.Scuttled)
+                from.SendLocalizedMessage(1116725); //This ship is too damaged to sail!
             else if (Pilot != null)
                 boat.RemovePilot(from);
             else
@@ -117,7 +120,11 @@ namespace Server.Items
             if (Boat != null && (Boat.Owner == from || from.AccessLevel > AccessLevel.Player))
             {
                 if (Boat.Contains(from))
+                {
                     list.Add(new RenameShipEntry(this, from));
+                    list.Add(new EmergencyRepairEntry(this, from));
+                    list.Add(new ShipRepairEntry(this, from));
+                }
                 else
                     list.Add(new DryDockEntry(Boat, from));
             }
@@ -149,10 +156,67 @@ namespace Server.Items
             }
         }
 
-        private class RenameShipEntry : ContextMenuEntry
+        private class EmergencyRepairEntry : ContextMenuEntry
         {
             private TillerMan m_TillerMan;
             private Mobile m_From;
+
+            public EmergencyRepairEntry(TillerMan tillerman, Mobile from)
+                : base(1116589, 5)
+            {
+                m_TillerMan = tillerman;
+                m_From = from;
+            }
+
+            public override void OnClick()
+            {
+                if (m_TillerMan != null && m_TillerMan.Boat != null)
+                {
+                    BaseBoat g = m_TillerMan.Boat;
+
+                    if (!g.Scuttled)
+                        m_From.SendLocalizedMessage(1116595); //Your ship is not in need of emergency repairs in order to sail.
+                    else if (g.IsUnderEmergencyRepairs())
+                    {
+                        TimeSpan left = g.GetEndEmergencyRepairs();
+                        m_From.SendLocalizedMessage(1116592, left != TimeSpan.Zero ? left.TotalMinutes.ToString() : "0"); //Your ship is underway with emergency repairs holding for an estimated ~1_TIME~ more minutes.
+                    }
+                    else if (!g.TryEmergencyRepair(m_From))
+                        m_From.SendLocalizedMessage(1116591, String.Format("{0}\t{1}", BaseGalleon.EmergencyRepairClothCost.ToString(), BaseGalleon.EmergencyRepairWoodCost)); //You need a minimum of ~1_CLOTH~ yards of cloth and ~2_WOOD~ pieces of lumber to effect emergency repairs.
+                }
+            }
+        }
+
+        private class ShipRepairEntry : ContextMenuEntry
+        {
+            private TillerMan m_TillerMan;
+            private Mobile m_From;
+
+            public ShipRepairEntry(TillerMan tillerman, Mobile from)
+                : base(1116590, 5)
+            {
+                m_TillerMan = tillerman;
+                m_From = from;
+            }
+
+            public override void OnClick()
+            {
+                if (m_TillerMan != null && m_TillerMan.Boat != null)
+                {
+                    if (!BaseGalleon.IsNearLandOrDocks(m_TillerMan.Boat))
+                        m_From.SendLocalizedMessage(1116594); //Your ship must be near shore or a sea market in order to effect permanent repairs.
+                    else if (m_TillerMan.Boat.DamageTaken == DamageLevel.Pristine)
+                        m_From.SendLocalizedMessage(1116596); //Your ship is in pristine condition and does not need repairs.
+                    else
+                        m_TillerMan.Boat.TryRepairs(m_From);
+                }
+            }
+        }
+
+        private class RenameShipEntry : ContextMenuEntry
+        {
+            private TillerMan m_TillerMan;
+            private readonly Mobile m_From;
 
             public RenameShipEntry(TillerMan tillerman, Mobile from)
                 : base(1111680, 3)
@@ -170,7 +234,7 @@ namespace Server.Items
 
         private class DryDockEntry : ContextMenuEntry
         {
-            private Mobile m_From;
+            private readonly Mobile m_From;
             private BaseBoat m_Boat;
 
             public DryDockEntry(BaseBoat boat, Mobile from)

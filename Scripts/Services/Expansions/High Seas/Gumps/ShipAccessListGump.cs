@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using Server;
-using Server.Items;
 using Server.Multis;
 using System.Collections.Generic;
 using Server.Network;
@@ -13,7 +12,8 @@ namespace Server.Gumps
         private SecurityEntry m_Entry;
         private List<Mobile> m_UseList;
 
-        public AccessListGump(Mobile from, BaseGalleon galleon) : base(50, 50, galleon)
+        public AccessListGump(Mobile from, BaseGalleon galleon)
+            : base(galleon)
         {
             from.CloseGump(typeof(AccessListGump));
 
@@ -26,49 +26,44 @@ namespace Server.Gumps
                 m_Galleon.SecurityEntry = m_Entry;
             }
 
-            AddButton(10, 370, 4005, 4007, 1, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(45, 370, 100, 20, 1149777, LabelColor, false, false);  //MAIN MENU
+            AddButton(10, 355, 0xFA5, 0xFA7, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(45, 357, 100, 18, 1149777, LabelColor, false, false); // MAIN MENU
 
-            List<Mobile> list = new List<Mobile>(m_Entry.Manifest.Keys);
-            m_UseList = list;
+            m_UseList = new List<Mobile>(m_Entry.Manifest.Keys);
 
-            int pages = (int)Math.Ceiling(list.Count / 10.0);
-            int index = 0;
+            int page = 1;
+            int y = 79;
 
-            for (int i = 1; i <= pages; i++)
+            AddPage(page);
+
+            for (int i = 0; i < m_UseList.Count; i++)
             {
-                int y = 85;
-                AddPage(i);
+                if (page > 1)
+                    AddButton(270, 390, 4014, 4016, 0, GumpButtonType.Page, page - 1);
 
-                for (int c = 0; c < 10; c++)
+                Mobile mob = m_UseList[i];
+
+                if (mob == null || m_Galleon.IsOwner(mob))
+                    continue;
+
+                string name = mob.Name;
+                SecurityLevel level = m_Entry.GetEffectiveLevel(mob);
+
+                AddButton(10, y, 0xFA5, 0xFA7, i + 2, GumpButtonType.Reply, 0);
+                AddLabel(45, y + 2, 0x3E7, name);
+                AddHtmlLocalized(160, y + 2, 150, 18, GetLevel(level), GetHue(level), false, false);
+
+                y += 25;
+
+                bool pages = (i + 1) % 10 == 0;
+
+                if (pages && m_UseList.Count - 1 != i)
                 {
-                    if (index >= list.Count)
-                        break;
+                    AddButton(310, 390, 4005, 4007, 0, GumpButtonType.Page, page + 1);
+                    page++;
+                    y = 0;
 
-                    Mobile mob = list[index];
-
-                    if (mob == null)
-                        continue;
-
-                    string name = mob.Name;
-                    SecurityLevel level = m_Entry.GetEffectiveLevel(mob);
-
-                    AddButton(10, y, 4005, 4007, index + 2, GumpButtonType.Reply, 0);
-                    AddHtml(45, y, 130, 20, Color(name, "DarkCyan"), false, false);
-                    AddHtmlLocalized(180, y, 100, 20, GetLevel(level), GetHue(level), false, false);
-
-                    index++;
-                    y += 25;
-                }
-
-                if (i < pages)
-                {
-                    AddButton(310, 390, 4005, 4007, 0, GumpButtonType.Page, i + 1);
-                }
-
-                if (i > 1)
-                {
-                    AddButton(270, 390, 4014, 4016, 0, GumpButtonType.Page, i - 1);
+                    AddPage(page);
                 }
             }
         }
