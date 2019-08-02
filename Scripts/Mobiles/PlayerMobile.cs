@@ -2457,7 +2457,15 @@ namespace Server.Mobiles
 			}
 			else
 			{
-				if (Alive && Core.AOS)
+                if (Core.HS)
+                {
+                    BaseGalleon galleon = BaseGalleon.FindGalleonAt(from.Location, from.Map);
+
+                    if (galleon != null && galleon.IsOwner(from))
+                        list.Add(new ShipAccessEntry(this, from, galleon));
+                }
+
+                if (Alive && Core.AOS)
 				{
 					Party theirParty = from.Party as Party;
 					Party ourParty = Party as Party;

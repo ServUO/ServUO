@@ -4,6 +4,7 @@ using System;
 using Server.Engines.VeteranRewards;
 using Server.Items;
 using Server.Multis;
+using Server.Network;
 using Server.Spells;
 #endregion
 
@@ -328,6 +329,12 @@ namespace Server.Mobiles
             if (!BaseMount.CheckMountAllowed(from, true))
             {
                 // CheckMountAllowed sends the message
+                return false;
+            }
+
+            if (from.Mount is BaseBoat)
+            {
+                PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1042146, from.NetState); // You cannot use this while mounted.
                 return false;
             }
 
