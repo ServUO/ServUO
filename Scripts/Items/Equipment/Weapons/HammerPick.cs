@@ -11,8 +11,8 @@ namespace Server.Items
         public HammerPick()
             : base(0x143D)
         {
-            this.Weight = 9.0;
-            this.Layer = Layer.OneHanded;
+            Weight = 9.0;
+            Layer = Layer.OneHanded;
         }
 
         public HammerPick(Serial serial)

@@ -9,7 +9,7 @@ namespace Server.Items
         public BoneGloves()
             : base(0x1450)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public BoneGloves(Serial serial)
@@ -119,9 +119,6 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write((int)0);
-
-            if (this.Weight == 1.0)
-                this.Weight = 2.0;
         }
 
         public override void Deserialize(GenericReader reader)

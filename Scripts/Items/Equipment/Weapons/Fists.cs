@@ -133,9 +133,9 @@ namespace Server.Items
         public Fists()
             : base(0)
         {
-            this.Visible = false;
-            this.Movable = false;
-            this.Quality = ItemQuality.Normal;
+            Visible = false;
+            Movable = false;
+            Quality = ItemQuality.Normal;
         }
 
         public Fists(Serial serial)

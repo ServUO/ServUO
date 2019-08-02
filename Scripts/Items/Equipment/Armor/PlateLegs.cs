@@ -11,7 +11,7 @@ namespace Server.Items
         public PlateLegs()
             : base(0x1411)
         {
-            this.Weight = 7.0;
+            Weight = 7.0;
         }
 
         public PlateLegs(Serial serial)

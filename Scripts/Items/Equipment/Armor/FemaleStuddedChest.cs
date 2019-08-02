@@ -9,7 +9,7 @@ namespace Server.Items
         public FemaleStuddedChest()
             : base(0x1C02)
         {
-            this.Weight = 6.0;
+            Weight = 6.0;
         }
 
         public FemaleStuddedChest(Serial serial)
@@ -125,9 +125,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (this.Weight == 1.0)
-                this.Weight = 6.0;
         }
     }
 }

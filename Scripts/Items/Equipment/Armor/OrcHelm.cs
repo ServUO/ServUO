@@ -125,12 +125,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
-
-            if (version == 0 && (this.Weight == 1 || this.Weight == 5))
-            {
-                this.Weight = -1;
-            }
+            int version = reader.ReadInt();            
         }
     }
 }

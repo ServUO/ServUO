@@ -8,7 +8,7 @@ namespace Server.Items
         public WoodenKiteShield()
             : base(0x1B78)
         {
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         public WoodenKiteShield(Serial serial)
@@ -79,21 +79,16 @@ namespace Server.Items
                 return 12;
             }
         }
+		
+		public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);//version
+        }
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (this.Weight == 7.0)
-                this.Weight = 5.0;
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0);//version
-        }
+        }       
     }
 }

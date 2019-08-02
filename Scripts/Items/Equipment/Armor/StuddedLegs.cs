@@ -9,7 +9,7 @@ namespace Server.Items
         public StuddedLegs()
             : base(0x13DA)
         {
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         public StuddedLegs(Serial serial)
@@ -118,9 +118,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (this.Weight == 3.0)
-                this.Weight = 5.0;
         }
     }
 }

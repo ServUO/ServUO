@@ -5641,7 +5641,7 @@ namespace Server.Items
 
             if ((prop = m_AosWeaponAttributes.DurabilityBonus) != 0)
             {
-                list.Add(1060410, prop.ToString()); // durability ~1_val~%
+                list.Add(1151780, prop.ToString()); // durability +~1_VAL~%
             }
 
             if (Core.TOL)

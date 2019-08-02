@@ -11,7 +11,7 @@ namespace Server.Items
         public LeatherSkirt()
             : base(0x1C08)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public LeatherSkirt(Serial serial)
@@ -121,9 +121,6 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write((int)0);
-
-            if (this.Weight == 3.0)
-                this.Weight = 1.0;
         }
 
         public override void Deserialize(GenericReader reader)

@@ -10,7 +10,7 @@ namespace Server.Items
         public LargePlateShield()
             : base(0x4204)
         {
-            //Weight = 8.0;
+
         }
 
         public LargePlateShield(Serial serial)
