@@ -5,13 +5,14 @@ namespace Server.Items
 {
     public class PowderCharge : Item, ICommodity
     {
-        public override int LabelNumber { get { return 1116160; } }
+        public override int LabelNumber { get { return 1116160; } } // powder charge
 
         TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
         [Constructable]
-        public PowderCharge() : this(1)
+        public PowderCharge()
+            : this(1)
         {
         }
 
@@ -23,7 +24,10 @@ namespace Server.Items
             Amount = amount;
         }
 
-        public PowderCharge(Serial serial) : base(serial) { }
+        public PowderCharge(Serial serial)
+            : base(serial)
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -49,9 +53,9 @@ namespace Server.Items
         public LightPowderCharge() : this(1)
         {
         }
-        
+
         [Constructable]
-        public LightPowderCharge(int amount) :  base(16932)
+        public LightPowderCharge(int amount) : base(16932)
         {
             Hue = 2031;
             Stackable = true;

@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class Grapeshot : Item, ICommodity, ICannonAmmo
     {
-        public override int LabelNumber { get { return 1116030; } }
+        public override int LabelNumber { get { return 1116030; } } // grapeshot
         public override double DefaultWeight { get { return 3.5; } }
 
         TextDefinition ICommodity.Description { get { return LabelNumber; } }
@@ -14,18 +14,23 @@ namespace Server.Items
         public AmmunitionType AmmoType { get { return AmmunitionType.Grapeshot; } }
 
         [Constructable]
-        public Grapeshot() : this(1)
+        public Grapeshot()
+            : this(1)
         {
         }
 
         [Constructable]
-        public Grapeshot(int amount) : base(0xA2BF)
+        public Grapeshot(int amount)
+            : base(0xA2BF)
         {
             Stackable = true;
             Amount = amount;
         }
 
-        public Grapeshot(Serial serial) : base(serial) { }
+        public Grapeshot(Serial serial)
+            : base(serial)
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {

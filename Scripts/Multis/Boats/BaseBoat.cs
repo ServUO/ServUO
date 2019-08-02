@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Server;
 using Server.Items;
-using Server.Movement;
 using Server.Network;
 using Server.Mobiles;
 using Server.Regions;
@@ -17,6 +15,15 @@ namespace Server.Multis
         Move,
         Course,
         Single
+    }
+
+    public enum DamageLevel
+    {
+        Pristine = 0,
+        Slightly = 1,
+        Moderately = 2,
+        Heavily = 3,
+        Severely = 4
     }
 
     public abstract class BaseBoat : BaseMulti, IMount
@@ -40,129 +47,186 @@ namespace Server.Multis
 
             for (int i = 0; i < sector.Multis.Count; i++)
             {
-                BaseBoat boat = sector.Multis[i] as BaseBoat;
-
-                if (boat != null && boat.Contains(loc.X, loc.Y))
+                if (sector.Multis[i] is BaseBoat boat && boat.Contains(loc.X, loc.Y))
                     return boat;
             }
 
             return null;
         }
 
-        private Container m_SecureContainer;
-
-        private Hold m_Hold;
-        private object m_TillerMan;
-        private Mobile m_Owner;
-        private Mobile m_Pilot;
-
-        private Direction m_Facing;
-
-        private Direction m_Moving;
-        private int m_Speed;
         private int m_ClientSpeed;
 
-        private bool m_Anchored;
-        private string m_ShipName;
-
-        private BoatOrder m_Order;
-
-        private MapItem m_MapItem;
-        private int m_NextNavPoint;
-        private BoatCourse m_BoatCourse;
-
-        private Plank m_PPlank, m_SPlank;
-
-        private DateTime m_DecayTime;
-
-        private Timer m_TurnTimer;
-        private Timer m_MoveTimer;
-
-        private bool m_Decay;
-
-        private BoatMountItem m_VirtualMount;
-        private BaseDockedBoat m_DockedBoat;
+        public DamageLevel m_DamageTaken;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Hold Hold { get { return m_Hold; } set { m_Hold = value; } }
+        public DamageLevel DamageTaken
+        {
+            get { return m_DamageTaken; }
+            set
+            {
+                DamageLevel oldDamage = m_DamageTaken;
+
+                m_DamageTaken = value;
+
+                if (m_DamageTaken != oldDamage)
+                {
+                    if (this is BaseGalleon)
+                    {
+                        BaseGalleon galleon = this as BaseGalleon;
+
+                        galleon.InvalidateGalleon();
+
+                        if (galleon.GalleonPilot != null)
+                        {
+                            galleon.GalleonPilot.InvalidateProperties();
+
+                            if (m_DamageTaken == DamageLevel.Severely)
+                                galleon.GalleonPilot.Say(1116687); // Arr, we be scuttled!
+                        }
+                    }
+                    else
+                    {
+                        if (TillerMan != null)
+                        {
+                            if (TillerMan is Mobile)
+                                ((Mobile)TillerMan).InvalidateProperties();
+                            else if (TillerMan is Item)
+                                ((Item)TillerMan).InvalidateProperties();
+
+                            if (m_DamageTaken == DamageLevel.Severely)
+                                TillerManSay(1116687); // Arr, we be scuttled!
+                        }
+                    }
+                }
+            }
+        }
+
+        public virtual int DamageValue
+        {
+            get
+            {
+                switch (m_DamageTaken)
+                {
+                    default:
+                    case DamageLevel.Pristine:
+                    case DamageLevel.Slightly: return 0;
+                    case DamageLevel.Moderately:
+                    case DamageLevel.Heavily: return 1;
+                    case DamageLevel.Severely: return 2;
+                }
+            }
+        }
+
+        public int m_Hits;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public object TillerMan { get { return m_TillerMan; } set { m_TillerMan = value; } }
+        public int Hits { get { return m_Hits; } set { m_Hits = value; ComputeDamage(); InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Plank PPlank { get { return m_PPlank; } set { m_PPlank = value; } }
+        public double Durability { get { return m_Hits / (double)MaxHits * 100.0; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Plank SPlank { get { return m_SPlank; } set { m_SPlank = value; } }
+        public Hold Hold { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner { get { return m_Owner; } set { m_Owner = value; } }
+        public object TillerMan { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Pilot { get { return m_Pilot; } set { m_Pilot = value; } }
+        public Plank PPlank { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Plank SPlank { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Owner { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Pilot { get; set; }
+
+        private Direction m_Facing;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Direction Facing { get { return m_Facing; } set { SetFacing(value); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Direction Moving { get { return m_Moving; } set { m_Moving = value; } }
+        public Direction Moving { get; set; }
+
+        private Timer m_MoveTimer;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsMoving { get { return (m_MoveTimer != null); } }
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsTurning { get { return (m_TurnTimer != null); } }
+        private Timer m_TurnTimer;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsPiloted { get { return (m_Pilot != null); } }
+        public bool IsTurning { get { return m_TurnTimer != null; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Speed { get { return m_Speed; } set { m_Speed = value; } }
+        public bool IsPiloted { get { return Pilot != null; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Anchored { get { return m_Anchored; } set { m_Anchored = value; } }
+        public int Speed { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string ShipName { get { return m_ShipName; } set { m_ShipName = value; if (m_TillerMan != null) InvalidateTillerManProperties(); } }
+        public bool Anchored { get; set; }
+
+        private string m_ShipName;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BoatOrder Order { get { return m_Order; } set { m_Order = value; } }
+        public string ShipName
+        {
+            get { return m_ShipName; }
+            set
+            {
+                m_ShipName = value;
+
+                if (TillerMan != null)
+                    InvalidateTillerManProperties();
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public MapItem MapItem { get { return m_MapItem; } set { m_MapItem = value; } }
+        public BoatOrder Order { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int NextNavPoint { get { return m_NextNavPoint; } set { m_NextNavPoint = value; } }
+        public MapItem MapItem { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BoatCourse BoatCourse { get { return m_BoatCourse; } set { m_BoatCourse = value; } }
+        public int NextNavPoint { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool DoesDecay { get { return m_Decay; } set { m_Decay = value; } }
+        public BoatCourse BoatCourse { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BoatMountItem VirtualMount { get { return m_VirtualMount; } }
+        public bool DoesDecay { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BaseDockedBoat BoatItem { get { return m_DockedBoat; } set { m_DockedBoat = value; } }
+        public BoatMountItem VirtualMount { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Container SecureContainer { get { return m_SecureContainer; } set { m_SecureContainer = value; } }
+        public BaseDockedBoat BoatItem { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Container SecureContainer { get; set; }
+
+        private DateTime m_DecayTime;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime TimeOfDecay
         {
-            get
-            {
-                return m_DecayTime;
-            }
+            get { return m_DecayTime; }
             set
             {
                 m_DecayTime = value;
-                if (m_TillerMan != null && m_TillerMan is Mobile)
-                    ((Mobile)m_TillerMan).InvalidateProperties();
-                else if (m_TillerMan != null && m_TillerMan is Item)
-                    ((Item)m_TillerMan).InvalidateProperties();
+
+                if (TillerMan != null && TillerMan is Mobile)
+                {
+                    ((Mobile)TillerMan).InvalidateProperties();
+                }
+                else if (TillerMan != null && TillerMan is Item)
+                {
+                    ((Item)TillerMan).InvalidateProperties();
+                }
             }
         }
 
@@ -170,7 +234,7 @@ namespace Server.Multis
         {
             get
             {
-                if (!m_Decay)
+                if (!DoesDecay)
                     return 1043010; // This structure is like new.
 
                 if (m_DecayTime <= DateTime.UtcNow)
@@ -213,12 +277,17 @@ namespace Server.Multis
         #region High Seas
         public virtual bool IsClassicBoat { get { return true; } }
         public virtual double TurnDelay { get { return 0.5; } }
-        public virtual bool Scuttled { get { return false; } }
+        public virtual int MaxHits { get { return 25000; } }
+        public virtual double ScuttleLevel { get { return 25.0; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public virtual bool Scuttled { get { return Durability < ScuttleLevel; } }
+
         public virtual TimeSpan BoatDecayDelay { get { return TimeSpan.FromDays(13); } }
         public virtual bool CanLinkToLighthouse { get { return true; } }
 
         #region IMount Members
-        public Mobile Rider { get { return m_Pilot; } set { m_Pilot = value; } }
+        public Mobile Rider { get { return Pilot; } set { Pilot = value; } }
 
         public void OnRiderDamaged(Mobile from, ref int amount, bool willKill)
         {
@@ -241,26 +310,29 @@ namespace Server.Multis
             : base(0x0)
         {
             m_DecayTime = DateTime.UtcNow + BoatDecayDelay;
-            m_Decay = true;
+            DoesDecay = true;
             Facing = direction;
             Layer = Layer.Mount;
-            m_Anchored = false;
+            Anchored = false;
+
+            m_Hits = MaxHits;
+            m_DamageTaken = DamageLevel.Pristine;
 
             if (isClassic)
             {
-                m_TillerMan = new TillerMan(this);
-                m_PPlank = new Plank(this, PlankSide.Port, 0);
-                m_SPlank = new Plank(this, PlankSide.Starboard, 0);
+                TillerMan = new TillerMan(this);
+                PPlank = new Plank(this, PlankSide.Port, 0);
+                SPlank = new Plank(this, PlankSide.Starboard, 0);
 
-                m_PPlank.MoveToWorld(new Point3D(X + PortOffset.X, Y + PortOffset.Y, Z), Map);
-                m_SPlank.MoveToWorld(new Point3D(X + StarboardOffset.X, Y + StarboardOffset.Y, Z), Map);
+                PPlank.MoveToWorld(new Point3D(X + PortOffset.X, Y + PortOffset.Y, Z), Map);
+                SPlank.MoveToWorld(new Point3D(X + StarboardOffset.X, Y + StarboardOffset.Y, Z), Map);
 
-                m_Hold = new Hold(this);
+                Hold = new Hold(this);
 
                 UpdateComponents();
             }
 
-            m_NextNavPoint = -1;
+            NextNavPoint = -1;
             Movable = false;
             m_Instances.Add(this);
         }
@@ -268,6 +340,90 @@ namespace Server.Multis
         public BaseBoat(Serial serial)
             : base(serial)
         {
+        }
+
+        public override bool ForceShowProperties { get { return true; } }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            int health = (int)(Hits * 100 / MaxHits);
+
+            if (health >= 75)
+            {
+                list.Add(1158886, health.ToString());
+            }
+            else if (health >= 50)
+            {
+                list.Add(1158887, health.ToString());
+            }
+            else if (health >= 25)
+            {
+                list.Add(1158888, health.ToString());
+            }
+            else if (health >= 0)
+            {
+                list.Add(1158889, health.ToString());
+            }
+        }
+
+        public virtual void OnTakenDamage(int damage)
+        {
+            OnTakenDamage(null, damage);
+        }
+
+        public virtual void OnTakenDamage(Mobile damager, int damage)
+        {
+            m_Hits -= damage;
+
+            if (damager != null)
+                SendDamagePacket(damager, damage);
+
+            if (m_Hits < 0)
+                m_Hits = 0;
+
+            if (m_Hits > MaxHits)
+                m_Hits = MaxHits;
+
+            ComputeDamage();
+        }
+
+        public virtual void SendDamagePacket(Mobile from, int amount)
+        {
+            if (amount == 0)
+                return;
+
+            NetState theirState = (from == null ? null : from.NetState);
+
+            if (theirState == null && from != null)
+            {
+                Mobile master = from.GetDamageMaster(null);
+
+                if (master != null)
+                {
+                    theirState = master.NetState;
+                }
+            }
+
+            if (theirState != null)
+            {
+                theirState.Send(new DamagePacket(this, amount));
+            }
+        }
+
+        private void ComputeDamage()
+        {
+            if (Durability >= 100)
+                DamageTaken = DamageLevel.Pristine;
+            else if (Durability >= 75.0)
+                DamageTaken = DamageLevel.Slightly;
+            else if (Durability >= 50.0)
+                DamageTaken = DamageLevel.Moderately;
+            else if (Durability >= 25.0)
+                DamageTaken = DamageLevel.Heavily;
+            else
+                DamageTaken = DamageLevel.Severely;
         }
 
         public Point3D GetRotatedLocation(int x, int y)
@@ -279,36 +435,35 @@ namespace Server.Multis
 
         public virtual void UpdateComponents()
         {
-            if (m_PPlank != null)
+            if (PPlank != null)
             {
-                m_PPlank.MoveToWorld(GetRotatedLocation(PortOffset.X, PortOffset.Y), Map);
-                m_PPlank.SetFacing(m_Facing);
+                PPlank.MoveToWorld(GetRotatedLocation(PortOffset.X, PortOffset.Y), Map);
+                PPlank.SetFacing(m_Facing);
             }
 
-            if (m_SPlank != null)
+            if (SPlank != null)
             {
-                m_SPlank.MoveToWorld(GetRotatedLocation(StarboardOffset.X, StarboardOffset.Y), Map);
-                m_SPlank.SetFacing(m_Facing);
+                SPlank.MoveToWorld(GetRotatedLocation(StarboardOffset.X, StarboardOffset.Y), Map);
+                SPlank.SetFacing(m_Facing);
             }
 
             int xOffset = 0, yOffset = 0;
             Movement.Movement.Offset(m_Facing, ref xOffset, ref yOffset);
 
-            if (m_TillerMan != null)
+            if (TillerMan != null)
             {
-                if (m_TillerMan is TillerMan)
+                if (TillerMan is TillerMan tillerman)
                 {
-                    TillerMan tillerman = (TillerMan)m_TillerMan;
                     tillerman.Location = new Point3D(X + (xOffset * TillerManDistance) + (m_Facing == Direction.North ? 1 : 0), Y + (yOffset * TillerManDistance), tillerman.Z);
                     tillerman.SetFacing(m_Facing);
                     tillerman.InvalidateProperties();
                 }
             }
 
-            if (m_Hold != null)
+            if (Hold != null)
             {
-                m_Hold.Location = new Point3D(X + (xOffset * HoldDistance), Y + (yOffset * HoldDistance), m_Hold.Z);
-                m_Hold.SetFacing(m_Facing);
+                Hold.Location = new Point3D(X + (xOffset * HoldDistance), Y + (yOffset * HoldDistance), Hold.Z);
+                Hold.SetFacing(m_Facing);
             }
         }
 
@@ -316,40 +471,43 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)4);
+            writer.Write((int)5);
 
-            if (m_BoatCourse != null)
+            writer.Write(m_Hits);
+            writer.Write((int)m_DamageTaken);
+
+            if (BoatCourse != null)
             {
                 writer.Write((int)1);
-                m_BoatCourse.Serialize(writer);
+                BoatCourse.Serialize(writer);
             }
             else
                 writer.Write((int)0);
 
-            writer.Write(m_DockedBoat);
+            writer.Write(BoatItem);
 
-            writer.Write(m_VirtualMount);
-            writer.Write(m_Decay);
+            writer.Write(VirtualMount);
+            writer.Write(DoesDecay);
 
             // version 3
-            writer.Write((Item)m_MapItem);
-            writer.Write((int)m_NextNavPoint);
+            writer.Write((Item)MapItem);
+            writer.Write((int)NextNavPoint);
 
             writer.Write((int)m_Facing);
 
             writer.WriteDeltaTime(m_DecayTime);
 
-            writer.Write(m_Owner);
-            writer.Write(m_PPlank);
-            writer.Write(m_SPlank);
+            writer.Write(Owner);
+            writer.Write(PPlank);
+            writer.Write(SPlank);
 
-            if (m_TillerMan is Mobile)
-                writer.Write(m_TillerMan as Mobile);
-            else if (m_TillerMan is Item)
-                writer.Write(m_TillerMan as Item);
+            if (TillerMan is Mobile)
+                writer.Write(TillerMan as Mobile);
+            else if (TillerMan is Item)
+                writer.Write(TillerMan as Item);
 
-            writer.Write(m_Hold);
-            writer.Write(m_Anchored);
+            writer.Write(Hold);
+            writer.Write(Anchored);
             writer.Write(m_ShipName);
 
             CheckDecay();
@@ -358,29 +516,34 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch (version)
             {
+                case 5:
+                    {
+                        m_Hits = reader.ReadInt();
+                        m_DamageTaken = (DamageLevel)reader.ReadInt();
+                        goto case 4;
+                    }
                 case 4:
                     {
                         if (reader.ReadInt() == 1)
                         {
-                            m_BoatCourse = new BoatCourse(reader);
-                            m_BoatCourse.Boat = this;
-                            m_BoatCourse.Map = Map;
+                            BoatCourse = new BoatCourse(reader);
+                            BoatCourse.Boat = this;
+                            BoatCourse.Map = Map;
                         }
 
-                        m_DockedBoat = reader.ReadItem() as BaseDockedBoat;
-                        m_VirtualMount = reader.ReadItem() as BoatMountItem;
-                        m_Decay = reader.ReadBool();
+                        BoatItem = reader.ReadItem() as BaseDockedBoat;
+                        VirtualMount = reader.ReadItem() as BoatMountItem;
+                        DoesDecay = reader.ReadBool();
                         goto case 3;
                     }
                 case 3:
                     {
-                        m_MapItem = (MapItem)reader.ReadItem();
-                        m_NextNavPoint = reader.ReadInt();
+                        MapItem = (MapItem)reader.ReadItem();
+                        NextNavPoint = reader.ReadInt();
 
                         goto case 2;
                     }
@@ -399,7 +562,7 @@ namespace Server.Multis
                 case 0:
                     {
                         if (version < 3)
-                            m_NextNavPoint = -1;
+                            NextNavPoint = -1;
 
                         if (version < 2)
                         {
@@ -413,20 +576,20 @@ namespace Server.Multis
                                 m_Facing = Direction.West;
                         }
 
-                        m_Owner = reader.ReadMobile();
-                        m_PPlank = reader.ReadItem() as Plank;
-                        m_SPlank = reader.ReadItem() as Plank;
+                        Owner = reader.ReadMobile();
+                        PPlank = reader.ReadItem() as Plank;
+                        SPlank = reader.ReadItem() as Plank;
 
                         if (!IsClassicBoat && !(this is RowBoat))
-                            m_TillerMan = reader.ReadMobile() as object;
+                            TillerMan = reader.ReadMobile() as object;
                         else
-                            m_TillerMan = reader.ReadItem() as object;
+                            TillerMan = reader.ReadItem() as object;
 
-                        m_Hold = reader.ReadItem() as Hold;
-                        m_Anchored = reader.ReadBool();
+                        Hold = reader.ReadItem() as Hold;
+                        Anchored = reader.ReadBool();
                         m_ShipName = reader.ReadString();
 
-                        m_Anchored = false; //No more anchors[High Seas]
+                        Anchored = false; // No more anchors[High Seas]
 
                         if (version < 1)
                             Refresh();
@@ -439,11 +602,18 @@ namespace Server.Multis
 
             if (version == 6)
             {
-                if (m_MapItem != null)
+                if (MapItem != null)
+                {
                     Timer.DelayCall(TimeSpan.FromSeconds(10), delegate
                     {
-                        BoatCourse = new BoatCourse(this, m_MapItem);
+                        BoatCourse = new BoatCourse(this, MapItem);
                     });
+                }
+            }
+
+            if (version == 4)
+            {
+                Timer.DelayCall(() => Hits = MaxHits);
             }
         }
 
@@ -451,11 +621,11 @@ namespace Server.Multis
         {
             uint keyValue = 0;
 
-            if (m_PPlank != null)
-                keyValue = m_PPlank.KeyValue;
+            if (PPlank != null)
+                keyValue = PPlank.KeyValue;
 
-            if (keyValue == 0 && m_SPlank != null)
-                keyValue = m_SPlank.KeyValue;
+            if (keyValue == 0 && SPlank != null)
+                keyValue = SPlank.KeyValue;
 
             Key.RemoveKeys(m, keyValue);
         }
@@ -488,30 +658,27 @@ namespace Server.Multis
             return value;
         }
 
-        public override bool AllowsRelativeDrop
-        {
-            get { return true; }
-        }
+        public override bool AllowsRelativeDrop { get { return true; } }
 
         public override void OnAfterDelete()
         {
-            if (m_TillerMan != null)
+            if (TillerMan != null)
             {
-                if (m_TillerMan is Mobile)
-                    ((Mobile)m_TillerMan).Delete();
+                if (TillerMan is Mobile)
+                    ((Mobile)TillerMan).Delete();
 
-                else if (m_TillerMan is Item)
-                    ((Item)m_TillerMan).Delete();
+                else if (TillerMan is Item)
+                    ((Item)TillerMan).Delete();
             }
 
-            if (m_Hold != null)
-                m_Hold.Delete();
+            if (Hold != null)
+                Hold.Delete();
 
-            if (m_PPlank != null)
-                m_PPlank.Delete();
+            if (PPlank != null)
+                PPlank.Delete();
 
-            if (m_SPlank != null)
-                m_SPlank.Delete();
+            if (SPlank != null)
+                SPlank.Delete();
 
             if (m_TurnTimer != null)
                 m_TurnTimer.Stop();
@@ -523,18 +690,18 @@ namespace Server.Multis
             if (Owner is BaseShipCaptain)
                 ((BaseShipCaptain)Owner).OnShipDelete();
 
-            if (m_Pilot != null)
-                RemovePilot(m_Pilot);
+            if (Pilot != null)
+                RemovePilot(Pilot);
 
-            if (m_VirtualMount != null)
-                m_VirtualMount.Delete();
+            if (VirtualMount != null)
+                VirtualMount.Delete();
             #endregion
 
-            if (m_SecureContainer != null)
-                m_SecureContainer.Delete();
+            if (SecureContainer != null)
+                SecureContainer.Delete();
 
-            if (m_DockedBoat != null && !m_DockedBoat.Deleted && m_DockedBoat.Map == Map.Internal)
-                m_DockedBoat.Delete();
+            if (BoatItem != null && !BoatItem.Deleted && BoatItem.Map == Map.Internal)
+                BoatItem.Delete();
 
             m_Instances.Remove(this);
 
@@ -543,22 +710,22 @@ namespace Server.Multis
 
         public override void OnLocationChange(Point3D old)
         {
-            if (m_TillerMan != null)
+            if (TillerMan != null)
             {
-                if (m_TillerMan is Mobile && (Math.Abs(X - old.X) > 1 || Math.Abs(Y - old.Y) > 1))
-                    ((Mobile)m_TillerMan).Location = new Point3D(X + (((Mobile)m_TillerMan).X - old.X), Y + (((Mobile)m_TillerMan).Y - old.Y), Z + (((Mobile)m_TillerMan).Z - old.Z));
-                else if (m_TillerMan is Item)
-                    ((Item)m_TillerMan).Location = new Point3D(X + (((Item)m_TillerMan).X - old.X), Y + (((Item)m_TillerMan).Y - old.Y), Z + (((Item)m_TillerMan).Z - old.Z));
+                if (TillerMan is Mobile && (Math.Abs(X - old.X) > 1 || Math.Abs(Y - old.Y) > 1))
+                    ((Mobile)TillerMan).Location = new Point3D(X + (((Mobile)TillerMan).X - old.X), Y + (((Mobile)TillerMan).Y - old.Y), Z + (((Mobile)TillerMan).Z - old.Z));
+                else if (TillerMan is Item)
+                    ((Item)TillerMan).Location = new Point3D(X + (((Item)TillerMan).X - old.X), Y + (((Item)TillerMan).Y - old.Y), Z + (((Item)TillerMan).Z - old.Z));
             }
 
-            if (m_Hold != null)
-                m_Hold.Location = new Point3D(X + (m_Hold.X - old.X), Y + (m_Hold.Y - old.Y), Z + (m_Hold.Z - old.Z));
+            if (Hold != null)
+                Hold.Location = new Point3D(X + (Hold.X - old.X), Y + (Hold.Y - old.Y), Z + (Hold.Z - old.Z));
 
-            if (m_PPlank != null)
-                m_PPlank.Location = new Point3D(X + (m_PPlank.X - old.X), Y + (m_PPlank.Y - old.Y), Z + (m_PPlank.Z - old.Z));
+            if (PPlank != null)
+                PPlank.Location = new Point3D(X + (PPlank.X - old.X), Y + (PPlank.Y - old.Y), Z + (PPlank.Z - old.Z));
 
-            if (m_SPlank != null)
-                m_SPlank.Location = new Point3D(X + (m_SPlank.X - old.X), Y + (m_SPlank.Y - old.Y), Z + (m_SPlank.Z - old.Z));
+            if (SPlank != null)
+                SPlank.Location = new Point3D(X + (SPlank.X - old.X), Y + (SPlank.Y - old.Y), Z + (SPlank.Z - old.Z));
 
             #region High Seas
             Region oldReg = Region.Find(old, Map);
@@ -573,22 +740,22 @@ namespace Server.Multis
 
         public override void OnMapChange()
         {
-            if (m_TillerMan != null)
+            if (TillerMan != null)
             {
-                if (m_TillerMan is Mobile)
-                    ((Mobile)m_TillerMan).Map = Map;
-                else if (m_TillerMan is Item)
-                    ((Item)m_TillerMan).Map = Map;
+                if (TillerMan is Mobile)
+                    ((Mobile)TillerMan).Map = Map;
+                else if (TillerMan is Item)
+                    ((Item)TillerMan).Map = Map;
             }
 
-            if (m_Hold != null)
-                m_Hold.Map = Map;
+            if (Hold != null)
+                Hold.Map = Map;
 
-            if (m_PPlank != null)
-                m_PPlank.Map = Map;
+            if (PPlank != null)
+                PPlank.Map = Map;
 
-            if (m_SPlank != null)
-                m_SPlank.Map = Map;
+            if (SPlank != null)
+                SPlank.Map = Map;
         }
 
         public virtual bool CanCommand(Mobile m)
@@ -607,24 +774,25 @@ namespace Server.Multis
         {
             if (from == null)
                 return false;
-            if (from.AccessLevel > AccessLevel.Player || from == m_Owner)
+
+            if (from.AccessLevel > AccessLevel.Player || from == Owner)
                 return true;
 
-            if (m_Owner == null)
+            if (Owner == null)
                 return false;
 
-            Server.Accounting.Account acct1 = from.Account as Server.Accounting.Account;
-            Server.Accounting.Account acct2 = m_Owner.Account as Server.Accounting.Account;
+            Accounting.Account acct1 = from.Account as Accounting.Account;
+            Accounting.Account acct2 = Owner.Account as Accounting.Account;
 
             return acct1 != null && acct2 != null && acct1 == acct2;
         }
 
         public bool CheckKey(uint keyValue)
         {
-            if (m_SPlank != null && m_SPlank.KeyValue == keyValue)
+            if (SPlank != null && SPlank.KeyValue == keyValue)
                 return true;
 
-            if (m_PPlank != null && m_PPlank.KeyValue == keyValue)
+            if (PPlank != null && PPlank.KeyValue == keyValue)
                 return true;
 
             return false;
@@ -650,45 +818,39 @@ namespace Server.Multis
         */
 
         // Legacy clients will continue to see the old-style movement, but speeds are adjusted
-        private static bool NewBoatMovement = true;
+        private static readonly bool NewBoatMovement = true;
 
-        private static int SlowSpeed = 1;
-        private static int FastSpeed = NewBoatMovement ? 1 : 3;
-        private static int SlowDriftSpeed = 1;
-        private static int FastDriftSpeed = 1;
-
-        // Remove Me
-        private int _FastInterval = 250;
-        private int _NormalInterval = 500;
-        private int _SlowInterval = 1000;
+        private static readonly int SlowSpeed = 1;
+        private static readonly int FastSpeed = NewBoatMovement ? 1 : 3;
+        private static readonly int SlowDriftSpeed = 1;
+        private static readonly int FastDriftSpeed = 1;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int aFastInterval { get { return _FastInterval; } set { _FastInterval = value; } }
+        public int FastInterval { get; set; } = 250;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int aNormalInterval { get { return _NormalInterval; } set { _NormalInterval = value; } }
+        public int NormalInterval { get; set; } = 500;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int aSlowInterval { get { return _SlowInterval; } set { _SlowInterval = value; } }
-        // End Remove me
+        public int SlowInterval { get; set; } = 1000;
 
-        public TimeSpan FastInterval { get { return TimeSpan.FromMilliseconds(aFastInterval); } }
-        public TimeSpan NormalInterval { get { return TimeSpan.FromMilliseconds(aNormalInterval); } }
-        public TimeSpan SlowInterval { get { return TimeSpan.FromMilliseconds(aSlowInterval); } }
+        public TimeSpan FastInt { get { return TimeSpan.FromMilliseconds(FastInterval); } }
+        public TimeSpan NormalInt { get { return TimeSpan.FromMilliseconds(NormalInterval); } }
+        public TimeSpan SlowInt { get { return TimeSpan.FromMilliseconds(SlowInterval); } }
 
-        public TimeSpan FastDriftInterval { get { return NormalInterval; } }
-        public TimeSpan SlowDriftInterval { get { return SlowInterval; } }
+        public TimeSpan FastDriftInterval { get { return NormalInt; } }
+        public TimeSpan SlowDriftInterval { get { return SlowInt; } }
 
-        private static Direction Forward = Direction.North;
-        private static Direction ForwardLeft = Direction.Up;
-        private static Direction ForwardRight = Direction.Right;
-        private static Direction Backward = Direction.South;
-        private static Direction BackwardLeft = Direction.Left;
-        private static Direction BackwardRight = Direction.Down;
-        private static Direction Left = Direction.West;
-        private static Direction Right = Direction.East;
-        private static Direction Port = Left;
-        private static Direction Starboard = Right;
+        private static readonly Direction Forward = Direction.North;
+        private static readonly Direction ForwardLeft = Direction.Up;
+        private static readonly Direction ForwardRight = Direction.Right;
+        private static readonly Direction Backward = Direction.South;
+        private static readonly Direction BackwardLeft = Direction.Left;
+        private static readonly Direction BackwardRight = Direction.Down;
+        private static readonly Direction Left = Direction.West;
+        private static readonly Direction Right = Direction.East;
+        private static readonly Direction Port = Left;
+        private static readonly Direction Starboard = Right;
 
         private bool m_Decaying;
 
@@ -696,12 +858,12 @@ namespace Server.Multis
         {
             m_DecayTime = DateTime.UtcNow + BoatDecayDelay;
 
-            if (m_TillerMan != null)
+            if (TillerMan != null)
             {
-                if (m_TillerMan is Mobile)
-                    ((Mobile)m_TillerMan).InvalidateProperties();
-                else if (m_TillerMan is Item)
-                    ((Item)m_TillerMan).InvalidateProperties();
+                if (TillerMan is Mobile)
+                    ((Mobile)TillerMan).InvalidateProperties();
+                else if (TillerMan is Item)
+                    ((Item)TillerMan).InvalidateProperties();
             }
         }
 
@@ -717,19 +879,19 @@ namespace Server.Multis
 
             if (Scuttled)
             {
-                if (m_TillerMan != null)
-                    TillerManSay(1116687);  //Arr, we be scuttled!
+                if (TillerMan != null)
+                    TillerManSay(1116687);  // Arr, we be scuttled!
 
                 return false;
             }
 
-            bool drift = (dir != Forward);
-            TimeSpan interval = drift ? NormalInterval : FastInterval;
+            bool drift = dir != Forward;
+            TimeSpan interval = drift ? NormalInt : FastInt;
             int speed = drift ? FastDriftSpeed : FastSpeed;
 
             if (StartMove(dir, speed, 0x1, interval, true, true))
             {
-                if (m_TillerMan != null)
+                if (TillerMan != null)
                     TillerManSay(501429); // Aye aye sir.
 
                 return true;
@@ -743,15 +905,15 @@ namespace Server.Multis
             if (CheckDecay())
                 return;
 
-            if (from.AccessLevel < AccessLevel.GameMaster && from != m_Owner)
+            if (from.AccessLevel < AccessLevel.GameMaster && from != Owner)
             {
-                if (m_TillerMan != null)
+                if (TillerMan != null)
                     TillerManSay(Utility.Random(1042876, 4)); // Arr, don't do that! | Arr, leave me alone! | Arr, watch what thour'rt doing, matey! | Arr! Do that again and I’ll throw ye overhead!
 
                 return;
             }
 
-            if (m_TillerMan != null)
+            if (TillerMan != null)
                 TillerManSay(502580); // What dost thou wish to name thy ship?
 
             from.Prompt = new RenameBoatPrompt(this);
@@ -762,16 +924,16 @@ namespace Server.Multis
             if (Deleted || CheckDecay())
                 return;
 
-            if (from.AccessLevel < AccessLevel.GameMaster && from != m_Owner)
+            if (from.AccessLevel < AccessLevel.GameMaster && from != Owner)
             {
-                if (m_TillerMan != null)
+                if (TillerMan != null)
                     TillerManSay(1042880); // Arr! Only the owner of the ship may change its name!
 
                 return;
             }
             else if (!from.Alive)
             {
-                if (m_TillerMan != null)
+                if (TillerMan != null)
                     TillerManSay(502582); // You appear to be dead.
 
                 return;
@@ -779,7 +941,7 @@ namespace Server.Multis
 
             newName = newName.Trim();
 
-            if (!Server.Guilds.BaseGuildGump.CheckProfanity(newName))
+            if (!Guilds.BaseGuildGump.CheckProfanity(newName))
             {
                 from.SendMessage("That name is unacceptable.");
                 return;
@@ -801,18 +963,21 @@ namespace Server.Multis
             if (!from.Alive)
                 return DryDockResult.Dead;
 
+            if (DamageTaken != DamageLevel.Pristine)
+                return DryDockResult.Damaged;
+
             Container pack = from.Backpack;
 
             if (IsClassicBoat)
             {
-                if ((m_SPlank == null || !Key.ContainsKey(pack, m_SPlank.KeyValue)) && (m_PPlank == null || !Key.ContainsKey(pack, m_PPlank.KeyValue)))
+                if ((SPlank == null || !Key.ContainsKey(pack, SPlank.KeyValue)) && (PPlank == null || !Key.ContainsKey(pack, PPlank.KeyValue)))
                     return DryDockResult.NoKey;
 
                 //if (!m_Anchored)
                 //    return DryDockResult.NotAnchored;
             }
 
-            if (m_Hold != null && m_Hold.Items.Count > 0)
+            if (Hold != null && Hold.Items.Count > 0)
                 return DryDockResult.Hold;
 
             Map map = Map;
@@ -824,7 +989,7 @@ namespace Server.Multis
 
             foreach (var o in GetEntitiesOnBoard())
             {
-                if (o == this || IsComponentItem(o) || o is EffectItem || o == m_TillerMan)
+                if (o == this || IsComponentItem(o) || o is EffectItem || o == TillerMan)
                     continue;
 
                 if (o is Item && Contains((Item)o))
@@ -873,7 +1038,7 @@ namespace Server.Multis
             else if (result == DryDockResult.Damaged)
                 from.SendLocalizedMessage(1116324); // The ship must be fully repaired before it can be docked!
             else if (result == DryDockResult.Cannon)
-                from.SendLocalizedMessage(1116323);  //You cannot dock the ship with loaded weapons on deck!
+                from.SendLocalizedMessage(1116323);  // You cannot dock the ship with loaded weapons on deck!
             else if (result == DryDockResult.Valid)
                 from.SendGump(new ConfirmDryDockGump(from, this, dockmaster));
         }
@@ -898,11 +1063,11 @@ namespace Server.Multis
             else if (result == DryDockResult.Hold)
                 from.SendLocalizedMessage(502497); // Make sure your hold is empty, and try again!
             else if (result == DryDockResult.NotEnoughGold)
-                from.SendLocalizedMessage(1116506, DockMaster.DryDockAmount.ToString()); //The price is ~1_price~ and I will accept nothing less!
+                from.SendLocalizedMessage(1116506, DockMaster.DryDockAmount.ToString()); // The price is ~1_price~ and I will accept nothing less!
             else if (result == DryDockResult.Damaged)
                 from.SendLocalizedMessage(1116324); // The ship must be fully repaired before it can be docked!
             else if (result == DryDockResult.Cannon)
-                from.SendLocalizedMessage(1116323);  //You cannot dock the ship with loaded weapons on deck!
+                from.SendLocalizedMessage(1116323); // You cannot dock the ship with loaded weapons on deck!
 
             if (result != DryDockResult.Valid)
                 return;
@@ -938,21 +1103,347 @@ namespace Server.Multis
             }
         }
 
+        #region Repairs
+        private int m_PreRepairHits;
+        private EmergencyRepairDamageTimer m_EmergencyRepairTimer;
+
+        public static readonly int EmergencyRepairClothCost = 55;
+        public static readonly int EmergencyRepairWoodCost = 25;
+        public static readonly TimeSpan EmergencyRepairSpan = TimeSpan.FromMinutes(6);
+
+        public bool IsUnderEmergencyRepairs()
+        {
+            return m_EmergencyRepairTimer != null;
+        }
+
+        public TimeSpan GetEndEmergencyRepairs()
+        {
+            if (m_EmergencyRepairTimer != null && m_EmergencyRepairTimer.EndRepairs > DateTime.UtcNow)
+                return m_EmergencyRepairTimer.EndRepairs - DateTime.UtcNow;
+
+            return TimeSpan.Zero;
+        }
+
+        public bool TryEmergencyRepair(Mobile from)
+        {
+            if (from == null || from.Backpack == null)
+                return false;
+
+            int clothNeeded = EmergencyRepairClothCost;
+            int woodNeeded = EmergencyRepairWoodCost;
+            Container pack = from.Backpack;
+            Container hold = this is BaseGalleon ? ((BaseGalleon)this).GalleonHold : null;
+            TimeSpan ts = EmergencyRepairSpan;
+
+            int wood1 = pack.GetAmount(typeof(Board));
+            int wood2 = pack.GetAmount(typeof(Log));
+            int wood3 = 0; int wood4 = 0;
+
+            int cloth1 = pack.GetAmount(typeof(Cloth));
+            int cloth2 = pack.GetAmount(typeof(UncutCloth));
+            int cloth3 = 0; int cloth4 = 0;
+
+            if (hold != null)
+            {
+                wood3 = hold.GetAmount(typeof(Board));
+                wood4 = hold.GetAmount(typeof(Log));
+                cloth3 = hold.GetAmount(typeof(Cloth));
+                cloth4 = hold.GetAmount(typeof(UncutCloth));
+            }
+
+            int totalWood = wood1 + wood2 + wood3 + wood4;
+            int totalCloth = cloth1 + cloth2 + cloth3 + cloth4;
+
+            if (totalWood >= woodNeeded && totalCloth >= clothNeeded)
+            {
+                int toConsume = 0;
+
+                if (woodNeeded > 0 && wood1 > 0)
+                {
+                    toConsume = Math.Min(woodNeeded, wood1);
+                    pack.ConsumeTotal(typeof(Board), toConsume);
+                    woodNeeded -= toConsume;
+                }
+                if (woodNeeded > 0 && wood2 > 0)
+                {
+                    toConsume = Math.Min(woodNeeded, wood2);
+                    pack.ConsumeTotal(typeof(Log), toConsume);
+                    woodNeeded -= toConsume;
+                }
+                if (hold != null && woodNeeded > 0 && wood3 > 0)
+                {
+                    toConsume = Math.Min(woodNeeded, wood3);
+                    hold.ConsumeTotal(typeof(Board), toConsume);
+                    woodNeeded -= toConsume;
+                }
+                if (hold != null && woodNeeded > 0 && wood4 > 0)
+                {
+                    toConsume = Math.Min(woodNeeded, wood4);
+                    hold.ConsumeTotal(typeof(Log), toConsume);
+                }
+                if (clothNeeded > 0 && cloth1 > 0)
+                {
+                    toConsume = Math.Min(clothNeeded, cloth1);
+                    pack.ConsumeTotal(typeof(Cloth), toConsume);
+                    clothNeeded -= toConsume;
+                }
+                if (clothNeeded > 0 && cloth2 > 0)
+                {
+                    toConsume = Math.Min(clothNeeded, cloth2);
+                    pack.ConsumeTotal(typeof(UncutCloth), toConsume);
+                    clothNeeded -= toConsume;
+                }
+                if (hold != null && clothNeeded > 0 && cloth3 > 0)
+                {
+                    toConsume = Math.Min(clothNeeded, cloth3);
+                    hold.ConsumeTotal(typeof(Cloth), toConsume);
+                    clothNeeded -= toConsume;
+                }
+                if (hold != null && clothNeeded > 0 && cloth4 > 0)
+                {
+                    toConsume = Math.Min(clothNeeded, cloth4);
+                    hold.ConsumeTotal(typeof(UncutCloth), toConsume);
+                }
+
+                from.SendLocalizedMessage(1116592, ts.TotalMinutes.ToString()); // Your ship is underway with emergency repairs holding for an estimated ~1_TIME~ more minutes.
+                m_PreRepairHits = m_Hits;
+                m_Hits = (int)(MaxHits * .40);
+                m_EmergencyRepairTimer = new EmergencyRepairDamageTimer(this, ts);
+                ComputeDamage();
+                return true;
+            }
+            return false;
+        }
+
+        public void EndEmergencyRepairEffects()
+        {
+            m_EmergencyRepairTimer = null;
+            m_Hits = m_PreRepairHits;
+            m_PreRepairHits = 0;
+            ComputeDamage();
+
+            SendMessageToAllOnBoard(1116765);  // The emergency repairs have given out!
+        }
+
+        private static readonly double WoodPer = 17;
+        private static readonly double ClothPer = 17;
+
+        private Type[] WoodTypes = new Type[] { typeof(Board),  typeof(OakBoard), typeof(AshBoard), typeof(YewBoard), typeof(HeartwoodBoard), typeof(BloodwoodBoard), typeof(FrostwoodBoard),
+                                                typeof(Log), typeof(OakLog), typeof(AshLog), typeof(YewLog), typeof(HeartwoodLog), typeof(BloodwoodLog), typeof(FrostwoodLog), };
+
+        private Type[] ClothTypes = new Type[] { typeof(Cloth), typeof(UncutCloth) };
+
+        public void TryRepairs(Mobile from)
+        {
+            if (from == null || from.Backpack == null)
+                return;
+
+            Container pack = from.Backpack;
+            Container hold = this is BaseGalleon ? ((BaseGalleon)this).GalleonHold : null;
+            Container secure = SecureContainer;
+
+            double wood = 0;
+            double cloth = 0;
+
+            for (int i = 0; i < WoodTypes.Length; i++)
+            {
+                Type type = WoodTypes[i];
+                if (pack != null) wood += pack.GetAmount(type);
+                if (hold != null) wood += hold.GetAmount(type);
+                if (secure != null) wood += secure.GetAmount(type);
+            }
+
+            for (int i = 0; i < ClothTypes.Length; i++)
+            {
+                Type type = ClothTypes[i];
+                if (pack != null) cloth += pack.GetAmount(type);
+                if (hold != null) cloth += hold.GetAmount(type);
+                if (secure != null) cloth += secure.GetAmount(type);
+            }
+
+            double durability = ((double)Hits / (double)MaxHits) * 100;
+
+            //Now, how much do they need for 100% repair
+            double woodNeeded = WoodPer * (100.0 - durability);
+            double clothNeeded = ClothPer * (100.0 - durability);
+
+            //Apply skill bonus
+            woodNeeded -= ((double)from.Skills[SkillName.Carpentry].Value / 200.0) * woodNeeded;
+            clothNeeded -= ((double)from.Skills[SkillName.Tailoring].Value / 200.0) * clothNeeded;
+
+            //get 10% of needed repairs
+            double minWood = woodNeeded / 10;
+            double minCloth = clothNeeded / 10;
+
+            if (wood < minWood || cloth < minCloth)
+            {
+                from.SendLocalizedMessage(1116593, string.Format("{0}\t{1}", ((int)minCloth).ToString(), ((int)minWood).ToString())); //You need a minimum of ~1_CLOTH~ yards of cloth and ~2_WOOD~ pieces of lumber to effect repairs to this ship.
+                return;
+            }
+
+            double percWood, percCloth, woodUsed, clothUsed;
+
+            if (wood >= woodNeeded)
+            {
+                woodUsed = woodNeeded;
+                percWood = 100;
+            }
+            else
+            {
+                woodUsed = wood;
+                percWood = wood / woodNeeded * 100;
+            }
+
+            if (cloth >= clothNeeded)
+            {
+                clothUsed = clothNeeded;
+                percCloth = 100;
+            }
+            else
+            {
+                clothUsed = cloth;
+                percCloth = cloth / clothNeeded * 100;
+            }
+
+            if (clothUsed > woodUsed)
+            {
+                clothUsed = woodUsed;
+                percCloth = percWood;
+            }
+            else if (woodUsed > clothUsed)
+            {
+                woodUsed = clothUsed;
+                percWood = percCloth;
+            }
+
+            double totalPerc = (percWood + percCloth) / 2;
+
+            double toConsume = 0;
+            double woodTemp = woodUsed;
+            double clothTemp = clothUsed;
+
+            #region Consume
+            for (int i = 0; i < WoodTypes.Length; i++)
+            {
+                Type type = WoodTypes[i];
+
+                if (woodUsed <= 0)
+                    break;
+
+                if (woodUsed > 0 && pack.GetAmount(type) > 0)
+                {
+                    toConsume = Math.Min(woodUsed, pack.GetAmount(type));
+                    pack.ConsumeTotal(type, (int)toConsume);
+                    woodUsed -= toConsume;
+                }
+                if (hold != null && woodUsed > 0 && hold.GetAmount(type) > 0)
+                {
+                    toConsume = Math.Min(woodUsed, hold.GetAmount(type));
+                    hold.ConsumeTotal(type, (int)toConsume);
+                    woodUsed -= toConsume;
+                }
+                if (secure != null && woodUsed > 0 && secure.GetAmount(type) > 0)
+                {
+                    toConsume = Math.Min(woodUsed, secure.GetAmount(type));
+                    secure.ConsumeTotal(type, (int)toConsume);
+                    woodUsed -= toConsume;
+                }
+            }
+
+            for (int i = 0; i < ClothTypes.Length; i++)
+            {
+                Type type = ClothTypes[i];
+
+                if (clothUsed <= 0)
+                    break;
+
+                if (clothUsed > 0 && pack.GetAmount(type) > 0)
+                {
+                    toConsume = Math.Min(clothUsed, pack.GetAmount(type));
+                    pack.ConsumeTotal(type, (int)toConsume);
+                    clothUsed -= toConsume;
+                }
+                if (hold != null && clothUsed > 0 && hold.GetAmount(type) > 0)
+                {
+                    toConsume = Math.Min(clothUsed, hold.GetAmount(type));
+                    hold.ConsumeTotal(type, (int)toConsume);
+                    clothUsed -= toConsume;
+                }
+                if (secure != null && clothUsed > 0 && secure.GetAmount(type) > 0)
+                {
+                    toConsume = Math.Min(clothUsed, secure.GetAmount(type));
+                    secure.ConsumeTotal(type, (int)toConsume);
+                    clothUsed -= toConsume;
+                }
+            }
+            #endregion
+
+            m_Hits += (int)((MaxHits - m_Hits) * (totalPerc / 100));
+
+            if (m_Hits > MaxHits)
+                m_Hits = MaxHits;
+
+            ComputeDamage();
+
+            if (totalPerc > 100)
+                totalPerc = 100;
+
+            if (m_EmergencyRepairTimer != null)
+            {
+                m_EmergencyRepairTimer.Stop();
+                m_EmergencyRepairTimer = null;
+            }
+
+            string args = string.Format("{0}\t{1}\t{2}", ((int)clothTemp).ToString(), ((int)woodTemp).ToString(), ((int)Durability).ToString());
+            from.SendLocalizedMessage(1116598, args); //You effect permanent repairs using ~1_CLOTH~ yards of cloth and ~2_WOOD~ pieces of lumber. The ship is now ~3_DMGPCT~% repaired.
+        }
+
+        private class EmergencyRepairDamageTimer : Timer
+        {
+            private BaseBoat m_Boat;
+
+            public DateTime EndRepairs { get; }
+
+            public EmergencyRepairDamageTimer(BaseBoat boat, TimeSpan duration)
+                : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
+            {
+                m_Boat = boat;
+                EndRepairs = DateTime.UtcNow + duration;
+                Start();
+            }
+
+            protected override void OnTick()
+            {
+                if (m_Boat == null)
+                {
+                    Stop();
+                    return;
+                }
+
+                if (EndRepairs < DateTime.UtcNow)
+                {
+                    m_Boat.EndEmergencyRepairEffects();
+                    Stop();
+                }
+            }
+        }
+        #endregion
+
         public void SetName(SpeechEventArgs e)
         {
             if (CheckDecay())
                 return;
 
-            if (e.Mobile.AccessLevel < AccessLevel.GameMaster && e.Mobile != m_Owner)
+            if (e.Mobile.AccessLevel < AccessLevel.GameMaster && e.Mobile != Owner)
             {
-                if (m_TillerMan != null)
+                if (TillerMan != null)
                     TillerManSay(1042880); // Arr! Only the owner of the ship may change its name!
 
                 return;
             }
             else if (!e.Mobile.Alive)
             {
-                if (m_TillerMan != null)
+                if (TillerMan != null)
                     TillerManSay(502582); // You appear to be dead.
 
                 return;
@@ -979,7 +1470,7 @@ namespace Server.Multis
 
             if (m_ShipName == newName)
             {
-                if (m_TillerMan != null)
+                if (TillerMan != null)
                     TillerManSay(502531); // Yes, sir.
 
                 return;
@@ -987,10 +1478,14 @@ namespace Server.Multis
 
             ShipName = newName;
 
-            if (m_TillerMan != null && m_ShipName != null)
+            if (TillerMan != null && m_ShipName != null)
+            {
                 TillerManSay(1042885, m_ShipName); // This ship is now called the ~1_NEW_SHIP_NAME~.
-            else if (m_TillerMan != null)
+            }
+            else if (TillerMan != null)
+            {
                 TillerManSay(502534); // This ship now has no name.
+            }
         }
 
         public void RemoveName(Mobile m)
@@ -998,16 +1493,16 @@ namespace Server.Multis
             if (CheckDecay())
                 return;
 
-            if (m.AccessLevel < AccessLevel.GameMaster && m != m_Owner)
+            if (m.AccessLevel < AccessLevel.GameMaster && m != Owner)
             {
-                if (m_TillerMan != null)
+                if (TillerMan != null)
                     TillerManSay(1042880); // Arr! Only the owner of the ship may change its name!
 
                 return;
             }
             else if (!m.Alive)
             {
-                if (m_TillerMan != null)
+                if (TillerMan != null)
                     TillerManSay(502582); // You appear to be dead.
 
                 return;
@@ -1015,7 +1510,7 @@ namespace Server.Multis
 
             if (m_ShipName == null)
             {
-                if (m_TillerMan != null)
+                if (TillerMan != null)
                     TillerManSay(502526); // Ar, this ship has no name.
 
                 return;
@@ -1023,13 +1518,13 @@ namespace Server.Multis
 
             ShipName = null;
 
-            if (m_TillerMan != null)
+            if (TillerMan != null)
                 TillerManSay(502534); // This ship now has no name.
         }
 
         public void GiveName(Mobile m)
         {
-            if (m_TillerMan == null || CheckDecay())
+            if (TillerMan == null || CheckDecay())
                 return;
 
             if (m_ShipName == null)
@@ -1085,7 +1580,7 @@ namespace Server.Multis
             int start = -1;
             for (int i = 0; i < navPoint.Length; i++)
             {
-                if (Char.IsDigit(navPoint[i]))
+                if (char.IsDigit(navPoint[i]))
                 {
                     start = i;
                     break;
@@ -1103,7 +1598,7 @@ namespace Server.Multis
                 {
                     number--;
 
-                    if (m_BoatCourse == null || number < 0 || number >= m_BoatCourse.Waypoints.Count)
+                    if (BoatCourse == null || number < 0 || number >= BoatCourse.Waypoints.Count)
                     {
                         number = -1;
                     }
@@ -1127,21 +1622,21 @@ namespace Server.Multis
             if (CheckDecay())
                 return false;
 
-            if (m_BoatCourse == null)
+            if (BoatCourse == null)
             {
                 if (message && TillerMan != null)
                     TillerManSay(502513); // I have seen no map, sir.
 
                 return false;
             }
-            else if (Map != m_BoatCourse.Map)
+            else if (Map != BoatCourse.Map)
             {
                 if (message && TillerMan != null)
                     TillerManSay(502514); // The map is too far away from me, sir.
 
                 return false;
             }
-            else if ((Map != Map.Trammel && Map != Map.Felucca && Map != Map.Tokuno) || NextNavPoint < 0 || NextNavPoint >= m_BoatCourse.Waypoints.Count)
+            else if ((Map != Map.Trammel && Map != Map.Felucca && Map != Map.Tokuno) || NextNavPoint < 0 || NextNavPoint >= BoatCourse.Waypoints.Count)
             {
                 if (message && TillerMan != null)
                     TillerManSay(1042551); // I don't see that navpoint, sir.
@@ -1155,7 +1650,7 @@ namespace Server.Multis
             if (m_MoveTimer != null)
                 m_MoveTimer.Stop();
 
-            m_MoveTimer = new MoveTimer(this, FastInterval, false);
+            m_MoveTimer = new MoveTimer(this, FastInt, false);
             m_MoveTimer.Start();
 
             if (message && TillerMan != null)
@@ -1173,7 +1668,7 @@ namespace Server.Multis
 
             Mobile from = e.Mobile;
 
-            if (CanCommand(from) && Contains(from) && m_Pilot == null)
+            if (CanCommand(from) && Contains(from) && Pilot == null)
             {
                 for (int i = 0; i < e.Keywords.Length; ++i)
                 {
@@ -1221,14 +1716,14 @@ namespace Server.Multis
                             case 0x67: StartTurn(-4, true); break; // turn around, come about
                             case 0x68: StartMove(Forward, true); break;
                             case 0x69: StopMove(true); break;
-                            case 0x6A: if(!Core.HS) LowerAnchor( true ); break;
-                            case 0x6B: if(!Core.HS) RaiseAnchor( true ); break;
+                            case 0x6A: if (!Core.HS) LowerAnchor(true); break;
+                            case 0x6B: if (!Core.HS) RaiseAnchor(true); break;
                             case 0x60: GiveNavPoint(); break; // nav
                             case 0x61: NextNavPoint = 0; StartCourse(false, true); break; // start
                             case 0x62: StartCourse(false, true); break; // continue
                             case 0x63: StartCourse(e.Speech, false, true); break; // goto*
                             case 0x64: StartCourse(e.Speech, true, true); break; // single*
-                            case 0xF: if(Core.HS) TryTrack(from, e.Speech); break;
+                            case 0xF: if (Core.HS) TryTrack(from, e.Speech); break;
                         }
 
                         e.Handled = true;
@@ -1253,7 +1748,7 @@ namespace Server.Multis
 
             if (Scuttled)
             {
-                if (m_TillerMan != null)
+                if (TillerMan != null)
                     TillerManSay(1116687);  //Arr, we be scuttled!
 
                 return false;
@@ -1268,7 +1763,7 @@ namespace Server.Multis
                 if (Order == BoatOrder.Move)
                 {
                     resume = true;
-                    resumeDir = m_Moving;
+                    resumeDir = Moving;
                     fast = m_ClientSpeed == 0x4;
                 }
 
@@ -1329,11 +1824,11 @@ namespace Server.Multis
         private class TurnTimer : Timer
         {
             private BaseBoat m_Boat;
-            private int m_Offset;
+            private readonly int m_Offset;
 
-            private bool m_Resume;
-            private Direction m_ResumeDirection;
-            private bool m_Fast;
+            private readonly bool m_Resume;
+            private readonly Direction m_ResumeDirection;
+            private readonly bool m_Fast;
 
             public TurnTimer(BaseBoat boat, int offset, bool resume, Direction resumeDir, bool fast)
                 : base(TimeSpan.FromSeconds(0.5))
@@ -1360,7 +1855,7 @@ namespace Server.Multis
             if (CheckDecay())
                 return false;
 
-            if (m_Anchored)
+            if (Anchored)
             {
                 TillerManSay(501445); // Ar, the anchor was already dropped sir.
 
@@ -1369,7 +1864,7 @@ namespace Server.Multis
 
             StopMove(false);
 
-            m_Anchored = true;
+            Anchored = true;
 
             TillerManSay(501444); // Ar, anchor dropped sir.
 
@@ -1381,14 +1876,14 @@ namespace Server.Multis
             if (CheckDecay())
                 return false;
 
-            if (!m_Anchored)
+            if (!Anchored)
             {
                 TillerManSay(501447); // Ar, the anchor has not been dropped sir.
 
                 return false;
             }
 
-            m_Anchored = false;
+            Anchored = false;
 
             TillerManSay(501446); // Ar, anchor raised sir.
 
@@ -1402,20 +1897,19 @@ namespace Server.Multis
 
             if (Scuttled)
             {
-                if (m_TillerMan != null)
+                if (TillerMan != null)
                     TillerManSay(1116687);  //Arr, we be scuttled!
 
                 return false;
             }
 
-            int clientSpeed = 0x4;
-            bool drift = (dir != Forward && dir != ForwardLeft && dir != ForwardRight);
-            int speed = (fast ? (drift ? FastDriftSpeed : FastSpeed) : (drift ? SlowDriftSpeed : SlowSpeed));
-            TimeSpan interval = GetMovementInterval(fast, drift, out clientSpeed);
+            bool drift = dir != Forward && dir != ForwardLeft && dir != ForwardRight;
+            int speed = fast ? (drift ? FastDriftSpeed : FastSpeed) : (drift ? SlowDriftSpeed : SlowSpeed);
+            TimeSpan interval = GetMovementInterval(fast, drift, out int clientSpeed);
 
             if (StartMove(dir, speed, clientSpeed, interval, false, true))
             {
-                if (m_TillerMan != null)
+                if (TillerMan != null)
                     TillerManSay(501429); // Aye aye sir.
 
                 return true;
@@ -1426,13 +1920,27 @@ namespace Server.Multis
 
         public bool StartMove(Direction dir, int speed, int clientSpeed, TimeSpan interval, bool single, bool message)
         {
+            if (Pilot != null)
+                Pilot.RevealingAction();
+
             if (CheckDecay() || Scuttled || clientSpeed == 0x0)
                 return false;
 
-            m_Moving = dir;
-            m_Speed = speed;
-            m_ClientSpeed = clientSpeed;
-            m_Order = BoatOrder.Move;
+            Moving = dir;
+
+            if (IsUnderEmergencyRepairs())
+            {
+                Speed = 1;
+                m_ClientSpeed = 0x2;
+                interval = SlowDriftInterval;
+            }
+            else
+            {
+                Speed = speed;
+                m_ClientSpeed = clientSpeed;
+            }
+
+            Order = BoatOrder.Move;
 
             if (m_MoveTimer != null)
                 m_MoveTimer.Stop();
@@ -1450,19 +1958,19 @@ namespace Server.Multis
 
             if (m_MoveTimer == null)
             {
-                if (message && m_TillerMan != null)
+                if (message && TillerMan != null)
                     TillerManSay(501443); // Er, the ship is not moving sir.
 
                 return false;
             }
 
-            m_Moving = Direction.North;
-            m_Speed = 0;
+            Moving = Direction.North;
+            Speed = 0;
             m_ClientSpeed = 0;
             m_MoveTimer.Stop();
             m_MoveTimer = null;
 
-            if (message && m_TillerMan != null)
+            if (message && TillerMan != null)
                 TillerManSay(501429); // Aye aye sir.
 
             return true;
@@ -1481,7 +1989,7 @@ namespace Server.Multis
                 {
                     int tx = p.X + newComponents.Min.X + x;
                     int ty = p.Y + newComponents.Min.Y + y;
-                    
+
                     if (newComponents.Tiles[x][y].Length == 0 || Contains(tx, ty) || IsExcludedTile(newComponents.Tiles[x][y]))
                         continue;
 
@@ -1491,7 +1999,7 @@ namespace Server.Multis
                     bool hasWater = false;
                     int dif = Math.Abs(landTile.Z - p.Z);
 
-                    if ((dif >= 0 && dif <= 1) && ((landTile.ID >= 168 && landTile.ID <= 171) || (landTile.ID >= 310 && landTile.ID <= 311)))
+                    if (dif >= 0 && dif <= 1 && ((landTile.ID >= 168 && landTile.ID <= 171) || (landTile.ID >= 310 && landTile.ID <= 311)))
                         hasWater = true;
 
                     int z = p.Z;
@@ -1503,24 +2011,25 @@ namespace Server.Multis
                         if (IsExcludedTile(tile))
                             continue;
 
-                        bool isWater = (tile.ID >= 0x1796 && tile.ID <= 0x17B2);
+                        bool isWater = tile.ID >= 0x1796 && tile.ID <= 0x17B2;
 
                         if (tile.Z == p.Z && isWater)
+                        {
                             hasWater = true;
+                        }
                         else if (tile.Z >= p.Z && !isWater)
                         {
-                            if (Owner is BaseShipCaptain && !Owner.Deleted && m_Order == BoatOrder.Course)
+                            if (Owner is BaseShipCaptain && !Owner.Deleted && Order == BoatOrder.Course)
                             {
                                 ((BaseShipCaptain)Owner).CheckBlock(tile, new Point3D(tx, ty, tile.Z));
                             }
+
                             return false;
                         }
                     }
 
                     if (!hasWater)
-                    {
                         return false;
-                    }
                 }
             }
 
@@ -1557,7 +2066,7 @@ namespace Server.Multis
                         continue;
                 }
 
-                if (Owner is BaseShipCaptain && !Owner.Deleted && m_Order == BoatOrder.Course)
+                if (Owner is BaseShipCaptain && !Owner.Deleted && Order == BoatOrder.Course)
                 {
                     ((BaseShipCaptain)Owner).CheckBlock(e, e.Location);
                 }
@@ -1588,10 +2097,8 @@ namespace Server.Multis
 
         public virtual bool CanMoveOver(IEntity entity)
         {
-            if (entity is Corpse)
+            if (entity is Corpse corpse)
             {
-                var corpse = (Corpse)entity;
-
                 if (corpse.Owner == null || corpse.Owner is BaseCreature)
                 {
                     return true;
@@ -1641,26 +2148,27 @@ namespace Server.Multis
             if (base.Contains(x, y))
                 return true;
 
-            if (m_TillerMan != null)
+            if (TillerMan != null)
             {
-                if (m_TillerMan is Mobile)
+                if (TillerMan is Mobile)
                 {
-                    if (x == ((Mobile)m_TillerMan).X && y == ((Mobile)m_TillerMan).Y)
+                    if (x == ((Mobile)TillerMan).X && y == ((Mobile)TillerMan).Y)
                         return true;
                 }
-                else if (m_TillerMan is Item)
+                else if (TillerMan is Item)
                 {
-                    if (x == ((Item)m_TillerMan).X && y == ((Item)m_TillerMan).Y)
+                    if (x == ((Item)TillerMan).X && y == ((Item)TillerMan).Y)
                         return true;
                 }
             }
-            if (m_Hold != null && x == m_Hold.X && y == m_Hold.Y)
+
+            if (Hold != null && x == Hold.X && y == Hold.Y)
                 return true;
 
-            if (m_PPlank != null && x == m_PPlank.X && y == m_PPlank.Y)
+            if (PPlank != null && x == PPlank.X && y == PPlank.Y)
                 return true;
 
-            if (m_SPlank != null && x == m_SPlank.X && y == m_SPlank.Y)
+            if (SPlank != null && x == SPlank.X && y == SPlank.Y)
                 return true;
 
             return false;
@@ -1733,21 +2241,21 @@ namespace Server.Multis
                 speed = Speed;
                 clientSpeed = m_ClientSpeed;
             }
-            else if (m_BoatCourse == null)
+            else if (BoatCourse == null)
             {
                 if (message && TillerMan != null)
                     TillerManSay(502513); // I have seen no map, sir.
 
                 return false;
             }
-            else if (Map != m_BoatCourse.Map)
+            else if (Map != BoatCourse.Map)
             {
                 if (message && TillerMan != null)
                     TillerManSay(502514); // The map is too far away from me, sir.
 
                 return false;
             }
-            else if ((Map != Map.Trammel && Map != Map.Felucca && Map != Map.Tokuno) || NextNavPoint < 0 || NextNavPoint >= m_BoatCourse.Waypoints.Count)
+            else if ((Map != Map.Trammel && Map != Map.Felucca && Map != Map.Tokuno) || NextNavPoint < 0 || NextNavPoint >= BoatCourse.Waypoints.Count)
             {
                 if (message && TillerMan != null)
                     TillerManSay(1042551); // I don't see that navpoint, sir.
@@ -1756,17 +2264,16 @@ namespace Server.Multis
             }
             else
             {
-                Point2D dest = m_BoatCourse.Waypoints[NextNavPoint];
+                Point2D dest = BoatCourse.Waypoints[NextNavPoint];
 
-                int maxSpeed;
-                dir = GetMovementFor(dest.X, dest.Y, out maxSpeed);
+                dir = GetMovementFor(dest.X, dest.Y, out int maxSpeed);
 
                 if (maxSpeed == 0)
                 {
                     if (message && Order == BoatOrder.Single && TillerMan != null)
                         TillerManSay(1042874, (NextNavPoint + 1).ToString()); // We have arrived at nav point ~1_POINT_NUM~ , sir.
 
-                    if (NextNavPoint + 1 < m_BoatCourse.Waypoints.Count)
+                    if (NextNavPoint + 1 < BoatCourse.Waypoints.Count)
                     {
                         NextNavPoint++;
 
@@ -1788,7 +2295,7 @@ namespace Server.Multis
                             TillerManSay(502515); // The course is completed, sir.
 
                         if (Owner is BaseShipCaptain)
-                            Server.Engines.Quests.BountyQuestSpawner.ResetNavPoints(this);
+                            Engines.Quests.BountyQuestSpawner.ResetNavPoints(this);
 
                         return false;
                     }
@@ -1810,8 +2317,6 @@ namespace Server.Multis
             return Move(dir, speed, clientSpeed, true);
         }
 
-        private object m_Lock = new object();
-
         public bool Move(Direction dir, int speed, int clientSpeed, bool message)
         {
             Map map = Map;
@@ -1822,7 +2327,7 @@ namespace Server.Multis
             int rx = 0, ry = 0;
             Direction d;
 
-            if (m_Pilot == null)
+            if (Pilot == null)
             {
                 d = (Direction)(((int)m_Facing + (int)dir) & 0x7);
                 Movement.Movement.Offset((Direction)(((int)m_Facing + (int)dir) & 0x7), ref rx, ref ry);
@@ -1839,7 +2344,7 @@ namespace Server.Multis
                 {
                     if (i == 1)
                     {
-                        if (message && m_TillerMan != null)
+                        if (message && TillerMan != null)
                             TillerManSay(501424); // Ar, we've stopped sir.
 
                         return false;
@@ -1878,7 +2383,7 @@ namespace Server.Multis
                     {
                         if (!CanFit(new Point3D(newX + (j * rx), newY + (j * ry), Z), Map, ItemID))
                         {
-                            if (message && m_TillerMan != null)
+                            if (message && TillerMan != null)
                                 TillerManSay(501424); // Ar, we've stopped sir.
 
                             return false;
@@ -1948,7 +2453,7 @@ namespace Server.Multis
 
         public void Teleport(int xOffset, int yOffset, int zOffset)
         {
-            foreach (var ent in GetEntitiesOnBoard().Where(e => !IsComponentItem(e) && !CanMoveOver(e) && e != m_TillerMan))
+            foreach (var ent in GetEntitiesOnBoard().Where(e => !IsComponentItem(e) && !CanMoveOver(e) && e != TillerMan))
             {
                 ent.Location = new Point3D(ent.X + xOffset, ent.Y + yOffset, ent.Z + zOffset);
             }
@@ -1958,7 +2463,7 @@ namespace Server.Multis
 
         public virtual bool SetFacing(Direction facing)
         {
-            if (Parent != null || this.Map == null)
+            if (Parent != null || Map == null)
                 return false;
 
             if (CheckDecay())
@@ -1968,6 +2473,7 @@ namespace Server.Multis
             {
                 switch (facing)
                 {
+                    default:
                     case Direction.North: if (!CanFit(Location, Map, NorthID)) return false; break;
                     case Direction.East: if (!CanFit(Location, Map, EastID)) return false; break;
                     case Direction.South: if (!CanFit(Location, Map, SouthID)) return false; break;
@@ -1975,29 +2481,29 @@ namespace Server.Multis
                 }
             }
 
-            this.Map.OnLeave(this);
+            Map.OnLeave(this);
 
             Direction old = m_Facing;
             List<IEntity> toMove = new List<IEntity>();
 
-            if (m_TillerMan is GalleonPilot)
-                ((GalleonPilot)m_TillerMan).SetFacing(facing);
-            else if (m_TillerMan is TillerMan)
-                ((TillerMan)m_TillerMan).SetFacing(facing);
+            if (TillerMan is GalleonPilot)
+                ((GalleonPilot)TillerMan).SetFacing(facing);
+            else if (TillerMan is TillerMan)
+                ((TillerMan)TillerMan).SetFacing(facing);
 
-            if (m_Hold != null)
-                m_Hold.SetFacing(facing);
+            if (Hold != null)
+                Hold.SetFacing(facing);
 
-            if (m_PPlank != null)
+            if (PPlank != null)
             {
-                m_PPlank.SetFacing(facing);
-                toMove.Add(m_PPlank);
+                PPlank.SetFacing(facing);
+                toMove.Add(PPlank);
             }
 
-            if (m_SPlank != null)
+            if (SPlank != null)
             {
-                m_SPlank.SetFacing(facing);
-                toMove.Add(m_SPlank);
+                SPlank.SetFacing(facing);
+                toMove.Add(SPlank);
             }
 
             MultiComponentList mcl = Components;
@@ -2006,10 +2512,8 @@ namespace Server.Multis
 
             foreach (IEntity o in eable)
             {
-                if (o is Item)
+                if (o is Item item)
                 {
-                    Item item = (Item)o;
-
                     if (CanMoveOver(item))
                         continue;
 
@@ -2034,11 +2538,11 @@ namespace Server.Multis
             int xOffset = 0, yOffset = 0;
             Movement.Movement.Offset(facing, ref xOffset, ref yOffset);
 
-            if (m_TillerMan is Item)
-                ((Item)m_TillerMan).Location = new Point3D(X + (xOffset * TillerManDistance) + (facing == Direction.North ? 1 : 0), Y + (yOffset * TillerManDistance), ((Item)m_TillerMan).Z);
+            if (TillerMan is Item)
+                ((Item)TillerMan).Location = new Point3D(X + (xOffset * TillerManDistance) + (facing == Direction.North ? 1 : 0), Y + (yOffset * TillerManDistance), ((Item)TillerMan).Z);
 
-            if (m_Hold != null)
-                m_Hold.Location = new Point3D(X + (xOffset * HoldDistance), Y + (yOffset * HoldDistance), m_Hold.Z);
+            if (Hold != null)
+                Hold.Location = new Point3D(X + (xOffset * HoldDistance), Y + (yOffset * HoldDistance), Hold.Z);
 
             int count = (int)(m_Facing - old) & 0x7;
             count /= 2;
@@ -2050,6 +2554,7 @@ namespace Server.Multis
 
             switch (facing)
             {
+                default:
                 case Direction.North: ItemID = NorthID; break;
                 case Direction.East: ItemID = EastID; break;
                 case Direction.South: ItemID = SouthID; break;
@@ -2057,7 +2562,7 @@ namespace Server.Multis
             }
 
             SetFacingComponents(m_Facing, old, false);
-            this.Map.OnEnter(this);
+            Map.OnEnter(this);
 
             ColUtility.Free(toMove);
 
@@ -2067,7 +2572,7 @@ namespace Server.Multis
         private class MoveTimer : Timer
         {
             private BaseBoat m_Boat;
-            private bool m_SingleMove;
+            private readonly bool m_SingleMove;
 
             public MoveTimer(BaseBoat boat, TimeSpan interval, bool single)
                 : base(interval, interval, single ? 1 : 0)
@@ -2145,17 +2650,25 @@ namespace Server.Multis
 
         public void LockPilot(Mobile pilot)
         {
-            m_Pilot = pilot;
+            Pilot = pilot;
 
-            if (m_VirtualMount == null || m_VirtualMount.Deleted)
-                m_VirtualMount = new BoatMountItem(this);
+            if (VirtualMount == null || VirtualMount.Deleted)
+                VirtualMount = new BoatMountItem(this);
 
-            pilot.AddItem(m_VirtualMount);
+            pilot.AddItem(VirtualMount);
             pilot.Direction = m_Facing;
             pilot.Delta(MobileDelta.Direction | MobileDelta.Properties);
 
             SendContainerPacket();
-            pilot.SendLocalizedMessage(1116727); //You are now piloting this vessel.
+            pilot.SendLocalizedMessage(1116727); // You are now piloting this vessel.
+
+            if (this is BaseGalleon)
+            {
+                GetEntitiesOnBoard().OfType<PlayerMobile>().Where(x => x != pilot).ToList().ForEach(y =>
+                {
+                    y.SendLocalizedMessage(1149664, pilot.Name); // ~1_NAME~ has assumed control of the ship.
+                });
+            }
 
             if (IsMoving)
                 StopMove(false);
@@ -2163,18 +2676,26 @@ namespace Server.Multis
 
         public void RemovePilot(Mobile from)
         {
-            if (m_Pilot != from)
+            if (Pilot != from)
                 return;
 
-            m_Pilot.RemoveItem(m_VirtualMount);
-            m_VirtualMount.Internalize();
+            Pilot.RemoveItem(VirtualMount);
+            VirtualMount.Internalize();
 
-            m_Pilot = null;
+            Pilot = null;
 
             if (IsMoving)
                 StopMove(false);
 
-            from.SendLocalizedMessage(1149592); //You are no longer piloting this vessel.
+            from.SendLocalizedMessage(1149592); // You are no longer piloting this vessel.
+
+            if (this is BaseGalleon)
+            {
+                GetEntitiesOnBoard().OfType<PlayerMobile>().Where(x => x != from).ToList().ForEach(y =>
+                {
+                    y.SendLocalizedMessage(1149668, from.Name); // ~1_NAME~ has relinquished control of the ship.
+                });
+            }
         }
 
         public static bool IsDriving(Mobile from)
@@ -2184,9 +2705,8 @@ namespace Server.Multis
 
         public virtual void OnMousePilotCommand(Mobile from, Direction d, int rawSpeed)
         {
-            int clientSpeed = 0;
             int actualDir = (m_Facing - d) & 0x7;
-            TimeSpan interval = GetMovementInterval(rawSpeed, out clientSpeed);
+            TimeSpan interval = GetMovementInterval(rawSpeed, out int clientSpeed);
 
             if (rawSpeed > 1 && actualDir > 1 && actualDir != 7)
             {
@@ -2210,13 +2730,9 @@ namespace Server.Multis
 
         public static void ForceRemovePilot(Mobile m)
         {
-            var mountItem = m.FindItemOnLayer(Layer.Mount) as BoatMountItem;
-
-            if (mountItem != null)
+            if (m.FindItemOnLayer(Layer.Mount) is BoatMountItem mountItem)
             {
-                BaseBoat boat = mountItem.Mount as BaseBoat;
-
-                if (boat != null)
+                if (mountItem.Mount is BaseBoat boat)
                 {
                     boat.RemovePilot(m);
                 }
@@ -2265,7 +2781,7 @@ namespace Server.Multis
             if (item == null)
                 return false;
 
-            if (item == this || (m_TillerMan is Item && item == (Item)m_TillerMan) || item == m_SPlank || item == m_PPlank || item == m_Hold)
+            if (item == this || (TillerMan is Item && item == (Item)TillerMan) || item == SPlank || item == PPlank || item == Hold)
                 return true;
             return false;
         }
@@ -2318,17 +2834,17 @@ namespace Server.Multis
         {
             if (message is int)
             {
-                if (m_TillerMan is Mobile)
-                    ((Mobile)m_TillerMan).Say((int)message);
-                else if (m_TillerMan is Server.Items.TillerMan)
-                    ((Server.Items.TillerMan)m_TillerMan).Say((int)message);
+                if (TillerMan is Mobile)
+                    ((Mobile)TillerMan).Say((int)message);
+                else if (TillerMan is TillerMan)
+                    ((TillerMan)TillerMan).Say((int)message);
             }
             else if (message is string)
             {
-                if (m_TillerMan is Mobile)
-                    ((Mobile)m_TillerMan).Say((string)message);
-                else if (m_TillerMan is Server.Items.TillerMan)
-                    ((Server.Items.TillerMan)m_TillerMan).Say(1060658, (string)message);
+                if (TillerMan is Mobile)
+                    ((Mobile)TillerMan).Say((string)message);
+                else if (TillerMan is TillerMan)
+                    ((TillerMan)TillerMan).Say(1060658, (string)message);
             }
         }
 
@@ -2336,17 +2852,17 @@ namespace Server.Multis
         {
             if (message is int)
             {
-                if (m_TillerMan is Mobile)
-                    ((Mobile)m_TillerMan).Say((int)message, arg);
-                else if (m_TillerMan is Server.Items.TillerMan)
-                    ((Server.Items.TillerMan)m_TillerMan).Say((int)message, arg);
+                if (TillerMan is Mobile)
+                    ((Mobile)TillerMan).Say((int)message, arg);
+                else if (TillerMan is TillerMan)
+                    ((TillerMan)TillerMan).Say((int)message, arg);
             }
             else if (message is string)
             {
-                if (m_TillerMan is Mobile)
-                    ((Mobile)m_TillerMan).Say((string)message);
-                else if (m_TillerMan is Server.Items.TillerMan)
-                    ((Server.Items.TillerMan)m_TillerMan).Say(1060658, (string)message);
+                if (TillerMan is Mobile)
+                    ((Mobile)TillerMan).Say((string)message);
+                else if (TillerMan is TillerMan)
+                    ((TillerMan)TillerMan).Say(1060658, (string)message);
             }
         }
 
@@ -2406,13 +2922,13 @@ namespace Server.Multis
             if (Map == Map.Internal)
                 return false;
 
-            if(PlayerCount() > 0)
+            if (PlayerCount() > 0)
                 return false;
 
             if (m_Decaying)
                 return true;
 
-            if (m_Decay && !IsMoving && DateTime.UtcNow >= m_DecayTime)
+            if (DoesDecay && !IsMoving && DateTime.UtcNow >= m_DecayTime)
             {
                 new DecayTimer(this).Start();
 
@@ -2459,8 +2975,8 @@ namespace Server.Multis
         public Packet ContainerPacket
         {
             get { return m_ContainerPacket; }
-            set 
-            { 
+            set
+            {
                 m_ContainerPacket = value;
 
                 if (m_ContainerPacket != null)
@@ -2494,7 +3010,7 @@ namespace Server.Multis
 
             foreach (NetState state in eable)
             {
-                if(!state.HighSeas || state.Mobile == null || state.Mobile.InUpdateRange(Location))
+                if (!state.HighSeas || state.Mobile == null || state.Mobile.InUpdateRange(Location))
                     continue;
 
                 state.Send(RemovePacket);
@@ -2633,8 +3149,8 @@ namespace Server.Multis
             switch (speed)
             {
                 default: clientSpeed = 0x0; return TimeSpan.Zero;
-                case 1: clientSpeed = 0x2; return SlowInterval;
-                case 2: clientSpeed = 0x4; return FastInterval;
+                case 1: clientSpeed = 0x2; return SlowInt;
+                case 2: clientSpeed = 0x4; return FastInt;
             }
         }
 
@@ -2645,22 +3161,22 @@ namespace Server.Multis
                 if (drifting)
                 {
                     clientSpeed = 0x3;
-                    return NormalInterval;
+                    return NormalInt;
                 }
 
                 clientSpeed = 0x4;
-                return FastInterval;
+                return FastInt;
             }
             else
             {
                 if (drifting)
                 {
                     clientSpeed = 0x2;
-                    return SlowInterval;
+                    return SlowInt;
                 }
 
                 clientSpeed = 0x3;
-                return NormalInterval;
+                return NormalInt;
             }
         }
         #endregion
@@ -2685,21 +3201,17 @@ namespace Server.Multis
         private List<Point2D> m_Waypoints = new List<Point2D>();
         public List<Point2D> Waypoints { get { return m_Waypoints; } }
 
-        private BaseBoat m_Boat;
-        private Map m_Map;
-        private bool m_GivenMap;
+        [CommandProperty(AccessLevel.GameMaster)]
+        public BaseBoat Boat { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BaseBoat Boat { get { return m_Boat; } set { m_Boat = value; } }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public Map Map { get { return m_Map; } set { m_Map = value ; } }
+        public Map Map { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int NumWaypoints { get { return m_Waypoints.Count; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool GivenMap { get { return m_GivenMap; } set { m_GivenMap = value; } }
+        public bool GivenMap { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Point2D SetWaypoint
@@ -2719,11 +3231,11 @@ namespace Server.Multis
             {
                 if (value)
                 {
-                    if (m_Boat != null)
+                    if (Boat != null)
                     {
-                        MapItem mapItem = new MapItem(m_Map);
+                        MapItem mapItem = new MapItem(Map);
 
-                        if (m_Map == Map.Tokuno)
+                        if (Map == Map.Tokuno)
                             mapItem.SetDisplay(5, 5, 1448 - 32, 1448 - 10, 400, 400);
                         else
                             mapItem.SetDisplay(5, 5, 5120 - 32, 4096 - 10, 400, 400);
@@ -2731,12 +3243,12 @@ namespace Server.Multis
                         for (int i = 0; i < m_Waypoints.Count; i++)
                             mapItem.AddWorldPin(m_Waypoints[i].X, m_Waypoints[i].Y);
 
-                        if (m_Boat is BaseGalleon)
+                        if (Boat is BaseGalleon)
                         {
-                            ((BaseGalleon)m_Boat).GalleonHold.DropItem(mapItem);
+                            ((BaseGalleon)Boat).GalleonHold.DropItem(mapItem);
                         }
                         else
-                            m_Boat.Hold.DropItem(mapItem);
+                            Boat.Hold.DropItem(mapItem);
                     }
                 }
             }
@@ -2747,8 +3259,8 @@ namespace Server.Multis
         {
             get
             {
-                if(m_Boat != null && m_Boat.NextNavPoint >= 0 && m_Boat.NextNavPoint < m_Waypoints.Count)
-                    return m_Waypoints[m_Boat.NextNavPoint];
+                if (Boat != null && Boat.NextNavPoint >= 0 && Boat.NextNavPoint < m_Waypoints.Count)
+                    return m_Waypoints[Boat.NextNavPoint];
 
                 return Point2D.Zero;
             }
@@ -2756,30 +3268,29 @@ namespace Server.Multis
 
         public BoatCourse(BaseBoat boat)
         {
-            m_Boat = boat;
-            m_Map = boat.Map;
-            m_GivenMap = false;
+            Boat = boat;
+            Map = boat.Map;
+            GivenMap = false;
         }
 
         public BoatCourse(BaseBoat boat, MapItem item)
         {
-            m_Boat = boat;
-            m_Map = boat.Map;
-            m_GivenMap = false;
+            Boat = boat;
+            Map = boat.Map;
+            GivenMap = false;
 
             for (int i = 0; i < item.Pins.Count; i++)
             {
-                int x, y;
-                item.ConvertToWorld(item.Pins[i].X, item.Pins[i].Y, out x, out y);
+                item.ConvertToWorld(item.Pins[i].X, item.Pins[i].Y, out int x, out int y);
                 m_Waypoints.Add(new Point2D(x, y));
             }
         }
 
         public BoatCourse(BaseBoat boat, List<Point2D> list)
         {
-            m_Boat = boat;
-            m_Map = boat.Map;
-            m_GivenMap = false;
+            Boat = boat;
+            Map = boat.Map;
+            GivenMap = false;
 
             m_Waypoints = list;
         }
@@ -2801,7 +3312,7 @@ namespace Server.Multis
             {
                 BoatCourse course = (BoatCourse)obj;
 
-                if (m_Map == course.Map && m_Boat == course.Boat && course.Waypoints.Count == m_Waypoints.Count)
+                if (Map == course.Map && Boat == course.Boat && course.Waypoints.Count == m_Waypoints.Count)
                 {
                     for (int i = 0; i < m_Waypoints.Count; i++)
                     {
@@ -2824,23 +3335,27 @@ namespace Server.Multis
         public BoatCourse(GenericReader reader)
         {
             int version = reader.ReadInt();
-
-            m_GivenMap = reader.ReadBool();
+            GivenMap = reader.ReadBool();
 
             int c = reader.ReadInt();
+
             for (int i = 0; i < c; i++)
+            {
                 m_Waypoints.Add(reader.ReadPoint2D());
+            }
         }
 
         public void Serialize(GenericWriter writer)
         {
             writer.Write((int)0);
-
-            writer.Write(m_GivenMap);
+            writer.Write(GivenMap);
 
             writer.Write(m_Waypoints.Count);
+
             foreach (Point2D p in m_Waypoints)
+            {
                 writer.Write(p);
+            }
         }
     }
 }
