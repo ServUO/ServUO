@@ -785,6 +785,9 @@ namespace Server.Items
             {
                 list.Add(1061078, ArtifactRarity.ToString()); // artifact rarity ~1_val~
             }
+			
+			if (this is ManaPhasingOrb)
+                list.Add(1116158); //Mana Phase
 
             if (m_Killer != null && !m_Killer.IsEmpty && m_Killer.Amount > 0)
                 list.Add(1072388, "{0}\t{1}", m_Killer.Name != null ? m_Killer.Name.ToString() : "Unknown", m_Killer.Amount); // ~1_NAME~ Killer: +~2_val~%
