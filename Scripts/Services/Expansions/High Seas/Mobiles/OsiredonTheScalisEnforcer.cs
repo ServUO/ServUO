@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Multis;
 using System.Collections.Generic;
@@ -103,10 +103,10 @@ namespace Server.Mobiles
                 m_Eels.Remove(eel);
         }
 
-        public override void DoDamageBoat(BaseGalleon galleon)
+        public override void DoDamageBoat(BaseBoat boat)
         {
             DoAreaExplosion();
-            base.DoDamageBoat(galleon);
+            base.DoDamageBoat(boat);
         }
 
         public override void OnDamagedBySpell(Mobile from)

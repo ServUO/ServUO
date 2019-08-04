@@ -293,7 +293,7 @@ namespace Server.Items
         public virtual void OnShipHit(object obj)
         {
             object[] list = (object[])obj;
-            BaseGalleon target = list[0] as BaseGalleon;
+            BaseBoat target = list[0] as BaseBoat;
             Point3D pnt = (Point3D)list[1];
 
             var ammoInfo = AmmoInfo.GetAmmoInfo((AmmunitionType)list[2]);
@@ -362,7 +362,7 @@ namespace Server.Items
 
                         foreach (var mob in target.GetMobilesOnBoard().OfType<PlayerMobile>().Where(pm => Operator.CanBeHarmful(pm, false)))
                         {
-                            if (target.GetSecurityLevel(mob) > highest)
+                            if (target is BaseGalleon && ((BaseGalleon)target).GetSecurityLevel(mob) > highest)
                             {
                                 candidates.Insert(0, mob);
                             }

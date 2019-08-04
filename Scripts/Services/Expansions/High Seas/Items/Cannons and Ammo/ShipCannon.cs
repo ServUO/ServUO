@@ -84,6 +84,8 @@ namespace Server.Items
 
         public void TryCharge(Mobile m)
         {
+            m.Animate(AnimationType.Attack, 3);
+
             if (Charged)
             {
                 TryLoad(m);
@@ -128,6 +130,8 @@ namespace Server.Items
 
         public void TryLoad(Mobile m)
         {
+            m.Animate(AnimationType.Attack, 3);
+
             if (Loaded)
             {
                 TryPrime(m);
@@ -201,6 +205,8 @@ namespace Server.Items
         {
             if (!Primed)
             {
+                m.Animate(AnimationType.Attack, 3);
+
                 Timer.DelayCall(ActionTime, () =>
                 {
                     AddAction(m, 1149650); // priming started
@@ -323,6 +329,10 @@ namespace Server.Items
                 AddAction(from, from.InRange(Location, 2) ? 1149653 : 1149654); // You are now operating the cannon. : You are too far away.
                 ResendGump(from, TimeSpan.FromMilliseconds(500));
             }
+            else
+            {
+                from.Say(1010436); // You do not have permission to do this.
+            }
         }
 
         public Direction GetFacing()
@@ -420,26 +430,10 @@ namespace Server.Items
 
         public void LightFuse(Mobile from)
         {
-            if (!CheckRegion(from))
-                return;
-
-            DoAreaMessage(1116080, 10, from);
+            DoAreaMessage(1116080, 10, from); // ~1_NAME~ sets fire to the cannon's fuse. Stand back!
             AddAction(from, 1149683); //The fuse is lit!
-            Effects.PlaySound(this.Location, this.Map, 0x666);
+            Effects.PlaySound(Location, Map, 0x666);
             Timer.DelayCall(TimeSpan.FromSeconds(1.5), Shoot, from);
-        }
-
-        public bool CheckRegion(Mobile from)
-        {
-            Region r = Region.Find(from.Location, from.Map);
-
-            if (r is Server.Regions.GuardedRegion && !((Server.Regions.GuardedRegion)r).IsDisabled())
-            {
-                from.SendMessage("You are forbidden from discharging cannons within the town limits.");
-                return false;
-            }
-
-            return true;
         }
 
         public virtual void Shoot(object cannoneer)
@@ -462,8 +456,8 @@ namespace Server.Items
 
             int xOffset = 0; int yOffset = 0;
             int currentRange = 0;
-            Point3D pnt = this.Location;
-            Map map = this.Map;
+            Point3D pnt = Location;
+            Map map = Map;
             Direction d = GetFacing();
 
             switch (d)
@@ -515,10 +509,10 @@ namespace Server.Items
                                 else
                                     newPoint = new Point3D(pnt.X + (xOffset * currentRange), pnt.Y + (yOffset + i), pnt.Z);
 
-                                BaseGalleon g = FindValidBoatTarget(newPoint, map, ammo);
+                                BaseBoat b = FindValidBoatTarget(newPoint, map, ammo);
 
-                                if (g != null && g != Galleon && g.IsEnemy(Galleon))
-                                    list.Add(g);
+                                if (b != null && b != Galleon && b.IsEnemy(Galleon))
+                                    list.Add(b);
 
                                 damageables.AddRange(FindDamageables(shooter, newPoint, map, false, false, false, true, true));
                             }
@@ -587,23 +581,23 @@ namespace Server.Items
             }
         }
 
-        private BaseGalleon FindValidBoatTarget(Point3D newPoint, Map map, AmmoInfo info)
+        private BaseBoat FindValidBoatTarget(Point3D newPoint, Map map, AmmoInfo info)
         {
-            BaseGalleon galleon = BaseGalleon.FindGalleonAt(newPoint, map);
+            BaseBoat boat = BaseBoat.FindBoatAt(newPoint, map);
 
-            if (galleon != null && info.RequiresSurface)
+            if (boat != null && info.RequiresSurface)
             {
-                int d = galleon is BritannianShip ? 3 : 2;
-                switch (galleon.Facing)
+                int d = boat is BritannianShip ? 3 : 2;
+                switch (boat.Facing)
                 {
                     case Direction.North:
                     case Direction.South:
-                        if (newPoint.X <= galleon.X - d || newPoint.X >= galleon.X + d)
+                        if (newPoint.X <= boat.X - d || newPoint.X >= boat.X + d)
                             return null;
                         break;
                     case Direction.East:
                     case Direction.West:
-                        if (newPoint.Y <= galleon.Y - d || newPoint.Y >= galleon.Y + d)
+                        if (newPoint.Y <= boat.Y - d || newPoint.Y >= boat.Y + d)
                             return null;
                         break;
                 }
@@ -617,20 +611,20 @@ namespace Server.Items
 
                     if (!isWater && id.Surface && !id.Impassable)
                     {
-                        return galleon;
+                        return boat;
                     }
                 }
 
                 return null;
             }
 
-            return galleon;
+            return boat;
         }
 
         public void DoShootEffects()
         {
-            Point3D p = this.Location;
-            Map map = this.Map;
+            Point3D p = Location;
+            Map map = Map;
 
             p.Z -= 3;
 
@@ -666,11 +660,11 @@ namespace Server.Items
 
             if (Durability <= 0)
             {
-                DoAreaMessage(1116297, 5, null); //The ship cannon has been destroyed!
+                DoAreaMessage(1116297, 5, null); // The ship cannon has been destroyed!
                 Delete();
 
-                if (from != null && from.InRange(this.Location, 5))
-                    from.SendLocalizedMessage(1116297); //The ship cannon has been destroyed!
+                if (from != null && from.InRange(Location, 5))
+                    from.SendLocalizedMessage(1116297); // The ship cannon has been destroyed!
             }
 
             InvalidateProperties();
@@ -689,7 +683,7 @@ namespace Server.Items
         public virtual void OnShipHit(object obj)
         {
             object[] list = (object[])obj;
-            BaseGalleon target = list[0] as BaseGalleon;
+            BaseBoat target = list[0] as BaseBoat;
             Point3D pnt = (Point3D)list[1];
             AmmoInfo ammoInfo = list[2] as AmmoInfo;
             Mobile shooter = list[3] as Mobile;
@@ -937,7 +931,7 @@ namespace Server.Items
             percRepaired += Durability;
             if (percRepaired > 100) percRepaired = 100;
 
-            from.SendLocalizedMessage(1116605, String.Format("{0}\t{1}", ((int)temp).ToString(), ((int)percRepaired).ToString())); //You make repairs to the cannon using ~1_METAL~ ingots. The cannon is now ~2_DMGPCT~% repaired.
+            from.SendLocalizedMessage(1116605, string.Format("{0}\t{1}", ((int)temp).ToString(), ((int)percRepaired).ToString())); //You make repairs to the cannon using ~1_METAL~ ingots. The cannon is now ~2_DMGPCT~% repaired.
         }
 
         public void ResendGump(Mobile from)

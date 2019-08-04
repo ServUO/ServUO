@@ -535,7 +535,7 @@ namespace Server.Items
         public virtual void OnShipHit(object obj)
         {
             object[] list = (object[])obj;
-            BaseGalleon target = list[0] as BaseGalleon;
+            BaseBoat target = list[0] as BaseBoat;
             Point3D pnt = (Point3D)list[1];
             AmmoInfo ammoInfo = list[2] as AmmoInfo;
             Mobile shooter = list[3] as Mobile;

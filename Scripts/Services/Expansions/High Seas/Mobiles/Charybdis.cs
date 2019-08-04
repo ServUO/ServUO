@@ -231,15 +231,15 @@ namespace Server.Mobiles
 
         private bool m_HasPushed;
 
-        public override void DoDamageBoat(BaseGalleon galleon)
+        public override void DoDamageBoat(BaseBoat boat)
         {
-            if (galleon == null)
+            if (boat == null)
                 return;
 
             m_HasPushed = false;
-            IPoint2D pnt = galleon;
+            IPoint2D pnt = boat;
 
-            if(Combatant != null && galleon.Contains(Combatant))
+            if(Combatant != null && boat.Contains(Combatant))
                 pnt = Combatant;
 
             Direction dir = Utility.GetDirection(this, pnt);
@@ -334,13 +334,14 @@ namespace Server.Mobiles
 
                     if (Spells.SpellHelper.CheckMulti(p, Map))
                     {
-                        BaseGalleon galleon = BaseGalleon.FindGalleonAt(p, Map);
-                        if (galleon != null && !m_HasPushed)
+                        BaseBoat boat = BaseBoat.FindBoatAt(p, Map);
+
+                        if (boat != null && !m_HasPushed)
                         {
                             int damage = Utility.RandomMinMax(MinBoatDamage, MaxBoatDamage);
-                            galleon.OnTakenDamage(this, damage);
+                            boat.OnTakenDamage(this, damage);
 
-                            galleon.StartMove(dir, 1,0x2, galleon.SlowDriftInterval, true, false);
+                            boat.StartMove(dir, 1,0x2, boat.SlowDriftInterval, true, false);
                             m_HasPushed = true;
                         }
                         continue;
