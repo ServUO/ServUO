@@ -19,6 +19,11 @@ namespace Server.Items
             Movable = false;
         }
 
+        public override void OnDoubleClickDead(Mobile m)
+        {
+            OnDoubleClick(m);
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             from.RevealingAction();
