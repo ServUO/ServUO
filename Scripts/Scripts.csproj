@@ -2919,7 +2919,6 @@
     <Compile Include="Items\Quest\DeBoorShield.cs" />
     <Compile Include="Items\Artifacts\Consumables\GobletOfCelebration.cs" />
     <Compile Include="Quests\HonorOfDeBoorsQuest.cs" />
-    <Compile Include="Items\Addons\PotteryWheelAddon.cs" />
     <Compile Include="Mobiles\NPCs\Valem.cs" />
     <Compile Include="Items\Books\BookOfCircles.cs" />
     <Compile Include="Mobiles\Normal\GargoyleGuardian.cs" />
