@@ -1159,74 +1159,18 @@ namespace Server
                 name = String.Empty;
             }
 
-            string prefix = "";
-
-            if (ShowFameTitle && (m_Player || m_Body.IsHuman) && m_Fame >= 10000)
-            {
-                prefix = m_Female ? "Lady" : "Lord";
-            }
+            string prefix = ""; // still needs to be defined due to cliloc. Only defined in PlayerMobile. BaseCreature and BaseVendor require the suffix for the title and use the same cliloc.
 
             string suffix = "";
 
             if (PropertyTitle && Title != null && Title.Length > 0)
             {
                 suffix = Title;
-            }
-
-            BaseGuild guild = m_Guild;
-
-            if (guild != null && m_Player && m_DisplayGuildAbbr)
-            {
-                if (suffix.Length > 0)
-                    suffix = String.Format("{0} [{1}]", suffix, Utility.FixHtml(guild.Abbreviation));
-                else
-                    suffix = String.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));
-            }
+            }          
 
             suffix = ApplyNameSuffix(suffix);
 
-            list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~
-
-            if (guild != null && (m_DisplayGuildTitle || (m_Player && guild.Type != GuildType.Regular)))
-            {
-                string type;
-
-                if (guild.Type >= 0 && (int)guild.Type < m_GuildTypes.Length)
-                {
-                    type = m_GuildTypes[(int)guild.Type];
-                }
-                else
-                {
-                    type = "";
-                }
-
-                string title = GuildTitle;
-
-                if (title == null)
-                {
-                    title = "";
-                }
-                else
-                {
-                    title = title.Trim();
-                }
-
-                if (NewGuildDisplay && title.Length > 0)
-                {
-                    list.Add("{0}, {1}", Utility.FixHtml(title), Utility.FixHtml(guild.Name));
-                }
-                else
-                {
-                    if (title.Length > 0)
-                    {
-                        list.Add("{0}, {1} Guild{2}", Utility.FixHtml(title), Utility.FixHtml(guild.Name), type);
-                    }
-                    else
-                    {
-                        list.Add(Utility.FixHtml(guild.Name));
-                    }
-                }
-            }
+            list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~           
         }
 
 		public virtual bool NewGuildDisplay { get { return false; } }
