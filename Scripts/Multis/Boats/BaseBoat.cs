@@ -54,6 +54,9 @@ namespace Server.Multis
             return null;
         }
 
+        public virtual int ZSurface { get { return 0; } }
+        public virtual int RuneOffset { get { return 0; } }
+
         private int m_ClientSpeed;
 
         public DamageLevel m_DamageTaken;
@@ -368,6 +371,36 @@ namespace Server.Multis
             }
         }
 
+        public virtual bool IsEnemy(BaseBoat boat)
+        {
+            if (Map != null && Map.Rules == MapRules.FeluccaRules)
+                return true;
+
+            Mobile thisOwner = Owner;
+            Mobile themOwner = boat.Owner;
+
+            if (thisOwner == null || themOwner == null)
+                return true;
+
+            if (thisOwner is PlayerMobile && themOwner is PlayerMobile && Map != Map.Felucca)
+                return false;
+
+            return thisOwner.CanBeHarmful(themOwner, false);
+        }
+
+        public virtual bool IsEnemy(Mobile from)
+        {
+            if (Map != null && Map.Rules == MapRules.FeluccaRules)
+                return true;
+
+            Mobile thisOwner = Owner;
+
+            if (thisOwner == null || from == null || thisOwner is BaseCreature || from is BaseCreature)
+                return true;
+
+            return from.CanBeHarmful(thisOwner, false);
+        }
+
         public virtual void OnTakenDamage(int damage)
         {
             OnTakenDamage(null, damage);
@@ -375,18 +408,16 @@ namespace Server.Multis
 
         public virtual void OnTakenDamage(Mobile damager, int damage)
         {
-            m_Hits -= damage;
+            Hits -= damage;
 
             if (damager != null)
                 SendDamagePacket(damager, damage);
 
-            if (m_Hits < 0)
-                m_Hits = 0;
+            if (Hits < 0)
+                Hits = 0;
 
-            if (m_Hits > MaxHits)
-                m_Hits = MaxHits;
-
-            ComputeDamage();
+            if (Hits > MaxHits)
+                Hits = MaxHits;
         }
 
         public virtual void SendDamagePacket(Mobile from, int amount)
@@ -1104,7 +1135,6 @@ namespace Server.Multis
         }
 
         #region Repairs
-        private int m_PreRepairHits;
         private EmergencyRepairDamageTimer m_EmergencyRepairTimer;
 
         public static readonly int EmergencyRepairClothCost = 55;
@@ -1205,11 +1235,9 @@ namespace Server.Multis
                     hold.ConsumeTotal(typeof(UncutCloth), toConsume);
                 }
 
-                from.SendLocalizedMessage(1116592, ts.TotalMinutes.ToString()); // Your ship is underway with emergency repairs holding for an estimated ~1_TIME~ more minutes.
-                m_PreRepairHits = m_Hits;
-                m_Hits = (int)(MaxHits * .40);
+                from.SendLocalizedMessage(1116592, ts.TotalMinutes.ToString()); // Your ship is underway with emergency repairs holding for an estimated ~1_TIME~ more minutes.                
                 m_EmergencyRepairTimer = new EmergencyRepairDamageTimer(this, ts);
-                ComputeDamage();
+
                 return true;
             }
             return false;
@@ -1218,9 +1246,6 @@ namespace Server.Multis
         public void EndEmergencyRepairEffects()
         {
             m_EmergencyRepairTimer = null;
-            m_Hits = m_PreRepairHits;
-            m_PreRepairHits = 0;
-            ComputeDamage();
 
             SendMessageToAllOnBoard(1116765);  // The emergency repairs have given out!
         }
@@ -1923,12 +1948,12 @@ namespace Server.Multis
             if (Pilot != null)
                 Pilot.RevealingAction();
 
-            if (CheckDecay() || Scuttled || clientSpeed == 0x0)
+            if (CheckDecay() || !IsUnderEmergencyRepairs() && Scuttled || clientSpeed == 0x0)
                 return false;
 
             Moving = dir;
 
-            if (IsUnderEmergencyRepairs())
+            if (IsUnderEmergencyRepairs() || DamageTaken >= DamageLevel.Moderately)
             {
                 Speed = 1;
                 m_ClientSpeed = 0x2;

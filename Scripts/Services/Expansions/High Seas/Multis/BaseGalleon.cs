@@ -92,9 +92,6 @@ namespace Server.Multis
         public virtual int CaptiveOffset { get { return 0; } }
         public virtual double CannonDamageMod { get { return 1.0; } }
 
-        public virtual int RuneOffset { get { return 0; } }
-        public virtual int ZSurface { get { return 0; } }
-
         public abstract void AddMooringLines(Direction d);
         public abstract void AddCannonTiles(Direction d);
         public abstract void AddHoldTiles(Direction d);
@@ -414,33 +411,6 @@ namespace Server.Multis
                 return SecurityLevel.Captain;
 
             return m_SecurityEntry.GetEffectiveLevel(from);
-        }
-
-        public virtual bool IsEnemy(BaseGalleon galleon)
-        {
-            if (Map != null && Map.Rules == MapRules.FeluccaRules)
-                return true;
-
-            Mobile thisOwner = Owner;
-            Mobile themOwner = galleon.Owner;
-
-            if (thisOwner == null || themOwner == null)
-                return true;
-
-            return thisOwner.CanBeHarmful(themOwner, false);
-        }
-
-        public virtual bool IsEnemy(Mobile from)
-        {
-            if (Map != null && Map.Rules == MapRules.FeluccaRules)
-                return true;
-
-            Mobile thisOwner = Owner;
-
-            if (thisOwner == null || from == null || thisOwner is BaseCreature || from is BaseCreature)
-                return true;
-
-            return from.CanBeHarmful(thisOwner, false);
         }
 
         public bool IsPublic()

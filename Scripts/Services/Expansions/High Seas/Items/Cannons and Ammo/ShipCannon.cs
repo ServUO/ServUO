@@ -5,14 +5,20 @@ using System.Linq;
 using Server;
 using Server.Mobiles;
 using Server.ContextMenus;
-using Server.Targeting;
 using Server.Gumps;
-using Server.Misc;
 using Server.Multis;
 using Server.Network;
 
 namespace Server.Items
 {
+    public enum CannonAction
+    {
+        None,
+        Stop,
+        Fail,
+        Finish
+    }
+
     public abstract class BaseShipCannon : Container, IShipCannon
     {
         private int m_Hits;
@@ -21,13 +27,19 @@ namespace Server.Items
         public int Hits { get { return m_Hits; } set { m_Hits = value; InvalidateDamageState(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Charged { get; set; }
+        public bool Processing { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Loaded { get; set; }
+        public CannonAction Prepered { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Primed { get; set; }
+        public CannonAction Charged { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CannonAction Loaded { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CannonAction Primed { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public AmmunitionType AmmoType { get; set; }
@@ -54,10 +66,10 @@ namespace Server.Items
         public virtual TimeSpan ActionTime { get { return TimeSpan.FromSeconds(1.5); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool CanLight { get { return Loaded && Charged && Primed; } }
+        public bool CanLight => Prepered == CannonAction.Finish && Loaded == CannonAction.Finish && Charged == CannonAction.Finish && Primed == CannonAction.Finish;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Empty { get { return !Loaded && !Charged && !Primed && Items.Count == 0; } }
+        public bool Empty { get { return !CanLight && Items.Count == 0; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double Durability { get { return ((double)m_Hits / (double)MaxHits) * 100.0; } }
@@ -82,67 +94,126 @@ namespace Server.Items
             MaxItems = 3;
         }
 
-        public void TryCharge(Mobile m)
+        public void TryPrep(Mobile m)
         {
-            if (Charged)
-            {
-                TryLoad(m);
-            }
+            Processing = true;
+
+            m.Animate(AnimationType.Attack, 3);
+
+            if (Prepered == CannonAction.Stop)
+                AddAction(m, 1149679); // Preparation resumed.
             else
+                AddAction(m, 1149641); // Preparing to fire...
+
+            Timer.DelayCall(TimeSpan.FromSeconds(4.0), () =>
             {
-                AddAction(m, 1149644); // Charging started.
-                Timer.DelayCall(ActionTime, () =>
+                bool ramrod = m.Backpack.GetAmount(typeof(Ramrod)) >= 1;
+
+                if (ramrod)
                 {
-                    var charge = FindItemByType<PowderCharge>();
-
-                    if (charge != null)
+                    if (Galleon.Contains(m))
                     {
-                        if (m.InRange(Location, 2))
-                        {
-                            charge.Consume();
-                            Charged = true;
-                            AddAction(m, 1149646); // Charging Finished
-                            DoAreaMessage(1116061, 10, m); //~1_NAME~ finishes charging the cannon.
-                            InvalidateProperties();
-
-                            TryLoad(m);
-                            ResendGump(m);
-                        }
-                        else
-                        {
-                            DoAreaMessage(1116056, 10, m); //~1_NAME~ cancels the effort of charging the cannon and retrieves the powder charge.
-                            AddAction(m, 1149645); // Charging Canceled
-                            ResendGump(m);
-                        }
+                        Prepered = CannonAction.Finish;
+                        TryCharge(m);
+                        ResendGump(m);
                     }
                     else
                     {
-                        m.SendLocalizedMessage(1116014); // The magazine does not have a powder charge to charge this cannon with.
-
-                        AddAction(m, 1149665); // Need Powder Charge
+                        Processing = false;
+                        Prepered = CannonAction.Stop;
+                        AddAction(m, 1149675); // Preparation stopped.
                         ResendGump(m);
                     }
-                });
-            }
+                }
+                else
+                {
+                    Processing = false;
+                    AddAction(m, 1149660); // You need a ramrod.
+                    m.SendLocalizedMessage(1149660); // You need a ramrod.
+                    ResendGump(m);
+                }
+            });
+        }
+
+        public void TryCharge(Mobile m)
+        {
+            Processing = true;
+
+            m.Animate(AnimationType.Attack, 3);
+
+            if (Charged == CannonAction.Stop)
+                AddAction(m, 1149680); // Charging resumed.
+            else
+                AddAction(m, 1149644); // Charging started.
+
+            Timer.DelayCall(ActionTime, () =>
+            {
+                var charge = FindItemByType<PowderCharge>();
+
+                if (charge != null)
+                {
+                    if (Galleon.Contains(m))
+                    {
+                        charge.Consume();
+                        Charged = CannonAction.Finish;
+                        AddAction(m, 1149646); // Charging finished.
+                        InvalidateProperties();
+
+                        TryLoad(m);
+                        ResendGump(m);
+                    }
+                    else
+                    {
+                        Processing = false;
+                        Charged = CannonAction.Stop;
+                        AddAction(m, 1149676); // Charging stopped.
+                        DoAreaMessage(1116052, 10, null); // The effort to charge the cannon has paused.
+                        ResendGump(m);
+                    }
+                }
+                else
+                {
+                    Processing = false;
+                    m.SendLocalizedMessage(1116014); // The magazine does not have a powder charge to charge this cannon with.
+
+                    AddAction(m, 1149665); // Need powder charge.
+                    ResendGump(m);
+                }
+            });
         }
 
         public void TryLoad(Mobile m)
         {
-            if (Loaded)
-            {
-                TryPrime(m);
-            }
+            Processing = true;
+
+            m.Animate(AnimationType.Attack, 3);
+
+            if (Loaded == CannonAction.Stop)
+                AddAction(m, 1149681); // Loading resumed.
             else
+                AddAction(m, 1149647); // Loading started.
+
+            AmmoType = AmmunitionType.Empty;
+
+            Timer.DelayCall(ActionTime, () =>
             {
-                AddAction(m, 1149647); // loading started
-                AmmoType = AmmunitionType.Empty;
+                ICannonAmmo ammo = null;
 
-                Timer.DelayCall(ActionTime, () =>
+                var cannon = FindItemByType<Cannonball>();
+                var grapeshot = FindItemByType<Grapeshot>();
+
+                if (cannon != null)
                 {
-                    ICannonAmmo ammo = null;
-
-                    var cannon = FindItemByType<Cannonball>();
-                    var grapeshot = FindItemByType<Grapeshot>();
+                    ammo = cannon;
+                }
+                else if (grapeshot != null)
+                {
+                    ammo = grapeshot;
+                }
+                else
+                {
+                    cannon = m.Backpack.FindItemByType<Cannonball>();
+                    grapeshot = m.Backpack.FindItemByType<Grapeshot>();
 
                     if (cannon != null)
                     {
@@ -152,101 +223,106 @@ namespace Server.Items
                     {
                         ammo = grapeshot;
                     }
-                    else
-                    {
-                        cannon = m.Backpack.FindItemByType<Cannonball>();
-                        grapeshot = m.Backpack.FindItemByType<Grapeshot>();
+                }
 
-                        if (cannon != null)
-                        {
-                            ammo = cannon;
-                        }
-                        else if (grapeshot != null)
-                        {
-                            ammo = grapeshot;
-                        }
-                    }
-
-                    if (ammo != null && ammo is Item)
+                if (ammo != null && ammo is Item)
+                {
+                    if (Galleon.Contains(m))
                     {
-                        if (m.InRange(Location, 2))
-                        {
-                            Loaded = true;
-                            AmmoType = ammo.AmmoType;
-                            ((Item)ammo).Consume();
-                            InvalidateProperties();
-                            AddAction(m, 1149649); // Loading Finished
+                        Loaded = CannonAction.Finish;
+                        AmmoType = ammo.AmmoType;
+                        ((Item)ammo).Consume();
+                        InvalidateProperties();
+                        AddAction(m, 1149649); // Loading finished.
 
-                            TryPrime(m);
-                            ResendGump(m);
-                        }
-                        else
-                        {
-                            DoAreaMessage(1116057, 10, m); //~1_NAME~ cancels the effort of loading the cannon and retrieves the cannonball.
-                            AddAction(m, 1149648); // Loading canceled.
-                            ResendGump(m);
-                        }
-                    }
-                    else
-                    {
-                        m.SendLocalizedMessage(1158933); // The magazine does not have ammo to load this cannon with.
-                        AddAction(m, 1158933); // Need ammo.
+                        TryPrime(m);
                         ResendGump(m);
                     }
-                });
-            }
+                    else
+                    {
+                        Processing = false;
+                        Loaded = CannonAction.Stop;
+                        DoAreaMessage(1116053, 10, null); // The effort to load the cannon has paused.
+                        AddAction(m, 1149677); // Loading stopped.
+                        ResendGump(m);
+                    }
+                }
+                else
+                {
+                    Processing = false;
+                    Loaded = CannonAction.Fail;
+                    m.SendLocalizedMessage(1158933); // The magazine does not have ammo to load this cannon with.
+                    AddAction(m, 1158933); // Need ammo.
+                    ResendGump(m);
+                }
+            });
         }
 
         public void TryPrime(Mobile m)
         {
-            if (!Primed)
+            Processing = true;
+
+            m.Animate(AnimationType.Attack, 3);
+
+            if (Primed == CannonAction.Stop)
+                AddAction(m, 1149682); // Priming resumed.
+            else
+                AddAction(m, 1149650); // Priming started.
+
+            Timer.DelayCall(ActionTime, () =>
             {
-                Timer.DelayCall(ActionTime, () =>
+                var fuse = FindItemByType<FuseCord>();
+
+                if (fuse != null)
                 {
-                    AddAction(m, 1149650); // priming started
-                    var fuse = FindItemByType<FuseCord>();
-
-                    if (fuse != null)
+                    if (Galleon.Contains(m))
                     {
-                        if (m.InRange(Location, 2))
-                        {
-                            fuse.Consume();
-                            Primed = true;
-                            InvalidateProperties();
+                        fuse.Consume();
+                        Primed = CannonAction.Finish;
+                        InvalidateProperties();
 
-                            DoAreaMessage(1116064, 10, m); //~1_NAME~ finishes priming the cannon. It is ready to be fired!
-                            AddAction(m, 1149652); // Ready to fire.
-                            ResendGump(m);
-                        }
-                        else
-                        {
-                            DoAreaMessage(1116059, 10, m); //~1_NAME~ cancels the effort of priming the cannon and retrieves the cannon fuse.
-                            AddAction(m, 1149651); // priming canceled
-                            ResendGump(m);
-                        }
+                        AddAction(m, 1149652); // Ready to fire.
+                        ResendGump(m);
                     }
                     else
                     {
-                        AddAction(m, 1149661); // You need fuse.
+                        Primed = CannonAction.Stop;
+                        DoAreaMessage(1116053, 10, null); // The effort to load the cannon has paused.
+                        AddAction(m, 1149678); // Priming stopped.
                         ResendGump(m);
                     }
-                });
-            }
+                }
+                else
+                {
+                    Primed = CannonAction.Fail;
+                    AddAction(m, 1149661); // You need fuse.
+                    m.SendLocalizedMessage(1158939); // The magazine does not have a fuse to prime the cannon with.
+                    ResendGump(m);
+                }
+
+                Processing = false;
+            });
         }
 
         public void Unload(Mobile m)
         {
-            if (Primed)
+            Item item;
+
+            if (Primed == CannonAction.Finish)
             {
-                m.AddToBackpack(new FuseCord());
+                item = new FuseCord();
+
+                if (!TryDropItem(m, item, false))
+                {
+                    m.AddToBackpack(item);
+                }
+
                 AddAction(m, 1149686); // Fuse removed.
-                Primed = false;
+                Primed = CannonAction.None;
             }
 
-            if (Loaded)
+            if (Loaded == CannonAction.Finish)
             {
-                Item item;
-
                 switch (AmmoType)
                 {
                     default: item = null; break;
@@ -258,20 +334,29 @@ namespace Server.Items
 
                 if (item != null)
                 {
-                    DoAreaMessage(AmmoType == AmmunitionType.Grapeshot ? 1116067 : 1116066, 10, m); //~1_NAME~ carefully removes the powder charge from the cannon.
                     AddAction(m, 1149685); // Ammunition removed.
-                    m.AddToBackpack(item);
+
+                    if (!TryDropItem(m, item, false))
+                    {
+                        m.AddToBackpack(item);
+                    }
                 }
 
                 AmmoType = AmmunitionType.Empty;
-                Loaded = false;
+                Loaded = CannonAction.None;
             }
 
-            if (Charged)
+            if (Charged == CannonAction.Finish)
             {
-                m.AddToBackpack(new PowderCharge());
+                item = new PowderCharge();
+
+                if (!TryDropItem(m, item, false))
+                {
+                    m.AddToBackpack(item);
+                }
+
                 AddAction(m, 1149684); // Powder charge removed.
-                Charged = false;
+                Charged = CannonAction.None;
             }
         }
 
@@ -309,6 +394,11 @@ namespace Server.Items
             typeof(Cannonball), typeof(Grapeshot), typeof(PowderCharge), typeof(FuseCord)
         };
 
+        public override void OnDoubleClickDead(Mobile m)
+        {
+            OnDoubleClick(m);
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (Galleon.GetSecurityLevel(from) >= SecurityLevel.Crewman)
@@ -320,8 +410,12 @@ namespace Server.Items
                     Viewing.Add(from);
                 }
 
-                AddAction(from, from.InRange(Location, 2) ? 1149653 : 1149654); // You are now operating the cannon. : You are too far away.
+                AddAction(from, from.Alive && Galleon.Contains(from) && from.InRange(Location, 2) ? 1149653 : 1149654); // You are now operating the cannon. : You are too far away.
                 ResendGump(from, TimeSpan.FromMilliseconds(500));
+            }
+            else
+            {
+                from.Say(1010436); // You do not have permission to do this.
             }
         }
 
@@ -348,20 +442,14 @@ namespace Server.Items
             if (from == null)
                 return;
 
-            IPooledEnumerable eable = this.GetMobilesInRange(6);
-
-            foreach (Mobile mob in eable)
-            {
-                if (mob != from && mob is PlayerMobile && mob.InLOS(this))
+            Galleon.GetEntitiesOnBoard().OfType<PlayerMobile>().Where(x => x != from && Galleon.GetSecurityLevel(x) > SecurityLevel.Denied)
+                .ToList().ForEach(y =>
                 {
                     if (from != null)
-                        mob.SendLocalizedMessage(cliloc, from.Name);
+                        y.SendLocalizedMessage(cliloc, from.Name);
                     else
-                        mob.SendLocalizedMessage(cliloc);
-                }
-            }
-
-            eable.Free();
+                        y.SendLocalizedMessage(cliloc);
+                });
         }
 
         public void TryLightFuse(Mobile from)
@@ -415,31 +503,14 @@ namespace Server.Items
                 return;
             }
 
-            AddAction(from, 1149669); //Need a lighted match.
+            AddAction(from, 1149669); // Need a lighted fire source.
+            from.SendLocalizedMessage(1149669); // Need a lighted fire source.
         }
 
         public void LightFuse(Mobile from)
         {
-            if (!CheckRegion(from))
-                return;
-
-            DoAreaMessage(1116080, 10, from);
-            AddAction(from, 1149683); //The fuse is lit!
-            Effects.PlaySound(this.Location, this.Map, 0x666);
+            AddAction(from, 1149683); // The fuse is lit!
             Timer.DelayCall(TimeSpan.FromSeconds(1.5), Shoot, from);
-        }
-
-        public bool CheckRegion(Mobile from)
-        {
-            Region r = Region.Find(from.Location, from.Map);
-
-            if (r is Server.Regions.GuardedRegion && !((Server.Regions.GuardedRegion)r).IsDisabled())
-            {
-                from.SendMessage("You are forbidden from discharging cannons within the town limits.");
-                return false;
-            }
-
-            return true;
         }
 
         public virtual void Shoot(object cannoneer)
@@ -458,12 +529,12 @@ namespace Server.Items
                 m_Hits -= Utility.RandomMinMax(0, 4);
 
             DoShootEffects();
-            AddAction(shooter, 1149691); //Fired successfully.
+            AddAction(shooter, 1149691); // Fired successfully.
 
             int xOffset = 0; int yOffset = 0;
             int currentRange = 0;
-            Point3D pnt = this.Location;
-            Map map = this.Map;
+            Point3D pnt = Location;
+            Map map = Map;
             Direction d = GetFacing();
 
             switch (d)
@@ -515,12 +586,48 @@ namespace Server.Items
                                 else
                                     newPoint = new Point3D(pnt.X + (xOffset * currentRange), pnt.Y + (yOffset + i), pnt.Z);
 
-                                BaseGalleon g = FindValidBoatTarget(newPoint, map, ammo);
+                                BaseBoat b = FindValidBoatTarget(newPoint, map, ammo);
 
-                                if (g != null && g != Galleon && g.IsEnemy(Galleon))
-                                    list.Add(g);
+                                if (b != null && b != Galleon && b.IsEnemy(Galleon))
+                                    list.Add(b);
+                            }
 
-                                damageables.AddRange(FindDamageables(shooter, newPoint, map, false, false, false, true, true));
+                            if (list.Count > 0)
+                            {
+                                IEntity toHit = list[Utility.Random(list.Count)];
+
+                                if (toHit is BaseBoat)
+                                {
+                                    Timer.DelayCall(delay, new TimerStateCallback(OnShipHit), new object[] { (BaseBoat)toHit, newPoint, ammo, shooter });
+                                    hit = true;
+                                }
+                                else if (toHit is DamageableItem)
+                                {
+                                    Timer.DelayCall(delay, new TimerStateCallback(OnDamageableItemHit), new object[] { (DamageableItem)toHit, newPoint, ammo, shooter });
+                                    hit = true;
+                                }
+                            }
+                        }
+                        break;
+                    case AmmunitionType.Grapeshot:
+                        {
+                            Point3D newPoint = pnt;
+                            List<IEntity> list = new List<IEntity>();
+                            List<IDamageable> damageables = new List<IDamageable>();
+
+                            for (int i = -lateralOffset; i <= lateralOffset; i++)
+                            {
+                                if (xOffset == 0)
+                                    newPoint = new Point3D(pnt.X + (xOffset + i), pnt.Y + (yOffset * currentRange), pnt.Z);
+                                else
+                                    newPoint = new Point3D(pnt.X + (xOffset * currentRange), pnt.Y + (yOffset + i), pnt.Z);
+
+                                BaseBoat b = FindValidBoatTarget(newPoint, map, ammo);
+
+                                if (b != null && b != Galleon && b.IsEnemy(Galleon))
+                                    list.Add(b);
+
+                                damageables.AddRange(FindDamageables(shooter, newPoint, map, true, true, false, true, true));
                             }
 
                             foreach (var m in damageables)
@@ -550,28 +657,6 @@ namespace Server.Items
                             }
                         }
                         break;
-                    case AmmunitionType.Grapeshot:
-                        {
-                            Point3D newPoint = pnt;
-                            List<Mobile> mobiles = new List<Mobile>();
-
-                            for (int i = -lateralOffset; i <= lateralOffset; i++)
-                            {
-                                if (xOffset == 0)
-                                    newPoint = new Point3D(pnt.X + (xOffset + i), pnt.Y + (yOffset * currentRange), pnt.Z);
-                                else
-                                    newPoint = new Point3D(pnt.X + (xOffset * currentRange), pnt.Y + (yOffset + i), pnt.Z);
-
-                                mobiles.AddRange(FindDamageables(shooter, newPoint, map, true, true, true, true, false).OfType<Mobile>());
-                            }
-
-                            if (mobiles.Count > 0)
-                            {
-                                Timer.DelayCall(delay, new TimerStateCallback(OnMobileHit), new object[] { mobiles, newPoint, ammo, shooter });
-                                hit = true;
-                            }
-                        }
-                        break;
                 }
 
                 if (hit && ammo.SingleTarget)
@@ -587,23 +672,23 @@ namespace Server.Items
             }
         }
 
-        private BaseGalleon FindValidBoatTarget(Point3D newPoint, Map map, AmmoInfo info)
+        private BaseBoat FindValidBoatTarget(Point3D newPoint, Map map, AmmoInfo info)
         {
-            BaseGalleon galleon = BaseGalleon.FindGalleonAt(newPoint, map);
+            BaseBoat boat = BaseBoat.FindBoatAt(newPoint, map);
 
-            if (galleon != null && info.RequiresSurface)
+            if (boat != null && info.RequiresSurface)
             {
-                int d = galleon is BritannianShip ? 3 : 2;
-                switch (galleon.Facing)
+                int d = boat is BritannianShip ? 3 : 2;
+                switch (boat.Facing)
                 {
                     case Direction.North:
                     case Direction.South:
-                        if (newPoint.X <= galleon.X - d || newPoint.X >= galleon.X + d)
+                        if (newPoint.X <= boat.X - d || newPoint.X >= boat.X + d)
                             return null;
                         break;
                     case Direction.East:
                     case Direction.West:
-                        if (newPoint.Y <= galleon.Y - d || newPoint.Y >= galleon.Y + d)
+                        if (newPoint.Y <= boat.Y - d || newPoint.Y >= boat.Y + d)
                             return null;
                         break;
                 }
@@ -617,20 +702,20 @@ namespace Server.Items
 
                     if (!isWater && id.Surface && !id.Impassable)
                     {
-                        return galleon;
+                        return boat;
                     }
                 }
 
                 return null;
             }
 
-            return galleon;
+            return boat;
         }
 
         public void DoShootEffects()
         {
-            Point3D p = this.Location;
-            Map map = this.Map;
+            Point3D p = Location;
+            Map map = Map;
 
             p.Z -= 3;
 
@@ -642,8 +727,8 @@ namespace Server.Items
                 case Direction.West: p.X--; break;
             }
 
-            Effects.SendLocationEffect(p, map, 14120, 15, 10);
-            Effects.PlaySound(p, map, 0x664);
+            Effects.SendPacket(p, map, new GraphicalEffect(EffectType.FixedXYZ, Serial.Zero, Serial.Zero, 0x3728, p, p, 14, 14, true, true));
+            Effects.PlaySound(Location, map, 0x11C);
         }
 
         public void InvalidateDamageState()
@@ -666,11 +751,11 @@ namespace Server.Items
 
             if (Durability <= 0)
             {
-                DoAreaMessage(1116297, 5, null); //The ship cannon has been destroyed!
+                DoAreaMessage(1116297, 5, null); // The ship cannon has been destroyed!
                 Delete();
 
-                if (from != null && from.InRange(this.Location, 5))
-                    from.SendLocalizedMessage(1116297); //The ship cannon has been destroyed!
+                if (from != null && from.InRange(Location, 5))
+                    from.SendLocalizedMessage(1116297); // The ship cannon has been destroyed!
             }
 
             InvalidateProperties();
@@ -678,10 +763,11 @@ namespace Server.Items
 
         public void ClearCannon()
         {
-            Charged = false;
-            Loaded = false;
+            Prepered = CannonAction.None;
+            Charged = CannonAction.None;
+            Loaded = CannonAction.None;
             AmmoType = AmmunitionType.Empty;
-            Primed = false;
+            Primed = CannonAction.None;
 
             InvalidateProperties();
         }
@@ -689,16 +775,13 @@ namespace Server.Items
         public virtual void OnShipHit(object obj)
         {
             object[] list = (object[])obj;
-            BaseGalleon target = list[0] as BaseGalleon;
+            BaseBoat target = list[0] as BaseBoat;
             Point3D pnt = (Point3D)list[1];
             AmmoInfo ammoInfo = list[2] as AmmoInfo;
             Mobile shooter = list[3] as Mobile;
 
             if (target != null && Galleon != null)
             {
-                int damage = (int)(ammoInfo.GetDamage(this) * Galleon.CannonDamageMod);
-                target.OnTakenDamage(shooter, damage);
-
                 int z = target.ZSurface;
 
                 if (target.TillerMan != null && target.TillerMan is IEntity)
@@ -739,42 +822,24 @@ namespace Server.Items
                     }
                 }
 
-                Effects.SendLocationEffect(hit, target.Map, Utility.RandomBool() ? 14000 : 14013, 15, 10);
-                Effects.PlaySound(hit, target.Map, 0x207);
+                int damage = 0;
 
-                Mobile victim = target.Owner;
-
-                if (victim != null && target.Contains(victim) && shooter.CanBeHarmful(victim, false))
+                if (ammoInfo.AmmoType == AmmunitionType.Grapeshot)
                 {
-                    shooter.DoHarmful(victim);
+                    for (int count = 15; count > 0; count--)
+                    {
+                        damage = (int)(ammoInfo.GetDamage(this) * Galleon.CannonDamageMod);
+                        Point3D loc = new Point3D(hit.X + Utility.RandomMinMax(0, 4), hit.Y + Utility.RandomMinMax(0, 4), hit.Z);
+                        Effects.SendPacket(loc, target.Map, new GraphicalEffect(EffectType.FixedXYZ, Serial.Zero, Serial.Zero, 0x36CB, loc, loc, 15, 15, true, true));
+                        target.OnTakenDamage(shooter, damage);
+                        MobileOnBoardDamage(shooter, loc, ammoInfo);
+                    }
                 }
                 else
                 {
-                    List<Mobile> candidates = new List<Mobile>();
-                    SecurityLevel highest = SecurityLevel.Passenger;
-
-                    foreach (var mob in target.GetMobilesOnBoard().OfType<PlayerMobile>().Where(pm => shooter.CanBeHarmful(pm, false)))
-                    {
-                        if (Galleon.GetSecurityLevel(mob) > highest)
-                        {
-                            candidates.Insert(0, mob);
-                        }
-                        else
-                        {
-                            candidates.Add(mob);
-                        }
-                    }
-
-                    if (candidates.Count > 0)
-                    {
-                        shooter.DoHarmful(candidates[0]);
-                    }
-                    else if (victim != null && shooter.IsHarmfulCriminal(victim))
-                    {
-                        shooter.CriminalAction(false);
-                    }
-
-                    ColUtility.Free(candidates);
+                    damage = (int)(ammoInfo.GetDamage(this) * Galleon.CannonDamageMod);
+                    Effects.SendPacket(hit, target.Map, new GraphicalEffect(EffectType.FixedXYZ, Serial.Zero, Serial.Zero, 0x36CB, hit, hit, 15, 15, true, true));
+                    target.OnTakenDamage(shooter, damage);
                 }
 
                 if (Galleon.Map != null)
@@ -794,6 +859,32 @@ namespace Server.Items
             }
         }
 
+        public void MobileOnBoardDamage(Mobile shooter, Point3D pnt, AmmoInfo info)
+        {
+            List<IDamageable> list = new List<IDamageable>();
+
+            if (Map == null || Map == Map.Internal || Galleon == null)
+                return;
+
+            IPooledEnumerable eable = Map.GetObjectsInRange(pnt, 0);
+
+            foreach (IDamageable dam in eable.OfType<IDamageable>())
+            {
+                Mobile mob = dam as Mobile;
+
+                if (mob != null && (!shooter.CanBeHarmful(mob, false) || Galleon.Contains(mob)))
+                    continue;
+
+                if (mob is PlayerMobile || mob is BaseCreature)
+                {
+                    shooter.DoHarmful(mob);
+                    AOS.Damage(mob, shooter, 35, info.PhysicalDamage, info.FireDamage, info.ColdDamage, info.PoisonDamage, info.EnergyDamage);
+                }
+            }
+
+            eable.Free();
+        }
+
         public virtual void OnMobileHit(object obj)
         {
             object[] objects = (object[])obj;
@@ -809,14 +900,9 @@ namespace Server.Items
 
             if (toHit != null)
             {
-                //only cannonballs will get the damage bonus
-                //if (toHit is BaseSeaChampion && info.AmmoType != AmmunitionType.Empty && info.AmmoType == AmmunitionType.Cannonball)
-                //   damage *= 75;
-
+                Effects.SendPacket(toHit.Location, toHit.Map, new GraphicalEffect(EffectType.FixedXYZ, Serial.Zero, Serial.Zero, 0x36CB, toHit.Location, toHit.Location, 15, 15, true, true));
                 shooter.DoHarmful(toHit);
                 AOS.Damage(toHit, shooter, damage, info.PhysicalDamage, info.FireDamage, info.ColdDamage, info.PoisonDamage, info.EnergyDamage);
-                Effects.SendLocationEffect(toHit.Location, toHit.Map, Utility.RandomBool() ? 14000 : 14013, 15, 10);
-                Effects.PlaySound(toHit.Location, toHit.Map, 0x207);
             }
         }
 
@@ -870,7 +956,7 @@ namespace Server.Items
                 if (pet && mob is BaseCreature && (((BaseCreature)mob).Controlled || ((BaseCreature)mob).Summoned))
                     list.Add(mob);
 
-                if (seacreature && mob is BaseSeaChampion)
+                if (seacreature && (mob is BaseSeaChampion || mob is Kraken))
                     list.Add(mob);
             }
 
@@ -886,7 +972,6 @@ namespace Server.Items
             if (pack == null)
                 return;
 
-            //double ingotsNeeded = 36 * (100 - Durability);
             double ingotsNeeded = 36 * (int)DamageState;
 
             ingotsNeeded -= ((double)from.Skills[SkillName.Blacksmith].Value / 200.0) * ingotsNeeded;
@@ -937,7 +1022,7 @@ namespace Server.Items
             percRepaired += Durability;
             if (percRepaired > 100) percRepaired = 100;
 
-            from.SendLocalizedMessage(1116605, String.Format("{0}\t{1}", ((int)temp).ToString(), ((int)percRepaired).ToString())); //You make repairs to the cannon using ~1_METAL~ ingots. The cannon is now ~2_DMGPCT~% repaired.
+            from.SendLocalizedMessage(1116605, string.Format("{0}\t{1}", ((int)temp).ToString(), ((int)percRepaired).ToString())); //You make repairs to the cannon using ~1_METAL~ ingots. The cannon is now ~2_DMGPCT~% repaired.
         }
 
         public void ResendGump(Mobile from)
@@ -947,6 +1032,11 @@ namespace Server.Items
 
         public void ResendGump(Mobile from, TimeSpan delay)
         {
+            if (!Galleon.Contains(from))
+            {
+                Viewing.Remove(from);
+            }
+
             if (!Viewing.Contains(from))
             {
                 Viewing.Add(from);
@@ -1012,9 +1102,9 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1116026, Charged ? "#1116031" : "#1116032"); // Charged: ~1_VALUE~
-            list.Add(1116027, String.Format("{0}", AmmoInfo.GetAmmoName(this).ToString())); // Ammo: ~1_VALUE~
-            list.Add(1116028, Primed ? "#1116031" : "#1116032"); //Primed: ~1_VALUE~
+            list.Add(1116026, Charged == CannonAction.Finish ? "#1116031" : "#1116032"); // Charged: ~1_VALUE~
+            list.Add(1116027, string.Format("{0}", AmmoInfo.GetAmmoName(this).ToString())); // Ammo: ~1_VALUE~
+            list.Add(1116028, Primed == CannonAction.Finish ? "#1116031" : "#1116032"); //Primed: ~1_VALUE~
             list.Add(1116580 + (int)DamageState);
             list.Add(1072241, "{0}\t{1}\t{2}\t{3}", TotalItems, MaxItems, TotalWeight, MaxWeight);
         }
@@ -1037,7 +1127,7 @@ namespace Server.Items
             public BaseShipCannon Cannon { get; set; }
 
             public UnloadContext(BaseShipCannon cannon, Mobile from)
-                : base(1116072, 2)
+                : base(1116072, 2) // Unload
             {
                 From = from;
                 Cannon = cannon;
@@ -1083,13 +1173,17 @@ namespace Server.Items
 
             public override void OnClickDisabled()
             {
-                if (!Cannon.Empty)
+                if (Cannon.Galleon.GetSecurityLevel(From) != SecurityLevel.Captain)
                 {
-                    From.SendLocalizedMessage(1116321); //The ship cannon and magazine must be fully unloaded before it can be dismantled.
+                    From.SendLocalizedMessage(1149693); // You must own the ship to do that.
+                }
+                else if (!Cannon.Empty)
+                {
+                    From.SendLocalizedMessage(1116321); // The ship cannon and magazine must be fully unloaded before it can be dismantled.
                 }
                 else if (Cannon.DamageState != DamageLevel.Pristine)
                 {
-                    From.SendLocalizedMessage(1116322); //The ship cannon must be fully repaired before it can be dismantled.
+                    From.SendLocalizedMessage(1116322); // The ship cannon must be fully repaired before it can be dismantled.
                 }
             }
         }
@@ -1147,13 +1241,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
 
+            writer.Write((int)Prepered);
             writer.Write(Galleon);
-
-            writer.Write(Charged);
-            writer.Write(Loaded);
-            writer.Write(Primed);
+            writer.Write((int)Charged);
+            writer.Write((int)Loaded);
+            writer.Write((int)Primed);
             writer.Write((int)AmmoType);
             writer.Write((int)Position);
 
@@ -1165,15 +1259,42 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            Galleon = reader.ReadItem() as BaseGalleon;
+            switch (version)
+            {
+                case 1:
+                    {
+                        Prepered = (CannonAction)reader.ReadInt();
+                        Galleon = reader.ReadItem() as BaseGalleon;
+                        Charged = (CannonAction)reader.ReadInt();
+                        Loaded = (CannonAction)reader.ReadInt();
+                        Primed = (CannonAction)reader.ReadInt();
+                        AmmoType = (AmmunitionType)reader.ReadInt();
+                        Position = (ShipPosition)reader.ReadInt();
+                        m_Hits = reader.ReadInt();
 
-            Charged = reader.ReadBool();
-            Loaded = reader.ReadBool();
-            Primed = reader.ReadBool();
-            AmmoType = (AmmunitionType)reader.ReadInt();
-            Position = (ShipPosition)reader.ReadInt();
+                        return;
+                    }
+                case 0:
+                    {
+                        Galleon = reader.ReadItem() as BaseGalleon;
 
-            m_Hits = reader.ReadInt();
+                        if (reader.ReadBool())
+                            Charged = CannonAction.Finish;
+
+                        if (reader.ReadBool())
+                            Loaded = CannonAction.Finish;
+
+                        if (reader.ReadBool())
+                            Primed = CannonAction.Finish;
+
+                        AmmoType = (AmmunitionType)reader.ReadInt();
+                        Position = (ShipPosition)reader.ReadInt();
+
+                        m_Hits = reader.ReadInt();
+
+                        break;
+                    }
+            }
 
             InvalidateDamageState();
         }
@@ -1209,9 +1330,9 @@ namespace Server.Items
                     AddHtmlLocalized(45, 35, 70, 18, 1158890, 0x7FFF, false, false); // PREP
                 }
 
-                AddHtmlLocalized(115, 53, 115, 18, Cannon.Charged ? 1149631 : 1149632, Cannon.Charged ? 0x1FE7 : 0x7CE7, false, false); // Charged / Not Charged
-                AddHtmlLocalized(115, 71, 115, 18, 1114057, Cannon.Loaded ? AmmoInfo.GetAmmoName(Cannon).ToString() : "#1149636", Cannon.Loaded ? 0x1FE7 : 0x7CE7, false, false); // Cannonball / Not Loaded
-                AddHtmlLocalized(115, 89, 115, 18, Cannon.Primed ? 1149640 : 1149639, Cannon.Primed ? 0x1FE7 : 0x7CE7, false, false); // Primed / No Fuse
+                AddHtmlLocalized(115, 53, 115, 18, Cannon.Charged == CannonAction.Finish ? 1149631 : 1149632, Cannon.Charged == CannonAction.Finish ? 0x1FE7 : 0x7CE7, false, false); // Charged / Not Charged
+                AddHtmlLocalized(115, 71, 115, 18, 1114057, Cannon.Loaded == CannonAction.Finish ? AmmoInfo.GetAmmoName(Cannon).ToString() : "#1149636", Cannon.Loaded == CannonAction.Finish ? 0x1FE7 : 0x7CE7, false, false); // Cannonball / Not Loaded
+                AddHtmlLocalized(115, 89, 115, 18, Cannon.Primed == CannonAction.Finish ? 1149640 : 1149639, Cannon.Primed == CannonAction.Finish ? 0x1FE7 : 0x7CE7, false, false); // Primed / No Fuse
 
                 if (Cannon.Actions.ContainsKey(User))
                 {
@@ -1228,7 +1349,7 @@ namespace Server.Items
 
             public override void OnResponse(RelayInfo info)
             {
-                if (info.ButtonID == 0)
+                if (info.ButtonID == 0 || !Cannon.Galleon.Contains(User))
                 {
                     if (Cannon.Viewing.Contains(User))
                     {
@@ -1237,28 +1358,34 @@ namespace Server.Items
 
                     return;
                 }
-                if (!User.InRange(Cannon.Location, 2))
-                {
-                    Cannon.AddAction(User, 1149654); // You are too far away.
-                }
-                else
+
+                if (User.InRange(Cannon.Location, 2) && User.Alive)
                 {
                     switch (info.ButtonID)
                     {
                         case 1:
-                            if (!Cannon.Charged)
                             {
-                                Cannon.TryCharge(User);
+                                if (!Cannon.Processing)
+                                {
+                                    if (Cannon.Prepered != CannonAction.Finish)
+                                    {
+                                        Cannon.TryPrep(User);
+                                    }
+                                    else if (Cannon.Charged != CannonAction.Finish)
+                                    {
+                                        Cannon.TryCharge(User);
+                                    }
+                                    else if (Cannon.Loaded != CannonAction.Finish)
+                                    {
+                                        Cannon.TryLoad(User);
+                                    }
+                                    else if (Cannon.Primed != CannonAction.Finish)
+                                    {
+                                        Cannon.TryPrime(User);
+                                    }
+                                }
+                                break;
                             }
-                            else if (!Cannon.Loaded)
-                            {
-                                Cannon.TryLoad(User);
-                            }
-                            else if (!Cannon.Primed)
-                            {
-                                Cannon.TryPrime(User);
-                            }
-                            break;
                         case 6:
                             if (Cannon.CanLight)
                             {
@@ -1269,6 +1396,10 @@ namespace Server.Items
                             Cannon.Unload(User);
                             break;
                     }
+                }
+                else
+                {
+                    Cannon.AddAction(User, 1149654); // You are too far away.
                 }
 
                 Refresh();
