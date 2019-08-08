@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Multis;
 using System.Collections.Generic;
@@ -31,7 +31,7 @@ namespace Server.Mobiles
         public override double TreasureMapChance { get { return .50; } }
         public override int TreasureMapLevel { get { return 7; } }
 
-        public override Type[] UniqueList { get { return new Type[] { typeof(EnchantedCoralBracelet), typeof(WandOfThunderingGlory), typeof(LeviathanHideBracers), typeof(SmilingMoonBlade) } ; } }
+        public override Type[] UniqueList { get { return new Type[] { typeof(EnchantedCoralBracelet), typeof(WandOfThunderingGlory), typeof(LeviathanHideBracers), typeof(SmilingMoonBlade) }; } }
         public override Type[] SharedList { get { return new Type[] { typeof(MiniSoulForgeDeed) }; } }
         public override Type[] DecorativeList { get { return new Type[] { typeof(EnchantedBladeDeed), typeof(EnchantedVortexDeed) }; } }
 
@@ -103,10 +103,10 @@ namespace Server.Mobiles
                 m_Eels.Remove(eel);
         }
 
-        public override void DoDamageBoat(BaseGalleon galleon)
+        public override void DoDamageBoat(BaseBoat boat)
         {
             DoAreaExplosion();
-            base.DoDamageBoat(galleon);
+            base.DoDamageBoat(boat);
         }
 
         public override void OnDamagedBySpell(Mobile from)
@@ -200,9 +200,9 @@ namespace Server.Mobiles
             IPooledEnumerable eable = this.GetMobilesInRange(8);
             foreach (Mobile mob in eable)
             {
-                if(!CanBeHarmful(mob, false) || mob == this || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() == this))
+                if (!CanBeHarmful(mob, false) || mob == this || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() == this))
                     continue;
-                if(mob.Player)
+                if (mob.Player)
                     toExplode.Add(mob);
                 if (mob is BaseCreature && (((BaseCreature)mob).Controlled || ((BaseCreature)mob).Summoned || ((BaseCreature)mob).Team != this.Team))
                     toExplode.Add(mob);
@@ -234,7 +234,7 @@ namespace Server.Mobiles
             c.DropItem(new SpecialFishingNet());
 
             #region TOL
-            if(Core.TOL)
+            if (Core.TOL)
                 SkillMasteryPrimer.CheckPrimerDrop(this);
             #endregion
         }
