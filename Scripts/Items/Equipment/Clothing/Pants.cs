@@ -5,13 +5,7 @@ namespace Server.Items
     #region Reward Clothing
     public class LibraryFriendSkirt : Kilt
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073352;
-            }
-        }// Friends of the Library Kilt
+        public override int LabelNumber { get { return 1073352; } }// Friends of the Library Kilt
 
         [Constructable]
         public LibraryFriendSkirt()
@@ -29,37 +23,23 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override bool Dye(Mobile from, DyeTub sender)
-        {
-            from.SendLocalizedMessage(sender.FailMessage);
-            return false;
-        }
-
+      
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 
     public class LibraryFriendPants : LongPants
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073349;
-            }
-        }// Friends of the Library Pants
+        public override int LabelNumber { get { return 1073349; } }// Friends of the Library Pants
 
         [Constructable]
         public LibraryFriendPants()
@@ -77,37 +57,23 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override bool Dye(Mobile from, DyeTub sender)
-        {
-            from.SendLocalizedMessage(sender.FailMessage);
-            return false;
-        }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 
     public class MalabellesDress : Skirt
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073251;
-            }
-        }// Malabelle's Dress - Museum of Vesper Replica
+        public override int LabelNumber { get { return 1073251; } }// Malabelle's Dress - Museum of Vesper Replica
 
         [Constructable]
         public MalabellesDress()
