@@ -87,10 +87,7 @@
     </Compile>
     <Compile Include="Commands\BoundingBoxPicker.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Commands\ConvertPlayers.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    </Compile>   
     <Compile Include="Commands\CreateWorld.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -227,9 +224,6 @@
     <Compile Include="Commands\Properties.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\RunUOSpawnerExporter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Commands\ShardTime.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -251,7 +245,6 @@
     <Compile Include="Commands\Statics.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\Test.cs" />
     <Compile Include="Commands\TimeStamp.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -283,14 +276,8 @@
     <Compile Include="Context Menus\TeachEntry.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Deprecated\AlchemyStone.cs" />
     <Compile Include="Deprecated\GamblingStone.cs" />
-    <Compile Include="Deprecated\GMStone.cs" />
-    <Compile Include="Deprecated\IngotStone.cs" />
-    <Compile Include="Deprecated\RegStone.cs" />
-    <Compile Include="Deprecated\ScribeStone.cs" />
-    <Compile Include="Deprecated\SmithStone.cs" />
-    <Compile Include="Deprecated\TailorStone.cs" />
+    <Compile Include="Deprecated\GMStone.cs" />   
     <Compile Include="Gumps\AddCustomizableMessageGump.cs" />
     <Compile Include="Gumps\AddDoorGump.cs">
       <SubType>Code</SubType>
@@ -914,7 +901,6 @@
     <Compile Include="Items\Containers\MeagerImbuingBag.cs" />
     <Compile Include="Items\Containers\ScrollBox2.cs" />
     <Compile Include="Items\Containers\CleanupTrashBarrel.cs" />
-    <Compile Include="Items\Containers\TownTrashBarrel.cs" />
     <Compile Include="Items\Decorative\AcidWall.cs" />
     <Compile Include="Items\Decorative\AcidWall1.cs" />
     <Compile Include="Items\Decorative\BasePaintedMask.cs" />
@@ -2933,8 +2919,6 @@
     <Compile Include="Items\Quest\DeBoorShield.cs" />
     <Compile Include="Items\Artifacts\Consumables\GobletOfCelebration.cs" />
     <Compile Include="Quests\HonorOfDeBoorsQuest.cs" />
-    <Compile Include="Items\Addons\PotteryWheelAddon.cs" />
-    <Compile Include="Mobiles\NPCs\Valem.cs" />
     <Compile Include="Items\Books\BookOfCircles.cs" />
     <Compile Include="Mobiles\Normal\GargoyleGuardian.cs" />
     <Compile Include="Items\Books\ShrineMantra.cs" />
@@ -5576,10 +5560,7 @@
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Armor\ArmsOfArmstrong.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Containers\BagOfNecromancerReagents.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    </Compile>   
     <Compile Include="Items\Containers\BagOfSmokeBombs.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10449,13 +10430,7 @@
     </Compile>
     <Compile Include="Services\BasketWeaving\PlantPigmentHue.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\BasketWeaving\SATinker.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\BasketWeaving\SBSATinker.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    </Compile>   
     <Compile Include="Services\BasketWeaving\SilverSapling.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -11491,22 +11466,7 @@
     </Compile>
     <Compile Include="Items\Internal\ResGate.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Containers\AlchemyBag.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Containers\BagOfIngots.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Containers\ScribeBag.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Containers\SmithBag.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Containers\TailorBag.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    </Compile>     
     <Compile Include="Spells\Base\DisturbType.cs">
       <SubType>Code</SubType>
     </Compile>

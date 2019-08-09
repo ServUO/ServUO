@@ -5749,14 +5749,7 @@ namespace Server.Mobiles
 		}
 
         public override void AddNameProperties(ObjectPropertyList list)
-        {
-            string name = Name;
-
-            if (name == null)
-            {
-                name = String.Empty;
-            }
-
+        {           
             string prefix = "";
 
             if (ShowFameTitle && Fame >= 10000)
@@ -5827,6 +5820,7 @@ namespace Server.Mobiles
             }
 
             suffix = ApplyNameSuffix(suffix);
+			string name = Name;
 
             list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~
 

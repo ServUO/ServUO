@@ -77,7 +77,7 @@ namespace Server.Engines.Quests
             // 1078045 You ability to channel the supernatural is greatly enhanced while questing in this area.
             // 1078046 You are not in the quest area for Apprentice Medium. Your ability to channel the supernatural potential is not enhanced here.
 		
-            this.AddReward(new BaseReward(typeof(BagOfNecromancerReagents), 1078053));
+            this.AddReward(new BaseReward(typeof(BagOfNecroReagents), 1078053));
         }
 		
         public override bool CanOffer()
@@ -130,19 +130,19 @@ namespace Server.Engines.Quests
 
         public override void InitSBInfo()
         {
-            this.SBInfos.Add(new SBMage());
+            SBInfos.Add(new SBMage());
         }
 		
         [Constructable]
         public Morganna()
             : base("Morganna", "The Spirit Speak Instructor")
         { 
-            this.SetSkill(SkillName.Magery, 120.0, 120.0);
-            this.SetSkill(SkillName.MagicResist, 120.0, 120.0);
-            this.SetSkill(SkillName.SpiritSpeak, 120.0, 120.0);
-            this.SetSkill(SkillName.Swords, 120.0, 120.0);
-            this.SetSkill(SkillName.Meditation, 120.0, 120.0);
-            this.SetSkill(SkillName.Necromancy, 120.0, 120.0);
+            SetSkill(SkillName.Magery, 120.0, 120.0);
+            SetSkill(SkillName.MagicResist, 120.0, 120.0);
+            SetSkill(SkillName.SpiritSpeak, 120.0, 120.0);
+            SetSkill(SkillName.Swords, 120.0, 120.0);
+            SetSkill(SkillName.Meditation, 120.0, 120.0);
+            SetSkill(SkillName.Necromancy, 120.0, 120.0);
         }
 		
         public Morganna(Serial serial)
@@ -152,42 +152,40 @@ namespace Server.Engines.Quests
 		
         public override void Advertise()
         {
-            this.Say(1078132); // Want to learn how to channel the supernatural?
+            Say(1078132); // Want to learn how to channel the supernatural?
         }
 		
         public override void OnOfferFailed()
         { 
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 		
         public override void InitBody()
         { 
-            this.Female = true;
-            this.CantWalk = true;
-            this.Race = Race.Human;	
+            Female = true;
+            CantWalk = true;
+            Race = Race.Human;	
 		
             base.InitBody();
         }
 		
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Robe(0x47D));
-            this.AddItem(new SkullCap(0x455));
-            this.AddItem(new Sandals());
+            AddItem(new Backpack());
+            AddItem(new Robe(0x47D));
+            AddItem(new SkullCap(0x455));
+            AddItem(new Sandals());
         }
 		
         public override void Serialize(GenericWriter writer)
         {
-            base.Serialize(writer);
-			
+            base.Serialize(writer);		
             writer.Write((int)0); // version
         }
 		
         public override void Deserialize(GenericReader reader)
         {
-            base.Deserialize(reader);
-			
+            base.Deserialize(reader);		
             int version = reader.ReadInt();
         }
     }

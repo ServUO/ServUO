@@ -8,13 +8,7 @@ namespace Server.Items
     #region Reward Clothing
     public class ZooMemberBonnet : Bonnet
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073221;
-            }
-        }// Britannia Royal Zoo Member
+        public override int LabelNumber { get { return 1073221; } }// Britannia Royal Zoo Member
 
         [Constructable]
         public ZooMemberBonnet()
@@ -33,36 +27,22 @@ namespace Server.Items
         {
         }
 
-        public override bool Dye(Mobile from, DyeTub sender)
-        {
-            from.SendLocalizedMessage(sender.FailMessage);
-            return false;
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 
     public class ZooMemberFloppyHat : FloppyHat
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073221;
-            }
-        }// Britannia Royal Zoo Member
+        public override int LabelNumber { get { return 1073221; } }// Britannia Royal Zoo Member
 
         [Constructable]
         public ZooMemberFloppyHat()
@@ -81,36 +61,22 @@ namespace Server.Items
         {
         }
 
-        public override bool Dye(Mobile from, DyeTub sender)
-        {
-            from.SendLocalizedMessage(sender.FailMessage);
-            return false;
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 
     public class LibraryFriendFeatheredHat : FeatheredHat
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073347;
-            }
-        }// Friends of the Library Feathered Hat
+        public override int LabelNumber { get { return 1073347; } }// Friends of the Library Feathered Hat
 
         [Constructable]
         public LibraryFriendFeatheredHat()
@@ -128,24 +94,16 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override bool Dye(Mobile from, DyeTub sender)
-        {
-            from.SendLocalizedMessage(sender.FailMessage);
-            return false;
-        }
-
+       
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
