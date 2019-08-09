@@ -9,7 +9,7 @@ namespace Server.Items
         public RingmailChest()
             : base(0x13EC)
         {
-            this.Weight = 15.0;
+            Weight = 15.0;
         }
 
         public RingmailChest(Serial serial)
@@ -111,9 +111,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (this.Weight == 1.0)
-                this.Weight = 15.0;
         }
     }
 }

@@ -2457,7 +2457,15 @@ namespace Server.Mobiles
 			}
 			else
 			{
-				if (Alive && Core.AOS)
+                if (Core.HS)
+                {
+                    BaseGalleon galleon = BaseGalleon.FindGalleonAt(from.Location, from.Map);
+
+                    if (galleon != null && galleon.IsOwner(from))
+                        list.Add(new ShipAccessEntry(this, from, galleon));
+                }
+
+                if (Alive && Core.AOS)
 				{
 					Party theirParty = from.Party as Party;
 					Party ourParty = Party as Party;
@@ -5741,14 +5749,7 @@ namespace Server.Mobiles
 		}
 
         public override void AddNameProperties(ObjectPropertyList list)
-        {
-            string name = Name;
-
-            if (name == null)
-            {
-                name = String.Empty;
-            }
-
+        {           
             string prefix = "";
 
             if (ShowFameTitle && Fame >= 10000)
@@ -5819,6 +5820,7 @@ namespace Server.Mobiles
             }
 
             suffix = ApplyNameSuffix(suffix);
+			string name = Name;
 
             list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~
 

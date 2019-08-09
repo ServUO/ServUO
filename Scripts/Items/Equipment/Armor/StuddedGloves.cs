@@ -9,7 +9,7 @@ namespace Server.Items
         public StuddedGloves()
             : base(0x13D5)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public StuddedGloves(Serial serial)
@@ -118,9 +118,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (this.Weight == 2.0)
-                this.Weight = 1.0;
         }
     }
 }

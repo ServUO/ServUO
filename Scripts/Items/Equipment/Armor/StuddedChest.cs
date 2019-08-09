@@ -9,7 +9,7 @@ namespace Server.Items
         public StuddedChest()
             : base(0x13DB)
         {
-            this.Weight = 8.0;
+            Weight = 8.0;
         }
 
         public StuddedChest(Serial serial)
@@ -118,9 +118,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (this.Weight == 1.0)
-                this.Weight = 8.0;
         }
     }
 }

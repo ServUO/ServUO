@@ -9,8 +9,8 @@ namespace Server.Items
         public Yumi()
             : base(0x27A5)
         {
-            this.Weight = 9.0;
-            this.Layer = Layer.TwoHanded;
+            Weight = 8.0;
+            Layer = Layer.TwoHanded;
         }
 
         public Yumi(Serial serial)
@@ -147,18 +147,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (this.Weight == 7.0)
-                this.Weight = 6.0;
         }
     }
 }

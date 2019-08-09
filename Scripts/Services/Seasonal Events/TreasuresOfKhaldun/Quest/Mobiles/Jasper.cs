@@ -168,7 +168,7 @@ namespace Server.Engines.Khaldun
                 : base(50, 50)
             {
                 AddBackground(0, 0, 400, 600, 9300);
-                AddImage(58, 30, 1744);
+                AddImage(58, 30, 1745);
 
                 AddHtmlLocalized(0, 340, 400, 20, 1154645, "#1158625", 0x0, false, false); // It all comes together...
                 AddHtmlLocalized(5, 365, 390, 200, 1158626, BaseGump.C32216(0x0D0D0D), false, true);

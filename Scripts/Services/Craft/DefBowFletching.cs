@@ -146,7 +146,7 @@ namespace Server.Engines.Craft
 
             if (Core.SE)
             {
-                index = AddCraft(typeof(FukiyaDarts), 1044565, 1030246, 50.0, 90.0, typeof(Board), 1044041, 1, 1044351);
+                index = AddCraft(typeof(FukiyaDarts), 1044565, 1030246, 50.0, 73.8, typeof(Board), 1044041, 1, 1044351);
                 this.SetUseAllRes(index, true);
             }
 

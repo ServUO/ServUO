@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Items;
 using Server.Multis;
@@ -8,40 +8,33 @@ namespace Server.Gumps
 {
     public class BaseShipGump : Gump
     {
-        public static readonly int CaptainHue   = 31137;
-        public static readonly int OfficerHue = 31681;
-        public static readonly int CrewHue      = 14273;
-        public static readonly int PassengerHue = 1080;
-        public static readonly int LabelColor   = 0xFFFFFF;
-        public static readonly int NoHue        = 12684;
+        public static readonly int NAHue = 0x5EF7;
+        public static readonly int PassengerHue = 0x1CFF;
+        public static readonly int CrewHue = 0x1FE7;
+        public static readonly int OfficerHue = 0x7FE7;
+        public static readonly int DenyHue = 0x7CE7;
+        public static readonly int CaptainHue = 0x7DE7;
+        public static readonly int LabelColor = 0x7FFF;
+        public static readonly int NoHue = 0x3DEF;
 
-        public virtual TextDefinition Title { get { return new TextDefinition(1149724); } }
-
-        public BaseShipGump(int x, int y, BaseGalleon galleon)
-            : base(x, y)
+        public BaseShipGump(BaseGalleon galleon)
+            : base(100, 100)
         {
-            AddBackground(0, 0, 350, 400, 2620);
+            AddPage(0);
 
-            if (Title != null && Title.Number > 0)
-                AddHtmlLocalized(0, 15, 350, 20, Title.Number, LabelColor, false, false); //<CENTER>Passenger and Crew Manifest</CENTER>
-            else if (Title != null && Title.String != null)
-                AddHtml(0, 15, 350, 20, String.Format("<CENTER><BASEFONT COLOR=#FFFFFF>{0}</CENTER>", Title.String), false, false);
+            AddBackground(0, 0, 320, 385, 0xA3C);
+            AddHtmlLocalized(10, 10, 300, 18, 1149724, 0x7FEF, false, false); //<CENTER>Passenger and Crew Manifest</CENTER>
 
-            string shipName = "a ship with no name";
+            string shipName = "unnamed ship";
 
-            if (galleon.ShipName != null && galleon.ShipName != String.Empty && galleon.ShipName != "")
+            if (galleon.ShipName != null && galleon.ShipName != string.Empty && galleon.ShipName != "")
                 shipName = galleon.ShipName;
 
-            AddHtmlLocalized(10, 40, 80, 20, 1149761, LabelColor, false, false);       //Ship:
-            AddHtml(90, 40, 250, 20, Color(shipName, "DarkCyan"), false, false);
+            AddHtmlLocalized(10, 38, 75, 18, 1149761, LabelColor, false, false); //Ship:
+            AddLabel(80, 38, 0x53, shipName);
 
-            AddHtmlLocalized(10, 60, 80, 20, 1149762, LabelColor, false, false);       //Owner:
-            AddHtml(90, 60, 250, 20, Color(galleon.Owner != null ? galleon.Owner.Name : "Unknown", "DarkCyan"), false, false);
-        }
-
-        public string Color(string text, string colorName)
-        {
-            return String.Format("<BASEFONT COLOR={0}>{1}</BASEFONT>", colorName, text);
+            AddHtmlLocalized(10, 56, 75, 18, 1149762, LabelColor, false, false); //Owner:
+            AddLabel(80, 56, 0x53, galleon.Owner != null ? galleon.Owner.Name : "Unknown");
         }
 
         public int GetHue(SecurityLevel level)
@@ -52,6 +45,8 @@ namespace Server.Gumps
                 case SecurityLevel.Officer: return OfficerHue;
                 case SecurityLevel.Crewman: return CrewHue;
                 case SecurityLevel.Passenger: return PassengerHue;
+                case SecurityLevel.NA: return NAHue;
+                case SecurityLevel.Denied: return DenyHue;
                 default: return LabelColor;
             }
         }
@@ -66,6 +61,7 @@ namespace Server.Gumps
                 case SecurityLevel.Crewman: return 1149728;
                 case SecurityLevel.Officer: return 1149729;
                 case SecurityLevel.Captain: return 1149730;
+                case SecurityLevel.NA: return 1149725;
             }
         }
     }

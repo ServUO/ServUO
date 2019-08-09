@@ -155,6 +155,19 @@ namespace Server.Engines.Khaldun
             dust.MoveToWorld(new Point3D(6256, 2889, 13), Map.Trammel);
             teleporter.MoveToWorld(new Point3D(6242, 2892, 17), Map.Trammel);
 
+            new GumshoeBottles().MoveToWorld(new Point3D(6154, 2901, 6), Map.Trammel);
+            new GumshoeBottles().MoveToWorld(new Point3D(6154, 2902, 6), Map.Trammel);
+
+            new GumshoeDeed().MoveToWorld(new Point3D(6161, 2901, 6), Map.Trammel);
+
+            new GumshoeRope().MoveToWorld(new Point3D(6163, 2896, 0), Map.Trammel);
+            new GumshoeRope().MoveToWorld(new Point3D(6163, 2896, 1), Map.Trammel);
+
+            new GumshoeMap().MoveToWorld(new Point3D(6166, 2895, 6), Map.Trammel);
+            new GumshoeMap().MoveToWorld(new Point3D(6166, 2895, 7), Map.Trammel);
+
+            new GumshoeTools().MoveToWorld(new Point3D(6160, 2901, 6), Map.Trammel);
+
             // Moonglow
             door = new TrapDoor("carthax", new Point3D(6198, 2893, 17), Map.Trammel);
             book = new MysteriousBook(door);
@@ -166,6 +179,16 @@ namespace Server.Engines.Khaldun
             dust.MoveToWorld(new Point3D(6208, 2885, 12), Map.Trammel);
             teleporter.MoveToWorld(new Point3D(6198, 2893, 17), Map.Trammel);
 
+            new GumshoeBottles().MoveToWorld(new Point3D(6198, 2888, 6), Map.Trammel);
+
+            new GumshoeRope().MoveToWorld(new Point3D(6200, 2887, 0), Map.Trammel);
+            new GumshoeRope().MoveToWorld(new Point3D(6200, 2887, 1), Map.Trammel);
+
+            new GumshoeMap().MoveToWorld(new Point3D(6198, 2887, 6), Map.Trammel);
+            new GumshoeMap().MoveToWorld(new Point3D(6198, 2887, 7), Map.Trammel);
+
+            new GumshoeTools().MoveToWorld(new Point3D(6198, 2889, 6), Map.Trammel);
+
             // Vesper
             door = new TrapDoor("moriens", new Point3D(6154, 2898, 17), Map.Trammel);
             book = new MysteriousBook(door);
@@ -174,8 +197,19 @@ namespace Server.Engines.Khaldun
 
             door.MoveToWorld(new Point3D(2762, 848, 0), Map.Trammel);
             book.MoveToWorld(new Point3D(6167, 2896, 6), Map.Trammel);
-            dust.MoveToWorld(new Point3D(6163, 2886, 0), Map.Trammel);
+            dust.MoveToWorld(new Point3D(6163, 2885, 0), Map.Trammel);
             teleporter.MoveToWorld(new Point3D(6154, 2898, 17), Map.Trammel);
+
+            new GumshoeBottles().MoveToWorld(new Point3D(6240, 2884, 6), Map.Trammel);
+            new GumshoeBottles().MoveToWorld(new Point3D(6239, 2885, 6), Map.Trammel);
+
+            new GumshoeRope().MoveToWorld(new Point3D(6241, 2884, 0), Map.Trammel);
+            new GumshoeRope().MoveToWorld(new Point3D(6241, 2884, 1), Map.Trammel);
+
+            new GumshoeMap().MoveToWorld(new Point3D(6240, 2885, 6), Map.Trammel);
+            new GumshoeMap().MoveToWorld(new Point3D(6240, 2885, 7), Map.Trammel);
+
+            new GumshoeTools().MoveToWorld(new Point3D(6239, 2886, 6), Map.Trammel);
 
             // Yew
             door = new TrapDoor("tenebrae", new Point3D(6294, 2891, 17), Map.Trammel);
@@ -187,6 +221,17 @@ namespace Server.Engines.Khaldun
             book.MoveToWorld(new Point3D(6294, 2887, 6), Map.Trammel);
             dust.MoveToWorld(new Point3D(6291, 2875, 9), Map.Trammel);
             teleporter.MoveToWorld(new Point3D(6294, 2891, 17), Map.Trammel);
+
+            new GumshoeBottles().MoveToWorld(new Point3D(6303, 2887, 6), Map.Trammel);
+            new GumshoeBottles().MoveToWorld(new Point3D(6304, 2887, 6), Map.Trammel);
+
+            new GumshoeRope().MoveToWorld(new Point3D(6299, 2887, 0), Map.Trammel);
+            new GumshoeRope().MoveToWorld(new Point3D(6299, 2887, 1), Map.Trammel);
+
+            new GumshoeMap().MoveToWorld(new Point3D(6294, 2888, 6), Map.Trammel);
+            new GumshoeMap().MoveToWorld(new Point3D(6294, 2888, 7), Map.Trammel);
+
+            new GumshoeTools().MoveToWorld(new Point3D(6294, 2889, 6), Map.Trammel);
 
             // Gravestones
             var grave = new DamagedHeadstone(1158607); // brit

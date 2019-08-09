@@ -129,7 +129,7 @@ namespace Server.Items
         public Cloak(int hue)
             : base(0x1515, hue)
         {
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         public Cloak(Serial serial)
@@ -177,9 +177,6 @@ namespace Server.Items
                         break;
                     }
             }
-
-            if (this.Weight == 4.0)
-                this.Weight = 5.0;
         }
     }
 

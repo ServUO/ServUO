@@ -1261,14 +1261,7 @@ namespace Server
         public virtual void AddLootTypeProperty(ObjectPropertyList list)
         {
             if (DisplayLootType)
-            {
-                Mobile blessedFor = BlessedFor;
-
-                if (blessedFor != null && !blessedFor.Deleted)
-                {
-                    AddBlessedForProperty(list, blessedFor);
-                }
-
+            {               
                 if (m_LootType == LootType.Blessed)
                 {
                     list.Add(1038021); // blessed

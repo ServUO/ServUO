@@ -6,6 +6,8 @@ namespace Server.Items
     public class TotemOfVoid : BaseTalisman
     {
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1075035; } }// Totem of the Void
+        public override bool ForceShowName { get { return true; } }
 		
         [Constructable]
         public TotemOfVoid()
@@ -23,21 +25,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075035;
-            }
-        }// Totem of the Void
-        public override bool ForceShowName
-        {
-            get
-            {
-                return true;
-            }
-        }
+        
         public override Type GetSummoner()
         {
             return Utility.RandomBool() ? typeof(SummonedSkeletalKnight) : typeof(SummonedSheep);
@@ -46,18 +34,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0 && (this.Protection == null || this.Protection.IsEmpty))
-                this.Protection = GetRandomProtection(false);
         }
     }
 }

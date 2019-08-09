@@ -128,7 +128,7 @@ namespace Server.Mobiles
                 }
             }
 
-            if(artifact != null)
+            if (artifact != null)
                 artifact.Delete();
         }
 
@@ -162,16 +162,16 @@ namespace Server.Mobiles
 
             BaseBoat boat = BaseBoat.FindBoatAt(focusMob, focusMob.Map);
 
-            if (boat != null && boat is BaseGalleon)
+            if (boat != null)
             {
                 int range = DamageRange;
-                for (int x = this.X - range; x <= this.X + range; x++)
+                for (int x = X - range; x <= X + range; x++)
                 {
-                    for (int y = this.Y - range; y <= this.Y + range; y++)
+                    for (int y = Y - range; y <= Y + range; y++)
                     {
-                        if (BaseBoat.FindBoatAt(new Point2D(x, y), this.Map) == boat)
+                        if (BaseBoat.FindBoatAt(new Point2D(x, y), Map) == boat)
                         {
-                            DoDamageBoat(boat as BaseGalleon);
+                            DoDamageBoat(boat);
                             m_NextBoatDamage = DateTime.UtcNow + BoatDamageCooldown;
                             m_InDamageMode = false;
                             return;
@@ -181,27 +181,28 @@ namespace Server.Mobiles
             }
         }
 
-        public virtual void DoDamageBoat(BaseGalleon galleon)
+        public virtual void DoDamageBoat(BaseBoat boat)
         {
             int damage = Utility.RandomMinMax(MinBoatDamage, MaxBoatDamage);
 
-            galleon.OnTakenDamage(this, damage);
+            boat.OnTakenDamage(this, damage);
 
-            for (int x = this.X - 2; x <= this.X + 2; x++)
+            for (int x = X - 2; x <= X + 2; x++)
             {
-                for (int y = this.Y - 2; y <= this.Y + 2; y++)
+                for (int y = Y - 2; y <= Y + 2; y++)
                 {
-                    BaseBoat boat = BaseBoat.FindBoatAt(new Point2D(x, y), this.Map);
-                    if (boat != null && boat == galleon)
+                    BaseBoat b = BaseBoat.FindBoatAt(new Point2D(x, y), Map);
+
+                    if (b != null && boat == b)
                     {
                         Direction toPush = Direction.North;
-                        if (this.X < x && x - this.X > 1)
+                        if (X < x && x - X > 1)
                             toPush = Direction.West;
-                        else if (this.X > x && this.X - x > 1)
+                        else if (X > x && X - x > 1)
                             toPush = Direction.East;
-                        else if (this.Y < y)
+                        else if (Y < y)
                             toPush = Direction.South;
-                        else if (this.Y > y)
+                        else if (Y > y)
                             toPush = Direction.North;
 
                         boat.StartMove(toPush, 1, 0x2, boat.SlowDriftInterval, true, false);
@@ -214,7 +215,7 @@ namespace Server.Mobiles
         public Point3D GetValidPoint(BaseBoat boat, Map map, int distance)
         {
             if (boat == null || map == null || map == Map.Internal)
-                return new Point3D(this.X + Utility.RandomMinMax(-1, 1), this.Y + Utility.RandomMinMax(-1, 1), this.Z);
+                return new Point3D(X + Utility.RandomMinMax(-1, 1), Y + Utility.RandomMinMax(-1, 1), Z);
 
             if (distance < 5) distance = 5;
             if (distance > 15) distance = 15;

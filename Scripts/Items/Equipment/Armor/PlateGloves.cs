@@ -11,7 +11,7 @@ namespace Server.Items
         public PlateGloves()
             : base(0x1414)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public PlateGloves(Serial serial)
@@ -113,9 +113,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (this.Weight == 1.0)
-                this.Weight = 2.0;
         }
     }
 }

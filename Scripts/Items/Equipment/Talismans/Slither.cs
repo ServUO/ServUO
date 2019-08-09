@@ -5,6 +5,8 @@ namespace Server.Items
     public class Slither : BaseTalisman
     {
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get{return 1114782;} }// Slither
+		
         [Constructable]
         public Slither()
             : base(0x2F5B)
@@ -19,9 +21,7 @@ namespace Server.Items
         public Slither(Serial serial)
             : base(serial)
         {
-        }
-		
-		public override int LabelNumber { get{return 1114782;} }// Slither
+        }				
 
         public override void Deserialize(GenericReader reader)
         {
