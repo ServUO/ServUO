@@ -11,9 +11,9 @@ namespace Server.Items
         public LetterOfIntroduction()
             : base(0x1F23)
 		{
-            this.Hue = 1167;
-			this.Weight = 2.0;
-            this.QuestItem = true;
+            Hue = 1167;
+			Weight = 2.0;
+            QuestItem = true;
 		}
 
         public LetterOfIntroduction( Serial serial ) : base( serial )
@@ -23,14 +23,12 @@ namespace Server.Items
 		public override void Serialize( GenericWriter writer )
 		{
 			base.Serialize( writer );
-
 			writer.Write( (int) 0 ); // version
 		}
 		
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
-
 			int version = reader.ReadInt();
 		}
 	}
@@ -43,9 +41,9 @@ namespace Server.Items
         public MasteringWeaving()
             : base(0x1E20)
         {
-            this.Hue = 744;
-            this.Weight = 2.0;
-            this.QuestItem = true;
+            Hue = 744;
+            Weight = 2.0;
+            QuestItem = true;
         }
 
         public MasteringWeaving(Serial serial)
@@ -56,14 +54,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
