@@ -9,43 +9,43 @@ namespace Server.Mobiles
         public AncientLich()
             : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = NameList.RandomName("ancient lich");
-            this.Body = 78;
-            this.BaseSoundID = 412;
+            Name = NameList.RandomName("ancient lich");
+            Body = 78;
+            BaseSoundID = 412;
 
-            this.SetStr(216, 305);
-            this.SetDex(96, 115);
-            this.SetInt(966, 1045);
+            SetStr(216, 305);
+            SetDex(96, 115);
+            SetInt(966, 1045);
 
-            this.SetHits(560, 595);
+            SetHits(560, 595);
 
-            this.SetDamage(15, 27);
+            SetDamage(15, 27);
 
-            this.SetDamageType(ResistanceType.Physical, 20);
-            this.SetDamageType(ResistanceType.Cold, 40);
-            this.SetDamageType(ResistanceType.Energy, 40);
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Cold, 40);
+            SetDamageType(ResistanceType.Energy, 40);
 
-            this.SetResistance(ResistanceType.Physical, 55, 65);
-            this.SetResistance(ResistanceType.Fire, 25, 30);
-            this.SetResistance(ResistanceType.Cold, 50, 60);
-            this.SetResistance(ResistanceType.Poison, 50, 60);
-            this.SetResistance(ResistanceType.Energy, 25, 30);
+            SetResistance(ResistanceType.Physical, 55, 65);
+            SetResistance(ResistanceType.Fire, 25, 30);
+            SetResistance(ResistanceType.Cold, 50, 60);
+            SetResistance(ResistanceType.Poison, 50, 60);
+            SetResistance(ResistanceType.Energy, 25, 30);
 
-            this.SetSkill(SkillName.EvalInt, 120.1, 130.0);
-            this.SetSkill(SkillName.Magery, 120.1, 130.0);
-            this.SetSkill(SkillName.Meditation, 100.1, 101.0);
-            this.SetSkill(SkillName.Poisoning, 100.1, 101.0);
-            this.SetSkill(SkillName.MagicResist, 175.2, 200.0);
-            this.SetSkill(SkillName.Tactics, 90.1, 100.0);
-            this.SetSkill(SkillName.Wrestling, 75.1, 100.0);
-            this.SetSkill(SkillName.Necromancy, 120.1, 130.0);
-            this.SetSkill(SkillName.SpiritSpeak, 120.1, 130.0);
+            SetSkill(SkillName.EvalInt, 120.1, 130.0);
+            SetSkill(SkillName.Magery, 120.1, 130.0);
+            SetSkill(SkillName.Meditation, 100.1, 101.0);
+            SetSkill(SkillName.Poisoning, 100.1, 101.0);
+            SetSkill(SkillName.MagicResist, 175.2, 200.0);
+            SetSkill(SkillName.Tactics, 90.1, 100.0);
+            SetSkill(SkillName.Wrestling, 75.1, 100.0);
+            SetSkill(SkillName.Necromancy, 120.1, 130.0);
+            SetSkill(SkillName.SpiritSpeak, 120.1, 130.0);
 
-            this.Fame = 23000;
-            this.Karma = -23000;
+            Fame = 23000;
+            Karma = -23000;
 
-            this.VirtualArmor = 60;
-            this.PackNecroReg(30, 275);
+            VirtualArmor = 60;
+            PackNecroReg(100, 200);
         }
 
         public AncientLich(Serial serial)
