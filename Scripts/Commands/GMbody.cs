@@ -110,17 +110,10 @@ namespace Server.Commands
                         if (from.IsStaff())
                         {
                             EquipItem(new StaffRing());
-                            EquipItem(new StaffRobe());
 
                             PackItem(new GMHidingStone());
                             PackItem(new GMEthereal());
-                            PackItem(new StaffOrb());
-
-                            PackItem(new Spellbook((ulong)18446744073709551615));
-                            PackItem(new NecromancerSpellbook((ulong)0xffff));
-                            PackItem(new BookOfChivalry());
-                            PackItem(new BookOfBushido());
-                            PackItem(new SpellweavingBook((ulong)0xffff));
+                            PackItem(new StaffOrb());                           
 
                             from.RawStr = 100;
                             from.RawDex = 100;

@@ -169,6 +169,7 @@ namespace Server.Gumps
                     }, acct);
                     break;
                 case 7:
+					User.CloseGump(typeof (NewCurrencyHelpGump));
                     User.SendGump(new NewCurrencyHelpGump());
                     Refresh();
                     break;
