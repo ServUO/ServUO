@@ -1137,10 +1137,9 @@ namespace Server.Items
             m_AllowableTable[typeof(GargishEarrings)] = DefBlacksmithy.CraftSystem;
             m_AllowableTable[typeof(GargishAmulet)] = DefBlacksmithy.CraftSystem;
             m_AllowableTable[typeof(GargishStoneAmulet)] = DefMasonry.CraftSystem;		
-			m_AllowableTable[typeof(BarbedWhip)] = DefTinkering.CraftSystem;
-			m_AllowableTable[typeof(SpikedWhip)] = DefTinkering.CraftSystem;
-			m_AllowableTable[typeof(BladedWhip)] = DefTinkering.CraftSystem;
-			
+			m_AllowableTable[typeof(BarbedWhip)] = DefTailoring.CraftSystem;
+			m_AllowableTable[typeof(SpikedWhip)] = DefTailoring.CraftSystem;
+			m_AllowableTable[typeof(BladedWhip)] = DefTailoring.CraftSystem;
         }
 
         public static void Configure()

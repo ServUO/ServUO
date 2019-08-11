@@ -293,7 +293,7 @@ namespace Server.Items
 
         public virtual bool CanSpawnRefinement()
         {
-            return ContentType == FillableContentType.Clothier || ContentType == FillableContentType.Blacksmith || ContentType == FillableContentType.Carpenter;
+            return Map == Map.Felucca && (ContentType == FillableContentType.Clothier || ContentType == FillableContentType.Blacksmith || ContentType == FillableContentType.Carpenter);
         }
 
         public virtual void GenerateContent(bool all)

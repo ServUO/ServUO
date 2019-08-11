@@ -307,6 +307,11 @@ namespace Server.Engines.Khaldun
                 return base.OnMoveOver(m);
             }
 
+            if (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)
+            {
+                m = ((BaseCreature)m).GetMaster();
+            }
+
             bool hasCreds = m.FindItemOnLayer(Layer.Neck) is DetectiveCredentials;
             bool canCross = hasCreds;
 
@@ -322,6 +327,7 @@ namespace Server.Engines.Khaldun
                         return base.OnMoveOver(m);
                     }
                 }
+
                 eable.Free();
 
                 if (X == 5991 && Y == 3749)
@@ -379,6 +385,8 @@ namespace Server.Engines.Khaldun
 
                 break;
             }
+
+            eable.Free();
         }
 
         public KhaldunCampBlocker(Serial serial)

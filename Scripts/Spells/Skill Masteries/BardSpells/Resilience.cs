@@ -28,26 +28,26 @@ namespace Server.Spells.SkillMasteries
 		public ResilienceSpell( Mobile caster, Item scroll ) : base(caster, scroll, m_Info)
 		{
 		}
-		
-		public override void OnCast()
-		{
+
+        public override void OnCast()
+        {
             BardSpell spell = SkillMasterySpell.GetSpell(Caster, this.GetType()) as BardSpell;
-			
-			if(spell != null)
-			{
-				spell.Expire();
+
+            if (spell != null)
+            {
+                spell.Expire();
                 Caster.SendLocalizedMessage(1115774); //You halt your spellsong.
-			}
-			else if ( CheckSequence() )
-			{
+            }
+            else if (CheckSequence())
+            {
                 m_PropertyBonus = (int)((BaseSkillBonus * 2) + CollectiveBonus); // 2 - 16 (22)
 
                 UpdateParty();
-				BeginTimer();
-			}
-			
-			FinishSequence();
-		}
+                BeginTimer();
+            }
+
+            FinishSequence();
+        }
 
         public override void AddPartyEffects(Mobile m)
         {
@@ -56,11 +56,15 @@ namespace Server.Spells.SkillMasteries
 
             string args = String.Format("{0}\t{1}\t{2}", m_PropertyBonus, m_PropertyBonus, m_PropertyBonus);
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Resilience, 1115614, 1115731, args.ToString()));
+
+            m.ResetStatTimers();
         }
 
         public override void RemovePartyEffects(Mobile m)
         {
             BuffInfo.RemoveBuff(m, BuffIcon.Resilience);
+
+            m.ResetStatTimers();
         }
 
         public override void EndEffects()
