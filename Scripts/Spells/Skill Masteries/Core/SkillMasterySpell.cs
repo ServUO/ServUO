@@ -185,7 +185,7 @@ namespace Server.Spells.SkillMasteries
 
                 Expire();
             }
-            else if (Caster.Skills[CastSkill].Value < RequiredSkill)
+            else if (Caster.Player && Caster.Skills[CastSkill].Value < RequiredSkill)
             {
                 Expire();
             }

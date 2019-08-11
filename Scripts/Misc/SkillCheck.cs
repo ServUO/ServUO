@@ -604,16 +604,15 @@ namespace Server.Misc
 			return false;
 		}
 
-		public static void IncreaseStat(Mobile from, Stat stat)
-		{
-			bool atTotalCap = from.RawStatTotal >= from.StatCap;
+        public static void IncreaseStat(Mobile from, Stat stat)
+        {
+            bool atTotalCap = from.RawStatTotal >= from.StatCap;
 
-			switch (stat)
-			{
-				case Stat.Str:
-				{
+            switch (stat)
+            {
+                case Stat.Str:
                     if (CanRaise(from, Stat.Str, atTotalCap))
-					{
+                    {
                         if (atTotalCap)
                         {
                             if (CanLower(from, Stat.Dex) && (from.RawDex < from.RawInt || !CanLower(from, Stat.Int)))
@@ -622,20 +621,23 @@ namespace Server.Misc
                                 --from.RawInt;
                         }
 
-						++from.RawStr;
+                        ++from.RawStr;
 
-						if (Siege.SiegeShard && from is PlayerMobile)
-						{
-							Siege.IncreaseStat((PlayerMobile)from);
-						}
-					}
+                        if (from is BaseCreature && ((BaseCreature)from).HitsMaxSeed > -1 && ((BaseCreature)from).HitsMaxSeed < from.StrCap)
+                        {
+                            ((BaseCreature)from).HitsMaxSeed++;
+                        }
 
-					break;
-				}
-				case Stat.Dex:
-				{
+                        if (Siege.SiegeShard && from is PlayerMobile)
+                        {
+                            Siege.IncreaseStat((PlayerMobile)from);
+                        }
+                    }
+
+                    break;
+                case Stat.Dex:
                     if (CanRaise(from, Stat.Dex, atTotalCap))
-					{
+                    {
                         if (atTotalCap)
                         {
                             if (CanLower(from, Stat.Str) && (from.RawStr < from.RawInt || !CanLower(from, Stat.Int)))
@@ -644,20 +646,23 @@ namespace Server.Misc
                                 --from.RawInt;
                         }
 
-						++from.RawDex;
+                        ++from.RawDex;
 
-						if (Siege.SiegeShard && from is PlayerMobile)
-						{
-							Siege.IncreaseStat((PlayerMobile)from);
-						}
-					}
+                        if (from is BaseCreature && ((BaseCreature)from).StamMaxSeed > -1 && ((BaseCreature)from).StamMaxSeed < from.DexCap)
+                        {
+                            ((BaseCreature)from).StamMaxSeed++;
+                        }
 
-					break;
-				}
-				case Stat.Int:
-				{
+                        if (Siege.SiegeShard && from is PlayerMobile)
+                        {
+                            Siege.IncreaseStat((PlayerMobile)from);
+                        }
+                    }
+
+                    break;
+                case Stat.Int:
                     if (CanRaise(from, Stat.Int, atTotalCap))
-					{
+                    {
                         if (atTotalCap)
                         {
                             if (CanLower(from, Stat.Str) && (from.RawStr < from.RawDex || !CanLower(from, Stat.Dex)))
@@ -666,18 +671,22 @@ namespace Server.Misc
                                 --from.RawDex;
                         }
 
-						++from.RawInt;
+                        ++from.RawInt;
 
-						if (Siege.SiegeShard && from is PlayerMobile)
-						{
-							Siege.IncreaseStat((PlayerMobile)from);
-						}
-					}
+                        if (from is BaseCreature && ((BaseCreature)from).ManaMaxSeed > -1 && ((BaseCreature)from).ManaMaxSeed < from.IntCap)
+                        {
+                            ((BaseCreature)from).ManaMaxSeed++;
+                        }
 
-					break;
-				}
-			}
-		}
+                        if (Siege.SiegeShard && from is PlayerMobile)
+                        {
+                            Siege.IncreaseStat((PlayerMobile)from);
+                        }
+                    }
+
+                    break;
+            }
+        }
 
 		public static void GainStat(Mobile from, Stat stat)
 		{

@@ -396,7 +396,7 @@ namespace Server.Items
             Register(55, new ItemPropertyInfo(AosElementAttribute.Energy, 1061162, 100, typeof(MagicalResidue), typeof(Amethyst), typeof(BouraPelt), 1, 1, 15, 1112008,
                 new PropInfo(1, 10, 100, 100), new PropInfo(2, 10, 100, 100), new PropInfo(3, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(4, 15, 15), new PropInfo(5, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(6, 15, 15, new int[] { 20 })));
 
-            Register(60, new ItemPropertyInfo("WeaponVelocity", 1080416, 130, typeof(RelicFragment), typeof(Tourmaline),	typeof(EssenceDirection), 1, 2, 15, 1112048,
+            Register(60, new ItemPropertyInfo("WeaponVelocity", 1080416, 130, typeof(RelicFragment), typeof(Tourmaline),	typeof(EssenceDirection), 1, 2, 50, 1112048,
                 new PropInfo(1, 50, 50), new PropInfo(2, 50, 50)));
 
             Register(61, new ItemPropertyInfo(AosAttribute.BalancedWeapon, 1072792, 150, typeof(RelicFragment), typeof(Amber), typeof(EssenceBalance), 0, 1, 1, 1112047,
