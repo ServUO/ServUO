@@ -79,10 +79,10 @@ namespace Server.Engines.Quests.Collector
         public Obsidian()
             : base(0x1EA7)
         {
-            this.Hue = 0x497;
+            Hue = 0x497;
 
-            this.m_Quantity = 1;
-            this.m_StatueName = "";
+            m_Quantity = 1;
+            m_StatueName = "";
         }
 
         public Obsidian(Serial serial)
