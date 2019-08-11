@@ -78,6 +78,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadEncodedInt();
+			_Instances.Add(this);
         }
     }
 }
