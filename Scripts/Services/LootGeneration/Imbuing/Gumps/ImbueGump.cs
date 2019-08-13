@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+
 using Server;
 using Server.Mobiles;
 using Server.Network;
@@ -161,7 +163,7 @@ namespace Server.Gumps
 
             // ===== CALCULATE DIFFICULTY =====
             var truePropWeight = (int)(((double)propWeight / (double)weight) * 100);
-            var trueTotalWeight = Imbuing.GetTotalWeight(m_Item, -1, false, true);
+            var trueTotalWeight = Imbuing.GetTotalWeight(m_Item, -1, true, true);
 
             double suc = Imbuing.GetSuccessChance(User, m_Item, trueTotalWeight, truePropWeight, bonus);
 
@@ -405,10 +407,24 @@ namespace Server.Gumps
             }
             if (item is BaseJewel)
             {
-                BaseJewel i = item as BaseJewel;
+                BaseJewel jewel = item as BaseJewel;
+
+                if (id >= 151 && id <= 183)
+                {
+                    var bonuses = jewel.SkillBonuses;
+                    var group = Imbuing.GetSkillGroup((SkillName)ItemPropertyInfo.GetAttribute(id));
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        if (bonuses.GetBonus(i) > 0 && group.Any(sk => sk == bonuses.GetSkill(i)))
+                        {
+                            return GetNameForAttribute(bonuses.GetSkill(i));
+                        }
+                    }
+                }
 
                 // SkillGroup1 replace SkillGroup1
-                if (id >= 151 && id <= 155)
+                /*if (id >= 151 && id <= 155)
                 {
                     if (i.SkillBonuses.GetBonus(0) > 0)
                     {
@@ -466,7 +482,7 @@ namespace Server.Gumps
                                 return GetNameForAttribute(sk);
                         }
                     }
-                }
+                }*/
             }
 
             return null;

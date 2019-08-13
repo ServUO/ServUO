@@ -764,9 +764,11 @@ namespace Server.Mobiles
 			{
 				var old = _Mastery;
 				_Mastery = value;
-				
-				if(old != _Mastery)
-					UpdateMasteryInfo();
+
+                if (old != _Mastery)
+                {
+                    UpdateMasteryInfo();
+                }
 			}
 		}
 		
@@ -781,7 +783,7 @@ namespace Server.Mobiles
             }
             else
             {
-                var masteries = MasteryInfo.Infos.Where(i => i.MasterySkill == _Mastery && !i.Passive && i.SpellType != typeof(BodyGuardSpell)).ToArray();
+                var masteries = MasteryInfo.Infos.Where(i => i.MasterySkill == _Mastery && !i.Passive && (i.SpellType != typeof(BodyGuardSpell) || Controlled)).ToArray();
 
                 if (masteries != null && masteries.Length > 0)
                 {
@@ -6578,6 +6580,8 @@ namespace Server.Mobiles
                 ControlOrder = OrderType.None;
                 Guild = null;
 
+                UpdateMasteryInfo();
+
                 Delta(MobileDelta.Noto);
             }
             else
@@ -6605,6 +6609,8 @@ namespace Server.Mobiles
                 ControlTarget = null;
                 ControlOrder = OrderType.Come;
                 Guild = null;
+
+                UpdateMasteryInfo();
 
                 AdjustSpeeds();
                 CurrentSpeed = m_dActiveSpeed;

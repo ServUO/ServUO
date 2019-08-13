@@ -985,6 +985,44 @@ namespace Server.Items
                         break;
                     }
             }
+
+            int strBonus = ComputeStatBonus(StatType.Str);
+            int dexBonus = ComputeStatBonus(StatType.Dex);
+            int intBonus = ComputeStatBonus(StatType.Int);
+
+            if (Parent is Mobile && (strBonus != 0 || dexBonus != 0 || intBonus != 0))
+            {
+                Mobile m = (Mobile)Parent;
+
+                string modName = Serial.ToString();
+
+                if (strBonus != 0)
+                    m.AddStatMod(new StatMod(StatType.Str, modName + "Str", strBonus, TimeSpan.Zero));
+
+                if (dexBonus != 0)
+                    m.AddStatMod(new StatMod(StatType.Dex, modName + "Dex", dexBonus, TimeSpan.Zero));
+
+                if (intBonus != 0)
+                    m.AddStatMod(new StatMod(StatType.Int, modName + "Int", intBonus, TimeSpan.Zero));
+            }
+
+            if (Parent is Mobile)
+            {
+                m_AosSkillBonuses.AddTo((Mobile)Parent);
+                ((Mobile)Parent).CheckStatTimers();
+            }
+        }
+
+        public int ComputeStatBonus(StatType type)
+        {
+            switch (type)
+            {
+                case StatType.Str: return Attributes.BonusStr;
+                case StatType.Dex: return Attributes.BonusDex;
+                case StatType.Int: return Attributes.BonusInt;
+            }
+
+            return 0;
         }
 
         public virtual void AlterBowDamage(ref int phys, ref int fire, ref int cold, ref int pois, ref int nrgy, ref int chaos, ref int direct)
