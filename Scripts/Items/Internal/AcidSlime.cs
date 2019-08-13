@@ -12,6 +12,9 @@ namespace Server.Items
         private readonly DateTime m_Created;
         private readonly Timer m_Timer;
         private bool m_Drying;
+		
+		public override int LabelNumber {get {return 1018143;} } // slime
+		
         [Constructable]
         public AcidSlime()
             : this(TimeSpan.FromSeconds(10.0), 5, 10)
@@ -22,27 +25,20 @@ namespace Server.Items
         public AcidSlime(TimeSpan duration, int minDamage, int maxDamage)
             : base(0x122A)
         {
-            this.Hue = 0x3F;
-            this.Movable = false;
-            this.m_MinDamage = minDamage;
-            this.m_MaxDamage = maxDamage;
-            this.m_Created = DateTime.UtcNow;
-            this.m_Duration = duration;
-            this.m_Timer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(1), new TimerCallback(OnTick));
+            Hue = 0x3F;
+            Movable = false;
+            m_MinDamage = minDamage;
+            m_MaxDamage = maxDamage;
+            m_Created = DateTime.UtcNow;
+            m_Duration = duration;
+            m_Timer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(1), new TimerCallback(OnTick));
         }
 
         public AcidSlime(Serial serial)
             : base(serial)
         {
         }
-
-        public override string DefaultName
-        {
-            get
-            {
-                return "slime";
-            }
-        }
+       
         public override void OnAfterDelete()
         {
             if (this.m_Timer != null)

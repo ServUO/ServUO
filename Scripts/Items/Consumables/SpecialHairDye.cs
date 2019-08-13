@@ -6,37 +6,30 @@ namespace Server.Items
 {
     public class SpecialHairDye : Item
     {
+		public override int LabelNumber {get {return 1074402;} } // Special Hair Dye
+		
         [Constructable]
         public SpecialHairDye()
             : base(0xE26)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Newbied;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public SpecialHairDye(Serial serial)
             : base(serial)
         {
         }
-
-        public override string DefaultName
-        {
-            get
-            {
-                return "Special Hair Dye";
-            }
-        }
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
 

@@ -7,12 +7,14 @@ namespace Server.Items
     public class ArcaneGem : Item, ICommodity
     {
         public const int DefaultArcaneHue = 2117;
+		public override int LabelNumber {get {return 1114115;} } // Arcane Gem
+		
         [Constructable]
         public ArcaneGem()
             : base(0x1EA7)
         {
-            this.Stackable = Core.ML;
-            this.Weight = 1.0;
+            Stackable = Core.ML;
+            Weight = 1.0;
         }
 
         public ArcaneGem(Serial serial)
@@ -22,14 +24,7 @@ namespace Server.Items
 
         TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
-
-        public override string DefaultName
-        {
-            get
-            {
-                return "arcane gem";
-            }
-        }
+       
         public static bool ConsumeCharges(Mobile from, int amount)
         {
             List<Item> items = from.Items;
@@ -129,17 +124,7 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                     return;
-                }
-                /*else if (item.LootType == LootType.Blessed)
-                {
-                    from.SendMessage("You can only use this on exceptionally crafted robes, thigh boots, cloaks, or leather gloves.");
-                    return;
-                }
-                else if (resource != CraftResource.None && resource != CraftResource.RegularLeather)
-                {
-                    from.SendLocalizedMessage(1049690); // Arcane gems can not be used on that type of leather.
-                    return;
-                }*/
+                }             
 
                 int charges = this.GetChargesFor(from);
 
@@ -228,14 +213,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

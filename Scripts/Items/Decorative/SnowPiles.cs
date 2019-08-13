@@ -2,7 +2,10 @@
 {
     public class SnowPileDeco : Item
     {
+		public override double DefaultWeight { get { return 2.0; } }
+		
         private static readonly int[] m_Types = new int[] { 0x8E2, 0x8E0, 0x8E6, 0x8E5, 0x8E3 };
+		
         [Constructable]
         public SnowPileDeco()
             : this(m_Types[Utility.Random(m_Types.Length)])
@@ -13,7 +16,7 @@
         public SnowPileDeco(int itemid)
             : base(itemid)
         {
-            this.Hue = 0x481;
+            Hue = 0x481;
         }
 
         public SnowPileDeco(Serial serial)
@@ -28,24 +31,16 @@
                 return "Snow Pile";
             }
         }
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 2.0;
-            }
-        }
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
