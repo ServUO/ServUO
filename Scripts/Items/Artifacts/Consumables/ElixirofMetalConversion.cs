@@ -4,6 +4,8 @@ namespace Server.Items
 {
     public class ElixirofMetalConversion : Item
     {
+		public override int LabelNumber { get { return 1113011; } } // Elixir of Metal Conversion
+		
         [Constructable]
         public ElixirofMetalConversion()
             : base(0x99B)
@@ -16,18 +18,11 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113011;
-            }
-        }
+       
         public override void OnDoubleClick(Mobile from)
         {
+			
             Container backpack = from.Backpack;
-
             IronIngot item1 = (IronIngot)backpack.FindItemByType(typeof(IronIngot));   
                
             if (item1 != null)                
@@ -56,31 +51,29 @@ namespace Server.Items
                             break;
                     }
 
-                    from.SendMessage("You've successfully converted the Metal.");    
+                    from.SendLocalizedMessage(1113048); // You've successfully converted the metal.
                     this.Delete();
                 }
                 else if ((m_Ore1.Amount < 500) || (m_Ore1.Amount > 500))
                 {
-                    from.SendMessage("You can only convert 500 Iron Ingots at a time.");
+                    from.SendLocalizedMessage(1113046); // You can only convert five hundred ingots at a time.
                 }
             }
             else
             {
-                from.SendMessage("There isn't Iron Ingots in your Backpack.");
+                from.SendLocalizedMessage(1078618); // The item must be in your backpack to be exchanged.
             }
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
