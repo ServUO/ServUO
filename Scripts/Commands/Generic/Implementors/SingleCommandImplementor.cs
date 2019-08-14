@@ -7,11 +7,11 @@ namespace Server.Commands.Generic
     {
         public SingleCommandImplementor()
         {
-            this.Accessors = new string[] { "Single" };
-            this.SupportRequirement = CommandSupport.Single;
-            this.AccessLevel = AccessLevel.Counselor;
-            this.Usage = "Single <command>";
-            this.Description = "Invokes the command on a single targeted object. This is the same as just invoking the command directly.";
+            Accessors = new string[] { "Single" };
+            SupportRequirement = CommandSupport.Single;
+            AccessLevel = AccessLevel.Counselor;
+            Usage = "Single <command>";
+            Description = "Invokes the command on a single targeted object. This is the same as just invoking the command directly.";
         }
 
         public override void Register(BaseCommand command)
@@ -46,7 +46,7 @@ namespace Server.Commands.Generic
         {
             if (!BaseCommand.IsAccessible(from, targeted))
             {
-                from.SendMessage("That is not accessible.");
+                from.SendLocalizedMessage(500447); // That is not accessible.
                 return;
             }
 

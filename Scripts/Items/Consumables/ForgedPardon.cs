@@ -30,7 +30,7 @@ namespace Server.Items
             {
                 from.Kills--;
 
-                from.SendMessage("You have been pardoned from one murder count.");
+                from.SendLocalizedMessage(1116208); // Your murder count has been successfully updated.
                 Delete();
                 m_Table[from] = DateTime.UtcNow + TimeSpan.FromHours(24);
             }

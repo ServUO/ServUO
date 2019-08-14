@@ -7,15 +7,16 @@ namespace Server.Items
     public class PlagueBeastMutationCore : Item, IScissorable
     {
         private bool m_Cut;
+		
+		public override int LabelNumber { get { return 1153760; } } // a plague beast mutation core
+		
         [Constructable]
         public PlagueBeastMutationCore()
             : base(0x1CF0)
-        {
-            this.m_Cut = true;
-
-            this.Name = "a plague beast mutation core";
-            this.Weight = 1.0;
-            this.Hue = 0x480;
+        {                     
+            Weight = 1.0;
+            Hue = 0x480;
+			m_Cut = true; 
         }
 
         public PlagueBeastMutationCore(Serial serial)

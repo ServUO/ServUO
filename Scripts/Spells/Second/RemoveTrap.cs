@@ -27,7 +27,6 @@ namespace Server.Spells.Second
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);
-            this.Caster.SendMessage("What do you wish to untrap?");
         }
 
         public void Target(TrapableContainer item)
@@ -74,7 +73,7 @@ namespace Server.Spells.Second
                 }
                 else
                 {
-                    from.SendMessage("You can't disarm that");
+                    from.SendLocalizedMessage(501856); // That isn't trapped.
                 }
             }
 
