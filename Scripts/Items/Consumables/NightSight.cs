@@ -44,7 +44,7 @@ namespace Server.Items
             }
             else
             {
-                from.SendMessage("You already have nightsight.");
+                from.SendLocalizedMessage(502178); // You are already affected by this type of potion.
             }
         }
     }
