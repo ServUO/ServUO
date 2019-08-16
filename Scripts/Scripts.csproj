@@ -1803,10 +1803,7 @@
     </Compile>
     <Compile Include="Items\Equipment\Jewelry\StaffRing.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Equipment\Clothing\StaffRobe.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    </Compile>   
     <Compile Include="Items\Addons\AbbatoirAddon.cs">
       <SubType>Code</SubType>
     </Compile>

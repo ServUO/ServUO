@@ -10,42 +10,42 @@ namespace Server.Mobiles
         public Balron()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = NameList.RandomName("balron");
-            this.Body = 40;
-            this.BaseSoundID = 357;
+            Name = NameList.RandomName("balron");
+            Body = 40;
+            BaseSoundID = 357;
 
-            this.SetStr(986, 1185);
-            this.SetDex(177, 255);
-            this.SetInt(151, 250);
+            SetStr(986, 1185);
+            SetDex(177, 255);
+            SetInt(151, 250);
 
-            this.SetHits(592, 711);
+            SetHits(592, 711);
 
-            this.SetDamage(22, 29);
+            SetDamage(22, 29);
 
-            this.SetDamageType(ResistanceType.Physical, 50);
-            this.SetDamageType(ResistanceType.Fire, 25);
-            this.SetDamageType(ResistanceType.Energy, 25);
+            SetDamageType(ResistanceType.Physical, 50);
+            SetDamageType(ResistanceType.Fire, 25);
+            SetDamageType(ResistanceType.Energy, 25);
 
-            this.SetResistance(ResistanceType.Physical, 65, 80);
-            this.SetResistance(ResistanceType.Fire, 60, 80);
-            this.SetResistance(ResistanceType.Cold, 50, 60);
-            this.SetResistance(ResistanceType.Poison, 100);
-            this.SetResistance(ResistanceType.Energy, 40, 50);
+            SetResistance(ResistanceType.Physical, 65, 80);
+            SetResistance(ResistanceType.Fire, 60, 80);
+            SetResistance(ResistanceType.Cold, 50, 60);
+            SetResistance(ResistanceType.Poison, 100);
+            SetResistance(ResistanceType.Energy, 40, 50);
 
-            this.SetSkill(SkillName.Anatomy, 25.1, 50.0);
-            this.SetSkill(SkillName.EvalInt, 90.1, 100.0);
-            this.SetSkill(SkillName.Magery, 95.5, 100.0);
-            this.SetSkill(SkillName.Meditation, 25.1, 50.0);
-            this.SetSkill(SkillName.MagicResist, 100.5, 150.0);
-            this.SetSkill(SkillName.Tactics, 90.1, 100.0);
-            this.SetSkill(SkillName.Wrestling, 90.1, 100.0);
+            SetSkill(SkillName.Anatomy, 25.1, 50.0);
+            SetSkill(SkillName.EvalInt, 90.1, 100.0);
+            SetSkill(SkillName.Magery, 95.5, 100.0);
+            SetSkill(SkillName.Meditation, 25.1, 50.0);
+            SetSkill(SkillName.MagicResist, 100.5, 150.0);
+            SetSkill(SkillName.Tactics, 90.1, 100.0);
+            SetSkill(SkillName.Wrestling, 90.1, 100.0);
 
-            this.Fame = 24000;
-            this.Karma = -24000;
+            Fame = 24000;
+            Karma = -24000;
 
-            this.VirtualArmor = 90;
+            VirtualArmor = 90;
 
-            this.PackItem(new Longsword());
+            PackItem(new Longsword());
         }
 
         public Balron(Serial serial)
