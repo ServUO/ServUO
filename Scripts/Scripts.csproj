@@ -87,7 +87,7 @@
     </Compile>
     <Compile Include="Commands\BoundingBoxPicker.cs">
       <SubType>Code</SubType>
-    </Compile>   
+    </Compile>
     <Compile Include="Commands\CreateWorld.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -277,7 +277,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Deprecated\GamblingStone.cs" />
-    <Compile Include="Deprecated\GMStone.cs" />   
+    <Compile Include="Deprecated\GMStone.cs" />
     <Compile Include="Gumps\AddCustomizableMessageGump.cs" />
     <Compile Include="Gumps\AddDoorGump.cs">
       <SubType>Code</SubType>
@@ -593,6 +593,7 @@
     <Compile Include="Items\Decorative\SilverSaplingReplica.cs" />
     <Compile Include="Items\Decorative\ValentineBear.cs" />
     <Compile Include="Items\Functional\StrangeContraption.cs" />
+    <Compile Include="Items\Internal\ItemSockets\SearingWeapon.cs" />
     <Compile Include="Items\Quest\RewardBooks.cs" />
     <Compile Include="Items\Resource\FocusingGemOfVirtueBane.cs" />
     <Compile Include="Items\Functional\SerpentsJawbone.cs" />
@@ -5560,7 +5561,7 @@
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Armor\ArmsOfArmstrong.cs">
       <SubType>Code</SubType>
-    </Compile>   
+    </Compile>
     <Compile Include="Items\Containers\BagOfSmokeBombs.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10430,7 +10431,7 @@
     </Compile>
     <Compile Include="Services\BasketWeaving\PlantPigmentHue.cs">
       <SubType>Code</SubType>
-    </Compile>   
+    </Compile>
     <Compile Include="Services\BasketWeaving\SilverSapling.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -11466,7 +11467,7 @@
     </Compile>
     <Compile Include="Items\Internal\ResGate.cs">
       <SubType>Code</SubType>
-    </Compile>     
+    </Compile>
     <Compile Include="Spells\Base\DisturbType.cs">
       <SubType>Code</SubType>
     </Compile>
