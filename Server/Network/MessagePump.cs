@@ -301,6 +301,10 @@ namespace Server.Network
 							{
 								m_Throttled.Enqueue(ns);
 							}
+                            else
+                            {
+                                buffer.Dequeue(new byte[packetLength], 0, packetLength);
+                            }
 
 							return;
 						}

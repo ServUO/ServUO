@@ -134,7 +134,7 @@ namespace Server.Items
 			}
 			else
 			{
-				m.SendMessage("This moongate does not seem to go anywhere.");
+				m.SendLocalizedMessage(1113744); // This moongate is not yet bonded to the magics of Sosaria.
 			}
 		}
 

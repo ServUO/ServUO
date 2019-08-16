@@ -1092,7 +1092,7 @@ namespace Server.Items
 			}
 			else if (from.Dex < DexRequirement)
 			{
-				from.SendMessage("You are not nimble enough to equip that.");
+				from.SendLocalizedMessage(1071936); // You cannot equip that.
 				return false;
 			}
 			else if (from.Str < AOS.Scale(StrRequirement, 100 - GetLowerStatReq()))
@@ -1102,7 +1102,7 @@ namespace Server.Items
 			}
 			else if (from.Int < IntRequirement)
 			{
-				from.SendMessage("You are not smart enough to equip that.");
+				from.SendLocalizedMessage(1071936); // You cannot equip that.
 				return false;
 			}
 			else if (!from.CanBeginAction(typeof(BaseWeapon)))

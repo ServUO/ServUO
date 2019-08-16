@@ -15,7 +15,7 @@ namespace Server.Targets
 		{
 			if (!BaseCommand.IsAccessible(from, o))
 			{
-				from.SendMessage("That is not accessible.");
+				from.SendLocalizedMessage(500447); // That is not accessible.
 				return;
 			}
 

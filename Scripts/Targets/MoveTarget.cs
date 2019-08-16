@@ -22,7 +22,7 @@ namespace Server.Targets
 			{
 				if (!BaseCommand.IsAccessible(from, this.m_Object))
 				{
-					from.SendMessage("That is not accessible.");
+					from.SendLocalizedMessage(500447); // That is not accessible.
 					return;
 				}
 
@@ -42,7 +42,7 @@ namespace Server.Targets
 					}
 					else
 					{
-						from.SendMessage("Invalid Item.");
+						from.SendLocalizedMessage(1154965); // Invalid item.
 					}
 				}
 				else if (this.m_Object is Mobile)

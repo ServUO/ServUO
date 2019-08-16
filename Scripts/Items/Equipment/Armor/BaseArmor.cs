@@ -2475,7 +2475,7 @@ namespace Server.Items
                     if (AllowFemaleWearer)
                         from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1010388); // Only females can wear this.
                     else
-                        from.SendMessage("You may not wear this.");
+                        from.SendLocalizedMessage(1071936); // You cannot equip that.
 
                     return false;
                 }
@@ -2484,7 +2484,7 @@ namespace Server.Items
                     if (AllowMaleWearer)
                         from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1063343); // Only males can wear this.
                     else
-                        from.SendMessage("You may not wear this.");
+                        from.SendLocalizedMessage(1071936); // You cannot equip that.
 
                     return false;
                 }
@@ -2514,7 +2514,7 @@ namespace Server.Items
                     }
                     else if (from.Int < intReq || (from.Int + intBonus) < 1)
                     {
-                        from.SendMessage("You are not smart enough to equip that.");
+                        from.SendLocalizedMessage(1071936); // You cannot equip that.
                         return false;
                     }
                 }
