@@ -90,11 +90,7 @@ namespace Server.Mobiles
                 }
             }
 
-            if (message)
-            {
-                from.SendLocalizedMessage(1075456); // You are not allowed to damage this NPC unless your on the Guilty Quest
-            }
-
+            from.SendLocalizedMessage(1075456); // You are not allowed to damage this NPC unless your on the Guilty Quest
             return false;
         }
 

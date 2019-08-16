@@ -112,7 +112,6 @@ namespace Server.Items
             }
         }
 
-        [CommandProperty(AccessLevel.GameMaster)]
         public string BookString
         {
             get { return ContentAsString; }

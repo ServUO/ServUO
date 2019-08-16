@@ -286,7 +286,7 @@ namespace Server.SkillHandlers
                 }
             }*/
 
-            return Math.Round(Math.Floor(20 * skill + 10 * a * Math.Pow(e, (b / (resultWeight + c))) + 10 * w - 2400) / 1000 * (i) + bonus, 3) * 100;
+            return Math.Max(0, Math.Round(Math.Floor(20 * skill + 10 * a * Math.Pow(e, (b / (resultWeight + c))) + 10 * w - 2400) / 1000 * (i) + bonus, 3) * 100);
         }
 
         public static int GetQualityBonus(Item item)

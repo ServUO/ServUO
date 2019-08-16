@@ -6260,6 +6260,19 @@ namespace Server
 			InvalidateProperties();
 		}
 
+        public bool RemoveSocket<T>()
+        {
+            var socket = GetSocket(typeof(T));
+
+            if (socket != null)
+            {
+                RemoveItemSocket(socket);
+                return true;
+            }
+
+            return false;
+        }
+
         public void RemoveItemSocket(ItemSocket socket)
         {
             if (Sockets == null)
@@ -6268,6 +6281,7 @@ namespace Server
             }
 
             Sockets.Remove(socket);
+            socket.OnRemoved();
 
             if (Sockets.Count == 0)
             {
@@ -6386,8 +6400,6 @@ namespace Server
 			EndTimer();
 			
 			Owner.RemoveItemSocket(this);
-			
-			OnRemoved();
 		}
 		
 		public virtual void OnRemoved()
