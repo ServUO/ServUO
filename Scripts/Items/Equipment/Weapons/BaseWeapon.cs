@@ -4537,7 +4537,10 @@ namespace Server.Items
                         {
                             if (reader.ReadBool())
                             {
-                                AttachSocket(new SearingWeapon(this));
+                                Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                                {
+                                    AttachSocket(new SearingWeapon(this));
+                                });
                             }
                         }
                         goto case 11;
