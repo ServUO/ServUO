@@ -124,7 +124,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -132,16 +132,13 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadEncodedInt();
 
-            switch (version)
+            if (version < 1)
             {
-                case 0:
-                    {
-                        reader.ReadBool();
-                        reader.ReadInt();
-                        reader.ReadInt();
-
-                        break;
-                    }
+                if (reader.ReadBool())
+                {
+                    reader.ReadInt();
+                    reader.ReadInt();
+                }
             }
         }
     }
