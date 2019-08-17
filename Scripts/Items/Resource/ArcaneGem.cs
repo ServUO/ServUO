@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class ArcaneGem : Item, ICommodity
     {
-        public const int DefaultArcaneHue = 2117; // The color that the item is painted to is the default color. (needs to be fixed.)
+        public const int DefaultArcaneHue = 2117;
         public override int LabelNumber {get {return 1114115;} } // Arcane Gem
 
         [Constructable]
@@ -72,11 +72,6 @@ namespace Server.Items
                         {
                             amount -= eq.CurArcaneCharges;
                             eq.CurArcaneCharges = 0;
-                        }
-
-                        if (eq.CurArcaneCharges <= 0)
-                        {
-                            obj.Hue = 0;
                         }
                     }
                 }
@@ -147,7 +142,7 @@ namespace Server.Items
                     }
                     else
                     {
-                        item.Hue = DefaultArcaneHue;
+                        item.Hue = eq.TempHue;
 
                         if (charges >= eq.MaxArcaneCharges)
                         {
@@ -196,11 +191,11 @@ namespace Server.Items
 
                             armor.Quality = ItemQuality.Normal;
                             armor.Crafter = from;
-                            armor.PhysicalBonus = 2;
-                            armor.FireBonus = 4;
-                            armor.ColdBonus = 3;
-                            armor.PoisonBonus = 3;
-                            armor.EnergyBonus = 3;
+                            armor.PhysicalBonus = 0;
+                            armor.FireBonus = 0;
+                            armor.ColdBonus = 0;
+                            armor.PoisonBonus = 0;
+                            armor.EnergyBonus = 0;
                         }
                         else if (item is BaseWeapon) // Sanity, weapons cannot recieve gems...
                         {
