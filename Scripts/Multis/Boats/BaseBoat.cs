@@ -284,7 +284,7 @@ namespace Server.Multis
         public virtual double ScuttleLevel { get { return 25.0; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual bool Scuttled { get { return Durability < ScuttleLevel; } }
+        public virtual bool Scuttled { get { return !IsUnderEmergencyRepairs() && Durability < ScuttleLevel; } }
 
         public virtual TimeSpan BoatDecayDelay { get { return TimeSpan.FromDays(13); } }
         public virtual bool CanLinkToLighthouse { get { return true; } }
@@ -622,9 +622,6 @@ namespace Server.Multis
 
                         Anchored = false; // No more anchors[High Seas]
 
-                        if (version < 1)
-                            Refresh();
-
                         break;
                     }
             }
@@ -885,8 +882,13 @@ namespace Server.Multis
 
         private bool m_Decaying;
 
-        public void Refresh()
+        public void Refresh(Mobile from = null)
         {
+            if (from != null && Status > 1043010)
+            {
+                from.SendLocalizedMessage(1043294); // Your ship's age and contents have been refreshed.
+            }
+
             m_DecayTime = DateTime.UtcNow + BoatDecayDelay;
 
             if (TillerMan != null)
@@ -1948,7 +1950,7 @@ namespace Server.Multis
             if (Pilot != null)
                 Pilot.RevealingAction();
 
-            if (CheckDecay() || !IsUnderEmergencyRepairs() && Scuttled || clientSpeed == 0x0)
+            if (CheckDecay() || Scuttled || clientSpeed == 0x0)
                 return false;
 
             Moving = dir;
@@ -2687,13 +2689,12 @@ namespace Server.Multis
             SendContainerPacket();
             pilot.SendLocalizedMessage(1116727); // You are now piloting this vessel.
 
-            if (this is BaseGalleon)
+            Refresh(pilot);
+
+            GetEntitiesOnBoard().OfType<PlayerMobile>().Where(x => x != pilot).ToList().ForEach(y =>
             {
-                GetEntitiesOnBoard().OfType<PlayerMobile>().Where(x => x != pilot).ToList().ForEach(y =>
-                {
-                    y.SendLocalizedMessage(1149664, pilot.Name); // ~1_NAME~ has assumed control of the ship.
-                });
-            }
+                y.SendLocalizedMessage(1149664, pilot.Name); // ~1_NAME~ has assumed control of the ship.
+            });
 
             if (IsMoving)
                 StopMove(false);
@@ -2701,26 +2702,22 @@ namespace Server.Multis
 
         public void RemovePilot(Mobile from)
         {
-            if (Pilot != from)
-                return;
-
             Pilot.RemoveItem(VirtualMount);
-            VirtualMount.Internalize();
-
-            Pilot = null;
+            VirtualMount.Internalize();            
 
             if (IsMoving)
                 StopMove(false);
 
-            from.SendLocalizedMessage(1149592); // You are no longer piloting this vessel.
+            Pilot.SendLocalizedMessage(1149592); // You are no longer piloting this vessel.
 
-            if (this is BaseGalleon)
+            Refresh(from);
+
+            GetEntitiesOnBoard().OfType<PlayerMobile>().Where(x => x != Pilot).ToList().ForEach(y =>
             {
-                GetEntitiesOnBoard().OfType<PlayerMobile>().Where(x => x != from).ToList().ForEach(y =>
-                {
-                    y.SendLocalizedMessage(1149668, from.Name); // ~1_NAME~ has relinquished control of the ship.
-                });
-            }
+                y.SendLocalizedMessage(1149668, Pilot.Name); // ~1_NAME~ has relinquished control of the ship.
+            });
+
+            Pilot = null;
         }
 
         public static bool IsDriving(Mobile from)
