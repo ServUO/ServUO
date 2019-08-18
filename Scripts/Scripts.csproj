@@ -555,6 +555,7 @@
     <Compile Include="Items\Addons\Crystal Furniture Set\CrystalSupplicantStatue.cs" />
     <Compile Include="Items\Addons\Crystal Furniture Set\CrystalThrone.cs" />
     <Compile Include="Items\Addons\Crystal Furniture Set\CrystalRunnerStatue.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Weapons\TheRedeemer.cs" />
     <Compile Include="Items\Consumables\AnniversaryPromotionalToken.cs" />
     <Compile Include="Items\Containers\BoxOfCrystalItems.cs" />
     <Compile Include="Items\Containers\BoxOfShadowItems.cs" />
@@ -1803,7 +1804,7 @@
     </Compile>
     <Compile Include="Items\Equipment\Jewelry\StaffRing.cs">
       <SubType>Code</SubType>
-    </Compile>   
+    </Compile>
     <Compile Include="Items\Addons\AbbatoirAddon.cs">
       <SubType>Code</SubType>
     </Compile>

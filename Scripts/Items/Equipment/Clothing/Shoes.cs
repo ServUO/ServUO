@@ -203,15 +203,12 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxArcaneCharges
         {
-            get
-            {
-                return this.m_MaxArcaneCharges;
-            }
+            get { return m_MaxArcaneCharges; }
             set
             {
-                this.m_MaxArcaneCharges = value;
-                this.InvalidateProperties();
-                this.Update();
+                m_MaxArcaneCharges = value;
+                InvalidateProperties();
+                Update();
             }
         }
 
@@ -220,58 +217,55 @@ namespace Server.Items
         {
             get
             {
-                return this.m_CurArcaneCharges;
+                return m_CurArcaneCharges;
             }
             set
             {
-                this.m_CurArcaneCharges = value;
-                this.InvalidateProperties();
-                this.Update();
+                m_CurArcaneCharges = value;
+                InvalidateProperties();
+                Update();
             }
         }
+
+        public int TempHue { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsArcane
         {
             get
             {
-                return (this.m_MaxArcaneCharges > 0 && this.m_CurArcaneCharges >= 0);
+                return m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0;
             }
         }
 
-        public override void OnSingleClick(Mobile from)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.OnSingleClick(from);
+            base.AddCraftedProperties(list);
 
-            if (this.IsArcane)
-                this.LabelTo(from, 1061837, String.Format("{0}\t{1}", this.m_CurArcaneCharges, this.m_MaxArcaneCharges));
+            if (IsArcane)
+                list.Add(1061837, "{0}\t{1}", m_CurArcaneCharges, m_MaxArcaneCharges); // arcane charges: ~1_val~ / ~2_val~
         }
 
         public void Update()
         {
-            if (this.IsArcane)
-                this.ItemID = 0x26AF;
-            else if (this.ItemID == 0x26AF)
-                this.ItemID = 0x1711;
+            if (IsArcane)
+                ItemID = 0x26AF;
+            else if (ItemID == 0x26AF)
+                ItemID = 0x1711;
 
-            if (this.IsArcane && this.CurArcaneCharges == 0)
-                this.Hue = 0;
-        }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            if (this.IsArcane)
-                list.Add(1061837, "{0}\t{1}", this.m_CurArcaneCharges, this.m_MaxArcaneCharges); // arcane charges: ~1_val~ / ~2_val~
+            if (IsArcane && CurArcaneCharges == 0)
+            {
+                TempHue = Hue;
+                Hue = 0;
+            }
         }
 
         public void Flip()
         {
-            if (this.ItemID == 0x1711)
-                this.ItemID = 0x1712;
-            else if (this.ItemID == 0x1712)
-                this.ItemID = 0x1711;
+            if (ItemID == 0x1711)
+                ItemID = 0x1712;
+            else if (ItemID == 0x1712)
+                ItemID = 0x1711;
         }
 
         #endregion
@@ -294,7 +288,7 @@ namespace Server.Items
         public ThighBoots(int hue)
             : base(0x1711, hue)
         {
-            this.Weight = 4.0;
+            Weight = 4.0;
         }
 
         public ThighBoots(Serial serial)
@@ -305,14 +299,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+            writer.Write((int)2); // version
 
-            writer.Write((int)1); // version
-
-            if (this.IsArcane)
+            if (IsArcane)
             {
                 writer.Write(true);
-                writer.Write((int)this.m_CurArcaneCharges);
-                writer.Write((int)this.m_MaxArcaneCharges);
+                writer.Write(TempHue);
+                writer.Write((int)m_CurArcaneCharges);
+                writer.Write((int)m_MaxArcaneCharges);
             }
             else
             {
@@ -323,20 +317,27 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
+                case 2:
+                    {
+                        if (reader.ReadBool())
+                        {
+                            TempHue = reader.ReadInt();
+                            m_CurArcaneCharges = reader.ReadInt();
+                            m_MaxArcaneCharges = reader.ReadInt();
+                        }
+
+                        break;
+                    }
                 case 1:
                     {
                         if (reader.ReadBool())
                         {
-                            this.m_CurArcaneCharges = reader.ReadInt();
-                            this.m_MaxArcaneCharges = reader.ReadInt();
-
-                            if (this.Hue == 2118)
-                                this.Hue = ArcaneGem.DefaultArcaneHue;
+                            m_CurArcaneCharges = reader.ReadInt();
+                            m_MaxArcaneCharges = reader.ReadInt();
                         }
 
                         break;
