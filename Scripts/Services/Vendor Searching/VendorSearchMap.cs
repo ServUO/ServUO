@@ -39,10 +39,10 @@ namespace Server.Items
             Hue = RecallRune.CalculateHue(vendor.Map, null, true);
             LootType = LootType.Blessed;
 
-            Width = 400;
-            Height = 400;
+            Width = 300;
+            Height = 300;
 
-            Bounds = new Rectangle2D(vendor.X - 100, vendor.Y - 100, 200, 200);
+            Bounds = new Rectangle2D(vendor.X - 300, vendor.Y - 300, 600, 600);
             AddWorldPin(vendor.X, vendor.Y);            
 
             DeleteTime = DateTime.UtcNow + TimeSpan.FromMinutes(DeleteDelayMinutes);
@@ -65,7 +65,7 @@ namespace Server.Items
         public override void AddNameProperty(ObjectPropertyList list)
         {
             if (Vendor != null && Vendor.Map != null && Vendor.Map != Map.Internal)
-                list.Add(1154559, String.Format("{0}\t{1}", Vendor.Name, Vendor.ShopName)); // Map to Vendor ~1_Name~: ~2_Shop~
+                list.Add(1154559, string.Format("{0}\t{1}", Vendor.Name, Vendor.ShopName)); // Map to Vendor ~1_Name~: ~2_Shop~
             else
                 base.AddNameProperties(list);
         }
@@ -75,7 +75,7 @@ namespace Server.Items
             base.GetProperties(list);
 
             if (Vendor != null && Vendor.Map != null && Vendor.Map != Map.Internal)
-                list.Add(1154639, String.Format("{0}\t{1}", GetCoords(), Vendor.Map.ToString())); //  Vendor Located at ~1_loc~ (~2_facet~)
+                list.Add(1154639, string.Format("{0}\t{1}", GetCoords(), Vendor.Map.ToString())); //  Vendor Located at ~1_loc~ (~2_facet~)
 
             list.Add(1075269); // Destroyed when dropped
         }
@@ -93,7 +93,7 @@ namespace Server.Items
 
                 if (Sextant.Format(new Point3D(x, y, Vendor.Map.GetAverageZ(x, y)), Vendor.Map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
                 {
-                    return String.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+                    return string.Format("{0}o {1}'{2}, {3}o {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
                 }
             }
 
@@ -167,7 +167,7 @@ namespace Server.Items
             public Mobile Clicker { get; set; }
 
             public OpenMapEntry(Mobile from, VendorSearchMap map)
-                : base(3006150, -1) // open map
+                : base(3006150, 1) // Open Map
             {
                 VendorMap = map;
                 Clicker = from;
@@ -181,8 +181,8 @@ namespace Server.Items
 
         public class TeleportEntry : ContextMenuEntry
         {
-            public VendorSearchMap VendorMap { get; set; }
-            public Mobile Clicker { get; set; }
+            private VendorSearchMap VendorMap { get; set; }
+            private Mobile Clicker { get; set; }
 
             public TeleportEntry(Mobile from, VendorSearchMap map)
                 : base(map.SetLocation == Point3D.Zero ? 1154558 : 1154636, -1) // Teleport To Vendor : Return to Previous Location
@@ -202,33 +202,42 @@ namespace Server.Items
 
         public class OpenContainerEntry : ContextMenuEntry
         {
-            public VendorSearchMap VendorMap { get; set; }
-            public Mobile Clicker { get; set; }
+            private VendorSearchMap VendorMap { get; set; }
+            private Mobile Clicker { get; set; }
+            private Container Container { get; set; }
 
             public OpenContainerEntry(Mobile from, VendorSearchMap map)
                 : base(1154699, -1) // Open Container Containing Item
             {
                 VendorMap = map;
                 Clicker = from;
+                Container = VendorMap.SearchItem.ParentEntity as Container;
 
-                BaseHouse h1 = BaseHouse.FindHouseAt(VendorMap.Vendor);
-                BaseHouse h2 = BaseHouse.FindHouseAt(Clicker);
+                Enabled = IsAccessible();
+            }
 
-                Enabled = h1 != null && h1 == h2;
+            private bool IsAccessible()
+            {
+                if (!Container.IsAccessibleTo(Clicker))
+                    return false;
+
+                if (!Clicker.InRange(Container.GetWorldLocation(), 18))
+                    return false;
+
+                return true;
             }
 
             public override void OnClick()
             {
-                BaseHouse h1 = BaseHouse.FindHouseAt(VendorMap.Vendor);
-                BaseHouse h2 = BaseHouse.FindHouseAt(Clicker);
+                RecurseOpen(Container, Clicker);
+            }
 
-                if (h1 != null && h1 == h2)
-                {
-                    Container c = VendorMap.SearchItem.ParentEntity as Container;
+            private static void RecurseOpen(Container c, Mobile from)
+            {
+                if (c.Parent is Container parent)
+                    RecurseOpen(parent, from);
 
-                    if (c != null)
-                        c.DisplayTo(Clicker);
-                }
+                c.DisplayTo(from);
             }
         }
 
