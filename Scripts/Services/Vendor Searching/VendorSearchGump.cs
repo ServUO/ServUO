@@ -544,10 +544,6 @@ namespace Server.Engines.VendorSearching
                         {
                             User.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
                         }
-                        else if (VendorMap.SetLocation != Point3D.Zero && (!Utility.InRange(VendorMap.SetLocation, User.Location, 100) || VendorMap.SetMap != User.Map))
-                        {
-                            User.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
-                        }
                         else
                         {
                             new Spells.Fourth.RecallSpell(User, VendorMap, VendorMap).Cast();
