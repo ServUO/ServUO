@@ -52,7 +52,8 @@ namespace Server.Items
 
         private static string[] _Names =
         {
-            "Hook's Pirate War", "Endless Struggle Between Platinum And Crimson", "Ophidian War", "Battle Of The Bloody Plains", "Expedition Against Khal Ankur", "Evacuation Of Haven", "Defeat Of Virtuebane"
+            "Hook's Pirate War", "Endless Struggle Between Platinum And Crimson", "Ophidian War", "Battle Of The Bloody Plains", "Expedition Against Khal Ankur", "Evacuation Of Haven", "Defeat Of Virtuebane", "Siege Of Ver Lor Reg",
+            "Assault On The Temple Of The Abyss", "Fall Of Trinsic"
         };
     }
 }

@@ -55,7 +55,7 @@ namespace Server.Items
 
         private static string[] _Names =
         {
-            "Trinsic", "Jhelom", "Vesper", "Ocllo", "Yew", "Britain", "Minoc", "Moonglow", "Skara Brae", 
+            "Trinsic", "Jhelom", "Vesper", "Ocllo", "Yew", "Britain", "Minoc", "Moonglow", "Skara Brae", "Delucia"
         };
     }
 }
