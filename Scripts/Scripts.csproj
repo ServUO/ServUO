@@ -750,6 +750,12 @@
     <Compile Include="Quests\TieredQuests\PercolemTieredQuests.cs" />
     <Compile Include="Quests\TieredQuests\ThepemTieredQuests.cs" />
     <Compile Include="Quests\TieredQuests\ZosilemTieredQuests.cs" />
+    <Compile Include="Services\22nd Anniversary\Anniversary22GiftToken.cs" />
+    <Compile Include="Services\22nd Anniversary\Items\CopperPortraits.cs" />
+    <Compile Include="Services\22nd Anniversary\Items\CopperShipRelief.cs" />
+    <Compile Include="Services\22nd Anniversary\Items\CopperSunflower.cs" />
+    <Compile Include="Services\22nd Anniversary\Items\CopperWings.cs" />
+    <Compile Include="Services\22nd Anniversary\Giver.cs" />
     <Compile Include="Services\Astronomy\21st Anniversary Gifts\Anniversary21Card.cs" />
     <Compile Include="Services\Astronomy\21st Anniversary Gifts\Anniversary21GiftToken.cs" />
     <Compile Include="Services\Astronomy\21st Anniversary Gifts\AnniversaryBag21st.cs" />
