@@ -43,28 +43,82 @@ namespace Server.Items
             var bag = new Bag();
             bag.Hue = 1286;
 
-            switch(choice)
+            bool chance = Utility.RandomDouble() < .1;
+
+            Item item;
+
+            switch (choice)
             {
                 default:
                     bag.Delete();
                     break;
                 case 1:
-                    bag.DropItem(new CopperWings());
-                    from.AddToBackpack(bag); Delete();
-                    break;
+                    {
+                        item = new CopperWings();
+
+                        if (chance)
+                        {
+                            item.Hue = 2951;
+                        }
+
+                        bag.DropItem(item);
+                        from.AddToBackpack(bag);
+                        Delete();
+                        break;
+                    }
                 case 2:
-                    bag.DropItem(new CopperPortrait1());
-                    bag.DropItem(new CopperPortrait2());
-                    from.AddToBackpack(bag);
-                    Delete(); break;
+                    {
+                        item = new CopperPortrait1();
+
+                        if (chance)
+                        {
+                            item.Hue = 2951;
+                        }
+
+                        bag.DropItem(item);
+
+                        item = new CopperPortrait2();
+
+                        if (chance)
+                        {
+                            item.Hue = 2951;
+                        }
+
+                        bag.DropItem(item);
+
+                        from.AddToBackpack(bag);
+                        Delete();
+                        break;
+                    }
+                    
                 case 3:
-                    bag.DropItem(new CopperShipReliefAddonDeed());
-                    from.AddToBackpack(bag);
-                    Delete(); break;
+                    {
+                        item = new CopperShipReliefAddonDeed();
+
+                        if (chance)
+                        {
+                            item.Hue = 2951;
+                        }
+
+                        bag.DropItem(item);
+
+                        from.AddToBackpack(bag);
+                        Delete();
+                        break;
+                    }
                 case 4:
-                    bag.DropItem(new CopperSunflower());
+                    item = new CopperSunflower();
+
+                    if (chance)
+                    {
+                        item.Hue = 2951;
+                    }
+
+                    bag.DropItem(item);
+
                     from.AddToBackpack(bag);
-                    Delete(); break;
+                    Delete();
+                    break;
             }
         }
 

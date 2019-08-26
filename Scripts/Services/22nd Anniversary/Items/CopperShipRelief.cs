@@ -54,6 +54,9 @@ namespace Server.Items
                 {
                     list.Add(1159152, name); // <BASEFONT COLOR=#FFD24D>Depicting the Maiden Voyage of ~1_NAME~<BASEFONT COLOR=#FFFFFF>
                 }
+
+                if (Hue == 2951)
+                    list.Add(1076187); // Antique
             }
 
             public CopperShipReliefComponent(Serial serial)
@@ -141,6 +144,9 @@ namespace Server.Items
             {
                 list.Add(1159152, _DisplayName); // <BASEFONT COLOR=#FFD24D>Depicting the Maiden Voyage of ~1_NAME~<BASEFONT COLOR=#FFFFFF>
             }
+
+            if (Hue == 2951)
+                list.Add(1076187); // Antique
         }
 
         public CopperShipReliefAddonDeed(Serial serial)
@@ -181,7 +187,7 @@ namespace Server.Items
 
         private static string[] _Names =
         {
-            "The HMS Cape", "The Mustang", "The Dragon's Breath", "The Crown Jewel", "The Empire", "The Scaly Eel", "The Spartan", "The Beast", "The Ararat", "The Arabella", "The Lusty Wench"
+            "The HMS Cape", "The Mustang", "The Dragon's Breath", "The Crown Jewel", "The Empire", "The Scaly Eel", "The Spartan", "The Beast", "The Ararat", "The Arabella", "The Lusty Wench", "The Golden Ankh"
         };
     }
 }
