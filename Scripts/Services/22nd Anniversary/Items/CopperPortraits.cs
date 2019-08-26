@@ -27,6 +27,9 @@ namespace Server.Items
             {
                 list.Add(1159151, _DisplayName); // <BASEFONT COLOR=#FFD24D>Relief of ~1_NAME~<BASEFONT COLOR=#FFFFFF>
             }
+
+            if (Hue == 2951)
+                list.Add(1076187); // Antique
         }
 
         public CopperPortrait1(Serial serial)
@@ -53,7 +56,7 @@ namespace Server.Items
         public static string[] _Names =
         {
             "Long Tooth Riccia", "Long Leg Topaz", "Glass Tongue Takako", "Iron Fist Riccia", "Fat Eye Takako", "Bloody Back Greg", "Cursed Powder Mercury", "Lone Tongue Erebus", "Mad Powder Sarah", "Long Beard Jim",
-            "Lazy Eye Thrixx", "Cursed Patch Artemis", "Mad Back Aeon", "Glass Tooth Asiantam", "Iron Mouth Artemis", "Stink Back Elizabella", "Lost Blade Mercury"
+            "Lazy Eye Thrixx", "Cursed Patch Artemis", "Mad Back Aeon", "Glass Tooth Asiantam", "Iron Mouth Artemis", "Stink Back Elizabella", "Lost Blade Mercury", "Lazy Mouth Malachi"
         };
     }
 
@@ -82,6 +85,9 @@ namespace Server.Items
             {
                 list.Add(1159151, _DisplayName); // <BASEFONT COLOR=#FFD24D>Relief of ~1_NAME~<BASEFONT COLOR=#FFFFFF>
             }
+
+            if (Hue == 2951)
+                list.Add(1076187); // Antique
         }
 
         public CopperPortrait2(Serial serial)

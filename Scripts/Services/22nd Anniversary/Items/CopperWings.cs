@@ -27,6 +27,9 @@ namespace Server.Items
             {
                 list.Add(1159153, _DisplayName); // <BASEFONT COLOR=#FFD24D>Symbolizing Glory During the ~1_NAME~<BASEFONT COLOR=#FFFFFF>
             }
+
+            if (Hue == 2951)
+                list.Add(1076187); // Antique
         }
 
         public CopperWings(Serial serial)

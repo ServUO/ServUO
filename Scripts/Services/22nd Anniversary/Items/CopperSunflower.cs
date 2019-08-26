@@ -30,6 +30,9 @@ namespace Server.Items
             {
                 list.Add(1159150, _DisplayName); // <BASEFONT COLOR=#FFD24D>Cast from Flowers Grown in The Warm Sun of ~1_NAME~<BASEFONT COLOR=#FFFFFF>
             }
+
+            if (Hue == 2951)
+                list.Add(1076187); // Antique
         }
 
         public CopperSunflower(Serial serial)

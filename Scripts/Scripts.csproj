@@ -602,6 +602,8 @@
     <Compile Include="Items\Internal\ItemSockets\EnchantedHotItem.cs" />
     <Compile Include="Items\Internal\ItemSockets\HonestyItem.cs" />
     <Compile Include="Items\Internal\ItemSockets\SlayerSocket.cs" />
+    <Compile Include="Items\Resource\OceanSapphire.cs" />
+    <Compile Include="Items\Resource\LiveRock.cs" />
     <Compile Include="Items\StoreBought\BarrelMailbox.cs" />
     <Compile Include="Items\StoreBought\SquirrelMailbox.cs" />
     <Compile Include="Items\Tools\SteamPoweredBeverageMaker.cs" />
