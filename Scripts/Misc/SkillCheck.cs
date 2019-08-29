@@ -611,6 +611,7 @@ namespace Server.Misc
             switch (stat)
             {
                 case Stat.Str:
+				{
                     if (CanRaise(from, Stat.Str, atTotalCap))
                     {
                         if (atTotalCap)
@@ -635,7 +636,9 @@ namespace Server.Misc
                     }
 
                     break;
+				}
                 case Stat.Dex:
+				{
                     if (CanRaise(from, Stat.Dex, atTotalCap))
                     {
                         if (atTotalCap)
@@ -660,7 +663,9 @@ namespace Server.Misc
                     }
 
                     break;
+				}
                 case Stat.Int:
+				{
                     if (CanRaise(from, Stat.Int, atTotalCap))
                     {
                         if (atTotalCap)
@@ -685,8 +690,9 @@ namespace Server.Misc
                     }
 
                     break;
-            }
-        }
+	            }
+	        }
+		}
 
 		public static void GainStat(Mobile from, Stat stat)
 		{
