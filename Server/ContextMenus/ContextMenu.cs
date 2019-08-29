@@ -118,7 +118,7 @@ namespace Server.ContextMenus
 
 		public static bool Display(Mobile m, IEntity target)
 		{
-			if (m == null || target == null || m.Map != target.Map || !m.CanSee(target))
+			if (m == null || target == null || m.Map != target.Map)
 			{
 				return false;
 			}
