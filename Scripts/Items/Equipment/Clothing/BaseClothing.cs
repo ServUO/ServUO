@@ -13,6 +13,7 @@ namespace Server.Items
         bool IsArcane { get; }
         int CurArcaneCharges { get; set; }
         int MaxArcaneCharges { get; set; }
+        int TempHue { get; set; }
     }
 
     public abstract class BaseClothing : Item, IDyable, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, IArtifact, ICombatEquipment, IEngravable, IQuality

@@ -34,22 +34,12 @@ namespace Server.Items
 
             if (Boat != null)
             {
-                if (Boat.Owner == from && Boat.Status > 1043010)
-                {
-                    from.SendLocalizedMessage(1043294); // Your ship's age and contents have been refreshed.
-                }
-
-                Boat.Refresh();
+                Boat.Refresh(from);
             }
 
             if (boat != null && Boat != boat)
             {
-                if (boat.Owner == from && boat.Status > 1043010)
-                {
-                    from.SendLocalizedMessage(1043294); // Your ship's age and contents have been refreshed.
-                }
-
-                boat.Refresh();
+                boat.Refresh(from);
             }
 
             if (!from.InRange(Location, range))

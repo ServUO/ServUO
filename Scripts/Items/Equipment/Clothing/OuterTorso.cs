@@ -1171,10 +1171,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxArcaneCharges
         {
-            get
-            {
-                return m_MaxArcaneCharges;
-            }
+            get { return m_MaxArcaneCharges; }
             set
             {
                 m_MaxArcaneCharges = value;
@@ -1186,10 +1183,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int CurArcaneCharges
         {
-            get
-            {
-                return m_CurArcaneCharges;
-            }
+            get { return m_CurArcaneCharges; }
             set
             {
                 m_CurArcaneCharges = value;
@@ -1198,12 +1192,14 @@ namespace Server.Items
             }
         }
 
+        public int TempHue { get; set; }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsArcane
         {
             get
             {
-                return (m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0);
+                return m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0;
             }
         }
 
@@ -1215,23 +1211,18 @@ namespace Server.Items
                 ItemID = 0x1F04;
 
             if (IsArcane && CurArcaneCharges == 0)
+            {
+                TempHue = Hue;
                 Hue = 0;
+            }
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
+            base.AddCraftedProperties(list);
 
             if (IsArcane)
                 list.Add(1061837, "{0}\t{1}", m_CurArcaneCharges, m_MaxArcaneCharges); // arcane charges: ~1_val~ / ~2_val~
-        }
-
-        public override void OnSingleClick(Mobile from)
-        {
-            base.OnSingleClick(from);
-
-            if (IsArcane)
-                LabelTo(from, 1061837, String.Format("{0}\t{1}", m_CurArcaneCharges, m_MaxArcaneCharges));
         }
 
         public void Flip()
@@ -1267,12 +1258,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
-            writer.Write((int)1); // version
+            writer.Write((int)2); // version
 
             if (IsArcane)
             {
                 writer.Write(true);
+                writer.Write(TempHue);
                 writer.Write((int)m_CurArcaneCharges);
                 writer.Write((int)m_MaxArcaneCharges);
             }
@@ -1285,20 +1276,27 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
+                case 2:
+                    {
+                        if (reader.ReadBool())
+                        {
+                            TempHue = reader.ReadInt();
+                            m_CurArcaneCharges = reader.ReadInt();
+                            m_MaxArcaneCharges = reader.ReadInt();
+                        }
+
+                        break;
+                    }
                 case 1:
                     {
                         if (reader.ReadBool())
                         {
                             m_CurArcaneCharges = reader.ReadInt();
                             m_MaxArcaneCharges = reader.ReadInt();
-
-                            if (Hue == 2118)
-                                Hue = ArcaneGem.DefaultArcaneHue;
                         }
 
                         break;

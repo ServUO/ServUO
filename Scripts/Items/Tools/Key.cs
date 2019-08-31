@@ -457,6 +457,12 @@ namespace Server.Items
                 }
                 else if (targeted is ILockable)
                 {
+                    if (targeted is Plank && ((Plank)targeted).IsOpen)
+                    {
+                        ((Item)targeted).SendLocalizedMessageTo(from, 501671); // You cannot currently lock that.
+                        return;
+                    }
+
                     if (m_Key.UseOn(from, (ILockable)targeted))
                         number = -1;
                     else

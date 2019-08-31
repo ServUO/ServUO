@@ -44,8 +44,10 @@ namespace Server.Mobiles
                 return TimeSpan.Zero;
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextMountAbility { get; set; }
+
         public virtual bool AllowMaleRider
         {
             get
@@ -53,6 +55,7 @@ namespace Server.Mobiles
                 return true;
             }
         }
+
         public virtual bool AllowFemaleRider
         {
             get
@@ -60,6 +63,7 @@ namespace Server.Mobiles
                 return true;
             }
         }
+
         [Hue, CommandProperty(AccessLevel.GameMaster)]
         public override int Hue
         {
@@ -75,6 +79,7 @@ namespace Server.Mobiles
                     InternalItem.Hue = value;
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public int ItemID
         {
@@ -91,6 +96,7 @@ namespace Server.Mobiles
                     InternalItem.ItemID = value;
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Rider
         {

@@ -72,29 +72,54 @@ namespace Server.Items
 
         public Mobile Pilot { get { return Boat != null ? Boat.Pilot : null; } }
 
+        public override void OnDoubleClickDead(Mobile m)
+        {
+            OnDoubleClick(m);
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
+            from.RevealingAction();
+
             BaseBoat boat = BaseBoat.FindBoatAt(from, from.Map);
             Item mount = from.FindItemOnLayer(Layer.Mount);
 
-            if (!from.InRange(Location, 3))
-                from.SendLocalizedMessage(500295); //You are too far away to do that.
-            else if (boat == null || Boat != boat || Boat == null)
-                from.SendLocalizedMessage(1116724); //You cannot pilot a ship unless you are aboard it!
-            else if (boat.Owner != from)
-                from.SendLocalizedMessage(1116726); //This is not your ship!
+            if (boat == null || Boat == null || Boat != boat)
+            {
+                from.SendLocalizedMessage(1116724); // You cannot pilot a ship unless you are aboard it!
+            }
+            else if (Pilot != null && Pilot != from && Pilot == Boat.Owner)
+            {
+                from.SendLocalizedMessage(502221); // Someone else is already using this item.
+            }
             else if (from.Flying)
+            {
                 from.SendLocalizedMessage(1116615); // You cannot pilot a ship while flying!
+            }
             else if (from.Mounted && !(mount is BoatMountItem))
-                from.SendLocalizedMessage(1010097); //You cannot use this while mounted or flying. 
-            else if (from != Pilot && Pilot != null && Pilot == Boat.Owner)
-                from.SendMessage("Someone is already piloting this vessle!");
+            {
+                from.SendLocalizedMessage(1010097); // You cannot use this while mounted or flying.
+            }
             else if (Pilot == null && Boat.Scuttled)
-                from.SendLocalizedMessage(1116725); //This ship is too damaged to sail!
+            {
+                from.SendLocalizedMessage(1116725); // This ship is too damaged to sail!
+            }
             else if (Pilot != null)
-                boat.RemovePilot(from);
+            {
+                if (from != Pilot) // High authorized player takes control of the ship
+                {
+                    boat.RemovePilot(from);
+                    boat.LockPilot(from);
+                }
+                else
+                {
+                    boat.RemovePilot(from);
+                }
+            }
             else
+            {
                 boat.LockPilot(from);
+            }
         }
 
         public override bool OnDragDrop(Mobile from, Item dropped)
@@ -117,16 +142,20 @@ namespace Server.Items
         {
             base.GetContextMenuEntries(from, list);
 
-            if (Boat != null && (Boat.Owner == from || from.AccessLevel > AccessLevel.Player))
+            if (Boat != null)
             {
                 if (Boat.Contains(from))
                 {
-                    list.Add(new RenameShipEntry(this, from));
+                    if (Boat.IsOwner(from))
+                        list.Add(new RenameShipEntry(this, from));
+
                     list.Add(new EmergencyRepairEntry(this, from));
                     list.Add(new ShipRepairEntry(this, from));
                 }
-                else
+                else if (Boat.IsOwner(from))
+                {
                     list.Add(new DryDockEntry(Boat, from));
+                }
             }
         }
 

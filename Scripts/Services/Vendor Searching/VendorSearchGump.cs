@@ -510,15 +510,15 @@ namespace Server.Engines.VendorSearching
             AddBackground(0, 0, 414, 214, 0x7752);
 
             if (VendorMap.Vendor != null && VendorMap.SetLocation != Point3D.Zero)
-                AddHtmlLocalized(27, 47, 380, 80, 1154637, String.Format("@{0}@{1}", VendorMap.GetCoords(), VendorMap.Vendor.Map.ToString()), 0xFFFF, false, false); // Please select 'Accept' if you would like to return to ~1_loc~ (~2_facet~).  This map will be deleted after use.
+                AddHtmlLocalized(27, 47, 380, 80, 1154637, string.Format("@{0}@{1}", VendorMap.GetCoords(), VendorMap.Vendor.Map.ToString()), 0x4E73, false, false); // Please select 'Accept' if you would like to return to ~1_loc~ (~2_facet~).  This map will be deleted after use.
             else
-                AddHtmlLocalized(27, 47, 380, 80, 1156475, String.Format("@{0}@{1}@{2}", VendorMap.TeleportCost.ToString(), VendorMap.Vendor.Name, VendorMap.DeleteDelayMinutes.ToString()), 0xFFFF, false, false); // Please select 'Accept' if you would like to pay ~1_cost~ gold to teleport to auction house ~2_name~. For this price you will also be able to teleport back to this location within the next ~3_minutes~ minutes.
+                AddHtmlLocalized(27, 47, 380, 80, 1154635, string.Format("@{0}@{1}@{2}", VendorMap.TeleportCost.ToString(), VendorMap.Vendor.Name, VendorMap.DeleteDelayMinutes.ToString()), 0x4E73, false, false); // Please select 'Accept' if you would like to pay ~1_cost~ gold to teleport to vendor ~2_name~.  For this price you will also be able to teleport back to this location within the next ~3_minutes~ minutes.
 
             AddButton(7, 167, 0x7747, 0x7747, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(47, 167, 100, 40, 1150300, 0x4E73, false, false); // CANCEL
 
             AddButton(377, 167, 0x7746, 0x7746, 1, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(267, 167, 100, 40, 1114514, "#1150299", 0xFFFF, false, false); // // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
+            AddHtmlLocalized(267, 167, 100, 40, 1114514, "#1150299", 0x4E73, false, false); // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
         }
 
         public override void OnResponse(RelayInfo info)
@@ -544,13 +544,9 @@ namespace Server.Engines.VendorSearching
                         {
                             User.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
                         }
-                        else if (VendorMap.SetLocation != Point3D.Zero && (!Utility.InRange(VendorMap.SetLocation, User.Location, 100) || VendorMap.SetMap != User.Map))
-                        {
-                            User.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
-                        }
                         else
                         {
-                            new Server.Spells.Fourth.RecallSpell(User, VendorMap, VendorMap).Cast();
+                            new Spells.Fourth.RecallSpell(User, VendorMap, VendorMap).Cast();
                         }
 
                         break;

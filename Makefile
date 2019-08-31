@@ -31,7 +31,7 @@ clean:
 Ultima.dll: Ultima/*.cs
 	${MCS} -target:library -out:${CURPATH}/Ultima.dll -r:${REFS} -nowarn:${NOWARNS} -d:MONO -d:ServUO -d:NEWTIMERS -nologo -optimize -unsafe -recurse:${SDKPATH}/*.cs
 
-ServUO.exe: Ultima.dll Server/*.cs
+${EXENAME}.exe: Ultima.dll Server/*.cs
 	${MCS} -win32icon:${SRVPATH}/servuo.ico -r:${CURPATH}/Ultima.dll,${REFS} -nowarn:${NOWARNS} -target:exe -out:${CURPATH}/${EXENAME}.exe -d:MONO -d:ServUO -d:NEWTIMERS -nologo -optimize -unsafe -recurse:${SRVPATH}/*.cs
 
 ${EXENAME}.sh: ${EXENAME}.exe
