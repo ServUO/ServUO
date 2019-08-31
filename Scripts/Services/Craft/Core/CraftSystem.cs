@@ -507,6 +507,12 @@ namespace Server.Engines.Craft
             craftItem.ForceNonExceptional = true;
         }
 
+        public void ForceExceptional(int index)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.ForceExceptional = true;
+        }
+
         public void SetMinSkillOffset(int index, double skillOffset)
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);

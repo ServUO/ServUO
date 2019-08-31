@@ -63,6 +63,7 @@ namespace Server.Engines.Craft
 
         public double MinSkillOffset { get; set; }
         public bool ForceNonExceptional { get; set; }
+        public bool ForceExceptional { get; set; }
         public Expansion RequiredExpansion { get; set; }
         public ThemePack RequiredThemePack { get; set; }
 
@@ -1259,7 +1260,16 @@ namespace Server.Engines.Craft
 				return 0.0;
 			}
 
-			double bonus = 0.0;
+            if (ForceExceptional)
+            {
+                bool allRequiredSkills = false;
+                GetSuccessChance(from, null, system, false, ref allRequiredSkills);
+
+                if (allRequiredSkills)
+                    return 100.0;
+            }
+
+            double bonus = 0.0;
 
 			if (from.Talisman is BaseTalisman)
 			{
