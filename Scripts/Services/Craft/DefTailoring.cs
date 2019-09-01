@@ -46,18 +46,18 @@ namespace Server.Engines.Craft
         KrampusMinionBoots = 587,
         KrampusMinionTalons = 588,
 
-        MaceBelt = 589,
-        SwordBelt = 590,
-        DaggerBelt = 591,
-        ElegantCollar = 592,
-        CrimsonMaceBelt = 593,
-        CrimsonSwordBelt = 594,
-        CrimsonDaggerBelt = 595,
-        ElegantCollarOfFortune = 596,
-        AssassinsCowl = 597,
-        MagesHood = 598,
-        CowlOfTheMaceAndShield = 599,
-        MagesHoodOfScholarlyInsight = 1100
+        MaceBelt = 1100,
+        SwordBelt = 1101,
+        DaggerBelt = 1102,
+        ElegantCollar = 1103,
+        CrimsonMaceBelt = 1104,
+        CrimsonSwordBelt = 1105,
+        CrimsonDaggerBelt = 1106,
+        ElegantCollarOfFortune = 1107,
+        AssassinsCowl = 1108,
+        MagesHood = 1109,
+        CowlOfTheMaceAndShield = 1110,
+        MagesHoodOfScholarlyInsight = 1111
 
     }
 
