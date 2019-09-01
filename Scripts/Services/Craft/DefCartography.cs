@@ -103,7 +103,7 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(TreasureMap), 1073502, 1, 1073503);
             AddResCallback(index, ConsumeTatteredWallMapRes);
 
-            index = AddCraft(typeof(TatteredWallMapEast), 1044448, 1072891, 90.0, 150.0, typeof(TreasureMap), 1073494, 10, 1073495);
+            index = AddCraft(typeof(TatteredWallMapEast), 1044448, 1072892, 90.0, 150.0, typeof(TreasureMap), 1073494, 10, 1073495);
             AddRes(index, typeof(TreasureMap), 1073498, 5, 1073499);
             AddRes(index, typeof(TreasureMap), 1073500, 3, 1073501);
             AddRes(index, typeof(TreasureMap), 1073502, 1, 1073503);
