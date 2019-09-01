@@ -5,6 +5,7 @@ namespace Server.Items
     public class VileTentacles : Item, ICommodity
     {
         public override int LabelNumber { get { return 1113333; } } // vile tentacles
+        public override double DefaultWeight { get { return 0.1; } }
 
         [Constructable]
         public VileTentacles()

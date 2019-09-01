@@ -127,15 +127,7 @@ namespace Server.Items
 
             if (version == 0)
             {
-                SaveFlag flags = (SaveFlag)reader.ReadInt();
-
-                if (flags != SaveFlag.None)
-                    flags = SaveFlag.xWeaponAttributes;
-
-                if (GetSaveFlag(flags, SaveFlag.xWeaponAttributes))
-                    m_AosWeaponAttributes = new AosWeaponAttributes(this, reader);
-                else
-                    m_AosWeaponAttributes = new AosWeaponAttributes(this);
+                xWeaponAttributesDeserializeHelper(reader, this);
             }
         }
     }

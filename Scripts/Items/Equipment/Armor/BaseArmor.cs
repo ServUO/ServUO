@@ -118,7 +118,7 @@ namespace Server.Items
         private AosSkillBonuses m_AosSkillBonuses;
         private SAAbsorptionAttributes m_SAAbsorptionAttributes;
         private NegativeAttributes m_NegativeAttributes;
-        public AosWeaponAttributes m_AosWeaponAttributes;
+        private AosWeaponAttributes m_AosWeaponAttributes;
 
         private TalismanAttribute m_TalismanProtection;
 
@@ -1594,13 +1594,13 @@ namespace Server.Items
                 flags |= toSet;
         }
 
-        public static bool GetSaveFlag(SaveFlag flags, SaveFlag toGet)
+        private static bool GetSaveFlag(SaveFlag flags, SaveFlag toGet)
         {
             return ((flags & toGet) != 0);
         }
 
         [Flags]
-        public enum SaveFlag
+        private enum SaveFlag
         {
             None = 0x00000000,
             Attributes = 0x00000001,
@@ -1666,6 +1666,19 @@ namespace Server.Items
             SetSelfRepair = 0x00000800,
         }
         #endregion
+
+        public void xWeaponAttributesDeserializeHelper(GenericReader reader, BaseArmor item)
+        {
+            SaveFlag flags = (SaveFlag)reader.ReadInt();
+
+            if (flags != SaveFlag.None)
+                flags = SaveFlag.xWeaponAttributes;
+
+            if (GetSaveFlag(flags, SaveFlag.xWeaponAttributes))
+                m_AosWeaponAttributes = new AosWeaponAttributes(item, reader);
+            else
+                m_AosWeaponAttributes = new AosWeaponAttributes(item);
+        }
 
         public override void Serialize(GenericWriter writer)
         {

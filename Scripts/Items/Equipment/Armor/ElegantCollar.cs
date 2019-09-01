@@ -7,12 +7,12 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1159224; } } // elegant collar
 
-        public override int BasePhysicalResistance { get { return 0; } }
-        public override int BaseFireResistance { get { return 0; } }
-        public override int BaseColdResistance { get { return 0; } }
-        public override int BasePoisonResistance { get { return 1; } }
-        public override int BaseEnergyResistance { get { return 0; } }
-        public override int InitMinHits { get { return 40; } }
+        public override int BasePhysicalResistance { get { return 2; } }
+        public override int BaseFireResistance { get { return 4; } }
+        public override int BaseColdResistance { get { return 3; } }
+        public override int BasePoisonResistance { get { return 3; } }
+        public override int BaseEnergyResistance { get { return 3; } }
+        public override int InitMinHits { get { return 35; } }
         public override int InitMaxHits { get { return 50; } }
         public override int AosStrReq { get { return 30; } }
         public override int ArmorBase { get { return 7; } }

@@ -5,6 +5,7 @@ namespace Server.Items
     public class EtherealSand : Item, ICommodity
     {
         public override int LabelNumber { get { return 1125984; } } // ethereal sand
+        public override double DefaultWeight { get { return 0.1; } }
 
         [Constructable]
         public EtherealSand()

@@ -43,10 +43,10 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (version != 0)
-                WeaponAttributes.HitLowerDefend = 30;
-            else
-                reader.ReadInt();
+            if (version == 0)
+            {
+                xWeaponAttributesDeserializeHelper(reader, this);
+            }
         }
     }
 }
