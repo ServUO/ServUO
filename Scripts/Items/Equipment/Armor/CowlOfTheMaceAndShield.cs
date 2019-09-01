@@ -1,4 +1,5 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
@@ -33,6 +34,26 @@ namespace Server.Items
         public CowlOfTheMaceAndShield(Serial serial)
             : base(serial)
         {
+        }
+
+        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
+        {
+            Quality = (ItemQuality)quality;
+
+            PlayerConstructed = true;
+
+            if (makersMark)
+                Crafter = from;
+
+            if (!craftItem.ForceNonExceptional)
+            {
+                if (typeRes == null)
+                    typeRes = craftItem.Resources.GetAt(0).ItemType;
+
+                Resource = CraftResources.GetFromType(typeRes);
+            }
+
+            return quality;
         }
 
         public override void Serialize(GenericWriter writer)
