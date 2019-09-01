@@ -102,7 +102,8 @@ namespace Server.Engines.Craft
 
         public override double GetChanceAtMin(CraftItem item)
         {
-            if (item.NameNumber == 1157348 || item.NameNumber == 1159225 || item.NameNumber == 1159213 || item.NameNumber == 1159212 || item.NameNumber == 1159211) // Cuffs of the Archmage
+            if (item.NameNumber == 1157348 || item.NameNumber == 1159225 || item.NameNumber == 1159213 || item.NameNumber == 1159212 ||
+                item.NameNumber == 1159211 || item.NameNumber == 1159228 || item.NameNumber == 1159229)
                 return 0.05; // 5%
 
             return 0.5; // 50%
@@ -281,14 +282,14 @@ namespace Server.Engines.Craft
                 AddRes(index, typeof(Leather), 1044462, 5, 1044463);
                 AddRes(index, typeof(MaceAndShieldGlasses), 1073381, 1, 1044253);
                 AddRes(index, typeof(VileTentacles), 1113333, 10, 1044253);
-                AddRecipe(index, (int)TailorRecipe.CrimsonDaggerBelt);
+                AddRecipe(index, (int)TailorRecipe.CowlOfTheMaceAndShield);
                 ForceExceptional(index);
 
                 index = AddCraft(typeof(MagesHoodOfScholarlyInsight), 1011375, 1159229, 120.0, 215.0, typeof(Cloth), 1044455, 5, 1044287);
                 AddRes(index, typeof(Leather), 1044462, 5, 1044463);
                 AddRes(index, typeof(TheScholarsHalo), 1157354, 1, 1044253);
                 AddRes(index, typeof(VoidCore), 1113334, 10, 1044253);
-                AddRecipe(index, (int)TailorRecipe.ElegantCollarOfFortune);
+                AddRecipe(index, (int)TailorRecipe.MagesHoodOfScholarlyInsight);
                 ForceExceptional(index);
             }
 
