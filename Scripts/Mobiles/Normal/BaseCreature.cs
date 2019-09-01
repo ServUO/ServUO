@@ -6391,8 +6391,6 @@ namespace Server.Mobiles
                             givenFactionKill = true;
                             Faction.HandleDeath(this, ds.m_Mobile);
                         }
-
-                        Region region = ds.m_Mobile.Region;
                     }
 
                     for (int i = 0; i < titles.Count; ++i)
