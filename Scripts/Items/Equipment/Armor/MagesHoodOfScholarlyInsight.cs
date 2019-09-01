@@ -6,6 +6,7 @@ namespace Server.Items
     public class MagesHoodOfScholarlyInsight : MagesHood
     {
         public override int LabelNumber { get { return 1159229; } } // mage's hood of scholarly insight
+        public override bool IsArtifact { get { return true; } }
 
         public override int BasePhysicalResistance { get { return 15; } }
         public override int BaseFireResistance { get { return 15; } }

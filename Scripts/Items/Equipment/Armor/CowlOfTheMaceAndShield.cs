@@ -6,6 +6,7 @@ namespace Server.Items
     public class CowlOfTheMaceAndShield : AssassinsCowl
     {
         public override int LabelNumber { get { return 1159228; } } // cowl of the mace & shield
+        public override bool IsArtifact { get { return true; } }
 
         public override int BasePhysicalResistance { get { return 10; } }
         public override int BaseFireResistance { get { return 10; } }

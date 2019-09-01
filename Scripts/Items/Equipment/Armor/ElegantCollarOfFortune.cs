@@ -6,6 +6,7 @@ namespace Server.Items
     public class ElegantCollarOfFortune : ElegantCollar
     {
         public override int LabelNumber { get { return 1159225; } } // elegant collar of fortune
+        public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public ElegantCollarOfFortune()
