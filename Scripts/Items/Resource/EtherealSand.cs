@@ -2,33 +2,33 @@ using System;
 
 namespace Server.Items
 {
-    public class FeyWings : Item, ICommodity
+    public class EtherealSand : Item, ICommodity
     {
-        public override int LabelNumber { get { return 1113332; } } // fey wings
+        public override int LabelNumber { get { return 1125984; } } // ethereal sand
         public override double DefaultWeight { get { return 0.1; } }
 
         [Constructable]
-        public FeyWings()
+        public EtherealSand()
             : this(1)
         {
         }
 
         [Constructable]
-        public FeyWings(int amount)
-            : base(0x5726)
+        public EtherealSand(int amount)
+            : base(0xA3E8)
         {
             Stackable = true;
             Amount = amount;
         }
 
-        public FeyWings(Serial serial)
+        public EtherealSand(Serial serial)
             : base(serial)
         {
         }
 
         TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -118,6 +118,7 @@ namespace Server.Items
         private AosSkillBonuses m_AosSkillBonuses;
         private SAAbsorptionAttributes m_SAAbsorptionAttributes;
         private NegativeAttributes m_NegativeAttributes;
+        private AosWeaponAttributes m_AosWeaponAttributes;
 
         private TalismanAttribute m_TalismanProtection;
 
@@ -312,6 +313,7 @@ namespace Server.Items
             armor.m_AosSkillBonuses = new AosSkillBonuses(newItem, m_AosSkillBonuses);
             armor.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(newItem, m_SAAbsorptionAttributes);
             armor.m_NegativeAttributes = new NegativeAttributes(newItem, m_NegativeAttributes);
+            armor.m_AosWeaponAttributes = new AosWeaponAttributes(newItem, m_AosWeaponAttributes);
             armor.m_TalismanProtection = new TalismanAttribute(m_TalismanProtection);
 
             armor.m_SetAttributes = new AosAttributes(newItem, m_SetAttributes);
@@ -1070,64 +1072,23 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosAttributes Attributes
-        {
-            get
-            {
-                return m_AosAttributes;
-            }
-            set
-            {
-            }
-        }
+        public AosAttributes Attributes { get { return m_AosAttributes; } set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosArmorAttributes ArmorAttributes
-        {
-            get
-            {
-                return m_AosArmorAttributes;
-            }
-            set
-            {
-            }
-        }
+        public AosArmorAttributes ArmorAttributes { get { return m_AosArmorAttributes; } set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosSkillBonuses SkillBonuses
-        {
-            get
-            {
-                return m_AosSkillBonuses;
-            }
-            set
-            {
-            }
-        }
+        public AosSkillBonuses SkillBonuses { get { return m_AosSkillBonuses; } set { } }
+
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SAAbsorptionAttributes AbsorptionAttributes
-        {
-            get
-            {
-                return m_SAAbsorptionAttributes;
-            }
-            set
-            {
-            }
-        }
+        public SAAbsorptionAttributes AbsorptionAttributes { get { return m_SAAbsorptionAttributes; } set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public NegativeAttributes NegativeAttributes
-        {
-            get 
-            { 
-                return m_NegativeAttributes;
-            }
-            set 
-            { 
-            }
-        }
+        public NegativeAttributes NegativeAttributes { get { return m_NegativeAttributes; } set { } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public AosWeaponAttributes WeaponAttributes { get { return m_AosWeaponAttributes; } set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public TalismanAttribute Protection
@@ -1668,11 +1629,11 @@ namespace Server.Items
             SkillBonuses = 0x00800000,
             PlayerConstructed = 0x01000000,
             xAbsorptionAttributes = 0x02000000,
-            //TimesImbued = 0x04000000,
+            xWeaponAttributes = 0x04000000,
             NegativeAttributes  = 0x08000000,
             Altered = 0x10000000, 
             TalismanProtection = 0x20000000,
-            EngravedText = 0x40000000
+            EngravedText = 0x40000000         
         }
 
         #region Mondain's Legacy Sets
@@ -1706,11 +1667,24 @@ namespace Server.Items
         }
         #endregion
 
+        public void xWeaponAttributesDeserializeHelper(GenericReader reader, BaseArmor item)
+        {
+            SaveFlag flags = (SaveFlag)reader.ReadInt();
+
+            if (flags != SaveFlag.None)
+                flags = SaveFlag.xWeaponAttributes;
+
+            if (GetSaveFlag(flags, SaveFlag.xWeaponAttributes))
+                m_AosWeaponAttributes = new AosWeaponAttributes(item, reader);
+            else
+                m_AosWeaponAttributes = new AosWeaponAttributes(item);
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)14); // version
+            writer.Write((int)15); // version
 
             // Version 14 - removed VvV Item (handled in VvV System) and BlockRepair (Handled as negative attribute)
 
@@ -1803,6 +1777,7 @@ namespace Server.Items
             // Version 7
             SaveFlag flags = SaveFlag.None;
 
+            SetSaveFlag(ref flags, SaveFlag.xWeaponAttributes, !m_AosWeaponAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.EngravedText, !String.IsNullOrEmpty(_EngravedText));
             SetSaveFlag(ref flags, SaveFlag.TalismanProtection, !m_TalismanProtection.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.NegativeAttributes, !m_NegativeAttributes.IsEmpty);
@@ -1836,6 +1811,9 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.Altered, m_Altered);
 
             writer.WriteEncodedInt((int)flags);
+
+            if (GetSaveFlag(flags, SaveFlag.xWeaponAttributes))
+                m_AosWeaponAttributes.Serialize(writer);
 
             if (GetSaveFlag(flags, SaveFlag.EngravedText))
                 writer.Write(_EngravedText);
@@ -1927,6 +1905,7 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 15:
                 case 14:
                 case 13:
                 case 12:
@@ -1987,7 +1966,7 @@ namespace Server.Items
 
                         m_BlessedBy = reader.ReadMobile();
 
-                        SetFlag sflags = (SetFlag)reader.ReadEncodedInt();
+                        SetFlag sflags = (SetFlag)reader.ReadEncodedInt();                        
 
                         if (GetSaveFlag(sflags, SetFlag.Attributes))
                             m_SetAttributes = new AosAttributes(this, reader);
@@ -2036,6 +2015,14 @@ namespace Server.Items
                 case 5:
                     {
                         SaveFlag flags = (SaveFlag)reader.ReadEncodedInt();
+
+                        if (version > 14)
+                        {
+                            if (GetSaveFlag(flags, SaveFlag.xWeaponAttributes))
+                                m_AosWeaponAttributes = new AosWeaponAttributes(this, reader);
+                            else
+                                m_AosWeaponAttributes = new AosWeaponAttributes(this);
+                        }
 
                         if (GetSaveFlag(flags, SaveFlag.EngravedText))
                             _EngravedText = reader.ReadString();
@@ -2327,6 +2314,9 @@ namespace Server.Items
             if (m_AosSkillBonuses == null)
                 m_AosSkillBonuses = new AosSkillBonuses(this);
 
+            if (m_AosWeaponAttributes == null)
+                m_AosWeaponAttributes = new AosWeaponAttributes(this);
+
             if (Core.AOS && Parent is Mobile)
                 m_AosSkillBonuses.AddTo((Mobile)Parent);
 
@@ -2395,6 +2385,7 @@ namespace Server.Items
 
             m_AosSkillBonuses = new AosSkillBonuses(this);
             m_NegativeAttributes = new NegativeAttributes(this);
+            m_AosWeaponAttributes = new AosWeaponAttributes(this);
             m_TalismanProtection = new TalismanAttribute();
         }
 
@@ -2853,6 +2844,51 @@ namespace Server.Items
 
             if ((prop = ArtifactRarity) > 0)
                 list.Add(1061078, prop.ToString()); // artifact rarity ~1_val~
+
+            if ((prop = m_AosWeaponAttributes.HitColdArea) != 0)
+                list.Add(1060416, prop.ToString()); // hit cold area ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitDispel) != 0)
+                list.Add(1060417, prop.ToString()); // hit dispel ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitEnergyArea) != 0)
+                list.Add(1060418, prop.ToString()); // hit energy area ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitFireArea) != 0)
+                list.Add(1060419, prop.ToString()); // hit fire area ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitFireball) != 0)
+                list.Add(1060420, prop.ToString()); // hit fireball ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitHarm) != 0)
+                list.Add(1060421, prop.ToString()); // hit harm ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitLeechHits) != 0)
+                list.Add(1060422, prop.ToString()); // hit life leech ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitLightning) != 0)
+                list.Add(1060423, prop.ToString()); // hit lightning ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitLowerAttack) != 0)
+                list.Add(1060424, prop.ToString()); // hit lower attack ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitLowerDefend) != 0)
+                list.Add(1060425, prop.ToString()); // hit lower defense ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitMagicArrow) != 0)
+                list.Add(1060426, prop.ToString()); // hit magic arrow ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitLeechMana) != 0)
+                list.Add(1060427, prop.ToString()); // hit mana leech ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitPhysicalArea) != 0)
+                list.Add(1060428, prop.ToString()); // hit physical area ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitPoisonArea) != 0)
+                list.Add(1060429, prop.ToString()); // hit poison area ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitLeechStam) != 0)
+                list.Add(1060430, prop.ToString()); // hit stamina leech ~1_val~%
 
             if ((prop = m_AosArmorAttributes.DurabilityBonus) != 0)
                 list.Add(1151780, prop.ToString()); // durability +~1_VAL~%

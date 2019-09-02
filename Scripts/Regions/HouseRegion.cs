@@ -70,6 +70,38 @@ namespace Server.Regions
             m.SendEverything();
         }
 
+        public override bool CanSee(Mobile m, IEntity e)
+        {
+            Item item = e as Item;
+
+            if (IsStairArea(item) || ExcludeItem(item))
+                return true;
+
+            if (m.PublicHouseContent && House.Public || !m.PublicHouseContent && House.IsInside(m))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool ExcludeItem(Item item)
+        {
+            return item.RootParent is Mobile || m_ItemTypes.Any(t => t == item.GetType() || item.GetType().IsSubclassOf(t));
+        }
+
+        private static Type[] m_ItemTypes = new Type[]
+        {
+            typeof(BaseHouse),  typeof(HouseTeleporter),
+            typeof(BaseDoor),   typeof(Static),
+            typeof(HouseSign)
+        };
+
+        public bool IsStairArea(Item item)
+        {
+            return item.Y >= House.Sign.Y;
+        }
+
         public override bool SendInaccessibleMessage(Item item, Mobile from)
         {
             if (item is Container)

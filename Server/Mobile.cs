@@ -869,6 +869,9 @@ namespace Server
         [CommandProperty(AccessLevel.GameMaster)]
         public bool CharacterOut { get; set; }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool PublicHouseContent { get; set; }
+
         public DFAlgorithm DFA { get; set; } 
 
         protected virtual void OnRaceChange(Race oldRace)

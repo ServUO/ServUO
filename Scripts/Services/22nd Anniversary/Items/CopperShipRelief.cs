@@ -187,7 +187,8 @@ namespace Server.Items
 
         private static string[] _Names =
         {
-            "The HMS Cape", "The Mustang", "The Dragon's Breath", "The Crown Jewel", "The Empire", "The Scaly Eel", "The Spartan", "The Beast", "The Ararat", "The Arabella", "The Lusty Wench", "The Golden Ankh"
+            "The HMS Cape", "The Mustang", "The Dragon's Breath", "The Crown Jewel", "The Empire", "The Scaly Eel", "The Spartan", "The Beast", "The Ararat", "The Arabella", "The Lusty Wench", "The Golden Ankh",
+            "The Poseidon's Fury"
         };
     }
 }

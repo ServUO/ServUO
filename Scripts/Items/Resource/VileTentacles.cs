@@ -2,26 +2,26 @@ using System;
 
 namespace Server.Items
 {
-    public class FeyWings : Item, ICommodity
+    public class VileTentacles : Item, ICommodity
     {
-        public override int LabelNumber { get { return 1113332; } } // fey wings
+        public override int LabelNumber { get { return 1113333; } } // vile tentacles
         public override double DefaultWeight { get { return 0.1; } }
 
         [Constructable]
-        public FeyWings()
+        public VileTentacles()
             : this(1)
         {
         }
 
         [Constructable]
-        public FeyWings(int amount)
-            : base(0x5726)
+        public VileTentacles(int amount)
+            : base(0x5727)
         {
             Stackable = true;
             Amount = amount;
         }
 
-        public FeyWings(Serial serial)
+        public VileTentacles(Serial serial)
             : base(serial)
         {
         }
@@ -29,6 +29,7 @@ namespace Server.Items
         TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
