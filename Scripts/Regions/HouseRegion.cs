@@ -77,7 +77,7 @@ namespace Server.Regions
             if (IsStairArea(item) || ExcludeItem(item))
                 return true;
 
-            if (m.PublicHouseContent && House.Public || !m.PublicHouseContent && House.IsInside(m))
+            if (House.IsInside(m) || m.PublicHouseContent && House.Public)
             {
                 return true;
             }
