@@ -10039,6 +10039,14 @@
     <Compile Include="Services\Seasonal Events\TreasuresOfDoom\RewardGump.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfDoom\Rewards.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfDoom\VaseSpawner.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\CommanderTitleDeed.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\CaptainTitleDeed.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\EnsignTitleDeed.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\ExplodingJackOLantern.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\PumpkinCannonDeed.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\JackOLanternHelm.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\AdmiralJacksPumpkinSpiceAle.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\PumpkinRowboat.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\CaddelliteVendor.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Creatures\CultistAmbusher.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Creatures\KhalAnkur.cs" />
@@ -12160,6 +12168,7 @@
       <Name>Ultima</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />
