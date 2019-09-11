@@ -64,32 +64,6 @@ namespace Server.Multis
             Rudder.Handle = new PumpkinRudderHandle(Rudder, d);
         }
 
-        public override void OnAfterPlacement(bool initial)
-        {
-            if (Owner != null)
-            {
-                foreach (var PumpkinRowBoat in Boats.OfType<PumpkinRowBoat>().Where(rb => rb.Owner == Owner && rb != this && rb.Map != Map.Internal))
-                {
-                    BaseDockedBoat boat = PumpkinRowBoat.BoatItem;
-
-                    if (boat == null || boat.Deleted)
-                        boat = PumpkinRowBoat.DockedBoat;
-
-                    if (boat == null)
-                    {
-                        PumpkinRowBoat.Delete();
-                        return;
-                    }
-
-                    boat.BoatItem = PumpkinRowBoat;
-                    Owner.AddToBackpack(boat);
-
-                    PumpkinRowBoat.Refresh();
-                    PumpkinRowBoat.Internalize();
-                }
-            }
-        }
-
         public override void Delete()
         {
             if (Line != null)
@@ -202,19 +176,7 @@ namespace Server.Multis
 
         public override bool HasAccess(Mobile from)
         {
-            if (from.AccessLevel > AccessLevel.Player || Owner == null)
-                return true;
-
-            if (from.Guild != null && from.Guild == Owner.Guild)
-                return true;
-
-            Party fromParty = Party.Get(from);
-            Party ownerParty = Party.Get(Owner);
-
-            if (fromParty != null && ownerParty != null && fromParty == ownerParty)
-                return true;
-
-            return from == Owner;
+            return true;
         }
 
         public PumpkinRowBoat(Serial serial)

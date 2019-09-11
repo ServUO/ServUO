@@ -313,6 +313,9 @@ namespace Server.Multis
         public BaseBoat(Direction direction, bool isClassic)
             : base(0x0)
         {
+            if (IsRowBoat)
+                Timer.DelayCall(TimeSpan.FromMinutes(2), TimeSpan.FromMinutes(2), RowBoat_Tick_Callback);
+
             m_DecayTime = DateTime.UtcNow + BoatDecayDelay;
             DoesDecay = true;
             Facing = direction;
@@ -339,6 +342,12 @@ namespace Server.Multis
             NextNavPoint = -1;
             Movable = false;
             m_Instances.Add(this);
+        }
+
+        public void RowBoat_Tick_Callback()
+        {
+            if (!GetMobilesOnBoard().Any())
+                Delete();
         }
 
         public BaseBoat(Serial serial)
@@ -644,6 +653,9 @@ namespace Server.Multis
             {
                 Timer.DelayCall(() => Hits = MaxHits);
             }
+
+            if (IsRowBoat)
+                Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), RowBoat_Tick_Callback);
         }
 
         public void RemoveKeys(Mobile m)
@@ -1114,17 +1126,24 @@ namespace Server.Multis
             if (boat == null)
                 return;
 
-            boat.BoatItem = this;
+            if (IsRowBoat)
+            {
+                Delete();
+            }
+            else
+            {
+                boat.BoatItem = this;
 
-            if (IsClassicBoat)
-                RemoveKeys(from);
+                if (IsClassicBoat)
+                    RemoveKeys(from);
 
-            from.AddToBackpack(boat);
+                from.AddToBackpack(boat);
 
-            Refresh();
-            Internalize();
+                Refresh();
+                Internalize();
 
-            OnDryDock(from);
+                OnDryDock(from);
+            }            
         }
 
         public virtual void OnDryDock(Mobile from)

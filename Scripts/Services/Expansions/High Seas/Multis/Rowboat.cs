@@ -64,32 +64,6 @@ namespace Server.Multis
             Rudder.Handle = new RudderHandle(Rudder, d);
         }
 
-        public override void OnAfterPlacement(bool initial)
-        {
-            if (Owner != null)
-            {
-                foreach (var rowBoat in Boats.OfType<RowBoat>().Where(rb => rb.Owner == Owner && rb != this && rb.Map != Map.Internal))
-                {
-                    BaseDockedBoat boat = rowBoat.BoatItem;
-
-                    if (boat == null || boat.Deleted)
-                        boat = rowBoat.DockedBoat;
-
-                    if (boat == null)
-                    {
-                        rowBoat.Delete();
-                        return;
-                    }
-
-                    boat.BoatItem = rowBoat;
-                    Owner.AddToBackpack(boat);
-
-                    rowBoat.Refresh();
-                    rowBoat.Internalize();
-                }
-            }
-        }
-
         public override void Delete()
         {
             if (Line != null)
@@ -189,18 +163,6 @@ namespace Server.Multis
 
         public override bool HasAccess(Mobile from)
         {
-            if (from.AccessLevel > AccessLevel.Player || Owner == null)
-                return true;
-
-            if (from.Guild != null && from.Guild == Owner.Guild)
-                return true;
-
-            Party fromParty = Party.Get(from);
-            Party ownerParty = Party.Get(Owner);
-
-            if (fromParty != null && ownerParty != null && fromParty == ownerParty)
-                return true;
-
             return true;
         }
 
@@ -296,7 +258,10 @@ namespace Server.Multis
             return false;
         }
 
-        public Rudder(Serial serial) : base(serial) { }
+        public Rudder(Serial serial)
+            : base(serial)
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {

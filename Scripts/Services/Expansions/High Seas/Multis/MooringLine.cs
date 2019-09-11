@@ -95,7 +95,9 @@ namespace Server.Items
             public override void OnClick()
             {
                 if (m_Boat != null && !m_Boat.Contains(m_From) && m_Boat.IsOwner(m_From))
+                {
                     m_Boat.BeginDryDock(m_From);
+                }
             }
         }
 
