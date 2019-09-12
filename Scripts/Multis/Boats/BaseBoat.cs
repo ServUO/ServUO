@@ -314,7 +314,7 @@ namespace Server.Multis
             : base(0x0)
         {
             if (IsRowBoat)
-                Timer.DelayCall(TimeSpan.FromMinutes(2), TimeSpan.FromMinutes(2), RowBoat_Tick_Callback);
+                Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), RowBoat_Tick_Callback);
 
             m_DecayTime = DateTime.UtcNow + BoatDecayDelay;
             DoesDecay = true;
