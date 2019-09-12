@@ -12,7 +12,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseBoat Boat { get; private set; }
 
-        public override int LabelNumber { get { return 1149697; } } // mooring line
+        public override int LabelNumber { get { return Boat.IsRowBoat ? 1020935 : 1149697; } } // rope || mooring line
 
         public MooringLine(BaseBoat boat)
             : base(5368)
@@ -20,6 +20,11 @@ namespace Server.Items
             Boat = boat;
             Movable = false;
             Weight = 0;
+        }
+
+        public override void OnDoubleClickDead(Mobile m)
+        {
+            OnDoubleClick(m);
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -32,15 +37,8 @@ namespace Server.Items
             int range = boat != null && boat == Boat ? 3 : 8;
             bool canMove = false;
 
-            if (Boat != null)
-            {
+            if (!Boat.IsRowBoat)
                 Boat.Refresh(from);
-            }
-
-            if (boat != null && Boat != boat)
-            {
-                boat.Refresh(from);
-            }
 
             if (!from.InRange(Location, range))
                 from.SendLocalizedMessage(500295); //You are too far away to do that.
@@ -52,32 +50,14 @@ namespace Server.Items
                 from.SendLocalizedMessage(1116610); //You can't do that while piloting a ship!
             else if (BaseHouse.FindHouseAt(from) != null)
                 from.SendLocalizedMessage(1149795); //You may not dock a ship while on another ship or inside a house.
-            else if (!Boat.IsClassicBoat)
+            else if (Boat == boat && !MoveToNearestDockOrLand(from))
+                from.SendLocalizedMessage(1149796); //You can not dock a ship this far out to sea. You must be near land or shallow water.
+            else if (boat == null || boat != null && Boat != boat)
             {
-                if (boat == Boat && !MoveToNearestDockOrLand(from))
-                    from.SendLocalizedMessage(1149796); //You can not dock a ship this far out to sea. You must be near land or shallow water.
-                else if (boat == null)
-                {
-                    if (!from.Alive)
-                        from.SendLocalizedMessage(1060190); //You cannot do that while dead!
-                    else if ((Boat is BaseGalleon && ((BaseGalleon)Boat).HasAccess(from)) || (Boat is RowBoat && ((RowBoat)Boat).HasAccess(from)))
-                        canMove = true;
-                    else
-                        from.SendLocalizedMessage(1116617); //You do not have permission to board this ship.
-                }
-                else if (boat != null && Boat != boat)
-                {
-                    if (!from.Alive)
-                        from.SendLocalizedMessage(1060190); //You cannot do that while dead!
-                    else if (Boat is RowBoat && ((RowBoat)Boat).HasAccess(from))
-                        canMove = true;
-                    else if (boat is RowBoat && Boat is BaseGalleon && ((BaseGalleon)Boat).HasAccess(from))
-                        canMove = true;
-                    else if (boat is BaseGalleon && Boat is BaseGalleon && ((BaseGalleon)Boat).HasAccess(from))
-                        canMove = true;
-                    else
-                        from.SendLocalizedMessage(1149795); //You may not dock a ship while on another ship or inside a house.
-                }
+                if (Boat.HasAccess(from))
+                    canMove = true;
+                else
+                    from.SendLocalizedMessage(1116617); //You do not have permission to board this ship.
             }
 
             if (canMove)
@@ -93,27 +73,32 @@ namespace Server.Items
         {
             base.GetContextMenuEntries(from, list);
 
-            if (!from.Alive && Boat.Contains(from))
+            if (Boat.IsRowBoat && from.Alive && !Boat.Contains(from))
             {
-                list.Add(new RemoveContext(from, this));
+                list.Add(new DryDockEntry(Boat, from));
             }
         }
 
-        public class RemoveContext : ContextMenuEntry
+        private class DryDockEntry : ContextMenuEntry
         {
-            private MooringLine m_Line;
-            private Mobile m_From;
+            private readonly Mobile m_From;
+            private BaseBoat m_Boat;
 
-            public RemoveContext(Mobile from, MooringLine line)
-                : base(1043331, 3)
+            public DryDockEntry(BaseBoat boat, Mobile from)
+                : base(1116520, 12) // Dry Dock Ship
             {
-                m_Line = line;
                 m_From = from;
+                m_Boat = boat;
+
+                Enabled = m_Boat != null && m_Boat.IsOwner(from);
             }
 
             public override void OnClick()
             {
-                m_Line.OnDoubleClick(m_From);
+                if (m_Boat != null && !m_Boat.Contains(m_From) && m_Boat.IsOwner(m_From))
+                {
+                    m_Boat.BeginDryDock(m_From);
+                }
             }
         }
 
@@ -131,7 +116,7 @@ namespace Server.Items
             Point3D nearest = Point3D.Zero;
             Point3D p = Point3D.Zero;
 
-            if (Boat is RowBoat)
+            if (Boat.IsRowBoat)
                 rec = new Rectangle2D(Boat.X - 8, Boat.Y - 8, 16, 16);
             else
             {
@@ -181,9 +166,6 @@ namespace Server.Items
             {
                 BaseCreature.TeleportPets(from, nearest, Map);
                 from.MoveToWorld(nearest, Map);
-
-                if (Boat != null)
-                    Boat.Refresh();
 
                 return true;
             }

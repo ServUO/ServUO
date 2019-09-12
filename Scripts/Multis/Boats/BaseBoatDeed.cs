@@ -6,86 +6,82 @@ using Server.Engines.CannedEvil;
 using Server.Network;
 using Server.Gumps;
 using Server.Items;
+using System.Linq;
 
 namespace Server.Multis
 {
-	public abstract class BaseBoatDeed : Item
-	{
-		private int m_MultiID;
-		private Point3D m_Offset;
-        private Direction m_Direction;
-
-		[CommandProperty( AccessLevel.GameMaster )]
-		public int MultiID{ get{ return m_MultiID; } set{ m_MultiID = value; } }
-
-		[CommandProperty( AccessLevel.GameMaster )]
-		public Point3D Offset{ get{ return m_Offset; } set{ m_Offset = value; } }
+    public abstract class BaseBoatDeed : Item
+    {
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int MultiID { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Direction BoatDirection { get { return m_Direction; } set { m_Direction = value; } }
+        public Point3D Offset { get; set; }
 
-		public BaseBoatDeed( int id, Point3D offset ) : base( 0x14F2 )
-		{
-			Weight = 1.0;
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Direction BoatDirection { get; set; }
 
-			if ( !Core.AOS )
-				LootType = LootType.Newbied;
+        public BaseBoatDeed(int id, Point3D offset)
+            : base(0x14F2)
+        {
+            Weight = 1.0;
 
-			m_MultiID = id;
-			m_Offset = offset;
-            m_Direction = Direction.North;
-		}
+            if (!Core.AOS)
+                LootType = LootType.Newbied;
 
-		public BaseBoatDeed( Serial serial ) : base( serial )
-		{
-		}
+            MultiID = id;
+            Offset = offset;
+            BoatDirection = Direction.North;
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public BaseBoatDeed(Serial serial)
+            : base(serial)
+        {
+        }
 
-			writer.Write( (int) 0 ); // version
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
 
-			writer.Write( m_MultiID );
-			writer.Write( m_Offset );
-		}
+            writer.Write(MultiID);
+            writer.Write(Offset);
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
 
-			int version = reader.ReadInt();
-
-			switch ( version )
-			{
-				case 0:
-				{
-					m_MultiID = reader.ReadInt();
-					m_Offset = reader.ReadPoint3D();
-
-					break;
-				}
-			}
-
-			if ( Weight == 0.0 )
-				Weight = 1.0;
-		}
-
-		public override void OnDoubleClick( Mobile from )
-		{
-			if ( !IsChildOf( from.Backpack ) )
-			{
-				from.SendLocalizedMessage( 1042001 ); // That must be in your pack for you to use it.
-			}
-			else if ( from.AccessLevel < AccessLevel.GameMaster && (from.Map == Map.Ilshenar || from.Map == Map.Malas) )
-			{
-				from.SendLocalizedMessage( 1010567, null, 0x25 ); // You may not place a boat from this location.
-			}
-            else if (Core.HS && BaseBoat.HasBoat(from) && !(this is RowBoatDeed))
+            switch (version)
             {
-                from.SendLocalizedMessage(1116758); //You already have a ship deployed!
+                case 0:
+                    {
+                        MultiID = reader.ReadInt();
+                        Offset = reader.ReadPoint3D();
+
+                        break;
+                    }
             }
-            else if(!from.HasGump(typeof(BoatPlacementGump)))
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            BaseBoat boat = BaseBoat.FindBoatAt(from, from.Map);
+            
+            if (from.AccessLevel < AccessLevel.GameMaster && (from.Map == Map.Ilshenar || from.Map == Map.Malas))
+            {
+                from.SendLocalizedMessage(1010567, null, 0x25); // You may not place a boat from this location.
+            }
+            else if (Core.HS && BaseBoat.HasBoat(from) && !Boat.IsRowBoat)
+            {
+                from.SendLocalizedMessage(1116758); // You already have a ship deployed!
+            }
+            else if (from.Region.IsPartOf(typeof(HouseRegion)) || boat != null && (boat.GetType() == Boat.GetType() || !boat.IsRowBoat && !(this is RowBoatDeed)))
+            {
+                from.SendLocalizedMessage(1010568, null, 0x25); // You may not place a ship while on another ship or inside a house.
+            }
+            else if (!from.HasGump(typeof(BoatPlacementGump)))
             {
                 if (Core.SE)
                     from.SendLocalizedMessage(502482); // Where do you wish to place the ship?
@@ -94,52 +90,60 @@ namespace Server.Multis
 
                 from.SendGump(new BoatPlacementGump(this, from));
             }
-		}
+        }
 
-		public abstract BaseBoat Boat{ get; }
+        public abstract BaseBoat Boat { get; }
 
-		public void OnPlacement( Mobile from, Point3D p, int itemID, Direction d )
-		{
-			if ( Deleted )
-			{
-				return;
-			}
-			else if ( !IsChildOf( from.Backpack ) )
-			{
-				from.SendLocalizedMessage( 1042001 ); // That must be in your pack for you to use it.
-			}
-			else
-			{
-				Map map = from.Map;
+        public void OnPlacement(Mobile from, Point3D p, int itemID, Direction d)
+        {
+            if (Deleted)
+            {
+                return;
+            }           
+            else
+            {
+                Map map = from.Map;
 
-				if ( map == null )
-					return;
+                if (map == null)
+                    return;
 
-				if ( from.AccessLevel < AccessLevel.GameMaster && (map == Map.Ilshenar || map == Map.Malas) )
-				{
-					from.SendLocalizedMessage( 1043284 ); // A ship can not be created here.
-					return;
-				}
+                if (from.AccessLevel < AccessLevel.GameMaster && (map == Map.Ilshenar || map == Map.Malas))
+                {
+                    from.SendLocalizedMessage(1043284); // A ship can not be created here.
+                    return;
+                }
 
-				if ( from.Region.IsPartOf( typeof( HouseRegion ) ) || (Server.Multis.BaseBoat.FindBoatAt( from, from.Map ) != null && !(this is RowBoatDeed)) )
-				{
-					from.SendLocalizedMessage( 1010568, null, 0x25 ); // You may not place a ship while on another ship or inside a house.
-					return;
-				}
+                BaseBoat b = BaseBoat.FindBoatAt(from, from.Map);
 
-                m_Direction = d;
-				BaseBoat boat = Boat;
+                if (from.Region.IsPartOf(typeof(HouseRegion)) || b != null && (b.GetType() == Boat.GetType() || !b.IsRowBoat && !(this is RowBoatDeed)))
+                {
+                    from.SendLocalizedMessage(1010568, null, 0x25); // You may not place a ship while on another ship or inside a house.
+                    return;
+                }
 
-				if ( boat == null )
-					return;
+                BoatDirection = d;
+                BaseBoat boat = Boat;
 
-				p = new Point3D( p.X - m_Offset.X, p.Y - m_Offset.Y, p.Z - m_Offset.Z );
+                if (boat == null)
+                    return;
 
-				if ( BaseBoat.IsValidLocation( p, map ) && boat.CanFit( p, map, itemID ) )
-				{
-					Delete();
+                p = new Point3D(p.X - Offset.X, p.Y - Offset.Y, p.Z - Offset.Z);
 
-					boat.Owner = from;
+                if (BaseBoat.IsValidLocation(p, map) && boat.CanFit(p, map, itemID))
+                {
+                    if (boat.IsRowBoat)
+                    {
+                        BaseBoat lastrowboat = World.Items.Values.OfType<BaseBoat>().Where(x => x.Owner == from && x.IsRowBoat && x.Map != Map.Internal && !x.GetMobilesOnBoard().Any()).OrderByDescending(y => y.Serial).FirstOrDefault();
+
+                        if (lastrowboat != null)
+                            lastrowboat.Delete();
+                    }
+                    else
+                    {
+                        Delete();
+                    }
+
+                    boat.Owner = from;
                     boat.ItemID = itemID;
 
                     if (boat is BaseGalleon)
@@ -159,7 +163,7 @@ namespace Server.Multis
                             boat.SPlank.KeyValue = keyValue;
                     }
 
-					boat.MoveToWorld( p, map );
+                    boat.MoveToWorld(p, map);
                     boat.OnAfterPlacement(true);
 
                     var addon = LighthouseAddon.GetLighthouse(from);
@@ -171,14 +175,14 @@ namespace Server.Multis
                         else
                             from.SendLocalizedMessage(1154597); // Failed to link to lighthouse.
                     }
-				}
-				else
-				{
-					boat.Delete();
-					from.SendLocalizedMessage( 1043284 ); // A ship can not be created here.
-				}
-			}
-		}
+                }
+                else
+                {
+                    boat.Delete();
+                    from.SendLocalizedMessage(1043284); // A ship can not be created here.
+                }
+            }
+        }
 
         private int RandomBasePaintHue()
         {
@@ -189,5 +193,5 @@ namespace Server.Multis
 
             return Utility.RandomMinMax(1801, 1908);
         }
-	}
+    }
 }

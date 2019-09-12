@@ -2,15 +2,23 @@ using System;
 using System.Collections.Generic;
 using Server.Items;
 using Server.Multis;
+using Server.Regions;
 
 namespace Server.Mobiles
 {
     public class SBShipwright : SBInfo
     {
-        private readonly List<GenericBuyInfo> m_BuyInfo = new InternalBuyInfo();
+        private readonly List<GenericBuyInfo> m_BuyInfo;
         private readonly IShopSellInfo m_SellInfo = new InternalSellInfo();
-        public SBShipwright()
+
+
+
+        public SBShipwright(Mobile m)
         {
+            if (m != null)
+            {
+                m_BuyInfo = new InternalBuyInfo(m);
+            }
         }
 
         public override IShopSellInfo SellInfo
@@ -30,7 +38,7 @@ namespace Server.Mobiles
 
         public class InternalBuyInfo : List<GenericBuyInfo>
         {
-            public InternalBuyInfo()
+            public InternalBuyInfo(Mobile m)
             {
                 Add(new GenericBuyInfo("1041205", typeof(SmallBoatDeed), 10177, 20, 0x14F2, 0));
                 Add(new GenericBuyInfo("1041206", typeof(SmallDragonBoatDeed), 10177, 20, 0x14F2, 0));
@@ -39,9 +47,13 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo("1041209", typeof(LargeBoatDeed), 12927, 20, 0x14F2, 0));
                 Add(new GenericBuyInfo("1041210", typeof(LargeDragonBoatDeed), 12927, 20, 0x14F2, 0));
 
-                Add(new GenericBuyInfo("1116740", typeof(TokunoGalleonDeed), 150002, 20, 0x14F2, 0));
-                Add(new GenericBuyInfo("1116739", typeof(GargishGalleonDeed), 200002, 20, 0x14F2, 0));
-                Add(new GenericBuyInfo("1116491", typeof(RowBoatDeed), 6252, 20, 0x14F2, 0));
+                if (m.Region is SeaMarketRegion)
+                {
+                    Add(new GenericBuyInfo("1116740", typeof(TokunoGalleonDeed), 150002, 20, 0x14F2, 0));
+                    Add(new GenericBuyInfo("1116739", typeof(GargishGalleonDeed), 200002, 20, 0x14F2, 0));
+                    Add(new GenericBuyInfo("1116491", typeof(RowBoatDeed), 6252, 20, 0x14F2, 0));
+                }
+
                 Add(new GenericBuyInfo(typeof(Spyglass), 3, 20, 0x14F5, 0));
             }
         }

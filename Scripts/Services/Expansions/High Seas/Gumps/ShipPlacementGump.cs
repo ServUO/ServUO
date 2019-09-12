@@ -103,7 +103,7 @@ namespace Server.Gumps
 
                     if (region.IsPartOf<DungeonRegion>())
                         from.SendLocalizedMessage(502488); // You can not place a ship inside a dungeon.
-                    else if (region.IsPartOf<HouseRegion>() || region.IsPartOf<Server.Engines.CannedEvil.ChampionSpawnRegion>())
+                    else if (region.IsPartOf<HouseRegion>() || region.IsPartOf<Engines.CannedEvil.ChampionSpawnRegion>())
                         from.SendLocalizedMessage(1042549); // A boat may not be placed in this area.
                     else
                     {

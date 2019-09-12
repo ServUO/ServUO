@@ -40,8 +40,11 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
+            if (Boat.IsRowBoat)
+                return;
+            
             list.Add(Boat.Status);
-            list.Add(1116580 + (int)Boat.DamageTaken); //State: Prisine
+            list.Add(1116580 + (int)Boat.DamageTaken); //State: Prisine            
         }
 
         public virtual void Say(int number)
@@ -141,6 +144,9 @@ namespace Server.Items
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
+
+            if (Boat.IsRowBoat)
+                return;
 
             if (Boat != null)
             {
