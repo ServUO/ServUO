@@ -67,17 +67,19 @@ namespace Server.Multis
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!IsChildOf(from.Backpack))
-            {
-                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
-            }
-            else if (from.AccessLevel < AccessLevel.GameMaster && (from.Map == Map.Ilshenar || from.Map == Map.Malas))
+            BaseBoat boat = BaseBoat.FindBoatAt(from, from.Map);
+            
+            if (from.AccessLevel < AccessLevel.GameMaster && (from.Map == Map.Ilshenar || from.Map == Map.Malas))
             {
                 from.SendLocalizedMessage(1010567, null, 0x25); // You may not place a boat from this location.
             }
-            else if (Core.HS && BaseBoat.HasBoat(from) && !(this is RowBoatDeed))
+            else if (Core.HS && BaseBoat.HasBoat(from) && !Boat.IsRowBoat)
             {
-                from.SendLocalizedMessage(1116758); //You already have a ship deployed!
+                from.SendLocalizedMessage(1116758); // You already have a ship deployed!
+            }
+            else if (from.Region.IsPartOf(typeof(HouseRegion)) || boat != null && (boat.GetType() == Boat.GetType() || !boat.IsRowBoat && !(this is RowBoatDeed)))
+            {
+                from.SendLocalizedMessage(1010568, null, 0x25); // You may not place a ship while on another ship or inside a house.
             }
             else if (!from.HasGump(typeof(BoatPlacementGump)))
             {
@@ -97,11 +99,7 @@ namespace Server.Multis
             if (Deleted)
             {
                 return;
-            }
-            else if (!IsChildOf(from.Backpack))
-            {
-                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
-            }
+            }           
             else
             {
                 Map map = from.Map;
@@ -115,7 +113,9 @@ namespace Server.Multis
                     return;
                 }
 
-                if (from.Region.IsPartOf(typeof(HouseRegion)) || (BaseBoat.FindBoatAt(from, from.Map) != null))
+                BaseBoat b = BaseBoat.FindBoatAt(from, from.Map);
+
+                if (from.Region.IsPartOf(typeof(HouseRegion)) || b != null && (b.GetType() == Boat.GetType() || !b.IsRowBoat && !(this is RowBoatDeed)))
                 {
                     from.SendLocalizedMessage(1010568, null, 0x25); // You may not place a ship while on another ship or inside a house.
                     return;
@@ -164,7 +164,7 @@ namespace Server.Multis
                     }
 
                     boat.MoveToWorld(p, map);
-                    boat.OnAfterPlacement(from);
+                    boat.OnAfterPlacement(true);
 
                     var addon = LighthouseAddon.GetLighthouse(from);
 

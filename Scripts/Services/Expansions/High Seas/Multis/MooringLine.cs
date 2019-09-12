@@ -37,7 +37,8 @@ namespace Server.Items
             int range = boat != null && boat == Boat ? 3 : 8;
             bool canMove = false;
 
-            Boat.Refresh(from);
+            if (!Boat.IsRowBoat)
+                Boat.Refresh(from);
 
             if (!from.InRange(Location, range))
                 from.SendLocalizedMessage(500295); //You are too far away to do that.
