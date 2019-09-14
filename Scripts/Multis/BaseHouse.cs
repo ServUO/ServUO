@@ -5220,6 +5220,108 @@ namespace Server.Multis
         }
     }
 
+    public class ReLocateEntry : ContextMenuEntry
+    {
+        public Mobile Mobile { get; set; }
+        public Item Item { get; set; }
+        public BaseHouse House { get; set; }
+
+        public ReLocateEntry(Mobile m, Item item, BaseHouse house)
+            : base(1159158, 8) // Relocate Container
+        {
+            Item = item;
+            Mobile = m;
+            House = house;
+
+            Enabled = Mobile.Alive;
+        }
+
+        public override void OnClick()
+        {
+            if (Mobile.Alive && BaseHouse.FindHouseAt(Mobile) == House && House.IsOwner(Mobile))
+            {
+                Mobile.Target = new InternalTarget(Item, House);
+                Mobile.SendLocalizedMessage(1159160); // Target the location that you wish to relocate this container. Once selected the container will no longer be secured.
+            }
+            else
+            {
+                Mobile.SendLocalizedMessage(1153882); // You do not own that.
+            }
+        }
+
+        public static AddonFitResult CouldFit(Point3D p, Map map, Mobile from, ref BaseHouse house)
+        {
+            if (!map.CanFit(p.X, p.Y, p.Z, 20, true, true, true))
+                return AddonFitResult.Blocked;
+            else if (!BaseAddon.CheckHouse(from, p, map, 20, ref house))
+                return AddonFitResult.NotInHouse;
+            else
+                return CheckDoors(p, 20, house);
+        }
+
+        public static AddonFitResult CheckDoors(Point3D p, int height, BaseHouse house)
+        {
+            List<Item> doors = house.Doors;
+
+            for (int i = 0; i < doors.Count; i++)
+            {
+                BaseDoor door = doors[i] as BaseDoor;
+
+                Point3D doorLoc = door.GetWorldLocation();
+                int doorHeight = door.ItemData.CalcHeight;
+
+                if (Utility.InRange(doorLoc, p, 1) && (p.Z == doorLoc.Z || ((p.Z + height) > doorLoc.Z && (doorLoc.Z + doorHeight) > p.Z)))
+                    return AddonFitResult.DoorTooClose;
+            }
+
+            return AddonFitResult.Valid;
+        }
+
+        private class InternalTarget : Target
+        {
+            public Item Item { get; set; }
+            public BaseHouse House { get; set; }
+
+            public InternalTarget(Item item, BaseHouse house)
+                : base(8, true, TargetFlags.None)
+            {
+                Item = item;
+                House = house;
+            }
+
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                IPoint3D p = targeted as IPoint3D;
+
+                Point3D point = new Point3D(p.X, p.Y, p.Z);
+
+                BaseHouse house = BaseHouse.FindHouseAt(point, from.Map, 0);
+
+                AddonFitResult result = CouldFit(point, from.Map, from, ref house);
+
+                if (house != null && house == House && house.Owner == from && result == AddonFitResult.Valid)
+                {
+                    if (House.Release(from, Item))
+                    {
+                        Item.MoveToWorld(point, from.Map);
+                        Item.Movable = true;
+                    }
+                    
+                    from.SendLocalizedMessage(1159159); // This container has been released and is no longer secure.
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1149667); // Invalid target.
+                }
+            }
+
+            protected override void OnTargetCancel(Mobile from, TargetCancelType cancelType)
+            {
+                from.SendLocalizedMessage(500979); // You cannot see that location.
+            }
+        }        
+    }
+
     public class ReleaseEntry : ContextMenuEntry
     {
         public Mobile Mobile { get; set; }
@@ -5227,7 +5329,7 @@ namespace Server.Multis
         public BaseHouse House { get; set; }
 
         public ReleaseEntry(Mobile m, Item item, BaseHouse house)
-            : base(1153880, 8)
+            : base(1153880, 8) // Retrieve
         {
             Item = item;
             Mobile = m;
