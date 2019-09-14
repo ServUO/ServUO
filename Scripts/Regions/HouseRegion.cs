@@ -74,20 +74,15 @@ namespace Server.Regions
         {
             Item item = e as Item;
 
-            if (IsStairArea(item) || ExcludeItem(item))
+            if (m.PublicHouseContent && House.Public || House.IsInside(m) || ExcludeItem(item) || m.InHouseCanSee(item.RootParent))
                 return true;
-
-            if (House.IsInside(m) || m.PublicHouseContent && House.Public)
-            {
-                return true;
-            }
 
             return false;
         }
 
-        private static bool ExcludeItem(Item item)
+        private bool ExcludeItem(Item item)
         {
-            return item.RootParent is Mobile || m_ItemTypes.Any(t => t == item.GetType() || item.GetType().IsSubclassOf(t));
+            return IsStairArea(item) || m_ItemTypes.Any(t => t == item.GetType() || item.GetType().IsSubclassOf(t));
         }
 
         private static Type[] m_ItemTypes = new Type[]
