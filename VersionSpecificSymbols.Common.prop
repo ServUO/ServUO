@@ -7,7 +7,9 @@ Modelled from https://msdn.microsoft.com/en-us/library/ms171464.aspx
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-		<DefineConstants Condition="$([System.Version]::Parse('$(TargetFrameworkVersion.Substring(1))').CompareTo($([System.Version]::Parse('4.7.1')))) >= 0">$(DefineConstants);NETFX_471</DefineConstants>
+        <DefineConstants Condition="$([System.Version]::Parse('$(TargetFrameworkVersion.Substring(1))').CompareTo($([System.Version]::Parse('4.8'))))   >= 0">$(DefineConstants);NETFX_48</DefineConstants>
+        <DefineConstants Condition="$([System.Version]::Parse('$(TargetFrameworkVersion.Substring(1))').CompareTo($([System.Version]::Parse('4.7.2')))) >= 0">$(DefineConstants);NETFX_472</DefineConstants>
+        <DefineConstants Condition="$([System.Version]::Parse('$(TargetFrameworkVersion.Substring(1))').CompareTo($([System.Version]::Parse('4.7.1')))) >= 0">$(DefineConstants);NETFX_471</DefineConstants>
         <DefineConstants Condition="$([System.Version]::Parse('$(TargetFrameworkVersion.Substring(1))').CompareTo($([System.Version]::Parse('4.7')))) 	>= 0">$(DefineConstants);NETFX_47</DefineConstants>
         <DefineConstants Condition="$([System.Version]::Parse('$(TargetFrameworkVersion.Substring(1))').CompareTo($([System.Version]::Parse('4.6.2')))) >= 0">$(DefineConstants);NETFX_462</DefineConstants>
         <DefineConstants Condition="$([System.Version]::Parse('$(TargetFrameworkVersion.Substring(1))').CompareTo($([System.Version]::Parse('4.6.1')))) >= 0">$(DefineConstants);NETFX_461</DefineConstants>
