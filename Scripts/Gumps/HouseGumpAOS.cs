@@ -174,7 +174,7 @@ namespace Server.Gumps
 
         private static readonly int[] m_FoundationNumbers = (Core.ML ? new int[]
         {
-            20, 189, 765, 65, 101, 0x2DF7, 0x2DFB, 0x3672, 0x3676
+            20, 189, 765, 65, 101, 11767, 11771, 11207, 11715, 11181, 13938, 13942, 16806, 16732, 19208, 39614, 39888 
         } : new int[]
             {
                 20, 189, 765, 65, 101
@@ -182,12 +182,12 @@ namespace Server.Gumps
 
         private static readonly int[] m_PostNumbers = new int[]
         {
-            9, 29, 54, 90, 147, 169,
-            177, 204, 251, 257, 263,
-            298, 347, 424, 441, 466,
-            514, 600, 601, 602, 603,
-            660, 666, 672, 898, 970,
-            974, 982
+            9, 29, 54, 90, 147, 169, 177, 204, 251, 257,
+            263, 298, 347, 353, 424, 441, 466, 514, 553,
+            600, 601, 602, 603, 660, 666, 672, 898, 970,
+            974, 982, 11212, 11720, 11186, 13788, 13849,
+            17190, 16796, 16733, 16663, 20758, 19214,
+            39603, 39809
         };
 
         private static readonly List<int> _HouseSigns = new List<int>();
@@ -478,13 +478,25 @@ namespace Server.Gumps
                     }
                 case HouseGumpPageAOS.ChangeFoundation:
                     {
-                        for (int i = 0; i < m_FoundationNumbers.Length; ++i)
-                        {
-                            int x = 15 + ((i % 5) * 80);
-                            int y = 180 + ((i / 5) * 100);
+                        int index = 0;
 
-                            AddButton(x, y, 4005, 4007, GetButtonID(8, i), GumpButtonType.Reply, 0);
-                            AddItem(x + 25, y, m_FoundationNumbers[i]);
+                        for (int i = 0; i < 2; ++i)
+                        {
+                            AddPage(i + 1);
+
+                            if (i == 0)
+                                AddButton(10, 360, 4005, 4007, 0, GumpButtonType.Page, ((i + 1) % 2) + 1);
+                            else
+                                AddButton(10, 360, 4014, 4016, 0, GumpButtonType.Page, ((i + 1) % 2) + 1);
+
+                            for (int j = 0; j < 15 && index < m_FoundationNumbers.Length; ++j)
+                            {
+                                int x = 15 + ((j % 5) * 80);
+                                int y = 150 + ((j / 5) * 80);
+
+                                AddButton(x, y, 4005, 4007, GetButtonID(8, index), GumpButtonType.Reply, 0);
+                                AddItem(x + 25, y, m_FoundationNumbers[index++]);
+                            }
                         }
 
                         break;
@@ -580,11 +592,11 @@ namespace Server.Gumps
                     {
                         int index = 0;
 
-                        for (int i = 0; i < 2; ++i)
+                        for (int i = 0; i < 3; ++i)
                         {
                             AddPage(i + 1);
 
-                            AddButton(10, 360, 4005, 4007, 0, GumpButtonType.Page, ((i + 1) % 2) + 1);
+                            AddButton(10, 360, 4005, 4007, 0, GumpButtonType.Page, ((i + 1) % 3) + 1);
 
                             for (int j = 0; j < 16 && index < m_PostNumbers.Length; ++j)
                             {
@@ -1414,11 +1426,35 @@ namespace Server.Gumps
                                         newType = FoundationType.ElvenNatural;
                                         break;
                                     case 7:
-                                        newType = FoundationType.Crystal;
+                                        newType = FoundationType.SimpleMarble;
                                         break;
                                     case 8:
+                                        newType = FoundationType.PlainMarble;
+                                        break;
+                                    case 9:
+                                        newType = FoundationType.OrnateMarble;
+                                        break;
+                                    case 10:
+                                        newType = FoundationType.Crystal;
+                                        break;
+                                    case 11:
                                         newType = FoundationType.Shadow;
-                                        break; 
+                                        break;
+                                    case 12:
+                                        newType = FoundationType.GargishGreenMarble;
+                                        break;
+                                    case 13:
+                                        newType = FoundationType.GargishTwoToneStone;
+                                        break;
+                                    case 14:
+                                        newType = FoundationType.Gothic;
+                                        break;
+                                    case 15:
+                                        newType = FoundationType.Brick1;
+                                        break;
+                                    case 16:
+                                        newType = FoundationType.Brick2;
+                                        break;
                                     default:
                                         return;
                                 }
