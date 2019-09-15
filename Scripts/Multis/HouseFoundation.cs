@@ -21,7 +21,15 @@ namespace Server.Multis
         ElvenGrey,
         ElvenNatural,
         Crystal,
-        Shadow
+        Shadow,
+        SimpleMarble,
+        PlainMarble,
+        OrnateMarble,
+        GargishGreenMarble,
+        GargishTwoToneStone,
+        Gothic,
+        Brick1,
+        Brick2
     }
 
     public class HouseFoundation : BaseHouse
@@ -367,7 +375,7 @@ namespace Server.Multis
 
         public static void GetFoundationGraphics(FoundationType type, out int east, out int south, out int post, out int corner)
         {
-            switch( type )
+            switch (type)
             {
                 default:
                 case FoundationType.DarkWood:
@@ -423,6 +431,54 @@ namespace Server.Multis
                     east = 0x3675;
                     south = 0x3674;
                     post = 0x3677;
+                    break;
+                case FoundationType.SimpleMarble:
+                    corner = 0x2BC7;
+                    east = 0x2CEF;
+                    south = 0x2CF0;
+                    post = 0x2BC8;
+                    break;
+                case FoundationType.PlainMarble:
+                    corner = 0x2DC3;
+                    east = 0x2DCF;
+                    south = 0x2DD0;
+                    post = 0x2DC6;
+                    break;
+                case FoundationType.OrnateMarble:
+                    corner = 0x2BAD;
+                    east = 0x2BB9;
+                    south = 0x2BBA;
+                    post = 0x2BB0;
+                    break;
+                case FoundationType.GargishGreenMarble:
+                    corner = 0x41A6;
+                    east = 0x41A8;
+                    south = 0x41A7;
+                    post = 0x419E;
+                    break;
+                case FoundationType.GargishTwoToneStone:
+                    corner = 0x415C;
+                    east = 0x4166;
+                    south = 0x4167;
+                    post = 0x415F;
+                    break;
+                case FoundationType.Gothic:
+                    corner = 0x4B08;
+                    east = 0x4B00;
+                    south = 0x4AFA;
+                    post = 0x4B06;
+                    break;
+                case FoundationType.Brick1:
+                    corner = 0x9ABE;
+                    east = 0x9AC0;
+                    south = 0x9ABF;
+                    post = 0x9AC1;
+                    break;
+                case FoundationType.Brick2:
+                    corner = 0x9BD0;
+                    east = 0x9BD2;
+                    south = 0x9BD1;
+                    post = 0x9BD3;
                     break;
             }
         }
