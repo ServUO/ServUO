@@ -8,6 +8,7 @@
 /Scripts/bin
 /Scripts/obj
 /Scripts/Output
+/Scripts/Custom
 
 /Honesty
 /Logs
@@ -18,7 +19,6 @@
 /Reports
 /VitaNexCore
 /TheBox
-/Custom
 /.vs
 
 /staffHistory.xml
@@ -38,6 +38,7 @@
 *.bin
 *.csproj.user
 *.DotSettings.user
+*.ini
 
 !/Data/*
 !/bin/rosyln/*
