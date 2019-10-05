@@ -46,6 +46,23 @@ namespace Server.Items
             }
         }
 
+        public override bool HasGump(Mobile toCheck)
+        {
+            var bookGump = toCheck.FindGump<RunicAtlasGump>();
+
+            if (bookGump != null && bookGump.Atlas == this)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public override void CloseGump(Mobile m)
+        {
+            m.CloseGump(typeof(RunicAtlasGump));
+        }
+
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
             int entries = Entries.Count;
@@ -83,7 +100,14 @@ namespace Server.Items
 
             Quality = (BookQuality)(quality - 1);
 
-            MaxCharges = 100;
+            if (Quality == BookQuality.Exceptional)
+            {
+                MaxCharges = Utility.RandomList(80, 90, 100);
+            }
+            else
+            {
+                MaxCharges = 80;
+            }
 
             return quality;
         }

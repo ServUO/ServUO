@@ -59,6 +59,8 @@ namespace Server.Mobiles
         {
         }
 
+        public override bool CanFlee { get { return false; } }
+
         public override bool IgnoreYoungProtection
         {
             get
