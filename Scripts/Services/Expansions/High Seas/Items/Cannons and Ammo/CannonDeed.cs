@@ -10,7 +10,8 @@ namespace Server.Items
     {
         Light,
         Heavy,
-        Massive
+        Massive,
+        Pumpkin
     }
 
     public abstract class ShipCannonDeed : Item

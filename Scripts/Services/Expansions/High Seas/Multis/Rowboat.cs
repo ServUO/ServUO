@@ -23,108 +23,78 @@ namespace Server.Multis
         public override BaseDockedBoat DockedBoat { get { return new DockedRowBoat(this); } }
 
         public override bool IsClassicBoat { get { return false; } }
+        public override bool IsRowBoat { get { return true; } }
         public override bool CanLinkToLighthouse { get { return false; } }
 
-        private Rudder m_Rudder;
-        private MooringLine m_Line;
+        [CommandProperty(AccessLevel.GameMaster)]
+        public MooringLine Line { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Rudder Rudder { get { return m_Rudder; } }
+        public Rudder Rudder { get; private set; }
 
         [Constructable]
-        public RowBoat(Direction d) : base(d, false)
+        public RowBoat(Direction d)
+            : base(d, false)
         {
-            m_Rudder = new Rudder(this, d);
-            TillerMan = m_Rudder;
-            m_Line = new MooringLine(this);
+            Rudder = new Rudder(this, d);
+            TillerMan = Rudder;
+            Line = new MooringLine(this);
 
             switch (d)
             {
                 default:
                 case Direction.North:
-                    m_Rudder.Location = new Point3D(X, Y - TillerManDistance, Z);
-                    m_Line.Location = new Point3D(X, Y - 2, Z + 5);
+                    Rudder.Location = new Point3D(X, Y - TillerManDistance, Z);
+                    Line.Location = new Point3D(X, Y - 2, Z + 5);
                     break;
                 case Direction.South:
-                    m_Rudder.Location = new Point3D(X, Y + TillerManDistance, Z);
-                    m_Line.Location = new Point3D(X, Y + 2, Z + 5);
+                    Rudder.Location = new Point3D(X, Y + TillerManDistance, Z);
+                    Line.Location = new Point3D(X, Y + 2, Z + 5);
                     break;
                 case Direction.East:
-                    m_Rudder.Location = new Point3D(X + TillerManDistance, Y, Z);
-                    m_Line.Location = new Point3D(X + 2, Y, Z + 5);
+                    Rudder.Location = new Point3D(X + TillerManDistance, Y, Z);
+                    Line.Location = new Point3D(X + 2, Y, Z + 5);
                     break;
                 case Direction.West:
-                    m_Rudder.Location = new Point3D(X - TillerManDistance, Y, Z);
-                    m_Line.Location = new Point3D(X - 2, Y, Z + 5);
+                    Rudder.Location = new Point3D(X - TillerManDistance, Y, Z);
+                    Line.Location = new Point3D(X - 2, Y, Z + 5);
                     break;
             }
 
-            m_Rudder.Handle = new RudderHandle(m_Rudder, d);
-        }
-
-        public override void OnAfterPlacement(bool initial)
-        {
-            if (Owner != null)
-            {
-                foreach (var rowBoat in BaseBoat.Boats.OfType<RowBoat>().Where(rb => rb.Owner == Owner && rb != this && rb.Map != Map.Internal))
-                {
-                    BaseDockedBoat boat = rowBoat.BoatItem;
-
-                    if (boat == null || boat.Deleted)
-                        boat = rowBoat.DockedBoat;
-
-                    if (boat == null)
-                    {
-                        rowBoat.Delete();
-                        return;
-                    }
-
-                    boat.BoatItem = rowBoat;
-                    Owner.AddToBackpack(boat);
-
-                    rowBoat.Refresh();
-                    rowBoat.Internalize();
-                }
-            }
-        }
-
-        public override TimeSpan GetMovementInterval(bool fast, bool drifting, out int clientSpeed)
-        {
-            clientSpeed = 0x2;
-            return SlowDriftInterval;
+            Rudder.Handle = new RudderHandle(Rudder, d);
         }
 
         public override void Delete()
         {
-            if (m_Line != null)
-                m_Line.Delete();
+            if (Line != null)
+                Line.Delete();
 
-            if (m_Rudder != null && m_Rudder.Handle != null)
-                m_Rudder.Handle.Delete();
+            if (Rudder != null && Rudder.Handle != null)
+                Rudder.Handle.Delete();
 
             base.Delete();
         }
 
         public override void SetFacingComponents(Direction facing, Direction old, bool ignore)
         {
-            if (m_Rudder == null || m_Rudder.Handle == null)
+            if (Rudder == null || Rudder.Handle == null)
                 return;
 
-            if (m_Rudder != null && facing == Direction.North)
-                m_Rudder.X--;
+            if (Rudder != null && facing == Direction.North)
+                Rudder.X--;
 
-            m_Rudder.Handle.SetFacing(facing);
+            Rudder.Handle.SetFacing(facing);
         }
 
         public override void OnLocationChange(Point3D old)
         {
             base.OnLocationChange(old);
 
-            if (m_Line != null)
-                m_Line.Location = new Point3D(X + (m_Line.X - old.X), Y + (m_Line.Y - old.Y), Z + (m_Line.Z - old.Z));
+            if (Line != null)
+                Line.Location = new Point3D(X + (Line.X - old.X), Y + (Line.Y - old.Y), Z + (Line.Z - old.Z));
 
-            if(m_Rudder != null && m_Rudder.Handle != null)
-                m_Rudder.Handle.Location = new Point3D(X + (m_Rudder.Handle.X - old.X), Y + (m_Rudder.Handle.Y - old.Y), Z + (m_Rudder.Handle.Z - old.Z));
+            if(Rudder != null && Rudder.Handle != null)
+                Rudder.Handle.Location = new Point3D(X + (Rudder.Handle.X - old.X), Y + (Rudder.Handle.Y - old.Y), Z + (Rudder.Handle.Z - old.Z));
         }
 
         /// <summary>
@@ -150,62 +120,50 @@ namespace Server.Multis
             }
 
             eable.Free();
-            yield return m_Rudder;
+            yield return Rudder;
         }
 
         public override void OnMapChange()
         {
             base.OnMapChange();
 
-            if (m_Line != null)
-                m_Line.Map = this.Map;
+            if (Line != null)
+                Line.Map = Map;
         }
 
         public override void OnPlacement(Mobile from)
         {
             base.OnPlacement(from);
 
-            if (m_Line == null)
+            if (Line == null)
                 return;
 
             switch (Facing)
             {
                 default:
                 case Direction.North:
-                    m_Line.Location = new Point3D(X, Y - 2, Z + 5);
+                    Line.Location = new Point3D(X, Y - 2, Z + 5);
                     break;
                 case Direction.South:
-                    m_Line.Location = new Point3D(X, Y + 2, Z + 5);
+                    Line.Location = new Point3D(X, Y + 2, Z + 5);
                     break;
                 case Direction.East:
-                    m_Line.Location = new Point3D(X + 2, Y, Z + 5);
+                    Line.Location = new Point3D(X + 2, Y, Z + 5);
                     break;
                 case Direction.West:
-                    m_Line.Location = new Point3D(X - 2, Y, Z + 5);
+                    Line.Location = new Point3D(X - 2, Y, Z + 5);
                     break;
             }
         }
 
         public override bool IsComponentItem(IEntity item)
         {
-            return item == this || item == m_Line || item == m_Rudder || (m_Rudder != null && item == m_Rudder.Handle);
+            return item == this || item == Line || item == Rudder || (Rudder != null && item == Rudder.Handle);
         }
 
         public override bool HasAccess(Mobile from)
         {
-            if (from.AccessLevel > AccessLevel.Player || this.Owner == null)
-                return true;
-
-            if (from.Guild != null && from.Guild == this.Owner.Guild)
-                return true;
-
-            Party fromParty = Party.Get(from);
-            Party ownerParty = Party.Get(this.Owner);
-
-            if (fromParty != null && ownerParty != null && fromParty == ownerParty)
-                return true;
-
-            return from == this.Owner;
+            return true;
         }
 
         public RowBoat(Serial serial)
@@ -217,29 +175,33 @@ namespace Server.Multis
         {
             base.Serialize(writer);
             writer.Write((int)0);
-            writer.Write(m_Rudder);
-            writer.Write(m_Line);
+
+            writer.Write(Rudder);
+            writer.Write(Line);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            m_Rudder = reader.ReadItem() as Rudder;
-            m_Line = reader.ReadItem() as MooringLine;
 
-            TillerMan = m_Rudder;
+            Rudder = reader.ReadItem() as Rudder;
+            Line = reader.ReadItem() as MooringLine;
+
+            TillerMan = Rudder;
         }
     }
 
     public class Rudder : TillerMan
     {
+        public override int LabelNumber { get { return 1149698; } } // wheel
+
+        public override bool ForceShowProperties { get { return true; } }
+
         public override bool Babbles { get { return false; } }
 
-        private RudderHandle m_Handle;
-
         [CommandProperty(AccessLevel.GameMaster)]
-        public RudderHandle Handle { get { return m_Handle; } set { m_Handle = value; } }
+        public RudderHandle Handle { get; set; }
 
         public Rudder(BaseBoat boat, Direction d)
             : base(boat)
@@ -251,14 +213,14 @@ namespace Server.Multis
         {
             base.OnMapChange();
 
-            if (m_Handle != null)
-                m_Handle.Map = this.Map;
+            if (Handle != null)
+                Handle.Map = Map;
         }
 
         public override void Delete()
         {
-            if (m_Handle != null)
-                m_Handle.Delete();
+            if (Handle != null)
+                Handle.Delete();
 
             base.Delete();
         }
@@ -283,12 +245,6 @@ namespace Server.Multis
             }
         }
 
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            //base.GetProperties(list);
-            //list.Add(m_Boat.Status);
-        }
-
         public override void Say(int number)
         {
         }
@@ -297,33 +253,30 @@ namespace Server.Multis
         {
         }
 
-        public override void AddNameProperty(ObjectPropertyList list)
-        {
-        }
-
-        public override void OnSingleClick(Mobile from)
-        {
-        }
-
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
             return false;
         }
 
-        public Rudder(Serial serial) : base(serial) { }
+        public Rudder(Serial serial)
+            : base(serial)
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write((int)0);
-            writer.Write(m_Handle);
+
+            writer.Write(Handle);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            m_Handle = reader.ReadItem() as RudderHandle;
+
+            Handle = reader.ReadItem() as RudderHandle;
 
             if (ItemID == 16062)
                 X--;
@@ -332,20 +285,18 @@ namespace Server.Multis
 
     public class RudderHandle : Static
     {
-        private Rudder m_Rudder;
-
         [CommandProperty(AccessLevel.GameMaster)]
-        public Rudder Rudder { get { return m_Rudder; } set { m_Rudder = value; } }
+        public Rudder Rudder { get; set; }
 
         public RudderHandle(Rudder rudder, Direction d)
         {
-            m_Rudder = rudder;
+            Rudder = rudder;
             SetFacing(d);
         }
 
-        public void SetFacing(Direction dir)
+        public virtual void SetFacing(Direction dir)
         {
-            if (m_Rudder == null)
+            if (Rudder == null)
                 Delete();
             else
             {
@@ -354,19 +305,19 @@ namespace Server.Multis
                     default:
                     case Direction.South:
                         ItemID = 16067;
-                        MoveToWorld(new Point3D(m_Rudder.X, m_Rudder.Y + 1, m_Rudder.Z), this.Map);
+                        MoveToWorld(new Point3D(Rudder.X, Rudder.Y + 1, Rudder.Z), Map);
                         break;
                     case Direction.North:
                         ItemID = 16063;
-                        MoveToWorld(new Point3D(m_Rudder.X + 1, m_Rudder.Y - 1, m_Rudder.Z), this.Map);
+                        MoveToWorld(new Point3D(Rudder.X + 1, Rudder.Y - 1, Rudder.Z), Map);
                         break;
                     case Direction.West:
                         ItemID = 15991;
-                        MoveToWorld(new Point3D(m_Rudder.X -1, m_Rudder.Y + 1, m_Rudder.Z), this.Map);
+                        MoveToWorld(new Point3D(Rudder.X -1, Rudder.Y + 1, Rudder.Z), Map);
                         break;
                     case Direction.East:
                         ItemID = 15970;
-                        MoveToWorld(new Point3D(m_Rudder.X + 1, m_Rudder.Y, m_Rudder.Z), this.Map);
+                        MoveToWorld(new Point3D(Rudder.X + 1, Rudder.Y, Rudder.Z), Map);
                         break;
                 }
             }
@@ -374,8 +325,8 @@ namespace Server.Multis
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (m_Rudder != null)
-                m_Rudder.OnDoubleClick(from);
+            if (Rudder != null)
+                Rudder.OnDoubleClick(from);
         }
 
         public RudderHandle(Serial serial) : base(serial) { }
@@ -384,21 +335,21 @@ namespace Server.Multis
         {
             base.Serialize(writer);
             writer.Write((int)0);
-            writer.Write(m_Rudder);
+            writer.Write(Rudder);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            m_Rudder = reader.ReadItem() as Rudder;
+            Rudder = reader.ReadItem() as Rudder;
         }
     }
 
     public class RowBoatDeed : BaseBoatDeed
     {
         public override int LabelNumber { get { return 1116491; } }
-        public override BaseBoat Boat { get { return new RowBoat(this.BoatDirection); } }
+        public override BaseBoat Boat { get { return new RowBoat(BoatDirection); } }
 
         [Constructable]
         public RowBoatDeed()
@@ -426,13 +377,15 @@ namespace Server.Multis
 
     public class DockedRowBoat : BaseDockedBoat
     {
-        public override BaseBoat Boat { get { return new RowBoat(this.BoatDirection); } }
+        public override BaseBoat Boat { get { return new RowBoat(BoatDirection); } }
 
-        public DockedRowBoat(BaseBoat boat) : base(0x3C, Point3D.Zero, boat)
+        public DockedRowBoat(BaseBoat boat)
+            : base(0x3C, Point3D.Zero, boat)
         {
         }
 
-        public DockedRowBoat(Serial serial) : base(serial)
+        public DockedRowBoat(Serial serial)
+            : base(serial)
         {
         }
 

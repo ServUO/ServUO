@@ -56,7 +56,8 @@ namespace Server.Items
         public static string[] _Names =
         {
             "Long Tooth Riccia", "Long Leg Topaz", "Glass Tongue Takako", "Iron Fist Riccia", "Fat Eye Takako", "Bloody Back Greg", "Cursed Powder Mercury", "Lone Tongue Erebus", "Mad Powder Sarah", "Long Beard Jim",
-            "Lazy Eye Thrixx", "Cursed Patch Artemis", "Mad Back Aeon", "Glass Tooth Asiantam", "Iron Mouth Artemis", "Stink Back Elizabella", "Lost Blade Mercury", "Lazy Mouth Malachi"
+            "Lazy Eye Thrixx", "Cursed Patch Artemis", "Mad Back Aeon", "Glass Tooth Asiantam", "Iron Mouth Artemis", "Stink Back Elizabella", "Lost Blade Mercury", "Lazy Mouth Malachi", "Glass Back Nekomata",
+            "Tooth Silver Fox"
         };
     }
 

@@ -6,26 +6,17 @@ namespace Server.Items
     {
         public override bool IsArtifact { get { return true; } }
 
-        private AosWeaponAttributes m_AosWeaponAttributes;
-
         [Constructable]
         public GargishBracersofAlchemicalDevastation()
         {
             Attributes.RegenMana = 4;
             Attributes.CastRecovery = 3;
             ArmorAttributes.MageArmor = 1;
-            m_AosWeaponAttributes = new AosWeaponAttributes(this);
-            m_AosWeaponAttributes.HitFireball = 15;
+            WeaponAttributes.HitFireball = 15;
         }
 
         public GargishBracersofAlchemicalDevastation(Serial serial) : base(serial)
         {
-        }
-
-        private enum SaveFlag
-        {
-            None = 0x00000000,
-            WeaponAttributes = 0x00000001,
         }
 
         public override int LabelNumber
@@ -46,62 +37,21 @@ namespace Server.Items
 
         public override bool CanFortify { get { return false; } }
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public AosWeaponAttributes WeaponAttributes
-        {
-            get { return this.m_AosWeaponAttributes; }
-            set { }
-        }
-
-        public override void AppendChildNameProperties(ObjectPropertyList list)
-        {
-            base.AppendChildNameProperties(list);
-
-            int prop;
-
-            if ((prop = this.m_AosWeaponAttributes.HitFireball) != 0)
-                list.Add(1060420, prop.ToString());
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
-            writer.Write((int)0); // version
-
-            SaveFlag flags = SaveFlag.None;
-
-            SetSaveFlag(ref flags, SaveFlag.WeaponAttributes, !this.m_AosWeaponAttributes.IsEmpty);
-
-            writer.Write((int)flags);
-
-            if (GetSaveFlag(flags, SaveFlag.WeaponAttributes))
-                this.m_AosWeaponAttributes.Serialize(writer);
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
-            SaveFlag flags = (SaveFlag)reader.ReadInt();
-
-            if (GetSaveFlag(flags, SaveFlag.WeaponAttributes))
-                this.m_AosWeaponAttributes = new AosWeaponAttributes(this, reader);
-            else
-                this.m_AosWeaponAttributes = new AosWeaponAttributes(this);
-        }
-
-        private static void SetSaveFlag(ref SaveFlag flags, SaveFlag toSet, bool setIf)
-        {
-            if (setIf)
-                flags |= toSet;
-        }
-
-        private static bool GetSaveFlag(SaveFlag flags, SaveFlag toGet)
-        {
-            return ((flags & toGet) != 0);
+            if (version == 0)
+            {
+                xWeaponAttributesDeserializeHelper(reader, this);
+            }
         }
     }
 }

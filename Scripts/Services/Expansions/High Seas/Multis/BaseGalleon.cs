@@ -504,6 +504,11 @@ namespace Server.Multis
                 switch (deed.CannonType)
                 {
                     default:
+                    case CannonPower.Pumpkin:
+                        {
+                            cannon = new PumpkinCannon(this);
+                            break;
+                        }
                     case CannonPower.Light:
                         if (Core.EJ)
                         {
@@ -985,7 +990,7 @@ namespace Server.Multis
             if (cannon == null)
                 return;
 
-            int type = cannon is Blundercannon ? 2 : cannon is LightShipCannon || cannon is Culverin ? 0 : 1;
+            int type = cannon is PumpkinCannon ? 3 : cannon is Blundercannon ? 2 : cannon is LightShipCannon || cannon is Culverin ? 0 : 1;
 
             switch (Facing)
             {
@@ -1018,11 +1023,11 @@ namespace Server.Multis
         public static int[][] CannonIDs { get { return m_CannonIDs; } }
         private static int[][] m_CannonIDs = new int[][]
         { 
-                      //Light  Heavy, Blunder
-            new int[] { 16918, 16922, 41664 }, //South
-            new int[] { 16919, 16923, 41665 }, //West
-            new int[] { 16920, 16924, 41666 }, //North
-            new int[] { 16921, 16925, 41667 }, //East
+                      //Light  Heavy, Blunder, Pumpkin
+            new int[] { 16918, 16922, 41664, 41979 }, //South
+            new int[] { 16919, 16923, 41665, 41980 }, //West
+            new int[] { 16920, 16924, 41666, 41981 }, //North
+            new int[] { 16921, 16925, 41667, 41982 }, //East
         };
 
         public virtual ShipPosition GetCannonPosition(Point3D pnt)

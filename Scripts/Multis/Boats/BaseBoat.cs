@@ -279,6 +279,7 @@ namespace Server.Multis
 
         #region High Seas
         public virtual bool IsClassicBoat { get { return true; } }
+        public virtual bool IsRowBoat { get { return false; } }
         public virtual double TurnDelay { get { return 0.5; } }
         public virtual int MaxHits { get { return 25000; } }
         public virtual double ScuttleLevel { get { return 25.0; } }
@@ -312,6 +313,9 @@ namespace Server.Multis
         public BaseBoat(Direction direction, bool isClassic)
             : base(0x0)
         {
+            if (IsRowBoat)
+                Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), RowBoat_Tick_Callback);
+
             m_DecayTime = DateTime.UtcNow + BoatDecayDelay;
             DoesDecay = true;
             Facing = direction;
@@ -338,6 +342,12 @@ namespace Server.Multis
             NextNavPoint = -1;
             Movable = false;
             m_Instances.Add(this);
+        }
+
+        public void RowBoat_Tick_Callback()
+        {
+            if (!GetMobilesOnBoard().Any())
+                Delete();
         }
 
         public BaseBoat(Serial serial)
@@ -611,7 +621,7 @@ namespace Server.Multis
                         PPlank = reader.ReadItem() as Plank;
                         SPlank = reader.ReadItem() as Plank;
 
-                        if (!IsClassicBoat && !(this is RowBoat))
+                        if (!IsClassicBoat && !IsRowBoat)
                             TillerMan = reader.ReadMobile() as object;
                         else
                             TillerMan = reader.ReadItem() as object;
@@ -643,6 +653,9 @@ namespace Server.Multis
             {
                 Timer.DelayCall(() => Hits = MaxHits);
             }
+
+            if (IsRowBoat)
+                Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), RowBoat_Tick_Callback);
         }
 
         public void RemoveKeys(Mobile m)
@@ -1113,17 +1126,24 @@ namespace Server.Multis
             if (boat == null)
                 return;
 
-            boat.BoatItem = this;
+            if (IsRowBoat)
+            {
+                Delete();
+            }
+            else
+            {
+                boat.BoatItem = this;
 
-            if (IsClassicBoat)
-                RemoveKeys(from);
+                if (IsClassicBoat)
+                    RemoveKeys(from);
 
-            from.AddToBackpack(boat);
+                from.AddToBackpack(boat);
 
-            Refresh();
-            Internalize();
+                Refresh();
+                Internalize();
 
-            OnDryDock(from);
+                OnDryDock(from);
+            }            
         }
 
         public virtual void OnDryDock(Mobile from)
@@ -1955,7 +1975,7 @@ namespace Server.Multis
 
             Moving = dir;
 
-            if (IsUnderEmergencyRepairs() || DamageTaken >= DamageLevel.Moderately)
+            if (IsRowBoat)
             {
                 Speed = 1;
                 m_ClientSpeed = 0x2;
@@ -1963,8 +1983,17 @@ namespace Server.Multis
             }
             else
             {
-                Speed = speed;
-                m_ClientSpeed = clientSpeed;
+                if (IsUnderEmergencyRepairs() || DamageTaken >= DamageLevel.Moderately)
+                {
+                    Speed = 1;
+                    m_ClientSpeed = 0x2;
+                    interval = SlowDriftInterval;
+                }
+                else
+                {
+                    Speed = speed;
+                    m_ClientSpeed = clientSpeed;
+                }
             }
 
             Order = BoatOrder.Move;
@@ -2206,12 +2235,12 @@ namespace Server.Multis
             if (from.AccessLevel > AccessLevel.Player)
                 return false;
 
-            return Boats.Any(boat => boat.Owner == from && !boat.Deleted && boat.Map != Map.Internal && !(boat is RowBoat));
+            return Boats.Any(boat => boat.Owner == from && !boat.Deleted && boat.Map != Map.Internal && !boat.IsRowBoat);
         }
 
         public static BaseBoat GetBoat(Mobile from)
         {
-            return Boats.FirstOrDefault(boat => boat.Owner == from && !boat.Deleted && boat.Map != Map.Internal && !(boat is RowBoat));
+            return Boats.FirstOrDefault(boat => boat.Owner == from && !boat.Deleted && boat.Map != Map.Internal && !boat.IsRowBoat);
         }
 
         public static bool IsValidLocation(Point3D p, Map map)

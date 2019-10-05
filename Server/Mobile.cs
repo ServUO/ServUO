@@ -869,6 +869,9 @@ namespace Server
         [CommandProperty(AccessLevel.GameMaster)]
         public bool CharacterOut { get; set; }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool PublicHouseContent { get; set; }
+
         public DFAlgorithm DFA { get; set; } 
 
         protected virtual void OnRaceChange(Race oldRace)
@@ -9160,7 +9163,23 @@ namespace Server
 			}
 		}
 
-		public virtual bool CanSee(Item item)
+        public virtual bool InHouseCanSee(object o)
+        {
+            if (o is Item)
+            {
+                return CanSee((Item)o);
+            }
+            else if (o is Mobile)
+            {
+                return CanSee((Mobile)o);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public virtual bool CanSee(Item item)
 		{
 			if (m_Map == Map.Internal)
 			{

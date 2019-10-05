@@ -593,6 +593,18 @@
     <Compile Include="Items\Decorative\FlamingScarecrow.cs" />
     <Compile Include="Items\Decorative\SilverSaplingReplica.cs" />
     <Compile Include="Items\Decorative\ValentineBear.cs" />
+    <Compile Include="Items\Equipment\Armor\MagesHoodOfScholarlyInsight.cs" />
+    <Compile Include="Items\Equipment\Armor\CowlOfTheMaceAndShield.cs" />
+    <Compile Include="Items\Equipment\Armor\MagesHood.cs" />
+    <Compile Include="Items\Equipment\Armor\ElegantCollarOfFortune.cs" />
+    <Compile Include="Items\Equipment\Armor\CrimsonDaggerBelt.cs" />
+    <Compile Include="Items\Equipment\Armor\CrimsonSwordBelt.cs" />
+    <Compile Include="Items\Equipment\Armor\CrimsonMaceBelt.cs" />
+    <Compile Include="Items\Equipment\Armor\ElegantCollar.cs" />
+    <Compile Include="Items\Equipment\Armor\AssassinsCowl.cs" />
+    <Compile Include="Items\Equipment\Clothing\DaggerBelt.cs" />
+    <Compile Include="Items\Equipment\Clothing\MaceBelt.cs" />
+    <Compile Include="Items\Equipment\Clothing\SwordBelt.cs" />
     <Compile Include="Items\Functional\StrangeContraption.cs" />
     <Compile Include="Items\Internal\ItemSockets\SearingWeapon.cs" />
     <Compile Include="Items\Quest\RewardBooks.cs" />
@@ -604,6 +616,8 @@
     <Compile Include="Items\Internal\ItemSockets\SlayerSocket.cs" />
     <Compile Include="Items\Resource\OceanSapphire.cs" />
     <Compile Include="Items\Resource\LiveRock.cs" />
+    <Compile Include="Items\Resource\VileTentacles.cs" />
+    <Compile Include="Items\Resource\EtherealSand.cs" />
     <Compile Include="Items\StoreBought\BarrelMailbox.cs" />
     <Compile Include="Items\StoreBought\SquirrelMailbox.cs" />
     <Compile Include="Items\Tools\SteamPoweredBeverageMaker.cs" />
@@ -742,8 +756,10 @@
     <Compile Include="Misc\ArchivedSaves.cs" />
     <Compile Include="Misc\Replacer.cs" />
     <Compile Include="Misc\TaskPollingTimer.cs" />
+    <Compile Include="Mobiles\Normal\HungryCoconutCrab.cs" />
     <Compile Include="Mobiles\Normal\Triton.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
+    <Compile Include="Mobiles\NPCs\MiningCooperativeMerchant.cs" />
     <Compile Include="Multis\ContestHouses.cs" />
     <Compile Include="Quests\The Ritual\Items.cs" />
     <Compile Include="Quests\The Ritual\Mobiles.cs" />
@@ -10023,6 +10039,14 @@
     <Compile Include="Services\Seasonal Events\TreasuresOfDoom\RewardGump.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfDoom\Rewards.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfDoom\VaseSpawner.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\CommanderTitleDeed.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\CaptainTitleDeed.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\EnsignTitleDeed.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\ExplodingJackOLantern.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\PumpkinCannonDeed.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\JackOLanternHelm.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\AdmiralJacksPumpkinSpiceAle.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\PumpkinRowboat.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\CaddelliteVendor.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Creatures\CultistAmbusher.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Creatures\KhalAnkur.cs" />
@@ -12144,6 +12168,7 @@
       <Name>Ultima</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />

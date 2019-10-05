@@ -10,8 +10,8 @@ namespace Server.Mobiles
         public Shipwright()
             : base("the shipwright")
         { 
-            this.SetSkill(SkillName.Carpentry, 60.0, 83.0);
-            this.SetSkill(SkillName.Macing, 36.0, 68.0);
+            SetSkill(SkillName.Carpentry, 60.0, 83.0);
+            SetSkill(SkillName.Macing, 36.0, 68.0);
         }
 
         public Shipwright(Serial serial)
@@ -23,32 +23,30 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SBInfos;
+                return m_SBInfos;
             }
         }
         public override void InitSBInfo() 
         { 
-            this.m_SBInfos.Add(new SBShipwright()); 
+            m_SBInfos.Add(new SBShipwright(this)); 
         }
 
         public override void InitOutfit()
         {
             base.InitOutfit();
 
-            this.AddItem(new Server.Items.SmithHammer());
+            AddItem(new Items.SmithHammer());
         }
 
         public override void Serialize(GenericWriter writer) 
         { 
-            base.Serialize(writer); 
-
+            base.Serialize(writer);
             writer.Write((int)0); // version 
         }
 
         public override void Deserialize(GenericReader reader) 
         { 
-            base.Deserialize(reader); 
-
+            base.Deserialize(reader);
             int version = reader.ReadInt(); 
         }
     }
