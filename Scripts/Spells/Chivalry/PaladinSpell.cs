@@ -92,9 +92,15 @@ namespace Server.Spells.Chivalry
 			Caster.Mana -= mana;
 
 			return true;
-		}		
+		}
 
-		public override void DoFizzle()
+        public override void SayMantra()
+        {
+            if (Caster.Player)
+                Caster.PublicOverheadMessage(MessageType.Spell, Caster.SpeechHue, MantraNumber, "", false);
+        }
+
+        public override void DoFizzle()
 		{
 			Caster.PlaySound(0x1D6);
 			Caster.NextSpellTime = Core.TickCount;

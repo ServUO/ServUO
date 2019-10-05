@@ -2323,9 +2323,11 @@ namespace Server.Mobiles
 
 		public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
 		{
-			base.GetContextMenuEntries(from, list);
+            //base.GetContextMenuEntries(from, list);
 
-			if (from == this)
+            list.Add(new PaperdollEntry(this));
+
+            if (from == this)
 			{
                 if (Core.HS && Alive)
                 {
@@ -2345,58 +2347,55 @@ namespace Server.Mobiles
                 if (Core.SA)
                 {
                     list.Add(new TitlesMenuEntry(this));
-
-					if (Alive)
-					{
-						QuestHelper.GetContextMenuEntries(list);
-					}
 				}
-                else if (Core.ML)
-                {
-                    #region Mondains Legacy
-                    if (Alive)
-                    {
-                        QuestHelper.GetContextMenuEntries(list);
 
-						if (m_RewardTitles.Count > 0)
-						{
-							list.Add(new CallbackEntry(6229, ShowChangeTitle));
-						}
-					}
-                    #endregion
+                if (Alive && Core.SA)
+                {
+                    list.Add(new Engines.Points.LoyaltyRating(this));
+                }
+
+                list.Add(new OpenBackpackEntry(this));
+
+                if (Alive && InsuranceEnabled)
+                {
+                    if (Core.SA)
+                    {
+                        list.Add(new CallbackEntry(1114299, OpenItemInsuranceMenu));
+                    }
+
+                    list.Add(new CallbackEntry(6201, ToggleItemInsurance));
+
+                    if (!Core.SA)
+                    {
+                        if (AutoRenewInsurance)
+                        {
+                            list.Add(new CallbackEntry(6202, CancelRenewInventoryInsurance));
+                        }
+                        else
+                        {
+                            list.Add(new CallbackEntry(6200, AutoRenewInventoryInsurance));
+                        }
+                    }
+                }
+                else if (Siege.SiegeShard)
+                {
+                    list.Add(new CallbackEntry(3006168, SiegeBlessItem));
+                }
+
+                if (Core.ML && Alive)
+                {
+                    QuestHelper.GetContextMenuEntries(list);
+
+                    if (!Core.SA && m_RewardTitles.Count > 0)
+                    {
+                        list.Add(new CallbackEntry(6229, ShowChangeTitle));
+                    }
                 }
 
                 if (m_Quest != null)
                 {
                     m_Quest.GetContextMenuEntries(list);
                 }
-
-			    if (Alive && Core.SA)
-			    {
-                    list.Add(new Engines.Points.LoyaltyRating(this));
-			    }
-
-				if (Alive && InsuranceEnabled)
-				{
-					list.Add(new CallbackEntry(6201, ToggleItemInsurance));
-
-					if (Core.SA)
-					{
-						list.Add(new CallbackEntry(1114299, OpenItemInsuranceMenu));
-					}
-					else if (AutoRenewInsurance)
-					{
-						list.Add(new CallbackEntry(6202, CancelRenewInventoryInsurance));
-					}
-					else
-					{
-						list.Add(new CallbackEntry(6200, AutoRenewInventoryInsurance));
-					}
-				}
-				else if (Siege.SiegeShard)
-				{
-					list.Add(new CallbackEntry(3006168, SiegeBlessItem));
-				}
 
 				if (house != null)
                 {

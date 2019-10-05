@@ -590,13 +590,25 @@ namespace Server.Items
 
                                 if (b != null && b != Galleon && b.IsEnemy(Galleon))
                                     list.Add(b);
+
+                                damageables.AddRange(FindDamageables(shooter, newPoint, map, false, false, false, true, true));
+                            }
+
+                            foreach (var m in damageables)
+                            {
+                                list.Add(m);
                             }
 
                             if (list.Count > 0)
                             {
                                 IEntity toHit = list[Utility.Random(list.Count)];
 
-                                if (toHit is BaseBoat)
+                                if (toHit is Mobile)
+                                {
+                                    Timer.DelayCall(delay, new TimerStateCallback(OnMobileHit), new object[] { (Mobile)toHit, newPoint, ammo, shooter });
+                                    hit = true;
+                                }
+                                else if (toHit is BaseBoat)
                                 {
                                     Timer.DelayCall(delay, new TimerStateCallback(OnShipHit), new object[] { (BaseBoat)toHit, newPoint, ammo, shooter });
                                     hit = true;

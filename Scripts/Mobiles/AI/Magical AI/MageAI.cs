@@ -23,10 +23,9 @@ namespace Server.Mobiles
 {
 	public class MageAI : BaseAI
 	{
-		protected const double HealChance = 0.25; // 10% chance to heal at gm skill
-
 		public virtual SkillName CastSkill { get { return SkillName.Magery; } }
 		public virtual bool UsesMagery { get { return true; } }
+        public virtual double HealChance { get { return .25; } }
 
 		protected const double DispelChance = 0.75; // 75% chance to dispel at gm skill
 		protected double TeleportChance { get { return m_Mobile.TeleportChance; } }
@@ -485,10 +484,11 @@ namespace Server.Mobiles
 				return null;
 			}
 
-			if (!SmartAI && ScaleByCastSkill(HealChance) < Utility.RandomDouble())
-			{
-				return null;
-			}
+            if (m_Mobile.Hits == m_Mobile.HitsMax || (!SmartAI && ScaleByCastSkill(HealChance) < Utility.RandomDouble()))
+            {
+                return null;
+            }
+
 			if (Utility.Random(0, 4 + (m_Mobile.Hits == 0 ? m_Mobile.HitsMax : (m_Mobile.HitsMax / m_Mobile.Hits))) < 3)
 			{
 				return null;

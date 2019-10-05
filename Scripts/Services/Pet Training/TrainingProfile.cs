@@ -274,6 +274,7 @@ namespace Server.Mobiles
 
             var ourDif = Creature.BardingDifficulty;
             var theirDif =  bc.BardingDifficulty;
+            var master = Creature.ControlMaster;
 
             if (Utility.Random(100) < 8 - (1 + (ControlSlots - ControlSlotsMin)))
             {
@@ -287,17 +288,17 @@ namespace Server.Mobiles
                         
                         PowerHourBegin = DateTime.UtcNow;
                         InPowerHour = true;
-                        Creature.ControlMaster.SendLocalizedMessage(1157569); // [Pet Training Power Hour]:  Your pet is under the effects of enhanced training progress for the next hour!
+                        master.SendLocalizedMessage(1157569); // [Pet Training Power Hour]:  Your pet is under the effects of enhanced training progress for the next hour!
                     }
                     else if (InPowerHour && PowerHourBegin + PowerHourDuration < DateTime.UtcNow)
                     {
                         InPowerHour = false;
-                        Creature.ControlMaster.SendLocalizedMessage(1157570); // [Pet Training Power Hour]:  Your pet is no longer under the effects of enhanced training progress.
+                        master.SendLocalizedMessage(1157570); // [Pet Training Power Hour]:  Your pet is no longer under the effects of enhanced training progress.
                     }
 
                     TrainingProgress = Math.Min(TrainingProgressMax, TrainingProgress + toGain);
 
-                    if (!bc.Controlled && !bc.Summoned)
+                    if (!bc.Controlled && !bc.Summoned && master is PlayerMobile)
                     {
                         int cliloc = 1157574; // *The pet's battle experience has greatly increased!*
 
@@ -306,28 +307,35 @@ namespace Server.Mobiles
                         else if (toGain < 2.5)
                             cliloc = 1157573; // *The pet's battle experience has fairly increased!*
 
-                        if (Creature.ControlMaster.HasGump(typeof(PetTrainingProgressGump)))
+                        if (master.HasGump(typeof(PetTrainingProgressGump)))
                         {
-                            ResendProgressGump(Creature.ControlMaster);
+                            ResendProgressGump(master);
+                        }
+                        else
+                        {
+                            if (master.InRange(Creature.Location, 12))
+                            {
+                                BaseGump.SendGump(new PetTrainingProgressGump((PlayerMobile)master, Creature));
+                            }
                         }
 
-                        Creature.PrivateOverheadMessage(MessageType.Regular, 0x59, cliloc, Creature.ControlMaster.NetState);
+                        Creature.PrivateOverheadMessage(MessageType.Regular, 0x59, cliloc, master.NetState);
 
                         if (TrainingProgress >= TrainingProgressMax)
                         {
-                            Creature.PrivateOverheadMessage(MessageType.Regular, 0x59, 1157543, Creature.ControlMaster.NetState); // *The creature surges with battle experience and is ready to train!*
+                            Creature.PrivateOverheadMessage(MessageType.Regular, 0x59, 1157543, master.NetState); // *The creature surges with battle experience and is ready to train!*
 
-                            Server.Engines.Quests.LeadingIntoBattleQuest.CheckComplete(Creature.ControlMaster as PlayerMobile);
+                            Server.Engines.Quests.LeadingIntoBattleQuest.CheckComplete((PlayerMobile)master);
                         }
                     }
                     else
                     {
-                        Creature.PrivateOverheadMessage(MessageType.Regular, 0x21, 1157564, Creature.ControlMaster.NetState); // *The pet does not appear to train from that*
+                        Creature.PrivateOverheadMessage(MessageType.Regular, 0x21, 1157564, master.NetState); // *The pet does not appear to train from that*
                     }
                 }
                 else
                 {
-                    Creature.PrivateOverheadMessage(MessageType.Regular, 0x21, 1157564, Creature.ControlMaster.NetState); // *The pet does not appear to train from that*
+                    Creature.PrivateOverheadMessage(MessageType.Regular, 0x21, 1157564, master.NetState); // *The pet does not appear to train from that*
                 }
             }
         }

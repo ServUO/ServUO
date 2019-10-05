@@ -326,22 +326,24 @@ namespace Server.Items
 
         public bool IsOpen(Mobile toCheck)
         {
-            NetState ns = toCheck.NetState;
+            return HasGump(toCheck);
+        }
 
-            if (ns != null)
+        public virtual bool HasGump(Mobile toCheck)
+        {
+            var bookGump = toCheck.FindGump<RunebookGump>();
+
+            if (bookGump != null && bookGump.Book == this)
             {
-                foreach (Gump gump in ns.Gumps)
-                {
-                    RunebookGump bookGump = gump as RunebookGump;
-
-                    if (bookGump != null && bookGump.Book == this)
-                    {
-                        return true;
-                    }
-                }
+                return true;
             }
 
             return false;
+        }
+
+        public virtual void CloseGump(Mobile m)
+        {
+            m.CloseGump(typeof(RunebookGump));
         }
 
         public override bool DisplayLootType
@@ -368,16 +370,20 @@ namespace Server.Items
 		
         public override bool OnDragLift(Mobile from)
         {
-            if (from.HasGump(typeof(RunebookGump)))
+            if (HasGump(from))
             {
                 from.SendLocalizedMessage(500169); // You cannot pick that up.
                 return false;
             }
-			
+
             foreach (Mobile m in m_Openers)
+            {
                 if (IsOpen(m))
-                    m.CloseGump(typeof(RunebookGump));
-				
+                {
+                    CloseGump(m);
+                }
+            }
+            
             m_Openers.Clear();
 			
             return true;

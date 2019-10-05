@@ -380,7 +380,7 @@ namespace Server.Items
                             }
                             else if (master != null && master.InRange(petPatient, 3))
                             {
-                                healerNumber = 503255; // You are able to resurrect the creature.
+                                healerNumber = 1049658; // The owner has been asked to sanctify the resurrection.
 
                                 master.CloseGump(typeof(PetResurrectGump));
                                 master.SendGump(new PetResurrectGump(m_Healer, petPatient));
@@ -397,7 +397,7 @@ namespace Server.Items
 
                                     if (friend.InRange(petPatient, 3))
                                     {
-                                        healerNumber = 503255; // You are able to resurrect the creature.
+                                        healerNumber = 1049658; // The owner has been asked to sanctify the resurrection.
 
                                         friend.CloseGump(typeof(PetResurrectGump));
                                         friend.SendGump(new PetResurrectGump(m_Healer, petPatient));
@@ -409,7 +409,7 @@ namespace Server.Items
 
                                 if (!found)
                                 {
-                                    healerNumber = 1049670; // The pet's owner must be nearby to attempt resurrection.
+                                    healerNumber = 1049659; // Neither the owner or friends of the pet are nearby to sanctify the resurrection.
                                 }
                             }
                         }
