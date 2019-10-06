@@ -187,14 +187,6 @@ namespace Server.Multis
                 _InternalCannon.Clear();
                 _InternalCannon = null;
             }
-
-            if (from != null && from.Backpack != null)
-            {
-                List<ShipRune> list = from.Backpack.FindItemsByType<ShipRune>();
-
-                foreach (ShipRune item in list)
-                    item.InvalidateProperties();
-            }
         }
 
         public override bool Contains(int x, int y)
@@ -307,9 +299,10 @@ namespace Server.Multis
 
         public bool TryMarkRune(RecallRune rune, Mobile from)
         {
-            ShipRune newRune = new ShipRune(this);
+            RecallRune newRune = new RecallRune();
+            newRune.SetGalleon(this);
+
             Container c = rune.Parent as Container;
-            newRune.Location = rune.Location;
 
             if (c != null)
                 c.AddItem(newRune);
@@ -328,14 +321,13 @@ namespace Server.Multis
             if (Owner == null || !(Owner is PlayerMobile))
                 return;
 
-            ShipRune rune1 = new ShipRune(this);
-            DistributeRune(rune1, false);
+            RecallRune rune = new RecallRune();
+            rune.SetGalleon(this);
+            DistributeRune(rune, false);
 
-            ShipRune rune2 = new ShipRune(this);
-            DistributeRune(rune2, true);
-
-            rune1.InvalidateProperties();
-            rune2.InvalidateProperties();
+            rune = new RecallRune();
+            rune.SetGalleon(this);
+            DistributeRune(rune, true);
         }
 
         public override Point3D GetMarkedLocation()
@@ -839,14 +831,6 @@ namespace Server.Multis
                 if (pad != null)
                     _InternalCannon[c] = pad;
             });
-
-            if (from != null && from.Backpack != null)
-            {
-                List<ShipRune> list = from.Backpack.FindItemsByType<ShipRune>();
-
-                foreach (ShipRune item in list)
-                    item.InvalidateProperties();
-            }
 
             base.OnDryDock(from);
         }

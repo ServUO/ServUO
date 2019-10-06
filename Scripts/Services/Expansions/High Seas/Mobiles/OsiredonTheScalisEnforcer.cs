@@ -85,6 +85,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.SpiritSpeak, 160.1, 220.0);
             SetSkill(SkillName.Magery, 120.1, 129.4);
             SetSkill(SkillName.EvalInt, 100.1, 120.0);
+            SetSkill(SkillName.DetectHidden, 100.0);
 
             Fame = 25000;
             Karma = -25000;

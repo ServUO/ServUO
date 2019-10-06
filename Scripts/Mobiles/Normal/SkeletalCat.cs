@@ -3,19 +3,19 @@ using Server.Gumps;
 
 namespace Server.Mobiles
 {
-    public class EowmuStatue : Item, ICreatureStatuette
+    public class SkeletalCatStatue : Item, ICreatureStatuette
     {
-        public override int LabelNumber { get { return 1158082; } } // Eowmu
+        public override int LabelNumber { get { return 1158462; } } // Skeletal Cat
 
-        public Type CreatureType { get { return typeof(Eowmu); } }
+        public Type CreatureType { get { return typeof(SkeletalCat); } }
 
         [Constructable]
-        public EowmuStatue() 
-            : base(0xA0C0)
+        public SkeletalCatStatue() 
+            : base(0xA138)
         {
             LootType = LootType.Blessed;
         }
-        public EowmuStatue(Serial serial)
+        public SkeletalCatStatue(Serial serial)
             : base(serial)
         {
         }
@@ -41,20 +41,20 @@ namespace Server.Mobiles
         }
     }
 
-    [CorpseName("an eowmu corpse")]
-    public class Eowmu : BaseMount
+    [CorpseName("a Skeletal Cat corpse")]
+    public class SkeletalCat : BaseMount
     {
         [Constructable]
-        public Eowmu()
-            : this("Eowmu")
+        public SkeletalCat()
+            : this("Skeletal Cat")
         {
         }
 
         [Constructable]
-        public Eowmu(string name)
-            : base(name, 1440, 16079, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+        public SkeletalCat(string name)
+            : base(name, 1441, 16080, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            BaseSoundID = 0xA8;
+            BaseSoundID = 229;
 
             SetStr(400);
             SetDex(125);
@@ -81,18 +81,18 @@ namespace Server.Mobiles
             Karma = 300;
 
             Tamable = true;
-            ControlSlots = 1;
+            ControlSlots = 2;
             MinTameSkill = 30.0;
         }
 
-        public Eowmu(Serial serial)
+        public SkeletalCat(Serial serial)
             : base(serial)
         {
         }
 
         public override int Meat { get { return 3; } }
         public override int Hides { get { return 10; } }
-        public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
+        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
 
         public override void Serialize(GenericWriter writer)
         {
