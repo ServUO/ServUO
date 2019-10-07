@@ -756,7 +756,9 @@
     <Compile Include="Misc\ArchivedSaves.cs" />
     <Compile Include="Misc\Replacer.cs" />
     <Compile Include="Misc\TaskPollingTimer.cs" />
+    <Compile Include="Mobiles\Normal\CoconutCrab.cs" />
     <Compile Include="Mobiles\Normal\HungryCoconutCrab.cs" />
+    <Compile Include="Mobiles\Normal\SkeletalCat.cs" />
     <Compile Include="Mobiles\Normal\Triton.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
     <Compile Include="Mobiles\NPCs\MiningCooperativeMerchant.cs" />

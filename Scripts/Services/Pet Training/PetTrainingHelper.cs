@@ -110,7 +110,8 @@ namespace Server.Mobiles
         StygianDrake = Bashing | Chivalry | Discordance | Mysticism | Piercing | Poisoning | Slashing | Spellweaving | WrestlingMastery,
         Triceratops = Bashing | Poisoning | Slashing | WrestlingMastery,
         TsukiWolf = Tokuno | Chivalry | Discordance | Mysticism | Necromage | Necromancy | Poisoning | Spellweaving | WrestlingMastery,
-        Triton = Chivalry | Discordance | MageryMastery | Mysticism | Poisoning | Spellweaving | Bushido | Ninjitsu | BattleDefense | Bashing | Piercing | Slashing | WrestlingMastery
+        Triton = Chivalry | Discordance | MageryMastery | Mysticism | Poisoning | Spellweaving | Bushido | Ninjitsu | BattleDefense | Bashing | Piercing | Slashing | WrestlingMastery,
+        CoconutCrab = GreaterDragon | BattleDefense | Bashing | Piercing | Slashing | WrestlingMastery
     }
 
     public static class PetTrainingHelper
@@ -279,6 +280,8 @@ namespace Server.Mobiles
         public static SpecialAbility[] RuleBreakers;
         public static SpecialAbility[] SpecialAbilityTriton;
         public static SpecialAbility[] SpecialAbilityGrizzledMare;
+        public static SpecialAbility[] SpecialAbilitySkeletalCat;
+        public static SpecialAbility[] SpecialAbilityCoconutCrab;
         #endregion
 
         #region AreaEffect Defs
@@ -603,6 +606,19 @@ namespace Server.Mobiles
                 SpecialAbility.LifeLeech, SpecialAbility.LightningForce, SpecialAbility.ManaDrain, SpecialAbility.RagingBreath,
                 SpecialAbility.Repel, SpecialAbility.SearingWounds, SpecialAbility.StealLife, SpecialAbility.VenomousBite, SpecialAbility.ViciousBite
             };
+
+            SpecialAbilitySkeletalCat = new SpecialAbility[]
+            {
+                SpecialAbility.ManaDrain, SpecialAbility.Repel, SpecialAbility.SearingWounds, SpecialAbility.GraspingClaw,
+                SpecialAbility.TailSwipe, SpecialAbility.ViciousBite, SpecialAbility.VenomousBite, SpecialAbility.LifeLeech
+            };
+
+            SpecialAbilityCoconutCrab = new SpecialAbility[]
+            {
+                SpecialAbility.AngryFire, SpecialAbility.ConductiveBlast, SpecialAbility.DragonBreath, SpecialAbility.Inferno,
+                SpecialAbility.LightningForce, SpecialAbility.ManaDrain, SpecialAbility.RagingBreath, SpecialAbility.Repel,
+                SpecialAbility.SearingWounds, SpecialAbility.VenomousBite, SpecialAbility.ViciousBite
+            };
             #endregion
 
             #region Area Effect Packages
@@ -789,6 +805,8 @@ namespace Server.Mobiles
                 new TrainingDefinition(typeof(TigerCub), Class.ClawedAndTailed, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 3),
                 new TrainingDefinition(typeof(GrizzledMare), Class.ClawedTailedAndNecromantic, MagicalAbility.GrizzledMare, SpecialAbilityGrizzledMare, WepAbility2, AreaEffectArea4, 1, 3),
                 new TrainingDefinition(typeof(HungryCoconutCrab), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 2),
+                new TrainingDefinition(typeof(SkeletalCat), Class.ClawedTailedAndNecromantic, MagicalAbility.Hellcat, SpecialAbilitySkeletalCat, WepAbility4, AreaEffectArea3, 2, 3),
+                new TrainingDefinition(typeof(CoconutCrab), Class.None, MagicalAbility.CoconutCrab, SpecialAbilityCoconutCrab, WepAbility2, AreaEffectArea2, 1, 3),
             };
             #endregion
         }

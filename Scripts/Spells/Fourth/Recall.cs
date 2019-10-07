@@ -77,8 +77,16 @@ namespace Server.Spells.Fourth
 
                 if (m_Entry != null)
                 {
-                    loc = m_Entry.Location;
-                    map = m_Entry.Map;
+                    if (m_Entry.Type != RecallRuneType.Ship)
+                    {
+                        loc = m_Entry.Location;
+                        map = m_Entry.Map;
+                    }
+                    else
+                    {
+                        Effect(m_Entry.Galleon);
+                        return;
+                    }
                 }
                 else if (m_SearchMap != null)
                 {
@@ -87,7 +95,6 @@ namespace Server.Spells.Fourth
                 }
                 else
                 {
-
                     loc = m_AuctionMap.SetLocation != Point3D.Zero ? m_AuctionMap.SetLocation : m_AuctionMap.SafeLocation;
                     map = m_AuctionMap.SetMap != null ? m_AuctionMap.SetMap : m_AuctionMap.SafeMap;
 
@@ -100,7 +107,7 @@ namespace Server.Spells.Fourth
                     }
                 }
 
-                Effect(loc, map, true, m_Entry != null && m_Entry.Galleon != null);
+                Effect(loc, map, true, false);
             }
         }
 
@@ -121,13 +128,33 @@ namespace Server.Spells.Fourth
                 Caster.SendLocalizedMessage(1005564, "", 0x22); // Wouldst thou flee during the heat of battle??
                 return false;
             }
-            else if (Server.Misc.WeightOverloading.IsOverloaded(Caster))
+            else if (Misc.WeightOverloading.IsOverloaded(Caster))
             {
                 Caster.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
                 return false;
             }
 
             return SpellHelper.CheckTravel(Caster, TravelCheckType.RecallFrom);
+        }
+
+        public void Effect(BaseGalleon galleon)
+        {
+            if (galleon == null)
+            {
+                Caster.SendLocalizedMessage(1116767); // The ship could not be located.
+            }
+            else if (galleon.Map == Map.Internal)
+            {
+                Caster.SendLocalizedMessage(1149569); // That ship is in dry dock.
+            }
+            else if (!galleon.HasAccess(Caster))
+            {
+                Caster.SendLocalizedMessage(1116617); // You do not have permission to board this ship.
+            }
+            else
+            {
+                Effect(galleon.GetMarkedLocation(), galleon.Map, false, true);
+            }
         }
 
         public void Effect(Point3D loc, Map map, bool checkMulti, bool isboatkey = false)
@@ -162,17 +189,17 @@ namespace Server.Spells.Fourth
             {
                 Caster.SendLocalizedMessage(1005564, "", 0x22); // Wouldst thou flee during the heat of battle??
             }
-            else if (Server.Misc.WeightOverloading.IsOverloaded(Caster))
+            else if (Misc.WeightOverloading.IsOverloaded(Caster))
             {
                 Caster.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
             }
             else if (!map.CanSpawnMobile(loc.X, loc.Y, loc.Z) && !isboatkey)
             {
-                this.Caster.SendLocalizedMessage(501025); // Something is blocking the location.
+                Caster.SendLocalizedMessage(501025); // Something is blocking the location.
             }
-            else if ((checkMulti && SpellHelper.CheckMulti(loc, map)) && !isboatkey)
+            else if (checkMulti && SpellHelper.CheckMulti(loc, map) && !isboatkey)
             {
-                this.Caster.SendLocalizedMessage(501025); // Something is blocking the location.
+                Caster.SendLocalizedMessage(501025); // Something is blocking the location.
             }
             else if (m_Book != null && m_Book.CurCharges <= 0)
             {
@@ -182,7 +209,7 @@ namespace Server.Spells.Fourth
             {
                 Caster.SendLocalizedMessage(1071955); // You cannot teleport while dragging an object.
             }
-            else if (Server.Engines.CityLoyalty.CityTradeSystem.HasTrade(Caster))
+            else if (Engines.CityLoyalty.CityTradeSystem.HasTrade(Caster))
             {
                 Caster.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
             }
@@ -210,6 +237,7 @@ namespace Server.Spells.Fourth
         private class InternalTarget : Target
         {
             private readonly RecallSpell m_Owner;
+
             public InternalTarget(RecallSpell owner)
                 : base(Core.ML ? 10 : 12, false, TargetFlags.None)
             {
@@ -225,18 +253,40 @@ namespace Server.Spells.Fourth
                     RecallRune rune = (RecallRune)o;
 
                     if (rune.Marked)
-                        m_Owner.Effect(rune.Target, rune.TargetMap, true);
+                    {
+                        if (rune.Type == RecallRuneType.Ship)
+                        {
+                            m_Owner.Effect(rune.Galleon);
+                        }
+                        else
+                        {
+                            m_Owner.Effect(rune.Target, rune.TargetMap, true);
+                        }
+                    }
                     else
+                    {
                         from.SendLocalizedMessage(501805); // That rune is not yet marked.
+                    }
                 }
                 else if (o is Runebook)
                 {
                     RunebookEntry e = ((Runebook)o).Default;
 
                     if (e != null)
-                        m_Owner.Effect(e.Location, e.Map, true);
+                    {
+                        if (e.Type == RecallRuneType.Ship)
+                        {
+                            m_Owner.Effect(e.Galleon);
+                        }
+                        else
+                        {
+                            m_Owner.Effect(e.Location, e.Map, true);
+                        }
+                    }
                     else
+                    {
                         from.SendLocalizedMessage(502354); // Target is not marked.
+                    }
                 }
                 else if (o is Key && ((Key)o).KeyValue != 0 && ((Key)o).Link is BaseBoat)
                 {
@@ -247,30 +297,15 @@ namespace Server.Spells.Fourth
                     else
                         from.Send(new MessageLocalized(from.Serial, from.Body, MessageType.Regular, 0x3B2, 3, 502357, from.Name, "")); // I can not recall from that object.
                 }
-
-                #region High Seas
-                else if (o is ShipRune && ((ShipRune)o).Galleon != null)
+                else if (o is Engines.NewMagincia.WritOfLease)
                 {
-                    BaseGalleon galleon = ((ShipRune)o).Galleon;
-
-                    if (!galleon.Deleted && galleon.Map != null && galleon.Map != Map.Internal && galleon.HasAccess(from))
-                        m_Owner.Effect(galleon.GetMarkedLocation(), galleon.Map, false, true);
-                    else
-                        from.Send(new MessageLocalized(from.Serial, from.Body, MessageType.Regular, 0x3B2, 3, 502357, from.Name, "")); // I can not recall from that object.
-                }
-                #endregion
-
-                #region New Magincia
-                else if (o is Server.Engines.NewMagincia.WritOfLease)
-                {
-                    Server.Engines.NewMagincia.WritOfLease lease = (Server.Engines.NewMagincia.WritOfLease)o;
+                    Engines.NewMagincia.WritOfLease lease = (Engines.NewMagincia.WritOfLease)o;
 
                     if (lease.RecallLoc != Point3D.Zero && lease.Facet != null && lease.Facet != Map.Internal)
                         m_Owner.Effect(lease.RecallLoc, lease.Facet, false);
                     else
                         from.Send(new MessageLocalized(from.Serial, from.Body, MessageType.Regular, 0x3B2, 3, 502357, from.Name, "")); // I can not recall from that object.
                 }
-                #endregion
 
                 else
                 {

@@ -1,5 +1,6 @@
 using System;
 using Server.Items;
+using Server.Multis;
 using Server.Network;
 using Server.Targeting;
 
@@ -28,7 +29,7 @@ namespace Server.Spells.Sixth
         }
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public override bool CheckCast()
@@ -36,35 +37,41 @@ namespace Server.Spells.Sixth
             if (!base.CheckCast())
                 return false;
 
-            return SpellHelper.CheckTravel(this.Caster, TravelCheckType.Mark);
+            return SpellHelper.CheckTravel(Caster, TravelCheckType.Mark);
         }
 
         public void Target(RecallRune rune)
         {
-            if (!this.Caster.CanSee(rune))
-            {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
-            }
-            else if (!SpellHelper.CheckTravel(this.Caster, TravelCheckType.Mark))
-            {
-            }
-            else if (SpellHelper.CheckMulti(this.Caster.Location, this.Caster.Map, !Core.AOS))
-            {
-                this.Caster.SendLocalizedMessage(501942); // That location is blocked.
-            }
-            else if (!rune.IsChildOf(this.Caster.Backpack))
-            {
-                this.Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1062422); // You must have this rune in your backpack in order to mark it.
-            }
-            else if (this.CheckSequence())
-            {
-                rune.Mark(this.Caster);
+            BaseBoat boat = BaseBoat.FindBoatAt(Caster.Location, Caster.Map);
 
-                this.Caster.PlaySound(0x1FA);
-                Effects.SendLocationEffect(this.Caster, this.Caster.Map, 14201, 16);
+            if (!Caster.CanSee(rune))
+            {
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
+            }
+            else if (!SpellHelper.CheckTravel(Caster, TravelCheckType.Mark))
+            {
+            }
+            else if (boat == null && SpellHelper.CheckMulti(Caster.Location, Caster.Map, !Core.AOS))
+            {
+                Caster.SendLocalizedMessage(501942); // That location is blocked.
+            }
+            else if (boat != null && !(boat is BaseGalleon))
+            {
+                Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, 501800); // You cannot mark an object at that location.
+            }
+            else if (!rune.IsChildOf(Caster.Backpack))
+            {
+                Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1062422); // You must have this rune in your backpack in order to mark it.
+            }
+            else if (CheckSequence())
+            {
+                rune.Mark(Caster);
+
+                Caster.PlaySound(0x1FA);
+                Effects.SendLocationEffect(Caster, Caster.Map, 14201, 16);
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         private class InternalTarget : Target
@@ -73,14 +80,14 @@ namespace Server.Spells.Sixth
             public InternalTarget(MarkSpell owner)
                 : base(Core.ML ? 10 : 12, false, TargetFlags.None)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is RecallRune)
                 {
-                    this.m_Owner.Target((RecallRune)o);
+                    m_Owner.Target((RecallRune)o);
                 }
                 else
                 {
@@ -90,7 +97,7 @@ namespace Server.Spells.Sixth
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

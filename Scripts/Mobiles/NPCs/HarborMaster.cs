@@ -107,7 +107,8 @@ namespace Server.Mobiles
                     {
                         if (IsSpecialShip(boat))
                         {
-                            ShipRune newRune = new ShipRune((BaseGalleon)boat);
+                            RecallRune newRune = new RecallRune();
+                            newRune.SetGalleon((BaseGalleon)boat);
                             m_From.AddToBackpack(newRune);
                             m_Vendor.Say(1149580); // A recall rune to your ship has been placed in your backpack.
                         }

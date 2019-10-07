@@ -64,7 +64,7 @@ namespace Server.Mobiles
             Name = "hungry coconut crab";
             Body = 0x5E7;
             Hue = 2713;
-            BaseSoundID = 0X4F2;
+            BaseSoundID = 0x4F2;
 
             SetStr(19);
             SetDex(15);
