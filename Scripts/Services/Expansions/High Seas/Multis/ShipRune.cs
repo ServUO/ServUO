@@ -1,9 +1,10 @@
-﻿using Server;
+using Server;
 using System;
 using Server.Multis;
 
 namespace Server.Items
 {
+    // This item is no longer used.
     [FlipableAttribute(0x1f14, 0x1f15, 0x1f16, 0x1f17)]
     public class ShipRune : Item
     {
@@ -12,15 +13,15 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseGalleon Galleon { get { return m_Galleon; } set { m_Galleon = value; } }
 
-        public BaseDockedBoat DockedBoat 
-        { 
-            get 
-            { 
-                if(m_Galleon != null)
+        public BaseDockedBoat DockedBoat
+        {
+            get
+            {
+                if (m_Galleon != null)
                     return m_Galleon.BoatItem;
 
-                return null;  
-            } 
+                return null;
+            }
         }
 
         public override int LabelNumber { get { return 1149570; } } //A Ship Rune
@@ -35,6 +36,25 @@ namespace Server.Items
         {
             m_Galleon = galleon;
             Hue = 0x47F;
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (!IsChildOf(from.Backpack))
+            {
+                from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
+            }
+            else
+            {
+                if (Galleon != null)
+                {
+                    RecallRune rune = new RecallRune();
+                    rune.SetGalleon(Galleon);
+                    from.AddToBackpack(rune);
+                }
+
+                Delete();
+            }
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -56,7 +76,7 @@ namespace Server.Items
                     string name = m_Galleon.ShipName != null && m_Galleon.ShipName != "" ? m_Galleon.ShipName : "Unnamed Ship";
                     list.Add(1041644, name); //The ~1_VAL~ (Dry Docked)
                 }
-                
+
             }
         }
 
@@ -74,7 +94,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
             m_Galleon = reader.ReadItem() as BaseGalleon;
-            if(version == 0)
+            if (version == 0)
                 reader.ReadItem();
         }
     }

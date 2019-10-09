@@ -145,7 +145,7 @@ namespace Server.Items
                     typeof(Spellbinder), typeof(AngeredSpirit),
                     typeof(BoneSwordSlinger), typeof(CovetousRevenant),
                     typeof(DiseasedLich), typeof(VileCadaver),
-                    typeof(GrizzledMare)
+                    typeof(GrizzledMare), typeof(SkeletalCat)
                 );
 
             undead.Entries = new SlayerEntry[0];

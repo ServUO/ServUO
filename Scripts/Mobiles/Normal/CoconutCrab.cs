@@ -3,19 +3,19 @@ using Server.Gumps;
 
 namespace Server.Mobiles
 {
-    public class EowmuStatue : Item, ICreatureStatuette
+    public class CoconutCrabStatue : Item, ICreatureStatuette
     {
-        public override int LabelNumber { get { return 1158082; } } // Eowmu
+        public override int LabelNumber { get { return 1159165; } } // Coconut Crab
 
-        public Type CreatureType { get { return typeof(Eowmu); } }
+        public Type CreatureType { get { return typeof(CoconutCrab); } }
 
         [Constructable]
-        public EowmuStatue() 
-            : base(0xA0C0)
+        public CoconutCrabStatue() 
+            : base(0xA335)
         {
             LootType = LootType.Blessed;
         }
-        public EowmuStatue(Serial serial)
+        public CoconutCrabStatue(Serial serial)
             : base(serial)
         {
         }
@@ -41,20 +41,20 @@ namespace Server.Mobiles
         }
     }
 
-    [CorpseName("an eowmu corpse")]
-    public class Eowmu : BaseMount
+    [CorpseName("a Coconut Crab corpse")]
+    public class CoconutCrab : BaseMount
     {
         [Constructable]
-        public Eowmu()
-            : this("Eowmu")
+        public CoconutCrab()
+            : this("Coconut Crab")
         {
         }
 
         [Constructable]
-        public Eowmu(string name)
-            : base(name, 1440, 16079, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+        public CoconutCrab(string name)
+            : base(name, 1510, 16081, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            BaseSoundID = 0xA8;
+            BaseSoundID = 0x4F2;
 
             SetStr(400);
             SetDex(125);
@@ -85,7 +85,7 @@ namespace Server.Mobiles
             MinTameSkill = 30.0;
         }
 
-        public Eowmu(Serial serial)
+        public CoconutCrab(Serial serial)
             : base(serial)
         {
         }

@@ -5,20 +5,34 @@ using Server.Regions;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x1f14, 0x1f15, 0x1f16, 0x1f17)]
+    public enum RecallRuneType
+    {
+        Normal,
+        Shop,
+        Ship
+    }
+
+    [Flipable(0x1f14, 0x1f15, 0x1f16, 0x1f17)]
     public class RecallRune : Item
     {
+        public override int LabelNumber { get { return Type == RecallRuneType.Normal ? 1060577 : Type == RecallRuneType.Shop ? 1151508 : 1149570; } } // Recall Rune - Shop Recall Rune - Ship Recall Rune
+
         private const string RuneFormat = "a recall rune for {0}";
         private string m_Description;
         private bool m_Marked;
-        private Point3D m_Target;
         private Map m_TargetMap;
         private BaseHouse m_House;
+        private BaseGalleon m_Galleon;
+
+        [CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
+        public RecallRuneType Type { get; set; }
+
         [Constructable]
         public RecallRune()
             : base(0x1F14)
         {
             Weight = 1.0;
+            Type = RecallRuneType.Normal;
             CalculateHue();
         }
 
@@ -40,30 +54,56 @@ namespace Server.Items
             set
             {
                 m_House = value;
+
+                if (value != null)
+                {
+                    Type = RecallRuneType.Shop;
+                }
+
                 CalculateHue();
                 InvalidateProperties();
             }
         }
+
         [CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
-        public string Description
+        public BaseGalleon Galleon
         {
             get
             {
-                return m_Description;
+                if (m_Galleon != null && m_Galleon.Deleted)
+                    Galleon = null;
+
+                return m_Galleon;
             }
+            set
+            {
+                m_Galleon = value;
+
+                if (value != null)
+                {
+                    Type = RecallRuneType.Ship;
+                }
+
+                CalculateHue();
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
+        public string Description
+        {
+            get { return m_Description; }
             set
             {
                 m_Description = value;
                 InvalidateProperties();
             }
         }
+
         [CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
         public bool Marked
         {
-            get
-            {
-                return m_Marked;
-            }
+            get { return m_Marked; }
             set
             {
                 if (m_Marked != value)
@@ -74,25 +114,14 @@ namespace Server.Items
                 }
             }
         }
+
         [CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
-        public Point3D Target
-        {
-            get
-            {
-                return m_Target;
-            }
-            set
-            {
-                m_Target = value;
-            }
-        }
+        public Point3D Target { get; set; }
+
         [CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
         public Map TargetMap
         {
-            get
-            {
-                return m_TargetMap;
-            }
+            get { return m_TargetMap; }
             set
             {
                 if (m_TargetMap != value)
@@ -103,35 +132,40 @@ namespace Server.Items
                 }
             }
         }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+            writer.Write((int)2); // version
 
-            if (m_House != null && !m_House.Deleted)
-            {
-                writer.Write((int)1); // version
-
-                writer.Write((Item)m_House);
-            }
-            else
-            {
-                writer.Write((int)0); // version
-            }
-
+            writer.Write((int)Type);
+            writer.Write((Item)m_Galleon);
+            writer.Write((Item)m_House);
             writer.Write((string)m_Description);
             writer.Write((bool)m_Marked);
-            writer.Write((Point3D)m_Target);
+            writer.Write((Point3D)Target);
             writer.Write((Map)m_TargetMap);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
+                case 2:
+                    {
+                        Type = (RecallRuneType)reader.ReadInt();
+                        m_Galleon = reader.ReadItem() as BaseGalleon;
+                        m_House = reader.ReadItem() as BaseHouse;
+                        m_Description = reader.ReadString();
+                        m_Marked = reader.ReadBool();
+                        Target = reader.ReadPoint3D();
+                        m_TargetMap = reader.ReadMap();
+
+                        break;
+                    }
                 case 1:
                     {
                         m_House = reader.ReadItem() as BaseHouse;
@@ -141,7 +175,7 @@ namespace Server.Items
                     {
                         m_Description = reader.ReadString();
                         m_Marked = reader.ReadBool();
-                        m_Target = reader.ReadPoint3D();
+                        Target = reader.ReadPoint3D();
                         m_TargetMap = reader.ReadMap();
 
                         break;
@@ -149,56 +183,80 @@ namespace Server.Items
             }
         }
 
+        public void SetGalleon(BaseGalleon galleon)
+        {
+            m_Marked = true;
+            Galleon = galleon;
+        }
+
         public void Mark(Mobile m)
         {
+            RecallRuneEmpty();
+
             m_Marked = true;
 
             bool setDesc = false;
+
             if (Core.AOS)
             {
-                m_House = BaseHouse.FindHouseAt(m);
+                m_Galleon = BaseBoat.FindBoatAt(m) as BaseGalleon;
 
-                if (m_House == null)
+                if (m_Galleon != null)
                 {
-                    m_Target = m.Location;
-                    m_TargetMap = m.Map;
+                    Type = RecallRuneType.Ship;
                 }
                 else
                 {
-                    HouseSign sign = m_House.Sign;
+                    m_House = BaseHouse.FindHouseAt(m);
 
-                    if (sign != null)
-                        m_Description = sign.Name;
+                    if (m_House == null)
+                    {
+                        Target = m.Location;
+                        m_TargetMap = m.Map;
+
+                        Type = RecallRuneType.Normal;
+                    }
                     else
-                        m_Description = null;
+                    {
+                        HouseSign sign = m_House.Sign;
 
-                    if (m_Description == null || (m_Description = m_Description.Trim()).Length == 0)
-                        m_Description = "an unnamed house";
+                        if (sign != null)
+                            m_Description = sign.Name;
+                        else
+                            m_Description = null;
 
-                    setDesc = true;
+                        if (m_Description == null || (m_Description = m_Description.Trim()).Length == 0)
+                            m_Description = "an unnamed house";
 
-                    int x = m_House.BanLocation.X;
-                    int y = m_House.BanLocation.Y + 2;
-                    int z = m_House.BanLocation.Z;
+                        setDesc = true;
 
-                    Map map = m_House.Map;
+                        int x = m_House.BanLocation.X;
+                        int y = m_House.BanLocation.Y + 2;
+                        int z = m_House.BanLocation.Z;
 
-                    if (map != null && !map.CanFit(x, y, z, 16, false, false))
-                        z = map.GetAverageZ(x, y);
+                        Map map = m_House.Map;
 
-                    m_Target = new Point3D(x, y, z);
-                    m_TargetMap = map;
+                        if (map != null && !map.CanFit(x, y, z, 16, false, false))
+                            z = map.GetAverageZ(x, y);
+
+                        Target = new Point3D(x, y, z);
+                        m_TargetMap = map;
+
+                        Type = RecallRuneType.Shop;
+                    }
                 }
             }
             else
             {
                 m_House = null;
-                m_Target = m.Location;
+                Target = m.Location;
                 m_TargetMap = m.Map;
+
+                Type = RecallRuneType.Normal;
             }
 
             if (!setDesc)
-                m_Description = BaseRegion.GetRuneNameFor(Region.Find(m_Target, m_TargetMap));
+                m_Description = BaseRegion.GetRuneNameFor(Region.Find(Target, m_TargetMap));
 
             CalculateHue();
             InvalidateProperties();
@@ -210,56 +268,92 @@ namespace Server.Items
 
             if (m_Marked)
             {
-                string desc;
+                if (Type == RecallRuneType.Ship)
+                {
+                    if (Galleon != null)
+                    {
+                        if (Galleon.Owner != null)
+                        {
+                            list.Add(1149571, Galleon.Owner.Name); // Owner: ~1_NAME~
+                        }
+                        else
+                        {
+                            list.Add(1150535); // Unknown Owner
+                        }
 
-                if ((desc = m_Description) == null || (desc = desc.Trim()).Length == 0)
-                    desc = "an unknown location";
+                        if (Galleon.ShipName != null)
+                        {
+                            list.Add(1149572, Galleon.ShipName); // Name: the ~1_NAME~
+                        }
+                        else
+                        {
+                            list.Add(1149573); // Name: the Unnamed Ship
+                        }
 
-                if (m_TargetMap == Map.Tokuno)
-                    list.Add((House != null ? 1063260 : 1063259), RuneFormat, desc); // ~1_val~ (Tokuno Islands)[(House)]
-                else if (m_TargetMap == Map.Malas)
-                    list.Add((House != null ? 1062454 : 1060804), RuneFormat, desc); // ~1_val~ (Malas)[(House)]
-                else if (m_TargetMap == Map.Felucca)
-                    list.Add((House != null ? 1062452 : 1060805), RuneFormat, desc); // ~1_val~ (Felucca)[(House)]
-                else if (m_TargetMap == Map.Trammel)
-                    list.Add((House != null ? 1062453 : 1060806), RuneFormat, desc); // ~1_val~ (Trammel)[(House)]
-                else if (m_TargetMap == Map.TerMur)
-                    list.Add((House != null ? 1113206 : 1113205), RuneFormat, desc); // ~1_val~ (Ter Mur)(House)
+                        if (Galleon.Map != Map.Internal && Galleon.Map != null)
+                        {
+                            list.Add(1149574, Galleon.Map.ToString()); // Location: ~1_FACET~
+                        }
+                        else
+                        {
+                            list.Add(1149574, "#1149575"); // Location: Dry Dock
+                        }
+                    }
+                    else
+                    {
+                        list.Add(1150535); // Unknown Owner
+                        list.Add(1149573); // Name: the Unnamed Ship
+                        list.Add(1149574, "#1149575"); // Location: Dry Dock
+                    }
+                }
                 else
-                    list.Add((House != null ? "{0} ({1})(House)" : "{0} ({1})"), String.Format(RuneFormat, desc), m_TargetMap);
+                {
+                    string desc;
+
+                    if ((desc = m_Description) == null || (desc = desc.Trim()).Length == 0)
+                        desc = "an unknown location";
+
+                    if (m_TargetMap == Map.Tokuno)
+                        list.Add((House != null ? 1063260 : 1063259), RuneFormat, desc); // ~1_val~ (Tokuno Islands)[(House)]
+                    else if (m_TargetMap == Map.Malas)
+                        list.Add((House != null ? 1062454 : 1060804), RuneFormat, desc); // ~1_val~ (Malas)[(House)]
+                    else if (m_TargetMap == Map.Felucca)
+                        list.Add((House != null ? 1062452 : 1060805), RuneFormat, desc); // ~1_val~ (Felucca)[(House)]
+                    else if (m_TargetMap == Map.Trammel)
+                        list.Add((House != null ? 1062453 : 1060806), RuneFormat, desc); // ~1_val~ (Trammel)[(House)]
+                    else if (m_TargetMap == Map.TerMur)
+                        list.Add((House != null ? 1113206 : 1113205), RuneFormat, desc); // ~1_val~ (Ter Mur)(House)
+                    else
+                        list.Add((House != null ? "{0} ({1})(House)" : "{0} ({1})"), string.Format(RuneFormat, desc), m_TargetMap);
+                }
             }
         }
 
-        public override void OnSingleClick(Mobile from)
+        public void RecallRuneEmpty()
         {
-            if (m_Marked)
-            {
-                string desc;
-
-                if ((desc = m_Description) == null || (desc = desc.Trim()).Length == 0)
-                    desc = "an unknown location";
-
-                if (m_TargetMap == Map.Tokuno)
-                    LabelTo(from, (House != null ? 1063260 : 1063259), String.Format(RuneFormat, desc)); // ~1_val~ (Tokuno Islands)[(House)]
-                else if (m_TargetMap == Map.Malas)
-                    LabelTo(from, (House != null ? 1062454 : 1060804), String.Format(RuneFormat, desc)); // ~1_val~ (Malas)[(House)]
-                else if (m_TargetMap == Map.Felucca)
-                    LabelTo(from, (House != null ? 1062452 : 1060805), String.Format(RuneFormat, desc)); // ~1_val~ (Felucca)[(House)]
-                else if (m_TargetMap == Map.Trammel)
-                    LabelTo(from, (House != null ? 1062453 : 1060806), String.Format(RuneFormat, desc)); // ~1_val~ (Trammel)[(House)]
-                else if (m_TargetMap == Map.TerMur)
-                    LabelTo(from, (House != null ? 1113206 : 1113205), String.Format(RuneFormat, desc)); // ~1_val~ (Ter Mur)(House)
-                else
-                    LabelTo(from, (House != null ? "{0} ({1})(House)" : "{0} ({1})"), String.Format(RuneFormat, desc), m_TargetMap);
-            }
-            else
-            {
-                LabelTo(from, "an unmarked recall rune");
-            }
+            m_Description = null;
+            m_Galleon = null;
+            m_House = null;
+            Target = Point3D.Zero;
+            m_TargetMap = null;
+            Type = RecallRuneType.Normal;
+            m_Marked = false;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
+            if (Type == RecallRuneType.Ship)
+            {
+                if (Galleon == null)
+                {
+                    RecallRuneEmpty();
+                    CalculateHue();
+                }
+
+                InvalidateProperties();
+                return;
+            }
+
             int number;
 
             if (!IsChildOf(from.Backpack))
@@ -281,13 +375,24 @@ namespace Server.Items
                 number = 501805; // That rune is not yet marked.
             }
 
-            if(number > 0)
+            if (number > 0)
                 from.SendLocalizedMessage(number);
         }
 
         private void CalculateHue()
         {
-            Hue = CalculateHue(m_TargetMap, House, m_Marked);
+            int hue = 0;
+
+            if (Type == RecallRuneType.Ship)
+            {
+                hue = 1151;
+            }
+            else
+            {
+                hue = CalculateHue(m_TargetMap, House, m_Marked);
+            }
+
+            Hue = hue;
         }
 
         public static int CalculateHue(Map map, BaseHouse house, bool mark)
@@ -295,7 +400,7 @@ namespace Server.Items
             int hue = 0;
 
             if (mark)
-            { 
+            {
                 if (map == Map.Trammel)
                     hue = (house != null ? 0x47F : 50);
                 else if (map == Map.Felucca)
@@ -317,6 +422,7 @@ namespace Server.Items
         {
             public override int MessageCliloc { get { return 501804; } }
             private readonly RecallRune m_Rune;
+
             public RenamePrompt(RecallRune rune)
             {
                 m_Rune = rune;
