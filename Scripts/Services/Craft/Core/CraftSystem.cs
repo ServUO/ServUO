@@ -460,6 +460,17 @@ namespace Server.Engines.Craft
             craftItem.DisplayID = id;
         }
 
+        /// <summary>
+        /// Add a callback Action to allow mutating the crafted item. Handy when you have a single Item Type but you want to create variations of it.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="action"></param>
+        public void SetMutateAction(int index, Action<Mobile, Item, ITool> action)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.MutateAction = action;
+        }
+
         public void SetForceSuccess(int index, int success)
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);
