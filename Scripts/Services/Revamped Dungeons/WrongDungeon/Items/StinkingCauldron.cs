@@ -20,7 +20,7 @@ namespace Server.Items
 
         private void GooeyMaggotsSpawn()
         {
-            if (Map != Map.Internal)
+            if (Map != null && Map != Map.Internal)
             {
                 int amount = Utility.RandomMinMax(1, 2);
 

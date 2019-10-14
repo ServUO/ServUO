@@ -530,14 +530,25 @@ namespace Server.Engines.Quests
             if (quest == null)
                 return false;
 
-            for (int i = 0; i < quest.Objectives.Count; i ++)
+            bool complete = false;
+
+            for (int i = 0; i < quest.Objectives.Count && !complete; i ++)
             {
                 if (quest.Objectives[i] is ObtainObjective)
                 {
                     ObtainObjective obtain = (ObtainObjective)quest.Objectives[i];
-					
-                    if (obtain.MaxProgress > CountQuestItems(quest.Owner, obtain.Obtain))
+
+                    if (CountQuestItems(quest.Owner, obtain.Obtain) >= obtain.MaxProgress)
+                    {
+                        if (!quest.AllObjectives)
+                        {
+                            complete = true;
+                        }
+                    }
+                    else
+                    {
                         return false;
+                    }
                 }
                 else if (quest.Objectives[i] is DeliverObjective)
                 {
@@ -885,11 +896,11 @@ namespace Server.Engines.Quests
 
         public override void OnClick()
         {
-            if (!this.Owner.From.Alive)
+            if (!Owner.From.Alive)
                 return;
 				
-            this.Owner.From.SendLocalizedMessage(1072352); // Target the item you wish to toggle Quest Item status on <ESC> to cancel			
-            this.Owner.From.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(ToggleQuestItem_Callback));
+            Owner.From.SendLocalizedMessage(1072352); // Target the item you wish to toggle Quest Item status on <ESC> to cancel			
+            Owner.From.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(ToggleQuestItem_Callback));
         }
 
         private void ToggleQuestItem_Callback(Mobile from, object obj)
