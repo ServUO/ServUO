@@ -34,13 +34,13 @@ namespace Server.Engines.Plants
             AddHtmlLocalized(10, 150, 80, 16, 1150361, LabelColor, false, false); // Needed:
             AddHtmlLocalized(10, 180, 80, 16, 1150360, LabelColor, false, false); // You Have:
 
-            AddHtml(80, 150, 60, 16, String.Format("<BASEFONT COLOR=#{0:X6}>20</BASEFONT>", FontColor), false, false);
-            AddHtml(80, 180, 60, 16, String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", FontColor, amount.ToString()), false, false);
+            AddHtml(80, 150, 60, 16, string.Format("<BASEFONT COLOR=#{0:X6}>20</BASEFONT>", FontColor), false, false);
+            AddHtml(80, 180, 60, 16, string.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", FontColor, amount.ToString()), false, false);
 
             AddButton(165, 150, 4023, 4025, 1, GumpButtonType.Reply, 0);
             AddButton(165, 180, 4017, 4019, 2, GumpButtonType.Reply, 0);
 
-            AddHtml(205, 150, 100, 16, String.Format("<BASEFONT COLOR=#{0:X6}>Use</BASEFONT>", FontColor), false, false);
+            AddHtml(205, 150, 100, 16, string.Format("<BASEFONT COLOR=#{0:X6}>Use</BASEFONT>", FontColor), false, false);
             AddHtmlLocalized(205, 180, 100, 16, 1150364, LabelColor, false, false); // Not Use
         }
 

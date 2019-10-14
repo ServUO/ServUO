@@ -174,14 +174,14 @@ namespace Server.Gumps
             int perRealWorldDay = vendor.ChargePerRealWorldDay;
             int goldHeld = vendor.HoldGold;
 
-            AddBackground(25, 10, 530, 180, 0x13BE);
+            AddBackground(25, 10, 530, 220, 0x13BE);
 
-            AddImageTiled(35, 20, 510, 160, 0xA40);
-            AddAlphaRegion(35, 20, 510, 160);
+            AddImageTiled(35, 20, 510, 200, 0xA40);
+            AddAlphaRegion(35, 20, 510, 200);
 
             AddImage(10, 0, 0x28DC);
-            AddImage(537, 175, 0x28DC);
-            AddImage(10, 175, 0x28DC);
+            AddImage(537, 215, 0x28DC);
+            AddImage(10, 215, 0x28DC);
             AddImage(537, 0, 0x28DC);
 
             if (goldHeld < perRealWorldDay)
@@ -199,21 +199,23 @@ namespace Server.Gumps
                 AddLabel(300, 35, 0x480, days.ToString());
             }
 
-            AddHtmlLocalized(40, 58, 260, 20, 1038324, 0x7FFF, false, false); // My charge per real world day is: 
-            AddLabel(300, 58, 0x480, perRealWorldDay.ToString());
+            AddHtmlLocalized(40, 181, 260, 20, vendor.VendorSearch ? 1154633 : 1154634, 0x7FFF, false, false); // Vendor Search Enabled / Disable
 
-            AddHtmlLocalized(40, 82, 260, 20, 1038322, 0x7FFF, false, false); // Gold held in my account: 
-            AddLabel(300, 82, 0x480, goldHeld.ToString());
+            AddHtmlLocalized(40, 78, 260, 20, 1038324, 0x7FFF, false, false); // My charge per real world day is: 
+            AddLabel(300, 78, 0x480, perRealWorldDay.ToString());
 
-            AddHtmlLocalized(40, 108, 260, 20, 1062509, 0x7FFF, false, false); // Shop Name:
-            AddLabel(140, 106, 0x66D, vendor.ShopName);
+            AddHtmlLocalized(40, 102, 260, 20, 1038322, 0x7FFF, false, false); // Gold held in my account: 
+            AddLabel(300, 102, 0x480, goldHeld.ToString());
+
+            AddHtmlLocalized(40, 128, 260, 20, 1062509, 0x7FFF, false, false); // Shop Name:
+            AddLabel(140, 128, 0x66D, vendor.ShopName);
 
             if (vendor is RentedVendor)
             {
                 int days, hours;
                 ((RentedVendor)vendor).ComputeRentalExpireDelay(out days, out hours);
 
-                AddLabel(38, 132, 0x480, String.Format("Location rental will expire in {0} day{1} and {2} hour{3}.", days, days != 1 ? "s" : "", hours, hours != 1 ? "s" : ""));
+                AddLabel(38, 132, 0x480, string.Format("Location rental will expire in {0} day{1} and {2} hour{3}.", days, days != 1 ? "s" : "", hours, hours != 1 ? "s" : ""));
             }
 
             AddButton(390, 24, 0x15E1, 0x15E5, 1, GumpButtonType.Reply, 0);
@@ -232,13 +234,19 @@ namespace Server.Gumps
             AddHtmlLocalized(408, 101, 120, 20, 3006123, 0x7FFF, false, false); // Open Paperdoll
 
             AddButton(390, 124, 0x15E1, 0x15E5, 6, GumpButtonType.Reply, 0);
-            AddLabel(408, 121, 0x480, "Collect Gold");
+            AddHtmlLocalized(408, 121, 120, 20, 1071988, 0x7FFF, false, false); // Collect Gold
 
             AddButton(390, 144, 0x15E1, 0x15E5, 7, GumpButtonType.Reply, 0);
-            AddLabel(408, 141, 0x480, "Dismiss Vendor");
+            AddHtmlLocalized(408, 141, 120, 20, 1156104, 0x7FFF, false, false); // Deposit Gold
 
-            AddButton(390, 162, 0x15E1, 0x15E5, 0, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(408, 161, 120, 20, 1011012, 0x7FFF, false, false); // CANCEL
+            AddButton(390, 162, 0x15E1, 0x15E5, 8, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(408, 161, 120, 20, 1071987, 0x7FFF, false, false); // Dismiss Vendor
+
+            AddButton(390, 182, 0x15E1, 0x15E5, 9, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(408, 181, 120, 20, 1154631, 0x7FFF, false, false); // Opt Out of Search
+
+            AddButton(390, 202, 0x15E1, 0x15E5, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(408, 201, 120, 20, 1011012, 0x7FFF, false, false); // CANCEL
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
@@ -251,7 +259,7 @@ namespace Server.Gumps
             if (!m_Vendor.CanInteractWith(from, true))
                 return;
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 1: // See goods
                     {
@@ -289,12 +297,31 @@ namespace Server.Gumps
 
                         break;
                     }
-                case 7: // Dismiss Vendor
+                case 7: // Deposit Gold
+                    {
+                        m_Vendor.DepositeGold(from);
+
+                        break;
+                    }
+                case 8: // Dismiss Vendor
                     {
                         m_Vendor.Dismiss(from);
 
                         break;
                     }
+                case 9: // Opt Out of Search
+                    {
+                        if (m_Vendor.VendorSearch)
+                        {
+                            m_Vendor.VendorSearch = false;
+                        }
+                        else
+                        {
+                            m_Vendor.VendorSearch = true;
+                        }
+
+                        break;
+                    }                
             }
         }
     }
@@ -305,12 +332,6 @@ namespace Server.Gumps
 
         private class CustomItem
         {
-            private readonly Type m_Type;
-            private readonly int m_ItemID;
-            private readonly int m_LocNum;
-            private readonly int m_ArtNum;
-            private readonly bool m_LongText;
-
             public CustomItem(int itemID, int loc)
                 : this(null, itemID, loc, 0, false)
             {
@@ -333,23 +354,23 @@ namespace Server.Gumps
 
             public CustomItem(Type type, int itemID, int loc, int art, bool longText)
             {
-                m_Type = type;
-                m_ItemID = itemID;
-                m_LocNum = loc;
-                m_ArtNum = art;
-                m_LongText = longText;
+                Type = type;
+                ItemID = itemID;
+                LocNumber = loc;
+                ArtNumber = art;
+                LongText = longText;
             }
 
             public Item Create()
             {
-                if (m_Type == null)
+                if (Type == null)
                     return null;
 
                 Item i = null;
 				
                 try
                 {
-                    ConstructorInfo ctor = m_Type.GetConstructor(new Type[0]);
+                    ConstructorInfo ctor = Type.GetConstructor(new Type[0]);
                     if (ctor != null)
                         i = ctor.Invoke(null) as Item;
                 }
@@ -360,86 +381,27 @@ namespace Server.Gumps
                 return i;
             }
 
-            public Type Type
-            {
-                get
-                {
-                    return m_Type;
-                }
-            }
-            public int ItemID
-            {
-                get
-                {
-                    return m_ItemID;
-                }
-            }
-            public int LocNumber
-            {
-                get
-                {
-                    return m_LocNum;
-                }
-            }
-            public int ArtNumber
-            {
-                get
-                {
-                    return m_ArtNum;
-                }
-            }
-            public bool LongText
-            {
-                get
-                {
-                    return m_LongText;
-                }
-            }
+            public Type Type { get; }
+            public int ItemID { get; }
+            public int LocNumber { get; }
+            public int ArtNumber { get; }
+            public bool LongText { get; }
         }
 
         private class CustomCategory
         {
-            private readonly CustomItem[] m_Entries;
-            private readonly Layer m_Layer;
-            private readonly bool m_CanDye;
-            private readonly int m_LocNum;
-
             public CustomCategory(Layer layer, int loc, bool canDye, CustomItem[] items)
             {
-                m_Entries = items;
-                m_CanDye = canDye;
-                m_Layer = layer;
-                m_LocNum = loc;
+                Entries = items;
+                CanDye = canDye;
+                Layer = layer;
+                LocNumber = loc;
             }
 
-            public bool CanDye
-            {
-                get
-                {
-                    return m_CanDye;
-                }
-            }
-            public CustomItem[] Entries
-            {
-                get
-                {
-                    return m_Entries;
-                }
-            }
-            public Layer Layer
-            {
-                get
-                {
-                    return m_Layer;
-                }
-            }
-            public int LocNumber
-            {
-                get
-                {
-                    return m_LocNum;
-                }
-            }
+            public bool CanDye { get; }
+            public CustomItem[] Entries { get; }
+            public Layer Layer { get; }
+            public int LocNumber { get; }
         }
 
         private static readonly CustomCategory[] Categories = new CustomCategory[]
@@ -852,28 +814,13 @@ namespace Server.Gumps
 
         private class HairOrBeard
         {
-            private readonly int m_ItemID;
-            private readonly int m_Name;
-
-            public int ItemID
-            {
-                get
-                {
-                    return m_ItemID;
-                }
-            }
-            public int Name
-            {
-                get
-                {
-                    return m_Name;
-                }
-            }
+            public int ItemID { get; }
+            public int Name { get; }
 
             public HairOrBeard(int itemID, int name)
             {
-                m_ItemID = itemID;
-                m_Name = name;
+                ItemID = itemID;
+                Name = name;
             }
         }
 		

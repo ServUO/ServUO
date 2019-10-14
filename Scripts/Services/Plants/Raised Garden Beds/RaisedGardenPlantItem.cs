@@ -1,12 +1,8 @@
 using Server;
 using System;
 using Server.Items;
-using Server.Mobiles;
 using Server.Multis;
-using System.Collections.Generic;
-using Server.ContextMenus;
 using Server.Network;
-using Server.Gumps;
 
 namespace Server.Engines.Plants
 {
@@ -51,7 +47,7 @@ namespace Server.Engines.Plants
             {
                 if (m_Component != null)
                 {
-                    if (m_Component.X != this.X || m_Component.Y != this.Y || m_Component.Map != this.Map || m_Component.Deleted)
+                    if (m_Component.X != X || m_Component.Y != Y || m_Component.Map != Map || m_Component.Deleted)
                         m_Component = null;
                 }
 
@@ -63,7 +59,7 @@ namespace Server.Engines.Plants
 
                 if (m_Component != null)
                 {
-                    if (m_Component.X != this.X || m_Component.Y != this.Y || m_Component.Map != this.Map || m_Component.Deleted)
+                    if (m_Component.X != X || m_Component.Y != Y || m_Component.Map != Map || m_Component.Deleted)
                         m_Component = null;
                 }
             }
@@ -74,7 +70,7 @@ namespace Server.Engines.Plants
         {
             get
             {
-                return RootParent == null && this.Component != null && !this.Movable && !this.Deleted;
+                return RootParent == null && Component != null && !Movable && !Deleted;
             }
         }
 
@@ -138,7 +134,7 @@ namespace Server.Engines.Plants
             if (PlantStatus >= PlantStatus.DecorativePlant)
                 return;
 
-            Point3D loc = this.GetWorldLocation();
+            Point3D loc = GetWorldLocation();
 
             if (!from.InLOS(loc) || !from.InRange(loc, 4))
             {

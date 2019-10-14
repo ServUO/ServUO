@@ -8,6 +8,7 @@ namespace Server.Engines.Plants
     public class MainPlantGump : Gump
     {
         private readonly PlantItem m_Plant;
+
         public MainPlantGump(PlantItem plant)
             : base(20, 20)
         {
@@ -67,8 +68,16 @@ namespace Server.Engines.Plants
             AddButton(48, 183, 0xD2, 0xD2, 11, GumpButtonType.Reply, 0); // Help
             AddLabel(54, 183, 0x835, "?");
 
+            if (plant is MaginciaPlantItem || plant is RaisedGardenPlantItem)
+            {
+                AddItem(219, 180, 0x913);
+            }
+            else
+            {                
+                AddItem(219, 180, 0x15FD);
+            }
+
             AddButton(232, 183, 0xD4, 0xD4, 12, GumpButtonType.Reply, 0); // Empty the bowl
-            AddItem(219, 180, 0x15FD);
         }
 
         public static Item GetPotion(Mobile from, PotionEffect[] effects)
