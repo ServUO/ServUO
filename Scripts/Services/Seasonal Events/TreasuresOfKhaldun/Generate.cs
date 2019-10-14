@@ -124,9 +124,11 @@ namespace Server.Engines.Khaldun
                 CaddelliteVendor.InstanceFel.MoveToWorld(new Point3D(6018, 3749, 21), Map.Felucca);
             }
 
+            ChampionSpawn champ = null;
+
             if (!Siege.SiegeShard)
             {
-                var champ = new ChampionSpawn();
+                champ = new ChampionSpawn();
                 champ.Type = ChampionSpawnType.Khaldun;
                 champ.MoveToWorld(new Point3D(5469, 1461, 20), Map.Trammel);
                 ChampionSystem.AllSpawns.Add(champ);
