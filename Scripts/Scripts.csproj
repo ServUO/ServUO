@@ -763,6 +763,7 @@
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
     <Compile Include="Mobiles\NPCs\Gardener.cs" />
     <Compile Include="Mobiles\NPCs\MiningCooperativeMerchant.cs" />
+    <Compile Include="Mobiles\NPCs\CommissionPlayerVendor.cs" />
     <Compile Include="Multis\ContestHouses.cs" />
     <Compile Include="Quests\The Ritual\Items.cs" />
     <Compile Include="Quests\The Ritual\Mobiles.cs" />

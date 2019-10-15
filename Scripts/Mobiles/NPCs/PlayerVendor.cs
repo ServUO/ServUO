@@ -24,48 +24,33 @@ namespace Server.Mobiles
 
     public class VendorItem
     {
-        private readonly Item m_Item;
-        private readonly int m_Price;
-        private readonly DateTime m_Created;
         private string m_Description;
-        private bool m_Valid;
+
         public VendorItem(Item item, int price, string description, DateTime created)
         {
-            m_Item = item;
-            m_Price = price;
+            Item = item;
+            Price = price;
 
             if (description != null)
                 m_Description = description;
             else
                 m_Description = "";
 
-            m_Created = created;
+            Created = created;
 
-            m_Valid = true;
+            Valid = true;
         }
 
-        public Item Item
-        {
-            get
-            {
-                return m_Item;
-            }
-        }
-        public int Price
-        {
-            get
-            {
-                return m_Price;
-            }
-        }
+        public Item Item { get; }
+        public int Price { get; }
         public string FormattedPrice
         {
             get
             {
                 if (Core.ML)
-                    return m_Price.ToString("N0", CultureInfo.GetCultureInfo("en-US"));
+                    return Price.ToString("N0", CultureInfo.GetCultureInfo("en-US"));
 
-                return m_Price.ToString();
+                return Price.ToString();
             }
         }
         public string Description
@@ -85,37 +70,14 @@ namespace Server.Mobiles
                     Item.InvalidateProperties();
             }
         }
-        public DateTime Created
-        {
-            get
-            {
-                return m_Created;
-            }
-        }
-        public bool IsForSale
-        {
-            get
-            {
-                return Price >= 0;
-            }
-        }
-        public bool IsForFree
-        {
-            get
-            {
-                return Price == 0;
-            }
-        }
-        public bool Valid
-        {
-            get
-            {
-                return m_Valid;
-            }
-        }
+        public DateTime Created { get; }
+        public bool IsForSale { get { return Price >= 0; } }
+        public bool IsForFree { get { return Price == 0; } }
+        public bool Valid { get; private set; }
+
         public void Invalidate()
         {
-            m_Valid = false;
+            Valid = false;
         }
     }
 
@@ -132,13 +94,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override int DefaultMaxWeight
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public override int DefaultMaxWeight { get { return 0; } }
+
         public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
         {
             if (!base.CheckHold(m, item, message, checkItems, plusItems, plusWeight))
@@ -265,7 +222,7 @@ namespace Server.Mobiles
                     else
                         item.LabelTo(from, 1043304, vi.FormattedPrice); // Price: ~1_COST~
 
-                    if (!String.IsNullOrEmpty(vi.Description))
+                    if (!string.IsNullOrEmpty(vi.Description))
                     {
                         // The localized message (1043305) is no longer valid - <br>Seller's Description:<br>"~1_DESC~"
                         item.LabelTo(from, "Description: {0}", vi.Description);
@@ -279,33 +236,27 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
 
         private class BuyEntry : ContextMenuEntry
         {
             private readonly Item m_Item;
+
             public BuyEntry(Item item)
                 : base(6103)
             {
                 m_Item = item;
             }
 
-            public override bool NonLocalUse
-            {
-                get
-                {
-                    return true;
-                }
-            }
+            public override bool NonLocalUse { get { return true; } }
+
             public override void OnClick()
             {
                 if (m_Item.Deleted)
@@ -401,9 +352,12 @@ namespace Server.Mobiles
                 InvalidateProperties();
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextPayTime { get; private set; }
+
         public PlayerVendorPlaceholder Placeholder { get; set; }
+
         public BaseHouse House
         {
             get
@@ -421,6 +375,7 @@ namespace Server.Mobiles
                 m_House = value;
             }
         }
+
         public int ChargePerDay
         {
             get
@@ -512,7 +467,6 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)2); // version
 
             writer.Write((bool)VendorSearch);
@@ -539,7 +493,6 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             bool newVendorSystem = false;
@@ -1221,7 +1174,7 @@ namespace Server.Mobiles
 
         public override bool HandlesOnSpeech(Mobile from)
         {
-            return (from.Alive && from.GetDistanceToSqrt(this) <= 3);
+            return from.Alive && from.GetDistanceToSqrt(this) <= 3;
         }
 
         public bool WasNamed(string speech)
@@ -1462,7 +1415,7 @@ namespace Server.Mobiles
             if (vi != null)
             {
                 string name;
-                if (!String.IsNullOrEmpty(item.Name))
+                if (!string.IsNullOrEmpty(item.Name))
                     name = item.Name;
                 else
                     name = "#" + item.LabelNumber.ToString();
@@ -1475,6 +1428,7 @@ namespace Server.Mobiles
         private class ReturnVendorEntry : ContextMenuEntry
         {
             private readonly PlayerVendor m_Vendor;
+
             public ReturnVendorEntry(PlayerVendor vendor)
                 : base(6214)
             {
@@ -1493,6 +1447,7 @@ namespace Server.Mobiles
         private class PayTimer : Timer
         {
             private readonly PlayerVendor m_Vendor;
+
             public PayTimer(PlayerVendor vendor, TimeSpan delay)
                 : base(delay, GetInterval())
             {
@@ -1573,6 +1528,7 @@ namespace Server.Mobiles
         {
             private readonly PlayerVendor m_Vendor;
             private readonly VendorItem m_VI;
+
             public VendorPricePrompt(PlayerVendor vendor, VendorItem vi)
             {
                 m_Vendor = vendor;
@@ -1672,6 +1628,7 @@ namespace Server.Mobiles
         private class CollectGoldPrompt : Prompt
         {
             private readonly PlayerVendor m_Vendor;
+
             public CollectGoldPrompt(PlayerVendor vendor)
             {
                 m_Vendor = vendor;
@@ -1716,6 +1673,7 @@ namespace Server.Mobiles
         private class VendorNamePrompt : Prompt
         {
             private readonly PlayerVendor m_Vendor;
+
             public VendorNamePrompt(PlayerVendor vendor)
             {
                 m_Vendor = vendor;
@@ -1775,14 +1733,14 @@ namespace Server.Mobiles
     public class PlayerVendorPlaceholder : Item
     {
         private readonly ExpireTimer m_Timer;
-        private PlayerVendor m_Vendor;
+
         public PlayerVendorPlaceholder(PlayerVendor vendor)
             : base(0x1F28)
         {
             Hue = 0x672;
             Movable = false;
 
-            m_Vendor = vendor;
+            Vendor = vendor;
 
             m_Timer = new ExpireTimer(this);
             m_Timer.Start();
@@ -1794,19 +1752,14 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public PlayerVendor Vendor
-        {
-            get
-            {
-                return m_Vendor;
-            }
-        }
+        public PlayerVendor Vendor { get; private set; }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            if (m_Vendor != null)
-                list.Add(1062498, m_Vendor.Name); // reserved for vendor ~1_NAME~
+            if (Vendor != null)
+                list.Add(1062498, Vendor.Name); // reserved for vendor ~1_NAME~
         }
 
         public void RestartTimer()
@@ -1817,29 +1770,27 @@ namespace Server.Mobiles
 
         public override void OnDelete()
         {
-            if (m_Vendor != null && !m_Vendor.Deleted)
+            if (Vendor != null && !Vendor.Deleted)
             {
-                m_Vendor.MoveToWorld(Location, Map);
-                m_Vendor.Placeholder = null;
+                Vendor.MoveToWorld(Location, Map);
+                Vendor.Placeholder = null;
             }
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt((int)0);
 
-            writer.Write((Mobile)m_Vendor);
+            writer.Write((Mobile)Vendor);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
 
-            m_Vendor = (PlayerVendor)reader.ReadMobile();
+            Vendor = (PlayerVendor)reader.ReadMobile();
 
             Timer.DelayCall(TimeSpan.Zero, new TimerCallback(Delete));
         }
