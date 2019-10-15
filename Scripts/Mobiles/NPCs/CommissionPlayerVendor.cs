@@ -5,6 +5,8 @@ namespace Server.Mobiles
 {
     public class CommissionPlayerVendor : PlayerVendor
     {
+        public override bool IsCommission { get { return true; } }
+
         public CommissionPlayerVendor(Mobile owner, BaseHouse house)
            : base(owner, house)
         {

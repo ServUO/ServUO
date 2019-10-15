@@ -109,7 +109,7 @@ namespace Server.Mobiles
                 return false;
             }
 
-            if (!BaseHouse.NewVendorSystem && Parent is PlayerVendor)
+            if (!BaseHouse.NewVendorSystem && Parent is PlayerVendor || Parent is CommissionPlayerVendor)
             {
                 BaseHouse house = ((PlayerVendor)Parent).House;
 
@@ -274,6 +274,9 @@ namespace Server.Mobiles
         private string m_ShopName;
         private Timer m_PayTimer;
 
+        public double CommissionPerc { get { return 5.25; } }
+        public virtual bool IsCommission { get { return false; } }
+
         public PlayerVendor(Mobile owner, BaseHouse house)
         {
             Owner = owner;
@@ -305,12 +308,15 @@ namespace Server.Mobiles
             InitBody();
             InitOutfit();
 
-            TimeSpan delay = PayTimer.GetInterval();
+            if (!IsCommission)
+            {
+                TimeSpan delay = PayTimer.GetInterval();
 
-            m_PayTimer = new PayTimer(this, delay);
-            m_PayTimer.Start();
+                m_PayTimer = new PayTimer(this, delay);
+                m_PayTimer.Start();
 
-            NextPayTime = DateTime.UtcNow + delay;
+                NextPayTime = DateTime.UtcNow + delay;
+            }
 
             if (PlayerVendors == null)
                 PlayerVendors = new List<PlayerVendor>();
@@ -559,7 +565,8 @@ namespace Server.Mobiles
                     Timer.DelayCall(TimeSpan.Zero, new TimerCallback(FixDresswear));
                 }
 
-                NextPayTime = DateTime.UtcNow + PayTimer.GetInterval();
+                if (!IsCommission)
+                    NextPayTime = DateTime.UtcNow + PayTimer.GetInterval();
 
                 if (newVendorSystemActivated)
                 {
@@ -573,10 +580,13 @@ namespace Server.Mobiles
                 VendorSearch = true;
             }
 
-            TimeSpan delay = NextPayTime - DateTime.UtcNow;
+            if (!IsCommission)
+            {
+                TimeSpan delay = NextPayTime - DateTime.UtcNow;
 
-            m_PayTimer = new PayTimer(this, delay > TimeSpan.Zero ? delay : TimeSpan.Zero);
-            m_PayTimer.Start();
+                m_PayTimer = new PayTimer(this, delay > TimeSpan.Zero ? delay : TimeSpan.Zero);
+                m_PayTimer.Start();
+            }
 
             Blessed = false;
 

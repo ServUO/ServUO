@@ -557,6 +557,7 @@
     <Compile Include="Items\Addons\Crystal Furniture Set\CrystalRunnerStatue.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\TheRedeemer.cs" />
     <Compile Include="Items\Consumables\AnniversaryPromotionalToken.cs" />
+    <Compile Include="Items\Consumables\CommissionPlayerVendorDeed.cs" />
     <Compile Include="Items\Containers\BoxOfCrystalItems.cs" />
     <Compile Include="Items\Containers\BoxOfShadowItems.cs" />
     <Compile Include="Items\Addons\Shadow Furniture Set\ShadowAltar.cs" />
