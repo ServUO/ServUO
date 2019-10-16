@@ -1610,7 +1610,7 @@ namespace Server.Mobiles
         {
             int index = Array.IndexOf(WeaponAbilities, effect);
 
-            if (index < 0 && index >= _WeaponAbilityLocalizations.Length)
+            if (index < 0 || index >= _WeaponAbilityLocalizations.Length)
             {
                 return new TextDefinition[] { null, null };
             }
@@ -1622,7 +1622,7 @@ namespace Server.Mobiles
         {
             int index = Array.IndexOf(AreaEffect.Effects, effect);
 
-            if (index < 0 && index >= _AreaEffectLocalizations.Length)
+            if (index < 0 || index >= _AreaEffectLocalizations.Length)
             {
                 return new TextDefinition[] { null, null };
             }

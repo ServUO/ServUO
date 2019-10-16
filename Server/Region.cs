@@ -1061,6 +1061,10 @@ namespace Server
 			return true;
 		}
 
+        public virtual void OnDelete(Item item)
+        {
+        }
+
         public virtual void GetContextMenuEntries(Mobile from, List<Server.ContextMenus.ContextMenuEntry> list, Item item)
         {
         }

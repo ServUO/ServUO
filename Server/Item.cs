@@ -4372,6 +4372,13 @@ namespace Server
                 Spawner.Remove(this);
                 Spawner = null;
             }
+
+            var region = Region.Find(GetWorldLocation(), Map);
+
+            if (region != null)
+            {
+                region.OnDelete(this);
+            }
         }
 
         public virtual void OnParentDeleted(object parent)
