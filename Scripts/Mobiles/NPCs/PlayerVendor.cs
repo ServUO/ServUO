@@ -11,6 +11,7 @@ using Server.Multis;
 using Server.Prompts;
 using Server.Targeting;
 using Server.Accounting;
+using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -105,6 +106,13 @@ namespace Server.Mobiles
             {
                 if (message)
                     m.SendMessage("Imbued items may not be sold here.");
+
+                return false;
+            }
+
+            if (Parent is PlayerVendor && item is Container && ((Container)item).Items.OfType<Container>().Any())
+            {
+                ((PlayerVendor)Parent).SayTo(m, 1017381); // You cannot place a container that has other containers in it on a vendor.
 
                 return false;
             }
@@ -285,7 +293,7 @@ namespace Server.Mobiles
             if (BaseHouse.NewVendorSystem)
             {
                 BankAccount = 0;
-                HoldGold = 4;
+                HoldGold = 3;
             }
             else
             {
