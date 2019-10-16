@@ -51,7 +51,13 @@ namespace Server.Items
 
                     if (!plant.IsContract)
                     {
-                        plant.ContractEndTime = DateTime.UtcNow + TimeSpan.FromDays(14);
+                        if (plant.ContractTime.Month == DateTime.UtcNow.Month)
+                        {
+                            from.SendLocalizedMessage(1155760); // You may do this once every other month.
+                            return;
+                        }
+
+                        plant.ContractTime = DateTime.UtcNow;
                         from.SendLocalizedMessage(1155762); // You have hired a gardener to tend to your plant.  The gardener will no longer tend to your plant when server maintenance occurs after the expiration date of your gardening contract.  While a gardener is tending to your plant you will not have to care for it.
                         m_Item.Delete();
                     }

@@ -9,9 +9,7 @@ namespace Server.Engines.Plants
     {
         public static readonly bool Enabled = true;
         public static readonly int PlantDelay = 4;
-
-        private Dictionary<Mobile, DateTime> m_PlantDelayTable = new Dictionary<Mobile, DateTime>();
-        public Dictionary<Mobile, DateTime> PlantDelayTable { get { return m_PlantDelayTable; } }
+        public Dictionary<Mobile, DateTime> PlantDelayTable { get; } = new Dictionary<Mobile, DateTime>();
 
         public static MaginciaPlantSystem FelInstance { get; private set; }
         public static MaginciaPlantSystem TramInstance { get; private set; }
@@ -41,11 +39,11 @@ namespace Server.Engines.Plants
 
         public bool CheckPlantDelay(Mobile from)
         {
-            if (m_PlantDelayTable.ContainsKey(from))
+            if (PlantDelayTable.ContainsKey(from))
             {
-                if (m_PlantDelayTable[from] > DateTime.UtcNow)
+                if (PlantDelayTable[from] > DateTime.UtcNow)
                 {
-                    TimeSpan left = m_PlantDelayTable[from] - DateTime.UtcNow;
+                    TimeSpan left = PlantDelayTable[from] - DateTime.UtcNow;
 
                     // Time remaining to plant on the Isle of Magincia again: ~1_val~ days ~2_val~ hours ~3_val~ minutes.
                     from.SendLocalizedMessage(1150459, string.Format("{0}\t{1}\t{2}", left.Days.ToString(), left.Hours.ToString(), left.Minutes.ToString()));
@@ -58,14 +56,14 @@ namespace Server.Engines.Plants
 
         public void OnPlantDelete(Mobile from)
         {
-            if (m_PlantDelayTable.ContainsKey(from))
-                m_PlantDelayTable.Remove(from);
+            if (PlantDelayTable.ContainsKey(from))
+                PlantDelayTable.Remove(from);
         }
 
         public void OnPlantPlanted(Mobile from)
         {
             if (from.AccessLevel == AccessLevel.Player)
-                m_PlantDelayTable[from] = DateTime.UtcNow + TimeSpan.FromDays(PlantDelay);
+                PlantDelayTable[from] = DateTime.UtcNow + TimeSpan.FromDays(PlantDelay);
             else
                 from.SendMessage("As staff, you bypass the {0} day plant delay.", PlantDelay);
         }
@@ -211,14 +209,14 @@ namespace Server.Engines.Plants
         {
             List<Mobile> toRemove = new List<Mobile>();
 
-            foreach (KeyValuePair<Mobile, DateTime> kvp in m_PlantDelayTable)
+            foreach (KeyValuePair<Mobile, DateTime> kvp in PlantDelayTable)
             {
                 if (kvp.Value < DateTime.UtcNow)
                     toRemove.Add(kvp.Key);
             }
 
             foreach (Mobile m in toRemove)
-                m_PlantDelayTable.Remove(m);
+                PlantDelayTable.Remove(m);
         }
 
         public MaginciaPlantSystem(Serial serial) : base(serial)
@@ -232,8 +230,8 @@ namespace Server.Engines.Plants
 
             DefragPlantDelayTable();
 
-            writer.Write(m_PlantDelayTable.Count);
-            foreach (KeyValuePair<Mobile, DateTime> kvp in m_PlantDelayTable)
+            writer.Write(PlantDelayTable.Count);
+            foreach (KeyValuePair<Mobile, DateTime> kvp in PlantDelayTable)
             {
                 writer.Write(kvp.Key);
                 writer.Write(kvp.Value);
@@ -253,7 +251,7 @@ namespace Server.Engines.Plants
                 DateTime dt = reader.ReadDateTime();
 
                 if (m != null && dt > DateTime.UtcNow)
-                    m_PlantDelayTable[m] = dt;
+                    PlantDelayTable[m] = dt;
             }
 
             if (Map == Map.Felucca)

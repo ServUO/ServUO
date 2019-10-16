@@ -21,7 +21,7 @@ namespace Server.Engines.Plants
 
         public override int ContainerLocalization { get { return 1150436; } } // mound of dirt
         public override int OnPlantLocalization { get { return 1150442; } } // You plant the seed in the mound of dirt.
-        public override int CantUseLocalization { get { return 1150511; } } // That is not your gardening plot.
+        public override int CantUseLocalization { get { return 501648; } } // You cannot use this unless you are the owner.
 
         public override int LabelNumber
         {
@@ -47,7 +47,10 @@ namespace Server.Engines.Plants
         public DateTime Planted { get { return m_Planted; } set { m_Planted = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime ContractEndTime { get { return m_Contract; } set { m_Contract = value; InvalidateProperties(); } }
+        public DateTime ContractTime { get { return m_Contract; } set { m_Contract = value; InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime ContractEndTime => ContractTime + TimeSpan.FromDays(14);
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsContract => ContractEndTime > DateTime.UtcNow;
@@ -104,9 +107,6 @@ namespace Server.Engines.Plants
 
         public override bool IsUsableBy(Mobile from)
         {
-            if (PlantStatus == PlantStatus.BowlOfDirt)
-                return true;
-
             return RootParent == null && !Movable && Owner == from && IsAccessibleTo(from);
         }
 
@@ -131,7 +131,7 @@ namespace Server.Engines.Plants
 
             if (Owner != null)
             {
-                list.Add(1150474, string.Format("{0}\t{1}", "New Magincia", Owner.Name)); // Planted in ~1_val~ by: ~2_val~
+                list.Add(1150474, string.Format("{0}\t{1}", "#1011345", Owner.Name)); // Planted in ~1_val~ by: ~2_val~
                 list.Add(1150478, m_Planted.ToShortDateString());
 
                 if (IsContract)
@@ -221,7 +221,7 @@ namespace Server.Engines.Plants
             base.Serialize(writer);
             writer.Write((int)1); // version
 
-            writer.Write(ContractEndTime);
+            writer.Write(ContractTime);
             writer.Write(Owner);
             writer.Write(m_Planted);
             writer.Write(SetToDecorative);
@@ -236,7 +236,7 @@ namespace Server.Engines.Plants
             {
                 case 1:
                     {
-                        ContractEndTime = reader.ReadDateTime();
+                        ContractTime = reader.ReadDateTime();
                         Owner = reader.ReadMobile();
                         m_Planted = reader.ReadDateTime();
                         SetToDecorative = reader.ReadDateTime();
