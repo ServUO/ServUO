@@ -89,6 +89,8 @@ namespace Server.Engines.Craft
         public bool NeedWater { get; set; }
         public int ItemHue { get; set; }
 
+        public Action<Mobile, Item, ITool> MutateAction { get; set; }
+
         public void AddRecipe(int id, CraftSystem system)
         {
             if (Recipe != null)
@@ -1866,6 +1868,8 @@ namespace Server.Engines.Craft
                     m_PlantHue = PlantHue.None;
                     m_PlantPigmentHue = PlantPigmentHue.None;
 					#endregion
+
+                    MutateAction?.Invoke(from,item,tool);
 
                     if (CaddelliteCraft)
                     {

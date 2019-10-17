@@ -525,7 +525,7 @@ namespace Server.Mobiles
             public Type[] Uses { get; private set; }
 
             public AuraDefinition()
-                : this(TimeSpan.FromSeconds(5), 4, 5, 0, 0, 0, 0, 0, 0, 0, new Type[] { })
+                : this(TimeSpan.FromSeconds(5), 4, 5, 0, 0, 0, 0, 0, 0, 100, new Type[] { })
             {
             }
 
@@ -564,7 +564,7 @@ namespace Server.Mobiles
 
                 cora = new AuraDefinition(typeof(CoraTheSorceress));
                 cora.Range = 3;
-                cora.Damage = 0;
+                cora.Damage = 10;
                 cora.Fire = 0;
                 Definitions.Add(cora);
 

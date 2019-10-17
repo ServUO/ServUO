@@ -340,8 +340,7 @@ namespace Server.Mobiles
 
         public override bool OnBeforeDeath()
         {
-            if (m_Timer != null)
-                m_Timer.Stop();
+            RestoreBody();
 
             return base.OnBeforeDeath();
         }

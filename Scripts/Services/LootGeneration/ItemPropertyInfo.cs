@@ -1178,7 +1178,7 @@ namespace Server.Items
         public static bool HasHitSpell(BaseWeapon wep)
         {
             return wep.WeaponAttributes.HitFireball > 0 || wep.WeaponAttributes.HitLightning > 0 || wep.WeaponAttributes.HitMagicArrow > 0
-                /*|| wep.WeaponAttributes.HitCurse > 0*/ || wep.WeaponAttributes.HitHarm > 0;
+                /*|| wep.WeaponAttributes.HitCurse > 0*/ || wep.WeaponAttributes.HitHarm > 0 || wep.WeaponAttributes.HitDispel > 0;
         }
 
         public static bool HasHitArea(BaseWeapon wep)

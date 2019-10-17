@@ -463,6 +463,14 @@ namespace Server.Regions
             return base.OnSingleClick(from, o);
         }
 
+        public override void OnDelete(Item item)
+        {
+            if (House.IsLockedDown(item) || House.IsSecure(item))
+            {
+                House.SetLockdown(null, item, false); 
+            }
+        }
+
         private static Rectangle3D[] GetArea(BaseHouse house)
         {
             int x = house.X;
