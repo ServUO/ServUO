@@ -30,7 +30,8 @@ namespace Server.Engines.VendorSearching
 
             foreach (PlayerVendor pv in PlayerVendor.PlayerVendors.Where(pv => pv.Map != Map.Internal &&
                                                                                pv.Map != null &&
-                                                                               pv.Backpack != null && 
+                                                                               pv.Backpack != null &&
+                                                                               pv.VendorSearch &&
                                                                                pv.Backpack.Items.Count > 0 && 
                                                                                (!excludefel || pv.Map != Map.Felucca)))
             {
@@ -103,7 +104,7 @@ namespace Server.Engines.VendorSearching
             if (searchCriteria.MaxPrice > -1 && price > searchCriteria.MaxPrice)
 				return false;
 			
-			if (!String.IsNullOrEmpty(searchCriteria.SearchName))
+			if (!string.IsNullOrEmpty(searchCriteria.SearchName))
 			{
                 string name;
 
@@ -111,7 +112,7 @@ namespace Server.Engines.VendorSearching
                 {
                     var commodity = (ICommodity)((CommodityDeed)item).Commodity;
 
-                    if (!String.IsNullOrEmpty(commodity.Description.String))
+                    if (!string.IsNullOrEmpty(commodity.Description.String))
                     {
                         name = commodity.Description.String;
                     }
@@ -332,7 +333,7 @@ namespace Server.Engines.VendorSearching
                                 return false;
                             break;
                         case Misc.FactionItem:
-                            if (!(item is Server.Factions.IFactionItem))
+                            if (!(item is Factions.IFactionItem))
                                 return false;
                             break;
                         case Misc.PromotionalToken:
@@ -411,7 +412,7 @@ namespace Server.Engines.VendorSearching
             }
             else
             {
-                if (o is SlayerName && (!(item is ISlayer) || ((((ISlayer)item).Slayer != (SlayerName)o && ((ISlayer)item).Slayer2 != (SlayerName)o))))
+                if (o is SlayerName && (!(item is ISlayer) || (((ISlayer)item).Slayer != (SlayerName)o && ((ISlayer)item).Slayer2 != (SlayerName)o)))
                 {
                     return false;
                 }
@@ -454,12 +455,12 @@ namespace Server.Engines.VendorSearching
 
                 string name = commodity.Description.String;
 
-                if (String.IsNullOrEmpty(name) && commodity.Description.Number > 0)
+                if (string.IsNullOrEmpty(name) && commodity.Description.Number > 0)
                 {
                     name = StringList.GetString(commodity.Description.Number);
                 }
 
-                if (!String.IsNullOrEmpty(name) && name.ToLower().IndexOf(searchstring.ToLower()) >= 0)
+                if (!string.IsNullOrEmpty(name) && name.ToLower().IndexOf(searchstring.ToLower()) >= 0)
                 {
                     return true;
                 }
@@ -717,7 +718,7 @@ namespace Server.Engines.VendorSearching
             basestring = StringList.GetString((int)number);
             string args = s.ToString();
 
-            if (args == null || args == String.Empty)
+            if (args == null || args == string.Empty)
             {
                 return basestring;
             }
@@ -805,11 +806,10 @@ namespace Server.Engines.VendorSearching
 
         private static Type[] _SearchableContainers =
         {
-            typeof(BaseQuiver),                     typeof(BaseResourceSatchel),
-            typeof(FishBowl),                       typeof(FirstAidBelt),
-            typeof(Server.Engines.Plants.SeedBox),  typeof(BaseSpecialScrollBook),
-            typeof(GardenShedBarrel),               
-            typeof(JewelryBox),
+            typeof(BaseQuiver),         typeof(BaseResourceSatchel),
+            typeof(FishBowl),           typeof(FirstAidBelt),
+            typeof(Plants.SeedBox),     typeof(BaseSpecialScrollBook),
+            typeof(GardenShedBarrel),   typeof(JewelryBox),
         };
 	}
 
@@ -980,7 +980,7 @@ namespace Server.Engines.VendorSearching
 
         public bool IsEmpty
         {
-            get { return Details.Count == 0 && !EntryPrice && String.IsNullOrEmpty(SearchName) && SearchType == Layer.Invalid; }
+            get { return Details.Count == 0 && !EntryPrice && string.IsNullOrEmpty(SearchName) && SearchType == Layer.Invalid; }
         }
 
         public SearchCriteria(GenericReader reader)

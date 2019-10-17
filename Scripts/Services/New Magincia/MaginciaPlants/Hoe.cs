@@ -2,38 +2,64 @@ using System;
 using Server;
 using Server.Targeting;
 using Server.Engines.Plants;
+using Server.Network;
 
 namespace Server.Items
 {
-	public class Hoe : Item
-	{
+    public class Hoe : BaseAxe, IUsesRemaining
+    {
         public override int LabelNumber { get { return 1150482; } } // hoe
 
-		[Constructable]
-		public Hoe() : base( 3897 )
-		{
-		}
+        [Constructable]
+        public Hoe()
+            : base(0xE86)
+        {
+            Hue = 2524;
+            Weight = 11.0;
+            UsesRemaining = 50;
+            ShowUsesRemaining = true;
+        }
+
+        public override WeaponAbility PrimaryAbility { get { return WeaponAbility.DoubleStrike; } }
+        public override WeaponAbility SecondaryAbility { get { return WeaponAbility.Disarm; } }
+        public override int AosStrengthReq { get { return 50; } }
+        public override int AosMinDamage { get { return 12; } }
+        public override int AosMaxDamage { get { return 16; } }
+        public override int AosSpeed { get { return 35; } }
+        public override float MlSpeed { get { return 3.00f; } }
+        public override int InitMinHits { get { return 31; } }
+        public override int InitMaxHits { get { return 60; } }
+
+        public override bool CanBeWornByGargoyles { get { return true; } }
+
+        public override WeaponAnimation DefAnimation { get { return WeaponAnimation.Slash1H; } }
 
         public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack))
             {
                 from.Target = new InternalTarget(this);
-                from.SendMessage("Target the land you would like to till.");
             }
         }
 
         private class InternalTarget : Target
         {
-            private Hoe m_Hoe;
+            private readonly Hoe m_Hoe;
 
-            public InternalTarget(Hoe hoe) : base(2, true, TargetFlags.None)
+            public InternalTarget(Hoe hoe)
+                : base(2, true, TargetFlags.None)
             {
                 m_Hoe = hoe;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
+                if (!MaginciaPlantSystem.Enabled)
+                {
+                    from.SendMessage("Magincia plant placement is currently disabled.");
+                    return;
+                }
+
                 Map map = from.Map;
 
                 if (targeted is LandTarget && map != null)
@@ -43,31 +69,41 @@ namespace Server.Items
 
                     if (r != null && r.IsPartOf("Magincia") && (lt.Name == "dirt" || lt.Name == "grass"))
                     {
-                        if (!MaginciaPlantSystem.Enabled)
-                            from.SendMessage("Magincia plant placement is currently disabled.");
-                        else if (MaginciaPlantSystem.CanAddPlant(from, lt.Location))
+                        if (MaginciaPlantSystem.CanAddPlant(from, lt.Location))
                         {
-                            int fertileDirt = from.Backpack == null ? 0 : from.Backpack.GetAmount(typeof(FertileDirt), false);
-
-                            if (fertileDirt > 0)
-                                from.SendGump(new FertileDirtGump(null, fertileDirt, lt));
+                            if (!MaginciaPlantSystem.CheckDelay(from))
+                            {
+                                return;
+                            }
+                            else if (from.Mounted || from.Flying)
+                            {
+                                from.SendLocalizedMessage(501864); // You can't mine while riding.
+                            }
+                            else if (from.IsBodyMod && !from.Body.IsHuman)
+                            {
+                                from.SendLocalizedMessage(501865); // You can't mine while polymorphed.
+                            }
                             else
                             {
-                                if (from.Body.IsHuman && !from.Mounted)
-                                    from.Animate(11, 5, 1, true, false, 0);
+                                m_Hoe.UsesRemaining--;
 
-                                from.PlaySound(0x125);
+                                from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1150492); // You till a small area to plant.                                
+                                from.Animate(AnimationType.Attack, 3);
 
                                 MaginciaPlantItem dirt = new MaginciaPlantItem();
+                                dirt.Owner = from;
                                 dirt.StartTimer();
 
-                                Timer.DelayCall(TimeSpan.FromSeconds(.7), new TimerStateCallback(MoveItem_Callback), new object[] { dirt, lt.Location, map } );
+                                MaginciaPlantSystem.OnPlantPlanted(from, from.Map);
+
+                                Timer.DelayCall(TimeSpan.FromSeconds(.7), new TimerStateCallback(MoveItem_Callback), new object[] { dirt, lt.Location, map });
                             }
                         }
                     }
                     else
+                    {
                         from.SendLocalizedMessage(1150457); // The ground here is not good for gardening.
-                    
+                    }
                 }
             }
 
@@ -87,22 +123,21 @@ namespace Server.Items
             }
         }
 
-		public Hoe( Serial serial ) : base( serial )
-		{
-		}
+        public Hoe(Serial serial)
+            : base(serial)
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
 
-			writer.Write( (int) 0 ); // version
-		}
-
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
-
-			int version = reader.ReadInt();
-		}
-	}
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 }
