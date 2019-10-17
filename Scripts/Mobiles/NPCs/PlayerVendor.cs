@@ -469,7 +469,7 @@ namespace Server.Mobiles
             }
             else if (vi.Created + TimeSpan.FromMinutes(1.0) > DateTime.UtcNow)
             {
-                from.SendMessage("You cannot buy this item right now.  Please wait one minute and try again.");
+                from.SendLocalizedMessage(1071949); // You cannot buy this item right now.  Please wait one minute and try again.
             }
             else
             {
@@ -542,8 +542,8 @@ namespace Server.Mobiles
                             Item item = reader.ReadItem();
 
                             int price = reader.ReadInt();
-                            if (price > 100000000)
-                                price = 100000000;
+                            if (price > 175000000)
+                                price = 175000000;
 
                             string description = reader.ReadString();
 
@@ -1623,10 +1623,10 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    if (price > 100000000)
+                    if (price > 175000000)
                     {
-                        price = 100000000;
-                        from.SendMessage("You cannot price items above 100,000,000 gold.  The price has been adjusted.");
+                        price = 175000000;
+                        from.SendLocalizedMessage(1071986); // You cannot price items above 175,000,000 gold. The price has been set to the maximum. Note that if you price an item above 125,000,000 gold, players without expanded bank storage may not be able to purchase the item.
                     }
 
                     setPrice = true;
@@ -1679,7 +1679,7 @@ namespace Server.Mobiles
             {
                 if (amount <= 0)
                 {
-                    m_Vendor.SayTo(to, "Very well. I will hold on to the money for now then.");
+                    m_Vendor.SayTo(to, 1071951); // Very well. I will hold on to the money for now then.
                 }
                 else
                 {
@@ -1706,7 +1706,7 @@ namespace Server.Mobiles
 
                 if (!NameVerification.Validate(name, 1, 20, true, true, true, 0, NameVerification.Empty))
                 {
-                    m_Vendor.SayTo(from, "That name is unacceptable.");
+                    m_Vendor.SayTo(from, 501173); // That name is disallowed.
                     return;
                 }
 
@@ -1735,7 +1735,7 @@ namespace Server.Mobiles
 
                 if (!NameVerification.Validate(name, 1, 20, true, true, true, 0, NameVerification.Empty))
                 {
-                    m_Vendor.SayTo(from, "That name is unacceptable.");
+                    m_Vendor.SayTo(from, 501173); // That name is disallowed.
                     return;
                 }
 
