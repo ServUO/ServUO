@@ -787,8 +787,8 @@ namespace Server.Items
                 switch ((string)attribute)
                 {
                     case "RandomEater": attribute = GetRandomEater(); break;
-                    case "HitSpell": attribute = GetRandomEater(); break;
-                    case "HitArea": attribute = GetRandomEater(); break;
+                    case "HitSpell": attribute = GetRandomHitSpell(); break;
+                    case "HitArea": attribute = GetRandomHitArea(); break;
                     case "Slayer": attribute = BaseRunicTool.GetRandomSlayer(); break;
                     case "WeaponVelocity": break;
                     case "ElementalDamage": attribute = GetRandomElemental(); break;
@@ -1555,50 +1555,6 @@ namespace Server.Items
 
                 return value;
             }
-
-            /*public int Min(int resIndex, int preIndex, Item item)
-            {
-                if (HardCap == 1)
-                    return 1;
-
-                int max = Max(resIndex, preIndex, item);
-
-                if (resIndex != -1 && preIndex != -1)
-                {
-                    return item is BaseRanged && SecondaryInfo != null ? SecondaryInfo[resIndex][0] : Info[resIndex][0];
-                }
-
-                return (int)((double)max * .5);
-            }
-
-            public int Max(int resIndex, int preIndex, Item item)
-            {
-                int[][] info = item is BaseRanged && SecondaryInfo != null ? SecondaryInfo : Info;
-
-                if (resIndex != -1 && preIndex != -1)
-                {
-                    if (item is BaseWeapon && this.Attribute is AosWeaponAttribute && ((AosWeaponAttribute)this.Attribute == AosWeaponAttribute.HitLeechHits
-                                                            || (AosWeaponAttribute)this.Attribute == AosWeaponAttribute.HitLeechMana))
-                    {
-                        int weight = Info[resIndex][preIndex];
-                        return (int)(((BaseWeapon)item).MlSpeed * (weight * 100) / (100 + ((BaseWeapon)item).Attributes.WeaponSpeed));
-                    }
-
-                    if (info != null && resIndex >= 0 && resIndex < info.Length && preIndex >= 0 && preIndex < info[resIndex].Length)
-                    {
-                        return info[resIndex][preIndex];
-                    }
-
-                    return HardCap;
-                }
-
-                if (info == null)
-                {
-                    return HardCap;
-                }
-
-                return info[Info.Length - 1][Info[Info.Length - 1].Length - 1];
-            }*/
         }
 
         public static object GetRandomHitSpell()

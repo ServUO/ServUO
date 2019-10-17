@@ -2139,7 +2139,7 @@ namespace Server.Mobiles
                     }
                 }
 
-                if (with is HarvestersBlade)
+                if (special)
                 {
                     feathers = (int)Math.Ceiling((double)feathers * 1.1);
                     wool = (int)Math.Ceiling((double)wool * 1.1);
@@ -2207,17 +2207,30 @@ namespace Server.Mobiles
                 if (hides != 0)
                 {
                     Item leather = null;
+                    var cutHides = (with is SkinningKnife && from.FindItemOnLayer(Layer.OneHanded) == with) || special || with is ButchersWarCleaver;
 
                     switch (HideType)
                     {
                         default:
-                        case HideType.Regular: leather = new Leather(hides); break;
-                        case HideType.Spined: leather = new SpinedLeather(hides); break;
-                        case HideType.Horned: leather = new HornedLeather(hides); break;
-                        case HideType.Barbed: leather = new BarbedLeather(hides); break;
+                        case HideType.Regular:
+                            if (cutHides) leather = new Leather(hides);
+                            else leather = new Hides(hides);
+                            break;
+                        case HideType.Spined:
+                            if (cutHides) leather = new SpinedLeather(hides);
+                            else leather = new SpinedHides(hides);
+                            break;
+                        case HideType.Horned:
+                            if (cutHides) leather = new HornedLeather(hides);
+                            else leather = new HornedHides(hides);
+                            break;
+                        case HideType.Barbed:
+                            if (cutHides) leather = new BarbedLeather(hides);
+                            else leather = new BarbedHides(hides);
+                            break;
                     }
 
-                    if (!Core.AOS || (!special && !(with is ButchersWarCleaver)) || !from.AddToBackpack(leather))
+                    if (!Core.AOS || !cutHides || !from.AddToBackpack(leather))
                     {
                         corpse.AddCarvedItem(leather, from);
                         from.SendLocalizedMessage(500471); // You skin it, and the hides are now in the corpse.
