@@ -867,33 +867,36 @@ namespace Server.Spells
                 return false;
             }
 
-            if (caster != null && caster.IsPlayer())
+            if (caster != null)
             {
-				// Jail region
-				if (caster.Region.IsPartOf<Regions.Jail>())
-				{
-					caster.SendLocalizedMessage(1114345); // You'll need a better jailbreak plan than that!
-					return false;
-				}
-				else if(caster.Region is Regions.GreenAcres)
-				{
-					caster.SendLocalizedMessage(502360); // You cannot teleport into that area.
-					return false;
-				}
-            }
+                if (caster.IsPlayer())
+                {
+                    // Jail region
+                    if (caster.Region.IsPartOf<Regions.Jail>())
+                    {
+                        caster.SendLocalizedMessage(1114345); // You'll need a better jailbreak plan than that!
+                        return false;
+                    }
+                    else if (caster.Region is Regions.GreenAcres)
+                    {
+                        caster.SendLocalizedMessage(502360); // You cannot teleport into that area.
+                        return false;
+                    }
+                }
 
-            // Always allow monsters to teleport
-            if (caster is BaseCreature && (type == TravelCheckType.TeleportTo || type == TravelCheckType.TeleportFrom))
-            {
-                BaseCreature bc = (BaseCreature)caster;
+                // Always allow monsters to teleport
+                if (caster is BaseCreature && (type == TravelCheckType.TeleportTo || type == TravelCheckType.TeleportFrom))
+                {
+                    BaseCreature bc = (BaseCreature) caster;
 
-                if (!bc.Controlled && !bc.Summoned)
-                    return true;
-            }
+                    if (!bc.Controlled && !bc.Summoned)
+                        return true;
+                }
 
-            if (Siege.SiegeShard && !Siege.CheckTravel(caster, loc, map, type))
-            {
-                return false;
+                if (Siege.SiegeShard && !Siege.CheckTravel(caster, loc, map, type))
+                {
+                    return false;
+                }
             }
 
             m_TravelCaster = caster;
@@ -902,30 +905,37 @@ namespace Server.Spells
             int v = (int)type;
             bool isValid = true;
 
-            BaseRegion destination = Region.Find(loc, map) as BaseRegion;
-            BaseRegion current = Region.Find(caster.Location, map) as BaseRegion;
-
-            if (destination != null && !destination.CheckTravel(caster, loc, type))
-                isValid = false;
-
-            if (isValid && current != null && !current.CheckTravel(caster, loc, type))
-                isValid = false;
-
-            #region Mondain's Legacy
-            if (m_TravelCaster != null && m_TravelCaster.Region != null)
+            if (caster != null)
             {
-                if (m_TravelCaster.Region.IsPartOf("Blighted Grove") && loc.Z < -10)
+                BaseRegion destination = Region.Find(loc, map) as BaseRegion;
+                BaseRegion current = Region.Find(caster.Location, map) as BaseRegion;
+
+                if (destination != null && !destination.CheckTravel(caster, loc, type))
                     isValid = false;
+
+                if (isValid && current != null && !current.CheckTravel(caster, loc, type))
+                    isValid = false;
+
+                #region Mondain's Legacy
+
+                if (caster.Region != null)
+                {
+                    if (caster.Region.IsPartOf("Blighted Grove") && loc.Z < -10)
+                        isValid = false;
+                }
+
+                if ((int)type <= 4 && (IsNewDungeon(caster.Map, caster.Location) || IsNewDungeon(map, loc)))
+                    isValid = false;
+                
+                #endregion
+
+                #region High Seas
+
+                if (BaseBoat.IsDriving(caster))
+                    return false;
+
+                #endregion
             }
-
-            if ((int)type <= 4 && (IsNewDungeon(caster.Map, caster.Location) || IsNewDungeon(map, loc)))
-                isValid = false;
-            #endregion
-
-            #region High Seas
-            if (BaseBoat.IsDriving(caster))
-                return false;
-            #endregion
 
             for (int i = 0; isValid && i < m_Validators.Length; ++i)
                 isValid = (m_Rules[v, i] || !m_Validators[i](map, loc));
