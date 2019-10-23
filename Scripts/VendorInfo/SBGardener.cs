@@ -4,11 +4,12 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    public class SBBanker : SBInfo
+    public class SBGardener : SBInfo
     {
         private readonly List<GenericBuyInfo> m_BuyInfo = new InternalBuyInfo();
         private readonly IShopSellInfo m_SellInfo = new InternalSellInfo();
-        public SBBanker()
+
+        public SBGardener()
         {
         }
 
@@ -31,15 +32,10 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                Add(new GenericBuyInfo("1041243", typeof(ContractOfEmployment), 1252, 20, 0x14F0, 0));
-
-                if (Multis.BaseHouse.NewVendorSystem)
-                {
-                    Add(new GenericBuyInfo("1062332", typeof(VendorRentalContract), 1252, 20, 0x14F0, 0x672));
-                    Add(new GenericBuyInfo("1159156", typeof(CommissionContractOfEmployment), 28127, 20, 0x14F0, 0x672));
-                }
-
-                Add(new GenericBuyInfo("1047016", typeof(CommodityDeed), 5, 20, 0x14F0, 0x47));
+                Add(new GenericBuyInfo(typeof(Hoe), 17, 20, 0xE86, 2524));
+                Add(new GenericBuyInfo(typeof(GardeningContract), 10156, 500, 0x14F0, 0));
+                Add(new GenericBuyInfo("1060834", typeof(Engines.Plants.PlantBowl), 2, 20, 0x15FD, 0));
+                Add(new BeverageBuyInfo(typeof(Pitcher), BeverageType.Water, 11, 20, 0x1F9D, 0));
             }
         }
 
@@ -47,6 +43,9 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
+                Add(typeof(Hoe), 8);
+                Add(typeof(Pitcher), 5);
+                Add(typeof(Engines.Plants.PlantBowl), 1);
             }
         }
     }

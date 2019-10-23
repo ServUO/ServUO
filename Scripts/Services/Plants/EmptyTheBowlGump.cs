@@ -8,6 +8,8 @@ namespace Server.Engines.Plants
     {
         private readonly PlantItem m_Plant;
 
+        public bool IsOtherPlant => m_Plant != null && m_Plant is MaginciaPlantItem || m_Plant is RaisedGardenPlantItem;
+
         public EmptyTheBowlGump(PlantItem plant)
             : base(20, 20)
         {
@@ -15,7 +17,14 @@ namespace Server.Engines.Plants
 
             DrawBackground();
 
-            AddLabel(90, 70, 0x44, "Empty the bowl?");
+            if (IsOtherPlant)
+            {
+                AddHtmlLocalized(90, 70, 130, 20, 1150439, 0x1FE7, false, false); // Abandon this plot?
+            }
+            else
+            {
+                AddHtmlLocalized(100, 70, 100, 20, 1053045, 0x1FE7, false, false); // Empty the bowl?
+            }
 
             DrawPicture();
 
@@ -33,7 +42,7 @@ namespace Server.Engines.Plants
 
             if (info.ButtonID == 0 || m_Plant.Deleted || m_Plant.PlantStatus >= PlantStatus.DecorativePlant)
                 return;
-			
+
             if (info.ButtonID == 3 && !from.InRange(m_Plant.GetWorldLocation(), 3))
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3E9, 500446); // That is too far away.
@@ -46,7 +55,7 @@ namespace Server.Engines.Plants
                 return;
             }
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 1: // Cancel
                     {
@@ -66,18 +75,21 @@ namespace Server.Engines.Plants
                     {
                         PlantBowl bowl = null;
 
-                        if (m_Plant.RequiresUpkeep)
+                        if (!IsOtherPlant)
                         {
-                            bowl = new PlantBowl();
-
-                            if (!from.PlaceInBackpack(bowl))
+                            if (m_Plant.RequiresUpkeep)
                             {
-                                bowl.Delete();
+                                bowl = new PlantBowl();
 
-                                m_Plant.LabelTo(from, 1053047); // You cannot empty a bowl with a full pack!
-                                from.SendGump(new MainPlantGump(m_Plant));
+                                if (!from.PlaceInBackpack(bowl))
+                                {
+                                    bowl.Delete();
 
-                                break;
+                                    m_Plant.LabelTo(from, 1053047); // You cannot empty a bowl with a full pack!
+                                    from.SendGump(new MainPlantGump(m_Plant));
+
+                                    break;
+                                }
                             }
                         }
 
@@ -121,12 +133,23 @@ namespace Server.Engines.Plants
 
         private void DrawPicture()
         {
-            AddItem(90, 100, 0x1602);
-            AddImage(140, 102, 0x15E1);
-            AddItem(160, 100, 0x15FD);
+            if (IsOtherPlant)
+            {
+                AddItem(90, 100, 0x913);
 
-            if (m_Plant.PlantStatus != PlantStatus.BowlOfDirt && m_Plant.PlantStatus < PlantStatus.Plant)
-                AddItem(156, 130, 0xDCF); // Seed
+                if (m_Plant.PlantStatus != PlantStatus.BowlOfDirt && m_Plant.PlantStatus < PlantStatus.Plant)
+                    AddItem(160, 105, 0xDCF); // Seed
+            }
+            else
+            {
+                AddItem(90, 100, 0x1602);
+                AddItem(160, 100, 0x15FD);
+
+                if (m_Plant.PlantStatus != PlantStatus.BowlOfDirt && m_Plant.PlantStatus < PlantStatus.Plant)
+                    AddItem(156, 130, 0xDCF); // Seed
+            }
+
+            AddImage(140, 102, 0x15E1);
         }
     }
 }

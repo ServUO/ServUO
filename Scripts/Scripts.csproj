@@ -557,6 +557,7 @@
     <Compile Include="Items\Addons\Crystal Furniture Set\CrystalRunnerStatue.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\TheRedeemer.cs" />
     <Compile Include="Items\Consumables\AnniversaryPromotionalToken.cs" />
+    <Compile Include="Items\Consumables\CommissionPlayerVendorDeed.cs" />
     <Compile Include="Items\Containers\BoxOfCrystalItems.cs" />
     <Compile Include="Items\Containers\BoxOfShadowItems.cs" />
     <Compile Include="Items\Addons\Shadow Furniture Set\ShadowAltar.cs" />
@@ -761,7 +762,9 @@
     <Compile Include="Mobiles\Normal\SkeletalCat.cs" />
     <Compile Include="Mobiles\Normal\Triton.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
+    <Compile Include="Mobiles\NPCs\Gardener.cs" />
     <Compile Include="Mobiles\NPCs\MiningCooperativeMerchant.cs" />
+    <Compile Include="Mobiles\NPCs\CommissionPlayerVendor.cs" />
     <Compile Include="Multis\ContestHouses.cs" />
     <Compile Include="Quests\The Ritual\Items.cs" />
     <Compile Include="Quests\The Ritual\Mobiles.cs" />
@@ -822,6 +825,7 @@
     <Compile Include="Services\LootGeneration\RunicReforging\RunicReforging.cs" />
     <Compile Include="Services\MondainsLegacyQuests\Helpers\Persistence.cs" />
     <Compile Include="Services\MondainsLegacyQuests\TierQuest.cs" />
+    <Compile Include="Services\New Magincia\MaginciaPlants\GardeningContract.cs" />
     <Compile Include="Services\Plants\PottedCoffeePlant.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\GlovesOfFeudalGrip.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\BritchesOfWarding.cs" />
@@ -12073,6 +12077,7 @@
     <Compile Include="VendorInfo\SBBarkeeper.cs" />
     <Compile Include="VendorInfo\SBBeekeeper.cs" />
     <Compile Include="VendorInfo\SBBlacksmith.cs" />
+    <Compile Include="VendorInfo\SBGardener.cs" />
     <Compile Include="VendorInfo\SBBowyer.cs" />
     <Compile Include="VendorInfo\SBButcher.cs" />
     <Compile Include="VendorInfo\SBCarpenter.cs" />
@@ -12171,7 +12176,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />
   </ProjectExtensions>

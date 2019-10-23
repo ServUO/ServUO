@@ -85,13 +85,24 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
+
+            writer.Write(_DisplayName);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadEncodedInt();
+
+            if (version == 0)
+            {
+                _DisplayName = CopperShipReliefAddonDeed._Names[Utility.Random(CopperShipReliefAddonDeed._Names.Length)];
+            }
+            else
+            {
+                _DisplayName = reader.ReadString();
+            }
         }
     }
 
@@ -185,7 +196,7 @@ namespace Server.Items
                 base.OnDoubleClick(from);
         }
 
-        private static string[] _Names =
+        public static string[] _Names =
         {
             "The HMS Cape", "The Mustang", "The Dragon's Breath", "The Crown Jewel", "The Empire", "The Scaly Eel", "The Spartan", "The Beast", "The Ararat", "The Arabella", "The Lusty Wench", "The Golden Ankh",
             "The Poseidon's Fury", "The Silver Hart"
