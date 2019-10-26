@@ -451,7 +451,7 @@ namespace Server.Engines.Plants
 
                 ApplyBeneficEffects();
 
-                if (ApplyMaladiesEffects()) // Dead
+                if (!ApplyMaladiesEffects()) // Dead
                     return;
             }
 
