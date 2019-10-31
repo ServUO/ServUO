@@ -578,7 +578,7 @@ namespace Server.Items
 
         public RecallRuneType Type { get; }
 
-        public RunebookEntry(Point3D loc, Map map, string desc, BaseHouse house, RecallRuneType type, BaseGalleon g = null)
+        public RunebookEntry(Point3D loc, Map map, string desc, BaseHouse house, RecallRuneType type = 0, BaseGalleon g = null)
         {
             m_Location = loc;
             m_Map = map;
