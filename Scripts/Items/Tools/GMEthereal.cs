@@ -101,6 +101,8 @@ namespace Server.Mobiles
             {
                 if (from.Mounted)
                     from.SendLocalizedMessage(1005583); // Please dismount first.
+				else if (from.Race == Race.Gargoyle)
+					from.SendLocalizedMessage(1112281); // gargs can't mount
                 else if (from.HasTrade)
                     from.SendLocalizedMessage(1042317, "", 0x41); // You may not ride at this time
                 else if (Multis.DesignContext.Check(from))
