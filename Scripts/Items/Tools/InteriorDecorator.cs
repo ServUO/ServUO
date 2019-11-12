@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
@@ -173,6 +174,17 @@ namespace Server.Items
                 OnTarget(from, targeted);
             }
 
+            private static Type[] m_KingsCollectionTypes = new Type[]
+            {
+                typeof(BirdLamp),    typeof(DragonLantern),
+                typeof(KoiLamp),   typeof(TallLamp)
+            };
+
+            private static bool IsKingsCollection(Item item)
+            {
+                return m_KingsCollectionTypes.Any(t => t == item.GetType());
+            }
+
             protected override void OnTarget(Mobile from, object targeted)
             {
                 if (m_Decorator.Command == DecorateCommand.GetHue)
@@ -198,7 +210,11 @@ namespace Server.Items
 
                     bool isDecorableComponent = false;
 
-                    if (item is AddonComponent || item is AddonContainerComponent || item is BaseAddonContainer)
+                    if (m_Decorator.Command == DecorateCommand.Turn && IsKingsCollection(item))
+                    {
+                        isDecorableComponent = true;
+                    }
+                    else if (item is AddonComponent || item is AddonContainerComponent || item is BaseAddonContainer)
                     {
                         object addon = null;
                         int count = 0;
