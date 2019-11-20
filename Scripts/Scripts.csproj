@@ -547,6 +547,19 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Addons\AdvancedTrainingDummy.cs" />
+    <Compile Include="Items\Addons\JollyHolidayTree.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\AlchemistsBookshelf.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\TheTokenBox.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\FirePainting.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\ShipPainting.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\FluffySponge.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\BarrelSponge.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\ShelfSponge.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\CactusSponge.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\FourPostBed.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\OrnateBed.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\MonasteryBell.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\15thAnniversaryLithograph.cs" />
     <Compile Include="Items\Addons\Crystal Furniture Set\CrystalAltar.cs" />
     <Compile Include="Items\Addons\Crystal Furniture Set\CrystalBrazier.cs" />
     <Compile Include="Items\Addons\Crystal Furniture Set\CrystalTable.cs" />
@@ -555,9 +568,22 @@
     <Compile Include="Items\Addons\Crystal Furniture Set\CrystalSupplicantStatue.cs" />
     <Compile Include="Items\Addons\Crystal Furniture Set\CrystalThrone.cs" />
     <Compile Include="Items\Addons\Crystal Furniture Set\CrystalRunnerStatue.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\DragonLantern.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\TallLamp.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\KoiLamp.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\GoldenTable.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\BirdLamp.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\MarbleTable.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\EmbroideredTapestry.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\CastlePainting.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\BullTapestry.cs" />
+    <Compile Include="Items\Addons\TheKingsCollection\HorsePainting.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\TheRedeemer.cs" />
+    <Compile Include="Items\Consumables\2019HolidayGiftToken.cs" />
     <Compile Include="Items\Consumables\AnniversaryPromotionalToken.cs" />
     <Compile Include="Items\Consumables\CommissionPlayerVendorDeed.cs" />
+    <Compile Include="Items\Consumables\FearEssence.cs" />
+    <Compile Include="Items\Consumables\ShatterPotion.cs" />
     <Compile Include="Items\Containers\BoxOfCrystalItems.cs" />
     <Compile Include="Items\Containers\BoxOfShadowItems.cs" />
     <Compile Include="Items\Addons\Shadow Furniture Set\ShadowAltar.cs" />
@@ -582,6 +608,7 @@
     <Compile Include="Items\Consumables\EmbroideryTool.cs" />
     <Compile Include="Items\Damageable\Beacon.cs" />
     <Compile Include="Items\Damageable\DamageableItem.cs" />
+    <Compile Include="Items\Decorative\DoveCage.cs" />
     <Compile Include="Items\Decorative\Countertop.cs" />
     <Compile Include="Items\Decorative\ButcherBlock.cs" />
     <Compile Include="Items\Decorative\CupidStatue.cs" />
@@ -589,6 +616,8 @@
     <Compile Include="Items\Containers\HeartShapedBox.cs" />
     <Compile Include="Items\Addons\Shadow Furniture Set\ObsidianPillar.cs" />
     <Compile Include="Items\Decorative\GypsyWagonLamp.cs" />
+    <Compile Include="Items\Decorative\PumpkinCarvingKit.cs" />
+    <Compile Include="Items\Decorative\HolidayWallArt.cs" />
     <Compile Include="Items\Decorative\UltimaBanner.cs" />
     <Compile Include="Items\Decorative\EnchantedWheelbarrow.cs" />
     <Compile Include="Items\Decorative\FlamingScarecrow.cs" />
@@ -760,6 +789,7 @@
     <Compile Include="Mobiles\Normal\CoconutCrab.cs" />
     <Compile Include="Mobiles\Normal\HungryCoconutCrab.cs" />
     <Compile Include="Mobiles\Normal\SkeletalCat.cs" />
+    <Compile Include="Mobiles\Normal\TheButcher.cs" />
     <Compile Include="Mobiles\Normal\Triton.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
     <Compile Include="Mobiles\NPCs\Gardener.cs" />
