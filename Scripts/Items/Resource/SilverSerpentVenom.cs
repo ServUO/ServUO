@@ -17,8 +17,10 @@ namespace Server.Items
 
         [Constructable]
         public SilverSerpentVenom(int amount)
-            : base(0x5722)
+            : base(0xE24)
         {
+            Hue = 1155;
+
             Stackable = true;
             Amount = amount;
         }
@@ -31,13 +33,23 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    break;
+                case 0:
+                    ItemID = 0xE24;
+                    Hue = 1155;
+                    break;
+            }
         }
     }
 }

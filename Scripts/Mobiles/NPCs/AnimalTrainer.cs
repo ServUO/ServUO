@@ -129,6 +129,8 @@ namespace Server.Mobiles
                         player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.InProgress, false));
                         quest.InProgress();
                     }
+
+                    return false;
                 }
             }
 

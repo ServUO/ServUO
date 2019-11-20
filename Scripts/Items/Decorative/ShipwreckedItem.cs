@@ -7,7 +7,7 @@ namespace Server.Items
         bool IsShipwreckedItem { get; set; }
     }
 
-    public class ShipwreckedItem : Item, IDyable, IShipwreckedItem
+    public class ShipwreckedItem : Item, IDyable, IShipwreckedItem, IFlipable
     {
         private bool m_IsBarnacleItem;
 
@@ -44,6 +44,25 @@ namespace Server.Items
             {
                 base.AddNameProperties(list);
                 list.Add(1041645); // recovered from a shipwreck
+            }
+        }
+
+        public virtual void OnFlip(Mobile m)
+        {
+            switch (ItemID)
+            {
+                case 0x0E9F: ItemID = 0x0EC8; break;
+                case 0x0EC8: ItemID = 0x0E9F; break;
+                case 0x0EC9: ItemID = 0x0EE7; break;
+                case 0x0EE7: ItemID = 0x0EC9; break;
+                case 0x0EA1: ItemID++; break;
+                case 0x0EA2: ItemID--; break;
+                case 0x0EA3: ItemID++; break;
+                case 0x0EA4: ItemID--; break;
+                case 0x0EA5: ItemID = 0x0EA7; break;
+                case 0x0EA6: ItemID = 0x0EA8; break;
+                case 0x0EA7: ItemID = 0x0EA5; break;
+                case 0x0EA8: ItemID = 0x0EA6; break;
             }
         }
 
