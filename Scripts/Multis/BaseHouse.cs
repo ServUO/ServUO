@@ -2654,16 +2654,10 @@ namespace Server.Multis
 
         private bool CanRelease(Mobile from, Item item)
         {
-            if (item is Container)
+            if (item is Container && item.Items.Any(i => i is CraftableHouseItem || i is CraftableMetalHouseDoor || i is CraftableStoneHouseDoor))
             {
-                foreach (var i in item.Items)
-                {
-                    if (i is CraftableHouseItem || i is CraftableMetalHouseDoor || i is CraftableStoneHouseDoor)
-                    {
-                        from.SendLocalizedMessage(1010417); // You may not release this at this time.
-                        return false;
-                    }
-                }
+                from.SendLocalizedMessage(1010417); // You may not release this at this time.
+                return false;
             }
 
             return true;
@@ -4942,9 +4936,9 @@ namespace Server.Multis
                     {
                         Item.MoveToWorld(point, from.Map);
                         Item.Movable = true;
+
+                        from.SendLocalizedMessage(1159159); // This container has been released and is no longer secure.
                     }
-                    
-                    from.SendLocalizedMessage(1159159); // This container has been released and is no longer secure.
                 }
                 else
                 {

@@ -29,7 +29,7 @@ namespace Server.Regions
         {
             if (m.NetState != null &&
                 !TransformationSpellHelper.UnderTransformation(m, typeof(AnimalForm)) &&
-                !TransformationSpellHelper.UnderTransformation(m, typeof(Server.Spells.Spellweaving.ReaperFormSpell)))
+                (Core.SA || !TransformationSpellHelper.UnderTransformation(m, typeof(Server.Spells.Spellweaving.ReaperFormSpell))))
                 m.SendSpeedControl(SpeedControlType.Disable);
         }
 

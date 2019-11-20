@@ -991,7 +991,8 @@ namespace Server.Items
 			protected override void OnTick()
 			{
 				m_Mobile.EndAction(typeof(BaseWeapon));
-			}
+                m_Mobile.SendLocalizedMessage(1060168); // Your confusion has passed, you may now arm a weapon!
+            }
 		}
 
 		public override bool CheckConflictingLayer(Mobile m, Item item, Layer layer)
@@ -1107,7 +1108,8 @@ namespace Server.Items
 			}
 			else if (!from.CanBeginAction(typeof(BaseWeapon)))
 			{
-				return false;
+                from.SendLocalizedMessage(3000201); // You must wait to perform another action.
+                return false;
 			}
 				#region Personal Bless Deed
 			else if (BlessedBy != null && BlessedBy != from)
