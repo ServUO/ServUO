@@ -82,7 +82,7 @@ namespace Server.Items
 
                     g = new RunicAtlasGump((PlayerMobile)from, this);
                     g.Page = newPage;
-                    from.SendGump(g);
+                    BaseGump.SendGump(g);
                 }
             }
 

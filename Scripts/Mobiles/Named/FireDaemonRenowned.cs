@@ -67,7 +67,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(LegacyOfDespair) };
+                return new Type[] { };
             }
         }
 

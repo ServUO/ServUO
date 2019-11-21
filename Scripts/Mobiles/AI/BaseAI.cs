@@ -236,7 +236,7 @@ namespace Server.Mobiles
 					list.Add(new InternalEntry(from, 6108, 14, m_Mobile, this, OrderType.Follow)); // Command: Follow
 					list.Add(new InternalEntry(from, 6107, 14, m_Mobile, this, OrderType.Guard)); // Command: Guard
 
-					if (m_Mobile.CanDrop)
+					if (m_Mobile.IsBonded)
 					{
 						list.Add(new InternalEntry(from, 6109, 14, m_Mobile, this, OrderType.Drop)); // Command: Drop
 					}
@@ -1232,7 +1232,7 @@ namespace Server.Mobiles
 			switch (m_Mobile.ControlOrder)
 			{
 				case OrderType.None:
-					//m_Mobile.ControlMaster.RevealingAction();
+					
 					m_Mobile.Home = m_Mobile.Location;
 					m_Mobile.CurrentSpeed = m_Mobile.PassiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
@@ -1240,14 +1240,14 @@ namespace Server.Mobiles
 					m_Mobile.Combatant = null;
 					break;
 				case OrderType.Come:
-					//m_Mobile.ControlMaster.RevealingAction();
+					
 					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = false;
 					m_Mobile.Combatant = null;
 					break;
 				case OrderType.Drop:
-					//m_Mobile.ControlMaster.RevealingAction();
+					
 					m_Mobile.CurrentSpeed = m_Mobile.PassiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = true;
@@ -1255,10 +1255,10 @@ namespace Server.Mobiles
 					break;
 				case OrderType.Friend:
 				case OrderType.Unfriend:
-					//m_Mobile.ControlMaster.RevealingAction();
+					
 					break;
 				case OrderType.Guard:
-					//m_Mobile.ControlMaster.RevealingAction();
+					
 					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = true;
@@ -1268,7 +1268,7 @@ namespace Server.Mobiles
 					m_Mobile.ControlMaster.SendLocalizedMessage(1049671, petname); //~1_PETNAME~ is now guarding you.
 					break;
 				case OrderType.Attack:
-					//m_Mobile.ControlMaster.RevealingAction();
+					
 					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 
@@ -1276,28 +1276,28 @@ namespace Server.Mobiles
 					m_Mobile.Combatant = null;
 					break;
 				case OrderType.Patrol:
-					//m_Mobile.ControlMaster.RevealingAction();
+					
 					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = false;
 					m_Mobile.Combatant = null;
 					break;
 				case OrderType.Release:
-					//m_Mobile.ControlMaster.RevealingAction();
+					
 					m_Mobile.CurrentSpeed = m_Mobile.PassiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = false;
 					m_Mobile.Combatant = null;
 					break;
 				case OrderType.Stay:
-					//m_Mobile.ControlMaster.RevealingAction();
+					
 					m_Mobile.CurrentSpeed = m_Mobile.PassiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = false;
 					m_Mobile.Combatant = null;
 					break;
 				case OrderType.Stop:
-					//m_Mobile.ControlMaster.RevealingAction();
+					
 					m_Mobile.Home = m_Mobile.Location;
 					m_Mobile.CurrentSpeed = m_Mobile.PassiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
@@ -1305,15 +1305,17 @@ namespace Server.Mobiles
 					m_Mobile.Combatant = null;
 					break;
 				case OrderType.Follow:
-					//m_Mobile.ControlMaster.RevealingAction();
-					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
+					
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 
 					m_Mobile.Warmode = false;
 					m_Mobile.Combatant = null;
-					break;
+                    m_Mobile.AdjustSpeeds();
+
+                    m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
+                    break;
 				case OrderType.Transfer:
-					//m_Mobile.ControlMaster.RevealingAction();
+					
 					m_Mobile.CurrentSpeed = m_Mobile.PassiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 
@@ -1387,7 +1389,7 @@ namespace Server.Mobiles
 
 		public virtual bool DoOrderDrop()
 		{
-			if (m_Mobile.IsDeadPet || !m_Mobile.CanDrop)
+			if (m_Mobile.IsDeadPet || !m_Mobile.IsBonded)
 			{
 				return true;
 			}
@@ -2207,52 +2209,72 @@ namespace Server.Mobiles
 			return true;
 		}
 
-		public virtual void WalkRandom(int iChanceToNotMove, int iChanceToDir, int iSteps)
-		{
-			if (m_Mobile.Deleted || m_Mobile.DisallowAllMoves)
-			{
-				return;
-			}
+        public virtual void WalkRandom(int iChanceToNotMove, int iChanceToDir, int iSteps)
+        {
+            if (m_Mobile.Deleted || m_Mobile.DisallowAllMoves)
+            {
+                return;
+            }
 
-			for (var i = 0; i < iSteps; i++)
-			{
-				if (Utility.Random(8 * iChanceToNotMove) <= 8)
-				{
-					var iRndMove = Utility.Random(0, 8 + (9 * iChanceToDir));
+            if (m_Mobile.CanFly && Utility.Random(8 * iChanceToNotMove) <= 8)
+            {
+                var p = Point3D.Zero;
 
-					switch (iRndMove)
-					{
-						case 0:
-							DoMove(Direction.Up);
-							break;
-						case 1:
-							DoMove(Direction.North);
-							break;
-						case 2:
-							DoMove(Direction.Left);
-							break;
-						case 3:
-							DoMove(Direction.West);
-							break;
-						case 5:
-							DoMove(Direction.Down);
-							break;
-						case 6:
-							DoMove(Direction.South);
-							break;
-						case 7:
-							DoMove(Direction.Right);
-							break;
-						case 8:
-							DoMove(Direction.East);
-							break;
-						default:
-							DoMove(m_Mobile.Direction);
-							break;
-					}
-				}
-			}
-		}
+                for (int i = 0; i < 10; i++)
+                {
+                    p.X = m_Mobile.X + Utility.RandomList(-3, -2, 2, 3);
+                    p.Y = m_Mobile.Y + Utility.RandomList(-3, -2, 2, 3);
+                    p.Z = m_Mobile.Map.GetAverageZ(p.X, p.Y);
+
+                    if (m_Mobile.Home != Point3D.Zero && m_Mobile.RangeHome > 0 && !Utility.InRange(p, m_Mobile.Home, m_Mobile.RangeHome))
+                    {
+                        continue;
+                    }
+
+                    WalkMobileRange(p, 1, m_Mobile.CanFly, 0, 1);
+                    return;
+                }
+            }
+
+            for (var i = 0; i < iSteps; i++)
+            {
+                if (Utility.Random(8 * iChanceToNotMove) <= 8)
+                {
+                    var iRndMove = Utility.Random(0, 8 + (9 * iChanceToDir));
+
+                    switch (iRndMove)
+                    {
+                        case 0:
+                            DoMove(Direction.Up);
+                            break;
+                        case 1:
+                            DoMove(Direction.North);
+                            break;
+                        case 2:
+                            DoMove(Direction.Left);
+                            break;
+                        case 3:
+                            DoMove(Direction.West);
+                            break;
+                        case 5:
+                            DoMove(Direction.Down);
+                            break;
+                        case 6:
+                            DoMove(Direction.South);
+                            break;
+                        case 7:
+                            DoMove(Direction.Right);
+                            break;
+                        case 8:
+                            DoMove(Direction.East);
+                            break;
+                        default:
+                            DoMove(m_Mobile.Direction);
+                            break;
+                    }
+                }
+            }
+        }
 
 		public virtual double TransformMoveDelay(double delay)
 		{
@@ -2493,7 +2515,7 @@ namespace Server.Mobiles
 
 			if (m_Mobile.Home == Point3D.Zero)
 			{
-				if (m_Mobile.Spawner is SpawnEntry)
+                if (m_Mobile.Spawner is SpawnEntry)
 				{
 					Region region = ((SpawnEntry)m_Mobile.Spawner).Region;
 

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using Server.Network;
+
 namespace Server.Spells.Mysticism
 {
 	public class StoneFormSpell : MysticTransformationSpell
@@ -61,6 +63,12 @@ namespace Server.Spells.Mysticism
             Timer.DelayCall(new TimerCallback(MobileDelta_Callback));
 			m_Effected.Add(m);
 
+
+            if (!Core.HS)
+            {
+                m.SendSpeedControl(SpeedControlType.WalkSpeed);
+            }
+
             string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}", "-10", "-2", GetResBonus(m).ToString(), GetMaxResistance(m).ToString(), GetDamBonus(m).ToString());
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.StoneForm, 1080145, 1080146, args));
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.PoisonImmunity, 1153785, 1153814));
@@ -74,11 +82,32 @@ namespace Server.Spells.Mysticism
 
 		public override void RemoveEffect( Mobile m )
 		{
-			m.Delta( MobileDelta.WeaponDamage );
+            if (!Core.HS)
+            {
+                m.SendSpeedControl(SpeedControlType.Disable);
+            }
+
+            m.Delta( MobileDelta.WeaponDamage );
 			m_Effected.Remove(m);
             BuffInfo.RemoveBuff(m, BuffIcon.StoneForm);
             BuffInfo.RemoveBuff(m, BuffIcon.PoisonImmunity);
 		}
+
+        public static void Initialize()
+        {
+            if (!Core.HS)
+            {
+                EventSink.Login += new LoginEventHandler(OnLogin);
+            }
+        }
+
+        public static void OnLogin(LoginEventArgs e)
+        {
+            TransformContext context = TransformationSpellHelper.GetContext(e.Mobile);
+
+            if (context != null && context.Type == typeof(StoneFormSpell))
+                e.Mobile.SendSpeedControl(SpeedControlType.WalkSpeed);
+        }
 
         public static int GetMaxResistBonus(Mobile m)
         {

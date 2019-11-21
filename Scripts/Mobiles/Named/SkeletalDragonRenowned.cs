@@ -64,7 +64,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(AxeOfAbandon), typeof(DemonBridleRing), typeof(VoidInfusedKilt) };
+                return new Type[] { typeof(AxeOfAbandon), typeof(DemonBridleRing), typeof(VoidInfusedKilt), typeof(BladeOfBattle) };
             }
         }
         public override bool ReacquireOnMovement

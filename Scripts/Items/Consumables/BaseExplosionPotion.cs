@@ -14,7 +14,6 @@ namespace Server.Items
 	{
 		private const int ExplosionRange = 2; // How long is the blast radius?
 		private Timer m_Timer;
-		private ArrayList m_Users;
 
 		public BaseExplosionPotion(PotionEffect effect)
 			: base(0xF0D, effect)
@@ -83,17 +82,6 @@ namespace Server.Items
 			}
 
 			from.RevealingAction();
-
-			if (m_Users == null)
-			{
-				m_Users = new ArrayList();
-			}
-
-			if (!m_Users.Contains(from))
-			{
-				m_Users.Add(from);
-			}
-
 			from.Target = new ThrowTarget(this);
 
 			if (m_Timer == null)
@@ -128,20 +116,24 @@ namespace Server.Items
 				return;
 			}
 
-			Consume();
+            bool damageThrower = false;
 
-			for (int i = 0; m_Users != null && i < m_Users.Count; ++i)
-			{
-				Mobile m = (Mobile)m_Users[i];
-				ThrowTarget targ = m.Target as ThrowTarget;
+            if (from != null)
+            {
+                if (from.Target is ThrowTarget && ((ThrowTarget)from.Target).Potion == this)
+                {
+                    Target.Cancel(from);
+                }
 
-				if (targ != null && targ.Potion == this)
-				{
-					Target.Cancel(m);
-				}
-			}
+                if (IsChildOf(from.Backpack) || Parent == from)
+                {
+                    damageThrower = true;
+                }
+            }
 
-			if (map == null)
+            Consume();
+
+            if (map == null)
 			{
 				return;
 			}
@@ -160,6 +152,11 @@ namespace Server.Items
 			int max = Scale(from, MaxDamage);
 
             var list = SpellHelper.AcquireIndirectTargets(from, loc, map, ExplosionRange, false).OfType<Mobile>().ToList();
+
+            if (from != null && damageThrower && !list.Contains(from))
+            {
+                list.Add(from);
+            }
 
             foreach (var m in list)
             {

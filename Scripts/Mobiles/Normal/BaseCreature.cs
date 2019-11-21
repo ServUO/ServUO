@@ -1001,6 +1001,11 @@ namespace Server.Mobiles
                 }
 
                 base.Combatant = value;
+
+                if (Controlled)
+                {
+                    AdjustSpeeds();
+                }
             }
         }
 
@@ -4538,14 +4543,11 @@ namespace Server.Mobiles
         public virtual void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
         { }
 
-        public virtual bool CanDrop { get { return IsBonded; } }
-        public virtual bool OwnerCanRename { get { return true; } }
-
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
 
-            if (m_bControlled && m_ControlMaster == from && !m_bSummoned && OwnerCanRename)
+            if (CanBeRenamedBy(from) && m_bControlled && m_ControlMaster == from && !m_bSummoned)
             {
                 list.Add(new RenameEntry(from, this));
             }
