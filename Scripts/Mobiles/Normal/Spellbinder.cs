@@ -10,7 +10,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Spellbinder, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             Name = "a spectral spellbinder";
-            Body = 153;
+            Body = Utility.RandomList(26, 50, 56);
             BaseSoundID = 0x482;
 
             SetStr(46, 70);

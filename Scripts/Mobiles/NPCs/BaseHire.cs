@@ -13,7 +13,6 @@ namespace Server.Mobiles
         private int m_HoldGold = 8;
         private Timer m_PayTimer;
 
-        public override bool OwnerCanRename { get { return false; } }
         public override bool IsBondable { get { return false; } }
         public override bool CanAutoStable { get { return false; } }
         public override bool CanDetectHidden { get { return false; } }

@@ -6,6 +6,7 @@ namespace Server.Mobiles
     public class Shipwright : BaseVendor 
     { 
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
+
         [Constructable]
         public Shipwright()
             : base("the shipwright")

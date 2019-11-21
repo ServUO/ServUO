@@ -20,8 +20,8 @@ namespace Server
             var maxDex = GetMaxMovementDex(bc);
             var dex = Math.Min(maxDex, Math.Max(25, bc.Dex));
 
-            var min = bc.IsMonster ? MinDelayWild : MinDelay;
-            var max = bc.IsMonster ? MaxDelayWild : MaxDelay;
+            var min = bc.IsMonster || InActiveCombat(bc) ? MinDelayWild : MinDelay;
+            var max = bc.IsMonster || InActiveCombat(bc) ? MaxDelayWild : MaxDelay;
 
             if (bc.IsParagon)
             {
@@ -46,6 +46,11 @@ namespace Server
             return bc.IsMonster ? 150 : 190;
         }
 
+        public static bool InActiveCombat(BaseCreature bc)
+        {
+            return bc.Combatant != null && bc.ControlOrder != OrderType.Follow;
+        }
+
         public static double TransformMoveDelay(BaseCreature bc, double delay)
         {
             var adjusted = bc.IsMonster ? MaxDelayWild : MaxDelay;
@@ -68,11 +73,8 @@ namespace Server
             return delay;
         }
 
-        // Should we use the new method of speeds?
-        private static readonly bool Enabled = true;
-
+        public static bool UseNewSpeeds { get { return true; } }
 		public double ActiveSpeed { get; set; }
-
 		public double PassiveSpeed { get; set; }
 
 		public Type[] Types { get; set; }
@@ -84,9 +86,9 @@ namespace Server
 			Types = types;
 		}
 
-		public static bool Contains(object obj)
+		/*public static bool Contains(object obj)
 		{
-			if (!Enabled)
+			if (UseNewSpeeds)
 				return false;
 
 			if (m_Table == null)
@@ -95,23 +97,27 @@ namespace Server
 			var sp = (SpeedInfo)m_Table[obj.GetType()];
 
 			return (sp != null);
-		}
+		}*/
 
-        public static bool GetSpeeds(object obj, ref double activeSpeed, ref double passiveSpeed)
+        public static bool GetSpeeds(BaseCreature bc, ref double activeSpeed, ref double passiveSpeed)
 		{
-			if (!Enabled)
-				return false;
+            if (UseNewSpeeds)
+            {
+                GetSpeedsNew(bc, ref activeSpeed, ref passiveSpeed);
+            }
+            else
+            {
+                if (m_Table == null)
+                    LoadTable();
 
-			if (m_Table == null)
-				LoadTable();
+                var sp = (SpeedInfo)m_Table[bc.GetType()];
 
-			var sp = (SpeedInfo)m_Table[obj.GetType()];
+                if (sp == null)
+                    return false;
 
-			if (sp == null)
-				return false;
-
-			activeSpeed = sp.ActiveSpeed;
-			passiveSpeed = sp.PassiveSpeed;
+                activeSpeed = sp.ActiveSpeed;
+                passiveSpeed = sp.PassiveSpeed;
+            }
 
 			return true;
 		}
@@ -134,7 +140,7 @@ namespace Server
 
 		private static readonly SpeedInfo[] m_Speeds =
 		{
-			/* Slow */
+			// Slow
 			new SpeedInfo(
 				0.3,
 				0.6,
@@ -150,7 +156,8 @@ namespace Server
 					typeof(Korpre), typeof(Anzuanord), typeof(Anlorzen), typeof(UndeadGuardian), typeof(PutridUndeadGuardian),
 					typeof(CorgulTheSoulBinder), typeof(GooeyMaggots), typeof(Fezzik), typeof(Ronin)
 				}),
-			/* Fast */ new SpeedInfo(
+            // Fast
+            new SpeedInfo(
 				0.2,
 				0.4,
 				new[]
@@ -174,7 +181,7 @@ namespace Server
 					// TODO: Where to put Lurg, Putrefier, Swoop and Pyre? They seem slower.
 					#endregion
 				}),
-			/* Very Fast */
+			// Very Fast
 			new SpeedInfo(
 				0.175,
 				0.350,
@@ -187,8 +194,9 @@ namespace Server
 					typeof(Leviathan), typeof(FireBeetle), typeof(FanDancer), typeof(FactionDeathKnight), typeof(ClockworkExodus),
 					typeof(Navrey), typeof(Raptor), typeof(TrapdoorSpider)
 				}),
-			/* Extremely Fast */ new SpeedInfo(0.08, 0.20, new[] {typeof(Miasma), typeof(Semidar), typeof(Mephitis)}),
-			/* Medium */
+			// Extremely Fast
+            new SpeedInfo(0.08, 0.20, new[] {typeof(Miasma), typeof(Semidar), typeof(Mephitis)}),
+			// Medium
 			new SpeedInfo(
 				0.25,
 				0.5,
