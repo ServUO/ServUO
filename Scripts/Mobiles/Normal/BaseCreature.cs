@@ -7167,7 +7167,14 @@ namespace Server.Mobiles
             Mobile m = Combatant as Mobile;
 
             if (m == null && GetMaster() is PlayerMobile)
+            {
                 m = GetMaster().Combatant as Mobile;
+            }
+
+            if (creaturesOnly && m is PlayerMobile)
+            {
+                return null;
+            }
 
             if (m == null || m == this || !CanBeHarmful(m, false) || (creaturesOnly && !(m is BaseCreature)))
             {
@@ -7175,12 +7182,15 @@ namespace Server.Mobiles
                 list.AddRange(Aggressors.Where(info => !creaturesOnly || info.Attacker is PlayerMobile));
 
                 if (list.Count > 0)
+                {
                     m = list[Utility.Random(list.Count)].Attacker;
+                }
                 else
+                {
                     m = null;
+                }
 
-                list.Clear();
-                list.TrimExcess();
+                ColUtility.Free(list);
             }
 
             return m;

@@ -14,11 +14,11 @@ namespace Server.Items
         public static string FilePath = Path.Combine("Saves", "Highseas.bin");
         public static bool DefaultRestrictBoats = true;
 
-        /*public static void Configure()
+        public static void Initialize()
         {
             if (Core.HS)
             {
-                Region reg = new TokunoDocksRegion();
+                /*Region reg = new TokunoDocksRegion();
                 reg.Register();
 
                 SeaMarketRegion reg1 = new SeaMarketRegion(Map.Felucca);
@@ -29,9 +29,9 @@ namespace Server.Items
 
                 SeaMarketRegion.SetRegions(reg1, reg2);
 
-                CommandSystem.Register("RestrictBoats", AccessLevel.GameMaster, new CommandEventHandler(SeaMarketRegion.SetRestriction_OnCommand));
+                CommandSystem.Register("RestrictBoats", AccessLevel.GameMaster, new CommandEventHandler(SeaMarketRegion.SetRestriction_OnCommand));*/
             }
-        }*/
+        }
 
         public static void Configure()
         {
@@ -43,17 +43,6 @@ namespace Server.Items
                 SeaMarketRegion.RestrictBoats = DefaultRestrictBoats;
 
                 m_Instance = new HighSeasPersistance();
-
-                Region reg = new TokunoDocksRegion();
-                reg.Register();
-
-                SeaMarketRegion reg1 = new SeaMarketRegion(Map.Felucca);
-                SeaMarketRegion reg2 = new SeaMarketRegion(Map.Trammel);
-
-                reg1.Register();
-                reg2.Register();
-
-                SeaMarketRegion.SetRegions(reg1, reg2);
 
                 CommandSystem.Register("RestrictBoats", AccessLevel.GameMaster, new CommandEventHandler(SeaMarketRegion.SetRestriction_OnCommand));
             }
