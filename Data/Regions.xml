@@ -999,6 +999,10 @@
       <rect x="5640" y="1776" width="295" height="263" />
       <go x="5774" y="1896" z="20" />
     </region>
+	<region type="SeaMarketRegion" priority="50" name="Sea Market">
+      <rect x="4529" y="2296" width="45" height="112" />
+      <go x="4550" y="2317" z="-2" />
+    </region>
   </Facet>
   <Facet name="Trammel">
     <region type="DungeonRegion" priority="50" name="Khaldun">
@@ -2086,6 +2090,10 @@
       <rect x="5640" y="1776" width="295" height="263" />
       <go x="5774" y="1896" z="20" />
     </region>
+	<region type="SeaMarketRegion" priority="50" name="Sea Market">
+      <rect x="4529" y="2296" width="45" height="112" />
+      <go x="4550" y="2317" z="-2" />
+    </region>
   </Facet>
   <Facet name="Ilshenar">
     <region type="ExploringDeepCreaturesRegion" name="Djinn">
@@ -2643,6 +2651,10 @@
       <rect x="283" y="361" width="68" height="102" />
       <go x="320" y="408" z="32" />
       <smartNoHousing active="true" />
+    </region>
+	<region type="TokunoDocksRegion" priority="50" name="Tokuno Docks">
+      <rect x="650" y="1350" width="100" height="50" />
+      <go x="713" y="1360" z="26" />
     </region>
   </Facet>
   <Facet name="TerMur">
