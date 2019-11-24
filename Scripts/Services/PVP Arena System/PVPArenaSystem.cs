@@ -349,10 +349,30 @@ namespace Server.Engines.ArenaSystem
 
         public static void InitializeArenas()
         {
-            Instance.Register(new PVPArena(ArenaDefinition.LostLandsTrammel));
-            Instance.Register(new PVPArena(ArenaDefinition.LostLandsFelucca));
-            Instance.Register(new PVPArena(ArenaDefinition.HavenTrammel));
-            Instance.Register(new PVPArena(ArenaDefinition.HavenFelucca));
+            if (CanInitialize(ArenaDefinition.LostLandsTrammel))
+            {
+                Instance.Register(new PVPArena(ArenaDefinition.LostLandsTrammel));
+            }
+
+            if (CanInitialize(ArenaDefinition.LostLandsFelucca))
+            {
+                Instance.Register(new PVPArena(ArenaDefinition.LostLandsFelucca));
+            }
+
+            if (CanInitialize(ArenaDefinition.HavenTrammel))
+            {
+                Instance.Register(new PVPArena(ArenaDefinition.HavenTrammel));
+            }
+
+            if (CanInitialize(ArenaDefinition.HavenFelucca))
+            {
+                Instance.Register(new PVPArena(ArenaDefinition.HavenFelucca));
+            }
+        }
+
+        private static bool CanInitialize(ArenaDefinition def)
+        {
+            return !Instance.IsBlocked(def) && (Arenas == null || !Arenas.Any(arena => arena.Definition == def));
         }
 
         [Usage("ArenaSetup")]

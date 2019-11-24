@@ -37,9 +37,9 @@ namespace Server.Engines.ArenaSystem
             for(int i = 0; i < ArenaDefinition.Definitions.Length; i++)
             {
                 var def = ArenaDefinition.Definitions[i];
-                bool exists = PVPArenaSystem.Arenas.Any(arena => arena.Definition == def);
-
-                AddHtml(45, 105 + (i * 25), 200, 20, Color("#FFFFFF", String.Format("{0} [{1}]", def.Name, exists ? "Enabled" : "Disabled")), false, false);
+                bool exists = PVPArenaSystem.Arenas != null && PVPArenaSystem.Arenas.Any(arena => arena.Definition == def);
+              
+                AddHtml(45, 105 + (i * 25), 200, 20, Color("#FFFFFF", String.Format("{0} [{1}]", def.Name, exists ? "Enabled" : PVPArenaSystem.Instance != null && PVPArenaSystem.Instance.IsBlocked(def) ? "Blocked" : "Disabled")), false, false);
                 AddButton(10, 105 + (i * 25), !exists ? 4023 : 4017, !exists ? 4024 : 4018, i + 500, GumpButtonType.Reply, 0);
             }
 
@@ -57,7 +57,7 @@ namespace Server.Engines.ArenaSystem
             if (id >= 0 && id < ArenaDefinition.Definitions.Length)
             {
                 var def = ArenaDefinition.Definitions[id];
-                bool exists = PVPArenaSystem.Arenas.Any(arena => arena.Definition == def);
+                bool exists = PVPArenaSystem.Arenas != null && PVPArenaSystem.Arenas.Any(arena => arena.Definition == def);
 
                 BaseGump.SendGump(new GenericConfirmCallbackGump<ArenaDefinition>(
                     User,
@@ -839,7 +839,7 @@ namespace Server.Engines.ArenaSystem
                     else if (from != pm)
                     {
                         PVPArenaSystem.SendMessage(from, 1116152); // You have sent the invitation to the player.
-                        PVPArenaSystem.SendMessage(pm, 1116212); // You have been invited to a duel.  Select the ìOKî button to join this duel.
+                        PVPArenaSystem.SendMessage(pm, 1116212); // You have been invited to a duel.  Select the ‚ÄúOK‚Äù button to join this duel.
 
                         BaseGump.SendGump(new OfferDuelGump(pm, Duel, Arena, true));
                     }
