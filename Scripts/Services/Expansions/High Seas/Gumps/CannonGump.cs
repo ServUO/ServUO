@@ -66,7 +66,7 @@ namespace Server.Gumps
             if (!loaded)
                 AddHtmlLocalized(150, 80, 100, 16, 1149636, RedHue, false, false); //Not Loaded
             else
-                AddHtmlLocalized(150, 80, 100, 16, 1114057, AmmoInfo.GetAmmoName(cannon), GreenHue, false, false);
+                AddHtmlLocalized(150, 80, 100, 16, 1114057, AmmoInfo.GetAmmoName(cannon).ToString(), GreenHue, false, false);
                 //AddHtmlLocalized(150, 80, 100, 16, cannon.AmmoType == AmmoType.Grapeshot ? 1095741 : 1116029, GreenHue, false, false);
 
             if (!primed)

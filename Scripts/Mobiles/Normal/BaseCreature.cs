@@ -7896,7 +7896,7 @@ namespace Server.Mobiles
                         {
                             Mobile owner = c.ControlMaster;
 
-                            if (!c.IsStabled &&
+                            if (!c.IsStabled && !(c is BaseVendor) &&
                                 (owner == null || owner.Deleted || owner.Map != c.Map || !owner.InRange(c, 12) || !c.CanSee(owner) ||
                                  !c.InLOS(owner)))
                             {

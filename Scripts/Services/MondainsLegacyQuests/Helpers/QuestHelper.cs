@@ -86,10 +86,20 @@ namespace Server.Engines.Quests
         {
             if (!quest.CanOffer())
                 return false;
-			
-            // if a player wants to start quest chain (already started) again (not osi)			
-            if (quest.ChainID != QuestChain.None && FirstChainQuest(quest, quest.Quester) && from.Chains.ContainsKey(quest.ChainID))
-                return false;
+
+            if (quest.ChainID != QuestChain.None)
+            {
+                // if a player wants to start quest chain (already started) again (not osi)
+                if (from.Chains.ContainsKey(quest.ChainID) && FirstChainQuest(quest, quest.Quester))
+                {
+                    return false;
+                }
+                // if player already has an active quest from the chain
+                else if (InChainProgress(from, quest))
+                {
+                    return false;
+                }
+            }
 				
             if (!Delayed(from, quest, message))
                 return false;
@@ -232,12 +242,35 @@ namespace Server.Engines.Quests
             player.DoneQuests.Add(new QuestRestartInfo(type, delay));
         }
 
+        /// <summary>
+        /// Called in BaseQuestItem.cs
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="quests"></param>
+        /// <returns></returns>
         public static bool InProgress(PlayerMobile player, Type[] quests)
         { 
             if (quests == null)
                 return false;
-				
-            for (int i = 0; i < quests.Length; i ++)
+
+            var quest = player.Quests.FirstOrDefault(q => quests.Any(questerType => questerType == q.GetType()));
+
+            if (quest != null)
+            {
+                if (quest.Completed)
+                {
+                    player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.Complete, false, true));
+                }
+                else
+                {
+                    player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.InProgress, false));
+                    quest.InProgress();
+                }
+
+                return true;
+            }
+
+            /*for (int i = 0; i < quests.Length; i ++)
             { 
                 for (int j = 0; j < player.Quests.Count; j ++)
                 {
@@ -258,13 +291,40 @@ namespace Server.Engines.Quests
                         return true;
                     }
                 }
-            }
+            }*/
+
             return false;
         }
 
+        /// <summary>
+        /// Called in MondainQuester.cs
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="quester"></param>
+        /// <returns></returns>
         public static bool InProgress(PlayerMobile player, Mobile quester)
-        { 
-            for (int i = 0; i < player.Quests.Count; i ++)
+        {
+            var quest = player.Quests.FirstOrDefault(q => q.QuesterType == quester.GetType());
+
+            if (quest != null)
+            {
+                if (quest.Completed)
+                {
+                    if (quest.Complete == null && !AnyRewards(quest))
+                        quest.GiveRewards();
+                    else
+                        player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.Complete, false, true));
+                }
+                else
+                {
+                    player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.InProgress, false));
+                    quest.InProgress();
+                }
+
+                return true;
+            }
+
+            /*for (int i = 0; i < player.Quests.Count; i ++)
             {
                 BaseQuest quest = player.Quests[i];
 				
@@ -288,7 +348,7 @@ namespace Server.Engines.Quests
 						
                     return true;
                 }
-            }
+            }*/
 			
             return false;
         }
@@ -357,65 +417,20 @@ namespace Server.Engines.Quests
 
         public static bool FirstChainQuest(BaseQuest quest, object quester)
         {
-            Type[] quests = null;
-		
-            if (quester is MondainQuester)
-            {
-                MondainQuester mQuester = (MondainQuester)quester;
-				
-                quests = mQuester.Quests;
-            }
-            else if (quester is BaseQuestItem)
-            {
-                BaseQuestItem iQuester = (BaseQuestItem)quester;
-				
-                quests = iQuester.Quests;
-            }
-			
-            if (quests != null)
-            {
-                for (int i = 0; i < quests.Length; i ++)
-                {
-                    if (quests[i] == quest.GetType())
-                        return true;
-                }
-            }
-			
-            return false;
+            return quest != null && BaseChain.Chains[(int)quest.ChainID] != null && BaseChain.Chains[(int)quest.ChainID].Length > 0 && BaseChain.Chains[(int)quest.ChainID][0] == quest.GetType();
         }
 
         public static Type FindFirstChainQuest(BaseQuest quest)
         {
-            if (quest == null)
+            if (quest == null || quest.ChainID == QuestChain.None || BaseChain.Chains[(int)quest.ChainID] == null || BaseChain.Chains[(int)quest.ChainID].Length == 0)
                 return null;
-				
-            Type[] quests = null;
-		
-            if (quest.Quester is MondainQuester)
-            {
-                MondainQuester mQuester = (MondainQuester)quest.Quester;
-				
-                quests = mQuester.Quests;
-            }
-            else if (quest.Quester is BaseQuestItem)
-            {
-                BaseQuestItem iQuester = (BaseQuestItem)quest.Quester;
-				
-                quests = iQuester.Quests;
-            }
-			
-            if (quests != null)
-            {
-                for (int i = 0; i < quests.Length; i ++)
-                {
-                    BaseQuest fQuest = Construct(quests[i]) as BaseQuest;
-					
-                    if (fQuest != null && fQuest.ChainID == quest.ChainID)
-                        return fQuest.GetType();
-                }
-            }
-			
-            return null;
+
+            return BaseChain.Chains[(int)quest.ChainID][0];
+        }
+
+        public static bool InChainProgress(PlayerMobile pm, BaseQuest quest)
+        {
+            return pm.Quests.Any(q => q.ChainID != QuestChain.None && q.ChainID == quest.ChainID && q.GetType() != quest.GetType());
         }
 
         public static Region FindRegion(string name)
