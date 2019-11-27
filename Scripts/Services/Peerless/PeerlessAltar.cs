@@ -570,7 +570,7 @@ namespace Server.Items
             StopSlayTimer();
 
             // delete master keys
-            Utility.SafeDelete(MasterKeys);
+            ColUtility.SafeDelete(MasterKeys);
 
             ColUtility.Free(MasterKeys);
             m_DeadlineTimer = Timer.DelayCall(DelayAfterBossSlain, new TimerCallback(FinishSequence));
