@@ -752,12 +752,17 @@ namespace Server.Mobiles
         {
             base.OnAfterDelete();
 
-            m_PayTimer.Stop();
+            if (m_PayTimer != null)
+            {
+                m_PayTimer.Stop();
+            }
 
             House = null;
 
             if (Placeholder != null)
+            {
                 Placeholder.Delete();
+            }
         }
 
         public override bool IsSnoop(Mobile from)

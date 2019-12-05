@@ -141,6 +141,13 @@ namespace Server.Items
             base.GetProperties(list);
             
             list.Add(1071345, String.Format("{0:F1}", m_SkillLevel)); // Skill: ~1_val~
+
+            var desc = RepairSkillInfo.GetInfo(m_Skill).Description;
+
+            if (desc != null)
+            {
+                list.Add(desc.ToString());
+            }
         }
 
         public override void OnDoubleClick(Mobile from)

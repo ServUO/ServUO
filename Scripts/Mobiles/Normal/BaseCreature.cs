@@ -7037,10 +7037,6 @@ namespace Server.Mobiles
 
         public virtual bool PlayInstrumentSound { get { return true; } }
 
-        public virtual TimeSpan DiscordInterval { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(60, 120)); } }
-        public virtual TimeSpan PeaceInterval { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(60, 120)); } }
-        public virtual TimeSpan ProvokeInterval { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(60, 120)); } }
-
         public virtual bool DoDiscord()
         {
             Mobile target = GetBardTarget(Controlled);
@@ -7453,10 +7449,8 @@ namespace Server.Mobiles
             }
             else if (combatant != null && CanProvoke && tc >= m_NextProvoke && 0.33 > Utility.RandomDouble())
             {
-                if (DoProvoke())
-                    m_NextProvoke = tc + (int)ProvokeInterval.TotalMilliseconds;
-                else
-                    m_NextProvoke = tc + (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
+                DoProvoke();
+                m_NextProvoke = tc + Utility.RandomMinMax(5000, 12500);
             }
 
             if (combatant != null && TeleportsTo && tc >= m_NextTeleport)

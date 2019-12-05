@@ -348,7 +348,7 @@ namespace Server.Items
             {
                 var recipe = list[i];
 
-                if (!CheckFilter(recipe))
+                if (!CheckFilter(recipe) || !Recipe.Recipes.ContainsKey(recipe.RecipeID))
                     continue;                
 
                 int y = 96 + (tableIndex++ * 32);

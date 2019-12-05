@@ -33,8 +33,6 @@ namespace Server.Engines.Despise
         public override int DexStart { get { return Utility.RandomMinMax(100, 110); } }
         public override int IntStart { get { return Utility.RandomMinMax(100, 110); } }
 
-        public override TimeSpan DiscordInterval { get { return TimeSpan.FromSeconds(45); } }
-
         public override Mobile GetBardTarget(bool creaturesOnly = false)
         {
             IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, RangePerception);
