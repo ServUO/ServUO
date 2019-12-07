@@ -1,8 +1,36 @@
 using System;
 using Server.Gumps;
+using Server.Misc;
 
 namespace Server.Items
 {
+    public class HolidayGiftGiver2019 : GiftGiver
+    {
+        public static void Initialize()
+        {
+            GiftGiving.Register(new HolidayGiftGiver2019());
+        }
+
+        public override DateTime Start { get { return new DateTime(2019, 12, 03); } }
+        public override DateTime Finish { get { return new DateTime(2020, 01, 03); } }
+        public override TimeSpan MinimumAge { get { return TimeSpan.FromDays(30); } }
+
+        public override void GiveGift(Mobile mob)
+        {
+            Item token = new HolidayGiftToken2019();
+
+            switch (GiveGift(mob, token))
+            {
+                case GiftResult.Backpack:
+                    mob.SendLocalizedMessage(1062835); // Happy Holidays from the Origin team!  Gift items have been placed in your backpack.
+                    break;
+                case GiftResult.BankBox:
+                    mob.SendLocalizedMessage(1062836); // Happy Holidays from the Origin team!  Gift items have been placed in your bank box.
+                    break;
+            }
+        }
+    }
+
     public enum HolidayGift2019
     {
         None = 0,
