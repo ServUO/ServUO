@@ -1,6 +1,5 @@
 using System;
 using Server;
-using Server.Network;
 
 namespace Server.Items
 {
@@ -18,13 +17,13 @@ namespace Server.Items
         {
             DisplayName = name;
 
-            AddComponent(new JollyHolidayTreeComponent(0xA4D0), 0, 0, 0);
+            AddComponent(new JollyHolidayTreeComponent(0xA4D0, 1124426), 0, 0, 0);
         }
 
-        private class JollyHolidayTreeComponent : AddonComponent, IDyable
+        private class JollyHolidayTreeComponent : LocalizedAddonComponent, IDyable
         {
-            public JollyHolidayTreeComponent(int id)
-                : base(id)
+            public JollyHolidayTreeComponent(int id, int labelnumber)
+                : base(id, labelnumber)
             {
             }
 
@@ -39,13 +38,15 @@ namespace Server.Items
                 return true;
             }
 
-            public override void OnAosSingleClick(Mobile from)
+            public override void GetProperties(ObjectPropertyList list)
             {
+                base.GetProperties(list);
+
                 string name = ((JollyHolidayTreeAddon)Addon).DisplayName;
 
                 if (!string.IsNullOrEmpty(name))
                 {
-                    PublicOverheadMessage(MessageType.Regular, 0x3B2, 1159271, name); // <BASEFONT COLOR=#FFD24D>Jolly Holiday Tree from ~1_NAME~<BASEFONT COLOR=#FFFFFF>
+                    list.Add(1159271, name); // <BASEFONT COLOR=#FFD24D>Jolly Holiday Tree from ~1_NAME~<BASEFONT COLOR=#FFFFFF>
                 }
             }
 
@@ -57,20 +58,20 @@ namespace Server.Items
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-                writer.WriteEncodedInt(0); // version
+                writer.Write((int)0);
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-                int version = reader.ReadEncodedInt();
+                int version = reader.ReadInt();
             }
         }
 
         public JollyHolidayTreeAddon(Serial serial)
             : base(serial)
         {
-        }       
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -87,7 +88,7 @@ namespace Server.Items
 
             _DisplayName = reader.ReadString();
         }
-    }   
+    }
 
     public class JollyHolidayTreeDeed : BaseAddonDeed
     {

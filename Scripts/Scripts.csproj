@@ -608,6 +608,28 @@
     <Compile Include="Items\Consumables\EmbroideryTool.cs" />
     <Compile Include="Items\Damageable\Beacon.cs" />
     <Compile Include="Items\Damageable\DamageableItem.cs" />
+    <Compile Include="Items\Decorative\ArtisanFestivalRewards\LanternBrokenShield.cs" />
+    <Compile Include="Items\Decorative\ArtisanFestivalRewards\LanternHand.cs" />
+    <Compile Include="Items\Decorative\ArtisanFestivalRewards\LanternHeart.cs" />
+    <Compile Include="Items\Decorative\ArtisanFestivalRewards\LanternUnevenScales.cs" />
+    <Compile Include="Items\Decorative\ArtisanFestivalRewards\PaintingAnkh.cs" />
+    <Compile Include="Items\Decorative\ArtisanFestivalRewards\PaintingAxe.cs" />
+    <Compile Include="Items\Decorative\ArtisanFestivalRewards\PaintingMasks.cs" />
+    <Compile Include="Items\Decorative\ArtisanFestivalRewards\PaintingSword.cs" />
+    <Compile Include="Items\Decorative\ArtisanFestivalRewards\PillowChalice.cs" />
+    <Compile Include="Items\Decorative\ArtisanFestivalRewards\PillowMoon.cs" />
+    <Compile Include="Items\Decorative\ArtisanFestivalRewards\PillowSkull.cs" />
+    <Compile Include="Items\Decorative\ArtisanFestivalRewards\PillowTear.cs" />
+    <Compile Include="Items\Decorative\ArtisanFestivalRewards\SculptureWoodCanes.cs" />
+    <Compile Include="Items\Decorative\ArtisanFestivalRewards\SculptureWoodCoin.cs" />
+    <Compile Include="Items\Decorative\ArtisanFestivalRewards\SculptureWoodEven.cs" />
+    <Compile Include="Items\Decorative\ArtisanFestivalRewards\SculptureWoodScept.cs" />
+    <Compile Include="Items\Decorative\DecorativeStableSet\ChickenStatue.cs" />
+    <Compile Include="Items\Decorative\DecorativeStableSet\CowPie.cs" />
+    <Compile Include="Items\Decorative\DecorativeStableSet\CowStatue.cs" />
+    <Compile Include="Items\Decorative\DecorativeStableSet\Feedbag.cs" />
+    <Compile Include="Items\Decorative\DecorativeStableSet\HorseStatue.cs" />
+    <Compile Include="Items\Decorative\DecorativeStableSet\MetalTub.cs" />
     <Compile Include="Items\Decorative\DoveCage.cs" />
     <Compile Include="Items\Decorative\Countertop.cs" />
     <Compile Include="Items\Decorative\ButcherBlock.cs" />
@@ -649,6 +671,7 @@
     <Compile Include="Items\Resource\VileTentacles.cs" />
     <Compile Include="Items\Resource\EtherealSand.cs" />
     <Compile Include="Items\StoreBought\BarrelMailbox.cs" />
+    <Compile Include="Items\StoreBought\PetWhistle.cs" />
     <Compile Include="Items\StoreBought\SquirrelMailbox.cs" />
     <Compile Include="Items\Tools\SteamPoweredBeverageMaker.cs" />
     <Compile Include="Items\Addons\ClawFootTub.cs" />
@@ -793,6 +816,19 @@
     <Compile Include="Mobiles\Normal\Triton.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
     <Compile Include="Mobiles\NPCs\Gardener.cs" />
+    <Compile Include="Mobiles\NPCs\Mannequin\BaseProperty.cs" />
+    <Compile Include="Mobiles\NPCs\Mannequin\Gumps.cs" />
+    <Compile Include="Mobiles\NPCs\Mannequin\Mannequin.cs" />
+    <Compile Include="Mobiles\NPCs\Mannequin\Property\AbsorptionAttributeProperty.cs" />
+    <Compile Include="Mobiles\NPCs\Mannequin\Property\AosArmorAttributeProperty.cs" />
+    <Compile Include="Mobiles\NPCs\Mannequin\Property\AosAttributeProperty.cs" />
+    <Compile Include="Mobiles\NPCs\Mannequin\Property\ExtendedWeaponAttribute.cs" />
+    <Compile Include="Mobiles\NPCs\Mannequin\Property\NegativeAttributeProperty.cs" />
+    <Compile Include="Mobiles\NPCs\Mannequin\Property\OtherProperty.cs" />
+    <Compile Include="Mobiles\NPCs\Mannequin\Property\ResistProperty.cs" />
+    <Compile Include="Mobiles\NPCs\Mannequin\Property\SkillBonusAttribute.cs" />
+    <Compile Include="Mobiles\NPCs\Mannequin\Property\SlayerAttribute.cs" />
+    <Compile Include="Mobiles\NPCs\Mannequin\Property\WeaponAttributeProperty.cs" />
     <Compile Include="Mobiles\NPCs\MiningCooperativeMerchant.cs" />
     <Compile Include="Mobiles\NPCs\CommissionPlayerVendor.cs" />
     <Compile Include="Multis\ContestHouses.cs" />
@@ -10292,7 +10328,6 @@
     <Compile Include="Services\Virtues\Honesty.cs" />
     <Compile Include="Services\Virtues\Humility.cs" />
     <Compile Include="Services\Virtues\Spirituality.cs" />
-    <Compile Include="Services\Mannequin.cs" />
     <Compile Include="Services\Help\HelpGump.cs">
       <SubType>Code</SubType>
     </Compile>

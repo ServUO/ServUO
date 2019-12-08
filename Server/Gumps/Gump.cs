@@ -230,7 +230,12 @@ namespace Server.Gumps
 			Add(new GumpImage(x, y, gumpID));
 		}
 
-		public void AddImage(int x, int y, int gumpID, int hue)
+        public void AddSpriteImage(int x, int y, int gumpID, int width, int height, int sx, int sy)
+        {
+            Add(new GumpSpriteImage(x, y, gumpID, width, height, sx, sy));
+        }
+
+        public void AddImage(int x, int y, int gumpID, int hue)
 		{
 			Add(new GumpImage(x, y, gumpID, hue));
 		}
