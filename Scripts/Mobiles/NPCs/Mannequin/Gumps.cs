@@ -34,6 +34,9 @@ namespace Server.Gumps
 
             for (int i = 0; i < EquipmentItem.Count; i++)
             {
+                if (EquipmentItem[i].LabelNumber == 1159280) // Medable Armor - not appear
+                    continue;
+
                 if (EquipmentItem[i].IsSpriteGraph)
                 {
                     AddSpriteImage(5 + (35 * si), 41, 0x9D3B, EquipmentItem[i].SpriteW, EquipmentItem[i].SpriteH, 30, 30);
@@ -59,6 +62,9 @@ namespace Server.Gumps
 
             for (int i = 0; i < SelectItem.Count; i++)
             {
+                if (SelectItem[i].LabelNumber == 1159280) // Medable Armor - not appear
+                    continue;
+
                 if (SelectItem[i].IsSpriteGraph)
                 {
                     AddSpriteImage(275 + (35 * si), 41, 0x9D3B, SelectItem[i].SpriteW, SelectItem[i].SpriteH, 30, 30);
