@@ -6,6 +6,7 @@ namespace Server.Items
     public class JollyHolidayTreeAddon : BaseAddon
     {
         public override BaseAddonDeed Deed { get { return new JollyHolidayTreeDeed(DisplayName); } }
+        public override bool ForceShowProperties { get { return true; } }
 
         private string _DisplayName;
 
