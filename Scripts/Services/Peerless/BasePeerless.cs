@@ -14,16 +14,17 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_Altar;
+                return m_Altar;
             }
             set
             {
-                this.m_Altar = value;
+                m_Altar = value;
             }
         }
 
 		public override bool CanBeParagon { get { return false; } }
         public virtual bool DropPrimer { get { return Core.TOL; } }
+        public virtual bool GiveMLSpecial { get { return true; } }
 
         public override bool Unprovokable
         {
@@ -49,11 +50,11 @@ namespace Server.Mobiles
         {
             base.OnThink();
 			
-            if (this.HasFireRing && this.Combatant != null && this.Alive && this.Hits > 0.8 * this.HitsMax && this.m_NextFireRing > Core.TickCount && Utility.RandomDouble() < this.FireRingChance)
-                this.FireRing();
+            if (HasFireRing && Combatant != null && Alive && Hits > 0.8 * HitsMax && m_NextFireRing > Core.TickCount && Utility.RandomDouble() < FireRingChance)
+                FireRing();
 				
-            if (this.CanSpawnHelpers && this.Combatant != null && this.Alive && this.CanSpawnWave())
-                this.SpawnHelpers();
+            if (CanSpawnHelpers && Combatant != null && Alive && CanSpawnWave())
+                SpawnHelpers();
         }
 		
         public override void OnDeath(Container c)
@@ -85,15 +86,63 @@ namespace Server.Mobiles
                 MondainsLegacy.DropPeerlessMinor(c);
             }
 
-            if (this.m_Altar != null)
-                this.m_Altar.OnPeerlessDeath();
+            if (GiveMLSpecial)
+            {
+                if (Utility.RandomDouble() < 0.10)
+                    c.DropItem(new HumanFeyLeggings());
+
+                if (Utility.RandomDouble() < 0.025)
+                    c.DropItem(new CrimsonCincture());
+
+                if (0.05 > Utility.RandomDouble())
+                {
+                    switch (Utility.Random(32))
+                    {
+                        case 0: c.DropItem(new AssassinChest()); break;
+                        case 1: c.DropItem(new AssassinArms()); break;
+                        case 2: c.DropItem(new AssassinLegs()); break;
+                        case 3: c.DropItem(new AssassinGloves()); break;
+                        case 4: c.DropItem(new DeathChest()); break;
+                        case 5: c.DropItem(new DeathArms()); break;
+                        case 6: c.DropItem(new DeathLegs()); break;
+                        case 7: c.DropItem(new DeathBoneHelm()); break;
+                        case 8: c.DropItem(new DeathGloves()); break;
+                        case 9: c.DropItem(new MyrmidonArms()); break;
+                        case 10: c.DropItem(new MyrmidonLegs()); break;
+                        case 11: c.DropItem(new MyrmidonGorget()); break;
+                        case 12: c.DropItem(new MyrmidonChest()); break;
+                        case 13: c.DropItem(new LeafweaveGloves()); break;
+                        case 14: c.DropItem(new LeafweaveLegs()); break;
+                        case 15: c.DropItem(new LeafweavePauldrons()); break;
+                        case 16: c.DropItem(new PaladinGloves()); break;
+                        case 17: c.DropItem(new PaladinGorget()); break;
+                        case 18: c.DropItem(new PaladinArms()); break;
+                        case 19: c.DropItem(new PaladinLegs()); break;
+                        case 20: c.DropItem(new PaladinHelm()); break;
+                        case 21: c.DropItem(new PaladinChest()); break;
+                        case 22: c.DropItem(new HunterArms()); break;
+                        case 23: c.DropItem(new HunterGloves()); break;
+                        case 24: c.DropItem(new HunterLegs()); break;
+                        case 25: c.DropItem(new HunterChest()); break;
+                        case 26: c.DropItem(new GreymistArms()); break;
+                        case 27: c.DropItem(new GreymistGloves()); break;
+                        case 28: c.DropItem(new GreymistLegs()); break;
+                        case 29: c.DropItem(new MalekisHonor()); break;
+                        case 30: c.DropItem(new Feathernock()); break;
+                        case 31: c.DropItem(new Swiftflight()); break;
+                    }
+                }
+            }
+
+            if (m_Altar != null)
+                m_Altar.OnPeerlessDeath();
         }
 		
         public BasePeerless(AIType aiType, FightMode fightMode, int rangePerception, int rangeFight, double activeSpeed, double passiveSpeed)
             : base(aiType, fightMode, rangePerception, rangeFight, activeSpeed, passiveSpeed)
         {
-            this.m_NextFireRing = Core.TickCount + 10000;			
-            this.m_CurrentWave = this.MaxHelpersWaves;
+            m_NextFireRing = Core.TickCount + 10000;			
+            m_CurrentWave = MaxHelpersWaves;
         }
 		
         public override void Serialize(GenericWriter writer)
@@ -102,7 +151,7 @@ namespace Server.Mobiles
 
             writer.Write((int)0); // version
 			
-            writer.Write((Item)this.m_Altar);
+            writer.Write((Item)m_Altar);
         }
 		
         public override void Deserialize(GenericReader reader)
@@ -111,7 +160,7 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 			
-            this.m_Altar = reader.ReadItem() as PeerlessAltar;
+            m_Altar = reader.ReadItem() as PeerlessAltar;
         }
 		
         #region Helpers		
@@ -143,11 +192,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_CurrentWave;
+                return m_CurrentWave;
             }
             set
             {
-                this.m_CurrentWave = value;
+                m_CurrentWave = value;
             }
         }
 
@@ -155,8 +204,8 @@ namespace Server.Mobiles
         {
             get
             {
-                if (this.m_Altar != null)
-                    return this.m_Altar.AllHelpersDead();
+                if (m_Altar != null)
+                    return m_Altar.AllHelpersDead();
 
                 return true;
             }
@@ -164,14 +213,14 @@ namespace Server.Mobiles
 		
         public virtual bool CanSpawnWave()
         {
-            if (this.MaxHelpersWaves > 0 && this.m_CurrentWave > 0)
+            if (MaxHelpersWaves > 0 && m_CurrentWave > 0)
             {
-                double hits = (this.Hits / (double)this.HitsMax);
-                double waves = (this.m_CurrentWave / (double)(this.MaxHelpersWaves + 1));
+                double hits = (Hits / (double)HitsMax);
+                double waves = (m_CurrentWave / (double)(MaxHelpersWaves + 1));
 				
-                if (hits < waves && Utility.RandomDouble() < this.SpawnHelpersChance)
+                if (hits < waves && Utility.RandomDouble() < SpawnHelpersChance)
                 {
-                    this.m_CurrentWave -= 1;
+                    m_CurrentWave -= 1;
                     return true;
                 }
             }
@@ -185,12 +234,12 @@ namespace Server.Mobiles
 		
         public void SpawnHelper(BaseCreature helper, int range)
         {
-            this.SpawnHelper(helper, this.GetSpawnPosition(range));					
+            SpawnHelper(helper, GetSpawnPosition(range));					
         }
 		
         public void SpawnHelper(BaseCreature helper, int x, int y, int z)
         {
-            this.SpawnHelper(helper, new Point3D(x, y, z));					
+            SpawnHelper(helper, new Point3D(x, y, z));					
         }
 		
         public void SpawnHelper(BaseCreature helper, Point3D location)
@@ -201,10 +250,10 @@ namespace Server.Mobiles
             helper.Home = location;
             helper.RangeHome = 4;
 		
-            if (this.m_Altar != null)
-                this.m_Altar.AddHelper(helper);
+            if (m_Altar != null)
+                m_Altar.AddHelper(helper);
 				
-            helper.MoveToWorld(location, this.Map);			
+            helper.MoveToWorld(location, Map);			
         }
 
         #endregion
@@ -215,22 +264,22 @@ namespace Server.Mobiles
                 switch ( Utility.Random(6) )
                 {
                     case 0:
-                        this.PackItem(new Blight());
+                        PackItem(new Blight());
                         break;
                     case 1:
-                        this.PackItem(new Scourge());
+                        PackItem(new Scourge());
                         break;
                     case 2:
-                        this.PackItem(new Taint());
+                        PackItem(new Taint());
                         break;
                     case 3:
-                        this.PackItem(new Putrefication());
+                        PackItem(new Putrefaction());
                         break;
                     case 4:
-                        this.PackItem(new Corruption());
+                        PackItem(new Corruption());
                         break;
                     case 5:
-                        this.PackItem(new Muculent());
+                        PackItem(new Muculent());
                         break;
                 }
         }
@@ -238,7 +287,7 @@ namespace Server.Mobiles
         public virtual void PackItems(Item item, int amount)
         {
             for (int i = 0; i < amount; i ++)
-                this.PackItem(item);
+                PackItem(item);
         }
 		
         public virtual void PackTalismans(int amount)
@@ -246,7 +295,7 @@ namespace Server.Mobiles
             int count = Utility.Random(amount);
 			
             for (int i = 0; i < count; i ++)
-                this.PackItem(Loot.RandomTalisman());
+                PackItem(Loot.RandomTalisman());
         }
 		
         #region Fire Ring
@@ -285,7 +334,7 @@ namespace Server.Mobiles
         {
             for (int i = 0; i < m_North.Length; i += 2) 
             {
-                Point3D p = this.Location;
+                Point3D p = Location;
 				
                 p.X += m_North[i];
                 p.Y += m_North[i + 1];
@@ -294,12 +343,12 @@ namespace Server.Mobiles
 				
                 SpellHelper.GetSurfaceTop(ref po);
 				
-                Effects.SendLocationEffect(po, this.Map, 0x3E27, 50);
+                Effects.SendLocationEffect(po, Map, 0x3E27, 50);
             }
 			
             for (int i = 0; i < m_East.Length; i += 2) 
             {
-                Point3D p = this.Location;
+                Point3D p = Location;
 				
                 p.X += m_East[i];
                 p.Y += m_East[i + 1];
@@ -308,10 +357,10 @@ namespace Server.Mobiles
 				
                 SpellHelper.GetSurfaceTop(ref po);
 				
-                Effects.SendLocationEffect(po, this.Map, 0x3E31, 50);
+                Effects.SendLocationEffect(po, Map, 0x3E31, 50);
             }
 			
-            this.m_NextFireRing = Core.TickCount + 10000;
+            m_NextFireRing = Core.TickCount + 10000;
         }
         #endregion
     }

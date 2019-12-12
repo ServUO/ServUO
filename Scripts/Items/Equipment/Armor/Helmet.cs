@@ -8,7 +8,7 @@ namespace Server.Items
         public Helmet()
             : base(0x140A)
         {
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         public Helmet(Serial serial)
@@ -103,9 +103,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (this.Weight == 1.0)
-                this.Weight = 5.0;
         }
     }
 }

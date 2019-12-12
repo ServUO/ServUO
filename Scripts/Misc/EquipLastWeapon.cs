@@ -1,6 +1,7 @@
 using System;
 using Server;
 using Server.Mobiles;
+using Server.Items;
 
 namespace Server.Network
 {
@@ -15,21 +16,32 @@ namespace Server.Network
         {
             PlayerMobile from = state.Mobile as PlayerMobile;
 
-            if (from != null)
+            if (from == null || from.Backpack == null)
+                return;
+
+            if (from.IsStaff() || Core.TickCount - from.NextActionTime >= 0)
             {
-                if (from.LastWeapon != null && from.LastWeapon.IsChildOf(from.Backpack))
+                BaseWeapon toEquip = from.LastWeapon;
+                BaseWeapon toDisarm = from.FindItemOnLayer(Layer.OneHanded) as BaseWeapon;
+
+                if (toDisarm == null)
+                    toDisarm = from.FindItemOnLayer(Layer.TwoHanded) as BaseWeapon;
+
+                if (toDisarm != null)
                 {
-                    Item toEquip = from.LastWeapon;
-                    Item toDisarm = from.FindItemOnLayer(Layer.OneHanded);
-
-                    if (toDisarm == null || !toDisarm.Movable)
-                        toDisarm = from.FindItemOnLayer(Layer.TwoHanded);
-
-                    if (toDisarm != null && toDisarm.Movable)
-                        from.Backpack.DropItem(toDisarm);
-
-                    from.EquipItem(toEquip);
+                    from.Backpack.DropItem(toDisarm);
+                    from.NextActionTime = Core.TickCount + Mobile.ActionDelay;
                 }
+
+                if (toEquip != toDisarm && toEquip != null && toEquip.Movable && toEquip.IsChildOf(from.Backpack))
+                {
+                    from.EquipItem(toEquip);
+                    from.NextActionTime = Core.TickCount + Mobile.ActionDelay;
+                }
+            }
+            else
+            {
+                from.SendActionMessage();
             }
         }
     }

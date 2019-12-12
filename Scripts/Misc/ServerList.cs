@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - ServerList.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.IO;
@@ -47,7 +41,7 @@ namespace Server.Misc
         * firewalls) or specific IP adddresses you can do so by modifying the file SocketOptions.cs found in this directory.
         */
 
-		public static readonly string Address = Config.Get("Server.Address", null);
+		public static readonly string Address = Config.Get("Server.Address", default(string));
 
 		public static readonly bool AutoDetect = Config.Get("Server.AutoDetect", true);
 

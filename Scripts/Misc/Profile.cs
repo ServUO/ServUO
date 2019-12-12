@@ -14,6 +14,12 @@ namespace Server.Misc
 
         public static void EventSink_ChangeProfileRequest(ChangeProfileRequestEventArgs e)
         {
+            if (e.Beholder != e.Beheld && e.Beholder.AccessLevel <= e.Beheld.AccessLevel)
+            {
+                e.Beholder.SendMessage("You do not have permission to do that.");
+                return;
+            }
+            
             Mobile from = e.Beholder;
 
             if (from.ProfileLocked)

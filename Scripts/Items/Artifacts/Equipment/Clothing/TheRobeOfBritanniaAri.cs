@@ -12,8 +12,7 @@ namespace Server.Items
         public TheRobeOfBritanniaAri()
             : base(0x2684)
         {
-            this.Hue = 0x48b;
-            this.StrRequirement = 0;
+            Hue = 0x48b;
         }
 
         public TheRobeOfBritanniaAri(Serial serial)

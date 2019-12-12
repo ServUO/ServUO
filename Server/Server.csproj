@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AssemblyName>ServUO</AssemblyName>
     <ApplicationIcon>servuo.ico</ApplicationIcon>
     <StartupObject>Server.Core</StartupObject>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NEWTIMERS, ServUO</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NEWTIMERS;ServUO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -35,8 +35,12 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
-    <DefineConstants>TRACE;NEWTIMERS, ServUO</DefineConstants>
+    <DefineConstants>TRACE;NEWTIMERS;ServUO</DefineConstants>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>ServUO.exe.manifest</ApplicationManifest>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -159,6 +163,7 @@
     <Compile Include=".\VirtueInfo.cs" />
     <Compile Include=".\World.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Gumps\ECHandleInput.cs" />
     <Compile Include="Gumps\Gump.cs" />
     <Compile Include="Gumps\GumpAlphaRegion.cs" />
     <Compile Include="Gumps\GumpBackground.cs" />
@@ -177,33 +182,29 @@
     <Compile Include="Gumps\GumpLabelCropped.cs" />
     <Compile Include="Gumps\GumpPage.cs" />
     <Compile Include="Gumps\GumpRadio.cs" />
+    <Compile Include="Gumps\GumpSpriteImage.cs" />
     <Compile Include="Gumps\GumpTextEntry.cs" />
     <Compile Include="Gumps\GumpTextEntryLimited.cs" />
     <Compile Include="Gumps\GumpTooltip.cs" />
-    <Compile Include="Gumps\KRGumpButton.cs" />
-    <Compile Include="Gumps\KRGumpHtmlLocalized.cs" />
-    <Compile Include="Gumps\KRGumpImage.cs" />
-    <Compile Include="Gumps\KRGumpLabel.cs" />
     <Compile Include="Gumps\RelayInfo.cs" />
     <Compile Include="Network\PingListener.cs" />
     <Compile Include="Persistence\Persistence.cs" />
     <Compile Include="PromptExtensions.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Items\VirtualCheck.cs" />
+    <Compile Include="SpawnArea.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="servuo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.XML" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ultima\Ultima.csproj">
@@ -211,4 +212,9 @@
       <Name>Ultima</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="ServUO.exe.manifest" />
+  </ItemGroup>
+  <Import Project="..\VersionSpecificSymbols.Common.prop" />
 </Project>

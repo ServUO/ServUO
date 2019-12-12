@@ -111,6 +111,7 @@ namespace Server.Items
                 return false;
 
             m_Instance = new ArisenController();
+            WeakEntityCollection.Add("sa", m_Instance);
             return true;
         }
 

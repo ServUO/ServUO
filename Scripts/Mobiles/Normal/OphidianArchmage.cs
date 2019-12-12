@@ -63,6 +63,13 @@ namespace Server.Mobiles
                 return 1;
             }
         }
+		public override int TreasureMapLevel
+        {
+            get
+            {
+                return 2;
+            }
+        }
 
         public override TribeType Tribe { get { return TribeType.Ophidian; } }
 

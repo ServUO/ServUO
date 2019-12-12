@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server.Targeting;
 using Server.Multis;
 using Server.Regions;
+using Server.Mobiles;
 
 namespace Server.Spells.Spellweaving
 {
@@ -54,8 +57,8 @@ namespace Server.Spells.Spellweaving
                 int level = GetFocusLevel(Caster);
                 double skill = Caster.Skills[CastSkill].Value;
 
-                int tiles = 2 + level;
-                int damage = 15 + level;
+                int tiles = 5 + level;
+                int damage = 10 + (int)Math.Max(1, (skill / 24)) + level;
                 int duration = (int)Math.Max(1, skill / 24) + level; 
 				
                 for (int x = p.X - tiles; x <= p.X + tiles; x += tiles)
@@ -76,7 +79,7 @@ namespace Server.Spells.Spellweaving
 
                 NegativeAttributes.OnCombatAction(Caster);
 
-                new InternalTimer(Caster, p, damage, tiles, duration).Start();
+                new InternalTimer(this, Caster, p, damage, tiles, duration).Start();
             }
 
             FinishSequence();
@@ -97,6 +100,22 @@ namespace Server.Spells.Spellweaving
                     return false;
             }
             return true;
+        }
+
+        private static Dictionary<Mobile, long> m_Table = new Dictionary<Mobile, long>();
+        public static Dictionary<Mobile, long> Table { get { return m_Table; } }
+
+        public static void DefragTable()
+        {
+            List<Mobile> mobiles = new List<Mobile>(m_Table.Keys);
+
+            foreach (Mobile m in mobiles)
+            {
+                if (Core.TickCount - m_Table[m] >= 0)
+                    m_Table.Remove(m);
+            }
+
+            ColUtility.Free(mobiles);
         }
 
         public class InternalTarget : Target
@@ -123,7 +142,8 @@ namespace Server.Spells.Spellweaving
         }
 
         public class InternalTimer : Timer
-        { 
+        {
+            private readonly Spell m_Spell;
             private readonly Mobile m_Owner;
             private readonly Point3D m_Location;
             private readonly int m_Damage;
@@ -131,9 +151,10 @@ namespace Server.Spells.Spellweaving
             private int m_LifeSpan;
             private Map m_Map;
 
-            public InternalTimer(Mobile owner, Point3D location, int damage, int range, int duration)
+            public InternalTimer(Spell spell, Mobile owner, Point3D location, int damage, int range, int duration)
                 : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), duration)
             {
+                m_Spell = spell;
                 m_Owner = owner;
                 m_Location = location;
                 m_Damage = damage;
@@ -148,41 +169,40 @@ namespace Server.Spells.Spellweaving
                     return;
 					
                 m_LifeSpan -= 1;
+                var targets = GetTargets().Where(m => BaseHouse.FindHouseAt(m.Location, m.Map, 20) == null).ToList();
+                int count = targets.Count;
 
-                List<Mobile> list = GetTargets();
-
-                foreach (Mobile m in list)
+                foreach (Mobile m in targets)
                 {
                     m_Owner.DoHarmful(m);
-					
-                    if (m_Owner.Map.CanFit(m.Location, 12, true, false))
-                        new FireItem(m_LifeSpan).MoveToWorld(m.Location, m.Map);
-						
-                    Effects.PlaySound(m.Location, m.Map, 0x5CF);
-					
-                    AOS.Damage(m, m_Owner, m_Damage, 0, 100, 0, 0, 0, DamageType.SpellAOE);	
+
+                    if (m_Map.CanFit(m.Location, 12, true, false))
+                        new FireItem(m_LifeSpan).MoveToWorld(m.Location, m_Map);
+
+                    Effects.PlaySound(m.Location, m_Map, 0x5CF);
+                    double sdiBonus = (double)AosAttributes.GetValue(m_Owner, AosAttribute.SpellDamage) / 100;
+
+                    if (m is PlayerMobile && sdiBonus > .15)
+                        sdiBonus = .15;
+
+                    int damage = m_Damage + (int)((double)m_Damage * sdiBonus);
+
+                    if (count > 1)
+                        damage /= Math.Min(3, count);
+
+                    AOS.Damage(m, m_Owner, damage, 0, 100, 0, 0, 0, 0, 0, DamageType.SpellAOE);
+                    WildfireSpell.Table[m] = Core.TickCount + 1000;
                 }
 
-                list.Clear();
+                ColUtility.Free(targets);
             }
 
-            private List<Mobile> GetTargets()
+            private IEnumerable<Mobile> GetTargets()
             {
-                List<Mobile> targets = new List<Mobile>();
-                IPooledEnumerable eable = m_Map.GetMobilesInRange(m_Location, m_Range);
+                WildfireSpell.DefragTable();
 
-                foreach (Mobile m in eable)
-                {
-                    if (BaseHouse.FindHouseAt(m.Location, m.Map, 20) != null)
-                        continue;
-
-                    if (m != m_Owner && SpellHelper.ValidIndirectTarget(m_Owner, m) && m_Owner.CanBeHarmful(m, false))
-                        targets.Add(m);
-                }
-
-                eable.Free();
-                return targets;					
-            }
+                return m_Spell.AcquireIndirectTargets(m_Location, m_Range).OfType<Mobile>();
+            }			
         }
 
         public class FireItem : Item

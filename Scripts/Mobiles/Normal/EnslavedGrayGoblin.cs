@@ -10,78 +10,78 @@ namespace Server.Mobiles
         public EnslavedGrayGoblin()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Enslaved Gray Goblin";
-            this.Body = 334;
-            this.BaseSoundID = 0x45A;
+            Name = "Enslaved Gray Goblin";
+            Body = 334;
+            BaseSoundID = 0x600;
 
-            this.SetStr(321, 321);
-            this.SetDex(64, 64);
-            this.SetInt(147, 147);
+            SetStr(321, 321);
+            SetDex(64, 64);
+            SetInt(147, 147);
 
-            this.SetHits(179, 179);
-            this.SetStam(64, 64);
-            this.SetMana(147, 147);
+            SetHits(179, 179);
+            SetStam(64, 64);
+            SetMana(147, 147);
 
-            this.SetDamage(5, 7);
+            SetDamage(5, 7);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 50, 50);
-            this.SetResistance(ResistanceType.Fire, 38, 38);
-            this.SetResistance(ResistanceType.Cold, 32, 32);
-            this.SetResistance(ResistanceType.Poison, 12, 12);
-            this.SetResistance(ResistanceType.Energy, 11, 11);
+            SetResistance(ResistanceType.Physical, 50, 50);
+            SetResistance(ResistanceType.Fire, 38, 38);
+            SetResistance(ResistanceType.Cold, 32, 32);
+            SetResistance(ResistanceType.Poison, 12, 12);
+            SetResistance(ResistanceType.Energy, 11, 11);
 
-            this.SetSkill(SkillName.MagicResist, 121.6, 121.6);
-            this.SetSkill(SkillName.Tactics, 90.0, 90.0);
-            this.SetSkill(SkillName.Anatomy, 82.0, 82.0);
-            this.SetSkill(SkillName.Wrestling, 99.2, 99.2);
+            SetSkill(SkillName.MagicResist, 121.6, 121.6);
+            SetSkill(SkillName.Tactics, 90.0, 90.0);
+            SetSkill(SkillName.Anatomy, 82.0, 82.0);
+            SetSkill(SkillName.Wrestling, 99.2, 99.2);
 
-            this.Fame = 1500;
-            this.Karma = -1500;
+            Fame = 1500;
+            Karma = -1500;
 
-            this.VirtualArmor = 28;
+            VirtualArmor = 28;
 
             // Loot - 30-40gold, magicitem,gem,goblin blood, essence control
             switch ( Utility.Random(20) )
             {
                 case 0:
-                    this.PackItem(new Scimitar());
+                    PackItem(new Scimitar());
                     break;
                 case 1:
-                    this.PackItem(new Katana());
+                    PackItem(new Katana());
                     break;
                 case 2:
-                    this.PackItem(new WarMace());
+                    PackItem(new WarMace());
                     break;
                 case 3:
-                    this.PackItem(new WarHammer());
+                    PackItem(new WarHammer());
                     break;
                 case 4:
-                    this.PackItem(new Kryss());
+                    PackItem(new Kryss());
                     break;
                 case 5:
-                    this.PackItem(new Pitchfork());
+                    PackItem(new Pitchfork());
                     break;
             }
 
-            this.PackItem(new ThighBoots());
+            PackItem(new ThighBoots());
 
             switch ( Utility.Random(3) )
             {
                 case 0:
-                    this.PackItem(new Ribs());
+                    PackItem(new Ribs());
                     break;
                 case 1:
-                    this.PackItem(new Shaft());
+                    PackItem(new Shaft());
                     break;
                 case 2:
-                    this.PackItem(new Candle());
+                    PackItem(new Candle());
                     break;
             }
 
             if (0.2 > Utility.RandomDouble())
-                this.PackItem(new BolaBall());
+                PackItem(new BolaBall());
         }
 
         public EnslavedGrayGoblin(Serial serial)
@@ -89,34 +89,16 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.SavagesAndOrcs;
-            }
-        }
+        public override int GetAngerSound() { return 0x600; }
+        public override int GetIdleSound() { return 0x600; }
+        public override int GetAttackSound() { return 0x5FD; }
+        public override int GetHurtSound() { return 0x5FF; }
+        public override int GetDeathSound() { return 0x5FE; }
+
+        public override bool CanRummageCorpses { get { return true; } }
+        public override int TreasureMapLevel { get { return 1; } }
+        public override int Meat { get { return 1; } }
+        public override OppositionGroup OppositionGroup { get { return OppositionGroup.SavagesAndOrcs; } }
 
         public override void GenerateLoot()
         {

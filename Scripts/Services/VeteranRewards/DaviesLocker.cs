@@ -224,6 +224,16 @@ namespace Server.Engines.VeteranRewards
                     SetSecureLevelEntry.AddTo(from, (DaviesLockerAddon)Addon, list);
             }
 
+            public override void GetProperties(ObjectPropertyList list)
+            {
+                base.GetProperties(list);
+
+                if (Addon is DaviesLockerAddon)
+                {
+                    list.Add(1153648, ((DaviesLockerAddon)Addon).Entries.Count.ToString());
+                }
+            }
+
             public DaviesLockerComponent(Serial serial)
                 : base(serial)
             {

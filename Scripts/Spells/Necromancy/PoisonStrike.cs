@@ -26,7 +26,7 @@ namespace Server.Spells.Necromancy
         {
             get
             {
-                return TimeSpan.FromSeconds((Core.ML ? 1.75 : 1.5));
+                return TimeSpan.FromSeconds((Core.ML ? 2.0 : 1.5));
             }
         }
         public override double RequiredSkill
@@ -94,7 +94,7 @@ namespace Server.Spells.Necromancy
                 {
                     sdiBonus = (double)AosAttributes.GetValue(Caster, AosAttribute.SpellDamage) / 100;
 
-                    // PvP spell damage increase cap of 15% from an item’s magic property in Publish 33(SE)
+                    // PvP spell damage increase cap of 15% from an itemâ€™s magic property in Publish 33(SE)
                     if (m is PlayerMobile && Caster.Player && sdiBonus > 15)
                         sdiBonus = 15;
                 }
@@ -111,33 +111,8 @@ namespace Server.Spells.Necromancy
 
             if (map != null)
             {
-                List<IDamageable> targets = new List<IDamageable>();
-
-                if (Caster.CanBeHarmful(m, false))
-                    targets.Add(m);
-
-                IPooledEnumerable eable = m.Map.GetObjectsInRange(m.Location, 2);
-
-                foreach (object o in eable)
+                foreach (var id in AcquireIndirectTargets(m.Location, 2))
                 {
-                    IDamageable id = o as IDamageable;
-
-                    if (!(Caster is BaseCreature && id is BaseCreature))
-                    {
-                        if ((id is Mobile && (Mobile)id == Caster) || id == m)
-                            continue;
-
-                        if ((!(id is Mobile) || SpellHelper.ValidIndirectTarget(Caster, (Mobile)id)) && Caster.CanBeHarmful(id, false))
-                            targets.Add(id);
-                    }
-                }
-
-                eable.Free();
-
-                for (int i = 0; i < targets.Count; ++i)
-                {
-                    IDamageable id = targets[i];
-
                     int num;
 
                     if (Utility.InRange(id.Location, m.Location, 0))
@@ -150,9 +125,6 @@ namespace Server.Spells.Necromancy
                     Caster.DoHarmful(id);
                     SpellHelper.Damage(this, id, ((id is PlayerMobile && Caster.Player) ? pvpDamage : pvmDamage) / num, 0, 0, 0, 100, 0);
                 }
-
-                targets.Clear();
-                targets.TrimExcess();
             }
         }
 

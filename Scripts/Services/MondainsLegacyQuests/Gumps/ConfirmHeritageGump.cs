@@ -9,26 +9,26 @@ namespace Server.Engines.Quests
         public ConfirmHeritageGump(HeritageQuester quester)
             : base(50, 50)
         { 
-            this.m_Quester = quester;
+            m_Quester = quester;
 			
-            this.Closable = true;
-            this.Disposable = true;
-            this.Dragable = true;
-            this.Resizable = false;
+            Closable = true;
+            Disposable = true;
+            Dragable = true;
+            Resizable = false;
 			
-            this.AddPage(0);
+            AddPage(0);
 			
-            this.AddBackground(0, 0, 240, 135, 0x2422);
+            AddBackground(0, 0, 240, 135, 0x2422);
 			
-            object message = this.m_Quester.ConfirmMessage;
+            object message = m_Quester.ConfirmMessage;
 			
             if (message is int)
-                this.AddHtmlLocalized(15, 15, 210, 75, (int)message, 0x0, false, false);
+                AddHtmlLocalized(15, 15, 210, 75, (int)message, 0x0, false, false);
             else if (message is string)
-                this.AddHtml(15, 15, 210, 75, (string)message, false, false);
+                AddHtml(15, 15, 210, 75, (string)message, false, false);
 				
-            this.AddButton(160, 95, 0xF7, 0xF8, (int)Buttons.Okay, GumpButtonType.Reply, 0);
-            this.AddButton(90, 95, 0xF2, 0xF1, (int)Buttons.Close, GumpButtonType.Reply, 0); 		
+            AddButton(160, 95, 0xF7, 0xF8, (int)Buttons.Okay, GumpButtonType.Reply, 0);
+            AddButton(90, 95, 0xF2, 0xF1, (int)Buttons.Close, GumpButtonType.Reply, 0); 		
         }
 
         private enum Buttons
@@ -38,7 +38,7 @@ namespace Server.Engines.Quests
         }
         public override void OnResponse(Server.Network.NetState state, RelayInfo info)
         { 
-            if (this.m_Quester == null)
+            if (m_Quester == null)
                 return;
 				
             if (info.ButtonID == (int)Buttons.Okay)
@@ -47,10 +47,10 @@ namespace Server.Engines.Quests
 				
                 if (HeritageQuester.Check(m))
                 {
-                    HeritageQuester.AddPending(m, this.m_Quester);
+                    HeritageQuester.AddPending(m, m_Quester);
                     Timer.DelayCall(TimeSpan.FromMinutes(1), new TimerStateCallback(CloseHeritageGump), m);
 					
-                    state.Mobile.Send(new HeritagePacket(m.Female, (short)(this.m_Quester.Race.RaceID + 1)));					
+                    state.Mobile.Send(new HeritagePacket(m.Female, (short)(m_Quester.Race.RaceID + 1)));					
                 }
             }
         }

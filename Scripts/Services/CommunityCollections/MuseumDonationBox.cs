@@ -46,7 +46,8 @@ namespace Server.Items
             base.Init();
 			
             this.Donations.Add(new CollectionItem(typeof(Gold), 0xEEF, 1073116, 0x0, 0.06666));
-            this.Donations.Add(new CollectionItem(typeof(BankCheck), 0x14F0, 1075013, 0x34, 0.06666));
+            if(!Core.TOL)
+                this.Donations.Add(new CollectionItem(typeof(BankCheck), 0x14F0, 1075013, 0x34, 0.06666));
             this.Donations.Add(new CollectionItem(typeof(Board), 0x1BD7, 1015101, 0, 1));
             this.Donations.Add(new CollectionItem(typeof(OakBoard), 0x1BD7, 1075052, 0x7DA, 3));
             this.Donations.Add(new CollectionItem(typeof(AshBoard), 0x1BD7, 1075053, 0x4A7, 6));

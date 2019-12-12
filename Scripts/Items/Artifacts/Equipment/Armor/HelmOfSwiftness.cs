@@ -112,11 +112,6 @@ namespace Server.Items
                     _ElfOnly = true;
                     break;
             }
-
-            if (ItemID != 0x2689)
-            {
-                ItemID = 0x2689;
-            }
         }
     }
 }

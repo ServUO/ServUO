@@ -8,13 +8,13 @@ namespace Server.Items
         [Constructable]
         public ColdForgedBlade()
         {
-            this.WeaponAttributes.HitHarm = 40;
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.NightSight = 1;
-            this.Attributes.WeaponSpeed = 25;
-            this.Attributes.WeaponDamage = 50;
+            WeaponAttributes.HitHarm = 40;
+            Attributes.SpellChanneling = 1;
+            Attributes.NightSight = 1;
+            Attributes.WeaponSpeed = 25;
+            Attributes.WeaponDamage = 50;
 
-            this.Hue = this.GetElementalDamageHue();
+            Hue = this.GetElementalDamageHue();
         }
 
         public ColdForgedBlade(Serial serial)

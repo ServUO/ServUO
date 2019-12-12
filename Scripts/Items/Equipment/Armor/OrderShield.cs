@@ -12,9 +12,9 @@ namespace Server.Items
             : base(0x1BC4)
         {
             if (!Core.AOS)
-                this.LootType = LootType.Newbied;
+                LootType = LootType.Newbied;
 
-            this.Weight = 7.0;
+            Weight = 7.0;
         }
 
         public OrderShield(Serial serial)
@@ -85,21 +85,16 @@ namespace Server.Items
                 return 30;
             }
         }
+		
+		public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);//version
+        }
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (this.Weight == 6.0)
-                this.Weight = 7.0;
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0);//version
         }
 
         public override bool OnEquip(Mobile from)

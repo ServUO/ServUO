@@ -3,8 +3,10 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class NecromancersPhylactery : BaseTalisman, ITokunoDyable
+    public class NecromancersPhylactery : BaseTalisman
     {
+		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public NecromancersPhylactery()
             : base(0x2F5A)

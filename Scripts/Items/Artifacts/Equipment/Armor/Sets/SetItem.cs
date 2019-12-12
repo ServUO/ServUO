@@ -352,6 +352,9 @@ namespace Server
 
         public static bool ResistsBonusPerPiece(ISetItem item)
         {
+            if (item.SetPhysicalBonus == 0 && item.SetFireBonus == 0 && item.SetColdBonus == 0 && item.SetPoisonBonus == 0 && item.SetEnergyBonus == 0)
+                return true;
+
             switch (item.SetID)
             {
                 default: return false;

@@ -9,19 +9,19 @@ namespace Server.Items
         public GargishSignOfChaos()
             : base()
         {
-			this.Name = "Sign of Chaos";
-			this.Hue = 2075;
-		
-            this.ArmorAttributes.SoulCharge = 20;
-            this.Attributes.AttackChance = 5;
-            this.Attributes.DefendChance = 10;
-            this.Attributes.CastSpeed = 1;
+			Hue = 2075;	
+            ArmorAttributes.SoulCharge = 20;
+            Attributes.AttackChance = 5;
+            Attributes.DefendChance = 10;
+            Attributes.CastSpeed = 1;
         }
 
         public GargishSignOfChaos(Serial serial)
             : base(serial)
         {
         }
+        
+        public override int LabelNumber { get{return 1113535;} }// Sign of Chaos
 
         public override int BasePhysicalResistance
         {
@@ -71,22 +71,7 @@ namespace Server.Items
             {
                 return 255;
             }
-        }
-		
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }			
+        }     	
 
         public override void Deserialize(GenericReader reader)
         {

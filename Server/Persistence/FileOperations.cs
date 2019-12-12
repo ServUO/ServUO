@@ -1,10 +1,7 @@
 using System;
 using System.IO;
-#if !MONO
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
-
-#endif
 
 namespace Server
 {
@@ -13,13 +10,10 @@ namespace Server
         public const int KB = 1024;
         public const int MB = 1024 * KB;
 
-        #if !MONO
         private const FileOptions NoBuffering = (FileOptions)0x20000000;
 
         [DllImport("Kernel32", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern SafeFileHandle CreateFile(string lpFileName, int dwDesiredAccess, FileShare dwShareMode, IntPtr securityAttrs, FileMode dwCreationDisposition, int dwFlagsAndAttributes, IntPtr hTemplateFile);
-
-        #endif
 
         private static int bufferSize = 1 * MB;
         private static int concurrency = 1;
@@ -87,9 +81,6 @@ namespace Server
                 options |= FileOptions.Asynchronous;
             }
 
-            #if MONO
-			return new FileStream( path, mode, access, share, bufferSize, options );
-            #else
             if (unbuffered)
             {
                 options |= NoBuffering;
@@ -107,10 +98,8 @@ namespace Server
             }
 
             return new UnbufferedFileStream(fileHandle, access, bufferSize, (concurrency > 0));
-            #endif
         }
 
-        #if !MONO
         private class UnbufferedFileStream : FileStream
         {
             private readonly SafeFileHandle fileHandle;
@@ -141,6 +130,5 @@ namespace Server
                 base.Dispose(disposing);
             }
         }
-        #endif
     }
 }

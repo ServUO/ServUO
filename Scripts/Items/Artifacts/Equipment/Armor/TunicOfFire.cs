@@ -8,10 +8,10 @@ namespace Server.Items
         [Constructable]
         public TunicOfFire()
         {
-            this.Hue = 0x54F;
-            this.ArmorAttributes.SelfRepair = 5;
-            this.Attributes.NightSight = 1;
-            this.Attributes.ReflectPhysical = 15;
+            Hue = 0x54F;
+            ArmorAttributes.SelfRepair = 5;
+            Attributes.NightSight = 1;
+            Attributes.ReflectPhysical = 15;
         }
 
         public TunicOfFire(Serial serial)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Multis;
 using Server.Mobiles;
@@ -9,126 +9,102 @@ namespace Server.Items
 {
     public class MooringLine : Item
     {
-        private BaseBoat m_Boat;
-
         [CommandProperty(AccessLevel.GameMaster)]
-        public BaseBoat Boat { get { return m_Boat; } }
+        public BaseBoat Boat { get; private set; }
 
-        public override int LabelNumber { get { return 1149697; } } //mooring line
+        public override int LabelNumber { get { return Boat.IsRowBoat ? 1020935 : 1149697; } } // rope || mooring line
 
-        public MooringLine(BaseBoat boat) : base (5368)
+        public MooringLine(BaseBoat boat)
+            : base(5368)
         {
-            m_Boat = boat;
+            Boat = boat;
             Movable = false;
+            Weight = 0;
+        }
+
+        public override void OnDoubleClickDead(Mobile m)
+        {
+            OnDoubleClick(m);
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (m_Boat == null || from == null)
+            if (Boat == null || from == null)
                 return;
 
             BaseBoat boat = BaseBoat.FindBoatAt(from, from.Map);
 
-            int range = boat != null && boat == this.Boat ? 3 : 8;
+            int range = boat != null && boat == Boat ? 3 : 8;
             bool canMove = false;
 
-            if (m_Boat != null)
-            {
-                if (m_Boat.Owner == from && m_Boat.Status > 1043010)
-                {
-                    from.SendLocalizedMessage(1043294); // Your ship's age and contents have been refreshed.
-                }
+            if (!Boat.IsRowBoat)
+                Boat.Refresh(from);
 
-                m_Boat.Refresh();
-            }
-
-            if (boat != null && m_Boat != boat)
-            {
-                if (boat.Owner == from && boat.Status > 1043010)
-                {
-                    from.SendLocalizedMessage(1043294); // Your ship's age and contents have been refreshed.
-                }
-
-                boat.Refresh();
-            }
-
-            if (!from.InRange(this.Location, range))
+            if (!from.InRange(Location, range))
                 from.SendLocalizedMessage(500295); //You are too far away to do that.
-            else if (!from.InLOS(this.Location))
+            else if (!from.InLOS(Location))
                 from.SendLocalizedMessage(500950); //You cannot see that.
-            else if (m_Boat.IsMoving || m_Boat.IsTurning)
+            else if (Boat.IsMoving || Boat.IsTurning)
                 from.SendLocalizedMessage(1116611); //You can't use that while the ship is moving!
             else if (BaseBoat.IsDriving(from))
                 from.SendLocalizedMessage(1116610); //You can't do that while piloting a ship!
             else if (BaseHouse.FindHouseAt(from) != null)
                 from.SendLocalizedMessage(1149795); //You may not dock a ship while on another ship or inside a house.
-            else if (!m_Boat.IsClassicBoat)
+            else if (Boat == boat && !MoveToNearestDockOrLand(from))
+                from.SendLocalizedMessage(1149796); //You can not dock a ship this far out to sea. You must be near land or shallow water.
+            else if (boat == null || boat != null && Boat != boat)
             {
-                if (boat == m_Boat && !MoveToNearestDockOrLand(from))
-                    from.SendLocalizedMessage(1149796); //You can not dock a ship this far out to sea. You must be near land or shallow water.
-                else if (boat == null)
-                {
-                    if (!from.Alive)
-                        from.SendLocalizedMessage(1060190); //You cannot do that while dead!
-                    else if ((m_Boat is BaseGalleon && ((BaseGalleon)m_Boat).HasAccess(from)) || (m_Boat is RowBoat && ((RowBoat)m_Boat).HasAccess(from)))
-                        canMove = true;
-                    else
-                        from.SendLocalizedMessage(1116617); //You do not have permission to board this ship.
-                }
-                else if (boat != null && m_Boat != boat)
-                {
-                    if (!from.Alive)
-                        from.SendLocalizedMessage(1060190); //You cannot do that while dead!
-                    else if (m_Boat is RowBoat && ((RowBoat)m_Boat).HasAccess(from))
-                        canMove = true;
-                    else if (boat is RowBoat && m_Boat is BaseGalleon && ((BaseGalleon)m_Boat).HasAccess(from))
-                        canMove = true;
-                    else if (boat is BaseGalleon && m_Boat is BaseGalleon && ((BaseGalleon)m_Boat).HasAccess(from))
-                        canMove = true;
-                    else
-                        from.SendLocalizedMessage(1149795); //You may not dock a ship while on another ship or inside a house.
-                }
+                if (Boat.HasAccess(from))
+                    canMove = true;
+                else
+                    from.SendLocalizedMessage(1116617); //You do not have permission to board this ship.
             }
 
             if (canMove)
             {
-                BaseCreature.TeleportPets(from, this.Location, this.Map);
-                from.MoveToWorld(this.Location, this.Map);
+                BaseCreature.TeleportPets(from, Location, Map);
+                from.MoveToWorld(Location, Map);
 
-                m_Boat.SendContainerPacket();
+                Boat.SendContainerPacket();
             }
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
-            if (!from.Alive && m_Boat.Contains(from))
+
+            if (Boat.IsRowBoat && from.Alive && !Boat.Contains(from))
             {
-                list.Add(new RemoveContext(from, this));
+                list.Add(new DryDockEntry(Boat, from));
             }
         }
 
-        public class RemoveContext : ContextMenuEntry
+        private class DryDockEntry : ContextMenuEntry
         {
-            private MooringLine m_Line;
-            private Mobile m_From;
+            private readonly Mobile m_From;
+            private BaseBoat m_Boat;
 
-            public RemoveContext(Mobile from, MooringLine line)
-                : base(1043331, 3)
+            public DryDockEntry(BaseBoat boat, Mobile from)
+                : base(1116520, 12) // Dry Dock Ship
             {
-                m_Line = line;
                 m_From = from;
+                m_Boat = boat;
+
+                Enabled = m_Boat != null && m_Boat.IsOwner(from);
             }
 
             public override void OnClick()
             {
-                m_Line.OnDoubleClick(m_From);
+                if (m_Boat != null && !m_Boat.Contains(m_From) && m_Boat.IsOwner(m_From))
+                {
+                    m_Boat.BeginDryDock(m_From);
+                }
             }
         }
 
         public bool MoveToNearestDockOrLand(Mobile from)
         {
-            if ((m_Boat != null && !m_Boat.Contains(from)) || !ValidateDockOrLand())
+            if ((Boat != null && !Boat.Contains(from)) || !ValidateDockOrLand())
                 return false;
 
             Map map = Map;
@@ -140,16 +116,16 @@ namespace Server.Items
             Point3D nearest = Point3D.Zero;
             Point3D p = Point3D.Zero;
 
-            if (m_Boat is RowBoat)
-                rec = new Rectangle2D(m_Boat.X - 8, m_Boat.Y - 8, 16, 16);
+            if (Boat.IsRowBoat)
+                rec = new Rectangle2D(Boat.X - 8, Boat.Y - 8, 16, 16);
             else
             {
-                switch (m_Boat.Facing)
+                switch (Boat.Facing)
                 {
                     default:
                     case Direction.North:
                     case Direction.South:
-                        if (X < m_Boat.X)
+                        if (X < Boat.X)
                         {
                             rec = new Rectangle2D(X - 8, Y - 8, 8, 16);
                         }
@@ -160,7 +136,7 @@ namespace Server.Items
                         break;
                     case Direction.West:
                     case Direction.East:
-                        if (Y < m_Boat.Y)
+                        if (Y < Boat.Y)
                         {
                             rec = new Rectangle2D(X - 8, Y - 8, 16, 8);
                         }
@@ -174,7 +150,7 @@ namespace Server.Items
 
             for (int x = rec.X; x <= rec.X + rec.Width; x++)
             {
-                for(int y = rec.Y; y <= rec.Y + rec.Height; y++)
+                for (int y = rec.Y; y <= rec.Y + rec.Height; y++)
                 {
                     p = new Point3D(x, y, map.GetAverageZ(x, y));
 
@@ -188,15 +164,12 @@ namespace Server.Items
 
             if (nearest != Point3D.Zero)
             {
-                BaseCreature.TeleportPets(from, nearest, this.Map);
-                from.MoveToWorld(nearest, this.Map);
-
-                if (m_Boat != null)
-                    m_Boat.Refresh();
+                BaseCreature.TeleportPets(from, nearest, Map);
+                from.MoveToWorld(nearest, Map);
 
                 return true;
             }
-            
+
             return false;
         }
 
@@ -208,7 +181,7 @@ namespace Server.Items
 
             Map map = from.Map;
 
-            if (Server.Spells.SpellHelper.CheckMulti(p, map) || Region.Find(p, map).IsPartOf<Factions.StrongholdRegion>())
+            if (Spells.SpellHelper.CheckMulti(p, map) || Region.Find(p, map).IsPartOf<Factions.StrongholdRegion>())
                 return false;
 
             StaticTile[] staticTiles = map.Tiles.GetStaticTiles(x, y, true);
@@ -240,23 +213,28 @@ namespace Server.Items
 
         public bool ValidateDockOrLand()
         {
-            return BaseGalleon.IsNearLandOrDocks(m_Boat);
+            return BaseGalleon.IsNearLandOrDocks(Boat);
         }
 
-        public MooringLine(Serial serial) : base(serial) { }
+        public MooringLine(Serial serial)
+            : base(serial)
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write((int)0);
-            writer.Write(m_Boat);
+
+            writer.Write(Boat);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            m_Boat = reader.ReadItem() as BaseBoat;
+
+            Boat = reader.ReadItem() as BaseBoat;
         }
     }
 }

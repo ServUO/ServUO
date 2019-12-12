@@ -76,6 +76,9 @@ namespace Server.Mobiles
 
             if (0.5 > Utility.RandomDouble())
                 PackItem(new Yeast());
+
+            SetWeaponAbility(WeaponAbility.WhirlwindAttack);
+            SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 
         public OrcChopper(Serial serial)
@@ -112,17 +115,6 @@ namespace Server.Mobiles
             get
             {
                 return OppositionGroup.SavagesAndOrcs;
-            }
-        }
-        public override WeaponAbility GetWeaponAbility()
-        {
-            switch (Utility.Random(2))
-            {
-                default:
-                case 1:
-                    return WeaponAbility.WhirlwindAttack;
-                case 2:
-                    return WeaponAbility.CrushingBlow;
             }
         }
 

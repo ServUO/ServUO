@@ -3,47 +3,50 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("a fire daemon corpse")]
-    public class FireDaemon : BaseCreature
+    public class FireDaemon : BaseCreature, IAuraCreature
     {
         [Constructable]
         public FireDaemon()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a fire daemon";
-            this.Body = 9;
-            this.BaseSoundID = 0x47D;
-            this.Hue = 1636;
+            Name = "a fire daemon";
+            Body = 9;
+            BaseSoundID = 0x47D;
+            Hue = 1636;
 
-            this.SetStr(504, 539);
-            this.SetDex(126, 145);
-            this.SetInt(329, 364);
+            SetStr(504, 539);
+            SetDex(126, 145);
+            SetInt(329, 364);
 
-            this.SetHits(1026, 1174);
+            SetHits(1026, 1174);
 
-            this.SetDamage(7, 14);
+            SetDamage(7, 14);
 
-            this.SetDamageType(ResistanceType.Physical, 20);
-            this.SetDamageType(ResistanceType.Fire, 80);
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Fire, 80);
 
-            this.SetResistance(ResistanceType.Physical, 45, 60);
-            this.SetResistance(ResistanceType.Fire, 100);
-            this.SetResistance(ResistanceType.Cold, -10, 0);
-            this.SetResistance(ResistanceType.Poison, 20, 30);
-            this.SetResistance(ResistanceType.Energy, 30, 40);
+            SetResistance(ResistanceType.Physical, 45, 60);
+            SetResistance(ResistanceType.Fire, 100);
+            SetResistance(ResistanceType.Cold, -10, 0);
+            SetResistance(ResistanceType.Poison, 20, 30);
+            SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.Anatomy, 75.5, 84.9);
-            this.SetSkill(SkillName.MagicResist, 95.7, 109.8);
-            this.SetSkill(SkillName.Tactics, 81.0, 98.6);
-            this.SetSkill(SkillName.Wrestling, 40.2, 78.7);
-            this.SetSkill(SkillName.EvalInt, 91.1, 104.5);
-            this.SetSkill(SkillName.Magery, 91.3, 105.0);
-            this.SetSkill(SkillName.Meditation, 90.1, 103.7);
-            this.SetSkill(SkillName.DetectHidden, 66.0);
+            SetSkill(SkillName.Anatomy, 75.5, 84.9);
+            SetSkill(SkillName.MagicResist, 95.7, 109.8);
+            SetSkill(SkillName.Tactics, 81.0, 98.6);
+            SetSkill(SkillName.Wrestling, 40.2, 78.7);
+            SetSkill(SkillName.EvalInt, 91.1, 104.5);
+            SetSkill(SkillName.Magery, 91.3, 105.0);
+            SetSkill(SkillName.Meditation, 90.1, 103.7);
+            SetSkill(SkillName.DetectHidden, 66.0);
 
-            this.Fame = 15000;
-            this.Karma = -15000;
+            Fame = 15000;
+            Karma = -15000;
 
-            this.VirtualArmor = 58;
+            VirtualArmor = 58;
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
+            SetAreaEffect(AreaEffect.AuraDamage);
         }        
 
         public FireDaemon(Serial serial)
@@ -51,18 +54,20 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool HasAura { get { return true; } }
-        public override int AuraRange { get { return 5; } }
-        public override bool HasBreath { get { return true; } }
         public override bool CanRummageCorpses { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Regular; } }
         public override int TreasureMapLevel { get { return 4; } }
         public override int Meat { get { return 1; } }
 
+        public void AuraEffect(Mobile m)
+        {
+            m.SendLocalizedMessage(1008112); // The intense heat is damaging you!
+        }
+
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
-            this.AddLoot(LootPack.Rich);
+            AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.Rich);
         }
 
         public override void Serialize(GenericWriter writer)

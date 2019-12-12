@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Prompt.cs
-// **********
-#endregion
-
 using System;
 
 namespace Server.Prompts

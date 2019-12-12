@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - PaperdollEntry.cs
-// **********
-#endregion
-
 namespace Server.ContextMenus
 {
 	public class PaperdollEntry : ContextMenuEntry

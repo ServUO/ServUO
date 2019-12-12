@@ -23,27 +23,19 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 
     public class ZooMemberSkirt : PlainDress
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073221;
-            }
-        }// Britannia Royal Zoo Member
+        public override int LabelNumber { get { return 1073221; } }// Britannia Royal Zoo Member
 
         [Constructable]
         public ZooMemberSkirt()
@@ -62,36 +54,22 @@ namespace Server.Items
         {
         }
 
-        public override bool Dye(Mobile from, DyeTub sender)
-        {
-            from.SendLocalizedMessage(sender.FailMessage);
-            return false;
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 
     public class ZooMemberBodySash : BodySash
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073221;
-            }
-        }// Britannia Royal Zoo Member
+        public override int LabelNumber { get { return 1073221; } }// Britannia Royal Zoo Member
 
         [Constructable]
         public ZooMemberBodySash()
@@ -110,36 +88,22 @@ namespace Server.Items
         {
         }
 
-        public override bool Dye(Mobile from, DyeTub sender)
-        {
-            from.SendLocalizedMessage(sender.FailMessage);
-            return false;
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 
     public class ZooMemberRobe : Robe
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073221;
-            }
-        }// Britannia Royal Zoo Member
+        public override int LabelNumber { get { return 1073221; } }// Britannia Royal Zoo Member
 
         [Constructable]
         public ZooMemberRobe()
@@ -157,37 +121,23 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override bool Dye(Mobile from, DyeTub sender)
-        {
-            from.SendLocalizedMessage(sender.FailMessage);
-            return false;
-        }
-
+      
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 
     public class ZooMemberCloak : Cloak
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073221;
-            }
-        }// Britannia Royal Zoo Member
+        public override int LabelNumber { get { return 1073221; } }// Britannia Royal Zoo Member
 
         [Constructable]
         public ZooMemberCloak()
@@ -206,36 +156,22 @@ namespace Server.Items
         {
         }
 
-        public override bool Dye(Mobile from, DyeTub sender)
-        {
-            from.SendLocalizedMessage(sender.FailMessage);
-            return false;
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 
     public class LibraryFriendBodySash : BodySash
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073346;
-            }
-        }// Friends of the Library Sash
+        public override int LabelNumber { get { return 1073346; } }// Friends of the Library Sash
 
         [Constructable]
         public LibraryFriendBodySash()
@@ -254,36 +190,22 @@ namespace Server.Items
         {
         }
 
-        public override bool Dye(Mobile from, DyeTub sender)
-        {
-            from.SendLocalizedMessage(sender.FailMessage);
-            return false;
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 
     public class LibraryFriendDoublet : Doublet
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073351;
-            }
-        }// Friends of the Library Doublet
+        public override int LabelNumber { get { return 1073351; } }// Friends of the Library Doublet
 
         [Constructable]
         public LibraryFriendDoublet()
@@ -302,36 +224,22 @@ namespace Server.Items
         {
         }
 
-        public override bool Dye(Mobile from, DyeTub sender)
-        {
-            from.SendLocalizedMessage(sender.FailMessage);
-            return false;
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 
     public class LibraryFriendSurcoat : Surcoat
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073348;
-            }
-        }// Friends of the Library Surcoat
+        public override int LabelNumber { get { return 1073348; } }// Friends of the Library Surcoat
 
         [Constructable]
         public LibraryFriendSurcoat()
@@ -350,36 +258,22 @@ namespace Server.Items
         {
         }
 
-        public override bool Dye(Mobile from, DyeTub sender)
-        {
-            from.SendLocalizedMessage(sender.FailMessage);
-            return false;
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 
     public class LibraryFriendCloak : Cloak
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073350;
-            }
-        }// Friends of the Library Cloak
+        public override int LabelNumber { get { return 1073350; } }// Friends of the Library Cloak
 
         [Constructable]
         public LibraryFriendCloak()
@@ -398,23 +292,15 @@ namespace Server.Items
         {
         }
 
-        public override bool Dye(Mobile from, DyeTub sender)
-        {
-            from.SendLocalizedMessage(sender.FailMessage);
-            return false;
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
@@ -1285,10 +1171,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxArcaneCharges
         {
-            get
-            {
-                return m_MaxArcaneCharges;
-            }
+            get { return m_MaxArcaneCharges; }
             set
             {
                 m_MaxArcaneCharges = value;
@@ -1300,10 +1183,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int CurArcaneCharges
         {
-            get
-            {
-                return m_CurArcaneCharges;
-            }
+            get { return m_CurArcaneCharges; }
             set
             {
                 m_CurArcaneCharges = value;
@@ -1312,12 +1192,14 @@ namespace Server.Items
             }
         }
 
+        public int TempHue { get; set; }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsArcane
         {
             get
             {
-                return (m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0);
+                return m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0;
             }
         }
 
@@ -1329,23 +1211,18 @@ namespace Server.Items
                 ItemID = 0x1F04;
 
             if (IsArcane && CurArcaneCharges == 0)
+            {
+                TempHue = Hue;
                 Hue = 0;
+            }
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
+            base.AddCraftedProperties(list);
 
             if (IsArcane)
                 list.Add(1061837, "{0}\t{1}", m_CurArcaneCharges, m_MaxArcaneCharges); // arcane charges: ~1_val~ / ~2_val~
-        }
-
-        public override void OnSingleClick(Mobile from)
-        {
-            base.OnSingleClick(from);
-
-            if (IsArcane)
-                LabelTo(from, 1061837, String.Format("{0}\t{1}", m_CurArcaneCharges, m_MaxArcaneCharges));
         }
 
         public void Flip()
@@ -1381,12 +1258,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
-            writer.Write((int)1); // version
+            writer.Write((int)2); // version
 
             if (IsArcane)
             {
                 writer.Write(true);
+                writer.Write(TempHue);
                 writer.Write((int)m_CurArcaneCharges);
                 writer.Write((int)m_MaxArcaneCharges);
             }
@@ -1399,20 +1276,27 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
+                case 2:
+                    {
+                        if (reader.ReadBool())
+                        {
+                            TempHue = reader.ReadInt();
+                            m_CurArcaneCharges = reader.ReadInt();
+                            m_MaxArcaneCharges = reader.ReadInt();
+                        }
+
+                        break;
+                    }
                 case 1:
                     {
                         if (reader.ReadBool())
                         {
                             m_CurArcaneCharges = reader.ReadInt();
                             m_MaxArcaneCharges = reader.ReadInt();
-
-                            if (Hue == 2118)
-                                Hue = ArcaneGem.DefaultArcaneHue;
                         }
 
                         break;
@@ -1510,9 +1394,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (Weight == 3.0)
-                Weight = 2.0;
         }
     }
 
@@ -1864,18 +1745,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (Layer != Layer.OuterTorso)
-                Layer = Layer.OuterTorso;
         }
     }
 

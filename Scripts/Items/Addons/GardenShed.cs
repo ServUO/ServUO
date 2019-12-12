@@ -19,12 +19,10 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            return;
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
-            return;
         }
 
         public GardenShedComponent(Serial serial)
@@ -71,7 +69,7 @@ namespace Server.Items
         [Constructable]
         public GardenShedAddon(bool east) : base(east ? 0x4BEB : 0x4BE7)
         {
-            SecondContainer = new GardenShedAddonSecond(this, east);
+            SecondContainer = new GardenShedBarrel(this, east);
 
             if (east) // East
             {
@@ -140,6 +138,7 @@ namespace Server.Items
         {
             if (!SecondContainer.IsSecure)
             {
+                SecondContainer.DropItemsToGround();
                 base.OnChop(from);
             }
             else
@@ -167,18 +166,19 @@ namespace Server.Items
         }
     }
 
-    public class GardenShedAddonSecond : BaseAddonContainer
+    [TypeAlias("Server.Items.GardenShedAddonSecond")]
+    public class GardenShedBarrel : BaseAddonContainer
     {
         public GardenShedAddon m_MainContainer;
 
         [Constructable]
-        public GardenShedAddonSecond(GardenShedAddon container, bool east)
+        public GardenShedBarrel(GardenShedAddon container, bool east)
             : base(east ? 0x4BED : 0x4BE9)
         {
             m_MainContainer = container;
         }
 
-        public GardenShedAddonSecond(Serial serial)
+        public GardenShedBarrel(Serial serial)
             : base(serial)
         {
         }
@@ -214,6 +214,7 @@ namespace Server.Items
 
             if (!m_MainContainer.IsSecure)
             {
+                m_MainContainer.DropItemsToGround();
                 base.OnChop(from);
             }
             else

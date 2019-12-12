@@ -5,60 +5,7 @@ using Server.Mobiles;
 namespace Server.Items
 {
     public abstract class BasePigmentsOfTokuno : Item, IUsesRemaining
-    {
-		public override bool IsArtifact { get { return true; } }
-        private static readonly Type[] m_Glasses = new Type[]
-        {
-            typeof(MaritimeGlasses),
-            typeof(WizardsGlasses),
-            typeof(TradeGlasses),
-            typeof(LyricalGlasses),
-            typeof(NecromanticGlasses),
-            typeof(LightOfWayGlasses),
-            typeof(FoldedSteelGlasses),
-            typeof(PoisonedGlasses),
-            typeof(TreasureTrinketGlasses),
-            typeof(MaceAndShieldGlasses),
-            typeof(ArtsGlasses),
-            typeof(AnthropomorphistGlasses)
-        };
-
-        private static readonly Type[] m_Replicas = new Type[]
-        {
-            typeof(ANecromancerShroud),
-            typeof(BraveKnightOfTheBritannia),
-            typeof(CaptainJohnsHat),
-            typeof(DetectiveBoots),
-            typeof(DjinnisRing),
-            typeof(EmbroideredOakLeafCloak),
-            typeof(GauntletsOfAnger),
-            typeof(LieutenantOfTheBritannianRoyalGuard),
-            typeof(OblivionsNeedle),
-            typeof(RoyalGuardSurvivalKnife),
-            typeof(SamaritanRobe),
-            typeof(TheMostKnowledgePerson),
-            typeof(TheRobeOfBritanniaAri),
-            typeof(AcidProofRobe),
-            typeof(Calm),
-            typeof(CrownOfTalKeesh),
-            typeof(FangOfRactus),
-            typeof(GladiatorsCollar),
-            typeof(OrcChieftainHelm),
-            typeof(Pacify),
-            typeof(Quell),
-            typeof(ShroudOfDeceit),
-            typeof(Subdue)
-        };
-
-        private static readonly Type[] m_DyableHeritageItems = new Type[]
-        {
-            typeof(ChargerOfTheFallen),
-            typeof(SamuraiHelm),
-            typeof(HolySword),
-            typeof(LeggingsOfEmbers),
-            typeof(ShaminoCrossbow)
-        };
-
+    {      
         public override int LabelNumber
         {
             get
@@ -74,12 +21,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Label;
+                return m_Label;
             }
             set
             {
-                this.m_Label = value;
-                this.InvalidateProperties();
+                m_Label = value;
+                InvalidateProperties();
             }
         }
 
@@ -91,7 +38,7 @@ namespace Server.Items
         {
             get
             {
-                return this.m_InheritsItem;
+                return m_InheritsItem;
             }
         }
         #endregion
@@ -99,15 +46,15 @@ namespace Server.Items
         public BasePigmentsOfTokuno()
             : base(0xEFF)
         {
-            this.Weight = 1.0;
-            this.m_UsesRemaining = 1;
+            Weight = 1.0;
+            m_UsesRemaining = 1;
         }
 
         public BasePigmentsOfTokuno(int uses)
             : base(0xEFF)
         {
-            this.Weight = 1.0;
-            this.m_UsesRemaining = uses;
+            Weight = 1.0;
+            m_UsesRemaining = uses;
         }
 
         public BasePigmentsOfTokuno(Serial serial)
@@ -119,15 +66,18 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (this.m_Label != null && this.m_Label > 0)
-                TextDefinition.AddTo(list, this.m_Label);
+            if (m_Label != null && m_Label > 0)
+                TextDefinition.AddTo(list, m_Label);
+        }
 
-            list.Add(1060584, this.m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+        public override void AddUsesRemainingProperties(ObjectPropertyList list)
+        {
+            list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsAccessibleTo(from) && from.InRange(this.GetWorldLocation(), 3))
+            if (IsAccessibleTo(from) && from.InRange(GetWorldLocation(), 3))
             {
                 from.SendLocalizedMessage(1070929); // Select the artifact or enhanced magic item to dye.
                 from.BeginTarget(3, false, Server.Targeting.TargetFlags.None, new TargetStateCallback(InternalCallback), this);
@@ -147,7 +97,7 @@ namespace Server.Items
 
             if (i == null)
                 from.SendLocalizedMessage(1070931); // You can only dye artifacts and enhanced magic items with this tub.
-            else if (!from.InRange(i.GetWorldLocation(), 3) || !this.IsAccessibleTo(from))
+            else if (!from.InRange(i.GetWorldLocation(), 3) || !IsAccessibleTo(from))
                 from.SendLocalizedMessage(502436); // That is not accessible.
             else if (from.Items.Contains(i))
                 from.SendLocalizedMessage(1070930); // Can't dye artifacts or enhanced magic items that are being worn.
@@ -160,7 +110,7 @@ namespace Server.Items
             else
             {
                 //Notes: on OSI there IS no hue check to see if it's already hued.  and no messages on successful hue either
-                i.Hue = this.Hue;
+                i.Hue = Hue;
 
                 if (--pigment.UsesRemaining <= 0)
                     pigment.Delete();
@@ -188,42 +138,11 @@ namespace Server.Items
             if (!CraftResources.IsStandard(resource))
                 return true;
 
-            if (i is ITokunoDyable)
-                return true;
-
-            if (Server.Engines.Blackthorn.BlackthornRewards.IsTokunoDyable(t))
-                return true;
-
             if (i.IsArtifact)
                 return true;
 
-            return (
-                    IsInTypeList(t, TreasuresOfTokuno.LesserArtifactsTotal) ||
-                    IsInTypeList(t, TreasuresOfTokuno.GreaterArtifacts) ||
-                    #region Mondain's Legacy
-                    IsInTypeList(t, MondainsLegacy.PigmentList) ||
-                    #endregion
-                    #region TOL
-                    IsInTypeList(t, TimeOfLegends.PigmentList) ||
-                    #endregion
-                    IsInTypeList(t, DemonKnight.DoomArtifact) ||
-                    IsInTypeList(t, MondainsLegacy.Artifacts) ||
-                    IsInTypeList(t, StealableArtifactsSpawner.TypesOfEntires) ||
-                    IsInTypeList(t, Paragon.Artifacts) ||
-                    IsInTypeList(t, Leviathan.Artifacts) ||
-                    IsInTypeList(t, TreasureMapChest.Artifacts) ||
-                    IsInTypeList(t, m_Replicas) ||
-                    IsInTypeList(t, m_DyableHeritageItems) ||
-                    IsInTypeList(t, m_Glasses));
-        }
-
-        private static bool IsInTypeList(Type t, Type[] list)
-        {
-            for (int i = 0; i < list.Length; i++)
-            {
-                if (list[i] == t)
-                    return true;
-            }
+            if (i is BaseAddonDeed && ((BaseAddonDeed)i).UseCraftResource && !((BaseAddonDeed)i).IsReDeed && ((BaseAddonDeed)i).Resource != CraftResource.None)
+                return true;
 
             return false;
         }
@@ -234,7 +153,7 @@ namespace Server.Items
 
             writer.Write((int)1);
 
-            writer.WriteEncodedInt(this.m_UsesRemaining);
+            writer.WriteEncodedInt(m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -247,12 +166,12 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_UsesRemaining = reader.ReadEncodedInt();
+                        m_UsesRemaining = reader.ReadEncodedInt();
                         break;
                     }
                 case 0: // Old pigments that inherited from item
                     {
-                        this.m_InheritsItem = true;
+                        m_InheritsItem = true;
 
                         if (this is LesserPigmentsOfTokuno)
                             ((LesserPigmentsOfTokuno)this).Type = (LesserPigmentType)reader.ReadEncodedInt();
@@ -261,7 +180,7 @@ namespace Server.Items
                         else if (this is MetalPigmentsOfTokuno)
                             reader.ReadEncodedInt();
 
-                        this.m_UsesRemaining = reader.ReadEncodedInt();
+                        m_UsesRemaining = reader.ReadEncodedInt();
 
                         break;
                     }
@@ -275,12 +194,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_UsesRemaining;
+                return m_UsesRemaining;
             }
             set
             {
-                this.m_UsesRemaining = value;
-                this.InvalidateProperties();
+                m_UsesRemaining = value;
+                InvalidateProperties();
             }
         }
 

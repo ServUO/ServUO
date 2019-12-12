@@ -43,10 +43,6 @@ namespace Server.Mobiles
 
             this.AddItem(new ThighBoots());
 
-            if (this.Female)
-                this.AddItem(new FancyDress(lowHue));
-            else
-                this.AddItem(new FancyShirt(lowHue));
             this.AddItem(new LongPants(lowHue));
 
             if (!this.Female)

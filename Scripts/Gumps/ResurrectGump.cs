@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
 using Server.Network;
+using Server.Services.Virtues;
 
 namespace Server.Gumps
 {
@@ -13,6 +14,7 @@ namespace Server.Gumps
         Healer = 2,
         Generic = 3,
         SilverSapling = 102034,
+        GemOfSalvation = 84106,
     }
 
     public class ResurrectGump : Gump

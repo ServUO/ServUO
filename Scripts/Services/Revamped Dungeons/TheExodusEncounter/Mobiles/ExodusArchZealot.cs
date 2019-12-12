@@ -18,12 +18,12 @@ namespace Server.Mobiles
 		[Constructable]
 		public ExodusArchZealot()
         {
-            this.Name = "Hunter";
-            this.Title = "the Arch Zealot";
-            this.Body = 0x190;
-            this.CantWalk = true;
-            this.Hue = 0;
-            this.Blessed = true;
+            Name = "Hunter";
+            Title = "the Arch Zealot";
+            Body = 0x190;
+            CantWalk = true;
+            Hue = 0;
+            Blessed = true;
 
             AddItem(new HoodedShroudOfShadows(0xA91));
             AddItem(new ThighBoots());
@@ -34,6 +34,22 @@ namespace Server.Mobiles
             beard.Movable = false;
 
             AddItem(beard);
+        }
+
+        public override bool OnDragDrop(Mobile from, Item dropped)
+        {
+            if (from.InRange(Location, 2))
+            {
+                if (from.Race == Race.Gargoyle && dropped.GetType() == typeof(ExodusSacrificalDagger))
+                {
+                    dropped.Delete();
+                    from.AddToBackpack(new ExodusSacrificalGargishDagger());
+
+                    return true;
+                }
+            }
+
+            return base.OnDragDrop(from, dropped);
         }
         
         public ExodusArchZealot(Serial serial): base(serial)

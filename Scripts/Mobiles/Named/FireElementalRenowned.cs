@@ -66,7 +66,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(TokenOfHolyFavor), typeof(SwordOfShatteredHopes) };
+                return new Type[] { typeof(TokenOfHolyFavor), typeof(SwordOfShatteredHopes), typeof(LegacyOfDespair) };
             }
         }
         public override double DispelDifficulty
@@ -112,9 +112,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (this.BaseSoundID == 274)
-                this.BaseSoundID = 838;
         }
     }
 }

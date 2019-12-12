@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -59,6 +60,9 @@ namespace Server.Items
             t.Start();
 
             Registry.Add(defender, t);
+
+            if (attacker is BaseCreature)
+                PetTrainingHelper.OnWeaponAbilityUsed((BaseCreature)attacker, SkillName.Ninjitsu);
         }
 
         private class InternalTimer : Timer

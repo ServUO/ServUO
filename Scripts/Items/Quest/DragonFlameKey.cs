@@ -6,10 +6,11 @@ namespace Server.Items
     {
         [Constructable]
         public DragonFlameKey()
-            : base(0x1012)
+            : base(0x2002)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x8F; // TODO check
+            Weight = 2.0;
+            Hue = 42;
+            LootType = LootType.Blessed;
         }
 
         public DragonFlameKey(Serial serial)

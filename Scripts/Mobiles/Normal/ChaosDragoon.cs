@@ -10,39 +10,33 @@ namespace Server.Mobiles
         public ChaosDragoon()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.15, 0.4)
         {
-            this.Name = "a chaos dragoon";
-            this.Body = 0x190;
-            this.Hue = Utility.RandomSkinHue();
+            Name = "a chaos dragoon";
+            Body = 0x190;
+            Hue = Utility.RandomSkinHue();
 
-            this.SetStr(176, 225);
-            this.SetDex(81, 95);
-            this.SetInt(61, 85);
+            SetStr(176, 225);
+            SetDex(81, 95);
+            SetInt(61, 85);
 
-            this.SetHits(176, 225);
+            SetHits(176, 225);
 
-            this.SetDamage(24, 26);
+            SetDamage(24, 26);
 
-            this.SetDamageType(ResistanceType.Physical, 25);
-            this.SetDamageType(ResistanceType.Fire, 25);
-            this.SetDamageType(ResistanceType.Cold, 25);
-            this.SetDamageType(ResistanceType.Energy, 25);
+            SetDamageType(ResistanceType.Physical, 25);
+            SetDamageType(ResistanceType.Fire, 25);
+            SetDamageType(ResistanceType.Cold, 25);
+            SetDamageType(ResistanceType.Energy, 25);
 
-            //SetResistance( ResistanceType.Physical, 25, 38 );
-            //SetResistance( ResistanceType.Fire, 25, 38 );
-            //SetResistance( ResistanceType.Cold, 25, 38 );
-            //SetResistance( ResistanceType.Poison, 25, 38 );
-            //SetResistance( ResistanceType.Energy, 25, 38 );
+            SetSkill(SkillName.Fencing, 77.6, 92.5);
+            SetSkill(SkillName.Healing, 60.3, 90.0);
+            SetSkill(SkillName.Macing, 77.6, 92.5);
+            SetSkill(SkillName.Anatomy, 77.6, 87.5);
+            SetSkill(SkillName.MagicResist, 77.6, 97.5);
+            SetSkill(SkillName.Swords, 77.6, 92.5);
+            SetSkill(SkillName.Tactics, 77.6, 87.5);
 
-            this.SetSkill(SkillName.Fencing, 77.6, 92.5);
-            this.SetSkill(SkillName.Healing, 60.3, 90.0);
-            this.SetSkill(SkillName.Macing, 77.6, 92.5);
-            this.SetSkill(SkillName.Anatomy, 77.6, 87.5);
-            this.SetSkill(SkillName.MagicResist, 77.6, 97.5);
-            this.SetSkill(SkillName.Swords, 77.6, 92.5);
-            this.SetSkill(SkillName.Tactics, 77.6, 87.5);
-
-            this.Fame = 5000;
-            this.Karma = -5000;
+            Fame = 5000;
+            Karma = -5000;
 
             CraftResource res = CraftResource.None;
 
@@ -84,65 +78,67 @@ namespace Server.Mobiles
             }
 
             melee.Movable = false;
-            this.AddItem(melee);
+            AddItem(melee);
 
             DragonHelm helm = new DragonHelm();
             helm.Resource = res;
             helm.Movable = false;
-            this.AddItem(helm);
+            AddItem(helm);
 
             DragonChest chest = new DragonChest();
             chest.Resource = res;
             chest.Movable = false;
-            this.AddItem(chest);
+            AddItem(chest);
 
             DragonArms arms = new DragonArms();
             arms.Resource = res;
             arms.Movable = false;
-            this.AddItem(arms);
+            AddItem(arms);
 
             DragonGloves gloves = new DragonGloves();
             gloves.Resource = res;
             gloves.Movable = false;
-            this.AddItem(gloves);
+            AddItem(gloves);
 
             DragonLegs legs = new DragonLegs();
             legs.Resource = res;
             legs.Movable = false;
-            this.AddItem(legs);
+            AddItem(legs);
 
             ChaosShield shield = new ChaosShield();
             shield.Movable = false;
-            this.AddItem(shield);
+            AddItem(shield);
 
-            this.AddItem(new Shirt());
-            this.AddItem(new Boots());
+            AddItem(new Shirt());
+            AddItem(new Boots());
 
             int amount = Utility.RandomMinMax(1, 3);
 
             switch ( res )
             {
                 case CraftResource.BlackScales:
-                    this.AddItem(new BlackScales(amount));
+                    AddItem(new BlackScales(amount));
                     break;
                 case CraftResource.RedScales:
-                    this.AddItem(new RedScales(amount));
+                    AddItem(new RedScales(amount));
                     break;
                 case CraftResource.BlueScales:
-                    this.AddItem(new BlueScales(amount));
+                    AddItem(new BlueScales(amount));
                     break;
                 case CraftResource.YellowScales:
-                    this.AddItem(new YellowScales(amount));
+                    AddItem(new YellowScales(amount));
                     break;
                 case CraftResource.GreenScales:
-                    this.AddItem(new GreenScales(amount));
+                    AddItem(new GreenScales(amount));
                     break;
                 case CraftResource.WhiteScales:
-                    this.AddItem(new WhiteScales(amount));
+                    AddItem(new WhiteScales(amount));
                     break;
             }
 
             new SwampDragon().Rider = this;
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public ChaosDragoon(Serial serial)
@@ -150,13 +146,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }
         public override bool AutoDispel
         {
             get
@@ -214,13 +203,12 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
-            //AddLoot( LootPack.Gems );	
+            AddLoot(LootPack.Rich);
         }
 
         public override bool OnBeforeDeath()
         {
-            IMount mount = this.Mount;
+            IMount mount = Mount;
 
             if (mount != null)
                 mount.Rider = null;

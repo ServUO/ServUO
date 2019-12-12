@@ -8,11 +8,11 @@ namespace Server.Items
         [Constructable]
         public BowOfTheJukaKing()
         {
-            this.Hue = 0x460;
-            this.WeaponAttributes.HitMagicArrow = 25;
-            this.Slayer = SlayerName.ReptilianDeath;
-            this.Attributes.AttackChance = 15;
-            this.Attributes.WeaponDamage = 40;
+            Hue = 0x460;
+            WeaponAttributes.HitMagicArrow = 25;
+            Slayer = SlayerName.ReptilianDeath;
+            Attributes.AttackChance = 15;
+            Attributes.WeaponDamage = 40;
         }
 
         public BowOfTheJukaKing(Serial serial)

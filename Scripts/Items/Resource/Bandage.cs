@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Bandage.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -13,12 +7,19 @@ using Server.Gumps;
 using Server.Mobiles;
 using Server.Targeting;
 using Server.Network;
+using Server.Engines.Despise;
+using Server.Services.Virtues;
 #endregion
 
 namespace Server.Items
 {
-	public class Bandage : Item, IDyable
-	{
+	public class Bandage : Item, IDyable, ICommodity
+    {
+        public static void Initialize()
+        {
+            EventSink.BandageTargetRequest += BandageTargetRequest;
+        }
+
 		public static int Range = (Core.AOS ? 2 : 1);
 
 		public override double DefaultWeight { get { return 0.1; } }
@@ -40,7 +41,10 @@ namespace Server.Items
 			: base(serial)
 		{ }
 
-		public virtual bool Dye(Mobile from, DyeTub sender)
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
+
+        public virtual bool Dye(Mobile from, DyeTub sender)
 		{
 			if (Deleted)
 			{
@@ -82,12 +86,17 @@ namespace Server.Items
 			}
 		}
 
-        public static void BandageTargetRequest(Bandage b, Mobile from, Mobile target)
+        public static void BandageTargetRequest(BandageTargetRequestEventArgs e)
 		{
-            if (b.Deleted)
+			BandageTargetRequest(e.Bandage as Bandage, e.Mobile, e.Target);
+		}
+
+        public static void BandageTargetRequest(Bandage bandage, Mobile from, Mobile target)
+		{
+            if (bandage == null || bandage.Deleted)
                 return;
 
-			if (from.InRange(b.GetWorldLocation(), Range))
+            if (from.InRange(bandage.GetWorldLocation(), Range))
 			{
 				Target t = from.Target;
 
@@ -100,7 +109,7 @@ namespace Server.Items
 				from.RevealingAction();
 				from.SendLocalizedMessage(500948); // Who will you use the bandages on?
 
-                new InternalTarget(b).Invoke(from, target);
+                new InternalTarget(bandage).Invoke(from, target);
 			}
 			else
 			{
@@ -178,18 +187,14 @@ namespace Server.Items
 		private int m_Slips;
         private int m_HealedPoisonOrBleed;
 		private Timer m_Timer;
+        private int m_HealingBonus;
 
 		public Mobile Healer { get { return m_Healer; } }
 		public Mobile Patient { get { return m_Patient; } }
 		public int Slips { get { return m_Slips; } set { m_Slips = value; } }
         public int HealedPoisonOrBleed { get { return m_HealedPoisonOrBleed; } set { m_HealedPoisonOrBleed = value; } }
 		public Timer Timer { get { return m_Timer; } }
-
-		#region Heritage Items
-		private readonly bool m_Enhanced;
-
-		public bool Enhanced { get { return m_Enhanced; } }
-		#endregion
+        public int HealingBonus { get { return m_HealingBonus; } }
 
 		public void Slip()
 		{
@@ -206,7 +211,8 @@ namespace Server.Items
 			m_Healer = healer;
 			m_Patient = patient;
 
-			m_Enhanced = enhanced;
+            if (enhanced)
+                m_HealingBonus += EnhancedBandage.HealingBonus;
 
 			m_Timer = new InternalTimer(this, delay);
 			m_Timer.Start();
@@ -233,8 +239,13 @@ namespace Server.Items
 			return bc;
 		}
 
-		public static SkillName GetPrimarySkill(Mobile m)
+		public static SkillName GetPrimarySkill(Mobile healer, Mobile m)
 		{
+            if (m is DespiseCreature)
+            {
+                return healer.Skills[SkillName.Healing].Value > healer.Skills[SkillName.Veterinary].Value ? SkillName.Healing : SkillName.Veterinary;
+            }
+
 			if (!m.Player && (m.Body.IsMonster || m.Body.IsAnimal))
 			{
 				return SkillName.Veterinary;
@@ -245,8 +256,13 @@ namespace Server.Items
 			}
 		}
 
-		public static SkillName GetSecondarySkill(Mobile m)
+        public static SkillName GetSecondarySkill(Mobile healer, Mobile m)
 		{
+            if (m is DespiseCreature)
+            {
+                return healer.Skills[SkillName.Healing].Value > healer.Skills[SkillName.Veterinary].Value ? SkillName.Anatomy : SkillName.AnimalLore;
+            }
+
 			if (!m.Player && (m.Body.IsMonster || m.Body.IsAnimal))
 			{
 				return SkillName.AnimalLore;
@@ -303,8 +319,8 @@ namespace Server.Items
             bool playSound = true;
             bool checkSkills = false;
 
-            SkillName primarySkill = GetPrimarySkill(m_Patient);
-            SkillName secondarySkill = GetSecondarySkill(m_Patient);
+            SkillName primarySkill = GetPrimarySkill(m_Healer, m_Patient);
+            SkillName secondarySkill = GetSecondarySkill(m_Healer, m_Patient);
 
             BaseCreature petPatient = m_Patient as BaseCreature;
 
@@ -364,7 +380,7 @@ namespace Server.Items
                             }
                             else if (master != null && master.InRange(petPatient, 3))
                             {
-                                healerNumber = 503255; // You are able to resurrect the creature.
+                                healerNumber = 1049658; // The owner has been asked to sanctify the resurrection.
 
                                 master.CloseGump(typeof(PetResurrectGump));
                                 master.SendGump(new PetResurrectGump(m_Healer, petPatient));
@@ -381,7 +397,7 @@ namespace Server.Items
 
                                     if (friend.InRange(petPatient, 3))
                                     {
-                                        healerNumber = 503255; // You are able to resurrect the creature.
+                                        healerNumber = 1049658; // The owner has been asked to sanctify the resurrection.
 
                                         friend.CloseGump(typeof(PetResurrectGump));
                                         friend.SendGump(new PetResurrectGump(m_Healer, petPatient));
@@ -393,7 +409,7 @@ namespace Server.Items
 
                                 if (!found)
                                 {
-                                    healerNumber = 1049670; // The pet's owner must be nearby to attempt resurrection.
+                                    healerNumber = 1049659; // Neither the owner or friends of the pet are nearby to sanctify the resurrection.
                                 }
                             }
                         }
@@ -470,19 +486,21 @@ namespace Server.Items
 
                 double healing = m_Healer.Skills[primarySkill].Value;
                 double anatomy = m_Healer.Skills[secondarySkill].Value;
-                double chance = ((healing + 10.0) / 100.0) - (m_Slips * 0.02);
 
-                #region Heritage Items
-                if( m_Enhanced )
-                    healing += EnhancedBandage.HealingBonus;
-                #endregion
+                FirstAidBelt belt = m_Healer.FindItemOnLayer(Layer.Waist) as FirstAidBelt;
 
-                #region Exodus Items
+                if (belt != null)
+                    m_HealingBonus += belt.HealingBonus;
+
                 Item item = m_Healer.FindItemOnLayer(Layer.TwoHanded);
 
                 if (item is Asclepius || item is GargishAsclepius)
-                    healing += 15;
-                #endregion
+                    m_HealingBonus += 15;
+
+                if (m_HealingBonus > 0)
+                    healing += m_HealingBonus;
+
+                double chance = ((healing + 10.0) / 100.0) - (m_Slips * 0.02);
 
                 if (chance > Utility.RandomDouble())
                 {
@@ -525,6 +543,12 @@ namespace Server.Items
                     if (m_HealedPoisonOrBleed > 0)
                     {
                         toHeal /= m_HealedPoisonOrBleed;
+                    }
+
+                    if (SearingWounds.IsUnderEffects(m_Patient))
+                    {
+                        toHeal /= 2;
+                        m_Patient.SendLocalizedMessage(1151178); // The cauterized wound resists some of your healing.
                     }
 
                     if (toHeal < 1)
@@ -645,52 +669,6 @@ namespace Server.Items
             {
                 healer.DoBeneficial(patient);
 
-                bool onSelf = (healer == patient);
-                int dex = healer.Dex;
-
-                double seconds;
-                double resDelay = (patient.Alive ? 0.0 : 5.0);
-
-                if (onSelf)
-                {
-                    if (Core.AOS)
-                    {
-                        seconds = Math.Min(8, Math.Ceiling(11.0 - healer.Dex / 20));
-                        seconds = Math.Max(seconds, 4);
-                    }
-                    else
-                    {
-                        seconds = 9.4 + (0.6 * ((double)(120 - dex) / 10));
-                    }
-                }
-                else
-                {
-                    if (Core.AOS && GetPrimarySkill(patient) == SkillName.Veterinary)
-                    {
-                        seconds = 2.0;
-                    }
-                    else if (Core.AOS)
-                    {
-                        seconds = Math.Ceiling((double)4 - healer.Dex / 60);
-                        seconds = Math.Max(seconds, 2);
-                    }
-                    else
-                    {
-                        if (dex >= 100)
-                        {
-                            seconds = 3.0 + resDelay;
-                        }
-                        else if (dex >= 40)
-                        {
-                            seconds = 4.0 + resDelay;
-                        }
-                        else
-                        {
-                            seconds = 5.0 + resDelay;
-                        }
-                    }
-                }
-
                 BandageContext context = GetContext(healer);
 
                 if (context != null)
@@ -698,18 +676,18 @@ namespace Server.Items
                     context.StopHeal();
                 }
 
+				var delay = GetDelay(healer, patient);
+
                 if (patient is PlayerMobile)
-                    BuffInfo.AddBuff(healer, new BuffInfo(BuffIcon.Healing, 1002082, 1151400, TimeSpan.FromSeconds(seconds), healer, String.Format("{0}", patient.Name)));
+                    BuffInfo.AddBuff(healer, new BuffInfo(BuffIcon.Healing, 1002082, 1151400, delay, healer, String.Format("{0}", patient.Name)));
                 else
-                    BuffInfo.AddBuff(healer, new BuffInfo(BuffIcon.Veterinary, 1002167, 1151400, TimeSpan.FromSeconds(seconds), healer, String.Format("{0}", patient.Name)));
+                    BuffInfo.AddBuff(healer, new BuffInfo(BuffIcon.Veterinary, 1002167, 1151400, delay, healer, String.Format("{0}", patient.Name)));
 
-                seconds *= 1000;
-
-                context = new BandageContext(healer, patient, TimeSpan.FromMilliseconds(seconds), enhanced);
+                context = new BandageContext(healer, patient, delay, enhanced);
 
                 m_Table[healer] = context;
 
-                if (!onSelf)
+                if (healer != patient)
                 {
                     patient.SendLocalizedMessage(1008078, false, healer.Name); //  : Attempting to heal you.
                 }
@@ -718,7 +696,7 @@ namespace Server.Items
 
                 if (healer.NetState != null && healer.NetState.IsEnhancedClient)
                 {
-                    healer.NetState.Send(new BandageTimerPacket((int)(seconds / 1000)));
+                    healer.NetState.Send(new BandageTimerPacket((int)delay.TotalSeconds));
                 }
 
                 return context;
@@ -726,6 +704,61 @@ namespace Server.Items
 
             return null;
         }
+
+		public static TimeSpan GetDelay(Mobile healer, Mobile patient)
+		{
+			return GetDelay(healer, patient, !patient.Alive || patient.IsDeadBondedPet);
+		}
+
+		public static TimeSpan GetDelay(Mobile healer, Mobile patient, bool dead)
+		{
+			return GetDelay(healer, patient, dead, GetPrimarySkill(healer, patient));
+		}
+
+		public static TimeSpan GetDelay(Mobile healer, Mobile patient, bool dead, SkillName skill)
+		{
+			var resDelay = dead ? 5.0 : 0.0;
+
+			var dex = healer.Dex;
+
+            double seconds;
+
+			if (healer == patient)
+            {
+                if (Core.AOS)
+                {
+                    seconds = Math.Min(8, Math.Ceiling(11.0 - dex / 20));
+                    seconds = Math.Max(seconds, 4);
+                }
+                else
+                {
+                    seconds = 9.4 + (0.6 * ((double)(120 - dex) / 10));
+                }
+            }
+            else if (Core.AOS && skill == SkillName.Veterinary)
+            {
+                seconds = 2.0;
+            }
+            else if (Core.AOS)
+            {
+                seconds = Math.Ceiling((double)4 - dex / 60);
+                seconds = Math.Max(seconds, 2);
+            }
+            else if (dex >= 100)
+            {
+                seconds = 3.0 + resDelay;
+            }
+            else if (dex >= 40)
+            {
+                seconds = 4.0 + resDelay;
+            }
+            else
+            {
+                seconds = 5.0 + resDelay;
+            }
+			
+			return TimeSpan.FromSeconds(seconds);
+		}
 	}
 
     public sealed class BandageTimerPacket : Packet

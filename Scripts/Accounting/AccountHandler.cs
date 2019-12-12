@@ -15,21 +15,48 @@ namespace Server.Misc
     {
         None,
         Crypt,
-        NewCrypt
+        NewCrypt,
+        NewSecureCrypt
     }
 
     public class AccountHandler
     {
 	    public static PasswordProtection ProtectPasswords = Config.GetEnum(
 		    "Accounts.ProtectPasswords",
-			PasswordProtection.NewCrypt);
+			PasswordProtection.NewSecureCrypt);
 
         private static readonly int MaxAccountsPerIP = Config.Get("Accounts.AccountsPerIp", 1);
         private static readonly bool AutoAccountCreation = Config.Get("Accounts.AutoCreateAccounts", true);
         private static readonly bool RestrictDeletion = Config.Get("Accounts.RestrictDeletion", !TestCenter.Enabled);
         private static readonly TimeSpan DeleteDelay = Config.Get("Accounts.DeleteDelay", TimeSpan.FromDays(7.0));
 
+        private static readonly CityInfo[] StartingCitiesT2A = new CityInfo[]
+        {
+            new CityInfo("New Haven",	"New Haven Bank",	1150168, 3503,	2574,	14, Map.Felucca),
+            new CityInfo("Yew", "The Empath Abbey",	1075072, 633,	858,	0, Map.Felucca),
+            new CityInfo("Minoc", "The Barnacle", 1075073, 2476,	413,	15, Map.Felucca),
+            new CityInfo("Britain",	"The Wayfarer's Inn",	1075074, 1602,	1591,	20, Map.Felucca),
+            new CityInfo("Moonglow",	"The Scholars Inn",	1075075, 4408,	1168,	0, Map.Felucca),
+            new CityInfo("Trinsic",	"The Traveler's Inn",	1075076, 1845,	2745,	0, Map.Felucca),
+            new CityInfo("Jhelom", "The Mercenary Inn",	1075078, 1374,	3826,	0, Map.Felucca),
+            new CityInfo("Skara Brae",	"The Falconer's Inn",	1075079, 618,	2234,	0, Map.Felucca),
+            new CityInfo("Vesper", "The Ironwood Inn",	1075080, 2771,	976,	0, Map.Felucca)
+        };
+
         private static readonly CityInfo[] StartingCities = new CityInfo[]
+        {
+            new CityInfo("New Haven",	"New Haven Bank",	1150168, 3503,	2574,	14),
+            new CityInfo("Yew", "The Empath Abbey",	1075072, 633,	858,	0),
+            new CityInfo("Minoc", "The Barnacle", 1075073, 2476,	413,	15),
+            new CityInfo("Britain",	"The Wayfarer's Inn",	1075074, 1602,	1591,	20),
+            new CityInfo("Moonglow",	"The Scholars Inn",	1075075, 4408,	1168,	0),
+            new CityInfo("Trinsic",	"The Traveler's Inn",	1075076, 1845,	2745,	0),
+            new CityInfo("Jhelom", "The Mercenary Inn",	1075078, 1374,	3826,	0),
+            new CityInfo("Skara Brae",	"The Falconer's Inn",	1075079, 618,	2234,	0),
+            new CityInfo("Vesper", "The Ironwood Inn",	1075080, 2771,	976,	0)
+        };
+
+        private static readonly CityInfo[] StartingCitiesSA = new CityInfo[]
         {
             new CityInfo("New Haven",	"New Haven Bank",	1150168, 3503,	2574,	14),
             new CityInfo("Yew", "The Empath Abbey",	1075072, 633,	858,	0),
@@ -70,7 +97,7 @@ namespace Server.Misc
 
         private static readonly char[] m_ForbiddenChars = new char[]
         {
-            '<', '>', ':', '"', '/', '\\', '|', '?', '*'
+            '<', '>', ':', '"', '/', '\\', '|', '?', '*', ' '
         };
 
         private static AccessLevel m_LockdownLevel;
@@ -233,7 +260,7 @@ namespace Server.Misc
                 e.Accepted = false;
                 e.RejectReason = ALRReason.InUse;
 
-                Utility.PushColor(ConsoleColor.DarkRed);
+                Utility.PushColor(ConsoleColor.Red);
                 Console.WriteLine("Login: {0}: Past IP limit threshold", e.State);
                 Utility.PopColor();
 
@@ -261,7 +288,7 @@ namespace Server.Misc
                 }
                 else
                 {
-                    Utility.PushColor(ConsoleColor.DarkRed);
+                    Utility.PushColor(ConsoleColor.Red);
                     Console.WriteLine("Login: {0}: Invalid username '{1}'", e.State, un);
                     Utility.PopColor();
                     e.RejectReason = ALRReason.Invalid;
@@ -310,7 +337,7 @@ namespace Server.Misc
             {
                 e.Accepted = false;
 
-                Utility.PushColor(ConsoleColor.DarkRed);
+                Utility.PushColor(ConsoleColor.Red);
                 Console.WriteLine("Login: {0}: Past IP limit threshold", e.State);
                 Utility.PopColor();
 
@@ -359,7 +386,23 @@ namespace Server.Misc
                 Utility.PopColor();
                 e.State.Account = acct;
                 e.Accepted = true;
-                e.CityInfo = Siege.SiegeShard ? SiegeStartingCities : StartingCities;
+
+                if(Siege.SiegeShard)
+                {
+                    e.CityInfo = SiegeStartingCities;
+                }
+                else if (!Core.UOR)
+                {
+                    e.CityInfo = StartingCitiesT2A;
+                }
+                else if (!Core.SA)
+                {
+                    e.CityInfo = StartingCities;
+                }
+                else
+                {
+                    e.CityInfo = StartingCitiesSA;
+                }
             }
 
             if (!e.Accepted)

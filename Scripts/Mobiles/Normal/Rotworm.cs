@@ -42,6 +42,8 @@ namespace Server.Mobiles
             Karma = -500;
 
             PackBodyPartOrBones();
+
+            SetSpecialAbility(SpecialAbility.BloodDisease);
         }
 
         public Rotworm(Serial serial)
@@ -88,83 +90,6 @@ namespace Server.Mobiles
 
             if (torch != null && torch.Burning)
                 BeginFlee(TimeSpan.FromSeconds(5.0));
-        }
-
-        private static Dictionary<Mobile, BloodDiseaseTimer> m_BloodDiseaseTable = new Dictionary<Mobile, BloodDiseaseTimer>();
-
-        public static bool IsDiseased(Mobile m)
-        {
-            return m_BloodDiseaseTable.ContainsKey(m);
-        }
-
-        public override void OnGotMeleeAttack(Mobile attacker)
-        {
-            base.OnGotMeleeAttack(attacker);
-
-            TryInfect(attacker);
-        }
-
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            TryInfect(defender);
-        }
-
-        private void TryInfect(Mobile attacker)
-        {
-            if (!m_BloodDiseaseTable.ContainsKey(attacker) && this.InRange(attacker, 1) && 0.25 > Utility.RandomDouble() && !FountainOfFortune.UnderProtection(attacker))
-            {
-                // The rotworm has infected you with blood disease!!
-                attacker.SendLocalizedMessage(1111672, "", 0x25);
-
-                attacker.PlaySound(0x213);
-                Effects.SendTargetParticles(attacker, 0x373A, 1, 15, 0x26B9, EffectLayer.Head);
-
-                BloodDiseaseTimer timer = new BloodDiseaseTimer(attacker);
-                timer.Start();
-
-                // TODO: 2nd cliloc
-                BuffInfo.AddBuff(attacker, new BuffInfo(BuffIcon.RotwormBloodDisease, 1153798, 1153798));
-
-                m_BloodDiseaseTable.Add(attacker, timer);
-            }
-        }
-
-        private class BloodDiseaseTimer : Timer
-        {
-            private const int MaxCount = 8;
-
-            private int m_Count;
-            private Mobile m_Victim;
-
-            public BloodDiseaseTimer(Mobile m)
-                : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
-            {
-                m_Victim = m;
-            }
-
-            protected override void OnTick()
-            {
-                if (m_Count == MaxCount || m_Victim.Deleted || !m_Victim.Alive || m_Victim.IsDeadBondedPet)
-                {
-                    // You no longer feel sick.
-                    m_Victim.SendLocalizedMessage(1111673);
-
-                    m_BloodDiseaseTable.Remove(m_Victim);
-
-                    BuffInfo.RemoveBuff(m_Victim, BuffIcon.RotwormBloodDisease);
-
-                    Stop();
-                }
-                else if (m_Count > 0)
-                {
-                    AOS.Damage(m_Victim, Utility.RandomMinMax(10, 20), 0, 0, 0, 100, 0);
-                    m_Victim.Combatant = null;
-                }
-
-                m_Count++;
-            }
         }
 
         public override void Serialize(GenericWriter writer)

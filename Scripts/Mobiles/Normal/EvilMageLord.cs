@@ -10,39 +10,39 @@ namespace Server.Mobiles
         public EvilMageLord()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         { 
-            this.Name = NameList.RandomName("evil mage lord");
-            this.Body = Utility.RandomList(125, 126);
+            Name = NameList.RandomName("evil mage lord");
+            Body = Utility.RandomList(125, 126);
 
-            this.PackItem(new Robe(Utility.RandomMetalHue())); 
-            this.PackItem(new WizardsHat(Utility.RandomMetalHue())); 
+            PackItem(new Robe(Utility.RandomMetalHue())); 
+            PackItem(new WizardsHat(Utility.RandomMetalHue())); 
 
-            this.SetStr(81, 105);
-            this.SetDex(191, 215);
-            this.SetInt(126, 150);
+            SetStr(81, 105);
+            SetDex(191, 215);
+            SetInt(126, 150);
 
-            this.SetHits(49, 63);
+            SetHits(49, 63);
 
-            this.SetDamage(5, 10);
+            SetDamage(5, 10);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 35, 40);
-            this.SetResistance(ResistanceType.Fire, 30, 40);
-            this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 30, 40);
+            SetResistance(ResistanceType.Physical, 35, 40);
+            SetResistance(ResistanceType.Fire, 30, 40);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.EvalInt, 80.2, 100.0);
-            this.SetSkill(SkillName.Magery, 95.1, 100.0);
-            this.SetSkill(SkillName.Meditation, 27.5, 50.0);
-            this.SetSkill(SkillName.MagicResist, 77.5, 100.0);
-            this.SetSkill(SkillName.Tactics, 65.0, 87.5);
-            this.SetSkill(SkillName.Wrestling, 20.3, 80.0);
+            SetSkill(SkillName.EvalInt, 80.2, 100.0);
+            SetSkill(SkillName.Magery, 95.1, 100.0);
+            SetSkill(SkillName.Meditation, 27.5, 50.0);
+            SetSkill(SkillName.MagicResist, 77.5, 100.0);
+            SetSkill(SkillName.Tactics, 65.0, 87.5);
+            SetSkill(SkillName.Wrestling, 20.3, 80.0);
 
-            this.Fame = 10500;
-            this.Karma = -10500;
+            Fame = 10500;
+            Karma = -10500;
 
-            this.VirtualArmor = 16;
+            VirtualArmor = 16;
 			switch (Utility.Random(16))
             {
                 case 0: PackItem(new BloodOathScroll()); break;
@@ -50,11 +50,21 @@ namespace Server.Mobiles
                 case 2: PackItem(new StrangleScroll()); break;
                 case 3: PackItem(new LichFormScroll()); break;
 			}
-            this.PackReg(23);
+            PackReg(23);
             if (Utility.RandomBool())
-                this.PackItem(new Shoes());
+                PackItem(new Shoes());
             else
-                this.PackItem(new Sandals());
+                PackItem(new Sandals());
+        }
+
+        public override int GetDeathSound()
+        {
+            return 0x423;
+        }
+
+        public override int GetHurtSound()
+        {
+            return 0x436;
         }
 
         public EvilMageLord(Serial serial)
@@ -92,9 +102,9 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average);
-            this.AddLoot(LootPack.Meager);
-            this.AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.Average);
+            AddLoot(LootPack.Meager);
+            AddLoot(LootPack.MedScrolls, 2);
         }
 
         public override void Serialize(GenericWriter writer) 

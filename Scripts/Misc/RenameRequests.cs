@@ -1,5 +1,7 @@
 using System;
 
+using Server.Mobiles;
+
 namespace Server.Misc
 {
     public class RenameRequests
@@ -19,7 +21,16 @@ namespace Server.Misc
             {
                 name = name.Trim();
 
-                if (NameVerification.Validate(name, 1, 16, true, false, true, 0, NameVerification.Empty, NameVerification.StartDisallowed, (Core.ML ? NameVerification.Disallowed : new string[] { })))
+                var numExceptions = 0;
+                var exceptions = NameVerification.Empty;
+
+                if (targ is BaseCreature)
+                {
+                    exceptions = new char[] { ' ' };
+                    numExceptions = 5;
+                }
+
+                if (NameVerification.Validate(name, 1, 16, true, false, true, numExceptions, exceptions, NameVerification.StartDisallowed, (Core.ML ? NameVerification.Disallowed : new string[] { })))
                 {
                     if (Core.ML)
                     {

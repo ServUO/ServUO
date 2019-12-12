@@ -43,7 +43,9 @@ namespace Server.Items
         Barako,
         Urali,
         Sakkhra,
-        #endregion
+        #endregion,
+        Shatter,
+        FearEssence
     }
 
     public abstract class BasePotion : Item, ICraftable, ICommodity
@@ -63,7 +65,7 @@ namespace Server.Items
             }
         }
 
-        int ICommodity.DescriptionNumber
+        TextDefinition ICommodity.Description
         {
             get
             {

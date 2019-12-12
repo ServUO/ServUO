@@ -190,7 +190,7 @@ namespace Ultima
 		public static unsafe void ApplyTo(Bitmap bmp, short[] Colors, bool onlyHueGrayPixels)
 		{
 			BitmapData bd = bmp.LockBits(
-				new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format16bppArgb1555);
+				new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, Settings.PixelFormat);
 
 			int stride = bd.Stride >> 1;
 			int width = bd.Width;
@@ -328,7 +328,7 @@ namespace Ultima
 		public unsafe void ApplyTo(Bitmap bmp, bool onlyHueGrayPixels)
 		{
 			BitmapData bd = bmp.LockBits(
-				new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format16bppArgb1555);
+				new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, Settings.PixelFormat);
 
 			int stride = bd.Stride >> 1;
 			int width = bd.Width;

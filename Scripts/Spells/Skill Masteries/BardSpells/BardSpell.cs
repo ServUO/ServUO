@@ -15,6 +15,8 @@ namespace Server.Spells.SkillMasteries
         private BaseInstrument m_Instrument;
         public BaseInstrument Instrument { get { return m_Instrument; } }
 
+        public virtual double SlayerBonus { get { return 1.5; } }
+
         public override double RequiredSkill { get { return 90; } }
         public override double UpKeep { get { return 0; } }
         public override int RequiredMana { get { return 0; } }
@@ -25,10 +27,7 @@ namespace Server.Spells.SkillMasteries
         {
             get
             {
-                if (Caster == null)
-                    return 0.0;
-
-                return ((Caster.Skills[CastSkill].Base * 2) + Caster.Skills[DamageSkill].Base) / 360;
+                return Math.Floor(2 + (((Caster.Skills[CastSkill].Base - 90) / 10) + ((Caster.Skills[DamageSkill].Base - 90) / 10)));
             }
         }
 
@@ -36,32 +35,29 @@ namespace Server.Spells.SkillMasteries
 		{ 
 			get 
 			{
-				if(Caster == null)
-					return 0.0;
-					
-				double bonus = 0.0;
+                double bonus = 0;
 				double prov = Caster.Skills[SkillName.Provocation].Base;
 				double peac = Caster.Skills[SkillName.Peacemaking].Base;
 				double disc = Caster.Skills[SkillName.Discordance].Base;
-				
+
 				switch(CastSkill)
 				{
 					default: return 0.0;
 					case SkillName.Provocation:
-						if(peac >= 100) bonus += peac;
-						if(disc >= 100) bonus += disc;
+                        if (peac >= 100) bonus += 1 + ((peac - 100) / 10);
+                        if (disc >= 100) bonus += 1 + ((disc - 100) / 10);
 						break;
 					case SkillName.Peacemaking:
-						if(prov >= 100) bonus += peac;
-						if(disc >= 100) bonus += disc;
+                        if (prov >= 100) bonus += 1 + ((peac - 100) / 10);
+                        if (disc >= 100) bonus += 1 + ((disc - 100) / 10);
 						break;
 					case SkillName.Discordance:
-						if(prov >= 100) bonus += peac;
-						if(peac >= 100) bonus += disc;
+                        if (prov >= 100) bonus += 1 + ((peac - 100) / 10);
+                        if (peac >= 100) bonus += 1 + ((disc - 100) / 10);
 						break;
 				}
-					
-				return bonus / 200; 
+
+                return bonus;
 			}
 		}
 		
@@ -95,7 +91,7 @@ namespace Server.Spells.SkillMasteries
 
         public void OnPickedInstrument(Mobile from, BaseInstrument instrument)
         {
-            from.SendMessage("You choose a muscial instrument.  Try using the bard mastery again.");
+            from.SendMessage("You choose a muscial instrument. Try using the bard mastery again.");
         }
 
         public override bool CheckFizzle()
@@ -144,5 +140,26 @@ namespace Server.Spells.SkillMasteries
 				
 			return 0;
 		}
+
+        public virtual double GetSlayerBonus()
+        {
+            if (Target == null)
+                return 1.0;
+
+            ISlayer slayer = Instrument as ISlayer;
+
+            if (slayer != null)
+            {
+                SlayerEntry se1 = SlayerGroup.GetEntryByName(slayer.Slayer);
+                SlayerEntry se2 = SlayerGroup.GetEntryByName(slayer.Slayer2);
+
+                if ((se1 != null && se1.Slays(Target)) || (se2 != null && se2.Slays(Target)))
+                {
+                    return SlayerBonus;
+                }
+            }
+
+            return 1.0;
+        }
 	}
 }

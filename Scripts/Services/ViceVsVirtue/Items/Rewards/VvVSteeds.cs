@@ -55,8 +55,6 @@ namespace Server.Engines.VvV
             base.OnDoubleClick(m);
         }
 		
-
-
 		public VvVSteedStatuette(Serial serial) : base(serial)
 		{
 		}
@@ -314,7 +312,7 @@ namespace Server.Engines.VvV
 
 				steeds.ForEach(s =>
 				{
-					if(s.NextReadinessAtrophy < DateTime.UtcNow)
+					if((s.Map != Map.Internal || (s.Rider != null && s.Rider.Map != Map.Internal)) && s.NextReadinessAtrophy < DateTime.UtcNow)
 					{
 						s.BattleReadiness--;
 						

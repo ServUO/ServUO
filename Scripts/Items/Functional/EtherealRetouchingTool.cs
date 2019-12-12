@@ -58,7 +58,7 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is EtherealMount)
+                if (m_Tool.IsChildOf(from.Backpack) && targeted is EtherealMount)
                 {
                     EtherealMount mount = targeted as EtherealMount;
 

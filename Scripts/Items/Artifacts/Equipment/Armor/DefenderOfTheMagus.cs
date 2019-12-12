@@ -8,49 +8,46 @@ namespace Server.Items
         [Constructable]
         public DefenderOfTheMagus() 
         {
-            this.Name = ("Defender Of The Magus");
-		
-            this.Hue = 590;
-			
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.DefendChance = 10;				
-            this.Attributes.CastRecovery = 1;
+            Hue = 590;		
+            Attributes.SpellChanneling = 1;
+            Attributes.DefendChance = 10;				
+            Attributes.CastRecovery = 1;
             //Random Resonance:
             switch (Utility.Random(5))
             {
                 case 0:
-                    this.AbsorptionAttributes.ResonanceCold = 10;
+                    AbsorptionAttributes.ResonanceCold = 10;
                     break;
                 case 1:
-                    this.AbsorptionAttributes.ResonanceFire = 10;
+                    AbsorptionAttributes.ResonanceFire = 10;
                     break;
                 case 2:
-                    this.AbsorptionAttributes.ResonanceKinetic = 10;
+                    AbsorptionAttributes.ResonanceKinetic = 10;
                     break;
                 case 3:
-                    this.AbsorptionAttributes.ResonancePoison = 10;
+                    AbsorptionAttributes.ResonancePoison = 10;
                     break;
                 case 4:
-                    this.AbsorptionAttributes.ResonanceEnergy = 10;
+                    AbsorptionAttributes.ResonanceEnergy = 10;
                     break;
             }
             //Random Resist:
             switch (Utility.Random(5))
             {
                 case 0:
-                    this.ColdBonus = 10;
+                    ColdBonus = 10;
                     break;
                 case 1:
-                    this.FireBonus = 10;
+                    FireBonus = 10;
                     break;
                 case 2:
-                    this.PhysicalBonus = 10;
+                    PhysicalBonus = 10;
                     break;
                 case 3:
-                    this.PoisonBonus = 10;
+                    PoisonBonus = 10;
                     break;
                 case 4:
-                    this.EnergyBonus = 10;
+                    EnergyBonus = 10;
                     break;
             }
 
@@ -60,6 +57,8 @@ namespace Server.Items
             : base(serial)
         {
         }
+        
+        public override int LabelNumber { get{return 1113851;} }// Defender of the Magus
 
         public override int BasePhysicalResistance
         {

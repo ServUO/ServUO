@@ -188,12 +188,6 @@ namespace Server.Items
                 resourceType = craftItem.Resources.GetAt(0).ItemType;
 
             this.Resource = CraftResources.GetFromType(resourceType);
-
-            CraftContext context = craftSystem.GetContext(from);
-
-            if (context != null && context.DoNotColor)
-                this.Hue = 0;
-
             return quality;
         }
         #endregion

@@ -12,9 +12,9 @@ namespace Server.Engines.Quests
         public InTheWeeds()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(FNPitchfork), "Farmer Nash's Pitchfork", 1, 0xE87));
+            AddObjective(new ObtainObjective(typeof(FNPitchfork), "Farmer Nash's Pitchfork", 1, 0xE87));
 			
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* In The Weeds */
@@ -153,21 +153,21 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = false;
-            this.Race = Race.Gargoyle;
+            Female = false;
+            Race = Race.Gargoyle;
 			
-            this.Hue = 0x840C;
-            this.HairItemID = 0x2045;
-            this.HairHue = 0x453;
+            Hue = 0x840C;
+            HairItemID = 0x2045;
+            HairHue = 0x453;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Sandals(0x74A));
-            this.AddItem(new Robe(0x498));
+            AddItem(new Backpack());
+            AddItem(new Sandals(0x74A));
+            AddItem(new Robe(0x498));
         }
 
         public override void Serialize(GenericWriter writer)

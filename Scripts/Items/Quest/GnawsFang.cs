@@ -8,8 +8,9 @@ namespace Server.Items
         public GnawsFang()
             : base(0x10E8)
         {
-            this.Weight = 1;
-            this.Hue = 0x174; // TODO check
+            Weight = 1;
+            Hue = 0x174; // TODO check
+            LootType = LootType.Blessed;
         }
 
         public GnawsFang(Serial serial)

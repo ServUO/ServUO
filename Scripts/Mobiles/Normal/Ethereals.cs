@@ -1,15 +1,10 @@
-#region Header
-// **********
-// ServUO - Ethereals.cs
-// **********
-#endregion
-
 #region References
 using System;
 
 using Server.Engines.VeteranRewards;
 using Server.Items;
 using Server.Multis;
+using Server.Network;
 using Server.Spells;
 #endregion
 
@@ -337,6 +332,12 @@ namespace Server.Mobiles
                 return false;
             }
 
+            if (from.Mount is BaseBoat)
+            {
+                PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1042146, from.NetState); // You cannot use this while mounted.
+                return false;
+            }
+
             if (from.Mounted)
             {
                 from.SendLocalizedMessage(1005583); // Please dismount first.
@@ -389,7 +390,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(5); // version
+            writer.Write(7); // version
 
             writer.Write(m_Transparent);
 
@@ -414,6 +415,8 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 7:
+                case 6:
                 case 5:
                     m_Transparent = reader.ReadBool();
                     m_TransparentMountedID = reader.ReadInt();
@@ -513,7 +516,7 @@ namespace Server.Mobiles
             ProcessDelta();
         }
 
-        public void OnRiderDamaged(int amount, Mobile from, bool willKill)
+        public virtual void OnRiderDamaged(Mobile from, ref int amount, bool willKill)
         { }
 
         private class EtherealSpell : Spell
@@ -720,7 +723,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public EtherealRidgeback()
-            : base(0x2615, 0x3E9A, 0x3EBA)
+            : base(0x2615, 0x3E9A, 0x3EBA, DefaultEtherealHue)
         { }
 
         public EtherealRidgeback(Serial serial)
@@ -732,7 +735,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(1); // version
+            writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -746,6 +749,11 @@ namespace Server.Mobiles
                 NonTransparentMountedID = 0x3EBA;
                 Transparent = true;
             }
+
+            if (version == 1)
+            {
+                TransparentMountedHue = DefaultEtherealHue;
+            }
         }
     }
 
@@ -753,7 +761,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public EtherealUnicorn()
-            : base(0x25CE, 0x3E9B, 0x3EB4)
+            : base(0x25CE, 0x3E9B, 0x3EB4, DefaultEtherealHue)
         { }
 
         public EtherealUnicorn(Serial serial)
@@ -765,7 +773,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(1); // version
+            writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -779,6 +787,11 @@ namespace Server.Mobiles
                 NonTransparentMountedID = 0x3EB4;
                 Transparent = true;
             }
+
+            if (version == 1)
+            {
+                TransparentMountedHue = DefaultEtherealHue;
+            }
         }
     }
 
@@ -786,7 +799,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public EtherealBeetle()
-            : base(0x260F, 0x3E97, 0x3EBC)
+            : base(0x260F, 0x3E97, 0x3EBC, DefaultEtherealHue)
         { }
 
         public EtherealBeetle(Serial serial)
@@ -798,7 +811,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(1); // version
+            writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -812,6 +825,11 @@ namespace Server.Mobiles
                 NonTransparentMountedID = 0x3EBC;
                 Transparent = true;
             }
+
+            if (version == 1)
+            {
+                TransparentMountedHue = DefaultEtherealHue;
+            }
         }
     }
 
@@ -819,7 +837,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public EtherealKirin()
-            : base(0x25A0, 0x3E9C, 0x3EAD)
+            : base(0x25A0, 0x3E9C, 0x3EAD, DefaultEtherealHue)
         { }
 
         public EtherealKirin(Serial serial)
@@ -831,7 +849,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(1); // version
+            writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -844,6 +862,11 @@ namespace Server.Mobiles
             {
                 NonTransparentMountedID = 0x3EAD;
                 Transparent = true;
+            }
+
+            if (version == 1)
+            {
+                TransparentMountedHue = DefaultEtherealHue;
             }
         }
     }

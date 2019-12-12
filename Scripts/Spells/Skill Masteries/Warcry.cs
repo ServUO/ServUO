@@ -37,7 +37,16 @@ namespace Server.Spells.SkillMasteries
                 _DamageMalus = (int)((double)skill / 2.4);
 
                 Caster.PublicOverheadMessage(MessageType.Regular, Caster.SpeechHue, false, "Prepare Yourself!");
-                Caster.PlaySound(Caster.Female ? 0x338 : 0x44A);
+
+                if (Caster.Player)
+                {
+                    Caster.PlaySound(Caster.Female ? 0x338 : 0x44A);
+                }
+                else if (Caster is BaseCreature)
+                {
+                    Caster.PlaySound(((BaseCreature)Caster).GetAngerSound());
+                }
+
                 TimeSpan d;
 
                 if (Caster.AccessLevel == AccessLevel.Player)
@@ -64,7 +73,15 @@ namespace Server.Spells.SkillMasteries
             {
                 damage -= (int)((double)damage * ((double)_DamageMalus / 100.00));
 
-                Caster.PlaySound(attacker.Female ? 0x338 : 0x44A);
+                if (Caster.Player)
+                {
+                    Caster.PlaySound(attacker.Female ? 0x338 : 0x44A);
+                }
+                else if (Caster is BaseCreature)
+                {
+                    Caster.PlaySound(((BaseCreature)Caster).GetAngerSound());
+                }
+
                 Caster.FixedEffect(0x3779, 10, 20, 1372, 4);
 
                 //Caster.SendLocalizedMessage(1156161, attacker.Name); // ~1_NAME~ attacks you for 50% damage.

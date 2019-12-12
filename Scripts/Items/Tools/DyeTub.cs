@@ -162,10 +162,10 @@ namespace Server.Items
                                 {
                                     BaseHouse house = BaseHouse.FindHouseAt(item);
 
-                                    if (house == null || (!house.IsLockedDown(item) && !house.IsSecure(item)))
-                                        from.SendLocalizedMessage(501022); // Furniture must be locked down to paint it.
-                                    else if (!house.IsCoOwner(from))
+                                    if (!house.IsCoOwner(from))
                                         from.SendLocalizedMessage(501023); // You must be the owner to use this item.
+                                    else if (house == null || (!house.IsLockedDown(item) && !house.IsSecure(item)) && (!(item is AddonComponent) || !house.Addons.ContainsKey(((AddonComponent)item).Addon)))
+                                        from.SendLocalizedMessage(501022); // Furniture must be locked down to paint it.
                                     else
                                         okay = true;
                                 }
@@ -214,24 +214,33 @@ namespace Server.Items
                             from.PlaySound(0x23E);
                         }
                     }
-                    else if ((item is BaseArmor && (((BaseArmor)item).MaterialType == ArmorMaterialType.Leather || ((BaseArmor)item).MaterialType == ArmorMaterialType.Studded) || item is ElvenBoots || item is WoodlandBelt) && m_Tub.AllowLeather)
+                    else if (m_Tub.AllowLeather)
                     {
-                        if (!from.InRange(m_Tub.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
+                        if ((item is BaseArmor && (((BaseArmor)item).MaterialType == ArmorMaterialType.Leather || ((BaseArmor)item).MaterialType == ArmorMaterialType.Studded)) ||
+                            (item is BaseClothing && (((BaseClothing)item).DefaultResource == CraftResource.RegularLeather) || item is WoodlandBelt || item is BarbedWhip 
+							|| item is BladedWhip || item is SpikedWhip))
                         {
-                            from.SendLocalizedMessage(500446); // That is too far away.
-                        }
-                        else if (!item.Movable)
-                        {
-                            from.SendLocalizedMessage(1042419); // You may not dye leather items which are locked down.
-                        }
-                        else if (item.Parent is Mobile)
-                        {
-                            from.SendLocalizedMessage(500861); // Can't Dye clothing that is being worn.
+                            if (!from.InRange(m_Tub.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
+                            {
+                                from.SendLocalizedMessage(500446); // That is too far away.
+                            }
+                            else if (!item.Movable)
+                            {
+                                from.SendLocalizedMessage(1042419); // You may not dye leather items which are locked down.
+                            }
+                            else if (item.Parent is Mobile)
+                            {
+                                from.SendLocalizedMessage(500861); // Can't Dye clothing that is being worn.
+                            }
+                            else
+                            {
+                                item.Hue = m_Tub.DyedHue;
+                                from.PlaySound(0x23E);
+                            }
                         }
                         else
                         {
-                            item.Hue = m_Tub.DyedHue;
-                            from.PlaySound(0x23E);
+                            from.SendLocalizedMessage(m_Tub.FailMessage);
                         }
                     }
                     else if ((item is BaseArmor && (((BaseArmor)item).MaterialType == ArmorMaterialType.Chainmail || ((BaseArmor)item).MaterialType == ArmorMaterialType.Ringmail || ((BaseArmor)item).MaterialType == ArmorMaterialType.Plate)) && m_Tub.AllowMetal)

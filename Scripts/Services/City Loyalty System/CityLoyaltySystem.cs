@@ -7,6 +7,8 @@ using System.Linq;
 using System.Globalization;
 using Server.Network;
 using Server.Commands;
+using Server.Items;
+using Server.Engines.SeasonalEvents;
 
 namespace Server.Engines.CityLoyalty
 {
@@ -77,7 +79,7 @@ namespace Server.Engines.CityLoyalty
         MaritimeGuild = 1154050,
         MerchantsAssociation = 1154051,
         MiningCooperative = 1154052,
-        LeageOfRangers = 1154053,
+        LeagueOfRangers = 1154053,
         GuildOfAssassins = 1154054,
         WarriorsGuild = 1154055,
     }
@@ -96,6 +98,9 @@ namespace Server.Engines.CityLoyalty
         public static readonly int MaxBallotBoxes = Config.Get("CityLoyalty.MaxBallotBoxes", 10);
         public static readonly int AnnouncementPeriod = Config.Get("CityLoyalty.AnnouncementPeriod", 48);
 
+        public static readonly TimeSpan LoveAtrophyDuration = TimeSpan.FromHours(40);
+        public static Map SystemMap { get { return Siege.SiegeShard ? Map.Felucca : Map.Trammel; } }
+
         public override TextDefinition Name { get { return new TextDefinition(String.Format("{0}", this.City.ToString())); } }
         public override bool AutoAdd { get { return false; } }
         public override double MaxPoints { get { return double.MaxValue; } }
@@ -109,21 +114,12 @@ namespace Server.Engines.CityLoyalty
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public City City { get; private set; }
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int CompletedTrades { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
 		public CityDefinition Definition { get; set; }
 		
 		[CommandProperty(AccessLevel.GameMaster)]
-		public long Treasury { get; set; }
-		
-		[CommandProperty(AccessLevel.GameMaster)]
 		public CityElection Election { get; set; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public TradeDeal ActiveTradeDeal { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime TradeDealStart { get; set; }
@@ -146,9 +142,24 @@ namespace Server.Engines.CityLoyalty
         [CommandProperty(AccessLevel.GameMaster)]
         public CityStone Stone { get; set; }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CityMessageBoard Board { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public string Headline { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public string Body { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime PostedOn { get; set; }
+
         private Mobile _Governor;
         private Mobile _GovernorElect;
         private bool _PendingGovernor;
+        private long _Treasury;
+        private TradeDeal _ActiveTradeDeal;
+        private int _CompletedTrades;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile GovernorElect 
@@ -160,6 +171,9 @@ namespace Server.Engines.CityLoyalty
                     Governor = null;
 
                 _GovernorElect = value;
+
+                if (Stone != null)
+                    Stone.InvalidateProperties();
             }
         }
 
@@ -203,13 +217,45 @@ namespace Server.Engines.CityLoyalty
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string Headline { get; set; }
+        public long Treasury
+        {
+            get { return _Treasury; }
+            set
+            {
+                _Treasury = value;
+
+                if (Stone != null)
+                    Stone.InvalidateProperties();
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string Body { get; set; }
+        public TradeDeal ActiveTradeDeal
+        {
+            get { return _ActiveTradeDeal; }
+            set
+            {
+                _ActiveTradeDeal = value;
+
+                if (Stone != null)
+                    Stone.InvalidateProperties();
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime PostedOn { get; set; }
+        public int CompletedTrades
+        {
+            get { return _CompletedTrades; }
+            set
+            {
+                _CompletedTrades = value;
+
+                if (Stone != null)
+                    Stone.InvalidateProperties();
+            }
+        }
+
+        private Dictionary<Mobile, DateTime> CitizenWait { get; set; }
 
 		public CityLoyaltySystem(City city)
 		{
@@ -219,6 +265,7 @@ namespace Server.Engines.CityLoyalty
                 Cities = new List<CityLoyaltySystem>();
 
             Election = new CityElection(this);
+            CitizenWait = new Dictionary<Mobile, DateTime>();
 
 			Cities.Add(this);
 		}
@@ -233,9 +280,9 @@ namespace Server.Engines.CityLoyalty
             return new CityLoyaltyEntry(pm, this.City);
         }
 		
-		public bool IsCitizen(Mobile from)
+		public bool IsCitizen(Mobile from, bool staffIsCitizen = true)
 		{
-            if (from.AccessLevel > AccessLevel.Player)
+            if (from.AccessLevel > AccessLevel.Player && staffIsCitizen)
                 return true;
 
             CityLoyaltyEntry entry = GetPlayerEntry<CityLoyaltyEntry>(from);
@@ -287,7 +334,7 @@ namespace Server.Engines.CityLoyalty
                         Stone.InvalidateProperties();
                 }
 
-                _CitizenWait[from] = DateTime.UtcNow + TimeSpan.FromDays(CitizenJoinWait);
+                CitizenWait[from] = DateTime.UtcNow + TimeSpan.FromDays(CitizenJoinWait);
             }
 		}
 		
@@ -303,7 +350,11 @@ namespace Server.Engines.CityLoyalty
 			}
 
             entry.Hate += (int)hate;
-            from.SendLocalizedMessage(1152321, Definition.Name); // Your deeds in the city of ~1_name~ are worthy of censure.
+
+            if (entry.ShowGainMessage)
+            {
+                from.SendLocalizedMessage(1152321, Definition.Name); // Your deeds in the city of ~1_name~ are worthy of censure.
+            }
 
             if (from == Governor && entry.LoyaltyRating < LoyaltyRating.Unknown)
                 Governor = null;
@@ -315,15 +366,16 @@ namespace Server.Engines.CityLoyalty
 		public virtual void AwardLove(Mobile from, double love, bool message = true)
 		{
             CityLoyaltyEntry entry = GetPlayerEntry<CityLoyaltyEntry>(from, true);
-			
+
 			if(entry.Hate > 10)
 			{
 				double convert = entry.Hate / 75;
                 entry.Neutrality += (int)convert;
                 entry.Hate -= (int)convert;
 			}
-			
-			foreach(CityLoyaltySystem sys in Cities.Where(s => s.City != this.City))
+
+            // TODO: Re-Enable this for The Awakening Event
+            /*foreach (CityLoyaltySystem sys in Cities.Where(s => s.City != this.City))
 			{
                 CityLoyaltyEntry e = sys.GetPlayerEntry<CityLoyaltyEntry>(from, true);
 
@@ -333,10 +385,12 @@ namespace Server.Engines.CityLoyalty
                     e.Love -= (int)convert;
                     e.Neutrality += (int)convert;
 				}
-			}
+			}*/
 
-            if(message)
+            if (message && entry.ShowGainMessage)
+            {
                 from.SendLocalizedMessage(1152320, Definition.Name); // Your deeds in the city of ~1_name~ are worthy of praise.
+            }
 
 			entry.Love += (int)love;
 		}
@@ -477,16 +531,6 @@ namespace Server.Engines.CityLoyalty
 			}
 		}
 
-        public void PayTradeDealCost()
-        {
-            if (Treasury >= TradeDealCost)
-                Treasury -= TradeDealCost;
-            else
-            {
-                OnNewTradeDeal(TradeDeal.None);
-            }
-        }
-
         public void OnNewTradeDeal(TradeDeal newtradedeal)
         {
             if(ActiveTradeDeal == TradeDeal.None)
@@ -536,6 +580,10 @@ namespace Server.Engines.CityLoyalty
                     entry.UtilizingTradeDeal = true;
                     BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.CityTradeDeal, 1154168, 1154169, new TextDefinition((int)ActiveTradeDeal), true));
 
+                    ActivateTradeDeal(m, ActiveTradeDeal);
+
+                    m.Delta(MobileDelta.WeaponDamage);
+
                     m.SendLocalizedMessage(1154075); // You gain the benefit of your City's Trade Deal!
                 }
             }
@@ -568,28 +616,72 @@ namespace Server.Engines.CityLoyalty
                 to.SendLocalizedMessage(message);
         }
 
+        public bool CanAdd(Mobile from)
+        {
+            if (CitizenWait.ContainsKey(from))
+            {
+                if (CitizenWait[from] < DateTime.UtcNow)
+                {
+                    RemoveWaitTime(from);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public int NextJoin(Mobile from)
+        {
+            if (CitizenWait.ContainsKey(from))
+            {
+                return (int)(CitizenWait[from] - DateTime.UtcNow).TotalDays;
+            }
+
+            return 0;
+        }
+
+        public void RemoveWaitTime(Mobile from)
+        {
+            if (CitizenWait.ContainsKey(from))
+            {
+                CitizenWait.Remove(from);
+            }
+        }
+
         public static void Initialize()
         {
             EventSink.Login += OnLogin;
-            _CitizenWait = new Dictionary<Mobile, DateTime>();
+            Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), OnTick);
 
-            CommandSystem.Register("ElectionStartTime", AccessLevel.Administrator, e => e.Mobile.SendGump(new ElectionStartTimeGump(e.Mobile as PlayerMobile)));
-           
+            CommandSystem.Register("ElectionStartTime", AccessLevel.Administrator, e => Server.Gumps.BaseGump.SendGump(new ElectionStartTimeGump(e.Mobile as PlayerMobile)));
+            CommandSystem.Register("RemoveWait", AccessLevel.Administrator, e =>
+                {
+                    foreach (var city in Cities)
+                    {
+                        city.RemoveWaitTime(e.Mobile);
+                    }
+                });
+
             CommandSystem.Register("SystemInfo", AccessLevel.Administrator, e => 
             {
-                e.Mobile.CloseGump(typeof(SystemInfoGump));
-                e.Mobile.SendGump(new SystemInfoGump());
+                if (e.Mobile is PlayerMobile)
+                {
+                    e.Mobile.CloseGump(typeof(SystemInfoGump));
+                    Server.Gumps.BaseGump.SendGump(new SystemInfoGump((PlayerMobile)e.Mobile));
+                }
             });
         }
 
 		private static DateTime _NextAtrophy;
-		private static Dictionary<Mobile, DateTime> _CitizenWait;
 		
 		public static List<CityLoyaltySystem> Cities { get; private set; }
 
         public static bool HasTradeDeal(Mobile m, TradeDeal deal)
         {
-            CityLoyaltySystem sys = GetCitizenship(m);
+            CityLoyaltySystem sys = GetCitizenship(m, false);
 
             if (sys != null)
             {
@@ -613,13 +705,52 @@ namespace Server.Engines.CityLoyalty
 
             CityLoyaltySystem sys = GetCitizenship(pm);
 
-            if (sys != null && sys.ActiveTradeDeal != TradeDeal.None)
+            if (sys != null)
             {
-                CityLoyaltyEntry entry = sys.GetPlayerEntry<CityLoyaltyEntry>(pm, true);
+                if (sys.ActiveTradeDeal != TradeDeal.None)
+                {
+                    CityLoyaltyEntry entry = sys.GetPlayerEntry<CityLoyaltyEntry>(pm, true);
 
-                if(entry != null && entry.UtilizingTradeDeal)
-                    BuffInfo.AddBuff(pm, new BuffInfo(BuffIcon.CityTradeDeal, 1154168, 1154169, new TextDefinition((int)sys.ActiveTradeDeal), true));
+                    if (entry != null && entry.UtilizingTradeDeal)
+                    {
+                        BuffInfo.AddBuff(pm, new BuffInfo(BuffIcon.CityTradeDeal, 1154168, 1154169, new TextDefinition((int)sys.ActiveTradeDeal), true));
+                        ActivateTradeDeal(pm, sys.ActiveTradeDeal);
+                    }
+                }
+
+                int message;
+
+                if (pm.LastOnline + LoveAtrophyDuration > DateTime.UtcNow)
+                {
+                    message = 1152913; // The moons of Trammel and Felucca align to preserve your virtue status and city loyalty.
+                }
+                else
+                {
+                    message = 1152912; // The moons of Trammel and Felucca fail to preserve your virtue status and city loyalty.
+                }
+
+                Timer.DelayCall(TimeSpan.FromSeconds(.7), () =>
+                {
+                    pm.SendLocalizedMessage(message);
+                });
             }
+        }
+
+        public static void ActivateTradeDeal(Mobile m, TradeDeal deal)
+        {
+            switch (deal)
+            {
+                case TradeDeal.OrderOfEngineers: m.AddStatMod(new StatMod(StatType.Dex, String.Format("TradeDeal_{0}", StatType.Dex), 3, TimeSpan.Zero)); break;
+                case TradeDeal.MiningCooperative: m.AddStatMod(new StatMod(StatType.Str, String.Format("TradeDeal_{0}", StatType.Str), 3, TimeSpan.Zero)); break;
+                case TradeDeal.LeagueOfRangers: m.AddStatMod(new StatMod(StatType.Int, String.Format("TradeDeal_{0}", StatType.Int), 3, TimeSpan.Zero)); break;
+            }
+        }
+
+        public static void RemoveTradeDeal(Mobile m)
+        {
+            m.RemoveStatMod(String.Format("TradeDeal_{0}", StatType.Dex));
+            m.RemoveStatMod(String.Format("TradeDeal_{0}", StatType.Str));
+            m.RemoveStatMod(String.Format("TradeDeal_{0}", StatType.Int));
         }
 
         public static void OnBODTurnIn(Mobile from, int gold)
@@ -644,80 +775,93 @@ namespace Server.Engines.CityLoyalty
 
             rights.ForEach(store =>
                 {
-                    CityLoyaltySystem city = CityLoyaltySystem.GetCitizenship(store.m_Mobile);
+                    CityLoyaltySystem city = CityLoyaltySystem.GetCitizenship(store.m_Mobile, false);
 
                     if (city != null)
                         city.AwardLove(store.m_Mobile, 1 * (spawnLevel + 1), 0.10 > Utility.RandomDouble());
                 });
         }
 
-        public static bool CanAddCitizen(Mobile from, out int days)
+        public static bool CanAddCitizen(Mobile from)
         {
-            if (_CitizenWait.ContainsKey(from))
+            if (from.AccessLevel > AccessLevel.Player)
+                return true;
+
+            foreach (var city in Cities)
             {
-                if (_CitizenWait[from] < DateTime.UtcNow)
-                {
-                    RemoveWaitTime(from);
-                }
-                else
-                {
-                    days = (int)(_CitizenWait[from] - DateTime.UtcNow).TotalDays;
+                if (!city.CanAdd(from))
                     return false;
+            }
+            return true;
+        }
+
+        public static int NextJoinCity(Mobile from)
+        {
+            foreach (var city in Cities)
+            {
+                if (!city.CanAdd(from))
+                {
+                    return city.NextJoin(from);
                 }
             }
-            days = 0;
-            return true;
+
+            return 0;
         }
 
         public static void OnTick()
         {
-            List<PlayerMobile> list = new List<PlayerMobile>(_CitizenWait.Keys.OfType<PlayerMobile>());
-
-            foreach (PlayerMobile pm in list)
+            foreach (var sys in Cities)
             {
-                if (_CitizenWait[pm] < DateTime.UtcNow)
+                List<Mobile> list = new List<Mobile>(sys.CitizenWait.Keys);
+
+                foreach (var m in list)
                 {
-                    RemoveWaitTime(pm);
+                    if (sys.CitizenWait[m] < DateTime.UtcNow)
+                    {
+                        sys.RemoveWaitTime(m);
+                    }
                 }
-            }
 
-            list.Clear();
-            list.TrimExcess();
+                ColUtility.Free(list);
 
-            Cities.ForEach(sys =>
-            {
                 if (DateTime.UtcNow > _NextAtrophy)
                 {
-                    sys.PlayerTable.ForEach(t =>
+                    // TODO: Re-Enable this for The Awakening Event
+                    /*sys.PlayerTable.ForEach(t =>
                     {
                         CityLoyaltyEntry entry = t as CityLoyaltyEntry;
 
-                        if (entry != null)
+                        if (entry != null && entry.Player != null)
                         {
                             PlayerMobile owner = entry.Player;
 
                             entry.Neutrality -= entry.Neutrality / 50;
                             entry.Hate -= entry.Hate / 50;
 
-                            if (owner != null && owner.LastOnline + TimeSpan.FromHours(40) < DateTime.UtcNow)
+                            if (owner.LastOnline + LoveAtrophyDuration < DateTime.UtcNow)
                                 entry.Love -= entry.Love / 75;
                         }
-                    });
+                    });*/
 
                     _NextAtrophy = DateTime.UtcNow + TimeSpan.FromDays(1);
                 }
 
                 if (sys.NextTradeDealCheck != DateTime.MinValue && sys.NextTradeDealCheck < DateTime.UtcNow)
                 {
-                    sys.PayTradeDealCost();
+                    if (sys.Treasury >= TradeDealCost)
+                    {
+                        sys.Treasury -= TradeDealCost;
+                        sys.NextTradeDealCheck = DateTime.UtcNow + TimeSpan.FromDays(TradeDealCostPeriod);
+                    }
+                    else
+                    {
+                        sys.OnNewTradeDeal(TradeDeal.None);
+                    }
                 }
 
                 foreach (CityLoyaltyEntry entry in sys.PlayerTable.OfType<CityLoyaltyEntry>())
                 {
-                    if (entry.TradeDealExpired)
-                    {
-                        entry.CheckTradeDeal();
-                    }
+                    entry.CheckTradeDeal();
                 }
 
                 if (sys.Election != null)
@@ -725,19 +869,18 @@ namespace Server.Engines.CityLoyalty
                     sys.Election.OnTick();
                 }
                 else
+                {
                     sys.Election = new CityElection(sys);
-            });
+                }
+
+                if (sys.Stone != null)
+                {
+                    sys.Stone.InvalidateProperties();
+                }
+            }
 
             CityTradeSystem.OnTick();
         }
-		
-		public static void RemoveWaitTime(Mobile from)
-		{
-			if(_CitizenWait.ContainsKey(from))
-			{
-				_CitizenWait.Remove(from);
-			}
-		}
 		
 		public static bool HasCitizenship(Mobile from)
 		{
@@ -760,12 +903,12 @@ namespace Server.Engines.CityLoyalty
             return sys != null && sys.IsCitizen(from);
         }
 		
-		public static CityLoyaltySystem GetCitizenship(Mobile from)
+		public static CityLoyaltySystem GetCitizenship(Mobile from, bool staffIsCitizen = true)
 		{
             if (Cities == null)
                 return null;
 
-			return Cities.FirstOrDefault(sys => sys.IsCitizen(from));
+            return Cities.FirstOrDefault(sys => sys.IsCitizen(from, staffIsCitizen));
 		}
 
         public static bool ApplyCityTitle(PlayerMobile pm, ObjectPropertyList list, string prefix, int loc)
@@ -804,7 +947,7 @@ namespace Server.Engines.CityLoyalty
             {
                 CityLoyaltyEntry entry = city.GetPlayerEntry<CityLoyaltyEntry>(pm, true);
 
-                if (entry != null)
+                if (entry != null && !String.IsNullOrEmpty(entry.CustomTitle))
                     str = String.Format("{0}\t{1}", entry.CustomTitle, city.Definition.Name);
             }
 
@@ -1003,13 +1146,24 @@ namespace Server.Engines.CityLoyalty
             var origin = GetCityInstance(entry.Origin);
             int gold = entry.CalculateGold();
 
-            origin.AddToTreasury(from, gold);
-            from.SendLocalizedMessage(1154761, String.Format("{0}\t{1}", gold.ToString("N0", CultureInfo.GetCultureInfo("en-US")), origin.Definition.Name)); // ~1_val~ gold has been deposited into the ~2_NAME~ City treasury for your efforts!
+            if (gold > 0)
+            {
+                origin.AddToTreasury(from, gold);
+                from.SendLocalizedMessage(1154761, String.Format("{0}\t{1}", gold.ToString("N0", CultureInfo.GetCultureInfo("en-US")), origin.Definition.Name)); // ~1_val~ gold has been deposited into the ~2_NAME~ City treasury for your efforts!
+            }
 
-            origin.AwardLove(from, 150);
-            dest.AwardLove(from, 150);
+            if (entry.Distance > 0)
+            {
+                origin.AwardLove(from, 150);
+                dest.AwardLove(from, 150);
+            }
 
             origin.CompletedTrades++;
+
+            if (CityTradeSystem.KrampusEncounterActive)
+            {
+                KrampusEncounter.Encounter.OnTradeComplete(from, entry);
+            }
 		}
 
         public static void OnSlimTradeComplete(Mobile from, TradeEntry entry)
@@ -1017,8 +1171,11 @@ namespace Server.Engines.CityLoyalty
             var dest = GetCityInstance(entry.Destination);
             var origin = GetCityInstance(entry.Origin);
 
-            origin.AwardHate(from, 25);
-            dest.AwardHate(from, 25);
+            if (entry.Distance > 0)
+            {
+                origin.AwardHate(from, 25);
+                dest.AwardHate(from, 25);
+            }
         }
 
         public static Moonglow Moonglow { get; set; }
@@ -1053,8 +1210,15 @@ namespace Server.Engines.CityLoyalty
             writer.Write((int)City);
 
 			base.Serialize(writer);
-			writer.Write(0);
-			
+			writer.Write(2);
+
+            writer.Write(CitizenWait.Count);
+            foreach (var kvp in CitizenWait)
+            {
+                writer.Write(kvp.Key);
+                writer.Write(kvp.Value);
+            }
+
 			writer.Write(CompletedTrades);
             writer.Write(Governor);
             writer.Write(GovernorElect);
@@ -1076,16 +1240,6 @@ namespace Server.Engines.CityLoyalty
             }
             else
                 writer.Write(1);
-
-            if (this.City == City.Britain)
-            {
-                writer.Write(_CitizenWait.Count);
-                foreach (KeyValuePair<Mobile, DateTime> kvp in _CitizenWait)
-                {
-                    writer.Write(kvp.Key);
-                    writer.Write(kvp.Value);
-                }
-            }
 		}
 		
 		public override void Deserialize(GenericReader reader)
@@ -1094,30 +1248,49 @@ namespace Server.Engines.CityLoyalty
 
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
-			
-			CompletedTrades = reader.ReadInt();
-            Governor = reader.ReadMobile();
-            GovernorElect = reader.ReadMobile();
-            PendingGovernor = reader.ReadBool();
-            Treasury = reader.ReadLong();
-            ActiveTradeDeal = (TradeDeal)reader.ReadInt();
-            TradeDealStart = reader.ReadDateTime();
-            NextTradeDealCheck = reader.ReadDateTime();
-            CanUtilize = reader.ReadBool();
 
-            Headline = reader.ReadString();
-            Body = reader.ReadString();
-            PostedOn = reader.ReadDateTime();
-
-            if (reader.ReadInt() == 0)
-                Election = new CityElection(this, reader);
-            else
-                Election = new CityElection(this);
-
-            if (this.City == City.Britain)
+            switch (version)
             {
-                _CitizenWait = new Dictionary<Mobile, DateTime>();
+                case 2:
+                case 1:
+                    {
+                        int count = reader.ReadInt();
+                        for (int i = 0; i < count; i++)
+                        {
+                            Mobile m = reader.ReadMobile();
+                            DateTime dt = reader.ReadDateTime();
 
+                            if (m != null && dt > DateTime.UtcNow)
+                                CitizenWait[m] = dt;
+                        }
+                    }
+                    goto case 0;
+                case 0:
+                    {
+                        CompletedTrades = reader.ReadInt();
+                        Governor = reader.ReadMobile();
+                        GovernorElect = reader.ReadMobile();
+                        PendingGovernor = reader.ReadBool();
+                        Treasury = reader.ReadLong();
+                        ActiveTradeDeal = (TradeDeal)reader.ReadInt();
+                        TradeDealStart = reader.ReadDateTime();
+                        NextTradeDealCheck = reader.ReadDateTime();
+                        CanUtilize = reader.ReadBool();
+
+                        Headline = reader.ReadString();
+                        Body = reader.ReadString();
+                        PostedOn = reader.ReadDateTime();
+
+                        if (reader.ReadInt() == 0)
+                            Election = new CityElection(this, reader);
+                        else
+                            Election = new CityElection(this);
+                    }
+                    break;
+            }
+
+            if (version == 0 && this.City == City.Britain)
+            {
                 int count = reader.ReadInt();
                 for (int i = 0; i < count; i++)
                 {
@@ -1125,10 +1298,31 @@ namespace Server.Engines.CityLoyalty
                     DateTime dt = reader.ReadDateTime();
 
                     if (m != null && dt > DateTime.UtcNow)
-                        _CitizenWait[m] = dt;
+                        CitizenWait[m] = dt;
                 }
+            }
 
-                Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), OnTick);
+            // City Bulletin Board Location
+            if (version == 1)
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
+                    {
+                        Board = new CityMessageBoard(City, 0xA0C5);
+                        Board.MoveToWorld(Definition.BoardLocation, SystemMap);
+                        Console.WriteLine("City Message Board for {0} Converted!", City.ToString());
+                        /*if (Board != null)
+                        {
+                            //Board.ItemID = 0xA0C5;
+                            //board.MoveToWorld(Definition.BoardLocation, SystemMap);
+
+
+                            Console.WriteLine("City Message Board for {0} Converted!", City.ToString());
+                        }
+                        else
+                        {
+                            Console.WriteLine("City Message Board for {0} not found!", City.ToString());
+                        }*/
+                    });
             }
 		}
 	}
@@ -1145,7 +1339,7 @@ namespace Server.Engines.CityLoyalty
 							 new Point3D(4416, 1044, -2),
                              new Point3D(4480, 1172, 0),
                              new Point3D(4551, 1051, 0),
-                             new Point3D(4474, 1176, 0),
+                             new Point3D(4478, 1170, 0),
 							 "Moonglow",
 							 1114143,
 							 1154524
@@ -1165,7 +1359,7 @@ namespace Server.Engines.CityLoyalty
                              new Point3D(1436, 1760, -2),
                              new Point3D(1446, 1694, 0),
                              new Point3D(1417, 1715, 20),
-                             new Point3D(1437, 1693, 0),
+                             new Point3D(1481, 1718, 0),
 							 "Britain",
 							 1114148,
 							 1154521
@@ -1185,7 +1379,7 @@ namespace Server.Engines.CityLoyalty
 							 new Point3D(1377, 3879, 0),
                              new Point3D(1336, 3770, 0),
                              new Point3D(1379, 3797, 0),
-                             new Point3D(1326, 3776, 0),
+                             new Point3D(1333, 3776, 0),
 							 "Jhelom",
 							 1114146,
 							 1154522
@@ -1205,7 +1399,7 @@ namespace Server.Engines.CityLoyalty
 							 new Point3D(621, 1043, 0),
                              new Point3D(631, 863, 0),
                              new Point3D(385, 914, 0),
-                             new Point3D(633, 856, 0),
+                             new Point3D(626, 863, 0),
 							 "Yew",
 							 1114138,
 							 1154529
@@ -1225,7 +1419,7 @@ namespace Server.Engines.CityLoyalty
 							 new Point3D(2499, 398, 15),
                              new Point3D(2514, 559, 0),
                              new Point3D(2424, 533, 0),
-                             new Point3D(2508, 560, 0),
+                             new Point3D(2522, 558, 0),
 							 "Minoc",
 							 1114139,
 							 1154523
@@ -1245,7 +1439,7 @@ namespace Server.Engines.CityLoyalty
                              new Point3D(2061, 2855, -2), 
                              new Point3D(1907, 2683, 0),
                              new Point3D(1851, 2772, 0),
-                             new Point3D(1904, 2690, 7),
+                             new Point3D(1907, 2679, 0),
 							 "Trinsic",
 							 1114142,
 							 1154527
@@ -1266,7 +1460,7 @@ namespace Server.Engines.CityLoyalty
 							 new Point3D(645, 2228, -2),
                              new Point3D(586, 2153, 0),
                              new Point3D(571, 2210, 0),
-                             new Point3D(590, 2152, 0),
+                             new Point3D(580, 2155, 0),
 							 "Skara Brae",
 							 1114145,
 							 1154526
@@ -1287,7 +1481,7 @@ namespace Server.Engines.CityLoyalty
 							 new Point3D(3677, 2254, 20),
                              new Point3D(3796, 2247, 20),
                              new Point3D(3680, 2269, 26),
-                             new Point3D(3781, 2256, 20),
+                             new Point3D(3795, 2259, 20),
 							 "Magincia",
 							 1114141,
 							 1154525
@@ -1308,7 +1502,7 @@ namespace Server.Engines.CityLoyalty
 							 new Point3D(3004, 834, 0),
                              new Point3D(2891, 682, 0),
                              new Point3D(3004, 822, 0),
-                             new Point3D(2894, 680, 0),
+                             new Point3D(2899, 685, 0),
 							 "Vesper",
 							 1114140,
 							 1154528

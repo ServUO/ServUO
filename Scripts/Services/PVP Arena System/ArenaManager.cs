@@ -76,6 +76,14 @@ namespace Server.Engines.ArenaSystem
             }
         }
 
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (CanPaperdollBeOpenedBy(from))
+            {
+                DisplayPaperdollTo(from);
+            }
+        }
+
         public ArenaManager(Serial serial)
             : base(serial)
         {

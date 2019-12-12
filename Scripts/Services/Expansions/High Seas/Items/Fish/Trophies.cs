@@ -2,6 +2,7 @@
 using System;
 using Server.Mobiles;
 using Server.Multis;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -300,26 +301,52 @@ namespace Server.Items
             }
         }
 
+        public Item TrophyDeed
+        {
+            get
+            {
+                var info = TaxidermyKit.TrophyInfos.FirstOrDefault(i => i.CreatureType == m_TypeName);
+
+                if (info != null)
+                {
+                    return new FishTrophyDeed(m_FishWeight, m_Fisher, m_DateCaught, info.DeedNumber, info.AddonNumber, info.NorthID);
+                }
+
+                return null;
+            }
+        }
+
+        public override void OnChop(Mobile from)
+        {
+            if (Components.Count > 0)
+            {
+                OnComponentUsed(Components[0], from);
+            }
+        }
+
         public override void OnComponentUsed(AddonComponent c, Mobile from)
         {
             if (m_TypeName == null)
                 return;
 
-            foreach (TaxidermyKit.TrophyInfo info in TaxidermyKit.TrophyInfos)
-            {
-                if (info.CreatureType == m_TypeName)
-                {
-                    BaseHouse house = BaseHouse.FindHouseAt(c);
+            var info = TaxidermyKit.TrophyInfos.FirstOrDefault(i => i.CreatureType == m_TypeName);
 
-                    if (house != null && (house.IsCoOwner(from) || (house.Addons.ContainsKey(this) && house.Addons[this] == from)))
-                    {
-                        from.AddToBackpack(new FishTrophyDeed(m_FishWeight, m_Fisher, m_DateCaught, info.DeedNumber, info.AddonNumber, info.NorthID));
-                        Delete();
-                    }
-                    else
-                    {
-                        from.SendLocalizedMessage(502092); // You must be in your house to do this.
-                    }
+            if (info != null)
+            {
+                BaseHouse house = BaseHouse.FindHouseAt(c);
+
+                if (house != null && (house.IsCoOwner(from) || (house.Addons.ContainsKey(this) && house.Addons[this] == from)))
+                {
+                    from.AddToBackpack(new FishTrophyDeed(m_FishWeight, m_Fisher, m_DateCaught, info.DeedNumber, info.AddonNumber, info.NorthID));
+
+                    if(house.Addons.ContainsKey(this))
+                        house.Addons.Remove(this);
+
+                    Delete();
+                }
+                else
+                {
+                    from.SendLocalizedMessage(502092); // You must be in your house to do this.
                 }
             }
         }

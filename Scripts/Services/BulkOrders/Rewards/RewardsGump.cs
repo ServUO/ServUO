@@ -11,22 +11,26 @@ namespace Server.Engines.BulkOrders
 
         public bool UsingBanked { get; set; }
 
-        public override int YDist { get  { return 15; } }
-
         public RewardsGump(Mobile owner, PlayerMobile user, BODType type, int points = 0)
             : base(owner, user, BulkOrderSystem.GetRewardCollection(type), 1157082, points == 0 ? BulkOrderSystem.GetPoints(user, type) : points)
         {
             BODType = type;
-
-            if (points > 0)
-                BulkOrderSystem.AddToPending(User, type, points);
-            else
-                UsingBanked = true;
-
+            UsingBanked = points == 0;
+            
             var entry = new GumpLabel(230, 65, 0x64, GetPoints(user).ToString("0.000000"));
             entry.Parent = this;
 
             Entries.Insert(10, entry);
+        }
+
+        public override int GetYOffset(int id)
+        {
+            if (id == 0x182B)
+            {
+                return 34;
+            }
+
+            return 15;
         }
 
         protected override void AddPoints()
@@ -45,7 +49,7 @@ namespace Server.Engines.BulkOrders
         {
             BODCollectionItem item = citem as BODCollectionItem;
 
-            if (GetPoints(User) >= item.Points && item != null && item.Constructor != null)
+            if (item != null && GetPoints(User) >= item.Points && item.Constructor != null)
             {
                 Item i = item.Constructor(item.RewardType);
 

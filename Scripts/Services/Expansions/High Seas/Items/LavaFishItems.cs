@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using System;
 using Server.Mobiles;
 
@@ -63,14 +63,14 @@ namespace Server.Items
         {
             if (parent is Mobile)
             {
-                ((Mobile)parent).SendLocalizedMessage(1151094, GetNameInfo(ItemID)); // You manage to equip the stone ~1_token~ and find you can no longer move!
+                Mobile m = (Mobile)parent as Mobile;                
 
-                if (((Mobile)parent).Frozen && Navrey.Table.ContainsKey((Mobile)parent))
+                if (SpiderWebbing.IsTrapped(m))
                 {
-                    ((Mobile)parent).Frozen = false;
-                    Navrey.RemoveFromTable((Mobile)parent);
-                    ((Mobile)parent).SendLocalizedMessage(1005603); //You can move again!
+                    SpiderWebbing.RemoveEffects(m);                    
                 }
+
+                m.SendLocalizedMessage(1151094, GetNameInfo(ItemID)); // You manage to equip the stone ~1_token~ and find you can no longer move!
             }
         }
 

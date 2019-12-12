@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - Decompressor.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 using System;
 #endregion
 

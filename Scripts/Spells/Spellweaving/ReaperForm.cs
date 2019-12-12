@@ -90,7 +90,10 @@ namespace Server.Spells.Spellweaving
         }
         public static void Initialize()
         {
-            EventSink.Login += new LoginEventHandler(OnLogin);
+            if (!Core.SA)
+            {
+                EventSink.Login += new LoginEventHandler(OnLogin);
+            }
         }
 
         public static void OnLogin(LoginEventArgs e)
@@ -107,12 +110,19 @@ namespace Server.Spells.Spellweaving
 
             BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.ReaperForm, 1071034, 1153781, "10\t10\t5\t5\t5\t5\t25"));
 
-            m.SendSpeedControl(SpeedControlType.WalkSpeed);
+            if (!Core.SA)
+            {
+                m.SendSpeedControl(SpeedControlType.WalkSpeed);
+            }
         }
 
         public override void RemoveEffect(Mobile m)
         {
-            m.SendSpeedControl(SpeedControlType.Disable);
+            if (!Core.SA)
+            {
+                m.SendSpeedControl(SpeedControlType.Disable);
+            }
+
             BuffInfo.RemoveBuff(m, BuffIcon.ReaperForm);
         }
     }

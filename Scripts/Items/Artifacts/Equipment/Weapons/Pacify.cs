@@ -8,15 +8,13 @@ namespace Server.Items
         [Constructable]
         public Pacify()
         {
-            this.Hue = 0x835;
-
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.AttackChance = 10;
-            this.Attributes.WeaponSpeed = 20;
-            this.Attributes.WeaponDamage = 50;
-
-            this.WeaponAttributes.HitLeechMana = 100;
-            this.WeaponAttributes.UseBestSkill = 1;
+            Hue = 0x835;
+            Attributes.SpellChanneling = 1;
+            Attributes.AttackChance = 10;
+            Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = 50;
+            WeaponAttributes.HitLeechMana = 100;
+            WeaponAttributes.UseBestSkill = 1;
         }
 
         public Pacify(Serial serial)

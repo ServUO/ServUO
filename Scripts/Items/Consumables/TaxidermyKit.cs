@@ -1,10 +1,12 @@
 using System;
+
 using Server;
 using Server.Multis;
 using Server.Mobiles;
 using Server.Targeting;
 using Server.Network;
 using Server.Items;
+using Server.Engines.HuntsmasterChallenge;
 
 namespace Server.Items
 {
@@ -66,7 +68,7 @@ namespace Server.Items
 			new TrophyInfo( typeof( Troll ),		  0x1E66,		1041092, 1041106 ),
             new TrophyInfo( typeof( RedHerring ),     0x1E62,		1113567, 1113569 ),
             new TrophyInfo( typeof( MudPuppy ),		  0x1E62,		1113568, 1113570 ),
-            //HighSeas - not yet :)
+
             new TrophyInfo( typeof( AutumnDragonfish),     0,       1116124, 1116185 ),
             new TrophyInfo( typeof( BullFish ),            1,       1116129, 1116190 ),
             new TrophyInfo( typeof( FireFish ),            2,       1116127, 1116188 ),
@@ -170,17 +172,24 @@ namespace Server.Items
                     }
                     else if (from.Backpack != null && from.Backpack.ConsumeTotal(typeof(Board), 10))
                     {
-                        Server.Engines.HuntsmasterChallenge.HuntingTrophyInfo info = Server.Engines.HuntsmasterChallenge.HuntingTrophyInfo.Infos[lic.KillEntry.KillIndex];
+                        int index = lic.KillEntry.KillIndex;
 
-                        if (info != null)
+                        if (index >= 0 && index < Server.Engines.HuntsmasterChallenge.HuntingTrophyInfo.Infos.Count)
                         {
-                            if(info.Complex)
-                                from.AddToBackpack(new HuntTrophyAddonDeed(from.Name, info.MeasuredBy, lic.KillEntry.Measurement, info.SouthID, lic.KillEntry.DateKilled.ToShortDateString(), lic.KillEntry.Location, info.Species));
-                            else
-                                from.AddToBackpack(new HuntTrophyDeed(from.Name, info.MeasuredBy, lic.KillEntry.Measurement, info.SouthID, lic.KillEntry.DateKilled.ToShortDateString(), lic.KillEntry.Location, info.Species, info.FlippedIDs));
-                            
-                            lic.ProducedTrophy = true;
-                            m_Kit.Delete();
+                            Server.Engines.HuntsmasterChallenge.HuntingTrophyInfo info = Server.Engines.HuntsmasterChallenge.HuntingTrophyInfo.Infos[index];
+
+                            if (info != null)
+                            {
+                                string name = lic.KillEntry.Owner != null ? lic.KillEntry.Owner.Name : from.Name;
+
+                                if (info.Complex)
+                                    from.AddToBackpack(new HuntTrophyAddonDeed(name, index, lic.KillEntry.Measurement, lic.KillEntry.DateKilled.ToShortDateString(), lic.KillEntry.Location));
+                                else
+                                    from.AddToBackpack(new HuntTrophy(name, index, lic.KillEntry.Measurement, lic.KillEntry.DateKilled.ToShortDateString(), lic.KillEntry.Location));
+
+                                lic.ProducedTrophy = true;
+                                m_Kit.Delete();
+                            }
                         }
                     }
                     else
@@ -212,6 +221,7 @@ namespace Server.Items
 
                                     Mobile hunter = null;
                                     int weight = 0;
+                                    DateTime dateCaught = DateTime.MinValue;
 
                                     if ( targeted is BigFish )
                                     {
@@ -219,6 +229,7 @@ namespace Server.Items
 
                                         hunter = fish.Fisher;
                                         weight = (int)fish.Weight;
+                                        dateCaught = fish.DateCaught;
 
                                         fish.Consume();
                                     }
@@ -229,7 +240,7 @@ namespace Server.Items
 
                                         hunter = fish.Fisher;
                                         weight = (int)fish.Weight;
-                                        DateTime dateCaught = fish.DateCaught;
+                                        dateCaught = fish.DateCaught;
 
                                         from.AddToBackpack(new FishTrophyDeed(weight, hunter, dateCaught, m_Table[i].DeedNumber, m_Table[i].AddonNumber, m_Table[i].NorthID));
 
@@ -244,7 +255,7 @@ namespace Server.Items
 
                                         hunter = fish.Fisher;
                                         weight = (int)fish.Weight;
-                                        DateTime dateCaught = fish.DateCaught;
+                                        dateCaught = fish.DateCaught;
 
                                         from.AddToBackpack(new FishTrophyDeed(weight, hunter, dateCaught, m_Table[i].DeedNumber, m_Table[i].AddonNumber, m_Table[i].NorthID));
 
@@ -253,6 +264,12 @@ namespace Server.Items
                                         return;
                                     }
                                     #endregion
+                                    var deed = new TrophyDeed(m_Table[i], hunter, weight);
+
+                                    if (dateCaught != DateTime.MinValue)
+                                    {
+                                        deed.DateCaught = dateCaught;
+                                    }
 
                                     from.AddToBackpack( new TrophyDeed( m_Table[i], hunter, weight ) );
 
@@ -307,14 +324,17 @@ namespace Server.Items
 		[CommandProperty( AccessLevel.GameMaster )]
 		public int AnimalWeight{ get{ return m_AnimalWeight; } set{ m_AnimalWeight = value; InvalidateProperties(); } }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime DateCaught { get; set; }
+
 		public override int LabelNumber{ get{ return m_AddonNumber; } }
 
 		[Constructable]
-		public TrophyAddon( Mobile from, int itemID, int westID, int northID, int deedNumber, int addonNumber ) : this( from, itemID, westID, northID, deedNumber, addonNumber, null, 0 )
+		public TrophyAddon( Mobile from, int itemID, int westID, int northID, int deedNumber, int addonNumber ) : this( from, itemID, westID, northID, deedNumber, addonNumber, null, 0, DateTime.MinValue )
 		{
 		}
 
-		public TrophyAddon( Mobile from, int itemID, int westID, int northID, int deedNumber, int addonNumber, Mobile hunter, int animalWeight ) : base( itemID )
+		public TrophyAddon( Mobile from, int itemID, int westID, int northID, int deedNumber, int addonNumber, Mobile hunter, int animalWeight, DateTime dateCaught ) : base( itemID )
 		{
 			m_WestID = westID;
 			m_NorthID = northID;
@@ -323,6 +343,7 @@ namespace Server.Items
 
 			m_Hunter = hunter;
 			m_AnimalWeight = animalWeight;
+            DateCaught = dateCaught;
 
 			Movable = false;
 
@@ -340,6 +361,11 @@ namespace Server.Items
 
 				list.Add( 1070858, m_AnimalWeight.ToString() ); // ~1_weight~ stones
 			}
+
+            if (DateCaught != DateTime.MinValue)
+            {
+                list.Add(String.Format("[{0}]", DateCaught.ToShortDateString()));
+            }
 		}
 
 		public override void OnAosSingleClick( Mobile from )
@@ -381,7 +407,9 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 1 ); // version
+			writer.Write( (int) 2 ); // version
+
+            writer.Write(DateCaught);
 
 			writer.Write( (Mobile) m_Hunter );
 			writer.Write( (int) m_AnimalWeight );
@@ -392,32 +420,37 @@ namespace Server.Items
 			writer.Write( (int) m_AddonNumber );
 		}
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadInt();
+            int version = reader.ReadInt();
 
-			switch ( version )
-			{
-				case 1:
-				{
-					m_Hunter = reader.ReadMobile();
-					m_AnimalWeight = reader.ReadInt();
-					goto case 0;
-				}
-				case 0:
-				{
-					m_WestID = reader.ReadInt();
-					m_NorthID = reader.ReadInt();
-					m_DeedNumber = reader.ReadInt();
-					m_AddonNumber = reader.ReadInt();
-					break;
-				}
-			}
+            switch (version)
+            {
+                case 2:
+                    {
+                        DateCaught = reader.ReadDateTime();
+                        goto case 1;
+                    }
+                case 1:
+                    {
+                        m_Hunter = reader.ReadMobile();
+                        m_AnimalWeight = reader.ReadInt();
+                        goto case 0;
+                    }
+                case 0:
+                    {
+                        m_WestID = reader.ReadInt();
+                        m_NorthID = reader.ReadInt();
+                        m_DeedNumber = reader.ReadInt();
+                        m_AddonNumber = reader.ReadInt();
+                        break;
+                    }
+            }
 
-			Timer.DelayCall( TimeSpan.Zero, new TimerCallback( FixMovingCrate ) );
-		}
+            Timer.DelayCall(TimeSpan.Zero, new TimerCallback(FixMovingCrate));
+        }
 
 		private void FixMovingCrate()
 		{
@@ -444,7 +477,12 @@ namespace Server.Items
 
 		public Item Deed
 		{
-			get{ return new TrophyDeed( m_WestID, m_NorthID, m_DeedNumber, m_AddonNumber, m_Hunter, m_AnimalWeight ); }
+			get{ return new TrophyDeed( m_WestID, m_NorthID, m_DeedNumber, m_AddonNumber, m_Hunter, m_AnimalWeight, DateCaught ); }
+		}
+
+		void IChopable.OnChop(Mobile user)
+		{
+			OnDoubleClick(user);
 		}
 
 		public override void OnDoubleClick( Mobile from )
@@ -495,14 +533,18 @@ namespace Server.Items
 		[CommandProperty( AccessLevel.GameMaster )]
 		public int AnimalWeight{ get{ return m_AnimalWeight; } set{ m_AnimalWeight = value; InvalidateProperties(); } }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime DateCaught { get; set; }
+
 		public override int LabelNumber{ get{ return m_DeedNumber; } }
 
 		[Constructable]
-		public TrophyDeed( int westID, int northID, int deedNumber, int addonNumber ) : this( westID, northID, deedNumber, addonNumber, null, 0 )
+        public TrophyDeed(int westID, int northID, int deedNumber, int addonNumber)
+            : this(westID, northID, deedNumber, addonNumber, null, 0, DateTime.MinValue)
 		{
 		}
 
-		public TrophyDeed( int westID, int northID, int deedNumber, int addonNumber, Mobile hunter, int animalWeight ) : base( 0x14F0 )
+		public TrophyDeed( int westID, int northID, int deedNumber, int addonNumber, Mobile hunter, int animalWeight, DateTime dateCaught ) : base( 0x14F0 )
 		{
 			m_WestID = westID;
 			m_NorthID = northID;
@@ -510,10 +552,11 @@ namespace Server.Items
 			m_AddonNumber = addonNumber;
 			m_Hunter = hunter;
 			m_AnimalWeight = animalWeight;
+            DateCaught = dateCaught;
 		}
 
         public TrophyDeed( TaxidermyKit.TrophyInfo info, Mobile hunter, int animalWeight )
-            : this( info.NorthID + 7, info.NorthID, info.DeedNumber, info.AddonNumber, hunter, animalWeight )
+            : this( info.NorthID + 7, info.NorthID, info.DeedNumber, info.AddonNumber, hunter, animalWeight, DateTime.MinValue )
         {
         }
 
@@ -538,7 +581,9 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 1 ); // version
+			writer.Write( (int) 2 ); // version
+
+            writer.Write(DateCaught);
 
 			writer.Write( (Mobile) m_Hunter );
 			writer.Write( (int) m_AnimalWeight );
@@ -555,23 +600,28 @@ namespace Server.Items
 
 			int version = reader.ReadInt();
 
-			switch ( version )
-			{
-				case 1:
-				{
-					m_Hunter = reader.ReadMobile();
-					m_AnimalWeight = reader.ReadInt();
-					goto case 0;
-				}
-				case 0:
-				{
-					m_WestID = reader.ReadInt();
-					m_NorthID = reader.ReadInt();
-					m_DeedNumber = reader.ReadInt();
-					m_AddonNumber = reader.ReadInt();
-					break;
-				}
-			}
+            switch (version)
+            {
+                case 2:
+                    {
+                        DateCaught = reader.ReadDateTime();
+                        goto case 1;
+                    }
+                case 1:
+                    {
+                        m_Hunter = reader.ReadMobile();
+                        m_AnimalWeight = reader.ReadInt();
+                        goto case 0;
+                    }
+                case 0:
+                    {
+                        m_WestID = reader.ReadInt();
+                        m_NorthID = reader.ReadInt();
+                        m_DeedNumber = reader.ReadInt();
+                        m_AddonNumber = reader.ReadInt();
+                        break;
+                    }
+            }
 		}
 
 		public override void OnDoubleClick( Mobile from )
@@ -610,7 +660,7 @@ namespace Server.Items
 
 					if ( itemID > 0 )
 					{
-                        Item trophy = new TrophyAddon(from, itemID, m_WestID, m_NorthID, m_DeedNumber, m_AddonNumber, m_Hunter, m_AnimalWeight);
+                        Item trophy = new TrophyAddon(from, itemID, m_WestID, m_NorthID, m_DeedNumber, m_AddonNumber, m_Hunter, m_AnimalWeight, DateCaught);
 
                         if (m_DeedNumber == 1113567)
                             trophy.Hue = 1645;

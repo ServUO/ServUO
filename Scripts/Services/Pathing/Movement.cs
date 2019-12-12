@@ -71,7 +71,7 @@ namespace Server.Movement
         {
         }
 
-        private bool IsOk(bool ignoreDoors, bool ignoreSpellFields, int ourZ, int ourTop, StaticTile[] tiles, List<Item> items)
+        private bool IsOk(Mobile m, bool ignoreDoors, bool ignoreSpellFields, int ourZ, int ourTop, StaticTile[] tiles, List<Item> items)
         {
             for (int i = 0; i < tiles.Length; ++i)
             {
@@ -98,10 +98,27 @@ namespace Server.Movement
                 if ((flags & ImpassableSurface) != 0) // Impassable || Surface
                 {
                     if (ignoreDoors && ((flags & TileFlag.Door) != 0 || itemID == 0x692 || itemID == 0x846 || itemID == 0x873 || (itemID >= 0x6F5 && itemID <= 0x6F6)))
-                        continue;
+                    {
+                        if (item is BaseHouseDoor && m != null && !((BaseHouseDoor)item).CheckAccess(m))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
 
                     if (ignoreSpellFields && (itemID == 0x82 || itemID == 0x3946 || itemID == 0x3956))
+                    {
                         continue;
+                    }
+
+                    // hidden containers, per EA
+                    if ((flags & TileFlag.Container) != 0 && !item.Visible)
+                    {
+                        continue;
+                    }
 
                     int checkZ = item.Z;
                     int checkTop = checkZ + itemData.CalcHeight;
@@ -161,8 +178,10 @@ namespace Server.Movement
             {
                 StaticTile tile = tiles[i];
                 ItemData itemData = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
-				#region SA
-                if (m != null && m.Flying && (itemData.Name == "hover over"))
+                TileFlag flags = itemData.Flags;
+
+                #region SA
+                if (m != null && m.Flying && (itemData.Name == "hover over" || (flags & TileFlag.HoverOver) != 0))
                 {
                     newZ = tile.Z;
                     return true;
@@ -188,8 +207,6 @@ namespace Server.Movement
                     }
                 }
 				#endregion
-
-                TileFlag flags = itemData.Flags;
 
                 if ((flags & ImpassableSurface) == TileFlag.Surface || (canSwim && (flags & TileFlag.Wet) != 0)) // Surface && !Impassable
                 {
@@ -228,7 +245,7 @@ namespace Server.Movement
                         if (considerLand && landCheck < landCenter && landCenter > ourZ && testTop > landZ)
                             continue;
 
-                        if (this.IsOk(ignoreDoors, ignoreSpellFields, ourZ, testTop, tiles, items))
+                        if (this.IsOk(m, ignoreDoors, ignoreSpellFields, ourZ, testTop, tiles, items))
                         {
                             newZ = ourZ;
                             moveIsOk = true;
@@ -246,7 +263,7 @@ namespace Server.Movement
                 TileFlag flags = itemData.Flags;
 
 				#region SA
-                if (m != null && m.Flying && (itemData.Name == "hover over"))
+                if (m != null && m.Flying && (itemData.Name == "hover over" || (flags & TileFlag.HoverOver) != 0))
                 {
                     newZ = item.Z;
                     return true;
@@ -289,7 +306,7 @@ namespace Server.Movement
                         if (considerLand && landCheck < landCenter && landCenter > ourZ && testTop > landZ)
                             continue;
 
-                        if (this.IsOk(ignoreDoors, ignoreSpellFields, ourZ, testTop, tiles, items))
+                        if (this.IsOk(m, ignoreDoors, ignoreSpellFields, ourZ, testTop, tiles, items))
                         {
                             newZ = ourZ;
                             moveIsOk = true;
@@ -318,7 +335,7 @@ namespace Server.Movement
                         shouldCheck = false;
                 }
 
-                if (shouldCheck && this.IsOk(ignoreDoors, ignoreSpellFields, ourZ, testTop, tiles, items))
+                if (shouldCheck && this.IsOk(m, ignoreDoors, ignoreSpellFields, ourZ, testTop, tiles, items))
                 {
                     newZ = ourZ;
                     moveIsOk = true;

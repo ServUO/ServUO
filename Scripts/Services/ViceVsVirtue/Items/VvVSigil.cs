@@ -26,6 +26,7 @@ namespace Server.Engines.VvV
 
         public override int LabelNumber { get { return 1123391; } } // Sigil
         public override bool HandlesOnMovement { get { return !Visible; } }
+        public bool CheckWhenHidden { get { return true; } }
 
         public VvVSigil(VvVBattle battle, Point3D home)
             : base(0x99C7)
@@ -83,6 +84,11 @@ namespace Server.Engines.VvV
 
         public static bool CheckMovement(PlayerMobile pm, Direction d)
         {
+            if (!ViceVsVirtueSystem.Enabled)
+            {
+                return true;
+            }
+
             int x = pm.X;
             int y = pm.Y;
 

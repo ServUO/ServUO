@@ -7,7 +7,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public SkeletalDragon()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "a skeletal dragon";
             Body = 104;
@@ -35,13 +35,15 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 100.3, 130.0);
             SetSkill(SkillName.Tactics, 97.6, 100.0);
             SetSkill(SkillName.Wrestling, 97.6, 100.0);
-            SetSkill(SkillName.Necromancy, 120.1, 130.0);
-            SetSkill(SkillName.SpiritSpeak, 120.1, 130.0);
+            SetSkill(SkillName.Necromancy, 80.1, 100.0);
+            SetSkill(SkillName.SpiritSpeak, 80.1, 100.0);
 
             Fame = 22500;
             Karma = -22500;
 
             VirtualArmor = 80;
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public SkeletalDragon(Serial serial)
@@ -49,14 +51,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool AutoDispel { get { return true; } }
+        public override bool AutoDispel { get { return !Controlled; } }
         public override bool BleedImmune { get { return true; } }
-        public override bool HasBreath { get { return true; } } // fire breath enabled
-        public override bool ReacquireOnMovement { get { return true; } }
+        public override bool ReacquireOnMovement { get { return !Controlled; } }
         public override double BonusPetDamageScalar { get { return (Core.SE) ? 3.0 : 1.0; } }
-        public override int BreathFireDamage { get { return 0; } }
-        public override int BreathColdDamage { get { return 100; } }
-        public override int BreathEffectHue { get { return 0x480; } }
         public override int Hides { get { return 20; } }
         public override int Meat { get { return 19; } } // where's it hiding these? :)
         public override HideType HideType { get { return HideType.Barbed; } }

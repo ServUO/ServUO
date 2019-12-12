@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using System.Collections.Generic;
 using Server.Items;
@@ -19,10 +19,10 @@ namespace Server.Multis
         public override int WheelDistance { get { return 7; } }
         public override int CaptiveOffset { get { return 4; } }
         public override int MaxCannons { get { return 7; } }
-        public override double CannonDamageMod { get { return 1.5; } }
+        public override double CannonDamageMod { get { return 1.3; } }
 
         public override double TurnDelay { get { return 2; } }
-        public override int MaxHits { get { return 110; } }
+        public override int MaxHits { get { return 100000; } }
 
         public override int ZSurface { get { return 14; } }
 

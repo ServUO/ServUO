@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Server;
 using Server.Mobiles;
@@ -25,14 +25,12 @@ namespace Server.Items
             Hue = 0x491;
             Weight = 1.0;
             Stackable = true;
-            LootType = LootType.Cursed; 
         }
 
         public static void CheckCleanup(AfterWorldSaveEventArgs e)
         {
             DoCleanup();
             ManaDraught.DoCleanup();
-            GemOfSalvation.DoCleanup();
         }
 
         public static void DoCleanup()
@@ -41,12 +39,9 @@ namespace Server.Items
 
             foreach (PlayerMobile pm in SeedUsageList.Keys)
             {
-                if (SeedUsageList[pm] != null)
+               if (SeedUsageList[pm] < DateTime.Now + Cooldown)
                 {
-                    if (SeedUsageList[pm] < DateTime.Now + Cooldown)
-                    {
-                        toRemove.Add(pm);
-                    }
+                    toRemove.Add(pm);
                 }
             }
 
@@ -82,10 +77,7 @@ namespace Server.Items
             }
             else
             {
-                if (SeedUsageList[by] != null)
-                {
-                    by.SendLocalizedMessage(1079263,((int)(((SeedUsageList[by] + Cooldown)-DateTime.Now).TotalSeconds)).ToString()); 
-                }
+                by.SendLocalizedMessage(1079263,((int)(((SeedUsageList[by] + Cooldown)-DateTime.Now).TotalSeconds)).ToString());
             }
         }
 

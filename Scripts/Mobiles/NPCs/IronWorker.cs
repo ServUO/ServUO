@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - IronWorker.cs
-// **********
-#endregion
-
 #region References
 using System.Collections.Generic;
 
@@ -20,6 +14,7 @@ namespace Server.Mobiles
 		public IronWorker()
 			: base("the iron worker")
 		{
+			SetSkill(SkillName.Begging, 64.0, 100.0);
 			SetSkill(SkillName.ArmsLore, 36.0, 68.0);
 			SetSkill(SkillName.Blacksmith, 65.0, 88.0);
 			SetSkill(SkillName.Fencing, 60.0, 83.0);
@@ -58,8 +53,6 @@ namespace Server.Mobiles
 
 		public override void InitOutfit()
 		{
-			base.InitOutfit();
-
 			Item item = (Utility.RandomBool() ? null : new RingmailChest());
 
 			if (item != null && !EquipItem(item))
@@ -68,7 +61,7 @@ namespace Server.Mobiles
 				item = null;
 			}
 
-			switch (Utility.Random(3))
+			switch (Utility.Random(4))
 			{
 				case 0:
 				case 1:
@@ -77,6 +70,9 @@ namespace Server.Mobiles
 				case 2:
 					AddItem(new Bandana(Utility.RandomBrightHue()));
 					break;
+                case 3:
+                    AddItem(new Bascinet());
+                    break;
 			}
 
 			if (item == null)
@@ -84,8 +80,9 @@ namespace Server.Mobiles
 				AddItem(new FullApron(Utility.RandomBrightHue()));
 			}
 
-			AddItem(new Bascinet());
 			AddItem(new SmithHammer());
+
+            base.InitOutfit();
 
 			item = FindItemOnLayer(Layer.Pants);
 

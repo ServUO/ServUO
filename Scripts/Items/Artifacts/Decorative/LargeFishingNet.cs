@@ -35,7 +35,7 @@ namespace Server.Items
                     Timer.DelayCall(TimeSpan.FromSeconds(0.5), new TimerStateCallback(MoveCorpse), new object[] { (Corpse)targeted, from });
                 }
                 else
-                    from.SendMessage("This can only be used in deep water.");
+                    from.SendLocalizedMessage(1010485); // You can only use this in deep water!
             }
             else
                 from.SendMessage("You can only net corpses!");

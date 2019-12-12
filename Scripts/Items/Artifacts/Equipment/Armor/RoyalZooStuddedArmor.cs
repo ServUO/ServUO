@@ -9,12 +9,11 @@ namespace Server.Items
         public RoyalZooStuddedLegs()
             : base()
         {
-            this.Hue = 0x109;
-		
-            this.Attributes.BonusHits = 2;
-            this.Attributes.BonusMana = 3;
-            this.Attributes.LowerManaCost = 10;
-            this.ArmorAttributes.MageArmor = 1;
+            Hue = 0x109;	
+            Attributes.BonusHits = 2;
+            Attributes.BonusMana = 3;
+            Attributes.LowerManaCost = 10;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public RoyalZooStuddedLegs(Serial serial)
@@ -100,12 +99,11 @@ namespace Server.Items
         public RoyalZooStuddedGloves()
             : base()
         {
-            this.Hue = 0x109;
-		
-            this.Attributes.BonusHits = 2;
-            this.Attributes.BonusMana = 3;
-            this.Attributes.LowerManaCost = 10;
-            this.ArmorAttributes.MageArmor = 1;
+            Hue = 0x109;	
+            Attributes.BonusHits = 2;
+            Attributes.BonusMana = 3;
+            Attributes.LowerManaCost = 10;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public RoyalZooStuddedGloves(Serial serial)
@@ -191,12 +189,11 @@ namespace Server.Items
         public RoyalZooStuddedGorget()
             : base()
         {
-            this.Hue = 0x109;
-		
-            this.Attributes.BonusHits = 2;
-            this.Attributes.BonusMana = 3;
-            this.Attributes.LowerManaCost = 10;
-            this.ArmorAttributes.MageArmor = 1;
+            Hue = 0x109;	
+            Attributes.BonusHits = 2;
+            Attributes.BonusMana = 3;
+            Attributes.LowerManaCost = 10;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public RoyalZooStuddedGorget(Serial serial)
@@ -282,12 +279,11 @@ namespace Server.Items
         public RoyalZooStuddedArms()
             : base()
         {
-            this.Hue = 0x109;
-		
-            this.Attributes.BonusHits = 2;
-            this.Attributes.BonusMana = 3;
-            this.Attributes.LowerManaCost = 10;
-            this.ArmorAttributes.MageArmor = 1;
+            Hue = 0x109;	
+            Attributes.BonusHits = 2;
+            Attributes.BonusMana = 3;
+            Attributes.LowerManaCost = 10;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public RoyalZooStuddedArms(Serial serial)
@@ -373,12 +369,11 @@ namespace Server.Items
         public RoyalZooStuddedChest()
             : base()
         {
-            this.Hue = 0x109;
-		
-            this.Attributes.BonusHits = 2;
-            this.Attributes.BonusMana = 3;
-            this.Attributes.LowerManaCost = 10;
-            this.ArmorAttributes.MageArmor = 1;
+            Hue = 0x109;	
+            Attributes.BonusHits = 2;
+            Attributes.BonusMana = 3;
+            Attributes.LowerManaCost = 10;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public RoyalZooStuddedChest(Serial serial)
@@ -464,12 +459,11 @@ namespace Server.Items
         public RoyalZooStuddedFemaleChest()
             : base()
         {
-            this.Hue = 0x109;
-		
-            this.Attributes.BonusHits = 2;
-            this.Attributes.BonusMana = 3;
-            this.Attributes.LowerManaCost = 10;
-            this.ArmorAttributes.MageArmor = 1;
+            Hue = 0x109;
+            Attributes.BonusHits = 2;
+            Attributes.BonusMana = 3;
+            Attributes.LowerManaCost = 10;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public RoyalZooStuddedFemaleChest(Serial serial)

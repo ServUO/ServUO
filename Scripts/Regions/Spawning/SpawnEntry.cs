@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Server.Commands;
+using Server.ContextMenus;
 using Server.Mobiles;
 
 namespace Server.Regions
@@ -168,6 +169,13 @@ namespace Server.Regions
                 return this.m_Running && !this.Complete;
             }
         }
+
+        public virtual void GetSpawnProperties(ISpawnable spawn, ObjectPropertyList list)
+        { }
+
+        public virtual void GetSpawnContextEntries(ISpawnable spawn, Mobile m, List<ContextMenuEntry> list)
+        { }
+
         public static void Remove(GenericReader reader, int version)
         {
             int count = reader.ReadInt();

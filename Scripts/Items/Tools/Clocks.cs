@@ -1,22 +1,25 @@
+#region References
 using System;
-using Server.Multis;
-using Server.Gumps;
 using System.Collections.Generic;
 using System.Linq;
+
+using Server.Multis;
+using Server.Gumps;
 using Server.ContextMenus;
+#endregion
 
 namespace Server.Items
 {
     public enum MoonPhase
     {
-        NewMoon,
-        WaxingCrescentMoon,
+        WaxingCrescent,
         FirstQuarter,
         WaxingGibbous,
-        FullMoon,
+        Full,
         WaningGibbous,
         LastQuarter,
-        WaningCrescent
+        WaningCrescent,
+        New
     }
 
     [Flipable(0x104B, 0x104C)]
@@ -24,8 +27,10 @@ namespace Server.Items
     {
         public const double SecondsPerUOMinute = 5.0;
         public const double MinutesPerUODay = SecondsPerUOMinute * 24;
+
         private static readonly DateTime WorldStart = new DateTime(1997, 9, 1);
-        private static DateTime m_ServerStart;
+
+		public static DateTime ServerStart { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level { get; set; }
@@ -49,18 +54,12 @@ namespace Server.Items
         {
         }
 
-        public static DateTime ServerStart
-        {
-            get
-            {
-                return m_ServerStart;
-            }
-        }
+		[CallPriority(-1)]
         public static void Initialize()
         {
-            m_ServerStart = DateTime.UtcNow;
+			ServerStart = DateTime.UtcNow;
 
-            Timer.DelayCall(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2), new TimerCallback(ClockTime.Tick_Callback));
+            Timer.DelayCall(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2), ClockTime.Tick_Callback);
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -77,7 +76,9 @@ namespace Server.Items
             GetTime(map, x, y, out hours, out minutes, out totalMinutes);
 
             if (map != null)
-                totalMinutes /= 10 + (map.MapIndex * 20);
+			{
+				totalMinutes /= 10 + (map.MapIndex * 20);
+			}
 
             return (MoonPhase)(totalMinutes % 8);
         }
@@ -91,12 +92,14 @@ namespace Server.Items
 
         public static void GetTime(Map map, int x, int y, out int hours, out int minutes, out int totalMinutes)
         {
-            TimeSpan timeSpan = DateTime.UtcNow - WorldStart;
+			var timeSpan = DateTime.UtcNow - WorldStart;
 
             totalMinutes = (int)(timeSpan.TotalSeconds / SecondsPerUOMinute);
 
             if (map != null)
+			{
                 totalMinutes += map.MapIndex * 320;
+			}
 
             // Really on OSI this must be by subserver
             totalMinutes += x / 16;
@@ -131,26 +134,44 @@ namespace Server.Items
             // 08:00 PM - 11:59 AM : Late at night
 
             if (hours >= 20)
+			{
                 generalNumber = 1042957; // It's late at night
+			}
             else if (hours >= 16)
+			{
                 generalNumber = 1042956; // It's early in the evening
+			}
             else if (hours >= 13)
+			{
                 generalNumber = 1042955; // It's the afternoon
+			}
             else if (hours >= 12)
+			{
                 generalNumber = 1042954; // It's around noon
+			}
             else if (hours >= 08)
+			{
                 generalNumber = 1042953; // It's late in the morning
+			}
             else if (hours >= 04)
+			{
                 generalNumber = 1042952; // It's early in the morning
+			}
             else if (hours >= 01)
+			{
                 generalNumber = 1042951; // It's the middle of the night
+			}
             else
+			{
                 generalNumber = 1042950; // 'Tis the witching hour. 12 Midnight.
+			}
 
             hours %= 12;
 
             if (hours == 0)
+			{
                 hours = 12;
+			}
 
             exactTime = String.Format("{0}:{1:D2}", hours, minutes);
         }
@@ -232,6 +253,7 @@ namespace Server.Items
                     if (m.Player)
                     {
                         int hours, minutes;
+
                         GetTime(m.Map, m.X, m.Y, out hours, out minutes);
 
                         if (minutes == 00 && (hours == 12 || hours == 00 || hours == 06 || hours == 18))
@@ -248,13 +270,15 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version            
+
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+
+            reader.ReadInt();
             
             _Instances.Add(this);
         }

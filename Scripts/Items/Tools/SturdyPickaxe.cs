@@ -15,10 +15,10 @@ namespace Server.Items
         public SturdyPickaxe(int uses)
             : base(0xE86)
         {
-            this.Weight = 11.0;
-            this.Hue = 0x973;
-            this.UsesRemaining = uses;
-            this.ShowUsesRemaining = true;
+            Weight = 11.0;
+            Hue = 0x973;
+            UsesRemaining = uses;
+            ShowUsesRemaining = true;
         }
 
         public SturdyPickaxe(Serial serial)
@@ -117,6 +117,22 @@ namespace Server.Items
                 return 35;
             }
         }
+
+        public override int InitMinHits
+        {
+            get
+            {
+                return 31;
+            }
+        }
+        public override int InitMaxHits
+        {
+            get
+            {
+                return 60;
+            }
+        }
+
         public override WeaponAnimation DefAnimation
         {
             get

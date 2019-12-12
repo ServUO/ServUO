@@ -4,45 +4,46 @@ using Server.Spells;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a juka corpse")] // Why is this 'juka' and warriors 'jukan' ? :-(
+    [CorpseName("a juka corpse")] 
     public class JukaMage : BaseCreature
     {
         private DateTime m_NextAbilityTime;
+		
         [Constructable]
         public JukaMage()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a juka mage";
-            this.Body = 765;
+            Name = "a juka mage";
+            Body = 765;
 
-            this.SetStr(201, 300);
-            this.SetDex(71, 90);
-            this.SetInt(451, 500);
+            SetStr(201, 300);
+            SetDex(71, 90);
+            SetInt(451, 500);
 
-            this.SetHits(121, 180);
+            SetHits(121, 180);
 
-            this.SetDamage(4, 10);
+            SetDamage(4, 10);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 20, 30);
-            this.SetResistance(ResistanceType.Fire, 35, 45);
-            this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 10, 20);
-            this.SetResistance(ResistanceType.Energy, 35, 45);
+            SetResistance(ResistanceType.Physical, 20, 30);
+            SetResistance(ResistanceType.Fire, 35, 45);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 10, 20);
+            SetResistance(ResistanceType.Energy, 35, 45);
 
-            this.SetSkill(SkillName.Anatomy, 80.1, 90.0);
-            this.SetSkill(SkillName.EvalInt, 80.2, 100.0);
-            this.SetSkill(SkillName.Magery, 99.1, 100.0);
-            this.SetSkill(SkillName.Meditation, 80.2, 100.0);
-            this.SetSkill(SkillName.MagicResist, 140.1, 150.0);
-            this.SetSkill(SkillName.Tactics, 80.1, 90.0);
-            this.SetSkill(SkillName.Wrestling, 80.1, 90.0);
+            SetSkill(SkillName.Anatomy, 80.1, 90.0);
+            SetSkill(SkillName.EvalInt, 80.2, 100.0);
+            SetSkill(SkillName.Magery, 99.1, 100.0);
+            SetSkill(SkillName.Meditation, 80.2, 100.0);
+            SetSkill(SkillName.MagicResist, 140.1, 150.0);
+            SetSkill(SkillName.Tactics, 80.1, 90.0);
+            SetSkill(SkillName.Wrestling, 80.1, 90.0);
 
-            this.Fame = 15000;
-            this.Karma = -15000;
+            Fame = 15000;
+            Karma = -15000;
 
-            this.VirtualArmor = 16;
+            VirtualArmor = 16;
 
             Container bag = new Bag();
 
@@ -59,14 +60,14 @@ namespace Server.Mobiles
                     item.Delete();
             }
 
-            this.PackItem(bag);
+            PackItem(bag);
 
-            this.PackItem(new ArcaneGem());
+            PackItem(new ArcaneGem());
 
             if (Core.ML && Utility.RandomDouble() < .33)
-                this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed(4));
+                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
 
-            this.m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(2, 5));
+            m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(2, 5));
         }
 
         public JukaMage(Serial serial)
@@ -88,6 +89,9 @@ namespace Server.Mobiles
                 return true;
             }
         }
+		
+		public override int TreasureMapLevel { get { return 3; } }
+		
         public override int Meat
         {
             get
@@ -97,8 +101,8 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average, 2);
-            this.AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.Average, 2);
+            AddLoot(LootPack.MedScrolls, 2);
         }
 
         public override int GetIdleSound()

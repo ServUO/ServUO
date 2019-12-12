@@ -5,10 +5,13 @@ namespace Server.Items
 {
 	public class ShadowWyrmCostume : BaseCostume
 	{
-		[Constructable]
+        public override string CreatureName { get { return "shadow wyrm"; } }
+
+        [Constructable]
 		public ShadowWyrmCostume() : base( )
 		{
-            this.CostumeBody = 106;
+            CostumeBody = 106;
+            CostumeHue = 0;
 		}
 		
 		public override int LabelNumber

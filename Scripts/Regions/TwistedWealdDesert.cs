@@ -29,13 +29,14 @@ namespace Server.Regions
         {
             if (m.NetState != null &&
                 !TransformationSpellHelper.UnderTransformation(m, typeof(AnimalForm)) &&
-                !TransformationSpellHelper.UnderTransformation(m, typeof(Server.Spells.Spellweaving.ReaperFormSpell)))
+                (Core.SA || !TransformationSpellHelper.UnderTransformation(m, typeof(Server.Spells.Spellweaving.ReaperFormSpell))))
                 m.SendSpeedControl(SpeedControlType.Disable);
         }
 
         private static void Desert_OnLogin(LoginEventArgs e) 
         {
             Mobile m = e.Mobile;
+
             if (m.Region.IsPartOf<TwistedWealdDesert>() && m.AccessLevel < AccessLevel.GameMaster)
                 m.SendSpeedControl(SpeedControlType.WalkSpeed);
         }

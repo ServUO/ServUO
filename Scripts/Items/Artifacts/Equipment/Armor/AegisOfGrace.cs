@@ -19,6 +19,8 @@ namespace Server.Items
                 ItemID = 0x2B6E;
                 Weight = 2.0;
                 StrRequirement = 10;
+
+                MeditationAllowance = ArmorMeditationAllowance.All;
             }
         }
 
@@ -42,7 +44,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -50,10 +52,9 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadEncodedInt();
 
-            if (ItemID == 0x2B6E)
+            if(version == 0 && ItemID == 0x2B6E)
             {
-                Weight = 2.0;
-                StrRequirement = 10;
+                MeditationAllowance = ArmorMeditationAllowance.All;
             }
         }
     }

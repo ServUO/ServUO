@@ -19,8 +19,6 @@ namespace Server.Engines.VvV
 
         public VvVGargishStoneChest()
         {
-            IsVvVItem = true;
-
             AbsorptionAttributes.EaterEnergy = 15;
             Attributes.BonusStr = 3;
             Attributes.BonusStam = 10;
@@ -35,13 +33,17 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+
+            if (version == 0)
+                Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
         }
     }
 
@@ -58,8 +60,6 @@ namespace Server.Engines.VvV
 
         public VvVStuddedChest()
         {
-            IsVvVItem = true;
-
             AbsorptionAttributes.EaterEnergy = 15;
             Attributes.BonusStr = 3;
             Attributes.BonusStam = 10;
@@ -74,13 +74,17 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+
+            if (version == 0)
+                Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
         }
     }
 }

@@ -19,12 +19,13 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
  
-        public override int RequiredMana { get { return 30; } } // get
+        public override int RequiredMana { get { return 40; } }
 		
         public override SkillName CastSkill { get { return SkillName.AnimalTaming; } }
 		public override SkillName DamageSkill { get { return SkillName.AnimalLore; } }
- 
-		private int _EnhancedGainChance;
+        public override bool RevealOnTick { get { return false; } }
+
+        private int _EnhancedGainChance;
 		public int EnhancedGainChance { get { return _EnhancedGainChance; } }
  
         public WhisperingSpell(Mobile caster, Item scroll)
@@ -43,7 +44,7 @@ namespace Server.Spells.SkillMasteries
 				return false;
 			}
 
-            if (Caster is PlayerMobile && ((PlayerMobile)Caster).AllFollowers == null || ((PlayerMobile)Caster).AllFollowers.Count == 0)
+            if (Caster is PlayerMobile && ((PlayerMobile)Caster).AllFollowers == null || ((PlayerMobile)Caster).AllFollowers.Where(m => !(m is Server.Engines.Despise.DespiseCreature)).Count() == 0)
             {
                 Caster.SendLocalizedMessage(1156112); // This ability requires you to have pets.
                 return false;
@@ -65,7 +66,7 @@ namespace Server.Spells.SkillMasteries
 			{
                 if (Caster is PlayerMobile)
                 {
-                    foreach (Mobile m in ((PlayerMobile)Caster).AllFollowers.Where(m => m.Map == Caster.Map && Caster.InRange(m.Location, PartyRange)))
+                    foreach (Mobile m in ((PlayerMobile)Caster).AllFollowers.Where(m => m.Map == Caster.Map && Caster.InRange(m.Location, PartyRange) && !(m is Server.Engines.Despise.DespiseCreature)))
                     {
                         Effects.SendLocationParticles(EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0, 0, 0, 0, 0, 5060, 0);
                         Effects.PlaySound(m.Location, m.Map, 0x243);

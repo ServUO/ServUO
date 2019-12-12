@@ -34,7 +34,7 @@ namespace Server.Items
 
         public override int AosStrReq { get { return 40; } }
 
-        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Plate; } }
+        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Stone; } }
 
         public override Race RequiredRace { get { return Race.Gargoyle; } }
         public override bool CanBeWornByGargoyles { get { return true; } }

@@ -1,5 +1,6 @@
 using System;
 using Server.Engines.PartySystem;
+using Server.Spells;
 
 namespace Server.Items
 {
@@ -27,7 +28,7 @@ namespace Server.Items
 
         public override void CheckGate(Mobile m, int range)
         {
-            if (m.Murderer)
+            if (SpellHelper.RestrictRedTravel && m.Murderer)
                 return;
 
             Party casterParty = Party.Get(this.m_Caster);

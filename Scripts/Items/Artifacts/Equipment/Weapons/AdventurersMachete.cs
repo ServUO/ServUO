@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public AdventurersMachete()
         {
-            this.Attributes.Luck = 20;
+            Attributes.Luck = 20;
         }
 
         public AdventurersMachete(Serial serial)

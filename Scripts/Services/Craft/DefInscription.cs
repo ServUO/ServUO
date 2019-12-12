@@ -88,6 +88,14 @@ namespace Server.Engines.Craft
             return 0;
         }
 
+        public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
+        {
+            if (resourceType == typeof(AntiqueDocumentsKit))
+                return false;
+
+            return base.ConsumeOnFailure(from, resourceType, craftItem);
+        }
+
         private System.Collections.Generic.Dictionary<Type, int> _Buffer = new System.Collections.Generic.Dictionary<Type, int>();
 
         public override void PlayCraftEffect(Mobile from)
@@ -208,7 +216,7 @@ namespace Server.Engines.Craft
             int index = AddCraft(type, 1111671, id, minSkill, minSkill + 1.0, m_RegTypes[(int)regs[0]], GetRegLocalization(regs[0]), 1, 501627);	//Yes, on OSI it's only 1.0 skill diff'.  Don't blame me, blame OSI.
 
             for (int i = 1; i < regs.Length; ++i)
-                AddRes(index, m_RegTypes[(int)regs[0]], GetRegLocalization(regs[i]), 1, 501627);
+                AddRes(index, m_RegTypes[(int)regs[i]], GetRegLocalization(regs[i]), 1, 501627);
 
             AddRes(index, typeof(BlankScroll), 1044377, 1, 1044378);
 
@@ -366,14 +374,12 @@ namespace Server.Engines.Craft
                 AddRes(index, typeof(BlackPearl), 1044353, 1, 1044253);
                 AddRes(index, typeof(SwitchItem), 1073464, 1, 1044253);
                 ForceNonExceptional(index);
-                SetNeededExpansion(index, Expansion.ML);
 
                 index = AddCraft(typeof(RunedPrism), 1044294, 1073465, 45.0, 95.0, typeof(BlankScroll), 1044377, 1, 1044378);
                 AddRes(index, typeof(SpidersSilk), 1044360, 1, 1044253);
                 AddRes(index, typeof(BlackPearl), 1044353, 1, 1044253);
                 AddRes(index, typeof(HollowPrism), 1072895, 1, 1044253);
                 ForceNonExceptional(index);
-                SetNeededExpansion(index, Expansion.ML);
             }
 
             // Runebook
@@ -411,14 +417,13 @@ namespace Server.Engines.Craft
                 AddRes(index, typeof(Corruption), 1032676, 10, 1044253);
                 AddRecipe(index, (int)TinkerRecipes.ScrappersCompendium);
                 ForceNonExceptional(index);
-                SetNeededExpansion(index, Expansion.ML);
 
                 index = AddCraft(typeof(SpellbookEngraver), 1044294, 1072151, 75.0, 100.0, typeof(Feather), 1044562, 1, 1044563);
                 AddRes(index, typeof(BlackPearl), 1015001, 7, 1044253);
-                SetNeededExpansion(index, Expansion.ML);
+
 
                 AddCraft(typeof(NecromancerSpellbook), 1044294, 1074909, 50.0, 100.0, typeof(BlankScroll), 1044377, 10, 1044378);
-                //	AddCraft(typeof(SpellweavingBook), 1044294, "Spellweaving book", 50.0, 100.0, typeof(BlankScroll), 1044377, 10, 1044378);
+
                 AddCraft(typeof(MysticBook), 1044294, 1031677, 50.0, 100.0, typeof(BlankScroll), 1044377, 10, 1044378);
             }
             #endregion
@@ -431,10 +436,14 @@ namespace Server.Engines.Craft
                 AddRes(index, typeof(DaemonBone), 1017412, 5, 1044253);
                 AddRes(index, typeof(SummonDaemonScroll), 1016017, 1, 1044253);
 
+                index = AddCraft(typeof(PropheticManuscript), 1044294, 1155631, 90.0, 115.0, typeof(AncientParchment), 1155627, 10, 1044253);
+                AddRes(index, typeof(AntiqueDocumentsKit), 1155630, 1, 1044253);
+                AddRes(index, typeof(WoodPulp), 1113136, 10, 1113289);
+                AddRes(index, typeof(Beeswax), 1025154, 5, 1044253);
+
                 AddCraft(typeof(BlankScroll), 1044294, 1023636, 50.0, 100.0, typeof(WoodPulp), 1113136, 1, 1044378);
 
                 index = AddCraft(typeof(ScrollBinderDeed), 1044294, 1113135, 75.0, 125.0, typeof(WoodPulp), 1113136, 1, 1044253);
-                SetNeededExpansion(index, Expansion.SA);
                 SetItemHue(index, 1641);
 
                 index = AddCraft(typeof(GargoyleBook100), 1044294, 1113290, 60.0, 100.0, typeof(BlankScroll), 1044377, 40, 1044378);

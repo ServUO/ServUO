@@ -10,38 +10,40 @@ namespace Server.Mobiles
         [Constructable]
         public SirPatrick()
         {
-            this.Name = "Sir Patrick";
-            this.Hue = 0x47E;
+            Name = "Sir Patrick";
+            Hue = 0x47E;
 
-            this.SetStr(208, 319);
-            this.SetDex(98, 132);
-            this.SetInt(45, 91);
+            SetStr(208, 319);
+            SetDex(98, 132);
+            SetInt(45, 91);
 
-            this.SetHits(616, 884);
+            SetHits(616, 884);
 
-            this.SetDamage(15, 25);
+            SetDamage(15, 25);
 
-            this.SetDamageType(ResistanceType.Physical, 40);
-            this.SetDamageType(ResistanceType.Cold, 60);
+            SetDamageType(ResistanceType.Physical, 40);
+            SetDamageType(ResistanceType.Cold, 60);
 
-            this.SetResistance(ResistanceType.Physical, 55, 62);
-            this.SetResistance(ResistanceType.Fire, 40, 48);
-            this.SetResistance(ResistanceType.Cold, 71, 80);
-            this.SetResistance(ResistanceType.Poison, 40, 50);
-            this.SetResistance(ResistanceType.Energy, 50, 60);
+            SetResistance(ResistanceType.Physical, 55, 62);
+            SetResistance(ResistanceType.Fire, 40, 48);
+            SetResistance(ResistanceType.Cold, 71, 80);
+            SetResistance(ResistanceType.Poison, 40, 50);
+            SetResistance(ResistanceType.Energy, 50, 60);
 
-            this.SetSkill(SkillName.Wrestling, 126.3, 136.5);
-            this.SetSkill(SkillName.Tactics, 128.5, 143.8);
-            this.SetSkill(SkillName.MagicResist, 102.8, 117.9);
-            this.SetSkill(SkillName.Anatomy, 127.5, 137.2);
+            SetSkill(SkillName.Wrestling, 126.3, 136.5);
+            SetSkill(SkillName.Tactics, 128.5, 143.8);
+            SetSkill(SkillName.MagicResist, 102.8, 117.9);
+            SetSkill(SkillName.Anatomy, 127.5, 137.2);
 
-            this.Fame = 18000;
-            this.Karma = -18000;
+            Fame = 18000;
+            Karma = -18000;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
+
+            SetSpecialAbility(SpecialAbility.LifeDrain);
         }
 
         public SirPatrick(Serial serial)
@@ -50,7 +52,6 @@ namespace Server.Mobiles
         }
 
 		public override bool CanBeParagon { get { return false; } }
-        public override bool DrainsLife { get { return true; } }
 
         public override void OnDeath( Container c )
         {
@@ -72,7 +73,7 @@ namespace Server.Mobiles
         }*/
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.UltraRich, 2);
         }
 
         public override void Serialize(GenericWriter writer)

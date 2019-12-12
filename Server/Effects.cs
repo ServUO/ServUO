@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Effects.cs
-// **********
-#endregion
-
 #region References
 using Server.Network;
 #endregion
@@ -38,6 +32,11 @@ namespace Server
 		{
 			return (m_ParticleSupportType == ParticleSupportType.Full ||
 					(m_ParticleSupportType == ParticleSupportType.Detect && (state.IsUOTDClient || state.IsEnhancedClient)));
+		}
+
+		public static void PlayExplodeSound(IPoint3D p, Map map)
+		{
+			PlaySound(p, map, Utility.RandomList(283, 284, 285, 286, 519, 773, 774, 775, 776, 777, 1231));
 		}
 
 		public static void PlaySound(IPoint3D p, Map map, int soundID)

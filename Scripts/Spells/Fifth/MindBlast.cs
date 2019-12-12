@@ -36,42 +36,44 @@ namespace Server.Spells.Fifth
         }
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(Mobile m)
         {
-            if (!this.Caster.CanSee(m))
+            if (!Caster.CanSee(m))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
             else if (Core.AOS)
             {
-                if (this.Caster.CanBeHarmful(m) && this.CheckSequence())
+                if (Caster.CanBeHarmful(m) && CheckSequence())
                 {
-                    Mobile from = this.Caster, target = m;
+                    Mobile from = Caster, target = m;
 
                     SpellHelper.Turn(from, target);
-                    SpellHelper.CheckReflect((int)this.Circle, ref from, ref target);
+                    SpellHelper.CheckReflect((int)Circle, ref from, ref target);
 
-                    int damage = (int)((this.Caster.Skills[SkillName.Magery].Value + this.Caster.Int) / 5) + Utility.RandomMinMax(2, 6);
+                    int intel = Math.Min(200, Caster.Int);
+
+                    int damage = (int)((Caster.Skills[SkillName.Magery].Value + intel) / 5) + Utility.RandomMinMax(2, 6);
 					
                     if (damage > 60)
                         damage = 60;
 
                     Timer.DelayCall(TimeSpan.FromSeconds(1.0),
                         new TimerStateCallback(AosDelay_Callback),
-                        new object[] { this.Caster, target, m, damage });
+                        new object[] { Caster, target, m, damage });
                 }
             }
-            else if (this.CheckHSequence(m))
+            else if (CheckHSequence(m))
             {
-                Mobile from = this.Caster, target = m;
+                Mobile from = Caster, target = m;
 
                 SpellHelper.Turn(from, target);
 
                 if(target != null)
-                    SpellHelper.CheckReflect((int)this.Circle, ref from, ref target);
+                    SpellHelper.CheckReflect((int)Circle, ref from, ref target);
 
                 // Algorithm: (highestStat - lowestStat) / 2 [- 50% if resisted]
 
@@ -97,16 +99,16 @@ namespace Server.Spells.Fifth
                 double damage;
                 if (Core.AOS)
                 {
-                    damage = this.GetDamageScalar(m)*(highestStat - lowestStat)/4; //less damage
+                    damage = GetDamageScalar(m)*(highestStat - lowestStat)/4; //less damage
                 }
                 else
                 {
-                    damage = this.GetDamageScalar(m) * (highestStat - lowestStat) / 2; //less damage
+                    damage = GetDamageScalar(m) * (highestStat - lowestStat) / 2; //less damage
                 }
                 if (damage > 45)
                     damage = 45;
 
-                if (this.CheckResisted(target))
+                if (CheckResisted(target))
                 {
                     damage /= 2;
                     target.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
@@ -120,7 +122,7 @@ namespace Server.Spells.Fifth
                 SpellHelper.Damage(this, target, damage, 0, 0, 100, 0, 0);
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         public override double GetSlayerDamageScalar(Mobile target)
@@ -138,10 +140,10 @@ namespace Server.Spells.Fifth
 
             if (caster.HarmfulCheck(defender))
             {
-                SpellHelper.Damage(this, target, Utility.RandomMinMax(damage, damage + 4), 0, 0, 100, 0, 0);
-
                 target.FixedParticles(0x374A, 10, 15, 5038, 1181, 2, EffectLayer.Head);
                 target.PlaySound(0x213);
+
+                SpellHelper.Damage(this, target, Utility.RandomMinMax(damage, damage + 4), 0, 0, 100, 0, 0);
             }
         }
 
@@ -151,18 +153,18 @@ namespace Server.Spells.Fifth
             public InternalTarget(MindBlastSpell owner)
                 : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is Mobile)
-                    this.m_Owner.Target((Mobile)o);
+                    m_Owner.Target((Mobile)o);
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

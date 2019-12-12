@@ -4,13 +4,37 @@ namespace Server.Items
 {
     public class FruitBasket : Food
     {
+        private bool _DailyRare;
+
+        public bool DailyRare
+        { 
+            get { return _DailyRare; } 
+            set 
+            {
+                _DailyRare = value;
+
+                if (_DailyRare)
+                {
+                    Movable = false;
+                }
+            } 
+        }
+
         [Constructable]
         public FruitBasket()
+            : this(false)
+        {
+        }
+
+        [Constructable]
+        public FruitBasket(bool rare)
             : base(1, 0x993)
         {
-            this.Weight = 2.0;
-            this.FillFactor = 5;
-            this.Stackable = false;
+            Weight = 2.0;
+            FillFactor = 5;
+            Stackable = false;
+
+            DailyRare = rare;
         }
 
         public FruitBasket(Serial serial)
@@ -18,20 +42,63 @@ namespace Server.Items
         {
         }
 
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (!DailyRare)
+            {
+                base.OnDoubleClick(from);
+                return;
+            }
+
+            if (from.InRange(GetWorldLocation(), 1))
+            {
+                Eat(from);
+            }
+        }
+
         public override bool Eat(Mobile from)
         {
+            var p = Location;
+
             if (!base.Eat(from))
+            {
+                return false;
+            }
+
+            var basket = new Basket();
+
+            if (Parent == null && DailyRare)
+            {
+                basket.MoveToWorld(p, from.Map);
+            }
+            else
+            {
+                from.AddToBackpack(new Basket());
+            }
+
+            return true;
+        }
+
+        public override bool TryEat(Mobile from)
+        {
+            if (!DailyRare)
+            {
+                return base.TryEat(from);
+            }
+
+            if (Deleted || !from.CheckAlive() || !CheckItemUse(from))
                 return false;
 
-            from.AddToBackpack(new Basket());
-            return true;
+            return Eat(from);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
+
+            writer.Write(DailyRare);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -39,6 +106,13 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    DailyRare = reader.ReadBool();
+                    break;
+            }
         }
     }
 
@@ -55,8 +129,8 @@ namespace Server.Items
         public Banana(int amount)
             : base(amount, 0x171f)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 1;
+            Weight = 1.0;
+            FillFactor = 1;
         }
 
         public Banana(Serial serial)
@@ -92,8 +166,8 @@ namespace Server.Items
         public Bananas(int amount)
             : base(amount, 0x1721)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 1;
+            Weight = 1.0;
+            FillFactor = 1;
         }
 
         public Bananas(Serial serial)
@@ -128,8 +202,8 @@ namespace Server.Items
         public SplitCoconut(int amount)
             : base(amount, 0x1725)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 1;
+            Weight = 1.0;
+            FillFactor = 1;
         }
 
         public SplitCoconut(Serial serial)
@@ -164,8 +238,8 @@ namespace Server.Items
         public Lemon(int amount)
             : base(amount, 0x1728)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 1;
+            Weight = 1.0;
+            FillFactor = 1;
         }
 
         public Lemon(Serial serial)
@@ -200,8 +274,8 @@ namespace Server.Items
         public Lemons(int amount)
             : base(amount, 0x1729)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 1;
+            Weight = 1.0;
+            FillFactor = 1;
         }
 
         public Lemons(Serial serial)
@@ -236,8 +310,8 @@ namespace Server.Items
         public Lime(int amount)
             : base(amount, 0x172a)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 1;
+            Weight = 1.0;
+            FillFactor = 1;
         }
 
         public Lime(Serial serial)
@@ -272,8 +346,8 @@ namespace Server.Items
         public Limes(int amount)
             : base(amount, 0x172B)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 1;
+            Weight = 1.0;
+            FillFactor = 1;
         }
 
         public Limes(Serial serial)
@@ -308,8 +382,8 @@ namespace Server.Items
         public Coconut(int amount)
             : base(amount, 0x1726)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 1;
+            Weight = 1.0;
+            FillFactor = 1;
         }
 
         public Coconut(Serial serial)
@@ -344,8 +418,8 @@ namespace Server.Items
         public OpenCoconut(int amount)
             : base(amount, 0x1723)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 1;
+            Weight = 1.0;
+            FillFactor = 1;
         }
 
         public OpenCoconut(Serial serial)
@@ -380,8 +454,8 @@ namespace Server.Items
         public Dates(int amount)
             : base(amount, 0x1727)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 1;
+            Weight = 1.0;
+            FillFactor = 1;
         }
 
         public Dates(Serial serial)
@@ -416,8 +490,8 @@ namespace Server.Items
         public Grapes(int amount)
             : base(amount, 0x9D1)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 1;
+            Weight = 1.0;
+            FillFactor = 1;
         }
 
         public Grapes(Serial serial)
@@ -452,8 +526,8 @@ namespace Server.Items
         public Peach(int amount)
             : base(amount, 0x9D2)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 1;
+            Weight = 1.0;
+            FillFactor = 1;
         }
 
         public Peach(Serial serial)
@@ -488,8 +562,8 @@ namespace Server.Items
         public Pear(int amount)
             : base(amount, 0x994)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 1;
+            Weight = 1.0;
+            FillFactor = 1;
         }
 
         public Pear(Serial serial)
@@ -524,8 +598,8 @@ namespace Server.Items
         public Apple(int amount)
             : base(amount, 0x9D0)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 1;
+            Weight = 1.0;
+            FillFactor = 1;
         }
 
         public Apple(Serial serial)
@@ -560,8 +634,8 @@ namespace Server.Items
         public Watermelon(int amount)
             : base(amount, 0xC5C)
         {
-            this.Weight = 5.0;
-            this.FillFactor = 5;
+            Weight = 5.0;
+            FillFactor = 5;
         }
 
         public Watermelon(Serial serial)
@@ -584,11 +658,11 @@ namespace Server.Items
 
             if (version < 1)
             {
-                if (this.FillFactor == 2)
-                    this.FillFactor = 5;
+                if (FillFactor == 2)
+                    FillFactor = 5;
 
-                if (this.Weight == 2.0)
-                    this.Weight = 5.0;
+                if (Weight == 2.0)
+                    Weight = 5.0;
             }
         }
     }
@@ -605,8 +679,8 @@ namespace Server.Items
         public SmallWatermelon(int amount)
             : base(amount, 0xC5D)
         {
-            this.Weight = 5.0;
-            this.FillFactor = 5;
+            Weight = 5.0;
+            FillFactor = 5;
         }
 
         public SmallWatermelon(Serial serial)
@@ -642,8 +716,8 @@ namespace Server.Items
         public Squash(int amount)
             : base(amount, 0xc72)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 1;
+            Weight = 1.0;
+            FillFactor = 1;
         }
 
         public Squash(Serial serial)
@@ -679,8 +753,8 @@ namespace Server.Items
         public Cantaloupe(int amount)
             : base(amount, 0xc79)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 1;
+            Weight = 1.0;
+            FillFactor = 1;
         }
 
         public Cantaloupe(Serial serial)
@@ -717,8 +791,8 @@ namespace Server.Items
         public Plum(int amount)
             : base(amount, 0x9E86)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 1;
+            Weight = 1.0;
+            FillFactor = 1;
         }
 
         public Plum(Serial serial)

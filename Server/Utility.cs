@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Utility.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections;
@@ -15,6 +9,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Linq;
 #endregion
 
 namespace Server
@@ -718,20 +713,31 @@ namespace Server
                    (p1.m_Y <= (p2.m_Y + range));
 		}
 
-		public static bool InUpdateRange(IPoint2D p1, IPoint2D p2)
+		public static bool InUpdateRange(Mobile m, IPoint3D p)
 		{
-            int range = Core.GlobalUpdateRange;
-
-            return (p1.X >= (p2.X - range)) && (p1.X <= (p2.X + range)) && (p1.Y >= (p2.Y - range)) && (p1.Y <= (p2.Y + range));
+			return InUpdateRange(m, m, p);
 		}
 
-        public static bool InUpdateRange(Mobile m, Point3D p1, Point3D p2)
-        {
-            Server.Network.NetState state = m.NetState;
+		public static bool InUpdateRange(Mobile m, IPoint3D p1, IPoint3D p2)
+		{
+			int range = Core.GlobalUpdateRange;
 
-            int range = state != null ? state.UpdateRange : Core.GlobalUpdateRange;
+			if (m.NetState != null)
+			{
+				range = m.NetState.UpdateRange;
+			}
 
-            return InRange(p1, p2, range);
+			if (p1 is Item)
+			{
+				p1 = ((Item)p1).GetWorldLocation();
+			}
+
+			if (p2 is Item)
+			{
+				p2 = ((Item)p2).GetWorldLocation();
+			}
+
+			return (p1.X >= (p2.X - range)) && (p1.X <= (p2.X + range)) && (p1.Y >= (p2.Y - range)) && (p1.Y <= (p2.Y + range));
         }
 		#endregion
 
@@ -788,55 +794,6 @@ namespace Server
 				}
 			}
 		}
-
-		/* Should probably be rewritten to use an ITile interface
-
-        public static bool CanMobileFit( int z, StaticTile[] tiles )
-        {
-        int checkHeight = 15;
-        int checkZ = z;
-
-        for ( int i = 0; i < tiles.Length; ++i )
-        {
-        StaticTile tile = tiles[i];
-
-        if ( ((checkZ + checkHeight) > tile.Z && checkZ < (tile.Z + tile.Height))*/
-		/* || (tile.Z < (checkZ + checkHeight) && (tile.Z + tile.Height) > checkZ)*/ /* )
-        {
-        return false;
-        }
-        else if ( checkHeight == 0 && tile.Height == 0 && checkZ == tile.Z )
-        {
-        return false;
-        }
-        }
-
-        return true;
-        }
-
-        public static bool IsInContact( StaticTile check, StaticTile[] tiles )
-        {
-        int checkHeight = check.Height;
-        int checkZ = check.Z;
-
-        for ( int i = 0; i < tiles.Length; ++i )
-        {
-        StaticTile tile = tiles[i];
-
-        if ( ((checkZ + checkHeight) > tile.Z && checkZ < (tile.Z + tile.Height))*/
-		/* || (tile.Z < (checkZ + checkHeight) && (tile.Z + tile.Height) > checkZ)*/ /* )
-        {
-        return true;
-        }
-        else if ( checkHeight == 0 && tile.Height == 0 && checkZ == tile.Z )
-        {
-        return true;
-        }
-        }
-
-        return false;
-        }
-        */
 
 		public static object GetArrayCap(Array array, int index)
 		{
@@ -916,7 +873,7 @@ namespace Server
 		{
 			if (min > max)
 			{
-				double copy = min;
+				var copy = min;
 				min = max;
 				max = copy;
 			}
@@ -1393,14 +1350,53 @@ namespace Server
 			}
 		}
 
+		public static string FormatDelegate(Delegate callback)
+		{
+			if (callback == null)
+			{
+				return "null";
+			}
+
+			if (callback.Method.DeclaringType == null)
+			{
+				return callback.Method.Name;
+			}
+
+			return String.Format("{0}.{1}", callback.Method.DeclaringType.FullName, callback.Method.Name);
+		}
+
 		private static readonly Stack<ConsoleColor> m_ConsoleColors = new Stack<ConsoleColor>();
+
+		public static void WriteConsoleColor(ConsoleColor color, string format, params object[] args)
+		{
+			lock (((ICollection)m_ConsoleColors).SyncRoot)
+			{
+				PushColor(color);
+				Console.WriteLine(format, args);
+				PopColor();
+			}
+		}
+
+        public static void WriteConsoleColor(ConsoleColor color, string str)
+        {
+			lock (((ICollection)m_ConsoleColors).SyncRoot)
+			{
+				PushColor(color);
+				Console.WriteLine(str);
+				PopColor();
+			}
+		}
 
 		public static void PushColor(ConsoleColor color)
 		{
 			try
 			{
-				m_ConsoleColors.Push(Console.ForegroundColor);
-				Console.ForegroundColor = color;
+				lock (((ICollection)m_ConsoleColors).SyncRoot)
+				{
+					m_ConsoleColors.Push(Console.ForegroundColor);
+
+					Console.ForegroundColor = color;
+				}
 			}
 			catch
 			{ }
@@ -1410,7 +1406,10 @@ namespace Server
 		{
 			try
 			{
-				Console.ForegroundColor = m_ConsoleColors.Pop();
+				lock (((ICollection)m_ConsoleColors).SyncRoot)
+				{
+					Console.ForegroundColor = m_ConsoleColors.Pop();
+				}
 			}
 			catch
 			{ }
@@ -1478,17 +1477,10 @@ namespace Server
 			}
 		}
 
-#if MONO
-		public static List<TOutput> CastConvertList<TInput, TOutput>( List<TInput> list ) where TInput : class where TOutput : class
-		{
-			return list.ConvertAll<TOutput>( new  Converter<TInput, TOutput>( delegate( TInput value ) { return value as TOutput; } ) );
-		}
-        #else
 		public static List<TOutput> CastConvertList<TInput, TOutput>(List<TInput> list) where TOutput : TInput
 		{
 			return list.ConvertAll(delegate(TInput value) { return (TOutput)value; });
 		}
-#endif
 
 		public static List<TOutput> SafeConvertList<TInput, TOutput>(List<TInput> list) where TOutput : class
 		{
@@ -1525,6 +1517,183 @@ namespace Server
         public static bool IsAlphaNumeric(String str)
         {
             return !Regex.IsMatch(str, "[^a-z0-9]", RegexOptions.IgnoreCase);
+        }
+    }
+
+    public static class ColUtility
+    {
+        public static void Free<T>(List<T> l)
+        {
+            if (l == null)
+                return;
+
+            l.Clear();
+            l.TrimExcess();
+        }
+
+        public static void ForEach<T>(IEnumerable<T> list, Action<T> action)
+        {
+            if (list == null || action == null)
+                return;
+
+            List<T> l = list.ToList();
+
+            foreach (T o in l)
+                action(o);
+
+            Free(l);
+        }
+
+        public static void ForEach<TKey, TValue>(
+            IDictionary<TKey, TValue> dictionary, Action<KeyValuePair<TKey, TValue>> action)
+        {
+            if (dictionary == null || dictionary.Count == 0 || action == null)
+                return;
+
+            List<KeyValuePair<TKey, TValue>> l = dictionary.ToList();
+
+            foreach (KeyValuePair<TKey, TValue> kvp in l)
+                action(kvp);
+
+            Free(l);
+        }
+
+        public static void ForEach<TKey, TValue>(IDictionary<TKey, TValue> dictionary, Action<TKey, TValue> action)
+        {
+            if (dictionary == null || dictionary.Count == 0 || action == null)
+                return;
+
+            List<KeyValuePair<TKey, TValue>> l = dictionary.ToList();
+
+            foreach (KeyValuePair<TKey, TValue> kvp in l)
+                action(kvp.Key, kvp.Value);
+
+            Free(l);
+        }
+
+        public static void For<T>(IEnumerable<T> list, Action<int, T> action)
+        {
+            if (list == null || action == null)
+                return;
+
+            List<T> l = list.ToList();
+
+            for (int i = 0; i < l.Count; i++)
+                action(i, l[i]);
+
+            Free(l);
+        }
+
+        public static void For<TKey, TValue>(IDictionary<TKey, TValue> list, Action<int, TKey, TValue> action)
+        {
+            if (list == null || action == null)
+                return;
+
+            List<KeyValuePair<TKey, TValue>> l = list.ToList();
+
+            for (int i = 0; i < l.Count; i++)
+                action(i, l[i].Key, l[i].Value);
+
+            Free(l);
+        }
+
+        public static void IterateReverse<T>(this T[] list, Action<T> action)
+        {
+            if (list == null || action == null)
+            {
+                return;
+            }
+
+            int i = list.Length;
+
+            while (--i >= 0)
+            {
+                if (i < list.Length)
+                {
+                    action(list[i]);
+                }
+            }
+        }
+
+        public static void IterateReverse<T>(this List<T> list, Action<T> action)
+        {
+            if (list == null || action == null)
+            {
+                return;
+            }
+
+            int i = list.Count;
+
+            while (--i >= 0)
+            {
+                if (i < list.Count)
+                {
+                    action(list[i]);
+                }
+            }
+        }
+
+        public static void IterateReverse<T>(this IEnumerable<T> list, Action<T> action)
+        {
+            if (list == null || action == null)
+            {
+                return;
+            }
+
+            if (list is T[])
+            {
+                IterateReverse((T[])list, action);
+                return;
+            }
+
+            if (list is List<T>)
+            {
+                IterateReverse((List<T>)list, action);
+                return;
+            }
+
+            var toList = list.ToList();
+
+            foreach (var o in toList)
+            {
+                action(o);
+            }
+
+            Free(toList);
+        }
+
+        public static void SafeDelete<T>(List<T> list)
+        {
+            SafeDelete(list, null);
+        }
+
+        /// <summary>
+        /// Safely deletes any entities based on predicate from a list that by deleting such entity would cause the collection to be modified.
+        /// ie item.Items or mobile.Items. Omitting the predicate will delete all items in the collection.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="predicate"></param>
+        public static void SafeDelete<T>(List<T> list, Func<T, bool> predicate)
+        {
+            if (list == null)
+            {
+                return;
+            }
+
+            int i = list.Count;
+
+            while (--i >= 0)
+            {
+                if (i < list.Count)
+                {
+                    var entity = list[i] as IEntity;
+
+                    if (entity != null && !entity.Deleted && (predicate == null || predicate((T)entity)))
+                    {
+                        entity.Delete();
+                    }
+                }
+            }
         }
     }
 }

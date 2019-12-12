@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Misc;
 using Server.Multis;
 using Server.Prompts;
+using Server.Accounting;
 
 namespace Server.Mobiles
 {
@@ -17,26 +19,28 @@ namespace Server.Mobiles
             new VendorRentalDuration(TimeSpan.FromDays(21.0), 1062363), // 3 Weeks
             new VendorRentalDuration(TimeSpan.FromDays(28.0), 1062364)// 1 Month
         };
+
         private readonly TimeSpan m_Duration;
         private readonly int m_Name;
+
         private VendorRentalDuration(TimeSpan duration, int name)
         {
-            this.m_Duration = duration;
-            this.m_Name = name;
+            m_Duration = duration;
+            m_Name = name;
         }
 
         public TimeSpan Duration
         {
             get
             {
-                return this.m_Duration;
+                return m_Duration;
             }
         }
         public int Name
         {
             get
             {
-                return this.m_Name;
+                return m_Name;
             }
         }
         public int ID
@@ -64,19 +68,20 @@ namespace Server.Mobiles
         private int m_RentalGold;
         private DateTime m_RentalExpireTime;
         private Timer m_RentalExpireTimer;
+
         public RentedVendor(Mobile owner, BaseHouse house, VendorRentalDuration duration, int rentalPrice, bool landlordRenew, int rentalGold)
             : base(owner, house)
         {
-            this.m_RentalDuration = duration;
-            this.m_RentalPrice = this.m_RenewalPrice = rentalPrice;
-            this.m_LandlordRenew = landlordRenew;
-            this.m_RenterRenew = false;
+            m_RentalDuration = duration;
+            m_RentalPrice = m_RenewalPrice = rentalPrice;
+            m_LandlordRenew = landlordRenew;
+            m_RenterRenew = false;
 
-            this.m_RentalGold = rentalGold;
+            m_RentalGold = rentalGold;
 
-            this.m_RentalExpireTime = DateTime.UtcNow + duration.Duration;
-            this.m_RentalExpireTimer = new RentalExpireTimer(this, duration.Duration);
-            this.m_RentalExpireTimer.Start();
+            m_RentalExpireTime = DateTime.UtcNow + duration.Duration;
+            m_RentalExpireTimer = new RentalExpireTimer(this, duration.Duration);
+            m_RentalExpireTimer.Start();
         }
 
         public RentedVendor(Serial serial)
@@ -88,7 +93,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_RentalDuration;
+                return m_RentalDuration;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -96,11 +101,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_RentalPrice;
+                return m_RentalPrice;
             }
             set
             {
-                this.m_RentalPrice = value;
+                m_RentalPrice = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -108,11 +113,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_LandlordRenew;
+                return m_LandlordRenew;
             }
             set
             {
-                this.m_LandlordRenew = value;
+                m_LandlordRenew = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -120,11 +125,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_RenterRenew;
+                return m_RenterRenew;
             }
             set
             {
-                this.m_RenterRenew = value;
+                m_RenterRenew = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -132,7 +137,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.LandlordRenew && this.RenterRenew && this.House != null && this.House.DecayType != DecayType.Condemned;
+                return LandlordRenew && RenterRenew && House != null && House.DecayType != DecayType.Condemned;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -140,11 +145,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_RenewalPrice;
+                return m_RenewalPrice;
             }
             set
             {
-                this.m_RenewalPrice = value;
+                m_RenewalPrice = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -152,11 +157,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_RentalGold;
+                return m_RentalGold;
             }
             set
             {
-                this.m_RentalGold = value;
+                m_RentalGold = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -164,7 +169,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_RentalExpireTime;
+                return m_RentalExpireTime;
+            }
+            set
+            {
+                m_RentalExpireTime = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -172,25 +181,25 @@ namespace Server.Mobiles
         {
             get
             {
-                if (this.House != null)
-                    return this.House.Owner;
+                if (House != null)
+                    return House.Owner;
 
                 return null;
             }
         }
         public override bool IsOwner(Mobile m)
         {
-            return m == this.Owner || m.AccessLevel >= AccessLevel.GameMaster || (Core.ML && AccountHandler.CheckAccount(m, this.Owner));
+            return m == Owner || m.AccessLevel >= AccessLevel.GameMaster || (Core.ML && AccountHandler.CheckAccount(m, Owner));
         }
 
         public bool IsLandlord(Mobile m)
         {
-            return this.House != null && this.House.IsOwner(m);
+            return House != null && House.IsOwner(m);
         }
 
         public void ComputeRentalExpireDelay(out int days, out int hours)
         {
-            TimeSpan delay = this.RentalExpireTime - DateTime.UtcNow;
+            TimeSpan delay = RentalExpireTime - DateTime.UtcNow;
 
             if (delay <= TimeSpan.Zero)
             {
@@ -207,7 +216,7 @@ namespace Server.Mobiles
         public void SendRentalExpireMessage(Mobile to)
         {
             int days, hours;
-            this.ComputeRentalExpireDelay(out days, out hours);
+            ComputeRentalExpireDelay(out days, out hours);
 
             to.SendLocalizedMessage(1062464, days.ToString() + "\t" + hours.ToString()); // The rental contract on this vendor will expire in ~1_DAY~ day(s) and ~2_HOUR~ hour(s).
         }
@@ -216,18 +225,26 @@ namespace Server.Mobiles
         {
             base.OnAfterDelete();
 
-            this.m_RentalExpireTimer.Stop();
+            m_RentalExpireTimer.Stop();
         }
 
         public override void Destroy(bool toBackpack)
         {
-            if (this.RentalGold > 0 && this.House != null && this.House.IsAosRules)
+            if (RentalGold > 0 && House != null && House.IsAosRules)
             {
-                if (this.House.MovingCrate == null)
-                    this.House.MovingCrate = new MovingCrate(this.House);
+                if (House.MovingCrate == null)
+                    House.MovingCrate = new MovingCrate(House);
 
-                Banker.Deposit(this.House.MovingCrate, this.RentalGold);
-                this.RentalGold = 0;
+                if (AccountGold.Enabled && Landlord != null)
+                {
+                    Banker.Deposit(Landlord, RentalGold, true);
+                }
+                else
+                {
+                    Banker.Deposit(House.MovingCrate, RentalGold);
+                }
+
+                RentalGold = 0;
             }
 
             base.Destroy(toBackpack);
@@ -237,13 +254,13 @@ namespace Server.Mobiles
         {
             if (from.Alive)
             {
-                if (this.IsOwner(from))
+                if (IsOwner(from))
                 {
                     list.Add(new ContractOptionsEntry(this));
                 }
-                else if (this.IsLandlord(from))
+                else if (IsLandlord(from))
                 {
-                    if (this.RentalGold > 0)
+                    if (RentalGold > 0)
                         list.Add(new CollectRentEntry(this));
 
                     list.Add(new TerminateContractEntry(this));
@@ -260,16 +277,16 @@ namespace Server.Mobiles
 
             writer.WriteEncodedInt(0); // version
 
-            writer.WriteEncodedInt(this.m_RentalDuration.ID);
+            writer.WriteEncodedInt(m_RentalDuration.ID);
 
-            writer.Write((int)this.m_RentalPrice);
-            writer.Write((bool)this.m_LandlordRenew);
-            writer.Write((bool)this.m_RenterRenew);
-            writer.Write((int)this.m_RenewalPrice);
+            writer.Write((int)m_RentalPrice);
+            writer.Write((bool)m_LandlordRenew);
+            writer.Write((bool)m_RenterRenew);
+            writer.Write((int)m_RenewalPrice);
 
-            writer.Write((int)this.m_RentalGold);
+            writer.Write((int)m_RentalGold);
 
-            writer.WriteDeltaTime((DateTime)this.m_RentalExpireTime);
+            writer.WriteDeltaTime((DateTime)m_RentalExpireTime);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -280,22 +297,22 @@ namespace Server.Mobiles
 
             int durationID = reader.ReadEncodedInt();
             if (durationID < VendorRentalDuration.Instances.Length)
-                this.m_RentalDuration = VendorRentalDuration.Instances[durationID];
+                m_RentalDuration = VendorRentalDuration.Instances[durationID];
             else
-                this.m_RentalDuration = VendorRentalDuration.Instances[0];
+                m_RentalDuration = VendorRentalDuration.Instances[0];
 
-            this.m_RentalPrice = reader.ReadInt();
-            this.m_LandlordRenew = reader.ReadBool();
-            this.m_RenterRenew = reader.ReadBool();
-            this.m_RenewalPrice = reader.ReadInt();
+            m_RentalPrice = reader.ReadInt();
+            m_LandlordRenew = reader.ReadBool();
+            m_RenterRenew = reader.ReadBool();
+            m_RenewalPrice = reader.ReadInt();
 
-            this.m_RentalGold = reader.ReadInt();
+            m_RentalGold = reader.ReadInt();
 
-            this.m_RentalExpireTime = reader.ReadDeltaTime();
+            m_RentalExpireTime = reader.ReadDeltaTime();
 
-            TimeSpan delay = this.m_RentalExpireTime - DateTime.UtcNow;
-            this.m_RentalExpireTimer = new RentalExpireTimer(this, delay > TimeSpan.Zero ? delay : TimeSpan.Zero);
-            this.m_RentalExpireTimer.Start();
+            TimeSpan delay = m_RentalExpireTime - DateTime.UtcNow;
+            m_RentalExpireTimer = new RentalExpireTimer(this, delay > TimeSpan.Zero ? delay : TimeSpan.Zero);
+            m_RentalExpireTimer.Start();
         }
 
         private class ContractOptionsEntry : ContextMenuEntry
@@ -304,29 +321,29 @@ namespace Server.Mobiles
             public ContractOptionsEntry(RentedVendor vendor)
                 : base(6209)
             {
-                this.m_Vendor = vendor;
+                m_Vendor = vendor;
             }
 
             public override void OnClick()
             {
-                Mobile from = this.Owner.From;
+                Mobile from = Owner.From;
 
-                if (this.m_Vendor.Deleted || !from.CheckAlive())
+                if (m_Vendor.Deleted || !from.CheckAlive())
                     return;
 
-                if (this.m_Vendor.IsOwner(from))
+                if (m_Vendor.IsOwner(from))
                 {
                     from.CloseGump(typeof(RenterVendorRentalGump));
-                    from.SendGump(new RenterVendorRentalGump(this.m_Vendor));
+                    from.SendGump(new RenterVendorRentalGump(m_Vendor));
 
-                    this.m_Vendor.SendRentalExpireMessage(from);
+                    m_Vendor.SendRentalExpireMessage(from);
                 }
-                else if (this.m_Vendor.IsLandlord(from))
+                else if (m_Vendor.IsLandlord(from))
                 {
                     from.CloseGump(typeof(LandlordVendorRentalGump));
-                    from.SendGump(new LandlordVendorRentalGump(this.m_Vendor));
+                    from.SendGump(new LandlordVendorRentalGump(m_Vendor));
 
-                    this.m_Vendor.SendRentalExpireMessage(from);
+                    m_Vendor.SendRentalExpireMessage(from);
                 }
             }
         }
@@ -337,25 +354,25 @@ namespace Server.Mobiles
             public CollectRentEntry(RentedVendor vendor)
                 : base(6212)
             {
-                this.m_Vendor = vendor;
+                m_Vendor = vendor;
             }
 
             public override void OnClick()
             {
-                Mobile from = this.Owner.From;
+                Mobile from = Owner.From;
 
-                if (this.m_Vendor.Deleted || !from.CheckAlive() || !this.m_Vendor.IsLandlord(from))
+                if (m_Vendor.Deleted || !from.CheckAlive() || !m_Vendor.IsLandlord(from))
                     return;
 
-                if (this.m_Vendor.RentalGold > 0)
+                if (m_Vendor.RentalGold > 0)
                 {
-                    int depositedGold = Banker.DepositUpTo(from, this.m_Vendor.RentalGold);
-                    this.m_Vendor.RentalGold -= depositedGold;
+                    int depositedGold = Banker.DepositUpTo(from, m_Vendor.RentalGold);
+                    m_Vendor.RentalGold -= depositedGold;
 
                     if (depositedGold > 0)
                         from.SendLocalizedMessage(1060397, depositedGold.ToString()); // ~1_AMOUNT~ gold has been deposited into your bank box.
 
-                    if (this.m_Vendor.RentalGold > 0)
+                    if (m_Vendor.RentalGold > 0)
                         from.SendLocalizedMessage(500390); // Your bank box is full.
                 }
             }
@@ -367,18 +384,18 @@ namespace Server.Mobiles
             public TerminateContractEntry(RentedVendor vendor)
                 : base(6218)
             {
-                this.m_Vendor = vendor;
+                m_Vendor = vendor;
             }
 
             public override void OnClick()
             {
-                Mobile from = this.Owner.From;
+                Mobile from = Owner.From;
 
-                if (this.m_Vendor.Deleted || !from.CheckAlive() || !this.m_Vendor.IsLandlord(from))
+                if (m_Vendor.Deleted || !from.CheckAlive() || !m_Vendor.IsLandlord(from))
                     return;
 
                 from.SendLocalizedMessage(1062503); // Enter the amount of gold you wish to offer the renter in exchange for immediate termination of this contract?
-                from.Prompt = new RefundOfferPrompt(this.m_Vendor);
+                from.Prompt = new RefundOfferPrompt(m_Vendor);
             }
         }
 
@@ -387,12 +404,12 @@ namespace Server.Mobiles
             private readonly RentedVendor m_Vendor;
             public RefundOfferPrompt(RentedVendor vendor)
             {
-                this.m_Vendor = vendor;
+                m_Vendor = vendor;
             }
 
             public override void OnResponse(Mobile from, string text)
             {
-                if (!this.m_Vendor.CanInteractWith(from, false) || !this.m_Vendor.IsLandlord(from))
+                if (!m_Vendor.CanInteractWith(from, false) || !m_Vendor.IsLandlord(from))
                     return;
 
                 text = text.Trim();
@@ -402,7 +419,7 @@ namespace Server.Mobiles
                 if (!int.TryParse(text, out amount))
                     amount = -1;
 
-                Mobile owner = this.m_Vendor.Owner;
+                Mobile owner = m_Vendor.Owner;
                 if (owner == null)
                     return;
 
@@ -414,7 +431,7 @@ namespace Server.Mobiles
                 {
                     from.SendLocalizedMessage(1062507); // You do not have that much money in your bank account.
                 }
-                else if (owner.Map != this.m_Vendor.Map || !owner.InRange(this.m_Vendor, 5))
+                else if (owner.Map != m_Vendor.Map || !owner.InRange(m_Vendor, 5))
                 {
                     from.SendLocalizedMessage(1062505); // The renter must be closer to the vendor in order for you to make this offer.
                 }
@@ -423,7 +440,7 @@ namespace Server.Mobiles
                     from.SendLocalizedMessage(1062504); // Please wait while the renter considers your offer.
 
                     owner.CloseGump(typeof(VendorRentalRefundGump));
-                    owner.SendGump(new VendorRentalRefundGump(this.m_Vendor, from, amount));
+                    owner.SendGump(new VendorRentalRefundGump(m_Vendor, from, amount));
                 }
             }
         }
@@ -431,30 +448,31 @@ namespace Server.Mobiles
         private class RentalExpireTimer : Timer
         {
             private readonly RentedVendor m_Vendor;
+
             public RentalExpireTimer(RentedVendor vendor, TimeSpan delay)
                 : base(delay, vendor.RentalDuration.Duration)
             {
-                this.m_Vendor = vendor;
+                m_Vendor = vendor;
 
-                this.Priority = TimerPriority.OneMinute;
+                Priority = TimerPriority.OneMinute;
             }
 
             protected override void OnTick()
             {
-                int renewalPrice = this.m_Vendor.RenewalPrice;
+                int renewalPrice = m_Vendor.RenewalPrice;
 
-                if (this.m_Vendor.Renew && this.m_Vendor.HoldGold >= renewalPrice)
+                if (m_Vendor.Renew && m_Vendor.HoldGold >= renewalPrice)
                 {
-                    this.m_Vendor.HoldGold -= renewalPrice;
-                    this.m_Vendor.RentalGold += renewalPrice;
+                    m_Vendor.HoldGold -= renewalPrice;
+                    m_Vendor.RentalGold += renewalPrice;
 
-                    this.m_Vendor.RentalPrice = renewalPrice;
+                    m_Vendor.RentalPrice = renewalPrice;
 
-                    this.m_Vendor.m_RentalExpireTime = DateTime.UtcNow + this.m_Vendor.RentalDuration.Duration;
+                    m_Vendor.m_RentalExpireTime = DateTime.UtcNow + m_Vendor.RentalDuration.Duration;
                 }
                 else
                 {
-                    this.m_Vendor.Destroy(false);
+                    m_Vendor.Destroy(false);
                 }
             }
         }

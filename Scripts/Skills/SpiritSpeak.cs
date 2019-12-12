@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - SpiritSpeak.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -94,7 +88,7 @@ namespace Server.SkillHandlers
         {
             if (_Table == null || !_Table.ContainsKey(m))
             {
-                m.SendSpeedControl(SpeedControlType.NoMove);
+                m.Freeze(TimeSpan.FromSeconds(1));
 
                 m.Animate(AnimationType.Spell, 1);
                 m.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1062074, "", false); // Anh Mi Sah Ko
@@ -166,14 +160,28 @@ namespace Server.SkillHandlers
             {
                 Corpse toChannel = null;
 
-                foreach (Item item in Caster.GetItemsInRange(3))
+                IPooledEnumerable eable = Caster.GetObjectsInRange(3);
+
+                foreach (object objs in eable)
                 {
-                    if (item is Corpse && !((Corpse)item).Channeled)
+                    if (objs is Corpse && !((Corpse)objs).Channeled && !((Corpse)objs).Animated)
                     {
-                        toChannel = (Corpse)item;
+                        toChannel = (Corpse)objs;
                         break;
                     }
+                    else if (objs is Server.Engines.Khaldun.SageHumbolt)
+                    {
+                        if (((Server.Engines.Khaldun.SageHumbolt)objs).OnSpiritSpeak(Caster))
+                        {
+                            eable.Free();
+                            SpiritSpeak.Remove(Caster);
+                            Stop();
+                            return;
+                        }
+                    }
                 }
+
+                eable.Free();
 
                 int max, min, mana, number;
 

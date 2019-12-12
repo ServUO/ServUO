@@ -8,15 +8,13 @@ namespace Server.Items
         [Constructable]
         public PixieSwatter()
         {
-            this.Hue = 0x8A;
-            this.WeaponAttributes.HitPoisonArea = 75;
-            this.Attributes.WeaponSpeed = 30;
-            
-            this.WeaponAttributes.UseBestSkill = 1;
-            this.WeaponAttributes.ResistFireBonus = 12;
-            this.WeaponAttributes.ResistEnergyBonus = 12;
-
-            this.Slayer = SlayerName.Fey;
+            Hue = 0x8A;
+            WeaponAttributes.HitPoisonArea = 75;
+            Attributes.WeaponSpeed = 30;         
+            WeaponAttributes.UseBestSkill = 1;
+            WeaponAttributes.ResistFireBonus = 12;
+            WeaponAttributes.ResistEnergyBonus = 12;
+            Slayer = SlayerName.Fey;
         }
 
         public PixieSwatter(Serial serial)

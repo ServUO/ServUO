@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -123,11 +124,18 @@ namespace Server.Items
 
             int parry = (int)attacker.Skills[SkillName.Parry].Value;
 
-            int dcibonus = (int)(10.0 * ((Math.Max(attacker.Skills[SkillName.Bushido].Value, attacker.Skills[SkillName.Ninjitsu].Value) - 50.0) / 70.0 + 5));
+            bool creature = attacker is BaseCreature;
+            double skill = creature ? attacker.Skills[SkillName.Bushido].Value :
+                                      Math.Max(attacker.Skills[SkillName.Bushido].Value, attacker.Skills[SkillName.Ninjitsu].Value);
+
+            int dcibonus = (int)(10.0 * ((skill - 50.0) / 70.0 + 5));
             int spellblock = parry <= 70 ? 70 : parry <= 100 ? 40 : 20;
             int meleeblock = parry <= 70 ? 80 : parry <= 100 ? 65 : 55;
 
             BeginBlock(attacker, dcibonus, spellblock, meleeblock);
+
+            if(creature)
+                PetTrainingHelper.OnWeaponAbilityUsed((BaseCreature)attacker, SkillName.Bushido);
         }
 
         private class BlockInfo

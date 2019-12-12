@@ -8,13 +8,12 @@ namespace Server.Items
         [Constructable]
         public BladeDance()
         {
-            this.Hue = 0x66C;
-
-            this.Attributes.BonusMana = 8;
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.WeaponDamage = 30;
-            this.WeaponAttributes.HitLeechMana = 20;
-            this.WeaponAttributes.UseBestSkill = 1;
+            Hue = 0x66C;
+            Attributes.BonusMana = 8;
+            Attributes.SpellChanneling = 1;
+            Attributes.WeaponDamage = 30;
+            WeaponAttributes.HitLeechMana = 20;
+            WeaponAttributes.UseBestSkill = 1;
         }
 
         public BladeDance(Serial serial)
@@ -46,14 +45,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
         }
     }

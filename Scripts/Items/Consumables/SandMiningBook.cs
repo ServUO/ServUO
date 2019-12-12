@@ -40,11 +40,16 @@ namespace Server.Items
         {
             PlayerMobile pm = from as PlayerMobile;
 
-            if (!IsChildOf(from.Backpack))
+            if (pm == null)
             {
-                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+                return;
             }
-            else if (pm == null || from.Skills[SkillName.Mining].Base < 100.0)
+
+            if (!IsChildOf(pm.Backpack))
+            {
+                pm.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+            }
+            else if (pm.Skills[SkillName.Mining].Base < 100.0)
             {
                 pm.SendLocalizedMessage(1080041); // Only a Grandmaster Miner can learn from this book.
             }
@@ -56,6 +61,7 @@ namespace Server.Items
             {
                 pm.SandMining = true;
                 pm.SendLocalizedMessage(1111701); // You have learned how to mine fine sand.  Target sand areas when mining to look for fine sand.
+
                 Delete();
             }
         }

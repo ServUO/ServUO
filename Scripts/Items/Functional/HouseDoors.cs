@@ -100,6 +100,7 @@ namespace Server.Items
     {
         private DoorFacing m_Facing;
         private SecureLevel m_Level;
+
         public BaseHouseDoor(DoorFacing facing, int closedID, int openedID, int openedSound, int closedSound, Point3D offset)
             : base(closedID, openedID, openedSound, closedSound, offset)
         {
@@ -190,7 +191,7 @@ namespace Server.Items
 
         public override void Use(Mobile from)
         {
-            if (!CheckAccess(from))
+            if (from.AccessLevel == AccessLevel.Player && !CheckAccess(from))
                 from.SendLocalizedMessage(1061637); // You are not allowed to access 
             else
                 base.Use(from);

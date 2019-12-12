@@ -10,78 +10,78 @@ namespace Server.Mobiles
         public EnslavedGoblinScout()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Enslaved Goblin Scout";
-            this.Body = 334;
-            this.BaseSoundID = 0x45A;
+            Name = "Enslaved Goblin Scout";
+            Body = 334;
+            BaseSoundID = 0x600;
 
-            this.SetStr(320, 320);
-            this.SetDex(74, 74);
-            this.SetInt(112, 112);
+            SetStr(320, 320);
+            SetDex(74, 74);
+            SetInt(112, 112);
 
-            this.SetHits(182, 182);
-            this.SetStam(74, 74);
-            this.SetMana(112, 112);
+            SetHits(182, 182);
+            SetStam(74, 74);
+            SetMana(112, 112);
 
-            this.SetDamage(5, 7);
+            SetDamage(5, 7);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 42, 42);
-            this.SetResistance(ResistanceType.Fire, 33, 33);
-            this.SetResistance(ResistanceType.Cold, 30, 30);
-            this.SetResistance(ResistanceType.Poison, 14, 14);
-            this.SetResistance(ResistanceType.Energy, 18, 18);
+            SetResistance(ResistanceType.Physical, 42, 42);
+            SetResistance(ResistanceType.Fire, 33, 33);
+            SetResistance(ResistanceType.Cold, 30, 30);
+            SetResistance(ResistanceType.Poison, 14, 14);
+            SetResistance(ResistanceType.Energy, 18, 18);
 
-            this.SetSkill(SkillName.MagicResist, 95.0, 95.0);
-            this.SetSkill(SkillName.Tactics, 80.0, 86.9);
-            this.SetSkill(SkillName.Anatomy, 82.0, 89.3);
-            this.SetSkill(SkillName.Wrestling, 99.2, 113.7);
+            SetSkill(SkillName.MagicResist, 95.0, 95.0);
+            SetSkill(SkillName.Tactics, 80.0, 86.9);
+            SetSkill(SkillName.Anatomy, 82.0, 89.3);
+            SetSkill(SkillName.Wrestling, 99.2, 113.7);
 
-            this.Fame = 1500;
-            this.Karma = -1500;
+            Fame = 1500;
+            Karma = -1500;
 
-            this.VirtualArmor = 28;
+            VirtualArmor = 28;
 
             // Loot - 30-40gold, magicitem,gem,goblin blood, essence control
             switch ( Utility.Random(20) )
             {
                 case 0:
-                    this.PackItem(new Scimitar());
+                    PackItem(new Scimitar());
                     break;
                 case 1:
-                    this.PackItem(new Katana());
+                    PackItem(new Katana());
                     break;
                 case 2:
-                    this.PackItem(new WarMace());
+                    PackItem(new WarMace());
                     break;
                 case 3:
-                    this.PackItem(new WarHammer());
+                    PackItem(new WarHammer());
                     break;
                 case 4:
-                    this.PackItem(new Kryss());
+                    PackItem(new Kryss());
                     break;
                 case 5:
-                    this.PackItem(new Pitchfork());
+                    PackItem(new Pitchfork());
                     break;
             }
 
-            this.PackItem(new ThighBoots());
+            PackItem(new ThighBoots());
 
             switch ( Utility.Random(3) )
             {
                 case 0:
-                    this.PackItem(new Ribs());
+                    PackItem(new Ribs());
                     break;
                 case 1:
-                    this.PackItem(new Shaft());
+                    PackItem(new Shaft());
                     break;
                 case 2:
-                    this.PackItem(new Candle());
+                    PackItem(new Candle());
                     break;
             }
 
             if (0.2 > Utility.RandomDouble())
-                this.PackItem(new BolaBall());
+                PackItem(new BolaBall());
         }
 
         public EnslavedGoblinScout(Serial serial)
@@ -89,34 +89,16 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.SavagesAndOrcs;
-            }
-        }
+        public override int GetAngerSound() { return 0x600; }
+        public override int GetIdleSound() { return 0x600; }
+        public override int GetAttackSound() { return 0x5FD; }
+        public override int GetHurtSound() { return 0x5FF; }
+        public override int GetDeathSound() { return 0x5FE; }
+
+        public override bool CanRummageCorpses { get { return true; } }
+        public override int TreasureMapLevel { get { return 1; } }
+        public override int Meat { get { return 1; } }
+        public override OppositionGroup OppositionGroup { get { return OppositionGroup.SavagesAndOrcs; } }
 
         public override void GenerateLoot()
         {

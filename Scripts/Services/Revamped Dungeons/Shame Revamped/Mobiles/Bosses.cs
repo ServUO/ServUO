@@ -14,6 +14,7 @@ namespace Server.Mobiles
         public ShameGuardian(AIType type)
             : base(type, FightMode.Aggressor, 10, 1, .4, .2)
         {
+			Title = "the guardian";
         }
 
         public override void OnDeath(Container c)
@@ -28,18 +29,21 @@ namespace Server.Mobiles
             Altar = null;
         }
 
-        public override void Damage(int amount, Mobile from, bool informMount, bool checkfizzle)
+        public override int Damage(int amount, Mobile from, bool informMount, bool checkfizzle)
         {
             if (from == null)
-                return;
+                return 0;
 
             if (Altar == null || Altar.Summoner == null)
-                base.Damage(amount, from, informMount, checkfizzle);
+                amount = base.Damage(amount, from, informMount, checkfizzle);
             else
             {
                 bool good = false;
 
-                if (from == Altar.Summoner || (Altar.DeadLine > DateTime.UtcNow && Altar.DeadLine - DateTime.UtcNow < TimeSpan.FromMinutes(10)))
+                if (from == Altar.Summoner || (Altar.DeadLine > DateTime.UtcNow &&
+                                               Altar.DeadLine - DateTime.UtcNow < TimeSpan.FromMinutes(10)))
+                    good = true;
+                else if (from is BaseCreature && ((BaseCreature)from).GetMaster() == Altar.Summoner)
                     good = true;
                 else if (ShameAltar.AllowParties)
                 {
@@ -56,10 +60,15 @@ namespace Server.Mobiles
                 }
 
                 if (good)
-                    base.Damage(amount, from, informMount, checkfizzle);
-                else if (from != null)
+                    amount = base.Damage(amount, from, informMount, checkfizzle);
+                else
+                {
+                    amount = 0;
                     from.SendLocalizedMessage(1151633); // You did not summon this champion, so you may not attack it at this time.
+                }
             }
+
+            return amount;
         }
 
         public override bool AutoDispel { get { return true; } }
@@ -84,14 +93,14 @@ namespace Server.Mobiles
         }
     }
 
-    [CorpseName("an quartz elemental corpse")]
+    [CorpseName("a quartz elemental corpse")]
     public class QuartzElemental : ShameGuardian
     {
         [Constructable]
         public QuartzElemental()
             : base(AIType.AI_Melee)
         {
-            Name = "an quartz elemental";
+            Name = "a quartz elemental";
             Body = 14;
             BaseSoundID = 268;
             Hue = 2575;
@@ -138,6 +147,14 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
+		
+		public override int TreasureMapLevel
+        {
+            get
+            {
+                return 1;
+            }
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -152,14 +169,14 @@ namespace Server.Mobiles
         }
     }
 
-    [CorpseName("an flame elemental corpse")]
-    public class FlameElemental : ShameGuardian
+    [CorpseName("a flame elemental corpse")]
+    public class FlameElemental : ShameGuardian, IAuraCreature
     {
         [Constructable]
         public FlameElemental()
             : base(AIType.AI_Mage)
         {
-            Name = "an flame elemental";
+            Name = "a flame elemental";
             Body = 15;
             BaseSoundID = 838;
             Hue = 1161;
@@ -194,14 +211,15 @@ namespace Server.Mobiles
             Karma = -4500;
 
             PackItem(new SulfurousAsh(5));
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
+            SetAreaEffect(AreaEffect.AuraDamage);
         }
 
-        public override bool HasBreath { get { return true; } } // fire breath enabled
-        public override bool HasAura { get { return true; } }
-        public override int AuraRange { get { return 5; } }
-        public override int AuraBaseDamage { get { return 7; } }
-        public override int AuraFireDamage { get { return 100; } }
-        public override int AuraEnergyDamage { get { return 100; } }
+        public void AuraEffect(Mobile m)
+        {
+            m.SendLocalizedMessage(1008112); // The intense heat is damaging you!
+        }
 
         public override void GenerateLoot()
         {
@@ -234,14 +252,14 @@ namespace Server.Mobiles
         }
     }
 
-    [CorpseName("an wind elemental corpse")]
+    [CorpseName("a wind elemental corpse")]
     public class WindElemental : ShameGuardian
     {
         [Constructable]
         public WindElemental()
             : base(AIType.AI_Mage)
         {
-            Name = "an wind elemental";
+            Name = "a wind elemental";
             Body = 13;
             BaseSoundID = 655;
             Hue = 33765;

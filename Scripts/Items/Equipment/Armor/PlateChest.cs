@@ -11,7 +11,7 @@ namespace Server.Items
         public PlateChest()
             : base(0x1415)
         {
-            this.Weight = 10.0;
+            Weight = 10.0;
         }
 
         public PlateChest(Serial serial)
@@ -113,9 +113,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (this.Weight == 1.0)
-                this.Weight = 10.0;
         }
     }
 }

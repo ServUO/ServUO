@@ -1,11 +1,13 @@
-﻿using System;
-using Server;
+using System;
+using System.Linq;
 using System.Collections.Generic;
+
+using Server;
 using Server.Mobiles;
 using Server.Spells;
 using Server.Spells.Ninjitsu;
 using Server.Network;
-using System.Linq;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Items
 {
@@ -331,9 +333,9 @@ namespace Server.Items
             if (dam < 0)
                 return;
 
-            this.Mobile.Heal((int)dam);
-            this.Mobile.FixedParticles(0x376A, 9, 32, 5005, EffectLayer.Waist);
-            this.Mobile.PlaySound(0x1F2);
+            Mobile.Heal((int)dam, Mobile, false);
+            Mobile.SendLocalizedMessage(1113617); // Some of the damage you received has been converted to heal you.
+            Server.Effects.SendPacket(Mobile.Location, Mobile.Map, new ParticleEffect(EffectType.FixedFrom, Mobile.Serial, Serial.Zero, 0x375A, Mobile.Location, Mobile.Location, 1, 10, false, false, 33, 0, 2, 6889, 1, Mobile.Serial, 45, 0));
             m_Charges--;
         }
 
@@ -391,11 +393,25 @@ namespace Server.Items
 
     public class SplinteringWeaponContext : PropertyEffect
     {
+        public static List<Mobile> BleedImmune { get; set; } = new List<Mobile>();
+
         public SplinteringWeaponContext(Mobile from, Mobile defender, Item weapon)
             : base(from, defender, weapon, EffectsType.Splintering, TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(4))
         {
             StartForceWalk(defender);
-            BleedAttack.BeginBleed(defender, from, true);
+
+            if (Core.EJ)
+            {
+                if (!(defender is PlayerMobile) || !IsBleedImmune(defender))
+                {
+                    BleedAttack.BeginBleed(defender, from, true);
+                    AddBleedImmunity(defender);
+                }
+            }
+            else
+            {
+                BleedAttack.BeginBleed(defender, from, true);
+            }
 
             defender.SendLocalizedMessage(1112486); // A shard of the brittle weapon has become lodged in you!
             from.SendLocalizedMessage(1113077); // A shard of your blade breaks off and sticks in your opponent!
@@ -431,9 +447,9 @@ namespace Server.Items
             base.RemoveEffects();
         }
 
-        public static bool CheckHit(Mobile attacker, Mobile defender, Item weapon)
+        public static bool CheckHit(Mobile attacker, Mobile defender, WeaponAbility ability, Item weapon)
         {
-            if (defender == null)
+            if (defender == null || (Core.EJ && (ability == WeaponAbility.Disarm || ability == WeaponAbility.InfectiousStrike || SkillMasterySpell.HasSpell(attacker, typeof(SkillMasterySpell)))))
                 return false;
 
             SplinteringWeaponContext context = PropertyEffect.GetContext<SplinteringWeaponContext>(attacker, defender, EffectsType.Splintering);
@@ -445,6 +461,20 @@ namespace Server.Items
             }
 
             return false;
+        }
+
+        public static bool IsBleedImmune(Mobile m)
+        {
+            return BleedImmune.Contains(m);
+        }
+
+        public static void AddBleedImmunity(Mobile m)
+        {
+            if (!(m is PlayerMobile) || BleedImmune.Contains(m))
+                return;
+
+            BleedImmune.Add(m);
+            Timer.DelayCall(TimeSpan.FromSeconds(16), () => BleedImmune.Remove(m));
         }
     }
 
@@ -570,9 +600,11 @@ namespace Server.Items
         private int _ID;
 
         public SwarmContext(Mobile attacker, Mobile defender, Item weapon)
-            : base(attacker, defender, weapon, EffectsType.Swarm, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(2))
+            : base(attacker, defender, weapon, EffectsType.Swarm, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(5))
         {
             _ID = Utility.RandomMinMax(2331, 2339);
+
+            DoEffects();
         }
 
         public static void CheckHit(Mobile attacker, Mobile defender)
@@ -585,32 +617,44 @@ namespace Server.Items
 
             SwarmContext context = PropertyEffect.GetContext<SwarmContext>(attacker, defender, EffectsType.Swarm);
 
-            if (context == null)
+            if (context != null)
             {
-                context = new SwarmContext(attacker, defender, null);
-
-                if(defender.NetState != null)
-                    defender.PrivateOverheadMessage(MessageType.Regular, 1150, 1157321, defender.NetState); // *You are engulfed in a swarm of insects!*
-
-                Server.Effects.SendTargetEffect(defender, context._ID, 40); 
-
-                defender.PlaySound(0x00E);
-                defender.PlaySound(0x1BC);
+                context.RemoveEffects();
             }
+
+            context = new SwarmContext(attacker, defender, null);
+
+            defender.NonlocalOverheadMessage(MessageType.Regular, 0x5C, 1114447, defender.Name); // * ~1_NAME~ is stung by a swarm of insects *
+            defender.LocalOverheadMessage(MessageType.Regular, 0x5C, 1071905); // * The swarm of insects bites and stings your flesh! *
         }
 
         public override void OnTick()
         {
-            if (Victim == null)
+            if (Victim == null || !Victim.Alive)
             {
                 RemoveEffects();
                 return;
             }
 
-            AOS.Damage(Victim, Mobile, Utility.RandomMinMax(10, 20), 100, 0, 0, 0, 0);
-            Victim.SendLocalizedMessage(1157362); // Biting insects are attacking you!
+            if (Victim.FindItemOnLayer(Layer.OneHanded) is Torch)
+            {
+                if (Victim.NetState != null)
+                    Victim.LocalOverheadMessage(MessageType.Regular, 0x61, 1071925); // * The open flame begins to scatter the swarm of insects! *
+            }
+            else
+            {
+                DoEffects();
+            }
+        }
 
+        private void DoEffects()
+        {
+            AOS.Damage(Victim, Mobile, 10, 0, 0, 0, 0, 0, 0, 100);
+            Victim.SendLocalizedMessage(1157362); // Biting insects are attacking you!
             Server.Effects.SendTargetEffect(Victim, _ID, 40);
+
+            Victim.PlaySound(0x00E);
+            Victim.PlaySound(0x1BC);
         }
 
         public override void RemoveEffects()

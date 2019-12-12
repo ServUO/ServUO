@@ -8,11 +8,11 @@ namespace Server.Items
         [Constructable]
         public AlchemistsBauble()
         {
-            this.Hue = 0x290;
-            this.SkillBonuses.SetValues(0, SkillName.Magery, 10.0);
-            this.Attributes.EnhancePotions = 30;
-            this.Attributes.LowerRegCost = 20;
-            this.Resistances.Poison = 10;
+            Hue = 0x290;
+            SkillBonuses.SetValues(0, SkillName.Magery, 10.0);
+            Attributes.EnhancePotions = 30;
+            Attributes.LowerRegCost = 20;
+            Resistances.Poison = 10;
         }
 
         public AlchemistsBauble(Serial serial)

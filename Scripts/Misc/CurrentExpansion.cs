@@ -1,21 +1,16 @@
-#region Header
-// **********
-// ServUO - CurrentExpansion.cs
-// **********
-#endregion
-
 #region References
 using System;
 
 using Server.Accounting;
 using Server.Network;
+using Server.Services.TownCryer;
 #endregion
 
 namespace Server
 {
 	public class CurrentExpansion
 	{
-		public static readonly Expansion Expansion = Config.GetEnum<Expansion>("Expansion.CurrentExpansion", Expansion.TOL);
+		public static readonly Expansion Expansion = Config.GetEnum("Expansion.CurrentExpansion", Expansion.EJ);
 
 		[CallPriority(Int32.MinValue)]
 		public static void Configure()
@@ -26,6 +21,8 @@ namespace Server
 			AccountGold.ConvertOnBank = true;
 			AccountGold.ConvertOnTrade = false;
 			VirtualCheck.UseEditGump = true;
+            
+			TownCryerSystem.Enabled = Core.TOL;
 
 			ObjectPropertyList.Enabled = Core.AOS;
 
@@ -46,7 +43,7 @@ namespace Server
 				PacketHandlers.SingleClickProps = true; // single click for everything is overriden to check object property list
 			}
 
-			Mobile.ActionDelay = 1000;
+			Mobile.ActionDelay = Core.TOL ? 500 : Core.AOS ? 1000 : 500;
 			Mobile.AOSStatusHandler = AOS.GetStatus;
 		}
 	}

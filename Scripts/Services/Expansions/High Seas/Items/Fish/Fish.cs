@@ -1,11 +1,11 @@
-﻿using Server;
+using Server;
 using System;
 
 namespace Server.Items
 {
     public class BaseHighseasFish : Item, ICarvable, ICommodity
     {
-        int ICommodity.DescriptionNumber { get { return LabelNumber; } }
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
         public virtual Item GetCarved { get { return new RawFishSteak(); } }
@@ -25,10 +25,18 @@ namespace Server.Items
 
             Item newItem = GetCarved;
 
+            if (newItem == null)
+            {
+                newItem = new RawFishSteak();
+            }
+
+            if (newItem != null && HasSocket<Caddellite>())
+            {
+                newItem.AttachSocket(new Caddellite());
+            }
+
             if (newItem != null)
                 base.ScissorHelper(from, newItem, GetCarvedAmount);
-            else
-                base.ScissorHelper(from, new RawFishSteak(), 2);
 
             return true;
         }
@@ -80,6 +88,26 @@ namespace Server.Items
             typeof(RockCrab),        	typeof(SnowCrab),          	typeof(AppleCrab),
             typeof(SpineyLobster),   	typeof(RockLobster),       	typeof(HummerLobster),
             typeof(FredLobster),     	typeof(CrustyLobster), 		typeof(ShovelNoseLobster),
+        };
+
+        public static Type[] Lobsters { get { return m_Lobsters; } }
+        private static Type[] m_Lobsters = new Type[]
+        {
+            typeof(Lobster),
+            typeof(SpineyLobster),      typeof(RockLobster),        typeof(HummerLobster),
+            typeof(FredLobster),        typeof(CrustyLobster),      typeof(ShovelNoseLobster),
+            typeof(BlueLobster),        typeof(BloodLobster),       typeof(DreadLobster),
+            typeof(VoidLobster),
+        };
+
+        public static Type[] Crabs { get { return m_Crabs; } }
+        private static Type[] m_Crabs = new Type[]
+        {
+            typeof(Crab),
+            typeof(DungeonessCrab),     typeof(BlueCrab),           typeof(KingCrab),
+            typeof(RockCrab),           typeof(SnowCrab),           typeof(AppleCrab),
+            typeof(VoidCrab),           typeof(TunnelCrab),         typeof(SpiderCrab),
+            typeof(StoneCrab)
         };
 
         public BaseHighseasFish(Serial serial) : base(serial) { }

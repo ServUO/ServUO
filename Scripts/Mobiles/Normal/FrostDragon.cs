@@ -5,7 +5,7 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("a dragon corpse")]
-    public class FrostDragon : BaseCreature
+    public class FrostDragon : BaseCreature, IAuraCreature
     {
         [Constructable]
         public FrostDragon() : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -48,6 +48,10 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 5;
             MinTameSkill = 105.0;
+
+            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetSpecialAbility(SpecialAbility.DragonBreath);
+            SetAreaEffect(AreaEffect.AuraDamage);
         }
 
         public override void GenerateLoot()
@@ -56,14 +60,11 @@ namespace Server.Mobiles
             AddLoot(LootPack.Gems, 8);
         }
 
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.BleedAttack;
-        }
-
         public override void OnAfterTame(Mobile tamer)
         {
             Title = null;
+
+            base.OnAfterTame(tamer);
         }
 
         public override bool CanAngerOnTame { get { return true; } }
@@ -77,24 +78,12 @@ namespace Server.Mobiles
         public override int DragonBlood { get { return 8; } }
         public override FoodType FavoriteFood { get { return FoodType.Meat; } }
 
-        public override bool HasBreath { get { return true; } } // fire breath enabled
-        public override int BreathFireDamage { get { return 0; } }
-        public override int BreathColdDamage { get { return 100; } }
-        public override int BreathEffectHue { get { return 1264; } }
-
-        public override bool CanAreaDamage { get { return !Controlled; } }
-        public override int AreaDamageRange { get { return 10; } }
-        public override double AreaDamageScalar { get { return 1.0; } }
-        public override double AreaDamageChance { get { return 1.0; } }
-        public override TimeSpan AreaDamageDelay { get { return TimeSpan.FromSeconds(30); } }
-
-        public override int AreaFireDamage { get { return 0; } }
-        public override int AreaColdDamage { get { return 100; } }
-
-        public override void AreaDamageEffect(Mobile m)
+        public void AuraEffect(Mobile m)
         {
             m.FixedParticles(0x374A, 10, 30, 5052, Hue, 0, EffectLayer.Waist);
             m.PlaySound(0x5C6);
+
+            m.SendLocalizedMessage(1008111); //  : The intense cold is damaging you!
         }
 
         public FrostDragon(Serial serial) : base(serial)
@@ -104,13 +93,18 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                SetWeaponAbility(WeaponAbility.BleedAttack);
+            }
         }
     }
 }

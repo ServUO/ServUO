@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server.Targeting;
 using Server.Mobiles;
 
@@ -55,80 +57,47 @@ namespace Server.Spells.Seventh
                 if (p is Item)
                     p = ((Item)p).GetWorldLocation();
 
-                List<IDamageable> targets = new List<IDamageable>();
+                var targets = AcquireIndirectTargets(p, 2).ToList();
+                var count = Math.Max(1, targets.Count);
 
-                Map map = Caster.Map;
-
-                if (map != null)
+                foreach (var dam in targets)
                 {
-                    IPooledEnumerable eable = map.GetObjectsInRange(new Point3D(p), 2);
+                    var id = dam;
+                    var m = id as Mobile;
+                    double damage;
 
-                    foreach (object o in eable)
+                    if (Core.AOS)
+                        damage = GetNewAosDamage(51, 1, 5, id is PlayerMobile, id);
+                    else
+                        damage = Utility.Random(27, 22);
+
+                    if (Core.AOS && count > 2)
+                        damage = (damage * 2) / count;
+                    else if (!Core.AOS)
+                        damage /= count;
+
+                    if (!Core.AOS && m != null && CheckResisted(m))
                     {
-                        IDamageable id = o as IDamageable;
+                        damage *= 0.5;
 
-                        if (id == null || (Core.AOS && id is Mobile && (Mobile)id == Caster))
-                            continue;
-
-                        if ((!(id is Mobile) || SpellHelper.ValidIndirectTarget(Caster, id as Mobile)) && Caster.CanBeHarmful(id, false))
-                        {
-                            if (Core.AOS && !Caster.InLOS(id))
-                                continue;
-
-                            targets.Add(id);
-                        }
+                        m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                     }
 
-                    eable.Free();
-                }
+                    Mobile source = Caster;
+                    SpellHelper.CheckReflect((int)Circle, ref source, ref id, SpellDamageType);
 
-                double damage;
-
-                if (targets.Count > 0)
-                {
-                    for (int i = 0; i < targets.Count; ++i)
+                    if (m != null)
                     {
-                        IDamageable id = targets[i];
-                        Mobile m = id as Mobile;
-
-                        if (Core.AOS)
-                            damage = GetNewAosDamage(51, 1, 5, id is PlayerMobile, id);
-                        else
-                            damage = Utility.Random(27, 22);
-
-                        if (Core.AOS && targets.Count > 2)
-                            damage = (damage * 2) / targets.Count;
-                        else if (!Core.AOS)
-                            damage /= targets.Count;
-
-                        if (!Core.AOS && m != null && CheckResisted(m))
-                        {
-                            damage *= 0.5;
-
-                            m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
-                        }
-
-                        Mobile source = Caster;
-
-                        if (m != null)
-                        {
-                            SpellHelper.CheckReflect((int)Circle, ref source, ref m, SpellDamageType);
-                            damage *= GetDamageScalar(m);
-                        }
-
-                        Caster.DoHarmful(m != null ? m : id);
-                        SpellHelper.Damage(this, m != null ? m : id, damage, 0, 0, 0, 0, 100);
-
-                        Effects.SendBoltEffect(id, true, 0, true);
+                        damage *= GetDamageScalar(m);
                     }
-                }
-                else
-                {
-                    Caster.PlaySound(0x29);
+
+                    Effects.SendBoltEffect(id, true, 0, false);
+
+                    Caster.DoHarmful(id);
+                    SpellHelper.Damage(this, id, damage, 0, 0, 0, 0, 100);
                 }
 
-                targets.Clear();
-                targets.TrimExcess();
+                ColUtility.Free(targets);
             }
 
             FinishSequence();

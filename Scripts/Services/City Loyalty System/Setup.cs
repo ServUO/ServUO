@@ -90,12 +90,12 @@ namespace Server.Engines.CityLoyalty
                     itemdonation = new CityItemDonation(sys.City, minister);
                     petdonation = new CityPetDonation(sys.City, minister);
                     box = new BoxOfRopes(sys.City);
-                    board = new CityMessageBoard(sys.City, sys.City == City.Trinsic ? 7775 : 7774);
+                    board = new CityMessageBoard(sys.City, 0xA0C5);
 
                     if (!HasType(sys, minister.GetType()))
                     {
                         sys.Minister = minister;
-                        minister.MoveToWorld(sys.Definition.TradeMinisterLocation, Map.Trammel);
+                        minister.MoveToWorld(sys.Definition.TradeMinisterLocation, CityLoyaltySystem.SystemMap);
                     }
                     else
                         minister.Delete();
@@ -103,7 +103,7 @@ namespace Server.Engines.CityLoyalty
                     if (!HasType(sys, herald.GetType()))
                     {
                         sys.Herald = herald;
-                        herald.MoveToWorld(sys.Definition.HeraldLocation, Map.Trammel);
+                        herald.MoveToWorld(sys.Definition.HeraldLocation, CityLoyaltySystem.SystemMap);
                     }
                     else
                         herald.Delete();
@@ -111,7 +111,7 @@ namespace Server.Engines.CityLoyalty
                     if (!HasType(sys, capt.GetType()))
                     {
                         sys.Captain = capt;
-                        capt.MoveToWorld(sys.Definition.GuardsmanLocation, Map.Trammel);
+                        capt.MoveToWorld(sys.Definition.GuardsmanLocation, CityLoyaltySystem.SystemMap);
                     }
                     else
                         capt.Delete();
@@ -119,28 +119,31 @@ namespace Server.Engines.CityLoyalty
                     if (!HasType(sys, stone.GetType()))
                     {
                         sys.Stone = stone;
-                        stone.MoveToWorld(sys.Definition.StoneLocation, Map.Trammel);
+                        stone.MoveToWorld(sys.Definition.StoneLocation, CityLoyaltySystem.SystemMap);
                     }
                     else
                         stone.Delete();
 
                     if (!HasType(sys, itemdonation.GetType()))
-                        itemdonation.MoveToWorld(new Point3D(sys.Definition.TradeMinisterLocation.X, sys.Definition.TradeMinisterLocation.Y - 1, sys.Definition.TradeMinisterLocation.Z), Map.Trammel);
+                        itemdonation.MoveToWorld(new Point3D(sys.Definition.TradeMinisterLocation.X, sys.Definition.TradeMinisterLocation.Y - 1, sys.Definition.TradeMinisterLocation.Z), CityLoyaltySystem.SystemMap);
                     else
                         itemdonation.Delete();
 
                     if (!HasType(sys, petdonation.GetType()))
-                        petdonation.MoveToWorld(new Point3D(sys.Definition.TradeMinisterLocation.X, sys.Definition.TradeMinisterLocation.Y - 2, sys.Definition.TradeMinisterLocation.Z), Map.Trammel);
+                        petdonation.MoveToWorld(new Point3D(sys.Definition.TradeMinisterLocation.X, sys.Definition.TradeMinisterLocation.Y - 2, sys.Definition.TradeMinisterLocation.Z), CityLoyaltySystem.SystemMap);
                     else
                         petdonation.Delete();
 
                     if (!HasType(sys, box.GetType()))
-                        box.MoveToWorld(new Point3D(sys.Definition.GuardsmanLocation.X, sys.Definition.GuardsmanLocation.Y - 1, sys.Definition.GuardsmanLocation.Z), Map.Trammel);
+                        box.MoveToWorld(new Point3D(sys.Definition.GuardsmanLocation.X, sys.Definition.GuardsmanLocation.Y - 1, sys.Definition.GuardsmanLocation.Z), CityLoyaltySystem.SystemMap);
                     else
                         box.Delete();
 
-                    if(!HasType(sys, board.GetType()))
-                        board.MoveToWorld(sys.Definition.BoardLocation, Map.Trammel);
+                    if (!HasType(sys, board.GetType()))
+                    {
+                        board.MoveToWorld(sys.Definition.BoardLocation, CityLoyaltySystem.SystemMap);
+                        sys.Board = board;
+                    }
                     else
                         board.Delete();
                     

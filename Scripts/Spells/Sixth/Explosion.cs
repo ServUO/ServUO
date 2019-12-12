@@ -39,31 +39,34 @@ namespace Server.Spells.Sixth
         }
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(IDamageable m)
         {
-            Mobile defender = m as Mobile;
-
-            if (!this.Caster.CanSee(m))
+            if (Core.SA && HasDelayContext(m))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                DoHurtFizzle();
+                return;
             }
-            else if (this.Caster.CanBeHarmful(m) && this.CheckSequence())
+
+            if (!Caster.CanSee(m))
             {
-                Mobile attacker = this.Caster;
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
+            }
+            else if (Caster.CanBeHarmful(m) && CheckSequence())
+            {
+                Mobile attacker = Caster;
 
-                SpellHelper.Turn(this.Caster, m);
+                SpellHelper.Turn(Caster, m);
 
-                if(defender != null)
-                    SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref defender);
+                SpellHelper.CheckReflect((int)Circle, Caster, ref m);
 
-                InternalTimer t = new InternalTimer(this, attacker, defender != null ? defender : m);
+                InternalTimer t = new InternalTimer(this, attacker, m);
                 t.Start();
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         private class InternalTimer : Timer
@@ -79,10 +82,10 @@ namespace Server.Spells.Sixth
                 m_Attacker = attacker;
                 m_Target = target;
 
-                if (this.m_Spell != null)
-                    this.m_Spell.StartDelayedDamageContext(attacker, this);
+                if (m_Spell != null)
+                    m_Spell.StartDelayedDamageContext(attacker, this);
 
-                this.Priority = TimerPriority.FiftyMS;
+                Priority = TimerPriority.FiftyMS;
             }
 
             protected override void OnTick()
@@ -101,14 +104,14 @@ namespace Server.Spells.Sixth
                     {
                         damage = Utility.Random(23, 22);
 
-                        if (this.m_Spell.CheckResisted(defender))
+                        if (m_Spell.CheckResisted(defender))
                         {
                             damage *= 0.75;
 
                             defender.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                         }
 
-                        damage *= this.m_Spell.GetDamageScalar(defender);
+                        damage *= m_Spell.GetDamageScalar(defender);
                     }
 
                     if (defender != null)
@@ -124,11 +127,11 @@ namespace Server.Spells.Sixth
 
                     if (damage > 0)
                     {
-                        SpellHelper.Damage(this.m_Spell, this.m_Target, damage, 0, 100, 0, 0, 0);
+                        SpellHelper.Damage(m_Spell, m_Target, damage, 0, 100, 0, 0, 0);
                     }
 
-                    if (this.m_Spell != null)
-                        this.m_Spell.RemoveDelayedDamageContext(this.m_Attacker);
+                    if (m_Spell != null)
+                        m_Spell.RemoveDelayedDamageContext(m_Attacker);
                 }
             }
         }
@@ -139,18 +142,18 @@ namespace Server.Spells.Sixth
             public InternalTarget(ExplosionSpell owner)
                 : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is IDamageable)
-                    this.m_Owner.Target((IDamageable)o);
+                    m_Owner.Target((IDamageable)o);
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

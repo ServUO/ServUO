@@ -1122,4 +1122,43 @@ namespace Server.Items
         }
     }
     #endregion
+
+    #region BambooStoolArtifact
+    public class BambooStoolArtifact : BaseDecorationArtifact
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int ArtifactRarity
+        {
+            get
+            {
+                return 6;
+            }
+        }
+
+        [Constructable]
+        public BambooStoolArtifact()
+            : base(0x11FC)
+        {
+        }
+
+        public BambooStoolArtifact(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.WriteEncodedInt(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadEncodedInt();
+        }
+    }
+    #endregion
 }

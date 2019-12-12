@@ -36,6 +36,7 @@ namespace Server.Items
             SkillName.Bushido,
             SkillName.Ninjitsu
         };
+
         private static readonly SkillName[] m_PossibleSpellbookSkills = new SkillName[]
         {
             SkillName.Magery,
@@ -43,11 +44,15 @@ namespace Server.Items
             SkillName.EvalInt,
             SkillName.MagicResist
         };
+
         private static readonly BitArray m_Props = new BitArray(MaxProperties);
         private static readonly int[] m_Possible = new int[MaxProperties];
+
         private static bool m_PlayerMade;
         private static int m_LuckChance;
+
         private const int MaxProperties = 32;
+
         public BaseRunicTool(CraftResource resource, int itemID)
             : base(itemID)
         {
@@ -117,6 +122,68 @@ namespace Server.Items
             return v;
         }
 
+        public static void ApplyAttributesTo(Item item, int attributeCount, int min, int max)
+        {
+            if (item is FishingPole)
+            {
+                ApplyAttributesTo((FishingPole)item, attributeCount, min, max);
+            }
+            else if (item is BaseWeapon)
+            {
+                ApplyAttributesTo((BaseWeapon)item, attributeCount, min, max);
+            }
+            else if (item is BaseArmor)
+            {
+                ApplyAttributesTo((BaseArmor)item, attributeCount, min, max);
+            }
+            else if (item is BaseHat)
+            {
+                ApplyAttributesTo((BaseHat)item, attributeCount, min, max);
+            }
+            else if (item is BaseJewel)
+            {
+                ApplyAttributesTo((BaseJewel)item, attributeCount, min, max);
+            }
+            else if (item is Spellbook)
+            {
+                ApplyAttributesTo((Spellbook)item, attributeCount, min, max);
+            }
+        }
+
+        public static void ApplyAttributesTo(
+            Item item,
+            bool isRunicTool,
+            int luckChance,
+            int attributeCount,
+            int min,
+            int max)
+        {
+            if (item is FishingPole)
+            {
+                ApplyAttributesTo((FishingPole)item, isRunicTool, luckChance, attributeCount, min, max);
+            }
+            else if (item is BaseWeapon)
+            {
+                ApplyAttributesTo((BaseWeapon)item, isRunicTool, luckChance, attributeCount, min, max);
+            }
+            else if (item is BaseArmor)
+            {
+                ApplyAttributesTo((BaseArmor)item, isRunicTool, luckChance, attributeCount, min, max);
+            }
+            else if (item is BaseHat)
+            {
+                ApplyAttributesTo((BaseHat)item, isRunicTool, luckChance, attributeCount, min, max);
+            }
+            else if (item is BaseJewel)
+            {
+                ApplyAttributesTo((BaseJewel)item, isRunicTool, luckChance, attributeCount, min, max);
+            }
+            else if (item is Spellbook)
+            {
+                ApplyAttributesTo((Spellbook)item, isRunicTool, luckChance, attributeCount, min, max);
+            }
+        }
+
         #region High Seas
         public void ApplyAttributesTo(FishingPole pole)
         {
@@ -136,6 +203,15 @@ namespace Server.Items
 
         public static void ApplyAttributesTo(FishingPole pole, bool playerMade, int luckChance, int attributeCount, int min, int max)
         {
+            int delta;
+
+            if (min > max)
+            {
+                delta = min;
+                min = max;
+                max = delta;
+            }
+
             m_PlayerMade = playerMade;
             m_LuckChance = luckChance;
 
@@ -183,6 +259,15 @@ namespace Server.Items
 
         public static void ApplyAttributesTo(BaseWeapon weapon, bool playerMade, int luckChance, int attributeCount, int min, int max)
         {
+            int delta;
+
+            if (min > max)
+            {
+                delta = min;
+                min = max;
+                max = delta;
+            }
+
             if (!playerMade && RandomItemGenerator.Enabled)
             {
                 RandomItemGenerator.GenerateRandomItem(weapon, luckChance, attributeCount, min, max);
@@ -301,7 +386,7 @@ namespace Server.Items
                         ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitDispel, 2, 50, 2);
                         break;
                     case 11:
-                        ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechHits, 2, Server.SkillHandlers.Imbuing.GetPropRange(weapon, AosWeaponAttribute.HitLeechHits)[1], 2);
+                        ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechHits, 2, ItemPropertyInfo.GetMaxIntensity(weapon, AosWeaponAttribute.HitLeechHits), 2);
                         break;
                     case 12:
                         ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLowerAttack, 2, 50, 2);
@@ -310,7 +395,7 @@ namespace Server.Items
                         ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLowerDefend, 2, 50, 2);
                         break;
                     case 14:
-                        ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechMana, 2, Server.SkillHandlers.Imbuing.GetPropRange(weapon, AosWeaponAttribute.HitLeechMana)[1], 2);
+                        ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechMana, 2, ItemPropertyInfo.GetMaxIntensity(weapon, AosWeaponAttribute.HitLeechMana), 2);
                         break;
                     case 15:
                         ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechStam, 2, 50, 2);
@@ -383,6 +468,15 @@ namespace Server.Items
 
         public static void ApplyAttributesTo(BaseArmor armor, bool playerMade, int luckChance, int attributeCount, int min, int max)
         {
+            int delta;
+
+            if (min > max)
+            {
+                delta = min;
+                min = max;
+                max = delta;
+            }
+
             if (!playerMade && RandomItemGenerator.Enabled)
             {
                 RandomItemGenerator.GenerateRandomItem(armor, luckChance, attributeCount, min, max);
@@ -516,6 +610,15 @@ namespace Server.Items
 
         public static void ApplyAttributesTo(BaseHat hat, bool playerMade, int luckChance, int attributeCount, int min, int max)
         {
+            int delta;
+
+            if (min > max)
+            {
+                delta = min;
+                min = max;
+                max = delta;
+            }
+
             if (!playerMade && RandomItemGenerator.Enabled)
             {
                 RandomItemGenerator.GenerateRandomItem(hat, luckChance, attributeCount, min, max);
@@ -608,6 +711,15 @@ namespace Server.Items
 
         public static void ApplyAttributesTo(BaseJewel jewelry, bool playerMade, int luckChance, int attributeCount, int min, int max)
         {
+            int delta;
+
+            if (min > max)
+            {
+                delta = min;
+                min = max;
+                max = delta;
+            }
+
             if (!playerMade && RandomItemGenerator.Enabled)
             {
                 RandomItemGenerator.GenerateRandomItem(jewelry, luckChance, attributeCount, min, max);
@@ -715,6 +827,15 @@ namespace Server.Items
 
         public static void ApplyAttributesTo(Spellbook spellbook, bool playerMade, int luckChance, int attributeCount, int min, int max)
         {
+            int delta;
+
+            if (min > max)
+            {
+                delta = min;
+                min = max;
+                max = delta;
+            }
+
             m_PlayerMade = playerMade;
             m_LuckChance = luckChance;
 
@@ -856,7 +977,6 @@ namespace Server.Items
             }
             else
             {
-                // Behold, the worst system ever!
                 int v = Utility.RandomMinMax(0, 10000);
 
                 v = (int)Math.Sqrt(v);
@@ -865,12 +985,7 @@ namespace Server.Items
                 if (LootPack.CheckLuck(m_LuckChance))
                     v += 10;
 
-                if (v < min)
-                    v = min;
-                else if (v > max)
-                    v = max;
-
-                percent = v;
+                percent = Math.Min(max, min + AOS.Scale((max - min), v));
             }
 
             int scaledBy = Math.Abs(high - low) + 1;

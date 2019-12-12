@@ -35,7 +35,15 @@ namespace Server.Spells.SkillMasteries
 
         public override void OnUse(Mobile from)
         {
-            from.PlaySound(from.Female ? 0x338 : 0x44A);
+            if (from.Player)
+            {
+                from.PlaySound(from.Female ? 0x338 : 0x44A);
+            }
+            else if (from is BaseCreature)
+            {
+                from.PlaySound(((BaseCreature)from).GetAngerSound());
+            }
+
             from.FixedParticles(0x373A, 10, 15, 5018, 2719, 0, EffectLayer.Waist);
         }
 

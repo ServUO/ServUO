@@ -69,7 +69,11 @@ namespace Server.Items
                 
             if (defender.Paralyzed)
             {
-                attacker.SendLocalizedMessage(1061923); // The target is already frozen.
+                if (attacker != null)
+                {
+                    attacker.SendLocalizedMessage(1061923); // The target is already frozen.
+                }
+
                 return false;
             }
 

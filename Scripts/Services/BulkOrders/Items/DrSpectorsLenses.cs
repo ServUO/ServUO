@@ -5,6 +5,7 @@ namespace Server.Items
     public class DrSpectorsLenses : Glasses
     {
         public override int LabelNumber { get { return 1156991; } } // Dr. Spector's lenses
+        public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public DrSpectorsLenses()

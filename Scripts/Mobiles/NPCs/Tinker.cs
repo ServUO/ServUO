@@ -1,19 +1,22 @@
 using System;
 using System.Collections.Generic;
+using Server.ContextMenus;
 using Server.Engines.BulkOrders;
+using Server.Items;
 
 namespace Server.Mobiles
 {
     public class Tinker : BaseVendor
     {
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
+
         [Constructable]
         public Tinker()
             : base("the tinker")
         {
-            this.SetSkill(SkillName.Lockpicking, 60.0, 83.0);
-            this.SetSkill(SkillName.RemoveTrap, 75.0, 98.0);
-            this.SetSkill(SkillName.Tinkering, 64.0, 100.0);
+            SetSkill(SkillName.Lockpicking, 60.0, 83.0);
+            SetSkill(SkillName.RemoveTrap, 75.0, 98.0);
+            SetSkill(SkillName.Tinkering, 64.0, 100.0);
         }
 
         public Tinker(Serial serial)
@@ -32,12 +35,12 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SBInfos;
+                return m_SBInfos;
             }
         }
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBTinker(this));
+            m_SBInfos.Add(new SBTinker(this));
         }
 
         #region Bulk Orders
@@ -60,6 +63,50 @@ namespace Server.Mobiles
         }
 
         #endregion
+
+        public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.AddCustomContextEntries(from, list);
+
+            if (Core.ML && from.Alive)
+            {
+                list.Add(new RechargeEntry(from, this));
+            }
+        }
+
+        private class RechargeEntry : ContextMenuEntry
+        {
+            private readonly Mobile m_From;
+            private readonly Mobile m_Vendor;
+            private readonly BaseEngravingTool Tool;
+
+            public RechargeEntry(Mobile from, Mobile vendor)
+                : base(6271, 6)
+            {
+                m_From = from;
+                m_Vendor = vendor;
+
+                Tool = BaseEngravingTool.Find(from);
+
+                Enabled = Tool != null;
+            }
+
+            public override void OnClick()
+            {
+                if (!Core.ML || m_Vendor == null || m_Vendor.Deleted)
+                    return;
+
+                if (Tool != null)
+                {
+                    if (Banker.GetBalance(m_From) >= 100000)
+                        m_From.SendGump(new BaseEngravingTool.ConfirmGump(Tool, m_Vendor));
+                    else
+                        m_Vendor.Say(1076167); // You need a 100,000 gold and a blue diamond to recharge the weapon engraver.
+                }
+                else
+                    m_Vendor.Say(1076164); // I can only help with this if you are carrying an engraving tool that needs repair.
+            }
+        }
 
         public override void Serialize(GenericWriter writer)
         {

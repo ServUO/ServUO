@@ -13,36 +13,39 @@ namespace Server.Mobiles
         public Archaeosaurus()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, .2, .4)
         {
-            this.Name = "an Archaeosaurus";
-            this.Body = 1287;
-            this.BaseSoundID = 422;
+            Name = "an Archaeosaurus";
+            Body = 1287;
+            BaseSoundID = 422;
 
-            this.SetStr(405, 421);
-            this.SetDex(301, 320);
-            this.SetInt(201, 224);
+            SetStr(405, 421);
+            SetDex(301, 320);
+            SetInt(201, 224);
 
-            this.SetDamage(14, 16);
+            SetDamage(14, 16);
 
-            this.SetHits(1818, 2500);
+            SetHits(1818, 2500);
 
-            this.SetResistance(ResistanceType.Physical, 2, 3);
-            this.SetResistance(ResistanceType.Fire, 4, 5);
-            this.SetResistance(ResistanceType.Cold, 2, 3);
-            this.SetResistance(ResistanceType.Poison, 3, 4);
-            this.SetResistance(ResistanceType.Energy, 3);
+            SetResistance(ResistanceType.Physical, 2, 3);
+            SetResistance(ResistanceType.Fire, 4, 5);
+            SetResistance(ResistanceType.Cold, 2, 3);
+            SetResistance(ResistanceType.Poison, 3, 4);
+            SetResistance(ResistanceType.Energy, 3);
 
-            this.SetDamageType(ResistanceType.Poison, 50);
-            this.SetDamageType(ResistanceType.Fire, 50);
+            SetDamageType(ResistanceType.Poison, 50);
+            SetDamageType(ResistanceType.Fire, 50);
 
-            this.SetSkill(SkillName.MagicResist, 100.0, 115.0);
-            this.SetSkill(SkillName.Tactics, 90.0, 110.0);
-            this.SetSkill(SkillName.Wrestling, 90.0, 110.0);
-            this.SetSkill(SkillName.DetectHidden, 60.0, 70.0);
-            this.SetSkill(SkillName.EvalInt, 95.0, 105.0);
-            this.SetSkill(SkillName.Ninjitsu, 120.0);
+            SetSkill(SkillName.MagicResist, 100.0, 115.0);
+            SetSkill(SkillName.Tactics, 90.0, 110.0);
+            SetSkill(SkillName.Wrestling, 90.0, 110.0);
+            SetSkill(SkillName.DetectHidden, 60.0, 70.0);
+            SetSkill(SkillName.EvalInt, 95.0, 105.0);
+            SetSkill(SkillName.Ninjitsu, 120.0);
 
-            this.Fame = 8100;
-            this.Karma = -8100;
+            Fame = 8100;
+            Karma = -8100;
+
+            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetWeaponAbility(WeaponAbility.TalonStrike);
         }
 
         public override void GenerateLoot()
@@ -53,14 +56,6 @@ namespace Server.Mobiles
         public override int Meat { get { return 1; } }
         public override int Hides { get { return 7; } }
         public override int DragonBlood { get { return 6; } }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            if (Utility.RandomBool())
-                return WeaponAbility.BleedAttack;
-
-            return WeaponAbility.TalonStrike;
-        }
 
         public Archaeosaurus(Serial serial)
             : base(serial)

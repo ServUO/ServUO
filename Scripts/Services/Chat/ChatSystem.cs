@@ -9,7 +9,7 @@ namespace Server.Engines.Chat
     {
         public static readonly bool Enabled = Config.Get("Chat.Enabled", true);
         public static readonly bool AllowCreateChannels = Config.Get("Chat.AllowCreateChannels", true);
-        public static readonly string DefaultChannel = Config.Get("Chat.DefaultChannel", "Help");
+        public static readonly string DefaultChannel = "Help";
 
         public static void Initialize()
         {
@@ -27,8 +27,8 @@ namespace Server.Engines.Chat
                 return;
             }
 
-            pvSrc.Seek(2, SeekOrigin.Begin);
-            /*string chatName = */pvSrc.ReadUnicodeStringSafe((0x40 - 2) >> 1).Trim();
+            //pvSrc.Seek(2, SeekOrigin.Begin);
+            ///*string chatName = */pvSrc.ReadUnicodeStringSafe((0x40 - 2) >> 1).Trim();
 
             var chatName = from.Name;
 

@@ -15,10 +15,11 @@ namespace Server.Spells.Mysticism
 
         private static int[] m_ManaTable = new int[] { 4, 6, 9, 11, 14, 20, 40, 50 };
 
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(0.5 + 0.25 * (int)Circle); } }
+        public override TimeSpan CastDelayBase { get { return TimeSpan.FromMilliseconds(((4 + (int)Circle) * CastDelaySecondsPerTick) * 1000); } }
         public override double CastDelayFastScalar { get { return 1.0; } }
 
-        private const double ChanceOffset = 20.0, ChanceLength = 100.0 / 7.0;
+        public double ChanceOffset { get { return Caster is Server.Mobiles.PlayerMobile ? 20.0 : 30.0; } }
+        private const double ChanceLength = 100.0 / 7.0;
 
         public override void GetCastSkills(out double min, out double max)
         {
@@ -31,13 +32,6 @@ namespace Server.Spells.Mysticism
 
             min = avg - ChanceOffset;
             max = avg + ChanceOffset;
-        }
-
-        public override bool CheckFizzle()
-        {
-            double minSkill, maxSkill;
-            GetCastSkills(out minSkill, out maxSkill);
-            return Caster.CheckSkill(CastSkill, minSkill, maxSkill);
         }
 
         public override SkillName CastSkill { get { return SkillName.Mysticism; } }
@@ -54,7 +48,8 @@ namespace Server.Spells.Mysticism
 
         public override void SendCastEffect()
         {
-            Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 0x66C, 3);
+            if(Caster.Player)
+                Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 0x66C, 3);
         }
 
         public override int GetMana()
@@ -101,8 +96,10 @@ namespace Server.Spells.Mysticism
             if (n >= 1.0)
                 return true;
 
-            int maxSkill = (1 + (int)Circle) * 10;
-            maxSkill += (1 + ((int)Circle / 6)) * 25;
+            int circle = Math.Max(5, 1 + (int)Circle);
+
+            int maxSkill = circle * 10;
+            maxSkill += (circle / 6) * 25;
 
             if (target.Skills[SkillName.MagicResist].Value < maxSkill)
                 target.CheckSkill(SkillName.MagicResist, 0.0, target.Skills[SkillName.MagicResist].Cap);
@@ -114,7 +111,7 @@ namespace Server.Spells.Mysticism
         {
             double value = GetResistSkill(target);
             double firstPercent = value / 5.0;
-            double secondPercent = value - (((Caster.Skills[CastSkill].Value - 20.0) / 5.0) + (1 + (int)circle) * 5.0);
+            double secondPercent = value - (((Caster.Skills[CastSkill].Value - 20.0) / 5.0) + (Math.Max(5, 1 + (int)circle)) * 5.0);
 
             return (firstPercent > secondPercent ? firstPercent : secondPercent) / 2.0; // Seems should be about half of what stratics says.
         }
@@ -132,52 +129,6 @@ namespace Server.Spells.Mysticism
         public static double GetBoostSkill(Mobile m)
         {
             return Math.Max(m.Skills[SkillName.Imbuing].Value, m.Skills[SkillName.Focus].Value);
-        }
-
-        public virtual void OnTarget(Object o)
-        {
-        }
-
-        // Ever wondered why in the hell RunUO coded a new target class for every spell?
-        public class MysticSpellTarget : Target
-        {
-            private MysticSpell m_Owner;
-
-            public MysticSpell Owner
-            {
-                get { return m_Owner; }
-                set { m_Owner = value; }
-            }
-
-            public MysticSpellTarget(MysticSpell owner, TargetFlags flags)
-                : this(owner, false, flags)
-            {
-            }
-
-            public MysticSpellTarget(MysticSpell owner, bool allowland, TargetFlags flags)
-                : base(12, allowland, flags)
-            {
-                m_Owner = owner;
-            }
-
-            protected override void OnTarget(Mobile from, object o)
-            {
-                if (o == null)
-                    return;
-
-                if (!from.CanSee(o))
-                    from.SendLocalizedMessage(500237); // Target can not be seen.
-                else
-                {
-                    SpellHelper.Turn(from, o);
-                    m_Owner.OnTarget(o);
-                }
-            }
-
-            protected override void OnTargetFinish(Mobile from)
-            {
-                m_Owner.FinishSequence();
-            }
         }
     }
 }

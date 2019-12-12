@@ -313,6 +313,7 @@ namespace Server.Engines.ResortAndCasino
     public class CasinoWaitress : BaseVendor
     {
         public override bool IsActiveVendor { get { return false; } }
+        public override double GetMoveDelay { get { return (double)Utility.RandomMinMax(2, 6); } }
 
         private List<SBInfo> m_SBInfos = new List<SBInfo>();
         protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }

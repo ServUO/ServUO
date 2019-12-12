@@ -33,6 +33,9 @@ namespace Server.Engines.CityLoyalty
         public string CustomTitle { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
+        public bool ShowGainMessage { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public LoyaltyRating LoyaltyRating
         {
             get
@@ -48,9 +51,6 @@ namespace Server.Engines.CityLoyalty
         { 
             get 
             {
-                if (_Utilizing && TradeDealExpires < DateTime.UtcNow)
-                    UtilizingTradeDeal = false;
-
                 return _Utilizing;
             } 
             set 
@@ -61,10 +61,18 @@ namespace Server.Engines.CityLoyalty
                 if (!_Utilizing && value)
                     TradeDealExpires = DateTime.UtcNow + TimeSpan.FromHours(CityLoyaltySystem.TradeDealUtilizationPeriod);
 
-                if (_Utilizing && !value && Player.NetState != null)
+                if (_Utilizing && !value)
                 {
                     BuffInfo.RemoveBuff(Player, BuffIcon.CityTradeDeal);
-                    Player.SendLocalizedMessage(1154074); // The benefit from your City's Trade Deal has expired! Visit the City Stone to reclaim it.
+
+                    CityLoyaltySystem.RemoveTradeDeal(Player);
+
+                    if (Player.NetState != null)
+                    {
+                        Player.SendLocalizedMessage(1154074); // The benefit from your City's Trade Deal has expired! Visit the City Stone to reclaim it.
+                    }
+
+                    Player.Delta(MobileDelta.WeaponDamage);
                 }
 
                 _Utilizing = value;
@@ -80,8 +88,14 @@ namespace Server.Engines.CityLoyalty
 		public CityLoyaltyEntry(PlayerMobile pm, City city) : base(pm)
 		{
             City = city;
+            ShowGainMessage = true;
 		}
-		
+
+        public override string ToString()
+        {
+            return String.Format("{0} {1}", City.ToString(), IsCitizen ? "[Citizen]" : String.Empty);
+        }
+
 		public void DeclareCitizenship()
 		{
 			IsCitizen = true;
@@ -95,6 +109,7 @@ namespace Server.Engines.CityLoyalty
                 Player.RemoveRewardTitle(CityLoyaltySystem.GetTitleLocalization(Player, (CityTitle)i, City), true);
             }
 
+            CustomTitle = null;
             Player.RemoveRewardTitle(1154017, true);
 
 			IsCitizen = false;
@@ -113,19 +128,25 @@ namespace Server.Engines.CityLoyalty
             }
 		}
 
-        public bool CheckTradeDeal()
+        public void CheckTradeDeal()
         {
-            return UtilizingTradeDeal;
+            if (TradeDealExpired)
+            {
+                UtilizingTradeDeal = false;
+            }
         }
 		
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write(0);
-			
+			writer.Write(1);
+
+            writer.Write(ShowGainMessage);
+
 			writer.Write(Love);
 			writer.Write(Hate);
 			writer.Write(Neutrality);
+
 			writer.Write((int)Titles);
             writer.Write(TradeDealExpires);
             writer.Write(_Utilizing);
@@ -138,18 +159,33 @@ namespace Server.Engines.CityLoyalty
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
-			
-			Love = reader.ReadInt();
-			Hate = reader.ReadInt();
-			Neutrality = reader.ReadInt();
 
-			Titles = (CityTitle)reader.ReadInt();
-            TradeDealExpires = reader.ReadDateTime();
-            _Utilizing = reader.ReadBool();
-            CustomTitle = reader.ReadString();
-
-            CheckTradeDeal();
-			IsCitizen = reader.ReadBool();
+            switch (version)
+            {
+                case 1:
+                    ShowGainMessage = reader.ReadBool();
+                    goto case 0;
+                case 0:
+					{
+		                if (version == 0)
+		                {
+		                    ShowGainMessage = true;
+		                }
+		
+		                Love = reader.ReadInt();
+		                Hate = reader.ReadInt();
+		                Neutrality = reader.ReadInt();
+		
+		                Titles = (CityTitle)reader.ReadInt();
+		                TradeDealExpires = reader.ReadDateTime();
+		                _Utilizing = reader.ReadBool();
+		                CustomTitle = reader.ReadString();
+		
+		                CheckTradeDeal();
+		                IsCitizen = reader.ReadBool();
+					}
+                    break;
+            }
 		}
 	}
 }

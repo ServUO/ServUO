@@ -11,75 +11,75 @@ namespace Server.Mobiles
         public GreenGoblinAlchemistRenowned()
             : base(AIType.AI_Melee)
         {
-            this.Name = "Green Goblin Alchemist";
-            this.Title = "[Renowned]";
-            this.Body = 723;
-            this.BaseSoundID = 437;
+            Name = "Green Goblin Alchemist";
+            Title = "[Renowned]";
+            Body = 723;
+            BaseSoundID = 0x600;
 
-            this.SetStr(600, 650);
-            this.SetDex(50, 70);
-            this.SetInt(100, 250);
+            SetStr(600, 650);
+            SetDex(50, 70);
+            SetInt(100, 250);
 
-            this.SetHits(1000, 1500);
+            SetHits(1000, 1500);
 
-            this.SetDamage(5, 7);
+            SetDamage(5, 7);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 50, 55);
-            this.SetResistance(ResistanceType.Fire, 55, 60);
-            this.SetResistance(ResistanceType.Cold, 40, 50);
-            this.SetResistance(ResistanceType.Poison, 40, 50);
-            this.SetResistance(ResistanceType.Energy, 20, 25);
+            SetResistance(ResistanceType.Physical, 50, 55);
+            SetResistance(ResistanceType.Fire, 55, 60);
+            SetResistance(ResistanceType.Cold, 40, 50);
+            SetResistance(ResistanceType.Poison, 40, 50);
+            SetResistance(ResistanceType.Energy, 20, 25);
 
-            this.SetSkill(SkillName.MagicResist, 120.0, 125.0);
-            this.SetSkill(SkillName.Tactics, 95.0, 100.0);
-            this.SetSkill(SkillName.Wrestling, 100.0, 110.0);
+            SetSkill(SkillName.MagicResist, 120.0, 125.0);
+            SetSkill(SkillName.Tactics, 95.0, 100.0);
+            SetSkill(SkillName.Wrestling, 100.0, 110.0);
 
-            this.Fame = 1500;
-            this.Karma = -1500;
+            Fame = 1500;
+            Karma = -1500;
 
-            this.VirtualArmor = 28;
+            VirtualArmor = 28;
 
             switch ( Utility.Random(20) )
             {
                 case 0:
-                    this.PackItem(new Scimitar());
+                    PackItem(new Scimitar());
                     break;
                 case 1:
-                    this.PackItem(new Katana());
+                    PackItem(new Katana());
                     break;
                 case 2:
-                    this.PackItem(new WarMace());
+                    PackItem(new WarMace());
                     break;
                 case 3:
-                    this.PackItem(new WarHammer());
+                    PackItem(new WarHammer());
                     break;
                 case 4:
-                    this.PackItem(new Kryss());
+                    PackItem(new Kryss());
                     break;
                 case 5:
-                    this.PackItem(new Pitchfork());
+                    PackItem(new Pitchfork());
                     break;
             }
 
-            this.PackItem(new ThighBoots());
+            PackItem(new ThighBoots());
 
             switch ( Utility.Random(3) )
             {
                 case 0:
-                    this.PackItem(new Ribs());
+                    PackItem(new Ribs());
                     break;
                 case 1:
-                    this.PackItem(new Shaft());
+                    PackItem(new Shaft());
                     break;
                 case 2:
-                    this.PackItem(new Candle());
+                    PackItem(new Candle());
                     break;
             }
 
             if (0.2 > Utility.RandomDouble())
-                this.PackItem(new BolaBall());
+                PackItem(new BolaBall());
         }
 
         public GreenGoblinAlchemistRenowned(Serial serial)
@@ -101,13 +101,7 @@ namespace Server.Mobiles
                 return new Type[] { };
             }
         }
-        public override InhumanSpeech SpeechType
-        {
-            get
-            {
-                return InhumanSpeech.Orc;
-            }
-        }
+        
         public override bool AllureImmune
         {
             get
@@ -115,6 +109,13 @@ namespace Server.Mobiles
                 return true;
             }
         }
+		
+		public override int GetAngerSound() { return 0x600; }
+        public override int GetIdleSound() { return 0x600; }
+        public override int GetAttackSound() { return 0x5FD; }
+        public override int GetHurtSound() { return 0x5FF; }
+        public override int GetDeathSound() { return 0x5FE; }
+		
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.FilthyRich, 2);

@@ -13,12 +13,11 @@ namespace Server.Items
         public FrostguardTalisman()
             : base(0x2F5B)
         {
-            this.Hue = 0x556;
-
-            this.Weight = 1.0;
-            this.SAAbsorptionAttributes.EaterCold = 5;
-            this.Attributes.RegenMana = 1;
-            this.Attributes.LowerManaCost = 5;
+            Hue = 0x556;
+            Weight = 1.0;
+            SAAbsorptionAttributes.EaterCold = 5;
+            Attributes.RegenMana = 1;
+            Attributes.LowerManaCost = 5;
         }
 
         public FrostguardTalisman(Serial serial)

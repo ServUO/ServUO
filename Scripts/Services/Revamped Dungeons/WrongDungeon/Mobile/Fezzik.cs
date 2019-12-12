@@ -83,11 +83,13 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            /* if (0.2 > Utility.RandomDouble())
+            if (0.1 > Utility.RandomDouble())
             {
                 c.DropItem(new RecipeScroll(603));
-            } */
+            } 
         }
+		
+		public override int TreasureMapLevel { get { return 3; } }
 
         public override void GenerateLoot()
         {

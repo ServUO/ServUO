@@ -9,7 +9,7 @@ namespace Server.Items
         public StuddedBustierArms()
             : base(0x1C0C)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public StuddedBustierArms(Serial serial)

@@ -96,6 +96,11 @@ namespace Server.Spells.Ninjitsu
                 Caster.SendLocalizedMessage(1061091); // You cannot cast that spell in this form.
                 return false;
             }
+            else if (Caster.Flying)
+            {
+                Caster.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
+                return false;
+            }
 
             return base.CheckCast();
         }
@@ -169,7 +174,7 @@ namespace Server.Mobiles
 {
     public class Clone : BaseCreature
     {
-        private Mobile m_Caster;
+        private Mobile m_Caster;  
         public Clone(Mobile caster)
             : base(AIType.AI_Melee, FightMode.None, 10, 1, 0.2, 0.4)
         {

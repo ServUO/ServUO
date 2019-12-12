@@ -45,13 +45,11 @@ namespace Server.Spells.Bushido
 
             foreach (Mobile m in eable)
             {
-                if (m == defender)
-                    continue;
-
-                if (m.Combatant != attacker)
-                    continue;
-
-                targets.Add(m);
+                if (m != defender && m != attacker && m.CanBeHarmful(attacker, false) && attacker.InLOS(m) && 
+                    Server.Spells.SpellHelper.ValidIndirectTarget(attacker, m))
+                {
+                    targets.Add(m);
+                }
             }
             eable.Free();
 
@@ -76,12 +74,17 @@ namespace Server.Spells.Bushido
 
                 weapon.OnSwing(attacker, target, damageBonus);
 
+                if (defender.Alive)
+                    attacker.Combatant = defender;
+
                 this.CheckGain(attacker);
             }
             else
             {
                 attacker.SendLocalizedMessage(1063123); // There are no valid targets to attack!
             }
+
+            ColUtility.Free(targets);
         }
 
         public override void OnUse(Mobile m)

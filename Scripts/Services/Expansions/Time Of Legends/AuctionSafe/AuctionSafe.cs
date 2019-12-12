@@ -6,6 +6,7 @@ using Server.Multis;
 using Server.Gumps;
 using Server.ContextMenus;
 using System.Collections.Generic;
+using Server.Engines.VeteranRewards;
 
 namespace Server.Engines.Auction
 {
@@ -37,11 +38,28 @@ namespace Server.Engines.Auction
             }
         }
 
+        public bool CheckAuctionItem(Item item)
+        {
+            if (_Auction == null || !_Auction.OnGoing || _Auction.AuctionItem == null)
+                return false;
+
+            if (_Auction.AuctionItem == item)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public override BaseAddonDeed Deed { get { return new AuctionSafeDeed(); } }
 
-        public AuctionSafe(bool south)
+        public AuctionSafe(Mobile from, bool south)
         {
-            AddComponent(new InternalComponent(south ? 0x9C18 : 0x9C19), 0, 0, 0);
+            AddComponent(new InternalComponent(), 0, 0, 0);
+
+            Auction = new Auction(from, this);
 
             Level = SecureLevel.Anyone;
         }
@@ -51,30 +69,53 @@ namespace Server.Engines.Auction
             BaseHouse house = BaseHouse.FindHouseAt(this);
 
             if (!from.InRange(component.Location, 3))
+            {
                 from.SendLocalizedMessage(500332); // I am too far away to do that.
+            }
             else if (house != null && from is PlayerMobile)
             {
                 if (house.IsOwner(from))
-                    from.SendGump(new AuctionOwnerGump((PlayerMobile)from, this));
+                {
+                    if (!from.HasGump(typeof(AuctionBidGump)))
+                    {
+                        from.SendGump(new AuctionOwnerGump((PlayerMobile)from, this));
+                    }
+                }
                 else if (Auction != null)
                 {
-                    if (Auction.OnGoing)
+                    if (house.HasSecureAccess(from, Level))
                     {
                         if (Auction.InClaimPeriod)
                         {
                             if (Auction.HighestBid != null && from == Auction.HighestBid.Mobile)
+                            {
                                 Auction.ClaimPrize(from);
+                            }
+                            else
+                            {
+                                if (!from.HasGump(typeof(AuctionBidGump)))
+                                {
+                                    from.SendGump(new AuctionBidGump((PlayerMobile)from, this));
+                                }
+                            }
                         }
-                        else if (house.HasSecureAccess(from, Level))
-                            from.SendGump(new AuctionBidGump((PlayerMobile)from, this));
                         else
-                            from.SendLocalizedMessage(1156447); // This auction is private.
+                        {
+                            if (!from.HasGump(typeof(AuctionBidGump)))
+                            {
+                                from.SendGump(new AuctionBidGump((PlayerMobile)from, this));
+                            }
+                        }
                     }
                     else
-                        from.SendLocalizedMessage(1156432); // There is no active auction to complete this action.
+                    {
+                        from.SendLocalizedMessage(1156447); // This auction is private.
+                    }
                 }
                 else
+                {
                     from.SendLocalizedMessage(1156432); // There is no active auction to complete this action.
+                }
             }
         }
 
@@ -98,7 +139,7 @@ namespace Server.Engines.Auction
 
             if (Auction != null)
             {
-                Auction.Cancel();
+                Auction.HouseCollapse();
                 Auction = null;
             }
         }
@@ -135,12 +176,14 @@ namespace Server.Engines.Auction
                 Auction = new Auction(this, reader);
         }
 
+        [Flipable(0x9C18, 0x9C19)]
         public class InternalComponent : AddonComponent
         {
             public override bool ForceShowProperties { get { return true; } }
-            public override int LabelNumber { get { return 1156371; } } // an auction safe
+            public override int LabelNumber { get { return 1156371; } } // Auction Safe
 
-            public InternalComponent(int itemid) : base(itemid)
+            public InternalComponent()
+                : base(0x9C18)
             {
             }
 
@@ -148,18 +191,7 @@ namespace Server.Engines.Auction
             {
                 base.GetProperties(list);
 
-                AuctionSafe safe = this.Addon as AuctionSafe;
-
-                if (safe != null && safe.Auction != null)
-                {
-                    if (safe.Auction.OnGoing)
-                    {
-                        if (!safe.Auction.InClaimPeriod)
-                            list.Add(1156440); // Auction Pending
-                        else
-                            list.Add(1156438); // Auction Ended
-                    }
-                }
+                list.Add(501643); // locked down
             }
 
             public InternalComponent(Serial serial)
@@ -181,12 +213,15 @@ namespace Server.Engines.Auction
         }
     }
 
-    public class AuctionSafeDeed : BaseAddonDeed
+    public class AuctionSafeDeed : BaseAddonDeed, IRewardItem
     {
         public bool SouthFacing { get; set; }
+        public Mobile From { get; set; }
 
-        public override BaseAddon Addon { get { return new AuctionSafe(SouthFacing); } }
-        public override int LabelNumber { get { return 1156371; } } // an auction safe
+        public override BaseAddon Addon { get { return new AuctionSafe(From, SouthFacing); } }
+        public override int LabelNumber { get { return 1156371; } } // Auction Safe
+
+        public bool IsRewardItem { get; set; }
 
         [Constructable]
         public AuctionSafeDeed()
@@ -196,14 +231,31 @@ namespace Server.Engines.Auction
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (IsChildOf(from.Backpack))
+            BaseHouse house = BaseHouse.FindHouseAt(from);
+
+            if (house != null)
             {
-                from.SendGump(new SouthEastGump(s =>
+                if (house.Owner == from || house.IsCoOwner(from))
                 {
-                    SouthFacing = s;
-                    base.OnDoubleClick(from);
-                }));
+                    if (house.Public)
+                    {
+                        From = from;
+                        base.OnDoubleClick(from);
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1156437); // Auction Safes can only be placed in public type houses.
+                    }
+                }
             }
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (IsRewardItem)
+                list.Add(1076217); // 1st Year Veteran Reward
         }
 
         public AuctionSafeDeed(Serial serial)
@@ -214,7 +266,9 @@ namespace Server.Engines.Auction
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
+
+            writer.Write((bool)IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -222,7 +276,10 @@ namespace Server.Engines.Auction
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if(LootType != LootType.Blessed)
+            if (version > 0)
+                IsRewardItem = reader.ReadBool();
+
+            if (LootType != LootType.Blessed)
                 LootType = LootType.Blessed;
         }
     }

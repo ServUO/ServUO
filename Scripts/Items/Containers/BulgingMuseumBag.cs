@@ -1,5 +1,7 @@
 using System;
 
+using Server.SkillHandlers;
+
 namespace Server.Items 
 {
     public class BulgingMuseumBag : BaseRewardBag
@@ -8,55 +10,16 @@ namespace Server.Items
         public BulgingMuseumBag()
         {
             DropItem(new Gold(10000));
+            DropItem(new TerMurQuestRewardBook());
 
-            switch (Utility.Random(9))
+            for (int i = 0; i < Utility.RandomMinMax(10, 15); i++)
             {
-                case 0:
-                    DropItem(new Amber(10));
-                    break;
-                case 1:
-                    DropItem(new Amethyst(10));
-                    break;
-                case 2:
-                    DropItem(new Citrine(10));
-                    break;
-                case 3:
-                    DropItem(new Ruby(10));
-                    break;
-                case 4:
-                    DropItem(new Emerald(10));
-                    break;
-                case 5:
-                    DropItem(new Diamond(10));
-                    break;
-                case 6:
-                    DropItem(new Sapphire(10));
-                    break;
-                case 7:
-                    DropItem(new StarSapphire(10));
-                    break;
-                case 8:
-                    DropItem(new Tourmaline(10));
-                    break;
+                DropItemStacked(Loot.RandomGem());
             }
 
-            switch (Utility.Random(5))
+            for (int i = 0; i < Utility.RandomMinMax(5, 7); i++)
             {
-                case 0:
-                    DropItem(new ElvenFletching(20));
-                    break;
-                case 1:
-                    DropItem(new RelicFragment(20));
-                    break;
-                case 2:
-                    DropItem(new DelicateScales(20));
-                    break;
-                case 3:
-                    DropItem(new ChagaMushroom(20));
-                    break;
-                case 4:
-                    DropItem(new FeyWings(20));
-                    break;
+                DropItemStacked(Loot.RandomMLResource());
             }
         }
 

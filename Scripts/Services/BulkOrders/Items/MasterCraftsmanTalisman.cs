@@ -5,6 +5,8 @@ namespace Server.Items
 { 
 	public class MasterCraftsmanTalisman : BaseTalisman
     {
+        public override bool IsArtifact { get { return true; } }
+    
         private int _Type;
         public virtual int Type { get { return _Type; } }
 

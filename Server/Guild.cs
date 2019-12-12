@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Guild.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;

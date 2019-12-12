@@ -8,33 +8,33 @@ namespace Server.Mobiles
         [Constructable]
         public FireRabbit()
         {
-            this.Name = "a fire rabbit";
+            Name = "a fire rabbit";
 
-            this.Hue = 0x550; // guessed
+            Hue = 0x550; // guessed
 
-            this.SetStr(130);
-            this.SetDex(4500);
-            this.SetInt(2500);
+            SetStr(130);
+            SetDex(4500);
+            SetInt(2500);
 
-            this.SetHits(2500);
-            this.SetStam(1500);
-            this.SetMana(1500);
+            SetHits(2500);
+            SetStam(1500);
+            SetMana(1500);
 
-            this.SetDamage(10, 15);
+            SetDamage(10, 15);
 
-            this.SetDamageType(ResistanceType.Fire, 100);
-            this.SetDamageType(ResistanceType.Physical, 0);
+            SetDamageType(ResistanceType.Fire, 100);
+            SetDamageType(ResistanceType.Physical, 0);
 
-            this.SetResistance(ResistanceType.Physical, 45);
-            this.SetResistance(ResistanceType.Fire, 100);
-            this.SetResistance(ResistanceType.Cold, 40);
-            this.SetResistance(ResistanceType.Poison, 46);
-            this.SetResistance(ResistanceType.Energy, 46);
+            SetResistance(ResistanceType.Physical, 45);
+            SetResistance(ResistanceType.Fire, 100);
+            SetResistance(ResistanceType.Cold, 40);
+            SetResistance(ResistanceType.Poison, 46);
+            SetResistance(ResistanceType.Energy, 46);
 
-            this.SetSkill(SkillName.MagicResist, 200);
-            this.SetSkill(SkillName.Tactics, 0.0);
-            this.SetSkill(SkillName.Wrestling, 80.0);
-            this.SetSkill(SkillName.Anatomy, 0.0);
+            SetSkill(SkillName.MagicResist, 200);
+            SetSkill(SkillName.Tactics, 0.0);
+            SetSkill(SkillName.Wrestling, 80.0);
+            SetSkill(SkillName.Anatomy, 0.0);
         }
 
         public FireRabbit(Serial serial)
@@ -42,20 +42,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool IsScaryToPets
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool IsScaryToPets { get { return true; } }
+        public override bool BardImmune { get { return true; } }
+		
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
@@ -66,8 +55,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
-            this.AddLoot(LootPack.Rich, 3);
+            AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.Rich, 3);
         }
 
         public override void Serialize(GenericWriter writer)

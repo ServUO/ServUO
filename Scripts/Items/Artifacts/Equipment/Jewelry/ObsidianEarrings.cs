@@ -2,27 +2,25 @@ using System;
 
 namespace Server.Items
 {
-    public class ObsidianEarrings : GoldEarrings
+    public class ObsidianEarrings : GargishEarrings
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113820; } } // Obsidian Earrings
+
+        public override int BasePhysicalResistance { get { return 4; } }
+        public override int BaseFireResistance { get { return 10; } }
+        public override int BaseColdResistance { get { return 10; } }
+        public override int BasePoisonResistance { get { return 3; } }
+        public override int BaseEnergyResistance { get { return 13; } }
+
         [Constructable]
         public ObsidianEarrings()
-            : base()
-        {
-            this.Name = ("Obsidian Earrings");
-		
-            this.Hue = 1;
-			
-            this.Attributes.BonusMana = 8;
-            this.Attributes.RegenMana = 2;
-            this.Attributes.RegenStam = 2;
-            this.Attributes.SpellDamage = 8;
-            this.Resistances.Physical = 4;
-            this.Resistances.Fire = 10;
-            this.Resistances.Cold = 10;
-            this.Resistances.Poison = 3;
-            this.Resistances.Energy = 13;
-            //AbsorptionAttribute.CastingFocus = 4; TODO: how this shit works?
+        {	
+            Attributes.BonusMana = 8;
+            Attributes.RegenMana = 2;
+            Attributes.RegenStam = 2;
+            Attributes.SpellDamage = 8;
+            AbsorptionAttributes.CastingFocus = 4;
         }
 
         public ObsidianEarrings(Serial serial)

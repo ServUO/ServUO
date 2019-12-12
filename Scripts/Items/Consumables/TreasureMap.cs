@@ -1,18 +1,15 @@
-#region Header
-// **********
-// ServUO - TreasureMap.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
 using System.IO;
 
 using Server.ContextMenus;
+using Server.Engines.CannedEvil;
 using Server.Engines.Harvest;
 using Server.Mobiles;
+using Server.Multis;
 using Server.Network;
+using Server.Regions;
 using Server.Targeting;
 #endregion
 
@@ -34,7 +31,7 @@ namespace Server.Items
 			new Type[]{ typeof( DreadSpider ), typeof( LichLord ), typeof( Daemon ), typeof( ElderGazer ), typeof( OgreLord ) },
 			new Type[]{ typeof( LichLord ), typeof( Daemon ), typeof( ElderGazer ), typeof( PoisonElemental ), typeof( BloodElemental ) },
 			new Type[]{ typeof( AncientWyrm ), typeof( Balron ), typeof( BloodElemental ), typeof( PoisonElemental ), typeof( Titan ) },
-            new Type[]{ typeof( BloodElemental), typeof(ColdDrake), typeof(FrostDragon), typeof(GreaterDragon), typeof(PoisonElemental)}
+            new Type[]{ typeof( BloodElemental), typeof(ColdDrake), typeof(FrostDragon), typeof(FrostDrake), typeof(GreaterDragon), typeof(PoisonElemental)}
 		};
 
         private static Type[][] m_TokunoSpawnTypes = new Type[][]
@@ -167,6 +164,9 @@ namespace Server.Items
 
         private static Point2D[] m_Locations;
         private static Point2D[] m_HavenLocations;
+
+        public static Point2D[] Locations { get { return m_Locations; } }
+        public static Point2D[] HavenLocations { get { return m_Locations; } }
 
         private int m_Level;
         private bool m_Completed;
@@ -322,8 +322,7 @@ namespace Server.Items
 
             AddWorldPin(m_Location.X, m_Location.Y);
 
-            if (map != Map.Trammel && map != Map.Felucca)
-                m_NextReset = DateTime.UtcNow + ResetTime;
+            m_NextReset = DateTime.UtcNow + ResetTime;
         }
 
         public Map GetRandomMap()
@@ -377,55 +376,71 @@ namespace Server.Items
 
         public static bool ValidateLocation(int x, int y, Map map)
         {
-            int z = map.GetAverageZ(x, y);
-
-            LandTile lt = map.Tiles.GetLandTile(x, y);
-            LandData landID = TileData.LandTable[lt.ID];
-            TileFlag landFlags = landID.Flags;
+            var lt = map.Tiles.GetLandTile(x, y);
+            var ld = TileData.LandTable[lt.ID];
 
             //Checks for impassable flag..cant walk, cant have a chest
-            if ((landFlags & TileFlag.Impassable) > 0)
+            if (lt.Ignored || (ld.Flags & TileFlag.Impassable) > 0)
+            {
                 return false;
+            }
 
-            Region reg = Region.Find(new Point3D(x, y, z), map);
+            //Checks for roads
+            for (var i = 0; i < HousePlacement.RoadIDs.Length; i += 2)
+            {
+                if (lt.ID >= HousePlacement.RoadIDs[i] && lt.ID <= HousePlacement.RoadIDs[i + 1])
+                {
+                    return false;
+                }
+            }
+
+            var reg = Region.Find(new Point3D(x, y, lt.Z), map);
 
             //no-go in towns, houses, dungeons and champspawns
-            if (reg != null && (reg is Server.Regions.TownRegion || reg is Server.Regions.HouseRegion || reg is Server.Regions.DungeonRegion || reg is Server.Engines.CannedEvil.ChampionSpawnRegion))
+            if (reg != null)
+            {
+                if (reg.IsPartOf<TownRegion>() || reg.IsPartOf<DungeonRegion>() ||
+                    reg.IsPartOf<ChampionSpawnRegion>() || reg.IsPartOf<HouseRegion>())
+                {
+                    return false;
+                }
+            }
+
+            var n = (ld.Name ?? String.Empty).ToLower();
+                
+            if (n != "dirt" && n != "grass" && n != "jungle" && n != "forest" && n != "snow")
+            {
                 return false;
+            }
+
+            //Rare occrunces where a static tile needs to be checked
+            foreach (var tile in map.Tiles.GetStaticTiles(x, y, true))
+            {
+                var td = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
+
+                if ((td.Flags & TileFlag.Impassable) > 0)
+                {
+                    return false;
+                }
+
+                n = (td.Name ?? String.Empty).ToLower();
+                
+                if (n != "dirt" && n != "grass" && n != "jungle" && n != "forest" && n != "snow")
+                {
+                    return false;
+                }
+            }
 
             //check for house within 5 tiles
             for (int xx = x - 5; xx <= x + 5; xx++)
             {
                 for (int yy = y - 5; yy <= y + 5; yy++)
                 {
-                    if (Server.Multis.BaseHouse.FindHouseAt(new Point3D(xx, yy, map.GetAverageZ(xx, yy)), map, 16) != null)
+                    if (BaseHouse.FindHouseAt(new Point3D(xx, yy, lt.Z), map, Region.MaxZ - lt.Z) != null)
+                    {
                         return false;
+                    }
                 }
-            }
-
-            //Checks for roads
-            for (int i = 0; i < Server.Multis.HousePlacement.RoadIDs.Length; i += 2)
-            {
-                if (lt.ID >= Server.Multis.HousePlacement.RoadIDs[i] && lt.ID <= Server.Multis.HousePlacement.RoadIDs[i + 1])
-                    return false;
-            }
-
-            string n = landID.Name == null ? "" : landID.Name.ToLower();
-            if (n != "dirt" && n != "grass" && n != "jungle" && n != "forest" && n != "snow")
-                return false;
-
-            //Rare occrunces where a static tile needs to be checked
-            StaticTile[] st = map.Tiles.GetStaticTiles(x, y, true);
-            foreach (StaticTile tile in st)
-            {
-                ItemData id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
-                n = id.Name == null ? "" : id.Name.ToLower();
-                TileFlag flags = id.Flags;
-                if ((flags & TileFlag.Impassable) > 0)
-                    return false;
-
-                if (n != "dirt" && n != "grass" && n != "jungle" && n != "forest" && n != "snow")
-                    return false;
             }
 
             return true;
@@ -521,7 +536,11 @@ namespace Server.Items
             }
         }
 
-        public virtual void OnMapComplete(TreasureMapChest chest)
+        public virtual void OnMapComplete(Mobile from, TreasureMapChest chest)
+        {
+        }
+
+        public virtual void OnChestOpened(Mobile from, TreasureMapChest chest)
         {
         }
 
@@ -585,7 +604,7 @@ namespace Server.Items
 
                 try
                 {
-                    bc = (BaseCreature)Activator.CreateInstance(m_SpawnTypes[level][Utility.Random(spawns[level].Length)]);
+                    bc = (BaseCreature)Activator.CreateInstance(spawns[level][Utility.Random(spawns[level].Length)]);
                 }
                 catch
                 {
@@ -680,7 +699,7 @@ namespace Server.Items
             return false;
         }
 
-        public void OnBeginDig(Mobile from)
+        public virtual void OnBeginDig(Mobile from)
         {
             if (m_Completed)
             {
@@ -733,7 +752,7 @@ namespace Server.Items
             }
         }
 
-        public void Decode(Mobile from)
+        public virtual void Decode(Mobile from)
         {
             if (m_Completed || m_Decoder != null)
             {
@@ -754,12 +773,17 @@ namespace Server.Items
 
                 if (from.Skills[SkillName.Cartography].Value < minSkill)
                 {
-                    from.SendLocalizedMessage(503013); // The map is too difficult to attempt to decode.
+                    if (m_Level == 1)
+                    {
+                        from.CheckSkill(SkillName.Cartography, 0, minSkill);
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(503013); // The map is too difficult to attempt to decode.
+                    }
                 }
 
-                double maxSkill = minSkill + 60.0;
-
-                if (!from.CheckSkill(SkillName.Cartography, minSkill, maxSkill))
+                if (!from.CheckSkill(SkillName.Cartography, minSkill - 10, minSkill + 30))
                 {
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 503018); // You fail to make anything of the map.
                     return;
@@ -786,6 +810,7 @@ namespace Server.Items
                 m_Decoder = null;
                 GetRandomLocation(Facet);
                 InvalidateProperties();
+                m_NextReset = DateTime.UtcNow + ResetTime;
             }
         }
 
@@ -869,6 +894,7 @@ namespace Server.Items
             {
                 from.Send(
                     new MessageLocalizedAffix(
+                        from.NetState,
                         Serial,
                         ItemID,
                         MessageType.Label,
@@ -967,6 +993,11 @@ namespace Server.Items
             {
                 LootType = LootType.Blessed;
             }
+
+            if (m_NextReset == DateTime.MinValue)
+            {
+                m_NextReset = DateTime.UtcNow + ResetTime;
+            }
         }
 
         private static void LoadLocations()
@@ -1035,29 +1066,30 @@ namespace Server.Items
             switch (m_Level)
             {
                 case 1:
-                    return -3.0;
+                    return Core.AOS ? 27.0 : -3.0;
                 case 2:
-                    return 41.0;
+                    return Core.AOS ? 71.0 : 41.0;
                 case 3:
-                    return 51.0;
+                    return Core.AOS ? 81.0 : 51.0;
                 case 4:
-                    return 61.0;
+                    return Core.AOS ? 91.0 : 61.0;
                 case 5:
-                    return 70.0;
                 case 6:
-                    return 70.0;
+                    return Core.AOS ? 100.0 : 70.0;
+                case 7:
+                    return 100.0;
 
                 default:
                     return 0.0;
             }
         }
 
-        private bool HasRequiredSkill(Mobile from)
+        protected virtual bool HasRequiredSkill(Mobile from)
         {
             return (from.Skills[SkillName.Cartography].Value >= GetMinSkillLevel());
         }
 
-        private class DigTarget : Target
+        protected class DigTarget : Target
         {
             private readonly TreasureMap m_Map;
 
@@ -1337,10 +1369,11 @@ namespace Server.Items
                     m_From.EndAction(typeof(TreasureMap));
 
                     m_Chest.Temporary = false;
+                    m_Chest.TreasureMap = m_TreasureMap;
                     m_TreasureMap.Completed = true;
                     m_TreasureMap.CompletedBy = m_From;
 
-                    m_TreasureMap.OnMapComplete(m_Chest);
+                    m_TreasureMap.OnMapComplete(m_From, m_Chest);
 
                     int spawns;
                     switch (m_TreasureMap.Level)

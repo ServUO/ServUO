@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
+
 using Server.Network;
 using Server.Spells;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Mobiles;
 using Server.Spells.SkillMasteries;
 using Server.Gumps;
+using Server.Spells.Spellweaving;
 
 namespace Server.Items
 {
@@ -56,7 +58,7 @@ namespace Server.Items
             var menu = new SimpleContextMenuEntry(from, 1151948, m =>
                 {
                     if (m is PlayerMobile && IsChildOf(m.Backpack) && CheckCooldown(m))
-                        m.SendGump(new MasterySelectionGump(m as PlayerMobile, this));
+                        BaseGump.SendGump(new MasterySelectionGump(m as PlayerMobile, this));
                 });
 
             if (!IsChildOf(from.Backpack) || !CheckCooldown(from))
@@ -103,7 +105,14 @@ namespace Server.Items
                 SkillName sk = ((Mobile)RootParent).Skills.CurrentMastery;
 
                 if (sk > 0)
+                {
                     list.Add(MasteryInfo.GetLocalization(sk));
+
+                    if (sk == SkillName.Spellweaving)
+                    {
+                        list.Add(1060485, ArcanistSpell.GetMasteryFocusLevel((Mobile)RootParent).ToString()); // strength bonus ~1_val~
+                    }
+                }
             }
         }
 

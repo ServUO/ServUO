@@ -15,12 +15,12 @@ namespace Server.Items
         [Constructable]
         public FeyLeggings()
         {
-            this.Attributes.BonusHits = 6;
-            this.Attributes.DefendChance = 20;
+            Attributes.BonusHits = 6;
+            Attributes.DefendChance = 20;
 
             _ElfOnly = true;
 
-            this.ArmorAttributes.MageArmor = 1;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public FeyLeggings(Serial serial)

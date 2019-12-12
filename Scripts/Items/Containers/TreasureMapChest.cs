@@ -20,8 +20,8 @@ namespace Server.Items
             typeof(LunaLance), typeof(NightsKiss), typeof(NoxRangersHeavyCrossbow),
             typeof(PolarBearMask), typeof(VioletCourage), typeof(HeartOfTheLion),
             typeof(ColdBlood), typeof(AlchemistsBauble), typeof(CaptainQuacklebushsCutlass),
-			typeof(ForgedPardon), typeof(ShieldOfInvulnerability), typeof(AncientShipModelOfTheHMSCape),
-			typeof(AdmiralHeartyRum)
+			typeof(ShieldOfInvulnerability), typeof(AncientShipModelOfTheHMSCape),
+			typeof(AdmiralsHeartyRum)
         };
 
         public static Type[] ArtifactsLevelFiveToSeven { get { return m_LevelFiveToSeven; } }
@@ -48,8 +48,7 @@ namespace Server.Items
         private static Type[] m_SOSDecor = new Type[]
         {
             typeof(GrapeVine),
-            typeof(LargeFishingNet)
-            
+            typeof(LargeFishingNet) 
         };
 
 
@@ -65,6 +64,8 @@ namespace Server.Items
         private Timer m_Timer;
         private Mobile m_Owner;
         private bool m_Temporary;
+        private bool m_FirstOpenedByOwner;
+        private TreasureMap m_TreasureMap;
         private List<Mobile> m_Guardians;
         private List<Item> m_Lifted = new List<Item>();
 
@@ -77,15 +78,15 @@ namespace Server.Items
         public TreasureMapChest(Mobile owner, int level, bool temporary)
             : base(0xE40)
         {
-            this.m_Owner = owner;
-            this.m_Level = level;
-            this.m_DeleteTime = DateTime.UtcNow + TimeSpan.FromHours(3.0);
+            m_Owner = owner;
+            m_Level = level;
+            m_DeleteTime = DateTime.UtcNow + TimeSpan.FromHours(3.0);
 
-            this.m_Temporary = temporary;
-            this.m_Guardians = new List<Mobile>();
+            m_Temporary = temporary;
+            m_Guardians = new List<Mobile>();
 
-            this.m_Timer = new DeleteTimer(this, this.m_DeleteTime);
-            this.m_Timer.Start();
+            m_Timer = new DeleteTimer(this, m_DeleteTime);
+            m_Timer.Start();
 
             int luck = 0;
             Map map = Map.Trammel;
@@ -116,11 +117,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Level;
+                return m_Level;
             }
             set
             {
-                this.m_Level = value;
+                m_Level = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -128,11 +129,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Owner;
+                return m_Owner;
             }
             set
             {
-                this.m_Owner = value;
+                m_Owner = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -140,7 +141,7 @@ namespace Server.Items
         {
             get
             {
-                return this.m_DeleteTime;
+                return m_DeleteTime;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -148,18 +149,42 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Temporary;
+                return m_Temporary;
             }
             set
             {
-                this.m_Temporary = value;
+                m_Temporary = value;
+            }
+        }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool FirstOpenedByOwner
+        {
+            get
+            {
+                return m_FirstOpenedByOwner;
+            }
+            set
+            {
+                m_FirstOpenedByOwner = value;
+            }
+        }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public TreasureMap TreasureMap
+        {
+            get
+            {
+                return m_TreasureMap;
+            }
+            set
+            {
+                m_TreasureMap = value;
             }
         }
         public List<Mobile> Guardians
         {
             get
             {
-                return this.m_Guardians;
+                return m_Guardians;
             }
         }
         public override bool IsDecoContainer
@@ -174,7 +199,7 @@ namespace Server.Items
         {
             cont.Movable = false;
             cont.Locked = true;
-            int numberItems;
+            int count;
 
             if (level == 0)
             {
@@ -219,49 +244,70 @@ namespace Server.Items
                 cont.LockLevel = cont.RequiredSkill - 10;
                 cont.MaxLockLevel = cont.RequiredSkill + 40;
 
-                cont.DropItem(new Gold(level * 5000));
+                #region Gold
+                cont.DropItem(new Gold(isSos ? level * 10000 : level * 5000));
+                #endregion
 
-                for (int i = 0; i < level * 5; ++i)
+                #region Scrolls
+                if (isSos)
+                {
+                    switch(level)
+                    {
+                        default: count = 20; break;
+                        case 0:
+                        case 1: count = Utility.RandomMinMax(2, 5); break;
+                        case 2: count = Utility.RandomMinMax(10, 15); break;
+                    }
+                }
+                else
+                {
+                    count = level * 5;
+                }
+
+                for (int i = 0; i < count; ++i)
                     cont.DropItem(Loot.RandomScroll(0, 63, SpellbookType.Regular));
+                #endregion
 
-				double propsScale = 1.0;
+                #region Magical Items
+                double propsScale = 1.0;
+
                 if (Core.SE)
                 {
                     switch (level)
                     {
                         case 1:
-                            numberItems = 32;
+                            count = isSos ? Utility.RandomMinMax(2, 6) : 32;
 							propsScale = 0.5625;
                             break;
                         case 2:
-                            numberItems = 40;
+                            count = isSos ? Utility.RandomMinMax(10, 15) : 40;
 							propsScale = 0.6875;
                             break;
                         case 3:
-                            numberItems = 48;
+                            count = isSos ? Utility.RandomMinMax(15, 20) : 48;
 							propsScale = 0.875;
                             break;
                         case 4:
-                            numberItems = 56;
+                            count = isSos ? Utility.RandomMinMax(15, 20) : 56;
                             break;
                         case 5:
-                            numberItems = 64;
+                            count = isSos ? Utility.RandomMinMax(15, 20) : 64;
                             break;
                         case 6:
-                            numberItems = 72;
+                            count = isSos ? Utility.RandomMinMax(15, 20) : 72;
                             break;
                         case 7:
-                            numberItems = 80;
+                            count = isSos ? Utility.RandomMinMax(15, 20) : 80;
                             break;
                         default:
-                            numberItems = 0;
+                            count = 0;
                             break;
                     }
                 }
                 else
-                    numberItems = level * 6;
+                    count = level * 6;
 
-                for (int i = 0; i < numberItems; ++i)
+                for (int i = 0; i < count; ++i)
                 {
                     Item item;
 
@@ -351,32 +397,43 @@ namespace Server.Items
                     }
                 }
             }
+            #endregion
 
-            int reagents;
-            if (level == 0)
-                reagents = 12;
-            else
-                reagents = level + 1;
-
-            for (int i = 0; i < reagents; i++)
+            #region Reagents
+            if (isSos)
             {
-                Item item = Loot.RandomPossibleReagent();
-                item.Amount = Utility.RandomMinMax(40, 60);
-                cont.DropItem(item);
+                switch (level)
+                {
+                    default: count = Utility.RandomMinMax(45, 60); break;
+                    case 0:
+                    case 1: count = Utility.RandomMinMax(15, 20); break;
+                    case 2: count = Utility.RandomMinMax(25, 40); break;
+                }
+            }
+            else
+            {
+                count = level == 0 ? 12 : Utility.RandomMinMax(40, 60) * (level + 1);
             }
 
-            int gems;
-            if (level == 0)
-                gems = 2;
-            else
-                gems = (level * 3) + 1;
-
-            for (int i = 0; i < gems; i++)
+            for (int i = 0; i < count; i++)
             {
-                Item item = Loot.RandomGem();
-                cont.DropItem(item);
+                cont.DropItemStacked(Loot.RandomPossibleReagent());
             }
+            #endregion
 
+            #region Gems
+            if (level == 0)
+                count = 2;
+            else
+                count = (level * 3) + 1;
+
+            for (int i = 0; i < count; i++)
+            {
+                cont.DropItem(Loot.RandomGem());
+            }
+            #endregion
+
+            #region Imbuing Ingreds
             if (level > 1)
             {
                 Item item = Loot.Construct(m_ImbuingIngreds[Utility.Random(m_ImbuingIngreds.Length)]);
@@ -384,6 +441,7 @@ namespace Server.Items
                 item.Amount = level;
                 cont.DropItem(item);
             }
+            #endregion
 
             Item arty = null;
             Item special = null;
@@ -415,16 +473,16 @@ namespace Server.Items
                 {
                     if (0.025 > Utility.RandomDouble())
                         special = Loot.Construct(m_LevelFiveToSeven);
-                    else if (0.10 > Utility.RandomDouble())
+                    else if (0.20 > Utility.RandomDouble())
                         special = GetRandomSpecial(level, cont.Map);
 
                     arty = Loot.Construct(m_Artifacts);
                 }
                 else if (level >= 5)
                 {
-                    if (0.05 > Utility.RandomDouble())
+                    if (0.005 > Utility.RandomDouble())
                         special = Loot.Construct(m_LevelFiveToSeven);
-                    else if (0.25 > Utility.RandomDouble())
+                    else if (0.15 > Utility.RandomDouble())
                         special = GetRandomSpecial(level, cont.Map);
                 }
                 else if (.10 > Utility.RandomDouble())
@@ -465,12 +523,12 @@ namespace Server.Items
                 default:
                 case 0: special = new CreepingVine(); break;
                 case 1: special = new MessageInABottle(); break;
-                case 2: special = new ScrollofAlacrity(PowerScroll.Skills[Utility.Random(PowerScroll.Skills.Count)]); break;
+                case 2: special = new ScrollOfAlacrity(PowerScroll.Skills[Utility.Random(PowerScroll.Skills.Count)]); break;
                 case 3: special = new Skeletonkey(); break;
                 case 4: special = new TastyTreat(5); break;
                 case 5: special = new TreasureMap(Utility.RandomMinMax(level, Math.Min(7, level + 1)), map); break;
                 case 6: special = GetRandomRecipe(); break;
-                case 7: special = ScrollofTranscendence.CreateRandom(1, 5); break;
+                case 7: special = ScrollOfTranscendence.CreateRandom(1, 5); break;
             }
 
             return special;
@@ -514,12 +572,12 @@ namespace Server.Items
 
         public override bool CheckLocked(Mobile from)
         {
-            if (!this.Locked)
+            if (!Locked)
                 return false;
 
-            if (this.Level == 0 && from.AccessLevel < AccessLevel.GameMaster)
+            if (Level == 0 && from.AccessLevel < AccessLevel.GameMaster)
             {
-                foreach (Mobile m in this.Guardians)
+                foreach (Mobile m in Guardians)
                 {
                     if (m.Alive)
                     {
@@ -528,7 +586,7 @@ namespace Server.Items
                     }
                 }
 
-                this.LockPick(from);
+                LockPick(from);
                 return false;
             }
             else
@@ -539,26 +597,26 @@ namespace Server.Items
 
         public override bool CheckItemUse(Mobile from, Item item)
         {
-            return this.CheckLoot(from, item != this) && base.CheckItemUse(from, item);
+            return CheckLoot(from, item != this) && base.CheckItemUse(from, item);
         }
 
         public override bool CheckLift(Mobile from, Item item, ref LRReason reject)
         {
-            return this.CheckLoot(from, true) && base.CheckLift(from, item, ref reject);
+            return CheckLoot(from, true) && base.CheckLift(from, item, ref reject);
         }
 
         public override void OnItemLifted(Mobile from, Item item)
         {
-            bool notYetLifted = !this.m_Lifted.Contains(item);
+            bool notYetLifted = !m_Lifted.Contains(item);
 
             from.RevealingAction();
 
             if (notYetLifted)
             {
-                this.m_Lifted.Add(item);
+                m_Lifted.Add(item);
 
                 if (0.1 >= Utility.RandomDouble()) // 10% chance to spawn a new monster
-                    TreasureMap.Spawn(this.m_Level, this.GetWorldLocation(), this.Map, from, false);
+                    TreasureMap.Spawn(m_Level, GetWorldLocation(), Map, from, false);
             }
 
             base.OnItemLifted(from, item);
@@ -579,16 +637,19 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write((int)3); // version
 
-            writer.Write(this.m_Guardians, true);
-            writer.Write((bool)this.m_Temporary);
+            writer.Write(m_FirstOpenedByOwner);
+            writer.Write(m_TreasureMap);
 
-            writer.Write(this.m_Owner);
+            writer.Write(m_Guardians, true);
+            writer.Write((bool)m_Temporary);
 
-            writer.Write((int)this.m_Level);
-            writer.WriteDeltaTime(this.m_DeleteTime);
-            writer.Write(this.m_Lifted, true);
+            writer.Write(m_Owner);
+
+            writer.Write((int)m_Level);
+            writer.WriteDeltaTime(m_DeleteTime);
+            writer.Write(m_Lifted, true);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -599,49 +660,53 @@ namespace Server.Items
 
             switch (version)
             {
+                case 3:
+                    m_FirstOpenedByOwner = reader.ReadBool();
+                    m_TreasureMap = reader.ReadItem() as TreasureMap;
+                    goto case 2;
                 case 2:
                     {
-                        this.m_Guardians = reader.ReadStrongMobileList();
-                        this.m_Temporary = reader.ReadBool();
+                        m_Guardians = reader.ReadStrongMobileList();
+                        m_Temporary = reader.ReadBool();
 
                         goto case 1;
                     }
                 case 1:
                     {
-                        this.m_Owner = reader.ReadMobile();
+                        m_Owner = reader.ReadMobile();
 
                         goto case 0;
                     }
                 case 0:
                     {
-                        this.m_Level = reader.ReadInt();
-                        this.m_DeleteTime = reader.ReadDeltaTime();
-                        this.m_Lifted = reader.ReadStrongItemList();
+                        m_Level = reader.ReadInt();
+                        m_DeleteTime = reader.ReadDeltaTime();
+                        m_Lifted = reader.ReadStrongItemList();
 
                         if (version < 2)
-                            this.m_Guardians = new List<Mobile>();
+                            m_Guardians = new List<Mobile>();
 
                         break;
                     }
             }
 
-            if (!this.m_Temporary)
+            if (!m_Temporary)
             {
-                this.m_Timer = new DeleteTimer(this, this.m_DeleteTime);
-                this.m_Timer.Start();
+                m_Timer = new DeleteTimer(this, m_DeleteTime);
+                m_Timer.Start();
             }
             else
             {
-                this.Delete();
+                Delete();
             }
         }
 
         public override void OnAfterDelete()
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.m_Timer = null;
+            m_Timer = null;
 
             base.OnAfterDelete();
         }
@@ -652,6 +717,45 @@ namespace Server.Items
 
             if (from.Alive)
                 list.Add(new RemoveEntry(from, this));
+        }
+
+        public override void LockPick(Mobile from)
+        {
+            base.LockPick(from);
+
+            if (Map != null && Core.SA && 0.05 >= Utility.RandomDouble())
+            {
+                var grubber = new Grubber();
+                grubber.MoveToWorld(Map.GetSpawnPosition(Location, 1), Map);
+
+                Item item = null;
+
+                if (Items.Count > 0)
+                {
+                    do
+                    {
+                        item = Items[Utility.Random(Items.Count)];
+                    }
+                    while (item == null || item.LootType == LootType.Blessed);
+                }
+
+                grubber.PackItem(item);
+            }
+        }
+
+        public override void DisplayTo(Mobile to)
+        {
+            base.DisplayTo(to);
+
+            if (!m_FirstOpenedByOwner && to == m_Owner)
+            {
+                if (m_TreasureMap != null)
+                {
+                    m_TreasureMap.OnChestOpened((PlayerMobile)to, this);
+                }
+
+                m_FirstOpenedByOwner = true;
+            }
         }
 
         public void BeginRemove(Mobile from)
@@ -665,11 +769,11 @@ namespace Server.Items
 
         public void EndRemove(Mobile from)
         {
-            if (this.Deleted || from != this.m_Owner || !from.InRange(this.GetWorldLocation(), 3))
+            if (Deleted || from != m_Owner || !from.InRange(GetWorldLocation(), 3))
                 return;
 
             from.SendLocalizedMessage(1048124, "", 0x8A5); // The old, rusted chest crumbles when you hit it.
-            this.Delete();
+            Delete();
         }
 
         private static void GetRandomAOSStats(out int attributeCount, out int min, out int max)
@@ -746,18 +850,18 @@ namespace Server.Items
 
         private bool CheckLoot(Mobile m, bool criminalAction)
         {
-            if (this.m_Temporary)
+            if (m_Temporary)
                 return false;
 
-            if (m.AccessLevel >= AccessLevel.GameMaster || this.m_Owner == null || m == this.m_Owner)
+            if (m.AccessLevel >= AccessLevel.GameMaster || m_Owner == null || m == m_Owner)
                 return true;
 
-            Party p = Party.Get(this.m_Owner);
+            Party p = Party.Get(m_Owner);
 
             if (p != null && p.Contains(m))
                 return true;
 
-            Map map = this.Map;
+            Map map = Map;
 
             if (map != null && (map.Rules & MapRules.HarmfulRestrictions) == 0)
             {
@@ -780,30 +884,30 @@ namespace Server.Items
             public RemoveGump(Mobile from, TreasureMapChest chest)
                 : base(15, 15)
             {
-                this.m_From = from;
-                this.m_Chest = chest;
+                m_From = from;
+                m_Chest = chest;
 
-                this.Closable = false;
-                this.Disposable = false;
+                Closable = false;
+                Disposable = false;
 
-                this.AddPage(0);
+                AddPage(0);
 
-                this.AddBackground(30, 0, 240, 240, 2620);
+                AddBackground(30, 0, 240, 240, 2620);
 
-                this.AddHtmlLocalized(45, 15, 200, 80, 1048125, 0xFFFFFF, false, false); // When this treasure chest is removed, any items still inside of it will be lost.
-                this.AddHtmlLocalized(45, 95, 200, 60, 1048126, 0xFFFFFF, false, false); // Are you certain you're ready to remove this chest?
+                AddHtmlLocalized(45, 15, 200, 80, 1048125, 0xFFFFFF, false, false); // When this treasure chest is removed, any items still inside of it will be lost.
+                AddHtmlLocalized(45, 95, 200, 60, 1048126, 0xFFFFFF, false, false); // Are you certain you're ready to remove this chest?
 
-                this.AddButton(40, 153, 4005, 4007, 1, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(75, 155, 180, 40, 1048127, 0xFFFFFF, false, false); // Remove the Treasure Chest
+                AddButton(40, 153, 4005, 4007, 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(75, 155, 180, 40, 1048127, 0xFFFFFF, false, false); // Remove the Treasure Chest
 
-                this.AddButton(40, 195, 4005, 4007, 2, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(75, 197, 180, 35, 1006045, 0xFFFFFF, false, false); // Cancel
+                AddButton(40, 195, 4005, 4007, 2, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(75, 197, 180, 35, 1006045, 0xFFFFFF, false, false); // Cancel
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
                 if (info.ButtonID == 1)
-                    this.m_Chest.EndRemove(this.m_From);
+                    m_Chest.EndRemove(m_From);
             }
         }
 
@@ -814,18 +918,18 @@ namespace Server.Items
             public RemoveEntry(Mobile from, TreasureMapChest chest)
                 : base(6149, 3)
             {
-                this.m_From = from;
-                this.m_Chest = chest;
+                m_From = from;
+                m_Chest = chest;
 
-                this.Enabled = (from == chest.Owner);
+                Enabled = (from == chest.Owner);
             }
 
             public override void OnClick()
             {
-                if (this.m_Chest.Deleted || this.m_From != this.m_Chest.Owner || !this.m_From.CheckAlive())
+                if (m_Chest.Deleted || m_From != m_Chest.Owner || !m_From.CheckAlive())
                     return;
 
-                this.m_Chest.BeginRemove(this.m_From);
+                m_Chest.BeginRemove(m_From);
             }
         }
 
@@ -835,13 +939,13 @@ namespace Server.Items
             public DeleteTimer(Item item, DateTime time)
                 : base(time - DateTime.UtcNow)
             {
-                this.m_Item = item;
-                this.Priority = TimerPriority.OneMinute;
+                m_Item = item;
+                Priority = TimerPriority.OneMinute;
             }
 
             protected override void OnTick()
             {
-                this.m_Item.Delete();
+                m_Item.Delete();
             }
         }
     }

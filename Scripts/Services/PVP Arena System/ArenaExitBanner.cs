@@ -44,8 +44,8 @@ namespace Server.Engines.ArenaSystem
             {
                 from.LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
             }
-            else
-            { 
+            else if (Arena != null)
+            {
                 var duel = Arena.CurrentDuel;
 
                 if (duel != null && duel.InPreFight)

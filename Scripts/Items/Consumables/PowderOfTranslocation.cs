@@ -13,7 +13,7 @@ namespace Server.Items
         string TranslocationItemName { get; }
     }
 
-    public class PowderOfTranslocation : Item
+    public class PowderOfTranslocation : Item, ICommodity
     {
         [Constructable]
         public PowderOfTranslocation()
@@ -34,6 +34,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override void OnDoubleClick(Mobile from)
         {

@@ -15,7 +15,7 @@ namespace Server.Items
 
                 Clock.GetTime(this.Map, GetWorldLocation().X, GetWorldLocation().Y, out hour, out min);
 
-                if (hour > 20 && hour < 4)
+                if (hour > 20 || hour < 4)
                     return 1156199; // Moon Dial
 
                 return 1123890; // Sun Dial

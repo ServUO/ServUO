@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Server.Items
 {
@@ -13,7 +13,8 @@ namespace Server.Items
         public Taffy(int amount)
             : base(0x469D)
         {
-            this.Stackable = true;
+            Stackable = true;
+            Amount = amount;
         }
 
         public Taffy(Serial serial)

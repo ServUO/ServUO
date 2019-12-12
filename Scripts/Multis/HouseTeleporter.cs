@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Multis;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -10,6 +12,16 @@ namespace Server.Items
     {
         private Item m_Target;
         private SecureLevel m_Level;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public BaseHouse House
+        {
+            get
+            {
+                return BaseHouse.FindHouseAt(this);
+            }
+        }
+
         [Constructable]
         public HouseTeleporter(int itemID)
             : this(itemID, null)
@@ -59,6 +71,12 @@ namespace Server.Items
         {
             BaseHouse house = BaseHouse.FindHouseAt(this);
 
+            if (house != null && house.IsCombatRestricted(m))
+            {
+                m.SendLocalizedMessage(1071514); // You cannot use this item during the heat of battle.
+                return false;
+            }
+
             if (house != null && (house.Public ? house.IsBanned(m) : !house.HasAccess(m)))
             {
                 m.SendLocalizedMessage(1115577); // You cannot teleport from here to the destination because you do not have the correct house permissions. 
@@ -76,6 +94,11 @@ namespace Server.Items
 
         public override bool OnMoveOver(Mobile m)
         {
+            if (m is PlayerMobile && ((PlayerMobile)m).DesignContext != null)
+            {
+                return true;
+            }
+
             if (m_Target != null && !m_Target.Deleted)
             {
                 if (CheckAccess(m))
@@ -136,7 +159,7 @@ namespace Server.Items
         {
         }
 
-        private class EffectTimer : Timer
+        public class EffectTimer : Timer
         {
             private readonly Point3D m_Location;
             private readonly Map m_Map;

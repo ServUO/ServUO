@@ -1,174 +1,177 @@
-using System;
+#region References
 using Server.Spells.First;
 using Server.Spells.Fourth;
 using Server.Spells.Second;
 using Server.Targeting;
+#endregion
 
 namespace Server.Mobiles
 {
-    public class HealerAI : BaseAI
-    {
-        private static readonly NeedDelegate m_Cure = new NeedDelegate(NeedCure);
-        private static readonly NeedDelegate m_GHeal = new NeedDelegate(NeedGHeal);
-        private static readonly NeedDelegate m_LHeal = new NeedDelegate(NeedLHeal);
-        private static readonly NeedDelegate[] m_ACure = new NeedDelegate[] { m_Cure };
-        private static readonly NeedDelegate[] m_AGHeal = new NeedDelegate[] { m_GHeal };
-        private static readonly NeedDelegate[] m_ALHeal = new NeedDelegate[] { m_LHeal };
-        private static readonly NeedDelegate[] m_All = new NeedDelegate[] { m_Cure, m_GHeal, m_LHeal };
-        public HealerAI(BaseCreature m)
-            : base(m)
-        {
-        }
+	public class HealerAI : BaseAI
+	{
+		private static readonly NeedDelegate m_Cure = NeedCure;
+		private static readonly NeedDelegate m_GHeal = NeedGHeal;
+		private static readonly NeedDelegate m_LHeal = NeedLHeal;
+		private static readonly NeedDelegate[] m_ACure = {m_Cure};
+		private static readonly NeedDelegate[] m_AGHeal = {m_GHeal};
+		private static readonly NeedDelegate[] m_ALHeal = {m_LHeal};
+		private static readonly NeedDelegate[] m_All = {m_Cure, m_GHeal, m_LHeal};
 
-        private delegate bool NeedDelegate(Mobile m);
-        public override bool Think()
-        {
-            if (this.m_Mobile.Deleted)
-                return false;
+		public HealerAI(BaseCreature m)
+			: base(m)
+		{ }
 
-            Target targ = this.m_Mobile.Target;
+		private delegate bool NeedDelegate(Mobile m);
 
-            if (targ != null)
-            {
-                if (targ is CureSpell.InternalTarget)
-                {
-                    this.ProcessTarget(targ, m_ACure);
-                }
-                else if (targ is GreaterHealSpell.InternalTarget)
-                {
-                    this.ProcessTarget(targ, m_AGHeal);
-                }
-                else if (targ is HealSpell.InternalTarget)
-                {
-                    this.ProcessTarget(targ, m_ALHeal);
-                }
-                else
-                {
-                    targ.Cancel(this.m_Mobile, TargetCancelType.Canceled);
-                }
-            }
-            else
-            {
-                Mobile toHelp = this.Find(m_All);
+		public override bool Think()
+		{
+			if (m_Mobile.Deleted)
+				return false;
 
-                if (toHelp != null)
-                {
-                    if (NeedCure(toHelp))
-                    {
-                        if (this.m_Mobile.Debug)
-                            this.m_Mobile.DebugSay("{0} needs a cure", toHelp.Name);
+			var targ = m_Mobile.Target;
 
-                        if (!(new CureSpell(this.m_Mobile, null)).Cast())
-                            new CureSpell(this.m_Mobile, null).Cast();
-                    }
-                    else if (NeedGHeal(toHelp))
-                    {
-                        if (this.m_Mobile.Debug)
-                            this.m_Mobile.DebugSay("{0} needs a greater heal", toHelp.Name);
+			if (targ != null)
+			{
+				if (targ is CureSpell.InternalTarget)
+				{
+					ProcessTarget(targ, m_ACure);
+				}
+				else if (targ is GreaterHealSpell.InternalTarget)
+				{
+					ProcessTarget(targ, m_AGHeal);
+				}
+				else if (targ is HealSpell.InternalTarget)
+				{
+					ProcessTarget(targ, m_ALHeal);
+				}
+				else
+				{
+					targ.Cancel(m_Mobile, TargetCancelType.Canceled);
+				}
+			}
+			else
+			{
+				var toHelp = Find(m_All);
 
-                        if (!(new GreaterHealSpell(this.m_Mobile, null)).Cast())
-                            new HealSpell(this.m_Mobile, null).Cast();
-                    }
-                    else if (NeedLHeal(toHelp))
-                    {
-                        if (this.m_Mobile.Debug)
-                            this.m_Mobile.DebugSay("{0} needs a lesser heal", toHelp.Name);
+				if (toHelp != null)
+				{
+					if (NeedCure(toHelp))
+					{
+						if (m_Mobile.Debug)
+							m_Mobile.DebugSay("{0} needs a cure", toHelp.Name);
 
-                        new HealSpell(this.m_Mobile, null).Cast();
-                    }
-                }
-                else
-                {
-                    if (this.AcquireFocusMob(this.m_Mobile.RangePerception, FightMode.Weakest, false, true, false))
-                    {
-                        this.WalkMobileRange(this.m_Mobile.FocusMob, 1, false, 4, 7);
-                    }
-                    else
-                    {
-                        this.WalkRandomInHome(3, 2, 1);
-                    }
-                }
-            }
+						if (!(new CureSpell(m_Mobile, null)).Cast())
+							new CureSpell(m_Mobile, null).Cast();
+					}
+					else if (NeedGHeal(toHelp))
+					{
+						if (m_Mobile.Debug)
+							m_Mobile.DebugSay("{0} needs a greater heal", toHelp.Name);
 
-            return true;
-        }
+						if (!(new GreaterHealSpell(m_Mobile, null)).Cast())
+							new HealSpell(m_Mobile, null).Cast();
+					}
+					else if (NeedLHeal(toHelp))
+					{
+						if (m_Mobile.Debug)
+							m_Mobile.DebugSay("{0} needs a lesser heal", toHelp.Name);
 
-        private static bool NeedCure(Mobile m)
-        {
-            return m.Poisoned;
-        }
+						new HealSpell(m_Mobile, null).Cast();
+					}
+				}
+				else
+				{
+					if (AcquireFocusMob(m_Mobile.RangePerception, FightMode.Weakest, false, true, false))
+					{
+						WalkMobileRange(m_Mobile.FocusMob, 1, false, 4, 7);
+					}
+					else
+					{
+						WalkRandomInHome(3, 2, 1);
+					}
+				}
+			}
 
-        private static bool NeedGHeal(Mobile m)
-        {
-            return m.Hits < m.HitsMax - 40;
-        }
+			return true;
+		}
 
-        private static bool NeedLHeal(Mobile m)
-        {
-            return m.Hits < m.HitsMax - 10;
-        }
+		private static bool NeedCure(Mobile m)
+		{
+			return m.Poisoned;
+		}
 
-        private void ProcessTarget(Target targ, NeedDelegate[] func)
-        {
-            Mobile toHelp = this.Find(func);
+		private static bool NeedGHeal(Mobile m)
+		{
+			return m.Hits < m.HitsMax - 40;
+		}
 
-            if (toHelp != null)
-            {
-                if (targ.Range != -1 && !this.m_Mobile.InRange(toHelp, targ.Range))
-                {
-                    this.DoMove(this.m_Mobile.GetDirectionTo(toHelp) | Direction.Running);
-                }
-                else
-                {
-                    targ.Invoke(this.m_Mobile, toHelp);
-                }
-            }
-            else
-            {
-                targ.Cancel(this.m_Mobile, TargetCancelType.Canceled);
-            }
-        }
+		private static bool NeedLHeal(Mobile m)
+		{
+			return m.Hits < m.HitsMax - 10;
+		}
 
-        private Mobile Find(params NeedDelegate[] funcs)
-        {
-            if (this.m_Mobile.Deleted)
-                return null;
+		private void ProcessTarget(Target targ, NeedDelegate[] func)
+		{
+			var toHelp = Find(func);
 
-            Map map = this.m_Mobile.Map;
+			if (toHelp != null)
+			{
+				if (targ.Range != -1 && !m_Mobile.InRange(toHelp, targ.Range))
+				{
+					DoMove(m_Mobile.GetDirectionTo(toHelp) | Direction.Running);
+				}
+				else
+				{
+					targ.Invoke(m_Mobile, toHelp);
+				}
+			}
+			else
+			{
+				targ.Cancel(m_Mobile, TargetCancelType.Canceled);
+			}
+		}
 
-            if (map != null)
-            {
-                double prio = 0.0;
-                Mobile found = null;
-                IPooledEnumerable eable = m_Mobile.GetMobilesInRange(m_Mobile.RangePerception);
+		private Mobile Find(params NeedDelegate[] funcs)
+		{
+			if (m_Mobile.Deleted)
+				return null;
 
-                foreach (Mobile m in eable)
-                {
-                    if (!this.m_Mobile.CanSee(m) || !(m is BaseCreature) || ((BaseCreature)m).Team != this.m_Mobile.Team)
-                        continue;
+			var map = m_Mobile.Map;
 
-                    for (int i = 0; i < funcs.Length; ++i)
-                    {
-                        if (funcs[i](m))
-                        {
-                            double val = -this.m_Mobile.GetDistanceToSqrt(m);
+			if (map != null)
+			{
+				var prio = 0.0;
+				Mobile found = null;
+				IPooledEnumerable eable = m_Mobile.GetMobilesInRange(m_Mobile.RangePerception);
 
-                            if (found == null || val > prio)
-                            {
-                                prio = val;
-                                found = m;
-                            }
+				foreach (Mobile m in eable)
+				{
+					if (!m_Mobile.CanSee(m) || !(m is BaseCreature) || ((BaseCreature)m).Team != m_Mobile.Team)
+						continue;
 
-                            break;
-                        }
-                    }
-                }
+					for (var i = 0; i < funcs.Length; ++i)
+					{
+						if (funcs[i](m))
+						{
+							var val = -m_Mobile.GetDistanceToSqrt(m);
 
-                eable.Free();
-                return found;
-            }
+							if (found == null || val > prio)
+							{
+								prio = val;
+								found = m;
+							}
 
-            return null;
-        }
-    }
+							break;
+						}
+					}
+				}
+
+				eable.Free();
+
+				return found;
+			}
+
+			return null;
+		}
+	}
 }

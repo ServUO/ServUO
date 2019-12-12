@@ -72,6 +72,14 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1114368); // This is not your pet!
                 }
+                else if (t.Allured || t.Summoned)
+                {
+                    from.SendLocalizedMessage(1152924); // That is not a valid pet.
+                }
+			    else if (target is BaseTalismanSummon)
+                {
+                    from.SendLocalizedMessage(1152924); // That is not a valid pet.
+                }
                 else
                 {
                     t.IsBonded = !t.IsBonded;

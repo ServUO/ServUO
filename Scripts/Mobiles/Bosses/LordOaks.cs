@@ -10,41 +10,42 @@ namespace Server.Mobiles
         private bool m_SpawnedQueen;
         [Constructable]
         public LordOaks()
-            : base(AIType.AI_Mage, FightMode.Evil)
+            : base(AIType.AI_Paladin, FightMode.Evil)
         {
-            this.Body = 175;
-            this.Name = "Lord Oaks";
+            Body = 175;
+            Name = "Lord Oaks";
 
-            this.SetStr(403, 850);
-            this.SetDex(101, 150);
-            this.SetInt(503, 800);
+            SetStr(403, 850);
+            SetDex(101, 150);
+            SetInt(503, 800);
 
-            this.SetHits(12000);
-            this.SetStam(202, 400);
+            SetHits(12000);
+            SetStam(202, 400);
 
-            this.SetDamage(21, 33);
+            SetDamage(21, 33);
 
-            this.SetDamageType(ResistanceType.Physical, 75);
-            this.SetDamageType(ResistanceType.Fire, 25);
+            SetDamageType(ResistanceType.Physical, 75);
+            SetDamageType(ResistanceType.Fire, 25);
 
-            this.SetResistance(ResistanceType.Physical, 85, 90);
-            this.SetResistance(ResistanceType.Fire, 60, 70);
-            this.SetResistance(ResistanceType.Cold, 60, 70);
-            this.SetResistance(ResistanceType.Poison, 80, 90);
-            this.SetResistance(ResistanceType.Energy, 80, 90);
+            SetResistance(ResistanceType.Physical, 85, 90);
+            SetResistance(ResistanceType.Fire, 60, 70);
+            SetResistance(ResistanceType.Cold, 60, 70);
+            SetResistance(ResistanceType.Poison, 80, 90);
+            SetResistance(ResistanceType.Energy, 80, 90);
 
-            this.SetSkill(SkillName.Anatomy, 75.1, 100.0);
-            this.SetSkill(SkillName.EvalInt, 120.1, 130.0);
-            this.SetSkill(SkillName.Magery, 120.0);
-            this.SetSkill(SkillName.Meditation, 120.1, 130.0);
-            this.SetSkill(SkillName.MagicResist, 100.5, 150.0);
-            this.SetSkill(SkillName.Tactics, 100.0);
-            this.SetSkill(SkillName.Wrestling, 100.0);
+            SetSkill(SkillName.Anatomy, 75.1, 100.0);
+            SetSkill(SkillName.EvalInt, 120.1, 130.0);
+            SetSkill(SkillName.Magery, 120.0);
+            SetSkill(SkillName.Meditation, 120.1, 130.0);
+            SetSkill(SkillName.MagicResist, 100.5, 150.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.Wrestling, 100.0);
+            SetSkill(SkillName.Chivalry, 100.0);
 
-            this.Fame = 22500;
-            this.Karma = 22500;
+            Fame = 22500;
+            Karma = 22500;
 
-            this.VirtualArmor = 100;
+            VirtualArmor = 100;
         }
 
         public LordOaks(Serial serial)
@@ -154,17 +155,17 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 5);
+            AddLoot(LootPack.UltraRich, 5);
         }
 
         public void SpawnPixies(Mobile target)
         {
-            Map map = this.Map;
+            Map map = Map;
 
             if (map == null)
                 return;
 
-            this.Say(1042154); // You shall never defeat me as long as I have my queen!
+            Say(1042154); // You shall never defeat me as long as I have my queen!
 
             int newPixies = Utility.RandomMinMax(3, 6);
 
@@ -172,20 +173,20 @@ namespace Server.Mobiles
             {
                 Pixie pixie = new Pixie();
 
-                pixie.Team = this.Team;
+                pixie.Team = Team;
                 pixie.FightMode = FightMode.Closest;
 
                 bool validLocation = false;
-                Point3D loc = this.Location;
+                Point3D loc = Location;
 
                 for (int j = 0; !validLocation && j < 10; ++j)
                 {
-                    int x = this.X + Utility.Random(3) - 1;
-                    int y = this.Y + Utility.Random(3) - 1;
+                    int x = X + Utility.Random(3) - 1;
+                    int y = Y + Utility.Random(3) - 1;
                     int z = map.GetAverageZ(x, y);
 
-                    if (validLocation = map.CanFit(x, y, this.Z, 16, false, false))
-                        loc = new Point3D(x, y, this.Z);
+                    if (validLocation = map.CanFit(x, y, Z, 16, false, false))
+                        loc = new Point3D(x, y, Z);
                     else if (validLocation = map.CanFit(x, y, z, 16, false, false))
                         loc = new Point3D(x, y, z);
                 }
@@ -222,37 +223,37 @@ namespace Server.Mobiles
 
         public void CheckQueen()
         {
-            if (this.Map == null)
+            if (Map == null)
                 return;
 
-            if (!this.m_SpawnedQueen)
+            if (!m_SpawnedQueen)
             {
-                this.Say(1042153); // Come forth my queen!
+                Say(1042153); // Come forth my queen!
 
-                this.m_Queen = new Silvani();
+                m_Queen = new Silvani();
 
-                ((BaseCreature)this.m_Queen).Team = this.Team;
+                ((BaseCreature)m_Queen).Team = Team;
 
-                this.m_Queen.MoveToWorld(this.Location, this.Map);
+                m_Queen.MoveToWorld(Location, Map);
 
-                this.m_SpawnedQueen = true;
+                m_SpawnedQueen = true;
             }
-            else if (this.m_Queen != null && this.m_Queen.Deleted)
+            else if (m_Queen != null && m_Queen.Deleted)
             {
-                this.m_Queen = null;
+                m_Queen = null;
             }
         }
 
         public override void AlterDamageScalarFrom(Mobile caster, ref double scalar)
         {
-            this.CheckQueen();
+            CheckQueen();
 
-            if (this.m_Queen != null)
+            if (m_Queen != null)
             {
                 scalar *= 0.1;
 
                 if (0.1 >= Utility.RandomDouble())
-                    this.SpawnPixies(caster);
+                    SpawnPixies(caster);
             }
         }
 
@@ -290,10 +291,10 @@ namespace Server.Mobiles
         {
             base.OnGotMeleeAttack(attacker);
 
-            this.CheckQueen();
+            CheckQueen();
 
-            if (this.m_Queen != null && 0.1 >= Utility.RandomDouble())
-                this.SpawnPixies(attacker);
+            if (m_Queen != null && 0.1 >= Utility.RandomDouble())
+                SpawnPixies(attacker);
 
             /*attacker.Damage(Utility.Random(20, 10), this);
             attacker.Stam -= Utility.Random(20, 10);
@@ -306,8 +307,8 @@ namespace Server.Mobiles
 
             writer.Write((int)0); // version
 
-            writer.Write(this.m_Queen);
-            writer.Write(this.m_SpawnedQueen);
+            writer.Write(m_Queen);
+            writer.Write(m_SpawnedQueen);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -320,8 +321,8 @@ namespace Server.Mobiles
             {
                 case 0:
                     {
-                        this.m_Queen = reader.ReadMobile();
-                        this.m_SpawnedQueen = reader.ReadBool();
+                        m_Queen = reader.ReadMobile();
+                        m_SpawnedQueen = reader.ReadBool();
 
                         break;
                     }

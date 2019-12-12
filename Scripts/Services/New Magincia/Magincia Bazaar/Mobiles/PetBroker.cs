@@ -56,19 +56,32 @@ namespace Server.Engines.NewMagincia
 		
 		public void RemoveEntry(PetBrokerEntry entry)
 		{
-			if(m_BrokerEntries.Contains(entry))
-				m_BrokerEntries.Remove(entry);
+            if (m_BrokerEntries.Contains(entry))
+            {
+                m_BrokerEntries.Remove(entry);
+            }
 		}
 
-        public bool HasValidEntry()
+        public override bool HasValidEntry(Mobile m)
         {
+            var hasValid = false;
+
             foreach (PetBrokerEntry entry in m_BrokerEntries)
             {
                 if (entry.Pet != null)
-                    return true;
+                {
+                    if (m.Stabled.Count < AnimalTrainer.GetMaxStabled(m))
+                    {
+                        SendToStables(m, entry.Pet);
+                    }
+                    else
+                    {
+                        hasValid = true;
+                    }
+                }
             }
 
-            return BankBalance > 0;
+            return hasValid;
         }
 		
 		public bool HasEntry(BaseCreature bc)
@@ -107,44 +120,82 @@ namespace Server.Engines.NewMagincia
 			return (int)perc;
 		}
 		
-		public bool TryBuyPet(Mobile from, PetBrokerEntry entry)
+		public int TryBuyPet(Mobile from, PetBrokerEntry entry)
 		{
-			if(from == null || entry == null || entry.Pet == null)
-				return false;
+            if (from == null || entry == null || entry.Pet == null)
+            {
+                return 1150377; // Unable to complete the desired transaction at this time.
+            }
 				
 			int cost = entry.SalePrice;
-			int toDeduct = cost + (int)((double)cost * ((double)ComissionFee / 100.0));
+			int toAdd = cost - (int)((double)cost * ((double)ComissionFee / 100.0));
 			BaseCreature pet = entry.Pet;
-			
-			if(!m_BrokerEntries.Contains(entry) || entry.Pet == null || entry.Pet.Deleted)
-				from.SendLocalizedMessage(1150377); // Unable to complete the desired transaction at this time.
-			else if(pet.GetControlChance(from) <= 0.0)
-				from.SendLocalizedMessage(1150379); // Unable to transfer that pet to you because you have no chance at all of controlling it.
-            else if (from.Stabled.Count >= AnimalTrainer.GetMaxStabled(from)/*from.Followers + pet.ControlSlots >= from.FollowersMax*/)
-				from.SendLocalizedMessage(1150376); // You do not have any available stable slots. The Animal Broker can only transfer pets to your stables. Please make a stables slot available and try again.
-			else if (!Banker.Withdraw(from, toDeduct))
-				from.SendLocalizedMessage(1150252); // You do not have the funds needed to make this trade available in your bank box. Brokers are only able to transfer funds from your bank box. Please deposit the necessary funds into your bank box and try again.
-			else
-			{
-                BankBalance += cost;
-				pet.Blessed = false;
-                EndViewTimer(pet);
-                pet.ControlTarget = null;
-                pet.ControlOrder = OrderType.Stay;
-                pet.Internalize();
-                pet.SetControlMaster(null);
-                pet.SummonMaster = null;
-                pet.IsStabled = true;
-                pet.Loyalty = BaseCreature.MaxLoyalty;
-                from.Stabled.Add(pet);
+
+            if (!m_BrokerEntries.Contains(entry) || entry.Pet == null || entry.Pet.Deleted)
+            {
+                return 1150377; // Unable to complete the desired transaction at this time.
+            }
+            else if (pet.GetControlChance(from) <= 0.0)
+            {
+                return 1150379; // Unable to transfer that pet to you because you have no chance at all of controlling it.
+            }
+            else if (from.Stabled.Count >= AnimalTrainer.GetMaxStabled(from))
+            {
+                return 1150376; // You do not have any available stable slots. The Animal Broker can only transfer pets to your stables. Please make a stables slot available and try again.
+            }
+            else if (!Banker.Withdraw(from, cost, true))
+            {
+                return 1150252; // You do not have the funds needed to make this trade available in your bank box. Brokers are only able to transfer funds from your bank box. Please deposit the necessary funds into your bank box and try again.
+            }
+            else
+            {
+                BankBalance += toAdd;
+                pet.IsBonded = false;
+
+                SendToStables(from, pet);
 
                 from.SendLocalizedMessage(1150380, String.Format("{0}\t{1}", entry.TypeName, pet.Name)); // You have purchased ~1_TYPE~ named "~2_NAME~". The animal is now in the stables and you may retrieve it there.
                 m_BrokerEntries.Remove(entry);
-                return true;
+                return 0;
             }
+        }
 
-            return false;
-		}
+        public static void SendToStables(Mobile to, BaseCreature pet)
+        {
+            EndViewTimer(pet);
+
+            pet.Blessed = false;
+            pet.ControlTarget = null;
+            pet.ControlOrder = OrderType.Stay;
+            pet.Internalize();
+            pet.SetControlMaster(null);
+            pet.SummonMaster = null;
+            pet.IsStabled = true;
+            pet.Loyalty = BaseCreature.MaxLoyalty;
+            to.Stabled.Add(pet);
+        }
+
+        public static void SendToBrokerStables(BaseCreature pet)
+        {
+            if (pet is BaseMount)
+                ((BaseMount)pet).Rider = null;
+
+            pet.ControlTarget = null;
+            pet.ControlOrder = OrderType.Stay;
+            pet.Internalize();
+
+            pet.SetControlMaster(null);
+            pet.SummonMaster = null;
+
+            pet.IsStabled = true;
+            pet.Loyalty = BaseCreature.MaxLoyalty;
+
+            pet.Home = Point3D.Zero;
+            pet.RangeHome = 10;
+            pet.Blessed = false;
+
+            EndViewTimer(pet);
+        }
 		
 		private static Dictionary<BaseCreature, Timer> m_ViewTimer = new Dictionary<BaseCreature, Timer>();
 		
@@ -183,24 +234,7 @@ namespace Server.Engines.NewMagincia
 			
 			protected override void OnTick()
 			{
-                if (m_Creature is BaseMount)
-                    ((BaseMount)m_Creature).Rider = null;
-
-				m_Creature.ControlTarget = null;
-				m_Creature.ControlOrder = OrderType.Stay;
-				m_Creature.Internalize();
-
-				m_Creature.SetControlMaster( null );
-				m_Creature.SummonMaster = null;
-
-				m_Creature.IsStabled = true;
-				m_Creature.Loyalty = BaseCreature.MaxLoyalty;
-				
-				m_Creature.Home = Point3D.Zero;
-				m_Creature.RangeHome = 10;
-				m_Creature.Blessed = false;
-				
-				EndViewTimer(m_Creature);
+                PetBroker.SendToBrokerStables(m_Creature);
 			}
 		}
 
@@ -226,6 +260,17 @@ namespace Server.Engines.NewMagincia
 			int count = reader.ReadInt();
 			for(int i = 0; i < count; i++)
 				m_BrokerEntries.Add(new PetBrokerEntry(reader));
+
+            Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
+                {
+                    foreach (var entry in m_BrokerEntries)
+                    {
+                        if (entry.Pet != null && !entry.Pet.IsStabled)
+                        {
+                            AddToViewTimer(entry.Pet);
+                        }
+                    }
+                });
 		}
 	}
 }

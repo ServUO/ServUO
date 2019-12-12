@@ -135,7 +135,7 @@ namespace Server.Items
                 case SmugglersLiquorType.KazolasTreeTopWine:
                     id = 2504;
                     Hue = 512; //Confirmed
-                    m_Label = 123456;
+                    m_Label = 1150036;
                     break;
                 case SmugglersLiquorType.Moonshine:
                     id = 2504;
@@ -221,7 +221,9 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write((int)2);
+
+            writer.Write(m_Label);
             writer.Write((int)m_Type);
         }
 
@@ -232,8 +234,13 @@ namespace Server.Items
 
             switch (version)
             {
+                case 2:
+                    m_Label = reader.ReadInt();
+                    m_Type = (SmugglersLiquorType)reader.ReadInt();
+                    break;
                 case 1:
                     m_Type = (SmugglersLiquorType)reader.ReadInt();
+                    ComputeItemID();
                     break;
                 case 0:
                     int type = reader.ReadInt();

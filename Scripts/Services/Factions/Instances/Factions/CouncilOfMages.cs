@@ -55,7 +55,8 @@ namespace Server.Factions
                             new Point3D( 4468, 1536, 21 ),
                             new Point3D( 4470, 1534, 21 ),
                             new Point3D( 4470, 1536, 21 )
-                        })
+                        },
+                        new Point3D(4458, 1544, 0))
                     : // Old CoM Location
                     new StrongholdDefinition(
                         new Rectangle2D[]
@@ -77,7 +78,8 @@ namespace Server.Factions
                             new Point3D(3797, 2252, 20),
                             new Point3D(3797, 2249, 20),
                             new Point3D(3797, 2246, 20)
-                        }),
+                        },
+                        new Point3D(3796, 2259, 20)),
                     new RankDefinition[]
                     {
                         new RankDefinition(10, 991, 8, new TextDefinition(1060789, "Inquisitor of the Council")),

@@ -53,6 +53,9 @@ namespace Server.Engines.Craft
         {
             if (item == null)
                 return EnhanceResult.BadItem;
+			
+			if (item is GargishNecklace || item is GargishEarrings)
+                return EnhanceResult.BadItem;
 
             if (!item.IsChildOf(from.Backpack))
                 return EnhanceResult.NotInBackpack;
@@ -269,6 +272,11 @@ namespace Server.Engines.Craft
                         if (!craftItem.ConsumeRes(from, resType, craftSystem, ref resHue, ref maxAmount, ConsumeType.All, ref resMessage))
                             return EnhanceResult.NoResources;
 
+                        if (craftItem.CaddelliteCraft)
+                        {
+                            Caddellite.TryInfuse(from, item, craftSystem);
+                        }
+
                         if (item is IResource)
                             ((IResource)item).Resource = resource;
 
@@ -282,7 +290,7 @@ namespace Server.Engines.Craft
                             if (hue > 0)
                                 w.Hue = hue;
                         }
-                        else if (item is BaseArmor)	//Sanity
+                        else if (item is BaseArmor)
                         {
                             ((BaseArmor)item).DistributeMaterialBonus(attributes);
                         }

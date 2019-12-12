@@ -8,14 +8,12 @@ namespace Server.Items
         [Constructable]
         public BraveKnightOfTheBritannia()
         {
-            this.Hue = 0x47e;
-
-            this.Attributes.WeaponSpeed = 30;
-            this.Attributes.WeaponDamage = 35;
-
-            this.WeaponAttributes.HitLeechStam = 48;
-            this.WeaponAttributes.HitHarm = 26;
-            this.WeaponAttributes.HitLeechHits = 22;
+            Hue = 0x47e;
+            Attributes.WeaponSpeed = 30;
+            Attributes.WeaponDamage = 35;
+            WeaponAttributes.HitLeechStam = 48;
+            WeaponAttributes.HitHarm = 26;
+            WeaponAttributes.HitLeechHits = 22;
         }
 
         public BraveKnightOfTheBritannia(Serial serial)

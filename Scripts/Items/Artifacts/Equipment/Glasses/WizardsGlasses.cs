@@ -8,11 +8,10 @@ namespace Server.Items
         [Constructable]
         public WizardsGlasses()
         {
-            this.Attributes.BonusMana = 10;
-            this.Attributes.RegenMana = 3;
-            this.Attributes.SpellDamage = 15;
-
-            this.Hue = 0x2B0;
+            Attributes.BonusMana = 10;
+            Attributes.RegenMana = 3;
+            Attributes.SpellDamage = 15;
+            Hue = 0x2B0;
         }
 
         public WizardsGlasses(Serial serial)

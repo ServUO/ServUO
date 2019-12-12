@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public UntanglingTheWebQuest()
             : base()
         { 
-            this.AddObjective(new AcidCreaturesObjective(typeof(IAcidCreature), "acid creatures", 12));
+            AddObjective(new AcidCreaturesObjective(typeof(IAcidCreature), "acid creatures", 12));
 			
-            this.AddReward(new BaseReward(typeof(AcidPopper), 1095058));
+            AddReward(new BaseReward(typeof(AcidPopper), 1095058));
         }
 
         /* Untangling the Web */
@@ -63,8 +63,8 @@ namespace Server.Engines.Quests
         }
         public override void OnCompleted()
         { 
-            this.Owner.SendLocalizedMessage(1095056, null, 0x23); // Vernix's Jars are now full.							
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1095056, null, 0x23); // Vernix's Jars are now full.							
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -92,8 +92,8 @@ namespace Server.Engines.Quests
             {
                 base.OnKill(killed);
 
-                if (!this.Completed)
-                    this.Quest.Owner.SendLocalizedMessage(1095055); // You collect acid from the creature into the jar.
+                if (!Completed)
+                    Quest.Owner.SendLocalizedMessage(1095055); // You collect acid from the creature into the jar.
             }
 
             public override void Serialize(GenericWriter writer)
@@ -117,9 +117,9 @@ namespace Server.Engines.Quests
         public GreenWithEnvyQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(EyeOfNavrey), "eye of Navrey", 1, 0x1F1C));
+            AddObjective(new ObtainObjective(typeof(EyeOfNavrey), "eye of Navrey", 1, 0x1F1C));
 			
-            this.AddReward(new BaseReward(typeof(RewardBox), 1072584));
+            AddReward(new BaseReward(typeof(RewardBox), 1072584));
         }
 
         /* Green with Envy */
@@ -213,20 +213,23 @@ namespace Server.Engines.Quests
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = false;
-            this.Body = 723;
+            Female = false;
+            Body = 723;
+
+            Frozen = true;
+            Direction = Direction.East;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
+            AddItem(new Backpack());
         }
 
         public override void Advertise()
         {
-            this.Say(Utility.RandomBool() ? 1095119 : 1095051);
+            Say(Utility.RandomBool() ? 1095119 : 1095051);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -241,6 +244,9 @@ namespace Server.Engines.Quests
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            Frozen = true;
+            Direction = Direction.East;
         }
     }
 }

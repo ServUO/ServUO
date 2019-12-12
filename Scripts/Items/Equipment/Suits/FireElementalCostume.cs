@@ -5,7 +5,9 @@ namespace Server.Items
 {
 	public class FireElementalCostume : BaseCostume
 	{
-		[Constructable]
+        public override string CreatureName { get { return "fire elemental"; } }
+
+        [Constructable]
 		public FireElementalCostume() : base( )
 		{
             this.CostumeBody = 15;

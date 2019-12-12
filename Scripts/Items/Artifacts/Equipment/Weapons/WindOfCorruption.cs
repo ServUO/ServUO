@@ -19,7 +19,6 @@ namespace Server.Items
             Attributes.WeaponDamage = 50;
             WeaponAttributes.HitLowerDefend = 40;
             AosElementDamages.Chaos = 100;
-
             Slayer = SlayerName.Fey;
             Hue = 1171;
         }
@@ -57,7 +56,6 @@ namespace Server.Items
             Attributes.WeaponDamage = 50;
             WeaponAttributes.HitLowerDefend = 40;
             AosElementDamages.Chaos = 100;
-
             Slayer = SlayerName.Fey;
             Hue = 1171;
         }

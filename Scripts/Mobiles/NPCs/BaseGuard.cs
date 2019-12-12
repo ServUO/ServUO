@@ -7,6 +7,8 @@ namespace Server.Mobiles
     {
         public BaseGuard(Mobile target)
         {
+            GuardImmune = true;
+
             if (target != null)
             {
                 Location = target.Location;
@@ -22,6 +24,17 @@ namespace Server.Mobiles
         }
 
         public abstract Mobile Focus { get; set; }
+
+        public override bool CanBeHarmful(IDamageable target, bool message, bool ignoreOurBlessedness)
+        {
+            if (target is Mobile && ((Mobile)target).GuardImmune)
+            {
+                return false;
+            }
+
+            return base.CanBeHarmful(target, message, ignoreOurBlessedness);
+        }
+
         public static void Spawn(Mobile caller, Mobile target)
         {
             Spawn(caller, target, 1, false);
@@ -29,7 +42,7 @@ namespace Server.Mobiles
 
         public static void Spawn(Mobile caller, Mobile target, int amount, bool onlyAdditional)
         {
-            if (target == null || target.Deleted)
+            if (target == null || target.Deleted || target.GuardImmune)
                 return;
 
             IPooledEnumerable eable = target.GetMobilesInRange(15);

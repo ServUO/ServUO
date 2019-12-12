@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - EventSink.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -13,12 +7,22 @@ using System.Reflection;
 
 using Server.Accounting;
 using Server.Commands;
+using Server.ContextMenus;
 using Server.Guilds;
+using Server.Items;
 using Server.Network;
 #endregion
 
 namespace Server
 {
+	public delegate void OnItemObtainedEventHandler(OnItemObtainedEventArgs e);
+
+	public delegate void CheckEquipItemEventHandler(CheckEquipItemEventArgs e);
+
+	public delegate void ContextMenuEventHandler(ContextMenuEventArgs e);
+
+	public delegate void WorldBroadcastEventHandler(WorldBroadcastEventArgs e);
+
 	public delegate void CharacterCreatedEventHandler(CharacterCreatedEventArgs e);
 
 	public delegate void OpenDoorMacroEventHandler(OpenDoorMacroEventArgs e);
@@ -47,6 +51,8 @@ namespace Server
 
 	public delegate void CastSpellRequestEventHandler(CastSpellRequestEventArgs e);
 
+	public delegate void BandageTargetRequestEventHandler(BandageTargetRequestEventArgs e);
+
 	public delegate void AnimateRequestEventHandler(AnimateRequestEventArgs e);
 
 	public delegate void LogoutEventHandler(LogoutEventArgs e);
@@ -60,6 +66,8 @@ namespace Server
 	public delegate void RenameRequestEventHandler(RenameRequestEventArgs e);
 
 	public delegate void PlayerDeathEventHandler(PlayerDeathEventArgs e);
+
+	public delegate void CreatureDeathEventHandler(CreatureDeathEventArgs e);
 
 	public delegate void VirtueGumpRequestEventHandler(VirtueGumpRequestEventArgs e);
 
@@ -125,7 +133,17 @@ namespace Server
 
 	public delegate void CraftSuccessEventHandler(CraftSuccessEventArgs e);
 
-	public delegate void ItemCreatedEventHandler(ItemCreatedEventArgs e);
+    public delegate void SkillGainEventHandler(SkillGainEventArgs e);
+
+    public delegate void SkillCheckEventHandler(SkillCheckEventArgs e);
+
+    public delegate void SkillCapChangeEventHandler(SkillCapChangeEventArgs e);
+
+    public delegate void StatCapChangeEventHandler(StatCapChangeEventArgs e);
+
+    public delegate void QuestCompleteEventHandler(QuestCompleteEventArgs e);
+
+    public delegate void ItemCreatedEventHandler(ItemCreatedEventArgs e);
 
 	public delegate void ItemDeletedEventHandler(ItemDeletedEventArgs e);
 
@@ -144,6 +162,97 @@ namespace Server
     public delegate void UnequipMacroEventHandler(UnequipMacroEventArgs e);
 
     public delegate void TargetByResourceMacroEventHandler(TargetByResourceMacroEventArgs e);
+
+    public delegate void JoinGuildEventHandler(JoinGuildEventArgs e);
+
+    public delegate void TameCreatureEventHandler(TameCreatureEventArgs e);
+
+    public delegate void ValidVendorPurchaseEventHandler(ValidVendorPurchaseEventArgs e);
+
+    public delegate void ValidVendorSellEventHandler(ValidVendorSellEventArgs e);
+
+    public delegate void CorpseLootEventHandler(CorpseLootEventArgs e);
+
+    public delegate void RepairItemEventHandler(RepairItemEventArgs e);
+
+    public delegate void AlterItemEventHandler(AlterItemEventArgs e);
+
+    public delegate void PlacePlayerVendorEventHandler(PlacePlayerVendorEventArgs e);
+
+    public delegate void FameChangeEventHandler(FameChangeEventArgs e);
+
+    public delegate void KarmaChangeEventHandler(KarmaChangeEventArgs e);
+
+    public delegate void VirtueLevelChangeEventHandler(VirtueLevelChangeEventArgs e);
+
+    public delegate void PlayerMurderedEventHandler(PlayerMurderedEventArgs e);
+
+    public delegate void AccountGoldChangeEventHandler(AccountGoldChangeEventArgs e);
+
+    public delegate void ContainerDroppedToEventHandler(ContainerDroppedToEventArgs e);
+
+    public delegate void TeleportMovementEventHandler(TeleportMovementEventArgs e);
+
+    public class OnItemObtainedEventArgs : EventArgs
+	{
+		private readonly Mobile m_Mobile;
+		private readonly Item m_Item;
+
+		public OnItemObtainedEventArgs(Mobile from, Item item)
+		{
+			m_Mobile = from;
+			m_Item = item;
+		}
+
+		public Mobile Mobile { get { return m_Mobile; } }
+		public Item Item { get { return m_Item; } }
+	}
+
+	public class CheckEquipItemEventArgs : EventArgs
+	{
+		public Mobile Mobile { get; private set; }
+		public Item Item { get; private set; }
+		public bool Message { get; private set; }
+
+		public bool Block { get; set; }
+
+		public CheckEquipItemEventArgs(Mobile m, Item item, bool message)
+		{
+			Mobile = m;
+			Item = item;
+			Message = message;
+		}
+	}
+
+	public class ContextMenuEventArgs : EventArgs
+	{
+		public Mobile Mobile { get; private set; }
+		public IEntity Target { get; private set; }
+		public List<ContextMenuEntry> Entries { get; private set; }
+
+		public ContextMenuEventArgs(Mobile m, IEntity target, List<ContextMenuEntry> entries)
+		{
+			Mobile = m;
+			Target = target;
+			Entries = entries;
+		}
+	}
+
+	public class WorldBroadcastEventArgs : EventArgs
+	{
+		public int Hue { get; set; }
+		public bool Ascii { get; set; }
+		public AccessLevel Access { get; set; }
+		public string Text { get; set; }
+
+		public WorldBroadcastEventArgs(int hue, bool ascii, AccessLevel access, string text)
+		{
+			Hue = hue;
+			Ascii = ascii;
+			Access = access;
+			Text = text;
+		}
+	}
 
     public class ClientVersionReceivedArgs : EventArgs
 	{
@@ -422,13 +531,58 @@ namespace Server
 
 	public class PlayerDeathEventArgs : EventArgs
 	{
-		private readonly Mobile m_Mobile;
-
-		public Mobile Mobile { get { return m_Mobile; } }
+		public Mobile Mobile { get; private set; }
+		public Mobile Killer { get; private set; }
+		public Container Corpse { get; private set; }
 
 		public PlayerDeathEventArgs(Mobile mobile)
+			: this(mobile, mobile.LastKiller, mobile.Corpse)
+		{ }
+
+		public PlayerDeathEventArgs(Mobile mobile, Mobile killer, Container corpse)
 		{
-			m_Mobile = mobile;
+			Mobile = mobile;
+			Killer = killer;
+			Corpse = corpse;
+		}
+	}
+
+	public class CreatureDeathEventArgs : EventArgs
+	{
+		public Mobile Creature { get; private set; }
+		public Mobile Killer { get; private set; }
+		public Container Corpse { get; private set; }
+
+		public List<Item> ForcedLoot { get; private set; }
+
+		public bool PreventDefault { get; set; }
+		public bool PreventDelete { get; set; }
+		public bool ClearCorpse { get; set; }
+
+		public CreatureDeathEventArgs(Mobile creature)
+			: this(creature, creature.LastKiller, creature.Corpse)
+		{ }
+
+		public CreatureDeathEventArgs(Mobile creature, Mobile killer, Container corpse)
+		{
+			Creature = creature;
+			Killer = killer;
+			Corpse = corpse;
+
+			ForcedLoot = new List<Item>();
+		}
+
+		public void ClearLoot(bool free)
+		{
+			if (free)
+			{
+				ForcedLoot.Clear();
+				ForcedLoot.TrimExcess();
+			}
+			else
+			{
+				ForcedLoot = new List<Item>();
+			}
 		}
 	}
 
@@ -530,6 +684,24 @@ namespace Server
 			m_Mobile = m;
 			m_Spellbook = book;
 			m_SpellID = spellID;
+		}
+	}
+
+	public class BandageTargetRequestEventArgs : EventArgs
+	{
+		private readonly Mobile m_Mobile;
+		private readonly Item m_Bandage;
+		private readonly Mobile m_Target;
+
+		public Mobile Mobile { get { return m_Mobile; } }
+		public Item Bandage { get { return m_Bandage; } }
+		public Mobile Target { get { return m_Target; } }
+
+		public BandageTargetRequestEventArgs(Mobile m, Item bandage, Mobile target)
+		{
+			m_Mobile = m;
+			m_Bandage = bandage;
+			m_Target = target;
 		}
 	}
 
@@ -1052,13 +1224,15 @@ namespace Server
 		public Mobile Harvester { get; private set; }
 		public Item Tool { get; private set; }
 		public Item Resource { get; private set; }
+        public Item BonusResource { get; private set; }
 		public object HarvestSystem { get; private set; }
 
-		public ResourceHarvestSuccessEventArgs(Mobile m, Item i, Item r, object o)
+		public ResourceHarvestSuccessEventArgs(Mobile m, Item i, Item r, Item b, object o)
 		{
 			Harvester = m;
 			Tool = i;
 			Resource = r;
+            BonusResource = b;
 			HarvestSystem = o;
 		}
 	}
@@ -1077,7 +1251,77 @@ namespace Server
 		}
 	}
 
-	public class ItemCreatedEventArgs : EventArgs
+    public class SkillGainEventArgs : EventArgs
+    {
+        public int Gained { get; private set; }
+        public Mobile From { get; private set; }
+        public Skill Skill { get; private set; }
+
+        public SkillGainEventArgs(Mobile from, Skill skill, int toGain)
+        {
+            From = from;
+            Skill = skill;
+            Gained = toGain;
+        }
+    }
+
+    public class SkillCheckEventArgs : EventArgs
+    {
+        public bool Success { get; set; }
+        public Mobile From { get; set; }
+        public Skill Skill { get; set; }
+
+        public SkillCheckEventArgs(Mobile from, Skill skill, bool success)
+        {
+            From = from;
+            Skill = skill;
+            Success = success;
+        }
+    }
+
+    public class SkillCapChangeEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; private set; }
+        public Skill Skill { get; private set; }
+        public double OldCap { get; private set; }
+        public double NewCap { get; private set; }
+
+        public SkillCapChangeEventArgs(Mobile from, Skill skill, double oldCap, double newCap)
+        {
+            Mobile = from;
+            Skill = skill;
+            OldCap = oldCap;
+            NewCap = newCap;
+        }
+    }
+
+    public class StatCapChangeEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; private set; }
+        public int OldCap { get; private set; }
+        public int NewCap { get; private set; }
+
+        public StatCapChangeEventArgs(Mobile from, int oldCap, int newCap)
+        {
+            Mobile = from;
+            OldCap = oldCap;
+            NewCap = newCap;
+        }
+    }
+
+    public class QuestCompleteEventArgs : EventArgs
+    {
+        public Type QuestType { get; private set; }
+        public Mobile Mobile { get; private set; }
+
+        public QuestCompleteEventArgs(Mobile from, Type type)
+        {
+            Mobile = from;
+            QuestType = type;
+        }
+    }
+
+    public class ItemCreatedEventArgs : EventArgs
 	{
 		public Item Item { get; set; }
 
@@ -1219,8 +1463,222 @@ namespace Server
         }
     }
 
+    public class JoinGuildEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public BaseGuild Guild { get; set; }
+
+        public JoinGuildEventArgs(Mobile m, BaseGuild g)
+        {
+            Mobile = m;
+            Guild = g;
+        }
+    }
+
+    public class TameCreatureEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Mobile Creature { get; set; }
+
+        public TameCreatureEventArgs(Mobile m, Mobile creature)
+        {
+            Mobile = m;
+            Creature = creature;
+        }
+    }
+
+    public class ValidVendorPurchaseEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Mobile Vendor { get; set; }
+        public IEntity Bought { get; set; }
+        public int AmountPerUnit { get; set; }
+
+        public ValidVendorPurchaseEventArgs(Mobile m, Mobile vendor, IEntity bought, int costPer)
+        {
+            Mobile = m;
+            Vendor = vendor;
+            Bought = bought;
+            AmountPerUnit = costPer;
+        }
+    }
+
+    public class ValidVendorSellEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Mobile Vendor { get; set; }
+        public IEntity Sold { get; set; }
+        public int AmountPerUnit { get; set; }
+
+        public ValidVendorSellEventArgs(Mobile m, Mobile vendor, IEntity sold, int costPer)
+        {
+            Mobile = m;
+            Vendor = vendor;
+            Sold = sold;
+            AmountPerUnit = costPer;
+        }
+    }
+
+    public class CorpseLootEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Container Corpse { get; set; }
+        public Item Looted { get; set; }
+
+        public CorpseLootEventArgs(Mobile m, Container c, Item looted)
+        {
+            Mobile = m;
+            Corpse = c;
+            Looted = looted;
+        }
+    }
+
+    public class RepairItemEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Item Tool { get; set; }
+        public IEntity Repaired { get; set; }
+
+        public RepairItemEventArgs(Mobile m, Item tool, IEntity repaired)
+        {
+            Mobile = m;
+            Tool = tool;
+            Repaired = repaired;
+        }
+    }
+
+    public class AlterItemEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Item Tool { get; set; }
+        public Item OldItem { get; set; }
+        public Item NewItem { get; set; }
+
+        public AlterItemEventArgs(Mobile m, Item tool, Item oldItem, Item newItem)
+        {
+            Mobile = m;
+            Tool = tool;
+            OldItem = oldItem;
+            NewItem = newItem;
+        }
+    }
+
+    public class PlacePlayerVendorEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Mobile Vendor { get; set; }
+
+        public PlacePlayerVendorEventArgs(Mobile m, Mobile vendor)
+        {
+            Mobile = m;
+            Vendor = vendor;
+        }
+    }
+
+    public class FameChangeEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public int OldValue { get; set; }
+        public int NewValue { get; set; }
+
+        public FameChangeEventArgs(Mobile m, int oldValue, int newValue)
+        {
+            Mobile = m;
+            OldValue = oldValue;
+            NewValue = newValue;
+        }
+    }
+
+    public class KarmaChangeEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public int OldValue { get; set; }
+        public int NewValue { get; set; }
+
+        public KarmaChangeEventArgs(Mobile m, int oldValue, int newValue)
+        {
+            Mobile = m;
+            OldValue = oldValue;
+            NewValue = newValue;
+        }
+    }
+
+    public class VirtueLevelChangeEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public int OldLevel { get; set; }
+        public int NewLevel { get; set; }
+        public int Virtue { get; set; }
+
+        public VirtueLevelChangeEventArgs(Mobile m, int oldLevel, int newLevel, int virtue)
+        {
+            Mobile = m;
+            OldLevel = oldLevel;
+            NewLevel = newLevel;
+            Virtue = virtue;
+        }
+    }
+
+    public class PlayerMurderedEventArgs : EventArgs
+    {
+        public Mobile Murderer { get; set; }
+        public Mobile Victim { get; set; }
+
+        public PlayerMurderedEventArgs(Mobile murderer, Mobile victim)
+        {
+            Murderer = murderer;
+            Victim = victim;
+        }
+    }
+
+    public class AccountGoldChangeEventArgs : EventArgs
+    {
+        public IAccount Account { get; set; }
+        public double OldAmount { get; set; }
+        public double NewAmount { get; set; }
+
+        public AccountGoldChangeEventArgs(IAccount account, double oldAmount, double newAmount)
+        {
+            Account = account;
+            OldAmount = oldAmount;
+            NewAmount = newAmount;
+        }
+    }
+
+    public class ContainerDroppedToEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Container Container { get; set; }
+        public Item Dropped { get; set; }
+
+        public ContainerDroppedToEventArgs(Mobile m, Container container, Item dropped)
+        {
+            Mobile = m;
+            Container = container;
+            Dropped = dropped;
+        }
+    }
+
+    public class TeleportMovementEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; set; }
+        public Point3D OldLocation { get; set; }
+        public Point3D NewLocation { get; set; }
+
+        public TeleportMovementEventArgs(Mobile m, Point3D oldLoc, Point3D newLoc)
+        {
+            Mobile = m;
+            OldLocation = oldLoc;
+            NewLocation = newLoc;
+        }
+    }
+
     public static class EventSink
 	{
+		public static event OnItemObtainedEventHandler OnItemObtained;
+		public static event CheckEquipItemEventHandler CheckEquipItem;
+		public static event ContextMenuEventHandler ContextMenu;
+		public static event WorldBroadcastEventHandler WorldBroadcast;
 		public static event CharacterCreatedEventHandler CharacterCreated;
 		public static event OpenDoorMacroEventHandler OpenDoorMacroUsed;
 		public static event SpeechEventHandler Speech;
@@ -1235,6 +1693,7 @@ namespace Server
 		public static event StunRequestEventHandler StunRequest;
 		public static event OpenSpellbookRequestEventHandler OpenSpellbookRequest;
 		public static event CastSpellRequestEventHandler CastSpellRequest;
+		public static event BandageTargetRequestEventHandler BandageTargetRequest;
 		public static event AnimateRequestEventHandler AnimateRequest;
 		public static event LogoutEventHandler Logout;
 		public static event SocketConnectEventHandler SocketConnect;
@@ -1242,6 +1701,7 @@ namespace Server
 		public static event DisconnectedEventHandler Disconnected;
 		public static event RenameRequestEventHandler RenameRequest;
 		public static event PlayerDeathEventHandler PlayerDeath;
+		public static event CreatureDeathEventHandler CreatureDeath;
 		public static event VirtueGumpRequestEventHandler VirtueGumpRequest;
 		public static event VirtueItemRequestEventHandler VirtueItemRequest;
 		public static event VirtueMacroRequestEventHandler VirtueMacroRequest;
@@ -1275,8 +1735,13 @@ namespace Server
 		public static event ResourceHarvestAttemptEventHandler ResourceHarvestAttempt;
 		public static event ResourceHarvestSuccessEventHandler ResourceHarvestSuccess;
 		public static event CraftSuccessEventHandler CraftSuccess;
+        public static event SkillGainEventHandler SkillGain;
+        public static event SkillCheckEventHandler SkillCheck;
+        public static event SkillCapChangeEventHandler SkillCapChange;
+        public static event StatCapChangeEventHandler StatCapChange;
+        public static event QuestCompleteEventHandler QuestComplete;
 
-		public static event ItemCreatedEventHandler ItemCreated;
+        public static event ItemCreatedEventHandler ItemCreated;
 		public static event ItemDeletedEventHandler ItemDeleted;
 		public static event MobileCreatedEventHandler MobileCreated;
 		public static event MobileDeletedEventHandler MobileDeleted;
@@ -1287,6 +1752,54 @@ namespace Server
         public static event EquipMacroEventHandler EquipMacro;
         public static event UnequipMacroEventHandler UnequipMacro;
         public static event TargetByResourceMacroEventHandler TargetByResourceMacro;
+
+        public static event JoinGuildEventHandler JoinGuild;
+        public static event TameCreatureEventHandler TameCreature;
+        public static event ValidVendorPurchaseEventHandler ValidVendorPurchase;
+        public static event ValidVendorSellEventHandler ValidVendorSell;
+        public static event CorpseLootEventHandler CorpseLoot;
+        public static event RepairItemEventHandler RepairItem;
+        public static event AlterItemEventHandler AlterItem;
+        public static event PlacePlayerVendorEventHandler PlacePlayerVendor;
+        public static event FameChangeEventHandler FameChange;
+        public static event KarmaChangeEventHandler KarmaChange;
+        public static event VirtueLevelChangeEventHandler VirtueLevelChange;
+        public static event PlayerMurderedEventHandler PlayerMurdered;
+        public static event AccountGoldChangeEventHandler AccountGoldChange;
+        public static event ContainerDroppedToEventHandler ContainerDroppedTo;
+        public static event TeleportMovementEventHandler TeleportMovement;
+
+        public static void InvokeOnItemObtained(OnItemObtainedEventArgs e)
+		{
+			if (OnItemObtained != null)
+			{
+				OnItemObtained(e);
+			}
+		}
+
+		public static void InvokeCheckEquipItem(CheckEquipItemEventArgs e)
+		{
+			if (CheckEquipItem != null)
+			{
+				CheckEquipItem(e);
+			}
+		}
+
+		public static void InvokeContextMenu(ContextMenuEventArgs e)
+		{
+			if (ContextMenu != null)
+			{
+				ContextMenu(e);
+			}
+		}
+
+		public static void InvokeWorldBroadcast(WorldBroadcastEventArgs e)
+		{
+			if (WorldBroadcast != null)
+			{
+				WorldBroadcast(e);
+			}
+		}
 
         public static void InvokeClientVersionReceived(ClientVersionReceivedArgs e)
 		{
@@ -1448,6 +1961,14 @@ namespace Server
 			}
 		}
 
+		public static void InvokeCreatureDeath(CreatureDeathEventArgs e)
+		{
+			if (CreatureDeath != null)
+			{
+				CreatureDeath(e);
+			}
+		}
+
 		public static void InvokeRenameRequest(RenameRequestEventArgs e)
 		{
 			if (RenameRequest != null)
@@ -1501,6 +2022,14 @@ namespace Server
 			if (CastSpellRequest != null)
 			{
 				CastSpellRequest(e);
+			}
+		}
+
+		public static void InvokeBandageTargetRequest(BandageTargetRequestEventArgs e)
+		{
+			if (BandageTargetRequest != null)
+			{
+				BandageTargetRequest(e);
 			}
 		}
 
@@ -1712,13 +2241,53 @@ namespace Server
 			}
 		}
 
-		public static void InvokeCraftSuccess(CraftSuccessEventArgs e)
+        public static void InvokeCraftSuccess(CraftSuccessEventArgs e)
 		{
 			if (CraftSuccess != null)
 			{
 				CraftSuccess(e);
 			}
 		}
+
+        public static void InvokeSkillGain(SkillGainEventArgs e)
+        {
+            if(SkillGain != null)
+            {
+                SkillGain(e);
+            }
+        }
+
+        public static void InvokeSkillCheck(SkillCheckEventArgs e)
+        {
+            if (SkillCheck != null)
+            {
+                SkillCheck(e);
+            }
+        }
+
+        public static void InvokeSkillCapChange(SkillCapChangeEventArgs e)
+        {
+            if (SkillCapChange != null)
+            {
+                SkillCapChange(e);
+            }
+        }
+
+        public static void InvokeStatCapChange(StatCapChangeEventArgs e)
+        {
+            if (StatCapChange != null)
+            {
+                StatCapChange(e);
+            }
+        }
+
+        public static void InvokeQuestComplete(QuestCompleteEventArgs e)
+        {
+            if (QuestComplete != null)
+            {
+                QuestComplete(e);
+            }
+        }
 
 		public static void InvokeItemCreated(ItemCreatedEventArgs e)
 		{
@@ -1800,8 +2369,132 @@ namespace Server
             }
         }
 
+        public static void InvokeJoinGuild(JoinGuildEventArgs e)
+        {
+            if (JoinGuild != null)
+            {
+                JoinGuild(e);
+            }
+        }
+
+        public static void InvokeTameCreature(TameCreatureEventArgs e)
+        {
+            if (TameCreature != null)
+            {
+                TameCreature(e);
+            }
+        }
+
+        public static void InvokeValidVendorPurchase(ValidVendorPurchaseEventArgs e)
+        {
+            if (ValidVendorPurchase != null)
+            {
+                ValidVendorPurchase(e);
+            }
+        }
+
+        public static void InvokeValidVendorSell(ValidVendorSellEventArgs e)
+        {
+            if (ValidVendorSell != null)
+            {
+                ValidVendorSell(e);
+            }
+        }
+
+        public static void InvokeCorpseLoot(CorpseLootEventArgs e)
+        {
+            if (CorpseLoot != null)
+            {
+                CorpseLoot(e);
+            }
+        }
+
+        public static void InvokeRepairItem(RepairItemEventArgs e)
+        {
+            if (RepairItem != null)
+            {
+                RepairItem(e);
+            }
+        }
+
+        public static void InvokeAlterItem(AlterItemEventArgs e)
+        {
+            if (AlterItem != null)
+            {
+                AlterItem(e);
+            }
+        }
+
+        public static void InvokePlacePlayerVendor(PlacePlayerVendorEventArgs e)
+        {
+            if (PlacePlayerVendor != null)
+            {
+                PlacePlayerVendor(e);
+            }
+        }
+
+        public static void InvokeFameChange(FameChangeEventArgs e)
+        {
+            if (FameChange != null)
+            {
+                FameChange(e);
+            }
+        }
+
+        public static void InvokeKarmaChange(KarmaChangeEventArgs e)
+        {
+            if (KarmaChange != null)
+            {
+                KarmaChange(e);
+            }
+        }
+
+        public static void InvokeVirtueLevelChange(VirtueLevelChangeEventArgs e)
+        {
+            if (VirtueLevelChange != null)
+            {
+                VirtueLevelChange(e);
+            }
+        }
+
+        public static void InvokePlayerMurdered(PlayerMurderedEventArgs e)
+        {
+            if (PlayerMurdered != null)
+            {
+                PlayerMurdered(e);
+            }
+        }
+
+        public static void InvokeAccountGoldChange(AccountGoldChangeEventArgs e)
+        {
+            if (AccountGoldChange != null)
+            {
+                AccountGoldChange(e);
+            }
+        }
+
+        public static void InvokeContainerDroppedTo(ContainerDroppedToEventArgs e)
+        {
+            if (ContainerDroppedTo != null)
+            {
+                ContainerDroppedTo(e);
+            }
+        }
+
+        public static void InvokeTeleportMovement(TeleportMovementEventArgs e)
+        {
+            if (TeleportMovement != null)
+            {
+                TeleportMovement(e);
+            }
+        }
+
         public static void Reset()
 		{
+			OnItemObtained = null;
+			CheckEquipItem = null;
+			ContextMenu = null;
+			WorldBroadcast = null;
 			CharacterCreated = null;
 			OpenDoorMacroUsed = null;
 			Speech = null;
@@ -1816,6 +2509,7 @@ namespace Server
 			StunRequest = null;
 			OpenSpellbookRequest = null;
 			CastSpellRequest = null;
+			BandageTargetRequest = null;
 			AnimateRequest = null;
 			Logout = null;
 			SocketConnect = null;
@@ -1823,6 +2517,7 @@ namespace Server
 			Disconnected = null;
 			RenameRequest = null;
 			PlayerDeath = null;
+			CreatureDeath = null;
 			VirtueGumpRequest = null;
 			VirtueItemRequest = null;
 			VirtueMacroRequest = null;
@@ -1849,6 +2544,8 @@ namespace Server
 			ResourceHarvestAttempt = null;
 			ResourceHarvestSuccess = null;
 			CraftSuccess = null;
+			SkillGain = null;
+            SkillCheck = null;
 
 			ItemCreated = null;
 			ItemDeleted = null;
@@ -1858,6 +2555,22 @@ namespace Server
             TargetedSpell = null;
             TargetedSkill = null;
             TargetedItemUse = null;
+
+            JoinGuild = null;
+            TameCreature = null;
+            ValidVendorPurchase = null;
+            ValidVendorSell = null;
+            CorpseLoot = null;
+            RepairItem = null;
+            AlterItem = null;
+            PlacePlayerVendor = null;
+            FameChange = null;
+            KarmaChange = null;
+            VirtueLevelChange = null;
+            PlayerMurdered = null;
+            AccountGoldChange = null;
+            ContainerDroppedTo = null;
+            TeleportMovement = null;
         }
 	}
 }

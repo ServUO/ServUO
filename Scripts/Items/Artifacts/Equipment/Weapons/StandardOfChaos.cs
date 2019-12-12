@@ -2,25 +2,23 @@ using System;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x26BF, 0x26C9)]
     public class StandardOfChaos : DoubleBladedStaff
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113522; } } // Standard of Chaos
+		
         [Constructable]
         public StandardOfChaos()
         {
-            this.Name = ("Standard Of Chaos");
-		
-            this.Hue = 2209;
-			
-            this.WeaponAttributes.HitHarm = 30;	
-            this.WeaponAttributes.HitFireball = 20;	
-            this.WeaponAttributes.HitLightning = 10;
-            this.WeaponAttributes.HitLowerDefend = 40;
-            this.Attributes.WeaponSpeed = 30;
-            this.Attributes.WeaponDamage = -40;
-            this.Attributes.CastSpeed = 1;
-            this.AosElementDamages.Chaos = 100;		
+            Hue = 2209;		
+            WeaponAttributes.HitHarm = 30;	
+            WeaponAttributes.HitFireball = 20;	
+            WeaponAttributes.HitLightning = 10;
+            WeaponAttributes.HitLowerDefend = 40;
+            Attributes.WeaponSpeed = 30;
+            Attributes.WeaponDamage = -40;
+            Attributes.CastSpeed = 1;
+            AosElementDamages.Chaos = 100;		
         }
 
         public StandardOfChaos(Serial serial)

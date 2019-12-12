@@ -153,7 +153,8 @@ namespace Server.Mobiles
 	public class CovetousWyrm : CovetousCreature
 	{
 		[Constructable]
-		public CovetousWyrm() : base(AIType.AI_Mage)
+        public CovetousWyrm()
+            : base(AIType.AI_Necro)
 		{
 			Name = "a covetous wyrm";
 			Body = 106;

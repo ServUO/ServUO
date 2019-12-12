@@ -3,37 +3,25 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class LuckyCharm : BaseTalisman, ITokunoDyable
+    public class LuckyCharm : BaseTalisman
     {
+		public override int LabelNumber { get { return 1154725; } }// Lucky Charm
+		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public LuckyCharm()
             : base(0x2F5B)
         {
-            this.Hue = 1923;
-            this.Attributes.RegenHits = 1;
-            this.Attributes.RegenStam = 1;
-            this.Attributes.RegenMana = 1;
-            this.Attributes.Luck = 150;
+            Hue = 1923;
+            Attributes.RegenHits = 1;
+            Attributes.RegenStam = 1;
+            Attributes.RegenMana = 1;
+            Attributes.Luck = 150;
         }
 
         public LuckyCharm(Serial serial)
             : base(serial)
         {
-        }
-
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1154725;
-            }
-        }// Lucky Charm
-        public override bool ForceShowName
-        {
-            get
-            {
-                return true;
-            }
         }
         public override void Serialize(GenericWriter writer)
         {

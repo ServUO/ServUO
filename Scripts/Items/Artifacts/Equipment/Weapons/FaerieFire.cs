@@ -2,29 +2,23 @@ using System;
 
 namespace Server.Items
 {
-    public class FaerieFire : ElvenCompositeLongbow, ITokunoDyable
+    public class FaerieFire : ElvenCompositeLongbow
 	{
 		public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072908;
-            }
-        }// Faerie Fire
+        public override int LabelNumber { get { return 1072908; } }// Faerie Fire
+		public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
 
         [Constructable]
         public FaerieFire()
             : base()
         {
-            this.Hue = 0x489;
-            this.Balanced = true;
-			
-            this.Attributes.BonusDex = 3;
-            this.Attributes.WeaponSpeed = 20;
-            this.Attributes.WeaponDamage = 60;
-			
-            this.WeaponAttributes.HitFireball = 25;
+            Hue = 0x489;
+            Balanced = true;		
+            Attributes.BonusDex = 3;
+            Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = 60;		
+            WeaponAttributes.HitFireball = 25;
         }
 
         public FaerieFire(Serial serial)
@@ -44,14 +38,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
         }
     }

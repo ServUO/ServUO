@@ -9,41 +9,43 @@ namespace Server.Mobiles
         public Drake()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a drake";
-            this.Body = Utility.RandomList(60, 61);
-            this.BaseSoundID = 362;
+            Name = "a drake";
+            Body = Utility.RandomList(60, 61);
+            BaseSoundID = 362;
 
-            this.SetStr(401, 430);
-            this.SetDex(133, 152);
-            this.SetInt(101, 140);
+            SetStr(401, 430);
+            SetDex(133, 152);
+            SetInt(101, 140);
 
-            this.SetHits(241, 258);
+            SetHits(241, 258);
 
-            this.SetDamage(11, 17);
+            SetDamage(11, 17);
 
-            this.SetDamageType(ResistanceType.Physical, 80);
-            this.SetDamageType(ResistanceType.Fire, 20);
+            SetDamageType(ResistanceType.Physical, 80);
+            SetDamageType(ResistanceType.Fire, 20);
 
-            this.SetResistance(ResistanceType.Physical, 45, 50);
-            this.SetResistance(ResistanceType.Fire, 50, 60);
-            this.SetResistance(ResistanceType.Cold, 40, 50);
-            this.SetResistance(ResistanceType.Poison, 20, 30);
-            this.SetResistance(ResistanceType.Energy, 30, 40);
+            SetResistance(ResistanceType.Physical, 45, 50);
+            SetResistance(ResistanceType.Fire, 50, 60);
+            SetResistance(ResistanceType.Cold, 40, 50);
+            SetResistance(ResistanceType.Poison, 20, 30);
+            SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.MagicResist, 65.1, 80.0);
-            this.SetSkill(SkillName.Tactics, 65.1, 90.0);
-            this.SetSkill(SkillName.Wrestling, 65.1, 80.0);
+            SetSkill(SkillName.MagicResist, 65.1, 80.0);
+            SetSkill(SkillName.Tactics, 65.1, 90.0);
+            SetSkill(SkillName.Wrestling, 65.1, 80.0);
 
-            this.Fame = 5500;
-            this.Karma = -5500;
+            Fame = 5500;
+            Karma = -5500;
 
-            this.VirtualArmor = 46;
+            VirtualArmor = 46;
 
-            this.Tamable = true;
-            this.ControlSlots = 2;
-            this.MinTameSkill = 84.3;
+            Tamable = true;
+            ControlSlots = 2;
+            MinTameSkill = 84.3;
 
-            this.PackReg(3);
+            PackReg(3);
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public Drake(Serial serial)
@@ -58,13 +60,6 @@ namespace Server.Mobiles
                 return true;
             }
         }
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }// fire breath enabled
         public override int TreasureMapLevel
         {
             get
@@ -111,7 +106,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return (this.Body == 60 ? ScaleType.Yellow : ScaleType.Red);
+                return (Body == 60 ? ScaleType.Yellow : ScaleType.Red);
             }
         }
         public override FoodType FavoriteFood
@@ -130,8 +125,8 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.MedScrolls, 2);
         }
 
         public override void Serialize(GenericWriter writer)

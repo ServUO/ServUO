@@ -8,12 +8,20 @@ using System.Linq;
 namespace Server.Items
 {
     [Furniture]
-    [FlipableAttribute(0x4142, 0x4143)]
     public class Mailbox : LockableContainer, IFlipable
     {
+        public override int LabelNumber { get { return 1113927; } } // Mailbox
+
         public override int DefaultGumpID { get { return 0x11A; } }
 
+        public virtual int SouthMailBoxID { get { return 0x4141; } }
+        public virtual int SouthEmptyMailBoxID { get { return 0x4142; } }
+        public virtual int EastMailBoxID { get { return 0x4143; } }
+        public virtual int EastEmptyMailBoxID { get { return 0x4144; } }
+
         public Dictionary<Item, Mobile> Contents { get; set; }
+
+        public bool IsEmpty { get { return Items.Count == 0; } }
 
         [CommandProperty(AccessLevel.Decorator)]
         public override int ItemID
@@ -23,30 +31,67 @@ namespace Server.Items
             {
                 base.ItemID = value;
 
-                if (Items.Count > 0 && (ItemID == 0x4142 || ItemID == 0x4144))
+                CheckMailBox();
+            }
+        }
+
+        public void CheckMailBox()
+        {
+            if (IsEmpty)
+            {
+                if (ItemID == SouthMailBoxID)
                 {
-                    base.ItemID = ItemID - 1;
+                    base.ItemID = SouthEmptyMailBoxID;
                 }
-                else if (Items.Count == 0 && (ItemID == 0x4141 || ItemID == 0x4143))
+                else if (ItemID == EastMailBoxID)
                 {
-                    base.ItemID = ItemID + 1;
+                    base.ItemID = EastEmptyMailBoxID;
+                }
+            }
+            else
+            {
+                if (ItemID == SouthEmptyMailBoxID)
+                {
+                    base.ItemID = SouthMailBoxID;
+                }
+                else if (ItemID == EastEmptyMailBoxID)
+                {
+                    base.ItemID = EastMailBoxID;
                 }
             }
         }
 
         [Constructable]
         public Mailbox()
-            : base(0x4142)
+            : this(0x4142)
+        {
+        }
+
+        [Constructable]
+        public Mailbox(int id)
+            : base(id)
         {
             Weight = 5.0;
         }
 
-        public void OnFlip()
+        public virtual void OnFlip(Mobile from)
         {
-            if (ItemID == 0x4141 || ItemID == 0x4142)
-                ItemID = ItemID + 2;
-            else
-                ItemID = ItemID - 2;
+            if (ItemID == SouthMailBoxID)
+            {
+                base.ItemID = EastMailBoxID;
+            }
+            else if (ItemID == EastMailBoxID)
+            {
+                base.ItemID = SouthMailBoxID;
+            }
+            else if (ItemID == SouthEmptyMailBoxID)
+            {
+                base.ItemID = EastEmptyMailBoxID;
+            }
+            else if (ItemID == EastEmptyMailBoxID)
+            {
+                base.ItemID = SouthEmptyMailBoxID;
+            }
         }
 
         public override void GetChildProperties(ObjectPropertyList list, Item item)
@@ -79,18 +124,18 @@ namespace Server.Items
 
         public override bool TryDropItem(Mobile from, Item dropped, bool sendFullMessage)
         {
-            BaseHouse house = BaseHouse.FindHouseAt(this);
-
             if (!CheckHold(from, dropped, true, true))
             {
                 return false;
             }
 
+            BaseHouse house = BaseHouse.FindHouseAt(this);
+
             if (house != null && IsLockedDown)
             {
                 if (!house.CheckAccessibility(this, from))
                 {
-                    this.PrivateOverheadMessage(MessageType.Regular, 0x21, 1061637, from.NetState); // You are not allowed to access this!
+                    PrivateOverheadMessage(MessageType.Regular, 0x21, 1061637, from.NetState); // You are not allowed to access this!
                     from.SendLocalizedMessage(501727); // You cannot lock that down!
                     return false;
                 }
@@ -109,6 +154,25 @@ namespace Server.Items
         public override bool IsAccessibleTo(Mobile m)
         {
             return true;
+        }
+
+        public override bool CheckLift(Mobile from, Item item, ref LRReason reject)
+        {
+            if (item == this)
+            {
+                return base.CheckLift(from, item, ref reject);
+            }
+
+            BaseHouse house = BaseHouse.FindHouseAt(this);
+
+            if (house != null && IsSecure)
+            {
+                var secure = house.GetSecureInfoFor(this);
+
+                return secure != null && house.HasSecureAccess(from, secure);
+            }
+
+            return base.CheckLift(from, item, ref reject);
         }
 
         public override void SendFullItemsMessage(Mobile to, Item item) // That mailbox is completely full.
@@ -134,31 +198,14 @@ namespace Server.Items
         {
             base.OnItemAdded(item);
 
-            if (ItemID == 0x4142 && ItemID != 0x141)
-            {
-                ItemID = 0x4141;
-            }
-            else if (ItemID == 0x4144 && ItemID != 0x143)
-            {
-                ItemID = 0x4143;
-            }
+            CheckMailBox();
         }
 
         public override void OnItemRemoved(Item item)
         {
             base.OnItemRemoved(item);
 
-            if (Items.Count == 0)
-            {
-                if (ItemID == 0x4141 && ItemID != 0x4142)
-                {
-                    ItemID = 0x4142;
-                }
-                else if (ItemID == 0x4143 && ItemID != 0x4144)
-                {
-                    ItemID = 0x4144;
-                }
-            }
+            CheckMailBox();
 
             if (Contents != null && Contents.ContainsKey(item))
             {

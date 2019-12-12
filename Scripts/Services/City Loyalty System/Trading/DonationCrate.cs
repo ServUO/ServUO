@@ -68,7 +68,9 @@ namespace Server.Engines.CityLoyalty
                     items.TrimExcess();
                 }
                 else
+                {
                     love = CheckTurnin(dropped);
+                }
 
                 if (love > 0)
                 {
@@ -101,6 +103,12 @@ namespace Server.Engines.CityLoyalty
 
                     if (sys != null)
                     {
+                        // TODO: If anything adds to treasure, change this
+                        if (item is MaritimeCargo)
+                        {
+                            AddToTreasury(sys, (MaritimeCargo)item);
+                        }
+
                         item.Delete();
                         love = Table[checkType] * item.Amount;
 
@@ -110,6 +118,21 @@ namespace Server.Engines.CityLoyalty
             }
 
             return love;
+        }
+
+        private void AddToTreasury(CityLoyaltySystem system, MaritimeCargo cargo)
+        {
+            if (system != null)
+            {
+                if (cargo.City == City)
+                {
+                    system.AddToTreasury(null, cargo.GetAwardAmount() * 1000);
+                }
+                else
+                {
+                    system.AddToTreasury(null, 100);
+                }
+            }
         }
 		
 		private class InternalTarget : Target
@@ -212,7 +235,8 @@ namespace Server.Engines.CityLoyalty
 			ItemTable.Add(typeof(BasePotion), 			15);
 			ItemTable.Add(typeof(Bow), 					20);
 			ItemTable.Add(typeof(Crossbow), 			20);
-		}
+            ItemTable.Add(typeof(MaritimeCargo),        50);
+        }
 		
 		public CityItemDonation(Serial serial) : base(serial)
 		{

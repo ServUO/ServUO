@@ -1,10 +1,14 @@
 using System;
-using Server;
 using System.Collections.Generic;
+
+using Server;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
 using Server.Engines.Quests.Doom;
+using Server.Accounting;
+using Server.Engines.Craft;
+using Server.SkillHandlers;
 
 namespace Server.Engines.Points
 {
@@ -18,23 +22,35 @@ namespace Server.Engines.Points
 
         private TextDefinition m_Name = null;
 
+        public static bool Enabled { get; set; }
+
         public CleanUpBritanniaData()
         {
-            InitializeEntries();
+            Enabled = Core.ML;
+
+            if (Enabled)
+            {
+                InitializeEntries();
+                PointsExchange = new Dictionary<string, double>();
+            }
         }
 
         public static double GetPoints(Item item)
         {
-            double points = 0;
-
             if (item is IVvVItem && ((IVvVItem)item).IsVvVItem)
-                return points;
+                return 0;
+
+            double points = 0;
 
             Type type = item.GetType();
 
             if (Entries.ContainsKey(type))
             {
                 points = Entries[type];
+
+                // Kind of ametuar, but if this arrizes more, we'll make a seperate function
+                if (item is SOS && ((SOS)item).IsAncient)
+                    points = 2500;
 
                 if (item.Stackable)
                     points = points * item.Amount;                
@@ -88,7 +104,7 @@ namespace Server.Engines.Points
                     else if (ps.Value == 120)
                         points = 2500;
                 }
-                else if (item is ScrollofTranscendence)
+                else if (item is ScrollOfTranscendence)
                 {
                     SpecialScroll sot = (SpecialScroll)item;
 
@@ -133,6 +149,10 @@ namespace Server.Engines.Points
                     BasePigmentsOfTokuno pigments = (BasePigmentsOfTokuno)item;
                     points = 500 * pigments.UsesRemaining;
                 }
+                else if (item is ICombatEquipment)
+                {
+                    points = GetPointsForEquipment(item);
+                }
 
                 if (item.LootType != LootType.Blessed && points < 100 && item is IShipwreckedItem && ((IShipwreckedItem)item).IsShipwreckedItem)
                 {
@@ -160,13 +180,13 @@ namespace Server.Engines.Points
             Entries[typeof(LargeFishingNet)] = 500.0;
             Entries[typeof(AntiqueWeddingDress)] = 500.0;
             Entries[typeof(BronzedArmorValkyrie)] = 500.0;
-            Entries[typeof(Bait)] = 10.0;
             Entries[typeof(BaseCrabAndLobster)] = 1.0;
             Entries[typeof(KelpWovenLeggings)] = 500.0;
             Entries[typeof(FabledFishingNet)] = 2500.0;
             Entries[typeof(LavaRock)] = 500.0;
             Entries[typeof(SmugglersLiquor)] = 30.0;
             Entries[typeof(MessageInABottle)] = 100.0;
+            Entries[typeof(SOS)] = 100.0;
             Entries[typeof(RunedDriftwoodBow)] = 500.0;
             Entries[typeof(Rope)] = 1600.0;
             Entries[typeof(SpecialFishingNet)] = 250.0;
@@ -222,6 +242,7 @@ namespace Server.Engines.Points
             Entries[typeof(SpinedLeather)] = 0.50;
             Entries[typeof(HornedLeather)] = 1.0;
             Entries[typeof(BarbedLeather)] = 2.0;
+            Entries[typeof(Fur)] = 0.10;
 
 
             //BOD Rewards
@@ -543,7 +564,7 @@ namespace Server.Engines.Points
             Entries[typeof(VampiricEssence)] = 5000.0;
             Entries[typeof(Venom)] = 5000.0;
             Entries[typeof(VoidInfusedKilt)] = 5000.0;
-            Entries[typeof(WallofHungryMouths)] = 5000.0;
+            Entries[typeof(WallOfHungryMouths)] = 5000.0;
 
             //Tokuno Major Artifacts
             Entries[typeof(DarkenedSky)] = 2500.0;
@@ -688,9 +709,217 @@ namespace Server.Engines.Points
             Entries[typeof(BalmOfSwiftness)] = 100.0;
             Entries[typeof(TaintedMushroom)] = 1000.0;
             Entries[typeof(GoldenSkull)] = 1000.0;
+            Entries[typeof(RedSoulstone)] = 15000.0;
+            Entries[typeof(BlueSoulstone)] = 15000.0;
+            Entries[typeof(SoulStone)] = 15000.0;
+            Entries[typeof(HornOfPlenty)] = 2500.0;
+            Entries[typeof(KepetchWax)] = 500.0;
+            Entries[typeof(SlithEye)] = 500.0;
+            Entries[typeof(SoulstoneFragment)] = 500.0;
+            Entries[typeof(WhiteClothDyeTub)] = 300.0;
+            Entries[typeof(Lodestone)] = 75.0;
+            Entries[typeof(FeyWings)] = 75.0;
+            Entries[typeof(StoutWhip)] = 3.0;
+            Entries[typeof(PlantClippings)] = 1.0;
+            Entries[typeof(BasketOfRolls)] = 5.0;
+            Entries[typeof(Yeast)] = 10.0;
+            Entries[typeof(ValentinesCard)] = 50.0;
+            Entries[typeof(MetallicClothDyeTub)] = 100.0;
 
             //Treasure Hunting
             Entries[typeof(Lockpick)] = 0.10;
+        }
+
+        public static int GetPointsForEquipment(Item item)
+        {
+            if (item is IEpiphanyArmor)
+            {
+                return 1000;
+            }
+
+            foreach (CraftSystem system in CraftSystem.Systems)
+            {
+                CraftItem crItem = null;
+
+                if (system != null && system.CraftItems != null)
+                {
+                    var type = item.GetType();
+
+                    if (type == typeof(SilverRing))
+                    {
+                        type = typeof(GoldRing);
+                    }
+                    else if (type == typeof(SilverBracelet))
+                    {
+                        type = typeof(GoldBracelet);
+                    }
+
+                    crItem = system.CraftItems.SearchFor(type);
+
+                    if (crItem != null && crItem.Resources != null)
+                    {
+                        CraftRes craftRes = crItem.Resources.GetAt(0);
+                        double amount = 1;
+
+                        if (craftRes != null)
+                        {
+                            amount = craftRes.Amount;
+                        }
+
+                        double award = 1;
+
+                        if (item is IResource)
+                        {
+                            switch (((IResource)item).Resource)
+                            {
+                                default: award = amount * .1; break;
+                                case CraftResource.DullCopper: award = amount * .47; break;
+                                case CraftResource.ShadowIron: award = amount * .73; break;
+                                case CraftResource.Copper: award = amount * 1.0; break;
+                                case CraftResource.Bronze: award = amount * 1.47; break;
+                                case CraftResource.Gold: award = amount * 2.5; break;
+                                case CraftResource.Agapite: award = amount * 5.0; break;
+                                case CraftResource.Verite: award = amount * 8.5; break;
+                                case CraftResource.Valorite: award = amount * 10; break;
+                                case CraftResource.SpinedLeather: award = amount * 0.5; break;
+                                case CraftResource.HornedLeather: award = amount * 1.0; break;
+                                case CraftResource.BarbedLeather: award = amount * 2.0; break;
+                                case CraftResource.OakWood: award = amount * .17; break;
+                                case CraftResource.AshWood: award = amount * .33; break;
+                                case CraftResource.YewWood: award = amount * .67; break;
+                                case CraftResource.Heartwood: award = amount * 1.0; break;
+                                case CraftResource.Bloodwood: award = amount * 2.17; break;
+                                case CraftResource.Frostwood: award = amount * 3.17; break;
+                            }
+                        }
+
+                        var weight = Imbuing.GetTotalWeight(item, -1, false, true);
+
+                        if (weight > 0)
+                        {
+                            award += weight / 30;
+                        }
+
+                        return (int)award;
+                    }
+                }
+            }
+
+            return 0;
+        }
+
+        #region Points Exchange
+
+        public Dictionary<string, double> PointsExchange { get; private set; }
+
+        public double GetPointsFromExchange(Mobile m)
+        {
+            Account a = m.Account as Account;
+
+            if (a != null && !PointsExchange.ContainsKey(a.Username))
+            {
+                PointsExchange[a.Username] = 0.0;
+            }
+
+            return a == null ? 0.0 : PointsExchange[a.Username];
+        }
+
+        public bool AddPointsToExchange(Mobile m)
+        {
+            Account a = m.Account as Account;
+
+            if (a == null)
+            {
+                return false;
+            }
+
+            double points = GetPoints(m);
+
+            if (points <= 0)
+            {
+                m.SendLocalizedMessage(1158451); // This account has no points to deposit.
+            }
+            else if (DeductPoints(m, points))
+            {
+                if (!PointsExchange.ContainsKey(a.Username))
+                {
+                    PointsExchange[a.Username] = points;
+                }
+                else
+                {
+                    PointsExchange[a.Username] += points;
+                }
+
+                m.SendLocalizedMessage(1158452, points.ToString("N0")); // You have deposited ~1_VALUE~ Cleanup Britannia Points.
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool RemovePointsFromExchange(Mobile m)
+        {
+            Account a = m.Account as Account;
+
+            if (a == null)
+            {
+                return false;
+            }
+
+            double points = GetPointsFromExchange(m);
+
+            if (points <= 0)
+            {
+                m.SendLocalizedMessage(1158457); // This account has no points to withdraw.
+            }
+            else if (PointsExchange.ContainsKey(a.Username))
+            {
+                PointsExchange[a.Username] = 0;
+                AwardPoints(m, points, false, false);
+
+                m.SendLocalizedMessage(1158453, String.Format("{0}\t{1}", points.ToString("N0"), ((int)GetPoints(m)).ToString("N0"))); // You have withdrawn ~1_VALUE~ Cleanup Britannia Points.  You now have ~2_VALUE~ points.
+                return true;
+            }
+
+            return false;
+        }
+        #endregion
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+
+            writer.Write(PointsExchange == null ? 0 : PointsExchange.Count);
+
+            if (PointsExchange != null)
+            {
+                foreach (var kvp in PointsExchange)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value);
+                }
+            }
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            if (this.Version >= 2)
+            {
+                int version = reader.ReadInt();
+
+                int count = reader.ReadInt();
+
+                for (int i = 0; i < count; i++)
+                {
+                    string accountName = reader.ReadString();
+                    double points = reader.ReadDouble();
+
+                    PointsExchange[accountName] = points;
+                }
+            }
         }
     }
 

@@ -258,11 +258,13 @@ namespace Server.Items
                         Hue = 555;
 
                         double chance = .10;
-
-                        if (Dryness <= Dryness.Parched)
-                            chance = .01;
-                        else if (Dryness <= Dryness.Dry)
+                        if (Dryness == Dryness.Dry)
                             chance = .05;
+                        else if (Dryness == Dryness.Parched)
+                            chance = .01;
+                        else if (Dryness == Dryness.Dehydrated)
+                            chance = 0;
+                       
 
                         if (CanMutate && chance >= Utility.RandomDouble())
                         {

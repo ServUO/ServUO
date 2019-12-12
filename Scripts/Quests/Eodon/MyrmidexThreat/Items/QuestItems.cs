@@ -42,9 +42,9 @@ namespace Server.Items
             }
 		}
 		
-		public override void OnMapComplete(TreasureMapChest chest)
+		public override void OnMapComplete(Mobile from, TreasureMapChest chest)
 		{
-			base.OnMapComplete(chest);
+			base.OnMapComplete(from, chest);
 			
 			if(chest != null)
 				chest.DropItem(new StasisChamberActivator());

@@ -8,7 +8,7 @@ namespace Server.Items
         public StuddedGorget()
             : base(0x13D6)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public StuddedGorget(Serial serial)
@@ -117,9 +117,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (this.Weight == 2.0)
-                this.Weight = 1.0;
         }
     }
 }

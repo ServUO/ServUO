@@ -46,12 +46,12 @@ namespace Server.SkillHandlers
                 public InternalTarget(BasePoisonPotion potion)
                     : base(2, false, TargetFlags.None)
                 {
-                    this.m_Potion = potion;
+                    m_Potion = potion;
                 }
 
                 protected override void OnTarget(Mobile from, object targeted)
                 {
-                    if (this.m_Potion.Deleted)
+                    if (m_Potion.Deleted)
                         return;
 
                     bool startTimer = false;
@@ -77,7 +77,7 @@ namespace Server.SkillHandlers
 
                     if (startTimer)
                     {
-                        new InternalTimer(from, (Item)targeted, this.m_Potion).Start();
+                        new InternalTimer(from, (Item)targeted, m_Potion).Start();
 
                         from.PlaySound(0x4F);
                         m_Potion.Consume();
@@ -99,67 +99,68 @@ namespace Server.SkillHandlers
                     private readonly Poison m_Poison;
                     private readonly double m_MinSkill;
                     private readonly double m_MaxSkill;
+
                     public InternalTimer(Mobile from, Item target, BasePoisonPotion potion)
                         : base(TimeSpan.FromSeconds(2.0))
                     {
-                        this.m_From = from;
-                        this.m_Target = target;
-                        this.m_Poison = potion.Poison;
-                        this.m_MinSkill = potion.MinPoisoningSkill;
-                        this.m_MaxSkill = potion.MaxPoisoningSkill;
-                        this.Priority = TimerPriority.TwoFiftyMS;
+                        m_From = from;
+                        m_Target = target;
+                        m_Poison = potion.Poison;
+                        m_MinSkill = potion.MinPoisoningSkill;
+                        m_MaxSkill = potion.MaxPoisoningSkill;
+                        Priority = TimerPriority.TwoFiftyMS;
                     }
 
                     protected override void OnTick()
                     {
-                        if (this.m_From.CheckTargetSkill(SkillName.Poisoning, this.m_Target, this.m_MinSkill, this.m_MaxSkill))
+                        if (m_From.CheckTargetSkill(SkillName.Poisoning, m_Target, m_MinSkill, m_MaxSkill))
                         {
-                            if (this.m_Target is Food)
+                            if (m_Target is Food)
                             {
-                                ((Food)this.m_Target).Poison = this.m_Poison;
+                                ((Food)m_Target).Poison = m_Poison;
                             }
-                            else if (this.m_Target is BaseWeapon)
+                            else if (m_Target is BaseWeapon)
                             {
-                                ((BaseWeapon)this.m_Target).Poison = this.m_Poison;
-                                ((BaseWeapon)this.m_Target).PoisonCharges = 18 - (this.m_Poison.RealLevel * 2);
+                                ((BaseWeapon)m_Target).Poison = m_Poison;
+                                ((BaseWeapon)m_Target).PoisonCharges = 18 - (m_Poison.RealLevel * 2);
                             }
-                            else if (this.m_Target is FukiyaDarts)
+                            else if (m_Target is FukiyaDarts)
                             {
-                                ((FukiyaDarts)this.m_Target).Poison = this.m_Poison;
-                                ((FukiyaDarts)this.m_Target).PoisonCharges = Math.Min(18 - (this.m_Poison.RealLevel * 2), ((FukiyaDarts)this.m_Target).UsesRemaining);
+                                ((FukiyaDarts)m_Target).Poison = m_Poison;
+                                ((FukiyaDarts)m_Target).PoisonCharges = Math.Min(18 - (m_Poison.RealLevel * 2), ((FukiyaDarts)m_Target).UsesRemaining);
                             }
-                            else if (this.m_Target is Shuriken)
+                            else if (m_Target is Shuriken)
                             {
-                                ((Shuriken)this.m_Target).Poison = this.m_Poison;
-                                ((Shuriken)this.m_Target).PoisonCharges = Math.Min(18 - (this.m_Poison.RealLevel * 2), ((Shuriken)this.m_Target).UsesRemaining);
+                                ((Shuriken)m_Target).Poison = m_Poison;
+                                ((Shuriken)m_Target).PoisonCharges = Math.Min(18 - (m_Poison.RealLevel * 2), ((Shuriken)m_Target).UsesRemaining);
                             }
 
-                            this.m_From.SendLocalizedMessage(1010517); // You apply the poison
+                            m_From.SendLocalizedMessage(1010517); // You apply the poison
 
-                            Misc.Titles.AwardKarma(this.m_From, -20, true);
+                            Misc.Titles.AwardKarma(m_From, -20, true);
                         }
                         else // Failed
                         {
                             // 5% of chance of getting poisoned if failed
-                            if (this.m_From.Skills[SkillName.Poisoning].Base < 80.0 && Utility.Random(20) == 0)
+                            if (m_From.Skills[SkillName.Poisoning].Base < 80.0 && Utility.Random(20) == 0)
                             {
-                                this.m_From.SendLocalizedMessage(502148); // You make a grave mistake while applying the poison.
-                                this.m_From.ApplyPoison(this.m_From, this.m_Poison);
+                                m_From.SendLocalizedMessage(502148); // You make a grave mistake while applying the poison.
+                                m_From.ApplyPoison(m_From, m_Poison);
                             }
                             else
                             {
-                                if (this.m_Target is BaseWeapon)
+                                if (m_Target is BaseWeapon)
                                 {
-                                    BaseWeapon weapon = (BaseWeapon)this.m_Target;
+                                    BaseWeapon weapon = (BaseWeapon)m_Target;
 
                                     if (weapon.Type == WeaponType.Slashing)
-                                        this.m_From.SendLocalizedMessage(1010516); // You fail to apply a sufficient dose of poison on the blade
+                                        m_From.SendLocalizedMessage(1010516); // You fail to apply a sufficient dose of poison on the blade
                                     else
-                                        this.m_From.SendLocalizedMessage(1010518); // You fail to apply a sufficient dose of poison
+                                        m_From.SendLocalizedMessage(1010518); // You fail to apply a sufficient dose of poison
                                 }
                                 else
                                 {
-                                    this.m_From.SendLocalizedMessage(1010518); // You fail to apply a sufficient dose of poison
+                                    m_From.SendLocalizedMessage(1010518); // You fail to apply a sufficient dose of poison
                                 }
                             }
                         }

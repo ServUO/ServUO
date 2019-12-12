@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - ArcherGuard.cs
-// **********
-#endregion
-
 #region References
 using System;
 

@@ -2,11 +2,11 @@ using System;
 
 namespace Server.Items
 {
-    [Flipable(0xC17, 0xC17)]
+    [Flipable(0xC19, 0xC1A)]
     public class BrokenFallenChairComponent : AddonComponent
     {
         public BrokenFallenChairComponent()
-            : base(0xC17)
+            : base(0xC19)
         {
         }
 
@@ -26,7 +26,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -34,6 +34,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
+
+            if (version == 0)
+                ItemID = 0xC19;
         }
     }
 

@@ -8,12 +8,12 @@ namespace Server.Items
         [Constructable]
         public PendantOfTheMagi()
         {
-            this.Hue = 0x48D;
-            this.Attributes.BonusInt = 10;
-            this.Attributes.RegenMana = 3;
-            this.Attributes.SpellDamage = 5;
-            this.Attributes.LowerManaCost = 10;
-            this.Attributes.LowerRegCost = 30;
+            Hue = 0x48D;
+            Attributes.BonusInt = 10;
+            Attributes.RegenMana = 3;
+            Attributes.SpellDamage = 5;
+            Attributes.LowerManaCost = 10;
+            Attributes.LowerRegCost = 30;
         }
 
         public PendantOfTheMagi(Serial serial)

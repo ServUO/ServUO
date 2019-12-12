@@ -11,39 +11,43 @@ namespace Server.Mobiles
         public Semidar()
             : base(AIType.AI_Mage)
         {
-            this.Name = "Semidar";
-            this.Body = 174;
-            this.BaseSoundID = 0x4B0;
+            Name = "Semidar";
+            Body = 174;
+            BaseSoundID = 0x4B0;
 
-            this.SetStr(502, 600);
-            this.SetDex(102, 200);
-            this.SetInt(601, 750);
+            SetStr(502, 600);
+            SetDex(102, 200);
+            SetInt(601, 750);
 
-            this.SetHits(10000);
-            this.SetStam(103, 250);
+            SetHits(10000);
+            SetStam(103, 250);
 
-            this.SetDamage(29, 35);
+            SetDamage(29, 35);
 
-            this.SetDamageType(ResistanceType.Physical, 75);
-            this.SetDamageType(ResistanceType.Fire, 25);
+            SetDamageType(ResistanceType.Physical, 75);
+            SetDamageType(ResistanceType.Fire, 25);
 
-            this.SetResistance(ResistanceType.Physical, 75, 90);
-            this.SetResistance(ResistanceType.Fire, 65, 75);
-            this.SetResistance(ResistanceType.Cold, 60, 70);
-            this.SetResistance(ResistanceType.Poison, 65, 75);
-            this.SetResistance(ResistanceType.Energy, 65, 75);
+            SetResistance(ResistanceType.Physical, 75, 90);
+            SetResistance(ResistanceType.Fire, 65, 75);
+            SetResistance(ResistanceType.Cold, 60, 70);
+            SetResistance(ResistanceType.Poison, 65, 75);
+            SetResistance(ResistanceType.Energy, 65, 75);
 
-            this.SetSkill(SkillName.EvalInt, 95.1, 100.0);
-            this.SetSkill(SkillName.Magery, 90.1, 105.0);
-            this.SetSkill(SkillName.Meditation, 95.1, 100.0);
-            this.SetSkill(SkillName.MagicResist, 120.2, 140.0);
-            this.SetSkill(SkillName.Tactics, 90.1, 105.0);
-            this.SetSkill(SkillName.Wrestling, 90.1, 105.0);
+            SetSkill(SkillName.EvalInt, 95.1, 100.0);
+            SetSkill(SkillName.Magery, 90.1, 105.0);
+            SetSkill(SkillName.Meditation, 95.1, 100.0);
+            SetSkill(SkillName.MagicResist, 120.2, 140.0);
+            SetSkill(SkillName.Tactics, 90.1, 105.0);
+            SetSkill(SkillName.Wrestling, 90.1, 105.0);
 
-            this.Fame = 24000;
-            this.Karma = -24000;
+            Fame = 24000;
+            Karma = -24000;
 
-            this.VirtualArmor = 20;
+            VirtualArmor = 20;
+            SetSpecialAbility(SpecialAbility.LifeDrain);
+
+            ForceActiveSpeed = 0.3;
+            ForcePassiveSpeed = 0.6;
         }
 
         public Semidar(Serial serial)
@@ -96,16 +100,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 4);
-            this.AddLoot(LootPack.FilthyRich);
-        }
-
-        public override int GetDrainAmount(Mobile m)
-        {
-            if (m.Female)
-                return base.GetDrainAmount(m);
-
-            return base.GetDrainAmount(m) * 2;
+            AddLoot(LootPack.UltraRich, 4);
+            AddLoot(LootPack.FilthyRich);
         }
 
         public override void CheckReflect(Mobile caster, ref bool reflect)
@@ -119,9 +115,6 @@ namespace Server.Mobiles
             if (caster.Body.IsMale)
                 scalar = 20; // Male bodies always reflect.. damage scaled 20x
         }*/
-
-        public override bool DrainsLife { get { return false; } }
-        public override double DrainsLifeChance { get { return 0.25; } }
 
         public override void Serialize(GenericWriter writer)
         {

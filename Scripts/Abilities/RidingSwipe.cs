@@ -58,29 +58,28 @@ namespace Server.Items
 
             if (!attacker.Mounted)
             {
+                BlockMountType type = BlockMountType.RidingSwipe;
                 IMount mount = defender.Mount;
 
-                if (mount != null || defender.Flying || (Core.ML && Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender)))
+                if (Core.SA)
                 {
-                    BaseMount.Dismount(defender);
-
-                    if (mount is Mobile)
+                    if (defender.Flying)
                     {
-                        AOS.Damage((Mobile)mount, attacker, amount, 100, 0, 0, 0, 0);
-
-                        if (!m_MountPrevented.Contains((Mobile)mount))
-                            m_MountPrevented.Add((Mobile)mount);
+                        type = BlockMountType.RidingSwipeFlying;
                     }
-                    else
+                    else if (mount is EtherealMount)
                     {
-                        AOS.Damage(defender, attacker, amount, 100, 0, 0, 0, 0);
+                        type = BlockMountType.RidingSwipeEthereal;
                     }
-
-                    attacker.SendLocalizedMessage(1060082); // The force of your attack has dislodged them from their mount!
-
-                    defender.PlaySound(0x140);
-                    defender.FixedParticles(0x3728, 10, 15, 9955, EffectLayer.Waist);
                 }
+
+                Server.Items.Dismount.DoDismount(attacker, defender, mount, 10, type);
+
+                if(mount is Mobile)
+                    AOS.Damage((Mobile)mount, attacker, amount, 100, 0, 0, 0, 0);
+
+                defender.PlaySound(0x140);
+                defender.FixedParticles(0x3728, 10, 15, 9955, EffectLayer.Waist);
             }
             else
             {
@@ -97,25 +96,6 @@ namespace Server.Items
                     Server.Items.ParalyzingBlow.BeginImmunity(defender, Server.Items.ParalyzingBlow.FreezeDelayDuration);
                 }
             }
-        }
-
-        public static List<Mobile> MountPrevented { get { return m_MountPrevented; } }
-        private static List<Mobile> m_MountPrevented = new List<Mobile>();
-
-        public static bool CanMount(Mobile mount)
-        {
-            if (m_MountPrevented.Contains(mount))
-            {
-                if (mount.Hits == mount.HitsMax)
-                {
-                    m_MountPrevented.Remove(mount);
-                    return true;
-                }
-                else
-                    return false;
-            }
-
-            return true;
         }
     }
 }

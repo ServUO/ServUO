@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class GoblinBlood : Item
+    public class GoblinBlood : Item, ICommodity
     {
         [Constructable]
         public GoblinBlood()
@@ -22,6 +22,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override int LabelNumber
         {

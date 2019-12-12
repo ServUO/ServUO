@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Server;
 using Server.Targeting;
-using System.Collections.Generic;
 
 namespace Server.Spells.Mysticism
 {
@@ -62,20 +64,8 @@ namespace Server.Spells.Mysticism
                 if (map == null)
                     return;
 
-                List<Mobile> targets = new List<Mobile>();               
-
-                IPooledEnumerable eable = map.GetMobilesInRange(new Point3D(p), 3);
-                foreach (Mobile m in eable)
+                foreach (var m in AcquireIndirectTargets(p, 3).OfType<Mobile>())
                 {
-                    if (Caster != m && Caster.InLOS(m) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false) && !SleepSpell.IsUnderSleepEffects(m) && !m.Paralyzed)
-                        targets.Add(m);
-                }
-                eable.Free();
-
-                for (int i = 0; i < targets.Count; ++i)
-                {
-                    Mobile m = targets[i];
-
                     double duration = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 20) + 3;
                     duration -= GetResistSkill(m) / 10;
 

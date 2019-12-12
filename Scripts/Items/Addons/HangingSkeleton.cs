@@ -78,6 +78,11 @@ namespace Server.Items
                 list.Add(1076220); // 4th Year Veteran Reward
         }
 
+        void IChopable.OnChop(Mobile user)
+        {
+            OnDoubleClick(user);
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (from.InRange(this.Location, 3))
@@ -259,7 +264,7 @@ namespace Server.Items
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                if (this.m_Skeleton == null | this.m_Skeleton.Deleted)
+                if (this.m_Skeleton == null || this.m_Skeleton.Deleted)
                     return;		
 				
                 Mobile m = sender.Mobile;	

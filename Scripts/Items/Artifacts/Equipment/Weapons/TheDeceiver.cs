@@ -3,7 +3,7 @@ using System;
 namespace Server.Items
 {
     [FlipableAttribute(0x1443, 0x1442)]
-    public class TheDeceiver : TwoHandedAxe, ITokunoDyable
+    public class TheDeceiver : TwoHandedAxe
     {
         public override int LabelNumber { get { return 1157344; } } // the deceiver
         public override bool IsArtifact { get { return true; } }
@@ -12,13 +12,12 @@ namespace Server.Items
         public TheDeceiver() 
         {
             ExtendedWeaponAttributes.HitSparks = 20;
-
-            this.WeaponAttributes.HitLowerAttack = 20;
-            this.WeaponAttributes.HitEnergyArea = 75;
-            this.WeaponAttributes.HitLowerDefend = 20;
-            this.WeaponAttributes.HitLeechStam = 30;
-            this.Attributes.LowerManaCost = 8;
-            this.Attributes.WeaponDamage = 75;
+            WeaponAttributes.HitLowerAttack = 20;
+            WeaponAttributes.HitEnergyArea = 75;
+            WeaponAttributes.HitLowerDefend = 20;
+            WeaponAttributes.HitLeechStam = 30;
+            Attributes.LowerManaCost = 8;
+            Attributes.WeaponDamage = 75;
         }
 
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)

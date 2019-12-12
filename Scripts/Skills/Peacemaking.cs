@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Peacemaking.cs
-// **********
-#endregion
-
 #region References
 using System;
 using Server.Engines.XmlSpawner2;
@@ -38,6 +32,11 @@ namespace Server.SkillHandlers
 			from.Target = new InternalTarget(from, instrument);
 			from.NextSkillTime = Core.TickCount + 21600000;
 		}
+
+        public static bool UnderEffects(Mobile m)
+        {
+            return m is BaseCreature && ((BaseCreature)m).BardPacified;
+        }
 
 		public class InternalTarget : Target
 		{
@@ -82,7 +81,7 @@ namespace Server.SkillHandlers
 					if (targeted == from)
 					{
 						// Standard mode : reset combatants for everyone in the area
-						if (!BaseInstrument.CheckMusicianship(from))
+                        if (from.Player && !BaseInstrument.CheckMusicianship(from))
 						{
 							from.SendLocalizedMessage(500612); // You play poorly, and there is no effect.
 							m_Instrument.PlayInstrumentBadly(from);
@@ -165,7 +164,7 @@ namespace Server.SkillHandlers
 							from.SendLocalizedMessage(1049527); // That creature is already being calmed.
 							m_SetSkillTime = true;
 						}
-						else if (!BaseInstrument.CheckMusicianship(from))
+                        else if (from.Player && !BaseInstrument.CheckMusicianship(from))
 						{
 							from.SendLocalizedMessage(500612); // You play poorly, and there is no effect.
 							from.NextSkillTime = Core.TickCount + 5000;
@@ -176,8 +175,6 @@ namespace Server.SkillHandlers
 						{
 							double diff = m_Instrument.GetDifficultyFor(targ) - 10.0;
 							double music = from.Skills[SkillName.Musicianship].Value;
-
-							diff += XmlMobFactions.GetScaledFaction(from, targ, -25, 25, -0.001);
 
 							if (music > 100.0)
 							{

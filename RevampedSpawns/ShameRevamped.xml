@@ -1098,10 +1098,10 @@
     <Name>Shame_Revamped</Name>
     <UniqueId>9c8ba660-eea3-4d70-bba3-8e22558d9be7</UniqueId>
     <Map>Trammel</Map>
-    <X>5619</X>
-    <Y>71</Y>
-    <Width>60</Width>
-    <Height>60</Height>
+    <X>5641</X>
+    <Y>47</Y>
+    <Width>51</Width>
+    <Height>71</Height>
     <CentreX>5649</CentreX>
     <CentreY>101</CentreY>
     <CentreZ>10</CentreZ>
@@ -2361,10 +2361,10 @@
     <Name>Shame_Revamped</Name>
     <UniqueId>87003bcb-d3c2-43f8-a936-c9f7ea2ff8d5</UniqueId>
     <Map>Felucca</Map>
-    <X>5619</X>
-    <Y>71</Y>
-    <Width>60</Width>
-    <Height>60</Height>
+    <X>5641</X>
+    <Y>47</Y>
+    <Width>51</Width>
+    <Height>71</Height>
     <CentreX>5649</CentreX>
     <CentreY>101</CentreY>
     <CentreZ>10</CentreZ>

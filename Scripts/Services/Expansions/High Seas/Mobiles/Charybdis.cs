@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Multis;
 using System.Collections.Generic;
@@ -110,39 +110,50 @@ namespace Server.Mobiles
 
         public void DoTeleport()
         {
-            if (this.Combatant == null || !(Combatant is Mobile))
+            var combatant = Combatant as Mobile;
+
+            if (combatant == null)
             {
                 m_NextTeleport = DateTime.UtcNow + TeleportRate;
                 return;
             }
 
-            m_LastLocation = this.Location;
-            m_LastMap = this.Map;
+            m_LastLocation = Location;
+            m_LastMap = Map;
             DoTeleportEffects(m_LastLocation, m_LastMap);
 
-            this.Hidden = true;
-            this.Internalize();
+            Hidden = true;
+            Internalize();
 
-            DoAreaLightningAttack((Mobile)Combatant);
+            DoAreaLightningAttack(combatant);
 
-            Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerStateCallback(FinishTeleport), new object[]{Combatant.Location,Combatant});
+            Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(3), FinishTeleport, combatant);
             m_NextTeleport = DateTime.UtcNow + TeleportRate;
         }
 
-        public void FinishTeleport(object o)
+        public void FinishTeleport(Mobile combatant)
         {
-            object[] ojs = (object[])o;
-            Point3D focusLoc = (Point3D)ojs[0];
-            Mobile focus = ojs[1] as Mobile;
+            Point3D focusLoc;
+
+            if (combatant == null || combatant.Map == null)
+            {
+                focusLoc = Location;
+            }
+            else
+            {
+                focusLoc = combatant.Location;
+            }
 
             Map map = m_LastMap;
             Point3D newLoc = Point3D.Zero;
-            BaseBoat boat = BaseBoat.FindBoatAt(focus, map);
+            BaseBoat boat = BaseBoat.FindBoatAt(focusLoc, map);
 
             for (int i = 0; i < 25; i++)
             {
                 if (boat != null)
+                {
                     newLoc = GetValidPoint(boat, map, 10);
+                }
                 else
                 {
                     int x = focusLoc.X + Utility.RandomMinMax(-12, 12);
@@ -158,12 +169,12 @@ namespace Server.Mobiles
                     break;
             }
 
-            if (newLoc == Point3D.Zero || this.GetDistanceToSqrt(newLoc) > 15)
+            if (newLoc == Point3D.Zero || GetDistanceToSqrt(newLoc) > 15)
                 newLoc = m_LastLocation;
 
             DoTeleportEffects(newLoc, map);
-            this.Hidden = false;
-            Timer.DelayCall(TimeSpan.FromSeconds(.5), new TimerStateCallback(TimedMoveToWorld), new object[]{newLoc,map,focus});
+            Hidden = false;
+            Timer.DelayCall(TimeSpan.FromSeconds(.5), new TimerStateCallback(TimedMoveToWorld), new object[] { newLoc, map, combatant });
         }
 
         public void TimedMoveToWorld(object o)
@@ -208,7 +219,7 @@ namespace Server.Mobiles
                     if (Math.Abs(x) == 2 && Math.Abs(y) == 2)
                         continue;
 
-                    Point3D pnt = new Point3D(p.X + x, p.Y + y, this.Map.GetAverageZ(p.X + x, p.Y + y));
+                    Point3D pnt = new Point3D(p.X + x, p.Y + y, Map.GetAverageZ(p.X + x, p.Y + y));
                     Effects.SendLocationEffect(pnt, map, 0x3728, 16, 4);
                 }
             }
@@ -220,15 +231,15 @@ namespace Server.Mobiles
 
         private bool m_HasPushed;
 
-        public override void DoDamageBoat(BaseGalleon galleon)
+        public override void DoDamageBoat(BaseBoat boat)
         {
-            if (galleon == null)
+            if (boat == null)
                 return;
 
             m_HasPushed = false;
-            IPoint2D pnt = galleon;
+            IPoint2D pnt = boat;
 
-            if(Combatant != null && galleon.Contains(Combatant))
+            if (Combatant != null && boat.Contains(Combatant))
                 pnt = Combatant;
 
             Direction dir = Utility.GetDirection(this, pnt);
@@ -257,7 +268,7 @@ namespace Server.Mobiles
                     case (int)Direction.Up: { x -= i; y -= i; break; }
                 }
 
-                path.Add(this.X + x, this.Y + y, this.Z);
+                path.Add(X + x, Y + y, Z);
             }
 
             new EffectsTimer(this, path, dir, DamageRange);
@@ -270,8 +281,8 @@ namespace Server.Mobiles
                 Point3D point = path[i];
                 int o = i - 1;
 
-                Server.Effects.PlaySound(point, this.Map, 278);
-                Server.Effects.PlaySound(point, this.Map, 279);
+                Server.Effects.PlaySound(point, Map, 278);
+                Server.Effects.PlaySound(point, Map, 279);
 
                 for (int rn = 0; rn < (o * 2) + 1; rn++)
                 {
@@ -321,26 +332,27 @@ namespace Server.Mobiles
                     else
                         p = ep;
 
-                    if (Spells.SpellHelper.CheckMulti(p, this.Map))
+                    if (Spells.SpellHelper.CheckMulti(p, Map))
                     {
-                        BaseGalleon galleon = BaseGalleon.FindGalleonAt(p, this.Map);
-                        if (galleon != null && !m_HasPushed)
+                        BaseBoat boat = BaseBoat.FindBoatAt(p, Map);
+
+                        if (boat != null && !m_HasPushed)
                         {
                             int damage = Utility.RandomMinMax(MinBoatDamage, MaxBoatDamage);
-                            galleon.OnTakenDamage(this, damage);
+                            boat.OnTakenDamage(this, damage);
 
-                            galleon.StartMove(dir, 1,0x2, galleon.SlowDriftInterval, true, false);
+                            boat.StartMove(dir, 1, 0x2, boat.SlowDriftInterval, true, false);
                             m_HasPushed = true;
                         }
                         continue;
                     }
 
-                    LandTile t = this.Map.Tiles.GetLandTile(x, y);
+                    LandTile t = Map.Tiles.GetLandTile(x, y);
 
                     if (IsSeaTile(t))
                     {
                         Mobile spawn = new EffectSpawn();
-                        spawn.MoveToWorld(p, this.Map);
+                        spawn.MoveToWorld(p, Map);
                     }
                 }
             }
@@ -378,16 +390,16 @@ namespace Server.Mobiles
 
             public void DoDelete()
             {
-                if (this.Alive)
+                if (Alive)
                     Kill();
             }
 
             public override void OnDelete()
             {
-                Effects.SendLocationEffect(this.Location, this.Map, 0x352D, 16, 4);
-                Effects.PlaySound(this.Location, this.Map, 0x364);
+                Effects.SendLocationEffect(Location, Map, 0x352D, 16, 4);
+                Effects.PlaySound(Location, Map, 0x364);
 
-                Effects.SendLocationParticles(EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x3728, 1, 14, 0, 7, 9915, 0);
+                Effects.SendLocationParticles(EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 1, 14, 0, 7, 9915, 0);
 
                 base.OnDelete();
             }
@@ -398,7 +410,7 @@ namespace Server.Mobiles
             public override bool Unprovokable { get { return true; } }
             public override bool Uncalmable { get { return true; } }
             public override Poison PoisonImmune { get { return Poison.Lethal; } }
-            
+
             public override int Meat { get { return 1; } }
 
             public EffectSpawn(Serial serial)
@@ -435,7 +447,7 @@ namespace Server.Mobiles
                 m_Path = path;
                 m_Mobile = mobile;
                 Priority = TimerPriority.FiftyMS;
-                this.Start();
+                Start();
             }
 
             protected override void OnTick()
@@ -444,7 +456,7 @@ namespace Server.Mobiles
 
                 if (m_I >= m_IMax)
                 {
-                    this.Stop();
+                    Stop();
                     return;
                 }
 
@@ -454,23 +466,23 @@ namespace Server.Mobiles
 
         public void SpawnTentacle()
         {
-            if (this.Combatant == null)
+            if (Combatant == null)
             {
                 m_NextSpawn = DateTime.UtcNow + SpawnRate;
                 return;
             }
 
-            Map map = this.Map;
+            Map map = Map;
 
             List<Mobile> list = new List<Mobile>();
 
-            IPooledEnumerable eable = this.GetMobilesInRange(15);
+            IPooledEnumerable eable = GetMobilesInRange(15);
             foreach (Mobile m in eable)
             {
                 if (m == this || !CanBeHarmful(m))
                     continue;
 
-                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != this.Team))
+                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != Team))
                     list.Add(m);
                 else if (m.Player)
                     list.Add(m);
@@ -510,7 +522,7 @@ namespace Server.Mobiles
                         tent.MoveToWorld(spawnLoc, map);
                         tent.Home = tent.Location;
                         tent.RangeHome = 15;
-                        tent.Team = this.Team;
+                        tent.Team = Team;
                         if (spawn != this)
                             tent.Combatant = spawn;
                         break;
@@ -577,7 +589,7 @@ namespace Server.Mobiles
             c.DropItem(pole);
 
             #region TOL
-            if(Core.TOL)
+            if (Core.TOL)
                 SkillMasteryPrimer.CheckPrimerDrop(this);
             #endregion
         }

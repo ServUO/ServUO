@@ -5,7 +5,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class KeyRing : Item, IResource
+    public class KeyRing : Item, IResource, IQuality
     {
         private CraftResource _Resource;
         private Mobile _Crafter;
@@ -153,10 +153,8 @@ namespace Server.Items
             return false;
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             if (_Crafter != null)
             {
                 list.Add(1050043, _Crafter.TitleName); // crafted by ~1_NAME~

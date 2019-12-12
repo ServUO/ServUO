@@ -3,6 +3,7 @@ using Server.Gumps;
 using Server.Mobiles;
 using Server.Engines.Quests;
 using System.Collections.Generic;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -13,8 +14,8 @@ namespace Server.Items
         [Constructable]
         public ShrineOfSingularity() : base(0x48A8)
         {
-            this.Movable = false;
-            this.Name = "Shrine Of Singularity";	
+            Movable = false;
+            Name = "Shrine Of Singularity";	
         }
 
         public ShrineOfSingularity(Serial serial)
@@ -31,10 +32,9 @@ namespace Server.Items
         }
         public override void OnSpeech(SpeechEventArgs e)
         {
-            Mobile from = e.Mobile;
-            PlayerMobile pm = from as PlayerMobile;
+            PlayerMobile pm = e.Mobile as PlayerMobile;
 
-            if (pm is PlayerMobile && !e.Handled && from.InRange(Location, 2) && e.Speech.ToLower().Trim() == "unorus")
+            if (pm != null && !e.Handled && pm.InRange(Location, 2) && e.Speech.ToLower().Trim() == "unorus")
             {
                 e.Handled = true;
                 e.Mobile.PlaySound(0xF9);
@@ -42,7 +42,7 @@ namespace Server.Items
                 QuestOfSingularity quest = GetSingularityQuest(pm);
 
                 if (HasDelay(pm) && pm.AccessLevel == AccessLevel.Player)
-                    pm.SendLocalizedMessage(1112685); //You need more time to contemplate the Book of Circles before trying again.
+                    pm.PublicOverheadMessage(MessageType.Regular, 0x47E, 1112685); // You need more time to contemplate the Book of Circles before trying again.
                 else if (pm.AbyssEntry)
                     pm.SendLocalizedMessage(1112697);  //You enter a state of peaceful contemplation, focusing on the meaning of Singularity.
                 else if (quest == null)
@@ -55,7 +55,7 @@ namespace Server.Items
                     pm.SendGump(new MondainQuestGump(quest));
                 }
                 else if (quest.Completed)
-                    from.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.Complete, false, true));
+                    pm.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.Complete, false, true));
                 else if (!pm.HasGump(typeof(QAndAGump)))
                     pm.SendGump(new QAndAGump(pm, quest));
             }
@@ -99,7 +99,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)2); // version
 
             Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(DefragDelays_Callback));
         }
@@ -122,13 +122,18 @@ namespace Server.Items
                 book.Movable = false;
                 book.MoveToWorld(new Point3D(994, 3991, -33), Map.TerMur);
             }
+
+            if (version == 1)
+            {
+                Timer.DelayCall(() => SpawnerPersistence.Delete("shrineofsingularity"));
+            }
         }
 
         public static ShrineOfSingularity Instance { get; set; }
 
         public static void Initialize()
         {
-            if (Instance == null)
+            if (Core.SA && Instance == null)
             {
                 Instance = new ShrineOfSingularity();
                 Instance.MoveToWorld(new Point3D(995, 3802, -19), Map.TerMur);

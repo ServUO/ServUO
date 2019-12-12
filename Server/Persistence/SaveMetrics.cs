@@ -53,17 +53,24 @@ namespace Server
                     "Amount of world-save bytes written to disk per second.",
                     PerformanceCounterType.RateOfCountsPerSecond32));
 
-                #if !MONO
-                try
+				if (!Core.Unix)
 				{
-					PerformanceCounterCategory.Create(PerformanceCategoryName, PerformanceCategoryDesc, PerformanceCounterCategoryType.SingleInstance, counters);
+					try
+					{
+						PerformanceCounterCategory.Create(PerformanceCategoryName, PerformanceCategoryDesc, PerformanceCounterCategoryType.SingleInstance, counters);
+					}
+					catch
+					{
+						if (Core.Debug)
+							Console.WriteLine("Metrics: Metrics enabled. Performance counters creation requires ServUO to be run as Administrator once!");
+					}               
 				}
-				catch
+				else
 				{
-					if (Core.Debug)
-                        Console.WriteLine("Metrics: Metrics enabled. Performance counters creation requires ServUO to be run as Administrator once!");
-				}               
-                #endif
+					Utility.PushColor(ConsoleColor.Yellow);
+					Console.WriteLine("WARNING: You've enabled SaveMetrics. This is currently not supported on Unix based operating systems. Please disable this option to hide this message.");
+					Utility.PopColor();
+				}
             }
 
             this.numberOfWorldSaves = new PerformanceCounter(PerformanceCategoryName, "Save - Count", false);

@@ -54,7 +54,11 @@ namespace Server.Mobiles
 			Tamable = !isFriend;
 			MinTameSkill = 107.1;
 			ControlSlots = 2;
+
+            SetWeaponAbility(WeaponAbility.BleedAttack);
 		}
+		
+		public override int TreasureMapLevel { get { return 3; } }
 
 		public override int Meat
 		{
@@ -74,11 +78,6 @@ namespace Server.Mobiles
 		public override PackInstinct PackInstinct
 		{
 			get { return PackInstinct.Ostard; }
-		}
-
-		public override WeaponAbility GetWeaponAbility()
-		{
-			return WeaponAbility.BleedAttack;
 		}
 
 		public override void GenerateLoot()
@@ -180,28 +179,10 @@ namespace Server.Mobiles
 			{
 				c.DropItem(new AncientPotteryFragments());
 			}
-
-			if (!Controlled && c != null && !c.Deleted && c is Corpse)
+            
+            if (!Controlled && Utility.RandomDouble() <= 0.005)
 			{
-				var corpse = (Corpse)c;
-				if (Utility.RandomDouble() < 0.01 && corpse.Killer != null && !corpse.Killer.Deleted)
-				{
-					GiveVArtifactTo(corpse.Killer);
-				}
-			}
-		}
-
-		public static void GiveVArtifactTo(Mobile m)
-		{
-            var item = new RaptorClaw();
-			m.PlaySound(0x5B4);
-
-			if (m.AddToBackpack(item))
-				m.SendLocalizedMessage(1062317);
-			// For your valor in combating the fallen beast, a special artifact has been bestowed on you.
-			else
-				m.SendMessage("As your backpack is full, your reward has been placed at your feet.");
-			{
+				c.DropItem(new RaptorClaw());
 			}
 		}
 
@@ -214,7 +195,7 @@ namespace Server.Mobiles
 		{
 			base.Serialize(writer);
 
-			writer.Write((int)1);
+			writer.Write((int)2);
 
 			writer.Write((bool)m_IsFriend);
 		}
@@ -227,6 +208,9 @@ namespace Server.Mobiles
 
 			if (version > 0)
 				m_IsFriend = reader.ReadBool();
+
+            if(version == 1)
+                SetWeaponAbility(WeaponAbility.BleedAttack);
 
 			if (m_IsFriend)
 				Delete();

@@ -1,7 +1,5 @@
 using System;
 using Server;
-using System.Collections.Generic;
-using Server.Mobiles;
 using Server.Items;
 
 namespace Server.Engines.VvV
@@ -19,12 +17,12 @@ namespace Server.Engines.VvV
         {
             get
             {
-                return this.m_MaxArcaneCharges;
+                return m_MaxArcaneCharges;
             }
             set
             {
-                this.m_MaxArcaneCharges = value;
-                this.InvalidateProperties();
+                m_MaxArcaneCharges = value;
+                InvalidateProperties();
             }
         }
 
@@ -33,29 +31,32 @@ namespace Server.Engines.VvV
         {
             get
             {
-                return this.m_CurArcaneCharges;
+                return m_CurArcaneCharges;
             }
             set
             {
-                this.m_CurArcaneCharges = value;
-                this.InvalidateProperties();
+                m_CurArcaneCharges = value;
+                InvalidateProperties();
             }
         }
+
+        public int TempHue { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsArcane
         {
             get
             {
-                return (this.m_MaxArcaneCharges > 0 && this.m_CurArcaneCharges >= 0);
+                return m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0;
             }
         }
 
-        public override void AddWeightProperty(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.AddWeightProperty(list);
+            base.AddCraftedProperties(list);
 
-            list.Add(1061837, "{0}\t{1}", this.m_CurArcaneCharges, this.m_MaxArcaneCharges); // arcane charges: ~1_val~ / ~2_val~
+            if (IsArcane)
+                list.Add(1061837, "{0}\t{1}", m_CurArcaneCharges, m_MaxArcaneCharges); // arcane charges: ~1_val~ / ~2_val~
         }
         #endregion
 
@@ -67,9 +68,9 @@ namespace Server.Engines.VvV
             }
         }
 
-        public VvVWand1() : base(WandEffect.None, 0, 0)
+        public VvVWand1()
+            : base(WandEffect.None, 0, 0)
         {
-            IsVvVItem = true;
             ItemID = 3571;
 
             Attributes.SpellChanneling = 1;
@@ -83,15 +84,16 @@ namespace Server.Engines.VvV
             : base(serial)
 		{
 		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
 
-            if (this.IsArcane)
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)2); // version
+
+            if (IsArcane)
             {
                 writer.Write(true);
+                writer.Write(TempHue);
                 writer.Write((int)m_CurArcaneCharges);
                 writer.Write((int)m_MaxArcaneCharges);
             }
@@ -99,18 +101,40 @@ namespace Server.Engines.VvV
             {
                 writer.Write(false);
             }
-		}
-		
-		public override void Deserialize(GenericReader reader)
+        }
+
+        public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
 
-            if (reader.ReadBool())
+            switch (version)
             {
-                m_CurArcaneCharges = reader.ReadInt();
-                m_MaxArcaneCharges = reader.ReadInt();
+                case 2:
+                    {
+                        if (reader.ReadBool())
+                        {
+                            TempHue = reader.ReadInt();
+                            m_CurArcaneCharges = reader.ReadInt();
+                            m_MaxArcaneCharges = reader.ReadInt();
+                        }
+
+                        break;
+                    }
+                case 1:
+                    {
+                        if (reader.ReadBool())
+                        {
+                            m_CurArcaneCharges = reader.ReadInt();
+                            m_MaxArcaneCharges = reader.ReadInt();
+                        }
+
+                        break;
+                    }
             }
+
+            if (version == 0)
+                Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
 		}
 	}
 
@@ -125,45 +149,42 @@ namespace Server.Engines.VvV
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxArcaneCharges
         {
-            get
-            {
-                return this.m_MaxArcaneCharges;
-            }
+            get { return m_MaxArcaneCharges; }
             set
             {
-                this.m_MaxArcaneCharges = value;
-                this.InvalidateProperties();
+                m_MaxArcaneCharges = value;
+                InvalidateProperties();
             }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int CurArcaneCharges
         {
-            get
-            {
-                return this.m_CurArcaneCharges;
-            }
+            get { return m_CurArcaneCharges; }
             set
             {
-                this.m_CurArcaneCharges = value;
-                this.InvalidateProperties();
+                m_CurArcaneCharges = value;
+                InvalidateProperties();
             }
         }
+
+        public int TempHue { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsArcane
         {
             get
             {
-                return (this.m_MaxArcaneCharges > 0 && this.m_CurArcaneCharges >= 0);
+                return m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0;
             }
         }
 
-        public override void AddWeightProperty(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.AddWeightProperty(list);
+            base.AddCraftedProperties(list);
 
-            list.Add(1061837, "{0}\t{1}", this.m_CurArcaneCharges, this.m_MaxArcaneCharges); // arcane charges: ~1_val~ / ~2_val~
+            if (IsArcane)
+                list.Add(1061837, "{0}\t{1}", m_CurArcaneCharges, m_MaxArcaneCharges); // arcane charges: ~1_val~ / ~2_val~
         }
         #endregion
 
@@ -178,7 +199,6 @@ namespace Server.Engines.VvV
         public VvVWand2()
             : base(WandEffect.None, 0, 0)
         {
-            IsVvVItem = true;
             ItemID = 3571;
 
             Attributes.SpellChanneling = 1;
@@ -196,11 +216,12 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write((int)2); // version
 
-            if (this.IsArcane)
+            if (IsArcane)
             {
                 writer.Write(true);
+                writer.Write(TempHue);
                 writer.Write((int)m_CurArcaneCharges);
                 writer.Write((int)m_MaxArcaneCharges);
             }
@@ -215,11 +236,33 @@ namespace Server.Engines.VvV
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (reader.ReadBool())
+            switch (version)
             {
-                m_CurArcaneCharges = reader.ReadInt();
-                m_MaxArcaneCharges = reader.ReadInt();
+                case 2:
+                    {
+                        if (reader.ReadBool())
+                        {
+                            TempHue = reader.ReadInt();
+                            m_CurArcaneCharges = reader.ReadInt();
+                            m_MaxArcaneCharges = reader.ReadInt();
+                        }
+
+                        break;
+                    }
+                case 1:
+                    {
+                        if (reader.ReadBool())
+                        {
+                            m_CurArcaneCharges = reader.ReadInt();
+                            m_MaxArcaneCharges = reader.ReadInt();
+                        }
+
+                        break;
+                    }
             }
+
+            if (version == 0)
+                Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
         }
     }
 }

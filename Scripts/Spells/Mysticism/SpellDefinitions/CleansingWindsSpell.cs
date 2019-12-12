@@ -31,10 +31,10 @@ namespace Server.Spells.Mysticism
 
         public override void OnCast()
         {
-            Caster.Target = new MysticSpellTarget(this, TargetFlags.Beneficial);
+            Caster.Target = new InternalTarget(this);
         }
 
-        public override void OnTarget(object o)
+        public void OnTarget(object o)
         {
             var targeted = o as Mobile;
 
@@ -50,7 +50,7 @@ namespace Server.Spells.Mysticism
 
                 Caster.PlaySound(0x64C);
 
-                var targets = new List<Mobile> {targeted};
+                var targets = new List<Mobile> { targeted };
                 targets.AddRange(FindAdditionalTargets(targeted).Take(3)); // This effect can hit up to 3 additional players beyond the primary target.
 
                 double primarySkill = Caster.Skills[CastSkill].Value;
@@ -89,7 +89,6 @@ namespace Server.Spells.Mysticism
                     // Cleansing Winds will not heal the target after removing mortal wound.
                     if (MortalStrike.IsWounded(target))
                     {
-                        MortalStrike.EndWound(target);
                         toHealMod = 0;
                     }
 
@@ -207,6 +206,12 @@ namespace Server.Spells.Mysticism
                 curseLevel += 1;
             }
 
+            if (MortalStrike.IsWounded(m))
+            {
+                MortalStrike.EndWound(m);
+                curseLevel += 2;
+            }
+
             BuffInfo.RemoveBuff(m, BuffIcon.Clumsy);
             BuffInfo.RemoveBuff(m, BuffIcon.FeebleMind);
             BuffInfo.RemoveBuff(m, BuffIcon.Weaken);
@@ -219,6 +224,41 @@ namespace Server.Spells.Mysticism
             BuffInfo.RemoveBuff(m, BuffIcon.EvilOmen);
 
             return curseLevel;
+        }
+
+        public class InternalTarget : Target
+        {
+            public CleansingWindsSpell Owner { get; set; }
+
+            public InternalTarget(CleansingWindsSpell owner)
+                : this(owner, false)
+            {
+            }
+
+            public InternalTarget(CleansingWindsSpell owner, bool allowland)
+                : base(12, allowland, TargetFlags.Beneficial)
+            {
+                Owner = owner;
+            }
+
+            protected override void OnTarget(Mobile from, object o)
+            {
+                if (o == null)
+                    return;
+
+                if (!from.CanSee(o))
+                    from.SendLocalizedMessage(500237); // Target can not be seen.
+                else
+                {
+                    SpellHelper.Turn(from, o);
+                    Owner.OnTarget(o);
+                }
+            }
+
+            protected override void OnTargetFinish(Mobile from)
+            {
+                Owner.FinishSequence();
+            }
         }
     }
 }

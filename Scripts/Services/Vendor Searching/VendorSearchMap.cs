@@ -1,16 +1,18 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using Server.Gumps;
 using Server.Engines.VendorSearching;
 using Server.Mobiles;
 using Server.ContextMenus;
 using Server.Multis;
+using Server.Gumps;
 
 namespace Server.Items
 {
     public class VendorSearchMap : MapItem
     {
+        public readonly int TeleportCost = 1000;
+        public readonly int DeleteDelayMinutes = 30;
+
         [CommandProperty(AccessLevel.GameMaster)]
         public PlayerVendor Vendor { get; set; }
 
@@ -28,33 +30,28 @@ namespace Server.Items
 
         public int TimeRemaining { get { return DeleteTime <= DateTime.UtcNow ? 0 : (int)(DeleteTime - DateTime.UtcNow).TotalMinutes; } }
 
-        public VendorSearchMap(PlayerVendor vendor, Item item) : base(vendor.Map)
+        public VendorSearchMap(PlayerVendor vendor, Item item)
+            : base(vendor.Map)
         {
             Vendor = vendor;
             SearchItem = item;
 
+            Hue = RecallRune.CalculateHue(vendor.Map, null, true);
             LootType = LootType.Blessed;
 
-            Width = 400;
-            Height = 400;
+            Width = 300;
+            Height = 300;
 
-            Bounds = new Rectangle2D(vendor.X - 100, vendor.Y - 100, 200, 200);
-            AddWorldPin(vendor.X, vendor.Y);
+            Bounds = new Rectangle2D(vendor.X - 300, vendor.Y - 300, 600, 600);
+            AddWorldPin(vendor.X, vendor.Y);            
 
-            if (vendor.Map == Map.Malas)
-                Hue = 1102;
-            else if (vendor.Map == Map.Trammel)
-                Hue = 50;
-            else if (vendor.Map == Map.Tokuno)
-                Hue = 1154;
-
-            DeleteTime = DateTime.UtcNow + TimeSpan.FromMinutes(30);
-            Timer.DelayCall(TimeSpan.FromMinutes(30), Delete);
+            DeleteTime = DateTime.UtcNow + TimeSpan.FromMinutes(DeleteDelayMinutes);
+            Timer.DelayCall(TimeSpan.FromMinutes(DeleteDelayMinutes), Delete);
         }
 
         public override bool DropToWorld(Mobile from, Point3D p)
         {
-            from.SendLocalizedMessage(1150512, "map"); // You destroyed the ~1_ITEMNAME~.
+            from.SendLocalizedMessage(500424); // You destroyed the item.
             Delete();
 
             return true;
@@ -68,7 +65,7 @@ namespace Server.Items
         public override void AddNameProperty(ObjectPropertyList list)
         {
             if (Vendor != null && Vendor.Map != null && Vendor.Map != Map.Internal)
-                list.Add(1154559, String.Format("{0}\t{1}", Vendor.Name, Vendor.ShopName)); // Map to Vendor ~1_Name~: ~2_Shop~
+                list.Add(1154559, string.Format("{0}\t{1}", Vendor.Name, Vendor.ShopName)); // Map to Vendor ~1_Name~: ~2_Shop~
             else
                 base.AddNameProperties(list);
         }
@@ -78,9 +75,9 @@ namespace Server.Items
             base.GetProperties(list);
 
             if (Vendor != null && Vendor.Map != null && Vendor.Map != Map.Internal)
-                list.Add(1154639, String.Format("{0}\t{1}", GetCoords(), Vendor.Map.ToString())); //  Vendor Located at ~1_loc~ (~2_facet~)
+                list.Add(1154639, string.Format("{0}\t{1}", GetCoords(), Vendor.Map.ToString())); //  Vendor Located at ~1_loc~ (~2_facet~)
 
-            list.Add(1075269); // destroyed when dropped
+            list.Add(1075269); // Destroyed when dropped
         }
 
         public string GetCoords()
@@ -96,7 +93,7 @@ namespace Server.Items
 
                 if (Sextant.Format(new Point3D(x, y, Vendor.Map.GetAverageZ(x, y)), Vendor.Map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
                 {
-                    return String.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+                    return string.Format("{0}o {1}'{2}, {3}o {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
                 }
             }
 
@@ -111,6 +108,9 @@ namespace Server.Items
             }
             else
             {
+                Banker.Withdraw(from, TeleportCost);
+                from.SendLocalizedMessage(1060398, TeleportCost.ToString()); // ~1_AMOUNT~ gold has been withdrawn from your bank box.
+
                 SetLocation = from.Location;
                 SetMap = from.Map;
             }
@@ -130,7 +130,7 @@ namespace Server.Items
             return Vendor != null && Vendor.Alive && BaseHouse.FindHouseAt(Vendor) != null;
         }
 
-        public Point3D GetVendorLocation()
+        public Point3D GetVendorLocation(Mobile m)
         {
             if (CheckVendor())
             {
@@ -138,6 +138,7 @@ namespace Server.Items
 
                 if (h != null)
                 {
+                    m.SendLocalizedMessage(1070905); // Strong magics have redirected you to a safer location!
                     return h.BanLocation;
                 }
             }
@@ -166,7 +167,7 @@ namespace Server.Items
             public Mobile Clicker { get; set; }
 
             public OpenMapEntry(Mobile from, VendorSearchMap map)
-                : base(3006150, -1) // open map
+                : base(3006150, 1) // Open Map
             {
                 VendorMap = map;
                 Clicker = from;
@@ -180,11 +181,11 @@ namespace Server.Items
 
         public class TeleportEntry : ContextMenuEntry
         {
-            public VendorSearchMap VendorMap { get; set; }
-            public Mobile Clicker { get; set; }
+            private VendorSearchMap VendorMap { get; set; }
+            private Mobile Clicker { get; set; }
 
             public TeleportEntry(Mobile from, VendorSearchMap map)
-                : base(map.SetLocation == Point3D.Zero ? 1154558 : 1154636, -1) // teleport to vendor : return to previous location
+                : base(map.SetLocation == Point3D.Zero ? 1154558 : 1154636, -1) // Teleport To Vendor : Return to Previous Location
             {
                 VendorMap = map;
                 Clicker = from;
@@ -192,39 +193,51 @@ namespace Server.Items
 
             public override void OnClick()
             {
-                Clicker.SendGump(new ConfirmTeleportGump(VendorMap, Clicker));
+                if (Clicker is PlayerMobile)
+                {
+                    BaseGump.SendGump(new ConfirmTeleportGump(VendorMap, (PlayerMobile)Clicker));
+                }
             }
         }
 
         public class OpenContainerEntry : ContextMenuEntry
         {
-            public VendorSearchMap VendorMap { get; set; }
-            public Mobile Clicker { get; set; }
+            private VendorSearchMap VendorMap { get; set; }
+            private Mobile Clicker { get; set; }
+            private Container Container { get; set; }
 
             public OpenContainerEntry(Mobile from, VendorSearchMap map)
                 : base(1154699, -1) // Open Container Containing Item
             {
                 VendorMap = map;
                 Clicker = from;
+                Container = VendorMap.SearchItem.ParentEntity as Container;
 
-                BaseHouse h1 = BaseHouse.FindHouseAt(VendorMap.Vendor);
-                BaseHouse h2 = BaseHouse.FindHouseAt(Clicker);
+                Enabled = IsAccessible();
+            }
 
-                Enabled = h1 != null && h1 == h2;
+            private bool IsAccessible()
+            {
+                if (!Container.IsAccessibleTo(Clicker))
+                    return false;
+
+                if (!Clicker.InRange(Container.GetWorldLocation(), 18))
+                    return false;
+
+                return true;
             }
 
             public override void OnClick()
             {
-                BaseHouse h1 = BaseHouse.FindHouseAt(VendorMap.Vendor);
-                BaseHouse h2 = BaseHouse.FindHouseAt(Clicker);
+                RecurseOpen(Container, Clicker);
+            }
 
-                if (h1 != null && h1 == h2)
-                {
-                    Container c = VendorMap.SearchItem.ParentEntity as Container;
+            private static void RecurseOpen(Container c, Mobile from)
+            {
+                if (c.Parent is Container parent)
+                    RecurseOpen(parent, from);
 
-                    if (c != null)
-                        c.DisplayTo(Clicker);
-                }
+                c.DisplayTo(from);
             }
         }
 
@@ -236,14 +249,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             Delete();

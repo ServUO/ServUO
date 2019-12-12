@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - PaladinSpell.cs
-// **********
-#endregion
-
 #region References
 using System;
 
@@ -25,7 +19,6 @@ namespace Server.Spells.Chivalry
 		public override SkillName CastSkill { get { return SkillName.Chivalry; } }
 		public override SkillName DamageSkill { get { return SkillName.Chivalry; } }
 		public override bool ClearHandsOnCast { get { return false; } }
-		//public override int CastDelayBase{ get{ return 1; } }
 		public override int CastRecoveryBase { get { return 7; } }
 
 		public static int ComputePowerValue(Mobile from, int div)
@@ -49,7 +42,7 @@ namespace Server.Spells.Chivalry
 				return false;
 			}
 
-			if (Caster.TithingPoints < RequiredTithing)
+			if (Caster.Player && Caster.TithingPoints < RequiredTithing)
 			{
 				Caster.SendLocalizedMessage(1060173, RequiredTithing.ToString());
 					// You must have at least ~1_TITHE_REQUIREMENT~ Tithing Points to use this ability,
@@ -67,7 +60,7 @@ namespace Server.Spells.Chivalry
 
 		public override bool CheckFizzle()
 		{
-			int requiredTithing = RequiredTithing;
+			int requiredTithing = Caster.Player ? RequiredTithing : 0;
 
 			if (AosAttributes.GetValue(Caster, AosAttribute.LowerRegCost) > Utility.Random(100))
 			{
@@ -101,12 +94,13 @@ namespace Server.Spells.Chivalry
 			return true;
 		}
 
-		public override void SayMantra()
-		{
-			Caster.PublicOverheadMessage(MessageType.Regular, 0x3B2, MantraNumber, "", false);
-		}
+        public override void SayMantra()
+        {
+            if (Caster.Player)
+                Caster.PublicOverheadMessage(MessageType.Spell, Caster.SpeechHue, MantraNumber, "", false);
+        }
 
-		public override void DoFizzle()
+        public override void DoFizzle()
 		{
 			Caster.PlaySound(0x1D6);
 			Caster.NextSpellTime = Core.TickCount;
@@ -125,7 +119,8 @@ namespace Server.Spells.Chivalry
 
 		public override void SendCastEffect()
 		{
-			Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 4, 3);
+            if(Caster.Player)
+			    Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 4, 3);
 		}
 
 		public override void GetCastSkills(out double min, out double max)

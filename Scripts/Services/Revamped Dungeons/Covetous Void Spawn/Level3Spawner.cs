@@ -1,8 +1,10 @@
-using Server;
 using System;
 using System.Collections.Generic;
-using Server.Mobiles;
 using System.Linq;
+
+using Server;
+using Server.ContextMenus;
+using Server.Mobiles;
 
 namespace Server.Engines.VoidPool
 {
@@ -39,7 +41,6 @@ namespace Server.Engines.VoidPool
                     {
                         if (Spawns != null)
                         {
-                            Spawns = null;
                             Deactivate(false);
                         }
 
@@ -59,6 +60,12 @@ namespace Server.Engines.VoidPool
         {
             RemoveFromSpawner(spawnable);
         }
+
+        public virtual void GetSpawnProperties(ISpawnable spawn, ObjectPropertyList list)
+        { }
+
+        public virtual void GetSpawnContextEntries(ISpawnable spawn, Mobile user, List<ContextMenuEntry> list)
+        { }
         #endregion
 
         public Level3Spawner(VoidPoolController controller)
@@ -182,19 +189,24 @@ namespace Server.Engines.VoidPool
                 Active = false;
             }
 
-            foreach (var entry in Spawns)
+            if (Spawns != null)
             {
-                var list = new List<BaseCreature>();
-
-                foreach (var bc in entry.Spawn)
+                foreach (var entry in Spawns)
                 {
-                    list.Add(bc);
+                    var list = new List<BaseCreature>();
+
+                    foreach (var bc in entry.Spawn)
+                    {
+                        list.Add(bc);
+                    }
+
+                    foreach (var creature in list)
+                        creature.Delete();
+
+                    ColUtility.Free(list);
                 }
 
-                foreach (var creature in list)
-                    creature.Delete();
-
-                ColUtility.Free(list);
+                Spawns.Clear();
             }
         }
 
@@ -209,18 +221,22 @@ namespace Server.Engines.VoidPool
             {
                 case 2:
                 case 1:
-                    if (version == 1)
-                        Active = controller.Active;
-
-                    _Active = reader.ReadBool();
+					{
+		                if (version == 1)
+		                    Active = controller.Active;
+		
+		                _Active = reader.ReadBool();
+					}
                     goto case 0;
                 case 0:
-                    int count = reader.ReadInt();
-
-                    for (int i = 0; i < count; i++)
-                    {
-                        Spawns[i].Deserialize(reader);
-                    }
+					{
+	                    int count = reader.ReadInt();
+	
+	                    for (int i = 0; i < count; i++)
+	                    {
+	                        Spawns[i].Deserialize(reader);
+	                    }
+					}
                     break;
             }
         }
@@ -231,10 +247,14 @@ namespace Server.Engines.VoidPool
 
             writer.Write(_Active);
 
-            writer.Write(Spawns.Count);
-            for (int i = 0; i < Spawns.Count; i++)
+            writer.Write(Spawns == null ? 0 : Spawns.Count);
+
+            if (Spawns != null)
             {
-                Spawns[i].Serialize(writer);
+                for (int i = 0; i < Spawns.Count; i++)
+                {
+                    Spawns[i].Serialize(writer);
+                }
             }
         }
 
@@ -260,7 +280,7 @@ namespace Server.Engines.VoidPool
 
             public void DoSpawn()
             {
-                if (Spawner == null || Spawner.Controller == null || !Spawner.Active)
+                if (Spawner == null || Spawner.Controller == null || Spawner.Controller.Map == null || !Spawner.Active)
                 {
                     return;
                 }
@@ -279,7 +299,7 @@ namespace Server.Engines.VoidPool
 
                         for(int j = 0; j < 50; j++)
                         {
-                            p = rec.GetRandomSpawnPoint(map);
+                            p = map.GetRandomSpawnPoint(rec);
 
                             if (map.CanSpawnMobile(p))
                                 break;
@@ -287,11 +307,14 @@ namespace Server.Engines.VoidPool
 
                         if (p != Point3D.Zero)
                         {
-                            bc.MoveToWorld(p, map);
+                            bc.Spawner = Spawner;
+
                             bc.Home = p;
                             bc.RangeHome = 20;
 
-                            bc.Spawner = Spawner;
+							bc.OnBeforeSpawn(p, map);
+                            bc.MoveToWorld(p, map);
+							bc.OnAfterSpawn();
 
                             Spawn.Add(bc);
                         }

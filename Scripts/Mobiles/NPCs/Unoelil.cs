@@ -9,8 +9,8 @@ namespace Server.Engines.Quests
         public Unoelil()
             : base("Unoelil", "the bark weaver")
         { 
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Unoelil(Serial serial)
@@ -32,21 +32,21 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 			
-            this.Hue = 0x8362;
-            this.HairItemID = 0x2FCD;
-            this.HairHue = 0x31D;
+            Hue = 0x8362;
+            HairItemID = 0x2FCD;
+            HairHue = 0x31D;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x1BB));
-            this.AddItem(new Tunic(0x64F));
-            this.AddItem(new ShortPants(0x1BB));
+            AddItem(new ElvenBoots(0x1BB));
+            AddItem(new Tunic(0x64F));
+            AddItem(new ShortPants(0x1BB));
         }
 
         public override void Serialize(GenericWriter writer)

@@ -42,6 +42,8 @@ namespace Server.Mobiles
 			
 			Fame = 10000;
 			Karma = -10000;
+
+            SetSpecialAbility(SpecialAbility.GraspingClaw);
 		}
 		
 		public GreaterPhoenix(Serial serial) : base(serial)

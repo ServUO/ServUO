@@ -1,11 +1,6 @@
-#region Header
-// **********
-// ServUO - BaseExplosionPotion.cs
-// **********
-#endregion
-
 #region References
 using System;
+using System.Linq;
 using System.Collections;
 
 using Server.Network;
@@ -17,12 +12,8 @@ namespace Server.Items
 {
 	public abstract class BaseExplosionPotion : BasePotion
 	{
-		private static readonly bool LeveledExplosion = false; // Should explosion potions explode other nearby potions?
-		private static readonly bool InstantExplosion = false; // Should explosion potions explode on impact?
-		private static readonly bool RelativeLocation = false; // Is the explosion target location relative for mobiles?
 		private const int ExplosionRange = 2; // How long is the blast radius?
 		private Timer m_Timer;
-		private ArrayList m_Users;
 
 		public BaseExplosionPotion(PotionEffect effect)
 			: base(0xF0D, effect)
@@ -91,17 +82,6 @@ namespace Server.Items
 			}
 
 			from.RevealingAction();
-
-			if (m_Users == null)
-			{
-				m_Users = new ArrayList();
-			}
-
-			if (!m_Users.Contains(from))
-			{
-				m_Users.Add(from);
-			}
-
 			from.Target = new ThrowTarget(this);
 
 			if (m_Timer == null)
@@ -136,20 +116,24 @@ namespace Server.Items
 				return;
 			}
 
-			Consume();
+            bool damageThrower = false;
 
-			for (int i = 0; m_Users != null && i < m_Users.Count; ++i)
-			{
-				Mobile m = (Mobile)m_Users[i];
-				ThrowTarget targ = m.Target as ThrowTarget;
+            if (from != null)
+            {
+                if (from.Target is ThrowTarget && ((ThrowTarget)from.Target).Potion == this)
+                {
+                    Target.Cancel(from);
+                }
 
-				if (targ != null && targ.Potion == this)
-				{
-					Target.Cancel(m);
-				}
-			}
+                if (IsChildOf(from.Backpack) || Parent == from)
+                {
+                    damageThrower = true;
+                }
+            }
 
-			if (map == null)
+            Consume();
+
+            if (map == null)
 			{
 				return;
 			}
@@ -164,67 +148,40 @@ namespace Server.Items
 				alchemyBonus = (int)(from.Skills.Alchemy.Value / (Core.AOS ? 5 : 10));
 			}
 
-			IPooledEnumerable eable = LeveledExplosion
-										  ? map.GetObjectsInRange(loc, ExplosionRange)
-										  : (IPooledEnumerable)map.GetMobilesInRange(loc, ExplosionRange);
-			ArrayList toExplode = new ArrayList();
-
-			int toDamage = 0;
-
-			foreach (object o in eable)
-			{
-				if (o is Mobile &&
-					(from == null || (SpellHelper.ValidIndirectTarget(from, (Mobile)o) && from.CanBeHarmful((Mobile)o, false) && from.InLOS((Mobile)o))))
-				{
-					toExplode.Add(o);
-					++toDamage;
-				}
-				else if (o is BaseExplosionPotion && o != this)
-				{
-					toExplode.Add(o);
-				}
-			}
-
-			eable.Free();
-
 			int min = Scale(from, MinDamage);
 			int max = Scale(from, MaxDamage);
 
-			for (int i = 0; i < toExplode.Count; ++i)
-			{
-				object o = toExplode[i];
+            var list = SpellHelper.AcquireIndirectTargets(from, loc, map, ExplosionRange, false).OfType<Mobile>().ToList();
 
-				if (o is Mobile)
-				{
-					Mobile m = (Mobile)o;
+            if (from != null && damageThrower && !list.Contains(from))
+            {
+                list.Add(from);
+            }
 
-					if (from != null)
-					{
-						from.DoHarmful(m);
-					}
+            foreach (var m in list)
+            {
+                if (from != null)
+                {
+                    from.DoHarmful(m);
+                }
 
-					int damage = Utility.RandomMinMax(min, max);
+                int damage = Utility.RandomMinMax(min, max);
 
-					damage += alchemyBonus;
+                damage += alchemyBonus;
 
-					if (!Core.AOS && damage > 40)
-					{
-						damage = 40;
-					}
-					else if (Core.AOS && toDamage > 2)
-					{
-						damage /= toDamage - 1;
-					}
+                if (!Core.AOS && damage > 40)
+                {
+                    damage = 40;
+                }
+                else if (Core.AOS && list.Count > 2)
+                {
+                    damage /= list.Count - 1;
+                }
 
-					AOS.Damage(m, from, damage, 0, 100, 0, 0, 0, Server.DamageType.SpellAOE);
-				}
-				else if (o is BaseExplosionPotion)
-				{
-					BaseExplosionPotion pot = (BaseExplosionPotion)o;
+                AOS.Damage(m, from, damage, 0, 100, 0, 0, 0, Server.DamageType.SpellAOE);
+            }
 
-					pot.Explode(from, false, pot.GetWorldLocation(), pot.Map);
-				}
-			}
+            list.Clear();
 		}
 
 		private void Detonate_OnTick(object state)
@@ -295,15 +252,7 @@ namespace Server.Items
 			Map map = (Map)states[2];
 
 			Point3D loc = new Point3D(p);
-
-			if (InstantExplosion)
-			{
-				Explode(from, true, loc, map);
-			}
-			else
-			{
-				MoveToWorld(loc, map);
-			}
+		    MoveToWorld(loc, map);
 		}
 
 		private class ThrowTarget : Target
@@ -347,17 +296,10 @@ namespace Server.Items
 
 				to = new Entity(Serial.Zero, new Point3D(p), map);
 
-				if (p is Mobile)
-				{
-					if (!RelativeLocation) // explosion location = current mob location. 
-					{
-						p = ((Mobile)p).Location;
-					}
-					else
-					{
-						to = (Mobile)p;
-					}
-				}
+                if (p is Mobile)
+                {
+                    to = (Mobile)p;
+                }
 
 				Effects.SendMovingEffect(from, to, m_Potion.ItemID, 7, 0, false, false, m_Potion.Hue, 0);
 

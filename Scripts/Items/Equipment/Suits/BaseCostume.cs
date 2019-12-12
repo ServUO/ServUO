@@ -1,21 +1,17 @@
 using System;
 using Server;
-using Server.Items;
-using Server.Mobiles;
-using System.Collections;
 
 namespace Server.Items
 {
     [FlipableAttribute(0x19BC, 0x19BD)]
-    public partial class BaseCostume : BaseShield, IDyable
+    public partial class BaseCostume : BaseShield
     {
         public bool m_Transformed;
         private int m_Body = 0;
         private int m_Hue = -1;
-        private int m_SaveNameHue = -1;
-        private bool m_SaveDisplayGuildTitle = true;
         private int m_SaveHueMod = -1;
-        private Mobile m_Wearer;
+
+        public virtual string CreatureName { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Transformed
@@ -41,11 +37,11 @@ namespace Server.Items
         public BaseCostume()
             : base(0x19BC)
         {
-            //Name = "Generic Costume";
             Resource = CraftResource.None;
             Attributes.SpellChanneling = 1;
             Layer = Layer.FirstValid;
-            Weight = 3.0;
+            Weight = 4.0;
+            StrRequirement = 10;
         }
 
         public BaseCostume(Serial serial)
@@ -54,30 +50,33 @@ namespace Server.Items
 
         }
 
-        private void EnMask(Mobile from)
+        private bool EnMask(Mobile from)
         {
-            m_Wearer = from;
-            from.SendMessage("You put on your spooky costume!");
+            if (from.Mounted || from.Flying) // You cannot use this while mounted or flying. 
+            {
+                from.SendLocalizedMessage(1010097);
+            }
+            else if (from.IsBodyMod || from.HueMod > -1)
+            {
+                from.SendLocalizedMessage(1158010); // You cannot use that item in this form.
+            }
+            else
+            {
+                from.BodyMod = m_Body;
+                from.HueMod = m_Hue;
+                Transformed = true;
 
-            m_SaveNameHue = from.NameHue;
-            m_SaveDisplayGuildTitle = from.DisplayGuildTitle;
-            m_SaveHueMod = from.HueMod;
-            from.BodyMod = m_Body;
-            from.NameHue = 39;
-            from.HueMod = m_Hue;
-            from.DisplayGuildTitle = false;
-            this.Transformed = true;
+                return true;
+            }
+
+            return false;
         }
 
         private void DeMask(Mobile from)
         {
-            from.SendMessage("You decide to quit being so spooky.");
-
             from.BodyMod = 0;
-            from.NameHue = m_SaveNameHue;
-            from.HueMod = m_SaveHueMod;
-            from.DisplayGuildTitle = m_SaveDisplayGuildTitle;
-            this.Transformed = false;
+            from.HueMod = -1;
+            Transformed = false;
         }
 
         public virtual bool Dye(Mobile from, DyeTub sender)
@@ -92,74 +91,48 @@ namespace Server.Items
             return true;
         }
 
-        public override void OnAdded(object parent)
+        public override bool OnEquip(Mobile from)
         {
-            if (parent is Mobile) m_Wearer = (Mobile)parent;
-            base.OnAdded(parent);
+            if (!Transformed)
+            {
+                if (EnMask(from))
+                    return true;
+
+                return false;
+            }
+
+            return base.OnEquip(from);
         }
 
-        public override void OnDoubleClick(Mobile from)
+        public override void OnRemoved(object parent)
         {
+            base.OnRemoved(parent);
 
-            if (Parent != from)
+            if (parent is Mobile && Transformed)
             {
-                from.SendMessage("The costume must be equiped to be used.");
-            }
-
-            else if (from.Mounted == true)
-            {
-                from.SendMessage("You cannot be mounted while wearing your costume!");
+                DeMask((Mobile)parent);
             }
 
-            else if (from.BodyMod != 0 && !Transformed)
-            {
-                from.SendMessage("You are already costumed!");
-            }
-
-            else if (Transformed == false)
-            {
-                EnMask(from);
-            }
-            else
-            {
-                DeMask(from);
-            }
+            base.OnRemoved(parent);
         }
 
-        public override void OnRemoved(Object o)
+        public static void OnDamaged(Mobile m)
         {
+            BaseCostume costume = m.FindItemOnLayer(Layer.FirstValid) as BaseCostume;
 
-            if (Transformed) DeMask(m_Wearer);
-            m_Wearer = null;
-
-            if (o is Mobile && ((Mobile)o).Murderer)
+            if (costume != null)
             {
-                ((Mobile)o).Criminal = true;
+                m.AddToBackpack(costume);
             }
-
-            if (o is Mobile && ((Mobile)o).GuildTitle != null)
-            {
-                ((Mobile)o).DisplayGuildTitle = m_SaveDisplayGuildTitle;
-            }
-
-            base.OnRemoved(o);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write((int)3);
             writer.Write((int)m_Body);
             writer.Write((int)m_Hue);
-            writer.Write((int)m_SaveNameHue);
-            writer.Write((bool)m_SaveDisplayGuildTitle);
-            writer.Write((int)m_SaveHueMod);
-
-            if (m_Wearer == null)
-                writer.Write((int)Serial.MinusOne.Value);
-            else
-                writer.Write((int)m_Wearer.Serial.Value);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -168,22 +141,32 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version == 1)
+            switch (version)
             {
-                m_Body = reader.ReadInt();
-                m_Hue = reader.ReadInt();
-                m_SaveNameHue = reader.ReadInt();
-                m_SaveDisplayGuildTitle = reader.ReadBool();
-                m_SaveHueMod = reader.ReadInt();
-                Serial WearerSerial = reader.ReadInt();
+                case 3:
+                    m_Body = reader.ReadInt();
+                    m_Hue = reader.ReadInt();
+                    break;
+                case 2:
+                    m_Body = reader.ReadInt();
+                    m_Hue = reader.ReadInt();
+                    reader.ReadInt();
+                    break;
+                case 1:
+                    m_Body = reader.ReadInt();
+                    m_Hue = reader.ReadInt();
+                    reader.ReadInt();
+                    reader.ReadBool();
 
-                if (WearerSerial.IsMobile)
-                    m_Wearer = World.FindMobile(WearerSerial);
-
-                else
-                    m_Wearer = null;
+                    m_SaveHueMod = reader.ReadInt();
+                    reader.ReadInt();
+                    break;
             }
 
+            if (RootParent is Mobile && ((Mobile)RootParent).Items.Contains(this))
+            {
+                EnMask((Mobile)RootParent);
+            }
         }
     }
 }

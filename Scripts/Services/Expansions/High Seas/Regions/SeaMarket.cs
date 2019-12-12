@@ -1,4 +1,7 @@
-﻿using System;
+using System;
+using System.Xml;
+using System.Linq;
+
 using Server;
 using Server.Mobiles;
 using Server.Items;
@@ -7,22 +10,15 @@ using System.Collections.Generic;
 using Server.Commands;
 using Server.Engines.Quests;
 using Server.Spells;
-using System.Linq;
 
 namespace Server.Regions
 {
-    public class SeaMarketRegion : GuardedRegion
+    public class SeaMarketRegion : BaseRegion
     {
-        private static readonly TimeSpan KickDuration = TimeSpan.FromMinutes(30);
+        private static readonly TimeSpan KickDuration = TimeSpan.FromMinutes(20);
 
         private static SeaMarketRegion m_Region1;
         private static SeaMarketRegion m_Region2;
-
-        public static void SetRegions(SeaMarketRegion reg1, SeaMarketRegion reg2)
-        {
-            m_Region1 = reg1;
-            m_Region2 = reg2;
-        }
 
         private Timer m_Timer;
 
@@ -61,13 +57,24 @@ namespace Server.Regions
         public static Rectangle2D[] Bounds { get { return m_Bounds; } }
         private static Rectangle2D[] m_Bounds = new Rectangle2D[]
         {
-            new Rectangle2D(4472, 2250, 200, 200),
+            new Rectangle2D(4529, 2296, 45, 112),
         };
 
-        public SeaMarketRegion(Map map)
-            : base("Sea Market", map, Region.DefaultPriority, m_Bounds)
+        public SeaMarketRegion(XmlElement xml, Map map, Region parent)
+            : base(xml, map, parent)
         {
-            GoLocation = new Point3D(4550, 2317, -2);
+        }
+
+        public override void OnRegister()
+        {
+            if (m_Region1 == null)
+            {
+                m_Region1 = this;
+            }
+            else if (m_Region2 == null)
+            {
+                m_Region2 = this;
+            }
         }
 
         public override bool CheckTravel(Mobile traveller, Point3D p, TravelCheckType type)
@@ -76,10 +83,21 @@ namespace Server.Regions
             {
                 case TravelCheckType.RecallTo:
                 case TravelCheckType.GateTo:
-                case TravelCheckType.Mark: return false;
+                    {
+                        return BaseBoat.FindBoatAt(p, Map) != null;
+                    }
+                case TravelCheckType.Mark:
+                    {
+                        return false;
+                    }
             }
 
             return base.CheckTravel(traveller, p, type);
+        }
+
+        public override bool AllowHousing(Mobile from, Point3D p)
+        {
+            return false;
         }
 
         #region Pirate Blabbing
@@ -114,7 +132,6 @@ namespace Server.Regions
                     Map map = capt.Map;
 
                     string locArgs;
-                    //string nameArgs;
                     string combine;
 
                     if (Sextant.Format(loc, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
@@ -147,8 +164,8 @@ namespace Server.Regions
                 return;
 
             foreach (var player in r.GetEnumeratedMobiles().Where(p => p is PlayerMobile && 
-                                                                       p.Alive &&
-                                                                       QuestHelper.GetQuest((PlayerMobile)p, typeof(ProfessionalBountyQuest)) != null))
+                                                                       p.Alive /*&&
+                                                                       QuestHelper.GetQuest((PlayerMobile)p, typeof(ProfessionalBountyQuest)) != null*/))
             {
                     IPooledEnumerable eable = player.GetMobilesInRange(4);
 

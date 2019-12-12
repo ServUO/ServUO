@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - BaseMulti.cs
-// **********
-#endregion
-
 #region References
 using Server.Network;
 using System;
@@ -89,17 +83,23 @@ namespace Server.Items
 		}
 
 		public virtual bool AllowsRelativeDrop { get { return false; } }
-
-        // Removed as it will use update range
-		/*public override int GetMaxUpdateRange()
-		{
-            return base.GetMaxUpdateRange() + 4;
-		}
-
+	
 		public override int GetUpdateRange(Mobile m)
 		{
-            return base.GetUpdateRange(m) + 4;
-		}*/
+            int min = m.NetState != null ? m.NetState.UpdateRange : Core.GlobalUpdateRange;
+            int max = Core.GlobalRadarRange - 1;
+
+            int w = Components.Width;
+            int h = Components.Height - 1;
+            int v = min + ((w > h ? w : h) / 2);
+
+            if (v > max)
+                v = max;
+            else if (v < min)
+                v = min;
+
+            return v;
+		}
 
 		public virtual MultiComponentList Components { get { return MultiData.GetComponents(ItemID); } }
 

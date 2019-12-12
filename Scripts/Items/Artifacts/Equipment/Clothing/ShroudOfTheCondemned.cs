@@ -14,9 +14,9 @@ namespace Server.Items
         public ShroudOfTheCondemned()
             : base(0x1F04, 0xD6)
         {
-            this.Hue = 2075;
-            this.Attributes.BonusHits = 3;
-            this.Attributes.BonusInt = 5;
+            Hue = 2075;
+            Attributes.BonusHits = 3;
+            Attributes.BonusInt = 5;
         }
 
         public ShroudOfTheCondemned(Serial serial)

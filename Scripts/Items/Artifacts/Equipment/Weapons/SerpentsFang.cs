@@ -8,12 +8,11 @@ namespace Server.Items
         [Constructable]
         public SerpentsFang()
         {
-            this.ItemID = 0x1400;
-            this.Hue = 0x488;
-            this.WeaponAttributes.HitPoisonArea = 100;
-            this.WeaponAttributes.ResistPoisonBonus = 20;
-            this.Attributes.AttackChance = 15;
-            this.Attributes.WeaponDamage = 50;
+            Hue = 0x488;
+            WeaponAttributes.HitPoisonArea = 100;
+            WeaponAttributes.ResistPoisonBonus = 20;
+            Attributes.AttackChance = 15;
+            Attributes.WeaponDamage = 50;
         }
 
         public SerpentsFang(Serial serial)
@@ -68,9 +67,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.ItemID == 0x1401)
-                this.ItemID = 0x1400;
         }
     }
 }

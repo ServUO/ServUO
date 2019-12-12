@@ -59,7 +59,10 @@ namespace Server.Engines.Shadowguard
 							{
                                 if (pirate.Alive)
                                 {
+                                    // this is gay, but can't figure out a better way to do!
+                                    pirate.BlockReflect = true;
                                     AOS.Damage(pirate, m, 300, 0, 0, 0, 0, 0, 0, 100);
+                                    pirate.BlockReflect = false;
                                     pirate.FixedParticles(0x3728, 20, 10, 5044, EffectLayer.Head);
 
                                     pirate.PlaySound(Utility.Random(0x3E, 3));
@@ -124,11 +127,11 @@ namespace Server.Engines.Shadowguard
 		public ShadowguardCypress Tree { get; set; }
 	
 		[CommandProperty(AccessLevel.GameMaster)]
-		public ShadowguardEncounter Encounter { get; set; }
+		public OrchardEncounter Encounter { get; set; }
 		
 		public override int Lifespan { get { return 60; } }
 	
-		public ShadowguardApple(ShadowguardEncounter encounter, ShadowguardCypress tree) : base(0x9D0)
+		public ShadowguardApple(OrchardEncounter encounter, ShadowguardCypress tree) : base(0x9D0)
 		{
 			Encounter = encounter;
 			Tree = tree;
@@ -220,7 +223,17 @@ namespace Server.Engines.Shadowguard
 				});
 			}
 		}
-		
+
+        public override void Delete()
+        {
+            base.Delete();
+
+            if (Encounter != null)
+            {
+                Encounter.OnAppleDeleted();
+            }
+        }
+
 		public ShadowguardApple(Serial serial) : base(serial)
 		{
 		}
@@ -245,20 +258,23 @@ namespace Server.Engines.Shadowguard
 	public class ShadowguardCypress : Item
 	{
 		[CommandProperty(AccessLevel.GameMaster)]
-		public ShadowguardEncounter Encounter { get; set; }
+		public OrchardEncounter Encounter { get; set; }
 		
 		[CommandProperty(AccessLevel.GameMaster)]
 		public VirtueType VirtueType { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ShadowguardCypressFoilage Foilage { get; set; }
-		
-		public ShadowguardCypress(ShadowguardEncounter encounter, VirtueType type) : base(Utility.RandomList(3320, 3323, 3326, 3329))
+
+        // 0xD96, 0xD9A, 
+
+        public ShadowguardCypress(OrchardEncounter encounter, VirtueType type)
+            : base(3329)
 		{
 			VirtueType = type;
 			Encounter = encounter;
 
-            Foilage = new ShadowguardCypressFoilage(Utility.RandomMinMax(this.ItemID + 1, this.ItemID + 2), this);
+            Foilage = new ShadowguardCypressFoilage(Utility.RandomBool() ? 0xD96 : 0xD9A, this);
 
 			Movable = false;
 		}
@@ -268,7 +284,7 @@ namespace Server.Engines.Shadowguard
             base.OnLocationChange(oldLocation);
 
             if (Foilage != null)
-                Foilage.Location = this.Location;
+                Foilage.Location = new Point3D(X, Y, Z + 6);
         }
 
         public override void OnMapChange()
@@ -281,12 +297,13 @@ namespace Server.Engines.Shadowguard
 		{
 			if(from.Backpack != null && from.InRange(this.Location, 3))
 			{
-				foreach(Item item in from.Backpack.Items.Where(i => i is ShadowguardApple && ((ShadowguardApple)i).Tree == this))
-				{
-					return;
-				}
-				
-				from.Backpack.DropItem(new ShadowguardApple(Encounter, this));
+                if (Encounter.Apple == null || Encounter.Apple.Deleted)
+                {
+                    Encounter.Apple = new ShadowguardApple(Encounter, this);
+                    from.Backpack.DropItem(Encounter.Apple);
+
+                    Encounter.OnApplePicked();
+                }
 			}
 		}
 		
@@ -372,16 +389,18 @@ namespace Server.Engines.Shadowguard
 
             writer.Write(Foilage);
 		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
 
             Foilage = reader.ReadItem() as ShadowguardCypressFoilage;
 
             if (Foilage != null)
+            {
                 Foilage.Tree = this;
+            }
 		}
 	}
 	

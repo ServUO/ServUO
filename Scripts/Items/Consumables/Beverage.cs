@@ -18,7 +18,10 @@ namespace Server.Items
         Liquor,
         Milk,
         Wine,
-        Water
+        Water,
+        Coffee,
+        GreenTea,
+        HotCocoa
     }
 
     public interface IHasQuantity
@@ -191,6 +194,159 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class HotCocoaMug : CeramicMug
+    {
+        [Constructable]
+        public HotCocoaMug()
+            : base(BeverageType.HotCocoa)
+        {
+        }
+
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            if (Quantity > 0 && Content == BeverageType.HotCocoa)
+            {
+                list.Add(1049515, "#1155738"); // a mug of Hot Cocoa
+            }
+            else
+            {
+                base.AddNameProperty(list);
+            }
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (Quantity > 0 && Content == BeverageType.HotCocoa)
+            {
+                from.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, 1155739); // *You sip from the mug*
+                Pour_OnTarget(from, from);
+            }
+            else
+            {
+                base.OnDoubleClick(from);
+            }
+        }
+
+        public HotCocoaMug(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class BasketOfGreenTeaMug : CeramicMug
+    {
+        [Constructable]
+        public BasketOfGreenTeaMug()
+            : base(BeverageType.GreenTea)
+        {
+        }
+
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            if (Quantity > 0 && Content == BeverageType.GreenTea)
+            {
+                list.Add(1049515, "#1030315"); // a mug of Basket of Green Tea
+            }
+            else
+            {
+                base.AddNameProperty(list);
+            }
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (Quantity > 0 && Content == BeverageType.GreenTea)
+            {
+                from.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, 1155739); // *You sip from the mug*
+                Pour_OnTarget(from, from);
+            }
+            else
+            {
+                base.OnDoubleClick(from);
+            }
+        }
+
+        public BasketOfGreenTeaMug(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class CoffeeMug : CeramicMug
+    {
+        [Constructable]
+        public CoffeeMug()
+            : base(BeverageType.Coffee)
+        {
+        }
+
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            if (Quantity > 0 && Content == BeverageType.Coffee)
+            {
+                list.Add(1049515, "#1155737"); // a mug of Coffee
+            }
+            else
+            {
+                base.AddNameProperty(list);
+            }
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (Quantity > 0 && Content == BeverageType.Coffee)
+            {
+                from.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, 1155739); // *You sip from the mug*
+                Pour_OnTarget(from, from);                
+            }
+            else
+            {
+                base.OnDoubleClick(from);
+            }
+        }
+
+        public CoffeeMug(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
             int version = reader.ReadInt();
         }
     }
@@ -660,7 +816,7 @@ namespace Server.Items
         }
     }
 
-    public abstract class BaseBeverage : Item, IHasQuantity, ICraftable, IResource
+    public abstract class BaseBeverage : Item, IHasQuantity, ICraftable, IResource, IQuality
     {
         private BeverageType m_Content;
         private int m_Quantity;
@@ -872,6 +1028,14 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
+            if (ShowQuantity)
+            {
+                list.Add(GetQuantityDescription());
+            }
+        }
+
+        public override void AddCraftedProperties(ObjectPropertyList list)
+        {
             if (_Crafter != null)
             {
                 list.Add(1050043, _Crafter.TitleName); // crafted by ~1_NAME~
@@ -880,11 +1044,6 @@ namespace Server.Items
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
-            }
-
-            if (ShowQuantity)
-            {
-                list.Add(GetQuantityDescription());
             }
         }
 
@@ -1000,7 +1159,14 @@ namespace Server.Items
                     src = (((AddonComponent)item).Addon as IWaterSource);
 
                 if (src == null || src.Quantity <= 0)
+                {
+                    if (item.ItemID >= 0xB41 && item.ItemID <= 0xB44)
+                    {
+                        Caddellite.CheckWaterSource(from, this, item);
+                    }
+
                     return;
+                }
 
                 if (from.Map != item.Map || !from.InRange(item.GetWorldLocation(), 2) || !from.InLOS(item))
                 {
@@ -1023,7 +1189,10 @@ namespace Server.Items
                     src.Quantity = 0;
                 }
 
-                from.SendLocalizedMessage(1010089); // You fill the container with water.
+                if (!(src is WaterContainerComponent))
+                {
+                    from.SendLocalizedMessage(1010089); // You fill the container with water.
+                }
             }
             else if (targ is Cow)
             {
@@ -1231,6 +1400,22 @@ namespace Server.Items
 
                     from.PlaySound(0x4E);
                 }
+            }
+            else if (targ is WaterContainerComponent)
+            {
+                WaterContainerComponent component = (WaterContainerComponent)targ;
+
+                if (component.IsFull)
+                {
+                    from.SendLocalizedMessage(500848); // Couldn't pour it there.  It was already full.
+                }
+                else
+                {
+                    component.Quantity += Quantity;
+                    Quantity = 0;
+                }
+
+                from.PlaySound(0x4E);
             }
             else if (from == targ)
             {

@@ -30,7 +30,7 @@ namespace Server.Engines.VvV
             Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), () =>
                 {
                     User.CloseGump(typeof(BattleWarningGump));
-                    ViceVsVirtueSystem.AddTempParticipant(User);
+                    ViceVsVirtueSystem.AddTempParticipant(User, null);
                 });
         }
 
@@ -58,11 +58,11 @@ namespace Server.Engines.VvV
                     }
                 }
 
-                if (closestGate != null)
+                if (closestGate != null && User.Map != null)
                 {
                     for (int i = 0; i < 25; i++)
                     {
-                        Point3D p = new Rectangle2D(closestGate.X - 5, closestGate.Y - 5, 10, 10).GetRandomSpawnPoint(User.Map);
+                        Point3D p = User.Map.GetRandomSpawnPoint(new Rectangle2D(closestGate.X - 5, closestGate.Y - 5, 10, 10));
 
                         if (closestGate.Map.CanFit(p.X, p.Y, p.Z, 16, false, true, true))
                         {
@@ -76,13 +76,13 @@ namespace Server.Engines.VvV
                 else
                 {
                     User.SendLocalizedMessage(1155584); // You are now open to attack!
-                    ViceVsVirtueSystem.AddTempParticipant(User);
+                    ViceVsVirtueSystem.AddTempParticipant(User, null);
                 }
             }
             else
             {
                 User.SendLocalizedMessage(1155584); // You are now open to attack!
-                ViceVsVirtueSystem.AddTempParticipant(User);
+                ViceVsVirtueSystem.AddTempParticipant(User, null);
             }
         }
     }

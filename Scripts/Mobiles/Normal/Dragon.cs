@@ -9,40 +9,42 @@ namespace Server.Mobiles
         public Dragon()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a dragon";
-            this.Body = Utility.RandomList(12, 59);
-            this.BaseSoundID = 362;
+            Name = "a dragon";
+            Body = Utility.RandomList(12, 59);
+            BaseSoundID = 362;
 
-            this.SetStr(796, 825);
-            this.SetDex(86, 105);
-            this.SetInt(436, 475);
+            SetStr(796, 825);
+            SetDex(86, 105);
+            SetInt(436, 475);
 
-            this.SetHits(478, 495);
+            SetHits(478, 495);
 
-            this.SetDamage(16, 22);
+            SetDamage(16, 22);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 55, 65);
-            this.SetResistance(ResistanceType.Fire, 60, 70);
-            this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 25, 35);
-            this.SetResistance(ResistanceType.Energy, 35, 45);
+            SetResistance(ResistanceType.Physical, 55, 65);
+            SetResistance(ResistanceType.Fire, 60, 70);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 25, 35);
+            SetResistance(ResistanceType.Energy, 35, 45);
 
-            this.SetSkill(SkillName.EvalInt, 30.1, 40.0);
-            this.SetSkill(SkillName.Magery, 30.1, 40.0);
-            this.SetSkill(SkillName.MagicResist, 99.1, 100.0);
-            this.SetSkill(SkillName.Tactics, 97.6, 100.0);
-            this.SetSkill(SkillName.Wrestling, 90.1, 92.5);
+            SetSkill(SkillName.EvalInt, 30.1, 40.0);
+            SetSkill(SkillName.Magery, 30.1, 40.0);
+            SetSkill(SkillName.MagicResist, 99.1, 100.0);
+            SetSkill(SkillName.Tactics, 97.6, 100.0);
+            SetSkill(SkillName.Wrestling, 90.1, 92.5);
 
-            this.Fame = 15000;
-            this.Karma = -15000;
+            Fame = 15000;
+            Karma = -15000;
 
-            this.VirtualArmor = 60;
+            VirtualArmor = 60;
 
-            this.Tamable = true;
-            this.ControlSlots = 3;
-            this.MinTameSkill = 93.9;
+            Tamable = true;
+            ControlSlots = 3;
+            MinTameSkill = 93.9;
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public Dragon(Serial serial)
@@ -54,21 +56,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return !this.Controlled;
+                return !Controlled;
             }
         }
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }// fire breath enabled
         public override bool AutoDispel
         {
             get
             {
-                return !this.Controlled;
+                return !Controlled;
             }
         }
         public override int TreasureMapLevel
@@ -117,7 +112,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return (this.Body == 12 ? ScaleType.Yellow : ScaleType.Red);
+                return (Body == 12 ? ScaleType.Yellow : ScaleType.Red);
             }
         }
         public override FoodType FavoriteFood
@@ -143,8 +138,8 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 2);
-            this.AddLoot(LootPack.Gems, 8);
+            AddLoot(LootPack.FilthyRich, 2);
+            AddLoot(LootPack.Gems, 8);
         }
 
         public override void Serialize(GenericWriter writer)

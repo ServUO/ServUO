@@ -68,7 +68,18 @@ namespace Server.Items
         TRex,
         Zipactriotal,
         MyrmidexQueen,
-        Virtuebane
+        Virtuebane,
+        GreyGoblin,
+        GreenGoblin,
+        Pyros,
+        Lithos,
+        Hydros,
+        Stratos,
+        Santa,
+        Krampus,
+        KhalAnkur,
+        KrampusMinion,
+        Horse
     }
 
     public class MonsterStatuetteInfo
@@ -138,29 +149,36 @@ namespace Server.Items
             /* Zipactriotl */       new MonsterStatuetteInfo(1157079, 0x9DE4, 609),
             /* Myrmidex Queen */    new MonsterStatuetteInfo(1157080, 0x9DB6, 959),
             /* Virtuebane */        new MonsterStatuetteInfo(1153592, 0x4C06, 357),
+            /* Grey Goblin */       new MonsterStatuetteInfo(1125135, 0xA095, 0x45A),
+            /* Green Goblin */      new MonsterStatuetteInfo(1125133, 0xA097, 0x45A),
+            /* Pyros */             new MonsterStatuetteInfo(1157993, 0x9F4D, new int[] { 0x112, 0x113, 0x114, 0x115, 0x116 }),
+            /* Lithos */            new MonsterStatuetteInfo(1157994, 0x9FA1, new int[] { 0x10D, 0x10E, 0x10F, 0x110, 0x111 }),
+            /* Hydros */            new MonsterStatuetteInfo(1157992, 0x9F49, new int[] { 0x117, 0x118, 0x1119, 0x11A, 0x11B }),
+            /* Stratos */           new MonsterStatuetteInfo(1157991, 0x9F4C, new int[] { 0x108, 0x109, 0x10A, 0x10B, 0x10C }),
+            /* Santa */             new MonsterStatuetteInfo(1097968, 0x4A9A, new int[] { 1641 }),
+            /* Krampus */           new MonsterStatuetteInfo(1158875, 0xA270, new int[] { 0x586, 0x587, 0x588, 0x589, 0x58A }),
+            /* Khal Ankur */        new MonsterStatuetteInfo(1158877, 0xA1C6, new int[] { 0x301, 0x302, 0x303, 0x304, 0x305 }),
+            /* Krampus Minion */    new MonsterStatuetteInfo(1158876, 0xA271, new int[] { 0X1C8, 0X1C9, 0X1CA, 0X1CB, 0X1CC }),
+            /* Horse */             new MonsterStatuetteInfo(1018263, 0xA511, 0x0A9),
         };
-
-        private readonly int m_LabelNumber;
-        private readonly int m_ItemID;
-        private readonly int[] m_Sounds;
-
+        
         public MonsterStatuetteInfo(int labelNumber, int itemID, int baseSoundID)
         {
-            m_LabelNumber = labelNumber;
-            m_ItemID = itemID;
-            m_Sounds = new int[] { baseSoundID, baseSoundID + 1, baseSoundID + 2, baseSoundID + 3, baseSoundID + 4 };
+            LabelNumber = labelNumber;
+            ItemID = itemID;
+            Sounds = new int[] { baseSoundID, baseSoundID + 1, baseSoundID + 2, baseSoundID + 3, baseSoundID + 4 };
         }
 
         public MonsterStatuetteInfo(int labelNumber, int itemID, int[] sounds)
         {
-            m_LabelNumber = labelNumber;
-            m_ItemID = itemID;
-            m_Sounds = sounds;
+            LabelNumber = labelNumber;
+            ItemID = itemID;
+            Sounds = sounds;
         }
 
-        public int LabelNumber { get { return m_LabelNumber; } }
-        public int ItemID { get { return m_ItemID; } }
-        public int[] Sounds { get { return m_Sounds; } }
+        public int LabelNumber { get; set; }
+        public int ItemID { get; set; }
+        public int[] Sounds { get; set; }
 
         public static MonsterStatuetteInfo GetInfo(MonsterStatuetteType type)
         {
@@ -177,7 +195,6 @@ namespace Server.Items
     {
         private MonsterStatuetteType m_Type;
         private bool m_TurnedOn;
-        private bool m_IsRewardItem;
 
         [Constructable]
         public MonsterStatuette()
@@ -221,11 +238,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsRewardItem
-        {
-            get { return m_IsRewardItem; }
-            set { m_IsRewardItem = value; }
-        }
+        public bool IsRewardItem { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool TurnedOn
@@ -314,7 +327,9 @@ namespace Server.Items
                 int[] sounds = MonsterStatuetteInfo.GetInfo(m_Type).Sounds;
 
                 if (sounds.Length > 0)
+                {
                     Effects.PlaySound(Location, Map, sounds[Utility.Random(sounds.Length)]);
+                }                    
             }
 
             base.OnMovement(m, oldLocation);
@@ -334,7 +349,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (Core.ML && m_IsRewardItem)
+            if (Core.ML && IsRewardItem)
                 list.Add(RewardSystem.GetRewardYearLabel(this, new object[] { m_Type })); // X Year Veteran Reward
 
             if (m_TurnedOn)
@@ -372,7 +387,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt((int)m_Type);
             writer.Write((bool)m_TurnedOn);
-            writer.Write((bool)m_IsRewardItem);
+            writer.Write((bool)IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -389,7 +404,7 @@ namespace Server.Items
                     {
                         m_Type = (MonsterStatuetteType)reader.ReadEncodedInt();
                         m_TurnedOn = reader.ReadBool();
-                        m_IsRewardItem = reader.ReadBool();
+                        IsRewardItem = reader.ReadBool();
                         break;
                     }
             }
@@ -435,3 +450,5 @@ namespace Server.Items
         }
     }
 }
+ 
+ 

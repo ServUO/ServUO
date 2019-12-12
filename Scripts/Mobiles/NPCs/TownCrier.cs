@@ -7,6 +7,9 @@ using Server.Items;
 using Server.Network;
 using Server.Prompts;
 using System.IO;
+using Server.Engines.CityLoyalty;
+using Server.ContextMenus;
+using Server.Services.TownCryer;
 
 namespace Server.Mobiles
 {
@@ -146,7 +149,9 @@ namespace Server.Mobiles
                 FilePath,
                 writer =>
                 {
-                    writer.Write(0);
+                    writer.Write(1);
+
+                    TownCryerSystem.Save(writer);
 
                     writer.Write(Instance.Entries == null ? 0 : Instance.Entries.Count);
 
@@ -165,15 +170,28 @@ namespace Server.Mobiles
                 {
                     int version = reader.ReadInt();
 
-                    int count = reader.ReadInt();
-                    for (int i = 0; i < count; i++)
+                    switch (version)
                     {
-                        var entry = new TownCrierEntry(reader);
+                        case 1:
+                            {
+                                TownCryerSystem.Load(reader);
+                                goto case 0;
+                            }
+                        case 0:
+                            {
+                                int count = reader.ReadInt();
+                                for (int i = 0; i < count; i++)
+                                {
+                                    var entry = new TownCrierEntry(reader);
 
-                        if (!entry.Expired)
-                        {
-                            Instance.AddEntry(entry);
-                        }
+                                    if (!entry.Expired)
+                                    {
+                                        Instance.AddEntry(entry);
+                                    }
+                                }
+                            }
+
+                            break;
                     }
                 });
         }
@@ -571,7 +589,7 @@ namespace Server.Mobiles
         public void ForceBeginAutoShout()
         {
             if (m_AutoShoutTimer == null)
-                m_AutoShoutTimer = Timer.DelayCall(TimeSpan.FromSeconds(5.0), TimeSpan.FromMinutes(1.0), new TimerCallback(AutoShout_Callback));
+                m_AutoShoutTimer = Timer.DelayCall(TimeSpan.FromMinutes(1.0), TimeSpan.FromMinutes(5.0), new TimerCallback(AutoShout_Callback));
         }
 
         public TownCrierEntry AddEntry(string[] lines, TimeSpan duration)
@@ -584,7 +602,7 @@ namespace Server.Mobiles
             m_Entries.Add(tce);
 
             if (m_AutoShoutTimer == null)
-                m_AutoShoutTimer = Timer.DelayCall(TimeSpan.FromSeconds(5.0), TimeSpan.FromMinutes(1.0), new TimerCallback(AutoShout_Callback));
+                m_AutoShoutTimer = Timer.DelayCall(TimeSpan.FromMinutes(1.0), TimeSpan.FromMinutes(5.0), new TimerCallback(AutoShout_Callback));
 
             return tce;
         }
@@ -597,7 +615,7 @@ namespace Server.Mobiles
             m_Entries.Add(entry);
 
             if (m_AutoShoutTimer == null)
-                m_AutoShoutTimer = Timer.DelayCall(TimeSpan.FromSeconds(5.0), TimeSpan.FromMinutes(1.0), new TimerCallback(AutoShout_Callback));
+                m_AutoShoutTimer = Timer.DelayCall(TimeSpan.FromMinutes(1.0), TimeSpan.FromMinutes(5.0), new TimerCallback(AutoShout_Callback));
         }
 
         public void RemoveEntry(TownCrierEntry tce)
@@ -621,10 +639,29 @@ namespace Server.Mobiles
 
         public override void OnDoubleClick(Mobile from)
         {
+            if (from is PlayerMobile && TownCryerSystem.Enabled)
+            {
+                BaseGump.SendGump(new TownCryerGump((PlayerMobile)from, this));
+            }
+
             if (from.AccessLevel >= AccessLevel.GameMaster)
+            {
                 from.SendGump(new TownCrierGump(from, this));
+            }
             else
+            {
                 base.OnDoubleClick(from);
+            }
+        }
+
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+            if (TownCryerSystem.Enabled)
+            {
+                TownCryerSystem.GetContextMenus(this, from, list);
+            }
         }
 
         public override bool HandlesOnSpeech(Mobile from)
@@ -649,6 +686,11 @@ namespace Server.Mobiles
                     m_NewsTimer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(3.0), new TimerStateCallback(ShoutNews_Callback), new object[] { tce, 0 });
 
                     PublicOverheadMessage(MessageType.Regular, 0x3B2, 502978); // Some of the latest news!
+                }
+
+                if (e.Mobile is PlayerMobile && TownCryerSystem.Enabled)
+                {
+                    BaseGump.SendGump(new TownCryerGump((PlayerMobile)e.Mobile, this));
                 }
             }
         }
@@ -684,19 +726,24 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            if (version > 0)
+            switch (version)
             {
-                int count = reader.ReadInt();
-
-                for (int i = 0; i < count; i++)
-                {
-                    var entry = new TownCrierEntry(reader);
-
-                    if (!entry.Expired)
+                case 1:
                     {
-                        AddEntry(entry);
+                        int count = reader.ReadInt();
+
+                        for (int i = 0; i < count; i++)
+                        {
+                            var entry = new TownCrierEntry(reader);
+
+                            if (!entry.Expired)
+                            {
+                                AddEntry(entry);
+                            }
+                        }
+
+                        break;
                     }
-                }
             }
 
             if (Core.AOS && NameHue == 0x35)

@@ -97,7 +97,7 @@ namespace Server.Engines.ArenaSystem
 
             if (GuardRegion == null)
             {
-                GuardRegion = new GuardedRegion(String.Format("{0}_Guarded", Definition.Name), Definition.Map, 1, Definition.GuardBounds);
+                GuardRegion = new GuardedArenaRegion(String.Format("{0}_Guarded", Definition.Name), Definition.Map, Definition.GuardBounds);
                 GuardRegion.Register();
             }
         }
@@ -114,6 +114,26 @@ namespace Server.Engines.ArenaSystem
             {
                 GuardRegion.Unregister();
                 GuardRegion = null;
+            }
+
+            if (Manager != null)
+            {
+                Manager.Delete();
+            }
+
+            if (Stone != null && !Stone.Deleted)
+            {
+                Stone.Delete();
+            }
+
+            if (Banner1 != null)
+            {
+                Banner1.Delete();
+            }
+
+            if (Banner2 != null)
+            {
+                Banner2.Delete();
             }
         }
 
@@ -284,7 +304,7 @@ namespace Server.Engines.ArenaSystem
 
             while (p == loc || !map.CanSpawnMobile(p.X, p.Y, p.Z))
             {
-                p = rec.GetRandomSpawnPoint(map);
+                p = map.GetRandomSpawnPoint(rec);
 
                 if (m == null || m.Alive)
                     p.Z = Definition.StoneLocation.Z;

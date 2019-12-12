@@ -21,7 +21,13 @@ namespace Server
         WizardsCompendium,
         BritanniaWaters,
         PastTreasures,
-        SkeletonKey
+        SkeletonKey,
+
+        // Factions
+        Minax,
+        CouncilOfMages,
+        TrueBritannians,
+        Shadowlords
     }
 
     public interface IComunityCollection

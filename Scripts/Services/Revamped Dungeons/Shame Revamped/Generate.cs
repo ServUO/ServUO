@@ -19,6 +19,7 @@ namespace Server.Engines.ShameRevamped
         private static void Delete(CommandEventArgs e)
         {
             WeakEntityCollection.Delete("newshame");
+            ResetOldSpawners(false);
         }
 
         public static void Generate(CommandEventArgs e)
@@ -190,20 +191,30 @@ namespace Server.Engines.ShameRevamped
             ResetOldSpawners();
         }
 
-        public static void ResetOldSpawners()
+        public static void ResetOldSpawners(bool reset = true)
         {
             Region r = Region.Find(new Point3D(5538, 170, 5), Map.Trammel);
             foreach (var spawner in r.GetEnumeratedItems().OfType<XmlSpawner>())
             {
                 if (spawner.Name.ToLower() != "shame_revamped" && spawner.Name.ToLower() != "shame_chest")
-                    spawner.DoReset = true;
+                {
+                    if (reset)
+                        spawner.DoReset = true;
+                    else
+                        spawner.DoRespawn = true;
+                }
             }
 
             r = Region.Find(new Point3D(5538, 170, 5), Map.Felucca);
             foreach (var spawner in r.GetEnumeratedItems().OfType<XmlSpawner>())
             {
                 if (spawner.Name.ToLower() != "shame_revamped" && spawner.Name.ToLower() != "shame_chest")
-                    spawner.DoReset = true;
+                {
+                    if (reset)
+                        spawner.DoReset = true;
+                    else
+                        spawner.DoRespawn = true;
+                }
             }
         }
 

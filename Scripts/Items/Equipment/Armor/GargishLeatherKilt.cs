@@ -44,29 +44,6 @@ namespace Server.Items
         public override Race RequiredRace { get { return Race.Gargoyle; } }
         public override bool CanBeWornByGargoyles { get { return true; } }
 
-        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
-        {
-            Quality = (ItemQuality)quality;
-
-            if (makersMark)
-                Crafter = from;
-
-            Type resourceType = typeRes;
-
-            if (resourceType == null)
-                resourceType = craftItem.Resources.GetAt(0).ItemType;
-
-            Resource = CraftResources.GetFromType(resourceType);
-
-            PlayerConstructed = true;
-
-            CraftContext context = craftSystem.GetContext(from);
-
-            Hue = CraftResources.GetHue(Resource);
-
-            return quality;
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

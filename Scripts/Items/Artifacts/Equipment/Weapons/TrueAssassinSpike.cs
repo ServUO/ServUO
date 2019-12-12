@@ -8,8 +8,8 @@ namespace Server.Items
         [Constructable]
         public TrueAssassinSpike()
         {
-            this.Attributes.AttackChance = 4;
-            this.Attributes.WeaponDamage = 4;
+            Attributes.AttackChance = 4;
+            Attributes.WeaponDamage = 4;
         }
 
         public TrueAssassinSpike(Serial serial)

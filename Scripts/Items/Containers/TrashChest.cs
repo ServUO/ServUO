@@ -14,8 +14,8 @@ namespace Server.Items
         public TrashChest()
             : base(0xE41)
         {
-            this.Movable = false;
-            this.m_Cleanup = new List<CleanupArray>();
+            Movable = false;
+            m_Cleanup = new List<CleanupArray>();
         }
 
         public TrashChest(Serial serial)
@@ -50,7 +50,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            this.m_Cleanup = new List<CleanupArray>();
+            m_Cleanup = new List<CleanupArray>();
         }
 
         public override bool OnDragDrop(Mobile from, Item dropped)
@@ -58,7 +58,7 @@ namespace Server.Items
             if (!base.OnDragDrop(from, dropped))
                 return false;
 
-            if (!AddCleanupItem(from, dropped))
+            if (CleanUpBritanniaData.Enabled && !AddCleanupItem(from, dropped))
             {
                 if (dropped.LootType == LootType.Blessed)
                 {
@@ -67,7 +67,7 @@ namespace Server.Items
                 }
             }
 
-            this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, Utility.Random(1042891, 8));
+            PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, Utility.Random(1042891, 8));
             Empty();
 
             return true;
@@ -78,7 +78,7 @@ namespace Server.Items
             if (!base.OnDragDropInto(from, item, p))
                 return false;
 
-            if (!AddCleanupItem(from, item))
+            if (CleanUpBritanniaData.Enabled && !AddCleanupItem(from, item))
             {
                 if (item.LootType == LootType.Blessed)
                 {
@@ -87,7 +87,7 @@ namespace Server.Items
                 }
             }
 
-            this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, Utility.Random(1042891, 8));
+            PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, Utility.Random(1042891, 8));
             Empty();
 
             return true;
@@ -95,7 +95,7 @@ namespace Server.Items
 
         public void Empty()
         {
-            List<Item> items = this.Items;
+            List<Item> items = Items;
 
             if (items.Count > 0)
             {
@@ -107,25 +107,25 @@ namespace Server.Items
                     ConfirmCleanupItem(items[i]);
 
                     #region SA
-                    if (.01 > Utility.RandomDouble())
+                    if (Core.SA && .01 > Utility.RandomDouble())
                         TrashBarrel.DropToCavernOfDiscarded(items[i]);
                     else
                         items[i].Delete();
                     #endregion
                 }
 
-                if (this.m_Cleanup.Any(x => x.mobiles != null))
+                if (m_Cleanup.Any(x => x.mobiles != null))
                 {
-                    foreach (var m in this.m_Cleanup.Select(x => x.mobiles).Distinct())
+                    foreach (var m in m_Cleanup.Select(x => x.mobiles).Distinct())
                     {
-                        if (this.m_Cleanup.Find(x => x.mobiles == m && x.confirm) != null)
+                        if (m_Cleanup.Find(x => x.mobiles == m && x.confirm) != null)
                         {
-                            double point = this.m_Cleanup.Where(x => x.mobiles == m && x.confirm).Sum(x => x.points);
-                            m.SendLocalizedMessage(1151280, String.Format("{0}\t{1}", point.ToString(), this.m_Cleanup.Count(r => r.mobiles == m))); // You have received approximately ~1_VALUE~points for turning in ~2_COUNT~items for Clean Up Britannia.
+                            double point = m_Cleanup.Where(x => x.mobiles == m && x.confirm).Sum(x => x.points);
+                            m.SendLocalizedMessage(1151280, String.Format("{0}\t{1}", point.ToString(), m_Cleanup.Count(r => r.mobiles == m))); // You have received approximately ~1_VALUE~points for turning in ~2_COUNT~items for Clean Up Britannia.
                             PointsSystem.CleanUpBritannia.AwardPoints(m, point);
                         }
                     }
-                    this.m_Cleanup.Clear();
+                    m_Cleanup.Clear();
                 }
             }
         }

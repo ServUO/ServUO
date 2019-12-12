@@ -45,8 +45,7 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(Candle), 6, 20, 0xA28, 0));
                 Add(new GenericBuyInfo(typeof(Torch), 8, 20, 0xF6B, 0));
                 Add(new GenericBuyInfo(typeof(Lantern), 2, 20, 0xA25, 0));
-					
-                //TODO: Oil Flask @ 8GP
+                Add(new GenericBuyInfo(typeof(OilFlask), 10, 20, 0x1C18, 0));
 
                 Add(new GenericBuyInfo(typeof(Lockpick), 12, 20, 0x14FC, 0, true));
 

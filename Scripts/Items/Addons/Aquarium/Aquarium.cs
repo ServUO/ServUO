@@ -774,7 +774,7 @@ namespace Server.Items
 
         public virtual bool RemoveItem(Mobile from, int at)
         {
-            if (at < 0 && at >= this.Items.Count)
+            if (at < 0 || at >= this.Items.Count)
                 return false;
 
             Item item = this.Items[at];

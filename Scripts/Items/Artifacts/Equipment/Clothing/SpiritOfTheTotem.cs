@@ -8,11 +8,10 @@ namespace Server.Items
         [Constructable]
         public SpiritOfTheTotem()
         {
-            this.Hue = 0x455;
-
-            this.Attributes.BonusStr = 20;
-            this.Attributes.ReflectPhysical = 15;
-            this.Attributes.AttackChance = 15;
+            Hue = 0x455;
+            Attributes.BonusStr = 20;
+            Attributes.ReflectPhysical = 15;
+            Attributes.AttackChance = 15;
         }
 
         public SpiritOfTheTotem(Serial serial)

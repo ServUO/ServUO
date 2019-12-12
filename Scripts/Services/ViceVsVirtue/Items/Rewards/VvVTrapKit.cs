@@ -15,14 +15,14 @@ namespace Server.Engines.VvV
 		public DeploymentType DeploymentType { get; set;}
 
         [CommandProperty(AccessLevel.GameMaster)]
-		public TrapType TrapType { get; set; }
+		public VvVTrapType TrapType { get; set; }
 		
 		public override int LabelNumber { get { return 1154944; } } // Trap Kit
 		
 		private static Dictionary<Mobile, DateTime> _Cooldown = new Dictionary<Mobile, DateTime>();
 		
 		[Constructable]
-		public VvVTrapKit(TrapType type) : base(7866)
+		public VvVTrapKit(VvVTrapType type) : base(7866)
 		{
 			TrapType = type;
             DeploymentType = DeploymentType.Proximaty;
@@ -176,11 +176,11 @@ namespace Server.Engines.VvV
 		{
 			switch(this.TrapType)
 			{
-				case TrapType.Explosion: return new VvVExplosionTrap(m, this.DeploymentType);
-				case TrapType.Poison: return new VvVPoisonTrap(m, this.DeploymentType);
-				case TrapType.Cold: return new VvVColdTrap(m, this.DeploymentType);
-				case TrapType.Energy: return new VvVEnergyTrap(m, this.DeploymentType);
-				case TrapType.Blade: return new VvVBladeTrap(m, this.DeploymentType);
+				case VvVTrapType.Explosion: return new VvVExplosionTrap(m, this.DeploymentType);
+				case VvVTrapType.Poison: return new VvVPoisonTrap(m, this.DeploymentType);
+				case VvVTrapType.Cold: return new VvVColdTrap(m, this.DeploymentType);
+				case VvVTrapType.Energy: return new VvVEnergyTrap(m, this.DeploymentType);
+				case VvVTrapType.Blade: return new VvVBladeTrap(m, this.DeploymentType);
 			}
 			
 			return null;
@@ -247,7 +247,7 @@ namespace Server.Engines.VvV
 			int version = reader.ReadInt();
 
             DeploymentType = (DeploymentType)reader.ReadInt();
-            TrapType = (TrapType)reader.ReadInt();
+            TrapType = (VvVTrapType)reader.ReadInt();
 		}
 	}
 }

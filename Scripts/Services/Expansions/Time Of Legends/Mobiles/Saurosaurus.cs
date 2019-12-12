@@ -11,53 +11,52 @@ namespace Server.Mobiles
         [Constructable]
         public Saurosaurus() : base(AIType.AI_Mage, FightMode.Closest, 10, 1, .2, .4)
         {
-            this.Name = "a saurosaurus";
-            this.Body = 1291;
-            this.BaseSoundID = 362;
+            Name = "a saurosaurus";
+            Body = 1291;
+            BaseSoundID = 362;
 
-            this.SetStr(802, 824);
-            this.SetDex(201, 220);
-            this.SetInt(403, 440);
+            SetStr(802, 824);
+            SetDex(201, 220);
+            SetInt(403, 440);
 
-            this.SetDamage(21, 28);
+            SetDamage(21, 28);
 
-            this.SetHits(1321, 1468);
+            SetHits(1321, 1468);
 
-            this.SetResistance(ResistanceType.Physical, 75, 85);
-            this.SetResistance(ResistanceType.Fire, 80, 90);
-            this.SetResistance(ResistanceType.Cold, 45, 55);
-            this.SetResistance(ResistanceType.Poison, 35, 45);
-            this.SetResistance(ResistanceType.Energy, 45, 55);
+            SetResistance(ResistanceType.Physical, 75, 85);
+            SetResistance(ResistanceType.Fire, 80, 90);
+            SetResistance(ResistanceType.Cold, 45, 55);
+            SetResistance(ResistanceType.Poison, 35, 45);
+            SetResistance(ResistanceType.Energy, 45, 55);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetSkill(SkillName.MagicResist, 70.0, 90.0);
-            this.SetSkill(SkillName.Tactics, 110.0, 120.0);
-            this.SetSkill(SkillName.Wrestling, 110.0, 130.0);
-            this.SetSkill(SkillName.Anatomy, 50.0, 60.0);
-            this.SetSkill(SkillName.DetectHidden, 80.0);
-            this.SetSkill(SkillName.Parry, 80.0, 90);
-            this.SetSkill(SkillName.Focus, 115.0, 125.0);
+            SetSkill(SkillName.MagicResist, 70.0, 90.0);
+            SetSkill(SkillName.Tactics, 110.0, 120.0);
+            SetSkill(SkillName.Wrestling, 110.0, 130.0);
+            SetSkill(SkillName.Anatomy, 50.0, 60.0);
+            SetSkill(SkillName.DetectHidden, 80.0);
+            SetSkill(SkillName.Parry, 80.0, 90);
+            SetSkill(SkillName.Focus, 115.0, 125.0);
 
-            this.Fame = 11000;
-            this.Karma = -11000;
+            Fame = 11000;
+            Karma = -11000;
 
-            this.Tamable = true;
-            this.ControlSlots = 3;
-            this.MinTameSkill = 102.0;
+            Tamable = true;
+            ControlSlots = 3;
+            MinTameSkill = 102.0;
+
+            SetWeaponAbility(WeaponAbility.ConcussionBlow);
+            SetSpecialAbility(SpecialAbility.TailSwipe);
+            SetSpecialAbility(SpecialAbility.LifeLeech);
         }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 3);
+            AddLoot(LootPack.FilthyRich, 3);
         }
 
         // Missing: Life Leech, Tail Swipe ability
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.ConcussionBlow;
-        }
 
         public override bool CanAngerOnTame { get { return true; } }
         public override bool StatLossAfterTame { get { return true; } }

@@ -49,7 +49,7 @@ namespace Server.Mobiles
             PackItem(new FertileDirt(Utility.RandomMinMax(1, 5)));
 
             if (Core.ML && Utility.RandomDouble() < .33)
-                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
+                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(3));
 
             Item orepile = null; /* no trust, no love :( */
 
@@ -83,15 +83,10 @@ namespace Server.Mobiles
 					case 1: PackItem( new UnknownMageSkeleton() ); break;
 					case 2: PackItem( new UnknownRogueSkeleton() ); break;
 				}
-			}					
-        }
+			}
 
-        public override bool HasBreath { get { return true; } }
-        public override int BreathPoisonDamage { get { return 100; } }
-        public override int BreathFireDamage { get { return 0; } }
-        public override int BreathEffectHue { get { return 0x3F; } }
-        public override int BreathEffectSound { get { return 0; } }
-        public override int BreathAngerSound { get { return 0; } }
+            SetSpecialAbility(SpecialAbility.DragonBreath);
+        }
 
         public override void OnThink()
         {
@@ -162,7 +157,7 @@ namespace Server.Mobiles
                 });
         }
 
-        public override void Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
+        public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
         {
             if (_Tunneling && !Hidden && 0.25 > Utility.RandomDouble())
             {
@@ -176,39 +171,67 @@ namespace Server.Mobiles
                 _StartTunnelMap = null;
             }
 
-            base.Damage(amount, from, informMount, checkDisrupt);
+            return base.Damage(amount, from, informMount, checkDisrupt);
         }
 
         public AntLion(Serial serial)
             : base(serial)
         {
         }
-
-        public override int GetAngerSound()
+		
+		public override void OnGotMeleeAttack(Mobile attacker)
         {
-            return 0x5A;
+            if (attacker.Weapon is BaseRanged)
+                BeginAcidBreath();
+
+            base.OnGotMeleeAttack(attacker);
         }
 
-        public override int GetIdleSound()
+        public override void OnDamagedBySpell(Mobile attacker)
         {
-            return 0x5A;
+            base.OnDamagedBySpell(attacker);
+
+            BeginAcidBreath();
         }
 
-        public override int GetAttackSound()
+        #region Acid Breath
+        private DateTime m_NextAcidBreath;
+
+        public void BeginAcidBreath()
         {
-            return 0x164;
+            PlayerMobile m = Combatant as PlayerMobile;
+            // Mobile m = Combatant;
+
+            if (m == null || m.Deleted || !m.Alive || !Alive || m_NextAcidBreath > DateTime.Now || !CanBeHarmful(m))
+                return;
+
+            PlaySound(0x118);
+            MovingEffect(m, 0x36D4, 1, 0, false, false, 0x3F, 0);
+
+            TimeSpan delay = TimeSpan.FromSeconds(GetDistanceToSqrt(m) / 5.0);
+            Timer.DelayCall<Mobile>(delay, new TimerStateCallback<Mobile>(EndAcidBreath), m);
+
+            m_NextAcidBreath = DateTime.Now + TimeSpan.FromSeconds(5);
         }
 
-        public override int GetHurtSound()
+        public void EndAcidBreath(Mobile m)
         {
-            return 0x187;
-        }
+            if (m == null || m.Deleted || !m.Alive || !Alive)
+                return;
 
-        public override int GetDeathSound()
-        {
-            return 0x1BA;
-        }
+            if (0.2 >= Utility.RandomDouble())
+                m.ApplyPoison(this, Poison.Greater);
 
+            AOS.Damage(m, Utility.RandomMinMax(100, 120), 0, 0, 0, 100, 0);
+        }
+        #endregion
+
+        public override int GetAngerSound() { return 0x5A; }
+        public override int GetIdleSound() { return 0x5A; }
+        public override int GetAttackSound() { return 0x164; }
+        public override int GetHurtSound() { return 0x187; }
+        public override int GetDeathSound() { return 0x1BA; }
+        
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average, 2);
@@ -224,6 +247,9 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            Hidden = false;
+            Blessed = false;
         }
 
         private class InternalItem : Item

@@ -16,7 +16,7 @@ namespace Server.Spells
         public override bool ClearHandsOnCast { get { return false; } }
         public override bool RevealOnCast { get { return false; } }
         public override double CastDelayFastScalar { get { return 0; } }
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(1.0); } }
+        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(2.0); } }
         public override TimeSpan GetCastRecovery() { return TimeSpan.Zero; }
         public override int GetMana() { return 0; }
         public override bool ConsumeReagents() { return true; }
@@ -52,34 +52,7 @@ namespace Server.Spells
                 return false;
             }
 
-            BlockMountType type = BaseMount.GetMountPrevention(mob);
-
-            if (type == BlockMountType.None)
-                return true;
-
-            if (message)
-            {
-                switch (type)
-                {
-                    case BlockMountType.Dazed:
-                        {
-                            mob.SendLocalizedMessage(1112457); // You are still too dazed to fly.
-                            break;
-                        }
-                    case BlockMountType.BolaRecovery:
-                        {
-                            mob.SendLocalizedMessage(1112455); // You cannot fly while recovering from a bola throw.
-                            break;
-                        }
-                    case BlockMountType.DismountRecovery:
-                        {
-                            mob.SendLocalizedMessage(1112456); // You cannot fly while recovering from a dismount maneuver.
-                            break;
-                        }
-                }
-            }
-
-            return false;
+            return true;
         }
 
         public override bool CheckCast()
@@ -96,16 +69,16 @@ namespace Server.Spells
             {
                 Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
             }
-            else if (!Caster.CanBeginAction(typeof(Seventh.PolymorphSpell)))
+			else if (!Caster.CanBeginAction(typeof(Seventh.PolymorphSpell)))
             {
-                Caster.SendLocalizedMessage(1061628); // You can't do that while polymorphed.
+                Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1112453); // You can't fly in your current form!
             }
             else if (Ninjitsu.AnimalForm.UnderTransformation(Caster) || Mysticism.StoneFormSpell.IsEffected(Caster) || (TransformationSpellHelper.UnderTransformation(Caster)
                 && !TransformationSpellHelper.UnderTransformation(Caster, typeof(Spells.Necromancy.VampiricEmbraceSpell))) || (Caster.IsBodyMod && !Caster.Body.IsHuman))
             {
                 Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1112453); // You can't fly in your current form!
             }
-            else if (Server.Mobiles.BaseMount.CheckMountAllowed(Caster, true, true))
+            else if (Caster.Region.OnBeginSpellCast(Caster, this) && Server.Mobiles.BaseMount.CheckMountAllowed(Caster, true, true))
             {
                 Caster.Flying = true;
                 BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Fly, 1112193, 1112567)); // Flying & You are flying.

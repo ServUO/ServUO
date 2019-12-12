@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - SaveData.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 using System;
 
 using Server;

@@ -3,44 +3,46 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a juka corpse")] // Why is this 'juka' and warriors 'jukan' ? :-(
+    [CorpseName("a juka corpse")] 
     public class JukaLord : BaseCreature
     {
+		public override double HealChance { get { return 1.0; } }
+		
         [Constructable]
         public JukaLord()
             : base(AIType.AI_Archer, FightMode.Closest, 10, 3, 0.2, 0.4)
         {
-            this.Name = "a juka lord";
-            this.Body = 766;
+            Name = "a juka lord";
+            Body = 766;
 
-            this.SetStr(401, 500);
-            this.SetDex(81, 100);
-            this.SetInt(151, 200);
+            SetStr(401, 500);
+            SetDex(81, 100);
+            SetInt(151, 200);
 
-            this.SetHits(241, 300);
+            SetHits(241, 300);
 
-            this.SetDamage(10, 12);
+            SetDamage(10, 12);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 40, 50);
-            this.SetResistance(ResistanceType.Fire, 45, 50);
-            this.SetResistance(ResistanceType.Cold, 40, 50);
-            this.SetResistance(ResistanceType.Poison, 20, 25);
-            this.SetResistance(ResistanceType.Energy, 40, 50);
+            SetResistance(ResistanceType.Physical, 40, 50);
+            SetResistance(ResistanceType.Fire, 45, 50);
+            SetResistance(ResistanceType.Cold, 40, 50);
+            SetResistance(ResistanceType.Poison, 20, 25);
+            SetResistance(ResistanceType.Energy, 40, 50);
 
-            this.SetSkill(SkillName.Anatomy, 90.1, 100.0);
-            this.SetSkill(SkillName.Archery, 95.1, 100.0);
-            this.SetSkill(SkillName.Healing, 80.1, 100.0);
-            this.SetSkill(SkillName.MagicResist, 120.1, 130.0);
-            this.SetSkill(SkillName.Swords, 90.1, 100.0);
-            this.SetSkill(SkillName.Tactics, 95.1, 100.0);
-            this.SetSkill(SkillName.Wrestling, 90.1, 100.0);
+            SetSkill(SkillName.Anatomy, 90.1, 100.0);
+            SetSkill(SkillName.Archery, 95.1, 100.0);
+            SetSkill(SkillName.Healing, 80.1, 100.0);
+            SetSkill(SkillName.MagicResist, 120.1, 130.0);
+            SetSkill(SkillName.Swords, 90.1, 100.0);
+            SetSkill(SkillName.Tactics, 95.1, 100.0);
+            SetSkill(SkillName.Wrestling, 90.1, 100.0);
 
-            this.Fame = 15000;
-            this.Karma = -15000;
+            Fame = 15000;
+            Karma = -15000;
 
-            this.VirtualArmor = 28;
+            VirtualArmor = 28;
 
             Container pack = new Backpack();
 
@@ -51,10 +53,9 @@ namespace Server.Mobiles
             pack.DropItem(Loot.RandomGem());
             pack.DropItem(new ArcaneGem());
 
-            this.PackItem(pack);
+            PackItem(pack);
 
-            this.AddItem(new JukaBow());
-            // TODO: Bandage self
+            AddItem(new JukaBow());
         }
 
         public JukaLord(Serial serial)

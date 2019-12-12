@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using Server;
 using Server.Targeting;
 using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class Matches : Item
+    public class Matches : Item, ICommodity
     {
         public override int LabelNumber { get { return 1116112; } }
 
@@ -107,19 +107,26 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object obj)
             {
-                if (obj is BaseCannon)
+                if (obj is IShipCannon)
                 {
-                    BaseCannon cannon = (BaseCannon)obj;
+                    IShipCannon cannon = (IShipCannon)obj;
 
                     if (cannon.CanLight)
+                    {
                         cannon.LightFuse(from);
+                    }
                     else
+                    {
                         from.SendLocalizedMessage(1116078); //There is no fuse to light! Prime the cannon first.
+                    }
                 }
             }
         }
 
         public Matches(Serial serial) : base(serial) { }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override void Serialize(GenericWriter writer)
         {

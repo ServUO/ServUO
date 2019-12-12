@@ -101,8 +101,21 @@ namespace Server.Mobiles
 
                 if (toGive.Count > 0)
                     toGive[Utility.Random(toGive.Count)].AddToBackpack(new YellowKey1());
+
+                ColUtility.Free(toGive);
             }
             base.OnDeath(c);
+        }
+
+        public override void OnThink()
+        {
+            base.OnThink();
+
+            if (Map != null && Region.Find(Location, Map).IsPartOf("Underworld"))
+            {
+                if (Z < 0 && X >= 1177 && X <= 1183 && Y >= 877 && Y <= 886)
+                    Z = 0;
+            }
         }
 
         public override void Serialize(GenericWriter writer) 

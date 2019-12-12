@@ -8,11 +8,11 @@ namespace Server.Items
         [Constructable]
         public ZyronicClaw()
         {
-            this.Hue = 0x485;
-            this.Slayer = SlayerName.ElementalBan;
-            this.WeaponAttributes.HitLeechMana = 81;
-            this.Attributes.AttackChance = 30;
-            this.Attributes.WeaponDamage = 50;
+            Hue = 0x485;
+            Slayer = SlayerName.ElementalBan;
+            WeaponAttributes.HitLeechMana = 81;
+            Attributes.AttackChance = 30;
+            Attributes.WeaponDamage = 50;
         }
 
         public ZyronicClaw(Serial serial)
@@ -66,9 +66,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.Slayer == SlayerName.None)
-                this.Slayer = SlayerName.ElementalBan;
         }
     }
 }

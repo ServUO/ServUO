@@ -1,4 +1,5 @@
 using System;
+
 using Server;
 using Server.Items;
 using Server.Mobiles;
@@ -6,6 +7,8 @@ using Server.Engines.Quests;
 using Server.Engines.Points;
 using Server.Accounting;
 using Server.Engines.BulkOrders;
+using Server.Engines.CityLoyalty;
+using Server.Misc;
 
 namespace Server.Mobiles
 {
@@ -127,6 +130,114 @@ namespace Server.Mobiles
                 PointsSystem.ViceVsVirtue.SetPoints(Player, value);
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double Khaldun
+        {
+            get
+            {
+                return (int)PointsSystem.Khaldun.GetPoints(Player);
+            }
+            set
+            {
+                PointsSystem.Khaldun.SetPoints(Player, value);
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double Doom
+        {
+            get
+            {
+                return (int)PointsSystem.TreasuresOfDoom.GetPoints(Player);
+            }
+            set
+            {
+                PointsSystem.TreasuresOfDoom.SetPoints(Player, value);
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double Doubloons
+        {
+            get
+            {
+                return (int)PointsSystem.RisingTide.GetPoints(Player);
+            }
+            set
+            {
+                PointsSystem.RisingTide.SetPoints(Player, value);
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double GauntletPoints
+        {
+            get
+            {
+                return (int)PointsSystem.DoomGauntlet.GetPoints(Player);
+            }
+            set
+            {
+                PointsSystem.DoomGauntlet.SetPoints(Player, value);
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double TOTPoints
+        {
+            get
+            {
+                return (int)PointsSystem.TreasuresOfTokuno.GetPoints(Player);
+            }
+            set
+            {
+                PointsSystem.TreasuresOfTokuno.SetPoints(Player, value);
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int TOTurnIns
+        {
+            get
+            {
+                return PointsSystem.TreasuresOfTokuno.GetTurnIns(Player);
+            }
+            set
+            {
+                PointsSystem.TreasuresOfTokuno.GetPlayerEntry<TreasuresOfTokuno.TOTEntry>(Player).TurnIns = value;
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double VASPoints
+        {
+            get
+            {
+                return (int)PointsSystem.VirtueArtifacts.GetPoints(Player);
+            }
+            set
+            {
+                PointsSystem.VirtueArtifacts.SetPoints(Player, value);
+            }
+        }
+
+        private CityLoyaltyProps _CityLoyaltyProps;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CityLoyaltyProps CityLoyalty
+        {
+            get
+            {
+                if (_CityLoyaltyProps == null)
+                    _CityLoyaltyProps = new CityLoyaltyProps(Player);
+
+                return _CityLoyaltyProps;
+            }
+            set
+            {
+            }
+        }
     }
 
     [PropertyObject]
@@ -219,92 +330,29 @@ namespace Server.Mobiles
             }
         }
 
-        public void CheckChanges()
-        {
-            var context = BulkOrderSystem.GetContext(Player, false);
-
-            if (context != null)
-            {
-                foreach (var kvp in context.Entries)
-                {
-                    switch (kvp.Key)
-                    {
-                        case BODType.Smith:
-                            if (Smithy == null)
-                                Smithy = new BODData(kvp.Key, kvp.Value);
-                            else
-                                Smithy.CheckChanges(kvp.Value);
-                            break;
-                        case BODType.Tailor:
-                            if (Tailor == null)
-                                Tailor = new BODData(kvp.Key, kvp.Value);
-                            else
-                                Tailor.CheckChanges(kvp.Value);
-                            break;
-                        case BODType.Alchemy:
-                            if (Alchemy == null)
-                                Alchemy = new BODData(kvp.Key, kvp.Value);
-                            else
-                                Alchemy.CheckChanges(kvp.Value);
-                            break;
-                        case BODType.Inscription:
-                            if (Inscription == null)
-                                Inscription = new BODData(kvp.Key, kvp.Value);
-                            else
-                                Inscription.CheckChanges(kvp.Value);
-                            break;
-                        case BODType.Tinkering:
-                            if (Tinkering == null)
-                                Tinkering = new BODData(kvp.Key, kvp.Value);
-                            else
-                                Tinkering.CheckChanges(kvp.Value);
-                            break;
-                        case BODType.Cooking:
-                            if (Cooking == null)
-                                Cooking = new BODData(kvp.Key, kvp.Value);
-                            else
-                                Cooking.CheckChanges(kvp.Value);
-                            break;
-                        case BODType.Fletching:
-                            if (Fletching == null)
-                                Fletching = new BODData(kvp.Key, kvp.Value);
-                            else
-                                Fletching.CheckChanges(kvp.Value);
-                            break;
-                        case BODType.Carpentry:
-                            if (Carpentry == null)
-                                Carpentry = new BODData(kvp.Key, kvp.Value);
-                            else
-                                Carpentry.CheckChanges(kvp.Value);
-                            break;
-                    }
-                }
-            }
-        }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public BODData Tailor { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BODData Tailor { get; set; }
+        public BODData Smithy { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BODData Smithy { get; set; }
+        public BODData Alchemy { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BODData Alchemy { get; set; }
+        public BODData Carpentry { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BODData Carpentry { get; set; }
+        public BODData Cooking { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BODData Cooking { get; set; }
+        public BODData Fletching { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BODData Fletching { get; set; }
+        public BODData Inscription { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BODData Inscription { get; set; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public BODData Tinkering { get; set; }
+        public BODData Tinkering { get; private set; }
     }
 
     [PropertyObject]
@@ -316,39 +364,150 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BODType Type { get; set; }
+        public BODEntry Entry { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int CachedDeeds { get; set; }
+        public BODType Type { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime LastBulkOrder { get; set; }
+        public int CachedDeeds { get { return Entry == null ? 0 : Entry.CachedDeeds; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double BankedPoints { get; set; }
+        public DateTime LastBulkOrder { get { return Entry == null ? DateTime.MinValue : Entry.LastBulkOrder; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int PendingRewardPoints { get; set; }
+        public double BankedPoints { get { return Entry == null ? 0 : Entry.BankedPoints; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int PendingRewardPoints { get { return Entry == null ? 0 : Entry.PendingRewardPoints; } }
 
         public BODData(BODType type, BODEntry entry)
         {
             Type = type;
+            Entry = entry;
+        }
+    }
 
-            CachedDeeds = entry == null ? 0 : entry.CachedDeeds;
-            LastBulkOrder = entry == null ? DateTime.MinValue : entry.LastBulkOrder;
-            BankedPoints = entry == null ? 0 : entry.BankedPoints;
-            PendingRewardPoints = entry == null ? 0 : entry.PendingRewardPoints;
+    [PropertyObject]
+    public class CityLoyaltyProps
+    {
+        public PlayerMobile Player { get; private set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CityLoyaltyEntry Moonglow
+        {
+            get
+            {
+                return CityLoyaltySystem.Moonglow.GetPlayerEntry<CityLoyaltyEntry>(Player);
+            }
+            set { }
         }
 
-        public void CheckChanges(BODEntry entry)
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CityLoyaltyEntry Britain
         {
-            if (entry == null)
-                return;
+            get
+            {
+                return CityLoyaltySystem.Britain.GetPlayerEntry<CityLoyaltyEntry>(Player);
+            }
+            set { }
+        }
 
-            CachedDeeds = entry.CachedDeeds;
-            LastBulkOrder = entry.LastBulkOrder;
-            BankedPoints = entry.BankedPoints;
-            PendingRewardPoints = entry.PendingRewardPoints;
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CityLoyaltyEntry Jhelom
+        {
+            get
+            {
+                return CityLoyaltySystem.Jhelom.GetPlayerEntry<CityLoyaltyEntry>(Player);
+            }
+            set { }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CityLoyaltyEntry Yew
+        {
+            get
+            {
+                return CityLoyaltySystem.Yew.GetPlayerEntry<CityLoyaltyEntry>(Player);
+            }
+            set { }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CityLoyaltyEntry Minoc
+        {
+            get
+            {
+                return CityLoyaltySystem.Minoc.GetPlayerEntry<CityLoyaltyEntry>(Player);
+            }
+            set { }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CityLoyaltyEntry Trinsic
+        {
+            get
+            {
+                return CityLoyaltySystem.Trinsic.GetPlayerEntry<CityLoyaltyEntry>(Player);
+            }
+            set { }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CityLoyaltyEntry SkaraBrae
+        {
+            get
+            {
+                return CityLoyaltySystem.SkaraBrae.GetPlayerEntry<CityLoyaltyEntry>(Player);
+            }
+            set { }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CityLoyaltyEntry NewMagincia
+        {
+            get
+            {
+                return CityLoyaltySystem.NewMagincia.GetPlayerEntry<CityLoyaltyEntry>(Player);
+            }
+            set { }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CityLoyaltyEntry Vesper
+        {
+            get
+            {
+                return CityLoyaltySystem.Vesper.GetPlayerEntry<CityLoyaltyEntry>(Player);
+            }
+            set { }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CityTradeSystem.CityTradeEntry TradeEntry
+        {
+            get
+            {
+                return CityLoyaltySystem.CityTrading.GetPlayerEntry<CityTradeSystem.CityTradeEntry>(Player);
+            }
+            set { }
+        }
+
+        public CityLoyaltyProps(PlayerMobile pm)
+        {
+            Player = pm;
+        }
+
+        public override string ToString()
+        {
+            var sys = CityLoyaltySystem.GetCitizenship(Player, false);
+
+            if (sys != null)
+            {
+                return String.Format("Citizenship: {0}", sys.City.ToString());
+            }
+
+            return base.ToString();
         }
     }
 }

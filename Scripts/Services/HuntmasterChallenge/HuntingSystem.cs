@@ -4,6 +4,7 @@ using Server.Mobiles;
 using System.Collections.Generic;
 using Server.Items;
 using Server.Gumps;
+using Server.Engines.Quests;
 
 namespace Server.Engines.HuntsmasterChallenge
 {
@@ -22,10 +23,10 @@ namespace Server.Engines.HuntsmasterChallenge
         private Timer m_Timer;
 		
 		[CommandProperty(AccessLevel.GameMaster)]
-		public DateTime SeasonBegins { get { return m_SeasonBegins; } }
+        public DateTime SeasonBegins { get { return m_SeasonBegins; } set { m_SeasonBegins = value; } }
 		
 		[CommandProperty(AccessLevel.GameMaster)]
-		public DateTime SeasonEnds { get { return m_SeasonEnds; } }
+        public DateTime SeasonEnds { get { return m_SeasonEnds; } set { m_SeasonEnds = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int BonusIndex { get { return m_BonusIndex; } }
@@ -65,7 +66,7 @@ namespace Server.Engines.HuntsmasterChallenge
 
             m_SeasonBegins = DateTime.Now;
             DateTime ends = DateTime.Now + TimeSpan.FromDays(30);
-            m_SeasonEnds = new DateTime(ends.Year, ends.Month, ends.Day, 8, 0, 0);
+            m_SeasonEnds = new DateTime(ends.Year, ends.Month, 1, 0, 0, 0);
             m_NextHint = DateTime.UtcNow;
             m_NextBonusIndex = DateTime.UtcNow;
 
@@ -214,6 +215,16 @@ namespace Server.Engines.HuntsmasterChallenge
 					permit.HasSubmitted = true;
 
                     CheckKill(info.HuntType, permit.KillEntry);
+
+                    if (from is PlayerMobile)
+                    {
+                        BaseQuest quest = QuestHelper.GetQuest((PlayerMobile)from, typeof(HuntmastersChallengeQuest));
+
+                        if (quest != null && quest is HuntmastersChallengeQuest)
+                        {
+                            ((HuntmastersChallengeQuest)quest).CompleteChallenge();
+                        }
+                    }
 				}
 			}
 		}
@@ -262,9 +273,11 @@ namespace Server.Engines.HuntsmasterChallenge
 			
 			m_Leaders.Clear();
 			
-			m_SeasonBegins = DateTime.Now;
-            DateTime ends = DateTime.Now + TimeSpan.FromDays(30);
-			m_SeasonEnds = new DateTime(ends.Year, ends.Month, ends.Day, 8, 0, 0);
+			var now = DateTime.Now;
+            var ends = DateTime.Now + TimeSpan.FromDays(30);
+
+			m_SeasonEnds = new DateTime(ends.Year, ends.Month, 1, 0, 0, 0);
+            m_SeasonBegins = new DateTime(now.Year, now.Month, 1, 0, 0, 0);
 
             HuntingDisplayTrophy.InvalidateDisplayTrophies();
 		}
@@ -426,6 +439,42 @@ namespace Server.Engines.HuntsmasterChallenge
                 s.MoveToWorld(new Point3D(748 + i, 2137, 0), Map.Felucca);
             }
 
+            s = new Static(2923);
+            s.MoveToWorld(new Point3D(736, 2150, 0), Map.Trammel);
+
+            s = new Static(2925);
+            s.MoveToWorld(new Point3D(736, 2149, 0), Map.Trammel);
+
+            s = new Static(2924);
+            s.MoveToWorld(new Point3D(736, 2148, 0), Map.Trammel);
+
+            s = new Static(2923);
+            s.MoveToWorld(new Point3D(736, 2146, 0), Map.Trammel);
+
+            s = new Static(2925);
+            s.MoveToWorld(new Point3D(736, 2145, 0), Map.Trammel);
+
+            s = new Static(2924);
+            s.MoveToWorld(new Point3D(736, 2144, 0), Map.Trammel);
+
+            s = new Static(2923);
+            s.MoveToWorld(new Point3D(736, 2150, 0), Map.Felucca);
+
+            s = new Static(2925);
+            s.MoveToWorld(new Point3D(736, 2149, 0), Map.Felucca);
+
+            s = new Static(2924);
+            s.MoveToWorld(new Point3D(736, 2148, 0), Map.Felucca);
+
+            s = new Static(2923);
+            s.MoveToWorld(new Point3D(736, 2146, 0), Map.Felucca);
+
+            s = new Static(2925);
+            s.MoveToWorld(new Point3D(736, 2145, 0), Map.Felucca);
+
+            s = new Static(2924);
+            s.MoveToWorld(new Point3D(736, 2144, 0), Map.Felucca);
+
             HuntingDisplayTrophy trophy = new HuntingDisplayTrophy(HuntType.GrizzlyBear);
             trophy.MoveToWorld(new Point3D(748, 2137, 6), Map.Trammel);
 
@@ -479,6 +528,90 @@ namespace Server.Engines.HuntsmasterChallenge
 
             trophy = new HuntingDisplayTrophy(HuntType.Eagle);
             trophy.MoveToWorld(new Point3D(756, 2136, 3), Map.Trammel);
+
+            trophy = new HuntingDisplayTrophy(HuntType.Saurosaurus);
+            trophy.MoveToWorld(new Point3D(746, 2136, 0), Map.Trammel);
+
+            trophy = new HuntingDisplayTrophy(HuntType.Saurosaurus);
+            trophy.MoveToWorld(new Point3D(746, 2136, 0), Map.Felucca);
+
+            trophy = new HuntingDisplayTrophy(HuntType.Anchisaur);
+            trophy.MoveToWorld(new Point3D(744, 2136, 0), Map.Trammel);
+
+            trophy = new HuntingDisplayTrophy(HuntType.Anchisaur);
+            trophy.MoveToWorld(new Point3D(744, 2136, 0), Map.Felucca);
+
+            trophy = new HuntingDisplayTrophy(HuntType.BlackTiger);
+            trophy.MoveToWorld(new Point3D(744, 2138, 0), Map.Trammel);
+
+            trophy = new HuntingDisplayTrophy(HuntType.BlackTiger);
+            trophy.MoveToWorld(new Point3D(744, 2138, 0), Map.Felucca);
+
+            trophy = new HuntingDisplayTrophy(HuntType.WhiteTiger);
+            trophy.MoveToWorld(new Point3D(744, 2140, 0), Map.Trammel);
+
+            trophy = new HuntingDisplayTrophy(HuntType.WhiteTiger);
+            trophy.MoveToWorld(new Point3D(744, 2140, 0), Map.Felucca);
+
+            trophy = new HuntingDisplayTrophy(HuntType.Triceratops);
+            trophy.MoveToWorld(new Point3D(744, 2142, 0), Map.Trammel);
+
+            trophy = new HuntingDisplayTrophy(HuntType.Triceratops);
+            trophy.MoveToWorld(new Point3D(744, 2142, 0), Map.Felucca);
+
+            trophy = new HuntingDisplayTrophy(HuntType.Allosaurus);
+            trophy.MoveToWorld(new Point3D(743, 2144, 0), Map.Trammel);
+
+            trophy = new HuntingDisplayTrophy(HuntType.Allosaurus);
+            trophy.MoveToWorld(new Point3D(743, 2144, 0), Map.Felucca);
+
+            trophy = new HuntingDisplayTrophy(HuntType.MyrmidexDrone);
+            trophy.MoveToWorld(new Point3D(741, 2144, 0), Map.Trammel);
+
+            trophy = new HuntingDisplayTrophy(HuntType.MyrmidexDrone);
+            trophy.MoveToWorld(new Point3D(741, 2144, 0), Map.Felucca);
+
+            trophy = new HuntingDisplayTrophy(HuntType.Dimetrosaur);
+            trophy.MoveToWorld(new Point3D(758, 2136, 0), Map.Trammel);
+
+            trophy = new HuntingDisplayTrophy(HuntType.Dimetrosaur);
+            trophy.MoveToWorld(new Point3D(758, 2136, 0), Map.Felucca);
+
+            trophy = new HuntingDisplayTrophy(HuntType.Tiger);
+            trophy.MoveToWorld(new Point3D(738, 2144, 0), Map.Trammel);
+
+            trophy = new HuntingDisplayTrophy(HuntType.Tiger);
+            trophy.MoveToWorld(new Point3D(738, 2144, 0), Map.Felucca);
+
+            trophy = new HuntingDisplayTrophy(HuntType.Najasaurus);
+            trophy.MoveToWorld(new Point3D(736, 2145, 6), Map.Trammel);
+
+            s = new Static(0x9C03);
+            s.MoveToWorld(new Point3D(736, 2144, 6), Map.Trammel);
+
+            trophy = new HuntingDisplayTrophy(HuntType.Najasaurus);
+            trophy.MoveToWorld(new Point3D(736, 2145, 6), Map.Felucca);
+
+            s = new Static(0x9C03);
+            s.MoveToWorld(new Point3D(736, 2144, 6), Map.Felucca);
+
+            trophy = new HuntingDisplayTrophy(HuntType.Lion);
+            trophy.MoveToWorld(new Point3D(736, 2147, 0), Map.Trammel);
+
+            trophy = new HuntingDisplayTrophy(HuntType.Lion);
+            trophy.MoveToWorld(new Point3D(736, 2147, 0), Map.Felucca);
+
+            trophy = new HuntingDisplayTrophy(HuntType.MyrmidexLarvae);
+            trophy.MoveToWorld(new Point3D(736, 2149, 6), Map.Trammel);
+
+            s = new Static(0x9C01);
+            s.MoveToWorld(new Point3D(736, 2149, 6), Map.Trammel);
+
+            trophy = new HuntingDisplayTrophy(HuntType.MyrmidexLarvae);
+            trophy.MoveToWorld(new Point3D(736, 2149, 6), Map.Felucca);
+
+            s = new Static(0x9C01);
+            s.MoveToWorld(new Point3D(736, 2149, 6), Map.Felucca);
 
             XmlSpawner spawner = new XmlSpawner("HuntMaster");
             spawner.MoveToWorld(new Point3D(747, 2148, 0), Map.Felucca);

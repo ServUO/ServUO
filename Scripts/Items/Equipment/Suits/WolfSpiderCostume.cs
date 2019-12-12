@@ -5,10 +5,12 @@ namespace Server.Items
 {
 	public class WolfSpiderCostume : BaseCostume
 	{
-		[Constructable]
+        public override string CreatureName { get { return "wolf spider"; } }
+
+        [Constructable]
 		public WolfSpiderCostume() : base( )
 		{
-            this.CostumeBody = 376;
+            CostumeBody = 736;
 		}
 		
 		public override int LabelNumber

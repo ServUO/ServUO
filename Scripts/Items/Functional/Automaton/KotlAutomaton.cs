@@ -74,6 +74,8 @@ namespace Server.Items
             Karma = -14000;
 
             ControlSlots = 4;
+            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            SetWeaponAbility(WeaponAbility.Disarm);
         }       
 
         public override void GenerateLoot()
@@ -170,22 +172,14 @@ namespace Server.Items
 
         public override double WeaponAbilityChance { get { return 0.33; } }
 
-        public override WeaponAbility GetWeaponAbility()
-        {
-            if (Utility.RandomBool())
-                return WeaponAbility.ParalyzingBlow;
-
-            return WeaponAbility.Disarm;
-        }
-
         public override bool IsScaredOfScaryThings { get {  return false;  } }
-        public override bool IsScaryToPets { get { return true; } }
+        public override bool IsScaryToPets { get { return !Controlled; } }
         public override FoodType FavoriteFood { get { return FoodType.None; } }
         public override bool CanBeDistracted { get { return false; } }
         public override bool DeleteOnRelease { get { return true; } }
         public override bool AutoDispel { get { return !Controlled; } }
         public override bool BleedImmune { get { return true; } }
-        public override bool BardImmune { get { return !Core.AOS || Controlled; } }
+        public override bool BardImmune { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
 
         public override bool CanTransfer(Mobile m)
@@ -201,7 +195,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
 
             writer.Write((int)_Resource);
         }
@@ -212,6 +206,12 @@ namespace Server.Items
             int version = reader.ReadInt();
 
             _Resource = (CraftResource)reader.ReadInt();
+
+            if (version == 0)
+            {
+                SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+                SetWeaponAbility(WeaponAbility.Disarm);
+            }
         }
     }
 }

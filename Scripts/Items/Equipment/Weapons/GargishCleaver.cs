@@ -10,7 +10,7 @@ namespace Server.Items
         public GargishCleaver()
             : base(0x48AE)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public GargishCleaver(Serial serial)
@@ -126,18 +126,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (this.Weight == 1.0)
-                this.Weight = 2.0;
         }
     }
 }

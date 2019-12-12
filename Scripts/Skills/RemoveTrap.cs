@@ -62,11 +62,12 @@ namespace Server.SkillHandlers
 
                     from.PlaySound(0x241);
 					
-                    if (from.CheckTargetSkill(SkillName.RemoveTrap, targ, targ.TrapPower, targ.TrapPower + 30))
+                    if (from.CheckTargetSkill(SkillName.RemoveTrap, targ, targ.TrapPower, targ.TrapPower + 10))
                     {
                         targ.TrapPower = 0;
                         targ.TrapLevel = 0;
                         targ.TrapType = Server.Items.TrapType.None;
+                        targ.InvalidateProperties();
                         from.SendLocalizedMessage(502377); // You successfully render the trap harmless
                     }
                     else
@@ -156,6 +157,26 @@ namespace Server.SkillHandlers
                         {
                             trap.Detonate(from);
                         }
+                    }
+                }
+                else if (targeted is GoblinFloorTrap)
+                {
+                    GoblinFloorTrap targ = (GoblinFloorTrap)targeted;
+
+                    if (from.InRange(targ.Location, 3))
+                    {
+                        from.Direction = from.GetDirectionTo(targ);
+
+                        if (targ.Owner == null)
+                        {
+                            Item item = new FloorTrapComponent();
+
+                            if (from.Backpack == null || !from.Backpack.TryDropItem(from, item, false))
+                                item.MoveToWorld(from.Location, from.Map);
+                        }
+
+                        targ.Delete();
+                        from.SendLocalizedMessage(502377); // You successfully render the trap harmless
                     }
                 }
                 else

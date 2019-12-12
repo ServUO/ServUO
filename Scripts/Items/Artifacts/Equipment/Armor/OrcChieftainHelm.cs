@@ -8,15 +8,15 @@ namespace Server.Items
         [Constructable]
         public OrcChieftainHelm()
         {
-            this.Hue = 0x2a3;
+            Hue = 0x2a3;
 
-            this.Attributes.Luck = 100;
-            this.Attributes.RegenHits = 3;
+            Attributes.Luck = 100;
+            Attributes.RegenHits = 3;
 
             if (Utility.RandomBool())
-                this.Attributes.BonusHits = 30;
+                Attributes.BonusHits = 30;
             else
-                this.Attributes.AttackChance = 30;
+                Attributes.AttackChance = 30;
         }
 
         public OrcChieftainHelm(Serial serial)

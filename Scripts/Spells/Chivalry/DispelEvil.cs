@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server.Items;
 using Server.Mobiles;
 using Server.Spells.Necromancy;
@@ -68,34 +70,22 @@ namespace Server.Spells.Chivalry
         }
         public override void SendCastEffect()
         {
-            this.Caster.FixedEffect(0x37C4, 10, 7, 4, 3); // At player
+           Caster.FixedEffect(0x37C4, 10, 7, 4, 3); // At player
         }
 
         public override void OnCast()
         {
             if (this.CheckSequence())
             {
-                List<Mobile> targets = new List<Mobile>();
-                IPooledEnumerable eable = Caster.GetMobilesInRange(8);
+               Caster.PlaySound(0xF5);
+               Caster.PlaySound(0x299);
+               Caster.FixedParticles(0x37C4, 1, 25, 9922, 14, 3, EffectLayer.Head);
 
-                foreach (Mobile m in eable)
+                int dispelSkill = ComputePowerValue(2);
+                double chiv = Caster.Skills.Chivalry.Value;
+
+                foreach (var m in AcquireIndirectTargets(Caster.Location, 8).OfType<Mobile>())
                 {
-                    if (this.Caster != m && SpellHelper.ValidIndirectTarget(this.Caster, m) && this.Caster.CanBeHarmful(m, false))
-                        targets.Add(m);
-                }
-                eable.Free();
-				
-                this.Caster.PlaySound(0xF5);
-                this.Caster.PlaySound(0x299);
-                this.Caster.FixedParticles(0x37C4, 1, 25, 9922, 14, 3, EffectLayer.Head);
-
-                int dispelSkill = this.ComputePowerValue(2);
-
-                double chiv = this.Caster.Skills.Chivalry.Value;
-
-                for (int i = 0; i < targets.Count; ++i)
-                {
-                    Mobile m = targets[i];
                     BaseCreature bc = m as BaseCreature;
 
                     if (bc != null)
@@ -150,7 +140,7 @@ namespace Server.Spells.Chivalry
                 }
             }
 
-            this.FinishSequence();
+           FinishSequence();
         }
     }
 }

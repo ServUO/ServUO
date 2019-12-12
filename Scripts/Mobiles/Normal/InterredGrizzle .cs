@@ -61,6 +61,8 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
+		
+		public override int TreasureMapLevel { get { return 4; } }
 
         public override void GenerateLoot() // -- Need to verify
         {
@@ -69,44 +71,15 @@ namespace Server.Mobiles
 
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
-            if (Utility.RandomDouble() < 0.3)
-                this.DropOoze();
+            if (Utility.RandomDouble() < 0.04)
+                SpillAcid(null, Utility.RandomMinMax(1, 3));
 
             base.OnDamage(amount, from, willKill);
         }
 
-        public virtual void DropOoze()
+        public override Item NewHarmfulItem()
         {
-            int amount = Utility.RandomMinMax(1, 3);
-
-            for (int i = 0; i < amount; i++)
-            {
-                Item ooze = new InfernalOoze(false, Utility.RandomMinMax(6, 10));
-                Point3D p = new Point3D(this.Location);
-
-                for (int j = 0; j < 5; j++)
-                {
-                    p = this.GetSpawnPosition(2);
-                    bool found = false;
-
-                    foreach (Item item in this.Map.GetItemsInRange(p, 0))
-                        if (item is InfernalOoze)
-                        {
-                            found = true;
-                            break;
-                        }
-
-                    if (!found)
-                        break;
-                }
-
-                ooze.MoveToWorld(p, this.Map);
-            }
-
-            if (this.Combatant is Mobile)
-            {
-                ((Mobile)this.Combatant).SendLocalizedMessage(1070820); // The creature spills a pool of acidic slime!
-            }
+            return new InfernalOoze(this, false, Utility.RandomMinMax(6, 10));
         }
 
         public override int GetAngerSound()

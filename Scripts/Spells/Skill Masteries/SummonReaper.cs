@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+
 using Server;
 using Server.Spells;
 using Server.Network;
@@ -82,11 +84,16 @@ namespace Server.Spells.SkillMasteries
     [CorpseName("a reapers corpse")]
     public class SummonedReaper : BaseCreature
     {
-        private DateTime _StartTime;
+        private int m_DispelDifficulty;
+
+        public override double DispelDifficulty { get { return m_DispelDifficulty; } }
+        public override double DispelFocus { get { return 45.0; } }
+
+        private long _NextAura;
 
         [Constructable]
         public SummonedReaper(Mobile caster, SummonReaperSpell spell)
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Spellweaving, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "a reaper";
             Body = 47;
@@ -133,37 +140,53 @@ namespace Server.Spells.SkillMasteries
                     }
                 });
 
-            _StartTime = DateTime.UtcNow + TimeSpan.FromSeconds(3);
-        }
+            m_DispelDifficulty = 91 + (int)((caster.Skills[SkillName.Spellweaving].Base * 83) / 5.2);
 
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.WhirlwindAttack;
+            _NextAura = Core.TickCount + 3000;
+            SetWeaponAbility(WeaponAbility.WhirlwindAttack);
         }
 
         public override Poison PoisonImmune { get { return Poison.Greater; } }
         public override bool DisallowAllMoves { get { return true; } }
         public override bool AlwaysMurderer { get { return true; } }
 
-        public override bool HasAura { get { return _StartTime < DateTime.UtcNow; } }
-        public override TimeSpan AuraInterval { get { return TimeSpan.FromSeconds(2); } }
-        public override int AuraBaseDamage { get { return Utility.RandomMinMax(10, 20); } }
-        public override int AuraFireDamage { get { return 0; } }
-        public override int AuraPoisonDamage { get { return 100; } }
-
-        public override void AuraDamage()
+        public override void OnThink()
         {
-            Server.Misc.Geometry.Circle2D(Location, Map, AuraRange, (pnt, map) =>
+            base.OnThink();
+
+            if (_NextAura < Core.TickCount)
+            {
+                DoAura();
+
+                _NextAura = Core.TickCount + 2000;
+            }
+        }
+
+        private void DoAura()
+        {
+            DoEffects();
+
+            foreach (Mobile m in SpellHelper.AcquireIndirectTargets(this, this, Map, 4).OfType<Mobile>())
+            {
+                int damage = Utility.RandomMinMax(10, 20);
+
+                AOS.Damage( m, this, damage, 0, 0, 0, 100, 0, DamageType.SpellAOE);
+
+                m.RevealingAction();
+            }
+        }
+
+        private void DoEffects()
+        {
+            Server.Misc.Geometry.Circle2D(Location, Map, 4, (pnt, map) =>
             {
                 Effects.SendLocationEffect(pnt, map, 0x3709, 0x14, 0x1, 0x8AF, 4);
             });
 
-            Server.Misc.Geometry.Circle2D(this.Location, this.Map, AuraRange + 1, (pnt, map) =>
+            Server.Misc.Geometry.Circle2D(Location, this.Map, 5, (pnt, map) =>
             {
                 Effects.SendLocationEffect(pnt, map, 0x3709, 0x14, 0x1, 0x8AF, 4);
             });
-
-            base.AuraDamage();
         }
 
         public SummonedReaper(Serial serial)

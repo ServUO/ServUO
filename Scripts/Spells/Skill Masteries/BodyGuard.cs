@@ -55,16 +55,31 @@ namespace Server.Spells.SkillMasteries
  
         public override void OnCast()
         {
-            Caster.BeginTarget(8, false, Server.Targeting.TargetFlags.None, (m, o) =>
+            if (Caster is BaseCreature && ((BaseCreature)Caster).ControlMaster != null)
+            {
+                var master = ((BaseCreature)Caster).ControlMaster;
+
+                if (Caster.CanSee(master) && Caster.InRange(master.Location, 8))
                 {
-                    if (!Caster.CanSee(o))
-                        Caster.SendLocalizedMessage(500237); // Target can not be seen.
-                    else
+                    SpellHelper.Turn(Caster, master);
+                    OnTarget(master);
+                }
+            }
+            else
+            {
+                Caster.BeginTarget(8, false, Server.Targeting.TargetFlags.None, (m, o) =>
                     {
-                        SpellHelper.Turn(Caster, o);
-                        OnTarget(o);
-                    }
-                });
+                        if (!Caster.CanSee(o))
+                        {
+                            Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                        }
+                        else
+                        {
+                            SpellHelper.Turn(Caster, o);
+                            OnTarget(o);
+                        }
+                    });
+            }
         }
 		
 		protected override void OnTarget(object o)
@@ -78,7 +93,7 @@ namespace Server.Spells.SkillMasteries
             if (protectee is BaseCreature && !((BaseCreature)protectee).Summoned && ((BaseCreature)protectee).GetMaster() is PlayerMobile)
                 master = ((BaseCreature)protectee).GetMaster();
 
-            if (protectee != null && Caster is PlayerMobile)
+            if (protectee != null)
 			{
                 BodyGuardSpell spell = GetSpell(s => s.GetType() == typeof(BodyGuardSpell) && s.Target == protectee) as BodyGuardSpell;
 				
@@ -99,16 +114,30 @@ namespace Server.Spells.SkillMasteries
                     Mobile responsible = master != null ? master : protectee;
 
                     Caster.FixedParticles( 0x376A, 9, 32, 5030, 1168, 0, EffectLayer.Waist, 0 );
-                    Caster.PlaySound(Caster.Female ? 0x338 : 0x44A);
 
-                    protectee.SendGump(new AcceptBodyguardGump(Caster as PlayerMobile, protectee, this));
+                    if (Caster.Player)
+                    {
+                        Caster.PlaySound(Caster.Female ? 0x338 : 0x44A);
+                    }
+                    else if (Caster is BaseCreature)
+                    {
+                        Caster.PlaySound(((BaseCreature)Caster).GetAngerSound());
+                    }
 
-                    AddGumpTimer(responsible, Caster);
+                    if (Caster is PlayerMobile)
+                    {
+                        protectee.SendGump(new AcceptBodyguardGump(Caster, protectee, this));
+                        AddGumpTimer(responsible, Caster);
+                    }
+                    else
+                    {
+                        AcceptBodyGuard(responsible);
+                    }
 				}
 			}
 		}
 
-		public void AcceptBodyGuard(Mobile toGuard, BodyGuardSpell spell)
+		public void AcceptBodyGuard(Mobile toGuard)
 		{
             RemoveGumpTimer(toGuard, Caster);
 
@@ -123,8 +152,8 @@ namespace Server.Spells.SkillMasteries
                 Caster.SendLocalizedMessage(1049452, "\t" + toGuard.Name); // You are now protecting ~2_NAME~.
                 toGuard.SendLocalizedMessage(1049451, Caster.Name); // You are now being protected by ~1_NAME~.
 
-                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Bodyguard, 1155924, 1156061, TimeSpan.FromSeconds(90), Caster, String.Format("{0}\t{1}\t{2}\t{3}", Caster.Name, (_Block + 5).ToString(), toGuard.Name, _Block.ToString())));
-                BuffInfo.AddBuff(toGuard, new BuffInfo(BuffIcon.Bodyguard, 1155924, 1156061, TimeSpan.FromSeconds(90), toGuard, String.Format("{0}\t{1}\t{2}\t{3}", Caster.Name, (_Block + 5).ToString(), toGuard.Name, _Block.ToString())));
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Bodyguard, 1155924, 1156061, TimeSpan.FromSeconds(90), Caster, String.Format("{0}\t{1}\t{2}\t{3}", Caster.Name, ((int)(_Block + 5)).ToString(), toGuard.Name, ((int)_Block).ToString())));
+                BuffInfo.AddBuff(toGuard, new BuffInfo(BuffIcon.Bodyguard, 1155924, 1156061, TimeSpan.FromSeconds(90), toGuard, String.Format("{0}\t{1}\t{2}\t{3}", Caster.Name, ((int)(_Block + 5)).ToString(), toGuard.Name, ((int)_Block).ToString())));
                 //~1_NAME~ receives ~2_DAMAGE~% of all damage dealt to ~3_NAME~. All damage dealt to ~3_NAME~ will be reduced by ~4_DAMAGE~%. Body guard must be within 2 tiles. 
 			}
 
@@ -133,6 +162,9 @@ namespace Server.Spells.SkillMasteries
 
         private bool HasShield()
         {
+            if (!Caster.Player)
+                return true;
+
             BaseShield shield = Caster.FindItemOnLayer(Layer.TwoHanded) as BaseShield;
 
             if (shield == null)
@@ -281,13 +313,9 @@ namespace Server.Spells.SkillMasteries
 				bool okay = info.IsSwitched( 1 );
 
                 if(okay)
-                    m_Spell.AcceptBodyGuard(m_Protectee, m_Spell);
+                    m_Spell.AcceptBodyGuard(m_Protectee);
                 else
                     m_Spell.DeclineBodyGuard(m_Protectee);
-				/*if ( okay )
-					JusticeVirtue.OnVirtueAccepted( m_Protector, m_Protectee );
-				else
-					JusticeVirtue.OnVirtueRejected( m_Protector, m_Protectee );*/
 			}
 		}
 	}

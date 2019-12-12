@@ -99,17 +99,24 @@ namespace Server.Gumps
                         {
                             if (m_House.Price > 0)
                             {
-                                if (Core.TOL)
+                                if (!Core.TOL)
                                 {
                                     toGive = new BankCheck(m_House.Price);
                                 }
                                 else
                                 {
                                     Banker.Deposit(m_Mobile, m_House.Price, true);
+
+                                    m_House.RemoveKeys(m_Mobile);
+                                    new TempNoHousingRegion(m_House, m_Mobile);
+                                    m_House.Delete();
+                                    return;
                                 }
                             }
                             else
+                            {
                                 toGive = m_House.GetDeed();
+                            }
                         }
                         else
                         {

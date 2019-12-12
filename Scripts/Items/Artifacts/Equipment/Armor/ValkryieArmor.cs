@@ -21,11 +21,9 @@ namespace Server.Items
 		public ValkyrieArmor() 
 		{
 			Hue = 2112;
-
 			Attributes.BonusStr = 5;
 			Attributes.BonusDex = 5;
 			Attributes.BonusInt = 5;
-
 			Attributes.BonusStam = 5;
 			Attributes.RegenStam = 3;
 			Attributes.LowerManaCost = 10;

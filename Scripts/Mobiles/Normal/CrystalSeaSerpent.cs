@@ -9,26 +9,26 @@ namespace Server.Mobiles
         [Constructable]
         public CrystalSeaSerpent()
         {
-            this.Name = "a crystal sea serpent";
-            this.Hue = 0x47E;
+            Name = "a crystal sea serpent";
+            Hue = 0x47E;
 
-            this.SetStr(250, 450);
-            this.SetDex(100, 150);
-            this.SetInt(90, 190);
+            SetStr(250, 450);
+            SetDex(100, 150);
+            SetInt(90, 190);
 
-            this.SetHits(230, 330);
+            SetHits(230, 330);
 
-            this.SetDamage(10, 18);
+            SetDamage(10, 18);
 
-            this.SetDamageType(ResistanceType.Physical, 10);
-            this.SetDamageType(ResistanceType.Cold, 45);
-            this.SetDamageType(ResistanceType.Energy, 45);
+            SetDamageType(ResistanceType.Physical, 10);
+            SetDamageType(ResistanceType.Cold, 45);
+            SetDamageType(ResistanceType.Energy, 45);
 
-            this.SetResistance(ResistanceType.Physical, 50, 70);
-            this.SetResistance(ResistanceType.Fire, 0);
-            this.SetResistance(ResistanceType.Cold, 70, 90);
-            this.SetResistance(ResistanceType.Poison, 20, 30);
-            this.SetResistance(ResistanceType.Energy, 60, 80);
+            SetResistance(ResistanceType.Physical, 50, 70);
+            SetResistance(ResistanceType.Fire, 0);
+            SetResistance(ResistanceType.Cold, 70, 90);
+            SetResistance(ResistanceType.Poison, 20, 30);
+            SetResistance(ResistanceType.Energy, 60, 80);
         }
 
         public override void OnDeath( Container c )
@@ -45,13 +45,7 @@ namespace Server.Mobiles
             c.DropItem( new LuckyDagger() );
         }
 
-        public override bool HasBreath{ get{ return true; } }
-        public override int BreathEnergyDamage{ get{ return 50; } } 
-        public override int BreathColdDamage{ get{ return 50; } }
-        public override int BreathFireDamage{ get{ return 0; } }
-        public override int BreathEffectHue{ get{ return 0x1ED; } }
-        public override double BreathDamageScalar{ get{ return 0.55; } }
-        //public override int TreasureMapLevel{ get{ return 3; } } //Can't get conformation as to if this is true, commented out for now.
+        public override int TreasureMapLevel { get { return 3; } }
         public override int Meat{ get{ return 10; } }
         public override int Hides{ get{ return 11; } }
         public override HideType HideType{ get{ return HideType.Horned; } }

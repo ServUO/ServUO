@@ -126,12 +126,6 @@ namespace Server.Engines.ResortAndCasino
             BettingOn = -1;
             Stage = GameStage.Betting;
 
-            if (Roll != null)
-            {
-                Roll.Clear();
-                Roll = null;
-            }
-
             Dealer.AddGame(Player, this);
             SendGump();
         }

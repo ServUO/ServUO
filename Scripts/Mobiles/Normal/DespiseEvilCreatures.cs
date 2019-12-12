@@ -26,6 +26,7 @@ namespace Server.Engines.Despise
             Karma = GetKarmaEvil;
 
             Power = powerLevel;
+            SetMagicalAbility(MagicalAbility.Discordance);
         }
 
         protected override BaseAI ForcedAI { get { return new DespiseMeleeAI(this); } }
@@ -148,6 +149,8 @@ namespace Server.Engines.Despise
             Fame = GetFame;
             Karma = GetKarmaEvil;
             Power = powerLevel;
+
+            SetWeaponAbility(WeaponAbility.ArmorIgnore);
         }
 
         protected override BaseAI ForcedAI { get { return new DespiseMeleeAI(this); } }
@@ -159,11 +162,6 @@ namespace Server.Engines.Despise
 
         public override double WeaponAbilityChance { get { return 0.5; } }
 
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.ArmorIgnore;
-        }
-
         public Darkmane(Serial serial) : base(serial)
         {
         }
@@ -171,13 +169,18 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int v = reader.ReadInt();
+
+            if (v == 0)
+            {
+                SetWeaponAbility(WeaponAbility.ArmorIgnore);
+            }
         }
     }
 
@@ -241,13 +244,15 @@ namespace Server.Engines.Despise
         public Hellion(int powerLevel) : base(AIType.AI_Melee, FightMode.Good)
         {
             Name = "Hellion";
-            Body = 130;
+            Body = 4;
             BaseSoundID = 0x174;
             Hue = 2671;
 
             Fame = GetFame;
             Karma = GetKarmaEvil;
             Power = powerLevel;
+
+            SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 
         protected override BaseAI ForcedAI { get { return new DespiseMeleeAI(this); } }
@@ -262,11 +267,6 @@ namespace Server.Engines.Despise
 
         public override double WeaponAbilityChance { get { return 0.5; } }
 
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.CrushingBlow;
-        }
-
         public Hellion(Serial serial) : base(serial)
         {
         }
@@ -274,13 +274,18 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int v = reader.ReadInt();
+
+            if (v == 0)
+            {
+                SetWeaponAbility(WeaponAbility.CrushingBlow);
+            }
         }
     }
 
@@ -302,6 +307,8 @@ namespace Server.Engines.Despise
             Fame = GetFame;
             Karma = GetKarmaEvil;
             Power = powerLevel;
+
+            SetWeaponAbility(WeaponAbility.ConcussionBlow);
         }
 
         protected override BaseAI ForcedAI { get { return new DespiseMeleeAI(this); } }
@@ -313,11 +320,6 @@ namespace Server.Engines.Despise
         public override int IntStart { get { return Utility.RandomMinMax(50, 60); } }
 
         public override double WeaponAbilityChance { get { return 0.5; } }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.ConcussionBlow;
-        }
 
         public Echidnite(Serial serial) : base(serial)
         {
@@ -333,6 +335,11 @@ namespace Server.Engines.Despise
         {
             base.Deserialize(reader);
             int v = reader.ReadInt();
+
+            if (v == 0)
+            {
+                SetWeaponAbility(WeaponAbility.ConcussionBlow);
+            }
         }
     }
 
@@ -355,6 +362,8 @@ namespace Server.Engines.Despise
             Fame = GetFame;
             Karma = GetKarmaEvil;
             Power = powerLevel;
+
+            SetWeaponAbility(WeaponAbility.DoubleStrike);
         }
 
         protected override BaseAI ForcedAI { get { return new DespiseMeleeAI(this); } }
@@ -366,11 +375,6 @@ namespace Server.Engines.Despise
         public override int IntStart { get { return Utility.RandomMinMax(30, 50); } }
 
         public override double WeaponAbilityChance { get { return 0.5; } }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.DoubleStrike;
-        }
 
         public override int GetAngerSound()
         {
@@ -395,13 +399,18 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int v = reader.ReadInt();
+
+            if (v == 0)
+            {
+                SetWeaponAbility(WeaponAbility.DoubleStrike);
+            }
         }
     }
 

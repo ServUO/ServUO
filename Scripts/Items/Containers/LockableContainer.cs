@@ -4,7 +4,7 @@ using Server.Network;
 
 namespace Server.Items
 {
-    public abstract class LockableContainer : TrapableContainer, ILockable, ILockpickable, IShipwreckedItem, IResource
+    public abstract class LockableContainer : TrapableContainer, ILockable, ILockpickable, IShipwreckedItem, IResource, IQuality
     {
         private bool m_Locked;
         private int m_LockLevel, m_MaxLockLevel, m_RequiredSkill;
@@ -413,10 +413,8 @@ namespace Server.Items
             }
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             if (m_PlayerConstructed && m_Crafter != null)
             {
                 list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
@@ -504,7 +502,7 @@ namespace Server.Items
                 from.SendLocalizedMessage(500637); // Your tinker skill was insufficient to make the item lockable.
             }
 
-            return 1;
+            return quality;
         }
 
         #endregion

@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using System;
 using Server.Engines.Quests;
 using Server.Mobiles;
@@ -14,25 +14,6 @@ namespace Server.Items
         public static string FilePath = Path.Combine("Saves", "Highseas.bin");
         public static bool DefaultRestrictBoats = true;
 
-        public static void Initialize()
-        {
-            if (Core.HS)
-            {
-                Region reg = new TokunoDocksRegion();
-                reg.Register();
-
-                SeaMarketRegion reg1 = new SeaMarketRegion(Map.Felucca);
-                SeaMarketRegion reg2 = new SeaMarketRegion(Map.Trammel);
-
-                reg1.Register();
-                reg2.Register();
-
-                SeaMarketRegion.SetRegions(reg1, reg2);
-
-                CommandSystem.Register("RestrictBoats", AccessLevel.GameMaster, new CommandEventHandler(SeaMarketRegion.SetRestriction_OnCommand));
-            }
-        }
-
         public static void Configure()
         {
             if (Core.HS)
@@ -43,6 +24,8 @@ namespace Server.Items
                 SeaMarketRegion.RestrictBoats = DefaultRestrictBoats;
 
                 m_Instance = new HighSeasPersistance();
+
+                CommandSystem.Register("RestrictBoats", AccessLevel.GameMaster, new CommandEventHandler(SeaMarketRegion.SetRestriction_OnCommand));
             }
         }
 

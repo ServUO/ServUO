@@ -10,53 +10,47 @@ namespace Server.Mobiles
         public Abscess()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Abscess";
-            this.Body = 0x109;
-            this.Hue = 0x8FD;
-            this.BaseSoundID = 0x16A;
+            Name = "Abscess";
+            Body = 0x109;
+            Hue = 0x8FD;
+            BaseSoundID = 0x16A;
 
-            this.SetStr(845, 871);
-            this.SetDex(121, 134);
-            this.SetInt(128, 142);
+            SetStr(845, 871);
+            SetDex(121, 134);
+            SetInt(128, 142);
 
-            this.SetHits(7470, 7540);
+            SetHits(7470, 7540);
 
-            this.SetDamage(26, 31);
+            SetDamage(26, 31);
 
-            this.SetDamageType(ResistanceType.Physical, 60);
-            this.SetDamageType(ResistanceType.Fire, 10);
-            this.SetDamageType(ResistanceType.Cold, 10);
-            this.SetDamageType(ResistanceType.Poison, 10);
-            this.SetDamageType(ResistanceType.Energy, 10);
+            SetDamageType(ResistanceType.Physical, 60);
+            SetDamageType(ResistanceType.Fire, 10);
+            SetDamageType(ResistanceType.Cold, 10);
+            SetDamageType(ResistanceType.Poison, 10);
+            SetDamageType(ResistanceType.Energy, 10);
 
-            this.SetResistance(ResistanceType.Physical, 65, 75);
-            this.SetResistance(ResistanceType.Fire, 70, 80);
-            this.SetResistance(ResistanceType.Cold, 25, 35);
-            this.SetResistance(ResistanceType.Poison, 35, 45);
-            this.SetResistance(ResistanceType.Energy, 35, 45);
+            SetResistance(ResistanceType.Physical, 65, 75);
+            SetResistance(ResistanceType.Fire, 70, 80);
+            SetResistance(ResistanceType.Cold, 25, 35);
+            SetResistance(ResistanceType.Poison, 35, 45);
+            SetResistance(ResistanceType.Energy, 35, 45);
 
-            this.SetSkill(SkillName.Wrestling, 132.3, 143.8);
-            this.SetSkill(SkillName.Tactics, 121.0, 130.5);
-            this.SetSkill(SkillName.MagicResist, 102.9, 119.0);
-            this.SetSkill(SkillName.Anatomy, 91.8, 94.3);
+            SetSkill(SkillName.Wrestling, 132.3, 143.8);
+            SetSkill(SkillName.Tactics, 121.0, 130.5);
+            SetSkill(SkillName.MagicResist, 102.9, 119.0);
+            SetSkill(SkillName.Anatomy, 91.8, 94.3);
 
             for (int i = 0; i < Utility.RandomMinMax(1, 2); i++)
             {
-                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public Abscess(Serial serial)
             : base(serial)
         {
-        }
-
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
         }
         public override int Hides
         {
@@ -78,17 +72,10 @@ namespace Server.Mobiles
             {
                 return true;
             }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        }       
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.AosUltraRich, 4);
+            AddLoot(LootPack.AosUltraRich, 4);
         }
 
         public override void OnDeath(Container c)
@@ -97,8 +84,8 @@ namespace Server.Mobiles
 			
             c.DropItem(new AbscessTail());			
 			
-            if (Paragon.ChestChance > Utility.RandomDouble())
-                c.DropItem(new ParagonChest(this.Name, this.TreasureMapLevel));
+            if ( Paragon.ChestChance > Utility.RandomDouble() )
+            c.DropItem( new ParagonChest( Name, 5 ) );
         }
 
         public override void Serialize(GenericWriter writer)

@@ -9,10 +9,10 @@ namespace Server.Mobiles
         public BlacksmithGuildmaster()
             : base("blacksmith")
         {
-            this.SetSkill(SkillName.ArmsLore, 65.0, 88.0);
-            this.SetSkill(SkillName.Blacksmith, 90.0, 100.0);
-            this.SetSkill(SkillName.Macing, 36.0, 68.0);
-            this.SetSkill(SkillName.Parry, 36.0, 68.0);
+            SetSkill(SkillName.ArmsLore, 65.0, 88.0);
+            SetSkill(SkillName.Blacksmith, 90.0, 100.0);
+            SetSkill(SkillName.Macing, 36.0, 68.0);
+            SetSkill(SkillName.Parry, 36.0, 68.0);
         }
 
         public BlacksmithGuildmaster(Serial serial)
@@ -50,26 +50,26 @@ namespace Server.Mobiles
         }
         public override void InitSBInfo()
         {
-            this.SBInfos.Add(new SBBlacksmith());
+            SBInfos.Add(new SBBlacksmith());
         }
 
         public override void InitOutfit()
         {
-            base.InitOutfit();
-
             Item item = (Utility.RandomBool() ? null : new Server.Items.RingmailChest());
 
-            if (item != null && !this.EquipItem(item))
+            if (item != null && !EquipItem(item))
             {
                 item.Delete();
                 item = null;
             }
 
             if (item == null)
-                this.AddItem(new Server.Items.FullApron());
+                AddItem(new Server.Items.FullApron());
 
-            this.AddItem(new Server.Items.Bascinet());
-            this.AddItem(new Server.Items.SmithHammer());
+            AddItem(new Server.Items.Bascinet());
+            AddItem(new Server.Items.SmithHammer());
+
+            base.InitOutfit();
         }
 
         #region Bulk Orders

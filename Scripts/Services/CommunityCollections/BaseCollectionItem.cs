@@ -281,14 +281,14 @@ namespace Server.Items
 
                 if (reward.QuestItem)
                     CollectionsObtainObjective.CheckReward(player, item);
+
+                reward.OnGiveReward(player, item, this, hue);
             }
             else if (item != null)
             {
                 player.SendLocalizedMessage(1074361); // The reward could not be given.  Make sure you have room in your pack.
                 item.Delete();
             }
-			
-            reward.OnGiveReward(player, this, hue);
 
 			player.CloseGump(typeof(CommunityCollectionGump));
             player.SendGump(new CommunityCollectionGump(player, this, Location));
@@ -296,14 +296,16 @@ namespace Server.Items
 		
         public virtual void DonatePet(PlayerMobile player, BaseCreature pet)
         {
-            for (int i = 0; i < m_Donations.Count; i ++)
-                if (m_Donations[i].Type == pet.GetType())
+            for (int i = 0; i < m_Donations.Count; i++)
+            {
+                if (m_Donations[i].Type == pet.GetType() || MoonglowDonationBox.HasGroup(pet.GetType(), m_Donations[i].Type))
                 {
                     pet.Delete();
                     Donate(player, m_Donations[i], 1);
                     return;
                 }
-				
+            }
+	
             player.SendLocalizedMessage(1073113); // This Collection is not accepting that type of creature.
         }
 
@@ -346,8 +348,7 @@ namespace Server.Items
             // start decay timer
             if (m_DailyDecay > 0)
             {
-                DateTime today = DateTime.Today;
-                today.AddDays(1);
+                DateTime today = DateTime.Today.AddDays(1);
 				
                 new CollectionDecayTimer(this, today - DateTime.UtcNow);
             }

@@ -2,6 +2,7 @@ using System;
 
 namespace Server.Items
 {
+    [Furniture]
     [Flipable(0x4C80, 0x4C81)]
     public class UpholsteredChairComponent : AddonComponent
     {

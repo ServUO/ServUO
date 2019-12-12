@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Server;
 using Server.Items;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -44,7 +45,32 @@ namespace Server.Items
             if (!Validate(attacker) || !CheckMana(attacker, false))
                 return false;
 
-            switch (Utility.Random(7))
+            int ran = -1;
+
+            if (attacker is BaseCreature && PetTrainingHelper.CheckSecondarySkill((BaseCreature)attacker, SkillName.Bushido))
+            {
+                ran = Utility.Random(9);
+            }
+            else
+            {
+                bool canfeint = attacker.Skills[WeaponAbility.Feint.GetSecondarySkill(attacker)].Value >= WeaponAbility.Feint.GetRequiredSecondarySkill(attacker);
+                bool canblock = attacker.Skills[WeaponAbility.Block.GetSecondarySkill(attacker)].Value >= WeaponAbility.Block.GetRequiredSecondarySkill(attacker);
+
+                if (canfeint && canblock)
+                {
+                    ran = Utility.Random(9);
+                }
+                else if (canblock)
+                {
+                    ran = Utility.Random(8);
+                }
+                else
+                {
+                    ran = Utility.RandomList(0, 1, 2, 3, 4, 5, 6, 8);
+                }
+            }
+
+            switch (ran)
             {
                 case 0:
                     m_NewAttack[attacker] = new BladeWeaveRedirect(WeaponAbility.ArmorIgnore, 1028838);
@@ -66,6 +92,12 @@ namespace Server.Items
                     break;
                 case 6:
                     m_NewAttack[attacker] = new BladeWeaveRedirect(WeaponAbility.ParalyzingBlow, 1028848);
+                    break;
+                case 7:
+                    m_NewAttack[attacker] = new BladeWeaveRedirect(WeaponAbility.Block, 1028853);
+                    break;
+                case 8:
+                    m_NewAttack[attacker] = new BladeWeaveRedirect(WeaponAbility.Feint, 1028857);
                     break;
                 default:
                     // should never happen

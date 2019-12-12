@@ -4,11 +4,13 @@ namespace Server.Items
 {
     public class Cauldron : Item
     {
+		public override int LabelNumber {get {return 1153777;} } // a cauldron
+		
         [Constructable]
         public Cauldron()
             : base(0x9ED)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Cauldron(Serial serial)
@@ -16,24 +18,15 @@ namespace Server.Items
         {
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "a cauldron";
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

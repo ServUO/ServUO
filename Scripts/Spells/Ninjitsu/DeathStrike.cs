@@ -179,5 +179,18 @@ namespace Server.Spells.Ninjitsu
                 this.m_isRanged = isRanged;
             }
         }
+
+        public static void Initialize()
+        {
+            if (Core.SE)
+            {
+                EventSink.Movement += new MovementEventHandler(EventSink_Movement);
+            }
+        }
+
+        public static void EventSink_Movement(MovementEventArgs e)
+        {
+            AddStep(e.Mobile);
+        }
     }
 }

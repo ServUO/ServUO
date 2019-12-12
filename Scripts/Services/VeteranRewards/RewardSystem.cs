@@ -110,15 +110,17 @@ namespace Server.Engines.VeteranRewards
         public static int GetRewardLevel(Account acct)
         {
             TimeSpan totalTime = (DateTime.UtcNow - acct.Created);
+            TimeSpan ositotalTime = (DateTime.UtcNow - new DateTime(1997, 9, 24));
 
             int level = (int)(totalTime.TotalDays / RewardInterval.TotalDays);
+            int levelosi = (int)(ositotalTime.TotalDays / 365);
 
             if (level < 0)
                 level = 0;
 
             level += StartingLevel;
 
-            return level;
+            return Math.Min(level, levelosi);
         }
 
         public static bool HasHalfLevel(Mobile mob)
@@ -128,11 +130,6 @@ namespace Server.Engines.VeteranRewards
             if (acct == null)
                 return false;
 
-            return HasHalfLevel(acct);
-        }
-
-        public static bool HasHalfLevel(Account acct)
-        {
             TimeSpan totalTime = (DateTime.UtcNow - acct.Created);
 
             Double level = (totalTime.TotalDays / RewardInterval.TotalDays);
@@ -385,13 +382,13 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(monsterStatues, 1006036, typeof(MonsterStatuette), MonsterStatuetteType.Skeleton),
                     new RewardEntry(monsterStatues, 1006037, typeof(MonsterStatuette), MonsterStatuetteType.Troll),
                     new RewardEntry(monsterStatues, 1155746, typeof(MonsterStatuette), MonsterStatuetteType.FleshRenderer),
+                    new RewardEntry(monsterStatues, 1156367, typeof(MonsterStatuette), Expansion.TOL, MonsterStatuetteType.DragonTurtle),
+                    new RewardEntry(monsterStatues, 1158875, typeof(MonsterStatuette), Expansion.EJ, MonsterStatuetteType.Krampus),
 
                     new RewardEntry(etherealSteeds, 1006019, typeof(EtherealHorse)),
 
                     new RewardEntry(houseAddOns,    1062692, typeof(ContestMiniHouseDeed), Expansion.AOS, MiniHouseType.MalasMountainPass),
-                    new RewardEntry(houseAddOns,    1072216, typeof(ContestMiniHouseDeed), Expansion.SE, MiniHouseType.ChurchAtNight),
-                    
-                    new RewardEntry(houseAddOns,    1156371,  typeof(Auction.AuctionSafeDeed), Expansion.TOL),
+                    new RewardEntry(houseAddOns,    1072216, typeof(ContestMiniHouseDeed), Expansion.SE, MiniHouseType.ChurchAtNight),                   
 
                     new RewardEntry(miscellaneous,  1076155, typeof(RedSoulstone),         Expansion.ML),
                     new RewardEntry(miscellaneous,  1080523, typeof(CommodityDeedBox),     Expansion.ML),
@@ -400,6 +397,7 @@ namespace Server.Engines.VeteranRewards
                
                     new RewardEntry(miscellaneous,    1123603,  typeof(CoralTheOwl), Expansion.ML),
                     new RewardEntry(miscellaneous,    1151769,  typeof(GreaterBraceletOfBinding), Expansion.ML),
+                    new RewardEntry(miscellaneous,    1156371,  typeof(Auction.AuctionSafeDeed), Expansion.TOL),
                 }),
                 new RewardList(RewardInterval, 2, new RewardEntry[]
                 {
@@ -418,6 +416,7 @@ namespace Server.Engines.VeteranRewards
 
                     new RewardEntry(monsterStatues, 1155747, typeof(MonsterStatuette), MonsterStatuetteType.CrystalElemental),
                     new RewardEntry(monsterStatues, 1157078, typeof(MonsterStatuette), Expansion.TOL, MonsterStatuetteType.TRex),
+                    new RewardEntry(monsterStatues, 1158877, typeof(MonsterStatuette), Expansion.EJ, MonsterStatuetteType.KhalAnkur),
 
                     new RewardEntry(houseAddOns,    1006048, typeof(BannerDeed)),
                     new RewardEntry(houseAddOns,    1006049, typeof(FlamingHeadDeed)),
@@ -441,8 +440,8 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(monsterStatues, 1006040, typeof(MonsterStatuette), MonsterStatuetteType.Llama),
                     new RewardEntry(monsterStatues, 1155748, typeof(MonsterStatuette), MonsterStatuetteType.DarkFather),
                     new RewardEntry(monsterStatues, 1157079, typeof(MonsterStatuette), Expansion.TOL, MonsterStatuetteType.Zipactriotal),
+                    new RewardEntry(monsterStatues, 1158876, typeof(MonsterStatuette), Expansion.EJ, MonsterStatuetteType.KrampusMinion),
 
-                    new RewardEntry(etherealSteeds, 1006019, typeof(EtherealHorse)),
                     new RewardEntry(etherealSteeds, 1006051, typeof(EtherealLlama)),
                     new RewardEntry(etherealSteeds, 1006050, typeof(EtherealOstard)),
 
@@ -472,6 +471,10 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(monsterStatues, 1049743, typeof(MonsterStatuette), MonsterStatuetteType.Reaper),
                     new RewardEntry(monsterStatues, 1049744, typeof(MonsterStatuette), MonsterStatuetteType.Mongbat),
                     new RewardEntry(monsterStatues, 1155745, typeof(MonsterStatuette), MonsterStatuetteType.PlatinumDragon),
+                    new RewardEntry(monsterStatues, 1157993, typeof(MonsterStatuette), MonsterStatuetteType.Pyros),
+                    new RewardEntry(monsterStatues, 1157994, typeof(MonsterStatuette), MonsterStatuetteType.Lithos),
+                    new RewardEntry(monsterStatues, 1157992, typeof(MonsterStatuette), MonsterStatuetteType.Hydros),
+                    new RewardEntry(monsterStatues, 1157991, typeof(MonsterStatuette), MonsterStatuetteType.Stratos),
 
                     new RewardEntry(etherealSteeds, 1049746, typeof(EtherealKirin)),
                     new RewardEntry(etherealSteeds, 1049745, typeof(EtherealUnicorn)),
@@ -480,7 +483,8 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(houseAddOns,    1049737, typeof(DecorativeShieldDeed)),
                     new RewardEntry(houseAddOns,    1049738, typeof(HangingSkeletonDeed)),
 
-                    new RewardEntry(miscellaneous,  1098160, typeof(Plants.SeedBox))
+                    new RewardEntry(miscellaneous,  1098160, typeof(Plants.SeedBox)),
+                    new RewardEntry(miscellaneous,  1158880, typeof(EmbroideryTool), Expansion.EJ),
                 }),
                 new RewardList(RewardInterval, 5, new RewardEntry[]
                 {
@@ -513,6 +517,7 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(houseAddOns,    1049739, typeof(StoneAnkhDeed)),
                     new RewardEntry(houseAddOns,    1080384, typeof(BloodyPentagramDeed), Expansion.ML),
                     new RewardEntry(houseAddOns,    1154582, typeof(LighthouseAddonDeed), Expansion.HS),
+                    new RewardEntry(houseAddOns,    1158860, typeof(RepairBenchDeed), Expansion.EJ),
                 }),
                 new RewardList(RewardInterval, 6, new RewardEntry[]
                 {
@@ -533,11 +538,13 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(houseAddOns,    1157071, typeof(BBQSmokerDeed),        Expansion.TOL),
                     new RewardEntry(houseAddOns,    1157070, typeof(AlchemyStationDeed),   Expansion.TOL),
                     new RewardEntry(houseAddOns,    1157989, typeof(WritingDeskDeed),      Expansion.TOL),
+                    new RewardEntry(houseAddOns,    1125529, typeof(TinkerBenchDeed),      Expansion.EJ),
                 }),
                 new RewardList(RewardInterval, 8, new RewardEntry[]
                 {
                     new RewardEntry(miscellaneous,  1076158, typeof(WeaponEngravingTool), Expansion.ML),
-                    new RewardEntry(houseAddOns,   1153535, typeof(DaviesLockerAddonDeed), Expansion.SA, true),
+                    new RewardEntry(houseAddOns,   1153535, typeof(DaviesLockerAddonDeed), Expansion.SA),
+                    new RewardEntry(houseAddOns,   1154583, typeof(GadgetryTableAddonDeed), Expansion.HS),
                 }),
                 new RewardList(RewardInterval, 9, new RewardEntry[]
                 {
@@ -565,15 +572,11 @@ namespace Server.Engines.VeteranRewards
 
                     new RewardEntry(houseAddOns,    1080548, typeof(MiningCartDeed), Expansion.ML),
                     new RewardEntry(houseAddOns,    1080397, typeof(AnkhOfSacrificeDeed), Expansion.ML),
-                    new RewardEntry(houseAddOns,    1150090, typeof(SkullRugEastAddonDeed), Expansion.SA),
-                    new RewardEntry(houseAddOns,    1150089, typeof(SkullRugSouthAddonDeed), Expansion.SA),
-                    new RewardEntry(houseAddOns,    1150092, typeof(RoseRugEastAddonDeed), Expansion.SA),
-                    new RewardEntry(houseAddOns,    1150091, typeof(RoseRugSouthAddonDeed), Expansion.SA),
-                    new RewardEntry(houseAddOns,    1150094, typeof(DolphinRugEastAddonDeed), Expansion.SA),
-                    new RewardEntry(houseAddOns,    1150093, typeof(DolphinRugSouthAddonDeed), Expansion.SA),
+                    new RewardEntry(houseAddOns,    1150120, typeof(SkullRugAddonDeed), Expansion.SA),
+                    new RewardEntry(houseAddOns,    1150121, typeof(RoseRugAddonDeed), Expansion.SA),
+                    new RewardEntry(houseAddOns,    1150122, typeof(DolphinRugAddonDeed), Expansion.SA),
                     new RewardEntry(houseAddOns,    1157996, typeof(KoiPondDeed), Expansion.TOL),
-
-                    new RewardEntry( miscellaneous, 1150424, typeof(ChestOfSending), Expansion.SA),
+                    new RewardEntry(houseAddOns,    1158881, typeof(WaterWheelDeed), Expansion.EJ),
                 }),
                 new RewardList(RewardInterval, 11, new RewardEntry[]
                 {
@@ -667,8 +670,7 @@ namespace Server.Engines.VeteranRewards
 
             if (Core.ML && e.Mobile is PlayerMobile && !((PlayerMobile)e.Mobile).HasStatReward && HasHalfLevel(e.Mobile))
             {
-                ((PlayerMobile)e.Mobile).HasStatReward = true;
-                e.Mobile.StatCap += 5;
+                Server.Gumps.BaseGump.SendGump(new StatRewardGump((PlayerMobile)e.Mobile));
             }
 
             if (cur < max)

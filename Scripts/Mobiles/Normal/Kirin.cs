@@ -160,7 +160,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (Utility.RandomDouble() < 0.3)
+            if (!Controlled && Utility.RandomDouble() < 0.3)
                 c.DropItem(new KirinBrains());
         }
 

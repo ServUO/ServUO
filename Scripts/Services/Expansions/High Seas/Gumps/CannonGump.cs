@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Items;
 using Server.Targeting;
@@ -30,7 +30,7 @@ namespace Server.Gumps
             bool cleaned = cannon.Cleaned;
             bool charged = cannon.Charged;
             bool primed = cannon.Primed;
-            bool loaded = cannon.AmmoType != AmmoType.Empty;
+            bool loaded = cannon.AmmoType != AmmunitionType.Empty;
 
             AddHtmlLocalized(0, 10, 300, 16, 1149614 + (int)m_Cannon.Position, 21758, false, false);
 
@@ -66,7 +66,7 @@ namespace Server.Gumps
             if (!loaded)
                 AddHtmlLocalized(150, 80, 100, 16, 1149636, RedHue, false, false); //Not Loaded
             else
-                AddHtmlLocalized(150, 80, 100, 16, 1114057, AmmoInfo.GetAmmoName(cannon), GreenHue, false, false);
+                AddHtmlLocalized(150, 80, 100, 16, 1114057, AmmoInfo.GetAmmoName(cannon).ToString(), GreenHue, false, false);
                 //AddHtmlLocalized(150, 80, 100, 16, cannon.AmmoType == AmmoType.Grapeshot ? 1095741 : 1116029, GreenHue, false, false);
 
             if (!primed)
@@ -121,7 +121,7 @@ namespace Server.Gumps
                         m_Cannon.RemoveCharge(from);
                     break;
                 case 3: //load
-                    if (m_Cannon.AmmoType == AmmoType.Empty)
+                    if (m_Cannon.AmmoType == AmmunitionType.Empty)
                         m_Cannon.TryLoad(from);
                     else
                         m_Cannon.RemoveLoad(from);

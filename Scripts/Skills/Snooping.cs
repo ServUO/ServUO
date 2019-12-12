@@ -46,6 +46,9 @@ namespace Server.SkillHandlers
                 if (root != null && !root.Alive)
                     return;
 
+                if (from.IsPlayer() && root is BaseCreature && !(cont is StrongBackpack))
+                    return;
+
                 if (root != null && root.IsStaff() && from.IsPlayer())
                 {
                     from.SendLocalizedMessage(500209); // You can not peek into the container.
@@ -64,17 +67,9 @@ namespace Server.SkillHandlers
 
                     if (map != null)
                     {
-                        string message = String.Format("You notice {0} attempting to peek into {1}'s belongings.", from.Name, root.Name);
+                        string message = String.Format("You notice {0} peeking into your belongings!", from.Name);
 
-                        IPooledEnumerable eable = map.GetClientsInRange(from.Location, 8);
-
-                        foreach (NetState ns in eable)
-                        {
-                            if (ns.Mobile != from)
-                                ns.Mobile.SendMessage(message);
-                        }
-
-                        eable.Free();
+                        root.Send(new AsciiMessage(-1, -1, MessageType.Label, 946, 3, "", message));                        
                     }
                 }
 

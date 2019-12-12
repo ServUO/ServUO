@@ -77,16 +77,16 @@ namespace Server.Items
             switch (version)
             {
                 case 1:
-                    {                        
+                    {
                         Pedestals = reader.ReadStrongItemList();
                         goto case 0;
                     }
                 case 0:
                     {
-                        m_ID = reader.ReadInt();                        
+                        m_ID = reader.ReadInt();
                         break;
-                    }                
-            }                     
+                    }
+            }
         }
 
         public int GetID()
@@ -95,33 +95,13 @@ namespace Server.Items
             m_ID += 1;
             return id;
         }
-
-        public bool TryDrop(Mobile from, Item item, PrismOfLightPillar c)
-        {
-            int id = c.ID;
-
-            if (id >= 0 && id < Keys.Length && item != null)
-            {
-                if (item.GetType() == Keys[id])
-                {
-                    if (Items.Count < Keys.Length)
-                    {
-                        c.Hue = 36;
-                    }
-
-                    return OnDragDrop(from, item);
-                }
-            }
-
-            return false;
-        }
     }
 
     public class PrismOfLightPillar : Container
     {
         public override int LabelNumber { get { return 1024643; } } // pedestal
+
         private PrismOfLightAltar m_Altar;
-        private int m_ID;
         private int m_OrgHue;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -131,18 +111,14 @@ namespace Server.Items
             set
             {
                 m_Altar = value;
-                                
+
                 if (!m_Altar.Pedestals.Contains(this))
                     m_Altar.Pedestals.Add(this);
             }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int ID
-        {
-            get { return m_ID; }
-            set { m_ID = value; }
-        }
+        public int ID { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int OrgHue
@@ -156,7 +132,7 @@ namespace Server.Items
             }
         }
 
-        public PrismOfLightPillar(PrismOfLightAltar altar, int hue) 
+        public PrismOfLightPillar(PrismOfLightAltar altar, int hue)
             : base(0x207D)
         {
             OrgHue = hue;
@@ -165,8 +141,8 @@ namespace Server.Items
             m_Altar = altar;
 
             if (m_Altar != null)
-            { 
-                m_ID = m_Altar.GetID();
+            {
+                ID = m_Altar.GetID();
                 m_Altar.Pedestals.Add(this);
             }
         }
@@ -180,21 +156,20 @@ namespace Server.Items
             if (m_Altar == null)
                 return false;
 
-            if (m_Altar.Activated)
+            if (dropped.GetType() == m_Altar.Keys[ID])
             {
-                from.SendLocalizedMessage(1075213); // The master of this realm has already been summoned and is engaged in combat.  Your opportunity will come after he has squashed the current batch of intruders!
-                return false;
-            }
-
-            if (!m_Altar.TryDrop(from, dropped, this))
-            {
-                from.SendLocalizedMessage(1072682); // This is not the proper key.
-                return false;
+                if (m_Altar.OnDragDrop(from, dropped))
+                {
+                    Hue = 36;
+                    return true;
+                }
             }
             else
             {
-                return true;
+                from.SendLocalizedMessage(1072682); // This is not the proper key.
             }
+
+            return false;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -204,8 +179,8 @@ namespace Server.Items
 
             writer.Write((int)m_OrgHue);
 
-            writer.Write((int)m_ID);
-            writer.Write((Item)m_Altar);            
+            writer.Write((int)ID);
+            writer.Write((Item)m_Altar);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -221,12 +196,12 @@ namespace Server.Items
                         goto case 0;
                     }
                 case 0:
-                    {                        
-                        m_ID = reader.ReadInt();
-                        m_Altar = reader.ReadItem() as PrismOfLightAltar;                        
+                    {
+                        ID = reader.ReadInt();
+                        m_Altar = reader.ReadItem() as PrismOfLightAltar;
 
                         break;
-                    }                
+                    }
             }
 
             if (version < 1)

@@ -4,7 +4,8 @@ using Server.Accounting;
 
 namespace Server.Items
 {
-    public class ScrollofTranscendence : SpecialScroll, IAccountRestricted
+    [TypeAlias("Server.Items.ScrollofTranscendence")]
+    public class ScrollOfTranscendence : SpecialScroll, IAccountRestricted
     {
         public override int LabelNumber
         {
@@ -28,34 +29,34 @@ namespace Server.Items
         {
             get
             {
-                return String.Format("<basefont color=#FFFFFF>Scroll of Transcendence ({0} Skill):</basefont>", this.Value);
+                return String.Format("<basefont color=#FFFFFF>Scroll of Transcendence ({0} Skill):</basefont>", Value);
             }
         }
 
-        public static ScrollofTranscendence CreateRandom(int min, int max)
+        public static ScrollOfTranscendence CreateRandom(int min, int max)
         {
             SkillName skill = (SkillName)Utility.Random(SkillInfo.Table.Length);
 
-            return new ScrollofTranscendence(skill, Utility.RandomMinMax(min, max) * 0.1);
+            return new ScrollOfTranscendence(skill, Utility.RandomMinMax(min, max) * 0.1);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string Account { get; set; }
 
-        public ScrollofTranscendence()
+        public ScrollOfTranscendence()
             : this(SkillName.Alchemy, 0.0)
         {
         }
 		
         [Constructable]
-        public ScrollofTranscendence(SkillName skill, double value)
+        public ScrollOfTranscendence(SkillName skill, double value)
             : base(skill, value)
         {
-            this.ItemID = 0x14EF;
-            this.Hue = 0x490;
+            ItemID = 0x14EF;
+            Hue = 0x490;
         }
 
-        public ScrollofTranscendence(Serial serial)
+        public ScrollOfTranscendence(Serial serial)
             : base(serial)
         {
         }
@@ -64,10 +65,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (this.Value == 1)
-                list.Add(1076759, "{0}\t{1}.0 Skill Points", this.GetName(), this.Value);
-            else
-                list.Add(1076759, "{0}\t{1} Skill Points", this.GetName(), this.Value);
+            list.Add(1076759, "{0}\t{1:0.0} Skill Points", GetName(), Value);
 
             if (!String.IsNullOrEmpty(Account))
                 list.Add(1155526); // Account Bound
@@ -107,19 +105,19 @@ namespace Server.Items
 
         public override void Use(Mobile from)
         {
-            if (!this.CanUse(from))
+            if (!CanUse(from))
                 return;
 			
-            double tskill = from.Skills[this.Skill].Base; // value of skill without item bonuses etc
-            double tcap = from.Skills[this.Skill].Cap; // maximum value permitted
+            double tskill = from.Skills[Skill].Base; // value of skill without item bonuses etc
+            double tcap = from.Skills[Skill].Cap; // maximum value permitted
             bool canGain = false;
 			
-            double newValue = this.Value;
+            double newValue = Value;
 
             if ((tskill + newValue) > tcap)
                 newValue = tcap - tskill;
 
-            if (tskill < tcap && from.Skills[this.Skill].Lock == SkillLock.Up)
+            if (tskill < tcap && from.Skills[Skill].Lock == SkillLock.Up)
             {
                 if ((from.SkillsTotal + newValue * 10) > from.SkillsCap)
                 {
@@ -147,15 +145,15 @@ namespace Server.Items
                 return;
             }
 
-            from.SendLocalizedMessage(1049513, this.GetNameLocalized()); // You feel a surge of magic as the scroll enhances your ~1_type~!
+            from.SendLocalizedMessage(1049513, GetNameLocalized()); // You feel a surge of magic as the scroll enhances your ~1_type~!
 					
-            from.Skills[this.Skill].Base += newValue;
+            from.Skills[Skill].Base += newValue;
 
             Effects.PlaySound(from.Location, from.Map, 0x1F7);
             Effects.SendTargetParticles(from, 0x373A, 35, 45, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
             Effects.SendTargetParticles(from, 0x376A, 35, 45, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
 
-            this.Delete();
+            Delete();
         }
 		
         public override void Serialize(GenericWriter writer)
@@ -171,16 +169,16 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); //Required for SpecialScroll insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); //Required for SpecialScroll insertion
 
             if (version > 0)
                 Account = reader.ReadString();
 
-            this.LootType = LootType.Cursed;
-            this.Insured = false;
+            LootType = LootType.Cursed;
+            Insured = false;
 
-            if (this.Hue == 0x7E)
-                this.Hue = 0x490;
+            if (Hue == 0x7E)
+                Hue = 0x490;
         }
     }
 }

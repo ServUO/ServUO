@@ -2,26 +2,23 @@ using System;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x904, 0x406D)]
     public class StandardOfChaosG : DualPointedSpear
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113522; } } // Standard of Chaos
+		
         [Constructable]
         public StandardOfChaosG()
         {
-            this.Name = ("Standard Of Chaos");
-		
-            this.Hue = 2209;
-			
-            this.WeaponAttributes.HitHarm = 30;	
-            this.WeaponAttributes.HitFireball = 20;	
-            this.WeaponAttributes.HitLightning = 10;
-            this.WeaponAttributes.HitLowerDefend = 40;
-            this.Attributes.WeaponSpeed = 30;
-            this.Attributes.WeaponDamage = -40;
-            this.Attributes.CastSpeed = 1;
-            this.AosElementDamages.Chaos = 100;		
-			this.StrRequirement = 40;
+            Hue = 2209;		
+            WeaponAttributes.HitHarm = 30;	
+            WeaponAttributes.HitFireball = 20;	
+            WeaponAttributes.HitLightning = 10;
+            WeaponAttributes.HitLowerDefend = 40;
+            Attributes.WeaponSpeed = 30;
+            Attributes.WeaponDamage = -40;
+            Attributes.CastSpeed = 1;
+            AosElementDamages.Chaos = 100;		
         }
 
         public StandardOfChaosG(Serial serial)
@@ -44,9 +41,6 @@ namespace Server.Items
                 return 255;
             }
         }
-        
-        public override Race RequiredRace { get { return Race.Gargoyle; } }
-        public override bool CanBeWornByGargoyles { get { return true; } }
 
         public override void Serialize(GenericWriter writer)
         {

@@ -8,7 +8,7 @@ using Server.Spells.Necromancy;
 
 namespace Server.Engines.VvV
 {
-	public enum TrapType
+	public enum VvVTrapType
 	{
 		Explosion 	= 1015027, // Explosion
 		Poison 		= 1028000, // Poison
@@ -37,10 +37,11 @@ namespace Server.Engines.VvV
         public List<VvVTrap> Links { get; set; }
 		
 		public override bool HandlesOnMovement { get { return true; } }
-		
+        public bool CheckWhenHidden { get { return true; } }
+
 		public virtual int MinDamage { get { return 0; } }
 		public virtual int MaxDamage { get { return 0; } }
-        public virtual TrapType TrapType { get { return TrapType.Explosion; } }
+        public virtual VvVTrapType TrapType { get { return VvVTrapType.Explosion; } }
 
         public static int HiddenID = 8600;
         public static int VisibleID = 39818;
@@ -274,7 +275,7 @@ namespace Server.Engines.VvV
 	{
 		public override int MinDamage { get { return 25; } }
 		public override int MaxDamage { get { return 35; } }
-        public override TrapType TrapType { get { return TrapType.Poison; } }
+        public override VvVTrapType TrapType { get { return VvVTrapType.Poison; } }
 
         public VvVPoisonTrap(Mobile owner, DeploymentType type)
             : base(owner, type)
@@ -318,7 +319,7 @@ namespace Server.Engines.VvV
 	{
 		public override int MinDamage { get { return 25; } }
 		public override int MaxDamage { get { return 35; } }
-        public override TrapType TrapType { get { return TrapType.Cold; } }
+        public override VvVTrapType TrapType { get { return VvVTrapType.Cold; } }
 
         public VvVColdTrap(Mobile owner, DeploymentType type)
             : base(owner, type)
@@ -364,7 +365,7 @@ namespace Server.Engines.VvV
 	{
 		public override int MinDamage { get { return 25; } }
 		public override int MaxDamage { get { return 35; } }
-        public override TrapType TrapType { get { return TrapType.Energy; } }
+        public override VvVTrapType TrapType { get { return VvVTrapType.Energy; } }
 
         public VvVEnergyTrap(Mobile owner, DeploymentType type)
             : base(owner, type)
@@ -407,7 +408,7 @@ namespace Server.Engines.VvV
 	{
 		public override int MinDamage { get { return 25; } }
 		public override int MaxDamage { get { return 35; } }
-        public override TrapType TrapType { get { return TrapType.Blade; } }
+        public override VvVTrapType TrapType { get { return VvVTrapType.Blade; } }
 
         public VvVBladeTrap(Mobile owner, DeploymentType type)
             : base(owner, type)

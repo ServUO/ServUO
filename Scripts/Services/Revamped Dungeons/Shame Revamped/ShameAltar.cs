@@ -97,6 +97,8 @@ namespace Server.Engines.ShameRevamped
                 SpawnGuardian();
                 Summoner = from;
 
+                PointsSystem.ShameCrystals.DeductPoints(from, SummonCost);
+
                 if (Teleporter == null || Teleporter.Deleted)
                     SpawnTeleporter();
 

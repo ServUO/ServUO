@@ -5,17 +5,16 @@ namespace Server.Items
     public class EternalGuardianStaff : GnarledStaff
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1112443; } } // Eternal Guardian Staff
+		
         [Constructable]
         public EternalGuardianStaff()
-        {
-            this.Name = ("Eternal Guardian Staff");
-		
-            this.Hue = 95;
-			
-            this.SkillBonuses.SetValues(0, SkillName.Mysticism, 15.0);		
-            this.Attributes.SpellDamage = 10;
-            this.Attributes.LowerManaCost = 5;	
-            this.Attributes.SpellChanneling = 1;	
+        {		
+            Hue = 95;
+            SkillBonuses.SetValues(0, SkillName.Mysticism, 15.0);		
+            Attributes.SpellDamage = 10;
+            Attributes.LowerManaCost = 5;	
+            Attributes.SpellChanneling = 1;	
         }
 
         public EternalGuardianStaff(Serial serial)

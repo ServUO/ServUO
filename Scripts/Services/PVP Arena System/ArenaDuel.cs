@@ -374,7 +374,7 @@ namespace Server.Engines.ArenaSystem
             Map map = Arena.Definition.Map;
             Rectangle2D rec = _StartPoints[pm];
 
-            Point3D p = rec.GetRandomSpawnPoint(map);
+            Point3D p = map.GetRandomSpawnPoint(rec);
 
             BaseCreature.TeleportPets(pm, p, map);
             pm.MoveToWorld(p, Arena.Definition.Map);

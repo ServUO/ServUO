@@ -5,7 +5,9 @@ namespace Server.Items
 {
 	public class GiantToadCostume : BaseCostume
 	{
-		[Constructable]
+        public override string CreatureName { get { return "giant toad"; } }
+
+        [Constructable]
 		public GiantToadCostume() : base( )
 		{
             this.CostumeBody = 80;

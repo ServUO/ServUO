@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - BaseVendor.cs
-// **********
-#endregion
-
 #region References
 using System.Collections.Generic;
 #endregion

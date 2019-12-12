@@ -10,32 +10,34 @@ namespace Server.Mobiles
         public Moloch()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a moloch";
-            this.Body = 0x311;
-            this.BaseSoundID = 0x300;
+            Name = "a moloch";
+            Body = 0x311;
+            BaseSoundID = 0x300;
 
-            this.SetStr(331, 360);
-            this.SetDex(66, 85);
-            this.SetInt(41, 65);
+            SetStr(331, 360);
+            SetDex(66, 85);
+            SetInt(41, 65);
 
-            this.SetHits(171, 200);
+            SetHits(171, 200);
 
-            this.SetDamage(15, 23);
+            SetDamage(15, 23);
 
-            this.SetResistance(ResistanceType.Physical, 60, 70);
-            this.SetResistance(ResistanceType.Fire, 60, 70);
-            this.SetResistance(ResistanceType.Cold, 40, 50);
-            this.SetResistance(ResistanceType.Poison, 20, 30);
-            this.SetResistance(ResistanceType.Energy, 20, 30);
+            SetResistance(ResistanceType.Physical, 60, 70);
+            SetResistance(ResistanceType.Fire, 60, 70);
+            SetResistance(ResistanceType.Cold, 40, 50);
+            SetResistance(ResistanceType.Poison, 20, 30);
+            SetResistance(ResistanceType.Energy, 20, 30);
 
-            this.SetSkill(SkillName.MagicResist, 65.1, 75.0);
-            this.SetSkill(SkillName.Tactics, 75.1, 90.0);
-            this.SetSkill(SkillName.Wrestling, 70.1, 90.0);
+            SetSkill(SkillName.MagicResist, 65.1, 75.0);
+            SetSkill(SkillName.Tactics, 75.1, 90.0);
+            SetSkill(SkillName.Wrestling, 70.1, 90.0);
 
-            this.Fame = 7500;
-            this.Karma = -7500;
+            Fame = 7500;
+            Karma = -7500;
 
-            this.VirtualArmor = 32;
+            VirtualArmor = 32;
+
+            SetWeaponAbility(WeaponAbility.ConcussionBlow);
         }
 
         public Moloch(Serial serial)
@@ -50,14 +52,10 @@ namespace Server.Mobiles
                 return Poison.Regular;
             }
         }
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.ConcussionBlow;
-        }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Rich);
         }
 
         public override void Serialize(GenericWriter writer)

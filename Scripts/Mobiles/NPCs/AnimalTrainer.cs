@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - AnimalTrainer.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -13,6 +7,8 @@ using Server.Gumps;
 using Server.Items;
 using Server.Network;
 using Server.Targeting;
+using Server.Engines.Quests;
+using System.Linq;
 #endregion
 
 namespace Server.Mobiles
@@ -68,6 +64,84 @@ namespace Server.Mobiles
 
 			base.AddCustomContextEntries(from, list);
 		}
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (PetTrainingHelper.Enabled)
+            {
+                list.Add(1072269); // Quest Giver
+            }
+        }
+
+        private DateTime _NextTalk;
+
+        public override void OnMovement(Mobile m, Point3D oldLocation)
+        {
+            if (PetTrainingHelper.Enabled && m.Alive && !m.Hidden && m is PlayerMobile)
+            {
+                PlayerMobile pm = (PlayerMobile)m;
+
+                if (InLOS(m) && InRange(m, 8) && !InRange(oldLocation, 8) && DateTime.UtcNow >= _NextTalk)
+                {
+                    if (Utility.Random(100) < 50)
+                        Say(1157526); // Such an exciting time to be an Animal Trainer! New taming techniques have been discovered!
+
+                    _NextTalk = DateTime.UtcNow + TimeSpan.FromSeconds(15);
+                }
+            }
+        }
+
+        private Type[] _Quests = { typeof(TamingPetQuest), typeof(UsingAnimalLoreQuest), typeof(LeadingIntoBattleQuest), typeof(TeachingSomethingNewQuest) };
+
+        public override void OnDoubleClick(Mobile m)
+        {
+            if (PetTrainingHelper.Enabled && m is PlayerMobile && m.InRange(Location, 5))
+            {
+                CheckQuest((PlayerMobile)m);
+            }
+        }
+
+        public bool CheckQuest(PlayerMobile player)
+        {
+            for (int i = 0; i < _Quests.Length; i++)
+            {
+                var quest = player.Quests.FirstOrDefault(q => q.GetType() == _Quests[i]);
+
+                if (quest != null)
+                {
+                    if (quest.Completed)
+                    {
+                        if (quest.GetType() != typeof(TeachingSomethingNewQuest))
+                        {
+                            quest.GiveRewards();
+                        }
+                        else
+                        {
+                            player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.Complete, false, true));
+                        }
+
+                        return true;
+                    }
+                    else
+                    {
+                        player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.InProgress, false));
+                        quest.InProgress();
+                    }
+
+                    return false;
+                }
+            }
+
+            BaseQuest questt = new TamingPetQuest();
+            questt.Owner = player;
+            questt.Quester = this;
+            player.CloseGump(typeof(MondainQuestGump));
+            player.SendGump(new MondainQuestGump(questt));
+
+            return true;
+        }
 
 		public static int GetMaxStabled(Mobile from)
 		{
@@ -404,6 +478,11 @@ namespace Server.Mobiles
 
 		public override void OnSpeech(SpeechEventArgs e)
 		{
+            if (e.Mobile.Map.Rules != MapRules.FeluccaRules && !CheckVendorAccess(e.Mobile))
+            {
+                return;
+            }
+
 			if (!e.Handled && e.HasKeyword(0x0008)) // *stable*
 			{
 				e.Handled = true;
@@ -474,6 +553,8 @@ namespace Server.Mobiles
 			{
 				m_Trainer = trainer;
 				m_From = from;
+
+                Enabled = from.Map.Rules == MapRules.FeluccaRules || trainer.CheckVendorAccess(from);
 			}
 
 			public override void OnClick()
@@ -553,6 +634,8 @@ namespace Server.Mobiles
 			{
 				m_Trainer = trainer;
 				m_From = from;
+
+                Enabled = from.Map.Rules == MapRules.FeluccaRules || trainer.CheckVendorAccess(from);
 			}
 
 			public override void OnClick()

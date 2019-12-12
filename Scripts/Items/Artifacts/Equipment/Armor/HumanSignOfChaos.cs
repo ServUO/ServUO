@@ -9,20 +9,20 @@ namespace Server.Items
         public HumanSignOfChaos()
             : base()
         {
-            this.Name = "Sign of Chaos";
-            this.Hue = 2075;
-
-            this.ArmorAttributes.SoulCharge = 20;
-            this.Attributes.AttackChance = 5;
-            this.Attributes.DefendChance = 10;
-            this.Attributes.CastSpeed = 1;
+            Hue = 2075;
+            ArmorAttributes.SoulCharge = 20;
+            Attributes.AttackChance = 5;
+            Attributes.DefendChance = 10;
+            Attributes.CastSpeed = 1;
         }
 
         public HumanSignOfChaos(Serial serial)
             : base(serial)
         {
         }
-
+        
+        public override int LabelNumber { get{return 1113535;} }// Sign of Chaos
+        
         public override int BasePhysicalResistance
         {
             get

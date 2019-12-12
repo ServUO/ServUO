@@ -8,7 +8,7 @@ namespace Server.Items
         public LeatherNinjaMitts()
             : base(0x2792)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public LeatherNinjaMitts(Serial serial)
@@ -129,7 +129,6 @@ namespace Server.Items
                         }
 
                         this.Weight = 2.0;
-                        this.ItemID = 0x2792;
 
                         break;
                     }

@@ -8,38 +8,38 @@ namespace Server.Mobiles
     {
         [Constructable]
         public SavagePackWolf()
-            : base(AIType.AI_Animal, FightMode.Weakest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Weakest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a savage pack wolf";
-            this.Body = 0xE1;
-            this.BaseSoundID = 0xE5;
+            Name = "a savage pack wolf";
+            Body = 0xE1;
+            BaseSoundID = 0xE5;
 
-            this.SetStr(100, 116);
-            this.SetDex(51, 61);
-            this.SetInt(11, 21);
+            SetStr(100, 116);
+            SetDex(51, 61);
+            SetInt(11, 21);
 
-            this.SetHits(650, 671);
-            this.SetMana(0);
+            SetHits(650, 671);
+            SetMana(0);
 
-            this.SetDamage(9, 12);
+            SetDamage(9, 12);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 50, 60);
-            this.SetResistance(ResistanceType.Fire, 50, 60);
-            this.SetResistance(ResistanceType.Cold, 60, 70);
-            this.SetResistance(ResistanceType.Poison, 50, 60);
-            this.SetResistance(ResistanceType.Energy, 50, 60);
+            SetResistance(ResistanceType.Physical, 50, 60);
+            SetResistance(ResistanceType.Fire, 50, 60);
+            SetResistance(ResistanceType.Cold, 60, 70);
+            SetResistance(ResistanceType.Poison, 50, 60);
+            SetResistance(ResistanceType.Energy, 50, 60);
 
-            this.SetSkill(SkillName.MagicResist, 60.7, 74.0);
-            this.SetSkill(SkillName.Tactics, 80.9, 94.4);
-            this.SetSkill(SkillName.Wrestling, 89.0, 97.1);
+            SetSkill(SkillName.MagicResist, 60.7, 74.0);
+            SetSkill(SkillName.Tactics, 80.9, 94.4);
+            SetSkill(SkillName.Wrestling, 89.0, 97.1);
 
-            this.Fame = 450;
-            this.Karma = 3000;
+            Fame = 450;
+            Karma = -450;
 
-            this.VirtualArmor = 26;
-            this.Tamable = false;
+            VirtualArmor = 26;
+            Tamable = false;
         }
 
         public SavagePackWolf(Serial serial)

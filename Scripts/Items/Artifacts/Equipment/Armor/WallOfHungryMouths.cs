@@ -2,23 +2,22 @@ using System;
 
 namespace Server.Items
 {
-    public class WallofHungryMouths : HeaterShield
+    [TypeAlias("Server.Items.WallofHungryMouths")]
+    public class WallOfHungryMouths : HeaterShield
     {
-	public override bool IsArtifact { get { return true; } }
-	
-        [Constructable]
-        public WallofHungryMouths()
-        {
-            this.Weight = 8.0;
-            this.Hue = 1034;
+        public override bool IsArtifact { get { return true; } }
 
-            this.AbsorptionAttributes.EaterEnergy = 20;
-            this.AbsorptionAttributes.EaterPoison = 20;
-            this.AbsorptionAttributes.EaterCold = 20;
-            this.AbsorptionAttributes.EaterFire = 20;
+        [Constructable]
+        public WallOfHungryMouths()
+        {
+            Hue = 1034;
+            AbsorptionAttributes.EaterEnergy = 20;
+            AbsorptionAttributes.EaterPoison = 20;
+            AbsorptionAttributes.EaterCold = 20;
+            AbsorptionAttributes.EaterFire = 20;
         }
 
-        public WallofHungryMouths(Serial serial)
+        public WallOfHungryMouths(Serial serial)
             : base(serial)
         {
         }
@@ -77,20 +76,6 @@ namespace Server.Items
             get
             {
                 return 255;
-            }
-        }
-        public override int AosStrReq
-        {
-            get
-            {
-                return 90;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 23;
             }
         }
         public override void Deserialize(GenericReader reader)

@@ -8,11 +8,10 @@ namespace Server.Items
         [Constructable]
         public TreasureTrinketGlasses()
         {
-            this.Attributes.BonusInt = 10;
-            this.Attributes.BonusHits = 5;
-            this.Attributes.SpellDamage = 10;
-
-            this.Hue = 0x1C2;
+            Attributes.BonusInt = 10;
+            Attributes.BonusHits = 5;
+            Attributes.SpellDamage = 10;
+            Hue = 0x1C2;
         }
 
         public TreasureTrinketGlasses(Serial serial)

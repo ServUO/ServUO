@@ -1,13 +1,60 @@
 using System;
 
+using Server.Engines.Quests;
+
 namespace Server.Items
 {
     public class BaseRewardBackpack : Backpack
     {
+        public virtual int Level { get { return 1; } }
+
         public BaseRewardBackpack()
             : base()
         {
-            this.Hue = 1127;
+            Hue = 1127;
+
+            DropItem(new Gold(Level * 2000));
+            DropItem(new TerMurQuestRewardBook());
+
+            int itemDrop;
+
+            switch (Level)
+            {
+                case 3: itemDrop = 5; break;
+                default: itemDrop = 3; break;
+            }
+
+            for (int i = 0; i < itemDrop; i++)
+            {
+                Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(false, false, true);
+
+                if (item != null)
+                {
+                    BaseReward.ApplyMods(item);
+                    DropItem(item);
+                }
+            }
+
+            itemDrop = Utility.RandomMinMax(2, 3);
+
+            for (int i = 0; i < itemDrop; i++)
+            {
+                if (Level == 1)
+                {
+                    DropItemStacked(Loot.RandomGem());
+                }
+                else
+                {
+                    DropItemStacked(Loot.RandomRareGem());
+                }
+            }
+
+            switch (Level)
+            {
+                case 1: DropItem(new MagicalResidue(20)); break;
+                case 2: DropItem(new EnchantedEssence(10)); break;
+                case 3: DropItem(new RelicFragment()); break;
+            }
         }
 
         public BaseRewardBackpack(Serial serial)
@@ -26,44 +73,18 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class DustyAdventurersBackpack : BaseRewardBackpack
     {
+        public override int LabelNumber { get { return 1113189; } } // Dusty Adventurer's Backpack
+
         [Constructable]
         public DustyAdventurersBackpack()
             : base()
         {
-            this.AddItem(new MagicalResidue(20));
-            this.AddItem(new Amber());
-            this.AddItem(new Sapphire());
-            this.AddItem(new Gold(2000));
-            this.AddItem(new Bow());
-            this.AddItem(new GargishBracelet());
-
-            switch (Utility.Random(5))
-            {
-                case 0:
-                    this.AddItem(new LeatherChest());
-                    break;
-                case 1:
-                    this.AddItem(new LeatherArms());
-                    break;
-                case 2:
-                    this.AddItem(new LeatherLegs());
-                    break;
-                case 3:
-                    this.AddItem(new GargishLeatherChest());
-                    break;
-                case 4:
-                    this.AddItem(new GargishLeatherArms());
-                    break;
-                case 5:
-                    this.AddItem(new GargishLeatherLegs());
-                    break;
-            }
         }
 
         public DustyAdventurersBackpack(Serial serial)
@@ -82,79 +103,19 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class DustyExplorersBackpack : BaseRewardBackpack
     {
+        public override int LabelNumber { get { return 1113190; } } // Dusty Explorer's Backpack
+        public override int Level { get { return 2; } }
+
         [Constructable]
         public DustyExplorersBackpack()
             : base()
         {
-            this.AddItem(new EnchantedEssence(10));
-            this.AddItem(new Amber());
-            this.AddItem(new Citrine());
-            this.AddItem(new Amethyst());
-            this.AddItem(new Gold(4000));
-            switch (Utility.Random(4))
-            {
-                case 0:
-                    this.AddItem(new GargishRing());
-                    break;
-                case 1:
-                    this.AddItem(new GargishNecklace());
-                    break;
-                case 2:
-                    this.AddItem(new GargishBracelet());
-                    break;
-                case 3:
-                    this.AddItem(new GargishEarrings());
-                    break;
-            }
-
-            switch (Utility.Random(6))
-            {
-                case 0:
-                    this.AddItem(new GlassSword());
-                    break;
-                case 1:
-                    this.AddItem(new Katana());
-                    break;
-                case 2:
-                    this.AddItem(new Broadsword());
-                    break;
-                case 3:
-                    this.AddItem(new Mace());
-                    break;
-                case 4:
-                    this.AddItem(new Halberd());
-                    break;
-                case 5:
-                    this.AddItem(new Shortblade());
-                    break;
-            }
-            switch (Utility.Random(6))
-            {
-                case 0:
-                    this.AddItem(new LeatherChest());
-                    break;
-                case 1:
-                    this.AddItem(new LeatherArms());
-                    break;
-                case 2:
-                    this.AddItem(new LeatherLegs());
-                    break;
-                case 3:
-                    this.AddItem(new GargishLeatherChest());
-                    break;
-                case 4:
-                    this.AddItem(new GargishLeatherArms());
-                    break;
-                case 5:
-                    this.AddItem(new GargishLeatherLegs());
-                    break;
-            }
         }
 
         public DustyExplorersBackpack(Serial serial)
@@ -173,83 +134,19 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class DustyHuntersBackpack : BaseRewardBackpack
     {
+        public override int LabelNumber { get { return 1113191; } } // Dusty Hunter's Backpack
+        public override int Level { get { return 3; } }
+
         [Constructable]
         public DustyHuntersBackpack()
             : base()
         {
-            this.AddItem(new RelicFragment(1));
-            this.AddItem(new Amber());
-            this.AddItem(new Ruby());
-            this.AddItem(new Diamond());
-            this.AddItem(new Gold(6000));
-
-            switch (Utility.Random(4))
-            {
-                case 0:
-                    this.AddItem(new GargishRing());
-                    break;
-                case 1:
-                    this.AddItem(new GargishNecklace());
-                    break;
-                case 2:
-                    this.AddItem(new GargishBracelet());
-                    break;
-                case 3:
-                    this.AddItem(new GargishEarrings());
-                    break;
-            }
-
-            switch (Utility.Random(6))
-            {
-                case 0:
-                    this.AddItem(new GlassSword());
-                    break;
-                case 1:
-                    this.AddItem(new Katana());
-                    break;
-                case 2:
-                    this.AddItem(new Broadsword());
-                    break;
-                case 3:
-                    this.AddItem(new Mace());
-                    break;
-                case 4:
-                    this.AddItem(new Halberd());
-                    break;
-                case 5:
-                    this.AddItem(new Shortblade());
-                    break;
-            }
-            switch (Utility.Random(6))
-            {
-                case 0:
-                    this.AddItem(new LeatherChest());
-                    break;
-                case 1:
-                    this.AddItem(new LeatherArms());
-                    break;
-                case 2:
-                    this.AddItem(new LeatherLegs());
-                    break;
-                case 3:
-                    this.AddItem(new GargishLeatherChest());
-                    break;
-                case 4:
-                    this.AddItem(new GargishLeatherArms());
-                    break;
-                case 5:
-                    this.AddItem(new GargishLeatherLegs());
-                    break;
-            }
-
-            this.AddItem(new LeatherTalons());
-            this.AddItem(new Boomerang());
         }
 
         public DustyHuntersBackpack(Serial serial)
@@ -268,7 +165,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

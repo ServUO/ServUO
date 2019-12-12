@@ -8,8 +8,9 @@ namespace Server.Items
         public IrksBrain()
             : base(0x1CF0)
         {
-            this.Weight = 1;
-            this.Hue = 0x453; // TODO check
+            Weight = 1;
+            Hue = 0x453; // TODO check
+            LootType = LootType.Blessed;
         }
 
         public IrksBrain(Serial serial)

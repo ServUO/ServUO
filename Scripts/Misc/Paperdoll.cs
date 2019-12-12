@@ -18,7 +18,7 @@ namespace Server.Misc
 
             beholder.Send(new DisplayPaperdoll(beheld, Titles.ComputeTitle(beholder, beheld), beheld.AllowEquipFrom(beholder)));
 
-            if (ObjectPropertyList.Enabled)
+            if (beholder.ViewOPL)
             {
                 List<Item> items = beheld.Items;
 

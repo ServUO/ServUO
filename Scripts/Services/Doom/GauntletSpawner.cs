@@ -754,7 +754,7 @@ namespace Server.Engines.Doom
                 Region reg = Region.Find(loc, map).GetRegion("Doom Gauntlet");
 
                 if (reg != null)
-                    playerCount = reg.GetEnumeratedMobiles().Where(m => m.AccessLevel == AccessLevel.Player).Count();
+                    playerCount = reg.GetEnumeratedMobiles().Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player).Count();
             }
 
             if (playerCount == 0 && m_Region != null)

@@ -26,7 +26,7 @@ namespace Server.Items
         {
             get
             {
-                return 95.0;
+                return 80.0;
             }
         }
         public override double MaxPoisoningSkill

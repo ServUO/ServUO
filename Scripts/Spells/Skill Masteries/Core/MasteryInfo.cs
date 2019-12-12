@@ -262,8 +262,18 @@ namespace Server.Spells.SkillMasteries
                         spell.Expire();
                     });
 
-                    list.Clear();
-                    list.TrimExcess();
+                    ColUtility.Free(list);
+                }
+
+                if (m is PlayerMobile && oldMastery == SkillName.Necromancy)
+                {
+                    ((PlayerMobile)m).AllFollowers.IterateReverse(mob => 
+                    {
+                        if (mob is BaseCreature && CommandUndeadSpell.ValidateTarget((BaseCreature)mob))
+                        {
+                            ((BaseCreature)mob).SetControlMaster(null);
+                        }
+                    });
                 }
 
                 SpecialMove move = SpecialMove.GetCurrentMove(m);

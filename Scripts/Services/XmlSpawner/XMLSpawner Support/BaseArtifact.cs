@@ -3,10 +3,8 @@ using Server.Items;
 
 namespace Server.Items
 {
-
-	public abstract class Artifact : Item
+	public abstract class Artifact : Item, IArtifact
 	{
-
 		[Constructable]
 		public Artifact(int itemID) : base(itemID)
 		{

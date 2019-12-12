@@ -10,7 +10,7 @@ namespace Server.Items
         public MetalKiteShield()
             : base(0x1B74)
         {
-            this.Weight = 7.0;
+            Weight = 7.0;
         }
 
         public MetalKiteShield(Serial serial)
@@ -94,17 +94,12 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (this.Weight == 5.0)
-                this.Weight = 7.0;
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);//version
         }
     }

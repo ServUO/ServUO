@@ -7,6 +7,7 @@ namespace Server.Regions
     {
         private Point3D m_EntranceLocation;
         private Map m_EntranceMap;
+
         public DungeonRegion(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)
         {
@@ -19,6 +20,7 @@ namespace Server.Regions
                 this.m_EntranceMap = entrMap;
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public override bool YoungProtected
         {
             get
@@ -26,6 +28,8 @@ namespace Server.Regions
                 return false;
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public Point3D EntranceLocation
         {
             get
@@ -37,6 +41,8 @@ namespace Server.Regions
                 this.m_EntranceLocation = value;
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public Map EntranceMap
         {
             get
@@ -48,6 +54,7 @@ namespace Server.Regions
                 this.m_EntranceMap = value;
             }
         }
+
         public override bool AllowHousing(Mobile from, Point3D p)
         {
             return false;

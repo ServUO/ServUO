@@ -43,11 +43,6 @@ namespace Server.Mobiles
             this.Karma = -20000;
 
             this.VirtualArmor = 44;
-
-            int count = Utility.RandomMinMax(2, 3);
-
-            for (int i = 0; i < count; ++i)
-                this.PackItem(new TreasureMap(3, Map.Trammel));
         }
 
         public WandererOfTheVoid(Serial serial)

@@ -3,7 +3,7 @@ using Server.Targeting;
 
 namespace Server.Items
 {
-    public class Wool : Item, IDyable
+    public class Wool : Item, IDyable, ICommodity
     {
         [Constructable]
         public Wool()
@@ -24,6 +24,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public static void OnSpun(ISpinningWheel wheel, Mobile from, int hue)
         {

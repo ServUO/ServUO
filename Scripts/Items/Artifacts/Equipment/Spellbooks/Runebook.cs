@@ -10,136 +10,72 @@ using Server.Network;
 namespace Server.Items
 {
     public class Runebook : Item, ISecurable, ICraftable
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override int LabelNumber { get { return 1041267; } } // runebook
+
         public static readonly TimeSpan UseDelay = TimeSpan.FromSeconds(7.0);
 
         private BookQuality m_Quality;
-		
-        [CommandProperty(AccessLevel.GameMaster)]		
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public BookQuality Quality
         {
             get
             {
-                return this.m_Quality;
+                return m_Quality;
             }
             set
             {
-                this.m_Quality = value;
-                this.InvalidateProperties();
+                m_Quality = value;
+                InvalidateProperties();
             }
         }
 
         private List<RunebookEntry> m_Entries;
         private string m_Description;
-        private int m_CurCharges, m_MaxCharges;
-        private int m_DefaultIndex;
-        private SecureLevel m_Level;
         private Mobile m_Crafter;
-		
-        private DateTime m_NextUse;
-		
-        private List<Mobile> m_Openers = new List<Mobile>();
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime NextUse
-        {
-            get
-            {
-                return this.m_NextUse;
-            }
-            set
-            {
-                this.m_NextUse = value;
-            }
-        }
+        public DateTime NextUse { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter
         {
             get
             {
-                return this.m_Crafter;
+                return m_Crafter;
             }
             set
             {
-                this.m_Crafter = value;
-                this.InvalidateProperties();
+                m_Crafter = value;
+                InvalidateProperties();
             }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SecureLevel Level
-        {
-            get
-            {
-                return this.m_Level;
-            }
-            set
-            {
-                this.m_Level = value;
-            }
-        }
+        public SecureLevel Level { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string Description
         {
             get
             {
-                return this.m_Description;
+                return m_Description;
             }
             set
             {
-                this.m_Description = value;
-                this.InvalidateProperties();
+                m_Description = value;
+                InvalidateProperties();
             }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int CurCharges
-        {
-            get
-            {
-                return this.m_CurCharges;
-            }
-            set
-            {
-                this.m_CurCharges = value;
-            }
-        }
+        public int CurCharges { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxCharges
-        {
-            get
-            {
-                return this.m_MaxCharges;
-            }
-            set
-            {
-                this.m_MaxCharges = value;
-            }
-        }
-		
-        public List<Mobile> Openers
-        {
-            get
-            {
-                return this.m_Openers;
-            }
-            set
-            {
-                this.m_Openers = value;
-            }
-        }
+        public int MaxCharges { get; set; }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041267;
-            }
-        }// runebook
+        public List<Mobile> Openers { get; set; } = new List<Mobile>();
 
         public virtual int MaxEntries { get { return 16; } }
 
@@ -147,19 +83,19 @@ namespace Server.Items
         public Runebook(int maxCharges, int id = 0x22C5)
             : base(Core.AOS ? id : 0xEFA)
         {
-            this.Weight = (Core.SE ? 1.0 : 3.0);
-            this.LootType = LootType.Blessed;
-            this.Hue = 0x461;
+            Weight = (Core.SE ? 1.0 : 3.0);
+            LootType = LootType.Blessed;
+            Hue = 0x461;
 
-            this.Layer = (Core.AOS ? Layer.Invalid : Layer.OneHanded);
+            Layer = (Core.AOS ? Layer.Invalid : Layer.OneHanded);
 
-            this.m_Entries = new List<RunebookEntry>();
+            m_Entries = new List<RunebookEntry>();
 
-            this.m_MaxCharges = maxCharges;
+            MaxCharges = maxCharges;
 
-            this.m_DefaultIndex = -1;
+            DefaultIndex = -1;
 
-            this.m_Level = SecureLevel.CoOwners;
+            Level = SecureLevel.CoOwners;
         }
 
         [Constructable]
@@ -168,35 +104,25 @@ namespace Server.Items
         {
         }
 
-        public List<RunebookEntry> Entries
-        {
-            get
-            {
-                return this.m_Entries;
-            }
-        }
+        public List<RunebookEntry> Entries { get { return m_Entries; } }
 
-        public int DefaultIndex
-        {
-            get { return m_DefaultIndex; }
-            set { m_DefaultIndex = value; }
-        }
+        public int DefaultIndex { get; set; }
 
         public RunebookEntry Default
         {
             get
             {
-                if (this.m_DefaultIndex >= 0 && this.m_DefaultIndex < this.m_Entries.Count)
-                    return this.m_Entries[this.m_DefaultIndex];
+                if (DefaultIndex >= 0 && DefaultIndex < m_Entries.Count)
+                    return m_Entries[DefaultIndex];
 
                 return null;
             }
             set
             {
                 if (value == null)
-                    this.m_DefaultIndex = -1;
+                    DefaultIndex = -1;
                 else
-                    this.m_DefaultIndex = this.m_Entries.IndexOf(value);
+                    DefaultIndex = m_Entries.IndexOf(value);
             }
         }
 
@@ -219,67 +145,65 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)3);
 
-            writer.Write((byte)this.m_Quality);	
+            writer.Write((byte)m_Quality);
 
-            writer.Write(this.m_Crafter);
+            writer.Write(m_Crafter);
 
-            writer.Write((int)this.m_Level);
+            writer.Write((int)Level);
 
-            writer.Write(this.m_Entries.Count);
+            writer.Write(m_Entries.Count);
 
-            for (int i = 0; i < this.m_Entries.Count; ++i)
-                this.m_Entries[i].Serialize(writer);
+            for (int i = 0; i < m_Entries.Count; ++i)
+                m_Entries[i].Serialize(writer);
 
-            writer.Write(this.m_Description);
-            writer.Write(this.m_CurCharges);
-            writer.Write(this.m_MaxCharges);
-            writer.Write(this.m_DefaultIndex);
+            writer.Write(m_Description);
+            writer.Write(CurCharges);
+            writer.Write(MaxCharges);
+            writer.Write(DefaultIndex);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            this.LootType = LootType.Blessed;
-
-            if (Core.SE && this.Weight == 3.0)
-                this.Weight = 1.0;
-
             int version = reader.ReadInt();
 
-            switch ( version )
+            LootType = LootType.Blessed;
+
+            if (Core.SE && Weight == 3.0)
+                Weight = 1.0;
+
+            switch (version)
             {
                 case 3:
                     {
-                        this.m_Quality = (BookQuality)reader.ReadByte();		
+                        m_Quality = (BookQuality)reader.ReadByte();
                         goto case 2;
                     }
                 case 2:
                     {
-                        this.m_Crafter = reader.ReadMobile();
+                        m_Crafter = reader.ReadMobile();
                         goto case 1;
                     }
                 case 1:
                     {
-                        this.m_Level = (SecureLevel)reader.ReadInt();
+                        Level = (SecureLevel)reader.ReadInt();
                         goto case 0;
                     }
                 case 0:
                     {
                         int count = reader.ReadInt();
 
-                        this.m_Entries = new List<RunebookEntry>(count);
+                        m_Entries = new List<RunebookEntry>(count);
 
                         for (int i = 0; i < count; ++i)
-                            this.m_Entries.Add(new RunebookEntry(reader));
+                            m_Entries.Add(new RunebookEntry(reader));
 
-                        this.m_Description = reader.ReadString();
-                        this.m_CurCharges = reader.ReadInt();
-                        this.m_MaxCharges = reader.ReadInt();
-                        this.m_DefaultIndex = reader.ReadInt();
+                        m_Description = reader.ReadString();
+                        CurCharges = reader.ReadInt();
+                        MaxCharges = reader.ReadInt();
+                        DefaultIndex = reader.ReadInt();
 
                         break;
                     }
@@ -288,60 +212,62 @@ namespace Server.Items
 
         public void DropRune(Mobile from, RunebookEntry e, int index)
         {
-            if (this.m_DefaultIndex > index)
-                this.m_DefaultIndex -= 1;
-            else if (this.m_DefaultIndex == index)
-                this.m_DefaultIndex = -1;
+            if (DefaultIndex > index)
+                DefaultIndex -= 1;
+            else if (DefaultIndex == index)
+                DefaultIndex = -1;
 
-            this.m_Entries.RemoveAt(index);
+            m_Entries.RemoveAt(index);
+
+
+            RecallRune rune = new RecallRune();
 
             if (e.Galleon != null)
             {
-                if (e.Galleon.Deleted)
-                {
-                    from.SendMessage("You discard the rune as the galleon is no longer available.");
-                    return;
-                }
-                else
-                {
-                    ShipRune rune = new ShipRune(e.Galleon);
-                    from.AddToBackpack(rune);
-                }
+                rune.Galleon = e.Galleon;
             }
-            else
+            else if (e.House != null)
             {
-                RecallRune rune = new RecallRune();
-
                 rune.Target = e.Location;
                 rune.TargetMap = e.Map;
                 rune.Description = e.Description;
                 rune.House = e.House;
-                rune.Marked = true;
-
-                from.AddToBackpack(rune);
+            }
+            else
+            {
+                rune.Target = e.Location;
+                rune.TargetMap = e.Map;
+                rune.Description = e.Description;
             }
 
-            from.SendLocalizedMessage(502421); // You have removed the rune.
+            rune.Type = e.Type;
+            rune.Marked = true;
+
+            from.AddToBackpack(rune);
+
+            from.SendLocalizedMessage(502421, "", 0x35); // You have removed the rune.
         }
 
         public bool IsOpen(Mobile toCheck)
         {
-            NetState ns = toCheck.NetState;
+            return HasGump(toCheck);
+        }
 
-            if (ns != null)
+        public virtual bool HasGump(Mobile toCheck)
+        {
+            var bookGump = toCheck.FindGump<RunebookGump>();
+
+            if (bookGump != null && bookGump.Book == this)
             {
-                foreach (Gump gump in ns.Gumps)
-                {
-                    RunebookGump bookGump = gump as RunebookGump;
-
-                    if (bookGump != null && bookGump.Book == this)
-                    {
-                        return true;
-                    }
-                }
+                return true;
             }
 
             return false;
+        }
+
+        public virtual void CloseGump(Mobile m)
+        {
+            m.CloseGump(typeof(RunebookGump));
         }
 
         public override bool DisplayLootType
@@ -355,56 +281,60 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-		
-            if (this.m_Quality == BookQuality.Exceptional)
+
+            if (m_Quality == BookQuality.Exceptional)
                 list.Add(1063341); // exceptional
 
-            if (this.m_Crafter != null)
-				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+            if (m_Crafter != null)
+                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
-            if (this.m_Description != null && this.m_Description.Length > 0)
-                list.Add(this.m_Description);
+            if (m_Description != null && m_Description.Length > 0)
+                list.Add(m_Description);
         }
-		
+
         public override bool OnDragLift(Mobile from)
         {
-            if (from.HasGump(typeof(RunebookGump)))
+            if (HasGump(from))
             {
                 from.SendLocalizedMessage(500169); // You cannot pick that up.
                 return false;
             }
-			
-            foreach (Mobile m in this.m_Openers)
-                if (this.IsOpen(m))
-                    m.CloseGump(typeof(RunebookGump));
-				
-            this.m_Openers.Clear();
-			
+
+            foreach (Mobile m in Openers)
+            {
+                if (IsOpen(m))
+                {
+                    CloseGump(m);
+                }
+            }
+
+            Openers.Clear();
+
             return true;
         }
 
         public override void OnSingleClick(Mobile from)
         {
-            if (this.m_Description != null && this.m_Description.Length > 0)
-                this.LabelTo(from, this.m_Description);
+            if (m_Description != null && m_Description.Length > 0)
+                LabelTo(from, m_Description);
 
             base.OnSingleClick(from);
 
-            if (this.m_Crafter != null)
-				this.LabelTo(from, 1050043, m_Crafter.TitleName);
+            if (m_Crafter != null)
+                LabelTo(from, 1050043, m_Crafter.TitleName);
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.GetWorldLocation(), (Core.ML ? 3 : 1)) && this.CheckAccess(from))
+            if (from.InRange(GetWorldLocation(), (Core.ML ? 3 : 1)) && CheckAccess(from))
             {
-                if (this.RootParent is BaseCreature)
+                if (RootParent is BaseCreature)
                 {
                     from.SendLocalizedMessage(502402); // That is inaccessible.
                     return;
                 }
 
-                if (DateTime.UtcNow < this.m_NextUse)
+                if (DateTime.UtcNow < NextUse)
                 {
                     from.SendLocalizedMessage(502406); // This book needs time to recharge.
                     return;
@@ -412,15 +342,15 @@ namespace Server.Items
 
                 from.CloseGump(typeof(RunebookGump));
                 from.SendGump(new RunebookGump(from, this));
-				
-                this.m_Openers.Add(from);
+
+                Openers.Add(from);
             }
         }
 
         public virtual void OnTravel()
         {
             if (!Core.SA)
-                this.m_NextUse = DateTime.UtcNow + UseDelay;
+                NextUse = DateTime.UtcNow + UseDelay;
         }
 
         public override void OnAfterDuped(Item newItem)
@@ -432,17 +362,19 @@ namespace Server.Items
 
             book.m_Entries = new List<RunebookEntry>();
 
-            for (int i = 0; i < this.m_Entries.Count; i++)
+            for (int i = 0; i < m_Entries.Count; i++)
             {
-                RunebookEntry entry = this.m_Entries[i];
+                RunebookEntry entry = m_Entries[i];
 
-                book.m_Entries.Add(new RunebookEntry(entry.Location, entry.Map, entry.Description, entry.House));
+                book.m_Entries.Add(new RunebookEntry(entry.Location, entry.Map, entry.Description, entry.House, entry.Type));
             }
+
+            base.OnAfterDuped(newItem);
         }
 
         public bool CheckAccess(Mobile m)
         {
-            if (!this.IsLockedDown || m.AccessLevel >= AccessLevel.GameMaster)
+            if (!IsLockedDown || m.AccessLevel >= AccessLevel.GameMaster)
                 return true;
 
             BaseHouse house = BaseHouse.FindHouseAt(this);
@@ -450,76 +382,63 @@ namespace Server.Items
             if (house != null && house.IsAosRules && (house.Public ? house.IsBanned(m) : !house.HasAccess(m)))
                 return false;
 
-            return (house != null && house.HasSecureAccess(m, this.m_Level));
+            return house != null && house.HasSecureAccess(m, Level);
         }
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (dropped is RecallRune || dropped is ShipRune)
+            if (dropped is RecallRune)
             {
-                if (this.IsLockedDown && from.AccessLevel < AccessLevel.GameMaster)
+                if (IsLockedDown && from.AccessLevel < AccessLevel.GameMaster)
                 {
                     from.SendLocalizedMessage(502413, null, 0x35); // That cannot be done while the book is locked down.
                 }
-                else if (this.IsOpen(from))
+                else if (IsOpen(from))
                 {
                     from.SendLocalizedMessage(1005571); // You cannot place objects in the book while viewing the contents.
                 }
-                else if (this.m_Entries.Count < MaxEntries)
+                else if (m_Entries.Count < MaxEntries)
                 {
                     if (dropped is RecallRune)
                     {
                         RecallRune rune = (RecallRune)dropped;
 
-                        if (rune.Marked && rune.TargetMap != null)
+                        if (rune.Marked)
                         {
-                            this.m_Entries.Add(new RunebookEntry(rune.Target, rune.TargetMap, rune.Description, rune.House));
+                            if (rune.Type == RecallRuneType.Ship)
+                            {
+                                RunebookEntry entry = new RunebookEntry(Point3D.Zero, null, null, null, rune.Type, rune.Galleon);
+                                m_Entries.Add(entry);
 
-                            dropped.Delete();
+                                dropped.Delete();
 
-                            from.Send(new PlaySound(0x42, this.GetWorldLocation()));
+                                from.Send(new PlaySound(0x42, GetWorldLocation()));
 
-                            string desc = rune.Description;
+                                from.SendAsciiMessage(entry.Description);
 
-                            if (desc == null || (desc = desc.Trim()).Length == 0)
-                                desc = "(indescript)";
+                                return true;
+                            }
+                            else if (rune.TargetMap != null)
+                            {
+                                m_Entries.Add(new RunebookEntry(rune.Target, rune.TargetMap, rune.Description, rune.House, rune.Type));
 
-                            from.SendMessage(desc);
+                                dropped.Delete();
 
-                            return true;
+                                from.Send(new PlaySound(0x42, GetWorldLocation()));
+
+                                string desc = rune.Description;
+
+                                if (desc == null || (desc = desc.Trim()).Length == 0)
+                                    desc = "(indescript)";
+
+                                from.SendAsciiMessage(desc);
+
+                                return true;
+                            }
                         }
                         else
                         {
                             from.SendLocalizedMessage(502409); // This rune does not have a marked location.
-                        }
-                    }
-                    else if(dropped is ShipRune)
-                    {
-                        ShipRune rune = (ShipRune)dropped;
-
-                        if (rune.Galleon != null && !rune.Galleon.Deleted)
-                        {
-                            m_Entries.Add(new RunebookEntry(Point3D.Zero, null, rune.Galleon.ShipName, null, rune.Galleon));
-
-                            dropped.Delete();
-
-                            from.Send(new PlaySound(0x42, GetWorldLocation()));
-
-                            string desc = rune.Galleon.ShipName;
-
-                            if (desc == null || (desc = desc.Trim()).Length == 0)
-                                desc = "an unnamed ship";
-
-                            from.SendMessage(desc);
-
-                            return true;
-                        }
-                        else
-                        {
-                            if (rune.DockedBoat != null)
-                                from.SendMessage("You cannot place a rune to a docked boat in the runebook.");
-                            else
-                                from.SendLocalizedMessage(502409); // This rune does not have a marked location.
                         }
                     }
                 }
@@ -530,20 +449,20 @@ namespace Server.Items
             }
             else if (dropped is RecallScroll)
             {
-                if (this.m_CurCharges < this.m_MaxCharges)
+                if (CurCharges < MaxCharges)
                 {
-                    from.Send(new PlaySound(0x249, this.GetWorldLocation()));
+                    from.Send(new PlaySound(0x249, GetWorldLocation()));
 
                     int amount = dropped.Amount;
 
-                    if (amount > (this.m_MaxCharges - this.m_CurCharges))
+                    if (amount > (MaxCharges - CurCharges))
                     {
-                        dropped.Consume(this.m_MaxCharges - this.m_CurCharges);
-                        this.m_CurCharges = this.m_MaxCharges;
+                        dropped.Consume(MaxCharges - CurCharges);
+                        CurCharges = MaxCharges;
                     }
                     else
                     {
-                        this.m_CurCharges += amount;
+                        CurCharges += amount;
                         dropped.Delete();
 
                         return true;
@@ -567,12 +486,12 @@ namespace Server.Items
             if (charges > 10)
                 charges = 10;
 
-            this.MaxCharges = (Core.SE ? charges * 2 : charges);
+            MaxCharges = (Core.SE ? charges * 2 : charges);
 
             if (makersMark)
-                this.Crafter = from;
+                Crafter = from;
 
-            this.m_Quality = (BookQuality)(quality - 1);
+            m_Quality = (BookQuality)(quality - 1);
 
             return quality;
         }
@@ -584,16 +503,14 @@ namespace Server.Items
         private readonly Point3D m_Location;
         private readonly Map m_Map;
         private readonly string m_Description;
-        private readonly BaseHouse m_House;
-        private BaseGalleon m_Galleon;
 
         public Point3D Location
         {
             get
             {
-                if (m_Galleon != null && !m_Galleon.Deleted)
+                if (Galleon != null && !Galleon.Deleted)
                 {
-                    return m_Galleon.GetMarkedLocation();
+                    return Galleon.GetMarkedLocation();
                 }
 
                 return m_Location;
@@ -604,9 +521,9 @@ namespace Server.Items
         {
             get
             {
-                if (m_Galleon != null && !m_Galleon.Deleted && m_Galleon.Map != Map.Internal && m_Galleon.Map != null)
+                if (Galleon != null && !Galleon.Deleted && Galleon.Map != Map.Internal && Galleon.Map != null)
                 {
-                    return m_Galleon.Map;
+                    return Galleon.Map;
                 }
 
                 return m_Map;
@@ -617,78 +534,115 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Description;
+                if (Type == RecallRuneType.Ship)
+                {
+                    string ownername;
+                    string shipname;
+
+                    if (Galleon == null)
+                    {
+                        ownername = "unknown owner";
+                        shipname = "unknown ship";
+                    }
+                    else
+                    {
+                        if (Galleon.Owner != null)
+                        {
+                            ownername = Galleon.Owner.Name;
+                        }
+                        else
+                        {
+                            ownername = "unknown owner";
+                        }
+
+                        if (Galleon.ShipName != null)
+                        {
+                            shipname = Galleon.ShipName;
+                        }
+                        else
+                        {
+                            shipname = "unnamed ship";
+                        }
+                    }
+
+                    return string.Format("{0}'s ship, the {1}", ownername, shipname);
+                }
+
+                return m_Description;
             }
         }
 
-        public BaseHouse House
-        {
-            get
-            {
-                return this.m_House;
-            }
-        }
+        public BaseHouse House { get; }
 
-        public BaseGalleon Galleon
-        {
-            get { return m_Galleon; }
-        }
+        public BaseGalleon Galleon { get; }
 
-        public RunebookEntry(Point3D loc, Map map, string desc, BaseHouse house, BaseGalleon g = null)
+        public RecallRuneType Type { get; }
+
+        public RunebookEntry(Point3D loc, Map map, string desc, BaseHouse house, RecallRuneType type = 0, BaseGalleon g = null)
         {
-            this.m_Location = loc;
-            this.m_Map = map;
-            this.m_Description = desc;
-            this.m_House = house;
-            this.m_Galleon = g;
+            m_Location = loc;
+            m_Map = map;
+            m_Description = desc;
+            House = house;
+            Galleon = g;
+            Type = type;
         }
 
         public RunebookEntry(GenericReader reader)
         {
             int version = reader.ReadByte();
 
-            switch ( version )
+            switch (version)
             {
+                case 3:
+                    {
+                        Type = (RecallRuneType)reader.ReadInt();
+                        Galleon = reader.ReadItem() as BaseGalleon;
+                        House = reader.ReadItem() as BaseHouse;
+                        m_Location = reader.ReadPoint3D();
+                        m_Map = reader.ReadMap();
+                        m_Description = reader.ReadString();
+
+                        break;
+                    }
                 case 2:
                     {
-                        this.m_Galleon = reader.ReadItem() as BaseGalleon;
+                        Galleon = reader.ReadItem() as BaseGalleon;
                         goto case 0;
                     }
                 case 1:
                     {
-                        this.m_House = reader.ReadItem() as BaseHouse;
+                        House = reader.ReadItem() as BaseHouse;
                         goto case 0;
                     }
                 case 0:
                     {
-                        this.m_Location = reader.ReadPoint3D();
-                        this.m_Map = reader.ReadMap();
-                        this.m_Description = reader.ReadString();
+                        m_Location = reader.ReadPoint3D();
+                        m_Map = reader.ReadMap();
+                        m_Description = reader.ReadString();
 
                         break;
                     }
+            }
+
+            if (version < 3)
+            {
+                if (Galleon != null)
+                    Type = RecallRuneType.Ship;
+                else if (House != null)
+                    Type = RecallRuneType.Shop;
+                else
+                    Type = RecallRuneType.Normal;
             }
         }
 
         public void Serialize(GenericWriter writer)
         {
-            if (m_Galleon != null && !m_Galleon.Deleted)
-            {
-                writer.Write((byte)2);
+            writer.Write((byte)3);
 
-                writer.Write(m_Galleon);
-            }
-            else if (m_House != null && !m_House.Deleted)
-            {
-                writer.Write((byte)1); // version
-
-                writer.Write(m_House);
-            }
-            else
-            {
-                writer.Write((byte)0); // version
-            }
-
+            writer.Write((int)Type);
+            writer.Write(Galleon);
+            writer.Write(House);
             writer.Write(m_Location);
             writer.Write(m_Map);
             writer.Write(m_Description);

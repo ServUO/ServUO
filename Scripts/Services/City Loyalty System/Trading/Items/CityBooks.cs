@@ -11,7 +11,6 @@ namespace Server.Items
         public abstract int Title { get; }
         public abstract int Content { get; }
 
-        [Constructable]
         public CityBook() : base(4030)
         {
         }

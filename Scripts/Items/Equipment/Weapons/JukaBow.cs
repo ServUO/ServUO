@@ -7,57 +7,37 @@ namespace Server.Items
     {
         [Constructable]
         public JukaBow()
-        {
-        }
+        { }
 
         public JukaBow(Serial serial)
             : base(serial)
+        { }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsModified => Slayer != SlayerName.None;
+        public override int AosStrengthReq => 80;
+        public override int AosDexterityReq => 80;
+        public override int OldStrengthReq => 80;
+        public override int OldDexterityReq => 80;
+
+        public override bool CanEquip(Mobile from)
         {
+            if (IsModified)
+            {
+                return base.CanEquip(from);
+            }
+
+            from.SendMessage("You cannot equip this bow until a bowyer modifies it.");
+            return false;
         }
 
-        public override int AosStrengthReq
-        {
-            get
-            {
-                return 80;
-            }
-        }
-        public override int AosDexterityReq
-        {
-            get
-            {
-                return 80;
-            }
-        }
-        public override int OldStrengthReq
-        {
-            get
-            {
-                return 80;
-            }
-        }
-        public override int OldDexterityReq
-        {
-            get
-            {
-                return 80;
-            }
-        }
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsModified
-        {
-            get
-            {
-                return (this.Hue == 0x453);
-            }
-        }
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsModified)
+            if (IsModified)
             {
                 from.SendMessage("That has already been modified.");
             }
-            else if (!this.IsChildOf(from.Backpack))
+            else if (!IsChildOf(from.Backpack))
             {
                 from.SendMessage("This must be in your backpack to modify it.");
             }
@@ -80,11 +60,11 @@ namespace Server.Items
             {
                 from.SendMessage("Those are not gears."); // Apparently gears that aren't in your backpack aren't really gears at all. :-(
             }
-            else if (this.IsModified)
+            else if (IsModified)
             {
                 from.SendMessage("That has already been modified.");
             }
-            else if (!this.IsChildOf(from.Backpack))
+            else if (!IsChildOf(from.Backpack))
             {
                 from.SendMessage("This must be in your backpack to modify it.");
             }
@@ -96,8 +76,8 @@ namespace Server.Items
             {
                 g.Consume();
 
-                this.Hue = 0x453;
-                this.Slayer = (SlayerName)Utility.Random(2, 25);
+                Hue = 0x453;
+                Slayer = (SlayerName)Utility.Random(2, 25);
 
                 from.SendMessage("You modify it.");
             }
@@ -106,14 +86,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

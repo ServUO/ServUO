@@ -927,10 +927,8 @@ namespace Server.Items
             m_UsesRemaining = usesRemaining;
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddUsesRemainingProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
         }
 
@@ -1151,6 +1149,41 @@ namespace Server.Items
                         break;
                     }
             }
+        }
+    }
+
+    public class VioletSoulstone : SoulStone
+    {
+        [Constructable]
+        public VioletSoulstone()
+            : this(null)
+        {
+        }
+
+        [Constructable]
+        public VioletSoulstone(string account)
+            : base(account)
+        {
+            Hue = 2598;
+        }
+
+        public VioletSoulstone(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
         }
     }
 }

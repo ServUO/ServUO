@@ -1,41 +1,46 @@
+#region References
 using System;
+
 using Server.Mobiles;
+#endregion
 
-namespace Server
+namespace Server.Services.Virtues
 {
-    public class CompassionVirtue
-    {
-        private static readonly TimeSpan LossDelay = TimeSpan.FromDays(7.0);
-        private const int LossAmount = 500;
-        public static void Initialize()
-        {
-            VirtueGump.Register(105, new OnVirtueUsed(OnVirtueUsed));
-        }
+	public class CompassionVirtue
+	{
+		private static readonly TimeSpan LossDelay = TimeSpan.FromDays(7.0);
 
-        public static void OnVirtueUsed(Mobile from)
-        {
-            from.SendLocalizedMessage(1053001); // This virtue is not activated through the virtue menu.
-        }
+		private const int LossAmount = 500;
 
-        public static void CheckAtrophy(Mobile from)
-        {
-            PlayerMobile pm = from as PlayerMobile;
+		public static void Initialize()
+		{
+			VirtueGump.Register(105, OnVirtueUsed);
+		}
 
-            if (pm == null)
-                return;
+		public static void OnVirtueUsed(Mobile from)
+		{
+			from.SendLocalizedMessage(1053001); // This virtue is not activated through the virtue menu.
+		}
 
-            try
-            {
-                if ((pm.LastCompassionLoss + LossDelay) < DateTime.UtcNow)
-                {
-                    VirtueHelper.Atrophy(from, VirtueName.Compassion, LossAmount);
-                    //OSI has no cliloc message for losing compassion.  Weird.
-                    pm.LastCompassionLoss = DateTime.UtcNow;
-                }
-            }
-            catch
-            {
-            }
-        }
-    }
+		public static void CheckAtrophy(Mobile from)
+		{
+			var pm = from as PlayerMobile;
+
+			if (pm == null)
+				return;
+
+			try
+			{
+				if (pm.LastCompassionLoss + LossDelay < DateTime.UtcNow)
+				{
+					VirtueHelper.Atrophy(from, VirtueName.Compassion, LossAmount);
+
+					//OSI has no cliloc message for losing compassion.  Weird.
+					pm.LastCompassionLoss = DateTime.UtcNow;
+				}
+			}
+			catch
+			{ }
+		}
+	}
 }

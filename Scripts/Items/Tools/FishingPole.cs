@@ -10,7 +10,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class FishingPole : Item, ICraftable, IUsesRemaining, IResource
+    public class FishingPole : Item, ICraftable, IUsesRemaining, IResource, IQuality
     {
         private Type m_BaitType;
         private bool m_EnhancedBait;
@@ -347,6 +347,23 @@ namespace Server.Items
             }
         }
 
+        public override void AddCraftedProperties(ObjectPropertyList list)
+        {
+            if (m_Crafter != null)
+                list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
+
+            if (m_Quality == ItemQuality.Exceptional)
+                list.Add(1060636); // exceptional
+        }
+
+        public override void AddUsesRemainingProperties(ObjectPropertyList list)
+        {
+            if (Siege.SiegeShard && m_ShowUsesRemaining)
+            {
+                list.Add(1060584, UsesRemaining.ToString()); // uses remaining: ~1_val~
+            }
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
@@ -354,20 +371,9 @@ namespace Server.Items
             if (m_AosAttributes.Brittle != 0)
                 list.Add(1116209); // Brittle
 
-            if (m_Crafter != null)
-                list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
-
-            if (m_Quality == ItemQuality.Exceptional)
-                list.Add(1060636); // exceptional
-
             if (m_AosSkillBonuses != null)
                 m_AosSkillBonuses.GetProperties(list);
 
-            if(Siege.SiegeShard && m_ShowUsesRemaining)
-            {
-                list.Add(1060584, ((IUsesRemaining)this).UsesRemaining.ToString()); // uses remaining: ~1_val~
-            }
-            
             base.AddResistanceProperties(list);
 
             int prop = 0;

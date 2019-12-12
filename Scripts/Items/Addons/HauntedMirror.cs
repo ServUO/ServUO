@@ -84,7 +84,7 @@ namespace Server.Items
         {
             get
             {
-                return new HaunterMirrorDeed();
+                return new HauntedMirrorDeed();
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -102,16 +102,17 @@ namespace Server.Items
         }
     }
 
-    public class HaunterMirrorDeed : BaseAddonDeed
+    [TypeAlias("Server.Items.HaunterMirrorDeed")]
+    public class HauntedMirrorDeed : BaseAddonDeed
     {
         [Constructable]
-        public HaunterMirrorDeed()
+        public HauntedMirrorDeed()
             : base()
         {
             this.LootType = LootType.Blessed;
         }
 
-        public HaunterMirrorDeed(Serial serial)
+        public HauntedMirrorDeed(Serial serial)
             : base(serial)
         {
         }

@@ -9,15 +9,11 @@ namespace Server.Items
         public DragonsEnd()
             : base()
         {
-            this.Hue = 0x554;
-
-            this.Slayer = SlayerName.DragonSlaying;
-
-            this.Attributes.AttackChance = 10;
-            this.Attributes.WeaponDamage = 60;
-
-            this.WeaponAttributes.ResistFireBonus = 20;
-            this.BlockRepair = true;
+            Hue = 0x554;
+            Slayer = SlayerName.DragonSlaying;
+            Attributes.AttackChance = 10;
+            Attributes.WeaponDamage = 60;
+            WeaponAttributes.ResistFireBonus = 20;
         }
 
         public DragonsEnd(Serial serial)
@@ -43,14 +39,14 @@ namespace Server.Items
         {
             get
             {
-                return 120;
+                return 225;
             }
         }
         public override int InitMaxHits
         {
             get
             {
-                return 120;
+                return 225;
             }
         }
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
@@ -63,7 +59,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -71,6 +67,11 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                NegativeAttributes.NoRepair = 0;
+            }
         }
     }
 }

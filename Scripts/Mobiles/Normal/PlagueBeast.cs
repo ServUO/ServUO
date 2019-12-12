@@ -16,11 +16,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_DevourTotal;
+                return m_DevourTotal;
             }
             set
             {
-                this.m_DevourTotal = value;
+                m_DevourTotal = value;
             }
         }
 
@@ -29,11 +29,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return (this.IsParagon ? this.m_DevourGoal + 25 : this.m_DevourGoal);
+                return (IsParagon ? m_DevourGoal + 25 : m_DevourGoal);
             }
             set
             {
-                this.m_DevourGoal = value;
+                m_DevourGoal = value;
             }
         }
 
@@ -42,7 +42,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_HasMetalChest;
+                return m_HasMetalChest;
             }
         }
 
@@ -50,70 +50,63 @@ namespace Server.Mobiles
         public PlagueBeast()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a plague beast";
-            this.Body = 775;
+            Name = "a plague beast";
+            Body = 775;
 
-            this.SetStr(302, 500);
-            this.SetDex(80);
-            this.SetInt(16, 20);
+            SetStr(302, 500);
+            SetDex(80);
+            SetInt(16, 20);
 
-            this.SetHits(318, 404);
+            SetHits(318, 404);
 
-            this.SetDamage(20, 24);
+            SetDamage(20, 24);
 
-            this.SetDamageType(ResistanceType.Physical, 60);
-            this.SetDamageType(ResistanceType.Poison, 40);
+            SetDamageType(ResistanceType.Physical, 60);
+            SetDamageType(ResistanceType.Poison, 40);
 
-            this.SetResistance(ResistanceType.Physical, 45, 55);
-            this.SetResistance(ResistanceType.Fire, 40, 50);
-            this.SetResistance(ResistanceType.Cold, 25, 35);
-            this.SetResistance(ResistanceType.Poison, 65, 75);
-            this.SetResistance(ResistanceType.Energy, 25, 35);
+            SetResistance(ResistanceType.Physical, 45, 55);
+            SetResistance(ResistanceType.Fire, 40, 50);
+            SetResistance(ResistanceType.Cold, 25, 35);
+            SetResistance(ResistanceType.Poison, 65, 75);
+            SetResistance(ResistanceType.Energy, 25, 35);
 
-            this.SetSkill(SkillName.MagicResist, 35.0);
-            this.SetSkill(SkillName.Tactics, 100.0);
-            this.SetSkill(SkillName.Wrestling, 100.0);
+            SetSkill(SkillName.MagicResist, 35.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.Wrestling, 100.0);
 
-            this.Fame = 13000;
-            this.Karma = -13000;
+            Fame = 13000;
+            Karma = -13000;
 
-            this.VirtualArmor = 30;
+            VirtualArmor = 30;
             if (Utility.RandomDouble() < 0.80)
-                this.PackItem(new PlagueBeastGland());
+                PackItem(new PlagueBeastGland());
 
             if (Core.ML && Utility.RandomDouble() < 0.33)
-                this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed(4));
+                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
 
-            this.m_DevourTotal = 0;
-            this.m_DevourGoal = Utility.RandomMinMax(15, 25); // How many corpses must be devoured before a metal chest is awarded
+            m_DevourTotal = 0;
+            m_DevourGoal = Utility.RandomMinMax(15, 25); // How many corpses must be devoured before a metal chest is awarded
+
+            SetSpecialAbility(SpecialAbility.PoisonSpit);
         }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
-            this.AddLoot(LootPack.Gems, Utility.Random(1, 3));
-        }
-
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            defender.ApplyPoison(this, this.IsParagon ? Poison.Lethal : Poison.Deadly);
-            defender.FixedParticles(0x374A, 10, 15, 5021, EffectLayer.Waist);
-            defender.PlaySound(0x1CB);
+            AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.Gems, Utility.Random(1, 3));
         }
 
         public override void OnDamagedBySpell(Mobile caster)
         {
-            if (this.Map != null && caster != this && 0.25 > Utility.RandomDouble())
+            if (Map != null && caster != this && 0.25 > Utility.RandomDouble())
             {
                 BaseCreature spawn = new PlagueSpawn(this);
 
-                spawn.Team = this.Team;
-                spawn.MoveToWorld(this.Location, this.Map);
+                spawn.Team = Team;
+                spawn.MoveToWorld(Location, Map);
                 spawn.Combatant = caster;
 
-                this.Say(1053034); // * The plague beast creates another beast from its flesh! *
+                Say(1053034); // * The plague beast creates another beast from its flesh! *
             }
 
             base.OnDamagedBySpell(caster);
@@ -136,15 +129,15 @@ namespace Server.Mobiles
 
         public override void OnGotMeleeAttack(Mobile attacker)
         {
-            if (this.Map != null && attacker != this && 0.25 > Utility.RandomDouble())
+            if (Map != null && attacker != this && 0.25 > Utility.RandomDouble())
             {
                 BaseCreature spawn = new PlagueSpawn(this);
 
-                spawn.Team = this.Team;
-                spawn.MoveToWorld(this.Location, this.Map);
+                spawn.Team = Team;
+                spawn.MoveToWorld(Location, Map);
                 spawn.Combatant = attacker;
 
-                this.Say(1053034); // * The plague beast creates another beast from its flesh! *
+                Say(1053034); // * The plague beast creates another beast from its flesh! *
             }
 
             base.OnGotMeleeAttack(attacker);
@@ -180,9 +173,9 @@ namespace Server.Mobiles
             base.Serialize(writer);
             writer.Write((int)1);
 
-            writer.Write(this.m_HasMetalChest);
-            writer.Write(this.m_DevourTotal);
-            writer.Write(this.m_DevourGoal);
+            writer.Write(m_HasMetalChest);
+            writer.Write(m_DevourTotal);
+            writer.Write(m_DevourGoal);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -194,9 +187,9 @@ namespace Server.Mobiles
             {
                 case 1:
                     {
-                        this.m_HasMetalChest = reader.ReadBool();
-                        this.m_DevourTotal = reader.ReadInt();
-                        this.m_DevourGoal = reader.ReadInt();
+                        m_HasMetalChest = reader.ReadBool();
+                        m_DevourTotal = reader.ReadInt();
+                        m_DevourGoal = reader.ReadInt();
                         break;
                     }
             }
@@ -207,7 +200,7 @@ namespace Server.Mobiles
             base.OnThink();
 
             // Check to see if we need to devour any corpses
-            IPooledEnumerable eable = this.GetItemsInRange(3); // Get all corpses in range
+            IPooledEnumerable eable = GetItemsInRange(3); // Get all corpses in range
 
             foreach (Item item in eable)
             {
@@ -219,7 +212,7 @@ namespace Server.Mobiles
                     if (corpse != null && corpse.Killer == this && corpse.Owner != null)
                     {
                         if (!corpse.DevourCorpse() && !corpse.Devoured)
-                            this.PublicOverheadMessage(MessageType.Emote, 0x3B2, 1053032); // * The plague beast attempts to absorb the remains, but cannot! *
+                            PublicOverheadMessage(MessageType.Emote, 0x3B2, 1053032); // * The plague beast attempts to absorb the remains, but cannot! *
                     }
                 }
             }
@@ -236,15 +229,15 @@ namespace Server.Mobiles
             if (corpse.Owner.Body.IsHuman)
                 corpse.TurnToBones(); // Not bones yet, and we are a human body therefore we turn to bones.
 
-            this.IncreaseHits((int)Math.Ceiling((double)corpse.Owner.HitsMax * 0.75));
-            this.m_DevourTotal++;
+            IncreaseHits((int)Math.Ceiling((double)corpse.Owner.HitsMax * 0.75));
+            m_DevourTotal++;
 
-            this.PublicOverheadMessage(MessageType.Emote, 0x3B2, 1053033); // * The plague beast absorbs the fleshy remains of the corpse *
+            PublicOverheadMessage(MessageType.Emote, 0x3B2, 1053033); // * The plague beast absorbs the fleshy remains of the corpse *
 
-            if (!this.m_HasMetalChest && this.m_DevourTotal >= this.DevourGoal)
+            if (!m_HasMetalChest && m_DevourTotal >= DevourGoal)
             {
-                this.PackItem(new MetalChest());
-                this.m_HasMetalChest = true;
+                PackItem(new MetalChest());
+                m_HasMetalChest = true;
             }
 
             return true;
@@ -256,19 +249,19 @@ namespace Server.Mobiles
         {
             int maxhits = 2000;
 
-            if (this.IsParagon)
+            if (IsParagon)
                 maxhits = (int)(maxhits * Paragon.HitsBuff);
 
             if (hp < 1000 && !Core.AOS)
                 hp = (hp * 100) / 60;
 
-            if (this.HitsMaxSeed >= maxhits)
+            if (HitsMaxSeed >= maxhits)
             {
-                this.HitsMaxSeed = maxhits;
+                HitsMaxSeed = maxhits;
 
-                int newHits = this.Hits + hp + Utility.RandomMinMax(10, 20); // increase the hp until it hits if it goes over it'll max at 2000
+                int newHits = Hits + hp + Utility.RandomMinMax(10, 20); // increase the hp until it hits if it goes over it'll max at 2000
 
-                this.Hits = Math.Min(maxhits, newHits);
+                Hits = Math.Min(maxhits, newHits);
                 // Also provide heal for each devour on top of the hp increase
             }
             else
@@ -277,8 +270,8 @@ namespace Server.Mobiles
                 int max = hp + 20;
                 int hpToIncrease = Utility.RandomMinMax(min, max);
 
-                this.HitsMaxSeed += hpToIncrease;
-                this.Hits += hpToIncrease;
+                HitsMaxSeed += hpToIncrease;
+                Hits += hpToIncrease;
                 // Also provide heal for each devour
             }
         }

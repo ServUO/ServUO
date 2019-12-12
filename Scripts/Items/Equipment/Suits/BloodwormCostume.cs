@@ -5,7 +5,9 @@ namespace Server.Items
 {
 	public class BloodwormCostume : BaseCostume
 	{
-		[Constructable]
+        public override string CreatureName { get { return "bloodworm"; } }
+
+        [Constructable]
 		public BloodwormCostume() : base( )
 		{
             this.CostumeBody = 287;

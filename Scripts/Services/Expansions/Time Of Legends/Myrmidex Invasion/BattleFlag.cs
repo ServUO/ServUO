@@ -58,7 +58,7 @@ namespace Server.Engines.MyrmidexInvasion
         public static void DisplayWaveInfo(BattleSpawner spawner, Mobile m)
         {
             int delay = 0;
-            ColUtility.ForEach(spawner.MyrmidexTeam, kvp =>
+            foreach (var kvp in spawner.MyrmidexTeam)
             {
                 if (kvp.Value.Count > 0)
                 {
@@ -72,10 +72,10 @@ namespace Server.Engines.MyrmidexInvasion
                 }
 
                 delay++;
-            });
+            }
 
             delay = 0;
-            ColUtility.ForEach(spawner.TribeTeam, kvp =>
+            foreach (var kvp in spawner.TribeTeam)
             {
                 if (kvp.Value.Count > 0)
                 {
@@ -89,7 +89,7 @@ namespace Server.Engines.MyrmidexInvasion
                 }
 
                 delay++;
-            });
+            }
         }
 
         public override bool HandlesOnMovement { get { return BattleSpawner != null && NextSpawn < DateTime.UtcNow; } }
@@ -120,6 +120,9 @@ namespace Server.Engines.MyrmidexInvasion
 
         private void Spawn(bool tribe, params Type[] types)
         {
+            if (Map == null)
+                return;
+
             NextSpawn = DateTime.UtcNow + TimeSpan.FromMinutes(10);
 
             for (int i = 0; i < 5; i++)
@@ -141,7 +144,7 @@ namespace Server.Engines.MyrmidexInvasion
 
                     do
                     {
-                        p = rec.GetRandomSpawnPoint(this.Map);
+                        p = this.Map.GetRandomSpawnPoint(rec);
                     }
                     while (p == this.Location || !this.Map.CanSpawnMobile(p));
 

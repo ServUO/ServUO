@@ -6,7 +6,12 @@ namespace System
 {
     public class ConsoleHook : TextWriter
     {
+#if DEBUG
+        private static readonly bool _Enabled = false;
+#else
         private static readonly bool _Enabled = true;
+#endif
+
         private static Stream m_OldOutput;
         private static bool m_Newline;
         public override Encoding Encoding

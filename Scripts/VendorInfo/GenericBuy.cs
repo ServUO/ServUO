@@ -135,7 +135,7 @@ namespace Server.Mobiles
             set { m_TotalSold = value; }
         }
 
-        public bool Stackable
+        public virtual bool Stackable
         {
             get { return m_Stackable; }
             set { m_Stackable = value; }
@@ -313,7 +313,7 @@ namespace Server.Mobiles
         }
 
         //Attempt to restock with item, (return true if restock sucessful)
-        public bool Restock(Item item, int amount)
+        public virtual bool Restock(Item item, int amount)
         {
             if (item == null || item.GetType() != m_Type)
             {
@@ -323,7 +323,7 @@ namespace Server.Mobiles
             return EconomyItem;
         }
 
-        public void OnRestock()
+        public virtual void OnRestock()
         {
             if (m_Amount <= 0)
             {
@@ -363,7 +363,7 @@ namespace Server.Mobiles
             return false;
         }
 
-        public void OnBought(BaseVendor vendor, int amount)
+        public void OnBought(Mobile buyer, BaseVendor vendor, IEntity entity, int amount)
         {
             if (EconomyItem)
             {
@@ -375,6 +375,8 @@ namespace Server.Mobiles
                     }
                 }
             }
+
+            EventSink.InvokeValidVendorPurchase(new ValidVendorPurchaseEventArgs(buyer, vendor, entity, m_Price));
         }
 
         public void OnSold(BaseVendor vendor, int amount)
@@ -391,9 +393,14 @@ namespace Server.Mobiles
             }
         }
 
-        public static bool IsDisplayCache(Mobile m)
+        public static bool IsDisplayCache(IEntity e)
         {
-            return DisplayCache.Cache != null && DisplayCache.Cache.Mobiles != null && DisplayCache.Cache.Mobiles.Contains(m);
+            if (e is Mobile)
+            {
+                return DisplayCache.Cache.Mobiles != null && DisplayCache.Cache.Mobiles.Contains((Mobile)e);
+            }
+
+            return DisplayCache.Cache.Table != null && DisplayCache.Cache.Table.ContainsValue(e);
         }
 
         private class DisplayCache : Container
@@ -403,6 +410,7 @@ namespace Server.Mobiles
             private List<Mobile> m_Mobiles;
 
             public List<Mobile> Mobiles { get { return m_Mobiles; } }
+            public Dictionary<Type, IEntity> Table { get { return m_Table; } }
 
             public DisplayCache()
                 : base(0)

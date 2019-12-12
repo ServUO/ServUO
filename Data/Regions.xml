@@ -238,6 +238,13 @@
         <rect x="6528" y="504" width="4" height="1" />
         <zrange min="-50" />
       </region>
+      <region type="TheLostCityEntry">
+		    <rect x="6316" y="472" width="8" height="8" />
+        <rect x="6303" y="509" width="11" height="7" />
+	    </region>
+      <region type="ParoxysmusBossEntry">
+				<rect x="6516" y="493" width="5" height="7" />
+			</region>
     </region>
     <region priority="50" name="Huntsman's Forest">
       <rect x="1595" y="550" width="120" height="120" />
@@ -988,8 +995,22 @@
       <rect x="759" y="1635" width="12" height="12" />
       <go x="762" y="1645" z="0" />
     </region>
+	<region type="DungeonRegion" priority="50" name="Solen Hives">
+      <rect x="5640" y="1776" width="295" height="263" />
+      <go x="5774" y="1896" z="20" />
+    </region>
+	<region type="SeaMarketRegion" priority="50" name="Sea Market">
+      <rect x="4529" y="2296" width="45" height="112" />
+      <go x="4550" y="2317" z="-2" />
+    </region>
   </Facet>
   <Facet name="Trammel">
+    <region type="DungeonRegion" priority="50" name="Khaldun">
+      <rect x="5381" y="1284" width="247" height="225" />
+      <go x="5571" y="1302" z="0" />
+      <music name="Dungeon9" />
+      <entrance x="5882" y="3819" />
+    </region>
     <region type="NoTravelSpellsAllowed" priority="50" name="Underwater World">
       <rect x="6251" y="1613" width="222" height="200" />
     </region>
@@ -1230,6 +1251,13 @@
         <rect x="6528" y="504" width="4" height="1" />
         <zrange min="-50" />
       </region>
+      <region type="TheLostCityEntry">
+		    <rect x="6316" y="472" width="8" height="8" />
+        <rect x="6303" y="509" width="11" height="7" />
+	    </region>
+      <region type="ParoxysmusBossEntry">
+				<rect x="6516" y="493" width="5" height="7" />
+			</region>
     </region>
     <region priority="50" name="Bravehorn's drinking pool">
       <rect x="1302" y="2331" width="38" height="22" />
@@ -2007,7 +2035,7 @@
       </spawning>
     </region>
     <region type="NoHousingRegion" priority="50" name="FireIsleCasino">
-      <rect x="4041" y="3364" width="60" height="64" />
+      <rect x="4038" y="3303" width="60" height="64" />
       <go x="4047" y="3371" z="0" />
     </region>
     <region priority="50" name="Shrine of Compassion">
@@ -2057,6 +2085,14 @@
     <region type="MondainRegion" priority="50" name="Sanctuary Entrance">
       <rect x="759" y="1635" width="12" height="12" />
       <go x="762" y="1645" z="0" />
+    </region>
+	<region type="DungeonRegion" priority="50" name="Solen Hives">
+      <rect x="5640" y="1776" width="295" height="263" />
+      <go x="5774" y="1896" z="20" />
+    </region>
+	<region type="SeaMarketRegion" priority="50" name="Sea Market">
+      <rect x="4529" y="2296" width="45" height="112" />
+      <go x="4550" y="2317" z="-2" />
     </region>
   </Facet>
   <Facet name="Ilshenar">
@@ -2405,10 +2441,14 @@
     </region>
   </Facet>
   <Facet name="Malas">
-    <region type="Underwater" priority="50" name="Gravewater Lake">
+    <region type="Underwater" priority="50" name="Gravewater Lake [Underwater]">
       <rect x="1698" y="1567" width="5" height="60" />
       <rect x="1687" y="1627" width="26" height="26" />
     </region>
+	<region priority="50" name="Gravewater Lake">
+			<rect x="1440" y="1527" width="423" height="219" />
+			<rect x="1381" y="1565" width="215" height="224" />
+	</region>
     <region type="MondainRegion" priority="50" name="Gravewater Dock">
       <rect x="1692" y="1551" width="16" height="16" />
     </region>
@@ -2581,6 +2621,11 @@
     <region priority="50" name="Ninja cave">
       <rect x="360" y="960" width="100" height="215" />
     </region>
+	<region type="NoHousingRegion" priority="50" name="Isle of the Divide">
+      <rect x="1533" y="849" width="295" height="195" />
+      <go x="1731" y="982" z="-80" />
+      <smartNoHousing active="true" />
+    </region>
   </Facet>
   <Facet name="Tokuno">
     <region type="GuardedRegion" priority="50" name="Moongates">
@@ -2606,6 +2651,10 @@
       <rect x="283" y="361" width="68" height="102" />
       <go x="320" y="408" z="32" />
       <smartNoHousing active="true" />
+    </region>
+	<region type="TokunoDocksRegion" priority="50" name="Tokuno Docks">
+      <rect x="650" y="1350" width="100" height="50" />
+      <go x="713" y="1360" z="26" />
     </region>
   </Facet>
   <Facet name="TerMur">
@@ -2724,7 +2773,7 @@
         <go x="924" y="595" z="-14" />
       </region>
     </region>
-    <region type="DungeonRegion" priority="50" name="AbyssEntrance">
+    <region type="DungeonRegion" priority="50" name="Underworld">
       <rect x="898" y="808" width="382" height="423" />
 			<go x="1128" y="1207" z="-2" />
 			<music name="HumanLevel" />
@@ -2782,11 +2831,16 @@
       <rect x="624" y="3296" width="303" height="287" />
       <go x="750" y="3440" z="-20" />
       <music name="RoyalCity" />
-      <region name="Queen's Palace">
-        <rect x="717" y="3339" width="68" height="73" />
-        <go x="748" y="3357" z="55" />
-        <music name="QueenPalace" />
-      </region>
+		<region name="Queen's Palace">
+		  <rect x="717" y="3339" width="68" height="73" />
+		  <go x="748" y="3357" z="55" />
+		  <music name="QueenPalace" />
+		</region>
+		<region name="Royal City Inn">
+            <rect x="724" y="3463" width="37" height="20" />
+            <rect x="747" y="3480" width="13" height="13" />
+            <logoutDelay active="false" />
+        </region>
     </region>
     <region type="DungeonRegion" priority="50" name="Royal Park">
       <rect x="632" y="3233" width="176" height="35" />

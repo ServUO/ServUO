@@ -4,44 +4,46 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("a charred corpse")]
-    public class FireGargoyle : BaseCreature
+    public class FireGargoyle : BaseCreature, IAuraCreature
     {
         [Constructable]
         public FireGargoyle()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = NameList.RandomName("fire gargoyle");
-            this.Body = 130;
-            this.BaseSoundID = 0x174;
+            Name = NameList.RandomName("fire gargoyle");
+            Body = 130;
+            BaseSoundID = 0x174;
 
-            this.SetStr(351, 400);
-            this.SetDex(126, 145);
-            this.SetInt(226, 250);
+            SetStr(351, 400);
+            SetDex(126, 145);
+            SetInt(226, 250);
 
-            this.SetHits(211, 240);
+            SetHits(211, 240);
 
-            this.SetDamage(7, 14);
+            SetDamage(7, 14);
 
-            this.SetDamageType(ResistanceType.Physical, 20);
-            this.SetDamageType(ResistanceType.Fire, 80);
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Fire, 80);
 
-            this.SetResistance(ResistanceType.Physical, 30, 35);
-            this.SetResistance(ResistanceType.Fire, 50, 60);
-            this.SetResistance(ResistanceType.Poison, 20, 30);
-            this.SetResistance(ResistanceType.Energy, 20, 30);
+            SetResistance(ResistanceType.Physical, 30, 35);
+            SetResistance(ResistanceType.Fire, 50, 60);
+            SetResistance(ResistanceType.Poison, 20, 30);
+            SetResistance(ResistanceType.Energy, 20, 30);
 
-            this.SetSkill(SkillName.Anatomy, 75.1, 85.0);
-            this.SetSkill(SkillName.EvalInt, 90.1, 105.0);
-            this.SetSkill(SkillName.Magery, 90.1, 105.0);
-            this.SetSkill(SkillName.Meditation, 90.1, 105.0);
-            this.SetSkill(SkillName.MagicResist, 90.1, 105.0);
-            this.SetSkill(SkillName.Tactics, 80.1, 100.0);
-            this.SetSkill(SkillName.Wrestling, 40.1, 80.0);
+            SetSkill(SkillName.Anatomy, 75.1, 85.0);
+            SetSkill(SkillName.EvalInt, 90.1, 105.0);
+            SetSkill(SkillName.Magery, 90.1, 105.0);
+            SetSkill(SkillName.Meditation, 90.1, 105.0);
+            SetSkill(SkillName.MagicResist, 90.1, 105.0);
+            SetSkill(SkillName.Tactics, 80.1, 100.0);
+            SetSkill(SkillName.Wrestling, 40.1, 80.0);
 
-            this.Fame = 3500;
-            this.Karma = -3500;
+            Fame = 3500;
+            Karma = -3500;
 
-            this.VirtualArmor = 32;
+            VirtualArmor = 32;
+            SetSpecialAbility(SpecialAbility.DragonBreath);
+            SetAreaEffect(AreaEffect.AuraDamage);
         }
 
         public FireGargoyle(Serial serial)
@@ -49,13 +51,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }// fire breath enabled
         public override int TreasureMapLevel
         {
             get
@@ -78,18 +73,15 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool HasAura { get { return true; } }
-        public override int AuraRange { get { return 2; } }
-
-        public override void AuraEffect(Mobile m)
+        public void AuraEffect(Mobile m)
         {
-            m.SendMessage("The radiating heat scorches your skin!");
+            m.SendLocalizedMessage(1008112); // The intense heat is damaging you!
         }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.Gems);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Gems);
         }
         
         public override void Serialize(GenericWriter writer)

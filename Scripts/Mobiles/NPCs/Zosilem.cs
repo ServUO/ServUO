@@ -6,8 +6,10 @@ using Server.Engines.BulkOrders;
 
 namespace Server.Engines.Quests
 {
-    public class Zosilem : MondainQuester
+    public class Zosilem : MondainQuester, ITierQuester
     {
+        public TierQuestInfo TierInfo { get { return TierQuestInfo.Zosilem; } }
+
         [Constructable]
         public Zosilem()
             : base("Zosilem", "the Alchemist")
@@ -23,7 +25,7 @@ namespace Server.Engines.Quests
 
         public override Type[] Quests
         {
-            get { return new Type[] { typeof(DabblingontheDarkSide) }; }
+            get { return new Type[] { }; }
         }
 
         #region Bulk Orders

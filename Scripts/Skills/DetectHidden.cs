@@ -1,12 +1,15 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Server.Factions;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Targeting;
 using Server.Engines.VvV;
 using Server.Items;
-using System.Collections.Generic;
-using System.Linq;
+using Server.Spells;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -15,6 +18,8 @@ namespace Server.Items
         bool CheckReveal(Mobile m);
         bool CheckPassiveDetect(Mobile m);
         void OnRevealed(Mobile m);
+
+        bool CheckWhenHidden { get; }
     }
 }
 
@@ -32,10 +37,10 @@ namespace Server.SkillHandlers
             src.SendLocalizedMessage(500819);//Where will you search?
             src.Target = new InternalTarget();
 
-            return TimeSpan.FromSeconds(6.0);
+            return TimeSpan.FromSeconds(10.0);
         }
 
-        private class InternalTarget : Target
+        public class InternalTarget : Target
         {
             public InternalTarget()
                 : base(12, true, TargetFlags.None)
@@ -53,18 +58,18 @@ namespace Server.SkillHandlers
                     p = ((Item)targ).Location;
                 else if (targ is IPoint3D)
                     p = new Point3D((IPoint3D)targ);
-                else 
+                else
                     p = src.Location;
 
                 double srcSkill = src.Skills[SkillName.DetectHidden].Value;
-                int range = (int)(srcSkill / 10.0);
+                int range = Math.Max(2, (int)(srcSkill / 10.0));
 
                 if (!src.CheckSkill(SkillName.DetectHidden, 0.0, 100.0))
                     range /= 2;
 
                 BaseHouse house = BaseHouse.FindHouseAt(p, src.Map, 16);
 
-                bool inHouse = (house != null && house.IsFriend(src));
+                bool inHouse = house != null && house.IsFriend(src);
 
                 if (inHouse)
                     range = 22;
@@ -80,14 +85,17 @@ namespace Server.SkillHandlers
                             double ss = srcSkill + Utility.Random(21) - 10;
                             double ts = trg.Skills[SkillName.Hiding].Value + Utility.Random(21) - 10;
                             double shadow = Server.Spells.SkillMasteries.ShadowSpell.GetDifficultyFactor(trg);
+                            bool houseCheck = inHouse && house.IsInside(trg);
 
-                            if (src.AccessLevel >= trg.AccessLevel && (ss >= ts || (inHouse && house.IsInside(trg))) && Utility.RandomDouble() > shadow)
+                            if (src.AccessLevel >= trg.AccessLevel && (ss >= ts || houseCheck) && Utility.RandomDouble() > shadow)
                             {
-                                if (trg is ShadowKnight && (trg.X != p.X || trg.Y != p.Y))
+                               if ((trg is ShadowKnight && (trg.X != p.X || trg.Y != p.Y)) ||
+                                    (!houseCheck && !CanDetect(src, trg)))
                                     continue;
 
                                 trg.RevealingAction();
                                 trg.SendLocalizedMessage(500814); // You have been revealed!
+                                trg.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500814, trg.NetState);
                                 foundAnyone = true;
                             }
                         }
@@ -99,16 +107,23 @@ namespace Server.SkillHandlers
 
                     foreach (Item item in itemsInRange)
                     {
-                        if (item.Visible)
-                            continue;
-
-                        IRevealableItem dItem = item as IRevealableItem;
-
-                        if (dItem != null && dItem.CheckReveal(src))
+                        if (item is LibraryBookcase && Server.Engines.Khaldun.GoingGumshoeQuest3.CheckBookcase(src, item))
                         {
-                            dItem.OnRevealed(src);
-
                             foundAnyone = true;
+                        }
+                        else
+                        {
+                            IRevealableItem dItem = item as IRevealableItem;
+
+                            if (dItem == null || (item.Visible && dItem.CheckWhenHidden))
+                                continue;
+
+                            if (dItem.CheckReveal(src))
+                            {
+                                dItem.OnRevealed(src);
+
+                                foundAnyone = true;
+                            }
                         }
                     }
 
@@ -124,8 +139,8 @@ namespace Server.SkillHandlers
 
         public static void DoPassiveDetect(Mobile src)
         {
-			if (src == null || src.Map == null || src.Location == Point3D.Zero || src.IsStaff())
-				return;
+            if (src == null || src.Map == null || src.Location == Point3D.Zero || src.IsStaff())
+                return;
 
             double ss = src.Skills[SkillName.DetectHidden].Value;
 
@@ -134,28 +149,23 @@ namespace Server.SkillHandlers
 
             IPooledEnumerable eable = src.Map.GetMobilesInRange(src.Location, 4);
 
-			if (eable == null)
-				return;
+            if (eable == null)
+                return;
 
             foreach (Mobile m in eable)
             {
-                if (m == null || m is ShadowKnight)
+                if (m == null || m == src || m is ShadowKnight || !CanDetect(src, m))
                     continue;
 
-                int noto = Notoriety.Compute(src, m);
+                double ts = (m.Skills[SkillName.Hiding].Value + m.Skills[SkillName.Stealth].Value) / 2;
 
-                if (m != src && noto != Notoriety.Innocent && noto != Notoriety.Ally && noto != Notoriety.Invulnerable)
+                if (src.Race == Race.Elf)
+                    ss += 20;
+
+                if (src.AccessLevel >= m.AccessLevel && Utility.Random(1000) < (ss - ts) + 1)
                 {
-                    double ts = (m.Skills[SkillName.Hiding].Value + m.Skills[SkillName.Stealth].Value) / 2;
-
-                    if (src.Race == Race.Elf)
-                        ss += 20;
-
-                    if (src.AccessLevel >= m.AccessLevel && Utility.Random(1000) < (ss - ts) + 1)
-                    {
-                        m.RevealingAction();
-                        m.SendLocalizedMessage(500814); // You have been revealed!
-                    }
+                    m.RevealingAction();
+                    m.SendLocalizedMessage(500814); // You have been revealed!
                 }
             }
 
@@ -172,6 +182,30 @@ namespace Server.SkillHandlers
             }
 
             eable.Free();
+        }
+
+        public static bool CanDetect(Mobile src, Mobile target)
+        {
+            if (src.Map == null || target.Map == null || !src.CanBeHarmful(target, false))
+                return false;
+
+            // No invulnerable NPC's
+            if (src.Blessed || (src is BaseCreature && ((BaseCreature)src).IsInvulnerable))
+                return false;
+
+            if (target.Blessed || (target is BaseCreature && ((BaseCreature)target).IsInvulnerable))
+                return false;
+
+            // pet owner, guild/alliance, party
+            if (!Server.Spells.SpellHelper.ValidIndirectTarget(target, src))
+                return false;
+
+            // Checked aggressed/aggressors
+            if (src.Aggressed.Any(x => x.Defender == target) || src.Aggressors.Any(x => x.Attacker == target))
+                return true;
+
+            // In Fel or Follow the same rules as indirect spells such as wither
+            return src.Map.Rules == MapRules.FeluccaRules;
         }
     }
 }

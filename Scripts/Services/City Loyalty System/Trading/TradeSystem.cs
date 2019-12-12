@@ -1,15 +1,16 @@
-
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Server;
 using Server.Mobiles;
 using Server.ContextMenus;
 using Server.Engines.Points;
-using System.Collections.Generic;
-using System.Linq;
 using Server.Engines;
 using Server.Items;
 using Server.Multis;
 using Server.Regions;
+using Server.Engines.SeasonalEvents;
 
 namespace Server.Engines.CityLoyalty
 {
@@ -36,7 +37,9 @@ namespace Server.Engines.CityLoyalty
         public override double MaxPoints { get { return double.MaxValue; } }
         public override bool ShowOnLoyaltyGump { get { return false; } }
 
-		public static Dictionary<Mobile, TradeOrderCrate> ActiveTrades { get; private set; }
+        public static bool KrampusEncounterActive { get { return KrampusEncounter.Enabled && KrampusEncounter.Encounter != null; } }
+
+        public static Dictionary<Mobile, TradeOrderCrate> ActiveTrades { get; private set; }
         public static Dictionary<BaseCreature, DateTime> Ambushers { get; private set; }
 		
 		public CityTradeSystem() 
@@ -80,13 +83,28 @@ namespace Server.Engines.CityLoyalty
 		{
 			if(from == null || from.Backpack == null)
 				return true;
-				
-			if(ActiveTrades.ContainsKey(from))
-				minister.SayTo(from, 1151722); // It appears you are already delivering a trade order. Deliver your current order before requesting another.
-			else
-			{
-				City origin = minister.City;
-				City destination;
+
+            if (ActiveTrades.ContainsKey(from))
+            {
+                minister.SayTo(from, 1151722); // It appears you are already delivering a trade order. Deliver your current order before requesting another.
+            }
+            else if (KrampusEncounterActive && (KrampusEncounter.Encounter.Krampus != null || KrampusEncounter.Encounter.KrampusSpawning))
+            {
+                var p = KrampusEncounter.Encounter.SpawnLocation;
+                var map = KrampusEncounter.Encounter.SpawnMap;
+
+                minister.SayTo(
+                    from,
+                    1158790,
+                    String.Format("{0}\t{1}",
+                    WorldLocationInfo.GetLocationString(p, map),
+                    Sextant.GetCoords(p, map)), 1150);
+                    // Take notice! The vile Krampus has been spotted near ~2_where~ at ~1_coords~!  New Trade Orders are suspended until Krampus has been defeated!
+            }
+            else
+            {
+                City origin = minister.City;
+                City destination;
 
                 do
                 {
@@ -107,21 +125,29 @@ namespace Server.Engines.CityLoyalty
                     string name = null;
 
                     Type t = GetRandomTrade(origin, destination, ref worth, ref name);
-                    int amount = Utility.RandomList(5, 10, 15, 20);
 
-                    entry.Details.Add(new TradeEntry.TradeDetails(t, worth, amount, name));
+                    if (t != null)
+                    {
+                        int amount = Utility.RandomList(5, 10, 15, 20);
+                        entry.Details.Add(new TradeEntry.TradeDetails(t, worth, amount, name));
+                    }
+                    else
+                    {
+                        minister.SayTo(from, "There are no trades available at this time.");
+                        return false;
+                    }
                 }
 
-				if(from.Backpack == null || !from.Backpack.TryDropItem(from, crate, false))
-				{
-					crate.Delete();
-					from.SendLocalizedMessage(114456); // Your backpack cannot hold the Trade Order.  Free up space and speak to the Trade Minister again.
-				}
-					
-				ActiveTrades[from] = crate;
-				
-				return true;
-			}
+                if (from.Backpack == null || !from.Backpack.TryDropItem(from, crate, false))
+                {
+                    crate.Delete();
+                    from.SendLocalizedMessage(114456); // Your backpack cannot hold the Trade Order.  Free up space and speak to the Trade Minister again.
+                }
+
+                ActiveTrades[from] = crate;
+
+                return true;
+            }
 			
 			return false;
 		}
@@ -193,11 +219,11 @@ namespace Server.Engines.CityLoyalty
         {
             switch (entry.Completed)
             {
-                case 1: entry.Player.AddRewardTitle(1152068 + (int)TradeTitle.Trader); break;
-                case 25: entry.Player.AddRewardTitle(1152068 + (int)TradeTitle.Exporter); break;
-                case 50: entry.Player.AddRewardTitle(1152068 + (int)TradeTitle.Broker); break;
-                case 100: entry.Player.AddRewardTitle(1152068 + (int)TradeTitle.Tycoon); break;
-                case 150: entry.Player.AddRewardTitle(1152068 + (int)TradeTitle.Magnate); break;
+                case 1: entry.Player.AddRewardTitle((int)TradeTitle.Trader); break;
+                case 25: entry.Player.AddRewardTitle((int)TradeTitle.Exporter); break;
+                case 50: entry.Player.AddRewardTitle((int)TradeTitle.Broker); break;
+                case 100: entry.Player.AddRewardTitle((int)TradeTitle.Tycoon); break;
+                case 150: entry.Player.AddRewardTitle((int)TradeTitle.Magnate); break;
             }
 
             if(entry.CompletedSlim == 50)
@@ -294,8 +320,10 @@ namespace Server.Engines.CityLoyalty
         public static Type GetRandomTrade(City originCity, City dest, ref int worth, ref string name)
         {
             Region region = CityLoyaltySystem.GetCityInstance(originCity).Definition.Region;
-
             List<BaseVendor> list = new List<BaseVendor>(region.GetEnumeratedMobiles().OfType<BaseVendor>().Where(bv => bv.GetBuyInfo() != null && bv.GetBuyInfo().Length > 0));
+
+            if (list.Count == 0)
+                return null;
 
             do
             {
@@ -394,8 +422,14 @@ namespace Server.Engines.CityLoyalty
         {
             BaseBoat boat = BaseBoat.FindBoatAt(m.Location, m.Map);
 
-            Type[] types = boat != null ? _SeaTypes : _LandTypes;
-            int amount = Utility.RandomMinMax(2, 4);
+            Type[] types = GetCreatureType(m, boat != null);
+
+            if (types == null)
+            {
+                return;
+            }
+
+            int amount = Utility.RandomMinMax(3, 5);
 
             for (int i = 0; i < amount; i++)
             {
@@ -403,6 +437,11 @@ namespace Server.Engines.CityLoyalty
 
                 if (bc != null)
                 {
+                    if (KrampusEncounterActive)
+                    {
+                        bc.Name = "An Icy Creature";
+                    }
+
                     Rectangle2D zone;
 
                     if (boat != null)
@@ -437,14 +476,17 @@ namespace Server.Engines.CityLoyalty
 
                     Point3D p = m.Location;
 
-                    for (int j = 0; j < 25; j++)
+                    if (m.Map != null)
                     {
-                        Point3D check = zone.GetRandomSpawnPoint(m.Map);
-
-                        if (CanFit(check.X, check.Y, check.Z, m.Map, bc))
+                        for (int j = 0; j < 25; j++)
                         {
-                            p = check;
-                            break;
+                            Point3D check = m.Map.GetRandomSpawnPoint(zone);
+
+                            if (CanFit(check.X, check.Y, check.Z, m.Map, bc))
+                            {
+                                p = check;
+                                break;
+                            }
                         }
                     }
 
@@ -489,15 +531,26 @@ namespace Server.Engines.CityLoyalty
 
                     bc.MoveToWorld(p, m.Map);
                     Timer.DelayCall(() => bc.Combatant = m);
-
-                    m.SendLocalizedMessage(1049330, "", 0x22); // You have been ambushed! Fight for your honor!!!
                 }
             }
+
+            m.LocalOverheadMessage(Server.Network.MessageType.Regular, 1150, 1155479); // *Your keen senses alert you to an incoming ambush of attackers!*
+            m.SendLocalizedMessage(1049330, "", 0x22); // You have been ambushed! Fight for your honor!!!
         }
 
-        public override void ProcessKill(BaseCreature victim, Mobile damager, int index)
+        public static Type[] GetCreatureType(Mobile m, bool wet)
         {
-            if (Ambushers != null && Ambushers.ContainsKey(victim))
+            if (KrampusEncounterActive)
+            {
+                return KrampusEncounter.Encounter.GetCreatureTypes(m, wet);
+            }
+
+            return wet ? _SeaTypes : _LandTypes;
+        }
+
+        public override void ProcessKill(Mobile victim, Mobile damager)
+        {
+            if (victim is BaseCreature && Ambushers != null && Ambushers.ContainsKey((BaseCreature)victim))
             {
                 if (ActiveTrades.ContainsKey(damager))
                 {
@@ -507,7 +560,7 @@ namespace Server.Engines.CityLoyalty
                         crate.Entry.Kills++;
                 }
 
-                Ambushers.Remove(victim);
+                Ambushers.Remove((BaseCreature)victim);
             }
         }
 
@@ -661,11 +714,16 @@ namespace Server.Engines.CityLoyalty
 			public CityTradeEntry(PlayerMobile pm) : base(pm)
 			{
 			}
+
+            public override string ToString()
+            {
+                return "...";
+            }
 			
 			public override void Serialize(GenericWriter writer)
 			{
 				base.Serialize(writer);
-				writer.Write(0);
+				writer.Write(1);
 				
 				writer.Write(Canceled);
 				writer.Write(DistanceTraveled);
@@ -711,6 +769,15 @@ namespace Server.Engines.CityLoyalty
                             Ambushers[bc] = dt;
                         }
                     }
+                }
+
+                if (version == 0)
+                {
+                    Timer.DelayCall(() =>
+                        {
+                            if (Player.RemoveRewardTitle(2303807, true))
+                                Player.AddRewardTitle(1151739);
+                        });
                 }
 			}
 		}

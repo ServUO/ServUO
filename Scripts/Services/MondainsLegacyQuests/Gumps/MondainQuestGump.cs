@@ -4,6 +4,21 @@ using Server.Mobiles;
 
 namespace Server.Engines.Quests
 {
+    public enum Buttons
+    {
+        Close,
+        CloseQuest,
+        RefuseQuest,
+        ResignQuest,
+        AcceptQuest,
+        AcceptReward,
+        PreviousPage,
+        NextPage,
+        Complete,
+        CompleteQuest,
+        RefuseReward
+    }
+
     public class MondainQuestGump : BaseQuestGump
     {
         private const int ButtonOffset = 11;
@@ -85,9 +100,9 @@ namespace Server.Engines.Quests
                 {
                     AddImage(379, 60, 0x15A9);
                 }
-                else if (!m_Quest.ShowDescription)
+                else
                 {
-                    AddImage(379, 60, 0x15E8);
+                    AddImage(379, 60, 0x1580);
                 }
             }                
 						
@@ -136,20 +151,6 @@ namespace Server.Engines.Quests
             Failed
         }
 
-        private enum Buttons
-        {
-            Close,
-            CloseQuest,
-            RefuseQuest,
-            ResignQuest,
-            AcceptQuest,
-            AcceptReward,
-            PreviousPage,
-            NextPage,
-            Complete,
-            CompleteQuest,
-            RefuseReward
-        }
         public virtual void SecMain()
         {
             if (m_From == null)
@@ -195,7 +196,27 @@ namespace Server.Engines.Quests
                     AddHtmlLocalized(98, 140, 312, 16, 1072202, 0x2710, false, false); // Description
 
                 AddHtmlObject(98, 156, 312, 180, m_Quest.Description, LightGreen, false, true);
+
+                if (m_Offer)
+                {
+                    AddButton(95, 455, 0x2EE0, 0x2EE2, (int)Buttons.AcceptQuest, GumpButtonType.Reply, 0);
+                    AddButton(313, 455, 0x2EF2, 0x2EF4, (int)Buttons.RefuseQuest, GumpButtonType.Reply, 0);
+                }
+                else
+                {
+                    AddButton(95, 455, 0x2EF5, 0x2EF7, (int)Buttons.ResignQuest, GumpButtonType.Reply, 0);
+                    AddButton(313, 455, 0x2EEC, 0x2EEE, (int)Buttons.CloseQuest, GumpButtonType.Reply, 0);
+                }
+
+                if (m_Quest.ShowDescription)
+                    AddButton(275, 430, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
             }
+        }
+
+        public virtual void SecObjectives()
+        {
+            if (m_Quest == null)
+                return;
 
             if (m_Offer)
             {
@@ -207,15 +228,6 @@ namespace Server.Engines.Quests
                 AddButton(95, 455, 0x2EF5, 0x2EF7, (int)Buttons.ResignQuest, GumpButtonType.Reply, 0);
                 AddButton(313, 455, 0x2EEC, 0x2EEE, (int)Buttons.CloseQuest, GumpButtonType.Reply, 0);
             }
-			
-            if(m_Quest.ShowDescription)
-                AddButton(275, 430, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
-        }
-
-        public virtual void SecObjectives()
-        {
-            if (m_Quest == null)
-                return;
 
             if (!m_Quest.RenderObjective(this, m_Offer))
             {
@@ -372,8 +384,16 @@ namespace Server.Engines.Quests
 
                         if (escort != null)
                         {
-                            AddHtmlLocalized(98, offset, 50, 16, 1072206, 0x15F90, false, false); // Escort to
-                            AddHtmlObject(153, offset, 200, 16, escort.Region.Name, White, false, false);
+                            AddHtmlLocalized(98, offset, 312, 16, 1072206, 0x15F90, false, false); // Escort to
+
+                            if (escort.Label == 0)
+                            {
+                                AddHtmlObject(173, offset, 200, 16, escort.Region.Name, White, false, false);
+                            }
+                            else
+                            {
+                                AddHtmlLocalized(173, offset, 200, 16, escort.Label, 0xFFFFFF, false, false);
+                            }
 
                             offset += 16;
 
@@ -414,22 +434,22 @@ namespace Server.Engines.Quests
                             AddLabel(223, offset, 0x481, FormatSeconds(obj.Seconds)); // %est. time remaining%
                         }
                     }
+                    else if (objective.ObjectiveDescription != null)
+                    {
+                        if (objective.ObjectiveDescription is int)
+                        {
+                            AddHtmlLocalized(98, offset, 310, 300, (int)objective.ObjectiveDescription, 0x15F90, false, false);
+                        }
+                        else if (objective.ObjectiveDescription is string)
+                        {
+                            AddHtmlObject(98, offset, 310, 300, (string)objective.ObjectiveDescription, LightGreen, false, false);
+                        }
+                    }
                 }
-            }
 
-            if (m_Offer)
-            {
-                AddButton(95, 455, 0x2EE0, 0x2EE2, (int)Buttons.AcceptQuest, GumpButtonType.Reply, 0);
-                AddButton(313, 455, 0x2EF2, 0x2EF4, (int)Buttons.RefuseQuest, GumpButtonType.Reply, 0);
+                AddButton(130, 430, 0x2EEF, 0x2EF1, (int)Buttons.PreviousPage, GumpButtonType.Reply, 0);
+                AddButton(275, 430, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
             }
-            else
-            {
-                AddButton(95, 455, 0x2EF5, 0x2EF7, (int)Buttons.ResignQuest, GumpButtonType.Reply, 0);
-                AddButton(313, 455, 0x2EEC, 0x2EEE, (int)Buttons.CloseQuest, GumpButtonType.Reply, 0);
-            }
-
-            AddButton(130, 430, 0x2EEF, 0x2EF1, (int)Buttons.PreviousPage, GumpButtonType.Reply, 0);
-            AddButton(275, 430, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
         }
 
         public virtual void SecRewards()
@@ -454,7 +474,7 @@ namespace Server.Engines.Quests
                 if (reward != null)
                 {
                     AddImage(105, offset, 0x4B9);
-                    AddHtmlObject(133, offset, 280, 32, reward.Name, LightGreen, false, false);
+                    AddHtmlObject(133, offset, 280, m_Quest.Rewards.Count == 1 ? 100 : 16, reward.Name, LightGreen, false, false);
 
                     offset += 16;
                 }

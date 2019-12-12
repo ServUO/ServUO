@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using System;
 using System.Collections.Generic;
 using System.Collections;
@@ -315,7 +315,7 @@ namespace Server.Engines.Quests
 
             foreach (BaseBoat boat in BaseBoat.Boats) 
             {
-                if (boat.Owner == from && !(boat is RowBoat))
+                if (boat.Owner == from && !boat.IsRowBoat)
                     boats.Add(boat);
             }
 
@@ -403,7 +403,7 @@ namespace Server.Engines.Quests
             if (from == null)
                 return 0;
 
-            double skill = from.Skills[SkillName.Fishing].Value;
+            double skill = from.Skills[SkillName.Fishing].Base;
 
             if (skill < 80.0)
                 return 11;

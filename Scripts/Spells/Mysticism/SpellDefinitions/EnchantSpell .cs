@@ -6,6 +6,7 @@ using Server;
 using Server.Mobiles;
 using Server.Spells;
 using Server.Network;
+using Server.Spells.Spellweaving;
 
 namespace Server.Spells.Mysticism
 {
@@ -79,7 +80,7 @@ namespace Server.Spells.Mysticism
                 Caster.SendLocalizedMessage(501775); // This spell is already in effect.
                 return false;
             }
-            else if (Weapon.Immolating || Weapon.ConsecratedContext != null)
+            else if (ImmolatingWeaponSpell.IsImmolating(Caster, Weapon) || Weapon.ConsecratedContext != null)
             {
                 Caster.SendLocalizedMessage(1080128); //You cannot use this ability while your weapon is enchanted.
                 return false;
@@ -110,7 +111,7 @@ namespace Server.Spells.Mysticism
             {
                 Caster.SendLocalizedMessage(501775); // This spell is already in effect.
             }
-            else if (Weapon.Immolating || Weapon.ConsecratedContext != null)
+            else if (ImmolatingWeaponSpell.IsImmolating(Caster, Weapon) || Weapon.ConsecratedContext != null)
             {
                 Caster.SendLocalizedMessage(1080128); //You cannot use this ability while your weapon is enchanted.
             }
@@ -130,7 +131,7 @@ namespace Server.Spells.Mysticism
                 int prim = (int)Caster.Skills[CastSkill].Value;
                 int sec = (int)Caster.Skills[DamageSkill].Value;
 
-                int value = (50 * (prim + sec)) / 240;
+                int value = (60 * (prim + sec)) / 240;
                 double duration = ((double)(prim + sec) / 2.0) + 30.0;
                 int malus = 0;
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Server.Engines.CannedEvil;
 using Server.Items;
+using Server.Services.Virtues;
 
 namespace Server.Mobiles
 {
@@ -226,6 +227,10 @@ namespace Server.Mobiles
             }
 
             ColUtility.Free(toGive);
+        }
+
+        public virtual void OnChampPopped(ChampionSpawn spawn)
+        {
         }
 
         public override bool OnBeforeDeath()

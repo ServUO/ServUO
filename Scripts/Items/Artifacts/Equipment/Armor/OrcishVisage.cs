@@ -8,10 +8,10 @@ namespace Server.Items
         [Constructable]
         public OrcishVisage()
         {
-            this.Hue = 0x592;
-            this.ArmorAttributes.SelfRepair = 3;
-            this.Attributes.BonusStr = 10;
-            this.Attributes.BonusStam = 5;
+            Hue = 0x592;
+            ArmorAttributes.SelfRepair = 3;
+            Attributes.BonusStr = 10;
+            Attributes.BonusStam = 5;
         }
 
         public OrcishVisage(Serial serial)

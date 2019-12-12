@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server.Targeting;
 using Server.Spells.Fourth;
 
@@ -42,34 +44,11 @@ namespace Server.Spells.Sixth
             else if (SpellHelper.CheckTown(p, this.Caster) && this.CheckSequence())
             {
                 SpellHelper.Turn(this.Caster, p);
-
                 SpellHelper.GetSurfaceTop(ref p);
 
-                List<Mobile> targets = new List<Mobile>();
-
-                Map map = this.Caster.Map;
-
-                if (map != null)
+                foreach (var m in AcquireIndirectTargets(p, 2).OfType<Mobile>())
                 {
-                    IPooledEnumerable eable = map.GetMobilesInRange(new Point3D(p), 2);
-
-                    foreach (Mobile m in eable)
-                    {
-                        if (Core.AOS && m == this.Caster)
-                            continue;
-
-                        if (SpellHelper.ValidIndirectTarget(this.Caster, m) && this.Caster.CanSee(m) && this.Caster.CanBeHarmful(m, false))
-                            targets.Add(m);
-                    }
-
-                    eable.Free();
-                }
-
-                for (int i = 0; i < targets.Count; ++i)
-                {
-                    Mobile m = targets[i];
-
-					CurseSpell.DoCurse(this.Caster, m, true);
+                    CurseSpell.DoCurse(this.Caster, m, true);
                 }
             }
 

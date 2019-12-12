@@ -8,11 +8,10 @@ namespace Server.Items
         [Constructable]
         public ArtsGlasses()
         {
-            this.Attributes.BonusStr = 5;
-            this.Attributes.BonusInt = 5;
-            this.Attributes.BonusHits = 15;
-
-            this.Hue = 0x73;
+            Attributes.BonusStr = 5;
+            Attributes.BonusInt = 5;
+            Attributes.BonusHits = 15;
+            Hue = 0x73;
         }
 
         public ArtsGlasses(Serial serial)

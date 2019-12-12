@@ -7,6 +7,7 @@ namespace Server.Factions
     public class FactionPersistence : Item
     {
         private static FactionPersistence m_Instance;
+
         public FactionPersistence()
             : base(1)
         {

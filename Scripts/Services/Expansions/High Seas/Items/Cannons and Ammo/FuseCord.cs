@@ -1,29 +1,35 @@
-﻿using System;
+using System;
 using Server;
 
 namespace Server.Items
 {
-    public class Fusecord : Item, ICommodity
+    [TypeAlias("Server.Items.Fusecord")]
+    public class FuseCord : Item, ICommodity
     {
-        public override int LabelNumber { get { return 1116305; } }
+        public override int LabelNumber { get { return 1116305; } } // fuse cord
 
-        int ICommodity.DescriptionNumber { get { return LabelNumber; } }
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
         [Constructable]
-        public Fusecord() : this(1)
+        public FuseCord()
+            : this(1)
         {
         }
 
         [Constructable]
-        public Fusecord(int amt) : base(5152)
+        public FuseCord(int amount)
+            : base(0x1420)
         {
             Stackable = true;
-            Hue = 782;
-            Amount = amt;
+            Hue = 1164;
+            Amount = amount;
         }
 
-        public Fusecord(Serial serial) : base(serial) { }
+        public FuseCord(Serial serial)
+            : base(serial)
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {

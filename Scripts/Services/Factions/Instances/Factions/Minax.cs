@@ -53,7 +53,8 @@ namespace Server.Factions
                             new Point3D(1116, 2598, 18),
                             new Point3D(1116, 2595, 18),
                             new Point3D(1116, 2592, 18)
-                        }),
+                        },
+                        new Point3D(1118, 2587, 18)),
                     new RankDefinition[]
                     {
                         new RankDefinition(10, 991, 8, new TextDefinition(1060784, "Avenger of Mondain")),

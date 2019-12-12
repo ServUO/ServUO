@@ -9,37 +9,38 @@ namespace Server.Mobiles
         public Gypsy()
             : base(AIType.AI_Animal, FightMode.None, 10, 1, 0.2, 0.4)
         {
-            this.InitStats(31, 41, 51);
+            InitStats(31, 41, 51);
 
-            this.SpeechHue = Utility.RandomDyedHue();
+            SpeechHue = Utility.RandomDyedHue();
 
-            this.SetSkill(SkillName.Cooking, 65, 88);
-            this.SetSkill(SkillName.Snooping, 65, 88);
-            this.SetSkill(SkillName.Stealing, 65, 88);
+			SetSkill(SkillName.Begging, 64.0, 100.0);
+            SetSkill(SkillName.Cooking, 65, 88);
+            SetSkill(SkillName.Snooping, 65, 88);
+            SetSkill(SkillName.Stealing, 65, 88);
 
-            this.Hue = Utility.RandomSkinHue();
+            Hue = Utility.RandomSkinHue();
 
-            if (this.Female = Utility.RandomBool())
+            if (Female = Utility.RandomBool())
             {
-                this.Body = 0x191;
-                this.Name = NameList.RandomName("female");
-                this.AddItem(new Kilt(Utility.RandomDyedHue()));
-                this.AddItem(new Shirt(Utility.RandomDyedHue()));
-                this.AddItem(new ThighBoots());
-                this.Title = "the gypsy";
+                Body = 0x191;
+                Name = NameList.RandomName("female");
+                AddItem(new Kilt(Utility.RandomDyedHue()));
+                AddItem(new Shirt(Utility.RandomDyedHue()));
+                AddItem(new ThighBoots());
+                Title = "the gypsy";
             }
             else
             {
-                this.Body = 0x190;
-                this.Name = NameList.RandomName("male");
-                this.AddItem(new ShortPants(Utility.RandomNeutralHue()));
-                this.AddItem(new Shirt(Utility.RandomDyedHue()));
-                this.AddItem(new Sandals());
-                this.Title = "the gypsy";
+                Body = 0x190;
+                Name = NameList.RandomName("male");
+                AddItem(new ShortPants(Utility.RandomNeutralHue()));
+                AddItem(new Shirt(Utility.RandomDyedHue()));
+                AddItem(new Sandals());
+                Title = "the gypsy";
             }
 
-            this.AddItem(new Bandana(Utility.RandomDyedHue()));
-            this.AddItem(new Dagger());
+            AddItem(new Bandana(Utility.RandomDyedHue()));
+            AddItem(new Dagger());
 
             Utility.AssignRandomHair(this);
 

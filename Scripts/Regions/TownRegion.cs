@@ -1,7 +1,9 @@
-using Server.Engines.VvV;
-using Server.Mobiles;
 using System;
 using System.Xml;
+using System.Linq;
+
+using Server.Engines.VvV;
+using Server.Mobiles;
 
 namespace Server.Regions
 {
@@ -12,21 +14,35 @@ namespace Server.Regions
         {
         }
 
+        public override void OnEnter(Mobile m)
+        {
+            base.OnEnter(m);
+
+            if (ViceVsVirtueSystem.EnhancedRules && 
+                IsVvVBattleRegion() &&
+                ViceVsVirtueSystem.IsVvVCombatant(m) &&
+                ViceVsVirtueSystem.Instance != null &&
+                ViceVsVirtueSystem.Instance.Battle != null && 
+                ViceVsVirtueSystem.Instance.Battle.OnGoing &&
+                ViceVsVirtueSystem.Instance.Battle.Region == this)
+            {
+                ViceVsVirtueSystem.Instance.Battle.AddAggression(m);
+            }
+        }
+
         public override void OnExit(Mobile m)
         {
             base.OnExit(m);
 
-            if (!(m is PlayerMobile))
-                return;
-
-            if (Map == Map.Felucca && (IsPartOf("Britain") || IsPartOf("Moonglow") || IsPartOf("Britain") || IsPartOf("Jhelom") || IsPartOf("Yew") || IsPartOf("Minoc") || IsPartOf("Trinsic") ||
-                IsPartOf("Skara Brae") || IsPartOf("Magincia") || IsPartOf("Vesper")))
+            if (IsVvVBattleRegion() && m is PlayerMobile && m.HasGump(typeof(BattleWarningGump)))
             {
-                if (m.HasGump(typeof(BattleWarningGump)))
-                {
-                    m.CloseGump(typeof(BattleWarningGump));
-                }
+                m.CloseGump(typeof(BattleWarningGump));
             }
+        }
+
+        private bool IsVvVBattleRegion()
+        {
+            return CityInfo.Infos.Any(kvp => IsPartOf(kvp.Value.Name) && Map == Map.Felucca);
         }
     }
 }

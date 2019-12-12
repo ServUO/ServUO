@@ -8,13 +8,12 @@ namespace Server.Items
         [Constructable]
         public BrambleCoat()
         {
-            this.Hue = 0x1;
-
-            this.ArmorAttributes.SelfRepair = 3;
-            this.Attributes.BonusHits = 4;
-            this.Attributes.Luck = 150;
-            this.Attributes.ReflectPhysical = 25;
-            this.Attributes.DefendChance = 15;
+            Hue = 0x1;
+            ArmorAttributes.SelfRepair = 3;
+            Attributes.BonusHits = 4;
+            Attributes.Luck = 150;
+            Attributes.ReflectPhysical = 25;
+            Attributes.DefendChance = 15;
         }
 
         public BrambleCoat(Serial serial)

@@ -39,9 +39,7 @@ namespace Server.Spells.SkillMasteries
                 return false;
             }
 
-            BaseWeapon weapon = GetWeapon();
-
-            if (weapon != null && weapon.DefSkill != CastSkill)
+            if (!CheckWeapon())
             {
                 Caster.SendLocalizedMessage(1156006); // You must have a swordsmanship weapon equipped to use this ability.
                 return false;

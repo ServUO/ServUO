@@ -8,12 +8,12 @@ namespace Server.Items
         [Constructable]
         public LunaLance()
         {
-            this.Hue = 0x47E;
-            this.SkillBonuses.SetValues(0, SkillName.Chivalry, 10.0);
-            this.Attributes.BonusStr = 5;
-            this.Attributes.WeaponSpeed = 20;
-            this.Attributes.WeaponDamage = 35;
-            this.WeaponAttributes.UseBestSkill = 1;
+            Hue = 0x47E;
+            SkillBonuses.SetValues(0, SkillName.Chivalry, 10.0);
+            Attributes.BonusStr = 5;
+            Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = 35;
+            WeaponAttributes.UseBestSkill = 1;
         }
 
         public LunaLance(Serial serial)

@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class MischiefMaker : MagicalShortbow, ITokunoDyable
+    public class MischiefMaker : MagicalShortbow
 	{
 		public override bool IsArtifact { get { return true; } }
         public override int LabelNumber
@@ -18,10 +18,8 @@ namespace Server.Items
             : base()
         {
             Hue = 0x8AB;
-            Balanced = true;
-			
-            Slayer = SlayerName.Silver;
-			
+            Balanced = true;			
+            Slayer = SlayerName.Silver;			
             Attributes.WeaponSpeed = 35;
             Attributes.WeaponDamage = 45;
         }
@@ -31,14 +29,11 @@ namespace Server.Items
         {
         }
 
-        #region Mondain's Legacy
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
         {
             pois = fire = phys = nrgy = chaos = direct = 0;
             cold = 100;
         }
-
-        #endregion
 
         public override void Serialize(GenericWriter writer)
         {
@@ -52,11 +47,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-
-            if (Slayer != SlayerName.Silver)
-            {
-                Slayer = SlayerName.Silver;
-            }
         }
     }
 }

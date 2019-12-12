@@ -8,12 +8,12 @@ namespace Server.Items
         [Constructable]
         public RingOfTheElements()
         {
-            this.Hue = 0x4E9;
-            this.Attributes.Luck = 100;
-            this.Resistances.Fire = 16;
-            this.Resistances.Cold = 16;
-            this.Resistances.Poison = 16;
-            this.Resistances.Energy = 16;
+            Hue = 0x4E9;
+            Attributes.Luck = 100;
+            Resistances.Fire = 16;
+            Resistances.Cold = 16;
+            Resistances.Poison = 16;
+            Resistances.Energy = 16;
         }
 
         public RingOfTheElements(Serial serial)

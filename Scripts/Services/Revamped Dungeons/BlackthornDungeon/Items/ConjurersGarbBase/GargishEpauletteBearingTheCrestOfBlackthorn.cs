@@ -20,12 +20,9 @@ namespace Server.Items
             Attributes.DefendChance = 5;
             Attributes.Luck = 140;
             Hue = 1194;
-
-            Layer = Layer.OuterTorso;
+			
+			Layer = Layer.OuterTorso;
         }
-
-        //public override int InitMinHits { get { return 255; } }
-        //public override int InitMaxHits { get { return 255; } }
 
         public GargishEpauletteBearingTheCrestOfBlackthorn7(Serial serial)
             : base(serial)
@@ -42,8 +39,8 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version == 0)
+			
+			if (version == 0)
             {
                 MaxHitPoints = 0;
                 HitPoints = 0;
