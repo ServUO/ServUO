@@ -12,6 +12,7 @@ using Server.Commands;
 using Server.Targeting;
 using Server.Regions;
 using Server.Gumps;
+using Server.Engines.Auction;
 
 namespace Server.Engines.VendorSearching
 {
@@ -19,6 +20,34 @@ namespace Server.Engines.VendorSearching
 	{
         public static string FilePath = Path.Combine("Saves/Misc", "VendorSearch.bin");
         public static Ultima.StringList StringList { get; private set; }
+
+        public static List<SearchItem> DoSearchAuction(Mobile m, SearchCriteria criteria)
+        {
+            if (criteria == null || Auction.Auction.Auctions == null || Auction.Auction.Auctions.Count == 0)
+            {
+                return null;
+            }
+
+            List<SearchItem> list = new List<SearchItem>();
+            bool excludefel = criteria.Details.FirstOrDefault(d => d.Attribute is Misc && (Misc)d.Attribute == Misc.ExcludeFel) != null;
+
+            foreach (Auction.Auction pv in Auction.Auction.Auctions.Where(pv => pv.AuctionItem != null &&
+                                                                                pv.AuctionItem.Map != Map.Internal &&
+                                                                               pv.AuctionItem.Map != null &&
+                                                                               pv.OnGoing &&
+                                                                               (!excludefel || pv.AuctionItem.Map != Map.Felucca)))
+            {
+                list.Add(new SearchItem(pv.Safe, pv.AuctionItem, (int)pv.Buyout, false));
+            }
+
+            switch (criteria.SortBy)
+            {
+                case SortBy.LowToHigh: list = list.OrderBy(vi => vi.Price).ToList(); break;
+                case SortBy.HighToLow: list = list.OrderBy(vi => -vi.Price).ToList(); break;
+            }
+
+            return list;
+        }
 
         public static List<SearchItem> DoSearch(Mobile m, SearchCriteria criteria)
         {
@@ -60,7 +89,7 @@ namespace Server.Engines.VendorSearching
 
                     if (price > 0 && CheckMatch(item, price, criteria))
                     {
-                        list.Add(new SearchItem(item, price, isChild));
+                        list.Add(new SearchItem(pv, item, price, isChild));
                     }
                 }
 
@@ -842,6 +871,7 @@ namespace Server.Engines.VendorSearching
         Skill5,
         Skill6,
         Sort,
+        Auction
     }
 
     public enum Misc
@@ -908,6 +938,7 @@ namespace Server.Engines.VendorSearching
         public Layer SearchType { get; set; }
         public string SearchName { get; set; }
         public SortBy SortBy { get; set; }
+        public bool Auction { get; set; }
         public long MinPrice { get; set; }
         public long MaxPrice { get; set; }
 
@@ -933,6 +964,7 @@ namespace Server.Engines.VendorSearching
             MinPrice = 0;
             MaxPrice = 175000000;
             SortBy = SortBy.LowToHigh;
+            Auction = false;
             SearchName = null;
             SearchType = Layer.Invalid;
             EntryPrice = false;
@@ -989,6 +1021,9 @@ namespace Server.Engines.VendorSearching
 
             Details = new List<SearchDetail>();
 
+            if (version > 1)
+                Auction = reader.ReadBool();
+
             if (version != 0)
                 EntryPrice = reader.ReadBool();
 
@@ -1007,8 +1042,9 @@ namespace Server.Engines.VendorSearching
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(1);
+            writer.Write(2);
 
+            writer.Write((bool)Auction);
             writer.Write((bool)EntryPrice);
             writer.Write((int)SearchType);
             writer.Write(SearchName);
@@ -1209,15 +1245,29 @@ namespace Server.Engines.VendorSearching
 
     public class SearchItem
     {
+        public PlayerVendor Vendor { get; set; }
+        public AuctionSafe AuctionSafe { get; set; }
         public Item Item { get; set; }
         public int Price { get; set; }
         public bool IsChild { get; set; }
+        public bool IsAuction { get; set; }
 
-        public SearchItem(Item item, int price, bool isChild)
+        public SearchItem(PlayerVendor vendor, Item item, int price, bool isChild)
         {
+            Vendor = vendor;
             Item = item;
             Price = price;
             IsChild = isChild;
+            IsAuction = false;
+        }
+
+        public SearchItem(AuctionSafe auctionsafe, Item item, int price, bool isChild)
+        {
+            AuctionSafe = auctionsafe;
+            Item = item;
+            Price = price;
+            IsChild = isChild;
+            IsAuction = true;
         }
     }
 }

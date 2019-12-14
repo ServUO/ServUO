@@ -250,6 +250,8 @@ namespace Server.Engines.VendorSearching
             }),
             new SearchCriteriaCategory(Category.Sort, 25, 1154695, new SearchCriterionEntry[] { /* Sort */
             }),
+            new SearchCriteriaCategory(Category.Auction, 26, 1159353, new SearchCriterionEntry[] { /* Auction Item */
+            }),
         };
     }
 
