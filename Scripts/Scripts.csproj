@@ -12118,7 +12118,6 @@
     <Compile Include="Spells\UnsummonTimer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Statistics.cs" />
     <Compile Include="Targets\BladedItemTarget.cs">
       <SubType>Code</SubType>
     </Compile>
