@@ -59,15 +59,6 @@ namespace Server.Misc
         */
         public static void Configure()
         {
-        	if (CustomPath != null)
-			{
-                Core.DataDirectories.Add(CustomPath);
-			}
-			else if(Files.LoadDirectory() != null && !Core.Unix)
-			{	
-				Core.DataDirectories.Add(Files.LoadDirectory());
-			}
-
 			if (Core.DataDirectories.Count == 0 && !Core.Service)
 			{
 				Console.WriteLine("Enter the Ultima Online directory:");
