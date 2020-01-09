@@ -182,6 +182,7 @@
     <Compile Include="Gumps\GumpLabelCropped.cs" />
     <Compile Include="Gumps\GumpPage.cs" />
     <Compile Include="Gumps\GumpRadio.cs" />
+    <Compile Include="Gumps\GumpSpriteImage.cs" />
     <Compile Include="Gumps\GumpTextEntry.cs" />
     <Compile Include="Gumps\GumpTextEntryLimited.cs" />
     <Compile Include="Gumps\GumpTooltip.cs" />

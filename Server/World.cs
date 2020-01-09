@@ -1106,8 +1106,6 @@ namespace Server
 				return;
 			}
             
-			EventSink.InvokeBeforeWorldSave(new BeforeWorldSaveEventArgs());
-
             ++m_Saves;
 
 			NetState.FlushAll();
@@ -1148,11 +1146,19 @@ namespace Server
 				Directory.CreateDirectory("Saves/Customs/");
 			}
 
+            try
+            {
+                EventSink.InvokeBeforeWorldSave(new BeforeWorldSaveEventArgs());
+            }
+            catch (Exception e)
+            {
+                throw new Exception("FATAL: Exception in EventSink.BeforeWorldSave", e);
+            }
+
 			if (m_Metrics)
 			{
-				using ( SaveMetrics metrics = new SaveMetrics() ) {
+				using (SaveMetrics metrics = new SaveMetrics())
 					strategy.Save(metrics, permitBackgroundWrite);
-				}
 			}
 			else
 			{
@@ -1164,9 +1170,9 @@ namespace Server
 				EventSink.InvokeWorldSave(new WorldSaveEventArgs(message));
 			}
 			catch (Exception e)
-			{
-				throw new Exception("World Save event threw an exception.  Save failed!", e);
-			}
+            {
+                throw new Exception("FATAL: Exception in EventSink.WorldSave", e);
+            }
 
 			watch.Stop();
 
@@ -1186,12 +1192,19 @@ namespace Server
 
 			if (message)
 			{
-				Broadcast(0x35, true, AccessLevel.Counselor, "World save complete. The entire process took {0:F1} seconds.", watch.Elapsed.TotalSeconds);
+				Broadcast(0x35, true, AccessLevel.Counselor, "World save done in {0:F1} seconds.", watch.Elapsed.TotalSeconds);
 			}
 
 			NetState.Resume();
 
-            EventSink.InvokeAfterWorldSave(new AfterWorldSaveEventArgs());
+            try
+            {
+                EventSink.InvokeAfterWorldSave(new AfterWorldSaveEventArgs());
+            }
+            catch (Exception e)
+            {
+                throw new Exception("FATAL: Exception in EventSink.AfterWorldSave", e);
+            }
         }
 
 		internal static List<Type> m_ItemTypes = new List<Type>();

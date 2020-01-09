@@ -295,7 +295,7 @@ namespace Server.Misc
             return points;
         }
 
-        private static double GetArmorMeditationValue(BaseArmor ar)
+        public static double GetArmorMeditationValue(BaseArmor ar)
         {
             if (ar == null || ar.ArmorAttributes.MageArmor != 0 || ar.Attributes.SpellChanneling != 0)
                 return 0.0;

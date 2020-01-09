@@ -5,6 +5,8 @@ using Server.Network;
 using Server.ContextMenus;
 using System.Collections.Generic;
 using System.Linq;
+using Server.Gumps;
+using Server.Targeting;
 
 namespace Server.Mobiles
 {
@@ -15,12 +17,19 @@ namespace Server.Mobiles
         public override bool IsInvulnerable { get { return true; } }
 
         public Mobile Owner { get; set; }
+        public string Description { get; set; }
 
         [Constructable]
         public Mannequin(Mobile owner)
             : base(AIType.AI_Use_Default, FightMode.None, 1, 1, 0.2, 0.2)
         {
             InitStats(100, 100, 25);
+
+            SetDamageType(ResistanceType.Physical, 0);
+            SetDamageType(ResistanceType.Fire, 0);
+            SetDamageType(ResistanceType.Cold, 0);
+            SetDamageType(ResistanceType.Poison, 0);
+            SetDamageType(ResistanceType.Energy, 0);
 
             Hits = HitsMax;
             Blessed = true;
@@ -76,6 +85,16 @@ namespace Server.Mobiles
             return false;
         }
 
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (!string.IsNullOrEmpty(Description))
+            {
+                list.Add(1159410, Description); // Description: ~1_MESSAGE~
+            }
+        }
+
         public override void OnAosSingleClick(Mobile from)
         {
         }
@@ -116,13 +135,94 @@ namespace Server.Mobiles
             }
         }
 
+        private List<Layer> SameLayers = new List<Layer>()
+        {
+            Layer.FirstValid,
+            Layer.OneHanded,
+            Layer.TwoHanded,
+        };
+
+        public bool CheckSameLayer(Item i1, Item i2)
+        {
+            return i1 is BaseWeapon && i2 is BaseWeapon && SameLayers.Contains(i1.Layer) && SameLayers.Contains(i2.Layer);
+        }
+
+        public bool LayerValidation(Item i1, Item i2)
+        {
+            return i1.Layer == i2.Layer || CheckSameLayer(i1, i2);
+        }
+
+        public static List<ValuedProperty> GetProperty(Item item)
+        {
+            return FindItemProperty(item, true).Where(x => x.Catalog != Catalog.None).ToList();
+        }
+
+        public static List<ValuedProperty> GetProperty(List<Item> items)
+        {
+            return FindItemsProperty(items).Where(x => x.Catalog != Catalog.None).ToList();
+        }
+
+        public static List<ValuedProperty> FindItemsProperty(List<Item> item)
+        {
+            var ll = System.Reflection.Assembly.GetExecutingAssembly().GetTypes()
+              .ToList().Where(r => r.FullName.Contains("MannequinProperty") && r.IsClass == true && r.IsAbstract == false).ToList();
+
+            List<ValuedProperty> cat = new List<ValuedProperty>();
+
+            ll.ForEach(x =>
+            {
+                var CI = Activator.CreateInstance(Type.GetType(x.FullName));
+
+                if (CI is ValuedProperty)
+                {
+                    ValuedProperty p = CI as ValuedProperty;
+
+                    if (p.Matches(item) || p.AlwaysVisible)
+                        cat.Add(p);
+                }
+            });
+
+            return cat;
+        }
+
+        public static List<ValuedProperty> FindItemProperty(Item item, bool visible = false)
+        {
+            var ll = System.Reflection.Assembly.GetExecutingAssembly().GetTypes()
+              .ToList().Where(r => r.FullName.Contains("MannequinProperty") && r.IsClass == true && r.IsAbstract == false).ToList();
+
+            List<ValuedProperty> cat = new List<ValuedProperty>();
+
+            ll.ForEach(x =>
+            {
+                var CI = Activator.CreateInstance(Type.GetType(x.FullName));
+
+                if (CI is ValuedProperty)
+                {
+                    ValuedProperty p = CI as ValuedProperty;
+
+                    if (p.Matches(item) || visible && p.AlwaysVisible)
+                        cat.Add(p);
+                }
+            });
+
+            return cat.OrderByDescending(x => x.Hue).ToList();
+        }
+
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
 
             if (IsOwner(Owner))
             {
-                if (from.Alive && from.InRange(this, 4))
+                if (from.Alive && from.InRange(this, 2))
+                {
+                    list.Add(new ViewSuitsEntry(from, this));
+                    list.Add(new CompareWithItemInSlotEntry(from, this));
+                    list.Add(new ViewSuitsSelectItemEntry(from, this));
+                    list.Add(new AddDescriptionEntry(from, this));
+                }
+
+                if (from.InRange(this, 4))
                     list.Add(new CustomizeBodyEntry(from, this));
 
                 if (from.Alive && from.InRange(this, 2))
@@ -172,10 +272,163 @@ namespace Server.Mobiles
             mobile.Delete();
         }
 
+        private class ViewSuitsEntry : ContextMenuEntry
+        {
+            private Mobile _From;
+            private readonly Mannequin _Mannequin;
+
+            public ViewSuitsEntry(Mobile from, Mannequin m)
+                : base(1159296, 3) // View Suit Stats
+            {
+                _From = from;
+                _Mannequin = m;
+            }
+
+            public override void OnClick()
+            {
+                _From.SendGump(new MannequinStatsGump(_Mannequin));
+            }
+        }
+
+        private class CompareWithItemInSlotEntry : ContextMenuEntry
+        {
+            private Mobile _From;
+            private readonly Mannequin _Mannequin;
+
+            public CompareWithItemInSlotEntry(Mobile from, Mannequin m)
+                : base(1159295, 3) // View Suit Stats With Selected Item
+            {
+                _From = from;
+                _Mannequin = m;
+            }
+
+            public override void OnClick()
+            {
+                _From.SendLocalizedMessage(1159294); // Target the item you wish to compare.
+                _From.Target = new InternalTarget(_Mannequin);
+            }
+
+            private class InternalTarget : Target
+            {
+                private readonly Mannequin _Mannequin;
+
+                public InternalTarget(Mannequin m)
+                    : base(-1, false, TargetFlags.None)
+                {
+                    _Mannequin = m;
+                }
+
+                protected override void OnTarget(Mobile from, object targeted)
+                {
+                    from.SendGump(new MannequinCompareGump(_Mannequin, (Item)targeted));
+                }
+            }
+        }
+
+        private class ViewSuitsSelectItemEntry : ContextMenuEntry
+        {
+            private Mobile _From;
+            private readonly Mannequin _Mannequin;
+
+            public ViewSuitsSelectItemEntry(Mobile from, Mannequin m)
+                : base(1159297, 3) // View Suit Stats With Selected Item
+            {
+                _From = from;
+                _Mannequin = m;
+            }
+
+            public override void OnClick()
+            {
+                _From.SendLocalizedMessage(1159294); // Target the item you wish to compare.
+                _From.Target = new InternalTarget(_Mannequin);
+            }
+
+            private class InternalTarget : Target
+            {
+                private readonly Mannequin _Mannequin;
+
+                public InternalTarget(Mannequin m)
+                    : base(-1, false, TargetFlags.None)
+                {
+                    _Mannequin = m;
+                }
+
+                protected override void OnTarget(Mobile from, object targeted)
+                {
+                    if (targeted is Item)
+                        from.SendGump(new MannequinStatsGump(_Mannequin, (Item)targeted));
+                }
+            }
+        }
+
+        private class AddDescriptionEntry : ContextMenuEntry
+        {
+            private Mobile _From;
+            private readonly Mannequin _Mannequin;
+
+            public AddDescriptionEntry(Mobile from, Mannequin m)
+                : base(1159411, 3) // Add Description
+            {
+                _From = from;
+                _Mannequin = m;
+            }
+
+            public override void OnClick()
+            {
+                _From.SendGump(new DescriptionGump(_Mannequin));
+            }
+
+            private class DescriptionGump : Gump
+            {
+                private Mannequin _Mannequin;
+
+                public DescriptionGump(Mannequin mann)
+                    : base(0, 0)
+                {
+                    _Mannequin = mann;
+
+                    AddBackground(50, 50, 400, 300, 0xA28);
+
+                    AddPage(0);
+
+                    AddHtmlLocalized(50, 70, 400, 20, 1159409, 0x0, false, false); // <CENTER>Mannequin</CENTER>
+                    AddHtmlLocalized(75, 95, 350, 145, 1159408, 0x0, true, true); // Enter the description to add to the mannequin. Leave the text area blank to remove any existing text.
+                    AddButton(125, 300, 0x81A, 0x81B, 1, GumpButtonType.Reply, 0);
+                    AddButton(320, 300, 0x819, 0x818, 0, GumpButtonType.Reply, 0);
+                    AddImageTiled(75, 245, 350, 40, 0xDB0);
+                    AddImageTiled(76, 245, 350, 2, 0x23C5);
+                    AddImageTiled(75, 245, 2, 40, 0x23C3);
+                    AddImageTiled(75, 285, 350, 2, 0x23C5);
+                    AddImageTiled(425, 245, 2, 42, 0x23C3);
+                    AddTextEntry(78, 246, 343, 37, 0x4FF, 0, "", 44);
+                }
+
+                public override void OnResponse(NetState sender, RelayInfo info)
+                {
+                    if (_Mannequin.Deleted)
+                        return;
+
+                    if (info.ButtonID == 1)
+                    {
+                        TextRelay text = info.GetTextEntry(0);
+                        string s = text.Text;
+
+                        if (s.Length > 44)
+                            s = s.Substring(0, 44);
+
+                        _Mannequin.Description = s;
+                        _Mannequin.InvalidateProperties();
+
+                        sender.Mobile.SendLocalizedMessage(1159412); // Updated
+                    }
+                }
+            }
+        }
+
         private class CustomizeBodyEntry : ContextMenuEntry
         {
             private Mobile _From;
-            private Mobile _Mannequin;
+            private readonly Mobile _Mannequin;
 
             public CustomizeBodyEntry(Mobile from, Mobile m)
                 : base(1151585, 4)
@@ -192,7 +445,7 @@ namespace Server.Mobiles
 
         private class SwitchClothesEntry : ContextMenuEntry
         {
-            private Mobile _From;
+            private readonly Mobile _From;
             private Mannequin _Mannequin;
 
             public SwitchClothesEntry(Mobile from, Mannequin m)
@@ -314,8 +567,9 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
-
+            writer.Write((int)1); // version
+            
+            writer.Write(Description);
             writer.Write(Owner);
         }
 
@@ -324,9 +578,25 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            Owner = reader.ReadMobile();
+            switch (version)
+            {
+                case 1:
+                    {
+                        Description = reader.ReadString();
+
+                        goto case 0;
+                    }
+                case 0:
+                    {
+                        Owner = reader.ReadMobile();
+
+                        break;
+                    }
+            }            
         }
     }
+
+    
 
     [Flipable(0x14F0, 0x14EF)]
     public class MannequinDeed : Item

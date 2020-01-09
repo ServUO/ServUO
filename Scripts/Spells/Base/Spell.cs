@@ -932,7 +932,7 @@ namespace Server.Spells
 
 			GetCastSkills(out minSkill, out maxSkill);
 
-			if (DamageSkill != CastSkill)
+			if (DamageSkill != CastSkill && DamageSkill != SkillName.Imbuing)
 			{
 				Caster.CheckSkill(DamageSkill, 0.0, Caster.Skills[DamageSkill].Cap);
 			}

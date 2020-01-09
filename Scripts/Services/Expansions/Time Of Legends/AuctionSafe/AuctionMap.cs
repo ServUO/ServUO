@@ -5,7 +5,6 @@ using Server.Mobiles;
 using Server.ContextMenus;
 using Server.Multis;
 using Server.Engines.Auction;
-using Server.Network;
 
 namespace Server.Items
 {
@@ -81,15 +80,15 @@ namespace Server.Items
         {
             if (AuctionItem == null)
             {
-                list.Add(1156474, String.Format("{0}\t{1}", HouseName, "Unknown")); // Map to Auction ~1_ITEMNAME~: ~2_HOUSE~
+                list.Add(1156474, string.Format("{0}\t{1}", HouseName, "Unknown")); // Map to Auction ~1_ITEMNAME~: ~2_HOUSE~
             }
             else if (AuctionItem.LabelNumber != 0)
             {
-                list.Add(1156474, String.Format("{0}\t#{1}", HouseName, AuctionItem.LabelNumber)); // Map to Auction ~1_ITEMNAME~: ~2_HOUSE~
+                list.Add(1156474, string.Format("{0}\t#{1}", HouseName, AuctionItem.LabelNumber)); // Map to Auction ~1_ITEMNAME~: ~2_HOUSE~
             }
             else
             {
-                list.Add(1156474, String.Format("{0}\t{1}", HouseName, AuctionItem.Name)); // Map to Auction ~1_ITEMNAME~: ~2_HOUSE~
+                list.Add(1156474, string.Format("{0}\t{1}", HouseName, AuctionItem.Name)); // Map to Auction ~1_ITEMNAME~: ~2_HOUSE~
             }
         }
 
@@ -99,7 +98,7 @@ namespace Server.Items
 
             string[] coord = GetCoords();
 
-            list.Add(1154639, String.Format("{0}\t{1}", coord[0], coord[1])); //  Vendor Located at ~1_loc~ (~2_facet~)
+            list.Add(1154639, string.Format("{0}\t{1}", coord[0], coord[1])); //  Vendor Located at ~1_loc~ (~2_facet~)
             
             if (!CheckItem())
             {
@@ -140,7 +139,7 @@ namespace Server.Items
 
                 if (Sextant.Format(new Point3D(x, y, z), map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
                 {
-                    return new string[] { String.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W"), map.ToString() };
+                    return new string[] { string.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W"), map.ToString() };
                 }
             }
 
@@ -185,6 +184,41 @@ namespace Server.Items
         public bool CheckItem()
         {
             return GetHouse() != null && AuctionItem != null && AuctionSafe.CheckAuctionItem(AuctionItem);
+        }
+
+        public Point3D GetLocation(Mobile m)
+        {
+            BaseHouse h = null;
+
+            if (SetLocation != Point3D.Zero)
+            {
+                h = BaseHouse.FindHouseAt(SetLocation, SetMap, 16);
+            }
+            else if (AuctionSafe != null)
+            {
+                h = BaseHouse.FindHouseAt(AuctionSafe);
+            }
+
+            if (h != null)
+            {
+                m.SendLocalizedMessage(1070905); // Strong magics have redirected you to a safer location!
+                return h.BanLocation;
+            }
+
+            return SetLocation != Point3D.Zero ? SetLocation : Point3D.Zero;
+        }
+
+        public Map GetMap()
+        {
+            if (SetLocation != Point3D.Zero)
+                return SetMap;
+
+            if (AuctionSafe != null)
+            {
+                return AuctionSafe.Map;
+            }
+
+            return null;
         }
 
         public class OpenMapEntry : ContextMenuEntry
@@ -307,7 +341,7 @@ namespace Server.Items
                             }
                             else
                             {
-                                new Server.Spells.Fourth.RecallSpell(User, AuctionMap, AuctionMap).Cast();
+                                new Spells.Fourth.RecallSpell(User, AuctionMap, AuctionMap).Cast();
                             }
 
                             break;

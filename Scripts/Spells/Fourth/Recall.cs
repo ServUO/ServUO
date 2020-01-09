@@ -90,21 +90,13 @@ namespace Server.Spells.Fourth
                 }
                 else if (m_SearchMap != null)
                 {
-                    loc = m_SearchMap.SetLocation != Point3D.Zero ? m_SearchMap.SetLocation : m_SearchMap.GetVendorLocation(Caster);
-                    map = m_SearchMap.SetMap != null ? m_SearchMap.SetMap : m_SearchMap.GetVendorMap();
+                    loc = m_SearchMap.GetLocation(Caster);
+                    map = m_SearchMap.GetMap();
                 }
                 else
                 {
-                    loc = m_AuctionMap.SetLocation != Point3D.Zero ? m_AuctionMap.SetLocation : m_AuctionMap.SafeLocation;
-                    map = m_AuctionMap.SetMap != null ? m_AuctionMap.SetMap : m_AuctionMap.SafeMap;
-
-                    BaseHouse house = BaseHouse.FindHouseAt(loc, map, 16);
-
-                    if (house != null)
-                    {
-                        Caster.SendLocalizedMessage(1070905); // Strong magics have redirected you to a safer location!
-                        loc = house.BanLocation;
-                    }
+                    loc = m_AuctionMap.GetLocation(Caster);
+                    map = m_AuctionMap.GetMap();
                 }
 
                 Effect(loc, map, true, false);
