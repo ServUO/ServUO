@@ -10,6 +10,14 @@ namespace Server.Misc
 {
     public static class ArchivedSaves
     {
+        public enum MergeType
+        {
+            Months,
+            Days,
+            Hours,
+            Minutes
+        }
+
         private static readonly string _DefaultDestination;
 
         private static string _Destination;
@@ -57,6 +65,8 @@ namespace Server.Misc
 
         public static TimeSpan ExpireAge { get; set; }
 
+        public static MergeType Merge { get; set; }
+
         private static readonly List<IAsyncResult> _Tasks = new List<IAsyncResult>(0x40);
 
         private static readonly object _TaskRoot = ((ICollection)_Tasks).SyncRoot;
@@ -86,6 +96,8 @@ namespace Server.Misc
             Async = Config.Get("AutoSave.ArchivesAsync", true);
 
             ExpireAge = Config.Get("AutoSave.ArchivesExpire", TimeSpan.Zero);
+
+            Merge = Config.GetEnum("AutoSave.ArchivesMerging", MergeType.Minutes);
         }
 
         [CallPriority(int.MaxValue - 10)]
@@ -153,7 +165,21 @@ namespace Server.Misc
             try
             {
                 var now = DateTime.Now;
-                var file = string.Format("{0} Saves ({1}-{2}-{3} {4:D2}-{5:D2}).zip", ServerList.ServerName, now.Day, now.Month, now.Year, now.Hour, now.Minute);
+
+                var ampm = now.Hour < 12 ? "AM" : "PM";
+                var hour12 = now.Hour > 12 ? now.Hour - 12 : now.Hour <= 0 ? 12 : now.Hour;
+
+                string date;
+
+                switch (Merge)
+                {
+                    case MergeType.Months: date = string.Format("{0}-{1}", now.Month, now.Year); break;
+                    case MergeType.Days: date = string.Format("{0}-{1}-{2}", now.Day, now.Month, now.Year); break;
+                    case MergeType.Hours: date = string.Format("{0}-{1}-{2} {3:D2} {4}", now.Day, now.Month, now.Year, hour12, ampm); break;
+                    case MergeType.Minutes: default: date = string.Format("{0}-{1}-{2} {3:D2}-{4:D2} {5}", now.Day, now.Month, now.Year, hour12, now.Minute, ampm); break;
+                }
+
+                var file = string.Format("{0} Saves ({1}).zip", ServerList.ServerName, date);
                 var dest = Path.Combine(Destination, file);
 
                 try { File.Delete(dest); }
