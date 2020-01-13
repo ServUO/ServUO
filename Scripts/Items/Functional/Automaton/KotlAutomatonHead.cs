@@ -45,6 +45,8 @@ namespace Server.Items
 
                 Timer.DelayCall(TimeSpan.FromSeconds(3), () =>
                     {
+                        _Activated = false;
+
                         KotlAutomaton automaton = GetAutomaton(from);
 
                         if (automaton.SetControlMaster(from))

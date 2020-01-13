@@ -27,7 +27,7 @@ namespace Server.Items
         {
             PlayerMobile pm = (PlayerMobile)args.Mobile;           
 
-            if (pm != null)
+            if (pm != null && pm.Backpack != null)
             {
                 GemOfSalvation gem = pm.Backpack.FindItemByType<GemOfSalvation>();
 

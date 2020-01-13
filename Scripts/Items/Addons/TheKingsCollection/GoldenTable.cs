@@ -11,10 +11,10 @@ namespace Server.Items
             switch (type)
             {
                 case DirectionType.East:
-                    AddComponent(new LocalizedAddonComponent(19627, 1154150), 1, 0, 0);
-                    AddComponent(new LocalizedAddonComponent(19626, 1154150), 0, 0, 0);
-                    AddComponent(new LocalizedAddonComponent(19625, 1154150), 0, 1, 0);
-                    AddComponent(new LocalizedAddonComponent(19624, 1154150), 1, 1, 0);
+                    AddComponent(new LocalizedAddonComponent(19624, 1154150), 1, 0, 0);
+                    AddComponent(new LocalizedAddonComponent(19627, 1154150), 0, 0, 0);
+                    AddComponent(new LocalizedAddonComponent(19626, 1154150), 0, 1, 0);
+                    AddComponent(new LocalizedAddonComponent(19625, 1154150), 1, 1, 0);
                     break;
                 case DirectionType.South:
                     AddComponent(new LocalizedAddonComponent(19623, 1154150), 1, 1, 0);

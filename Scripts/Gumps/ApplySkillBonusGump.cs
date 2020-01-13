@@ -51,7 +51,7 @@ namespace Server.Gumps
                 if (id >= 0 && id < Skills.Length)
                 {
                     Selection = Skills[id];
-                    object text;
+                    TextDefinition text;
 
                     if (Item is BaseWeapon)
                     {
