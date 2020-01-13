@@ -11,8 +11,8 @@ namespace Server.Gumps
 		public Action<Mobile, object> ConfirmCallback { get; set; }
 		public Action<Mobile, object> CloseCallback { get; set; }
 
-		public object Title { get; set; }
-		public object Body { get; set; }
+		public TextDefinition Title { get; set; }
+		public TextDefinition Body { get; set; }
 		public object State { get; set; }
 		public string Arguments { get; set; }
 
@@ -20,9 +20,9 @@ namespace Server.Gumps
         public int CloseLocalization { get; private set; }
 		
         public ConfirmCallbackGump(
-            PlayerMobile user, 
-            object title, 
-            object body, 
+            PlayerMobile user,
+            TextDefinition title,
+            TextDefinition body, 
             object state, 
             string args = null, 
             Action<Mobile, object> confirm = null, 
@@ -67,24 +67,34 @@ namespace Server.Gumps
 			AddImage( 333, 2, 0x2716 ); 
 			AddImage( 333, 248, 0x2716 ); 
 			AddImage( 2, 248, 0x2716 ); 
-			AddImage( 2, 2, 0x2716 );             
+			AddImage( 2, 2, 0x2716 );
 
-			if (Title is int) 
-			   AddHtmlLocalized( 25, 25, 200, 20, (int)Title, 0x7D00, false, false );
-			else  if (Title is string)
-			   AddHtml( 25, 25, 200, 20, String.Format("<basefont color=#FF0000>{0}", (string)Title), false, false );
+            if (Title.Number > 0)
+            {
+                AddHtmlLocalized(25, 25, 200, 20, Title.Number, 0x7D00, false, false);
+            }
+            else if (!String.IsNullOrEmpty(Title.String))
+            {
+                AddHtml(25, 25, 200, 20, String.Format("<basefont color=#FF0000>{0}", Title.String), false, false);
+            }
 
-			AddImage( 25, 45, 0xBBF ); 
+			AddImage( 25, 45, 0xBBF );
 
-			if (Body is int)
-			{
-				if(Arguments != null)
-					AddHtmlLocalized( 25, 55, 300, 120, (int)Body, Arguments, 0xFFFFFF, false, false );
-				else
-					AddHtmlLocalized( 25, 55, 300, 120, (int)Body, 0xFFFFFF, false, false );
-			}
-			else if(Body is string)
-			   AddHtml( 25, 55, 300, 120, String.Format("<BASEFONT COLOR=#FFFFFF>{0}</BASEFONT>", (string)Body), false, false );
+            if (Body.Number > 0)
+            {
+                if (Arguments != null)
+                {
+                    AddHtmlLocalized(25, 55, 300, 120, Body.Number, Arguments, 0xFFFFFF, false, false);
+                }
+                else
+                {
+                    AddHtmlLocalized(25, 55, 300, 120, Body.Number, 0xFFFFFF, false, false);
+                }
+            }
+            else if (!String.IsNullOrEmpty(Body.String))
+            {
+                AddHtml(25, 55, 300, 120, String.Format("<BASEFONT COLOR=#FFFFFF>{0}</BASEFONT>", Body.String), false, false);
+            }
 
 			AddRadio( 25, 175, 0x25F8, 0x25FB, true, 1);
 			AddRadio( 25, 210, 0x25F8, 0x25FB, false, 2);
@@ -105,7 +115,9 @@ namespace Server.Gumps
             if (confirm)
             {
                 if (ConfirmCallback != null)
+                {
                     ConfirmCallback(User, State);
+                }
             }
             else if (CloseCallback != null)
             {
@@ -119,8 +131,8 @@ namespace Server.Gumps
         public Action<Mobile, T> ConfirmCallback { get; set; }
         public Action<Mobile, T> CloseCallback { get; set; }
 
-        public object Title { get; set; }
-        public object Body { get; set; }
+        public TextDefinition Title { get; set; }
+        public TextDefinition Body { get; set; }
         public T State { get; set; }
         public string Arguments { get; set; }
 
@@ -129,8 +141,8 @@ namespace Server.Gumps
 
         public GenericConfirmCallbackGump(
             PlayerMobile user,
-            object title,
-            object body,
+            TextDefinition title,
+            TextDefinition body,
             T state,
             string args = null,
             Action<Mobile, T> confirm = null,
@@ -177,22 +189,32 @@ namespace Server.Gumps
             AddImage(2, 248, 0x2716);
             AddImage(2, 2, 0x2716);
 
-            if (Title is int)
-                AddHtmlLocalized(25, 25, 200, 20, (int)Title, 0x7D00, false, false);
-            else if (Title is string)
-                AddHtml(25, 25, 200, 20, String.Format("<basefont color=#FF0000>{0}", (string)Title), false, false);
+            if (Title.Number > 0)
+            {
+                AddHtmlLocalized(25, 25, 200, 20, Title.Number, 0x7D00, false, false);
+            }
+            else if (!String.IsNullOrEmpty(Title.String))
+            {
+                AddHtml(25, 25, 200, 20, String.Format("<basefont color=#FF0000>{0}", Title.String), false, false);
+            }
 
             AddImage(25, 45, 0xBBF);
 
-            if (Body is int)
+            if (Body.Number > 0)
             {
                 if (Arguments != null)
-                    AddHtmlLocalized(25, 55, 300, 120, (int)Body, Arguments, 0xFFFFFF, false, false);
+                {
+                    AddHtmlLocalized(25, 55, 300, 120, Body.Number, Arguments, 0xFFFFFF, false, false);
+                }
                 else
-                    AddHtmlLocalized(25, 55, 300, 120, (int)Body, 0xFFFFFF, false, false);
+                {
+                    AddHtmlLocalized(25, 55, 300, 120, Body.Number, 0xFFFFFF, false, false);
+                }
             }
-            else if (Body is string)
-                AddHtml(25, 55, 300, 120, String.Format("<BASEFONT COLOR=#FFFFFF>{0}</BASEFONT>", (string)Body), false, false);
+            else if (!String.IsNullOrEmpty(Body.String))
+            {
+                AddHtml(25, 55, 300, 120, String.Format("<BASEFONT COLOR=#FFFFFF>{0}</BASEFONT>", Body.String), false, false);
+            }
 
             AddRadio(25, 175, 0x25F8, 0x25FB, true, 1);
             AddRadio(25, 210, 0x25F8, 0x25FB, false, 2);
@@ -213,7 +235,9 @@ namespace Server.Gumps
             if (confirm)
             {
                 if (ConfirmCallback != null)
+                {
                     ConfirmCallback(User, State);
+                }
             }
             else if (CloseCallback != null)
             {
