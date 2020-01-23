@@ -3347,10 +3347,7 @@ namespace Server.Mobiles
             {
                 case AIType.AI_Melee:
                     m_AI = new MeleeAI(this);
-                    break;
-                case AIType.AI_Animal:
-                    m_AI = new AnimalAI(this);
-                    break;
+                    break;               
                 case AIType.AI_Berserk:
                     m_AI = new BerserkAI(this);
                     break;
@@ -3365,11 +3362,7 @@ namespace Server.Mobiles
                     break;
                 case AIType.AI_Mage:
                     m_AI = new MageAI(this);
-                    break;
-                case AIType.AI_Predator:
-                    //m_AI = new PredatorAI(this);
-                    m_AI = new MeleeAI(this);
-                    break;
+                    break;               
                 case AIType.AI_Thief:
                     m_AI = new ThiefAI(this);
                     break;

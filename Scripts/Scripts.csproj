@@ -8837,10 +8837,7 @@
     </Compile>
     <Compile Include="Mobiles\AI\AIControlMobileTarget.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mobiles\AI\AnimalAI.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    </Compile>   
     <Compile Include="Mobiles\AI\ArcherAI.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -8861,10 +8858,7 @@
     </Compile>
     <Compile Include="Mobiles\AI\OrcScoutAI.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mobiles\AI\PredatorAI.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    </Compile>   
     <Compile Include="Mobiles\AI\SpeedInfo.cs">
       <SubType>Code</SubType>
     </Compile>
