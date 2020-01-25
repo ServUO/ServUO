@@ -13,7 +13,7 @@ namespace Server.Items
             Attributes.RegenMana = 4;
             Attributes.CastRecovery = 3;
             ArmorAttributes.MageArmor = 1;
-            WeaponAttributes.HitFireball = 15;
+            WeaponAttributes.HitLightning = 35;
         }
 
         public BracersofAlchemicalDevastation(Serial serial)
@@ -40,12 +40,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                xWeaponAttributesDeserializeHelper(reader, this);
-            }
+            int version = reader.ReadInt();          
         }
     }
 }

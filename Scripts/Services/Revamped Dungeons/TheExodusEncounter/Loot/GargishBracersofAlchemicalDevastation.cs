@@ -12,7 +12,7 @@ namespace Server.Items
             Attributes.RegenMana = 4;
             Attributes.CastRecovery = 3;
             ArmorAttributes.MageArmor = 1;
-            WeaponAttributes.HitFireball = 15;
+            WeaponAttributes.HitLightning = 35;
         }
 
         public GargishBracersofAlchemicalDevastation(Serial serial) : base(serial)
@@ -47,11 +47,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                xWeaponAttributesDeserializeHelper(reader, this);
-            }
         }
     }
 }

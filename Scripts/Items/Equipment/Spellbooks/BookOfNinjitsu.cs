@@ -14,7 +14,7 @@ namespace Server.Items
         public BookOfNinjitsu(ulong content)
             : base(content, 0x23A0)
         {
-            this.Layer = (Core.ML ? Layer.OneHanded : Layer.Invalid);
+            Layer = (Core.ML ? Layer.OneHanded : Layer.Invalid);
         }
 
         public BookOfNinjitsu(Serial serial)
@@ -46,18 +46,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0 && Core.ML)
-                this.Layer = Layer.OneHanded;
         }
     }
 }
