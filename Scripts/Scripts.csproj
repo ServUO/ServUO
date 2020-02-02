@@ -2724,7 +2724,6 @@
     <Compile Include="Mobiles\NPCs\GolemCrafter.cs" />
     <Compile Include="Mobiles\NPCs\Gorrow.cs" />
     <Compile Include="Mobiles\NPCs\GrandpaCharley.cs" />
-    <Compile Include="Mobiles\NPCs\Greeter1.cs" />
     <Compile Include="Mobiles\NPCs\Gustar.cs" />
     <Compile Include="Mobiles\NPCs\Gypsy.cs" />
     <Compile Include="Mobiles\NPCs\GypsyAnimalTrainer.cs" />
