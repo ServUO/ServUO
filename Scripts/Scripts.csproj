@@ -933,7 +933,6 @@
     <Compile Include="Items\Artifacts\Equipment\Clothing\CloakOfPower.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\CloakOfSilence.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\TheScholarsHalo.cs" />
-    <Compile Include="Items\Artifacts\Equipment\Clothing\JadeArmband.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\MagicalDoor.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\AnkhPendant.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\NecklaceofDiligence.cs" />
@@ -5317,6 +5316,9 @@
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Jewelry\EssenceOfBattle.cs">
       <SubType>Code</SubType>
+    </Compile>
+	<Compile Include="Items\Artifacts\Equipment\Jewelry\JadeArmband.cs" />
+	<SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Jewelry\PendantOfTheMagi.cs">
       <SubType>Code</SubType>
