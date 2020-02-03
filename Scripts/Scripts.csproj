@@ -5316,7 +5316,7 @@
     <Compile Include="Items\Artifacts\Equipment\Jewelry\EssenceOfBattle.cs">
       <SubType>Code</SubType>
     </Compile>
-	<Compile Include="Items\Artifacts\Equipment\Jewelry\JadeArmband.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\JadeArmband.cs">
 	<SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Jewelry\PendantOfTheMagi.cs">
