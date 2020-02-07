@@ -8830,9 +8830,6 @@
     <Compile Include="Abilities\EnhancementTimer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Abilities\SelfDeletingItem.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Abilities\TimedResistanceMod.cs">
       <SubType>Code</SubType>
     </Compile>
