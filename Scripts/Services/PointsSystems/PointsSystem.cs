@@ -53,6 +53,7 @@ namespace Server.Engines.Points
         GauntletPoints,
         TOT,
         VAS,
+        FellowshipData,
     }
 
     public abstract class PointsSystem
@@ -358,6 +359,7 @@ namespace Server.Engines.Points
         public static DoomGauntlet DoomGauntlet { get; set; }
         public static TreasuresOfTokuno TreasuresOfTokuno { get; set; }
         public static VirtueArtifactsSystem VirtueArtifacts { get; set; }
+        public static FellowshipData FellowshipData { get; set; }
 
         public static void Configure()
         {
@@ -387,6 +389,7 @@ namespace Server.Engines.Points
             DoomGauntlet = new DoomGauntlet();
             TreasuresOfTokuno = new TreasuresOfTokuno();
             VirtueArtifacts = new VirtueArtifactsSystem();
+            FellowshipData = new FellowshipData();
         }
 
         public static void OnKilledBy(OnKilledByEventArgs e)
