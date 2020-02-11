@@ -298,15 +298,11 @@ namespace Server.Mobiles
 
         public void DeleteItems()
         {
-            for (int i = Items.Count - 1; i >= 0; i--)
-                if (Items[i] is ClonedItem)
-                    Items[i].Delete();
+            ColUtility.SafeDelete(Items, item => item is ClonedItem || item is BaseRanged);
 
             if (Backpack != null)
             {
-                for (int i = Backpack.Items.Count - 1; i >= 0; i--)
-                    if (Backpack.Items[i] is ClonedItem)
-                        Backpack.Items[i].Delete();
+                ColUtility.SafeDelete(Backpack.Items, item => item is ClonedItem || item is BaseRanged);
             }
         }
 
