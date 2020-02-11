@@ -210,10 +210,6 @@ namespace Server.Engines.Fellowship
 
         public static void Remove()
         {
-            ChampionSystem.AllSpawns.Where(s => s.Type == ChampionSpawnType.Khaldun && Region.Find(s.Location, s.Map).IsPartOf("Khaldun")).IterateReverse(s =>
-            {
-                s.Delete();
-            });
         }
 
         private static readonly Point3D[] blocker = new Point3D[] { new Point3D(6408, 2667, 0), new Point3D(6409, 2667, 0), new Point3D(6410, 2667, 0), new Point3D(6411, 2667, 0),
@@ -229,10 +225,22 @@ namespace Server.Engines.Fellowship
                 BlackthornEntry.InstanceTram.MoveToWorld(new Point3D(6409, 2677, 0), Map.Trammel);
             }
 
+            if (BlackthornStep2.InstanceTram == null && !Siege.SiegeShard)
+            {
+                BlackthornStep2.InstanceTram = new BlackthornStep2();
+                BlackthornStep2.InstanceTram.MoveToWorld(new Point3D(6378, 2612, 0), Map.Trammel);
+            }
+
             if (BlackthornEntry.InstanceFel == null)
             {
                 BlackthornEntry.InstanceFel = new BlackthornEntry();
                 BlackthornEntry.InstanceFel.MoveToWorld(new Point3D(6409, 2677, 0), Map.Felucca);
+            }
+
+            if (BlackthornStep2.InstanceFel == null)
+            {
+                BlackthornStep2.InstanceFel = new BlackthornStep2();
+                BlackthornStep2.InstanceFel.MoveToWorld(new Point3D(6378, 2612, 0), Map.Felucca);
             }
 
             Map map = Map.Felucca;

@@ -3,18 +3,35 @@ using Server.Items;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Engines.Quests;
+using System.Collections.Generic;
 
 namespace Server.Engines.Fellowship
 {
+    public enum Step
+    {
+        One,
+        Two,
+        Three,
+        Four,
+        Five,
+        Seven,
+        Eight
+    }
+
     public class Worker : BaseQuester
     {
         public static Worker InstanceTram { get; set; }
         public static Worker InstanceFel { get; set; }
 
+        private static readonly Dictionary<Mobile, Step> Donations = new Dictionary<Mobile, Step>();
+
+        public static Step Step { get; set; }
+
         [Constructable]
-        public Worker()
+        public Worker(Step step)
             : base("the Worker")
         {
+            Step = step;
         }
 
         public override void InitBody()
@@ -39,13 +56,46 @@ namespace Server.Engines.Fellowship
             SetWearable(new SmithHammer());
         }
 
+        public override bool OnDragDrop(Mobile from, Item item)
+        {
+            if (item is FellowshipCoin)
+            {
+                if (Donations.ContainsKey(from))
+                {
+                    if (Donations[from] > Step)
+                    {
+                        Donations[from] = Step;                        
+                    }
+                    else
+                    {
+                        SayTo(from, 500607, 0x3B2); // I'm not interested in that.
+                        return false;
+                    }                    
+                }
+                else
+                {
+                    Donations.Add(from, Step);
+                }
+
+                item.Delete();
+
+                return true;
+            }
+            else
+            {
+                SayTo(from, 500607, 0x3B2); // I'm not interested in that.
+
+                return false;
+            }
+        }
+
         public override void OnDoubleClick(Mobile m)
         {
             if (m is PlayerMobile && InRange(m.Location, 5))
             {
                 if (!m.HasGump(typeof(WorkerGump)))
                 {
-                    m.SendGump(new WorkerGump());
+                    m.SendGump(new WorkerGump(Step));
                 }
             }
         }
@@ -54,13 +104,25 @@ namespace Server.Engines.Fellowship
         {
             if (!player.HasGump(typeof(WorkerGump)))
             {
-                player.SendGump(new WorkerGump());
+                player.SendGump(new WorkerGump(Step));
             }
         }
 
         public class WorkerGump : Gump
         {
-            public WorkerGump()
+            private static readonly int[,] clilocs = new int[,]
+            {
+                {1159238, 1159239},
+                {1159236, 1159240},
+                {1159236, 1159241},
+                {1159236, 1159242},
+                {1159236, 1159243},
+                {1159236, 1159244},
+                {1159236, 1159245},
+                {1159236, 1159246},
+            };
+
+            public WorkerGump(Step step)
                 : base(100, 100)
             {
                 AddPage(0);

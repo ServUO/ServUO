@@ -10061,7 +10061,9 @@
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\MysteriousTunnel.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\WrongMazeWall.cs" />
     <Compile Include="Services\Seasonal Events\ForsakenFoes\Addon\BlackthornEntry.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Addon\BlackthornStep2.cs" />
     <Compile Include="Services\Seasonal Events\ForsakenFoes\Generate.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Items\FellowshipMedallion.cs" />
     <Compile Include="Services\Seasonal Events\ForsakenFoes\Items\TheFellowshipStaff.cs" />
     <Compile Include="Services\Seasonal Events\ForsakenFoes\Addon\TheFellowshipHouse.cs" />
     <Compile Include="Services\Seasonal Events\ForsakenFoes\Gumps.cs" />
