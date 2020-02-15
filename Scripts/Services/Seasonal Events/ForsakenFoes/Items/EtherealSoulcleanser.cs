@@ -30,22 +30,22 @@ namespace Server.Items
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            return CheckGain(from, dropped);
+            return Check(from, dropped);
         }
 
         public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
         {
-            return CheckGain(from, item);
+            return Check(from, item);
         }
 
-        public bool CheckGain(Mobile from, Item item)
+        public bool Check(Mobile from, Item item)
         {
             if (from == null || from.Deleted)
             {
                 return false;
             }
 
-            if (item != null && item is EtherealSoulbinder && ((EtherealSoulbinder)item).SoulPoint > 0)
+            if (item != null && (!(item is EtherealSoulbinder) || item is EtherealSoulbinder && ((EtherealSoulbinder)item).SoulPoint > 0))
             {
                 from.SendLocalizedMessage(1159170); // The machine only accepts filled ethereal soulbinders.
                 return false;

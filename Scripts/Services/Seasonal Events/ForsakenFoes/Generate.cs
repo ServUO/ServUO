@@ -1,18 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 using Server;
-using Server.Engines.CannedEvil;
 using Server.Items;
-using Server.Mobiles;
-using Server.Gumps;
 using Server.Engines.Points;
 
 namespace Server.Engines.Fellowship
 {
-	public static class ForsakenFoesGeneration
-	{
+    public static class ForsakenFoesGeneration
+    {
         public static void Initialize()
         {
             if (Core.EJ)
@@ -28,9 +24,9 @@ namespace Server.Engines.Fellowship
 
         public static void CheckEnabled(bool timed = false)
         {
-            var khaldun = PointsSystem.Khaldun;
+            var fellowship = PointsSystem.FellowshipData;
 
-            if (khaldun.Enabled && !khaldun.InSeason)
+            if (fellowship.Enabled && !fellowship.InSeason)
             {
                 if (timed)
                 {
@@ -39,7 +35,7 @@ namespace Server.Engines.Fellowship
                         Utility.WriteConsoleColor(ConsoleColor.Green, "Disabling Treasures of Khaldun");
 
                         Remove();
-                        khaldun.Enabled = false;
+                        fellowship.Enabled = false;
                     });
                 }
                 else
@@ -47,10 +43,10 @@ namespace Server.Engines.Fellowship
                     Utility.WriteConsoleColor(ConsoleColor.Green, "Auto Disabling Treasures of Khaldun");
 
                     Remove();
-                    khaldun.Enabled = false;
+                    fellowship.Enabled = false;
                 }
             }
-            else if (!khaldun.Enabled && khaldun.InSeason)
+            else if (!fellowship.Enabled && fellowship.InSeason)
             {
                 if (timed)
                 {
@@ -59,7 +55,13 @@ namespace Server.Engines.Fellowship
                         Utility.WriteConsoleColor(ConsoleColor.Green, "Enabling Treasures of Khaldun");
 
                         Generate();
-                        khaldun.Enabled = true;
+                        fellowship.Enabled = true;
+
+                        if (!fellowship.QuestContentGenerated)
+                        {
+                            GenerateQuestContent();
+                            fellowship.QuestContentGenerated = true;
+                        }
                     });
                 }
                 else
@@ -67,23 +69,58 @@ namespace Server.Engines.Fellowship
                     Utility.WriteConsoleColor(ConsoleColor.Green, "Auto Enabling Treasures of Khaldun");
 
                     Generate();
-                    khaldun.Enabled = true;
-                }
+                    fellowship.Enabled = true;
 
-                if(!khaldun.QuestContentGenerated)
-                {
-                    GenerateQuestContent();
-                    khaldun.QuestContentGenerated = true;
-                }
+                    if (!fellowship.QuestContentGenerated)
+                    {
+                        GenerateQuestContent();
+                        fellowship.QuestContentGenerated = true;
+                    }
+                }                
             }
         }
 
         public static void Generate()
         {
-            if (TheFellowshipHouse.InstanceTram == null && !Siege.SiegeShard)
+            if (!Siege.SiegeShard)
             {
-                TheFellowshipHouse.InstanceTram = new TheFellowshipHouse();
-                TheFellowshipHouse.InstanceTram.MoveToWorld(new Point3D(1720, 1562, 17), Map.Trammel);
+                if (TheFellowshipHouse.InstanceTram == null)
+                {
+                    TheFellowshipHouse.InstanceTram = new TheFellowshipHouse();
+                    TheFellowshipHouse.InstanceTram.MoveToWorld(new Point3D(1720, 1562, 17), Map.Trammel);
+                }
+
+                if (FellowshipAdept.InstanceTram == null)
+                {
+                    FellowshipAdept.InstanceTram = new FellowshipAdept();
+                    FellowshipAdept.InstanceTram.MoveToWorld(new Point3D(1711, 1570, 44), Map.Trammel);
+                }
+
+                if (Follower.InstanceTram == null)
+                {
+                    Follower.InstanceTram = new Follower();
+                    Follower.InstanceTram.MoveToWorld(new Point3D(1720, 1565, 49), Map.Trammel);
+                }
+
+                if (EtherealSoulcleanser.InstanceTram == null)
+                {
+                    EtherealSoulcleanser.InstanceTram = new EtherealSoulcleanser();
+                    EtherealSoulcleanser.InstanceTram.MoveToWorld(new Point3D(1721, 1565, 50), Map.Trammel);
+                }
+
+                if (FellowshipDonationBox.InstanceTram == null)
+                {
+                    FellowshipDonationBox.InstanceTram = new FellowshipDonationBox();
+                    FellowshipDonationBox.InstanceTram.MoveToWorld(new Point3D(1721, 1554, 49), Map.Trammel);
+                }
+
+                if (TheFellowshipStaff.InstanceTram == null)
+                {
+                    TheFellowshipStaff.InstanceTram = new TheFellowshipStaff();
+                    TheFellowshipStaff.InstanceTram.MoveToWorld(new Point3D(1718, 1559, 55), Map.Trammel);
+                }
+
+                OtherDecoration(Map.Trammel);
             }
 
             if (TheFellowshipHouse.InstanceFel == null)
@@ -92,22 +129,10 @@ namespace Server.Engines.Fellowship
                 TheFellowshipHouse.InstanceFel.MoveToWorld(new Point3D(1720, 1562, 17), Map.Felucca);
             }
 
-            if (FellowshipAdept.InstanceTram == null && !Siege.SiegeShard)
-            {
-                FellowshipAdept.InstanceTram = new FellowshipAdept();
-                FellowshipAdept.InstanceTram.MoveToWorld(new Point3D(1711, 1570, 44), Map.Trammel);
-            }
-
             if (FellowshipAdept.InstanceFel == null)
             {
                 FellowshipAdept.InstanceFel = new FellowshipAdept();
                 FellowshipAdept.InstanceFel.MoveToWorld(new Point3D(1711, 1570, 44), Map.Felucca);
-            }
-
-            if (Follower.InstanceTram == null && !Siege.SiegeShard)
-            {
-                Follower.InstanceTram = new Follower();
-                Follower.InstanceTram.MoveToWorld(new Point3D(1720, 1565, 49), Map.Trammel);
             }
 
             if (Follower.InstanceFel == null)
@@ -116,22 +141,10 @@ namespace Server.Engines.Fellowship
                 Follower.InstanceFel.MoveToWorld(new Point3D(1720, 1565, 49), Map.Felucca);
             }
 
-            if (EtherealSoulcleanser.InstanceTram == null && !Siege.SiegeShard)
-            {
-                EtherealSoulcleanser.InstanceTram = new EtherealSoulcleanser();
-                EtherealSoulcleanser.InstanceTram.MoveToWorld(new Point3D(1721, 1565, 50), Map.Trammel);
-            }
-
             if (EtherealSoulcleanser.InstanceFel == null)
             {
                 EtherealSoulcleanser.InstanceFel = new EtherealSoulcleanser();
                 EtherealSoulcleanser.InstanceFel.MoveToWorld(new Point3D(1721, 1565, 50), Map.Felucca);
-            }
-
-            if (FellowshipDonationBox.InstanceTram == null && !Siege.SiegeShard)
-            {
-                FellowshipDonationBox.InstanceTram = new FellowshipDonationBox();
-                FellowshipDonationBox.InstanceTram.MoveToWorld(new Point3D(1721, 1554, 49), Map.Trammel);
             }
 
             if (FellowshipDonationBox.InstanceFel == null)
@@ -140,20 +153,17 @@ namespace Server.Engines.Fellowship
                 FellowshipDonationBox.InstanceFel.MoveToWorld(new Point3D(1721, 1554, 49), Map.Felucca);
             }
 
-            if (TheFellowshipStaff.InstanceTram == null && !Siege.SiegeShard)
-            {
-                TheFellowshipStaff.InstanceTram = new TheFellowshipStaff();
-                TheFellowshipStaff.InstanceTram.MoveToWorld(new Point3D(1718, 1559, 55), Map.Trammel);
-            }
-
             if (TheFellowshipStaff.InstanceFel == null)
             {
                 TheFellowshipStaff.InstanceFel = new TheFellowshipStaff();
                 TheFellowshipStaff.InstanceFel.MoveToWorld(new Point3D(1718, 1559, 55), Map.Felucca);
             }
 
-            Map map = !Siege.SiegeShard ? Map.Trammel : Map.Felucca;
+            OtherDecoration(Map.Felucca);
+        }
 
+        public static void OtherDecoration(Map map)
+        {
             if (map.FindItem<Static>(new Point3D(1721, 1554, 54)) == null)
             {
                 Static st = new Static(0x42BF)
@@ -212,23 +222,100 @@ namespace Server.Engines.Fellowship
         {
         }
 
-        private static readonly Point3D[] blocker = new Point3D[] { new Point3D(6408, 2667, 0), new Point3D(6409, 2667, 0), new Point3D(6410, 2667, 0), new Point3D(6411, 2667, 0),
-                                            new Point3D(6412, 2667, 0), new Point3D(6396, 2677, 0), new Point3D(6396, 2678, 0), new Point3D(6396, 2679, 0),
-                                            new Point3D(6396, 2680, 0), new Point3D(6396, 2681, 0), new Point3D(6407, 2692, 0), new Point3D(6408, 2692, 0),
-                                            new Point3D(6409, 2692, 0), new Point3D(6410, 2692, 0)};
+        private static readonly Point3D[] blocker = new Point3D[]
+        {
+            new Point3D(6408, 2667, 0), new Point3D(6409, 2667, 0), new Point3D(6410, 2667, 0), new Point3D(6411, 2667, 0),
+            new Point3D(6412, 2667, 0), new Point3D(6396, 2677, 0), new Point3D(6396, 2678, 0), new Point3D(6396, 2679, 0),
+            new Point3D(6396, 2680, 0), new Point3D(6396, 2681, 0), new Point3D(6407, 2692, 0), new Point3D(6408, 2692, 0),
+            new Point3D(6409, 2692, 0), new Point3D(6410, 2692, 0), new Point3D(6370, 2744, 0), new Point3D(6371, 2744, 0),
+            new Point3D(6372, 2744, 0), new Point3D(6373, 2744, 0), new Point3D(6374, 2744, 0), new Point3D(6375, 2744, 0),
+            new Point3D(6331, 2653, 0), new Point3D(6332, 2653, 0), new Point3D(6333, 2653, 0), new Point3D(6410, 2783, 0),
+            new Point3D(6305, 2678, 0), new Point3D(6305, 2679, 0), new Point3D(6305, 2680, 0), new Point3D(6411, 2783, 0),
+            new Point3D(6422, 2708, 0), new Point3D(6422, 2709, 0), new Point3D(6422, 2710, 0), new Point3D(6422, 2711, 0),
+            new Point3D(6406, 2783, 0), new Point3D(6407, 2783, 0), new Point3D(6408, 2783, 0), new Point3D(6409, 2783, 0),
+            new Point3D(6442, 2744, 0), new Point3D(6443, 2744, 0), new Point3D(6444, 2744, 0), new Point3D(6445, 2744, 0),
+            new Point3D(6446, 2744, 0), new Point3D(6390, 2617, 0), new Point3D(6390, 2618, 0), new Point3D(6390, 2619, 0),
+            new Point3D(6390, 2620, 0), new Point3D(6390, 2621, 0), new Point3D(6390, 2622, 0), new Point3D(6390, 2623, 0),
+            new Point3D(6390, 2624, 0), new Point3D(6390, 2625, 0)
+        };
+
+        private static readonly Point3D[] Workers = new Point3D[]
+        {
+            new Point3D(6406, 2680, 0), new Point3D(6386, 2621, 0), new Point3D(6444, 2738, 0), new Point3D(6371, 2742, 0),
+            new Point3D(6332, 2650, 0), new Point3D(6299, 2679, 0), new Point3D(6428, 2709, 0), new Point3D(6409, 2787, 0)
+        };
+
+        private static readonly Point3D[,] Teleporters = new Point3D[,]
+        {
+            {new Point3D(6405, 2679, 0), new Point3D(6387, 2620, 0)},
+            {new Point3D(6387, 2620, 0), new Point3D(6405, 2679, 0)},
+            {new Point3D(6385, 2620, 0), new Point3D(6445, 2737, 0)},
+            {new Point3D(6445, 2737, 1), new Point3D(6385, 2620, 0)},
+            {new Point3D(6443, 2737, 1), new Point3D(6372, 2741, 0)},
+            {new Point3D(6372, 2741, 0), new Point3D(6443, 2737, 0)},
+            {new Point3D(6370, 2741, 0), new Point3D(6333, 2649, 0)},
+            {new Point3D(6333, 2649, 0), new Point3D(6370, 2741, 0)},
+            {new Point3D(6331, 2649, 0), new Point3D(6300, 2678, 0)},
+            {new Point3D(6300, 2678, 0), new Point3D(6331, 2649, 0)},
+            {new Point3D(6298, 2678, 0), new Point3D(6429, 2708, 0)},
+            {new Point3D(6429, 2708, 0), new Point3D(6298, 2678, 0)},
+            {new Point3D(6427, 2708, 0), new Point3D(6410, 2786, 0)},
+            {new Point3D(6410, 2786, 0), new Point3D(6427, 2708, 0)},
+        };
 
         public static void GenerateQuestContent()
         {
-            if (BlackthornEntry.InstanceTram == null && !Siege.SiegeShard)
+            if (!Siege.SiegeShard)
             {
-                BlackthornEntry.InstanceTram = new BlackthornEntry();
-                BlackthornEntry.InstanceTram.MoveToWorld(new Point3D(6409, 2677, 0), Map.Trammel);
-            }
+                if (BlackthornEntry.InstanceTram == null)
+                {
+                    BlackthornEntry.InstanceTram = new BlackthornEntry();
+                    BlackthornEntry.InstanceTram.MoveToWorld(new Point3D(6409, 2677, 0), Map.Trammel);
+                }
 
-            if (BlackthornStep2.InstanceTram == null && !Siege.SiegeShard)
-            {
-                BlackthornStep2.InstanceTram = new BlackthornStep2();
-                BlackthornStep2.InstanceTram.MoveToWorld(new Point3D(6378, 2612, 0), Map.Trammel);
+                if (BlackthornStep2.InstanceTram == null)
+                {
+                    BlackthornStep2.InstanceTram = new BlackthornStep2();
+                    BlackthornStep2.InstanceTram.MoveToWorld(new Point3D(6378, 2612, 0), Map.Trammel);
+                }
+
+                if (BlackthornStep3.InstanceTram == null)
+                {
+                    BlackthornStep3.InstanceTram = new BlackthornStep3();
+                    BlackthornStep3.InstanceTram.MoveToWorld(new Point3D(6454, 2741, 0), Map.Trammel);
+                }
+
+                if (BlackthornStep4.InstanceTram == null)
+                {
+                    BlackthornStep4.InstanceTram = new BlackthornStep4();
+                    BlackthornStep4.InstanceTram.MoveToWorld(new Point3D(6363, 2739, 0), Map.Trammel);
+                }
+
+                if (BlackthornStep5.InstanceTram == null)
+                {
+                    BlackthornStep5.InstanceTram = new BlackthornStep5();
+                    BlackthornStep5.InstanceTram.MoveToWorld(new Point3D(6327, 2647, 0), Map.Trammel);
+                }
+
+                if (BlackthornStep6.InstanceTram == null)
+                {
+                    BlackthornStep6.InstanceTram = new BlackthornStep6();
+                    BlackthornStep6.InstanceTram.MoveToWorld(new Point3D(6297, 2677, -4), Map.Trammel);
+                }
+
+                if (BlackthornStep7.InstanceTram == null)
+                {
+                    BlackthornStep7.InstanceTram = new BlackthornStep7();
+                    BlackthornStep7.InstanceTram.MoveToWorld(new Point3D(6429, 2709, 0), Map.Trammel);
+                }
+
+                if (BlackthornStep8.InstanceTram == null)
+                {
+                    BlackthornStep8.InstanceTram = new BlackthornStep8();
+                    BlackthornStep8.InstanceTram.MoveToWorld(new Point3D(6408, 2792, 0), Map.Trammel);
+                }
+
+                OtherQuestContent(Map.Trammel);
             }
 
             if (BlackthornEntry.InstanceFel == null)
@@ -243,26 +330,47 @@ namespace Server.Engines.Fellowship
                 BlackthornStep2.InstanceFel.MoveToWorld(new Point3D(6378, 2612, 0), Map.Felucca);
             }
 
-            Map map = Map.Felucca;
-
-            blocker.ToList().ForEach(x =>
+            if (BlackthornStep3.InstanceFel == null)
             {
-                if (map.FindItem<Blocker>(new Point3D(x)) == null)
-                {
-                    Blocker bl = new Blocker();
-
-                    bl.MoveToWorld(new Point3D(x), map);
-                }
-            });
-
-            if (Worker.InstanceFel == null)
-            {
-                Worker.InstanceFel = new Worker();
-                Worker.InstanceFel.MoveToWorld(new Point3D(6406, 2680, 0), map);
+                BlackthornStep3.InstanceFel = new BlackthornStep3();
+                BlackthornStep3.InstanceFel.MoveToWorld(new Point3D(6454, 2741, 0), Map.Felucca);
             }
 
-            map = Map.Trammel;
+            if (BlackthornStep4.InstanceFel == null)
+            {
+                BlackthornStep4.InstanceFel = new BlackthornStep4();
+                BlackthornStep4.InstanceFel.MoveToWorld(new Point3D(6363, 2739, 0), Map.Felucca);
+            }
 
+            if (BlackthornStep5.InstanceFel == null)
+            {
+                BlackthornStep5.InstanceFel = new BlackthornStep5();
+                BlackthornStep5.InstanceFel.MoveToWorld(new Point3D(6327, 2647, 0), Map.Felucca);
+            }
+
+            if (BlackthornStep6.InstanceFel == null)
+            {
+                BlackthornStep6.InstanceFel = new BlackthornStep6();
+                BlackthornStep6.InstanceFel.MoveToWorld(new Point3D(6297, 2677, -4), Map.Felucca);
+            }
+
+            if (BlackthornStep7.InstanceFel == null)
+            {
+                BlackthornStep7.InstanceFel = new BlackthornStep7();
+                BlackthornStep7.InstanceFel.MoveToWorld(new Point3D(6429, 2709, 0), Map.Felucca);
+            }
+
+            if (BlackthornStep8.InstanceFel == null)
+            {
+                BlackthornStep8.InstanceFel = new BlackthornStep8();
+                BlackthornStep8.InstanceFel.MoveToWorld(new Point3D(6408, 2792, 0), Map.Felucca);
+            }
+
+            OtherQuestContent(Map.Felucca);
+        }
+
+        public static void OtherQuestContent(Map map)
+        {
             blocker.ToList().ForEach(x =>
             {
                 if (map.FindItem<Blocker>(new Point3D(x)) == null)
@@ -273,10 +381,47 @@ namespace Server.Engines.Fellowship
                 }
             });
 
-            if (Worker.InstanceTram == null)
+            for (int i = 0; i < Workers.Length; i++)
             {
-                Worker.InstanceTram = new Worker();
-                Worker.InstanceTram.MoveToWorld(new Point3D(6406, 2680, 0), map);
+                Point3D p = Workers[i];
+
+                if (map.FindItem<Blocker>(p) == null)
+                {
+                    Worker w = new Worker((FellowshipChain)(i + 1));
+
+                    w.MoveToWorld(p, map);
+                }
+            }
+
+            FellowshipChain c = FellowshipChain.One;
+
+            for (int t = 0; t < Teleporters.Length / 2; t++)
+            {
+                Point3D p = Teleporters[t, 0];
+
+                if (map.FindItem<BlackthornDungeonTeleporter>(p) == null)
+                {
+                    BlackthornDungeonTeleporter bl;
+
+                    if (t % 2 == 0)
+                    {
+                        bl = new BlackthornDungeonTeleporter(c)
+                        {
+                            Dest = Teleporters[t, 1]
+                        };
+
+                        c++;
+                    }
+                    else
+                    {
+                        bl = new BlackthornDungeonTeleporter()
+                        {
+                            Dest = Teleporters[t, 1]
+                        };
+                    }
+
+                    bl.MoveToWorld(p, map);
+                }
             }
         }
     }

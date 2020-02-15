@@ -2,12 +2,13 @@ using System;
 
 namespace Server.Items
 {
-    public class BlackthornStep2 : BaseAddon
+    public class BlackthornStep2 : BlackthornBaseAddon
     {
         public static BlackthornStep2 InstanceTram { get; set; }
         public static BlackthornStep2 InstanceFel { get; set; }
 
-        private static int[,] m_AddOnSimpleComponents = new int[,] {
+        private static int[,] m_AddOnSimpleComponents = new int[,]
+        {
               {15874, 6, 13, 0}, {15874, 7, 13, 0}, {15874, 8, 13, 0}// 6	7	8	
 			, {15874, 9, 13, 0}, {15874, 10, 13, 0}, {15874, 11, 13, 0}// 9	10	11	
 			, {6584, 20, 15, 0}, {6584, 21, 16, 1}, {17729, 13, 13, 0}// 18	22	53	
@@ -415,29 +416,6 @@ namespace Server.Items
         public BlackthornStep2(Serial serial)
             : base(serial)
         {
-        }
-
-        private static void AddComplexComponent(BaseAddon addon, int item, int xoffset, int yoffset, int zoffset, int hue, int lightsource)
-        {
-            AddComplexComponent(addon, item, xoffset, yoffset, zoffset, hue, lightsource, null, 1);
-        }
-
-        private static void AddComplexComponent(BaseAddon addon, int item, int xoffset, int yoffset, int zoffset, int hue, int lightsource, string name, int amount)
-        {
-            AddonComponent ac;
-            ac = new AddonComponent(item);
-            if (name != null && name.Length > 0)
-                ac.Name = name;
-            if (hue != 0)
-                ac.Hue = hue;
-            if (amount > 1)
-            {
-                ac.Stackable = true;
-                ac.Amount = amount;
-            }
-            if (lightsource != -1)
-                ac.Light = (LightType)lightsource;
-            addon.AddComponent(ac, xoffset, yoffset, zoffset);
         }
 
         public override void Serialize(GenericWriter writer)

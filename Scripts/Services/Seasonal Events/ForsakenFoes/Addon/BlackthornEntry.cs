@@ -2,12 +2,61 @@ using System;
 
 namespace Server.Items
 {
-    public class BlackthornEntry : BaseAddon
+    public class BlackthornBaseAddon : BaseAddon
+    {
+        [Constructable]
+        public BlackthornBaseAddon()
+        {
+        }
+
+        public BlackthornBaseAddon(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public static void AddComplexComponent(BaseAddon addon, int item, int xoffset, int yoffset, int zoffset, int hue, int lightsource)
+        {
+            AddComplexComponent(addon, item, xoffset, yoffset, zoffset, hue, lightsource, null, 1);
+        }
+
+        public static void AddComplexComponent(BaseAddon addon, int item, int xoffset, int yoffset, int zoffset, int hue, int lightsource, string name, int amount)
+        {
+            AddonComponent ac;
+            ac = new AddonComponent(item);
+            if (name != null && name.Length > 0)
+                ac.Name = name;
+            if (hue != 0)
+                ac.Hue = hue;
+            if (amount > 1)
+            {
+                ac.Stackable = true;
+                ac.Amount = amount;
+            }
+            if (lightsource != -1)
+                ac.Light = (LightType)lightsource;
+            addon.AddComponent(ac, xoffset, yoffset, zoffset);
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0); // Version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();            
+        }
+    }
+
+    public class BlackthornEntry : BlackthornBaseAddon
     {
         public static BlackthornEntry InstanceTram { get; set; }
         public static BlackthornEntry InstanceFel { get; set; }
 
-        private static int[,] m_AddOnSimpleComponents = new int[,] {
+        private static int[,] m_AddOnSimpleComponents = new int[,]
+        {
               {6923, 7, 3, 0}, {12906, -5, 12, 0}, {12906, -4, 12, 0}// 10	18	19	
 			, {12906, -4, 11, 0}, {12906, -5, 11, 0}, {12906, -6, 11, 0}// 20	21	22	
 			, {12906, -7, 11, 0}, {12906, -8, 11, 0}, {12906, -7, 12, 0}// 23	24	25	
@@ -111,29 +160,6 @@ namespace Server.Items
 
         public BlackthornEntry(Serial serial) : base(serial)
         {
-        }
-
-        private static void AddComplexComponent(BaseAddon addon, int item, int xoffset, int yoffset, int zoffset, int hue, int lightsource)
-        {
-            AddComplexComponent(addon, item, xoffset, yoffset, zoffset, hue, lightsource, null, 1);
-        }
-
-        private static void AddComplexComponent(BaseAddon addon, int item, int xoffset, int yoffset, int zoffset, int hue, int lightsource, string name, int amount)
-        {
-            AddonComponent ac;
-            ac = new AddonComponent(item);
-            if (name != null && name.Length > 0)
-                ac.Name = name;
-            if (hue != 0)
-                ac.Hue = hue;
-            if (amount > 1)
-            {
-                ac.Stackable = true;
-                ac.Amount = amount;
-            }
-            if (lightsource != -1)
-                ac.Light = (LightType)lightsource;
-            addon.AddComponent(ac, xoffset, yoffset, zoffset);
         }
 
         public override void Serialize(GenericWriter writer)

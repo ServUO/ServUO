@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class TheFellowshipHouse : BaseAddon
+    public class TheFellowshipHouse : BlackthornBaseAddon
     {
         public static TheFellowshipHouse InstanceTram { get; set; }
         public static TheFellowshipHouse InstanceFel { get; set; }
@@ -267,31 +267,9 @@ namespace Server.Items
             AddComplexComponent((BaseAddon)this, 41197, -5, -8, 30, 49, -1, "", 1);// 680
         }
 
-        public TheFellowshipHouse(Serial serial) : base(serial)
+        public TheFellowshipHouse(Serial serial)
+            : base(serial)
         {
-        }
-
-        private static void AddComplexComponent(BaseAddon addon, int item, int xoffset, int yoffset, int zoffset, int hue, int lightsource)
-        {
-            AddComplexComponent(addon, item, xoffset, yoffset, zoffset, hue, lightsource, null, 1);
-        }
-
-        private static void AddComplexComponent(BaseAddon addon, int item, int xoffset, int yoffset, int zoffset, int hue, int lightsource, string name, int amount)
-        {
-            AddonComponent ac;
-            ac = new AddonComponent(item);
-            if (name != null && name.Length > 0)
-                ac.Name = name;
-            if (hue != 0)
-                ac.Hue = hue;
-            if (amount > 1)
-            {
-                ac.Stackable = true;
-                ac.Amount = amount;
-            }
-            if (lightsource != -1)
-                ac.Light = (LightType)lightsource;
-            addon.AddComponent(ac, xoffset, yoffset, zoffset);
         }
 
         public override void Serialize(GenericWriter writer)

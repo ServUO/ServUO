@@ -46,6 +46,7 @@ using Server.Engines.VendorSearching;
 using Server.Targeting;
 
 using RankDefinition = Server.Guilds.RankDefinition;
+using Server.Engines.Fellowship;
 #endregion
 
 namespace Server.Mobiles
@@ -4499,6 +4500,11 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
+                case 41:
+                    {
+                        FellowshipChain = (FellowshipChain)reader.ReadInt();
+                        goto case 40;
+                    }
                 case 40: // Version 40, moved gauntlet points, virtua artys and TOT turn ins to PointsSystem
                 case 39: // Version 39, removed ML quest save/load
                 case 38:
@@ -4517,7 +4523,7 @@ namespace Server.Mobiles
                 case 34:
                 case 33:
                     {
-                        m_ExploringTheDeepQuest = (ExploringTheDeepQuestChain)reader.ReadInt();
+                        ExploringTheDeepQuest = (ExploringTheDeepQuestChain)reader.ReadInt();
                         goto case 31;
                     }
                 case 32:
@@ -4965,7 +4971,9 @@ namespace Server.Mobiles
 
 			base.Serialize(writer);
 
-			writer.Write(40); // version
+			writer.Write(41); // version
+
+            writer.Write((int)FellowshipChain);
 
             writer.Write((DateTime)NextGemOfSalvationUse);
 
@@ -4980,7 +4988,7 @@ namespace Server.Mobiles
 
             writer.Write(_BlessedItem);
 
-            writer.Write((int)m_ExploringTheDeepQuest);
+            writer.Write((int)ExploringTheDeepQuest);
 
             // Version 31/32 Titles
             writer.Write(DisplayGuildTitle);
@@ -6870,12 +6878,11 @@ namespace Server.Mobiles
 		}
         #endregion
 
-        #region Exploring the Deep
-        private ExploringTheDeepQuestChain m_ExploringTheDeepQuest;
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ExploringTheDeepQuestChain ExploringTheDeepQuest { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ExploringTheDeepQuestChain ExploringTheDeepQuest { get { return m_ExploringTheDeepQuest; } set { m_ExploringTheDeepQuest = value; } }
-        #endregion
+        public FellowshipChain FellowshipChain { get; set; }
 
         public static bool PetAutoStable { get { return Core.SE; } }
 

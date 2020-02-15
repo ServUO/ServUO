@@ -1,17 +1,14 @@
 using Server;
 using System;
-using System.Collections.Generic;
 using Server.Mobiles;
-using Server.Items;
-using Server.Gumps;
 using System.Linq;
-using Server.Engines.Points;
 using Server.Regions;
 using System.Xml;
 using Server.Spells;
 using Server.Spells.Chivalry;
 using Server.Spells.Ninjitsu;
 using Server.Spells.Bushido;
+using Server.Engines.Points;
 
 namespace Server.Engines.Blackthorn
 {
@@ -32,7 +29,10 @@ namespace Server.Engines.Blackthorn
         public BlackthornDungeon(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)
         {
-            Timer.DelayCall(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), OnTick);
+            var fellowship = PointsSystem.FellowshipData;
+
+            if (!fellowship.Enabled)
+                Timer.DelayCall(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), OnTick);
         }
 
         public void OnTick()
@@ -62,7 +62,7 @@ namespace Server.Engines.Blackthorn
             }
 
             Effects.PlaySound(m.Location, m.Map, 0x231);
-            m.LocalOverheadMessage(Server.Network.MessageType.Regular, 0x22, 500855); // You are enveloped by a noxious gas cloud!                
+            m.LocalOverheadMessage(Network.MessageType.Regular, 0x22, 500855); // You are enveloped by a noxious gas cloud!                
             m.ApplyPoison(m, Poison.Lethal);
 
             IPooledEnumerable eable = this.Map.GetMobilesInRange(m.Location, 12);
@@ -135,7 +135,7 @@ namespace Server.Engines.Blackthorn
 
             if (m is PlayerMobile && m.X <= 1525 && m.X >= 1520 && m.Y <= 1485 && oldLocation.Y > 1485)
             {
-                Server.Engines.Quests.AVisitToCastleBlackthornQuest.CheckLocation((PlayerMobile)m, oldLocation);
+                Quests.AVisitToCastleBlackthornQuest.CheckLocation((PlayerMobile)m, oldLocation);
             }
 
             if (m.AccessLevel > AccessLevel.Player)

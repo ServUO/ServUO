@@ -1,4 +1,5 @@
 using System;
+using Server.Engines.SeasonalEvents;
 using Server.Mobiles;
 
 namespace Server.Engines.Points
@@ -9,6 +10,11 @@ namespace Server.Engines.Points
 		public override TextDefinition Name { get { return m_Name; } }
 		public override bool AutoAdd { get { return true; } }
         public override double MaxPoints { get { return double.MaxValue; } }
+
+        public bool InSeason { get { return SeasonalEventSystem.IsActive(EventType.Fellowship); } }
+
+        public bool Enabled { get; set; }
+        public bool QuestContentGenerated { get; set; }
 
         private readonly TextDefinition m_Name = null;
 
