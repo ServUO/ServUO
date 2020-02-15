@@ -33,40 +33,31 @@ namespace Server.Items
 
         private void SetHue()
         {
-            int perc = GetPercent();
-
-            if (perc <= 0)
+            if (SoulPoint <= 0)
                 Hue = 0;
-            else if (perc <= 1)
+            else if (SoulPoint <= 1)
                 Hue = 1909; // Meager
-            else if (perc <= 25)
+            else if (SoulPoint <= 25)
                 Hue = 1917; // Grand
-            else if (perc <= 50)
+            else if (SoulPoint <= 50)
                 Hue = 1914; // Exalted
-            else if (perc <= 90)
+            else if (SoulPoint <= 90)
                 Hue = 1922; // Legendary
             else
                 Hue = 1919; // Mythical
         }
 
-        public int GetPercent()
-        {
-            return (int)(m_SoulPoint * 100 / MaxSoulPoint);
-        }
-
         private int GetDescription()
         {
-            int perc = GetPercent();
-
-            if (perc <= 0)
+            if (SoulPoint <= 0)
                 return 1159177; // An Empty Soulbinder
-            else if (perc <= 33)
+            else if (SoulPoint <= 33)
                 return 1159176; // Meager
-            else if (perc <= 66)
+            else if (SoulPoint <= 66)
                 return 1159175; // Grand
-            else if (perc <= 66)
+            else if (SoulPoint <= 66)
                 return 1159174; // Exalted
-            else if (perc <= 66)
+            else if (SoulPoint <= 66)
                 return 1159173; // Legendary
             else
                 return 1159172; // Mythical
@@ -103,12 +94,16 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write((int)0); // version
+
+            writer.Write(m_SoulPoint);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            m_SoulPoint = reader.ReadInt();
         }
     }
 }

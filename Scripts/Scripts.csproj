@@ -829,7 +829,7 @@
     <Compile Include="Mobiles\NPCs\Mannequin\Property\SkillBonusAttribute.cs" />
     <Compile Include="Mobiles\NPCs\Mannequin\Property\SlayerAttribute.cs" />
     <Compile Include="Mobiles\NPCs\Mannequin\Property\WeaponAttributeProperty.cs" />
-    <Compile Include="Mobiles\NPCs\MiningCooperativeMerchant.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Mobile\MiningCooperativeMerchant.cs" />
     <Compile Include="Mobiles\NPCs\CommissionPlayerVendor.cs" />
     <Compile Include="Multis\ContestHouses.cs" />
     <Compile Include="Quests\The Ritual\Items.cs" />

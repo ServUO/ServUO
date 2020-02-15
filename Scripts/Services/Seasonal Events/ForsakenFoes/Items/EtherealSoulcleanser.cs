@@ -1,6 +1,5 @@
 using System;
 using Server.Engines.Points;
-using Server.Mobiles;
 using Server.Network;
 
 namespace Server.Items
@@ -40,36 +39,26 @@ namespace Server.Items
 
         public bool Check(Mobile from, Item item)
         {
-            if (from == null || from.Deleted)
+            if (from == null || from.Deleted || item == null)
             {
                 return false;
             }
 
-            if (item != null && (!(item is EtherealSoulbinder) || item is EtherealSoulbinder && ((EtherealSoulbinder)item).SoulPoint > 0))
+            if (!(item is EtherealSoulbinder) || item is EtherealSoulbinder && ((EtherealSoulbinder)item).SoulPoint <= 0)
             {
                 from.SendLocalizedMessage(1159170); // The machine only accepts filled ethereal soulbinders.
                 return false;
             }
 
-            int amount = Calculate((EtherealSoulbinder)item);
-            PointsSystem.FellowshipData.AwardPoints((PlayerMobile)from, amount);
+            double amount = 100 * ((EtherealSoulbinder)item).SoulPoint;
+            PointsSystem.FellowshipData.AwardPoints(from, amount);
 
             Effects.SendPacket(from.Location, from.Map, new GraphicalEffect(EffectType.FixedXYZ, from.Serial, Serial.Zero, 0x373A, from.Location, from.Location, 10, 15, true, true));
-            Effects.PlaySound(from.Location, from.Map, 0x1F2);
+            from.PlaySound(0x1F2);
 
             item.Delete();
 
             return true;
-        }
-
-        private int Calculate(EtherealSoulbinder item)
-        {
-            int perc = item.GetPercent();
-
-            if (perc <= 0)
-                return 0;
-            else
-                return 10000 * (perc / 100);
         }
 
         public override void Serialize(GenericWriter writer)

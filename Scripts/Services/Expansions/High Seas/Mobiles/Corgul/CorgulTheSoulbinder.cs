@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using System;
 using System.Collections.Generic;
 using Server.Items;
@@ -18,7 +18,6 @@ namespace Server.Mobiles
         private List<BaseCreature> m_Helpers = new List<BaseCreature>();
 
         public override bool CanDamageBoats { get { return false; } }
-
         public override bool TaintedLifeAura { get { return true; } }
         public override int Meat { get { return 5; } }
         public override double TreasureMapChance { get { return .25; } }
@@ -100,6 +99,9 @@ namespace Server.Mobiles
             Karma = -25000;
 
             m_NextReturn = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(120, 180));
+
+            if (Core.EJ)
+                IsSoulboundEnemies = true;
         }
 
         public double SharedChance { get { return this.Map != null && this.Map.Rules == MapRules.FeluccaRules ? .12 : .08; } }

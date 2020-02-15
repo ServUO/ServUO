@@ -4,6 +4,7 @@ using System.Linq;
 using Server;
 using Server.Items;
 using Server.Engines.Points;
+using Server.Mobiles;
 
 namespace Server.Engines.Fellowship
 {
@@ -82,6 +83,8 @@ namespace Server.Engines.Fellowship
 
         public static void Generate()
         {
+            XmlSpawner sp;
+
             if (!Siege.SiegeShard)
             {
                 if (TheFellowshipHouse.InstanceTram == null)
@@ -119,6 +122,15 @@ namespace Server.Engines.Fellowship
                     TheFellowshipStaff.InstanceTram = new TheFellowshipStaff();
                     TheFellowshipStaff.InstanceTram.MoveToWorld(new Point3D(1718, 1559, 55), Map.Trammel);
                 }
+
+                sp = new XmlSpawner("MiningCooperativeMerchant")
+                {
+                    SpawnRange = 1,
+                    HomeRange = 5
+                };
+
+                sp.MoveToWorld(new Point3D(2497, 432, 15), Map.Trammel);
+                sp.Respawn();
 
                 OtherDecoration(Map.Trammel);
             }
@@ -158,6 +170,15 @@ namespace Server.Engines.Fellowship
                 TheFellowshipStaff.InstanceFel = new TheFellowshipStaff();
                 TheFellowshipStaff.InstanceFel.MoveToWorld(new Point3D(1718, 1559, 55), Map.Felucca);
             }
+
+            sp = new XmlSpawner("MiningCooperativeMerchant")
+            {
+                SpawnRange = 1,
+                HomeRange = 5
+            };
+
+            sp.MoveToWorld(new Point3D(2497, 432, 15), Map.Felucca);
+            sp.Respawn();
 
             OtherDecoration(Map.Felucca);
         }
