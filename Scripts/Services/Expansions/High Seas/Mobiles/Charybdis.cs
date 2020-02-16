@@ -81,8 +81,8 @@ namespace Server.Mobiles
             Fame = 32000;
             Karma = -32000;
 
-            if (Core.EJ)
-                IsSoulboundEnemies = true;
+            if (IsSoulboundEnemies)
+                IsSoulbound = true;
         }
 
         public void AddTentacle(Mobile tent)
@@ -735,8 +735,8 @@ namespace Server.Mobiles
             Fame = 2500;
             Karma = -2500;
 
-            if (Core.EJ)
-                IsSoulboundEnemies = true;
+            if (IsSoulboundEnemies)
+                IsSoulbound = true;
         }
 
         public override void GenerateLoot()

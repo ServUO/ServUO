@@ -90,8 +90,8 @@ namespace Server.Mobiles
             Fame = 25000;
             Karma = -25000;
 
-            if (Core.EJ)
-                IsSoulboundEnemies = true;
+            if (IsSoulboundEnemies)
+                IsSoulbound = true;
         }
 
         public void AddEel(Mobile eel)

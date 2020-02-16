@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Server.ContextMenus;
 using Server.Engines.PartySystem;
+using Server.Engines.Points;
 using Server.Engines.Quests;
 using Server.Engines.Quests.Doom;
 using Server.Engines.Quests.Haven;
@@ -2433,7 +2434,7 @@ namespace Server.Mobiles
 
             writer.Write(29); // version
 
-            writer.Write(IsSoulboundEnemies);
+            writer.Write(IsSoulbound);
 
             writer.Write(m_ForceActiveSpeed);
             writer.Write(m_ForcePassiveSpeed);
@@ -2619,7 +2620,7 @@ namespace Server.Mobiles
             switch (version)
             {
                 case 29:
-                    IsSoulboundEnemies = reader.ReadBool();
+                    IsSoulbound = reader.ReadBool();
                     goto case 28;
                 case 28:
                     m_ForceActiveSpeed = reader.ReadDouble();
@@ -5821,7 +5822,7 @@ namespace Server.Mobiles
                 }
             }
 
-            if (IsSoulboundEnemies)
+            if (IsSoulbound)
             {
                 list.Add(1159188); // <BASEFONT COLOR=#FF8300>Soulbound<BASEFONT COLOR=#FFFFFF>
             }
@@ -5860,14 +5861,15 @@ namespace Server.Mobiles
 
         public virtual bool IgnoreYoungProtection { get { return false; } }
 
-        public bool IsSoulboundEnemies { get; set; }
+        public bool IsSoulbound { get; set; }
+        public bool IsSoulboundEnemies { get { return Core.EJ && PointsSystem.FellowshipData.Enabled; } }
 
         public override bool OnBeforeDeath()
         {
             int treasureLevel = TreasureMapLevel;
             GetLootingRights();
 
-            if (IsSoulboundEnemies && LastKiller is PlayerMobile)
+            if (IsSoulbound && LastKiller is PlayerMobile)
             {
                 if (LastKiller.Backpack != null)
                 {

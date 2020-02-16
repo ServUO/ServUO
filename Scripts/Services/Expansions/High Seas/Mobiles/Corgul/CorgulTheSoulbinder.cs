@@ -100,8 +100,8 @@ namespace Server.Mobiles
 
             m_NextReturn = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(120, 180));
 
-            if (Core.EJ)
-                IsSoulboundEnemies = true;
+            if (IsSoulboundEnemies)
+                IsSoulbound = true;
         }
 
         public double SharedChance { get { return this.Map != null && this.Map.Rules == MapRules.FeluccaRules ? .12 : .08; } }

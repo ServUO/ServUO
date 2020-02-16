@@ -272,8 +272,8 @@ namespace Server.Items
                         creature.Home = spawnLoc;
                         creature.RangeHome = 10;
 
-                        if (Core.EJ)
-                            creature.IsSoulboundEnemies = true;
+                        if (creature.IsSoulboundEnemies)
+                            creature.IsSoulbound = true;
 
                         Spawn.Add(creature, initial);
 

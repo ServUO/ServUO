@@ -112,8 +112,8 @@ namespace Server.Mobiles
             Fame = 22000;
             Karma = -22000;
 
-            if (Core.EJ)
-                IsSoulboundEnemies = true;
+            if (IsSoulboundEnemies)
+                IsSoulbound = true;
         }
 
         public static int GetRandomShirtHue()
