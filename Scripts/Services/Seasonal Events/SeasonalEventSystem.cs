@@ -70,7 +70,7 @@ namespace Server.Engines.SeasonalEvents
             Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfKhaldun,    "Treasures of Khaldun", EventStatus.Seasonal,   10, 1, 60));
             Entries.Add(new SeasonalEventEntry(EventType.KrampusEncounter,      "Krampus Encounter",    EventStatus.Seasonal,   12, 1, 60));
             Entries.Add(new SeasonalEventEntry(EventType.RisingTide,            "Rising Tide",          EventStatus.Active));
-            Entries.Add(new SeasonalEventEntry(EventType.Fellowship,            "Fellowship",           EventStatus.Active));
+            Entries.Add(new SeasonalEventEntry(EventType.Fellowship,            "Fellowship",           EventStatus.Inactive));
         }
 
         [Usage("SeasonSystemGump")]
