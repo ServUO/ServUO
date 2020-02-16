@@ -33,7 +33,7 @@ namespace Server.Engines.Fellowship
                 {
                     Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
                     {
-                        Utility.WriteConsoleColor(ConsoleColor.Green, "Disabling Treasures of Khaldun");
+                        Utility.WriteConsoleColor(ConsoleColor.Green, "Disabling The Fellowship");
 
                         Remove();
                         fellowship.Enabled = false;
@@ -41,7 +41,7 @@ namespace Server.Engines.Fellowship
                 }
                 else
                 {
-                    Utility.WriteConsoleColor(ConsoleColor.Green, "Auto Disabling Treasures of Khaldun");
+                    Utility.WriteConsoleColor(ConsoleColor.Green, "Auto Disabling The Fellowship");
 
                     Remove();
                     fellowship.Enabled = false;
@@ -53,7 +53,7 @@ namespace Server.Engines.Fellowship
                 {
                     Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
                     {
-                        Utility.WriteConsoleColor(ConsoleColor.Green, "Enabling Treasures of Khaldun");
+                        Utility.WriteConsoleColor(ConsoleColor.Green, "Enabling The Fellowship");
 
                         Generate();
                         fellowship.Enabled = true;
@@ -67,7 +67,7 @@ namespace Server.Engines.Fellowship
                 }
                 else
                 {
-                    Utility.WriteConsoleColor(ConsoleColor.Green, "Auto Enabling Treasures of Khaldun");
+                    Utility.WriteConsoleColor(ConsoleColor.Green, "Auto Enabling The Fellowship");
 
                     Generate();
                     fellowship.Enabled = true;
@@ -81,7 +81,7 @@ namespace Server.Engines.Fellowship
             }
         }
 
-        public static void Generate()
+        public static void GenerateQuestContent()
         {
             XmlSpawner sp;
 
@@ -132,7 +132,7 @@ namespace Server.Engines.Fellowship
                 sp.MoveToWorld(new Point3D(2497, 432, 15), Map.Trammel);
                 sp.Respawn();
 
-                OtherDecoration(Map.Trammel);
+                OtherQuestContent(Map.Trammel);
             }
 
             if (TheFellowshipHouse.InstanceFel == null)
@@ -180,10 +180,10 @@ namespace Server.Engines.Fellowship
             sp.MoveToWorld(new Point3D(2497, 432, 15), Map.Felucca);
             sp.Respawn();
 
-            OtherDecoration(Map.Felucca);
+            OtherQuestContent(Map.Felucca);
         }
 
-        public static void OtherDecoration(Map map)
+        public static void OtherQuestContent(Map map)
         {
             if (map.FindItem<Static>(new Point3D(1721, 1554, 54)) == null)
             {
@@ -239,9 +239,155 @@ namespace Server.Engines.Fellowship
             }
         }
 
+        #region remove decoration
         public static void Remove()
         {
+            string filename = XmlSpawner.LocateFile("RevampedSpawns/BlackthornDungeon.xml");
+            XmlSpawner.XmlLoadFromFile(filename, string.Empty, null, Point3D.Zero, Map.Internal, false, 0, false, out int processedmaps, out int processedspawners);
+
+            RemoveDecoration();
         }
+
+        public static void RemoveDecoration()
+        {
+            if (BlackthornEntry.InstanceTram != null)
+            {
+                BlackthornEntry.InstanceTram.Delete();
+                BlackthornEntry.InstanceTram = null;
+            }
+
+            if (BlackthornStep2.InstanceTram != null)
+            {
+                BlackthornStep2.InstanceTram.Delete();
+                BlackthornStep2.InstanceTram = null;
+            }
+
+            if (BlackthornStep3.InstanceTram != null)
+            {
+                BlackthornStep3.InstanceTram.Delete();
+                BlackthornStep3.InstanceTram = null;
+            }
+
+            if (BlackthornStep4.InstanceTram != null)
+            {
+                BlackthornStep4.InstanceTram.Delete();
+                BlackthornStep4.InstanceTram = null;
+            }
+
+            if (BlackthornStep5.InstanceTram != null)
+            {
+                BlackthornStep5.InstanceTram.Delete();
+                BlackthornStep5.InstanceTram = null;
+            }
+
+            if (BlackthornStep6.InstanceTram != null)
+            {
+                BlackthornStep6.InstanceTram.Delete();
+                BlackthornStep6.InstanceTram = null;
+            }
+
+            if (BlackthornStep7.InstanceTram != null)
+            {
+                BlackthornStep7.InstanceTram.Delete();
+                BlackthornStep7.InstanceTram = null;
+            }
+
+            if (BlackthornStep8.InstanceTram != null)
+            {
+                BlackthornStep8.InstanceTram.Delete();
+                BlackthornStep8.InstanceTram = null;
+            }
+
+            RemoveOtherdecoration(Map.Trammel);
+
+            if (BlackthornEntry.InstanceFel != null)
+            {
+                BlackthornEntry.InstanceFel.Delete();
+                BlackthornEntry.InstanceFel = null;
+            }
+
+            if (BlackthornStep2.InstanceFel != null)
+            {
+                BlackthornStep2.InstanceFel.Delete();
+                BlackthornStep2.InstanceFel = null;
+            }
+
+            if (BlackthornStep3.InstanceFel != null)
+            {
+                BlackthornStep3.InstanceFel.Delete();
+                BlackthornStep3.InstanceFel = null;
+            }
+
+            if (BlackthornStep4.InstanceFel != null)
+            {
+                BlackthornStep4.InstanceFel.Delete();
+                BlackthornStep4.InstanceFel = null;
+            }
+
+            if (BlackthornStep5.InstanceFel != null)
+            {
+                BlackthornStep5.InstanceFel.Delete();
+                BlackthornStep5.InstanceFel = null;
+            }
+
+            if (BlackthornStep6.InstanceFel != null)
+            {
+                BlackthornStep6.InstanceFel.Delete();
+                BlackthornStep6.InstanceFel = null;
+            }
+
+            if (BlackthornStep7.InstanceFel != null)
+            {
+                BlackthornStep7.InstanceFel.Delete();
+                BlackthornStep7.InstanceFel = null;
+            }
+
+            if (BlackthornStep8.InstanceFel != null)
+            {
+                BlackthornStep8.InstanceFel.Delete();
+                BlackthornStep8.InstanceFel = null;
+            }
+
+            RemoveOtherdecoration(Map.Felucca);
+        }
+
+        public static void RemoveOtherdecoration(Map map)
+        {
+            blocker.ToList().ForEach(x =>
+            {
+                Item b = map.FindItem<Blocker>(new Point3D(x));
+
+                if (b != null)
+                {
+                    b.Delete();
+                }
+            });
+
+            for (int i = 0; i < Workers.Length; i++)
+            {
+                Point3D p = Workers[i];
+
+                Mobile w = map.FindMobile<Worker>(p);
+
+                if (w != null)
+                {
+                    w.Delete();
+                }
+            }
+
+            for (int t = 0; t < Teleporters.Length / 2; t++)
+            {
+                Point3D p = Teleporters[t, 0];
+
+                Item tele = map.FindItem<BlackthornDungeonTeleporter>(p);
+
+                if (tele != null)
+                {
+                    tele.Delete();
+                }
+            }
+        }
+        #endregion
 
         private static readonly Point3D[] blocker = new Point3D[]
         {
@@ -257,7 +403,8 @@ namespace Server.Engines.Fellowship
             new Point3D(6442, 2744, 0), new Point3D(6443, 2744, 0), new Point3D(6444, 2744, 0), new Point3D(6445, 2744, 0),
             new Point3D(6446, 2744, 0), new Point3D(6390, 2617, 0), new Point3D(6390, 2618, 0), new Point3D(6390, 2619, 0),
             new Point3D(6390, 2620, 0), new Point3D(6390, 2621, 0), new Point3D(6390, 2622, 0), new Point3D(6390, 2623, 0),
-            new Point3D(6390, 2624, 0), new Point3D(6390, 2625, 0)
+            new Point3D(6390, 2624, 0), new Point3D(6390, 2625, 0), new Point3D(6434, 2708, 0), new Point3D(6434, 2709, 0),
+            new Point3D(6434, 2710, 0), new Point3D(6434, 2711, 0)
         };
 
         private static readonly Point3D[] Workers = new Point3D[]
@@ -284,8 +431,11 @@ namespace Server.Engines.Fellowship
             {new Point3D(6410, 2786, 0), new Point3D(6427, 2708, 0)},
         };
 
-        public static void GenerateQuestContent()
+        public static void Generate()
         {
+            string filename = XmlSpawner.LocateFile("RevampedSpawns/BlackthornDungeon.xml");
+            XmlSpawner.XmlUnLoadFromFile(filename, string.Empty, null, out int processedmaps, out int processedspawners);
+
             if (!Siege.SiegeShard)
             {
                 if (BlackthornEntry.InstanceTram == null)
@@ -336,7 +486,7 @@ namespace Server.Engines.Fellowship
                     BlackthornStep8.InstanceTram.MoveToWorld(new Point3D(6408, 2792, 0), Map.Trammel);
                 }
 
-                OtherQuestContent(Map.Trammel);
+                GenerateMapDecoration(Map.Trammel);
             }
 
             if (BlackthornEntry.InstanceFel == null)
@@ -387,10 +537,10 @@ namespace Server.Engines.Fellowship
                 BlackthornStep8.InstanceFel.MoveToWorld(new Point3D(6408, 2792, 0), Map.Felucca);
             }
 
-            OtherQuestContent(Map.Felucca);
+            GenerateMapDecoration(Map.Felucca);
         }
 
-        public static void OtherQuestContent(Map map)
+        public static void GenerateMapDecoration(Map map)
         {
             blocker.ToList().ForEach(x =>
             {
@@ -406,7 +556,7 @@ namespace Server.Engines.Fellowship
             {
                 Point3D p = Workers[i];
 
-                if (map.FindItem<Blocker>(p) == null)
+                if (map.FindMobile<Worker>(p) == null)
                 {
                     Worker w = new Worker((FellowshipChain)(i + 1));
 
