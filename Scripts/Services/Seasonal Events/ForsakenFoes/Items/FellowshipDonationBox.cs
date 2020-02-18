@@ -11,7 +11,7 @@ namespace Server.Items
 
         public override int DefaultGumpID { get { return 0x10C; } }
 
-        public static string FilePath = Path.Combine("Saves/Misc/FellowshipDonationBox", "Persistence.bin");
+        public static string FilePath = Path.Combine("Saves/Misc", "FellowshipDonationBox.bin");
         private static readonly Dictionary<Mobile, int> Donations = new Dictionary<Mobile, int>();
 
         public static void Configure()

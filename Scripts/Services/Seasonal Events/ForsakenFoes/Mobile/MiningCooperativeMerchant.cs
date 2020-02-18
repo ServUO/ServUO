@@ -17,7 +17,7 @@ namespace Server.Engines.Quests
 
     public class MiningCooperative
     {
-        public static string FilePath = Path.Combine("Saves/Misc/MiningCooperative", "Persistence.bin");
+        public static string FilePath = Path.Combine("Saves/Misc", "MiningCooperative.bin");
         private static List<CooperativeArray> PurchaseList = new List<CooperativeArray>();
 
         public static void Configure()

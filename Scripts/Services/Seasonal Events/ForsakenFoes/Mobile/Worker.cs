@@ -3,6 +3,8 @@ using Server.Items;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Engines.Quests;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Server.Engines.Fellowship
 {
@@ -21,6 +23,55 @@ namespace Server.Engines.Fellowship
 
     public class Worker : BaseQuester
     {
+        public static string FilePath = Path.Combine("Saves/Misc", "FellowshipChain.bin");
+        public static Dictionary<Mobile, FellowshipChain> FellowshipChainList = new Dictionary<Mobile, FellowshipChain>();
+        
+        public static void Configure()
+        {
+            EventSink.WorldSave += OnSave;
+            EventSink.WorldLoad += OnLoad;
+        }
+
+        public static void OnSave(WorldSaveEventArgs e)
+        {
+            Persistence.Serialize(
+                FilePath,
+                writer =>
+                {
+                    writer.Write((int)0);
+
+                    writer.Write(FellowshipChainList.Count);
+
+                    foreach (var chain in FellowshipChainList)
+                    {
+                        writer.Write(chain.Key);
+                        writer.Write((int)chain.Value);
+                    }
+                });
+        }
+
+        public static void OnLoad()
+        {
+            Persistence.Deserialize(
+                FilePath,
+                reader =>
+                {
+                    int version = reader.ReadInt();
+                    int count = reader.ReadInt();
+
+                    for (int i = count; i > 0; i--)
+                    {
+                        Mobile m = reader.ReadMobile();
+                        FellowshipChain chain = (FellowshipChain)reader.ReadInt();
+
+                        if (m != null)
+                        {
+                            FellowshipChainList[m] = chain;
+                        }
+                    }
+                });
+        }
+
         public static Worker InstanceTram { get; set; }
         public static Worker InstanceFel { get; set; }
 
@@ -60,21 +111,26 @@ namespace Server.Engines.Fellowship
         {
             if (item is FellowshipCoin)
             {
-                PlayerMobile pm = from as PlayerMobile;
-
-                if (Chain > pm.FellowshipChain)
+                if (FellowshipChainList.ContainsKey(from))
                 {
-                    pm.FellowshipChain = Chain;
+                    if (Chain > FellowshipChainList[from])
+                    {
+                        FellowshipChainList[from] = Chain;
+                    }
+                    else
+                    {
+                        SayTo(from, 500607, 0x3B2); // I'm not interested in that.
+                        return false;
+                    }
+
+                    if (FellowshipChainList[from] == FellowshipChain.Eight)
+                    {
+                        from.AddToBackpack(new FellowshipMedallion());
+                    }
                 }
                 else
                 {
-                    SayTo(from, 500607, 0x3B2); // I'm not interested in that.
-                    return false;
-                }
-
-                if (pm.FellowshipChain == FellowshipChain.Eight)
-                {
-                    from.AddToBackpack(new FellowshipMedallion());
+                    FellowshipChainList.Add(from, Chain);
                 }
 
                 item.Delete();
@@ -91,11 +147,11 @@ namespace Server.Engines.Fellowship
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && InRange(m.Location, 5))
+            if (m != null && InRange(m.Location, 5))
             {
                 if (!m.HasGump(typeof(WorkerGump)))
                 {
-                    m.SendGump(new WorkerGump((PlayerMobile)m, Chain));
+                    m.SendGump(new WorkerGump(m, Chain));
                 }
             }
         }
@@ -122,15 +178,29 @@ namespace Server.Engines.Fellowship
                 {1159236, 1159246},
             };
 
-            public WorkerGump(PlayerMobile pm, FellowshipChain chain)
+            public WorkerGump(Mobile from, FellowshipChain chain)
                 : base(100, 100)
             {
+                int cliloc;
+
+                if (FellowshipChainList.ContainsKey(from))
+                {
+                    if (chain > FellowshipChainList[from])
+                        cliloc = clilocs[(int)(chain - 1), 0];
+                    else
+                        cliloc = clilocs[(int)(chain - 1), 1];
+                }
+                else
+                {
+                    cliloc = clilocs[(int)(chain - 1), 0];
+                }
+
                 AddPage(0);
 
                 AddBackground(0, 0, 620, 328, 0x2454);
                 AddImage(0, 0, 0x61A);
                 AddHtmlLocalized(335, 14, 273, 18, 1114513, "#1159237", 0xC63, false, false); // <DIV ALIGN=CENTER>~1_TOKEN~</DIV>
-                AddHtmlLocalized(335, 51, 273, 267, chain > pm.FellowshipChain ? clilocs[((int)chain) - 1, 0] : clilocs[((int)chain) - 1, 1], 0xC63, false, true); // This castle stinks! Miracle the collapse in the sewers didn't bring the whole place down! Since the cave in, the sewer has flooded most of the dungeon. May have been a bit dangerous before with all the critters and what not running around, but now it's a death trap! Crew's been working at it nonstop to contain the leaks and sure up what's left. Mages got down here and setup a teleporter network to get us to where it's dry. Gotta insist you stay back though, too dangerous to let civilians in!
+                AddHtmlLocalized(335, 51, 273, 267, cliloc, 0xC63, false, true);
             }
         }
 

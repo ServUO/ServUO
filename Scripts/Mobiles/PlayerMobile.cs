@@ -4500,11 +4500,6 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
-                case 41:
-                    {
-                        FellowshipChain = (FellowshipChain)reader.ReadInt();
-                        goto case 40;
-                    }
                 case 40: // Version 40, moved gauntlet points, virtua artys and TOT turn ins to PointsSystem
                 case 39: // Version 39, removed ML quest save/load
                 case 38:
@@ -4971,9 +4966,7 @@ namespace Server.Mobiles
 
 			base.Serialize(writer);
 
-			writer.Write(41); // version
-
-            writer.Write((int)FellowshipChain);
+			writer.Write(40); // version
 
             writer.Write((DateTime)NextGemOfSalvationUse);
 
@@ -6880,9 +6873,6 @@ namespace Server.Mobiles
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ExploringTheDeepQuestChain ExploringTheDeepQuest { get; set; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public FellowshipChain FellowshipChain { get; set; }
 
         public static bool PetAutoStable { get { return Core.SE; } }
 
