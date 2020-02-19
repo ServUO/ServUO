@@ -829,7 +829,7 @@
     <Compile Include="Mobiles\NPCs\Mannequin\Property\SkillBonusAttribute.cs" />
     <Compile Include="Mobiles\NPCs\Mannequin\Property\SlayerAttribute.cs" />
     <Compile Include="Mobiles\NPCs\Mannequin\Property\WeaponAttributeProperty.cs" />
-    <Compile Include="Mobiles\NPCs\MiningCooperativeMerchant.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Mobile\MiningCooperativeMerchant.cs" />
     <Compile Include="Mobiles\NPCs\CommissionPlayerVendor.cs" />
     <Compile Include="Multis\ContestHouses.cs" />
     <Compile Include="Quests\The Ritual\Items.cs" />
@@ -5317,7 +5317,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Jewelry\JadeArmband.cs">
-	<SubType>Code</SubType>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Jewelry\PendantOfTheMagi.cs">
       <SubType>Code</SubType>
@@ -9778,6 +9778,7 @@
     <Compile Include="Services\PointsSystems\PlayerMobileProps.cs" />
     <Compile Include="Services\PointsSystems\PointsSystem.cs" />
     <Compile Include="Services\PointsSystems\QueensLoyalty.cs" />
+    <Compile Include="Services\PointsSystems\FellowshipData.cs" />
     <Compile Include="Services\PointsSystems\ShameCrystals.cs" />
     <Compile Include="Services\PointsSystems\VirtueArtifactsSystem.cs" />
     <Compile Include="Services\PointsSystems\VoidPool.cs" />
@@ -10059,6 +10060,28 @@
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Mobile\WrongPrisoner.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\MysteriousTunnel.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\WrongMazeWall.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Addon\BlackthornStep3.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Addon\BlackthornStep4.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Addon\BlackthornStep5.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Addon\BlackthornStep6.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Addon\BlackthornStep7.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Addon\BlackthornEntry.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Addon\BlackthornStep2.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Addon\BlackthornStep8.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\BlackthornDungeonTeleporter.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Generate.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Items\FellowshipMedallion.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Items\TheFellowshipStaff.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Addon\TheFellowshipHouse.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Gumps.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Items\EtherealSoulbinder.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Items\FellowshipDonationBox.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Items\EtherealSoulcleanser.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Items\FellowshipCoin.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Mobile\FellowshipAdept.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Mobile\Worker.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Mobile\Follower.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Rewards.cs" />
     <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\BarbedWhip.cs" />
     <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\BladedWhip.cs" />
     <Compile Include="Services\Seasonal Events\KrampusEncounter\Items\Branch.cs" />
@@ -10109,14 +10132,14 @@
     <Compile Include="Services\Seasonal Events\TreasuresOfDoom\RewardGump.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfDoom\Rewards.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfDoom\VaseSpawner.cs" />
-    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\CommanderTitleDeed.cs" />
-    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\CaptainTitleDeed.cs" />
-    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\EnsignTitleDeed.cs" />
-    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\ExplodingJackOLantern.cs" />
-    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\PumpkinCannonDeed.cs" />
-    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\JackOLanternHelm.cs" />
-    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\AdmiralJacksPumpkinSpiceAle.cs" />
-    <Compile Include="Services\Seasonal Events\TreasuresOfHalloween\Items\PumpkinRowboat.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Items\CommanderTitleDeed.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Items\CaptainTitleDeed.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Items\EnsignTitleDeed.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Items\ExplodingJackOLantern.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Items\PumpkinCannonDeed.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Items\JackOLanternHelm.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Items\AdmiralJacksPumpkinSpiceAle.cs" />
+    <Compile Include="Services\Seasonal Events\ForsakenFoes\Items\PumpkinRowboat.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\CaddelliteVendor.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Creatures\CultistAmbusher.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Creatures\KhalAnkur.cs" />

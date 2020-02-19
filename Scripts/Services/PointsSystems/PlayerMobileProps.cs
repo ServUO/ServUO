@@ -171,6 +171,19 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
+        public double Fellowship
+        {
+            get
+            {
+                return (int)PointsSystem.FellowshipData.GetPoints(Player);
+            }
+            set
+            {
+                PointsSystem.FellowshipData.SetPoints(Player, value);
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public double GauntletPoints
         {
             get

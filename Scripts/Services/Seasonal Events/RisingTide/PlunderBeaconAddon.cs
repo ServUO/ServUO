@@ -75,6 +75,7 @@ namespace Server.Items
             {
                 mob = new PirateCrew();
                 mob.CantWalk = true;
+
                 Crew.Add(mob);
             }
 
@@ -270,6 +271,9 @@ namespace Server.Items
                         creature.MoveToWorld(spawnLoc, map);
                         creature.Home = spawnLoc;
                         creature.RangeHome = 10;
+
+                        if (creature.IsSoulboundEnemies)
+                            creature.IsSoulbound = true;
 
                         Spawn.Add(creature, initial);
 

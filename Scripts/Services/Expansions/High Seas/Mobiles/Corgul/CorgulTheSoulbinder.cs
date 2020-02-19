@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using System;
 using System.Collections.Generic;
 using Server.Items;
@@ -18,7 +18,6 @@ namespace Server.Mobiles
         private List<BaseCreature> m_Helpers = new List<BaseCreature>();
 
         public override bool CanDamageBoats { get { return false; } }
-
         public override bool TaintedLifeAura { get { return true; } }
         public override int Meat { get { return 5; } }
         public override double TreasureMapChance { get { return .25; } }
@@ -100,10 +99,13 @@ namespace Server.Mobiles
             Karma = -25000;
 
             m_NextReturn = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(120, 180));
+
+            if (IsSoulboundEnemies)
+                IsSoulbound = true;
         }
 
-        public double SharedChance { get { return this.Map != null && this.Map.Rules == MapRules.FeluccaRules ? .12 : .08; } }
-        public double DecorativeChance { get { return this.Map != null && this.Map.Rules == MapRules.FeluccaRules ? .40 : .25; } }
+        public double SharedChance { get { return Map != null && Map.Rules == MapRules.FeluccaRules ? .12 : .08; } }
+        public double DecorativeChance { get { return Map != null && Map.Rules == MapRules.FeluccaRules ? .40 : .25; } }
 
         public override bool OnBeforeDeath()
         {
@@ -125,6 +127,9 @@ namespace Server.Mobiles
 
             if(winner != null)
                 GiveArtifact(winner, CreateArtifact(UniqueList));
+
+            if (IsSoulboundEnemies)
+                EtherealSandShower.Do(Location, Map, 50, 100, 500);
 
             return base.OnBeforeDeath();
         }
@@ -168,7 +173,7 @@ namespace Server.Mobiles
 
         public void SpawnMobile(BaseCreature bc, Point3D p)
         {
-            if(this.Map == null || bc == null)
+            if(Map == null || bc == null)
             {
                 if(bc != null)
                     bc.Delete();
@@ -181,16 +186,16 @@ namespace Server.Mobiles
             {
                 x = Utility.RandomMinMax(p.X - 4, p.X + 4);
                 y = Utility.RandomMinMax(p.Y - 4, p.Y + 4);
-                z = this.Map.GetAverageZ(x, y);
+                z = Map.GetAverageZ(x, y);
 
-                if (this.Map.CanSpawnMobile(x, y, z))
+                if (Map.CanSpawnMobile(x, y, z))
                 {
                     p = new Point3D(x, y, z);
                     break;
                 }
             }
 
-            bc.MoveToWorld(p, this.Map);
+            bc.MoveToWorld(p, Map);
             bc.Home = p;
             bc.RangeHome = 5;
         }
@@ -203,7 +208,7 @@ namespace Server.Mobiles
             {
                 Point3D p = CorgulAltar.SpawnLoc;
 
-                if (this.Region.IsPartOf<CorgulRegion>() && !Utility.InRange(this.Location, p, 15))
+                if (Region.IsPartOf<CorgulRegion>() && !Utility.InRange(Location, p, 15))
                 {
                     PlaySound(0x1FE);
                     FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
@@ -241,12 +246,12 @@ namespace Server.Mobiles
         {
             List<Mobile> targets = new List<Mobile>();
 
-            IPooledEnumerable eable = this.GetMobilesInRange(12);
+            IPooledEnumerable eable = GetMobilesInRange(12);
             foreach (Mobile mob in eable)
             {
                 if (!CanBeHarmful(mob) || mob == this)
                     continue;
-                if (mob is BaseCreature && (((BaseCreature)mob).Controlled || ((BaseCreature)mob).Summoned || ((BaseCreature)mob).Team != this.Team))
+                if (mob is BaseCreature && (((BaseCreature)mob).Controlled || ((BaseCreature)mob).Summoned || ((BaseCreature)mob).Team != Team))
                     targets.Add(mob);
                 else if (mob is PlayerMobile && mob.Alive)
                     targets.Add(mob);
@@ -289,7 +294,7 @@ namespace Server.Mobiles
 
             new InternalTimer(this, range);
 
-            IPooledEnumerable eable = this.GetMobilesInRange(range);
+            IPooledEnumerable eable = GetMobilesInRange(range);
             foreach (Mobile m in eable)
             {
                 if ((m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)) && CanBeHarmful(m))
@@ -415,6 +420,89 @@ namespace Server.Mobiles
 
             m_NextDismount = DateTime.UtcNow;
             m_NextArea = DateTime.UtcNow;
+        }
+    }
+
+    public class EtherealSandShower
+    {
+        public static void Do(Point3D center, Map map, int piles, int minAmount, int maxAmount)
+        {
+            new GoodiesTimer(center, map, piles, minAmount, maxAmount).Start();
+        }
+
+        private class GoodiesTimer : Timer
+        {
+            private readonly Map m_Map;
+            private readonly Point3D m_Location;
+            private readonly int m_PilesMax;
+            private int m_PilesDone = 0;
+            private readonly int m_MinAmount;
+            private readonly int m_MaxAmount;
+
+            public GoodiesTimer(Point3D center, Map map, int piles, int minAmount, int maxAmount)
+                : base(TimeSpan.FromSeconds(0.25d), TimeSpan.FromSeconds(0.25d))
+            {
+                m_Location = center;
+                m_Map = map;
+                m_PilesMax = piles;
+                m_MinAmount = minAmount;
+                m_MaxAmount = maxAmount;
+            }
+
+            protected override void OnTick()
+            {
+                if (m_PilesDone >= m_PilesMax)
+                {
+                    Stop();
+                    return;
+                }
+
+                Point3D p = FindGoldLocation(m_Map, m_Location, m_PilesMax / 8);
+                EtherealSand g = new EtherealSand(m_MinAmount, m_MaxAmount);
+                g.MoveToWorld(p, m_Map);
+
+                switch (Utility.Random(3))
+                {
+                    case 0: // Fire column
+                        Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x3709, 10, 30, 5052);
+                        Effects.PlaySound(g, g.Map, 0x208);
+                        break;
+                    case 1: // Explosion
+                        Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x36BD, 20, 10, 5044);
+                        Effects.PlaySound(g, g.Map, 0x307);
+                        break;
+                    case 2: // Ball of fire
+                        Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x36FE, 10, 10, 5052);
+                        break;
+                }
+                ++m_PilesDone;
+            }
+
+            private static Point3D FindGoldLocation(Map map, Point3D center, int range)
+            {
+                int cx = center.X;
+                int cy = center.Y;
+
+                for (int i = 0; i < 20; ++i)
+                {
+                    int x = cx + Utility.Random(range * 2) - range;
+                    int y = cy + Utility.Random(range * 2) - range;
+                    if ((cx - x) * (cx - x) + (cy - y) * (cy - y) > range * range)
+                        continue;
+
+                    int z = map.GetAverageZ(x, y);
+                    if (!map.CanFit(x, y, z, 6, false, false))
+                        continue;
+
+                    int topZ = z;
+                    foreach (Item item in map.GetItemsInRange(new Point3D(x, y, z), 0))
+                    {
+                        topZ = Math.Max(topZ, item.Z + item.ItemData.CalcHeight);
+                    }
+                    return new Point3D(x, y, topZ);
+                }
+                return center;
+            }
         }
     }
 }

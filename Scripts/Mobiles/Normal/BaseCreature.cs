@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Server.ContextMenus;
 using Server.Engines.PartySystem;
+using Server.Engines.Points;
 using Server.Engines.Quests;
 using Server.Engines.Quests.Doom;
 using Server.Engines.Quests.Haven;
@@ -2431,7 +2432,9 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(28); // version
+            writer.Write(29); // version
+
+            writer.Write(IsSoulbound);
 
             writer.Write(m_ForceActiveSpeed);
             writer.Write(m_ForcePassiveSpeed);
@@ -2616,6 +2619,9 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 29:
+                    IsSoulbound = reader.ReadBool();
+                    goto case 28;
                 case 28:
                     m_ForceActiveSpeed = reader.ReadDouble();
                     m_ForcePassiveSpeed = reader.ReadDouble();
@@ -5816,6 +5822,11 @@ namespace Server.Mobiles
                 }
             }
 
+            if (IsSoulbound)
+            {
+                list.Add(1159188); // <BASEFONT COLOR=#FF8300>Soulbound<BASEFONT COLOR=#FFFFFF>
+            }
+
             if (IsAmbusher)
                 list.Add(1155480); // Ambusher
         }
@@ -5850,10 +5861,26 @@ namespace Server.Mobiles
 
         public virtual bool IgnoreYoungProtection { get { return false; } }
 
+        public bool IsSoulbound { get; set; }
+        public bool IsSoulboundEnemies { get { return Core.EJ && PointsSystem.FellowshipData.Enabled; } }
+
         public override bool OnBeforeDeath()
         {
             int treasureLevel = TreasureMapLevel;
             GetLootingRights();
+
+            if (IsSoulbound && LastKiller is PlayerMobile)
+            {
+                if (LastKiller.Backpack != null)
+                {
+                    EtherealSoulbinder es = LastKiller.Backpack.FindItemsByType<EtherealSoulbinder>().Where(x => x.SoulPoint < x.MaxSoulPoint).FirstOrDefault();
+
+                    if (es != null)
+                    {
+                        es.SoulPoint += HitsMax / 1000;
+                    }
+                }
+            }
 
             if (treasureLevel == 1 && Map == Map.Trammel && TreasureMap.IsInHavenIsland(this))
             {

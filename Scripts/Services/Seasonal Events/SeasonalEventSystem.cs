@@ -12,6 +12,7 @@ using Server.Engines.TreasuresOfDoom;
 using Server.Engines.Khaldun;
 using Server.Engines.SorcerersDungeon;
 using Server.Engines.RisingTide;
+using Server.Engines.Fellowship;
 
 namespace Server.Engines.SeasonalEvents
 {
@@ -24,7 +25,8 @@ namespace Server.Engines.SeasonalEvents
         TreasuresOfDoom,
         TreasuresOfKhaldun,
         KrampusEncounter,
-        RisingTide
+        RisingTide,
+        Fellowship
     }
 
     public enum EventStatus
@@ -68,6 +70,7 @@ namespace Server.Engines.SeasonalEvents
             Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfKhaldun,    "Treasures of Khaldun", EventStatus.Seasonal,   10, 1, 60));
             Entries.Add(new SeasonalEventEntry(EventType.KrampusEncounter,      "Krampus Encounter",    EventStatus.Seasonal,   12, 1, 60));
             Entries.Add(new SeasonalEventEntry(EventType.RisingTide,            "Rising Tide",          EventStatus.Active));
+            Entries.Add(new SeasonalEventEntry(EventType.Fellowship,            "Fellowship",           EventStatus.Inactive));
         }
 
         [Usage("SeasonSystemGump")]
@@ -262,6 +265,9 @@ namespace Server.Engines.SeasonalEvents
                     break;
                 case EventType.RisingTide:
                     RisingTideGeneration.CheckEnabled();
+                    break;
+                case EventType.Fellowship:
+                    ForsakenFoesGeneration.CheckEnabled();
                     break;
             }
         }
