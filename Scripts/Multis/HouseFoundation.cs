@@ -811,6 +811,7 @@ namespace Server.Multis
             PacketHandlers.RegisterEncoded(0x04, true, new OnEncodedPacketReceive(Designer_Commit));
             PacketHandlers.RegisterEncoded(0x05, true, new OnEncodedPacketReceive(Designer_Delete));
             PacketHandlers.RegisterEncoded(0x06, true, new OnEncodedPacketReceive(Designer_Build));
+            PacketHandlers.RegisterEncoded(0x0A, true, new OnEncodedPacketReceive(Designer_Action)); // WTF does this do?
             PacketHandlers.RegisterEncoded(0x0C, true, new OnEncodedPacketReceive(Designer_Close));
             PacketHandlers.RegisterEncoded(0x0D, true, new OnEncodedPacketReceive(Designer_Stairs));
             PacketHandlers.RegisterEncoded(0x0E, true, new OnEncodedPacketReceive(Designer_Sync));
@@ -854,6 +855,7 @@ namespace Server.Multis
 
         public static void Designer_Action(NetState state, IEntity e, EncodedReader pvSrc)
         {
+            pvSrc.Trace(state);
             // TODO: What does this do?
         }
 

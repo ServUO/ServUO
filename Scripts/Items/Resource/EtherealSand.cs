@@ -8,6 +8,12 @@ namespace Server.Items
         public override double DefaultWeight { get { return 0.1; } }
 
         [Constructable]
+        public EtherealSand(int amountFrom, int amountTo)
+            : this(Utility.RandomMinMax(amountFrom, amountTo))
+        {
+        }
+
+        [Constructable]
         public EtherealSand()
             : this(1)
         {

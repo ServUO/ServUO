@@ -46,6 +46,7 @@ using Server.Engines.VendorSearching;
 using Server.Targeting;
 
 using RankDefinition = Server.Guilds.RankDefinition;
+using Server.Engines.Fellowship;
 #endregion
 
 namespace Server.Mobiles
@@ -4517,7 +4518,7 @@ namespace Server.Mobiles
                 case 34:
                 case 33:
                     {
-                        m_ExploringTheDeepQuest = (ExploringTheDeepQuestChain)reader.ReadInt();
+                        ExploringTheDeepQuest = (ExploringTheDeepQuestChain)reader.ReadInt();
                         goto case 31;
                     }
                 case 32:
@@ -4980,7 +4981,7 @@ namespace Server.Mobiles
 
             writer.Write(_BlessedItem);
 
-            writer.Write((int)m_ExploringTheDeepQuest);
+            writer.Write((int)ExploringTheDeepQuest);
 
             // Version 31/32 Titles
             writer.Write(DisplayGuildTitle);
@@ -6870,12 +6871,8 @@ namespace Server.Mobiles
 		}
         #endregion
 
-        #region Exploring the Deep
-        private ExploringTheDeepQuestChain m_ExploringTheDeepQuest;
-
         [CommandProperty(AccessLevel.GameMaster)]
-        public ExploringTheDeepQuestChain ExploringTheDeepQuest { get { return m_ExploringTheDeepQuest; } set { m_ExploringTheDeepQuest = value; } }
-        #endregion
+        public ExploringTheDeepQuestChain ExploringTheDeepQuest { get; set; }
 
         public static bool PetAutoStable { get { return Core.SE; } }
 
