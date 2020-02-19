@@ -31,7 +31,7 @@ namespace Server.Mobiles
 		{
 			public InternalBuyInfo()
 			{
-				Add(new GenericBuyInfo(typeof(BookOfNinjitsu), 500, 20, 0x2252, 0));
+				Add(new GenericBuyInfo(typeof(BookOfNinjitsu), 500, 20, 0x23A0, 0));
 			}
 		}
 

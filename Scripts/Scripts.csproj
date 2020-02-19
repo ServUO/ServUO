@@ -933,7 +933,6 @@
     <Compile Include="Items\Artifacts\Equipment\Clothing\CloakOfPower.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\CloakOfSilence.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\TheScholarsHalo.cs" />
-    <Compile Include="Items\Artifacts\Equipment\Clothing\JadeArmband.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\MagicalDoor.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\AnkhPendant.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\NecklaceofDiligence.cs" />
@@ -2725,7 +2724,6 @@
     <Compile Include="Mobiles\NPCs\GolemCrafter.cs" />
     <Compile Include="Mobiles\NPCs\Gorrow.cs" />
     <Compile Include="Mobiles\NPCs\GrandpaCharley.cs" />
-    <Compile Include="Mobiles\NPCs\Greeter1.cs" />
     <Compile Include="Mobiles\NPCs\Gustar.cs" />
     <Compile Include="Mobiles\NPCs\Gypsy.cs" />
     <Compile Include="Mobiles\NPCs\GypsyAnimalTrainer.cs" />
@@ -5317,6 +5315,9 @@
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Jewelry\EssenceOfBattle.cs">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\JadeArmband.cs">
+	<SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Jewelry\PendantOfTheMagi.cs">
       <SubType>Code</SubType>
@@ -8827,9 +8828,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Abilities\EnhancementTimer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Abilities\SelfDeletingItem.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Abilities\TimedResistanceMod.cs">
