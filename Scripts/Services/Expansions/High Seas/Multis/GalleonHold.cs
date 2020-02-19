@@ -5,10 +5,13 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class GalleonHold : Container
+    public class GalleonHold : Container, IGalleonFixture
     {
+        public override int LabelNumber { get { return 1149699; } } // cargo hold
+        public override bool ForceShowProperties { get { return true; } }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public BaseGalleon Galleon { get; private set; }
+        public BaseGalleon Galleon { get; set; }
 
         public override int DefaultMaxWeight
         {
@@ -64,9 +67,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
-
-            writer.Write(Galleon);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -74,40 +75,45 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            Galleon = reader.ReadItem() as BaseGalleon;
-
-            if (ItemID == 33648)
-                ItemID = 23648;
+            if (version == 0)
+            {
+                reader.ReadItem();
+            }
         }
     }
 
-    public class HoldItem : Item
+    public class HoldItem : Item, IGalleonFixture
     {
         public override int LabelNumber { get { return 1149699; } } // cargo hold
         public override bool ForceShowProperties { get { return true; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public GalleonHold Hold { get; private set; }
+        public BaseGalleon Galleon { get; set; }
 
-        public HoldItem(GalleonHold hold, int itemid) : base(itemid)
+        public HoldItem(BaseGalleon g, int itemid)
+            : base(itemid)
         {
-            Hold = hold;
+            Galleon = g;
             Movable = false;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (Hold == null || Hold.Galleon == null || !from.InRange(Location, 2))
+            if (Galleon == null || Galleon.GalleonHold == null || !from.InRange(Location, 2))
                 return;
 
-            Hold.OnDoubleClick(from);
+            Galleon.GalleonHold.OnDoubleClick(from);
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            list.Add(1072241, String.Format("{0}\t{1}\t{2}\t{3}", Hold.TotalItems, Hold.MaxItems, Hold.TotalWeight, Hold.MaxWeight)); // Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~/~4_MAXWEIGHT~ stones
+            if (Galleon != null && Galleon.GalleonHold != null)
+            {
+                var hold = Galleon.GalleonHold;
+                list.Add(1072241, String.Format("{0}\t{1}\t{2}\t{3}", hold.TotalItems, hold.MaxItems, hold.TotalWeight, hold.MaxWeight)); // Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~/~4_MAXWEIGHT~ stones
+            }
         }
 
         public HoldItem(Serial serial)
@@ -118,9 +124,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
-
-            writer.Write(Hold);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -128,7 +132,10 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            Hold = reader.ReadItem() as GalleonHold;
+            if (version == 0)
+            {
+                reader.ReadInt();
+            }
         }
     }
 }

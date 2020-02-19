@@ -177,9 +177,9 @@ namespace Server.Items
                     Server.Spells.SpellHelper.GetSurfaceTop(ref p);
 
                     BaseHouse house = null;
-                    BaseGalleon boat = null;
+                    BaseGalleon galleon = CheckGalleonPlacement(from, addon, new Point3D(p), map);
 
-                    AddonFitResult res = addon.CouldFit(p, map, from, ref house, ref boat);
+                    AddonFitResult res = galleon != null ? AddonFitResult.Valid : addon.CouldFit(p, map, from, ref house);
 
                     if (res == AddonFitResult.Valid)
                     {
@@ -195,8 +195,9 @@ namespace Server.Items
 
                         if (house != null)
                             house.Addons[addon] = from;
-                        else if (boat != null)
-                            boat.AddAddon(addon);
+
+                        if (galleon != null)
+                            galleon.AddAddon(addon);
 
                         m_Deed.DeleteDeed();
                     }
@@ -218,6 +219,23 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                 }
+            }
+
+            public BaseGalleon CheckGalleonPlacement(Mobile from, BaseAddon addon, Point3D p, Map map)
+            {
+                if (!Core.HS || addon.Components.Count > 1)
+                {
+                    return null;
+                }
+
+                var galleon = BaseGalleon.FindGalleonAt(p, map);
+
+                if (galleon != null && galleon.CanAddAddon(p))
+                {
+                    return galleon;
+                }
+
+                return null;
             }
         }
     }

@@ -193,6 +193,8 @@ namespace Server
 
     public delegate void TeleportMovementEventHandler(TeleportMovementEventArgs e);
 
+    public delegate void MultiDesignQueryHandler(MultiDesignQueryEventArgs e);
+
     public class OnItemObtainedEventArgs : EventArgs
 	{
 		private readonly Mobile m_Mobile;
@@ -1673,6 +1675,18 @@ namespace Server
         }
     }
 
+    public class MultiDesignQueryEventArgs : EventArgs
+    {
+        public NetState State { get; set; }
+        public BaseMulti Multi { get; set; }
+
+        public MultiDesignQueryEventArgs(NetState state, BaseMulti multi)
+        {
+            State = state;
+            Multi = multi;
+        }
+    }
+
     public static class EventSink
 	{
 		public static event OnItemObtainedEventHandler OnItemObtained;
@@ -1768,6 +1782,7 @@ namespace Server
         public static event AccountGoldChangeEventHandler AccountGoldChange;
         public static event ContainerDroppedToEventHandler ContainerDroppedTo;
         public static event TeleportMovementEventHandler TeleportMovement;
+        public static event MultiDesignQueryHandler MultiDesign;
 
         public static void InvokeOnItemObtained(OnItemObtainedEventArgs e)
 		{
@@ -2489,6 +2504,14 @@ namespace Server
             }
         }
 
+        public static void InvokeMultiDesignQuery(MultiDesignQueryEventArgs e)
+        {
+            if (MultiDesign != null)
+            {
+                MultiDesign(e);
+            }
+        }
+
         public static void Reset()
 		{
 			OnItemObtained = null;
@@ -2571,6 +2594,8 @@ namespace Server
             AccountGoldChange = null;
             ContainerDroppedTo = null;
             TeleportMovement = null;
+
+            MultiDesign = null;
         }
 	}
 }

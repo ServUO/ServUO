@@ -559,7 +559,7 @@ namespace Server
 
         public static BaseJewel RandomJewelry(bool isStygian = false)
         {
-            if (isStygian)
+            if (Core.SA && isStygian)
                 return Construct(m_SAJewelryTypes, m_JewelryTypes) as BaseJewel;
             else
                 return Construct(m_JewelryTypes) as BaseJewel;

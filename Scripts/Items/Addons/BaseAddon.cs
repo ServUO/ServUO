@@ -165,22 +165,16 @@ namespace Server.Items
 
 		public virtual AddonFitResult CouldFit(IPoint3D p, Map map, Mobile from, ref BaseHouse house)
 		{
-			BaseGalleon boat = null;
-			return CouldFit(p, map, from, ref house, ref boat);
-		}
-
-		public virtual AddonFitResult CouldFit(IPoint3D p, Map map, Mobile from, ref BaseHouse house, ref BaseGalleon boat)
-		{
 			if (Deleted)
 				return AddonFitResult.Blocked;
 
-			foreach (var c in m_Components)
+            foreach (var c in m_Components)
 			{
 				var p3D = new Point3D(p.X + c.Offset.X, p.Y + c.Offset.Y, p.Z + c.Offset.Z);
 
 				if (!map.CanFit(p3D.X, p3D.Y, p3D.Z, c.ItemData.Height, false, true, (c.Z == 0)))
 					return AddonFitResult.Blocked;
-				if (!CheckHouse(from, p3D, map, c.ItemData.Height, ref house) && !CheckBoat(from, p3D, map, ref boat))
+				if (!CheckHouse(from, p3D, map, c.ItemData.Height, ref house))
 					return AddonFitResult.NotInHouse;
 
 				if (c.NeedsWall)
@@ -227,41 +221,6 @@ namespace Server.Items
 
 			return true;
 		}
-
-		#region High Seas
-		private static readonly int[] m_ShipAddonTiles =
-			{23664, 23665, 23718, 23719, 23610, 23611, 23556, 23557, 23664, 23665, 23718, 23719, 23610, 23611, 23556, 23557};
-
-		public static bool CheckBoat(Mobile from, Point3D p, Map map, ref BaseGalleon boat)
-		{
-			var b = BaseBoat.FindBoatAt(p, map);
-			if (b is BaseGalleon)
-				boat = b as BaseGalleon;
-
-			if (boat != null)
-			{
-				if (boat.Addons.Count >= boat.MaxAddons)
-					return false;
-
-				IPooledEnumerable eable = boat.Map.GetItemsInRange(p, 0);
-
-				foreach (Item item in eable)
-				{
-					foreach (var id in m_ShipAddonTiles)
-					{
-						if (id == item.ItemID)
-						{
-							eable.Free();
-							return true;
-						}
-					}
-				}
-
-				eable.Free();
-			}
-			return false;
-		}
-		#endregion
 
 		public static bool IsWall(int x, int y, int z, Map map)
 		{

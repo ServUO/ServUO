@@ -1,12 +1,12 @@
-﻿using Server;
+using Server;
 using System;
 using Server.Engines.Quests;
 using Server.Multis;
 
 namespace Server.Items
 {
-    public class BindingPole : Item
-	{
+    public class BindingPole : Item, IGalleonFixture
+    {
 		private BaseQuest m_Quest;
         private BaseGalleon m_Galleon;
 
@@ -32,7 +32,7 @@ namespace Server.Items
 				m_Quest.OnResign(false);
 
             if (m_Galleon != null)
-                m_Galleon.Pole = null;
+                m_Galleon.RemoveFixture(this);
 		}
 
 		public BindingPole(BaseQuest quest) : base(5696)
