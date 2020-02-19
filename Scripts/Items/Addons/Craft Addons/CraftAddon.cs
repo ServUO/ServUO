@@ -60,9 +60,9 @@ namespace Server.Items
             tool.MoveToWorld(new Point3D(X + x, Y + y, Z + z), Map);
         }
 
-        public override AddonFitResult CouldFit(IPoint3D p, Map map, Mobile from, ref BaseHouse house, ref BaseGalleon boat)
+        public override AddonFitResult CouldFit(IPoint3D p, Map map, Mobile from, ref BaseHouse house)
         {
-            AddonFitResult result = base.CouldFit(p, map, from, ref house, ref boat);
+            AddonFitResult result = base.CouldFit(p, map, from, ref house);
 
             if (result == AddonFitResult.Valid)
             {

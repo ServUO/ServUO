@@ -2618,6 +2618,7 @@ namespace Server.Multis
             }
 
             SetFacingComponents(m_Facing, old, false);
+
             Map.OnEnter(this);
 
             ColUtility.Free(toMove);
@@ -3035,12 +3036,12 @@ namespace Server.Multis
             }
         }
 
-        public void ReleaseContainerPacket()
+        private void ReleaseContainerPacket()
         {
             Packet.Release(ref m_ContainerPacket);
         }
 
-        public Packet GetPacketContainer(IEnumerable<IEntity> entities)
+        protected Packet GetPacketContainer(IEnumerable<IEntity> entities)
         {
             if (ContainerPacket == null)
             {
@@ -3140,7 +3141,6 @@ namespace Server.Multis
                         cmd = 0x02;
                         itemID = multi.ItemID;
                         itemID &= 0x7FFF;
-                        //itemID |= 0x10000;
                         hue = (short)multi.Hue;
                         amount = (short)multi.Amount;
                     }

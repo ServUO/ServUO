@@ -851,7 +851,7 @@ namespace Server.Items
                 return base.CheckLocked(from);
             }
 
-            if (Locked && TrapType == TrapType.DartTrap && from.InRange(GetWorldLocation(), 2))
+            if (!Locked && TrapType == TrapType.DartTrap && from.InRange(GetWorldLocation(), 2))
             {
                 int damage;
                 var p = GetWorldLocation();

@@ -153,10 +153,10 @@ namespace Server.Engines.Quests
 					xOffset = dist * -1;
 					yOffset = 0;
                     break;
-			}	
- 
+			}
+
             m_Pole.MoveToWorld(new Point3D(m_Galleon.X + xOffset, m_Galleon.Y + yOffset, m_Galleon.ZSurface), m_Galleon.Map);
-            m_Galleon.Pole = m_Pole;
+            m_Galleon.AddFixture(m_Pole);
        }
  
         public override void GiveRewards()
