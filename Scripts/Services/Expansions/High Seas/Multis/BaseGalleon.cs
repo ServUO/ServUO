@@ -379,6 +379,11 @@ namespace Server.Multis
 
         public override bool CheckAddon(Item item)
         {
+            if(Addons == null)
+            {
+                return false;
+            }
+        
             if (Addons.ContainsKey(item))
             {
                 return true;
