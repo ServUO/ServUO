@@ -2618,6 +2618,7 @@ namespace Server.Multis
             }
 
             SetFacingComponents(m_Facing, old, false);
+
             Map.OnEnter(this);
 
             ColUtility.Free(toMove);
@@ -3048,16 +3049,6 @@ namespace Server.Multis
             }
 
             return ContainerPacket;
-        }
-
-        protected override Packet GetWorldPacketFor(NetState state)
-        {
-            if (Core.HS)
-            {
-                return GetPacketContainer(GetEntitiesOnBoard());
-            }
-
-            return base.GetWorldPacketFor(state);
         }
 
         public virtual void SendContainerPacket()

@@ -936,11 +936,9 @@ namespace Server.Multis
 
             var mcl = MultiData.GetComponents(ItemID);
 
-            foreach (var mte in mcl.List.Where(e => (TileFlag)e.m_Flags == TileFlag.None || (TileFlag)e.m_Flags == TileFlag.Generic))
+            foreach (var mte in mcl.List.Where(e => (TileFlag)e.m_Flags == TileFlag.None))
             {
-                var fixture = Fixtures.FirstOrDefault(f => f.X - X == mte.m_OffsetX && f.Y - Y == mte.m_OffsetY);
-
-                if (fixture != null)
+                foreach (var fixture in Fixtures.Where(f => f.X - X == mte.m_OffsetX && f.Y - Y == mte.m_OffsetY && f.Z - Z == mte.m_OffsetZ))
                 {
                     fixture.ItemID = mte.m_ItemID;
                 }
