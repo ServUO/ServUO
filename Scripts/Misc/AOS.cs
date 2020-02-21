@@ -571,7 +571,6 @@ namespace Server
                 return 0;
             }
 
-            List<Item> items = m.Items;
             int value = 0;
 
             if (attribute == AosAttribute.Luck || attribute == AosAttribute.RegenMana || attribute == AosAttribute.DefendChance || attribute == AosAttribute.EnhancePotions)
@@ -581,9 +580,9 @@ namespace Server
             value += Enhancement.GetValue(m, attribute);
             #endregion
 
-            for (int i = 0; i < items.Count; ++i)
+            for (int i = 0; i < m.Items.Count; ++i)
             {
-                Item obj = items[i];
+                Item obj = m.Items[i];
 
                 AosAttributes attrs = RunicReforging.GetAosAttributes(obj);
 
@@ -1405,16 +1404,15 @@ namespace Server
                 return 0;
             }
 
-            List<Item> items = m.Items;
             int value = 0;
 
             #region Enhancement
             value += Enhancement.GetValue(m, attribute);
             #endregion
 
-            for (int i = 0; i < items.Count; ++i)
+            for (int i = 0; i < m.Items.Count; ++i)
             {
-                AosWeaponAttributes attrs = RunicReforging.GetAosWeaponAttributes(items[i]);
+                AosWeaponAttributes attrs = RunicReforging.GetAosWeaponAttributes(m.Items[i]);
 
                 if (attrs != null)
                     value += attrs[attribute];
@@ -1974,16 +1972,15 @@ namespace Server
             if (!Core.AOS)
                 return 0;
 
-            List<Item> items = m.Items;
             int value = 0;
 
             #region Enhancement
             value += Enhancement.GetValue(m, attribute);
             #endregion
 
-            for (int i = 0; i < items.Count; ++i)
+            for (int i = 0; i < m.Items.Count; ++i)
             {
-                Item obj = items[i];
+                Item obj = m.Items[i];
 
                 if (obj is BaseWeapon)
                 {
@@ -2171,12 +2168,11 @@ namespace Server
                 return 0;
             }
 
-            List<Item> items = m.Items;
             int value = 0;
 
-            for (int i = 0; i < items.Count; ++i)
+            for (int i = 0; i < m.Items.Count; ++i)
             {
-                AosArmorAttributes attrs = RunicReforging.GetAosArmorAttributes(items[i]);
+                AosArmorAttributes attrs = RunicReforging.GetAosArmorAttributes(m.Items[i]);
 
                 if (attrs != null)
                     value += attrs[attribute];
@@ -2778,14 +2774,13 @@ namespace Server
                 return 0;
             }
 
-            List<Item> items = m.Items;
             int value = 0;
 
             #region Enhancement
             value += Enhancement.GetValue(m, attribute);
             #endregion
 
-            for (int i = 0; i < items.Count; ++i)
+            for (int i = 0; i < m.Items.Count; ++i)
             {
                 SAAbsorptionAttributes attrs = RunicReforging.GetSAAbsorptionAttributes(m.Items[i]);
 

@@ -3926,8 +3926,10 @@ namespace Server.Mobiles
             ClumsySpell.RemoveEffects(this);
             FeeblemindSpell.RemoveEffects(this);
             CurseSpell.RemoveEffect(this);
+            Spells.Second.ProtectionSpell.EndProtection(this);
 
-			EndAction(typeof(PolymorphSpell));
+
+            EndAction(typeof(PolymorphSpell));
 			EndAction(typeof(IncognitoSpell));
 
 			MeerMage.StopEffect(this, false);

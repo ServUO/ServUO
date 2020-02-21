@@ -79,7 +79,7 @@ namespace Server.Mobiles
             {
                 return new Type[]
                 {
-                    typeof(AxesOfFury), typeof(SummonersKilt), typeof(GiantSteps), typeof(StoneDragonsTooth),
+                    typeof(AxesOfFury), typeof(SummonersKilt), typeof(GiantSteps),
                     typeof(TokenOfHolyFavor)
                 };
             }

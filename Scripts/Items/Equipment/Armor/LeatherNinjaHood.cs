@@ -27,7 +27,7 @@ namespace Server.Items
         {
             get
             {
-                return 3;
+                return 4;
             }
         }
         public override int BaseColdResistance
@@ -48,7 +48,7 @@ namespace Server.Items
         {
             get
             {
-                return 4;
+                return 3;
             }
         }
         public override int InitMinHits

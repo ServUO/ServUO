@@ -77,7 +77,7 @@ namespace Server.Mobiles
 
         public override Type[] UniqueSAList
         {
-            get { return new Type[] { typeof(Slither), typeof(IronwoodCompositeBow), typeof(Venom), typeof(PetrifiedSnake), typeof(StoneDragonsTooth) }; }
+            get { return new Type[] { typeof(Slither), typeof(IronwoodCompositeBow), typeof(Venom), typeof(PetrifiedSnake), typeof(StoneDragonsTooth), typeof(MedusaFloorTileAddonDeed) }; }
         }
 
         public override Type[] SharedSAList

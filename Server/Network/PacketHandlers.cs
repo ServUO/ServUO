@@ -943,7 +943,7 @@ namespace Server.Network
 			int type = pvSrc.ReadInt32();
 			string text = pvSrc.ReadStringSafe();
 
-			if (text.Length > 128)
+			if (text == null || text.Length > 128)
 			{
 				return;
 			}
@@ -951,7 +951,7 @@ namespace Server.Network
 			Mobile from = state.Mobile;
 			Prompt p = from.Prompt;
 
-            if (p != null && p.Sender.Serial == serial && p.TypeId == prompt)
+            if (from != null && p != null && p.Sender.Serial == serial && p.TypeId == prompt)
             {
                 from.Prompt = null;
 

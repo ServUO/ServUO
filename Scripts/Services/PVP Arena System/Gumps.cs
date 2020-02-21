@@ -75,11 +75,14 @@ namespace Server.Engines.ArenaSystem
                             }
                             else
                             {
-                                var arena = PVPArenaSystem.Arenas.FirstOrDefault(a => a.Definition == d);
-
-                                if (arena != null)
+                                if (PVPArenaSystem.Arenas != null)
                                 {
-                                    PVPArenaSystem.Instance.AddBlockedArena(arena);
+                                    var arena = PVPArenaSystem.Arenas.FirstOrDefault(a => a.Definition == d);
+
+                                    if (arena != null)
+                                    {
+                                        PVPArenaSystem.Instance.AddBlockedArena(arena);
+                                    }
                                 }
                             }
                         }

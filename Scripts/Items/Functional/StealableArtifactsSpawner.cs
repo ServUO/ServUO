@@ -187,6 +187,14 @@ namespace Server.Items
             new StealableEntry(Map.Trammel, new Point3D(6423, 1658, 0), 9216, 13824, typeof(ShipsBellOfBmvArarat)),
             new StealableEntry(Map.Trammel, new Point3D(6405, 1640, 0), 9216, 13824, typeof(FigureheadOfBmvArarat)),
 
+            // Castle Blackthorne Stealables - Rarity 8 - does not show rarity on items
+            new StealableEntry(Map.Trammel, new Point3D(6436, 2606, 11), 9216, 13824, typeof(KingsGildedStatue)),
+            new StealableEntry(Map.Trammel, new Point3D(6298, 2673, 0), 9216, 13824, typeof(KingsPainting1)),
+            new StealableEntry(Map.Trammel, new Point3D(6455, 2700, 0), 9216, 13824, typeof(KingsPainting2)),
+            new StealableEntry(Map.Felucca, new Point3D(6436, 2606, 11), 9216, 13824, typeof(KingsGildedStatue)),
+            new StealableEntry(Map.Felucca, new Point3D(6298, 2673, 0), 9216, 13824, typeof(KingsPainting1)),
+            new StealableEntry(Map.Felucca, new Point3D(6455, 2700, 0), 9216, 13824, typeof(KingsPainting2)),
+
             //TOL - Artifact rarity 11 - does not show rarity on item
             new StealableEntry(Map.TerMur, new Point3D(538, 1496, 40), 36864, 55296, typeof(StretchedDinosaurHide)),
             new StealableEntry(Map.TerMur, new Point3D(174, 1808, 80), 36864, 55296, typeof(CarvedMyrmydexGlyph)),

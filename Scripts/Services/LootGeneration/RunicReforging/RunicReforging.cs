@@ -2730,6 +2730,10 @@ namespace Server.Items
 
             if(item is ElvenGlasses)
                 return ((ElvenGlasses)item).WeaponAttributes;
+
+            if (item is BaseArmor)
+                return ((BaseArmor)item).WeaponAttributes;
+
             return null;
         }
 

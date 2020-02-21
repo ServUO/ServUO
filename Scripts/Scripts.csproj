@@ -578,6 +578,10 @@
     <Compile Include="Items\Addons\TheKingsCollection\CastlePainting.cs" />
     <Compile Include="Items\Addons\TheKingsCollection\BullTapestry.cs" />
     <Compile Include="Items\Addons\TheKingsCollection\HorsePainting.cs" />
+    <Compile Include="Items\Artifacts\Decorative\GildedStatue.cs" />
+    <Compile Include="Items\Artifacts\Decorative\KingsGildedStatue.cs" />
+    <Compile Include="Items\Artifacts\Decorative\KingsPainting.cs" />
+    <Compile Include="Items\Artifacts\Decorative\MedusasFloorTileAddon.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\TheRedeemer.cs" />
     <Compile Include="Items\Consumables\2019HolidayGiftToken.cs" />
     <Compile Include="Items\Consumables\AnniversaryPromotionalToken.cs" />
