@@ -379,6 +379,11 @@ namespace Server.Multis
 
         public override bool CheckAddon(Item item)
         {
+            if(Addons == null)
+            {
+                return false;
+            }
+        
             if (Addons.ContainsKey(item))
             {
                 return true;
@@ -1292,6 +1297,27 @@ namespace Server.Multis
             {23664, 23665, 23718, 23719, 23610, 23611, 23556, 23557, 23664, 23665, 23718, 23719, 23610, 23611, 23556, 23557};
 
         public bool CanAddAddon(Point3D p)
+        {
+            if (Addons.Count >= MaxAddons || Map == null || Map == Map.Internal)
+                return false;
+
+            IPooledEnumerable eable = Map.GetItemsInRange(p, 0);
+
+            foreach (var item in eable.OfType<DeckItem>())
+            {
+                if (m_ShipAddonTiles.Any(id => id == item.ItemID) && !Addons.ContainsValue(item))
+                {
+                    eable.Free();
+                    return true;
+                }
+            }
+
+            eable.Free();
+            return false;
+        }
+
+        public void AddAddon(Item addon)
+        {
         {
             if (Addons.Count >= MaxAddons || Map == null || Map == Map.Internal)
                 return false;
