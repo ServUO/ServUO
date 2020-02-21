@@ -1318,27 +1318,6 @@ namespace Server.Multis
 
         public void AddAddon(Item addon)
         {
-        {
-            if (Addons.Count >= MaxAddons || Map == null || Map == Map.Internal)
-                return false;
-
-            IPooledEnumerable eable = Map.GetItemsInRange(p, 0);
-
-            foreach (var item in eable.OfType<DeckItem>())
-            {
-                if (m_ShipAddonTiles.Any(id => id == item.ItemID) && !Addons.ContainsValue(item))
-                {
-                    eable.Free();
-                    return true;
-                }
-            }
-
-            eable.Free();
-            return false;
-        }
-
-        public void AddAddon(Item addon)
-        {
             if (Addons == null)
             {
                 Addons = new Dictionary<Item, DeckItem>();
