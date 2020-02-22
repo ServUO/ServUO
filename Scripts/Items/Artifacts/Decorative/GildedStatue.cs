@@ -9,7 +9,7 @@ namespace Server.Items
         public override int ArtifactRarity { get { return 8; } }
 
         public override double DefaultWeight { get { return 10.0; } }
-        public override string DefaultName { get { return "A Gilded Statue from teh Personal Collection of the King"; } }
+        public override string DefaultName { get { return "A Gilded Statue From The Personal Collection Of The King"; } }
 
         [Constructable]
         public KingsGildedStatue()
