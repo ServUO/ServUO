@@ -6,8 +6,16 @@ namespace Server.Items
     {
         [Constructable]
         public Lodestone()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public Lodestone(int amount)
             : base(0x5739)
         {
+            Stackable = true;
+            Amount = amount;
         }
 
         public Lodestone(Serial serial)

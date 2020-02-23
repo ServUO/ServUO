@@ -29,13 +29,24 @@ namespace Server.Engines.Points
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
+
+            writer.Write(Enabled);
+            writer.Write(QuestContentGenerated);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    Enabled = reader.ReadBool();
+                    QuestContentGenerated = reader.ReadBool();
+                    break;
+            }
         }
 	}
 }

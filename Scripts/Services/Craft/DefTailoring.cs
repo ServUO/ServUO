@@ -109,14 +109,6 @@ namespace Server.Engines.Craft
             return 0.5; // 50%
         }
 
-        public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
-        {
-            if (resourceType == typeof(MidnightBracers))
-                return false;
-
-            return base.ConsumeOnFailure(from, resourceType, craftItem);
-        }
-
         private DefTailoring()
             : base(1, 1, 1.25)// base( 1, 1, 4.5 )
         {
@@ -493,21 +485,21 @@ namespace Server.Engines.Craft
                 index = AddCraft(typeof(CrimsonMaceBelt), 1015283, 1159211, 120.0, 215.0, typeof(Cloth), 1044455, 5, 1044287);
                 AddRes(index, typeof(Leather), 1044462, 5, 1044463);
                 AddRes(index, typeof(CrimsonCincture), 1075043, 1, 1044253);
-                AddRes(index, typeof(Lodestone), 1113332, 10, 1044253);
+                AddRes(index, typeof(Lodestone), 1113348, 10, 1044253);
                 AddRecipe(index, (int)TailorRecipe.CrimsonMaceBelt);
                 ForceExceptional(index);
 
                 index = AddCraft(typeof(CrimsonSwordBelt), 1015283, 1159212, 120.0, 215.0, typeof(Cloth), 1044455, 5, 1044287);
                 AddRes(index, typeof(Leather), 1044462, 5, 1044463);
                 AddRes(index, typeof(CrimsonCincture), 1075043, 1, 1044253);
-                AddRes(index, typeof(Lodestone), 1113332, 10, 1044253);
+                AddRes(index, typeof(Lodestone), 1113348, 10, 1044253);
                 AddRecipe(index, (int)TailorRecipe.CrimsonSwordBelt);
                 ForceExceptional(index);
 
                 index = AddCraft(typeof(CrimsonDaggerBelt), 1015283, 1159213, 120.0, 215.0, typeof(Cloth), 1044455, 5, 1044287);
                 AddRes(index, typeof(Leather), 1044462, 5, 1044463);
                 AddRes(index, typeof(CrimsonCincture), 1075043, 1, 1044253);
-                AddRes(index, typeof(Lodestone), 1113332, 10, 1044253);
+                AddRes(index, typeof(Lodestone), 1113348, 10, 1044253);
                 AddRecipe(index, (int)TailorRecipe.CrimsonDaggerBelt);
                 ForceExceptional(index);
 

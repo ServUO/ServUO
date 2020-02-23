@@ -5791,14 +5791,7 @@ namespace Server.Mobiles
             {
                 if (vvv)
                 {
-                    if (guild != null && DisplayGuildAbbr)
-                    {
-                        suffix = String.Format("[{0}] [VvV]", Utility.FixHtml(guild.Abbreviation));
-                    }
-                    else
-                    {
-                        suffix = "[VvV]";
-                    }
+                    suffix = String.Format("[{0}] [VvV]", Utility.FixHtml(guild.Abbreviation));
                 }
                 else if (suffix.Length > 0)
                 {
