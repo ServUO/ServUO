@@ -608,6 +608,7 @@
     <Compile Include="Items\Addons\FormalDiningTable.cs" />
     <Compile Include="Items\Addons\GadgetryTable.cs" />
     <Compile Include="Items\Consumables\DecorativeKitchenSet.cs" />
+	<Compile Include="Items\Consumables\DecorativeStableSet.cs" />
     <Compile Include="Items\Consumables\EmbroideryTool.cs" />
     <Compile Include="Items\Damageable\Beacon.cs" />
     <Compile Include="Items\Damageable\DamageableItem.cs" />
