@@ -5,6 +5,7 @@ using Server;
 using Server.Items;
 using Server.Engines.Points;
 using Server.Mobiles;
+using Server.Engines.Quests;
 
 namespace Server.Engines.Fellowship
 {
@@ -15,6 +16,64 @@ namespace Server.Engines.Fellowship
             if (Core.EJ)
             {
                 EventSink.WorldSave += OnWorldSave;
+
+                if (MiningCooperativeMerchant.InstanceTram == null && !Siege.SiegeShard)
+                {
+                    MiningCooperativeMerchant.InstanceTram = new MiningCooperativeMerchant();
+                    MiningCooperativeMerchant.InstanceTram.MoveToWorld(new Point3D(2497, 432, 15), Map.Trammel);
+
+                    MiningCooperativeMerchant.InstanceTram.Home = MiningCooperativeMerchant.InstanceTram.Location;
+                    MiningCooperativeMerchant.InstanceTram.RangeHome = 5;
+                }
+
+                if (MiningCooperativeMerchant.InstanceFel == null)
+                {
+                    MiningCooperativeMerchant.InstanceFel = new MiningCooperativeMerchant();
+                    MiningCooperativeMerchant.InstanceFel.MoveToWorld(new Point3D(2497, 432, 15), Map.Felucca);
+
+                    MiningCooperativeMerchant.InstanceFel.Home = MiningCooperativeMerchant.InstanceFel.Location;
+                    MiningCooperativeMerchant.InstanceFel.RangeHome = 5;
+                }
+
+                if (FellowshipAdept.InstanceTram == null && !Siege.SiegeShard)
+                {
+                    FellowshipAdept.InstanceTram = new FellowshipAdept();
+                    FellowshipAdept.InstanceTram.MoveToWorld(new Point3D(1711, 1570, 44), Map.Trammel);
+
+                    FellowshipAdept.InstanceTram.Home = FellowshipAdept.InstanceTram.Location;
+                    FellowshipAdept.InstanceTram.RangeHome = 5;
+                }
+
+                if (FellowshipAdept.InstanceFel == null)
+                {
+                    FellowshipAdept.InstanceFel = new FellowshipAdept();
+                    FellowshipAdept.InstanceFel.MoveToWorld(new Point3D(1711, 1570, 44), Map.Felucca);
+
+                    FellowshipAdept.InstanceFel.Home = FellowshipAdept.InstanceFel.Location;
+                    FellowshipAdept.InstanceFel.RangeHome = 5;
+                }
+            }
+            else
+            {
+                if (MiningCooperativeMerchant.InstanceTram != null)
+                {
+                    MiningCooperativeMerchant.InstanceTram.Delete();
+                }
+
+                if (MiningCooperativeMerchant.InstanceFel != null)
+                {
+                    MiningCooperativeMerchant.InstanceFel.Delete();
+                }
+
+                if (FellowshipAdept.InstanceTram != null)
+                {
+                    FellowshipAdept.InstanceTram.Delete();
+                }
+
+                if (FellowshipAdept.InstanceFel != null)
+                {
+                    FellowshipAdept.InstanceFel.Delete();
+                }
             }
         }
 
@@ -83,20 +142,12 @@ namespace Server.Engines.Fellowship
 
         public static void GenerateQuestContent()
         {
-            XmlSpawner sp;
-
             if (!Siege.SiegeShard)
             {
                 if (TheFellowshipHouse.InstanceTram == null)
                 {
                     TheFellowshipHouse.InstanceTram = new TheFellowshipHouse();
                     TheFellowshipHouse.InstanceTram.MoveToWorld(new Point3D(1720, 1562, 17), Map.Trammel);
-                }
-
-                if (FellowshipAdept.InstanceTram == null)
-                {
-                    FellowshipAdept.InstanceTram = new FellowshipAdept();
-                    FellowshipAdept.InstanceTram.MoveToWorld(new Point3D(1711, 1570, 44), Map.Trammel);
                 }
 
                 if (Follower.InstanceTram == null)
@@ -123,15 +174,6 @@ namespace Server.Engines.Fellowship
                     TheFellowshipStaff.InstanceTram.MoveToWorld(new Point3D(1718, 1559, 55), Map.Trammel);
                 }
 
-                sp = new XmlSpawner("MiningCooperativeMerchant")
-                {
-                    SpawnRange = 1,
-                    HomeRange = 5
-                };
-
-                sp.MoveToWorld(new Point3D(2497, 432, 15), Map.Trammel);
-                sp.Respawn();
-
                 OtherQuestContent(Map.Trammel);
             }
 
@@ -139,12 +181,6 @@ namespace Server.Engines.Fellowship
             {
                 TheFellowshipHouse.InstanceFel = new TheFellowshipHouse();
                 TheFellowshipHouse.InstanceFel.MoveToWorld(new Point3D(1720, 1562, 17), Map.Felucca);
-            }
-
-            if (FellowshipAdept.InstanceFel == null)
-            {
-                FellowshipAdept.InstanceFel = new FellowshipAdept();
-                FellowshipAdept.InstanceFel.MoveToWorld(new Point3D(1711, 1570, 44), Map.Felucca);
             }
 
             if (Follower.InstanceFel == null)
@@ -170,15 +206,6 @@ namespace Server.Engines.Fellowship
                 TheFellowshipStaff.InstanceFel = new TheFellowshipStaff();
                 TheFellowshipStaff.InstanceFel.MoveToWorld(new Point3D(1718, 1559, 55), Map.Felucca);
             }
-
-            sp = new XmlSpawner("MiningCooperativeMerchant")
-            {
-                SpawnRange = 1,
-                HomeRange = 5
-            };
-
-            sp.MoveToWorld(new Point3D(2497, 432, 15), Map.Felucca);
-            sp.Respawn();
 
             OtherQuestContent(Map.Felucca);
         }

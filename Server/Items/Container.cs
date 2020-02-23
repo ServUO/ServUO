@@ -12,9 +12,8 @@ using Server.Network;
 namespace Server.Items
 {
     public delegate void OnItemConsumed(Item item, int amount);
-
     public delegate int CheckItemGroup(Item a, Item b);
-
+    public delegate bool ResValidator(Item item);
     public delegate void ContainerSnoopHandler(Container cont, Mobile from);
 
     public class Container : Item
@@ -355,6 +354,11 @@ namespace Server.Items
         #region Consume[...]
         public bool ConsumeTotalGrouped(Type type, int amount, bool recurse, OnItemConsumed callback, CheckItemGroup grouper)
         {
+            return ConsumeTotalGrouped(type, amount, recurse, null, callback, grouper);
+        }
+
+        public bool ConsumeTotalGrouped(Type type, int amount, bool recurse, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper)
+        {
             if (grouper == null)
             {
                 throw new ArgumentNullException();
@@ -368,6 +372,10 @@ namespace Server.Items
             while (idx < typedItems.Length)
             {
                 Item a = typedItems[idx++];
+
+                if (validator != null && !validator(a))
+                    continue;
+
                 var group = new List<Item>();
 
                 group.Add(a);
@@ -375,6 +383,10 @@ namespace Server.Items
                 while (idx < typedItems.Length)
                 {
                     Item b = typedItems[idx];
+
+                    if (validator != null && !validator(b))
+                        continue;
+
                     int v = grouper(a, b);
 
                     if (v == 0)
@@ -462,6 +474,12 @@ namespace Server.Items
         public int ConsumeTotalGrouped(
             Type[] types, int[] amounts, bool recurse, OnItemConsumed callback, CheckItemGroup grouper)
         {
+            return ConsumeTotalGrouped(types, amounts, recurse, null, callback, grouper);
+        }
+
+        public int ConsumeTotalGrouped(
+            Type[] types, int[] amounts, bool recurse, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper)
+        {
             if (types.Length != amounts.Length)
             {
                 throw new ArgumentException();
@@ -484,6 +502,10 @@ namespace Server.Items
                 while (idx < typedItems.Length)
                 {
                     Item a = typedItems[idx++];
+
+                    if (validator != null && !validator(a))
+                        continue;
+
                     var group = new List<Item>();
 
                     group.Add(a);
@@ -491,6 +513,10 @@ namespace Server.Items
                     while (idx < typedItems.Length)
                     {
                         Item b = typedItems[idx];
+
+                        if (validator != null && !validator(b))
+                            continue;
+
                         int v = grouper(a, b);
 
                         if (v == 0)
@@ -582,6 +608,12 @@ namespace Server.Items
         public int ConsumeTotalGrouped(
             Type[][] types, int[] amounts, bool recurse, OnItemConsumed callback, CheckItemGroup grouper)
         {
+            return ConsumeTotalGrouped(types, amounts, recurse, null, callback, grouper);
+        }
+
+        public int ConsumeTotalGrouped(
+            Type[][] types, int[] amounts, bool recurse, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper)
+        {
             if (types.Length != amounts.Length)
             {
                 throw new ArgumentException();
@@ -604,6 +636,10 @@ namespace Server.Items
                 while (idx < typedItems.Length)
                 {
                     Item a = typedItems[idx++];
+
+                    if (validator != null && !validator(a))
+                        continue;
+
                     var group = new List<Item>();
 
                     group.Add(a);
@@ -611,6 +647,10 @@ namespace Server.Items
                     while (idx < typedItems.Length)
                     {
                         Item b = typedItems[idx];
+
+                        if (validator != null && !validator(b))
+                            continue;
+
                         int v = grouper(a, b);
 
                         if (v == 0)

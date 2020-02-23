@@ -88,14 +88,6 @@ namespace Server.Engines.Craft
             return 0;
         }
 
-        public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
-        {
-            if (resourceType == typeof(AntiqueDocumentsKit))
-                return false;
-
-            return base.ConsumeOnFailure(from, resourceType, craftItem);
-        }
-
         private System.Collections.Generic.Dictionary<Type, int> _Buffer = new System.Collections.Generic.Dictionary<Type, int>();
 
         public override void PlayCraftEffect(Mobile from)

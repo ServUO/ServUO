@@ -269,7 +269,22 @@ namespace Server.Engines.Craft
         {
             typeof(CapturedEssence), typeof(EyeOfTheTravesty), typeof(DiseasedBark),  typeof(LardOfParoxysmus), typeof(GrizzledBones), typeof(DreadHornMane),
 
-            typeof(Blight), typeof(Corruption), typeof(Muculent), typeof(Scourge), typeof(Putrefaction), typeof(Taint)
+            typeof(Blight), typeof(Corruption), typeof(Muculent), typeof(Scourge), typeof(Putrefaction), typeof(Taint),
+
+            // Tailoring
+            typeof(MidnightBracers), typeof(CrimsonCincture), typeof(GargishCrimsonCincture), typeof(LeurociansMempoOfFortune),
+
+            // Blacksmithy
+            typeof(LeggingsOfBane), typeof(GauntletsOfNobility),
+
+            // Carpentry
+            typeof(StaffOfTheMagi), typeof(BlackrockMoonstone),
+
+            // Tinkering
+            typeof(Server.Factions.Silver), typeof(RingOfTheElements), typeof(HatOfTheMagi), typeof(AutomatonActuator),
+
+            // Inscription
+            typeof(AntiqueDocumentsKit)
         };
 
         public virtual bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)

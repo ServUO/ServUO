@@ -85,19 +85,6 @@ namespace Server.Engines.Craft
             return 0.0; // 0%
         }
 
-        private System.Collections.Generic.List<Type> _NoConsumeOnFail = new System.Collections.Generic.List<Type>
-        {
-            typeof(LeggingsOfBane), typeof(GauntletsOfNobility)
-        };
-
-        public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
-        {
-            if (_NoConsumeOnFail.Contains(resourceType))
-                return false;
-
-            return base.ConsumeOnFailure(from, resourceType, craftItem);
-        }
-
         private DefBlacksmithy()
             : base(1, 1, 1.25) // base( 1, 2, 1.7 )
         {
