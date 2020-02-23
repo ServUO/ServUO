@@ -79,7 +79,10 @@ namespace Server.Items
         Krampus,
         KhalAnkur,
         KrampusMinion,
-        Horse
+        Horse,
+        Pig,
+        Goat,
+        IceFiend
     }
 
     public class MonsterStatuetteInfo
@@ -160,6 +163,9 @@ namespace Server.Items
             /* Khal Ankur */        new MonsterStatuetteInfo(1158877, 0xA1C6, new int[] { 0x301, 0x302, 0x303, 0x304, 0x305 }),
             /* Krampus Minion */    new MonsterStatuetteInfo(1158876, 0xA271, new int[] { 0X1C8, 0X1C9, 0X1CA, 0X1CB, 0X1CC }),
             /* Horse */             new MonsterStatuetteInfo(1018263, 0xA511, 0x0A9),
+            /* Pig */               new MonsterStatuetteInfo(1159417, 0x2101, 0x0C5),
+            /* Goat */              new MonsterStatuetteInfo(1159418, 0x2580, 0x09A),
+            /* Ice Fiend */         new MonsterStatuetteInfo(1159419, 0x2587, 0x166),
         };
         
         public MonsterStatuetteInfo(int labelNumber, int itemID, int baseSoundID)

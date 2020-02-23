@@ -122,7 +122,8 @@ namespace Server.Engines.Craft
                 bool isAnvil = (type.IsDefined(typeofAnvil, false) || item.ItemID == 4015 || item.ItemID == 4016 ||
                                 item.ItemID == 0x2DD5 || item.ItemID == 0x2DD6);
                 bool isForge = (type.IsDefined(typeofForge, false) || item.ItemID == 4017 ||
-                                (item.ItemID >= 6522 && item.ItemID <= 6569) || item.ItemID == 0x2DD8);
+                                (item.ItemID >= 6522 && item.ItemID <= 6569) || item.ItemID == 0x2DD8) ||
+                                item.ItemID == 0xA531 || item.ItemID == 0xA535;
 
                 if (!isAnvil && !isForge)
                 {

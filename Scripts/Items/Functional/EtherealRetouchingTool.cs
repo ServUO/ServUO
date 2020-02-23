@@ -62,7 +62,7 @@ namespace Server.Items
                 {
                     EtherealMount mount = targeted as EtherealMount;
 
-                    if (mount is GMEthereal)
+                    if (mount is GMEthereal || mount is EtherealWarBoar)
                     {
                         from.SendMessage("You cannot use it on this!");
                     }
