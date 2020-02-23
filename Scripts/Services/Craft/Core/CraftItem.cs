@@ -380,7 +380,6 @@ namespace Server.Engines.Craft
             new[] { typeof(Sausage), typeof(CookableSausage) },
             new[] { typeof(Lettuce), typeof(FarmableLettuce) },
             new[] { typeof(DarkYarn), typeof(LightYarn) }
-
         };
 
 		private static readonly Type[] m_ColoredItemTable = 
@@ -1091,7 +1090,7 @@ namespace Server.Engines.Craft
                 }
                 else
                 {
-                    index = ourPack.ConsumeTotalGrouped(types, amounts, true, OnResourceConsumed, CheckHueGrouping);
+                    index = ourPack.ConsumeTotalGrouped(types, amounts, true, ResourceValidator, OnResourceConsumed, CheckHueGrouping);
                 }
 
 				resHue = m_ResHue;
@@ -1123,7 +1122,7 @@ namespace Server.Engines.Craft
                 }
                 else
                 {
-                    index = ourPack.ConsumeTotalGrouped(types, amounts, true, OnResourceConsumed, CheckHueGrouping);
+                    index = ourPack.ConsumeTotalGrouped(types, amounts, true, ResourceValidator, OnResourceConsumed, CheckHueGrouping);
                 }
 
 				resHue = m_ResHue;
@@ -1254,6 +1253,17 @@ namespace Server.Engines.Craft
 		{
 			return b.Hue.CompareTo(a.Hue);
 		}
+
+        public bool ResourceValidator(Item item)
+        {
+            // VvV items or Faction Items cannot be used as resources
+            if ((item is IVvVItem && ((IVvVItem)item).IsVvVItem) || (item is IFactionItem && ((IFactionItem)item).FactionItemState != null))
+            {
+                return false;
+            }
+
+            return true;
+        }
 
 		public double GetExceptionalChance(CraftSystem system, double chance, Mobile from)
 		{

@@ -117,6 +117,9 @@ namespace Server.Engines.Quests
         public int Price { get { return 112; } }
         public int Quantity { get { return 500; } }
 
+        public static MiningCooperativeMerchant InstanceTram { get; set; }
+        public static MiningCooperativeMerchant InstanceFel { get; set; }
+
         public override void InitSBInfo()
         {
         }
@@ -156,6 +159,16 @@ namespace Server.Engines.Quests
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (Map == Map.Trammel)
+            {
+                InstanceTram = this;
+            }
+
+            if (Map == Map.Felucca)
+            {
+                InstanceFel = this;
+            }
         }
 
         public class MiningCooperativeGump : Gump

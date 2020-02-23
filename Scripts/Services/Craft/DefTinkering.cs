@@ -172,20 +172,6 @@ namespace Server.Engines.Craft
             }
         }
 
-        private System.Collections.Generic.List<Type> _NoConsumeOnFailure = new System.Collections.Generic.List<Type>
-        {
-            typeof(Silver), typeof(RingOfTheElements), typeof(HatOfTheMagi), typeof(AutomatonActuator),
-            typeof(BlackrockMoonstone)
-        };
-
-        public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
-        {
-            if (_NoConsumeOnFailure.Contains(resourceType))
-                return false;
-
-            return base.ConsumeOnFailure(from, resourceType, craftItem);
-        }
-
         public void AddJewelrySet(GemType gemType, Type itemType)
         {
             int offset = (int)gemType - 1;
