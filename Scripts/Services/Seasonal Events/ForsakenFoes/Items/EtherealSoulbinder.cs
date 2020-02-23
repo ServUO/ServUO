@@ -103,7 +103,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            m_SoulPoint = reader.ReadInt();
+            m_SoulPoint = reader.ReadDouble();
         }
     }
 }

@@ -41,6 +41,9 @@ namespace Server.Engines.Craft
             if (item.ItemType == typeof(HollowPrism))
                 return 0.5; // 50%
 
+            if (item.ItemType == typeof(EtherealSoulbinder))
+                return 0.1; // 10%
+
             return 0.0; // 0%
         }
 
@@ -105,7 +108,7 @@ namespace Server.Engines.Craft
         public override void InitCraftList()
         {
             int index = AddCraft(typeof(Bottle), 1044050, 1023854, 52.5, 102.5, typeof(Sand), 1044625, 1, 1044627);
-            this.SetUseAllRes(index, true);
+            SetUseAllRes(index, true);
 
             AddCraft(typeof(SmallFlask), 1044050, 1044610, 52.5, 102.5, typeof(Sand), 1044625, 2, 1044627);
             AddCraft(typeof(MediumFlask), 1044050, 1044611, 52.5, 102.5, typeof(Sand), 1044625, 3, 1044627);
@@ -118,12 +121,7 @@ namespace Server.Engines.Craft
             AddCraft(typeof(EmptyVialsWRack), 1044050, 1044616, 65.0, 115.0, typeof(Sand), 1044625, 8, 1044627);
             AddCraft(typeof(FullVialsWRack), 1044050, 1044617, 65.0, 115.0, typeof(Sand), 1044625, 9, 1044627);
             AddCraft(typeof(SpinningHourglass), 1044050, 1044618, 75.0, 125.0, typeof(Sand), 1044625, 10, 1044627);
-
-            if (Core.SA)
-            {
-                index = AddCraft(typeof(WorkableGlass), 1044050, 1154170, 55.0, 105.0, typeof(Sand), 1044625, 10, 1044627);
-            }
-
+            
             if (Core.ML)
             {
                 index = AddCraft(typeof(HollowPrism), 1044050, 1072895, 100.0, 150.0, typeof(Sand), 1044625, 8, 1044627);
@@ -140,6 +138,16 @@ namespace Server.Engines.Craft
                 SetItemHue(index, 1150);
 
                 index = AddCraft(typeof(EmptyVenomVial), 1044050, 1112215, 52.5, 102.5, typeof(Sand), 1044625, 1, 1044627);
+
+                index = AddCraft(typeof(EmptyOilFlask), 1044050, 1150866, 60.0, 110.0, typeof(Sand), 1044625, 5, 1044627);
+
+                index = AddCraft(typeof(WorkableGlass), 1044050, 1154170, 55.0, 105.0, typeof(Sand), 1044625, 10, 1044627);
+
+                if (Core.EJ)
+                {
+                    index = AddCraft(typeof(EtherealSoulbinder), 1044050, 1159167, 100.0, 190.0, typeof(Sand), 1044625, 20, 1044627);
+                    AddRes(index, typeof(EtherealSand), 1125984, 5, 1159169);
+                }
 
                 //Glass Weapons
                 index = AddCraft(typeof(GlassSword), 1111745, 1022316, 55.0, 105.0, typeof(Sand), 1044625, 14, 1044627);
@@ -158,12 +166,12 @@ namespace Server.Engines.Craft
             public InternalTimer(Mobile from)
                 : base(TimeSpan.FromSeconds(0.7))
             {
-                this.m_From = from;
+                m_From = from;
             }
 
             protected override void OnTick()
             {
-                this.m_From.PlaySound(0x2A);
+                m_From.PlaySound(0x2A);
             }
         }
     }
