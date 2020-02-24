@@ -29,21 +29,21 @@ namespace Server.Engines.Blackthorn
         public BlackthornDungeon(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)
         {
-            var fellowship = PointsSystem.FellowshipData;
-
-            if (!fellowship.Enabled)
-                Timer.DelayCall(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), OnTick);
+            Timer.DelayCall(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), OnTick);
         }
 
         public void OnTick()
         {
-            foreach (Mobile m in this.GetEnumeratedMobiles().Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player))
+            if (!PointsSystem.FellowshipData.Enabled)
             {
-                if (m.Hidden)
-                    m.RevealingAction();
+                foreach (Mobile m in GetEnumeratedMobiles().Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player))
+                {
+                    if (m.Hidden)
+                        m.RevealingAction();
 
-                if (m.Y > 2575 && m.LastMoveTime + 120000 < Core.TickCount)
-                    MoveLocation(m);
+                    if (m.Y > 2575 && m.LastMoveTime + 120000 < Core.TickCount)
+                        MoveLocation(m);
+                }
             }
         }
 
