@@ -62,6 +62,13 @@ namespace Server.Engines.VoidPool
             : base(serial)
         {
         }
+		
+		public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1152664); // Covetous Void Pool Reward Vendor
+        }
 
         public override void Serialize(GenericWriter writer)
         {
