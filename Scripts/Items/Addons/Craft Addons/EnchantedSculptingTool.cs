@@ -65,7 +65,7 @@ namespace Server.Items
 
     public class EnchantedSculptingToolDeed : CraftAddonDeed, IRewardItem, IRewardOption
     {
-        public override int LabelNumber { get { return 1159420; } } // Glass Kiln
+        public override int LabelNumber { get { return 1159421; } } // Enchanted Sculpting Tool
 
         public override BaseAddon Addon
         {
