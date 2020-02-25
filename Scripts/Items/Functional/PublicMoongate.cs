@@ -209,6 +209,12 @@ namespace Server.Items
 				m.SendLocalizedMessage(1071955); 
 				return false;
 			}
+            
+            if (!m.InRange(GetWorldLocation(), 3))
+			{
+				m.SendLocalizedMessage( 500446 ); // That is too far away.
+				return false;				
+			}
 
 			return true;
 		}
@@ -220,12 +226,6 @@ namespace Server.Items
 				return false;
 			}
             
-            if (!m.InRange(GetWorldLocation(), 3))
-			{
-				m.SendLocalizedMessage( 500446 ); // That is too far away.
-				return false;				
-			}
-
 			m.CloseGump(typeof(MoongateGump));
 			m.SendGump(new MoongateGump(m, this));
 
