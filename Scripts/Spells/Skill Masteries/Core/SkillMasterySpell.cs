@@ -612,6 +612,18 @@ namespace Server.Spells.SkillMasteries
             return false;
         }
 
+        public static bool HasSpell<TSpell>(Mobile from) where TSpell : SkillMasterySpell
+        {
+            CheckTable(from);
+
+            if (m_Table.ContainsKey(from))
+            {
+                return m_Table[from].Any(spell => spell.GetType() == typeof(TSpell));
+            }
+
+            return false;
+        }
+
         public static bool UnderPartyEffects(Mobile from, Type type)
         {
             return GetSpellForParty(from, type) != null;

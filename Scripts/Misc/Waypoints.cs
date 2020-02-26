@@ -75,7 +75,7 @@ namespace Server
         {
             NetState ns = m.NetState;
 
-            if (ns == null || !ns.IsEnhancedClient)
+            if (ns == null /*|| !ns.IsEnhancedClient*/)
                 return;
 
             AddHealers(m);

@@ -24,6 +24,8 @@ namespace Server.Spells.SkillMasteries
 
         public override SkillName CastSkill { get { return SkillName.Parry; } }
 
+        public double Multiplier { get { return (Caster.Skills[GetBestSkill()].Value + Caster.Skills[SkillName.Parry].Value + (GetMasteryLevel() * 40)) / 360; } }
+
         public ShieldBashSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
@@ -47,7 +49,7 @@ namespace Server.Spells.SkillMasteries
                 Caster.FixedParticles(0x376A, 9, 32, 5030, 1168, 0, EffectLayer.Waist, 0);
                 Caster.PlaySound(0x51A);
 
-                TimeSpan duration = TimeSpan.FromSeconds(5);
+                TimeSpan duration = TimeSpan.FromSeconds((int)Math.Max(3, 5.0 * Multiplier));
 
                 Caster.SendLocalizedMessage(1156022); // You ready your shield.
 
@@ -102,19 +104,52 @@ namespace Server.Spells.SkillMasteries
             }
 
             Caster.SendLocalizedMessage(1156027); // You bash you target with your shield!
-            bool pvp = defender is PlayerMobile;
+            bool pvp = Caster is PlayerMobile && defender is PlayerMobile;
 
-            damage = (pvp ? damage * 2 : damage * 5) + Utility.RandomMinMax(-4, 4);
+            var multiplier = Multiplier;
+
+            damage = pvp ? (int)(damage * (multiplier * 3)) : (int)(damage * (multiplier * 7));
 
             if (pvp && damage > 35)
                 damage = 35;
 
             Server.Timer.DelayCall(TimeSpan.FromMilliseconds(100), () =>
                 {
-                    CheckParalyze(defender, TimeSpan.FromSeconds(pvp ? 3 : 6));
+                    if (defender.Alive)
+                    {
+                        CheckParalyze(defender, TimeSpan.FromSeconds(pvp ? multiplier * 3 : multiplier * 6));
+                    }
                 });
 
             Expire();
+        }
+
+        private SkillName GetBestSkill()
+        {
+            double swrd = Caster.Skills[SkillName.Swords].Value;
+            double fenc = Caster.Skills[SkillName.Fencing].Value;
+            double mcng = Caster.Skills[SkillName.Macing].Value;
+            double wres = Caster.Skills[SkillName.Wrestling].Value;
+
+            SkillName sk = SkillName.Swords;
+            double val = swrd;
+
+            if (fenc > val)
+            {
+                sk = SkillName.Fencing;
+                val = fenc;
+            }
+            if (mcng > val)
+            {
+                sk = SkillName.Macing;
+                val = mcng;
+            }
+            if (wres > val)
+            {
+                sk = SkillName.Wrestling;
+            }
+
+            return sk;
         }
 
         private void CheckParalyze(Mobile defender, TimeSpan duration)

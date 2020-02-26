@@ -2253,7 +2253,7 @@ namespace Server.Items
             bool ranged = this is BaseRanged;
             int phys, fire, cold, pois, nrgy, chaos, direct;
 
-            if (Core.TOL && a is MovingShot)
+            if ((Core.TOL && a is MovingShot) || SkillMasterySpell.HasSpell<ShieldBashSpell>(attacker))
             {
                 phys = 100;
                 fire = cold = pois = nrgy = chaos = direct = 0;
