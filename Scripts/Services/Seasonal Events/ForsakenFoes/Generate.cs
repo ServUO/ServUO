@@ -269,7 +269,7 @@ namespace Server.Engines.Fellowship
         #region remove decoration
         public static void Remove()
         {
-            string filename = XmlSpawner.LocateFile("RevampedSpawns/BlackthornDungeon.xml");
+            string filename = XmlSpawner.LocateFile("RevampedSpawns/BlackthornDungeonCreature.xml");
             XmlSpawner.XmlLoadFromFile(filename, string.Empty, null, Point3D.Zero, Map.Internal, false, 0, false, out int processedmaps, out int processedspawners);
 
             RemoveDecoration();
@@ -388,6 +388,13 @@ namespace Server.Engines.Fellowship
                 {
                     b.Delete();
                 }
+
+                Item lb = map.FindItem<LOSBlocker>(new Point3D(x));
+
+                if (lb != null)
+                {
+                    lb.Delete();
+                }
             });
 
             for (int i = 0; i < Workers.Length; i++)
@@ -460,7 +467,7 @@ namespace Server.Engines.Fellowship
 
         public static void Generate()
         {
-            string filename = XmlSpawner.LocateFile("RevampedSpawns/BlackthornDungeon.xml");
+            string filename = XmlSpawner.LocateFile("RevampedSpawns/BlackthornDungeonCreature.xml");
             XmlSpawner.XmlUnLoadFromFile(filename, string.Empty, null, out int processedmaps, out int processedspawners);
 
             if (!Siege.SiegeShard)
@@ -576,6 +583,13 @@ namespace Server.Engines.Fellowship
                     Blocker bl = new Blocker();
 
                     bl.MoveToWorld(new Point3D(x), map);
+                }
+
+                if (map.FindItem<LOSBlocker>(new Point3D(x)) == null)
+                {
+                    LOSBlocker lb = new LOSBlocker();
+
+                    lb.MoveToWorld(new Point3D(x), map);
                 }
             });
 

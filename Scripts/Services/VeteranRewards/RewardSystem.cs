@@ -384,6 +384,7 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(monsterStatues, 1155746, typeof(MonsterStatuette), MonsterStatuetteType.FleshRenderer),
                     new RewardEntry(monsterStatues, 1156367, typeof(MonsterStatuette), Expansion.TOL, MonsterStatuetteType.DragonTurtle),
                     new RewardEntry(monsterStatues, 1158875, typeof(MonsterStatuette), Expansion.EJ, MonsterStatuetteType.Krampus),
+                    new RewardEntry(monsterStatues, 1159417, typeof(MonsterStatuette), Expansion.EJ, MonsterStatuetteType.Pig),
 
                     new RewardEntry(etherealSteeds, 1006019, typeof(EtherealHorse)),
 
@@ -417,6 +418,7 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(monsterStatues, 1155747, typeof(MonsterStatuette), MonsterStatuetteType.CrystalElemental),
                     new RewardEntry(monsterStatues, 1157078, typeof(MonsterStatuette), Expansion.TOL, MonsterStatuetteType.TRex),
                     new RewardEntry(monsterStatues, 1158877, typeof(MonsterStatuette), Expansion.EJ, MonsterStatuetteType.KhalAnkur),
+                    new RewardEntry(monsterStatues, 1159418, typeof(MonsterStatuette), Expansion.EJ, MonsterStatuetteType.Goat),
 
                     new RewardEntry(houseAddOns,    1006048, typeof(BannerDeed)),
                     new RewardEntry(houseAddOns,    1006049, typeof(FlamingHeadDeed)),
@@ -441,6 +443,8 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(monsterStatues, 1155748, typeof(MonsterStatuette), MonsterStatuetteType.DarkFather),
                     new RewardEntry(monsterStatues, 1157079, typeof(MonsterStatuette), Expansion.TOL, MonsterStatuetteType.Zipactriotal),
                     new RewardEntry(monsterStatues, 1158876, typeof(MonsterStatuette), Expansion.EJ, MonsterStatuetteType.KrampusMinion),
+                    new RewardEntry(monsterStatues, 1159419, typeof(MonsterStatuette), Expansion.EJ, MonsterStatuetteType.IceFiend),
+
 
                     new RewardEntry(etherealSteeds, 1006051, typeof(EtherealLlama)),
                     new RewardEntry(etherealSteeds, 1006050, typeof(EtherealOstard)),
@@ -617,6 +621,7 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(etherealSteeds, 1154589, typeof(EtherealTiger), Expansion.TOL),
                     new RewardEntry(etherealSteeds, 1155723, typeof(EtherealAncientHellHound), Expansion.TOL),
                     new RewardEntry(etherealSteeds, 1157081, typeof(EtherealTarantula), Expansion.TOL),
+                    new RewardEntry(etherealSteeds, 1157081, typeof(EtherealWarBoar), Expansion.EJ),
 
                     new RewardEntry(houseAddOns,    1153491, typeof(GardenShedDeed), Expansion.TOL),
                 }),

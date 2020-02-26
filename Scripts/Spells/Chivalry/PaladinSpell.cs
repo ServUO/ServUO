@@ -97,7 +97,7 @@ namespace Server.Spells.Chivalry
         public override void SayMantra()
         {
             if (Caster.Player)
-                Caster.PublicOverheadMessage(MessageType.Spell, Caster.SpeechHue, MantraNumber, "", false);
+                Caster.PublicOverheadMessage( MessageType.Regular, 0x3B2, MantraNumber, "", false );
         }
 
         public override void DoFizzle()
