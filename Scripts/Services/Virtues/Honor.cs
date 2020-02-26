@@ -48,7 +48,8 @@ namespace Server.Services.Virtues
 					BuffInfo.Blank,
 					TimeSpan.FromSeconds(duration),
 					pm,
-					"You have embraced your honor"));
+					"You have embraced your honor",
+                    true));
 
 			Timer.DelayCall(
 				TimeSpan.FromSeconds(duration),
@@ -182,7 +183,7 @@ namespace Server.Services.Virtues
 			if (!source.Mounted && !source.IsBodyMod)
 				source.Animate(32, 5, 1, true, true, 0);
 
-			BuffInfo.AddBuff(source, new BuffInfo(BuffIcon.Honored, 1075649, 1153815, String.Format("{0}", target.Name)));
+			BuffInfo.AddBuff(source, new BuffInfo(BuffIcon.Honored, 1075649, 1153815, String.Format("{0}", target.Name, true)));
 			BuffInfo.AddBuff(source, new BuffInfo(BuffIcon.Perfection, 1153786, 1151394, String.Format("0\t{0}", target.Name)));
 		}
 

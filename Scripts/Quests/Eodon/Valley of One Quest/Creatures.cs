@@ -380,7 +380,7 @@ namespace Server.Mobiles
             {
                 _NextSpecial = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(45, 60));
 
-                switch(Utility.Random(3))
+                switch(Utility.Random(Teleports ? 3 : 2))
                 {
                     case 0:
                         IPooledEnumerable eable = Map.GetMobilesInRange(Location, 10);
@@ -394,24 +394,6 @@ namespace Server.Mobiles
                         eable.Free();
                         break;
                     case 1:
-                        int ran = -1;
-
-                        while (ran < 0 || ran > _TeleList.Length || ran == _LastTeleport)
-                        {
-                            ran = Utility.Random(_TeleList.Length);
-                        }
-
-                        _LastTeleport = ran;
-                        Point3D p = _TeleList[ran];
-                        Point3D old = Location;
-
-                        MoveToWorld(p, Map);
-                        ProcessDelta();
-
-                        Effects.SendLocationParticles(EffectItem.Create(old, Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
-                        Effects.SendLocationParticles(EffectItem.Create(p, Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
-                        break;
-                    case 2:
                         IPooledEnumerable eable2 = Map.GetMobilesInRange(Location, 10);
                         List<Mobile> mobiles = new List<Mobile>();
 
@@ -437,6 +419,24 @@ namespace Server.Mobiles
                         }
 
                         ColUtility.Free(mobiles);
+                        break;
+                    case 2:
+                        int ran = -1;
+
+                        while (ran < 0 || ran > _TeleList.Length || ran == _LastTeleport)
+                        {
+                            ran = Utility.Random(_TeleList.Length);
+                        }
+
+                        _LastTeleport = ran;
+                        Point3D p = _TeleList[ran];
+                        Point3D old = Location;
+
+                        MoveToWorld(p, Map);
+                        ProcessDelta();
+
+                        Effects.SendLocationParticles(EffectItem.Create(old, Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
+                        Effects.SendLocationParticles(EffectItem.Create(p, Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
                         break;
                 }
             }
@@ -513,7 +513,7 @@ namespace Server.Mobiles
 
             foreach (Item item in eable)
             {
-                if (!item.Movable && IsInList(item.ItemID))
+                if (!item.Movable && _BarrelIDs.Any(id => id == item.ItemID))
                     items.Add(item);
             }
 
@@ -527,17 +527,6 @@ namespace Server.Mobiles
 
             ColUtility.Free(items);
             return itemid;
-        }
-
-        private bool IsInList(int itemid)
-        {
-            foreach (int i in _BarrelIDs)
-            {
-                if (i == itemid)
-                    return true;
-            }
-
-            return false;
         }
 
         public override void Serialize(GenericWriter writer)

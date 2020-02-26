@@ -3640,7 +3640,7 @@ namespace Server.Mobiles
 					deathRobe.Delete();
 				}
 
-                if (NetState != null && NetState.IsEnhancedClient)
+                if (NetState != null /*&& NetState.IsEnhancedClient*/)
                 {
                     Waypoints.RemoveHealers(this, Map);
                 }
@@ -3890,7 +3890,7 @@ namespace Server.Mobiles
 
 		public override void OnDeath(Container c)
 		{
-            if (NetState != null && NetState.IsEnhancedClient)
+            if (NetState != null /*&& NetState.IsEnhancedClient*/)
             {
                 Waypoints.OnDeath(this);
             }

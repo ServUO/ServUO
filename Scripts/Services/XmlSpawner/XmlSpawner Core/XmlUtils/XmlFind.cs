@@ -408,14 +408,13 @@ namespace Server.Mobiles
                     // boat stuffs
                     if (i is Static && i.Name != null && (i.Name.ToLower() == "weapon pad" || i.Name.ToLower() == "deck"))
                         return true;
-                    if (i is GalleonHold || i is MooringLine || i is HoldItem || i is BaseDockedBoat || i is Rudder || i is RudderHandle || i is ShipWheel || i is BaseBoat || i is Plank || i is TillerMan || i is Hold || i is IShipCannon)
+                    if (i is GalleonHold || i is MooringLine || i is HoldItem || i is BaseDockedBoat || i is Rudder || i is RudderHandle || i is ShipWheel || i is BaseBoat || i is Plank || i is TillerMan || i is Hold || i is IShipCannon || i is DeckItem || i is WeaponPad)
                         return true;
 
                     // Ignores shadowguard addons that are internalized while not in use
                     if (i is AddonComponent)
                     {
-                        AddonComponent comp = i as AddonComponent;
-                        BaseAddon addon = ((AddonComponent)comp).Addon;
+                        BaseAddon addon = ((AddonComponent)i).Addon;
 
                         if (addon != null && (addon is ArmoryAddon || addon is BarAddon || addon is BelfryAddon || addon is ShadowguardFountainAddon || addon is OrchardAddon))
                             return true;
