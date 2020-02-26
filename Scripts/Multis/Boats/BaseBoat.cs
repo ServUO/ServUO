@@ -2782,11 +2782,21 @@ namespace Server.Multis
 
         public static void ForceRemovePilot(Mobile m)
         {
+            
+
             if (m.FindItemOnLayer(Layer.Mount) is BoatMountItem mountItem)
             {
                 if (mountItem.Mount is BaseBoat boat)
                 {
-                    boat.RemovePilot(m);
+                    if (boat.Pilot == m)
+                    {
+                        boat.RemovePilot(m);
+                    }
+                    else
+                    {
+                        m.RemoveItem(mountItem);
+                        mountItem.Delete();
+                    }
                 }
                 else
                 {
