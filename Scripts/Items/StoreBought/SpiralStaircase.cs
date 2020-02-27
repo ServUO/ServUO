@@ -12,9 +12,13 @@ namespace Server.Items
     {
         public override bool ForceShowProperties { get { return true; } }
 
-        public TeleporterComponent(int itemID)
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Direction _Direction { get; set; }
+
+        public TeleporterComponent(int itemID, Direction d)
             : base(itemID)
         {
+            _Direction = d;
         }
 
         public TeleporterComponent(Serial serial)
@@ -48,28 +52,29 @@ namespace Server.Items
                 map = m.Map;
             }
 
-            Point3D p = Addon.Components.FirstOrDefault(x => x != this).Location;
+            TeleporterComponent c = Addon.Components.FirstOrDefault(x => x is TeleporterComponent && x != this) as TeleporterComponent;
 
-            if (p == Point3D.Zero)
-            {
-                p = m.Location;
-            }
+            Point3D p = new Point3D(c.Location.X, c.Location.Y, c._Direction == Direction.Up ? Location.Z + 20 : c.Location.Z);
 
             BaseCreature.TeleportPets(m, p, map);
 
-            m.MoveToWorld(new Point3D(p.X, p.Y, p.Z + 20), map);
+            m.MoveToWorld(p, map);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write((int)0);
+
+            writer.Write((int)_Direction);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            _Direction = (Direction)reader.ReadInt();
         }
     }
 
@@ -90,15 +95,15 @@ namespace Server.Items
                 AddComponent(new AddonComponent(42333), 1, 1, 20);
                 AddComponent(new AddonComponent(42334), 0, 1, 20);
                 AddComponent(new AddonComponent(42335), 1, 0, 20);
-                AddComponent(new TeleporterComponent(42336), 0, 0, 20);
-                AddComponent(new TeleporterComponent(42318), 1, 1, 0);
+                AddComponent(new TeleporterComponent(42336, Direction.Up), 0, 0, 20);
+                AddComponent(new TeleporterComponent(42318, Direction.Down), 1, 1, 0);
             }
             else
             {
-                AddComponent(new TeleporterComponent(42321), 0, 0, 0);
+                AddComponent(new TeleporterComponent(42321, Direction.Up), 0, 0, 0);
                 AddComponent(new AddonComponent(42319), 0, 1, 0);
                 AddComponent(new AddonComponent(42320), 1, 0, 0);
-                AddComponent(new TeleporterComponent(42318), 1, 1, 0);
+                AddComponent(new TeleporterComponent(42318, Direction.Down), 1, 1, 0);
             }
         }
 
