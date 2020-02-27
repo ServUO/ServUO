@@ -12,7 +12,6 @@ namespace Server.Items
     {
         public override bool ForceShowProperties { get { return true; } }
 
-        [CommandProperty(AccessLevel.GameMaster)]
         public Direction _Direction { get; set; }
 
         public TeleporterComponent(int itemID, Direction d)
