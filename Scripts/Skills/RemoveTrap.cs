@@ -17,11 +17,11 @@ namespace Server.SkillHandlers
 
         public static TimeSpan OnUse(Mobile m)
         {
-            if (m.Skills[SkillName.Lockpicking].Value < 50)
+            if (!Core.EJ && m.Skills[SkillName.Lockpicking].Value < 50)
             {
                 m.SendLocalizedMessage(502366); // You do not know enough about locks.  Become better at picking locks.
             }
-            else if (m.Skills[SkillName.DetectHidden].Value < 50)
+            else if (!Core.EJ && m.Skills[SkillName.DetectHidden].Value < 50)
             {
                 m.SendLocalizedMessage(502367); // You are not perceptive enough.  Become better at detect hidden.
             }
