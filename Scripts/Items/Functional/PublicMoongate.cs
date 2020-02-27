@@ -153,7 +153,10 @@ namespace Server.Items
 
 		public override void OnDoubleClick(Mobile m)
 		{
-			UseGate(m);
+            if (m.InRange(GetWorldLocation(), 1))
+            {
+                UseGate(m);
+            }
 		}
 
 		public override bool OnMoveOver(Mobile m)
@@ -208,12 +211,6 @@ namespace Server.Items
 				// You cannot teleport while dragging an object.
 				m.SendLocalizedMessage(1071955); 
 				return false;
-			}
-            
-            if (!m.InRange(GetWorldLocation(), 3))
-			{
-				m.SendLocalizedMessage( 500446 ); // That is too far away.
-				return false;				
 			}
 
 			return true;
