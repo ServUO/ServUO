@@ -611,7 +611,7 @@
     <Compile Include="Items\Addons\FormalDiningTable.cs" />
     <Compile Include="Items\Addons\GadgetryTable.cs" />
     <Compile Include="Items\Consumables\DecorativeKitchenSet.cs" />
-	<Compile Include="Items\Consumables\DecorativeStableSet.cs" />
+    <Compile Include="Items\Consumables\DecorativeStableSet.cs" />
     <Compile Include="Items\Consumables\EmbroideryTool.cs" />
     <Compile Include="Items\Damageable\Beacon.cs" />
     <Compile Include="Items\Damageable\DamageableItem.cs" />
@@ -678,8 +678,12 @@
     <Compile Include="Items\Resource\VileTentacles.cs" />
     <Compile Include="Items\Resource\EtherealSand.cs" />
     <Compile Include="Items\StoreBought\BarrelMailbox.cs" />
+    <Compile Include="Items\StoreBought\GardenSculpture.cs" />
+    <Compile Include="Items\StoreBought\MetalLadder.cs" />
     <Compile Include="Items\StoreBought\PetWhistle.cs" />
+    <Compile Include="Items\StoreBought\SpiralStaircase.cs" />
     <Compile Include="Items\StoreBought\SquirrelMailbox.cs" />
+    <Compile Include="Items\StoreBought\WineRack.cs" />
     <Compile Include="Items\Tools\SteamPoweredBeverageMaker.cs" />
     <Compile Include="Items\Addons\ClawFootTub.cs" />
     <Compile Include="Items\Addons\GreenMarbleFireplace.cs" />
