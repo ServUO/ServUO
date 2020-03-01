@@ -8,6 +8,11 @@ using Server.Guilds;
 
 namespace Server.SkillHandlers
 {
+    public interface IRemoveTrapTrainingKit
+    {
+        void OnRemoveTrap(Mobile m);
+    }
+
     public class RemoveTrap
     {
         public static void Initialize()
@@ -48,6 +53,10 @@ namespace Server.SkillHandlers
                 {
                     from.SendLocalizedMessage(502816); // You feel that such an action would be inappropriate
                 }
+                else if (targeted is IRemoveTrapTrainingKit)
+                {
+                    ((IRemoveTrapTrainingKit)targeted).OnRemoveTrap(from);
+                }
                 else if (targeted is TrapableContainer)
                 {
                     TrapableContainer targ = (TrapableContainer)targeted;
@@ -61,7 +70,7 @@ namespace Server.SkillHandlers
                     }
 
                     from.PlaySound(0x241);
-					
+
                     if (from.CheckTargetSkill(SkillName.RemoveTrap, targ, targ.TrapPower, targ.TrapPower + 10))
                     {
                         targ.TrapPower = 0;
@@ -144,7 +153,7 @@ namespace Server.SkillHandlers
                                 Guild fromG = from.Guild as Guild;
                                 Guild ownerG = trap.Owner.Guild as Guild;
 
-                                if (fromG != null && fromG != ownerG && !fromG.IsAlly(ownerG) && ViceVsVirtueSystem.Instance != null 
+                                if (fromG != null && fromG != ownerG && !fromG.IsAlly(ownerG) && ViceVsVirtueSystem.Instance != null
                                     && ViceVsVirtueSystem.Instance.Battle != null && ViceVsVirtueSystem.Instance.Battle.OnGoing)
                                 {
                                     ViceVsVirtueSystem.Instance.Battle.Update(from, UpdateType.Disarm);

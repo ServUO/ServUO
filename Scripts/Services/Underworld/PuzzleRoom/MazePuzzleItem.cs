@@ -6,16 +6,18 @@ using Server.Gumps;
 
 namespace Server.Items 
 {
-	public class MazePuzzleItem : BaseDecayingItem
-	{
+	public class MazePuzzleItem : BaseDecayingItem, ICircuitTrap
+    {
 		private MagicKey m_Key;
-		private List<int> m_Path;
-		private List<int> m_Progress;
 		
-		public List<int> Path { get { return m_Path; } set { m_Path = value; } }
-		public List<int> Progress { get { return m_Progress; } set { m_Progress = value; } }
-	
-		[CommandProperty(AccessLevel.GameMaster)]
+		public List<int> Path { get; set; }
+		public List<int> Progress { get; set; }
+        public CircuitCount Count { get { return CircuitCount.ThirtySix; } }
+        public int GumpTitle { get { return 1153747; } } // <center>GENERATOR CONTROL PANEL</center>
+        public int GumpDescription { get { return 1153749; } } // // <center>Close the Grid Circuit</center>
+        public bool CanDecipher { get { return true; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
 		public MagicKey Key { get { return m_Key; } set { m_Key = value; } }
 
         public override int LabelNumber { get { return 1113379; } } // Puzzle Board
@@ -32,12 +34,11 @@ namespace Server.Items
 		{
 			if(!IsChildOf(from.Backpack))
 				from.SendLocalizedMessage(500325); // I am too far away to do that.
-			else if(IsInPuzzleRoom(from))
+			else if(from is PlayerMobile && IsInPuzzleRoom(from))
 			{
                 from.CloseGump(typeof(PuzzleChest.PuzzleGump));
                 from.CloseGump(typeof(PuzzleChest.StatusGump));
-				from.CloseGump(typeof(MazePuzzleGump));
-				from.SendGump(new MazePuzzleGump(from, this, m_Path, m_Progress));
+				BaseGump.SendGump(new CircuitTrapGump((PlayerMobile)from, this));
 			}
 		}
 
@@ -54,11 +55,33 @@ namespace Server.Items
 
             if (m != null)
             {
-                if (m.HasGump(typeof(MazePuzzleGump)))
-                    m.CloseGump(typeof(MazePuzzleGump));
+                if (m.HasGump(typeof(CircuitTrapGump)))
+                {
+                    m.CloseGump(typeof(CircuitTrapGump));
+                }
             }
         }
-		
+
+        public void OnSelfClose(Mobile m)
+        {
+        }
+
+        public void OnProgress(Mobile m, int pick)
+        {
+            m.PlaySound(0x1F5);
+        }
+
+        public void OnFailed(Mobile m)
+        {
+            DoDamage(m);
+        }
+
+        public void OnComplete(Mobile m)
+        {
+            m.PlaySound(0x3D);
+            OnPuzzleCompleted(m);
+        }
+
 		private Timer m_DamageTimer;
 		
 		public void DoDamage(Mobile m)

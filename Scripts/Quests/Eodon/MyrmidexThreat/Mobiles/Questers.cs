@@ -219,10 +219,11 @@ namespace Server.Mobiles
 		
 		public override void InitOutfit()
 		{
-			SetWearable(new FancyShirt(), 1266);
-			SetWearable(new Doublet(), 1266);
-			SetWearable(new LongPants(), 1266);
-			SetWearable(new Boots());
+			SetWearable(new FancyShirt(), 1156);
+			SetWearable(new Doublet(), 1316);
+			SetWearable(new ElvenPants(), 1151);
+            SetWearable(new Cloak(), 1151);
+			SetWearable(new ElvenBoots(), 2007);
 		}	
 		
 		private class InternalSB : SBInfo
@@ -247,7 +248,11 @@ namespace Server.Mobiles
 				public InternalBuyInfo(BaseVendor owner)
 				{  
 					Add( new GenericBuyInfo( "Stasis Chamber Power Core", typeof( StasisChamberPowerCore ), 101250, 500, 40155, 0 ) );
-				}
+
+                    Add(new GenericBuyInfo("1159014", typeof(CircuitTrapTrainingKit), 99375, 500, 41875, 0));
+                    Add(new GenericBuyInfo("1159015", typeof(CylinderTrapTrainingKit), 99375, 500, 41875, 0));
+                    Add(new GenericBuyInfo("1159016", typeof(SliderTrapTrainingKit), 99375, 500, 41875, 0));
+                }
 			}
 
 			public class InternalSellInfo : GenericSellInfo

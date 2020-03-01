@@ -21,6 +21,11 @@ namespace Server.Items
         public static double LootChance = Config.Get("TreasureMaps.LootChance", .01);
         private static TimeSpan ResetTime = TimeSpan.FromDays(Config.Get("TreasureMaps.ResetTime", 30.0));
 
+        #region Forgotten Treasures
+
+
+        #endregion
+
         #region Spawn Types
         private static Type[][] m_SpawnTypes = new Type[][]
 		{
@@ -172,7 +177,6 @@ namespace Server.Items
         private bool m_Completed;
         private Mobile m_CompletedBy;
         private Mobile m_Decoder;
-        //private Map m_Map;
         private Point2D m_Location;
         private DateTime m_NextReset;
 
