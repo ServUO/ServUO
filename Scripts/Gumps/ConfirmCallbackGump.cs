@@ -69,13 +69,16 @@ namespace Server.Gumps
 			AddImage( 2, 248, 0x2716 ); 
 			AddImage( 2, 2, 0x2716 );
 
-            if (Title.Number > 0)
+            if (Title != null)
             {
-                AddHtmlLocalized(25, 25, 200, 20, Title.Number, 0x7D00, false, false);
-            }
-            else if (!String.IsNullOrEmpty(Title.String))
-            {
-                AddHtml(25, 25, 200, 20, String.Format("<basefont color=#FF0000>{0}", Title.String), false, false);
+                if (Title.Number > 0)
+                {
+                    AddHtmlLocalized(25, 25, 200, 20, Title.Number, 0x7D00, false, false);
+                }
+                else if (!String.IsNullOrEmpty(Title.String))
+                {
+                    AddHtml(25, 25, 200, 20, String.Format("<basefont color=#FF0000>{0}", Title.String), false, false);
+                }
             }
 
 			AddImage( 25, 45, 0xBBF );
