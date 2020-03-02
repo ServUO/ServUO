@@ -17,13 +17,64 @@ namespace Server.Items
 {
     public class TreasureMap : MapItem
     {
+        public static bool NewSystem { get { return Core.EJ; } }
+
         public static bool NewChestLocations = Config.Get("TreasureMaps.Enabled", true);
         public static double LootChance = Config.Get("TreasureMaps.LootChance", .01);
         private static TimeSpan ResetTime = TimeSpan.FromDays(Config.Get("TreasureMaps.ResetTime", 30.0));
 
         #region Forgotten Treasures
+        public TreasureLevel TreasureLevel { get { return (TreasureLevel)m_Level; } }
+        public TreasurePackage Package { get; set; }
+        public TreasureFacet Facet { get { return TreaureMapInfo.GetFacet(m_Location, Facet); } }
 
+        protected void ConvertLevel(int oldLevel)
+        {
+            switch (oldLevel)
+            {
+                default: m_Level = oldLevel; break;
+                case 3: m_Level = 2; break;
+                case 4: m_Level = 3; break;
+                case 5: m_Level = 3; break;
+                case 6: m_Level = 4; break;
+                case 7: m_Level = 5; break;
+            }
+        }
 
+        protected void AssignRandomPackage()
+        {
+            Package = (TreasurePackage)Utility.Random(5);
+        }
+
+        protected void AssignChestQuality(Mobile digger, TreasureMapChest chest)
+        {
+            var skill = digger.Skills[SkillName.Cartography].Value;
+
+            var dif;
+
+            switch (TreasureLevel)
+            {
+                default:
+                case TreasureLevel.Stash: dif = 100; break;
+                case TreasrueLevel.Supply: dif = 200; break;
+                case TreasrueLevel.Cache: dif = 300; break;
+                case TreasrueLevel.Horde: dif = 400; break;
+                case TreasrueLevel.Trove: dif = 500; break;
+            }
+
+            if (Utility.Random(dif) <= skill)
+            {
+                chest.Quality = ChestQuality.Gold;
+            }
+            else if (Utility.Random(dif) <= skill * 2)
+            {
+                chest.Quality = ChestQuality.Standard;
+            }
+            else
+            {
+                chest.Quality = ChestQuality.Rusty;
+            }
+        }
         #endregion
 
         #region Spawn Types
@@ -186,7 +237,15 @@ namespace Server.Items
             get { return m_Level; }
             set
             {
-                m_Level = value;
+                if (NewSystem)
+                {
+                    ConvertLevel(value);
+                }
+                else
+                {
+                    m_Level = value;
+                }
+
                 InvalidateProperties();
             }
         }
@@ -223,17 +282,6 @@ namespace Server.Items
                 InvalidateProperties();
             }
         }
-
-        /*[CommandProperty(AccessLevel.GameMaster)]
-        public Map ChestMap
-        {
-            get { return m_Map; }
-            set
-            {
-                m_Map = value;
-                InvalidateProperties();
-            }
-        }*/
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Point2D ChestLocation { get { return m_Location; } set { m_Location = value; } }
@@ -282,7 +330,12 @@ namespace Server.Items
         [Constructable]
         public TreasureMap(int level, Map map)
         {
-            m_Level = level;
+            Level = level;
+
+            if (NewSystem)
+            {
+                AssignRandomPackage();
+            }
 
             if (level == 7 || map == Map.Internal)
                 map = GetRandomMap();
@@ -605,10 +658,11 @@ namespace Server.Items
             if (level >= 0 && level < spawns.Length)
             {
                 BaseCreature bc;
+                var list = GetSpawnList(spawns, level);
 
                 try
                 {
-                    bc = (BaseCreature)Activator.CreateInstance(spawns[level][Utility.Random(spawns[level].Length)]);
+                    bc = (BaseCreature)Activator.CreateInstance(list[Utility.Random(list.Length)]);
                 }
                 catch
                 {
@@ -681,6 +735,43 @@ namespace Server.Items
             }
 
             return null;
+        }
+
+        public static Type[] GetSpawnList(Type[][] table, int level)
+        {
+            Type[] array;
+
+            if (NewSystem)
+            {
+                switch (level)
+                {
+                    default: array = table[level]; break;
+                    case 2:
+                        var list1 = new List<Type>();
+                        list1.AddRange(table[2]);
+                        list1.AddRange(table[3]);
+
+                        array = list.ToArray();
+                        ColUtility.Free(list1);
+                        break;
+                    case 3:
+                        var list2 = new List<Type>();
+                        list2.AddRange(table[4]);
+                        list2.AddRange(table[5]);
+
+                        array = list.ToArray();
+                        ColUtility.Free(list2);
+                        break;
+                    case 4: array = table[6]; break;
+                    case 5: array = table[7]; break;
+                }
+            }
+            else
+            {
+                array = table[level];
+            }
+
+            return array;
         }
 
         public static bool HasDiggingTool(Mobile m)
@@ -868,23 +959,34 @@ namespace Server.Items
             }
         }
 
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            if (NewSystem)
+            {
+                list.Add(m_Decoder != null ? 1158975 : 1158980, "#" + TreasureMapInfo.PackageLocalization(Package).ToString());
+            }
+            else
+            {
+                base.AddNameProperty(list);
+            }
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            if (Facet == Map.Felucca)
-                list.Add(1041502);
-            else if (Facet == Map.Trammel)
-                list.Add(1041503);
-            else if (Facet == Map.Ilshenar)
-                list.Add(1060850);
-            else if (Facet == Map.Tokuno)
-                list.Add(1115645);
-            else if (Facet == Map.Malas)
-                list.Add(1060851);
-            else if (Facet == Map.TerMur)
-                list.Add(1115646);
-            // for somewhere in Felucca : for somewhere in Trammel
+            var facet = TreasureMapInfo.GetFacet(m_Location, Facet);
+
+            switch (facet)
+            {
+                case TreasureFacet.Trammel: list.Add(1041503); break;
+                case TreasureFacet.Felucca: list.Add(1041502); break;
+                case TreasureFacet.Ilshenar: list.Add(1060850); break;
+                case TreasureFacet.Malas: list.Add(1060851); break;
+                case TreasureFacet.Tokuno: list.Add(1115645); break;
+                case TreasureFacet.TerMur: list.Add(1115646); break;
+                case TreasureFacet.Eodon: list.Add(1158985); break;
+            }
 
             if (m_Completed)
             {
@@ -938,7 +1040,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(2);
+            writer.Write(3);
+
+            writer.Write((int)Package);
 
             writer.Write(m_NextReset);
 
@@ -962,6 +1066,11 @@ namespace Server.Items
 
             switch (version)
             {
+                case 3:
+                    {
+                        Package = (TreasurePackage)reader.ReadInt();
+                        goto case 2;
+                    }
                 case 2:
                     {
                         m_NextReset = reader.ReadDateTime();
@@ -991,6 +1100,12 @@ namespace Server.Items
 
                         break;
                     }
+            }
+
+            if (version == 2 && NewSystem)
+            {
+                ConvertLevel(m_Level);
+                AssignRandomPackage();
             }
 
             if (Core.AOS && m_Decoder != null && LootType == LootType.Regular)
@@ -1154,7 +1269,7 @@ namespace Server.Items
                     }
 
                     int maxRange;
-                    double skillValue = from.Skills[SkillName.Mining].Value;
+                    double skillValue = NewSystem ? from.Skills[SkillName.Cartography].Value : from.Skills[SkillName.Mining].Value;
 
                     if (skillValue >= 100.0)
                     {
@@ -1357,6 +1472,12 @@ namespace Server.Items
                     if (m_Chest == null)
                     {
                         m_Chest = new TreasureMapChest(m_From, m_TreasureMap.Level, true);
+
+                        if (NewSystem)
+                        {
+                            AssignChestQuality(m_From, m_Chest);
+                        }
+
                         m_Chest.MoveToWorld(new Point3D(m_Location.X, m_Location.Y, m_Location.Z - 15), m_Map);
                     }
                     else
@@ -1377,6 +1498,15 @@ namespace Server.Items
                     m_TreasureMap.Completed = true;
                     m_TreasureMap.CompletedBy = m_From;
 
+                    if (NewSystem)
+                    {
+                        TreasureMapInfo.Fill(m_From, m_Chest, m_TreasureMap);
+                    }
+                    else
+                    {
+                        TreasureChest.Fill(m_From, m_Chest, m_Chest.Level, false);
+                    }
+
                     m_TreasureMap.OnMapComplete(m_From, m_Chest);
 
                     int spawns;
@@ -1395,9 +1525,11 @@ namespace Server.Items
 
                     for (int i = 0; i < spawns; ++i)
                     {
-                        BaseCreature bc = Spawn(m_TreasureMap.Level, m_Chest.Location, m_Chest.Map, null, true);
+                        var guardian = NewSystem ? Utility.RandomDouble() >= 0.3 : true;
 
-                        if (bc != null)
+                        BaseCreature bc = Spawn(m_TreasureMap.Level, m_Chest.Location, m_Chest.Map, null, guardian);
+
+                        if (bc != null && guardian)
                         {
                             m_Chest.Guardians.Add(bc);
                         }

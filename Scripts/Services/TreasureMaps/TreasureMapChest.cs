@@ -20,8 +20,8 @@ namespace Server.Items
             typeof(LunaLance), typeof(NightsKiss), typeof(NoxRangersHeavyCrossbow),
             typeof(PolarBearMask), typeof(VioletCourage), typeof(HeartOfTheLion),
             typeof(ColdBlood), typeof(AlchemistsBauble), typeof(CaptainQuacklebushsCutlass),
-			typeof(ShieldOfInvulnerability), typeof(AncientShipModelOfTheHMSCape),
-			typeof(AdmiralsHeartyRum)
+            typeof(ShieldOfInvulnerability), typeof(AncientShipModelOfTheHMSCape),
+            typeof(AdmiralsHeartyRum)
         };
 
         public static Type[] ArtifactsLevelFiveToSeven { get { return m_LevelFiveToSeven; } }
@@ -39,8 +39,8 @@ namespace Server.Items
         public static Type[] SOSArtifacts { get { return m_SOSArtifacts; } }
         private static Type[] m_SOSArtifacts = new Type[]
         {
-            typeof(AntiqueWeddingDress), 
-            typeof(KelpWovenLeggings),   
+            typeof(AntiqueWeddingDress),
+            typeof(KelpWovenLeggings),
             typeof(RunedDriftwoodBow),
             typeof(ValkyrieArmor)
         };
@@ -48,16 +48,16 @@ namespace Server.Items
         private static Type[] m_SOSDecor = new Type[]
         {
             typeof(GrapeVine),
-            typeof(LargeFishingNet) 
+            typeof(LargeFishingNet)
         };
 
 
         private static Type[] m_ImbuingIngreds =
-		{
-			typeof(AbyssalCloth),   typeof(EssencePrecision), typeof(EssenceAchievement), typeof(EssenceBalance), 
-			typeof(EssenceControl), typeof(EssenceDiligence), typeof(EssenceDirection),   typeof(EssenceFeeling), 
-			typeof(EssenceOrder),   typeof(EssencePassion),   typeof(EssencePersistence), typeof(EssenceSingularity)
-		};
+        {
+            typeof(AbyssalCloth),   typeof(EssencePrecision), typeof(EssenceAchievement), typeof(EssenceBalance),
+            typeof(EssenceControl), typeof(EssenceDiligence), typeof(EssenceDirection),   typeof(EssenceFeeling),
+            typeof(EssenceOrder),   typeof(EssencePassion),   typeof(EssencePersistence), typeof(EssenceSingularity)
+        };
 
         private int m_Level;
         private DateTime m_DeleteTime;
@@ -68,6 +68,8 @@ namespace Server.Items
         private TreasureMap m_TreasureMap;
         private List<Mobile> m_Guardians;
         private List<Item> m_Lifted = new List<Item>();
+
+        private ChestQuality _Quality;
 
         [Constructable]
         public TreasureMapChest(int level)
@@ -87,17 +89,6 @@ namespace Server.Items
 
             m_Timer = new DeleteTimer(this, m_DeleteTime);
             m_Timer.Start();
-
-            int luck = 0;
-            Map map = Map.Trammel;
-
-            if (owner != null)
-            {
-                luck = owner is PlayerMobile ? ((PlayerMobile)owner).RealLuck : owner.Luck;
-                map = owner.Map;
-            }
-
-            Fill(this, luck, level, false, map);
         }
 
         public TreasureMapChest(Serial serial)
@@ -187,6 +178,28 @@ namespace Server.Items
                 return m_Guardians;
             }
         }
+
+        public ChestQuality Quality
+        {
+            get { return _Quality; }
+            set
+            {
+                if (_Quality != value)
+                {
+                    _Quality = value;
+
+                    switch (_Quality)
+                    {
+                        case ChestQuality.Rusty: ItemID = Utility.RandomBool() ? 0xA306 : 0xA307; break;
+                        case ChestQuality.Standard: ItemID = Utility.RandomBool() ? 0xA304 : 0xA305; break;
+                        case ChestQuality.Gold: ItemID = Utility.RandomBool() ? 0xA308 : 0xA309; break;
+                    }
+                }
+            }
+        }
+
+        public bool FailedLockpick { get; set; }
+
         public override bool IsDecoContainer
         {
             get
@@ -195,8 +208,11 @@ namespace Server.Items
             }
         }
 
-        public static void Fill(LockableContainer cont, int luck, int level, bool isSos, Map map)
+        public static void Fill(Mobile from, LockableContainer cont, int level, bool isSos)
         {
+            var map = from.Map;
+            var luck = from is PlayerMobile ? ((PlayerMobile)from).RealLuck : from.Luck;
+
             cont.Movable = false;
             cont.Locked = true;
             int count;
@@ -637,7 +653,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)3); // version
+            writer.Write((int)4); // version
+
+            writer.Write(FailedLockpick);
+            writer.Write((int)_Quality);
 
             writer.Write(m_FirstOpenedByOwner);
             writer.Write(m_TreasureMap);
@@ -660,6 +679,10 @@ namespace Server.Items
 
             switch (version)
             {
+                case 4:
+                    FailedLockpick = reader.ReadBool();
+                    _Quality = (ChestQuality)reader.ReadInt();
+                    goto case 3;
                 case 3:
                     m_FirstOpenedByOwner = reader.ReadBool();
                     m_TreasureMap = reader.ReadItem() as TreasureMap;
@@ -723,7 +746,7 @@ namespace Server.Items
         {
             base.LockPick(from);
 
-            if (Map != null && Core.SA && 0.05 >= Utility.RandomDouble())
+            if (Map != null && ((TreasureMap.NewSystem && FailedLockpick) || (Core.SA && 0.05 >= Utility.RandomDouble())))
             {
                 var grubber = new Grubber();
                 grubber.MoveToWorld(Map.GetSpawnPosition(Location, 1), Map);

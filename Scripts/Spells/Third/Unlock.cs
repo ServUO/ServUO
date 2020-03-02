@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server.Items;
 using Server.Network;
 using Server.Targeting;
@@ -78,8 +78,9 @@ namespace Server.Spells.Third
                         else
                         {
                             int level = (int)(from.Skills[SkillName.Magery].Value * 0.8) - 4;
+                            var maxTreasureLevel = TreasureMap.NewSystem ? 3 : 2;
 
-                            if (level >= cont.RequiredSkill && !(cont is TreasureMapChest && ((TreasureMapChest)cont).Level > 2))
+                            if (level >= cont.RequiredSkill && !(cont is TreasureMapChest && ((TreasureMapChest)cont).Level > maxTreasureLevel))
                             {
                                 cont.Locked = false;
 

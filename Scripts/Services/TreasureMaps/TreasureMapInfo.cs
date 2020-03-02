@@ -1,6 +1,8 @@
 using System;
 
 using Server;
+using Server.Misc;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
@@ -33,6 +35,14 @@ namespace Server.Items
         Eodon
     }
 
+    public enum ChestQuality
+    {
+        None,
+        Rusty,
+        Standard,
+        Gold
+    }
+
     public static class TreasureMapInfo
     {
         public static void Initialize()
@@ -41,9 +51,28 @@ namespace Server.Items
 
         public static TreasureFacet GetFacet(IEntity e)
         {
-            if (e.Map == Map.TerMur)
+            return GetFacet(e.Location, e.Map);
+        }
+
+        public static int PackageLocalization(TreasurePackage package)
+        {
+            switch (package)
             {
-                if (SpellHelper.IsEodon(e.Location, e.Map))
+                case TreasurePackage.Artisian: return 1158989;
+                case TreasurePackage.Assassin: return 1158987;
+                case TreasurePackage.Mage: return 1158986;
+                case TreasurePackage.Ranger: return 1158990;
+                case TreasurePackage.Warrior: return 1158988;
+            }
+
+            return 0;
+        }
+
+        public static TreasureFacet GetFacet(IPoint2D p, Map map)
+        {
+            if (map == Map.TerMur)
+            {
+                if (SpellHelper.IsEodon(new Point3D(p.X, p.Y, 0), map))
                 {
                     return TreasureFacet.Eodon;
                 }
@@ -51,33 +80,33 @@ namespace Server.Items
                 return TreasureFacet.TerMur;
             }
 
-            if (e.Map == Map.Felucca)
+            if (map == Map.Felucca)
             {
                 return TreasureFacet.Felucca;
             }
 
-            if (e.Map == Map.Trammel)
+            if (map == Map.Trammel)
             {
                 return TreasureFacet.Trammel;
             }
 
-            if (e.Map == Map.Malas)
+            if (map == Map.Malas)
             {
                 return TreasureFacet.Malas;
             }
 
-            if (e.Map == Map.Ilshenar)
+            if (map == Map.Ilshenar)
             {
                 return TreasureFacet.Ilshenar;
             }
 
-            if (e.Map == Map.Tokuno)
+            if (map == Map.Tokuno)
             {
                 return TreasureFacet.Tokuno;
             }
         }
 
-        public static Type[] GetWeaponList(TreasurePackage package, Map map)
+        public static Type[] GetWeaponList(TreasureLevel level, TreasurePackage package, Map map)
         {
             Type[] list = null;
 
@@ -98,10 +127,20 @@ namespace Server.Items
                 list = _WeaponTable[(int)package][0];
             }
 
+            if (level >= TreasureLevel.Cache && package != TreasurePackage.Artisan)
+            {
+                if (package == TreasurePackage.Ranger || package == TreasurePackage.Warrior)
+                {
+                    list.Concat(new Type[] { typeof(SkullGrarledStaff) });
+                }
+
+                list.Concat(new Type[] { typeof(SkullLongsword) });
+            }
+
             return list;
         }
 
-        public static Type[] GetArmorList(TreasurePackage package, Map map)
+        public static Type[] GetArmorList(TreasureLevel level, TreasurePackage package, Map map)
         {
             Type[] list = null;
 
@@ -210,6 +249,34 @@ namespace Server.Items
             return null;
         }
 
+        public static Type[] GetReagentList(TreasureLevel level, TreasurePackage package, Map map)
+        {
+            if (level != TreasureLevel.Stash || package != TreaurePackage.Mage)
+                return null;
+
+            var facet = GetFacet(map);
+
+            switch (facet)
+            {
+                case TreasureFacet.Felucca:
+                case TreasureFacet.Trammel: return Loot.RegTypes;
+                case TreasureFacet.Malas: return Loot.NecroRegTypes;
+                case TreasureFacet.TerMur: return Loot.MysticRegTypes;
+            }
+
+            return null;
+        }
+
+        public static Recipe[] GetRecipeList(TreasureLevel level, TreasurePackage package)
+        {
+            if (packet == TreasurePackage.Artisan && level == TreasureLevel.Supply)
+            {
+                return Recipe.Recipes.Values.ToArray();
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Artisan
         /// Assassin
@@ -254,19 +321,19 @@ namespace Server.Items
                 },
             new Type[][] // Ranger
                 {
-                    new Type[] { typeof(Bow), typeof(Crossbow), typeof(HeavyCrossbow), typeof(CompositeBow), typeof(SkullGnarledStaff), typeof(ButcherKnife), typeof(SkinningKnife) },
-                    new Type[] { typeof(Bow), typeof(Crossbow), typeof(HeavyCrossbow), typeof(CompositeBow), typeof(SkullGnarledStaff), typeof(ButcherKnife), typeof(SkinningKnife), typeof(SoulGlaive) },
-                    new Type[] { typeof(Bow), typeof(Crossbow), typeof(HeavyCrossbow), typeof(CompositeBow), typeof(SkullGnarledStaff), typeof(ButcherKnife), typeof(SkinningKnife), typeof(ElvenCompositeLongbow) },
+                    new Type[] { typeof(Bow), typeof(Crossbow), typeof(HeavyCrossbow), typeof(CompositeBow), typeof(ButcherKnife), typeof(SkinningKnife) },
+                    new Type[] { typeof(Bow), typeof(Crossbow), typeof(HeavyCrossbow), typeof(CompositeBow), typeof(ButcherKnife), typeof(SkinningKnife), typeof(SoulGlaive) },
+                    new Type[] { typeof(Bow), typeof(Crossbow), typeof(HeavyCrossbow), typeof(CompositeBow), typeof(ButcherKnife), typeof(SkinningKnife), typeof(ElvenCompositeLongbow) },
                     new Type[] { },
-                    new Type[] { typeof(Bow), typeof(Crossbow), typeof(HeavyCrossbow), typeof(CompositeBow), typeof(SkullGnarledStaff), typeof(ButcherKnife), typeof(SkinningKnife), typeof(GargishButcherKnife), typeof(Cyclone), typeof(SoulGlaive) },
+                    new Type[] { typeof(Bow), typeof(Crossbow), typeof(HeavyCrossbow), typeof(CompositeBow), typeof(ButcherKnife), typeof(SkinningKnife), typeof(GargishButcherKnife), typeof(Cyclone), typeof(SoulGlaive) },
                     new Type[] { },
                 },
             new Type[][] // Warrior
                 {
-                    new Type[] { typeof(Lance), typeof(Pike), typeof(Pitchfork), typeof(ShortSpear), typeof(WarFork), typeof(Club), typeof(Mace), typeof(Maul), typeof(SkullGnarledStaff), typeof(WarMaul), typeof(Bardiche), typeof(Broadsword), typeof(CrescentBlade), typeof(Halberd), typeof(Longsword), typeof(Scmimitar), typeof(VikingSword) },
+                    new Type[] { typeof(Lance), typeof(Pike), typeof(Pitchfork), typeof(ShortSpear), typeof(WarFork), typeof(Club), typeof(Mace), typeof(Maul), typeof(WarMaul), typeof(Bardiche), typeof(Broadsword), typeof(CrescentBlade), typeof(Halberd), typeof(Longsword), typeof(Scmimitar), typeof(VikingSword) },
                     new Type[] { },
                     new Type[] { },
-                    new Type[] { typeof(Lance), typeof(Pike), typeof(Pitchfork), typeof(ShortSpear), typeof(WarFork), typeof(Club), typeof(Mace), typeof(Maul), typeof(SkullGnarledStaff), typeof(WarMaul), typeof(Bardiche), typeof(Broadsword), typeof(CrescentBlade), typeof(Halberd), typeof(Longsword), typeof(Scmimitar), typeof(VikingSword), typeof(Bokuto), typeof(Daisho) },
+                    new Type[] { typeof(Lance), typeof(Pike), typeof(Pitchfork), typeof(ShortSpear), typeof(WarFork), typeof(Club), typeof(Mace), typeof(Maul), typeof(WarMaul), typeof(Bardiche), typeof(Broadsword), typeof(CrescentBlade), typeof(Halberd), typeof(Longsword), typeof(Scmimitar), typeof(VikingSword), typeof(Bokuto), typeof(Daisho) },
                     new Type[] { },
                     new Type[] { },
                 },
@@ -388,70 +455,56 @@ namespace Server.Items
                 new SkillName[] { SkillName.Bushido, SkillName.Chivalry, SkillName.Focus, SkillName.Healing, SkillName.Parry, SkillName.Swords, SkillName.Tactics },
             };
 
-        /*private Type[][][] _ArmorTable = new Type[][][]
+        public static void Fill(Mobile from, TreasureMapChest chest, TreasureMap map)
         {
-            new Type[][] // Artisan
-                {
-                    new Type[] { }, // Trammel/Fel
-                    new Type[] { }, // Ilshenar
-                    new Type[] { }, // Malas
-                    new Type[] { }, // Tokuno
-                    new Type[] { }, // TerMur
-                    new Type[] { }, // Eodon
-                },
-            new Type[][] // Assassin
-                {
-                    new Type[] { }, // Trammel/Fel
-                    new Type[] { }, // Ilshenar
-                    new Type[] { }, // Malas
-                    new Type[] { }, // Tokuno
-                    new Type[] { }, // TerMur
-                    new Type[] { }, // Eodon
-                },
-            new Type[][] // Mage
-                {
-                    new Type[] { }, // Trammel/Fel
-                    new Type[] { }, // Ilshenar
-                    new Type[] { }, // Malas
-                    new Type[] { }, // Tokuno
-                    new Type[] { }, // TerMur
-                    new Type[] { }, // Eodon
-                },
-            new Type[][] // Ranger
-                {
-                    new Type[] { }, // Trammel/Fel
-                    new Type[] { }, // Ilshenar
-                    new Type[] { }, // Malas
-                    new Type[] { }, // Tokuno
-                    new Type[] { }, // TerMur
-                    new Type[] { }, // Eodon
-                },
-            new Type[][] // Warrior
-                {
-                    new Type[] { }, // Trammel/Fel
-                    new Type[] { }, // Ilshenar
-                    new Type[] { }, // Malas
-                    new Type[] { }, // Tokuno
-                    new Type[] { }, // TerMur
-                    new Type[] { }, // Eodon
-                }
-        };*/
+            chest.Movable = false;
+            chest.Locked = true;
+
+            chest.TrapType = TrapType.ExplosionTrap;
+            chest.TrapPower = level * 25;
+            chest.TrapLevel = level;
+
+            switch (level)
+            {
+                case 1: cont.RequiredSkill = 36; break;
+                case 2: cont.RequiredSkill = 60; break;
+                case 3: cont.RequiredSkill = 76; break;
+                case 4: cont.RequiredSkill = 75; break;
+                case 5: cont.RequiredSkill = 80; break;
+            }
+
+            cont.LockLevel = cont.RequiredSkill - 10;
+            cont.MaxLockLevel = cont.RequiredSkill + 40;
+
+            #region Gold
+            cont.DropItem(new Gold(isSos ? level * 10000 : level * 5000));
+            #endregion
+        }
     }
 
-    public class TreasureEntry
+    public class RemoveTrapTimer : Timer
     {
-        public Type[] Weapons { get; set; }
-        public Type[] Armor { get; set; }
-        public Type[] Jewels { get; set; }
-        public SkillName[] AlacritySkills { get; set; }
-        public SkillName[] TranscendenceSkills { get; set; }
-        public Type[] Special { get; set; }
-        public Type[] Resources { get; set; }
-        public Type[] Decoration { get; set; }
-        public Type[] Artifacts { get; set; }
+        public Mobile From { get; set; }
+        public TreaureMapChest Chest { get; set; }
+        public DateTime EndTime { get; set; }
 
-        public TreasureEntry()
+        public RemoveTrapTimer(Mobile from, TreasureMapChest chest, TimeSpan duration)
+            : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
         {
+            From = from;
+            Chest = chest;
+            EndTime = TimeSpan.UtcNow + duration;
+        }
+
+        protected override void OnTick()
+        {
+            if (EndTime < DateTime.UtcNow)
+            {
+            }
+            else
+            {
+
+            }
         }
     }
 }
