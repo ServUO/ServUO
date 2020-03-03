@@ -19,17 +19,18 @@ namespace Server.Misc
         public static void FatigueOnDamage(Mobile m, int damage, DFAlgorithm df)
         {
             double fatigue = 0.0;
+            var hits = Math.Max(1, m.Hits);
 
             switch (m.DFA)
             {
                 case DFAlgorithm.Standard:
                     {
-                        fatigue = (damage * (m.HitsMax / m.Hits) * ((double)m.Stam / m.StamMax)) - 5;
+                        fatigue = (damage * (m.HitsMax / hits) * ((double)m.Stam / m.StamMax)) - 5;
                     }
                     break;
                 case DFAlgorithm.PainSpike:
                     {
-                        fatigue = (damage * ((m.HitsMax / m.Hits) + ((50.0 + m.Stam) / m.StamMax) - 1.0)) - 5;
+                        fatigue = (damage * ((m.HitsMax / hits) + ((50.0 + m.Stam) / m.StamMax) - 1.0)) - 5;
                     }
                     break;
             }
