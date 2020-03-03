@@ -204,16 +204,16 @@ namespace Server.Engines.VeteranRewards
                 {
                     if (CheckAccessible(from, this))
                     {
-                        if (RewardCount > 0)
+                        if (RewardCount >= 2)
                         {
                             if (Activator.CreateInstance(GraniteType[Utility.Random(GraniteType.Length)]) is Item granite)
                             {
-                                granite.Amount = RewardCount;
+                                granite.Amount = 2;
 
                                 if (from.Backpack != null)
                                 {
                                     from.AddToBackpack(granite);
-                                    RewardCount = 0;
+                                    RewardCount -= 2;
                                 }
                             }                            
                         }
