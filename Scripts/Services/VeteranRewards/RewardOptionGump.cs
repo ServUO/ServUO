@@ -89,6 +89,11 @@ namespace Server.Gumps
         }
 
         public AddonOptionGump(IRewardOption option, int title)
+            : this(option, title, 300, 80)
+        {
+        }
+
+        public AddonOptionGump(IRewardOption option, int title, int bgw, int bgh)
             : base(50, 50)
         {
             m_Option = option;
@@ -98,7 +103,7 @@ namespace Server.Gumps
 
             AddPage(0);
 
-            AddBackground(0, 0, 300, 180, 0xA28);
+            AddBackground(0, 0, bgw, bgh, 0xA28);
 
             if (title > 0)
                 AddHtmlLocalized(30, 30, 240, 20, 1113302, String.Format("#{0}", title), 0x0, false, false); // <CENTER>~1_VAL~</CENTER>
