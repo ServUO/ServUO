@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Server;
 using Server.Misc;
@@ -127,16 +128,6 @@ namespace Server.Items
                 list = _WeaponTable[(int)package][0];
             }
 
-            if (level >= TreasureLevel.Cache && package != TreasurePackage.Artisan)
-            {
-                if (package == TreasurePackage.Ranger || package == TreasurePackage.Warrior)
-                {
-                    list.Concat(new Type[] { typeof(SkullGrarledStaff) });
-                }
-
-                list.Concat(new Type[] { typeof(SkullLongsword) });
-            }
-
             return list;
         }
 
@@ -168,27 +159,13 @@ namespace Server.Items
         {
             var facet = GetFacet(map);
 
-            if (package == TreasurePackage.Ranger && facet == TreasureFacet.TerMur)
+            if (facet == TreasureFacet.TerMur)
             {
-                if (level >= TreasureLevel.Cache)
-                {
-                    return _JewelTable[3];
-                }
-                else
-                {
-                    return _JewelTable[2];
-                }
+                return _JewelTable[1];
             }
             else
             {
-                if (level >= TreasureLevel.Cache)
-                {
-                    return _JewelTable[1];
-                }
-                else
-                {
-                    return _JewelTable[0];
-                }
+                return _JewelTable[0];
             }
 
             return null;
@@ -239,14 +216,26 @@ namespace Server.Items
             return null;
         }
 
-        public static Type[] GetDecorativeList(TreasureLevel level, TreasurePackage package)
+        public static Type[] GetDecorativeList(TreasureLevel level, TreasurePackage package, Map map)
         {
+            Type[] list = null;
+            var facet = GetFacet(map);
+
             if (level >= TreasureLevel.Cache)
             {
-                return _DecorativeTable[(int)package];
+                list = _DecorativeTable[(int)package];
+
+                if (facet == TreaureFacet.Malas)
+                {
+                    list.Concat(typeof(CoffinPiece));
+                }
+            }
+            else if (level == TreasureLevel.Supply)
+            {
+                list = _DecorativeMinorArtifacts;
             }
 
-            return null;
+            return list;
         }
 
         public static Type[] GetReagentList(TreasureLevel level, TreasurePackage package, Map map)
@@ -275,6 +264,30 @@ namespace Server.Items
             }
 
             return null;
+        }
+
+        public static Type[] GetSpecialLootList(TreasureLevel level, TreasurePackage package)
+        {
+            if (level == TreaureLevel.Stash)
+                return null;
+
+            Type[] list;
+
+            if (level == TreasureLevel.Supply)
+            {
+                list = _SpecialSupplyLoot[(int)package];
+            }
+            else
+            {
+                list = _SpecialCacheHordeAndTrove;
+            }
+
+            if (package > TreasurePackage.Artisan)
+            {
+                list.Concat(_FunctionalMinorArtifacts);
+            }
+
+            return list;
         }
 
         /// <summary>
@@ -307,8 +320,9 @@ namespace Server.Items
                     new Type[] { typeof(Dagger), typeof(Kryss), typeof(Cleaver), typeof(Cutlass), typeof(ElvenMachete) },
                     new Type[] { },
                     new Type[] { },
+                    new Type[] { },
                     new Type[] { typeof(Dagger), typeof(Kryss), typeof(Cleaver), typeof(Cutlass) },
-                    new Type[] { typeof(Dagger), typeof(Kryss), typeof(Cleaver), typeof(Cutlass) },
+                    new Type[] { typeof(Dagger), typeof(Kryss), typeof(Cleaver), typeof(Cutlass), typeof(BladedWhip), typeof(BarbedWhip), typeof(SpikedWhip) },
                 },
             new Type[][] // Mage
                 {
@@ -394,12 +408,9 @@ namespace Server.Items
             {
                 new Type[] { typeof(GoldRing), typeof(GoldBracelet), typeof(SilverRing), typeof(SilverBracelet) }, // standard
                 new Type[] { typeof(GoldRing), typeof(GoldBracelet), typeof(SilverRing), typeof(SilverBracelet), typeof(GargishBracelet) }, // Ranger/TerMur
-
-                new Type[] { typeof(GoldRing), typeof(GoldBracelet), typeof(SilverRing), typeof(SilverBracelet), typeof(OctopusNecklace) }, // cache+
-                new Type[] { typeof(GoldRing), typeof(GoldBracelet), typeof(SilverRing), typeof(SilverBracelet), typeof(GargishBracelet), typeof(OctopusNecklace) } // Ranger/TerMur/cache+
             };
 
-        public Type[][] _DecorationTable = new Type[][]
+        public Type[][] _DecorativeTable = new Type[][]
             {
                 new Type[] { typeof(SkullTiledFloorDeed) },
                 new Type[] { typeof(AncientWeapon3) },
@@ -419,13 +430,34 @@ namespace Server.Items
                 new Type[] { },
             };
 
-        public Type[][] _UtilityItemTable = new Type[][]
+        public Type[][] _SpecialSupplyLoot = new Type[][]
             {
-                new Type[] { typeof(ShieldEngravingTool) },
-                new Type[] { typeof(ForgedPardon), typeof(SkeletonKey) },
-                new Type[] { },
-                new Type[] { typeof(TastyTreat) },
-                new Type[] { },
+                new Type[] { typeof(LegendaryMapMakersGlasses), typeof(ManaPhasingOrb), typeof(RunedSashOfWarding), typeof(ShieldEngravingTool) },
+                new Type[] { typeof(ForgedPardon), typeof(LegendaryMapMakersGlasses), typeof(ManaPhasingOrb), typeof(RunedSashOfWarding), typeof(SkeletonKey), typeof(MasterSkeletonKey), typeof(SurgeShield) },
+                new Type[] { typeof(LegendaryMapMakersGlasses), typeof(ManaPhasingOrb), typeof(RunedSashOfWarding) },
+                new Type[] { typeof(LegendaryMapMakersGlasses), typeof(ManaPhasingOrb), typeof(RunedSashOfWarding), typeof(TastyTreat) },
+                new Type[] { typeof(LegendaryMapMakersGlasses), typeof(ManaPhasingOrb), typeof(RunedSashOfWarding) },
+            };
+
+        public Type[] _SpecialCacheHordeAndTrove = new Type[]
+            {
+                typeof(OctopusNecklace), typeof(SkullGnarledStaff), typeof(SkullLongsword)
+            };
+
+        public Type[] _DecorativeMinorArtifacts = new Type[]
+            {
+                typeof(CandelabraOfSouls), typeof(GoldBricks), typeof(PhillipsWoodenSteed), typeof(AncientShipModelOfTheHMSCape), typeof(AdmiralsHeartyRum)
+            };
+
+        public Type[] _FunctionalMinorArtifacts = new Type[]
+            {
+                typeof(ArcticDeathDealer), typeof(BlazeOfDeath), typeof(BurglarsBandana),
+                typeof(CavortingClub), typeof(DreadPirateHat),
+                typeof(EnchantedTitanLegBone), typeof(GwennosHarp), typeof(IolosLute),
+                typeof(LunaLance), typeof(NightsKiss), typeof(NoxRangersHeavyCrossbow),
+                typeof(PolarBearMask), typeof(VioletCourage), typeof(HeartOfTheLion),
+                typeof(ColdBlood), typeof(AlchemistsBauble), typeof(CaptainQuacklebushsCutlass),
+                typeof(ShieldOfInvulnerability),
             };
 
         public SkillName[][] _TranscendenceTable = new Type[][]
@@ -466,18 +498,40 @@ namespace Server.Items
 
             switch (level)
             {
-                case 1: cont.RequiredSkill = 36; break;
-                case 2: cont.RequiredSkill = 60; break;
-                case 3: cont.RequiredSkill = 76; break;
-                case 4: cont.RequiredSkill = 75; break;
-                case 5: cont.RequiredSkill = 80; break;
+                case 1: chest.RequiredSkill = 36; break;
+                case 2: chest.RequiredSkill = 60; break;
+                case 3: chest.RequiredSkill = 76; break;
+                case 4: chest.RequiredSkill = 75; break;
+                case 5: chest.RequiredSkill = 80; break;
             }
 
-            cont.LockLevel = cont.RequiredSkill - 10;
-            cont.MaxLockLevel = cont.RequiredSkill + 40;
+            chest.LockLevel = cont.RequiredSkill - 10;
+            chest.MaxLockLevel = cont.RequiredSkill + 40;
 
             #region Gold
-            cont.DropItem(new Gold(isSos ? level * 10000 : level * 5000));
+            // TODO Confirm
+            chest.DropItem(new Gold(isSos ? level * 10000 : level * 5500));
+            #endregion
+
+            #region Refinements
+            if (map.TreasureLevel == TreasureLevel.Stash)
+            {
+                RefinementComponent.Roll(chest, rolls, 0.10);
+            }
+            #endregion
+
+            #region Cartography Glasses
+            if (map.TreasureLevel == TreasureLevel.Supply && 0.05 > Utility.RandomDouble())
+            {
+                chest.DropItem(new LegendaryMapmakersGlasses());
+            }
+            #endregion
+
+            #region TMaps
+            if (map.TreasureLevel < TreasureLevel.Trove && 0.1 > Utility.RandomDouble())
+            {
+                chest.DropItem(new TreasureMap(map.Level + 1, map));
+            }
             #endregion
         }
     }
