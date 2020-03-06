@@ -279,8 +279,6 @@ namespace Server.Gumps
 
         public List<int> GetRandomPath()
         {
-            int index;
-
             switch (Count)
             {
                 default:

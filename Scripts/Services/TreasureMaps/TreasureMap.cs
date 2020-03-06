@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 using Server.ContextMenus;
 using Server.Engines.CannedEvil;
@@ -26,7 +27,7 @@ namespace Server.Items
         #region Forgotten Treasures
         public TreasureLevel TreasureLevel { get { return (TreasureLevel)m_Level; } }
         public TreasurePackage Package { get; set; }
-        public TreasureFacet Facet { get { return TreaureMapInfo.GetFacet(m_Location, Facet); } }
+        public TreasureFacet TreasureFacet { get { return TreasureMapInfo.GetFacet(m_Location, Facet); } }
 
         protected void ConvertLevel(int oldLevel)
         {
@@ -50,29 +51,29 @@ namespace Server.Items
         {
             var skill = digger.Skills[SkillName.Cartography].Value;
 
-            var dif;
+            int dif;
 
             switch (TreasureLevel)
             {
                 default:
                 case TreasureLevel.Stash: dif = 100; break;
-                case TreasrueLevel.Supply: dif = 200; break;
-                case TreasrueLevel.Cache: dif = 300; break;
-                case TreasrueLevel.Horde: dif = 400; break;
-                case TreasrueLevel.Trove: dif = 500; break;
+                case TreasureLevel.Supply: dif = 200; break;
+                case TreasureLevel.Cache: dif = 300; break;
+                case TreasureLevel.Hoard: dif = 400; break;
+                case TreasureLevel.Trove: dif = 500; break;
             }
 
             if (Utility.Random(dif) <= skill)
             {
-                chest.Quality = ChestQuality.Gold;
+                chest.ChestQuality = ChestQuality.Gold;
             }
             else if (Utility.Random(dif) <= skill * 2)
             {
-                chest.Quality = ChestQuality.Standard;
+                chest.ChestQuality = ChestQuality.Standard;
             }
             else
             {
-                chest.Quality = ChestQuality.Rusty;
+                chest.ChestQuality = ChestQuality.Rusty;
             }
         }
         #endregion
@@ -751,7 +752,7 @@ namespace Server.Items
                         list1.AddRange(table[2]);
                         list1.AddRange(table[3]);
 
-                        array = list.ToArray();
+                        array = list1.ToArray();
                         ColUtility.Free(list1);
                         break;
                     case 3:
@@ -759,7 +760,7 @@ namespace Server.Items
                         list2.AddRange(table[4]);
                         list2.AddRange(table[5]);
 
-                        array = list.ToArray();
+                        array = list2.ToArray();
                         ColUtility.Free(list2);
                         break;
                     case 4: array = table[6]; break;
@@ -1475,7 +1476,7 @@ namespace Server.Items
 
                         if (NewSystem)
                         {
-                            AssignChestQuality(m_From, m_Chest);
+                            m_TreasureMap.AssignChestQuality(m_From, m_Chest);
                         }
 
                         m_Chest.MoveToWorld(new Point3D(m_Location.X, m_Location.Y, m_Location.Z - 15), m_Map);
@@ -1504,7 +1505,7 @@ namespace Server.Items
                     }
                     else
                     {
-                        TreasureChest.Fill(m_From, m_Chest, m_Chest.Level, false);
+                        TreasureMapChest.Fill(m_From, m_Chest, m_Chest.Level, false);
                     }
 
                     m_TreasureMap.OnMapComplete(m_From, m_Chest);

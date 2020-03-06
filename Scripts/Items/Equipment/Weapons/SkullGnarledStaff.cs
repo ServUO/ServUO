@@ -7,7 +7,7 @@ namespace Server.Items
     [FlipableAttribute(41795, 41796)]
     public class SkullGnarledStaff : GnarledStaff
     {
-        public override void LabelNumber { get { return 1125819; } } // skull gnarled staff
+        public override int LabelNumber { get { return 1125819; } } // skull gnarled staff
 
         [Constructable]
         public SkullGnarledStaff()
@@ -38,17 +38,17 @@ namespace Server.Items
     [FlipableAttribute(41799, 41800)]
     public class GargishSkullGnarledStaff : GnarledStaff
     {
-        public override void LabelNumber { get { return 1125823; } } // gargish skull gnarled staff
+        public override int LabelNumber { get { return 1125823; } } // gargish skull gnarled staff
         public override Race RequiredRace { get { return Race.Gargoyle; } }
         public override bool CanBeWornByGargoyles { get { return true; } }
 
         [Constructable]
-        public SkullGnarledStaff()
+        public GargishSkullGnarledStaff()
         {
             ItemID = 41799;
         }
 
-        public SkullGnarledStaff(Serial serial)
+        public GargishSkullGnarledStaff(Serial serial)
             : base(serial)
         {
         }

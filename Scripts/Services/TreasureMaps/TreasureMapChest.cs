@@ -51,7 +51,7 @@ namespace Server.Items
             typeof(LargeFishingNet)
         };
 
-
+        public static Type[] ImbuingIngreds {  get { return m_ImbuingIngreds; } }
         private static Type[] m_ImbuingIngreds =
         {
             typeof(AbyssalCloth),   typeof(EssencePrecision), typeof(EssenceAchievement), typeof(EssenceBalance),
@@ -179,7 +179,7 @@ namespace Server.Items
             }
         }
 
-        public ChestQuality Quality
+        public ChestQuality ChestQuality
         {
             get { return _Quality; }
             set

@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+
 using Server.Targeting;
 
 namespace Server.Items
@@ -71,7 +73,7 @@ namespace Server.Items
             {
                 if (item is TreasureMapChest && TreasureMap.NewSystem && !((TreasureMapChest)item).Guardians.All(g => g.Deleted))
                 {
-                    from.SendLocazliedMessage(1115991); // You must destroy all the guardians before you can unlock the chest.
+                    from.SendLocalizedMessage(1115991); // You must destroy all the guardians before you can unlock the chest.
                 }
                 else
                 {
@@ -154,7 +156,7 @@ namespace Server.Items
 
                 if (item is TreasureMapChest)
                 {
-                    var chest = (TreaureMapChest)item;
+                    var chest = (TreasureMapChest)item;
 
                     if (TreasureMap.NewSystem)
                     {
@@ -162,7 +164,7 @@ namespace Server.Items
                     }
                     else if (chest.Items.Count > 0 && 0.25 > Utility.RandomDouble())
                     {
-                        Item toBreak = cont.Items[Utility.Random(chest.Items.Count)];
+                        Item toBreak = chest.Items[Utility.Random(chest.Items.Count)];
 
                         if (!(toBreak is Container))
                         {

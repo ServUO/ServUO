@@ -184,7 +184,7 @@ namespace Server.Items
     public class OctopusNecklace : BaseNecklace
     {
         [Constructable]
-        public SilverBeadNecklace()
+        public OctopusNecklace()
             : base(0xA349)
         {
             AssignRandomGem();
@@ -229,7 +229,7 @@ namespace Server.Items
             }
         }
 
-        public SilverBeadNecklace(Serial serial)
+        public OctopusNecklace(Serial serial)
             : base(serial)
         {
         }
