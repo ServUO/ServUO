@@ -678,10 +678,15 @@
     <Compile Include="Items\Resource\VileTentacles.cs" />
     <Compile Include="Items\Resource\EtherealSand.cs" />
     <Compile Include="Items\StoreBought\BarrelMailbox.cs" />
+    <Compile Include="Items\StoreBought\DrunkWomansSingingBall.cs" />
     <Compile Include="Items\StoreBought\GardenSculpture.cs" />
     <Compile Include="Items\StoreBought\MetalLadder.cs" />
     <Compile Include="Items\StoreBought\PetWhistle.cs" />
     <Compile Include="Items\StoreBought\SecretChest.cs" />
+    <Compile Include="Items\StoreBought\DrunkMansSingingBall.cs" />
+    <Compile Include="Items\StoreBought\SingingBallOfBedlam.cs" />
+    <Compile Include="Items\StoreBought\SingingBallOfSosarianSteeds.cs" />
+    <Compile Include="Items\StoreBought\SingingBallOfBlueBoar.cs" />
     <Compile Include="Items\StoreBought\SpiralStaircase.cs" />
     <Compile Include="Items\StoreBought\SquirrelMailbox.cs" />
     <Compile Include="Items\StoreBought\WineRack.cs" />
