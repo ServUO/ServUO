@@ -992,9 +992,16 @@ namespace Server.Mobiles
                 if (base.Combatant == null)
                 {
                     if (value is Mobile && AttacksFocus)
+                    {
                         InitialFocus = (Mobile)value;
+                    }
                 }
-                else if (AttacksFocus && initialFocus != null && value != initialFocus && !initialFocus.Hidden && InRange(initialFocus.Location, RangePerception))
+                else if (AttacksFocus && 
+                        initialFocus != null && 
+                        value != initialFocus && 
+                        !initialFocus.Hidden &&  
+                        Map == initialFocus.Map && 
+                        InRange(initialFocus.Location, RangePerception))
                 {
                     //Keeps focus
                     base.Combatant = initialFocus;
