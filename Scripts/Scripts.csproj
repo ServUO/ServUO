@@ -678,6 +678,13 @@
     <Compile Include="Items\Resource\VileTentacles.cs" />
     <Compile Include="Items\Resource\EtherealSand.cs" />
     <Compile Include="Items\StoreBought\BarrelMailbox.cs" />
+    <Compile Include="Items\StoreBought\Decorative Dungeon Set\DecorativeDungeonChair.cs" />
+    <Compile Include="Items\StoreBought\Decorative Dungeon Set\DecorativeDungeonStool.cs" />
+    <Compile Include="Items\StoreBought\Decorative Dungeon Set\DecorativeWallHook.cs" />
+    <Compile Include="Items\StoreBought\Decorative Dungeon Set\DecorativeStocks.cs" />
+    <Compile Include="Items\StoreBought\Decorative Dungeon Set\DecorativeDungeonMask.cs" />
+    <Compile Include="Items\StoreBought\Decorative Dungeon Set\DungeonFountain.cs" />
+    <Compile Include="Items\StoreBought\Decorative Dungeon Set\DungeonBull.cs" />
     <Compile Include="Items\StoreBought\DrunkWomansSingingBall.cs" />
     <Compile Include="Items\StoreBought\GardenSculpture.cs" />
     <Compile Include="Items\StoreBought\MetalLadder.cs" />

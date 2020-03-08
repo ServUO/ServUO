@@ -833,6 +833,12 @@ namespace Server.Mobiles
                 return false;
             }
 
+            if (item is SecretChest && ((SecretChest)item).Locked)
+            {
+                SayTo(from, 1151612); // I cannot accept a number key locked item.
+                return false;
+            }
+
             if (item is Gold)
             {
                 if (BaseHouse.NewVendorSystem)
@@ -895,6 +901,12 @@ namespace Server.Mobiles
         {
             if (IsOwner(from))
             {
+                if (item is SecretChest && ((SecretChest)item).Locked)
+                {
+                    SayTo(from, 1151612); // I cannot accept a number key locked item.
+                    return false;
+                }
+
                 if (GetVendorItem(item) == null)
                 {
                     // We must wait until the item is added
