@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class DrunkWomansSingingBall : SingingBall
     {
-        public override int LabelNumber { get { return 1152324; } } // drunk man's singing ball
+        public override int LabelNumber { get { return 1152323; } } // drunk woman's singing ball
 
         [Constructable]
         public DrunkWomansSingingBall()
