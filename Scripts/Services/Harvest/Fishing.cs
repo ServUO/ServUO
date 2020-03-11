@@ -485,7 +485,7 @@ namespace Server.Engines.Harvest
                             chest.Hue = 0x481;
                         }
 
-                        TreasureMapChest.Fill(chest, from is PlayerMobile ? ((PlayerMobile)from).RealLuck : from.Luck, Math.Max(1, Math.Min(4, sos.Level)), true, from.Map);
+                        TreasureMapChest.Fill(from, chest, Math.Max(1, Math.Min(4, sos.Level)), true);
                         sos.OnSOSComplete(chest);
 
                         if (sos.IsAncient)

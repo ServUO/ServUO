@@ -270,7 +270,9 @@ namespace Server.Items
             }
             set
             {
+                var old = m_GemType;
                 m_GemType = value;
+                OnGemTypeChange(old);
                 InvalidateProperties();
             }
         }
@@ -998,6 +1000,28 @@ namespace Server.Items
                     list.Add(1151488 + ((int)m_ItemPower - 1));
                 else
                     list.Add(1152281 + ((int)m_ItemPower - 9));
+            }
+        }
+
+        public virtual void OnGemTypeChange(GemType old)
+        {
+        }
+
+        public int GemLocalization()
+        {
+            switch (m_GemType)
+            {
+                default:
+                case GemType.None: return 0;
+                case GemType.StarSapphire: return 1023867;
+                case GemType.Emerald: return 1023887;
+                case GemType.Sapphire: return 1023887;
+                case GemType.Ruby: return 1023868;
+                case GemType.Citrine: return 1023875;
+                case GemType.Amethyst: return 1023863;
+                case GemType.Tourmaline: return 1023872;
+                case GemType.Amber: return 1062607;
+                case GemType.Diamond: return 1062608;
             }
         }
 

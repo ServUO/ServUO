@@ -202,7 +202,7 @@ namespace Server.Items
 
         public override void Open(Mobile from)
         {
-            if (!TrapOnOpen || !ExecuteTrap(from))
+            if (from.AccessLevel > AccessLevel.Player || !TrapOnOpen || !ExecuteTrap(from))
                 base.Open(from);
         }
 

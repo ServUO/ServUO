@@ -81,6 +81,7 @@ namespace Server.Mobiles
         public override int DragonBlood { get { return 6; } }
         public override int Meat { get { return 6; } }
         public override int Hides { get { return 11; } }
+        public override int TreasureMapLevel { get { return 1; } }
 
         public Anchisaur(Serial serial)
             : base(serial)

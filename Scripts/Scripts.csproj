@@ -528,6 +528,7 @@
     <Compile Include="Gumps\ToTAdminGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\Traps\CircuitTrap.cs" />
     <Compile Include="Gumps\VendorInventoryGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -550,6 +551,7 @@
     <Compile Include="Items\Addons\Craft Addons\EnchantedSculptingTool.cs" />
     <Compile Include="Items\Addons\EnchantedGraniteCart.cs" />
     <Compile Include="Items\Addons\JollyHolidayTree.cs" />
+    <Compile Include="Items\Addons\SkullTiledFloor.cs" />
     <Compile Include="Items\Addons\TheKingsCollection\AlchemistsBookshelf.cs" />
     <Compile Include="Items\Addons\TheKingsCollection\TheTokenBox.cs" />
     <Compile Include="Items\Addons\TheKingsCollection\FirePainting.cs" />
@@ -584,6 +586,7 @@
     <Compile Include="Items\Artifacts\Decorative\GildedStatue.cs" />
     <Compile Include="Items\Artifacts\Decorative\KingsPainting.cs" />
     <Compile Include="Items\Artifacts\Decorative\MedusasFloorTileAddon.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Glasses\LegendaryMapmakersGlasses.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\TheRedeemer.cs" />
     <Compile Include="Items\Consumables\2019HolidayGiftToken.cs" />
     <Compile Include="Items\Consumables\AnniversaryPromotionalToken.cs" />
@@ -615,6 +618,7 @@
     <Compile Include="Items\Consumables\EmbroideryTool.cs" />
     <Compile Include="Items\Damageable\Beacon.cs" />
     <Compile Include="Items\Damageable\DamageableItem.cs" />
+    <Compile Include="Items\Decorative\AncientWeapons.cs" />
     <Compile Include="Items\Decorative\ArtisanFestivalRewards\LanternBrokenShield.cs" />
     <Compile Include="Items\Decorative\ArtisanFestivalRewards\LanternHand.cs" />
     <Compile Include="Items\Decorative\ArtisanFestivalRewards\LanternHeart.cs" />
@@ -631,6 +635,7 @@
     <Compile Include="Items\Decorative\ArtisanFestivalRewards\SculptureWoodCoin.cs" />
     <Compile Include="Items\Decorative\ArtisanFestivalRewards\SculptureWoodEven.cs" />
     <Compile Include="Items\Decorative\ArtisanFestivalRewards\SculptureWoodScept.cs" />
+    <Compile Include="Items\Decorative\DecorativeHourglass.cs" />
     <Compile Include="Items\Decorative\DecorativeStableSet\ChickenStatue.cs" />
     <Compile Include="Items\Decorative\DecorativeStableSet\CowPie.cs" />
     <Compile Include="Items\Decorative\DecorativeStableSet\CowStatue.cs" />
@@ -664,6 +669,11 @@
     <Compile Include="Items\Equipment\Clothing\DaggerBelt.cs" />
     <Compile Include="Items\Equipment\Clothing\MaceBelt.cs" />
     <Compile Include="Items\Equipment\Clothing\SwordBelt.cs" />
+    <Compile Include="Items\Equipment\Weapons\SkullGnarledStaff.cs" />
+    <Compile Include="Items\Equipment\Weapons\SkullLongsword.cs" />
+    <Compile Include="Items\Functional\CircuitTrapTrainingKit.cs" />
+    <Compile Include="Items\Functional\CylinderTrapTrainingKit.cs" />
+    <Compile Include="Items\Functional\SliderTrapTrainingKit.cs" />
     <Compile Include="Items\Functional\StrangeContraption.cs" />
     <Compile Include="Items\Internal\ItemSockets\SearingWeapon.cs" />
     <Compile Include="Items\Quest\RewardBooks.cs" />
@@ -5068,9 +5078,6 @@
     <Compile Include="Items\Containers\TreasureChest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Containers\TreasureMapChest.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Containers\UnknownSkeletons.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -5504,9 +5511,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Tools\SeaChart.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Consumables\TreasureMap.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Tools\WorldMap.cs">
@@ -8827,9 +8831,6 @@
     <Compile Include="Misc\ToggleItem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\TreasureMapProtection.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Misc\ValidationQueue.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10297,6 +10298,11 @@
     <Compile Include="Services\Town Cryer\TownCryerModeratorEntry.cs" />
     <Compile Include="Services\Town Cryer\TownCryerNewsEntry.cs" />
     <Compile Include="Services\Town Cryer\TownCryerSystem.cs" />
+    <Compile Include="Services\TreasureMaps\BagOfGems.cs" />
+    <Compile Include="Services\TreasureMaps\TreasureMap.cs" />
+    <Compile Include="Services\TreasureMaps\TreasureMapChest.cs" />
+    <Compile Include="Services\TreasureMaps\TreasureMapInfo.cs" />
+    <Compile Include="Services\TreasureMaps\TreasureMapProtection.cs" />
     <Compile Include="Services\UltimaStore\PlayerProfile.cs" />
     <Compile Include="Services\UltimaStore\StoreEntry.cs" />
     <Compile Include="Services\UltimaStore\SystemConfig.cs" />
@@ -11147,9 +11153,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Underworld\PuzzleRoom\MastermindPuzzleItem.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Underworld\PuzzleRoom\MazePuzzleGump.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Underworld\PuzzleRoom\MazePuzzleItem.cs">
@@ -12286,7 +12289,9 @@
       <Name>Ultima</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Services\TreasureMaps\desktop.ini" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />

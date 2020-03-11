@@ -56,6 +56,7 @@ namespace Server.Mobiles
         public override int Meat { get { return 1; } }
         public override int Hides { get { return 7; } }
         public override int DragonBlood { get { return 6; } }
+        public override int TreasureMapLevel { get { return 1; } }
 
         public Archaeosaurus(Serial serial)
             : base(serial)
