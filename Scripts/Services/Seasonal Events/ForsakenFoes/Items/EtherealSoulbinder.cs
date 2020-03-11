@@ -40,9 +40,9 @@ namespace Server.Items
             if (SoulPoint <= 0)
                 Hue = 0;
             else if (SoulPoint <= 1)
-                Hue = 1909; // Meager
+                Hue = 1910; // Meager
             else if (SoulPoint <= 25)
-                Hue = 1917; // Grand
+                Hue = 1916; // Grand
             else if (SoulPoint <= 50)
                 Hue = 1914; // Exalted
             else if (SoulPoint <= 90)
@@ -55,13 +55,13 @@ namespace Server.Items
         {
             if (SoulPoint <= 0)
                 return 1159177; // An Empty Soulbinder
-            else if (SoulPoint <= 33)
+            else if (SoulPoint <= 1)
                 return 1159176; // Meager
-            else if (SoulPoint <= 66)
+            else if (SoulPoint <= 25)
                 return 1159175; // Grand
-            else if (SoulPoint <= 66)
+            else if (SoulPoint <= 50)
                 return 1159174; // Exalted
-            else if (SoulPoint <= 66)
+            else if (SoulPoint <= 90)
                 return 1159173; // Legendary
             else
                 return 1159172; // Mythical
