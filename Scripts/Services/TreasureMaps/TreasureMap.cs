@@ -1593,10 +1593,10 @@ namespace Server.Items
                     switch (m_TreasureMap.Level)
                     {
                         case 0:
-                            spawns = 3;
+                            spawns = TreasureMapInfo.NewSystem ? 4 : 3;
                             break;
                         case 1:
-                            spawns = 0;
+                            spawns = TreasureMapInfo.NewSystem ? 4 : 0;
                             break;
                         default:
                             spawns = 4;
