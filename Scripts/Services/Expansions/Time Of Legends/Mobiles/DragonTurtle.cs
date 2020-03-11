@@ -64,8 +64,9 @@ namespace Server.Mobiles
         public override TimeSpan TeleportDuration { get { return TimeSpan.FromSeconds(30); } }
         public override int TeleportRange { get { return 10; } }
         public override bool ReacquireOnMovement { get { return true; } }
+        public override int TreasureMapLevel { get { return 5; } }
 
-		public override void OnCarve(Mobile from, Corpse corpse, Item with)
+        public override void OnCarve(Mobile from, Corpse corpse, Item with)
         {
             if (corpse != null && !corpse.Carved)
             {

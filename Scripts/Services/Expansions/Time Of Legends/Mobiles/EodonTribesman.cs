@@ -56,6 +56,7 @@ namespace Server.Mobiles
         }
 
         public override bool InitialInnocent { get { return true; } }
+        public override int TreasureMapLevel { get { return 2; } }
 
         public override MasteryInfo[] Masteries
         {

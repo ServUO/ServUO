@@ -42,7 +42,7 @@ namespace Server.Mobiles
             Karma = -10000;
         }
 		
-		public override int TreasureMapLevel { get { return 4; } }
+		public override int TreasureMapLevel { get { return 5; } }
 
         private DateTime _NextDrop;
 

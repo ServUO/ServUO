@@ -123,7 +123,7 @@ namespace Server.Engines.Quests
 
             if (QuestHelper.TryReceiveQuestItem(Owner, typeof(BuriedRichesTreasureMap), TimeSpan.FromDays(7)))
             {
-                Owner.AddToBackpack(new BuriedRichesTreasureMap(1));
+                Owner.AddToBackpack(new BuriedRichesTreasureMap(0));
             }
         }
 
@@ -350,7 +350,7 @@ namespace Server.Engines.Quests
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && !QuestHelper.CheckDoneOnce((PlayerMobile)m, typeof(BuriedRichesQuest), this, false))
+            if (m is PlayerMobile && !QuestHelper.CheckDoneOnce((PlayerMobile)m, typeof(ToolsOfTheTradeQuest), this, false))
             {
                 m.SendLocalizedMessage(1080107); // I'm sorry, I have nothing for you at this time.
             }
@@ -464,7 +464,7 @@ namespace Server.Engines.Quests
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && !QuestHelper.CheckDoneOnce((PlayerMobile)m, typeof(BuriedRichesQuest), this, false))
+            if (m is PlayerMobile && QuestHelper.CheckDoneOnce((PlayerMobile)m, typeof(TheTreasureChaseQuest), this, false))
             {
                 m.SendLocalizedMessage(1080107); // I'm sorry, I have nothing for you at this time.
             }
