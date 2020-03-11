@@ -231,7 +231,7 @@ namespace Server.Engines.Quests
             m.PlaySound(0x41A);
             m.PrivateOverheadMessage(MessageType.Regular, 1154, 1157722, "Cartography", m.NetState); // *Your proficiency in ~1_SKILL~ reveals more about the item*
 
-            if (m is PlayerMobile)
+            if (m is PlayerMobile && Level == 0)
             {
                 m.CloseGump(typeof(InternalGump));
                 BaseGump.SendGump(new InternalGump((PlayerMobile)m, this));
@@ -246,7 +246,7 @@ namespace Server.Engines.Quests
 
                 if (quest != null)
                 {
-                    if (Level < 3)
+                    if (Level == 0)
                     {
                         TownCryerSystem.CompleteQuest((PlayerMobile)from, 1158239, 1158251, 0x655);
                         /*Your eyes widen as you pry open the old chest and reveal the treasure within! Even this small cache
@@ -254,17 +254,12 @@ namespace Server.Engines.Quests
                          * in ancient runes and marks the location of another treasure hoard. You carefully furl the map and
                          * set off on your next adventure!*/
 
-                        switch (Level)
-                        {
-                            default:
-                            case 1: from.SendLocalizedMessage(1158245, "", 0x23); // You have found the first zealot treasure! As you dig up the chest a leather bound case appears to contain an additional map. You place it in your backpack for later examination. 
-                                break;
-                            case 2: from.SendLocalizedMessage(1158246, "", 0x23); // You have found the second zealot treasure! As you dig up the chest a leather bound case appears to contain an additional map. You place it in your backpack for later examination. 
-                                break;
-                        }
+                        from.SendLocalizedMessage(1158245, "", 0x23); // You have found the first zealot treasure! As you dig up the chest a leather bound case appears to contain an additional map. You place it in your backpack for later examination. 
+                        chest.DropItem(new BuriedRichesTreasureMap(1));
                     }
                     else
                     {
+                        from.SendLocalizedMessage(1158246, "", 0x23); // You have found the second zealot treasure! As you dig up the chest a leather bound case appears to contain an additional map. You place it in your backpack for later examination. 
                         quest.CompleteQuest();
                     }
                 }
@@ -309,7 +304,7 @@ namespace Server.Engines.Quests
         {
             base.GetProperties(list);
 
-            if (Level == 1)
+            if (Level == 0)
             {
                 list.Add(1158229); // A mysterious treasure map personally given to you by the Legendary Cartographer in Vesper
             }
@@ -333,7 +328,7 @@ namespace Server.Engines.Quests
             {
                 AddBackground(0, 0, 454, 400, 9380);
                 AddHtmlLocalized(177, 53, 235, 20, CenterLoc, "#1158240", C32216(0xA52A2A), false, false); // A Mysterious Treasure Map
-                AddHtmlLocalized(177, 80, 235, 40, CenterLoc, Map.Level == 1 ? "#1158241" : "#1158250", C32216(0xA52A2A), false, false); // Given to you by the Master Cartographer
+                AddHtmlLocalized(177, 80, 235, 40, CenterLoc, Map.Level == 0 ? "#1158241" : "#1158250", C32216(0xA52A2A), false, false); // Given to you by the Master Cartographer
 
                 /*The Cartographer has given you a mysterious treasure map and offered you some tips on how to go about 
                  * recovering the treasure. As the Cartographer leaned in and handed you the furled parchment, she told
