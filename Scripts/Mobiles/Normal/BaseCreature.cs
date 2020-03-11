@@ -5866,21 +5866,8 @@ namespace Server.Mobiles
 
         public override bool OnBeforeDeath()
         {
-            int treasureLevel = TreasureMapLevel;
+            int treasureLevel = TreasureMapInfo.ConvertLevel(TreasureMapLevel);
             GetLootingRights();
-
-            if (IsSoulbound && LastKiller is PlayerMobile)
-            {
-                if (LastKiller.Backpack != null)
-                {
-                    EtherealSoulbinder es = LastKiller.Backpack.FindItemsByType<EtherealSoulbinder>().Where(x => x.SoulPoint < x.MaxSoulPoint).FirstOrDefault();
-
-                    if (es != null)
-                    {
-                        es.SoulPoint += HitsMax / 1000;
-                    }
-                }
-            }
 
             if (treasureLevel == 1 && Map == Map.Trammel && TreasureMap.IsInHavenIsland(this))
             {
@@ -5912,7 +5899,7 @@ namespace Server.Mobiles
                         if (map == Map.Trammel && Siege.SiegeShard)
                             map = Map.Felucca;
 
-                        PackItem(new TreasureMap(treasureLevel, map));
+                        PackItem(new TreasureMap(treasureLevel, map, SpellHelper.IsEodon(map, Location)));
                     }
                 }
 

@@ -59,6 +59,7 @@ namespace Server.Mobiles
         public override bool ReacquireOnMovement { get { return true; } }
         public override bool AttacksFocus { get { return true; } }
         public override bool CanFlee { get { return false; } }
+        public override int TreasureMapLevel { get { return 7; } }
 
         // Missing Tail Swipe Ability
 
@@ -363,6 +364,7 @@ namespace Server.Mobiles
         public override bool AutoDispel { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
         public override bool UseSmartAI { get { return true; } }
+        public override int TreasureMapLevel { get { return 7; } }
 
         public GreatApe(Serial serial)
             : base(serial)

@@ -42,7 +42,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = 0;
+            reader.ReadInt();
         }
     }
 }

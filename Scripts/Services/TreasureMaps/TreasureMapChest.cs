@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server.ContextMenus;
 using Server.Engines.PartySystem;
 using Server.Gumps;
@@ -59,14 +61,6 @@ namespace Server.Items
             typeof(EssenceOrder),   typeof(EssencePassion),   typeof(EssencePersistence), typeof(EssenceSingularity)
         };
 
-        private int m_Level;
-        private DateTime m_DeleteTime;
-        private Timer m_Timer;
-        private Mobile m_Owner;
-        private bool m_Temporary;
-        private bool m_FirstOpenedByOwner;
-        private TreasureMap m_TreasureMap;
-        private List<Mobile> m_Guardians;
         private List<Item> m_Lifted = new List<Item>();
 
         private ChestQuality _Quality;
@@ -80,15 +74,16 @@ namespace Server.Items
         public TreasureMapChest(Mobile owner, int level, bool temporary)
             : base(0xE40)
         {
-            m_Owner = owner;
-            m_Level = level;
-            m_DeleteTime = DateTime.UtcNow + TimeSpan.FromHours(3.0);
+            Owner = owner;
+            Level = level;
+            DeleteTime = DateTime.UtcNow + TimeSpan.FromHours(3.0);
 
-            m_Temporary = temporary;
-            m_Guardians = new List<Mobile>();
+            Temporary = temporary;
+            Guardians = new List<Mobile>();
+            AncientGuardians = new List<Mobile>();
 
-            m_Timer = new DeleteTimer(this, m_DeleteTime);
-            m_Timer.Start();
+            Timer = new DeleteTimer(this, DeleteTime);
+            Timer.Start();
         }
 
         public TreasureMapChest(Serial serial)
@@ -96,88 +91,34 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 3000541;
-            }
-        }
+        public override int LabelNumber { get { return 3000541; } }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Level
-        {
-            get
-            {
-                return m_Level;
-            }
-            set
-            {
-                m_Level = value;
-            }
-        }
+        public int Level { get; set; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner
-        {
-            get
-            {
-                return m_Owner;
-            }
-            set
-            {
-                m_Owner = value;
-            }
-        }
+        public Mobile Owner { get; set; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime DeleteTime
-        {
-            get
-            {
-                return m_DeleteTime;
-            }
-        }
+        public DateTime DeleteTime { get; private set; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Temporary
-        {
-            get
-            {
-                return m_Temporary;
-            }
-            set
-            {
-                m_Temporary = value;
-            }
-        }
+        public DateTime DigTime { get; set; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool FirstOpenedByOwner
-        {
-            get
-            {
-                return m_FirstOpenedByOwner;
-            }
-            set
-            {
-                m_FirstOpenedByOwner = value;
-            }
-        }
+        public bool Temporary { get; set; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public TreasureMap TreasureMap
-        {
-            get
-            {
-                return m_TreasureMap;
-            }
-            set
-            {
-                m_TreasureMap = value;
-            }
-        }
-        public List<Mobile> Guardians
-        {
-            get
-            {
-                return m_Guardians;
-            }
-        }
+        public bool FirstOpenedByOwner { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public TreasureMap TreasureMap { get; set; }
+
+        public Timer Timer { get; set; }
+
+        public List<Mobile> Guardians { get; set; }
+
+        public List<Mobile> AncientGuardians { get; set; }
 
         public ChestQuality ChestQuality
         {
@@ -190,9 +131,9 @@ namespace Server.Items
 
                     switch (_Quality)
                     {
-                        case ChestQuality.Rusty: ItemID = Utility.RandomBool() ? 0xA306 : 0xA307; break;
-                        case ChestQuality.Standard: ItemID = Utility.RandomBool() ? 0xA304 : 0xA305; break;
-                        case ChestQuality.Gold: ItemID = Utility.RandomBool() ? 0xA308 : 0xA309; break;
+                        case ChestQuality.Rusty: ItemID = 0xA306; break;
+                        case ChestQuality.Standard: ItemID = 0xA304; break;
+                        case ChestQuality.Gold: ItemID = 0xA308; break;
                     }
                 }
             }
@@ -588,18 +529,17 @@ namespace Server.Items
 
         public override bool CheckLocked(Mobile from)
         {
-            if (!Locked)
-                return false;
-
-            if (Level == 0 && from.AccessLevel < AccessLevel.GameMaster)
+            if (CanOpen(from) || from.AccessLevel > AccessLevel.Player)
             {
-                foreach (Mobile m in Guardians)
+                return false;
+            }
+
+            if (!TreasureMapInfo.NewSystem && Level == 0)
+            {
+                if (Guardians.Any(g => g.Alive))
                 {
-                    if (m.Alive)
-                    {
-                        from.SendLocalizedMessage(1046448); // You must first kill the guardians before you may open this chest.
-                        return true;
-                    }
+                    from.SendLocalizedMessage(1046448); // You must first kill the guardians before you may open this chest.
+                    return true;
                 }
 
                 LockPick(from);
@@ -609,6 +549,25 @@ namespace Server.Items
             {
                 return base.CheckLocked(from);
             }
+        }
+
+        public virtual bool CanOpen(Mobile from)
+        {
+            if (TreasureMapInfo.NewSystem)
+            {
+                if (!Locked && TrapType != TrapType.None)
+                {
+                    from.SendLocalizedMessage(1159008); // That appears to be trapped, using the remove trap skill would yield better results...
+                    return false;
+                }
+                else if (AncientGuardians.Any(ag => ag.Alive))
+                {
+                    from.SendLocalizedMessage(1046448); // You must first kill the guardians before you may open this chest.
+                    return false;
+                }
+            }
+
+            return !Locked;
         }
 
         public override bool CheckItemUse(Mobile from, Item item)
@@ -632,10 +591,42 @@ namespace Server.Items
                 m_Lifted.Add(item);
 
                 if (0.1 >= Utility.RandomDouble()) // 10% chance to spawn a new monster
-                    TreasureMap.Spawn(m_Level, GetWorldLocation(), Map, from, false);
+                    TreasureMap.Spawn(Level, GetWorldLocation(), Map, from, false);
             }
 
             base.OnItemLifted(from, item);
+        }
+
+        public void SpawnAncientGuardian(Mobile from)
+        {
+            ExecuteTrap(from);
+
+            var spawn = TreasureMap.Spawn(Level, GetWorldLocation(), Map, from, false);
+            spawn.NoLootOnDeath = true;
+
+            spawn.Name = "Ancient Chest Guardian";
+            spawn.Title = "(Guardian)";
+
+            if (spawn.HitsMaxSeed >= 0)
+                spawn.HitsMaxSeed = (int)(spawn.HitsMaxSeed * Paragon.HitsBuff);
+
+            spawn.RawStr = (int)(spawn.RawStr * Paragon.StrBuff);
+            spawn.RawInt = (int)(spawn.RawInt * Paragon.IntBuff);
+            spawn.RawDex = (int)(spawn.RawDex * Paragon.DexBuff);
+
+            spawn.Hits = spawn.HitsMax;
+            spawn.Mana = spawn.ManaMax;
+            spawn.Stam = spawn.StamMax;
+
+            for (int i = 0; i < spawn.Skills.Length; i++)
+            {
+                Skill skill = (Skill)spawn.Skills[i];
+
+                if (skill.Base > 0.0)
+                    skill.Base *= Paragon.SkillsBuff;
+            }
+
+            AncientGuardians.Add(spawn);
         }
 
         public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
@@ -657,17 +648,19 @@ namespace Server.Items
 
             writer.Write(FailedLockpick);
             writer.Write((int)_Quality);
+            writer.Write(DigTime);
+            writer.Write(AncientGuardians, true);
 
-            writer.Write(m_FirstOpenedByOwner);
-            writer.Write(m_TreasureMap);
+            writer.Write(FirstOpenedByOwner);
+            writer.Write(TreasureMap);
 
-            writer.Write(m_Guardians, true);
-            writer.Write((bool)m_Temporary);
+            writer.Write(Guardians, true);
+            writer.Write((bool)Temporary);
 
-            writer.Write(m_Owner);
+            writer.Write(Owner);
 
-            writer.Write((int)m_Level);
-            writer.WriteDeltaTime(m_DeleteTime);
+            writer.Write((int)Level);
+            writer.WriteDeltaTime(DeleteTime);
             writer.Write(m_Lifted, true);
         }
 
@@ -682,41 +675,43 @@ namespace Server.Items
                 case 4:
                     FailedLockpick = reader.ReadBool();
                     _Quality = (ChestQuality)reader.ReadInt();
+                    DigTime = reader.ReadDateTime();
+                    AncientGuardians = reader.ReadStrongMobileList();
                     goto case 3;
                 case 3:
-                    m_FirstOpenedByOwner = reader.ReadBool();
-                    m_TreasureMap = reader.ReadItem() as TreasureMap;
+                    FirstOpenedByOwner = reader.ReadBool();
+                    TreasureMap = reader.ReadItem() as TreasureMap;
                     goto case 2;
                 case 2:
                     {
-                        m_Guardians = reader.ReadStrongMobileList();
-                        m_Temporary = reader.ReadBool();
+                        Guardians = reader.ReadStrongMobileList();
+                        Temporary = reader.ReadBool();
 
                         goto case 1;
                     }
                 case 1:
                     {
-                        m_Owner = reader.ReadMobile();
+                        Owner = reader.ReadMobile();
 
                         goto case 0;
                     }
                 case 0:
                     {
-                        m_Level = reader.ReadInt();
-                        m_DeleteTime = reader.ReadDeltaTime();
+                        Level = reader.ReadInt();
+                        DeleteTime = reader.ReadDeltaTime();
                         m_Lifted = reader.ReadStrongItemList();
 
                         if (version < 2)
-                            m_Guardians = new List<Mobile>();
+                            Guardians = new List<Mobile>();
 
                         break;
                     }
             }
 
-            if (!m_Temporary)
+            if (!Temporary)
             {
-                m_Timer = new DeleteTimer(this, m_DeleteTime);
-                m_Timer.Start();
+                Timer = new DeleteTimer(this, DeleteTime);
+                Timer.Start();
             }
             else
             {
@@ -726,10 +721,10 @@ namespace Server.Items
 
         public override void OnAfterDelete()
         {
-            if (m_Timer != null)
-                m_Timer.Stop();
+            if (Timer != null)
+                Timer.Stop();
 
-            m_Timer = null;
+            Timer = null;
 
             base.OnAfterDelete();
         }
@@ -746,7 +741,7 @@ namespace Server.Items
         {
             base.LockPick(from);
 
-            if (Map != null && ((TreasureMap.NewSystem && FailedLockpick) || (Core.SA && 0.05 >= Utility.RandomDouble())))
+            if (Map != null && ((TreasureMapInfo.NewSystem && FailedLockpick) || (Core.SA && 0.05 >= Utility.RandomDouble())))
             {
                 var grubber = new Grubber();
                 grubber.MoveToWorld(Map.GetSpawnPosition(Location, 1), Map);
@@ -763,6 +758,11 @@ namespace Server.Items
                 }
 
                 grubber.PackItem(item);
+
+                if (TreasureMapInfo.NewSystem)
+                {
+                    grubber.PrivateOverheadMessage(MessageType.Regular, 33, 1159062, from.NetState); // *A grubber appears and ganks a piece of your loot!*
+                }
             }
         }
 
@@ -770,14 +770,41 @@ namespace Server.Items
         {
             base.DisplayTo(to);
 
-            if (!m_FirstOpenedByOwner && to == m_Owner)
+            if (!FirstOpenedByOwner && to == Owner)
             {
-                if (m_TreasureMap != null)
+                if (TreasureMap != null)
                 {
-                    m_TreasureMap.OnChestOpened((PlayerMobile)to, this);
+                    TreasureMap.OnChestOpened((PlayerMobile)to, this);
                 }
 
-                m_FirstOpenedByOwner = true;
+                FirstOpenedByOwner = true;
+            }
+        }
+
+        public override bool ExecuteTrap(Mobile from)
+        {
+            if (TreasureMapInfo.NewSystem && TrapType != TrapType.None)
+            {
+                int damage;
+
+                if (TrapLevel > 0)
+                    damage = Utility.RandomMinMax(10, 30) * TrapLevel;
+                else
+                    damage = TrapPower;
+
+                AOS.Damage(from, damage, 0, 100, 0, 0, 0);
+
+                // Your skin blisters from the heat!
+                from.LocalOverheadMessage(Network.MessageType.Regular, 0x2A, 503000);
+
+                Effects.SendLocationEffect(from.Location, from.Map, 0x36BD, 15, 10);
+                Effects.PlaySound(from.Location, from.Map, 0x307);
+
+                return true;
+            }
+            else
+            {
+                return base.ExecuteTrap(from);
             }
         }
 
@@ -792,7 +819,7 @@ namespace Server.Items
 
         public void EndRemove(Mobile from)
         {
-            if (Deleted || from != m_Owner || !from.InRange(GetWorldLocation(), 3))
+            if (Deleted || from != Owner || !from.InRange(GetWorldLocation(), 3))
                 return;
 
             from.SendLocalizedMessage(1048124, "", 0x8A5); // The old, rusted chest crumbles when you hit it.
@@ -873,13 +900,13 @@ namespace Server.Items
 
         private bool CheckLoot(Mobile m, bool criminalAction)
         {
-            if (m_Temporary)
+            if (Temporary)
                 return false;
 
-            if (m.AccessLevel >= AccessLevel.GameMaster || m_Owner == null || m == m_Owner)
+            if (m.AccessLevel >= AccessLevel.GameMaster || Owner == null || m == Owner)
                 return true;
 
-            Party p = Party.Get(m_Owner);
+            Party p = Party.Get(Owner);
 
             if (p != null && p.Contains(m))
                 return true;

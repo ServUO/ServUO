@@ -49,6 +49,7 @@ namespace Server.Mobiles
         public override Poison HitPoison { get { return Poison.Lethal; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
         public override int Meat { get { return 3; } }
+        public override int TreasureMapLevel { get { return 1; } }
 
         public DesertScorpion(Serial serial)
             : base(serial)

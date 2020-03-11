@@ -83,6 +83,8 @@ namespace Server.Mobiles
             return 0x2C3;
         }
 
+        public override int TreasureMapLevel { get { return 7; } }
+
         public override void SetToChampionSpawn()
         {
             SetStr(347, 387);

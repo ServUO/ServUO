@@ -63,6 +63,7 @@ namespace Server.Mobiles
         public override int DragonBlood { get { return 8; } }
         public override int Meat { get { return 5; } }
         public override int Hides { get { return 11; } }
+        public override int TreasureMapLevel { get { return 2; } }
 
         public Saurosaurus(Serial serial) : base(serial)
         {

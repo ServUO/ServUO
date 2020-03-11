@@ -62,6 +62,7 @@ namespace Server.Mobiles
 
         public override Poison HitPoison { get { return Poison.Deadly; } }
         public override Poison PoisonImmune { get { return Poison.Deadly; } }
+        public override int TreasureMapLevel { get { return 2; } }
 
         public override bool IsEnemy(Mobile m)
         {

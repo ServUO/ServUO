@@ -1,4 +1,8 @@
 using System;
+using System.Linq;
+
+using Server;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -104,6 +108,27 @@ namespace Server.Items
             int version = reader.ReadInt();
 
             m_SoulPoint = reader.ReadDouble();
+        }
+
+        public static void Initialize()
+        {
+            EventSink.CreatureDeath += CreatureDeath;
+        }
+
+        public static void CreatureDeath(CreatureDeathEventArgs e)
+        {
+            var bc = e.Creature as BaseCreature;
+            var killer = e.Killer;
+
+            if (bc != null && bc.IsSoulbound && killer is PlayerMobile && killer.Backpack != null)
+            {
+                EtherealSoulbinder es = killer.Backpack.FindItemsByType<EtherealSoulbinder>().Where(x => x.SoulPoint < x.MaxSoulPoint).FirstOrDefault();
+
+                if (es != null)
+                {
+                    es.SoulPoint += bc.HitsMax / 1000;
+                }
+            }
         }
     }
 }

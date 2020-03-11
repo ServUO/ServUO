@@ -57,6 +57,7 @@ namespace Server.Mobiles
         public override HideType HideType { get { return HideType.Regular; } }
         public override int Meat { get { return 3; } }
         public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
+        public override int TreasureMapLevel { get { return 2; } }
 
         public override bool CanAngerOnTame { get { return true; } }
         public override bool StatLossAfterTame { get { return true; } }

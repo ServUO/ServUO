@@ -8,6 +8,7 @@ using Server.Engines.Craft;
 using Server.Spells;
 using Server.SkillHandlers;
 using Server.Mobiles;
+using Server.Engines.PartySystem;
 
 namespace Server.Items
 {
@@ -50,8 +51,27 @@ namespace Server.Items
 
     public static class TreasureMapInfo
     {
-        public static void Initialize()
+        public static bool NewSystem { get { return Core.EJ; } }
+
+        /// <summary>
+        /// This is called from BaseCreature. Instead of editing EVERY creature that drops a map, we'll simply convert it here.
+        /// </summary>
+        /// <param name="level"></param>
+        public static int ConvertLevel(int level)
         {
+            if (!NewSystem || level == -1)
+                return level;
+
+            switch (level)
+            {
+                default: return (int)TreasureLevel.Stash;
+                case 2: 
+                case 3: return (int)TreasureLevel.Supply;
+                case 4: 
+                case 5: return (int)TreasureLevel.Cache;
+                case 6: return (int)TreasureLevel.Hoard;
+                case 7: return (int)TreasureLevel.Trove;
+            }
         }
 
         public static TreasureFacet GetFacet(IEntity e)
@@ -108,15 +128,27 @@ namespace Server.Items
             return TreasureFacet.Trammel;
         }
 
-        public static Type[] GetEquipmentList(TreasureLevel level, TreasurePackage package, TreasureFacet facet)
+        public static IEnumerable<Type> GetRandomEquipment(TreasureLevel level, TreasurePackage package, TreasureFacet facet, int amount)
         {
-            Type[] list = null;
+            Type[] weapons = GetWeaponList(level, package, facet);
+            Type[] armor = GetArmorList(level, package, facet);
+            Type[] jewels = GetJewelList(level, package, facet);
+            Type[] list;
 
-            list = GetWeaponList(level, package, facet);
-            list.Concat(GetArmorList(level, package, facet));
-            list.Concat(GetJewelList(level, package, facet));
+            for (int i = 0; i < amount; i++)
+            {
+                switch (Utility.Random(5))
+                {
+                    default:
+                    case 0: list = weapons; break;
+                    case 1:
+                    case 2: list = armor; break;
+                    case 3:
+                    case 4: list = jewels; break;
+                }
 
-            return list;
+                yield return list[Utility.Random(list.Length)];
+            }
         }
 
         public static Type[] GetWeaponList(TreasureLevel level, TreasurePackage package, TreasureFacet facet)
@@ -164,7 +196,7 @@ namespace Server.Items
                 list = _ArmorTable[(int)package][0];
             }
 
-            return null;
+            return list;
         }
 
         public static Type[] GetJewelList(TreasureLevel level, TreasurePackage package, TreasureFacet facet)
@@ -199,8 +231,11 @@ namespace Server.Items
             return _AlacrityTable[(int)package];
         }
 
-        public static SkillName[] GetPowerScrollList(TreasureLevel level, TreasurePackage package)
+        public static SkillName[] GetPowerScrollList(TreasureLevel level, TreasurePackage package, TreasureFacet facet)
         {
+            if (facet != TreasureFacet.Felucca)
+                return null;
+
             if (level >= TreasureLevel.Cache)
             {
                 return _PowerscrollTable[(int)package];
@@ -209,21 +244,21 @@ namespace Server.Items
             return null;
         }
 
-        public static Type[] GetCraftingMaterials(TreasureLevel level, TreasurePackage package)
+        public static Type[] GetCraftingMaterials(TreasureLevel level, TreasurePackage package, ChestQuality quality)
         {
-            if (package == TreasurePackage.Artisan && level <= TreasureLevel.Supply)
+            if (package == TreasurePackage.Artisan && level <= TreasureLevel.Supply && quality != ChestQuality.None)
             {
-                return _MaterialTable;
+                return _MaterialTable[(int)quality - 1];
             }
 
             return null;
         }
 
-        public static Type[] GetSpecialMaterials(TreasureLevel level, TreasurePackage package)
+        public static Type[] GetSpecialMaterials(TreasureLevel level, TreasurePackage package, TreasureFacet facet)
         {
             if (package == TreasurePackage.Artisan && level == TreasureLevel.Supply)
             {
-                return _SpecialMaterialTable[(int)package];
+                return _SpecialMaterialTable[(int)facet];
             }
 
             return null;
@@ -371,17 +406,34 @@ namespace Server.Items
             }
         }
 
-        public static int GetEquipmentAmount(TreasureLevel level, TreasurePackage package)
+        public static int GetEquipmentAmount(Mobile from, TreasureLevel level, TreasurePackage package)
         {
+            var amount = 0;
+
             switch (level)
             {
                 default:
-                case TreasureLevel.Stash: return 6;
-                case TreasureLevel.Supply: return 8;
-                case TreasureLevel.Cache: return package == TreasurePackage.Assassin ? 24 : 12;
-                case TreasureLevel.Hoard: return 18;
-                case TreasureLevel.Trove: return 36;
+                case TreasureLevel.Stash: amount = 6; break;
+                case TreasureLevel.Supply: amount = 8; break;
+                case TreasureLevel.Cache: amount = package == TreasurePackage.Assassin ? 24 : 12; break;
+                case TreasureLevel.Hoard: amount = 18; break;
+                case TreasureLevel.Trove: amount = 36; break;
             }
+
+            var p = Party.Get(from);
+
+            if (p != null && p.Count > 1)
+            {
+                for (int i = 0; i < p.Count - 1; i++)
+                {
+                    if (Utility.RandomBool())
+                    {
+                        amount++;
+                    }
+                }
+            }
+
+            return amount;
         }
 
         public static void GetMinMaxBudget(TreasureLevel level, Item item, out int min, out int max)
@@ -405,47 +457,47 @@ namespace Server.Items
             new Type[][] // Artisan
                 {
                     new Type[] { typeof(HammerPick), typeof(SledgeHammerWeapon), typeof(SmithyHammer), typeof(WarAxe), typeof(WarHammer), typeof(Axe), typeof(BattleAxe), typeof(DoubleAxe), typeof(ExecutionersAxe), typeof(Hatchet), typeof(LargeBattleAxe), typeof(OrnateAxe), typeof(TwoHandedAxe), typeof(Pickaxe) }, // Trammel, Felucca
-                    new Type[] { }, // Ilshenar
-                    new Type[] { }, // Malas
-                    new Type[] { }, // Tokuno
+                    null, // Ilshenar
+                    null, // Malas
+                    null, // Tokuno
                     new Type[] { typeof(HammerPick), typeof(SledgeHammerWeapon), typeof(SmithyHammer), typeof(WarAxe), typeof(WarHammer), typeof(Axe), typeof(BattleAxe), typeof(DoubleAxe), typeof(ExecutionersAxe), typeof(Hatchet), typeof(LargeBattleAxe), typeof(OrnateAxe), typeof(TwoHandedAxe), typeof(Pickaxe), typeof(DualShortAxes) },  // TerMur
                     new Type[] {  }  // Eodon
                 },
             new Type[][] // Assassin
                 {
                     new Type[] { typeof(Dagger), typeof(Kryss), typeof(Cleaver), typeof(Cutlass), typeof(ElvenMachete) },
-                    new Type[] { },
-                    new Type[] { },
-                    new Type[] { },
+                    null,
+                    null,
+                    null,
                     new Type[] { typeof(Dagger), typeof(Kryss), typeof(Cleaver), typeof(Cutlass) },
                     new Type[] { typeof(Dagger), typeof(Kryss), typeof(Cleaver), typeof(Cutlass), typeof(BladedWhip), typeof(BarbedWhip), typeof(SpikedWhip) },
                 },
             new Type[][] // Mage
                 {
                     new Type[] { typeof(BlackStaff), typeof(ShepherdsCrook), typeof(GnarledStaff), typeof(QuarterStaff) },
-                    new Type[] { },
-                    new Type[] { },
-                    new Type[] { },
-                    new Type[] { },
-                    new Type[] { },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
                 },
             new Type[][] // Ranger
                 {
                     new Type[] { typeof(Bow), typeof(Crossbow), typeof(HeavyCrossbow), typeof(CompositeBow), typeof(ButcherKnife), typeof(SkinningKnife) },
                     new Type[] { typeof(Bow), typeof(Crossbow), typeof(HeavyCrossbow), typeof(CompositeBow), typeof(ButcherKnife), typeof(SkinningKnife), typeof(SoulGlaive) },
                     new Type[] { typeof(Bow), typeof(Crossbow), typeof(HeavyCrossbow), typeof(CompositeBow), typeof(ButcherKnife), typeof(SkinningKnife), typeof(ElvenCompositeLongbow) },
-                    new Type[] { },
+                    null,
                     new Type[] { typeof(Bow), typeof(Crossbow), typeof(HeavyCrossbow), typeof(CompositeBow), typeof(ButcherKnife), typeof(SkinningKnife), typeof(GargishButcherKnife), typeof(Cyclone), typeof(SoulGlaive) },
-                    new Type[] { },
+                    null,
                 },
             new Type[][] // Warrior
                 {
                     new Type[] { typeof(Lance), typeof(Pike), typeof(Pitchfork), typeof(ShortSpear), typeof(WarFork), typeof(Club), typeof(Mace), typeof(Maul), typeof(WarAxe), typeof(Bardiche), typeof(Broadsword), typeof(CrescentBlade), typeof(Halberd), typeof(Longsword), typeof(Scimitar), typeof(VikingSword) },
-                    new Type[] { },
-                    new Type[] { },
+                    null,
+                    null,
                     new Type[] { typeof(Lance), typeof(Pike), typeof(Pitchfork), typeof(ShortSpear), typeof(WarFork), typeof(Club), typeof(Mace), typeof(Maul), typeof(WarAxe), typeof(Bardiche), typeof(Broadsword), typeof(CrescentBlade), typeof(Halberd), typeof(Longsword), typeof(Scimitar), typeof(VikingSword), typeof(Bokuto), typeof(Daisho) },
-                    new Type[] { },
-                    new Type[] { },
+                    null,
+                    null,
                 },
         };
 
@@ -454,35 +506,35 @@ namespace Server.Items
             new Type[][] // Artisan
                 {
                     new Type[] { typeof(Bonnet), typeof(Cap), typeof(Circlet), typeof(ElvenGlasses), typeof(FeatheredHat), typeof(FlowerGarland), typeof(JesterHat), typeof(SkullCap), typeof(StrawHat), typeof(TallStrawHat), typeof(WideBrimHat) }, // Trammel/Fel
-                    new Type[] { }, // Ilshenar
-                    new Type[] { }, // Malas
-                    new Type[] { }, // Tokuno
-                    new Type[] { }, // TerMur
+                    null, // Ilshenar
+                    null, // Malas
+                    null, // Tokuno
+                    null, // TerMur
                     new Type[] { typeof(Bonnet), typeof(Cap), typeof(Circlet), typeof(ElvenGlasses), typeof(FeatheredHat), typeof(FlowerGarland), typeof(JesterHat), typeof(SkullCap), typeof(StrawHat), typeof(TallStrawHat), typeof(WideBrimHat), typeof(ChefsToque) }, // Eodon
                 },
             new Type[][] // Assassin
                 {
                     new Type[] { typeof(ChainLegs), typeof(ChainCoif), typeof(ChainChest), typeof(RingmailLegs), typeof(RingmailGloves), typeof(RingmailChest), typeof(RingmailArms), typeof(Bandana) }, // Trammel/Fel
-                    new Type[] { }, // Ilshenar
-                    new Type[] { }, // Malas
+                    null, // Ilshenar
+                    null, // Malas
                     new Type[] { typeof(ChainLegs), typeof(ChainCoif), typeof(ChainChest), typeof(RingmailLegs), typeof(RingmailGloves), typeof(RingmailArms), typeof(RingmailArms), typeof(Bandana), typeof(LeatherSuneate), typeof(LeatherMempo), typeof(LeatherJingasa), typeof(LeatherHiroSode), typeof(LeatherHaidate), typeof(LeatherDo) }, // Tokuno
-                    new Type[] { }, // TerMur
-                    new Type[] { }, // Eodon
+                    null, // TerMur
+                    null, // Eodon
                 },
             new Type[][] // Mage
                 {
                     new Type[] { typeof(LeafGloves), typeof(LeafLegs), typeof(LeafTonlet), typeof(LeafGorget), typeof(LeafArms),typeof(LeafChest), typeof(LeatherArms), typeof(LeatherChest), typeof(LeatherLegs), typeof(LeatherGloves), typeof(LeatherGorget), typeof(WizardsHat) }, // Trammel/Fel
-                    new Type[] { }, // Ilshenar
+                    null, // Ilshenar
                     new Type[] { typeof(LeafGloves), typeof(LeafLegs), typeof(LeafTonlet), typeof(LeafGorget), typeof(LeafArms),typeof(LeafChest), typeof(LeatherArms), typeof(LeatherChest), typeof(LeatherLegs), typeof(LeatherGloves), typeof(LeatherGorget), typeof(WizardsHat), typeof(BoneLegs), typeof(BoneHelm), typeof(BoneGloves), typeof(BoneChest), typeof(BoneArms) }, // Malas
-                    new Type[] { }, // Tokuno
+                    null, // Tokuno
                     new Type[] { typeof(LeatherArms), typeof(LeatherChest), typeof(LeatherLegs), typeof(LeatherGloves), typeof(LeatherGorget), typeof(WizardsHat) }, // TerMur
                     new Type[] { typeof(LeatherArms), typeof(LeatherChest), typeof(LeatherLegs), typeof(LeatherGloves), typeof(LeatherGorget), typeof(WizardsHat) }, // Eodon
                 },
             new Type[][] // Ranger
                 {
                     new Type[] { typeof(HidePants), typeof(HidePauldrons), typeof(HideGorget), typeof(HideFemaleChest), typeof(HideChest), typeof(HideGloves), typeof(StuddedLegs), typeof(StuddedGorget), typeof(StuddedGloves), typeof(StuddedChest), typeof(StuddedBustierArms), typeof(StuddedArms), typeof(RavenHelm), typeof(VultureHelm), typeof(WingedHelm) }, // Trammel/Fel
-                    new Type[] { }, // Ilshenar
-                    new Type[] { }, // Malas
+                    null, // Ilshenar
+                    null, // Malas
                     new Type[] { typeof(StuddedLegs), typeof(StuddedGorget), typeof(StuddedGloves), typeof(StuddedChest), typeof(StuddedBustierArms), typeof(StuddedArms) }, // Tokuno
                     new Type[] { typeof(HidePants), typeof(HidePauldrons), typeof(HideGorget), typeof(HideFemaleChest), typeof(HideChest), typeof(HideGloves), typeof(StuddedLegs), typeof(StuddedGorget), typeof(StuddedGloves), typeof(StuddedChest), typeof(StuddedBustierArms), typeof(StuddedArms), typeof(GargishLeatherKilt), typeof(GargishLeatherLegs), typeof(GargishLeatherArms), typeof(GargishLeatherChest) }, // TerMur
                     new Type[] { typeof(StuddedLegs), typeof(StuddedGorget), typeof(StuddedGloves), typeof(StuddedChest), typeof(StuddedBustierArms), typeof(StuddedArms), typeof(TigerPeltSkirt), typeof(TigerPeltShorts), typeof(TigerPeltLegs), typeof(TigerPeltLongSkirt), typeof(TigerPeltHelm), typeof(TigerPeltChest), typeof(TigerPeltCollar), typeof(TigerPeltBustier), typeof(VultureHelm), typeof(TribalMask) }, // Eodon
@@ -490,7 +542,7 @@ namespace Server.Items
             new Type[][] // Warrior
                 {
                     new Type[] { typeof(PlateLegs), typeof(PlateHelm), typeof(PlateGorget), typeof(PlateGloves), typeof(PlateChest), typeof(PlateArms), typeof(Bascinet), typeof(CloseHelm), typeof(Helmet), typeof(LeatherCap), typeof(NorseHelm), typeof(TricorneHat), typeof(BronzeShield), typeof(Buckler), typeof(ChaosShield), typeof(HeaterShield), typeof(MetalKiteShield), typeof(MetalShield), typeof(OrderShield), typeof(WoodenKiteShield) }, // Trammel/Fel
-                    new Type[] { }, // Ilshenar
+                    null, // Ilshenar
                     new Type[] { typeof(PlateLegs), typeof(PlateHelm), typeof(PlateGorget), typeof(PlateGloves), typeof(PlateChest), typeof(PlateArms), typeof(Bascinet), typeof(CloseHelm), typeof(Helmet), typeof(LeatherCap), typeof(NorseHelm), typeof(TricorneHat), typeof(BronzeShield), typeof(Buckler), typeof(ChaosShield), typeof(HeaterShield), typeof(MetalKiteShield), typeof(MetalShield), typeof(OrderShield), typeof(WoodenKiteShield), typeof(DragonHelm), typeof(DragonGloves), typeof(DragonChest), typeof(DragonArms), typeof(DragonLegs) }, // Malas
                     new Type[] { typeof(PlateLegs), typeof(PlateHelm), typeof(PlateGorget), typeof(PlateGloves), typeof(PlateChest), typeof(PlateArms), typeof(Bascinet), typeof(CloseHelm), typeof(Helmet), typeof(LeatherCap), typeof(NorseHelm), typeof(TricorneHat), typeof(BronzeShield), typeof(Buckler), typeof(ChaosShield), typeof(HeaterShield), typeof(MetalKiteShield), typeof(MetalShield), typeof(OrderShield), typeof(WoodenKiteShield), typeof(PlateSuneate), typeof(PlateMempo), typeof(PlateHiroSode), typeof(PlateHatsuburi), typeof(PlateHaidate), typeof(PlateDo), typeof(PlateBattleKabuto), typeof(DecorativePlateKabuto), typeof(LightPlateJingasa), typeof(SmallPlateJingasa)  }, // Tokuno
                     new Type[] { typeof(PlateLegs), typeof(PlateHelm), typeof(PlateGorget), typeof(PlateGloves), typeof(PlateChest), typeof(PlateArms), typeof(Bascinet), typeof(CloseHelm), typeof(Helmet), typeof(LeatherCap), typeof(NorseHelm), typeof(TricorneHat), typeof(BronzeShield), typeof(Buckler), typeof(ChaosShield), typeof(HeaterShield), typeof(MetalKiteShield), typeof(MetalShield), typeof(OrderShield), typeof(WoodenKiteShield), typeof(GargishPlateArms), typeof(GargishPlateChest), typeof(GargishPlateKilt), typeof(GargishPlateLegs), typeof(GargishStoneKilt), typeof(GargishStoneLegs), typeof(GargishStoneArms), typeof(GargishStoneChest) }, // TerMur
@@ -498,7 +550,12 @@ namespace Server.Items
                 }
         };
 
-        public static Type[] _MaterialTable = new Type[] { typeof(BarbedLeather), typeof(BloodwoodBoard), typeof(FrostwoodBoard), typeof(ValoriteIngot), typeof(VeriteIngot) };
+        public static Type[][] _MaterialTable = new Type[][]
+        {
+            new Type[] { typeof(SpinedLeather), typeof(OakBoard), typeof(AshBoard), typeof(DullCopperIngot), typeof(ShadowIronIngot), typeof(CopperIngot) },
+            new Type[] { typeof(HornedLeather), typeof(YewBoard), typeof(HeartwoodBoard), typeof(BronzeIngot), typeof(GoldIngot), typeof(AgapiteIngot) },
+            new Type[] { typeof(BarbedLeather), typeof(BloodwoodBoard), typeof(FrostwoodBoard), typeof(ValoriteIngot), typeof(VeriteIngot) }
+        };
 
         public static Type[][] _JewelTable = new Type[][]
             {
@@ -517,13 +574,13 @@ namespace Server.Items
 
         public static Type[][] _SpecialMaterialTable = new Type[][]
             {
-                new Type[] { }, // tram
-                new Type[] { }, // fel
-                new Type[] { }, // ilsh
+                null, // tram
+                null, // fel
+                null, // ilsh
                 new Type[] { typeof(LuminescentFungi), typeof(BarkFragment), typeof(Blight), typeof(Corruption), typeof(Muculent), typeof(Putrefaction), typeof(Scourge), typeof(Taint)  }, // malas
-                new Type[] { }, // tokuno
+                null, // tokuno
                 TreasureMapChest.ImbuingIngreds, // ter
-                new Type[] { }, // eodon
+                null, // eodon
             };
 
         public static Type[][] _SpecialSupplyLoot = new Type[][]
@@ -576,7 +633,7 @@ namespace Server.Items
 
         public static SkillName[][] _PowerscrollTable = new SkillName[][]
             {
-                new SkillName[] { },
+                null,
                 new SkillName[] { SkillName.Ninjitsu },
                 new SkillName[] { SkillName.Magery, SkillName.Meditation, SkillName.Mysticism, SkillName.Spellweaving, SkillName.SpiritSpeak },
                 new SkillName[] { SkillName.AnimalTaming, SkillName.Discordance, SkillName.Provocation, SkillName.Veterinary },
@@ -594,30 +651,44 @@ namespace Server.Items
             chest.Locked = true;
 
             chest.TrapType = TrapType.ExplosionTrap;
-            chest.TrapPower = (int)level * 25;
-            chest.TrapLevel = (int)level;
 
             switch ((int)level)
             {
-                case 1: chest.RequiredSkill = 5; break;
-                case 2: chest.RequiredSkill = 45; break;
-                case 3: chest.RequiredSkill = 75; break;
-                case 4: chest.RequiredSkill = 80; break;
-                case 5: chest.RequiredSkill = 80; break;
+                default:
+                case 0:
+                    chest.RequiredSkill = 5;
+                    chest.TrapPower = 25;
+                    chest.TrapLevel = 1;
+                    break;
+                case 1:
+                    chest.RequiredSkill = 45;
+                    chest.TrapPower = 75;
+                    chest.TrapLevel = 3;
+                    break;
+                case 2:
+                    chest.RequiredSkill = 75;
+                    chest.TrapPower = 125;
+                    chest.TrapLevel = 5;
+                    break;
+                case 3:
+                    chest.RequiredSkill = 80;
+                    chest.TrapPower = 150;
+                    chest.TrapLevel = 6;
+                    break;
+                case 4:
+                    chest.RequiredSkill = 80;
+                    chest.TrapPower = 170;
+                    chest.TrapLevel = 7;
+                    break;
             }
 
             chest.LockLevel = chest.RequiredSkill - 10;
             chest.MaxLockLevel = chest.RequiredSkill + 40;
 
-            #region Gold
-            // TODO Confirm
-            chest.DropItem(new Gold(GetGoldCount(level)));
-            #endregion
-
             #region Refinements
             if (level == TreasureLevel.Stash)
             {
-                RefinementComponent.Roll(chest, GetRefinementRolls(quality), 0.10);
+                RefinementComponent.Roll(chest, GetRefinementRolls(quality), 0.9);
             }
             #endregion
 
@@ -666,13 +737,29 @@ namespace Server.Items
 
                 }
 
+                var goldAmount = GetGoldCount(level);
+
+                while (goldAmount > 0)
+                {
+                    if (goldAmount <= 20000)
+                    {
+                        bag.DropItem(new Gold(goldAmount));
+                        goldAmount = 0;
+                    }
+                    else
+                    {
+                        bag.DropItem(new Gold(20000));
+                        goldAmount -= 20000;
+                    }
+                }
+
                 chest.DropItem(bag);
             }
             #endregion
 
             #region Crafting Resources
             // TODO: DO each drop, or do only 1 drop?
-            list = GetCraftingMaterials(level, package);
+            list = GetCraftingMaterials(level, package, quality);
 
             if (list != null)
             {
@@ -692,7 +779,7 @@ namespace Server.Items
 
             #region Special Resources
             // TODO: DO each drop, or do only 1 drop?
-            list = GetSpecialMaterials(level, package);
+            list = GetSpecialMaterials(level, package, facet);
 
             if (list != null)
             {
@@ -710,100 +797,71 @@ namespace Server.Items
             }
             #endregion
 
-            #region Scrolls
-            var skillList = GetTranscendenceList(level, package);
+            #region Special Scrolls
+            amount = (int)level + 1;
 
-            if (skillList != null)
+            if (dropMap)
             {
-                if (skillList.Length > 0)
+                amount--;
+            }
+
+            if (amount > 0)
+            {
+                var transList = GetTranscendenceList(level, package);
+                var alacList = GetAlacrityList(level, package, facet);
+                var pscrollList = GetPowerScrollList(level, package, facet);
+
+                var scrollList = new List<Tuple<int, SkillName>>();
+
+                if (transList != null)
                 {
-                    amount = (int)level + 1;
-
-                    if (dropMap)
+                    foreach (var sk in transList)
                     {
-                        amount--;
-                        dropMap = false;
-                    }
-
-                    if (amount > 0)
-                    {
-                        double max = chest.Map == Map.Felucca ? 7 : 5;
-
-                        for (int i = 0; i < amount; i++)
-                        {
-                            chest.DropItem(new ScrollOfTranscendence(skillList[Utility.Random(skillList.Length)], Utility.RandomMinMax(1.0, max) / 10));
-                        }
+                        scrollList.Add(new Tuple<int, SkillName>(1, sk));
                     }
                 }
 
-                skillList = null;
-            }
-
-            skillList = GetAlacrityList(level, package, facet);
-
-            if (skillList != null)
-            {
-                if (skillList.Length > 0)
+                if (alacList != null)
                 {
-                    amount = (int)level + 1;
-
-                    if (dropMap)
+                    foreach (var sk in alacList)
                     {
-                        amount--;
-                        dropMap = false;
-                    }
-
-                    if (amount > 0)
-                    {
-                        for (int i = 0; i < amount; i++)
-                        {
-                            chest.DropItem(new ScrollOfAlacrity(skillList[Utility.Random(skillList.Length)]));
-                        }
+                        scrollList.Add(new Tuple<int, SkillName>(2, sk));
                     }
                 }
 
-                skillList = null;
-            }
-
-            if (chest.Map == Map.Felucca)
-            {
-                skillList = GetPowerScrollList(level, package);
-
-                if (skillList != null)
+                if (pscrollList != null)
                 {
-                    if (skillList.Length > 0)
+                    foreach (var sk in pscrollList)
                     {
-                        amount = (int)level + 1;
+                        scrollList.Add(new Tuple<int, SkillName>(3, sk));
+                    }
+                }
 
-                        if (dropMap)
-                        {
-                            amount--;
-                            dropMap = false;
-                        }
+                if (scrollList.Count > 0)
+                {
+                    for (int i = 0; i < amount; i++)
+                    {
+                        var random = scrollList[Utility.Random(scrollList.Count)];
 
-                        if (amount > 0)
+                        switch (random.Item1)
                         {
-                            for (int i = 0; i < amount; i++)
-                            {
-                                chest.DropItem(new PowerScroll(skillList[Utility.Random(skillList.Length)], 110.0));
-                            }
+                            case 1: chest.DropItem(new ScrollOfTranscendence(random.Item2, Utility.RandomMinMax(1.0, chest.Map == Map.Felucca ? 7.0 : 5.0) / 10)); break;
+                            case 2: chest.DropItem(new ScrollOfAlacrity(random.Item2)); break;
+                            case 3: chest.DropItem(new PowerScroll(random.Item2, 110.0)); break;
                         }
                     }
-
-                    skillList = null;
                 }
             }
-
             #endregion
 
             #region Decorations
             switch (level)
             {
                 case TreasureLevel.Stash: dropChance = 0.0; break;
-                case TreasureLevel.Supply: dropChance = 0.1; break;
-                case TreasureLevel.Cache: dropChance = 0.2; break;
-                case TreasureLevel.Hoard: dropChance = 0.3; break;
-                case TreasureLevel.Trove: dropChance = .4; break;
+                case TreasureLevel.Supply: dropChance = 0.2; break;
+                case TreasureLevel.Cache: dropChance = 0.4; break;
+                case TreasureLevel.Hoard: dropChance = 0.5; break;
+                case TreasureLevel.Trove: dropChance = .75; break;
             }
 
             if (Utility.RandomDouble() < dropChance)
@@ -837,22 +895,21 @@ namespace Server.Items
             switch (level)
             {
                 case TreasureLevel.Stash: dropChance = 0.0; break;
-                case TreasureLevel.Supply: dropChance = 0.05; break;
-                case TreasureLevel.Cache: dropChance = 0.1; break;
-                case TreasureLevel.Hoard: dropChance = 0.2; break;
-                case TreasureLevel.Trove: dropChance = .25; break;
+                case TreasureLevel.Supply: dropChance = 0.10; break;
+                case TreasureLevel.Cache: dropChance = 0.20; break;
+                case TreasureLevel.Hoard: dropChance = 0.50; break;
+                case TreasureLevel.Trove: dropChance = .75; break;
             }
 
             if (Utility.RandomDouble() < dropChance)
             {
-                bool legacyMini = false;
                 list = GetSpecialLootList(level, package);
 
                 if (list != null)
                 {
                     if (list.Length > 0)
                     {
-                        var type = list[Utility.Random(list.Length)];
+                        var type = MutateType(list[Utility.Random(list.Length)], facet);
                         Item deco;
 
                         if (type == null)
@@ -898,49 +955,37 @@ namespace Server.Items
             #endregion
 
             #region Magic Equipment
-            amount = GetEquipmentAmount(level, package);
-            list = GetEquipmentList(level, package, facet);
+            amount = GetEquipmentAmount(from, level, package);
 
-            for (int i = 0; i < amount; i++)
+            foreach(var type in GetRandomEquipment(level, package, facet, amount))
             {
-                var item = Loot.Construct(list);
+                var item = Loot.Construct(type);
                 int min, max;
                 GetMinMaxBudget(level, item, out min, out max);
 
                 if (item != null)
                 {
                     RunicReforging.GenerateRandomItem(item, from is PlayerMobile ? ((PlayerMobile)from).RealLuck : from.Luck, min, max, chest.Map);
+                    chest.DropItem(item);
                 }
             }
 
             list = null;
             #endregion
         }
-    }
 
-    public class RemoveTrapTimer : Timer
-    {
-        public Mobile From { get; set; }
-        public TreasureMapChest Chest { get; set; }
-        public DateTime EndTime { get; set; }
-
-        public RemoveTrapTimer(Mobile from, TreasureMapChest chest, TimeSpan duration)
-            : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
+        private static Type MutateType(Type type, TreasureFacet facet)
         {
-            From = from;
-            Chest = chest;
-            EndTime = DateTime.UtcNow + duration;
-        }
-
-        protected override void OnTick()
-        {
-            if (EndTime < DateTime.UtcNow)
+            if (type == typeof(SkullGnarledStaff))
             {
+                type = typeof(GargishSkullGnarledStaff);
             }
-            else
+            else if (type == typeof(SkullLongsword))
             {
-
+                type = typeof(GargishSkullLongsword);
             }
+
+            return type;
         }
     }
 }

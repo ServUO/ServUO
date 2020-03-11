@@ -62,7 +62,7 @@ namespace Server.Engines.Quests
                 quest.Owner = from;
                 quest.Quester = quester;
 
-                if (CanOffer(from, quest, message))
+                if (CanOffer(from, quest, quester, message))
                 {
                     return quest;
                 }
@@ -82,7 +82,7 @@ namespace Server.Engines.Quests
             return null;
         }
 
-        public static bool CanOffer(PlayerMobile from, BaseQuest quest, bool message)
+        public static bool CanOffer(PlayerMobile from, BaseQuest quest, object quester, bool message)
         {
             if (!quest.CanOffer())
                 return false;
@@ -101,7 +101,7 @@ namespace Server.Engines.Quests
                 }
             }
 				
-            if (!Delayed(from, quest, message))
+            if (!Delayed(from, quest, quester, message))
                 return false;
 		
             for (int i = quest.Objectives.Count - 1; i >= 0; i --)
@@ -128,37 +128,60 @@ namespace Server.Engines.Quests
             return true;
         }
 
-        public static bool Delayed(PlayerMobile player, BaseQuest quest, bool message)
+        public static bool Delayed(PlayerMobile player, BaseQuest quest, object quester, bool message)
         {
-            List<QuestRestartInfo> doneQuests = player.DoneQuests;
-																					
-            for (int i = doneQuests.Count - 1; i >= 0; i --)
-            { 
-                QuestRestartInfo restartInfo = doneQuests[i];
+            var restartInfo = GetRestartInfo(player, quest.GetType());
 
-                if (restartInfo.QuestType == quest.GetType())
+            if (restartInfo != null)
+            {
+                if (quest.DoneOnce)
                 {
-                    if (quest.DoneOnce)
+                    if (message && quester is Mobile)
                     {
-                        if (message && quest.StartingMobile != null)
-                            quest.StartingMobile.Say(1075454); // I can not offer you the quest again.
-					
-                        return false;
+                        ((Mobile)quester).Say(1075454); // I can not offer you the quest again.
                     }
-						
-                    DateTime endTime = restartInfo.RestartTime;
-					
-                    if (DateTime.UtcNow < endTime)
-                        return false;
-					
-                    if (quest.RestartDelay > TimeSpan.Zero)
-                        doneQuests.RemoveAt(i);
-													
-                    return true;
+
+                    return false;
                 }
+
+                DateTime endTime = restartInfo.RestartTime;
+
+                if (DateTime.UtcNow < endTime)
+                {
+                    if (message && quester is Mobile)
+                    {
+                        var ts = endTime - DateTime.UtcNow;
+                        string str;
+
+                        if (ts.TotalDays > 1)
+                            str = String.Format("I cannot offer this quest again for about {0} more days.", ts.TotalDays);
+                        else if (ts.TotalHours > 1)
+                            str = String.Format("I cannot offer this quest again for about {0} more hours.", ts.TotalHours);
+                        else if (ts.TotalMinutes > 1)
+                            str = String.Format("I cannot offer this quest again for about {0} more minutes.", ts.TotalMinutes);
+                        else
+                            str = "I can offer this quest again very soon.";
+
+                        ((Mobile)quester).SayTo(player, false, str);
+                    }
+
+                    return false;
+                }
+
+                if (quest.RestartDelay > TimeSpan.Zero)
+                {
+                    player.DoneQuests.Remove(restartInfo);
+                }
+
+                return true;
             }
-			
+
             return true;
+        }
+
+        public static QuestRestartInfo GetRestartInfo(PlayerMobile pm, Type quest)
+        {
+            return pm.DoneQuests.FirstOrDefault(ri => ri.QuestType == quest);
         }
 
         public static bool CheckDoneOnce(PlayerMobile player, BaseQuest quest, Mobile quester, bool message)
@@ -227,18 +250,15 @@ namespace Server.Engines.Quests
         }
 
         public static void Delay(PlayerMobile player, Type type, TimeSpan delay)
-        { 
-            for (int i = 0; i < player.DoneQuests.Count; i ++)
-            {
-                QuestRestartInfo restartInfo = player.DoneQuests[i];
+        {
+            var restartInfo = GetRestartInfo(player, type);
 
-                if (restartInfo.QuestType == type)
-                {
-                    restartInfo.Reset(delay);
-                    return;
-                }
+            if (restartInfo != null)
+            {
+                restartInfo.Reset(delay);
+                return;
             }
-			
+
             player.DoneQuests.Add(new QuestRestartInfo(type, delay));
         }
 

@@ -14,7 +14,7 @@ namespace Server.Items
         public SkullTiledFloorAddon(bool east)
             : base()
         { 
-            if (east)
+            if (!east)
             {
                 AddComponent(new LocalizedAddonComponent(0xA34F, 1125827), 0, 0, 0);
                 AddComponent(new LocalizedAddonComponent(0xA350, 1125827), -1, 0, 0);
@@ -23,9 +23,8 @@ namespace Server.Items
                 AddComponent(new LocalizedAddonComponent(0xA34C, 1125827), 0, 1, 0);
                 AddComponent(new LocalizedAddonComponent(0xA34D, 1125827), -1, 1, 0);
                 AddComponent(new LocalizedAddonComponent(0xA351, 1125827), 1, -1, 0);
-                AddComponent(new LocalizedAddonComponent(0xA352, 1125827), 0, -1, 0); ;
+                AddComponent(new LocalizedAddonComponent(0xA352, 1125827), 0, -1, 0);
                 AddComponent(new LocalizedAddonComponent(0xA353, 1125827), -1, -1, 0);
-                //AddComponent(new AnkhOfSacrificeComponent(0x1D98), 0, 0, 0);
             }
             else
             {
@@ -38,7 +37,6 @@ namespace Server.Items
                 AddComponent(new LocalizedAddonComponent(0xA35A, 1125827), -1, 1, 0);
                 AddComponent(new LocalizedAddonComponent(0xA35B, 1125827), -1, 0, 0);
                 AddComponent(new LocalizedAddonComponent(0xA35C, 1125827), -1, -1, 0);
-                //AddComponent(new AnkhOfSacrificeComponent(0x1E5D), 0, 0, 0);
             }
         }
 
