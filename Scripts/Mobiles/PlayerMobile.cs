@@ -5831,9 +5831,17 @@ namespace Server.Mobiles
                 }
             }
         }
+
+        public override void OnAfterNameChange(string oldName, string newName)
+        {
+            if (m_FameKarmaTitle != null)
+            {
+                FameKarmaTitle = FameKarmaTitle.Replace(oldName, newName);
+            }
+        }
         #endregion
 
-		public override void OnKillsChange(int oldValue)
+        public override void OnKillsChange(int oldValue)
 		{
 			if (Young && Kills > oldValue)
 			{

@@ -134,12 +134,16 @@ namespace Server.Mobiles
             }
         }
 
-        public override void OnDamagedBySpell(Mobile caster)
+        public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
         {
-            if (caster == this || Controlled || Summoned)
-                return;
+            var damage = base.Damage(amount, from, informMount, checkDisrupt);
 
-            SpawnOrcLord(caster);
+            if (from != this && !Controlled && !Summoned && Utility.RandomDouble() <= 0.2)
+            {
+                SpawnOrcLord(from);
+            }
+
+            return damage;
         }
 
         public void SpawnOrcLord(Mobile target)

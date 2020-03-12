@@ -111,6 +111,8 @@ namespace Server.Engines.Shadowguard
 
             Fame = 15000;
             Karma = -15000;
+
+            BlockReflect = true;
         }
 
         public override void GenerateLoot()
@@ -132,6 +134,8 @@ namespace Server.Engines.Shadowguard
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            BlockReflect = true;
         }
     }
 

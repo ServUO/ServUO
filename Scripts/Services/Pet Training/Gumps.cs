@@ -89,13 +89,13 @@ namespace Server.Mobiles
             AddHtml(180, 128, 75, 18, FormatAttributes(Creature.Mana, Creature.ManaMax), false, false);
 
             AddHtmlLocalized(53, 146, 160, 18, 1028335, _Label, false, false); // Strength
-            AddHtml(180, 146, 75, 18, FormatStat(Creature.RawStr), false, false);
+            AddHtml(180, 146, 75, 18, FormatStat(Creature.Str), false, false);
 
             AddHtmlLocalized(53, 164, 160, 18, 3000113, _Label, false, false); // Dexterity
-            AddHtml(180, 164, 75, 18, FormatStat(Creature.RawDex), false, false);
+            AddHtml(180, 164, 75, 18, FormatStat(Creature.Dex), false, false);
 
             AddHtmlLocalized(53, 182, 160, 18, 3000112, _Label, false, false); // Intelligence
-            AddHtml(180, 182, 75, 18, FormatStat(Creature.RawInt), false, false);
+            AddHtml(180, 182, 75, 18, FormatStat(Creature.Int), false, false);
 
             double bd = Items.BaseInstrument.GetBaseDifficulty(Creature);
 

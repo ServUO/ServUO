@@ -24,6 +24,7 @@ namespace Server.Spells.SkillMasteries
         public override double UpKeep { get { return 0; } }
         public override int RequiredMana { get { return 40; } }
         public override bool PartyEffects { get { return false; } }
+        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(2.0); } }
 
         public override SkillName CastSkill { get { return SkillName.Mysticism; } }
         public override SkillName DamageSkill

@@ -573,10 +573,6 @@ namespace Server.Items
             x2 = x1 + width;
             y2 = y1 + height;
 
-            if (eodon)
-            {
-            }
-
             if (map == Map.Trammel || map == Map.Felucca)
             {
                 if (x2 >= 5120)

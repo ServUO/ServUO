@@ -1,10 +1,12 @@
 using System;
 
+using Server.Engines.Craft;
+
 namespace Server.Items
 {
-    public class SummonersKilt : GargishClothKilt
+    public class SummonersKilt : GargishClothKilt, IRepairable
 	{
-		public Server.Engines.Craft.CraftSystem RepairSystem { get { return Server.Engines.Craft.DefTailoring.CraftSystem; } }
+		public Server.Engines.Craft.CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
 		
 		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber { get { return 1113540; } } // Summoner's Kilt

@@ -128,8 +128,10 @@ namespace Server.Engines.Shadowguard
 	
 		[CommandProperty(AccessLevel.GameMaster)]
 		public OrchardEncounter Encounter { get; set; }
-		
-		public override int Lifespan { get { return 60; } }
+
+        public bool _Thrown;
+
+		public override int Lifespan { get { return 30; } }
 	
 		public ShadowguardApple(OrchardEncounter encounter, ShadowguardCypress tree) : base(0x9D0)
 		{
@@ -150,6 +152,8 @@ namespace Server.Engines.Shadowguard
 				m.SendLocalizedMessage(1010086); // What do you want to use this on?
 				m.BeginTarget(10, false, Server.Targeting.TargetFlags.None, (from, targeted) =>
 				{
+                    _Thrown = true;
+
                     if (targeted is ShadowguardCypress || targeted is ShadowguardCypress.ShadowguardCypressFoilage)
                     {
                         ShadowguardCypress tree = null;
@@ -190,31 +194,36 @@ namespace Server.Engines.Shadowguard
                                         tree.Encounter.CheckEncounter();
                                         Delete();
                                     }
-                                    else
+                                    else if (Encounter != null)
                                     {
-                                        p = m.Location;
-                                        var creature = new VileTreefellow();
-
-                                        for (int i = 0; i < 10; i++)
+                                        foreach (var pm in Encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
                                         {
-                                            int x = Utility.RandomMinMax(p.X - 1, p.X + 1);
-                                            int y = Utility.RandomMinMax(p.Y - 1, p.Y + 1);
-                                            int z = p.Z;
+                                            if (!pm.Alive)
+                                                continue;
 
-                                            if (map.CanSpawnMobile(x, y, z))
+                                            p = pm.Location;
+                                            var creature = new VileTreefellow();
+
+                                            for (int i = 0; i < 10; i++)
                                             {
-                                                p = new Point3D(x, y, z);
-                                                break;
+                                                int x = Utility.RandomMinMax(p.X - 1, p.X + 1);
+                                                int y = Utility.RandomMinMax(p.Y - 1, p.Y + 1);
+                                                int z = p.Z;
+
+                                                if (map.CanSpawnMobile(x, y, z))
+                                                {
+                                                    p = new Point3D(x, y, z);
+                                                    break;
+                                                }
                                             }
+
+                                            creature.MoveToWorld(p, map);
+                                            Timer.DelayCall(() => creature.Combatant = pm);
+
+                                            Encounter.AddSpawn(creature);
                                         }
 
-                                        creature.MoveToWorld(p, map);
-                                        creature.Combatant = m;
                                         m.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1156212, m.NetState); // *Your throw seems to have summoned an ambush!*
-
-                                        if (Encounter is OrchardEncounter)
-                                            ((OrchardEncounter)Encounter).AddSpawn(creature);
-
                                         Delete();
                                     }
                                 });
@@ -223,6 +232,42 @@ namespace Server.Engines.Shadowguard
 				});
 			}
 		}
+
+        public override void OnDelete()
+        {
+            base.OnDelete();
+
+            if (!_Thrown && Encounter != null)
+            {
+                foreach (var pm in Encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                {
+                    if (!pm.Alive)
+                        continue;
+
+                    var p = pm.Location;
+                    var map = pm.Map;
+                    var creature = new VileTreefellow();
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        int x = Utility.RandomMinMax(p.X - 1, p.X + 1);
+                        int y = Utility.RandomMinMax(p.Y - 1, p.Y + 1);
+                        int z = p.Z;
+
+                        if (map.CanSpawnMobile(x, y, z))
+                        {
+                            p = new Point3D(x, y, z);
+                            break;
+                        }
+                    }
+
+                    creature.MoveToWorld(p, map);
+                    Timer.DelayCall(() => creature.Combatant = pm);
+
+                    Encounter.AddSpawn(creature);
+                }
+            }
+        }
 
         public override void Delete()
         {
