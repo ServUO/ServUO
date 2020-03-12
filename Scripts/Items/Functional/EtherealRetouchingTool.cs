@@ -39,6 +39,10 @@ namespace Server.Items
                 from.Target = new InternalTarget(this);
                 from.SendLocalizedMessage(1113815); // Target the ethereal mount you wish to retouch.
             }
+            else
+            {
+                from.SendLocalizedMessage(1042010); // You must have the object in your backpack to use it.
+            }
         }
 
         private class InternalTarget : Target
@@ -65,7 +69,7 @@ namespace Server.Items
                     {
                         from.SendLocalizedMessage(1045158); // You must have the item in your backpack to target it.
                     }
-                    if (mount is GMEthereal || mount is EtherealWarBoar)
+                    else if (mount is GMEthereal || mount is EtherealWarBoar)
                     {
                         from.SendLocalizedMessage(1071117); // You cannot use this item for it.
                     }
@@ -77,8 +81,6 @@ namespace Server.Items
                             from.SendLocalizedMessage(1113817); // Your ethereal mount's transparency has been restored.
 
                         mount.Transparent = mount.Transparent ? false : true;
-                        from.PlaySound(0x242);
-
                         mount.InvalidateProperties();
                     }                    
                 }
