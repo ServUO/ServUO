@@ -201,7 +201,7 @@ namespace Server.Spells.Spellweaving
             {
                 WildfireSpell.DefragTable();
 
-                return m_Spell.AcquireIndirectTargets(m_Location, m_Range).OfType<Mobile>();
+                return m_Spell.AcquireIndirectTargets(m_Location, m_Range).OfType<Mobile>().Where(m => !m_Table.ContainsKey(m));
             }			
         }
 

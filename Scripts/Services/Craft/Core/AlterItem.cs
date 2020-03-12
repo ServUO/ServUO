@@ -1,10 +1,12 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
+
+using System;
 using Server.Engines.Craft;
 using Server.Items;
 using Server.Targeting;
 using Server.Engines.VeteranRewards;
-using System.Linq;
+using Server.SkillHandlers;
 
 namespace Server.Engines.Craft
 {
@@ -297,6 +299,8 @@ namespace Server.Engines.Craft
                         newitem.Name = Server.Engines.VendorSearching.VendorSearch.StringList.GetString(origItem.LabelNumber);
                 }
 
+                AlterResists(newitem, origItem);
+
                 newitem.Hue = origItem.Hue;
                 newitem.LootType = origItem.LootType;
                 newitem.Insured = origItem.Insured;
@@ -333,9 +337,26 @@ namespace Server.Engines.Craft
                 from.SendLocalizedMessage(number);
         }
 
+        private void AlterResists(Item newItem, Item oldItem)
+        {
+            if (newItem is BaseArmor || newItem is BaseClothing)
+            {
+                var newResists = Imbuing.GetBaseResists(newItem);
+                var oldResists = Imbuing.GetBaseResists(oldItem);
+
+                for (int i = 0; i < newResists.Length; i++)
+                {
+                    if (oldResists[i] > newResists[i])
+                    {
+                        Imbuing.SetProperty(newItem, 51 + i, oldResists[i] - newResists[i]);
+                    }
+                }
+            }
+        }
+
         private bool RetainsName(Item item)
         {
-            if (item is Glasses || item is ElvenGlasses)
+            if (item is Glasses || item is ElvenGlasses || item.IsArtifact)
                 return true;
 
             if (item is IArtifact && ((IArtifact)item).ArtifactRarity > 0)

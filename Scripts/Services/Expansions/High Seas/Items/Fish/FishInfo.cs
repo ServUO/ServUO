@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -261,7 +261,8 @@ namespace Server.Items
             //insertion of baited type first to increase chances of fishing it up!
             List<FishInfo> infos = new List<FishInfo>(m_FishInfos);
 
-            if (bait != null) {
+            if (bait != null)
+            {
                 for (int i = 0; i < infos.Count; i++)
                 {
                     FishInfo info = infos[i];
@@ -301,8 +302,10 @@ namespace Server.Items
                     if (loc.ToLower() == "trammelandfelucca" && (map == Map.Trammel || map == Map.Felucca) && !Server.Spells.SpellHelper.IsAnyT2A(map, fromLoc) && info.Roll(from, baitStr, bump))
                         item = info.Type;
 
-                    if (loc.ToLower() == "fire island" && (map == Map.Felucca || map == Map.Trammel) && (from.X > 4559 && from.X < 4636 && from.Y > 3548 && from.Y < 3627
-                        || from.X > 4465 && from.X < 4493 && from.Y > 4479 && from.Y < 3746) && info.Roll(from, baitStr, bump))
+                    if (loc.ToLower() == "fire island" && IsFireIsland(fromLoc, map) && info.Roll(from, baitStr, bump))
+                        item = info.Type;
+
+                    if (loc.ToLower() == "gravewater lake" && IsGravewaterLake(fromLoc, map))
                         item = info.Type;
 
                     if (from.Region != null && from.Region.IsPartOf(loc) && info.Roll(from, baitStr, bump))
@@ -421,6 +424,17 @@ namespace Server.Items
             if (region.IsPartOf("Labyrinth"))
                 return true;
             return false;
+        }
+
+        public static bool IsFireIsland(Point3D p, Map map)
+        {
+            return (map == Map.Felucca || map == Map.Trammel) && (p.X > 4559 && p.X < 4636 && p.Y > 3548 && p.Y < 3627
+                        || p.X > 4465 && p.X < 4493 && p.Y > 4479 && p.Y < 3746);
+        }
+
+        public static bool IsGravewaterLake(Point3D p, Map map)
+        {
+            return map == Map.Malas && ((p.X >= 1440 && p.X <= 1863 && p.Y >= 1527 && p.Y <= 1746) || (p.X >= 1381 && p.X <= 1596 && p.Y >= 1565 && p.Y <= 1789));
         }
 
         public static Type[] SOSArtifacts { get { return m_SOSArtifacts; } }

@@ -382,40 +382,40 @@ namespace Server.Mobiles
         {
             if (Utility.RandomDouble() < 0.9 && !m_UnholyTouched.ContainsKey(target))
             {
-                int scalar = (int)(20 - (target.Skills[SkillName.MagicResist].Value / 10));
+                double scalar = -((20 - (target.Skills[SkillName.MagicResist].Value / 10)) / 100);
 
                 ArrayList mods = new ArrayList();
 
                 if (target.PhysicalResistance > 0)
                 {
-                    mods.Add(new ResistanceMod(ResistanceType.Physical, -(target.PhysicalResistance - scalar)));
+                    mods.Add(new ResistanceMod(ResistanceType.Physical, (int)((double)target.PhysicalResistance * scalar)));
                 }
 
                 if (target.FireResistance > 0)
                 {
-                    mods.Add(new ResistanceMod(ResistanceType.Fire, -(target.FireResistance - scalar)));
+                    mods.Add(new ResistanceMod(ResistanceType.Fire, (int)((double)target.FireResistance * scalar)));
                 }
 
                 if (target.ColdResistance > 0)
                 {
-                    mods.Add(new ResistanceMod(ResistanceType.Cold, -(target.ColdResistance - scalar)));
+                    mods.Add(new ResistanceMod(ResistanceType.Cold, (int)((double)target.ColdResistance * scalar)));
                 }
 
                 if (target.PoisonResistance > 0)
                 {
-                    mods.Add(new ResistanceMod(ResistanceType.Poison, -(target.PoisonResistance - scalar)));
+                    mods.Add(new ResistanceMod(ResistanceType.Poison, (int)((double)target.PoisonResistance * scalar)));
                 }
 
                 if (target.EnergyResistance > 0)
                 {
-                    mods.Add(new ResistanceMod(ResistanceType.Energy, -(target.EnergyResistance - scalar)));
+                    mods.Add(new ResistanceMod(ResistanceType.Energy, (int)((double)target.EnergyResistance * scalar)));
                 }
 
                 for (int i = 0; i < target.Skills.Length; ++i)
                 {
                     if (target.Skills[i].Value > 0)
                     {
-                        mods.Add(new DefaultSkillMod((SkillName)i, true, -(target.Skills[i].Value - scalar)));                        
+                        mods.Add(new DefaultSkillMod((SkillName)i, true, target.Skills[i].Value * scalar));
                     }
                 }
                 
