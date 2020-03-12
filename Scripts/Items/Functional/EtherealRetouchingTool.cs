@@ -3,7 +3,6 @@ using Server;
 using Server.Targeting;
 using Server.Engines.VeteranRewards;
 using Server.Mobiles;
-using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -11,11 +10,7 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1113814; } } // Retouching Tool
 
-        public bool IsRewardItem
-        {
-            get;
-            set;
-        }
+        public bool IsRewardItem { get; set; }
 
         [Constructable]
         public EtherealRetouchingTool()
@@ -58,21 +53,38 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (m_Tool.IsChildOf(from.Backpack) && targeted is EtherealMount)
+                if (!m_Tool.IsChildOf(from.Backpack))
+                {
+                    from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+                }
+                else if (targeted is EtherealMount)
                 {
                     EtherealMount mount = targeted as EtherealMount;
 
+                    if (!mount.IsChildOf(from.Backpack))
+                    {
+                        from.SendLocalizedMessage(1045158); // You must have the item in your backpack to target it.
+                    }
                     if (mount is GMEthereal || mount is EtherealWarBoar)
                     {
-                        from.SendMessage("You cannot use it on this!");
+                        from.SendLocalizedMessage(1071117); // You cannot use this item for it.
                     }
-                    else if (mount.IsChildOf(from.Backpack) && RewardSystem.CheckIsUsableBy(from, m_Tool, null))
+                    else if (RewardSystem.CheckIsUsableBy(from, m_Tool, null))
                     {
+                        if (mount.Transparent)
+                            from.SendLocalizedMessage(1113816); // Your ethereal mount's body has been solidified.
+                        else
+                            from.SendLocalizedMessage(1113817); // Your ethereal mount's transparency has been restored.
+
                         mount.Transparent = mount.Transparent ? false : true;
                         from.PlaySound(0x242);
 
                         mount.InvalidateProperties();
-                    }
+                    }                    
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1046439); // That is not a valid target.
                 }
             }
         }
@@ -85,7 +97,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(1); // version
 
             writer.Write(IsRewardItem);
@@ -94,7 +105,6 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
 
             if (version == 0)
