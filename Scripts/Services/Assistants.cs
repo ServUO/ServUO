@@ -1,4 +1,4 @@
-﻿#region References
+#region References
 using System;
 using System.Collections.Generic;
 
@@ -125,13 +125,14 @@ namespace Server.Misc
 				EventSink.Login += e =>
 				{
 					Mobile m = e.Mobile;
+                    NetState ns = m.NetState;
 
-					if (m == null || m.NetState == null || !m.NetState.Running)
-					{
-						return;
-					}
+                    if (m == null || ns == null || !ns.Running || ns.IsEnhancedClient)
+                    {
+                        return;
+                    }
 
-					m.Send(new BeginHandshake());
+                    m.Send(new BeginHandshake());
 
 					if (_Dictionary.ContainsKey(m))
 					{

@@ -1302,9 +1302,11 @@ namespace Server.Multis
                     return true;
             }
 
-            if (tiles.Length == 0 && this is Castle)
-                return true;
+            return IsInsideSpecial(p, tiles);
+        }
 
+        protected virtual bool IsInsideSpecial(Point3D p, StaticTile[] tiles)
+        {
             return false;
         }
 

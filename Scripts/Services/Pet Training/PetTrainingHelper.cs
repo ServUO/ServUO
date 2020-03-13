@@ -294,6 +294,7 @@ namespace Server.Mobiles
         public static AreaEffect[] AreaEffectArea2;
         public static AreaEffect[] AreaEffectArea3;
         public static AreaEffect[] AreaEffectArea4;
+        public static AreaEffect[] AreaEffectArea5;
         #endregion
 
         #region Weapon Ability Defs
@@ -669,6 +670,11 @@ namespace Server.Mobiles
                 AreaEffect.AuraOfEnergy, AreaEffect.ExplosiveGoo, AreaEffect.AuraOfNausea,
                 AreaEffect.PoisonBreath, AreaEffect.EssenceOfDisease,                
             };
+
+            AreaEffectArea5 = new AreaEffect[]
+            {
+                AreaEffect.ExplosiveGoo, AreaEffect.AuraOfNausea,  AreaEffect.PoisonBreath, AreaEffect.EssenceOfDisease
+            };
             #endregion
 
             #region Creature Training Defs
@@ -709,7 +715,7 @@ namespace Server.Mobiles
                 new TrainingDefinition(typeof(DreadWarhorse), Class.MagicalAndNecromantic, MagicalAbility.DreadWarhorse, new SpecialAbility[] { SpecialAbility.DragonBreath }, WepAbility2, AreaEffectArea2, 3, 5), 
                 new TrainingDefinition(typeof(Eagle), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3), 
                 new TrainingDefinition(typeof(Ferret), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 2), 
-                new TrainingDefinition(typeof(FireBeetle), Class.MagicalAndInsectoid, MagicalAbility.StandardClawedOrTailed, SpecialAbilityMagicalInsectoid, WepAbility1, AreaEffectExplosiveGoo, 1 ,5),
+                new TrainingDefinition(typeof(FireBeetle), Class.MagicalAndInsectoid, MagicalAbility.StandardClawedOrTailed, SpecialAbilityMagicalInsectoid, WepAbility1, AreaEffectArea5, 1 ,5),
                 new TrainingDefinition(typeof(FireSteed), Class.Magical, MagicalAbility.Dragon2, SpecialAbilityNone, WepAbility2, AreaEffectArea1, 2, 5),
                 new TrainingDefinition(typeof(ForestOstard), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
                 new TrainingDefinition(typeof(FrenziedOstard), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),

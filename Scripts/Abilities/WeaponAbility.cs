@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+
 using Server.Network;
 using Server.Spells;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Items
 {
@@ -459,6 +461,8 @@ namespace Server.Items
                 SpecialMove.ClearCurrentMove(m);
 
                 m_Table[m] = a;
+
+                SkillMasterySpell.CancelWeaponAbility(m);
             }
 
             return true;
