@@ -220,8 +220,9 @@ namespace Server.Engines.UOStore
             Register<TapestryOfSosaria>(1062917, 1156961, 0x234E, 0, 0, 100, cat);
             Register<RoseOfTrinsic>(1062913, 1156960, 0x234D, 0, 0, 100, cat);
             Register<HearthOfHomeFireDeed>(1062919, 1156958, 0, 0x9C97, 0, 100, cat);
-            // TODO: Singing Ball
-            // TODO: Secret Chest
+
+            Register<StoreSingingBall>(1041245, 1156907, 0, 0x9CB8, 0, 200, cat);
+            Register<SecretChest>(1151583, 1156909, 0x9706, 0, 0, 500, cat);
 
             Register<MiniHouseDeed>(new TextDefinition[] { 1062096, 1157015 }, 1156916, 0, 0x9CB5, 0, 200, cat, ConstructMiniHouseDeed); // two story wood & plaster
             Register<MiniHouseDeed>(new TextDefinition[] { 1062096, 1011317 }, 1156916, 0x22F5, 0, 0, 200, cat, ConstructMiniHouseDeed); // small stone tower
@@ -561,9 +562,7 @@ namespace Server.Engines.UOStore
 
         public static void AddPendingItem(Mobile m, Item item)
         {
-            List<Item> list;
-
-            if (!PendingItems.TryGetValue(m, out list))
+            if (!PendingItems.TryGetValue(m, out List<Item> list))
             {
                 PendingItems[m] = list = new List<Item>();
             }
@@ -583,9 +582,7 @@ namespace Server.Engines.UOStore
 
         public static void CheckPendingItem(Mobile m)
         {
-            List<Item> list;
-
-            if (PendingItems.TryGetValue(m, out list))
+            if (PendingItems.TryGetValue(m, out List<Item> list))
             {
                 var index = list.Count;
 
