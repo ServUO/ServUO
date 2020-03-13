@@ -248,7 +248,7 @@ namespace Server.Engines.Blackthorn
                         bc.Home = Defs[CurrentInvasion].BeaconLoc;
                         bc.SeeksHome = true;
                         bc.RangeHome = Utility.RandomMinMax(5, 10);
-
+                        bc.CanSwim = false;
                         bc.Tamable = false;
 
                         return true;

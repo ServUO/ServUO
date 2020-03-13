@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public ElvenSpinningwheelSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0x2E3F), 0, 0, 0);
+            AddComponent(new AddonComponent(0x2E3F), 0, 0, 0);
         }
 
         public ElvenSpinningwheelSouthAddon(Serial serial)
@@ -27,7 +27,7 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Timer != null;
+                return m_Timer != null;
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -56,10 +56,10 @@ namespace Server.Items
 
         public void BeginSpin(SpinCallback callback, Mobile from, int hue)
         {
-            this.m_Timer = new SpinTimer(this, callback, from, hue);
-            this.m_Timer.Start();
+            m_Timer = new SpinTimer(this, callback, from, hue);
+            m_Timer.Start();
 
-            foreach (AddonComponent c in this.Components)
+            foreach (AddonComponent c in Components)
             {
                 switch ( c.ItemID )
                 {
@@ -72,12 +72,12 @@ namespace Server.Items
 
         public void EndSpin(SpinCallback callback, Mobile from, int hue)
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.m_Timer = null;
+            m_Timer = null;
 
-            foreach (AddonComponent c in this.Components)
+            foreach (AddonComponent c in Components)
             {
                 switch ( c.ItemID )
                 {
@@ -98,18 +98,18 @@ namespace Server.Items
             private readonly Mobile m_From;
             private readonly int m_Hue;
             public SpinTimer(ElvenSpinningwheelSouthAddon wheel, SpinCallback callback, Mobile from, int hue)
-                : base(TimeSpan.FromSeconds(3.0))
+                : base(TimeSpan.FromSeconds(6.0))
             {
-                this.m_Wheel = wheel;
-                this.m_Callback = callback;
-                this.m_From = from;
-                this.m_Hue = hue;
-                this.Priority = TimerPriority.TwoFiftyMS;
+                m_Wheel = wheel;
+                m_Callback = callback;
+                m_From = from;
+                m_Hue = hue;
+                Priority = TimerPriority.TwoFiftyMS;
             }
 
             protected override void OnTick()
             {
-                this.m_Wheel.EndSpin(this.m_Callback, this.m_From, this.m_Hue);
+                m_Wheel.EndSpin(m_Callback, m_From, m_Hue);
             }
         }
     }

@@ -1234,7 +1234,7 @@ namespace Server.Items
 
         private bool CheckYoung(Mobile from)
         {
-            if (from.AccessLevel >= AccessLevel.GameMaster)
+            if (from.AccessLevel >= AccessLevel.GameMaster || TreasureMapInfo.NewSystem)
             {
                 return true;
             }
