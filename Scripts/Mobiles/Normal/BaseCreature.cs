@@ -6563,6 +6563,12 @@ namespace Server.Mobiles
             {
                 m.InvalidateProperties();
             }
+
+            if (_NavPoints != null)
+            {
+                _NavPoints.Clear();
+                _NavPoints = null;
+            }
         }
 
         public override bool CanBeHarmful(IDamageable damageable, bool message, bool ignoreOurBlessedness)

@@ -41,7 +41,6 @@ namespace Server.Spells.SkillMasteries
 
         public virtual bool CancelsWeaponAbility { get { return false; } }
         public virtual bool CancelsSpecialMove { get { return CancelsWeaponAbility; } }
-        public virtual bool ClearOnSpecialAbility { get { return false; } }
 
         public virtual bool RevealOnTick { get { return true; } }
 
@@ -979,41 +978,19 @@ namespace Server.Spells.SkillMasteries
             }
         }
 
-        public static bool CancelWeaponAbility(Mobile attacker)
+        public static void CancelWeaponAbility(Mobile attacker)
         {
-            foreach (SkillMasterySpell spell in EnumerateSpells(attacker))
+            foreach (SkillMasterySpell spell in EnumerateSpells(attacker).Where(s => s.CancelsWeaponAbility))
             {
-                if (spell.CancelsWeaponAbility)
-                    return true;
+                spell.Expire();
             }
-
-            return false;
         }
 
-        public static bool CancelSpecialMove(Mobile attacker)
+        public static void CancelSpecialMove(Mobile attacker)
         {
-            foreach (SkillMasterySpell spell in EnumerateSpells(attacker))
+            foreach (SkillMasterySpell spell in EnumerateSpells(attacker).Where(s => s.CancelsSpecialMove))
             {
-                if (spell.CancelsSpecialMove)
-                    return true;
-            }
-
-            return false;
-        }
-
-        public static void OnToggleSpecialAbility(Mobile m)
-        {
-            CheckTable(m);
-
-            if (m_Table.ContainsKey(m))
-            {
-                foreach (SkillMasterySpell sp in EnumerateSpells(m))
-                {
-                    if (sp.ClearOnSpecialAbility)
-                    {
-                        sp.Expire(true);
-                    }
-                }
+                spell.Expire();
             }
         }
 

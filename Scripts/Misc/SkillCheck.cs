@@ -175,6 +175,7 @@ namespace Server.Misc
 			return CheckSkill(from, skill, new Point2D(from.Location.X / LocationSize, from.Location.Y / LocationSize), chance);
 		}
 
+        #region Craft All Gains
         /// <summary>
         /// This should be a successful skill check, where a system can register several skill gains at once. Only system
         /// using this currently is UseAllRes for CraftItem.cs
@@ -189,17 +190,19 @@ namespace Server.Misc
                 return false;
 
             var skill = from.Skills[sk];
+            var value = skill.Value;
             var gains = 0;
 
             for (int i = 0; i < amount; i++)
             {
-                var gc = GetGainChance(from, skill, (skill.Value - minSkill) / (maxSkill - minSkill), true);
+                var gc = GetGainChance(from, skill, (value - minSkill) / (maxSkill - minSkill), value) / 10;
 
                 if (AllowGain(from, skill, new Point2D(from.Location.X / LocationSize, from.Location.Y / LocationSize)))
                 {
                     if (from.Alive && (skill.Base < 10.0 || Utility.RandomDouble() <= gc || CheckGGS(from, skill)))
                     {
                         gains++;
+                        value += 0.1;
                     }
                 }
 
@@ -215,7 +218,26 @@ namespace Server.Misc
             return false;
         }
 
-		public static bool CheckSkill(Mobile from, Skill skill, object obj, double chance)
+        private static double GetGainChance(Mobile from, Skill skill, double gains, double chance)
+        {
+            var gc = (double)(from.Skills.Cap - (from.Skills.Total + (gains * 10))) / from.Skills.Cap;
+
+            gc += (skill.Cap - (skill.Base + (gains * 10))) / skill.Cap;
+            gc /= 4;
+
+            gc *= skill.Info.GainFactor;
+
+            if (gc < 0.01)
+                gc = 0.01;
+
+            if (gc > 1.00)
+                gc = 1.00;
+
+            return gc;
+        }
+        #endregion
+
+        public static bool CheckSkill(Mobile from, Skill skill, object obj, double chance)
 		{
 			if (from.Skills.Cap == 0)
 				return false;

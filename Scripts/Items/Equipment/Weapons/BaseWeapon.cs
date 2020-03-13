@@ -1643,7 +1643,7 @@ namespace Server.Items
 
 			SpecialMove move = SpecialMove.GetCurrentMove(attacker);
 
-            if (move != null && (!move.OnBeforeSwing(attacker, defender) || SkillMasterySpell.CancelSpecialMove(attacker)))
+            if (move != null && !move.OnBeforeSwing(attacker, defender))
             {
                 SpecialMove.ClearCurrentMove(attacker);
             }

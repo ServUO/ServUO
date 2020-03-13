@@ -21,7 +21,6 @@ namespace Server.Spells.SkillMasteries
         public override SkillName CastSkill { get { return SkillName.Poisoning; } }
 		public override SkillName DamageSkill { get { return SkillName.Anatomy; } }
 
-        public override bool ClearOnSpecialAbility { get { return true; } }
         public override bool CancelsWeaponAbility { get { return true; } }
 
         public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(1.0); } }

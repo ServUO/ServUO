@@ -406,6 +406,12 @@ namespace Server.Multis
                 return new Point3D(5, 17, 0);
             }
         }
+
+        protected override bool IsInsideSpecial(Point3D p, StaticTile[] tiles)
+        {
+            return p.X >= X - 10 && p.X <= X + 10 && p.Y >= Y - 10 && p.Y <= Y + 10;
+        }
+
         public override HouseDeed GetDeed()
         {
             return new CastleDeed();

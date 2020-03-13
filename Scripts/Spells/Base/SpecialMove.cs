@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+
 using Server.Items;
 using Server.Network;
 using Server.Spells.Bushido;
 using Server.Spells.Ninjitsu;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Spells
 {
@@ -305,9 +307,9 @@ namespace Server.Spells
                 if (moveID > 0)
                     m.Send(new ToggleSpecialAbility(moveID + 1, true));
 
-                Server.Spells.SkillMasteries.SkillMasterySpell.OnToggleSpecialAbility(m);
-
                 move.SendAbilityMessage(m);
+
+                SkillMasterySpell.CancelSpecialMove(m);
             }
 
             return true;
