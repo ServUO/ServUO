@@ -30,8 +30,8 @@ namespace Server.Items
 		MurkyAmber,
 		VibranSeagreen,
         VibrantOcher,
-        OliveGreen,
         MossyGreen,
+        OliveGreen,
         MottledSunsetBlue,
         TyrianPurple,
         IntenseTeal

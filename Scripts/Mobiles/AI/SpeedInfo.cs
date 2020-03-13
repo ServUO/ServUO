@@ -20,8 +20,8 @@ namespace Server
             var maxDex = GetMaxMovementDex(bc);
             var dex = Math.Min(maxDex, Math.Max(25, bc.Dex));
 
-            var min = bc.IsMonster || InActiveCombat(bc) ? MinDelayWild : MinDelay;
-            var max = bc.IsMonster || InActiveCombat(bc) ? MaxDelayWild : MaxDelay;
+            var min = bc.IsMonster || InActivePVPCombat(bc) ? MinDelayWild : MinDelay;
+            var max = bc.IsMonster || InActivePVPCombat(bc) ? MaxDelayWild : MaxDelay;
 
             if (bc.IsParagon)
             {
@@ -46,9 +46,9 @@ namespace Server
             return bc.IsMonster ? 150 : 190;
         }
 
-        public static bool InActiveCombat(BaseCreature bc)
+        public static bool InActivePVPCombat(BaseCreature bc)
         {
-            return bc.Combatant != null && bc.ControlOrder != OrderType.Follow;
+            return bc.Combatant != null && bc.ControlOrder != OrderType.Follow && bc.Combatant is PlayerMobile;
         }
 
         public static double TransformMoveDelay(BaseCreature bc, double delay)
