@@ -1484,7 +1484,7 @@ namespace Server.Items
 
             protected override void OnTick()
             {
-                if (m_NextSkillTime != m_From.NextSkillTime || m_NextSpellTime != m_From.NextSpellTime ||
+                if (m_NextSkillTime != m_From.NextSkillTime || (!TreasureMapInfo.NewSystem && m_NextSpellTime != m_From.NextSpellTime) ||
                     m_NextActionTime != m_From.NextActionTime)
                 {
                     Terminate();
