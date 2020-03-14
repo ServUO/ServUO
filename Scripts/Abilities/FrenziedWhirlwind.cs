@@ -136,9 +136,6 @@ namespace Server.Items
 
                         int amount = Utility.RandomMinMax((int)Math.Ceiling(skill / 50) * 5, (int)Math.Ceiling(skill / 50) * 20) + 2;
                         AOS.Damage(m, m_Attacker, amount, 100, 0, 0, 0, 0);
-
-                        //m_Attacker.SendLocalizedMessage(1060161); // The whirling attack strikes a target!
-                        //m_Defender.SendLocalizedMessage(1060162); // You are struck by the whirling attack and take damage!
                     }
                 }
             }
