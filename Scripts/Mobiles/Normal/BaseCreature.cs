@@ -4246,7 +4246,7 @@ namespace Server.Mobiles
                 return false;
             }
 
-            if (skill == SkillName.RemoveTrap &&
+            if (!Core.EJ && skill == SkillName.RemoveTrap &&
                 (from.Skills[SkillName.Lockpicking].Base < 50.0 || from.Skills[SkillName.DetectHidden].Base < 50.0))
             {
                 return false;

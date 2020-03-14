@@ -57,7 +57,11 @@ namespace Server.Spells.SkillMasteries
 
             if (m != null)
             {
-                if (CheckHSequence(m))
+                if (GetSpell<DeathRaySpell>(Caster, m) != null)
+                {
+                    Caster.SendLocalizedMessage(1156094); // Your target is already under the effect of this ability.
+                }
+                else if (CheckHSequence(m))
                 {
                     if (CheckResisted(m))
                     {
@@ -67,11 +71,6 @@ namespace Server.Spells.SkillMasteries
                     else
                     {
                         SpellHelper.CheckReflect(0, Caster, ref m);
-                        SkillMasterySpell spell = GetSpell(Caster, this.GetType());
-
-                        if (spell != null && spell.Target == m)
-                            spell.Expire();
-
                         _Location = Caster.Location;
 
                         m.FixedParticles(0x374A, 1, 15, 5054, 0x7A2, 7, EffectLayer.Head);

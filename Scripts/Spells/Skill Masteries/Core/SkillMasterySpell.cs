@@ -555,6 +555,16 @@ namespace Server.Spells.SkillMasteries
             return null;
         }
 
+        public static TSpell GetSpell<TSpell>(Mobile caster, Mobile target) where TSpell : SkillMasterySpell
+        {
+            if (m_Table.ContainsKey(caster))
+            {
+                return m_Table[caster].FirstOrDefault(sms => sms.GetType() == typeof(TSpell) && sms.Target == target) as TSpell;
+            }
+
+            return null;
+        }
+
         public static SkillMasterySpell GetSpell(Func<SkillMasterySpell, bool> predicate)
 		{
             foreach (SkillMasterySpell spell in EnumerateAllSpells())

@@ -134,11 +134,10 @@ namespace Server.Items
                         int skill = m_Attacker is BaseCreature ? (int)m_Attacker.Skills[SkillName.Ninjitsu].Value :
                                                               (int)Math.Max(m_Attacker.Skills[SkillName.Bushido].Value, m_Attacker.Skills[SkillName.Ninjitsu].Value);
 
-                        int amount = Utility.RandomMinMax((int)(skill / 50) * 5, (int)(skill / 50) * 20) + 2;
-                        AOS.Damage(m, m_Attacker, amount, 100, 0, 0, 0, 0);
+                        var baseMin = (int)Math.Max(5, (skill / 50) * 5);
 
-                        //m_Attacker.SendLocalizedMessage(1060161); // The whirling attack strikes a target!
-                        //m_Defender.SendLocalizedMessage(1060162); // You are struck by the whirling attack and take damage!
+                        int amount = Utility.RandomMinMax(baseMin, (baseMin  * 20) + 2);
+                        AOS.Damage(m, m_Attacker, amount, 100, 0, 0, 0, 0);
                     }
                 }
             }
