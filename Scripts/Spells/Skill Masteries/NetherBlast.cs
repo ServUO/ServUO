@@ -215,7 +215,7 @@ namespace Server.Spells.SkillMasteries
 
                     m.FixedParticles(0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255);
 
-                    int manaRip = Math.Max(m.Mana, damage / 4);
+                    int manaRip = Math.Min(m.Mana, damage / 4);
 
                     if (manaRip > 0)
                     {

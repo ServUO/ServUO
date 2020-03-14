@@ -236,6 +236,12 @@ namespace Server.SkillHandlers
             {
                 if (targeted is TreasureMapChest && TreasureMapInfo.NewSystem)
                 {
+                    // put here to prevent abuse
+                    if (from.NextSkillTime > Core.TickCount)
+                    {
+                        from.NextSkillTime = Core.TickCount;
+                    }
+
                     from.SendLocalizedMessage(1159058); // You are too far away from the chest to manipulate the trigger mechanism.
                 }
                 else
