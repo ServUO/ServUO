@@ -78,8 +78,6 @@ namespace Server.Items
                 if (attacker is BaseCreature)
                     PetTrainingHelper.OnWeaponAbilityUsed((BaseCreature)attacker, SkillName.Ninjitsu);
             }
-
-            ColUtility.Free(targets);
         }
 
         public static void RemoveFromRegistry(Mobile from)
@@ -94,10 +92,10 @@ namespace Server.Items
         private class InternalTimer : Timer
         {
             private Mobile m_Attacker;
-            private IEnumerable<Mobile> m_List;
+            private List<Mobile> m_List;
             private long m_Start;
 
-            public InternalTimer(Mobile attacker, IEnumerable<Mobile> list)
+            public InternalTimer(Mobile attacker, List<Mobile> list)
                 : base(TimeSpan.FromMilliseconds(500), TimeSpan.FromMilliseconds(500))
             {
                 m_Attacker = attacker;
@@ -118,12 +116,16 @@ namespace Server.Items
 
                 if (!m_Attacker.Alive || m_Start + 2000 < Core.TickCount)
                 {
+                    ColUtility.Free(m_List);
                     Server.Items.FrenziedWhirlwind.RemoveFromRegistry(m_Attacker);
                 }
             }
 
             private void DoHit()
             {
+                if (m_List == null)
+                    return;
+
                 foreach (Mobile m in m_List)
                 {
                     if (m_Attacker.InRange(m.Location, 2) && m.Alive && m.Map == m_Attacker.Map)
@@ -135,9 +137,7 @@ namespace Server.Items
                                                               (int)Math.Max(m_Attacker.Skills[SkillName.Bushido].Value, m_Attacker.Skills[SkillName.Ninjitsu].Value);
 
                         var baseMin = (int)Math.Max(5, (skill / 50) * 5);
-
-                        int amount = Utility.RandomMinMax(baseMin, (baseMin  * 20) + 2);
-                        AOS.Damage(m, m_Attacker, amount, 100, 0, 0, 0, 0);
+                        AOS.Damage(m, m_Attacker, Utility.RandomMinMax(baseMin, (baseMin * 3) + 2), 100, 0, 0, 0, 0);
                     }
                 }
             }
