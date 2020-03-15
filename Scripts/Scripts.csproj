@@ -698,6 +698,7 @@
     <Compile Include="Items\StoreBought\GardenSculpture.cs" />
     <Compile Include="Items\StoreBought\MetalLadder.cs" />
     <Compile Include="Items\StoreBought\PetWhistle.cs" />
+    <Compile Include="Items\StoreBought\ImprovedRockHammer.cs" />
     <Compile Include="Items\StoreBought\SecretChest.cs" />
     <Compile Include="Items\StoreBought\SpiralStaircase.cs" />
     <Compile Include="Items\StoreBought\SquirrelMailbox.cs" />
