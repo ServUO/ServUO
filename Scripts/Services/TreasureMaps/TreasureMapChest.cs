@@ -591,7 +591,11 @@ namespace Server.Items
                 m_Lifted.Add(item);
 
                 if (0.1 >= Utility.RandomDouble()) // 10% chance to spawn a new monster
-                    TreasureMap.Spawn(Level, GetWorldLocation(), Map, from, false);
+                {
+                    var spawn = TreasureMap.Spawn(Level, GetWorldLocation(), Map, from, false);
+
+                    spawn.Hue = 2725;
+                }
             }
 
             base.OnItemLifted(from, item);
@@ -620,6 +624,8 @@ namespace Server.Items
                 spawn.Hits = spawn.HitsMax;
                 spawn.Mana = spawn.ManaMax;
                 spawn.Stam = spawn.StamMax;
+
+                spawn.Hue = 1960;
 
                 for (int i = 0; i < spawn.Skills.Length; i++)
                 {

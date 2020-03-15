@@ -1605,6 +1605,8 @@ namespace Server.Items
 
                         BaseCreature bc = Spawn(m_TreasureMap.Level, m_Chest.Location, m_Chest.Map, null, guardian);
 
+                        bc.Hue = 2725;
+
                         if (bc != null && guardian)
                         {
                             m_Chest.Guardians.Add(bc);
