@@ -249,10 +249,14 @@ namespace Server.Items
 
                 foreach (var kvp in dictionary)
                 {
-                    foreach (var context in kvp.Value)
+                    var contexts = new List<EodonPotionContext>(kvp.Value);
+
+                    foreach (var context in contexts)
                     {
                         context.OnTick(kvp.Key);
                     }
+
+                    ColUtility.Free(contexts);
                 }
 
                 dictionary.Clear();

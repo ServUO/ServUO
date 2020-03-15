@@ -183,9 +183,9 @@ namespace Server.Items
 	        new StealableEntry(Map.TerMur, new Point3D(1131, 1128, -42), 18432, 27648, typeof(BlockAndTackleArtifact)),
 
             //Ararat Stealables (Exploring the Deep) - Artifact rarity 8
-            new StealableEntry(Map.Trammel, new Point3D(6430, 1637, 0), 9216, 13824, typeof(SternAnchorOfBmvArarat)),
-            new StealableEntry(Map.Trammel, new Point3D(6423, 1658, 0), 9216, 13824, typeof(ShipsBellOfBmvArarat)),
-            new StealableEntry(Map.Trammel, new Point3D(6405, 1640, 0), 9216, 13824, typeof(FigureheadOfBmvArarat)),
+            new StealableEntry(Map.Trammel, new Point3D(6303, 1664, 11), 9216, 13824, typeof(SternAnchorOfBmvArarat)),
+            new StealableEntry(Map.Trammel, new Point3D(6303, 1756, 20), 9216, 13824, typeof(ShipsBellOfBmvArarat)),
+            new StealableEntry(Map.Trammel, new Point3D(6313, 1753, -14), 9216, 13824, typeof(FigureheadOfBmvArarat)),
 
             // Castle Blackthorne Stealables - Rarity 8 - does not show rarity on items
             new StealableEntry(Map.Trammel, new Point3D(6436, 2606, 11), 9216, 13824, typeof(KingsGildedStatue)),
