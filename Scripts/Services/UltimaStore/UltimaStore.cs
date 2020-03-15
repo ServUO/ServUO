@@ -306,6 +306,7 @@ namespace Server.Engines.UOStore
             //TODO: UndeadWeddingBundle, TotemOfChromaticFortune, 
 
             Register<PetBrandingIron>(1157314, 1157372, 0, 0x9CC3, 0, 600, cat);
+            Register<ImprovedRockHammer>(1157177, 1157306, 0, 0x9CBB, 0, 1000, cat);
             Register<PetBondingPotion>(1152921, 1156678, 0, 0x9CBC, 0, 500, cat); 
 
             Register<ForgedMetalOfArtifacts>(new TextDefinition[] { 1149868, 1156686 }, 1156674, 0, 0x9C65, 0, 1000, cat, ConstructForgedMetal);

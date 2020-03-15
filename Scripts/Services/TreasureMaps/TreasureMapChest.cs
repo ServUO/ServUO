@@ -612,6 +612,7 @@ namespace Server.Items
 
                 spawn.Name = "Ancient Chest Guardian";
                 spawn.Title = "(Guardian)";
+                spawn.Tamable = false;
 
                 if (spawn.HitsMaxSeed >= 0)
                     spawn.HitsMaxSeed = (int)(spawn.HitsMaxSeed * Paragon.HitsBuff);

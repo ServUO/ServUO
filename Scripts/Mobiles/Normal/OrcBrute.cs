@@ -138,7 +138,7 @@ namespace Server.Mobiles
         {
             var damage = base.Damage(amount, from, informMount, checkDisrupt);
 
-            if (from != this && !Controlled && !Summoned && Utility.RandomDouble() <= 0.2)
+            if (from != null && from != this && !Controlled && !Summoned && Utility.RandomDouble() <= 0.2)
             {
                 SpawnOrcLord(from);
             }
