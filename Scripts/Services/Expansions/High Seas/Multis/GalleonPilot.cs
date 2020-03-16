@@ -246,26 +246,31 @@ namespace Server.Mobiles
         {
             base.GetContextMenuEntries(from, list);
 
-            if (Galleon != null && Galleon.Contains(from))
+            if (Galleon != null)
             {
-                SecurityLevel level = Galleon.GetSecurityLevel(from);
-
-                if (level > SecurityLevel.NA)
+                if (Galleon.Contains(from))
                 {
-                    list.Add(new EmergencyRepairEntry(this, from));
-                    list.Add(new ShipRepairEntry(this, from));
+                    SecurityLevel level = Galleon.GetSecurityLevel(from);
+
+                    if (level >= SecurityLevel.Crewman)
+                    {
+                        list.Add(new EmergencyRepairEntry(this, from));
+                        list.Add(new ShipRepairEntry(this, from));
+                    }
+
+                    if (level == SecurityLevel.Captain)
+                    {
+                        list.Add(new RenameShipEntry(Galleon, from));
+                        list.Add(new MoveTillermanEntry(this, from));
+                        list.Add(new SecuritySettingsEntry(this, from));
+                        list.Add(new ResetSecuritySettings(this, from));
+                    }
                 }
-
-                if (level == SecurityLevel.Captain)
+                else
                 {
-                    list.Add(new RenameShipEntry(this, from));
-                    list.Add(new MoveTillermanEntry(this, from));
-                    list.Add(new SecuritySettingsEntry(this, from));
-                    list.Add(new ResetSecuritySettings(this, from));
+                    list.Add(new DryDockEntry(Galleon, from));
                 }
             }
-            else
-                list.Add(new DryDockEntry(Galleon, from));
         }
 
         private class EmergencyRepairEntry : ContextMenuEntry
@@ -322,25 +327,6 @@ namespace Server.Mobiles
                     else
                         m_Pilot.Galleon.TryRepairs(m_From);
                 }
-            }
-        }
-
-        private class RenameShipEntry : ContextMenuEntry
-        {
-            private GalleonPilot m_Pilot;
-            private Mobile m_From;
-
-            public RenameShipEntry(GalleonPilot pilot, Mobile from)
-                : base(1111680, 5) // Rename
-            {
-                m_Pilot = pilot;
-                m_From = from;
-            }
-
-            public override void OnClick()
-            {
-                if (m_Pilot != null && m_Pilot.Galleon != null)
-                    m_Pilot.Galleon.BeginRename(m_From);
             }
         }
 
@@ -472,27 +458,6 @@ namespace Server.Mobiles
 
                     }, m_Pilot.Galleon));
                 }
-            }
-        }
-
-        private class DryDockEntry : ContextMenuEntry
-        {
-            private Mobile m_From;
-            private BaseGalleon m_Galleon;
-
-            public DryDockEntry(BaseGalleon galleon, Mobile from)
-                : base(1116520, 12) // Dry Dock Ship
-            {
-                m_From = from;
-                m_Galleon = galleon;
-
-                Enabled = m_Galleon != null && m_Galleon.IsOwner(from);
-            }
-
-            public override void OnClick()
-            {
-                if (m_Galleon != null && !m_Galleon.Contains(m_From) && m_Galleon.IsOwner(m_From))
-                    m_Galleon.BeginDryDock(m_From);
             }
         }
 

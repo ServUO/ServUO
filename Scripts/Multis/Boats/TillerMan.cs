@@ -267,25 +267,6 @@ namespace Server.Items
             }
         }
 
-        private class DryDockEntry : ContextMenuEntry
-        {
-            private readonly Mobile m_From;
-            private BaseBoat m_Boat;
-
-            public DryDockEntry(BaseBoat boat, Mobile from)
-                : base(1116520, 12)
-            {
-                m_From = from;
-                m_Boat = boat;
-            }
-
-            public override void OnClick()
-            {
-                if (m_Boat != null && !m_Boat.Contains(m_From))
-                    m_Boat.BeginDryDock(m_From);
-            }
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

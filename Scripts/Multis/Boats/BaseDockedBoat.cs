@@ -7,15 +7,6 @@ namespace Server.Multis
 {
     public abstract class BaseDockedBoat : Item
     {
-        private string m_ShipName;
-
-        #region High Seas
-        private SecurityEntry m_SecurityEntry;
-        private PilotEntry m_PilotEntry;
-        private Mobile m_Owner;
-        private int m_BaseHue;
-        #endregion
-
         [CommandProperty(AccessLevel.GameMaster)]
         public int MultiID { get; set; }
 
@@ -71,11 +62,10 @@ namespace Server.Multis
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)5); // version
+            writer.Write((int)6); // version
 
             writer.Write(MultiID);
             writer.Write(Offset);
-            writer.Write(m_ShipName);
             writer.Write(BoatItem);
         }
 
@@ -86,58 +76,19 @@ namespace Server.Multis
 
             switch (version)
             {
+                case 6:
+                    {
+                        MultiID = reader.ReadInt();
+                        Offset = reader.ReadPoint3D();
+                        BoatItem = reader.ReadItem() as BaseBoat;
+                        break;
+                    }
                 case 5:
                     {
                         MultiID = reader.ReadInt();
                         Offset = reader.ReadPoint3D();
-                        m_ShipName = reader.ReadString();
+                        reader.ReadString();
                         BoatItem = reader.ReadItem() as BaseBoat;
-                        break;
-                    }
-                case 4:
-                    {
-                        switch (reader.ReadInt())
-                        {
-                            default:
-                            case 0: break;
-                            case 1:
-                                m_PilotEntry = new PilotEntry(reader);
-                                break;
-                        }
-                        goto case 3;
-                    }
-                case 3:
-                    {
-                        m_BaseHue = reader.ReadInt();
-
-                        if (version < 5)
-                            reader.ReadItem();
-                        reader.ReadItem();
-                        m_Owner = reader.ReadMobile();
-                        goto case 2;
-                    }
-                case 2:
-                    {
-                        switch (reader.ReadInt())
-                        {
-                            default:
-                            case 0: break;
-                            case 1:
-                                m_SecurityEntry = new SecurityEntry(null, reader);
-                                break;
-                        }
-                        goto case 1;
-                    }
-                case 1:
-                case 0:
-                    {
-                        MultiID = reader.ReadInt();
-                        Offset = reader.ReadPoint3D();
-                        m_ShipName = reader.ReadString();
-
-                        if (version == 0)
-                            reader.ReadUInt();
-
                         break;
                     }
             }

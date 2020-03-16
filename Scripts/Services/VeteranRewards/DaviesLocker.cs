@@ -372,21 +372,16 @@ namespace Server.Engines.VeteranRewards
 
     public class DaviesLockerEntry
     {
-        private Map m_Map;
-        private Point3D m_Location;
-        private int m_Level;
-        private bool m_QuestItem;
-
-        public Map Map { get { return m_Map; } }
-        public Point3D Location { get { return m_Location; } }
-        public int Level { get { return m_Level; } }
-        public bool QuestItem { get { return m_QuestItem; } set { m_QuestItem = value; } }
+        public Map Map { get; set; }
+        public Point3D Location { get; set; }
+        public int Level { get; set; }
+        public bool QuestItem { get; set; }
 
         public DaviesLockerEntry(Map map, Point3D location, int level)
         {
-            m_Map = map;
-            m_Location = location;
-            m_Level = level;
+            Map = map;
+            Location = location;
+            Level = level;
         }
 
         public DaviesLockerEntry(GenericReader reader)
@@ -396,12 +391,12 @@ namespace Server.Engines.VeteranRewards
             switch (v)
             {
                 case 1:
-                    m_QuestItem = reader.ReadBool();
+                    QuestItem = reader.ReadBool();
                     goto case 0;
                 case 0:
-                    m_Map = reader.ReadMap();
-                    m_Location = reader.ReadPoint3D();
-                    m_Level = reader.ReadInt();
+                    Map = reader.ReadMap();
+                    Location = reader.ReadPoint3D();
+                    Level = reader.ReadInt();
                     break;
             }
         }
@@ -410,29 +405,25 @@ namespace Server.Engines.VeteranRewards
         {
             writer.Write((int)1);
 
-            writer.Write(m_QuestItem);
+            writer.Write(QuestItem);
 
-            writer.Write(m_Map);
-            writer.Write(m_Location);
-            writer.Write(m_Level);
+            writer.Write(Map);
+            writer.Write(Location);
+            writer.Write(Level);
         }
     }
 
     public class SOSEntry : DaviesLockerEntry
     {
-        private bool m_IsAncient;
-        private int m_MessageIndex;
-        private bool m_Opened;
-
-        public bool IsAncient { get { return m_IsAncient; } }
-        public int MessageIndex { get { return m_MessageIndex; } }
-        public bool Opened { get { return m_Opened; } }
+        public bool IsAncient { get; set; }
+        public int MessageIndex { get; set; }
+        public bool Opened { get; set; }
 
         public SOSEntry(MessageInABottle mib) : base(mib.TargetMap, Point3D.Zero, mib.Level)
         {
-            m_Opened = false;
-            m_IsAncient = false;
-            m_MessageIndex = -1;
+            Opened = false;
+            IsAncient = false;
+            MessageIndex = -1;
 
             if (mib is SaltySeaMIB)
                 QuestItem = true;
@@ -440,9 +431,9 @@ namespace Server.Engines.VeteranRewards
 
         public SOSEntry(SOS sos) : base(sos.TargetMap, sos.TargetLocation, sos.Level)
         {
-            m_Opened = true;
-            m_IsAncient = sos.IsAncient;
-            m_MessageIndex = sos.MessageIndex;
+            Opened = true;
+            IsAncient = sos.IsAncient;
+            MessageIndex = sos.MessageIndex;
 
             if (sos is SaltySeaSOS)
                 QuestItem = true;
@@ -452,9 +443,9 @@ namespace Server.Engines.VeteranRewards
         {
             int v = reader.ReadInt();
 
-            m_IsAncient = reader.ReadBool();
-            m_MessageIndex = reader.ReadInt();
-            m_Opened = reader.ReadBool();
+            IsAncient = reader.ReadBool();
+            MessageIndex = reader.ReadInt();
+            Opened = reader.ReadBool();
         }
 
         public override void Serialize(GenericWriter writer)
@@ -462,30 +453,27 @@ namespace Server.Engines.VeteranRewards
             base.Serialize(writer);
             writer.Write((int)0);
 
-            writer.Write(m_IsAncient);
-            writer.Write(m_MessageIndex);
-            writer.Write(m_Opened);
+            writer.Write(IsAncient);
+            writer.Write(MessageIndex);
+            writer.Write(Opened);
         }
     }
 
     public class TreasureMapEntry : DaviesLockerEntry
     {
-        private bool m_Completed;
-        private Mobile m_CompletedBy;
-        private Mobile m_Decoder;
-        private DateTime m_NextReset;
-
-        public bool Completed { get { return m_Completed; } }
-        public Mobile CompletedBy { get { return m_CompletedBy; } }
-        public Mobile Decoder { get { return m_Decoder; } }
-        public DateTime NextReset { get { return m_NextReset; } }
+        public bool Completed { get; set; }
+        public Mobile CompletedBy { get; set; }
+        public Mobile Decoder { get; set; }
+        public DateTime NextReset { get; set; }
+        public TreasurePackage Package { get; set; }
 
         public TreasureMapEntry(TreasureMap map) : base(map.Facet, new Point3D(map.ChestLocation.X, map.ChestLocation.Y, 0), map.Level)
         {
-            m_Completed = map.Completed;
-            m_CompletedBy = map.CompletedBy;
-            m_Decoder = map.Decoder;
-            m_NextReset = map.NextReset;
+            Completed = map.Completed;
+            CompletedBy = map.CompletedBy;
+            Decoder = map.Decoder;
+            NextReset = map.NextReset;
+            Package = map.Package;
 
             if (map is HiddenTreasuresTreasureMap)
                 QuestItem = true;
@@ -495,21 +483,36 @@ namespace Server.Engines.VeteranRewards
         {
             int v = reader.ReadInt();
 
-            m_Completed = reader.ReadBool();
-            m_CompletedBy = reader.ReadMobile();
-            m_Decoder = reader.ReadMobile();
-            m_NextReset = reader.ReadDateTime();
+            switch (v)
+            {
+                case 1:
+                    Package = (TreasurePackage)reader.ReadInt();
+                    goto case 0;
+                case 0:
+                    Completed = reader.ReadBool();
+                    CompletedBy = reader.ReadMobile();
+                    Decoder = reader.ReadMobile();
+                    NextReset = reader.ReadDateTime();
+                    break;
+            }
+
+            if (v == 0)
+            {
+                Package = (TreasurePackage)Utility.RandomMinMax(0, 4);
+            }
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
 
-            writer.Write(m_Completed);
-            writer.Write(m_CompletedBy);
-            writer.Write(m_Decoder);
-            writer.Write(m_NextReset);
+            writer.Write((int)Package);
+
+            writer.Write(Completed);
+            writer.Write(CompletedBy);
+            writer.Write(Decoder);
+            writer.Write(NextReset);
         }
     }
 
@@ -539,10 +542,10 @@ namespace Server.Engines.VeteranRewards
             AddHtmlLocalized(0, 10, 600, 20, 1153552, AquaGreen, false, false); // <DIV ALIGN="CENTER">Davies' Locker</DIV>
 
             AddHtmlLocalized(30, 35, 40, 20, 1153554, Blue, false, false); // <DIV ALIGN="CENTER">Get</DIV>
-            AddHtmlLocalized(75, 35, 120, 20, 1153555, Blue, false, false); // <DIV ALIGN="CENTER">Facet</DIV>
-            AddHtmlLocalized(195, 35, 120, 20, 1153556, Blue, false, false); // <DIV ALIGN="CENTER">Level</DIV>
-            AddHtmlLocalized(315, 35, 120, 20, 1153557, Blue, false, false); // <DIV ALIGN="CENTER">Coords</DIV>
-            AddHtmlLocalized(435, 35, 120, 20, 1153558, Blue, false, false); // <DIV ALIGN="CENTER">Status</DIV>
+            AddHtmlLocalized(75, 35, 90, 20, 1153555, Blue, false, false); // <DIV ALIGN="CENTER">Facet</DIV>
+            AddHtmlLocalized(170, 35, 200, 20, 1153556, Blue, false, false); // <DIV ALIGN="CENTER">Level</DIV>
+            AddHtmlLocalized(365, 35, 105, 20, 1153557, Blue, false, false); // <DIV ALIGN="CENTER">Coords</DIV>
+            AddHtmlLocalized(470, 35, 120, 20, 1153558, Blue, false, false); // <DIV ALIGN="CENTER">Status</DIV>
 
             int perPage = 10;
             int totalPages = (int)Math.Ceiling((double)m_List.Count / 10.0);
@@ -580,15 +583,23 @@ namespace Server.Engines.VeteranRewards
                 if(addon.CanUse(from))
                     AddButton(45, y + 3, 1209, 1210, 5 + i, GumpButtonType.Reply, 0);
 
-                AddHtml(80, y, 100, 20, String.Format("<basefont color=yellow>{0}", entry.Map.ToString()), false, false);
-                AddHtmlLocalized(205, y, 220, 20, GetLevel(entry), Yellow, false, false);
+                AddHtml(80, y, 100, 20, String.Format("<basefont color=yellow>{0}", GetFacet(entry)), false, false);
+
+                if (TreasureMapInfo.NewSystem && entry is TreasureMapEntry)
+                {
+                    AddHtmlLocalized(175, y, 220, 20, 1060847, String.Format("{0}\t{1}", "#" + GetPackage((TreasureMapEntry)entry), "#" + GetLevel((TreasureMapEntry)entry)), Yellow, false, false);
+                }
+                else
+                {
+                    AddHtmlLocalized(175, y, 220, 20, GetLevel(entry), Yellow, false, false);
+                }
 
                 if ((entry is TreasureMapEntry && ((TreasureMapEntry)entry).Decoder == null) || (entry is SOSEntry && !((SOSEntry)entry).Opened))
-                    AddHtmlLocalized(325, y, 100, 20, 1153569, Yellow, false, false); // Unknown
+                    AddHtmlLocalized(370, y, 100, 20, 1153569, Yellow, false, false); // Unknown
                 else
-                    AddHtmlLocalized(325, y, 100, 20, 1060847, String.Format("{0}\t{1}", entry.Location.X.ToString(), entry.Location.Y.ToString()), Yellow, false, false); // ~1_val~ ~2_val~
+                    AddHtmlLocalized(370, y, 100, 20, 1060847, String.Format("{0}\t{1}", entry.Location.X.ToString(), entry.Location.Y.ToString()), Yellow, false, false); // ~1_val~ ~2_val~
                 
-                AddHtmlLocalized(440, y, 100, 20, GetStatus(entry), Yellow, false, false);
+                AddHtmlLocalized(475, y, 100, 20, GetStatus(entry), Yellow, false, false);
 
                 y += 35;
                 index++;
@@ -633,6 +644,34 @@ namespace Server.Engines.VeteranRewards
             }
 
             from.SendGump(new DaviesLockerGump(from, m_Addon, m_Page));
+        }
+
+        private string GetPackage(TreasureMapEntry entry)
+        {
+            switch (entry.Package)
+            {
+                default:
+                case TreasurePackage.Artisan: return "1159000";
+                case TreasurePackage.Assassin: return "1158998";
+                case TreasurePackage.Mage: return "1158997";
+                case TreasurePackage.Ranger: return "1159002";
+                case TreasurePackage.Warrior: return "1158999";
+            }
+        }
+
+        private string GetLevel(TreasureMapEntry entry)
+        {
+            return (1158992 + Math.Min(4, entry.Level)).ToString();
+        }
+
+        private string GetFacet(DaviesLockerEntry entry)
+        {
+            if (entry is TreasureMapEntry && Server.Spells.SpellHelper.IsEodon(entry.Map, entry.Location))
+            {
+                return "Eodon";
+            }
+
+            return entry.Map.ToString();
         }
 
         private void ConstructEntry(Mobile from, DaviesLockerEntry entry)
@@ -706,8 +745,11 @@ namespace Server.Engines.VeteranRewards
 
                 map.Facet = entry.Map;
                 map.Level = entry.Level;
+                map.Package = (TreasurePackage)entry.Package;
                 map.ChestLocation = new Point2D(entry.Location.X, entry.Location.Y);
             }
+
+            bool eodon = map.TreasureFacet == TreasureFacet.Eodon;
 
             map.Completed = entry.Completed;
             map.CompletedBy = entry.CompletedBy;
@@ -731,7 +773,7 @@ namespace Server.Engines.VeteranRewards
 
             int x2, y2;
 
-            map.AdjustMap(facet, out x2, out y2, x1, y1, width, height);
+            map.AdjustMap(facet, out x2, out y2, x1, y1, width, height, eodon);
 
             x1 = x2 - width;
             y1 = y2 - height;
