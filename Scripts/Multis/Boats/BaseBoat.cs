@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.IO;
+
 using Server;
 using Server.Items;
 using Server.Network;
 using Server.Mobiles;
 using Server.Regions;
-using System.Linq;
-using System.IO;
+using Server.ContextMenus;
 
 namespace Server.Multis
 {
@@ -3417,6 +3419,48 @@ namespace Server.Multis
             {
                 writer.Write(p);
             }
+        }
+    }
+
+    public class DryDockEntry : ContextMenuEntry
+    {
+        private BaseBoat Boat { get; set; }
+        private Mobile From { get; set; }
+
+        public DryDockEntry(BaseBoat boat, Mobile from)
+            : base(1116520, 12)
+        {
+            From = from;
+            Boat = boat;
+
+            Enabled = Boat != null && Boat.IsOwner(from);
+        }
+
+        public override void OnClick()
+        {
+            if (Boat != null && !Boat.Contains(From) && Boat.IsOwner(From))
+                Boat.BeginDryDock(From);
+        }
+    }
+
+    public class RenameShipEntry : ContextMenuEntry
+    {
+        private BaseBoat Boat { get; set; }
+        private Mobile From { get; set; }
+
+        public RenameShipEntry(BaseBoat boat, Mobile from)
+            : base(1111680, 3)
+        {
+            Boat = boat;
+            From = from;
+
+            Enabled = boat != null && boat.IsOwner(from);
+        }
+
+        public override void OnClick()
+        {
+            if (Boat != null && Boat.IsOwner(From))
+                Boat.BeginRename(From);
         }
     }
 }

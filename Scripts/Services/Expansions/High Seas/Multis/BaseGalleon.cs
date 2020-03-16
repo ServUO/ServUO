@@ -1818,65 +1818,6 @@ namespace Server.Multis
         }
     }
 
-    [PropertyObject]
-    public class PilotEntry
-    {
-        [CommandProperty(AccessLevel.GameMaster)]
-        public string Name { get; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool Female { get; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int SkinHue { get; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int HairHue { get; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int HairID { get; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int SpeechHue { get; }
-
-        public override string ToString()
-        {
-            return "...";
-        }
-
-        public PilotEntry(Mobile pilot)
-        {
-            Name = pilot.Name;
-            Female = pilot.Female;
-            SkinHue = pilot.Hue;
-            HairHue = pilot.HairHue;
-            HairID = pilot.HairItemID;
-            SpeechHue = pilot.SpeechHue;
-        }
-
-        public void Serialize(GenericWriter writer)
-        {
-            writer.Write((int)0);
-            writer.Write(Name);
-            writer.Write(Female);
-            writer.Write(SkinHue);
-            writer.Write(HairHue);
-            writer.Write(HairID);
-            writer.Write(SpeechHue);
-        }
-
-        public PilotEntry(GenericReader reader)
-        {
-            int version = reader.ReadInt();
-            Name = reader.ReadString();
-            Female = reader.ReadBool();
-            SkinHue = reader.ReadInt();
-            HairHue = reader.ReadInt();
-            HairID = reader.ReadInt();
-            SpeechHue = reader.ReadInt();
-        }
-    }
-
     public class ShipAccessEntry : ContextMenuEntry
     {
         private Mobile m_From;
