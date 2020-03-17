@@ -25,6 +25,7 @@ namespace Server.Spells.SkillMasteries
         public override int RequiredMana { get { return 40; } }
         public override bool PartyEffects { get { return false; } }
         public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(2.0); } }
+        public override double TickTime { get { return 1; } }
 
         public override SkillName CastSkill { get { return SkillName.Mysticism; } }
         public override SkillName DamageSkill
@@ -37,6 +38,8 @@ namespace Server.Spells.SkillMasteries
                 return SkillName.Imbuing;
             }
         }
+
+        public List<InternalItem> Items { get; set; } = new List<InternalItem>();
 
         public NetherBlastSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
@@ -96,16 +99,91 @@ namespace Server.Spells.SkillMasteries
 
                                 if (canFit)
                                 {
-                                    Item item = new InternalItem(Caster, this, 0x37CC, loc, Caster.Map, duration);
+                                    var item = new InternalItem(Caster, 0x37CC, loc, Caster.Map);
                                     item.ProcessDelta();
                                     Effects.SendLocationParticles(EffectItem.Create(loc, Caster.Map, EffectItem.DefaultDuration), 0x376A, 9, 10, 5048);
+
+                                    Items.Add(item);
                                 }
                             });
                     }
 
+                    Expires = DateTime.UtcNow + duration;
+                    BeginTimer();
+
                     Caster.PlaySound(0x211);
                 }
             }
+        }
+
+        public override bool OnTick()
+        {
+            Dictionary<Mobile, InternalItem> list = new Dictionary<Mobile, InternalItem>();
+
+            foreach (var item in Items.Where(i => !i.Deleted))
+            {
+                foreach (var m in AcquireIndirectTargets(item.Location, 1).OfType<Mobile>().Where(m =>
+                     (m.Z + 16) > item.Z &&
+                     (item.Z + 12) > m.Z))
+                {
+                    if (!list.ContainsKey(m))
+                    {
+                        list.Add(m, item);
+                    }
+                }
+            }
+
+            foreach (var kvp in list)
+            {
+                DoDamage(kvp.Key, kvp.Value);
+            }
+
+            list.Clear();
+            return base.OnTick();
+        }
+
+        public override void OnExpire()
+        {
+            foreach (var item in Items)
+            {
+                item.Delete();
+            }
+        }
+
+        private bool DoDamage(Mobile m, InternalItem item)
+        {
+            if (item.Visible && Caster != null && (!Core.AOS || m != Caster) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
+            {
+                if (SpellHelper.CanRevealCaster(m))
+                    Caster.RevealingAction();
+
+                SkillName damageSkill = Caster.Skills[SkillName.Focus].Value > Caster.Skills[SkillName.Imbuing].Value ? SkillName.Focus : SkillName.Imbuing;
+
+                double skill = ((Caster.Skills[SkillName.Mysticism].Value) + Caster.Skills[damageSkill].Value * 2) / 3;
+                skill /= m.Player ? 3.5 : 2;
+
+                int damage = (int)skill + Utility.RandomMinMax(-3, 3);
+                damage *= (int)GetDamageScalar(m);
+
+                int sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, m, CastSkill, Caster.Player && m.Player);
+
+                damage *= (100 + sdiBonus);
+                damage /= 100;
+
+                AOS.Damage(m, Caster, damage, 0, 0, 0, 0, 0, 100, 0, DamageType.SpellAOE);
+
+                m.FixedParticles(0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255);
+
+                int manaRip = Math.Min(m.Mana, damage / 4);
+
+                if (manaRip > 0)
+                {
+                    m.Mana -= manaRip;
+                    Caster.Mana += manaRip;
+                }
+            }
+
+            return true;
         }
 
         [DispellableField]
@@ -113,20 +191,13 @@ namespace Server.Spells.SkillMasteries
         {
             public override bool BlocksFit { get { return true; } }
 
-            public Mobile Caster { get; set; }
-            public Timer Timer { get; set; }
-            public DateTime Expires { get; set; }
-            public NetherBlastSpell Owner { get; set; }
-
-            public InternalItem(Mobile caster, NetherBlastSpell owner, int itemID, Point3D loc, Map map, TimeSpan duration)
+            public InternalItem(Mobile caster, int itemID, Point3D loc, Map map)
                 : base(itemID)
             {
                 Visible = false;
                 Movable = false;
                 Light = LightType.Circle300;
 
-                Owner = owner;
-                Expires = DateTime.UtcNow + duration;
                 MoveToWorld(loc, map);
 
                 if (caster.InLOS(this))
@@ -136,38 +207,6 @@ namespace Server.Spells.SkillMasteries
 
                 if (Deleted)
                     return;
-
-                Timer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), OnTick);
-                Timer.Start();
-
-                Caster = caster;
-            }
-
-            private void OnTick()
-            {
-                if (DateTime.UtcNow > Expires)
-                    Delete();
-
-                if (this.Deleted)
-                    return;
-
-                foreach (var m in Owner.AcquireIndirectTargets(Location, 1).OfType<Mobile>().Where(m =>
-                    (m.Z + 16) > Z && 
-                    (Z + 12) > m.Z))
-                {
-                    DoDamage(m);
-                }
-            }
-
-            public override void OnAfterDelete()
-            {
-                base.OnAfterDelete();
-
-                if (Timer != null)
-                {
-                    Timer.Stop();
-                    Timer = null;
-                }
             }
 
             public InternalItem(Serial serial)
@@ -189,42 +228,6 @@ namespace Server.Spells.SkillMasteries
                 int version = reader.ReadInt();
 
                 Delete();
-            }
-
-            public bool DoDamage(Mobile m)
-            {
-                if (Visible && Caster != null && (!Core.AOS || m != Caster) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
-                {
-                    if (SpellHelper.CanRevealCaster(m))
-                        Caster.RevealingAction();
-
-                    SkillName damageSkill = Caster.Skills[SkillName.Focus].Value > Caster.Skills[SkillName.Imbuing].Value ? SkillName.Focus : SkillName.Imbuing;
-
-                    double skill = ((Caster.Skills[SkillName.Mysticism].Value) + Caster.Skills[damageSkill].Value * 2) / 3;
-                    skill /= m.Player ? 3.5 : 2;
-
-                    int damage = (int)skill + Utility.RandomMinMax(-3, 3);
-                    damage *= (int)Owner.GetDamageScalar(m);
-
-                    int sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, m, Owner.CastSkill, Caster.Player && m.Player);
-
-                    damage *= (100 + sdiBonus);
-                    damage /= 100;
-
-                    AOS.Damage(m, Caster, damage, 0, 0, 0, 0, 0, 100, 0, DamageType.SpellAOE);
-
-                    m.FixedParticles(0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255);
-
-                    int manaRip = Math.Min(m.Mana, damage / 4);
-
-                    if (manaRip > 0)
-                    {
-                        m.Mana -= manaRip;
-                        Caster.Mana += manaRip;
-                    }
-                }
-
-                return true;
             }
         }
     }
