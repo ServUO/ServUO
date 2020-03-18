@@ -518,7 +518,7 @@ namespace Server.Engines.Harvest
             {
                 Static obj = (Static)toHarvest;
 
-                tileID = (obj.ItemID & 0x3FFF) | 0x4000;
+                tileID = (obj.ItemID & 0x3FFF);// | 0x4000;
                 map = obj.Map;
                 loc = obj.GetWorldLocation();
             }
