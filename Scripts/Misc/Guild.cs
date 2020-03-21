@@ -1299,6 +1299,11 @@ namespace Server.Guilds
 
 		public bool IsAlly(Guild g)
 		{
+            if (g == null)
+            {
+                return false;
+            }
+
 			if (NewGuildSystem)
 			{
 				return (Alliance != null && Alliance.IsMember(this) && Alliance.IsMember(g));
@@ -1309,6 +1314,11 @@ namespace Server.Guilds
 
 		public bool IsEnemy(Guild g)
 		{
+            if (g == null)
+            {
+                return false;
+            }
+
 			if (NewGuildSystem)
 			{
 				return IsWar(g);
