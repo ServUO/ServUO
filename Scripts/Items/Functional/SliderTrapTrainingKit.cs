@@ -97,7 +97,7 @@ namespace Server.Items
 			{
 				for (int j = i + 1; j < Order.Length; j++)
 				{
-					if (Order[j] && Order[i] && Order[i] > Order[j])
+					if (Order[j] != 0 && Order[i] != 0 && Order[i] > Order[j])
 						invCount++;
 				}
 			}
