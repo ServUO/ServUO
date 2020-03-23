@@ -1,9 +1,11 @@
 using System;
+using System.Linq;
+
 using Server;
 using Server.Network;
 using Server.Mobiles;
 using Server.Targeting;
-using System.Linq;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
@@ -141,6 +143,15 @@ namespace Server.Items
             typeof(CoralSnake),   typeof(GiantSerpent),
             typeof(SilverSerpent)
         };
+
+        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
+        {
+            base.OnCraft(quality, makersMark, from, craftSystem, typeRes, tool, craftItem, resHue);
+
+            Hue = 0x187;
+
+            return quality;
+        }
 
         public override void Serialize(GenericWriter writer)
         {
