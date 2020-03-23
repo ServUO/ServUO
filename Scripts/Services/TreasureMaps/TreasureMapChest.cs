@@ -529,7 +529,7 @@ namespace Server.Items
 
         public override bool CheckLocked(Mobile from)
         {
-            if (CanOpen(from) || from.AccessLevel > AccessLevel.Player)
+            if (from.AccessLevel > AccessLevel.Player)
             {
                 return false;
             }
@@ -545,10 +545,12 @@ namespace Server.Items
                 LockPick(from);
                 return false;
             }
-            else
+            else if (CanOpen(from))
             {
                 return base.CheckLocked(from);
             }
+
+            return true;
         }
 
         public virtual bool CanOpen(Mobile from)

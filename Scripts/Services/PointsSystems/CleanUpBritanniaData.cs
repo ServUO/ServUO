@@ -120,18 +120,33 @@ namespace Server.Engines.Points
                 {
                     TreasureMap tmap = (TreasureMap)item;
 
-                    if (tmap.Level == 1)
-                        points = 50;
-                    else if (tmap.Level == 2)
-                        points = 100;
-                    else if (tmap.Level == 3)
-                        points = 250;
-                    else if (tmap.Level == 4)
-                        points = 500;
-                    else if (tmap.Level == 5)
-                        points = 750;
-                    else if (tmap.Level == 6)
-                        points = 1000;
+                    if (TreasureMapInfo.NewSystem)
+                    {
+                        switch (tmap.Level)
+                        {
+                            default:
+                            case 0:
+                            case 1: return 50;
+                            case 2: return 250;
+                            case 3: return 750;
+                            case 4: return 1000;
+                        }
+                    }
+                    else
+                    {
+                        switch (tmap.Level)
+                        {
+                            default:
+                            case 0: return 25;
+                            case 1: return 50;
+                            case 2: return 100;
+                            case 3: return 250;
+                            case 4: return 500;
+                            case 5: return 750;
+                            case 6:
+                            case 7: return 1000;
+                        }
+                    }
                 }
                 else if (item is MidnightBracers && item.LootType == LootType.Cursed)
                 {
