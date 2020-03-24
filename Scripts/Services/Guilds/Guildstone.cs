@@ -1,4 +1,5 @@
 using System;
+using Server.Factions;
 using Server.Guilds;
 using Server.Gumps;
 using Server.Multis;
@@ -201,38 +202,6 @@ namespace Server.Items
         {
             if (!Guild.NewGuildSystem && this.m_Guild != null && !this.m_Guild.Disbanded)
                 this.m_Guild.Disband();
-        }
-
-        public override void OnDoubleClick(Mobile from)
-        {
-            if (Guild.NewGuildSystem)
-                return;
-
-            if (this.m_Guild == null || this.m_Guild.Disbanded)
-            {
-                this.Delete();
-            }
-            else if (!from.InRange(this.GetWorldLocation(), 2))
-            {
-                from.SendLocalizedMessage(500446); // That is too far away.
-            }
-            else if (this.m_Guild.Accepted.Contains(from))
-            {
-                this.m_Guild.Accepted.Remove(from);
-                this.m_Guild.AddMember(from);
-
-                GuildGump.EnsureClosed(from);
-                from.SendGump(new GuildGump(from, this.m_Guild));
-            }
-            else if (from.AccessLevel < AccessLevel.GameMaster && !this.m_Guild.IsMember(from))
-            {
-                from.Send(new MessageLocalized(this.Serial, this.ItemID, MessageType.Regular, 0x3B2, 3, 501158, "", "")); // You are not a member ...
-            }
-            else
-            {
-                GuildGump.EnsureClosed(from);
-                from.SendGump(new GuildGump(from, this.m_Guild));
-            }
         }
 
         #region IAddon Members
