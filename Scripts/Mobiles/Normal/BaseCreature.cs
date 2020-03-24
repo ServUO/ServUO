@@ -6814,7 +6814,7 @@ namespace Server.Mobiles
                 Mobile owner = ControlMaster;
 
                 if (owner != null && tc >= m_NextHealOwnerTime && CanBeBeneficial(owner, true, true) &&
-                    owner.Map == Map && InRange(owner, 2) && InLOS(owner) && owner.Hits < .78 * owner.HitsMax)
+                    owner.Map == Map && InRange(owner, 2) && InLOS(owner) && (owner.Poisoned || owner.Hits < .78 * owner.HitsMax))
                 {
                     HealStart(owner);
                     m_NextHealOwnerTime = tc + (int)TimeSpan.FromSeconds(30).TotalMilliseconds;
