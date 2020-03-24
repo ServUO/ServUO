@@ -66,7 +66,6 @@ namespace Server.Commands
             new CommandEntry("Stealables",          "GenStealArties",   "RemoveStealArties",	Category.Spawn,           Expansion.AOS,    108),
 			new CommandEntry("Solen Hives",         "SHTelGen",         "SHTelGenDelete",		Category.Dungeon,         Expansion.LBR,    109),
 			new CommandEntry("Malas Secrets",       "SecretLocGen",     "SecretLocDelete",		Category.System,          Expansion.AOS,    110),
-			new CommandEntry("Factions",            "GenerateFactions",	"DeleteFactions",		Category.System,          Expansion.None,   111),
 			new CommandEntry("Decorations",         "Decorate",         "DecorateDelete",		Category.Decoration,      Expansion.None,   113),
 			new CommandEntry("ML Decorations",      "DecorateML",		"DecorateMLDelete",		Category.Decoration,      Expansion.ML,     114),
 			new CommandEntry("SA Decorations",      "DecorateSA",		"DecorateSADelete",		Category.Decoration,      Expansion.SA,     115),
@@ -310,9 +309,6 @@ namespace Server.Gumps
 
 			int items = CreateWorld.Commands.Count;
 
-            if (!Server.Factions.Settings.Enabled)
-                items--;
-
 			AddBackground(0, 0, 280, 75 + items * 25, 5054);
 			switch (m_Type)
 			{
@@ -332,9 +328,6 @@ namespace Server.Gumps
 
 			foreach(CreateWorld.CommandEntry entry in CreateWorld.Commands)
 			{
-                if (entry.Name == "Factions" && !Server.Factions.Settings.Enabled)
-                    continue;
-
                 bool created = CreateWorldData.CreateTable.ContainsKey(entry.CheckID) && CreateWorldData.CreateTable[entry.CheckID];
 
 				AddLabel(20, y + 1, created ? 200 : 338, String.Format("{0} {1}", entry.Name, created ? "[created]" : "[not created]"));
@@ -525,8 +518,6 @@ namespace Server.Gumps
                     return SHTeleporter.SHTeleporterCreator.FindSHTeleporter(Map.Trammel, new Point3D(5747, 1895, 0)) != null;
                 case 110:
                     return WeakEntityCollection.HasCollection("malas");
-                case 111:
-                    return WeakEntityCollection.HasCollection("factions");
                 case 113:
                     return WeakEntityCollection.HasCollection("deco");
                 case 114:

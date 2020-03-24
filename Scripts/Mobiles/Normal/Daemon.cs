@@ -1,4 +1,3 @@
-using Server.Factions;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -77,11 +76,6 @@ namespace Server.Mobiles
         public override double DispelFocus
         {
             get { return 45.0; }
-        }
-
-        public override Faction FactionAllegiance
-        {
-            get { return Shadowlords.Instance; }
         }
 
         public override bool CanRummageCorpses

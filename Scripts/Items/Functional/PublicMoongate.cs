@@ -5,7 +5,6 @@ using System.Linq;
 
 using Server.Commands;
 using Server.Engines.CityLoyalty;
-using Server.Factions;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
@@ -534,7 +533,7 @@ namespace Server.Items
 						checkLists = PMList.UORLists;
 					}
 				}
-				else if (Sigil.ExistsOn(mobile))
+				else if (Server.Engines.VvV.VvVSigil.ExistsOn(mobile))
 				{
 					checkLists = PMList.SigilLists;
 				}
@@ -678,7 +677,7 @@ namespace Server.Items
 				m_Mobile.SendLocalizedMessage(1019004); // You are not allowed to travel there.
 				return;
 			}
-			else if (Sigil.ExistsOn(m_Mobile) && list.Map != Faction.Facet)
+			else if (Server.Engines.VvV.VvVSigil.ExistsOn(m_Mobile) && list.Map != Server.Engines.VvV.ViceVsVirtueSystem.Facet)
 			{
 				m_Mobile.SendLocalizedMessage(1019004); // You are not allowed to travel there.
 				return;

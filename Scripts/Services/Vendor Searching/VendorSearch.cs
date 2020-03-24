@@ -362,9 +362,7 @@ namespace Server.Engines.VendorSearching
                                 return false;
                             break;
                         case Misc.FactionItem:
-                            if (!(item is Factions.IFactionItem))
-                                return false;
-                            break;
+                            return false;
                         case Misc.PromotionalToken:
                             if (!(item is PromotionalToken))
                                 return false;

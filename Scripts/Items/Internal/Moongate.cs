@@ -1,7 +1,6 @@
 #region References
 using System;
 
-using Server.Factions;
 using Server.Gumps;
 using Server.Misc;
 using Server.Mobiles;
@@ -105,7 +104,7 @@ namespace Server.Items
 		{
 			var flags = m.NetState == null ? ClientFlags.None : m.NetState.Flags;
 
-			if (Sigil.ExistsOn(m))
+			if (Server.Engines.VvV.VvVSigil.ExistsOn(m))
 			{
 				m.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
 			}

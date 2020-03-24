@@ -65,11 +65,7 @@ namespace Server.Spells
             {
                 Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1113082); // You may not fly while dead.
             }
-            else if (Factions.Sigil.ExistsOn(Caster))
-            {
-                Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
-            }
-			else if (!Caster.CanBeginAction(typeof(Seventh.PolymorphSpell)))
+            else if (!Caster.CanBeginAction(typeof(Seventh.PolymorphSpell)))
             {
                 Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1112453); // You can't fly in your current form!
             }

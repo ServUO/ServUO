@@ -281,7 +281,7 @@ namespace Server.Engines.Craft
             typeof(StaffOfTheMagi), typeof(BlackrockMoonstone),
 
             // Tinkering
-            typeof(Server.Factions.Silver), typeof(RingOfTheElements), typeof(HatOfTheMagi), typeof(AutomatonActuator),
+            typeof(RingOfTheElements), typeof(HatOfTheMagi), typeof(AutomatonActuator),
 
             // Inscription
             typeof(AntiqueDocumentsKit)

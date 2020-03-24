@@ -7,7 +7,6 @@ using System.Linq;
 using Server.Accounting;
 using Server.ContextMenus;
 using Server.Engines.BulkOrders;
-using Server.Factions;
 using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
@@ -100,16 +99,8 @@ namespace Server.Mobiles
 
         public virtual BODType BODType { get { return BODType.Smith; } }
 
-		#region Faction
 		public virtual int GetPriceScalar()
 		{
-			Town town = Town.FromRegion(Region);
-
-			if (town != null)
-			{
-				return (100 + town.Tax);
-			}
-
 			return 100;
 		}
 
@@ -127,7 +118,6 @@ namespace Server.Mobiles
 				}
 			}
 		}
-		#endregion
 
 		private class BulkOrderInfoEntry : ContextMenuEntry
 		{

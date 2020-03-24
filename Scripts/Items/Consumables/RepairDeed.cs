@@ -174,7 +174,56 @@ namespace Server.Items
             if (!m.Region.IsPartOf<TownRegion>())
                 return false;
 
-            return Server.Factions.Faction.IsNearType(m, RepairSkillInfo.GetInfo(m_Skill).NearbyTypes, 6);
+            return IsNearType(m, RepairSkillInfo.GetInfo(m_Skill).NearbyTypes, 6);
+        }
+
+        public static bool IsNearType(Mobile mob, Type type, int range)
+        {
+            bool mobs = type.IsSubclassOf(typeof(Mobile));
+            bool items = type.IsSubclassOf(typeof(Item));
+
+            IPooledEnumerable eable;
+
+            if (mobs)
+                eable = mob.GetMobilesInRange(range);
+            else if (items)
+                eable = mob.GetItemsInRange(range);
+            else
+                return false;
+
+            foreach (object obj in eable)
+            {
+                if (type.IsAssignableFrom(obj.GetType()))
+                {
+                    eable.Free();
+                    return true;
+                }
+            }
+
+            eable.Free();
+            return false;
+        }
+
+        public static bool IsNearType(Mobile mob, Type[] types, int range)
+        {
+            IPooledEnumerable eable = mob.GetObjectsInRange(range);
+
+            foreach (object obj in eable)
+            {
+                Type objType = obj.GetType();
+
+                for (int i = 0; i < types.Length; i++)
+                {
+                    if (types[i].IsAssignableFrom(objType))
+                    {
+                        eable.Free();
+                        return true;
+                    }
+                }
+            }
+
+            eable.Free();
+            return false;
         }
 
         public override void Serialize(GenericWriter writer)

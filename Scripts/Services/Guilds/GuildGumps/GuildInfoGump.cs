@@ -1,5 +1,5 @@
 using System;
-using Server.Factions;
+
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
@@ -46,33 +46,25 @@ namespace Server.Guilds
                 this.AddButton(40, 120, 0x4B9, 0x4BA, 6, GumpButtonType.Reply, 0);	//Alliance Roster
             }
 
-            this.AddImageTiled(65, 148, 160, 26, 0xA40);
-            this.AddImageTiled(67, 150, 156, 22, 0xBBC);
-            this.AddHtmlLocalized(70, 151, 150, 20, 1063084, 0x0, false, false); // <i>Guild Faction</i>
-		
-            Faction f = Faction.Find(this.guild.Leader);
-            if (f != null)
-                this.AddHtml(233, 152, 320, 26, f.ToString(), false, false);
-
-            this.AddImageTiled(65, 196, 480, 4, 0x238D);
+            this.AddImageTiled(65, 166, 480, 4, 0x238D);
 
             string s = this.guild.Charter;
             if (String.IsNullOrEmpty(s))
                 s = "The guild leader has not yet set the guild charter.";
 
-            this.AddHtml(65, 216, 480, 80, s, true, true);
+            this.AddHtml(65, 186, 480, 80, s, true, true);
             if (isLeader)
-                this.AddButton(40, 251, 0x4B9, 0x4BA, 4, GumpButtonType.Reply, 0);	//Charter Edit button
+                this.AddButton(40, 221, 0x4B9, 0x4BA, 4, GumpButtonType.Reply, 0);	//Charter Edit button
 
             s = this.guild.Website;
 
             if (string.IsNullOrEmpty(s))
                 s = "Guild website not yet set.";
 
-            this.AddHtml(65, 306, 480, 30, s, true, false);
+            this.AddHtml(65, 276, 480, 30, s, true, false);
 
             if (isLeader)
-                this.AddButton(40, 313, 0x4B9, 0x4BA, 5, GumpButtonType.Reply, 0);	//Website Edit button
+                this.AddButton(40, 283, 0x4B9, 0x4BA, 5, GumpButtonType.Reply, 0);	//Website Edit button
 
             AddBackground(65, 370, 170, 26, 0x2486);
 
