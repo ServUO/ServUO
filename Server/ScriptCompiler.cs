@@ -144,6 +144,8 @@ namespace Server
 
 		public static bool CompileCSScripts(bool debug, bool cache, out Assembly assembly)
 		{
+            long startTime = Core.TickCount;
+
 			Utility.PushColor(ConsoleColor.Yellow);
 			Console.Write("Scripts: Compiling C# scripts...");
 			Utility.PopColor();
@@ -243,7 +245,7 @@ namespace Server
 				
 				m_AdditionalReferences.Add(path);
 
-				Display(results);
+				Display(results, startTime);
 
 				if (results.Errors.Count > 0 && !Core.Unix)
 				{
@@ -285,7 +287,7 @@ namespace Server
 			}
 		}
 
-		public static void Display(CompilerResults results)
+		public static void Display(CompilerResults results, long startTime)
 		{
 			if (results.Errors.Count > 0)
 			{
@@ -325,7 +327,7 @@ namespace Server
 				else
 				{
 					Utility.PushColor(ConsoleColor.Green);
-					Console.WriteLine("Finished with: {0} errors, {1} warnings", errors.Count, warnings.Count);
+					Console.WriteLine("Finished with: {0} errors, {1} warnings [{2} seconds]", errors.Count, warnings.Count, (int)((Core.TickCount - startTime) / 1000));
 					Utility.PopColor();
 				}
 
@@ -393,7 +395,7 @@ namespace Server
 			else
 			{
 				Utility.PushColor(ConsoleColor.Green);
-				Console.WriteLine("Finished with: 0 errors, 0 warnings");
+				Console.WriteLine("Finished with: 0 errors, 0 warnings [{0} seconds]", (int)((Core.TickCount - startTime) / 1000));
 				Utility.PopColor();
 			}
 		}
