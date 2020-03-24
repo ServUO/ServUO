@@ -2272,7 +2272,7 @@
     <Compile Include="Mobiles\Normal\DragonsFlameGrandMage.cs" />
     <Compile Include="Mobiles\Normal\Drake.cs" />
     <Compile Include="Mobiles\Normal\DreadSpider.cs" />
-    <Compile Include="Mobiles\Normal\DreamWraith .cs" />
+    <Compile Include="Mobiles\Normal\DreamWraith.cs" />
     <Compile Include="Mobiles\Normal\DullCopperElemental.cs" />
     <Compile Include="Mobiles\Normal\Eagle.cs" />
     <Compile Include="Mobiles\Normal\EarthElemental.cs" />
