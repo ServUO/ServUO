@@ -1,5 +1,4 @@
 using System;
-using Server.Factions;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -50,7 +49,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override Faction FactionAllegiance { get { return TrueBritannians.Instance; } }
         public override bool DeathAdderCharmable { get { return true; } }
         public override int Meat { get { return 1; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }

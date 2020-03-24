@@ -1,6 +1,4 @@
 using System;
-using Server.Factions;
-using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -39,22 +37,13 @@ namespace Server.Mobiles
             Karma = -15000;
 
             VirtualArmor = 50;
-
-            PackItem(new Club());
         }
 
         public OgreLord(Serial serial)
             : base(serial)
         {
         }
-
-        public override Faction FactionAllegiance
-        {
-            get
-            {
-                return Minax.Instance;
-            }
-        }       
+      
         public override bool CanRummageCorpses
         {
             get

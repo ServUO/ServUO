@@ -26,7 +26,7 @@ namespace Server.Engines.Points
 
         public CleanUpBritanniaData()
         {
-            Enabled = Core.ML;
+            Enabled = true;
 
             if (Enabled)
             {
@@ -120,9 +120,7 @@ namespace Server.Engines.Points
                 {
                     TreasureMap tmap = (TreasureMap)item;
 
-                    if (TreasureMapInfo.NewSystem)
-                    {
-                        switch (tmap.Level)
+                    switch (tmap.Level)
                         {
                             default:
                             case 0:
@@ -131,26 +129,6 @@ namespace Server.Engines.Points
                             case 3: return 750;
                             case 4: return 1000;
                         }
-                    }
-                    else
-                    {
-                        switch (tmap.Level)
-                        {
-                            default:
-                            case 0: return 25;
-                            case 1: return 50;
-                            case 2: return 100;
-                            case 3: return 250;
-                            case 4: return 500;
-                            case 5: return 750;
-                            case 6:
-                            case 7: return 1000;
-                        }
-                    }
-                }
-                else if (item is MidnightBracers && item.LootType == LootType.Cursed)
-                {
-                    points = 5000;
                 }
                 else if (item is MonsterStatuette)
                 {
@@ -680,7 +658,6 @@ namespace Server.Engines.Points
             Entries[typeof(BagOfSending)] = 250.0;
             Entries[typeof(Cauldron)] = 200.0;
             Entries[typeof(ChampionSkull)] = 1000.0;
-            //Entries[typeof(ChaosShield)] = 2500.0;
             Entries[typeof(ClockworkAssembly)] = 50.0;
             Entries[typeof(ConjurersTrinket)] = 10000.0;
 
@@ -704,7 +681,6 @@ namespace Server.Engines.Points
             Entries[typeof(MedusaDarkScales)] = 200.0;
             Entries[typeof(MedusaLightScales)] = 200.0;
             Entries[typeof(ContestMiniHouseDeed)] = 6500.0;
-            Entries[typeof(Moonstone)] = 5000.0;
             Entries[typeof(MysticsGuard)] = 2500.0;
             Entries[typeof(PowerCrystal)] = 100.0;
             Entries[typeof(PristineDreadHorn)] = 1000.0;

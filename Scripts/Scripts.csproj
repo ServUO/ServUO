@@ -276,8 +276,6 @@
     <Compile Include="Context Menus\TeachEntry.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Deprecated\GamblingStone.cs" />
-    <Compile Include="Deprecated\GMStone.cs" />
     <Compile Include="Gumps\AddCustomizableMessageGump.cs" />
     <Compile Include="Gumps\AddDoorGump.cs">
       <SubType>Code</SubType>
@@ -1128,6 +1126,7 @@
     <Compile Include="Items\Functional\CoralTheOwl.cs" />
     <Compile Include="Items\Functional\DragonTurtleEgg.cs" />
     <Compile Include="Items\Functional\EtherealRetouchingTool.cs" />
+	<Compile Include="Items\Functional\GamblingStone.cs" />
     <Compile Include="Items\Functional\GoblinFloorTrap.cs" />
     <Compile Include="Items\Functional\HouseCraftables.cs" />
     <Compile Include="Items\Functional\Incubator.cs" />
@@ -1137,47 +1136,30 @@
     <Compile Include="Items\Functional\SeedBox\SeedEntry.cs" />
     <Compile Include="Items\Functional\WallSafe.cs" />
     <Compile Include="Items\Internal\BlightedGroveTeleporters.cs" />
-    <Compile Include="Items\Internal\BlueNinjaQuestTeleporter.cs" />
     <Compile Include="Items\Internal\CrystalTeleporter.cs" />
     <Compile Include="Items\Internal\EffectMobile.cs" />
-    <Compile Include="Items\Internal\GreenNinjaQuestTeleporter.cs" />
     <Compile Include="Items\Internal\ItemInterfaces.cs" />
     <Compile Include="Items\Internal\MacawSpawner.cs" />
     <Compile Include="Items\Internal\PrismOfLightTeleporters.cs" />
     <Compile Include="Items\Internal\PvPWarnTeleporter.cs" />
     <Compile Include="Items\Internal\UnderworldTele.cs" />
-    <Compile Include="Items\Internal\WhiteNinjaQuestTeleporter.cs" />
     <Compile Include="Items\Quest\AbyssKey.cs" />
     <Compile Include="Items\Quest\BlueKey1.cs" />
     <Compile Include="Items\Quest\Bluekeyfragment.cs" />
     <Compile Include="Items\Quest\CompletedTuitionReimbursementForm.cs" />
     <Compile Include="Items\Quest\CreepyWeeds.cs" />
-    <Compile Include="Items\Quest\CrystalBallOfKnowledge.cs" />
-    <Compile Include="Items\Quest\CrystalCaveBarrier.cs" />
-    <Compile Include="Items\Quest\DarkTidesHorn.cs" />
-    <Compile Include="Items\Quest\DarkTidesTeleporter.cs" />
-    <Compile Include="Items\Quest\EminosKatana.cs" />
-    <Compile Include="Items\Quest\EminosKatanaChest.cs" />
+    <Compile Include="Items\Quest\CrystalBallOfKnowledge.cs" />   
     <Compile Include="Items\Quest\EnchantedPaints.cs" />
     <Compile Include="Items\Quest\FoolishGold.cs" />
     <Compile Include="Items\Quest\GamanHorn.cs" />
     <Compile Include="Items\Quest\GaramonsBook.cs" />
     <Compile Include="Items\Quest\GaramonsBook1.cs" />
     <Compile Include="Items\Quest\GiftForArielle.cs" />
-    <Compile Include="Items\Quest\GuardianBarrier.cs" />
-    <Compile Include="Items\Quest\HaochisKatana.cs" />
-    <Compile Include="Items\Quest\HaochisKatanaGenerator.cs" />
-    <Compile Include="Items\Quest\HaochisTreasureChest.cs" />
-    <Compile Include="Items\Quest\HonorCandle.cs" />
     <Compile Include="Items\Quest\ImageType.cs" />
-    <Compile Include="Items\Quest\KirinBrains.cs" />
-    <Compile Include="Items\Quest\KronusScroll.cs" />
-    <Compile Include="Items\Quest\KronusScrollBox.cs" />
-    <Compile Include="Items\Quest\MaabusCoffin.cs" />
+    <Compile Include="Items\Quest\KirinBrains.cs" />   
     <Compile Include="Items\Quest\MapFragment.cs" />
     <Compile Include="Items\Quest\MiniatureMushroom.cs" />
     <Compile Include="Items\Quest\NaxMarker.cs" />
-    <Compile Include="Items\Quest\NoteForZoel.cs" />
     <Compile Include="Items\Quest\Obsidian.cs" />
     <Compile Include="Items\Quest\PaintedImage.cs" />
     <Compile Include="Items\Quest\PixieLeg.cs" />
@@ -1186,7 +1168,6 @@
     <Compile Include="Items\Quest\Redkeyfragment.cs" />
     <Compile Include="Items\Quest\SAQuestItems.cs" />
     <Compile Include="Items\Quest\SatietyCure.cs" />
-    <Compile Include="Items\Quest\ScrollOfAbraxus.cs" />
     <Compile Include="Items\Quest\SealedNotesForJamal.cs" />
     <Compile Include="Items\Quest\SignedTuitionReimbursementForm.cs" />
     <Compile Include="Items\Quest\StolenRing.cs" />
@@ -1198,7 +1179,6 @@
     <Compile Include="Items\Quest\TyballsKey.cs" />
     <Compile Include="Items\Quest\TyballsShadow.cs" />
     <Compile Include="Items\Quest\UnicornRibs.cs" />
-    <Compile Include="Items\Quest\VaultOfSecretsBarrier.cs" />
     <Compile Include="Items\Quest\YellowKey1.cs" />
     <Compile Include="Items\Resource\BaseFish.cs">
       <SubType>Code</SubType>
@@ -1626,12 +1606,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Quest\MagicalRope.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Consumables\Moonstone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Internal\MoonstoneGate.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Internal\MorphItem.cs">
@@ -2283,7 +2257,6 @@
     <Compile Include="Mobiles\Normal\DarkGuardian.cs" />
     <Compile Include="Mobiles\Normal\DarknightCreeper.cs" />
     <Compile Include="Mobiles\Normal\DarkWisp.cs" />
-    <Compile Include="Mobiles\Normal\DeadlyImp.cs" />
     <Compile Include="Mobiles\Normal\DeathWatchBeetle.cs" />
     <Compile Include="Mobiles\Normal\DeathWatchBeetleHatchling.cs" />
     <Compile Include="Mobiles\Normal\DeepSeaSerpent.cs" />
@@ -2299,7 +2272,7 @@
     <Compile Include="Mobiles\Normal\DragonsFlameGrandMage.cs" />
     <Compile Include="Mobiles\Normal\Drake.cs" />
     <Compile Include="Mobiles\Normal\DreadSpider.cs" />
-    <Compile Include="Mobiles\Normal\DreamWraith .cs" />
+    <Compile Include="Mobiles\Normal\DreamWraith.cs" />
     <Compile Include="Mobiles\Normal\DullCopperElemental.cs" />
     <Compile Include="Mobiles\Normal\Eagle.cs" />
     <Compile Include="Mobiles\Normal\EarthElemental.cs" />
@@ -2333,7 +2306,6 @@
     <Compile Include="Mobiles\Normal\FeralTreefellow.cs" />
     <Compile Include="Mobiles\Normal\Ferret.cs" />
     <Compile Include="Mobiles\Normal\FetidEssence.cs" />
-    <Compile Include="Mobiles\Normal\FierceDragon.cs" />
     <Compile Include="Mobiles\Normal\FireAnt.cs" />
     <Compile Include="Mobiles\Normal\FireBeetle.cs" />
     <Compile Include="Mobiles\Normal\FireDaemon.cs" />
@@ -2728,7 +2700,6 @@
     <Compile Include="Mobiles\NPCs\Egwexem.cs" />
     <Compile Include="Mobiles\NPCs\ElwoodMcCarrin.cs" />
     <Compile Include="Mobiles\NPCs\Emerillo.cs" />
-    <Compile Include="Mobiles\NPCs\Emino.cs" />
     <Compile Include="Mobiles\NPCs\Enigma.cs" />
     <Compile Include="Mobiles\NPCs\Enrico.cs" />
     <Compile Include="Mobiles\NPCs\EnshroudedFigure.cs" />
@@ -2763,8 +2734,6 @@
     <Compile Include="Mobiles\NPCs\GypsyMaiden.cs" />
     <Compile Include="Mobiles\NPCs\HairStylist.cs" />
     <Compile Include="Mobiles\NPCs\Hamato.cs" />
-    <Compile Include="Mobiles\NPCs\Haochi.cs" />
-    <Compile Include="Mobiles\NPCs\HaochisGuardsman.cs" />
     <Compile Include="Mobiles\NPCs\HarborMaster.cs" />
     <Compile Include="Mobiles\NPCs\Healer.cs" />
     <Compile Include="Mobiles\NPCs\HealerGuildmaster.cs" />
@@ -2783,7 +2752,6 @@
     <Compile Include="Mobiles\NPCs\HireSailor.cs" />
     <Compile Include="Mobiles\NPCs\HireThief.cs" />
     <Compile Include="Mobiles\NPCs\HolyMage.cs" />
-    <Compile Include="Mobiles\NPCs\Horus.cs" />
     <Compile Include="Mobiles\NPCs\Huntsman.cs" />
     <Compile Include="Mobiles\NPCs\Impresario.cs" />
     <Compile Include="Mobiles\NPCs\InnKeeper.cs" />
@@ -2808,12 +2776,10 @@
     <Compile Include="Mobiles\NPCs\Lefty.cs" />
     <Compile Include="Mobiles\NPCs\Lissbet.cs" />
     <Compile Include="Mobiles\NPCs\Lohn.cs" />
-    <Compile Include="Mobiles\NPCs\Maabus.cs" />
     <Compile Include="Mobiles\NPCs\Mage.cs" />
     <Compile Include="Mobiles\NPCs\MageGuildmaster.cs" />
     <Compile Include="Mobiles\NPCs\Mallew.cs" />
     <Compile Include="Mobiles\NPCs\Mapmaker.cs" />
-    <Compile Include="Mobiles\NPCs\Mardoth.cs" />
     <Compile Include="Mobiles\NPCs\Margo.cs" />
     <Compile Include="Mobiles\NPCs\Maul.cs" />
     <Compile Include="Mobiles\NPCs\Merchant.cs" />
@@ -2854,7 +2820,6 @@
     <Compile Include="Mobiles\NPCs\RealEstateBroker.cs" />
     <Compile Include="Mobiles\NPCs\Rebinil.cs" />
     <Compile Include="Mobiles\NPCs\Recaro.cs" />
-    <Compile Include="Mobiles\NPCs\Relnia.cs" />
     <Compile Include="Mobiles\NPCs\RentedVendor.cs" />
     <Compile Include="Mobiles\NPCs\Robyn.cs" />
     <Compile Include="Mobiles\NPCs\Ryal.cs" />
@@ -2910,7 +2875,6 @@
     <Compile Include="Mobiles\NPCs\Xanthe.cs" />
     <Compile Include="Mobiles\NPCs\Yellienir.cs" />
     <Compile Include="Mobiles\NPCs\Yorus.cs" />
-    <Compile Include="Mobiles\NPCs\Zoel.cs" />
     <Compile Include="Mobiles\NPCs\Zorda.cs" />
     <Compile Include="Mobiles\Summons\AnimatedWeapon.cs" />
     <Compile Include="Mobiles\Summons\BaseFamiliar.cs" />
@@ -2929,7 +2893,6 @@
     <Compile Include="Mobiles\Summons\SummonedDaemon.cs" />
     <Compile Include="Mobiles\Summons\SummonedEarthElemental.cs" />
     <Compile Include="Mobiles\Summons\SummonedFireElemental.cs" />
-    <Compile Include="Mobiles\Summons\SummonedPaladin.cs" />
     <Compile Include="Mobiles\Summons\SummonedWaterElemental.cs" />
     <Compile Include="Mobiles\Summons\VampireBat.cs" />
     <Compile Include="Mobiles\Void Creatures\Anlorlem.cs" />
@@ -2971,15 +2934,9 @@
     <Compile Include="Quests\CloakOfHumility\Mobiles\Maribel.cs" />
     <Compile Include="Quests\CloakOfHumility\Mobiles\Nelson.cs" />
     <Compile Include="Quests\CloakOfHumility\Mobiles\Sean.cs" />
-    <Compile Include="Quests\CloakOfHumility\Mobiles\Walton.cs" />
-    <Compile Include="Quests\DarkTides\Conversations.cs" />
-    <Compile Include="Quests\DarkTides\DarkTidesQuest.cs" />
-    <Compile Include="Quests\DarkTides\Objectives.cs" />
+    <Compile Include="Quests\CloakOfHumility\Mobiles\Walton.cs" />    
     <Compile Include="Quests\DiscoveringAnimalTraining\DiscoveringAnimalTraining.cs" />
-    <Compile Include="Quests\ElfHeritage.cs" />
-    <Compile Include="Quests\EminosUndertaking\Conversations.cs" />
-    <Compile Include="Quests\EminosUndertaking\EminosUndertakingQuest.cs" />
-    <Compile Include="Quests\EminosUndertaking\Objectives.cs" />
+    <Compile Include="Quests\ElfHeritage.cs" />    
     <Compile Include="Quests\Eodon\Hawkwind\Hawkwind.cs" />
     <Compile Include="Quests\Eodon\Hawkwind\Objective.cs" />
     <Compile Include="Quests\Eodon\Hawkwind\TimeForLegendsQuest.cs" />
@@ -2997,10 +2954,7 @@
     <Compile Include="Quests\Eodon\Valley of One Quest\Questers.cs" />
     <Compile Include="Quests\Eodon\Valley of One Quest\Quests.cs" />
     <Compile Include="Quests\Eodon\Valley of One Quest\TigerCubEnclosure.cs" />
-    <Compile Include="Quests\Eodon\Valley of One Quest\Volcano.cs" />
-    <Compile Include="Quests\HaochisTrials\Conversations.cs" />
-    <Compile Include="Quests\HaochisTrials\HaochisTrialsQuest.cs" />
-    <Compile Include="Quests\HaochisTrials\Objectives.cs" />
+    <Compile Include="Quests\Eodon\Valley of One Quest\Volcano.cs" />   
     <Compile Include="Quests\HumanHeritage.cs" />
     <Compile Include="Quests\Mad Scientist\ClockworkCreature.cs" />
     <Compile Include="Quests\Mad Scientist\Items\ClockworkMechanism.cs" />
@@ -3205,6 +3159,9 @@
     <Compile Include="Items\Addons\HavenCannon.cs" />
     <Compile Include="Mobiles\NPCs\MilitiaCanoneer.cs" />
     <Compile Include="Mobiles\Normal\MilitiaFighter.cs" />
+	<Compile Include="Quests\Deprecated\DarkTidesQuest.cs" />
+	<Compile Include="Quests\Deprecated\EminosUndertakingQuest.cs" />
+	<Compile Include="Quests\Deprecated\HaochisTrialsQuest.cs" />
     <Compile Include="Quests\Deprecated\UzeraanTurmoilQuest.cs" />
     <Compile Include="Quests\WitchApprentice\Conversations.cs" />
     <Compile Include="Quests\WitchApprentice\Ingredient.cs" />

@@ -150,9 +150,7 @@ namespace Server.Items
                             ((BaseWeapon)o).Identified = true;
                         else if (o is BaseArmor)
                             ((BaseArmor)o).Identified = true;
-
-                        if (!Core.AOS)
-                            ((Item)o).OnSingleClick(from);
+						
                     }
                     else
                     {
