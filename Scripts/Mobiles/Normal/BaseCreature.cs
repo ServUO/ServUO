@@ -12,7 +12,6 @@ using Server.Engines.Quests.Doom;
 using Server.Engines.Quests.Haven;
 using Server.Engines.VvV;
 using Server.Engines.XmlSpawner2;
-using Server.Factions;
 using Server.Items;
 using Server.Misc;
 using Server.Multis;
@@ -371,8 +370,6 @@ namespace Server.Mobiles
         public bool IsPrisoner { get; set; }
 
         protected DateTime SummonEnd { get { return m_SummonEnd; } set { m_SummonEnd = value; } }
-
-        public virtual Faction FactionAllegiance { get { return null; } }
 
         public virtual int DefaultHitsRegen 
         {
@@ -1266,32 +1263,6 @@ namespace Server.Mobiles
 		}
         #endregion
 
-        #region Faction Allegiance
-        public enum Allegiance
-        {
-            None,
-            Ally,
-            Enemy
-        }
-
-        public virtual Allegiance GetFactionAllegiance(Mobile mob)
-        {
-            if (mob == null || mob.Map != Faction.Facet || FactionAllegiance == null)
-            {
-                return Allegiance.None;
-            }
-
-            Faction fac = Faction.Find(mob, true);
-
-            if (fac == null)
-            {
-                return Allegiance.None;
-            }
-
-            return (fac == FactionAllegiance ? Allegiance.Ally : Allegiance.Enemy);
-        }
-        #endregion
-
 		public virtual bool IsEnemy(Mobile m)
 		{
 			XmlIsEnemy a = (XmlIsEnemy)XmlAttach.FindAttachment(this, typeof(XmlIsEnemy));
@@ -1342,12 +1313,6 @@ namespace Server.Mobiles
             if (FightMode == FightMode.Aggressor || FightMode == FightMode.Evil || FightMode == FightMode.Good ||
                 (c != null && c.m_bSummoned && !c.m_bControlled && c.SummonMaster != null))
             {
-                // Faction Opposed Players/Pets are my enemies
-                if (GetFactionAllegiance(m) == BaseCreature.Allegiance.Enemy)
-                {
-                    return true;
-                }
-
                 // Negative Karma are my enemies
                 if (FightMode == FightMode.Evil)
                 {
@@ -1373,12 +1338,6 @@ namespace Server.Mobiles
                 // Others are not my enemies
                 return false;
             }
-
-			// Faction Allied Players/Pets are not my enemies
-			if (GetFactionAllegiance(m) == Allegiance.Ally)
-			{
-				return false;
-			}
 
             if (c == null)
             {
@@ -4636,7 +4595,7 @@ namespace Server.Mobiles
                 return;
             }
 
-            if (ViceVsVirtueSystem.Enabled && Map == Faction.Facet)
+            if (ViceVsVirtueSystem.Enabled && Map == ViceVsVirtueSystem.Facet)
             {
                 ViceVsVirtueSystem.CheckHarmful(this, target);
             }
@@ -4646,7 +4605,7 @@ namespace Server.Mobiles
         {
             base.DoBeneficial(target);
 
-            if (ViceVsVirtueSystem.Enabled && Map == Faction.Facet && target != null)
+            if (ViceVsVirtueSystem.Enabled && Map == ViceVsVirtueSystem.Facet && target != null)
             {
                 ViceVsVirtueSystem.CheckBeneficial(this, target);
             }
@@ -6307,8 +6266,6 @@ namespace Server.Mobiles
                     var fame = new List<int>();
                     var karma = new List<int>();
 
-                    bool givenFactionKill = false;
-
                     for (int i = 0; i < list.Count; ++i)
                     {
                         DamageStore ds = list[i];
@@ -6371,12 +6328,6 @@ namespace Server.Mobiles
 
                         if (HumilityVirtue.IsInHunt(ds.m_Mobile) && Karma < 0)
                             HumilityVirtue.RegisterKill(ds.m_Mobile, this, list.Count);
-
-                        if (!givenFactionKill)
-                        {
-                            givenFactionKill = true;
-                            Faction.HandleDeath(this, ds.m_Mobile);
-                        }
                     }
 
                     for (int i = 0; i < titles.Count; ++i)
@@ -6526,11 +6477,6 @@ namespace Server.Mobiles
             Mobile target = damageable as Mobile;
 
             if (RecentSetControl && GetMaster() == target)
-            {
-                return false;
-            }
-
-            if (target is BaseFactionGuard)
             {
                 return false;
             }

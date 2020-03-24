@@ -1,5 +1,4 @@
 using System;
-using Server.Factions;
 using Server.Guilds;
 using Server.Gumps;
 using Server.Multis;
@@ -219,20 +218,6 @@ namespace Server.Items
             }
             else if (this.m_Guild.Accepted.Contains(from))
             {
-                #region Factions
-                PlayerState guildState = PlayerState.Find(this.m_Guild.Leader);
-                PlayerState targetState = PlayerState.Find(from);
-
-                Faction guildFaction = (guildState == null ? null : guildState.Faction);
-                Faction targetFaction = (targetState == null ? null : targetState.Faction);
-
-                if (guildFaction != targetFaction || (targetState != null && targetState.IsLeaving))
-                    return;
-
-                if (guildState != null && targetState != null)
-                    targetState.Leaving = guildState.Leaving;
-                #endregion
-
                 this.m_Guild.Accepted.Remove(from);
                 this.m_Guild.AddMember(from);
 

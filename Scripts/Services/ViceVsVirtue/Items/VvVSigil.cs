@@ -39,6 +39,16 @@ namespace Server.Engines.VvV
             LootType = LootType.Cursed;
         }
 
+        public static bool ExistsOn(Mobile mob, bool vvvOnly = false)
+        {
+            if (mob == null || mob.Backpack == null)
+                return false;
+
+            Container pack = mob.Backpack;
+
+            return Server.Engines.VvV.ViceVsVirtueSystem.Enabled && vvvOnly && pack.FindItemByType(typeof(Server.Engines.VvV.VvVSigil)) != null;
+        }
+
         public void OnStolen(VvVPlayerEntry entry)
         {
             if (Battle != null && RootParentEntity == null)

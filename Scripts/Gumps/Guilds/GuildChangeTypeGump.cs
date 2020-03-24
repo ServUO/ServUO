@@ -1,5 +1,4 @@
 using System;
-using Server.Factions;
 using Server.Guilds;
 using Server.Network;
 
@@ -45,13 +44,7 @@ namespace Server.Gumps
             if (GuildGump.BadLeader(this.m_Mobile, this.m_Guild))
                 return;
 
-            PlayerState pl = PlayerState.Find(this.m_Mobile);
-
-            if (pl != null)
-            {
-                this.m_Mobile.SendLocalizedMessage(1010405); // You cannot change guild types while in a Faction!
-            }
-            else if (this.m_Guild.TypeLastChange.AddDays(7) > DateTime.UtcNow)
+            if (this.m_Guild.TypeLastChange.AddDays(7) > DateTime.UtcNow)
             {
                 this.m_Mobile.SendLocalizedMessage(1005292); // Your guild type will be changed in one week.
             }

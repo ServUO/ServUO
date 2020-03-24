@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Server.Engines.CannedEvil;
 using Server.Engines.PartySystem;
-using Server.Factions;
 using Server.Guilds;
 using Server.Items;
 using Server.Regions;
@@ -208,11 +207,6 @@ namespace Server.Spells.Necromancy
                 if (mGuild == cGuild)
                     return false;
             }
-
-            Faction f = Faction.Find(m);
-
-            if (Faction.Facet == m.Map && f != null && f == Faction.Find(Caster))
-                return false;
 
             return true;
         }

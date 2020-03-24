@@ -18,7 +18,6 @@ using Server.Engines.Shadowguard;
 using Server.Engines.VoidPool;
 using Server.Engines.VvV;
 using Server.Engines.XmlSpawner2;
-using Server.Factions;
 using Server.Guilds;
 using Server.Gumps;
 using Server.Items;
@@ -1326,10 +1325,6 @@ namespace Server.Mobiles
 				int dex = Dex;
 				int intel = Int;
 
-				#region Factions
-				int factionItemCount = 0;
-				#endregion
-
 				Mobile from = this;
 
                 for (int i = items.Count - 1; i >= 0; --i)
@@ -1491,38 +1486,6 @@ namespace Server.Mobiles
                             from.AddToBackpack(item);
 
                             from.SendLocalizedMessage(1062002, "quiver"); // You can no longer wear your ~1_ARMOR~
-                            moved = true;
-                        }
-                    }
-
-                    FactionItem factionItem = FactionItem.Find(item);
-
-                    if (factionItem != null)
-                    {
-                        bool drop = false;
-
-                        PlayerState state = PlayerState.Find(this);
-                        Faction ourFaction = null;
-
-                        if (state != null)
-                            ourFaction = state.Faction;
-
-                        if (ourFaction == null || ourFaction != factionItem.Faction)
-                        {
-                            drop = true;
-                        }
-                        else if (state != null && state.Rank.Rank < factionItem.MinRank)
-                        {
-                            drop = true;
-                        }
-                        else if (++factionItemCount > FactionItem.GetMaxWearables(this))
-                        {
-                            drop = true;
-                        }
-
-                        if (drop)
-                        {
-                            from.AddToBackpack(item);
                             moved = true;
                         }
                     }
@@ -1760,7 +1723,7 @@ namespace Server.Mobiles
         {
             base.DoHarmful(damageable, indirect);
 
-            if (ViceVsVirtueSystem.Enabled && (ViceVsVirtueSystem.EnhancedRules || Map == Faction.Facet) && damageable is Mobile)
+            if (ViceVsVirtueSystem.Enabled && (ViceVsVirtueSystem.EnhancedRules || Map == ViceVsVirtueSystem.Facet) && damageable is Mobile)
             {
                 ViceVsVirtueSystem.CheckHarmful(this, (Mobile)damageable);
             }
@@ -1770,7 +1733,7 @@ namespace Server.Mobiles
         {
             base.DoBeneficial(target);
 
-            if (ViceVsVirtueSystem.Enabled && (ViceVsVirtueSystem.EnhancedRules || Map == Faction.Facet) && target != null)
+            if (ViceVsVirtueSystem.Enabled && (ViceVsVirtueSystem.EnhancedRules || Map == ViceVsVirtueSystem.Facet) && target != null)
             {
                 ViceVsVirtueSystem.CheckBeneficial(this, target);
             }
@@ -2070,7 +2033,7 @@ namespace Server.Mobiles
 			{
                 bool check = base.CheckMovement(d, out newZ);
 
-                if (check && Sigil.ExistsOn(this, true) && !Server.Engines.VvV.VvVSigil.CheckMovement(this, d))
+                if (check && VvVSigil.ExistsOn(this, true) && !Server.Engines.VvV.VvVSigil.CheckMovement(this, d))
                 {
                     SendLocalizedMessage(1155414); // You may not remove the sigil from the battle region!
                     return false;
@@ -2478,7 +2441,7 @@ namespace Server.Mobiles
 			}
 
 			if ((item is Spellbook && item.LootType == LootType.Blessed) || item is Runebook || item is PotionKeg ||
-				item is Sigil)
+				item is VvVSigil)
 			{
 				return false;
 			}
@@ -2580,7 +2543,7 @@ namespace Server.Mobiles
             var imbueWeight = Imbuing.GetTotalWeight(item, -1, false, false);
             int cost = 600; // this handles old items, set items, etc
 
-            if (item.GetType().IsAssignableFrom(typeof(Factions.FactionItem)))
+            if (item is IVvVItem && ((IVvVItem)item).IsVvVItem)
                 cost = 800;
             else if (imbueWeight > 0)
                 cost = Math.Min(800, Math.Max(10, imbueWeight));
@@ -3138,55 +3101,6 @@ namespace Server.Mobiles
                 }
             }
 
-			#region Factions
-			FactionItem factionItem = FactionItem.Find(item);
-
-			if (factionItem != null)
-			{
-                PlayerState state = PlayerState.Find(this);
-                Faction faction = null;
-
-                if (state != null)
-                {
-                    faction = state.Faction;
-                }
-
-				if (faction == null)
-				{
-					SendLocalizedMessage(1010371); // You cannot equip a faction item!
-					return false;
-				}
-				else if (faction != factionItem.Faction)
-				{
-					SendLocalizedMessage(1010372); // You cannot equip an opposing faction's item!
-					return false;
-				}
-                else if (state != null && state.Rank.Rank < factionItem.MinRank)
-                {
-                    SendLocalizedMessage(1094804); // You are not high enough in rank to equip this item.
-                    return false;
-                }
-                else
-                {
-                    int maxWearables = FactionItem.GetMaxWearables(this);
-
-                    for (int i = 0; i < Items.Count; ++i)
-                    {
-                        Item equiped = Items[i];
-
-                        if (item != equiped && FactionItem.Find(equiped) != null)
-                        {
-                            if (--maxWearables == 0)
-                            {
-                                SendLocalizedMessage(1010373); // You do not have enough rank to equip more faction items!
-                                return false;
-                            }
-                        }
-                    }
-                }
-			}
-			#endregion
-
             #region Vice Vs Virtue
             IVvVItem vvvItem = item as IVvVItem;
 
@@ -3264,10 +3178,6 @@ namespace Server.Mobiles
                 else if (to is PlayerMobile && ((PlayerMobile)to).RefuseTrades)
                 {
                     msgNum = 1154111; // ~1_NAME~ is refusing all trades.
-                }
-                else if (item is IFactionItem && ((IFactionItem)item).FactionItemState != null)
-                {
-                    msgNum = 1094803; // This faction reward is bound to you, and cannot be traded.
                 }
 			}
 
@@ -3449,7 +3359,7 @@ namespace Server.Mobiles
                 Waypoints.OnMapChange(this, oldMap);
             }
 
-			if ((Map != Faction.Facet && oldMap == Faction.Facet) || (Map == Faction.Facet && oldMap != Faction.Facet))
+			if ((Map != ViceVsVirtueSystem.Facet && oldMap == ViceVsVirtueSystem.Facet) || (Map == ViceVsVirtueSystem.Facet && oldMap != ViceVsVirtueSystem.Facet))
 			{
 				InvalidateProperties();
 			}
@@ -3944,8 +3854,6 @@ namespace Server.Mobiles
 					Timer.DelayCall(TimeSpan.FromSeconds(2.5), SendYoungDeathNotice);
 				}
 			}
-
-			Faction.HandleDeath(this, killer);
 
 			Guilds.Guild.HandleDeath(this, killer);
             
@@ -5177,13 +5085,6 @@ namespace Server.Mobiles
 
 			Instances.Remove(this);
 
-			Faction faction = Faction.Find(this);
-
-			if (faction != null)
-			{
-				faction.RemoveMember(this);
-			}
-
 			BaseHouse.HandleDeletion(this);
 
 			DisguiseTimers.RemoveTimer(this);
@@ -5243,40 +5144,6 @@ namespace Server.Mobiles
 				}
 			}
 			#endregion
-
-			if (Map == Faction.Facet)
-			{
-				PlayerState pl = PlayerState.Find(this);
-
-				if (pl != null)
-				{
-					Faction faction = pl.Faction;
-
-					if (faction.Commander == this)
-					{
-						list.Add(1042733, faction.Definition.PropName); // Commanding Lord of the ~1_FACTION_NAME~
-					}
-					else if (pl.Sheriff != null)
-					{
-						list.Add(1042734, "{0}\t{1}", pl.Sheriff.Definition.FriendlyName, faction.Definition.PropName);
-						// The Sheriff of  ~1_CITY~, ~2_FACTION_NAME~
-					}
-					else if (pl.Finance != null)
-					{
-						list.Add(1042735, "{0}\t{1}", pl.Finance.Definition.FriendlyName, faction.Definition.PropName);
-						// The Finance Minister of ~1_CITY~, ~2_FACTION_NAME~
-					}
-					else if (pl.MerchantTitle != MerchantTitle.None)
-					{
-						list.Add(1060776, "{0}\t{1}", MerchantTitles.GetInfo(pl.MerchantTitle).Title, faction.Definition.PropName);
-						// ~1_val~, ~2_val~
-					}
-					else
-					{
-						list.Add(1060776, "{0}\t{1}", pl.Rank.Title, faction.Definition.PropName); // ~1_val~, ~2_val~
-					}
-				}
-			}
 
 			if (Core.ML)
 			{
@@ -5383,10 +5250,6 @@ namespace Server.Mobiles
 				}
 			}
 		}
-
-		#region Factions
-		public PlayerState FactionPlayerState { get; set; }
-		#endregion
         
 		#region Quests
 		private QuestSystem m_Quest;
@@ -5631,7 +5494,7 @@ namespace Server.Mobiles
             }
 
             BaseGuild guild = Guild;
-            bool vvv = Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(this) && (ViceVsVirtueSystem.EnhancedRules || this.Map == Faction.Facet);
+            bool vvv = Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(this) && (ViceVsVirtueSystem.EnhancedRules || this.Map == ViceVsVirtueSystem.Facet);
 
             if (m_OverheadTitle != null)
             {
@@ -6007,24 +5870,6 @@ namespace Server.Mobiles
 				else
 				{
 					suffix = String.Concat(suffix, " (Young)");
-				}
-			}
-
-			if (Map == Faction.Facet)
-			{
-				Faction faction = Faction.Find(this);
-
-				if (faction != null)
-				{
-					string adjunct = String.Format("[{0}]", faction.Definition.Abbreviation);
-					if (suffix.Length == 0)
-					{
-						suffix = adjunct;
-					}
-					else
-					{
-						suffix = String.Concat(suffix, " ", adjunct);
-					}
 				}
 			}
 

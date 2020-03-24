@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Server.Factions;
 using Server.Guilds;
 using Server.Network;
 
@@ -39,10 +38,6 @@ namespace Server.Gumps
                             else if ((g.WarInvitations.Contains(this.m_Guild) && this.m_Guild.WarDeclarations.Contains(g)) || this.m_Guild.IsWar(g))
                             {
                                 this.m_Mobile.SendLocalizedMessage(501183); // You are already at war with that guild.
-                            }
-                            else if (Faction.Find(this.m_Guild.Leader) != null)
-                            {
-                                this.m_Mobile.SendLocalizedMessage(1005288); // You cannot declare war while you are in a faction
                             }
                             else
                             {

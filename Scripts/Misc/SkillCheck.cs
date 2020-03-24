@@ -2,7 +2,6 @@
 using System;
 
 using Server.Engines.Quests;
-using Server.Factions;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
@@ -330,7 +329,7 @@ namespace Server.Misc
 
 		private static bool AllowGain(Mobile from, Skill skill, object obj)
 		{
-			if (Core.AOS && Faction.InSkillLoss(from)) //Changed some time between the introduction of AoS and SE.
+			if (Server.Engines.VvV.ViceVsVirtueSystem.InSkillLoss(from)) //Changed some time between the introduction of AoS and SE.
 				return false;
 
 			if (from is PlayerMobile)

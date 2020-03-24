@@ -52,13 +52,7 @@ namespace Server.Spells.Seventh
         {
             if (Caster.Flying)
             {
-            Caster.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
-            return false;
-            }
-            else 
-            if (Factions.Sigil.ExistsOn(this.Caster))
-            {
-                this.Caster.SendLocalizedMessage(1010521); // You cannot polymorph while you have a Town Sigil
+                Caster.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
                 return false;
             }
             else if (TransformationSpellHelper.UnderTransformation(this.Caster))
@@ -80,7 +74,7 @@ namespace Server.Spells.Seventh
             {
                 if (Core.ML)
                     EndPolymorph(this.Caster);
-                else 
+                else
                     this.Caster.SendLocalizedMessage(1005559); // This spell is already in effect.
                 return false;
             }
@@ -103,12 +97,7 @@ namespace Server.Spells.Seventh
         {
             if (Caster.Flying)
             {
-            Caster.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
-            }
-            else 
-            if (Factions.Sigil.ExistsOn(this.Caster))
-            {
-                this.Caster.SendLocalizedMessage(1010521); // You cannot polymorph while you have a Town Sigil
+                Caster.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
             }
             else if (!this.Caster.CanBeginAction(typeof(PolymorphSpell)))
             {
@@ -164,7 +153,7 @@ namespace Server.Spells.Seventh
                             Timer t = new InternalTimer(this.Caster);
 
                             m_Timers[this.Caster] = t;
-                            
+
                             BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Polymorph, 1075824, 1075823, t.Delay, Caster, String.Format("{0}\t{1}", GetArticleCliloc(m_NewBody), GetFormCliloc(m_NewBody))));
 
                             t.Start();

@@ -133,7 +133,7 @@ namespace Server.Items
                 {
                     User.SendLocalizedMessage(1019004); // You are not allowed to travel there.
                 }
-                else if (Factions.Sigil.ExistsOn(User))
+                else if (Server.Engines.VvV.VvVSigil.ExistsOn(User))
                 {
                     User.SendLocalizedMessage(1019004); // You are not allowed to travel there.
                 }
