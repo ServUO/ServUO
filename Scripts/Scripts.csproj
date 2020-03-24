@@ -1015,7 +1015,7 @@
     <Compile Include="Items\Functional\CoralTheOwl.cs" />
     <Compile Include="Items\Functional\DragonTurtleEgg.cs" />
     <Compile Include="Items\Functional\EtherealRetouchingTool.cs" />
-	<Compile Include="Items\Functional\GamblingStone.cs" />
+    <Compile Include="Items\Functional\GamblingStone.cs" />
     <Compile Include="Items\Functional\GoblinFloorTrap.cs" />
     <Compile Include="Items\Functional\HouseCraftables.cs" />
     <Compile Include="Items\Functional\Incubator.cs" />
@@ -1037,7 +1037,7 @@
     <Compile Include="Items\Quest\Bluekeyfragment.cs" />
     <Compile Include="Items\Quest\CompletedTuitionReimbursementForm.cs" />
     <Compile Include="Items\Quest\CreepyWeeds.cs" />
-    <Compile Include="Items\Quest\CrystalBallOfKnowledge.cs" />   
+    <Compile Include="Items\Quest\CrystalBallOfKnowledge.cs" />
     <Compile Include="Items\Quest\EnchantedPaints.cs" />
     <Compile Include="Items\Quest\FoolishGold.cs" />
     <Compile Include="Items\Quest\GamanHorn.cs" />
@@ -1045,7 +1045,7 @@
     <Compile Include="Items\Quest\GaramonsBook1.cs" />
     <Compile Include="Items\Quest\GiftForArielle.cs" />
     <Compile Include="Items\Quest\ImageType.cs" />
-    <Compile Include="Items\Quest\KirinBrains.cs" />   
+    <Compile Include="Items\Quest\KirinBrains.cs" />
     <Compile Include="Items\Quest\MapFragment.cs" />
     <Compile Include="Items\Quest\MiniatureMushroom.cs" />
     <Compile Include="Items\Quest\NaxMarker.cs" />
@@ -1986,11 +1986,6 @@
     <Compile Include="Mobiles\Event\BaneDragon.cs" />
     <Compile Include="Mobiles\Event\PumpkinHead.cs" />
     <Compile Include="Mobiles\Event\Wanderer.cs" />
-    <Compile Include="Mobiles\Factions\BaseWarHorse.cs" />
-    <Compile Include="Mobiles\Factions\CoMWarHorse.cs" />
-    <Compile Include="Mobiles\Factions\MinaxWarHorse.cs" />
-    <Compile Include="Mobiles\Factions\SLWarHorse.cs" />
-    <Compile Include="Mobiles\Factions\TBWarHorse.cs" />
     <Compile Include="Mobiles\MobileInterfaces.cs" />
     <Compile Include="Mobiles\Named\Abscess.cs" />
     <Compile Include="Mobiles\Named\AcidElementalRenowned.cs" />
@@ -2823,9 +2818,9 @@
     <Compile Include="Quests\CloakOfHumility\Mobiles\Maribel.cs" />
     <Compile Include="Quests\CloakOfHumility\Mobiles\Nelson.cs" />
     <Compile Include="Quests\CloakOfHumility\Mobiles\Sean.cs" />
-    <Compile Include="Quests\CloakOfHumility\Mobiles\Walton.cs" />    
+    <Compile Include="Quests\CloakOfHumility\Mobiles\Walton.cs" />
     <Compile Include="Quests\DiscoveringAnimalTraining\DiscoveringAnimalTraining.cs" />
-    <Compile Include="Quests\ElfHeritage.cs" />    
+    <Compile Include="Quests\ElfHeritage.cs" />
     <Compile Include="Quests\Eodon\Hawkwind\Hawkwind.cs" />
     <Compile Include="Quests\Eodon\Hawkwind\Objective.cs" />
     <Compile Include="Quests\Eodon\Hawkwind\TimeForLegendsQuest.cs" />
@@ -2843,7 +2838,7 @@
     <Compile Include="Quests\Eodon\Valley of One Quest\Questers.cs" />
     <Compile Include="Quests\Eodon\Valley of One Quest\Quests.cs" />
     <Compile Include="Quests\Eodon\Valley of One Quest\TigerCubEnclosure.cs" />
-    <Compile Include="Quests\Eodon\Valley of One Quest\Volcano.cs" />   
+    <Compile Include="Quests\Eodon\Valley of One Quest\Volcano.cs" />
     <Compile Include="Quests\HumanHeritage.cs" />
     <Compile Include="Quests\Mad Scientist\ClockworkCreature.cs" />
     <Compile Include="Quests\Mad Scientist\Items\ClockworkMechanism.cs" />
@@ -3048,9 +3043,9 @@
     <Compile Include="Items\Addons\HavenCannon.cs" />
     <Compile Include="Mobiles\NPCs\MilitiaCanoneer.cs" />
     <Compile Include="Mobiles\Normal\MilitiaFighter.cs" />
-	<Compile Include="Quests\Deprecated\DarkTidesQuest.cs" />
-	<Compile Include="Quests\Deprecated\EminosUndertakingQuest.cs" />
-	<Compile Include="Quests\Deprecated\HaochisTrialsQuest.cs" />
+    <Compile Include="Quests\Deprecated\DarkTidesQuest.cs" />
+    <Compile Include="Quests\Deprecated\EminosUndertakingQuest.cs" />
+    <Compile Include="Quests\Deprecated\HaochisTrialsQuest.cs" />
     <Compile Include="Quests\Deprecated\UzeraanTurmoilQuest.cs" />
     <Compile Include="Quests\WitchApprentice\Conversations.cs" />
     <Compile Include="Quests\WitchApprentice\Ingredient.cs" />
@@ -3451,13 +3446,6 @@
     <Compile Include="Services\ExploringTheDeep\Questers\MadelineHarte.cs" />
     <Compile Include="Services\ExploringTheDeep\Questers\SBHepler.cs" />
     <Compile Include="Services\ExploringTheDeep\Regions.cs" />
-    <Compile Include="Services\Factions\Core\Persistence.cs" />
-    <Compile Include="Services\Factions\Items\Equipment\CollectionBox.cs" />
-    <Compile Include="Services\Factions\Items\Equipment\EnhanctedBandage.cs" />
-    <Compile Include="Services\Factions\Items\Equipment\FactionEquipment.cs" />
-    <Compile Include="Services\Factions\Items\Equipment\PowderOfPerseverance.cs" />
-    <Compile Include="Services\Factions\Items\Equipment\ShrineGem.cs" />
-    <Compile Include="Services\Factions\Items\Equipment\StrongholdRune.cs" />
     <Compile Include="Services\FireCasino\CasinoGumps.cs" />
     <Compile Include="Services\FireCasino\DiceGames.cs" />
     <Compile Include="Services\FireCasino\FortuesFireGrog.cs" />
@@ -9217,252 +9205,6 @@
     <Compile Include="Services\Doom\LeverPuzzleRegions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Factions\Core\Election.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Core\Faction.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Core\FactionItem.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Core\FactionState.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Core\Generator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Core\GuardList.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Core\Keywords.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Core\MerchantTitles.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Core\PlayerState.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Core\Reflector.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Core\SilverGivenEntry.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Core\StrongholdRegion.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Core\Town.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Core\TownState.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Core\VendorList.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Definitions\FactionDefinition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Definitions\FactionItemDefinition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Definitions\GuardDefinition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Definitions\RankDefinition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Definitions\StrongholdDefintion.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Definitions\TownDefinition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Definitions\VendorDefinition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Gumps\ElectionGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Gumps\ElectionManagementGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Gumps\FactionGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Gumps\FactionImbueGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Gumps\FactionStoneGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Gumps\FinanceGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Gumps\HorseBreederGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Gumps\JoinStoneGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Gumps\LeaveFactionGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Gumps\SheriffGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Gumps\TownStoneGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Gumps\VoteGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Instances\Factions\CouncilOfMages.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Instances\Factions\Minax.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Instances\Factions\Shadowlords.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Instances\Factions\TrueBritannians.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Instances\Towns\Britain.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Instances\Towns\Magincia.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Instances\Towns\Minoc.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Instances\Towns\Moonglow.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Instances\Towns\SkaraBrae.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Instances\Towns\Trinsic.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Instances\Towns\Vesper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Instances\Towns\Yew.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Items\BaseMonolith.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Items\BaseSystemController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Items\FactionStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Items\JoinStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Items\Sigil.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Items\Silver.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Items\StrongholdMonolith.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Items\TownMonolith.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Items\TownStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Items\Traps\BaseFactionTrap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Items\Traps\BaseFactionTrapDeed.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Items\Traps\FactionExplosionTrap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Items\Traps\FactionGasTrap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Items\Traps\FactionSawTrap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Items\Traps\FactionSpikeTrap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Items\Traps\FactionTrapRemovalKit.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\FactionWarHorse.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Guards\BaseFactionGuard.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Guards\GuardAI.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Guards\Orders.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Guards\Types\FactionBerserker.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Guards\Types\FactionDeathKnight.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Guards\Types\FactionDragoon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Guards\Types\FactionHenchman.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Guards\Types\FactionKnight.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Guards\Types\FactionMercenary.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Guards\Types\FactionNecromancer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Guards\Types\FactionPaladin.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Guards\Types\FactionSorceress.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Guards\Types\FactionWizard.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Vendors\BaseFactionVendor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Vendors\FactionBoardVendor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Vendors\FactionBottleVendor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Vendors\FactionHorseVendor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Vendors\FactionOreVendor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Mobiles\Vendors\FactionReagentVendor.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Harvest\HarvestSystem.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10119,6 +9861,7 @@
     <Compile Include="Services\ViceVsVirtue\Items\Rewards\VvVTraps.cs" />
     <Compile Include="Services\ViceVsVirtue\Items\Rewards\VvVWands.cs" />
     <Compile Include="Services\ViceVsVirtue\Items\VvVAltar.cs" />
+    <Compile Include="Services\ViceVsVirtue\Items\VvVItem.cs" />
     <Compile Include="Services\ViceVsVirtue\Items\VvVSigil.cs" />
     <Compile Include="Services\ViceVsVirtue\Mobiles\SilverTrader.cs" />
     <Compile Include="Services\ViceVsVirtue\Mobiles\VvVPriest.cs" />

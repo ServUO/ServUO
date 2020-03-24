@@ -6,7 +6,6 @@ using System.Linq;
 using Server.ContextMenus;
 using Server.Engines.Craft;
 using Server.Engines.XmlSpawner2;
-using Server.Factions;
 using Server.Mobiles;
 using Server.Network;
 using Server.Services.Virtues;
@@ -29,7 +28,7 @@ namespace Server.Items
 		SlayerName Slayer2 { get; set; }
 	}
 
-    public abstract class BaseWeapon : Item, IWeapon, IFactionItem, IUsesRemaining, ICraftable, ISlayer, IDurability, ISetItem, IVvVItem, IOwnerRestricted, IResource, IArtifact, ICombatEquipment, IEngravable, IQuality
+    public abstract class BaseWeapon : Item, IWeapon, IUsesRemaining, ICraftable, ISlayer, IDurability, ISetItem, IVvVItem, IOwnerRestricted, IResource, IArtifact, ICombatEquipment, IEngravable, IQuality
     {
 		#region Damage Helpers
 		public static BaseWeapon GetDamageOutput(Mobile wielder, out int min, out int max)
@@ -122,26 +121,6 @@ namespace Server.Items
 				InvalidateProperties();
 			}
 		}
-
-		#region Factions
-		private FactionItem m_FactionState;
-
-		public FactionItem FactionItemState
-		{
-			get { return m_FactionState; }
-			set
-			{
-				m_FactionState = value;
-
-				if (m_FactionState == null)
-				{
-					Hue = CraftResources.GetHue(Resource);
-				}
-
-				LootType = (m_FactionState == null ? LootType.Regular : LootType.Blessed);
-			}
-		}
-		#endregion
 
         #region IUsesRemaining members
         private int m_UsesRemaining;
@@ -5498,10 +5477,6 @@ namespace Server.Items
         {
             base.AddNameProperties(list);
 
-            #region Factions
-            FactionEquipment.AddFactionProperties(this, list);
-			#endregion
-
 			#region Mondain's Legacy Sets
 			if (IsSetItem)
 			{
@@ -6207,13 +6182,6 @@ namespace Server.Items
 					attrs.Add(new EquipInfoAttribute(1049643)); // cursed
 				}
 			}
-
-			#region Factions
-			if (m_FactionState != null)
-			{
-				attrs.Add(new EquipInfoAttribute(1041350)); // faction item
-			}
-			#endregion
 
 			if (m_Quality == ItemQuality.Exceptional)
 			{

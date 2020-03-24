@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Server.Factions;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
@@ -66,10 +65,6 @@ namespace Server.Items
 			{
 				// You cannot disguise yourself while incognitoed.
 				from.SendLocalizedMessage(501704);
-			}
-			else if (Sigil.ExistsOn(from))
-			{
-				from.SendLocalizedMessage(1010465); // You cannot disguise yourself while holding a sigil
 			}
 			else if (TransformationSpellHelper.UnderTransformation(from))
 			{

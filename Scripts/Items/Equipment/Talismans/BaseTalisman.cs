@@ -8,7 +8,6 @@ using Server.Spells.Necromancy;
 using Server.Spells.Second;
 using Server.Targeting;
 using Server.Engines.Craft;
-using Server.Factions;
 
 namespace Server.Items
 {
@@ -36,21 +35,8 @@ namespace Server.Items
         Tinkering
     }
 
-    public class BaseTalisman : Item, IWearableDurability, IVvVItem, IOwnerRestricted, ITalismanProtection, ITalismanKiller, IFactionItem, IArtifact
+    public class BaseTalisman : Item, IWearableDurability, IVvVItem, IOwnerRestricted, ITalismanProtection, ITalismanKiller, IArtifact
     {
-        #region Factions
-        private FactionItem m_FactionState;
-
-        public FactionItem FactionItemState
-        {
-            get { return m_FactionState; }
-            set
-            {
-                m_FactionState = value;
-            }
-        }
-        #endregion
-
         private bool _VvVItem;
         private Mobile _Owner;
         private string _OwnerName;
@@ -765,10 +751,6 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-
-            #region Factions
-            FactionEquipment.AddFactionProperties(this, list);
-            #endregion
 
             if(Attributes.Brittle > 0)
                 list.Add(1116209); // Brittle           

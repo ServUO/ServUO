@@ -210,10 +210,6 @@ namespace Server.Engines.Help
                         {
                             from.SendLocalizedMessage(1114345, "", 0x35); // You'll need a better jailbreak plan than that!
                         }
-                        else if (Factions.Sigil.ExistsOn(from))
-                        {
-                            from.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
-                        }
                         else if (from.CanUseStuckMenu() && from.Region.CanUseStuckMenu(from) && !CheckCombat(from) && !from.Frozen && !from.Criminal && (Core.AOS || from.Kills < 5))
                         {
                             StuckMenu menu = new StuckMenu(from, from, true);

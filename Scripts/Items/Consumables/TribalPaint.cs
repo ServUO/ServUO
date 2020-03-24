@@ -31,11 +31,7 @@ namespace Server.Items
         {
             if (this.IsChildOf(from.Backpack))
             {
-                if (Factions.Sigil.ExistsOn(from))
-                {
-                    from.SendLocalizedMessage(1010465); // You cannot disguise yourself while holding a sigil.
-                }
-                else if (!from.CanBeginAction(typeof(Spells.Fifth.IncognitoSpell)))
+                if (!from.CanBeginAction(typeof(Spells.Fifth.IncognitoSpell)))
                 {
                     from.SendLocalizedMessage(501698); // You cannot disguise yourself while incognitoed.
                 }

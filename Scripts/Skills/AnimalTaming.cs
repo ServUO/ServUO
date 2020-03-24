@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 
 using Server.Engines.XmlSpawner2;
-using Server.Factions;
 using Server.Mobiles;
 using Server.Network;
 using Server.Spells;
@@ -183,20 +182,6 @@ namespace Server.SkillHandlers
 						}
 						else if (DarkWolfFamiliar.CheckMastery(from, creature) || from.Skills[SkillName.AnimalTaming].Value >= creature.CurrentTameSkill)
 						{
-							FactionWarHorse warHorse = creature as FactionWarHorse;
-
-							if (warHorse != null)
-							{
-								Faction faction = Faction.Find(from);
-
-								if (faction == null || faction != warHorse.Faction)
-								{
-									creature.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1042590, from.NetState);
-										// You cannot tame this creature.
-									return;
-								}
-							}
-
 							if (m_BeingTamed.Contains(targeted))
 							{
 								creature.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502802, from.NetState);

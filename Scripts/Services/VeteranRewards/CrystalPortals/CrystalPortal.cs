@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 
-using Server.Factions;
 using Server.Gumps;
 using Server.Misc;
 using Server.Mobiles;
@@ -73,7 +72,7 @@ namespace Server.Items
                 return false;
             }
 
-			if (Sigil.ExistsOn(m))
+			if (Server.Engines.VvV.VvVSigil.ExistsOn(m))
 			{
 				if (message)
 				{

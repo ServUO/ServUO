@@ -244,11 +244,6 @@ namespace Server.Items
                 from.SendLocalizedMessage(1070730); // You may not use a Soulstone while your character is dead.
                 return false;
             }
-            else if (Factions.Sigil.ExistsOn(from))
-            {
-                from.SendLocalizedMessage(1070731); // You may not use a Soulstone while your character has a faction town sigil.
-                return false;
-            }
             else if (from.Spell != null && from.Spell.IsCasting)
             {
                 from.SendLocalizedMessage(1070733); // You may not use a Soulstone while your character is casting a spell.

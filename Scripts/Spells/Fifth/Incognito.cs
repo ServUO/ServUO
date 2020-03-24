@@ -57,12 +57,7 @@ namespace Server.Spells.Fifth
 
         public override bool CheckCast()
         {
-            if (Factions.Sigil.ExistsOn(this.Caster))
-            {
-                this.Caster.SendLocalizedMessage(1010445); // You cannot incognito if you have a sigil
-                return false;
-            }
-            else if (!this.Caster.CanBeginAction(typeof(IncognitoSpell)))
+            if (!this.Caster.CanBeginAction(typeof(IncognitoSpell)))
             {
                 this.Caster.SendLocalizedMessage(1005559); // This spell is already in effect.
                 return false;
@@ -78,11 +73,7 @@ namespace Server.Spells.Fifth
 
         public override void OnCast()
         {
-            if (Factions.Sigil.ExistsOn(this.Caster))
-            {
-                this.Caster.SendLocalizedMessage(1010445); // You cannot incognito if you have a sigil
-            }
-            else if (!this.Caster.CanBeginAction(typeof(IncognitoSpell)))
+            if (!this.Caster.CanBeginAction(typeof(IncognitoSpell)))
             {
                 this.Caster.SendLocalizedMessage(1005559); // This spell is already in effect.
             }
