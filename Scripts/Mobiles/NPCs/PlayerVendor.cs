@@ -102,14 +102,6 @@ namespace Server.Mobiles
             if (!base.CheckHold(m, item, message, checkItems, plusItems, plusWeight))
                 return false;
 
-            if (Ethics.Ethic.IsImbued(item, true))
-            {
-                if (message)
-                    m.SendMessage("Imbued items may not be sold here.");
-
-                return false;
-            }
-
             if (Parent is PlayerVendor && item is Container && ((Container)item).Items.OfType<Container>().Any())
             {
                 ((PlayerVendor)Parent).SayTo(m, 1017381); // You cannot place a container that has other containers in it on a vendor.

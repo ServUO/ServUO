@@ -1,7 +1,5 @@
-using Server.Ethics;
 using Server.Factions;
 using Server.Items;
-using Server.Services;
 
 namespace Server.Mobiles
 {
@@ -63,7 +61,7 @@ namespace Server.Mobiles
             }
 
 
-            ControlSlots = Core.SE ? 4 : 5;
+            ControlSlots = 4;
         }
 
         public Daemon(Serial serial)
@@ -84,11 +82,6 @@ namespace Server.Mobiles
         public override Faction FactionAllegiance
         {
             get { return Shadowlords.Instance; }
-        }
-
-        public override Ethic EthicAllegiance
-        {
-            get { return Ethic.Evil; }
         }
 
         public override bool CanRummageCorpses

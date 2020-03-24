@@ -12,7 +12,6 @@ using Server.Engines.Quests.Doom;
 using Server.Engines.Quests.Haven;
 using Server.Engines.VvV;
 using Server.Engines.XmlSpawner2;
-using Server.Ethics;
 using Server.Factions;
 using Server.Items;
 using Server.Misc;
@@ -1262,19 +1261,12 @@ namespace Server.Mobiles
 			{
 				return false;
 			}
-/*
-			if (c.Combatant == this)
-			{
-				return false;
-			}
-*/
+
 			return ((m_bSummoned || m_bControlled) == (c.m_bSummoned || c.m_bControlled));
 		}
         #endregion
 
-        #region Allegiance
-        public virtual Ethic EthicAllegiance { get { return null; } }
-
+        #region Faction Allegiance
         public enum Allegiance
         {
             None,
@@ -1297,23 +1289,6 @@ namespace Server.Mobiles
             }
 
             return (fac == FactionAllegiance ? Allegiance.Ally : Allegiance.Enemy);
-        }
-
-        public virtual Allegiance GetEthicAllegiance(Mobile mob)
-        {
-            if (mob == null || mob.Map != Faction.Facet || EthicAllegiance == null)
-            {
-                return Allegiance.None;
-            }
-
-            Ethic ethic = Ethic.Find(mob, true);
-
-            if (ethic == null)
-            {
-                return Allegiance.None;
-            }
-
-            return (ethic == EthicAllegiance ? Allegiance.Ally : Allegiance.Enemy);
         }
         #endregion
 
@@ -1373,12 +1348,6 @@ namespace Server.Mobiles
                     return true;
                 }
 
-                // Ethic Opposed Players/Pets are my enemies
-                if (GetEthicAllegiance(m) == BaseCreature.Allegiance.Enemy)
-                {
-                    return true;
-                }
-
                 // Negative Karma are my enemies
                 if (FightMode == FightMode.Evil)
                 {
@@ -1407,15 +1376,6 @@ namespace Server.Mobiles
 
 			// Faction Allied Players/Pets are not my enemies
 			if (GetFactionAllegiance(m) == Allegiance.Ally)
-			{
-				return false;
-			}
-
-			Ethic ourEthic = EthicAllegiance;
-			Player pl = Ethics.Player.Find(m, true);
-
-			// Ethic Allied Players/Pets are not my enemies
-			if (pl != null && pl.IsShielded && (ourEthic == null || ourEthic == pl.Ethic))
 			{
 				return false;
 			}
@@ -4518,16 +4478,6 @@ namespace Server.Mobiles
             StopFlee();
 
             ForceReacquire();
-
-            if (!IsEnemy(aggressor))
-            {
-                Player pl = Ethics.Player.Find(aggressor, true);
-
-                if (pl != null && pl.IsShielded)
-                {
-                    pl.FinishShield();
-                }
-            }
 
             if (aggressor.ChangingCombatant && (m_bControlled || m_bSummoned) &&
                 (ct == OrderType.Come || (!Core.ML && ct == OrderType.Stay) || ct == OrderType.Stop || ct == OrderType.None ||

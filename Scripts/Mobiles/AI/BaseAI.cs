@@ -2821,7 +2821,7 @@ namespace Server.Mobiles
 			}
 
 			if (acqType == FightMode.Aggressor && m_Mobile.Aggressors.Count == 0 && m_Mobile.Aggressed.Count == 0 &&
-				m_Mobile.FactionAllegiance == null && m_Mobile.EthicAllegiance == null)
+				m_Mobile.FactionAllegiance == null)
 			{
 				if ((Core.TOL && m_Mobile.Tribe == TribeType.None) || (!Core.TOL && m_Mobile.OppositionGroup == null))
 				{

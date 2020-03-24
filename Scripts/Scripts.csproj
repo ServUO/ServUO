@@ -3202,24 +3202,10 @@
     <Compile Include="Items\Quest\PrismaticAmber.cs" />
     <Compile Include="Items\Quest\PrismaticCrystal.cs" />
     <Compile Include="Quests\UnfadingMemories.cs" />
-    <Compile Include="Quests\UzeraanTurmoil\Conversations.cs" />
     <Compile Include="Items\Addons\HavenCannon.cs" />
-    <Compile Include="Items\Quest\DaemonBloodChest.cs" />
-    <Compile Include="Items\Quest\QuestDaemonBlood.cs" />
-    <Compile Include="Items\Quest\QuestDaemonBone.cs" />
-    <Compile Include="Items\Quest\QuestFertileDirt.cs" />
-    <Compile Include="Items\Quest\SchmendrickApprenticeCorpse.cs" />
-    <Compile Include="Items\Quest\SchmendrickScrollOfPower.cs" />
-    <Compile Include="Items\Quest\UzeraanTurmoilHorn.cs" />
-    <Compile Include="Items\Internal\UzeraanTurmoilTeleporter.cs" />
-    <Compile Include="Mobiles\NPCs\Dryad.cs" />
-    <Compile Include="Mobiles\NPCs\MansionGuard.cs" />
     <Compile Include="Mobiles\NPCs\MilitiaCanoneer.cs" />
     <Compile Include="Mobiles\Normal\MilitiaFighter.cs" />
-    <Compile Include="Mobiles\NPCs\Schmendrick.cs" />
-    <Compile Include="Mobiles\NPCs\Uzeraan.cs" />
-    <Compile Include="Quests\UzeraanTurmoil\Objectives.cs" />
-    <Compile Include="Quests\UzeraanTurmoil\UzeraanTurmoilQuest.cs" />
+    <Compile Include="Quests\Deprecated\UzeraanTurmoilQuest.cs" />
     <Compile Include="Quests\WitchApprentice\Conversations.cs" />
     <Compile Include="Quests\WitchApprentice\Ingredient.cs" />
     <Compile Include="Items\Quest\Cauldron.cs" />
@@ -3369,7 +3355,6 @@
     <Compile Include="Services\CommunityCollections\CommunityCollectionGump.cs" />
     <Compile Include="Services\Doom\GaryRoom.cs" />
     <Compile Include="Services\Doom\GuardianRoom.cs" />
-    <Compile Include="Services\Ethics\Core\Persistence.cs" />
     <Compile Include="Services\Expansions\High Seas\Generate.cs" />
     <Compile Include="Services\Expansions\High Seas\Gumps\BaseShipGump.cs" />
     <Compile Include="Services\Expansions\High Seas\Gumps\BountyBoard.cs" />
@@ -9383,87 +9368,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Doom\LeverPuzzleRegions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Core\Ethic.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Core\Player.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Core\Power.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Definitions\EthicDefinition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Definitions\PowerDefinition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Evil\Ethic.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Evil\Mobiles\UnholyFamiliar.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Evil\Mobiles\UnholySteed.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Evil\Powers\Blight.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Evil\Powers\SummonFamiliar.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Evil\Powers\UnholyItem.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Evil\Powers\UnholySense.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Evil\Powers\UnholyShield.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Evil\Powers\UnholySteed.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Evil\Powers\UnholyWord.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Evil\Powers\VileBlade.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Hero\Ethic.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Hero\Mobiles\HolyFamiliar.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Hero\Mobiles\HolySteed.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Hero\Powers\Bless.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Hero\Powers\HolyBlade.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Hero\Powers\HolyItem.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Hero\Powers\HolySense.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Hero\Powers\HolyShield.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Hero\Powers\HolySteed.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Hero\Powers\HolyWord.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Ethics\Hero\Powers\SummonFamiliar.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Factions\Core\Election.cs">

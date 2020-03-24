@@ -5,7 +5,6 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("a silver serpent corpse")]
-    [TypeAlias("Server.Mobiles.Silverserpant")]
     public class SilverSerpent : BaseCreature
     {
         [Constructable]
@@ -52,7 +51,6 @@ namespace Server.Mobiles
         }
 
         public override Faction FactionAllegiance { get { return TrueBritannians.Instance; } }
-        public override Ethics.Ethic EthicAllegiance { get { return Ethics.Ethic.Hero; } }
         public override bool DeathAdderCharmable { get { return true; } }
         public override int Meat { get { return 1; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }

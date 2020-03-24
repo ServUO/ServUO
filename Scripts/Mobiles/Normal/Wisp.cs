@@ -12,42 +12,42 @@ namespace Server.Mobiles
         public Wisp()
             : base(AIType.AI_Mage, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a wisp";
-            this.Body = 58;
-            this.BaseSoundID = 466;
+            Name = "a wisp";
+            Body = 58;
+            BaseSoundID = 466;
 
-            this.SetStr(196, 225);
-            this.SetDex(196, 225);
-            this.SetInt(196, 225);
+            SetStr(196, 225);
+            SetDex(196, 225);
+            SetInt(196, 225);
 
-            this.SetHits(118, 135);
+            SetHits(118, 135);
 
-            this.SetDamage(17, 18);
+            SetDamage(17, 18);
 
-            this.SetDamageType(ResistanceType.Physical, 50);
-            this.SetDamageType(ResistanceType.Energy, 50);
+            SetDamageType(ResistanceType.Physical, 50);
+            SetDamageType(ResistanceType.Energy, 50);
 
-            this.SetResistance(ResistanceType.Physical, 35, 45);
-            this.SetResistance(ResistanceType.Fire, 20, 40);
-            this.SetResistance(ResistanceType.Cold, 10, 30);
-            this.SetResistance(ResistanceType.Poison, 5, 10);
-            this.SetResistance(ResistanceType.Energy, 50, 70);
+            SetResistance(ResistanceType.Physical, 35, 45);
+            SetResistance(ResistanceType.Fire, 20, 40);
+            SetResistance(ResistanceType.Cold, 10, 30);
+            SetResistance(ResistanceType.Poison, 5, 10);
+            SetResistance(ResistanceType.Energy, 50, 70);
 
-            this.SetSkill(SkillName.EvalInt, 80.0);
-            this.SetSkill(SkillName.Magery, 80.0);
-            this.SetSkill(SkillName.MagicResist, 80.0);
-            this.SetSkill(SkillName.Tactics, 80.0);
-            this.SetSkill(SkillName.Wrestling, 80.0);
+            SetSkill(SkillName.EvalInt, 80.0);
+            SetSkill(SkillName.Magery, 80.0);
+            SetSkill(SkillName.MagicResist, 80.0);
+            SetSkill(SkillName.Tactics, 80.0);
+			SetSkill(SkillName.Wrestling, 80.0);
 
-            this.Fame = 4000;
-            this.Karma = 0;
+            Fame = 4000;
+            Karma = 0;
 
-            this.VirtualArmor = 40;
+            VirtualArmor = 40;
 
-            if (Core.ML && Utility.RandomDouble() < .33)
-                this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed(4));
+            if (Utility.RandomDouble() < .33)
+                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(4));
 
-            this.AddItem(new LightSource());
+            AddItem(new LightSource());
         }
 
         public Wisp(Serial serial)
@@ -68,14 +68,7 @@ namespace Server.Mobiles
             {
                 return CouncilOfMages.Instance;
             }
-        }
-        public override Ethics.Ethic EthicAllegiance
-        {
-            get
-            {
-                return Ethics.Ethic.Hero;
-            }
-        }
+        }        
         public override TimeSpan ReacquireDelay
         {
             get
