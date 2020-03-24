@@ -344,117 +344,6 @@
     <Compile Include="Gumps\Go\ParentNode.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gumps\Guilds\DeclareFealtyGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GrantGuildTitleGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildAbbrvPrompt.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildAcceptWarGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildAdminCandidatesGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildCandidatesGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildChangeTypeGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildCharterGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildCharterPrompt.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildDeclarePeaceGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildDeclareWarGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildDeclareWarPrompt.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildDismissGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildListGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildmasterGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildMobileListGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildNamePrompt.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildRejectWarGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildRescindDeclarationGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildRosterGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildTitlePrompt.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildWarAdminGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildWarGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\GuildWebsitePrompt.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\New Guild System\AdvancedSearch.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\New Guild System\BaseGuildGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\New Guild System\BaseGuildListGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\New Guild System\Create Guild Gump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\New Guild System\DiplomacyGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\New Guild System\GuildInfoGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\New Guild System\GuildInvitationRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\New Guild System\GuildMemberInfoGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\New Guild System\GuildRosterGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\New Guild System\OtherGuildInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\New Guild System\War Declaration gump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Guilds\RecruitTarget.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Gumps\HeritageTokenGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -3576,6 +3465,19 @@
     <Compile Include="Services\FireCasino\Mobiles.cs" />
     <Compile Include="Services\FireCasino\TentBrownAddon.cs" />
     <Compile Include="Services\FireCasino\TentWhiteAddon.cs" />
+	<Compile Include="Services\Guilds\GuildGumps\AdvancedSearch.cs" />
+	<Compile Include="Services\Guilds\GuildGumps\BaseGuildGump.cs" />
+	<Compile Include="Services\Guilds\GuildGumps\BaseGuildListGump.cs" />
+	<Compile Include="Services\Guilds\GuildGumps\CreateGuildGump.cs" />
+	<Compile Include="Services\Guilds\GuildGumps\DiplomacyGump.cs" />
+	<Compile Include="Services\Guilds\GuildGumps\GuildInfoGump.cs" />
+	<Compile Include="Services\Guilds\GuildGumps\GuildInvitationRequest.cs" />
+	<Compile Include="Services\Guilds\GuildGumps\GuildMemberInfoGump.cs" />
+	<Compile Include="Services\Guilds\GuildGumps\GuildRosterGump.cs" />
+	<Compile Include="Services\Guilds\GuildGumps\OtherGuildInfo.cs" />
+	<Compile Include="Services\Guilds\GuildGumps\WarDeclarationGump.cs" />
+	<Compile Include="Services\Guilds\Guild.cs" />
+	<Compile Include="Services\Guilds\Guildstone.cs" />
     <Compile Include="Services\HolidaySettings.cs" />
     <Compile Include="Services\HuntmasterChallenge\BestKillBoard.cs" />
     <Compile Include="Services\HuntmasterChallenge\ComplexHuntTrophy.cs" />
@@ -5252,15 +5154,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Resource\Tourmaline.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Consumables\GuildDeed.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Addons\Guildstone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Internal\GuildTeleporter.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Jewelry\BurningAmber.cs">
@@ -8675,9 +8568,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\GiftGiving\Winter2004.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Misc\Guild.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Misc\HardwareInfo.cs">
