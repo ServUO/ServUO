@@ -242,7 +242,7 @@ namespace Server.Gumps
             new int[] { 0, 4, 8, 9, 5, 6, 7, 11, 15 },
             new int[] { 0, 4, 5, 6, 2, 3, 7, 11, 15 },
             new int[] { 0, 4, 5, 6, 7, 11, 10, 9, 8, 12, 13, 14, 15 },
-            new int[] { 0, 4, 5, 9, 10, 11, 12, 15 },
+            new int[] { 0, 4, 5, 9, 10, 11, 15 },
         };
 
         private int[][] Paths25 = new int[][]
