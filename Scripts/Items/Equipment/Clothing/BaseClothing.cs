@@ -448,31 +448,12 @@ namespace Server.Items
             }
         }
 
-        public override bool AllowSecureTrade(Mobile from, Mobile to, Mobile newOwner, bool accepted)
-        {
-            if (!Ethics.Ethic.CheckTrade(from, to, newOwner, this))
-                return false;
-
-            return base.AllowSecureTrade(from, to, newOwner, accepted);
-        }
-
         public virtual Race RequiredRace { get { return null; } }
 
-        #region Stygian Abyss
-        public virtual bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return false;
-            }
-        }
-        #endregion
+        public virtual bool CanBeWornByGargoyles { get { return false; } }
 
         public override bool CanEquip(Mobile from)
         {
-            if (!Ethics.Ethic.CheckEquip(from, this))
-                return false;
-
             if (from.IsPlayer())
             {
                 if (_Owner != null && _Owner != from)
@@ -1885,12 +1866,6 @@ namespace Server.Items
             if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(502437); // Items you wish to cut must be in your backpack.
-                return false;
-            }
-
-            if (Ethics.Ethic.IsImbued(this))
-            {
-                from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
                 return false;
             }
 

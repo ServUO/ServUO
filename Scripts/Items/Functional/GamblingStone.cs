@@ -45,12 +45,6 @@ namespace Server.Items
             list.Add("Jackpot: {0}gp", m_GamblePot);
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            base.OnSingleClick(from);
-            base.LabelTo(from, "Jackpot: {0}gp", m_GamblePot);
-        }
-
         public override void OnDoubleClick(Mobile from)
         {
             Container pack = from.Backpack;
@@ -70,26 +64,12 @@ namespace Server.Items
 
                     while (m_GamblePot > maxCheck)
                     {
-                        if (!Core.TOL)
-                        {
-                            from.AddToBackpack(new BankCheck(maxCheck));
-                        }
-                        else
-                        {
-                            Banker.Deposit(from, maxCheck, true);
-                        }
+                        Banker.Deposit(from, maxCheck, true);
 
                         m_GamblePot -= maxCheck;
                     }
 
-                    if (!Core.TOL)
-                    {
-                        from.AddToBackpack(new BankCheck(m_GamblePot));
-                    }
-                    else
-                    {
-                        Banker.Deposit(from, m_GamblePot, true);
-                    }
+                    Banker.Deposit(from, m_GamblePot, true);
 
                     m_GamblePot = 2500;
                 }
@@ -102,27 +82,13 @@ namespace Server.Items
                 {
                     from.SendMessage(0x35, "You win 1500gp!");
 
-                    if (!Core.TOL)
-                    {
-                        from.AddToBackpack(new BankCheck(1500));
-                    }
-                    else
-                    {
-                        Banker.Deposit(from, 1500, true);
-                    }
+                    Banker.Deposit(from, 1500, true);
                 }
                 else if (roll <= 100) // Another chance for gold
                 {
                     from.SendMessage(0x35, "You win 1000gp!");
 
-                    if (!Core.TOL)
-                    {
-                        from.AddToBackpack(new BankCheck(1000));
-                    }
-                    else
-                    {
-                        Banker.Deposit(from, 1000, true);
-                    }
+                    Banker.Deposit(from, 1000, true);
                 }
                 else // Loser!
                 {
@@ -138,7 +104,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
 
             writer.Write((int)m_GamblePot);
@@ -147,7 +112,6 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch( version )
@@ -155,7 +119,6 @@ namespace Server.Items
                 case 0:
                     {
                         m_GamblePot = reader.ReadInt();
-
                         break;
                     }
             }

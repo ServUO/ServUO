@@ -8,11 +8,11 @@ namespace Server.Mobiles
         public HealerGuildmaster()
             : base("healer")
         {
-            this.SetSkill(SkillName.Anatomy, 85.0, 100.0);
-            this.SetSkill(SkillName.Healing, 90.0, 100.0);
-            this.SetSkill(SkillName.Forensics, 75.0, 98.0);
-            this.SetSkill(SkillName.MagicResist, 75.0, 98.0);
-            this.SetSkill(SkillName.SpiritSpeak, 65.0, 88.0);
+            SetSkill(SkillName.Anatomy, 85.0, 100.0);
+            SetSkill(SkillName.Healing, 90.0, 100.0);
+            SetSkill(SkillName.Forensics, 75.0, 98.0);
+            SetSkill(SkillName.MagicResist, 75.0, 98.0);
+            SetSkill(SkillName.SpiritSpeak, 65.0, 88.0);
         }
 
         public HealerGuildmaster(Serial serial)
@@ -38,20 +38,18 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            this.AddItem(new Server.Items.Robe(Utility.RandomYellowHue()));
+            AddItem(new Server.Items.Robe(Utility.RandomYellowHue()));
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

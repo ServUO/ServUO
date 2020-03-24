@@ -7,14 +7,11 @@ namespace Server.Mobiles
         [Constructable]
         public Healer()
         {
-            this.Title = "the healer";
+            Title = "the healer";
 
-            if (!Core.AOS)
-                this.NameHue = 0x35;
-
-            this.SetSkill(SkillName.Forensics, 80.0, 100.0);
-            this.SetSkill(SkillName.SpiritSpeak, 80.0, 100.0);
-            this.SetSkill(SkillName.Swords, 80.0, 100.0);
+            SetSkill(SkillName.Forensics, 80.0, 100.0);
+            SetSkill(SkillName.SpiritSpeak, 80.0, 100.0);
+            SetSkill(SkillName.Swords, 80.0, 100.0);
         }
 
         public Healer(Serial serial)
@@ -82,18 +79,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (Core.AOS && this.NameHue == 0x35)
-                this.NameHue = -1;
         }
     }
 }

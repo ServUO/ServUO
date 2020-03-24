@@ -6,7 +6,6 @@ using System.Linq;
 using Server.ContextMenus;
 using Server.Engines.Craft;
 using Server.Engines.XmlSpawner2;
-using Server.Ethics;
 using Server.Factions;
 using Server.Mobiles;
 using Server.Network;
@@ -1016,30 +1015,13 @@ namespace Server.Items
 			return false;
 		}
 
-		public override bool AllowSecureTrade(Mobile from, Mobile to, Mobile newOwner, bool accepted)
-		{
-			if (!Ethic.CheckTrade(from, to, newOwner, this))
-			{
-				return false;
-			}
-
-			return base.AllowSecureTrade(from, to, newOwner, accepted);
-		}
-
 		public virtual Race RequiredRace { get { return null; } }
 		//On OSI, there are no weapons with race requirements, this is for custom stuff
 
-		#region SA
 		public virtual bool CanBeWornByGargoyles { get { return false; } }
-		#endregion
 
 		public override bool CanEquip(Mobile from)
 		{
-			if (!Ethic.CheckEquip(from, this))
-			{
-				return false;
-			}
-
             if (from.IsPlayer())
             {
                 if (_Owner != null && _Owner != from)

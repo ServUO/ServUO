@@ -492,22 +492,7 @@ namespace Server.Commands
 
             if (item is BaseAddon)
             {
-                if (item is MaabusCoffin)
-                {
-                    MaabusCoffin coffin = (MaabusCoffin)item;
-
-                    for (int i = 0; i < this.m_Params.Length; ++i)
-                    {
-                        if (this.m_Params[i].StartsWith("SpawnLocation"))
-                        {
-                            int indexOf = this.m_Params[i].IndexOf('=');
-
-                            if (indexOf >= 0)
-                                coffin.SpawnLocation = Point3D.Parse(this.m_Params[i].Substring(++indexOf));
-                        }
-                    }
-                }
-                else if (this.m_ItemID > 0)
+                if (this.m_ItemID > 0)
                 {
                     List<AddonComponent> comps = ((BaseAddon)item).Components;
 
