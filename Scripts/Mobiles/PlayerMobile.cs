@@ -996,7 +996,7 @@ namespace Server.Mobiles
                 max += Spells.Mysticism.StoneFormSpell.GetMaxResistBonus(this);
             }
 
-            if (Core.ML && Race == Race.Elf && type == ResistanceType.Energy)
+            if (Race == Race.Elf && type == ResistanceType.Energy)
             {
                 max += 5; //Intended to go after the 60 max from curse
             }
@@ -1672,9 +1672,7 @@ namespace Server.Mobiles
 					pm.m_Quest.StopTimer();
 				}
 
-				#region Mondain's Legacy
 				QuestHelper.StopTimer(pm);
-				#endregion
 
 				pm.m_SpeechLog = null;
 				pm.LastOnline = DateTime.UtcNow;
@@ -1787,13 +1785,11 @@ namespace Server.Mobiles
 				return false;
 			}
 
-			#region Mondain's Legacy
 			if (Peaced)
 			{
 				//!+ TODO: message
 				return false;
 			}
-			#endregion
 
 			if ((target is BaseVendor && ((BaseVendor)target).IsInvulnerable) || target is PlayerVendor || target is TownCrier)
 			{
@@ -2283,8 +2279,6 @@ namespace Server.Mobiles
 
 		public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
 		{
-            //base.GetContextMenuEntries(from, list);
-
             list.Add(new PaperdollEntry(this));
 
             if (from == this)
@@ -2318,24 +2312,8 @@ namespace Server.Mobiles
 
                 if (Alive && InsuranceEnabled)
                 {
-                    if (Core.SA)
-                    {
-                        list.Add(new CallbackEntry(1114299, OpenItemInsuranceMenu));
-                    }
-
+                    list.Add(new CallbackEntry(1114299, OpenItemInsuranceMenu));
                     list.Add(new CallbackEntry(6201, ToggleItemInsurance));
-
-                    if (!Core.SA)
-                    {
-                        if (AutoRenewInsurance)
-                        {
-                            list.Add(new CallbackEntry(6202, CancelRenewInventoryInsurance));
-                        }
-                        else
-                        {
-                            list.Add(new CallbackEntry(6200, AutoRenewInventoryInsurance));
-                        }
-                    }
                 }
                 else if (Siege.SiegeShard)
                 {
@@ -2404,11 +2382,6 @@ namespace Server.Mobiles
 				}
 				#endregion
 
-                if (Core.UOR && !Core.SA && Alive)
-				{
-					list.Add(new CallbackEntry(6210, ToggleChampionTitleDisplay));
-				}
-
 				if (DisabledPvpWarning)
 				{
 					list.Add(new CallbackEntry(1113797, EnablePvpWarning));
@@ -2446,7 +2419,7 @@ namespace Server.Mobiles
 					}
 				}
 
-                if (Core.TOL && from.InRange(this, 10))
+                if (from.InRange(this, 10))
                 {
                     list.Add(new CallbackEntry(1077728, () => OpenTrade(from))); // Trade
                 }
@@ -2455,7 +2428,7 @@ namespace Server.Mobiles
 
 				if (curhouse != null)
 				{
-					if (Alive && Core.AOS && curhouse.IsAosRules && curhouse.IsFriend(from))
+					if (Alive && curhouse.IsAosRules && curhouse.IsFriend(from))
 					{
 						list.Add(new EjectPlayerEntry(from, this));
 					}
@@ -2494,12 +2467,10 @@ namespace Server.Mobiles
 
 		private bool CanInsure(Item item)
 		{
-			#region Mondain's Legacy
 			if (item is BaseQuiver && item.LootType == LootType.Regular)
 			{
 				return true;
 			}
-			#endregion
 
 			if (((item is Container) && !(item is BaseQuiver)) || item is BagOfSending || item is KeyRing || item is MountItem)
 			{
@@ -5321,7 +5292,7 @@ namespace Server.Mobiles
 				}
 			}
 
-            if (TestCenter.Enabled && Core.TOL)
+            if (TestCenter.Enabled)
             {
                 Server.Engines.VvV.VvVPlayerEntry entry = Server.Engines.Points.PointsSystem.ViceVsVirtue.GetPlayerEntry<Server.Engines.VvV.VvVPlayerEntry>(this);
 
@@ -5340,58 +5311,6 @@ namespace Server.Mobiles
 			{
 				PlayerProperties(new PlayerPropertiesEventArgs(this, list));
 			}
-		}
-
-		public override void OnSingleClick(Mobile from)
-		{
-			if (Map == Faction.Facet)
-			{
-				PlayerState pl = PlayerState.Find(this);
-
-				if (pl != null)
-				{
-					string text;
-					bool ascii = false;
-
-					Faction faction = pl.Faction;
-
-					if (faction.Commander == this)
-					{
-						text = String.Concat(
-							Female ? "(Commanding Lady of the " : "(Commanding Lord of the ", faction.Definition.FriendlyName, ")");
-					}
-					else if (pl.Sheriff != null)
-					{
-						text = String.Concat(
-							"(The Sheriff of ", pl.Sheriff.Definition.FriendlyName, ", ", faction.Definition.FriendlyName, ")");
-					}
-					else if (pl.Finance != null)
-					{
-						text = String.Concat(
-							"(The Finance Minister of ", pl.Finance.Definition.FriendlyName, ", ", faction.Definition.FriendlyName, ")");
-					}
-					else
-					{
-						ascii = true;
-
-						if (pl.MerchantTitle != MerchantTitle.None)
-						{
-							text = String.Concat(
-								"(", MerchantTitles.GetInfo(pl.MerchantTitle).Title.String, ", ", faction.Definition.FriendlyName, ")");
-						}
-						else
-						{
-							text = String.Concat("(", pl.Rank.Title.String, ", ", faction.Definition.FriendlyName, ")");
-						}
-					}
-
-					int hue = (Faction.Find(from) == faction ? 98 : 38);
-
-					PrivateOverheadMessage(MessageType.Label, hue, ascii, text, from.NetState);
-				}
-			}
-
-			base.OnSingleClick(from);
 		}
 
 		protected override bool OnMove(Direction d)
@@ -5435,12 +5354,10 @@ namespace Server.Mobiles
 				}
 			}
 
-			#region Mondain's Legacy
 			if (InvisibilityPotion.HasTimer(this))
 			{
 				InvisibilityPotion.Iterrupt(this);
 			}
-			#endregion
 
 			return true;
 		}
@@ -6292,15 +6209,7 @@ namespace Server.Mobiles
         {
             if (m_TempSquelched)
             {
-                if (Core.ML)
-                {
-                    SendLocalizedMessage(500168); // You can not say anything, you have been muted.
-                }
-                else
-                {
-                    SendMessage("You can not say anything, you have been squelched."); //Cliloc ITSELF changed during ML.
-                }
-
+                SendLocalizedMessage(500168); // You can not say anything, you have been muted.
                 e.Blocked = true;
             }
             else
@@ -6856,8 +6765,6 @@ namespace Server.Mobiles
 					pet.IsStabled = true;
 					pet.StabledBy = this;
 
-					//pet.Loyalty = BaseCreature.MaxLoyalty; // Wonderfully happy
-
 					Stabled.Add(pet);
 					m_AutoStabled.Add(pet);
 				}
@@ -6910,8 +6817,6 @@ namespace Server.Mobiles
 
 					pet.IsStabled = false;
 					pet.StabledBy = null;
-
-					//pet.Loyalty = BaseCreature.MaxLoyalty; // Wonderfully Happy
 
 					if (Stabled.Contains(pet))
 					{

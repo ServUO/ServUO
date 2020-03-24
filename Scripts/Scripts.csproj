@@ -1180,7 +1180,6 @@
     <Compile Include="Items\Quest\TyballsKey.cs" />
     <Compile Include="Items\Quest\TyballsShadow.cs" />
     <Compile Include="Items\Quest\UnicornRibs.cs" />
-    <Compile Include="Items\Quest\VaultOfSecretsBarrier.cs" />
     <Compile Include="Items\Quest\YellowKey1.cs" />
     <Compile Include="Items\Resource\BaseFish.cs">
       <SubType>Code</SubType>
@@ -2778,7 +2777,6 @@
     <Compile Include="Mobiles\NPCs\Lefty.cs" />
     <Compile Include="Mobiles\NPCs\Lissbet.cs" />
     <Compile Include="Mobiles\NPCs\Lohn.cs" />
-    <Compile Include="Mobiles\NPCs\Maabus.cs" />
     <Compile Include="Mobiles\NPCs\Mage.cs" />
     <Compile Include="Mobiles\NPCs\MageGuildmaster.cs" />
     <Compile Include="Mobiles\NPCs\Mallew.cs" />
