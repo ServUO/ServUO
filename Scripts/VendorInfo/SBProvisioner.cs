@@ -87,35 +87,20 @@ namespace Server.Mobiles
 
                 Add(new GenericBuyInfo(typeof(WoodenBox), 14, 20, 0xE7D, 0));
                 Add(new GenericBuyInfo(typeof(Key), 2, 20, 0x100E, 0));
-
                 Add(new GenericBuyInfo(typeof(Bedroll), 5, 20, 0xA59, 0));
                 Add(new GenericBuyInfo(typeof(Kindling), 2, 20, 0xDE1, 0, true));
-
+				
                 Add(new GenericBuyInfo("1041205", typeof(Multis.SmallBoatDeed), 10177, 20, 0x14F2, 0));
-
                 Add(new GenericBuyInfo("1041060", typeof(HairDye), 60, 20, 0xEFF, 0));
-
                 Add(new GenericBuyInfo("1016450", typeof(Chessboard), 2, 20, 0xFA6, 0));
                 Add(new GenericBuyInfo("1016449", typeof(CheckerBoard), 2, 20, 0xFA6, 0));
                 Add(new GenericBuyInfo(typeof(Backgammon), 2, 20, 0xE1C, 0));
-                if (Core.AOS)
-                    Add(new GenericBuyInfo(typeof(Engines.Mahjong.MahjongGame), 6, 20, 0xFAA, 0));
+                Add(new GenericBuyInfo(typeof(Engines.Mahjong.MahjongGame), 6, 20, 0xFAA, 0));
                 Add(new GenericBuyInfo(typeof(Dices), 2, 20, 0xFA7, 0));
-
-                if (Core.AOS)
-                {
-                    Add(new GenericBuyInfo(typeof(SmallBagBall), 3, 20, 0x2256, 0));
-                    Add(new GenericBuyInfo(typeof(LargeBagBall), 3, 20, 0x2257, 0));
-                }
-
-                if (!Guild.NewGuildSystem)
-                    Add(new GenericBuyInfo("1041055", typeof(GuildDeed), 12450, 20, 0x14F0, 0));
-
-                if (Core.ML)
-                    Add(new GenericBuyInfo("1079931", typeof(SalvageBag), 1255, 20, 0xE76, Utility.RandomBlueHue()));
-
-                if (Core.SA)
-                    Add(new GenericBuyInfo("1114770", typeof(SkinTingeingTincture), 1255, 20, 0xEFF, 90));
+                Add(new GenericBuyInfo(typeof(SmallBagBall), 3, 20, 0x2256, 0));
+                Add(new GenericBuyInfo(typeof(LargeBagBall), 3, 20, 0x2257, 0));
+                Add(new GenericBuyInfo("1079931", typeof(SalvageBag), 1255, 20, 0xE76, Utility.RandomBlueHue()));
+                Add(new GenericBuyInfo("1114770", typeof(SkinTingeingTincture), 1255, 20, 0xEFF, 90));
             }
         }
 
@@ -154,9 +139,7 @@ namespace Server.Mobiles
                 Add(typeof(CheckerBoard), 1);
                 Add(typeof(Backgammon), 1);
                 Add(typeof(Dices), 1);
-
                 Add(typeof(Beeswax), 1);
-
                 Add(typeof(Amber), 25);
                 Add(typeof(Amethyst), 50);
                 Add(typeof(Citrine), 25);
@@ -178,9 +161,6 @@ namespace Server.Mobiles
                 Add(typeof(SilverBracelet), 10);
                 Add(typeof(GoldEarrings), 13);
                 Add(typeof(SilverEarrings), 10);
-
-                if (!Guild.NewGuildSystem)
-                    Add(typeof(GuildDeed), 6225);
             }
         }
     }
