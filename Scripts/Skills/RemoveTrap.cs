@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Server.Factions;
 using Server.Items;
 using Server.Network;
 using Server.Targeting;
@@ -120,52 +119,6 @@ namespace Server.SkillHandlers
                         {
                             from.SendLocalizedMessage(502372); // You fail to disarm the trap... but you don't set it off
                         }
-                    }
-                }
-                else if (targeted is BaseFactionTrap)
-                {
-                    BaseFactionTrap trap = (BaseFactionTrap)targeted;
-                    Faction faction = Faction.Find(from);
-
-                    FactionTrapRemovalKit kit = (from.Backpack == null ? null : from.Backpack.FindItemByType(typeof(FactionTrapRemovalKit)) as FactionTrapRemovalKit);
-
-                    bool isOwner = (trap.Placer == from || (trap.Faction != null && trap.Faction.IsCommander(from)));
-
-                    if (faction == null)
-                    {
-                        from.SendLocalizedMessage(1010538); // You may not disarm faction traps unless you are in an opposing faction
-                    }
-                    else if (faction == trap.Faction && trap.Faction != null && !isOwner)
-                    {
-                        from.SendLocalizedMessage(1010537); // You may not disarm traps set by your own faction!
-                    }
-                    else if (!isOwner && kit == null)
-                    {
-                        from.SendLocalizedMessage(1042530); // You must have a trap removal kit at the base level of your pack to disarm a faction trap.
-                    }
-                    else
-                    {
-                        if ((Core.ML && isOwner) || (from.CheckTargetSkill(SkillName.RemoveTrap, trap, 80.0, 100.0) && from.CheckTargetSkill(SkillName.Tinkering, trap, 80.0, 100.0)))
-                        {
-                            from.PrivateOverheadMessage(MessageType.Regular, trap.MessageHue, trap.DisarmMessage, from.NetState);
-
-                            if (!isOwner)
-                            {
-                                int silver = faction.AwardSilver(from, trap.SilverFromDisarm);
-
-                                if (silver > 0)
-                                    from.SendLocalizedMessage(1008113, true, silver.ToString("N0")); // You have been granted faction silver for removing the enemy trap :
-                            }
-
-                            trap.Delete();
-                        }
-                        else
-                        {
-                            from.SendLocalizedMessage(502372); // You fail to disarm the trap... but you don't set it off
-                        }
-
-                        if (!isOwner && kit != null)
-                            kit.ConsumeCharge(from);
                     }
                 }
                 else if (targeted is VvVTrap)

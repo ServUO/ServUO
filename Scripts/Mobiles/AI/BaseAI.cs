@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using Server.ContextMenus;
 using Server.Engines.XmlSpawner2;
-using Server.Factions;
 using Server.Gumps;
 using Server.Items;
 using Server.Network;
@@ -368,12 +367,6 @@ namespace Server.Mobiles
 						(bc is IRedSolen && SolenHelper.CheckRedFriendship(from)))
 					{
 						from.SendAsciiMessage("You can not force your pet to attack a creature you are protected from.");
-						return;
-					}
-
-					if (bc is BaseFactionGuard)
-					{
-						m_Mobile.SayTo(from, "Your pet refuses to attack the guard.");
 						return;
 					}
 				}
@@ -2765,8 +2758,6 @@ namespace Server.Mobiles
         *  iRange : The range
         *  acqType : A type of acquire we want (closest, strongest, etc)
         *  bPlayerOnly : Don't bother with other creatures or NPCs, want a player
-        *  bFacFriend : Check people in my faction
-        *  bFacFoe : Check people in other factions
         *
         * Note: Never use a differing acqType for enemy targeting! It only checks using creature's fightmode!
         */
@@ -2820,8 +2811,7 @@ namespace Server.Mobiles
 				return false;
 			}
 
-			if (acqType == FightMode.Aggressor && m_Mobile.Aggressors.Count == 0 && m_Mobile.Aggressed.Count == 0 &&
-				m_Mobile.FactionAllegiance == null)
+			if (acqType == FightMode.Aggressor && m_Mobile.Aggressors.Count == 0 && m_Mobile.Aggressed.Count == 0)
 			{
 				if ((Core.TOL && m_Mobile.Tribe == TribeType.None) || (!Core.TOL && m_Mobile.OppositionGroup == null))
 				{
@@ -2890,17 +2880,8 @@ namespace Server.Mobiles
 						continue;
 					}
 
-					// If we only want faction friends
-					if (bFacFriend && !bFacFoe)
-					{
-						// Ignore anyone who's not a friend
-						if (!m_Mobile.IsFriend(m))
-						{
-							continue;
-						}
-					}
 					// Don't ignore friends we want to and can help
-					else if (!bFacFriend || !m_Mobile.IsFriend(m))
+					else if (!m_Mobile.IsFriend(m))
 					{
 						// Let's not target a familiar...
 						if (m is BaseFamiliar)

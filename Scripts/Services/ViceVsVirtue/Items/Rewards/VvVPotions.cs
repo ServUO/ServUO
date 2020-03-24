@@ -3,7 +3,6 @@ using System;
 using Server.Items;
 using Server.Mobiles;
 using System.Collections.Generic;
-using Server.Factions;
 
 namespace Server.Engines.VvV
 {
@@ -145,21 +144,8 @@ namespace Server.Engines.VvV
         }
     }
 
-    public abstract class VvVPotion : Item, IFactionItem
+    public abstract class VvVPotion : Item
     {
-        #region Factions
-        private FactionItem m_FactionState;
-
-        public FactionItem FactionItemState
-        {
-            get { return m_FactionState; }
-            set
-            {
-                m_FactionState = value;
-            }
-        }
-        #endregion
-
         public virtual TimeSpan CooldownDuration { get { return TimeSpan.MinValue; } }
         public virtual PotionType CooldownType { get { return PotionType.None; } }
 
@@ -233,10 +219,7 @@ namespace Server.Engines.VvV
         {
             base.GetProperties(list);
 
-            if (!FactionEquipment.AddFactionProperties(this, list))
-            {
-                list.Add(1154937); // VvV Item
-            }
+            list.Add(1154937); // VvV Item
         }
 
         public bool IsInCooldown(Mobile m, ref DateTime dt)
@@ -293,9 +276,6 @@ namespace Server.Engines.VvV
                 if (ViceVsVirtueSystem.Enabled && !ViceVsVirtueSystem.IsVvV(m))
                 {
                     m.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
-                }
-                else if (Server.Factions.Settings.Enabled && !FactionEquipment.CanUse(this, m))
-                {
                 }
                 else if (!BasePotion.HasFreeHand(m))
                 {
@@ -513,7 +493,7 @@ namespace Server.Engines.VvV
 
         public override bool CheckUse(Mobile m)
         {
-            if (!Server.Factions.Faction.InSkillLoss(m))
+            if (!ViceVsVirtueSystem.InSkillLoss(m))
             {
                 m.SendLocalizedMessage(1155542); // You are not currently under the effects of stat loss.
                 return false;
@@ -525,7 +505,7 @@ namespace Server.Engines.VvV
         public override void Use(Mobile m)
         {
             m.SendLocalizedMessage(1155540); // You feel the effects of your stat loss fade.
-            Server.Factions.Faction.ClearSkillLoss(m);
+            ViceVsVirtueSystem.ClearSkillLoss(m);
 
             Consume();
         }

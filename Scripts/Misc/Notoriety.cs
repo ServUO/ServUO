@@ -6,7 +6,6 @@ using Server.Engines.ArenaSystem;
 using Server.Engines.PartySystem;
 using Server.Engines.Quests;
 using Server.Engines.VvV;
-using Server.Factions;
 using Server.Guilds;
 using Server.Items;
 using Server.Mobiles;
@@ -69,23 +68,10 @@ namespace Server.Misc
 
 			var map = from.Map;
 
-			#region Factions/VvV
-			if (Settings.Enabled)
-			{
-				var targetFaction = Faction.Find(target, true);
-
-				if ((!Core.ML || map == Faction.Facet) && targetFaction != null)
-				{
-					if (Faction.Find(from, true) != targetFaction)
-						return false;
-				}
-			}
-
             if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.IsEnemy(from, target))
 			{
                 return false;
 			}
-			#endregion
 
 			if (map != null && (map.Rules & MapRules.BeneficialRestrictions) == 0)
 				return true; // In felucca, anything goes
@@ -232,16 +218,7 @@ namespace Server.Misc
 						return Notoriety.Enemy;
 				}
 
-				if (Settings.Enabled)
-				{
-					var srcFaction = Faction.Find(source, true, true);
-					var trgFaction = Faction.Find(cretOwner, true, true);
-
-					if (srcFaction != null && trgFaction != null && srcFaction != trgFaction && source.Map == Faction.Facet)
-						return Notoriety.Enemy;
-				}
-
-				if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.IsEnemy(source, cretOwner) && (ViceVsVirtueSystem.EnhancedRules || source.Map == Faction.Facet))
+				if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.IsEnemy(source, cretOwner) && (ViceVsVirtueSystem.EnhancedRules || source.Map == ViceVsVirtueSystem.Facet))
 					return Notoriety.Enemy;
 
 				if (CheckHouseFlag(source, cretOwner, target.Location, target.Map))
@@ -287,18 +264,6 @@ namespace Server.Misc
 
 					if (sourceGuild.IsEnemy(targetGuild))
 						return Notoriety.Enemy;
-				}
-
-				var srcFaction = Faction.Find(source, true, true);
-				var trgFaction = Faction.Find(target.Owner, true, true);
-
-				if (srcFaction != null && trgFaction != null && srcFaction != trgFaction && source.Map == Faction.Facet)
-				{
-					foreach (var m in target.Aggressors)
-					{
-						if (m == source || m is BaseFactionGuard)
-							return Notoriety.Enemy;
-					}
 				}
 
 				if (CheckHouseFlag(source, target.Owner, target.Location, target.Map))
@@ -416,16 +381,7 @@ namespace Server.Misc
 					return Notoriety.Enemy;
 			}
 
-			if (Settings.Enabled)
-			{
-				var srcFaction = Faction.Find(source, true, true);
-				var trgFaction = Faction.Find(target, true, true);
-
-				if (srcFaction != null && trgFaction != null && srcFaction != trgFaction && source.Map == Faction.Facet)
-					return Notoriety.Enemy;
-			}
-
-			if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.IsEnemy(source, target) && (ViceVsVirtueSystem.EnhancedRules || source.Map == Faction.Facet))
+			if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.IsEnemy(source, target) && (ViceVsVirtueSystem.EnhancedRules || source.Map == ViceVsVirtueSystem.Facet))
 				return Notoriety.Enemy;
 
 			if (Stealing.ClassicMode && target is PlayerMobile && ((PlayerMobile)target).PermaFlags.Contains(source))

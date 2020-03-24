@@ -363,12 +363,7 @@ namespace Server.Multis
 
         public bool CheckTravel(Mobile from, Point3D dest, Map destMap)
         {
-            if (Factions.Sigil.ExistsOn(from))
-            {
-                from.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
-                return false;
-            }
-            else if (from.Criminal)
+            if (from.Criminal)
             {
                 from.SendLocalizedMessage(1005561, "", 0x22); // Thou'rt a criminal and cannot escape so easily.
                 return false;

@@ -1,5 +1,5 @@
 using System;
-using Server.Factions;
+
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
@@ -84,7 +84,7 @@ namespace Server.Engines.Craft
 
         public override double GetChanceAtMin(CraftItem item)
         {
-            if (item.NameNumber == 1044258 || item.NameNumber == 1046445) // potion keg and faction trap removal kit
+            if (item.NameNumber == 1044258 || item.NameNumber == 1046445) // potion keg 
                 return 0.5; // 50%
 
             return 0.0; // 0%
@@ -98,8 +98,6 @@ namespace Server.Engines.Craft
                 return 1044038; // You have worn out your tool!
             else if (!tool.CheckAccessible(from, ref num))
                 return num; // The tool must be on your person to use.
-            else if (itemType != null && (itemType.IsSubclassOf(typeof(BaseFactionTrapDeed)) || itemType == typeof(FactionTrapRemovalKit)) && Faction.Find(from) == null)
-                return 1044573; // You have to be in a faction to do that.
             else if (itemType == typeof(ModifiedClockworkAssembly) && !(from is PlayerMobile && ((PlayerMobile)from).MechanicalLife))
                 return 1113034; // You haven't read the Mechanical Life Manual. Talking to Sutek might help!
 
@@ -674,30 +672,6 @@ namespace Server.Engines.Craft
             // Explosion Trap
             index = AddCraft(typeof(ExplosionTrapCraft), 1044052, 1044597, 55.0, 105.0, typeof(IronIngot), 1044036, 1, 1044037);
             AddRes(index, typeof(BaseExplosionPotion), 1044569, 1, 1044253);
-
-            // Faction Gas Trap
-            index = AddCraft(typeof(FactionGasTrapDeed), 1044052, 1044598, 65.0, 115.0, typeof(Silver), 1044572, Core.AOS ? 250 : 1000, 1044253);
-            AddRes(index, typeof(IronIngot), 1044036, 10, 1044037);
-            AddRes(index, typeof(BasePoisonPotion), 1044571, 1, 1044253);
-
-            // Faction explosion Trap
-            index = AddCraft(typeof(FactionExplosionTrapDeed), 1044052, 1044599, 65.0, 115.0, typeof(Silver), 1044572, Core.AOS ? 250 : 1000, 1044253);
-            AddRes(index, typeof(IronIngot), 1044036, 10, 1044037);
-            AddRes(index, typeof(BaseExplosionPotion), 1044569, 1, 1044253);
-
-            // Faction Saw Trap
-            index = AddCraft(typeof(FactionSawTrapDeed), 1044052, 1044600, 65.0, 115.0, typeof(Silver), 1044572, Core.AOS ? 250 : 1000, 1044253);
-            AddRes(index, typeof(IronIngot), 1044036, 10, 1044037);
-            AddRes(index, typeof(Gears), 1044254, 1, 1044253);
-
-            // Faction Spike Trap           
-            index = AddCraft(typeof(FactionSpikeTrapDeed), 1044052, 1044601, 65.0, 115.0, typeof(Silver), 1044572, Core.AOS ? 250 : 1000, 1044253);
-            AddRes(index, typeof(IronIngot), 1044036, 10, 1044037);
-            AddRes(index, typeof(Springs), 1044171, 1, 1044253);
-
-            // Faction trap removal kit
-            index = AddCraft(typeof(FactionTrapRemovalKit), 1044052, 1046445, 90.0, 115.0, typeof(Silver), 1044572, 500, 1044253);
-            AddRes(index, typeof(IronIngot), 1044036, 10, 1044037);
             #endregion
 
             #region Magic Jewlery
