@@ -517,9 +517,6 @@ namespace Server.Items
         {
             bool shouldFillCorpse = true;
 
-            //if ( owner is BaseCreature )
-            //	shouldFillCorpse = !((BaseCreature)owner).IsBonded;
-
             Corpse c;
             if (owner is MilitiaFighter)
             {
@@ -1345,36 +1342,7 @@ namespace Server.Items
                 {
                     QuestSystem qs = player.Quest;
 
-                    if (qs is UzeraanTurmoilQuest)
-                    {
-                        GetDaemonBoneObjective obj = qs.FindObjective(typeof(GetDaemonBoneObjective)) as GetDaemonBoneObjective;
-
-                        if (obj != null && obj.CorpseWithBone == this && (!obj.Completed || UzeraanTurmoilQuest.HasLostDaemonBone(player)))
-                        {
-                            Item bone = new QuestDaemonBone();
-
-                            if (player.PlaceInBackpack(bone))
-                            {
-                                obj.CorpseWithBone = null;
-                                player.SendLocalizedMessage(1049341, "", 0x22);
-                                // You rummage through the bones and find a Daemon Bone!  You quickly place the item in your pack.
-
-                                if (!obj.Completed)
-                                {
-                                    obj.Complete();
-                                }
-                            }
-                            else
-                            {
-                                bone.Delete();
-                                player.SendLocalizedMessage(1049342, "", 0x22);
-                                // Rummaging through the bones you find a Daemon Bone, but can't pick it up because your pack is too full.  Come back when you have more room in your pack.
-                            }
-
-                            return;
-                        }
-                    }
-                    else if (qs is TheSummoningQuest)
+                    if (qs is TheSummoningQuest)
                     {
                         VanquishDaemonObjective obj = qs.FindObjective(typeof(VanquishDaemonObjective)) as VanquishDaemonObjective;
 

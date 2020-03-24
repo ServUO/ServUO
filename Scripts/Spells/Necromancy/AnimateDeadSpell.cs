@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Server.Engines.Quests;
-using Server.Engines.Quests.Necro;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
@@ -170,36 +168,6 @@ namespace Server.Spells.Necromancy
 
         public void Target(object obj)
         {
-            MaabusCoffinComponent comp = obj as MaabusCoffinComponent;
-
-            if (comp != null)
-            {
-                MaabusCoffin addon = comp.Addon as MaabusCoffin;
-
-                if (addon != null)
-                {
-                    PlayerMobile pm = this.Caster as PlayerMobile;
-
-                    if (pm != null)
-                    {
-                        QuestSystem qs = pm.Quest;
-
-                        if (qs is DarkTidesQuest)
-                        {
-                            QuestObjective objective = qs.FindObjective(typeof(AnimateMaabusCorpseObjective));
-
-                            if (objective != null && !objective.Completed)
-                            {
-                                addon.Awake(this.Caster);
-                                objective.Complete();
-                            }
-                        }
-                    }
-
-                    return;
-                }
-            }
-
             Corpse c = obj as Corpse;
 
             if (c == null)
@@ -345,7 +313,6 @@ namespace Server.Spells.Necromancy
             Type toSummon = null;
             SummonEntry[] entries = group.m_Entries;
 
-            #region Mondain's Legacy
             BaseCreature creature = caster as BaseCreature;
 
             if (creature != null)
@@ -353,7 +320,6 @@ namespace Server.Spells.Necromancy
                 if (creature.AIObject is NecroMageAI)
                     toSummon = typeof(FleshGolem);
             }
-            #endregion
 
             for (int i = 0; toSummon == null && i < entries.Length; ++i)
             {
@@ -413,14 +379,6 @@ namespace Server.Spells.Necromancy
             corpse.Animated = true;
 
             Register(caster, summoned);
-
-            #region Mondain's Legacy
-            /*if (creature != null)
-            {
-                if (creature.AIObject is NecroMageAI)
-                    ((NecroMageAI)creature.AIObject).Animated = summoned;
-            }*/
-            #endregion
         }
 
         public static void Scale(BaseCreature bc, int scalar)
@@ -443,7 +401,7 @@ namespace Server.Spells.Necromancy
             private readonly AnimateDeadSpell m_Owner;
 
             public InternalTarget(AnimateDeadSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.None)
+                : base(10, false, TargetFlags.None)
             {
                 this.m_Owner = owner;
             }

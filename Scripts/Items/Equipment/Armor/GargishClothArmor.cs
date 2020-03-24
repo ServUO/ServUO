@@ -26,12 +26,6 @@ namespace Server.Items
                 return false;
             }
 
-            if (Ethics.Ethic.IsImbued(this))
-            {
-                from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
-                return false;
-            }
-
             CraftSystem system = DefTailoring.CraftSystem;
 
             CraftItem item = system.CraftItems.SearchFor(GetType());
@@ -174,12 +168,6 @@ namespace Server.Items
                 return false;
             }
 
-            if (Ethics.Ethic.IsImbued(this))
-            {
-                from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
-                return false;
-            }
-
             CraftSystem system = DefTailoring.CraftSystem;
 
             CraftItem item = system.CraftItems.SearchFor(GetType());
@@ -314,12 +302,6 @@ namespace Server.Items
                 return false;
             }
 
-            if (Ethics.Ethic.IsImbued(this))
-            {
-                from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
-                return false;
-            }
-
             CraftSystem system = DefTailoring.CraftSystem;
 
             CraftItem item = system.CraftItems.SearchFor(GetType());
@@ -451,12 +433,6 @@ namespace Server.Items
             if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(502437); // Items you wish to cut must be in your backpack.
-                return false;
-            }
-
-            if (Ethics.Ethic.IsImbued(this))
-            {
-                from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
                 return false;
             }
 

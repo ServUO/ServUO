@@ -2548,71 +2548,11 @@
     </region>
     <region priority="50" name="Samurai start location">
       <rect x="320" y="690" width="115" height="100" />
-      <music name="Zento" />
-      <region type="QuestOfferRegion">
-        <rect x="368" y="772" width="7" height="5" />
-        <quest type="HaochisTrialsQuest" />
-      </region>
-      <region type="CancelQuestRegion">
-        <rect x="388" y="772" width="9" height="9" />
-        <quest type="HaochisTrialsQuest" />
-      </region>
-      <region type="QuestNoEntryRegion">
-        <rect x="363" y="747" width="6" height="6" />
-        <quest type="HaochisTrialsQuest" min="FirstTrialIntroObjective" message="1063163" />
-      </region>
-      <region type="QuestCompleteObjectiveRegion">
-        <rect x="333" y="768" width="11" height="3" />
-        <quest type="HaochisTrialsQuest" complete="FirstTrialIntroObjective" />
-      </region>
-      <region type="QuestNoEntryRegion">
-        <rect x="364" y="738" width="5" height="4" />
-        <quest type="HaochisTrialsQuest" min="SecondTrialIntroObjective" message="1063163" />
-      </region>
-      <region type="QuestCompleteObjectiveRegion">
-        <rect x="328" y="729" width="22" height="22" />
-        <quest type="HaochisTrialsQuest" complete="SecondTrialIntroObjective" />
-      </region>
-      <region type="QuestNoEntryRegion">
-        <rect x="363" y="727" width="6" height="6" />
-        <quest type="HaochisTrialsQuest" min="ThirdTrialIntroObjective" message="1063163" />
-      </region>
-      <region type="QuestCompleteObjectiveRegion">
-        <rect x="328" y="696" width="23" height="23" />
-        <quest type="HaochisTrialsQuest" complete="ThirdTrialIntroObjective" />
-      </region>
-      <region type="QuestNoEntryRegion">
-        <rect x="377" y="722" width="6" height="6" />
-        <quest type="HaochisTrialsQuest" min="FourthTrialIntroObjective" message="1063163" />
-      </region>
-      <region type="QuestCompleteObjectiveRegion">
-        <rect x="369" y="697" width="23" height="22" />
-        <quest type="HaochisTrialsQuest" complete="FourthTrialIntroObjective" />
-      </region>
-      <region type="QuestNoEntryRegion">
-        <rect x="391" y="729" width="4" height="5" />
-        <quest type="HaochisTrialsQuest" min="FifthTrialIntroObjective" message="1063163" />
-      </region>
-      <region type="QuestNoEntryRegion">
-        <rect x="391" y="738" width="4" height="4" />
-        <quest type="HaochisTrialsQuest" min="SixthTrialIntroObjective" message="1063163" />
-      </region>
-      <region type="QuestNoEntryRegion">
-        <rect x="397" y="747" width="4" height="5" />
-        <quest type="HaochisTrialsQuest" min="SeventhTrialIntroObjective" message="1063163" />
-      </region>
+      <music name="Zento" />      
     </region>
     <region priority="50" name="Ninja start location">
       <rect x="360" y="795" width="80" height="40" />
-      <music name="Zento" />
-      <region type="QuestOfferRegion">
-        <rect x="407" y="807" width="24" height="14" />
-        <quest type="EminosUndertakingQuest" />
-      </region>
-      <region type="CancelQuestRegion">
-        <rect x="374" y="801" width="4" height="3" />
-        <quest type="EminosUndertakingQuest" />
-      </region>
+      <music name="Zento" />     
     </region>
     <region priority="50" name="Ninja cave">
       <rect x="360" y="960" width="100" height="215" />

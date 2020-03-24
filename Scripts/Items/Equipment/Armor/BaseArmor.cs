@@ -1422,12 +1422,6 @@ namespace Server.Items
                 return false;
             }
 
-            if (Ethics.Ethic.IsImbued(this))
-            {
-                from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
-                return false;
-            }
-
             CraftSystem system = DefTailoring.CraftSystem;
 
             CraftItem item = system.CraftItems.SearchFor(GetType());
@@ -2389,35 +2383,12 @@ namespace Server.Items
             m_TalismanProtection = new TalismanAttribute();
         }
 
-        public override bool AllowSecureTrade(Mobile from, Mobile to, Mobile newOwner, bool accepted)
-        {
-            if (!Ethics.Ethic.CheckTrade(from, to, newOwner, this))
-                return false;
+        public virtual Race RequiredRace { get { return null; } }
 
-            return base.AllowSecureTrade(from, to, newOwner, accepted);
-        }
-
-        public virtual Race RequiredRace
-        {
-            get
-            {
-                return null;
-            }
-        }
-
-        public virtual bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool CanBeWornByGargoyles { get { return false; } }
 
         public override bool CanEquip(Mobile from)
         {
-            if (!Ethics.Ethic.CheckEquip(from, this))
-                return false;
-
             if (from.IsPlayer())
             {
                 if (_Owner != null && _Owner != from)

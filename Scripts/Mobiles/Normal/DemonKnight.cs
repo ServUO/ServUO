@@ -73,28 +73,28 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.ML;
+                return true;
             }
         }
         public override bool BardImmune
         {
             get
             {
-                return !Core.SE;
+                return false;
             }
         }
         public override bool Unprovokable
         {
             get
             {
-                return Core.SE;
+                return true;
             }
         }
         public override bool AreaPeaceImmune
         {
             get
             {
-                return Core.SE;
+                return true;
             }
         }
         public override Poison PoisonImmune
@@ -108,7 +108,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return 6;
+                return 5;
             }
         }
 

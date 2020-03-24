@@ -556,22 +556,6 @@ namespace Server.Misc
 
             bank.DropItem(book);
 
-            Bag bag = new Bag();
-
-            for (int i = 0; i < 5; ++i)
-                bag.DropItem(new Moonstone(MoonstoneType.Felucca));
-
-            // Felucca moonstones
-            bank.DropItem(bag);
-
-            bag = new Bag();
-
-            for (int i = 0; i < 5; ++i)
-                bag.DropItem(new Moonstone(MoonstoneType.Trammel));
-
-            // Trammel moonstones
-            bank.DropItem(bag);
-
             // Treasure maps
             bank.DropItem(new TreasureMap(1, Map.Trammel));
             bank.DropItem(new TreasureMap(2, Map.Trammel));
