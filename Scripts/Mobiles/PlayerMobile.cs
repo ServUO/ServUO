@@ -18,7 +18,6 @@ using Server.Engines.Shadowguard;
 using Server.Engines.VoidPool;
 using Server.Engines.VvV;
 using Server.Engines.XmlSpawner2;
-using Server.Ethics;
 using Server.Factions;
 using Server.Guilds;
 using Server.Gumps;
@@ -1333,10 +1332,6 @@ namespace Server.Mobiles
 
 				Mobile from = this;
 
-				#region Ethics
-				Ethic ethic = Ethic.Find(from);
-				#endregion
-
                 for (int i = items.Count - 1; i >= 0; --i)
                 {
                     if (i >= items.Count)
@@ -1345,35 +1340,6 @@ namespace Server.Mobiles
                     }
 
                     Item item = items[i];
-
-                    #region Ethics
-                    if ((item.SavedFlags & 0x100) != 0)
-                    {
-                        if (item.Hue != Ethic.Hero.Definition.PrimaryHue)
-                        {
-                            item.SavedFlags &= ~0x100;
-                        }
-                        else if (ethic != Ethic.Hero)
-                        {
-                            from.AddToBackpack(item);
-                            moved = true;
-                            continue;
-                        }
-                    }
-                    else if ((item.SavedFlags & 0x200) != 0)
-                    {
-                        if (item.Hue != Ethic.Evil.Definition.PrimaryHue)
-                        {
-                            item.SavedFlags &= ~0x200;
-                        }
-                        else if (ethic != Ethic.Evil)
-                        {
-                            from.AddToBackpack(item);
-                            moved = true;
-                            continue;
-                        }
-                    }
-                    #endregion
 
                     bool morph = from.FindItemOnLayer(Layer.Earrings) is MorphEarrings;
 
@@ -5501,13 +5467,6 @@ namespace Server.Mobiles
 			}
 		}
 
-		#region Ethics
-		private Player m_EthicPlayer;
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public Player EthicPlayer { get { return m_EthicPlayer; } set { m_EthicPlayer = value; } }
-		#endregion
-
 		#region Factions
 		public PlayerState FactionPlayerState { get; set; }
 		#endregion
@@ -5526,11 +5485,6 @@ namespace Server.Mobiles
         #endregion
 
         #region Mondain's Legacy
-        /*private List<BaseQuest> m_Quests;
-		private Dictionary<QuestChain, BaseChain> m_Chains;
-
-		public List<BaseQuest> Quests { get { return m_Quests; } }
-        public Dictionary<QuestChain, BaseChain> Chains { get { return m_Chains; } }*/
         public List<BaseQuest> Quests
         {
             get
@@ -6139,21 +6093,7 @@ namespace Server.Mobiles
 				}
 			}
 
-			#region Ethics
-			if (m_EthicPlayer != null)
-			{
-				if (suffix.Length == 0)
-				{
-					suffix = m_EthicPlayer.Ethic.Definition.Adjunct.String;
-				}
-				else
-				{
-					suffix = String.Concat(suffix, " ", m_EthicPlayer.Ethic.Definition.Adjunct.String);
-				}
-			}
-			#endregion
-
-			if (Core.ML && Map == Faction.Facet)
+			if (Map == Faction.Facet)
 			{
 				Faction faction = Faction.Find(this);
 

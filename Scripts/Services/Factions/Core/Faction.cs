@@ -1241,19 +1241,6 @@ namespace Server.Factions
                         killer.SendLocalizedMessage(1042748, silver.ToString("N0")); // Thou hast earned ~1_AMOUNT~ silver for vanquishing the vile creature.
                 }
 
-                #region Ethics
-                if (bc.Map == Faction.Facet && bc.GetEthicAllegiance(killer) == BaseCreature.Allegiance.Enemy)
-                {
-                    Ethics.Player killerEPL = Ethics.Player.Find(killer);
-
-                    if (killerEPL != null && (100 - killerEPL.Power) > Utility.Random(100))
-                    {
-                        ++killerEPL.Power;
-                        ++killerEPL.History;
-                    }
-                }
-                #endregion
-
                 return;
             }
 
@@ -1270,29 +1257,6 @@ namespace Server.Factions
                 if (victimState.KillPoints <= -6)
                 {
                     killer.SendLocalizedMessage(501693); // This victim is not worth enough to get kill points from. 
-
-                    #region Ethics
-                    Ethics.Player killerEPL = Ethics.Player.Find(killer);
-                    Ethics.Player victimEPL = Ethics.Player.Find(victim);
-
-                    if (killerEPL != null && victimEPL != null && victimEPL.Power > 0 && victimState.CanGiveSilverTo(killer))
-                    {
-                        int powerTransfer = Math.Max(1, victimEPL.Power / 5);
-
-                        if (powerTransfer > (100 - killerEPL.Power))
-                            powerTransfer = 100 - killerEPL.Power;
-
-                        if (powerTransfer > 0)
-                        {
-                            victimEPL.Power -= (powerTransfer + 1) / 2;
-                            killerEPL.Power += powerTransfer;
-
-                            killerEPL.History += powerTransfer;
-
-                            victimState.OnGivenSilverTo(killer);
-                        }
-                    }
-                    #endregion
                 }
                 else
                 {
@@ -1327,27 +1291,6 @@ namespace Server.Factions
 
                         killer.SendLocalizedMessage(1042737 + offset, args); // Thou hast been honored with ~1_KILL_POINTS~ kill point(s) for vanquishing ~2_DEAD_PLAYER~!
                         victim.SendLocalizedMessage(1042738 + offset, args); // Thou has lost ~1_KILL_POINTS~ kill point(s) to ~3_ATTACKER_NAME~ for being vanquished!
-
-                        #region Ethics
-                        Ethics.Player killerEPL = Ethics.Player.Find(killer);
-                        Ethics.Player victimEPL = Ethics.Player.Find(victim);
-
-                        if (killerEPL != null && victimEPL != null && victimEPL.Power > 0)
-                        {
-                            int powerTransfer = Math.Max(1, victimEPL.Power / 5);
-
-                            if (powerTransfer > (100 - killerEPL.Power))
-                                powerTransfer = 100 - killerEPL.Power;
-
-                            if (powerTransfer > 0)
-                            {
-                                victimEPL.Power -= (powerTransfer + 1) / 2;
-                                killerEPL.Power += powerTransfer;
-
-                                killerEPL.History += powerTransfer;
-                            }
-                        }
-                        #endregion
 
                         victimState.OnGivenSilverTo(killer);
                     }

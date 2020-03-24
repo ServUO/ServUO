@@ -4,7 +4,6 @@ using System.Collections.Generic;
  
 using Server.Commands;
 using Server.Engines.Craft;
-using Server.Ethics;
 using Server.Multis;
 using Server.Network;
 using Server.Spells;
@@ -590,23 +589,9 @@ namespace Server.Items
 			return (book.SpellbookType == type && (spellID == -1 || book.HasSpell(spellID)));
 		}
 
-		public override bool AllowSecureTrade(Mobile from, Mobile to, Mobile newOwner, bool accepted)
-		{
-			if (!Ethic.CheckTrade(from, to, newOwner, this))
-			{
-				return false;
-			}
-
-			return base.AllowSecureTrade(from, to, newOwner, accepted);
-		}
-
 		public override bool CanEquip(Mobile from)
 		{
-			if (!Ethic.CheckEquip(from, this))
-			{
-				return false;
-			}
-			else if (!from.CanBeginAction(typeof(BaseWeapon)))
+			if (!from.CanBeginAction(typeof(BaseWeapon)))
 			{
 				return false;
 			}
