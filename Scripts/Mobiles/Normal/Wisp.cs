@@ -1,5 +1,4 @@
 using System;
-using Server.Factions;
 using Server.Items;
 using Server.Misc;
 
@@ -44,7 +43,7 @@ namespace Server.Mobiles
 
             VirtualArmor = 40;
 
-            if (Utility.RandomDouble() < .33)
+            if (Utility.RandomDouble() < 0.33)
                 PackItem(Engines.Plants.Seed.RandomPeculiarSeed(4));
 
             AddItem(new LightSource());
@@ -60,13 +59,6 @@ namespace Server.Mobiles
             get
             {
                 return InhumanSpeech.Wisp;
-            }
-        }
-        public override Faction FactionAllegiance
-        {
-            get
-            {
-                return CouncilOfMages.Instance;
             }
         }        
         public override TimeSpan ReacquireDelay
