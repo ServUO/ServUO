@@ -307,11 +307,6 @@ namespace Server.Items
                 from.SendLocalizedMessage(1054014); // The bracelet glows black. The bracelet's target is on another facet.
                 return false;
             }
-            else if (Factions.Sigil.ExistsOn(from))
-            {
-                from.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
-                return false;
-            }
             else if (!SpellHelper.CheckTravel(from, TravelCheckType.RecallFrom))
             {
                 return false;

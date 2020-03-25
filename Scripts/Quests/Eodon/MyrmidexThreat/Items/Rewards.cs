@@ -208,10 +208,6 @@ namespace Server.Items
 				{
 					User.SendLocalizedMessage( 1019004 ); // You are not allowed to travel there.
 				}
-				else if ( Server.Factions.Sigil.ExistsOn( User ) )
-				{
-					User.SendLocalizedMessage( 1019004 ); // You are not allowed to travel there.
-				}
 				else if ( User.Criminal )
 				{
 					User.SendLocalizedMessage( 1005561, "", 0x22 ); // Thou'rt a criminal and cannot escape so easily.

@@ -9,7 +9,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Commands;
-using Server.Factions;
 using Server.Engines.Craft;
 using System.Linq;
 
@@ -93,10 +92,6 @@ namespace Server.SkillHandlers
             {
                 from.SendLocalizedMessage(1079576); // You cannot imbue this item.
             }
-            else if (item is IFactionItem && ((IFactionItem)item).FactionItemState != null)
-            {
-                from.SendLocalizedMessage(1114312); // You cannot imbue faction items.
-            }
             else if (item is BaseJewel && !(item is BaseRing) && !(item is BaseBracelet))
             {
                 from.SendLocalizedMessage(1079576); // You cannot imbue this item.
@@ -161,11 +156,6 @@ namespace Server.SkillHandlers
             {
                 if (message)
                     from.SendLocalizedMessage(1080445); //You cannot magically unravel an item that is under the effects of the ninjitsu focus attack ability.
-            }
-            else if (item is IFactionItem && ((IFactionItem)item).FactionItemState != null)
-            {
-                if (message)
-                    from.SendLocalizedMessage(1112408); // You cannot magically unravel a faction reward item.
             }
             else
             {

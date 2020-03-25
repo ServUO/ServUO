@@ -9,7 +9,6 @@ using Server.Gumps;
 using Server.Network;
 using Server.Guilds;
 using Server.Engines.Points;
-using Server.Factions;
 using Server.Engines.CityLoyalty;
 using Server.Regions;
 using Server.Accounting;
@@ -39,6 +38,8 @@ namespace Server.Engines.VvV
     {
         public static int VirtueHue = 2124;
         public static int ViceHue = 2118;
+
+        public static readonly Map Facet = Map.Felucca;
 
         public static bool Enabled = Config.Get("VvV.Enabled", true);
         public static int StartSilver = Config.Get("VvV.StartSilver", 2000);
@@ -140,7 +141,7 @@ namespace Server.Engines.VvV
                 }
 
                 if (statloss)
-                    Faction.ApplySkillLoss(victim);
+                    ApplySkillLoss(victim);
 
                 ColUtility.Free(list);
                 ColUtility.Free(handled);
@@ -292,6 +293,75 @@ namespace Server.Engines.VvV
             return count - 1;
         }
 
+        #region Skill Loss
+        public const double SkillLossFactor = 1.0 / 3;
+        public static TimeSpan SkillLossPeriod { get { return TimeSpan.FromMinutes(5); } }
+
+        private static readonly Dictionary<Mobile, SkillLossContext> m_SkillLoss = new Dictionary<Mobile, SkillLossContext>();
+
+        private class SkillLossContext
+        {
+            public Timer m_Timer;
+            public List<SkillMod> m_Mods;
+        }
+
+        public static bool InSkillLoss(Mobile mob)
+        {
+            return m_SkillLoss.ContainsKey(mob);
+        }
+
+        public static void ApplySkillLoss(Mobile mob)
+        {
+            if (InSkillLoss(mob))
+                return;
+
+            SkillLossContext context = new SkillLossContext();
+            m_SkillLoss[mob] = context;
+
+            List<SkillMod> mods = context.m_Mods = new List<SkillMod>();
+
+            for (int i = 0; i < mob.Skills.Length; ++i)
+            {
+                Skill sk = mob.Skills[i];
+                double baseValue = sk.Base;
+
+                if (baseValue > 0)
+                {
+                    SkillMod mod = new DefaultSkillMod(sk.SkillName, true, -(baseValue * SkillLossFactor));
+
+                    mods.Add(mod);
+                    mob.AddSkillMod(mod);
+                }
+            }
+
+            context.m_Timer = Timer.DelayCall(SkillLossPeriod, new TimerStateCallback(ClearSkillLoss_Callback), mob);
+        }
+
+        private static void ClearSkillLoss_Callback(object state)
+        {
+            ClearSkillLoss((Mobile)state);
+        }
+
+        public static bool ClearSkillLoss(Mobile mob)
+        {
+            SkillLossContext context;
+
+            if (!m_SkillLoss.TryGetValue(mob, out context))
+                return false;
+
+            m_SkillLoss.Remove(mob);
+
+            List<SkillMod> mods = context.m_Mods;
+
+            for (int i = 0; i < mods.Count; ++i)
+                mob.RemoveSkillMod(mods[i]);
+
+            context.m_Timer.Stop();
+
+            return true;
+        }
+        #endregion
+
         public void SendVvVMessage(string message)
         {
             foreach (NetState state in NetState.Instances.Where(st => st.Mobile != null && IsVvV(st.Mobile)))
@@ -338,7 +408,7 @@ namespace Server.Engines.VvV
 
                 if (initial)
                 {
-                    FactionEquipment.CheckProperties(item);
+                    VvVEquipment.CheckProperties(item);
                 }
             }
         }
@@ -832,7 +902,6 @@ namespace Server.Engines.VvV
             {
                 Timer.DelayCall(() =>
                     {
-                        Server.Factions.Generator.RemoveFactions();
                         CreateSilverTraders();
                     });
             }

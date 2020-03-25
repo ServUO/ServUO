@@ -158,7 +158,7 @@ namespace Server.Items
 
             Map map = from.Map;
 
-            if (Spells.SpellHelper.CheckMulti(p, map) || Region.Find(p, map).IsPartOf<Factions.StrongholdRegion>())
+            if (Spells.SpellHelper.CheckMulti(p, map))
                 return false;
 
             StaticTile[] staticTiles = map.Tiles.GetStaticTiles(x, y, true);

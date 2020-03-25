@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 using Server.Commands;
 using Server.Engines.Plants;
-using Server.Factions;
 using Server.Items;
 using Server.Mobiles;
 using Server.Engines.Quests;
@@ -144,24 +143,8 @@ namespace Server.Engines.Craft
 
             if (!_itemIds.TryGetValue(type, out itemId))
             {
-                if (type == typeof(FactionExplosionTrap))
-                {
-                    itemId = 14034;
-                }
-                else if (type == typeof(FactionGasTrap))
-                {
-                    itemId = 4523;
-                }
-                else if (type == typeof(FactionSawTrap))
-                {
-                    itemId = 4359;
-                }
-                else if (type == typeof(FactionSpikeTrap))
-                {
-                    itemId = 4517;
-                }
                 #region Mondain's Legacy
-                else if (type == typeof(ArcaneBookshelfSouthDeed))
+                if (type == typeof(ArcaneBookshelfSouthDeed))
                 {
                     itemId = 0x2DEF;
                 }
@@ -1256,8 +1239,8 @@ namespace Server.Engines.Craft
 
         public bool ResourceValidator(Item item)
         {
-            // VvV items or Faction Items cannot be used as resources
-            if ((item is IVvVItem && ((IVvVItem)item).IsVvVItem) || (item is IFactionItem && ((IFactionItem)item).FactionItemState != null))
+            // VvV Items cannot be used as resources
+            if ((item is IVvVItem && ((IVvVItem)item).IsVvVItem))
             {
                 return false;
             }
@@ -1941,48 +1924,7 @@ namespace Server.Engines.Craft
 					num = craftSystem.PlayEndingEffect(from, false, true, toolBroken, endquality, makersMark, this);
 				}
 
-				bool queryFactionImbue = false;
-				int availableSilver = 0;
-				FactionItemDefinition def = null;
-				Faction faction = null;
-
-				if (item is IFactionItem)
-				{
-					def = FactionItemDefinition.Identify(item);
-
-					if (def != null)
-					{
-						faction = Faction.Find(from);
-
-						if (faction != null)
-						{
-							Town town = Town.FromRegion(from.Region);
-
-							if (town != null && town.Owner == faction)
-							{
-								Container pack = from.Backpack;
-
-								if (pack != null)
-								{
-									availableSilver = pack.GetAmount(typeof(Silver));
-
-									if (availableSilver >= def.SilverCost)
-									{
-										queryFactionImbue = Faction.IsNearType(from, def.VendorType, 12);
-									}
-								}
-							}
-						}
-					}
-				}
-
-				// TODO: Scroll imbuing
-
-				if (queryFactionImbue)
-				{
-					from.SendGump(new FactionImbueGump(quality, item, from, craftSystem, tool, num, availableSilver, faction, def));
-				}
-				else if (tool != null && !tool.Deleted && tool.UsesRemaining > 0)
+				if (tool != null && !tool.Deleted && tool.UsesRemaining > 0)
 				{
 					from.SendGump(new CraftGump(from, craftSystem, tool, num));
 				}

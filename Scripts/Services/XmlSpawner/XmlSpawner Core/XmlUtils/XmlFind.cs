@@ -423,7 +423,7 @@ namespace Server.Mobiles
                     if (i is BaseAddon && (i is ArmoryAddon || i is BarAddon || i is BelfryAddon || i is ShadowguardFountainAddon || i is OrchardAddon))
                         return true;
 
-                    if (i is BoatMountItem || i is Server.Factions.FactionPersistence || i is Server.Misc.TreasuresOfTokunoPersistence || i is StealableArtifactsSpawner)
+                    if (i is BoatMountItem || i is Server.Misc.TreasuresOfTokunoPersistence || i is StealableArtifactsSpawner)
                         return true;
 
                     if (i is ArisenController)

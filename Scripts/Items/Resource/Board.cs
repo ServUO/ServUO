@@ -14,11 +14,11 @@ namespace Server.Items
 			set { m_Resource = value; InvalidateProperties(); }
 		}
 
-		TextDefinition ICommodity.Description 
-		{ 
-			get
-			{
-				if ( m_Resource >= CraftResource.OakWood && m_Resource <= CraftResource.YewWood )
+        public override int LabelNumber
+        {
+            get
+            {
+                if ( m_Resource >= CraftResource.OakWood && m_Resource <= CraftResource.YewWood )
 					return 1075052 + ( (int)m_Resource - (int)CraftResource.OakWood );
 
 				switch ( m_Resource )
@@ -28,6 +28,14 @@ namespace Server.Items
 					case CraftResource.Heartwood: return 1075062;	//WHY Osi.  Why?
 				}
 
+                return 1015101;
+            }
+        }
+		
+		TextDefinition ICommodity.Description 
+		{ 
+			get
+			{
 				return LabelNumber;
 			} 
 		}

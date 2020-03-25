@@ -2,7 +2,6 @@ using System;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
-using Server.Factions;
 
 namespace Server.Engines.Craft
 {
@@ -770,9 +769,6 @@ namespace Server.Engines.Craft
 
         public static bool AllowsRepair(object targeted, CraftSystem system)
         {
-            if (targeted is IFactionItem && ((IFactionItem)targeted).FactionItemState != null)
-                return false;
-
             if (targeted is BrokenAutomatonHead || targeted is IRepairableMobile)
                 return true;
 

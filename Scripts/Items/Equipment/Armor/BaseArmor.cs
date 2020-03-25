@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Engines.Craft;
 using Server.Engines.XmlSpawner2;
-using Server.Factions;
 using Server.Network;
 using Server.Mobiles;
 using AMA = Server.Items.ArmorMeditationAllowance;
@@ -12,29 +11,8 @@ using System.Linq;
 
 namespace Server.Items
 {
-    public abstract class BaseArmor : Item, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, ITalismanProtection, IEngravable, IArtifact, ICombatEquipment, IQuality
+    public abstract class BaseArmor : Item, IScissorable, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, ITalismanProtection, IEngravable, IArtifact, ICombatEquipment, IQuality
     {
-        #region Factions
-        private FactionItem m_FactionState;
-
-        public FactionItem FactionItemState
-        {
-            get
-            {
-                return m_FactionState;
-            }
-            set
-            {
-                m_FactionState = value;
-
-                if (m_FactionState == null)
-                    Hue = CraftResources.GetHue(Resource);
-
-                LootType = (m_FactionState == null ? LootType.Regular : LootType.Blessed);
-            }
-        }
-        #endregion
-
         #region IEngravable
         private string _EngravedText;
 
@@ -2765,10 +2743,6 @@ namespace Server.Items
         {
             base.AddNameProperties(list);
 
-            #region Factions
-            FactionEquipment.AddFactionProperties(this, list);
-            #endregion
-
             if (m_GorgonLenseCharges > 0)
                 list.Add(1112590, m_GorgonLenseCharges.ToString()); //Gorgon Lens Charges: ~1_val~         
 
@@ -3032,11 +3006,6 @@ namespace Server.Items
                 else if (LootType == LootType.Cursed)
                     attrs.Add(new EquipInfoAttribute(1049643)); // cursed
             }
-
-            #region Factions
-            if (m_FactionState != null)
-                attrs.Add(new EquipInfoAttribute(1041350)); // faction item
-            #endregion
 
             if (m_Quality == ItemQuality.Exceptional)
                 attrs.Add(new EquipInfoAttribute(1018305 - (int)m_Quality));
