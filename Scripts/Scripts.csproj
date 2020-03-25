@@ -7699,9 +7699,6 @@
     <Compile Include="Abilities\Dismount.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Abilities\Disrobe.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Abilities\DoubleShot.cs">
       <SubType>Code</SubType>
     </Compile>
