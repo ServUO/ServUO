@@ -2879,62 +2879,52 @@ namespace Server.Mobiles
 					{
 						continue;
 					}
-					
-					// Ignore anyone who's not a friend
-					if (!m_Mobile.IsFriend(m))
+
+					// Let's not target a familiar...
+					if (m is BaseFamiliar)
 					{
 						continue;
 					}
 
-					// Don't ignore friends we want to and can help
-					else
+					if (m_Mobile.Summoned && m_Mobile.SummonMaster != null)
 					{
-						// Let's not target a familiar...
-						if (m is BaseFamiliar)
+						// If this is a summon, it can't target its controller.
+						if (m == m_Mobile.SummonMaster)
+							continue;
+
+                        // It also must abide by harmful spell rules if the master is a player.
+                        if (m_Mobile.SummonMaster is PlayerMobile && !SpellHelper.ValidIndirectTarget(m_Mobile.SummonMaster, m))
+                        {
+                            continue;
+                        }
+
+						// Players animated creatures cannot attack other players directly.
+						if (m is PlayerMobile && m_Mobile.IsAnimatedDead && m_Mobile.SummonMaster is PlayerMobile)
+							continue;
+					}
+
+					// Ignore anyone we can't hurt
+					if (!m_Mobile.CanBeHarmful(m, false))
+					{
+                        continue;
+					}
+
+					// Don't ignore hostile mobiles
+					if (!IsHostile(m, acqType))
+					{
+						// Ignore anyone if we don't want enemies
+						if (!bFacFoe)
 						{
 							continue;
 						}
 
-						if (m_Mobile.Summoned && m_Mobile.SummonMaster != null)
+						// Ignore any non-enemy
+						if (!m_Mobile.IsEnemy(m))
 						{
-							// If this is a summon, it can't target its controller.
-							if (m == m_Mobile.SummonMaster)
-								continue;
-
-                            // It also must abide by harmful spell rules if the master is a player.
-                            if (m_Mobile.SummonMaster is PlayerMobile && !SpellHelper.ValidIndirectTarget(m_Mobile.SummonMaster, m))
-                            {
-                                continue;
-                            }
-
-							// Players animated creatures cannot attack other players directly.
-							if (m is PlayerMobile && m_Mobile.IsAnimatedDead && m_Mobile.SummonMaster is PlayerMobile)
-								continue;
-						}
-
-						// Ignore anyone we can't hurt
-						if (!m_Mobile.CanBeHarmful(m, false))
-						{
-                            continue;
-						}
-
-						// Don't ignore hostile mobiles
-						if (!IsHostile(m, acqType))
-						{
-							// Ignore anyone if we don't want enemies
-							if (!bFacFoe)
-							{
-								continue;
-							}
-
-							// Ignore any non-enemy
-							if (!m_Mobile.IsEnemy(m))
-							{
-								continue;
-							}
+							continue;
 						}
 					}
-
+					
 					theirVal = m_Mobile.GetFightModeRanking(m, acqType, bPlayerOnly);
 
 					if (theirVal > val || (theirVal == val && newFocusMob.Player && !m.Player))
