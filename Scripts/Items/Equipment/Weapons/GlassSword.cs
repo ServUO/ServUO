@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    // Based off a Katana
     [FlipableAttribute(0x90C, 0x4073)]
     public class GlassSword : BaseSword
     {
@@ -67,34 +66,7 @@ namespace Server.Items
                 return 2.75f;
             }
         }
-        public override int OldStrengthReq
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int OldMinDamage
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int OldMaxDamage
-        {
-            get
-            {
-                return 26;
-            }
-        }
-        public override int OldSpeed
-        {
-            get
-            {
-                return 58;
-            }
-        }
+        
         public override int DefHitSound
         {
             get

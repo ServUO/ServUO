@@ -80,9 +80,9 @@ namespace Server.Mobiles
                 else if (weapon.Quality == ItemQuality.Exceptional)
                     price = (int)(price * 1.25);
 
-                price += 100 * (int)weapon.DurabilityLevel;
+                price += 100 * weapon.WeaponAttributes.DurabilityBonus;
 
-                price += 100 * (int)weapon.DamageLevel;
+                price += 10 * weapon.Attributes.WeaponDamage;
 
                 if (price < 1)
                     price = 1;

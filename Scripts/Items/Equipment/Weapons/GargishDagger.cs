@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    // Based off a Dagger
     [FlipableAttribute(0x902, 0x406A)]
     public class GargishDagger : BaseKnife
     {
@@ -10,7 +9,6 @@ namespace Server.Items
         public GargishDagger()
             : base(0x902)
         {
-            //Weight = 1.0;
         }
 
         public GargishDagger(Serial serial)
@@ -67,34 +65,7 @@ namespace Server.Items
                 return 2.00f;
             }
         }
-        public override int OldStrengthReq
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int OldMinDamage
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int OldMaxDamage
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override int OldSpeed
-        {
-            get
-            {
-                return 55;
-            }
-        }
+        
         public override int InitMinHits
         {
             get

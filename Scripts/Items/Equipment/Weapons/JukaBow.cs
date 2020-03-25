@@ -17,8 +17,6 @@ namespace Server.Items
         public bool IsModified => Slayer != SlayerName.None;
         public override int AosStrengthReq => 80;
         public override int AosDexterityReq => 80;
-        public override int OldStrengthReq => 80;
-        public override int OldDexterityReq => 80;
 
         public override bool CanEquip(Mobile from)
         {

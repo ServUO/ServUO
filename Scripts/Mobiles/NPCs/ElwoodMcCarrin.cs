@@ -175,16 +175,7 @@ namespace Server.Engines.Quests.Collector
             {
                 BaseWeapon weapon = Loot.RandomWeapon();
 
-                if (Core.AOS)
-                {
-                    BaseRunicTool.ApplyAttributesTo(weapon, 2, 20, 30);
-                }
-                else
-                {
-                    weapon.DamageLevel = (WeaponDamageLevel)BaseCreature.RandomMinMaxScaled(2, 3);
-                    weapon.AccuracyLevel = (WeaponAccuracyLevel)BaseCreature.RandomMinMaxScaled(2, 3);
-                    weapon.DurabilityLevel = (WeaponDurabilityLevel)BaseCreature.RandomMinMaxScaled(2, 3);
-                }
+                BaseRunicTool.ApplyAttributesTo(weapon, 2, 20, 30);
 
                 bag.DropItem(weapon);
             }
