@@ -3462,7 +3462,6 @@
 	<Compile Include="Services\Guilds\GuildGumps\OtherGuildInfo.cs" />
 	<Compile Include="Services\Guilds\GuildGumps\WarDeclarationGump.cs" />
 	<Compile Include="Services\Guilds\Guild.cs" />
-	<Compile Include="Services\Guilds\Guildstone.cs" />
     <Compile Include="Services\HolidaySettings.cs" />
     <Compile Include="Services\HuntmasterChallenge\BestKillBoard.cs" />
     <Compile Include="Services\HuntmasterChallenge\ComplexHuntTrophy.cs" />

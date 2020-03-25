@@ -22,13 +22,13 @@ namespace Server.Multis
     {
         public static int AccountHouseLimit { get; } = Config.Get("Housing.AccountHouseLimit", 1);
 
-        public static bool NewVendorSystem { get { return Core.AOS; } } // Is new player vendor system enabled?
+        public static bool NewVendorSystem { get { return true; } } // Is new player vendor system enabled?
 
         public static double GlobalBonusStorageScalar { get { return Core.ML ? Core.SA ? 1.4 : 1.2 : 1.0; } }
 
         public const int MaxCoOwners = 15;
-        public static int MaxFriends { get { return !Core.AOS ? 50 : 140; } }
-        public static int MaxBans { get { return !Core.AOS ? 50 : 140; } }
+        public static int MaxFriends { get { return 140; } }
+        public static int MaxBans { get { return 140; } }
 
         #region Dynamic decay system
         private DecayLevel m_CurrentStage;
@@ -4300,29 +4300,6 @@ namespace Server.Multis
                 contains = Secures[i].Item == item;
 
             return contains;
-        }
-
-        public virtual Guildstone FindGuildstone()
-        {
-            Map map = Map;
-
-            if (map == null)
-                return null;
-
-            MultiComponentList mcl = Components;
-            IPooledEnumerable eable = map.GetItemsInBounds(new Rectangle2D(X + mcl.Min.X, Y + mcl.Min.Y, mcl.Width, mcl.Height));
-
-            foreach (Item item in eable)
-            {
-                if (item is Guildstone && Contains(item))
-                {
-                    eable.Free();
-                    return (Guildstone)item;
-                }
-            }
-
-            eable.Free();
-            return null;
         }
     }
 
