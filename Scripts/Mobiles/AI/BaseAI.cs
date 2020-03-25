@@ -2879,9 +2879,15 @@ namespace Server.Mobiles
 					{
 						continue;
 					}
+					
+					// Ignore anyone who's not a friend
+					if (!m_Mobile.IsFriend(m))
+					{
+						continue;
+					}
 
 					// Don't ignore friends we want to and can help
-					else if (!m_Mobile.IsFriend(m))
+					else
 					{
 						// Let's not target a familiar...
 						if (m is BaseFamiliar)
