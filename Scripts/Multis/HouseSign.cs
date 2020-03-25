@@ -122,66 +122,17 @@ namespace Server.Multis
             }
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            if (m_Owner != null && BaseHouse.DecayEnabled && m_Owner.DecayPeriod != TimeSpan.Zero)
-            {
-                string message;
-
-                switch ( m_Owner.DecayLevel )
-                {
-                    case DecayLevel.Ageless:
-                        message = "ageless";
-                        break;
-                    case DecayLevel.Fairly:
-                        message = "fairly worn";
-                        break;
-                    case DecayLevel.Greatly:
-                        message = "greatly worn";
-                        break;
-                    case DecayLevel.LikeNew:
-                        message = "like new";
-                        break;
-                    case DecayLevel.Slightly:
-                        message = "slightly worn";
-                        break;
-                    case DecayLevel.Somewhat:
-                        message = "somewhat worn";
-                        break;
-                    default:
-                        message = "in danger of collapsing";
-                        break;
-                }
-
-                LabelTo(from, "This house is {0}.", message);
-            }
-
-            base.OnSingleClick(from);
-        }
-
         public void ShowSign(Mobile m)
         {
             if (m_Owner != null && m.AccessLevel == AccessLevel.Player)
             {
-                if ((Core.ML && m_Owner.IsFriend(m)) || !Core.ML)
+                if ((m_Owner.IsFriend(m)))
                 {
                     m_Owner.RefreshDecay();
                 }
-
-                if (!Core.AOS && m_Owner.IsFriend(m))
-                {
-                    m.SendLocalizedMessage(501293); // Welcome back to the house, friend!
-                }
             }
 
-            if (m_Owner.IsAosRules)
-            {
-                m.SendGump(new HouseGumpAOS(HouseGumpPageAOS.Information, m, m_Owner));
-            }
-            else
-            {
-                m.SendGump(new HouseGump(m, m_Owner));
-            }
+            m.SendGump(new HouseGumpAOS(HouseGumpPageAOS.Information, m, m_Owner));
         }
 
         public void ClaimGump_Callback(Mobile from, bool okay, object state)
@@ -311,7 +262,6 @@ namespace Server.Multis
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
 
             writer.Write(m_Owner);
@@ -321,7 +271,6 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch ( version )
@@ -334,9 +283,6 @@ namespace Server.Multis
                         break;
                     }
             }
-
-            if (Name == "a house sign")
-                Name = null;
         }
     }
 }
