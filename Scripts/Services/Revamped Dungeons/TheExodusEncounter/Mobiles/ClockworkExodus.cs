@@ -77,8 +77,6 @@ namespace Server.Mobiles
             Fame = 24000;
             Karma = -24000;
 
-            VirtualArmor = 20;
-
             m_MinHits = Hits;
 
             if (Instances == null)
@@ -146,7 +144,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosSuperBoss, 2);
+            AddLoot(LootPack.SuperBoss, 2);
         }
 
         public void SpawnVortices(Mobile target)

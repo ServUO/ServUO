@@ -39,8 +39,6 @@ namespace Server.Mobiles
             item.Hue = 0x51D;
             AddItem(item);
 
-            // TODO quest items
-
             SetStr(340, 360);
             SetDex(400, 415);
             SetInt(200, 215);
@@ -69,8 +67,6 @@ namespace Server.Mobiles
 
             Fame = 13000;
             Karma = -13000;
-
-            VirtualArmor = 58;
         }
 
         public TigersClawThief(Serial serial)
@@ -83,7 +79,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosFilthyRich, 4);
+            AddLoot(LootPack.FilthyRich, 4);
         }
 
         public override void OnDeath(Container c)

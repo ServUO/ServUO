@@ -54,14 +54,6 @@ namespace Server.Mobiles
         {
             get { return true; }
         }
-
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS;
-            }
-        }
         public override Poison PoisonImmune
         {
             get
@@ -71,7 +63,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.AosUltraRich, 3);
+            this.AddLoot(LootPack.UltraRich, 3);
         }
 
         public override void OnDeath(Container c)

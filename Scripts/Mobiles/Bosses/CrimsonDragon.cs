@@ -167,7 +167,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosSuperBoss, 8);
+            AddLoot(LootPack.SuperBoss, 8);
             AddLoot(LootPack.Gems, 12);
         }
 
