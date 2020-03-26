@@ -23,8 +23,6 @@ namespace Server.Mobiles
 
             Fame = 25000;
             Karma = -25000;
-
-            VirtualArmor = 60;
         }
 
         public SerpentsFangHighExecutioner(Serial serial)
@@ -37,7 +35,7 @@ namespace Server.Mobiles
 		
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosFilthyRich, 6);
+            AddLoot(LootPack.FilthyRich, 6);
         }
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)

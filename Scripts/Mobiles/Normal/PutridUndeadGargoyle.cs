@@ -45,8 +45,6 @@ namespace Server.Mobiles
             Fame = 3500;
             Karma = -3500;
 
-            VirtualArmor = 32;
-
             if (0.05 > Utility.RandomDouble())
                 PackItem(new TatteredAncientScroll());
 
@@ -99,7 +97,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosFilthyRich, 5);
+            AddLoot(LootPack.FilthyRich, 5);
             AddLoot(LootPack.MedScrolls);
             AddLoot(LootPack.Gems, Utility.RandomMinMax(1, 4));
         }
