@@ -1840,36 +1840,7 @@ namespace Server.Mobiles
 				CheckLightLevels(false);
 			}
 		}
-
-		public override double ArmorRating
-		{
-			get
-			{
-				//BaseArmor ar;
-				double rating = 0.0;
-
-				AddArmorRating(ref rating, NeckArmor);
-				AddArmorRating(ref rating, HandArmor);
-				AddArmorRating(ref rating, HeadArmor);
-				AddArmorRating(ref rating, ArmsArmor);
-				AddArmorRating(ref rating, LegsArmor);
-				AddArmorRating(ref rating, ChestArmor);
-				AddArmorRating(ref rating, ShieldArmor);
-
-				return VirtualArmor + rating;
-			}
-		}
-
-		private void AddArmorRating(ref double rating, Item armor)
-		{
-			BaseArmor ar = armor as BaseArmor;
-
-			if (ar != null && (!Core.AOS || ar.ArmorAttributes.MageArmor == 0))
-			{
-				rating += ar.ArmorRatingScaled;
-			}
-		}
-
+    
 		#region [Stats]Max
 		[CommandProperty(AccessLevel.GameMaster)]
 		public override int HitsMax

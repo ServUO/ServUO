@@ -80,13 +80,6 @@ namespace Server.Items
                 return 20;
             }
         }
-        public override int OldStrReq
-        {
-            get
-            {
-                return 20;
-            }
-        }
         public override int ArmorBase
         {
             get

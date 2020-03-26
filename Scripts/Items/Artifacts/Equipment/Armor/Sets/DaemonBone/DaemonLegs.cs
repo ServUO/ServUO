@@ -77,20 +77,6 @@ namespace Server.Items
                 return 55;
             }
         }
-        public override int OldStrReq
-        {
-            get
-            {
-                return 40;
-            }
-        }
-        public override int OldDexBonus
-        {
-            get
-            {
-                return -4;
-            }
-        }
         public override int ArmorBase
         {
             get

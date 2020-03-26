@@ -131,23 +131,12 @@ namespace Server.Engines.Quests.Hag
                                 {
                                     Item item;
 
-                                    if (Core.AOS)
-                                    {
-                                        item = Loot.RandomArmorOrShieldOrJewelry();
+                                    item = Loot.RandomArmorOrShieldOrJewelry();
 
-                                        if (item is BaseArmor)
-                                            BaseRunicTool.ApplyAttributesTo((BaseArmor)item, 2, 20, 30);
-                                        else if (item is BaseJewel)
-                                            BaseRunicTool.ApplyAttributesTo((BaseJewel)item, 2, 20, 30);
-                                    }
-                                    else
-                                    {
-                                        BaseArmor armor = Loot.RandomArmorOrShield();
-                                        item = armor;
-
-                                        armor.ProtectionLevel = (ArmorProtectionLevel)BaseCreature.RandomMinMaxScaled(2, 3);
-                                        armor.Durability = (ArmorDurabilityLevel)BaseCreature.RandomMinMaxScaled(2, 3);
-                                    }
+                                    if (item is BaseArmor)
+                                        BaseRunicTool.ApplyAttributesTo((BaseArmor)item, 2, 20, 30);
+                                    else if (item is BaseJewel)
+                                        BaseRunicTool.ApplyAttributesTo((BaseJewel)item, 2, 20, 30);
 
                                     cont.DropItem(item);
                                 }
