@@ -1116,7 +1116,7 @@ namespace Server.Mobiles
 			var c = m_Mobile.Combatant as Mobile;
 
 			// We only want enemies we know want to attack us, not those we want to attack
-			if (AcquireFocusMob(m_Mobile.RangePerception, FightMode.Aggressor, false, false, true) || c != null)
+			if (AcquireFocusMob(m_Mobile.RangePerception, FightMode.Aggressor, false) || c != null)
 			{
 				// If I found a new target, set it as my combatant
 				if (m_Mobile.FocusMob != null)
@@ -2752,7 +2752,7 @@ namespace Server.Mobiles
 			return false;
 		}
 
-		/*
+        /*
         * Here we check to acquire a target from our surronding
         *
         *  iRange : The range
@@ -2761,8 +2761,12 @@ namespace Server.Mobiles
         *
         * Note: Never use a differing acqType for enemy targeting! It only checks using creature's fightmode!
         */
+        public virtual bool AcquireFocusMob(int iRange, FightMode acqType, bool bPlayerOnly, bool bFacFriend, bool bFacFoe)
+        {
+            return AcquireFocusMob(iRange, acqType, bPlayerOnly);
+        }
 
-		public virtual bool AcquireFocusMob(int iRange, FightMode acqType, bool bPlayerOnly, bool bFacFriend, bool bFacFoe)
+        public virtual bool AcquireFocusMob(int iRange, FightMode acqType, bool bPlayerOnly)
 		{
 			if (m_Mobile.Deleted)
 			{
@@ -2898,9 +2902,11 @@ namespace Server.Mobiles
                             continue;
                         }
 
-						// Players animated creatures cannot attack other players directly.
-						if (m is PlayerMobile && m_Mobile.IsAnimatedDead && m_Mobile.SummonMaster is PlayerMobile)
-							continue;
+                        // Players animated creatures cannot attack other players directly.
+                        if (m is PlayerMobile && m_Mobile.IsAnimatedDead && m_Mobile.SummonMaster is PlayerMobile)
+                        {
+                            continue;
+                        }
 					}
 
 					// Ignore anyone we can't hurt
@@ -2909,21 +2915,11 @@ namespace Server.Mobiles
                         continue;
 					}
 
-					// Don't ignore hostile mobiles
-					if (!IsHostile(m, acqType))
-					{
-						// Ignore anyone if we don't want enemies
-						if (!bFacFoe)
-						{
-							continue;
-						}
-
-						// Ignore any non-enemy
-						if (!m_Mobile.IsEnemy(m))
-						{
-							continue;
-						}
-					}
+                    // Don't ignore hostile mobiles/non-enemy
+                    if (!IsHostile(m, acqType) && !m_Mobile.IsEnemy(m))
+                    {
+                        continue;
+                    }
 					
 					theirVal = m_Mobile.GetFightModeRanking(m, acqType, bPlayerOnly);
 

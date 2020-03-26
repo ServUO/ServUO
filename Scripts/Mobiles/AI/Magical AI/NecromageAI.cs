@@ -10,14 +10,6 @@ namespace Server.Mobiles
 {
 	public class NecroMageAI : MageAI
 	{
-		/*private Mobile m_Animated;
-
-		public Mobile Animated
-		{
-			get { return m_Animated; }
-			set { m_Animated = value; }
-		}*/
-
 		public override SkillName CastSkill { get { return SkillName.Magery; } }
 
 		public NecroMageAI(BaseCreature m)
@@ -135,7 +127,7 @@ namespace Server.Mobiles
 
 		public override bool DoActionGuard()
 		{
-			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
+			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false))
 			{
 				if (m_Mobile.Debug)
 					m_Mobile.DebugSay("I am going to attack {0}", m_Mobile.FocusMob.Name);

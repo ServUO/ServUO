@@ -81,7 +81,7 @@ namespace Server.Mobiles
 				}
 				else
 				{
-					if (AcquireFocusMob(m_Mobile.RangePerception, FightMode.Weakest, false, true, false))
+					if (AcquireFocusMob(m_Mobile.RangePerception, FightMode.Weakest, false))
 					{
 						WalkMobileRange(m_Mobile.FocusMob, 1, false, 4, 7);
 					}
