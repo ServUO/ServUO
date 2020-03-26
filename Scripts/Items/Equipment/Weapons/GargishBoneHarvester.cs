@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    //Based off Bone Harvester
     [FlipableAttribute(0x48C6, 0x48C7)]
     public class GargishBoneHarvester : BaseSword
     {
@@ -67,34 +66,7 @@ namespace Server.Items
                 return 3.00f;
             }
         }
-        public override int OldStrengthReq
-        {
-            get
-            {
-                return 25;
-            }
-        }
-        public override int OldMinDamage
-        {
-            get
-            {
-                return 13;
-            }
-        }
-        public override int OldMaxDamage
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override int OldSpeed
-        {
-            get
-            {
-                return 36;
-            }
-        }
+
         public override int DefHitSound
         {
             get

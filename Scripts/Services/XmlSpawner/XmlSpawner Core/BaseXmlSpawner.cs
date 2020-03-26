@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.IO;
 using System.Collections.Generic;
@@ -7930,49 +7930,31 @@ namespace Server.Mobiles
 			}
 		}
 
-		public static Item MagicWeapon(int minLevel, int maxLevel, bool jewel)
-		{
-			BaseCreature.Cap(ref minLevel, 0, 5);
-			BaseCreature.Cap(ref maxLevel, 0, 5);
-			if (Core.AOS)
-			{
-				Item item = null;
-				if (jewel)
-					item = Loot.RandomWeaponOrJewelry();
-				else
-					item = Loot.RandomWeapon();
+        public static Item MagicWeapon(int minLevel, int maxLevel, bool jewel)
+        {
+            BaseCreature.Cap(ref minLevel, 0, 5);
+            BaseCreature.Cap(ref maxLevel, 0, 5);
 
-				if (item == null)
-					return null;
+            Item item = null;
+            if (jewel)
+                item = Loot.RandomWeaponOrJewelry();
+            else
+                item = Loot.RandomWeapon();
 
-				int attributeCount, min, max;
+            if (item == null)
+                return null;
 
-				BaseCreature.GetRandomAOSStats(minLevel, maxLevel, out attributeCount, out min, out max);
+            int attributeCount, min, max;
 
-				if (item is BaseWeapon)
-					BaseRunicTool.ApplyAttributesTo((BaseWeapon)item, attributeCount, min, max);
-				else if (item is BaseJewel)
-					BaseRunicTool.ApplyAttributesTo((BaseJewel)item, attributeCount, min, max);
+            BaseCreature.GetRandomAOSStats(minLevel, maxLevel, out attributeCount, out min, out max);
 
-				return item;
-			}
-			else
-			{
-			BaseWeapon weapon = Loot.RandomWeapon();
+            if (item is BaseWeapon)
+                BaseRunicTool.ApplyAttributesTo((BaseWeapon)item, attributeCount, min, max);
+            else if (item is BaseJewel)
+                BaseRunicTool.ApplyAttributesTo((BaseJewel)item, attributeCount, min, max);
 
-			if (weapon == null)
-				return null;
-
-			if (0.05 > Utility.RandomDouble())
-				weapon.Slayer = SlayerName.Silver;
-
-			weapon.DamageLevel = (WeaponDamageLevel)BaseCreature.RandomMinMaxScaled(minLevel, maxLevel);
-			weapon.AccuracyLevel = (WeaponAccuracyLevel)BaseCreature.RandomMinMaxScaled(minLevel, maxLevel);
-			weapon.DurabilityLevel = (WeaponDurabilityLevel)BaseCreature.RandomMinMaxScaled(minLevel, maxLevel);
-
-			return weapon;
-			}
-		}
+            return item;
+        }
 
 
 		// -------------------------------------------------------------

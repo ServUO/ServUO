@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    //Based Off Gnarled Staff
     [FlipableAttribute(0x48B8, 0x48B9)]
     public class GargishGnarledStaff : BaseStaff
     {
@@ -67,34 +66,7 @@ namespace Server.Items
                 return 3.25f;
             }
         }
-        public override int OldStrengthReq
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override int OldMinDamage
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int OldMaxDamage
-        {
-            get
-            {
-                return 30;
-            }
-        }
-        public override int OldSpeed
-        {
-            get
-            {
-                return 33;
-            }
-        }
+       
         public override int InitMinHits
         {
             get

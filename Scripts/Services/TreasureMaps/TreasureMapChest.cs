@@ -286,21 +286,12 @@ namespace Server.Items
                     {
                         BaseWeapon weapon = (BaseWeapon)item;
 
-                        if (Core.AOS)
-                        {
-                            int attributeCount;
-                            int min, max;
+                        int attributeCount;
+                        int min, max;
 
-                            GetRandomAOSStats(out attributeCount, out min, out max);
+                        GetRandomAOSStats(out attributeCount, out min, out max);
 
-                            BaseRunicTool.ApplyAttributesTo(weapon, attributeCount, min, max);
-                        }
-                        else
-                        {
-                            weapon.DamageLevel = (WeaponDamageLevel)Utility.Random(6);
-                            weapon.AccuracyLevel = (WeaponAccuracyLevel)Utility.Random(6);
-                            weapon.DurabilityLevel = (WeaponDurabilityLevel)Utility.Random(6);
-                        }
+                        BaseRunicTool.ApplyAttributesTo(weapon, attributeCount, min, max);
 
                         cont.DropItem(item);
                     }

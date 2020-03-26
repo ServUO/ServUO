@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    // Based off a DoubleAxe
     [FlipableAttribute(0x8FD, 0x4068)]
     public class DualShortAxes : BaseAxe
     {
@@ -10,7 +9,6 @@ namespace Server.Items
         public DualShortAxes()
             : base(0x8FD)
         {
-            //Weight = 8.0;
         }
 
         public DualShortAxes(Serial serial)
@@ -67,34 +65,7 @@ namespace Server.Items
                 return 3.00f;
             }
         }
-        public override int OldStrengthReq
-        {
-            get
-            {
-                return 45;
-            }
-        }
-        public override int OldMinDamage
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int OldMaxDamage
-        {
-            get
-            {
-                return 35;
-            }
-        }
-        public override int OldSpeed
-        {
-            get
-            {
-                return 37;
-            }
-        }
+       
         public override int InitMinHits
         {
             get

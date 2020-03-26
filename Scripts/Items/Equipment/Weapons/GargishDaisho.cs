@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    //Bassed Off Daisho
     [FlipableAttribute(0x48D0, 0x48D1)]
     public class GargishDaisho : BaseSword
     {
@@ -68,34 +67,7 @@ namespace Server.Items
                 return 2.75f;
             }
         }
-        public override int OldStrengthReq
-        {
-            get
-            {
-                return 40;
-            }
-        }
-        public override int OldMinDamage
-        {
-            get
-            {
-                return 13;
-            }
-        }
-        public override int OldMaxDamage
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override int OldSpeed
-        {
-            get
-            {
-                return 40;
-            }
-        }
+       
         public override int DefHitSound
         {
             get

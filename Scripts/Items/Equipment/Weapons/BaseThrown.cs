@@ -39,7 +39,7 @@ namespace Server.Items
                 {
                     /*
                      * Each weapon has a base and max range available to it, where the base
-                     * range is modified by the player’s strength to determine the actual range.
+                     * range is modified by the playerâ€™s strength to determine the actual range.
                      *
                      * Determining the maximum range of each weapon while in use:
                      * - Range = BaseRange + ((PlayerStrength - MinWeaponStrReq) / ((150 - MinWeaponStrReq) / 3))
@@ -112,25 +112,6 @@ namespace Server.Items
                 return WeaponAnimation.Throwing;
             }
         }
-
-        public override SkillName AccuracySkill
-        {
-            get
-            {
-                return SkillName.Throwing;
-            }
-        }
-
-        /*public override TimeSpan OnSwing(Mobile attacker, IDamageable damageable)
-        {
-            TimeSpan ts = base.OnSwing(attacker, damageable);
-
-            // time it takes to throw it around including mystic arc
-            if (ts < TimeSpan.FromMilliseconds(1000))
-                ts = TimeSpan.FromMilliseconds(1000);
-
-            return ts;
-        }*/
 
         public override bool OnFired(Mobile attacker, IDamageable damageable)
         {

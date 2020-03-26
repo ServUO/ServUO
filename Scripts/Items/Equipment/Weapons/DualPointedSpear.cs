@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    // Based off a Spear
     [FlipableAttribute(0x904, 0x406D)]
     public class DualPointedSpear : BaseSpear
     {
@@ -67,34 +66,7 @@ namespace Server.Items
                 return 2.25f;
             }
         }
-        public override int OldStrengthReq
-        {
-            get
-            {
-                return 30;
-            }
-        }
-        public override int OldMinDamage
-        {
-            get
-            {
-                return 2;
-            }
-        }
-        public override int OldMaxDamage
-        {
-            get
-            {
-                return 36;
-            }
-        }
-        public override int OldSpeed
-        {
-            get
-            {
-                return 46;
-            }
-        }
+       
         public override int InitMinHits
         {
             get

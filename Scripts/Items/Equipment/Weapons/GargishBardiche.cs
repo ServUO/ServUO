@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    //Based Off Bardiche
     [FlipableAttribute(0x48B4, 0x48B5)]
     public class GargishBardiche : BasePoleArm
     {
@@ -67,34 +66,7 @@ namespace Server.Items
                 return 3.75f;
             }
         }
-        public override int OldStrengthReq
-        {
-            get
-            {
-                return 40;
-            }
-        }
-        public override int OldMinDamage
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int OldMaxDamage
-        {
-            get
-            {
-                return 43;
-            }
-        }
-        public override int OldSpeed
-        {
-            get
-            {
-                return 26;
-            }
-        }
+        
         public override int InitMinHits
         {
             get

@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    // Based off a Kryss
     [FlipableAttribute(0x8FE, 0x4072)]
     public class BloodBlade : BaseSword
     {
@@ -10,7 +9,6 @@ namespace Server.Items
         public BloodBlade()
             : base(0x8FE)
         {
-            //Weight = 2.0;
         }
 
         public BloodBlade(Serial serial)
@@ -67,34 +65,7 @@ namespace Server.Items
                 return 2.00f;
             }
         }
-        public override int OldStrengthReq
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int OldMinDamage
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int OldMaxDamage
-        {
-            get
-            {
-                return 28;
-            }
-        }
-        public override int OldSpeed
-        {
-            get
-            {
-                return 53;
-            }
-        }
+        
         public override int DefHitSound
         {
             get
