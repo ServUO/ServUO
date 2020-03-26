@@ -110,7 +110,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosFilthyRich, 5);
+            AddLoot(LootPack.FilthyRich, 5);
         }
 
         public override void OnAfterTame(Mobile tamer)

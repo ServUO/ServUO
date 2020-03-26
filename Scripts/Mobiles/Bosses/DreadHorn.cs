@@ -51,8 +51,6 @@ namespace Server.Mobiles
 			SetSkill( SkillName.EvalInt, 110.0 );
 			SetSkill( SkillName.Meditation, 110.0 );
             SetSkill(SkillName.Spellweaving, 120.0);
-			
-			// TODO 1-3 spellweaving scroll
 
 			Fame = 32000;
 			Karma = -32000;
@@ -72,7 +70,7 @@ namespace Server.Mobiles
 		
 		public override void GenerateLoot()
 		{
-            AddLoot(LootPack.AosSuperBoss, 8);
+            AddLoot(LootPack.SuperBoss, 8);
             AddLoot(LootPack.LowScrolls, 4);
             AddLoot(LootPack.MedScrolls, 4);
             AddLoot(LootPack.HighScrolls, 4);

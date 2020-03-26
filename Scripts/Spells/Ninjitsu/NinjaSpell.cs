@@ -54,23 +54,12 @@ namespace Server.Spells.Ninjitsu
                 return false;
             }
         }
-        //public override int CastDelayBase{ get{ return 1; } }
         public override int CastRecoveryBase
         {
             get
             {
                 return 7;
             }
-        }
-        public static bool CheckExpansion(Mobile from)
-        {
-            if (!(from is PlayerMobile))
-                return true;
-
-            if (from.NetState == null)
-                return false;
-
-            return from.NetState.SupportsExpansion(Expansion.SE);
         }
 
         public override bool CheckCast()
@@ -79,12 +68,6 @@ namespace Server.Spells.Ninjitsu
 
             if (!base.CheckCast())
                 return false;
-
-            if (!CheckExpansion(this.Caster))
-            {
-                this.Caster.SendLocalizedMessage(1063456); // You must upgrade to Samurai Empire in order to use that ability.
-                return false;
-            }
 
             if (this.Caster.Skills[this.CastSkill].Value < this.RequiredSkill)
             {

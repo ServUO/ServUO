@@ -123,12 +123,6 @@ namespace Server.Items
         {
             base.OnDoubleClick(from);
 
-            if (!from.NetState.SupportsExpansion(Expansion.ML))
-            {
-                from.SendLocalizedMessage(1072791); // You must upgrade to Mondain's Legacy in order to use that item.				
-                return;
-            }
-
             if (m_UsesRemaining > 0)
             {
                 from.SendLocalizedMessage(TargetMessage);
