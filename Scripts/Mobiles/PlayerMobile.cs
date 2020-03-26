@@ -1840,7 +1840,7 @@ namespace Server.Mobiles
 				CheckLightLevels(false);
 			}
 		}
-
+    
 		#region [Stats]Max
 		[CommandProperty(AccessLevel.GameMaster)]
 		public override int HitsMax
