@@ -7853,82 +7853,54 @@ namespace Server.Mobiles
 			}
 		}
 
-		public static Item MagicArmor(int minLevel, int maxLevel, bool jewel, bool shield)
-		{
-			BaseCreature.Cap(ref minLevel, 0, 5);
-			BaseCreature.Cap(ref maxLevel, 0, 5);
-			if (Core.AOS)
-			{
-				Item item = null;
-				if (jewel)
-					item = Loot.RandomArmorOrShieldOrJewelry();
-				else
-					if (shield)
-						item = Loot.RandomArmorOrShield();
-					else
-						item = Loot.RandomArmor();
+        public static Item MagicArmor(int minLevel, int maxLevel, bool jewel, bool shield)
+        {
+            BaseCreature.Cap(ref minLevel, 0, 5);
+            BaseCreature.Cap(ref maxLevel, 0, 5);
 
-				if (item == null)
-					return null;
+            Item item = null;
+            if (jewel)
+                item = Loot.RandomArmorOrShieldOrJewelry();
+            else
+                if (shield)
+                item = Loot.RandomArmorOrShield();
+            else
+                item = Loot.RandomArmor();
 
-				int attributeCount, min, max;
+            if (item == null)
+                return null;
 
-				BaseCreature.GetRandomAOSStats(minLevel, maxLevel, out attributeCount, out min, out max);
+            int attributeCount, min, max;
 
-				if (item is BaseArmor)
-					BaseRunicTool.ApplyAttributesTo((BaseArmor)item, attributeCount, min, max);
-				else if (item is BaseJewel)
-					BaseRunicTool.ApplyAttributesTo((BaseJewel)item, attributeCount, min, max);
+            BaseCreature.GetRandomAOSStats(minLevel, maxLevel, out attributeCount, out min, out max);
 
-				return item;
-			}
-			else
-			{
-			BaseArmor armor = Loot.RandomArmorOrShield();
+            if (item is BaseArmor)
+                BaseRunicTool.ApplyAttributesTo((BaseArmor)item, attributeCount, min, max);
+            else if (item is BaseJewel)
+                BaseRunicTool.ApplyAttributesTo((BaseJewel)item, attributeCount, min, max);
 
-			if (armor == null)
-				return null;
+            return item;
+        }
 
-			armor.ProtectionLevel = (ArmorProtectionLevel)BaseCreature.RandomMinMaxScaled(minLevel, maxLevel);
-			armor.Durability = (ArmorDurabilityLevel)BaseCreature.RandomMinMaxScaled(minLevel, maxLevel);
+        public static Item MagicShield(int minLevel, int maxLevel)
+        {
+            BaseCreature.Cap(ref minLevel, 0, 5);
+            BaseCreature.Cap(ref maxLevel, 0, 5);
 
-			return armor;
-			}
-		}
+            Item item = Loot.RandomShield();
 
-		public static Item MagicShield(int minLevel, int maxLevel)
-		{
-			BaseCreature.Cap(ref minLevel, 0, 5);
-			BaseCreature.Cap(ref maxLevel, 0, 5);
-			if (Core.AOS)
-			{
-				Item item = Loot.RandomShield();
+            if (item == null)
+                return null;
 
-				if (item == null)
-					return null;
+            int attributeCount, min, max;
 
-				int attributeCount, min, max;
+            BaseCreature.GetRandomAOSStats(minLevel, maxLevel, out attributeCount, out min, out max);
 
-				BaseCreature.GetRandomAOSStats(minLevel, maxLevel, out attributeCount, out min, out max);
+            if (item is BaseArmor)
+                BaseRunicTool.ApplyAttributesTo((BaseArmor)item, attributeCount, min, max);
 
-				if (item is BaseArmor)
-					BaseRunicTool.ApplyAttributesTo((BaseArmor)item, attributeCount, min, max);
-
-				return item;
-			}
-			else
-			{
-			BaseArmor armor = Loot.RandomShield();
-
-			if (armor == null)
-				return null;
-
-			armor.ProtectionLevel = (ArmorProtectionLevel)BaseCreature.RandomMinMaxScaled(minLevel, maxLevel);
-			armor.Durability = (ArmorDurabilityLevel)BaseCreature.RandomMinMaxScaled(minLevel, maxLevel);
-
-			return armor;
-			}
-		}
+            return item;
+        }
 
         public static Item MagicWeapon(int minLevel, int maxLevel, bool jewel)
         {
