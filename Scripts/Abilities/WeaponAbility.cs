@@ -32,14 +32,6 @@ namespace Server.Items
             }
         }
 
-        public virtual bool RequiresSE
-        {
-            get
-            {
-                return false;
-            }
-        }
-
 		/// <summary>
 		///		Return false to make this special ability consume no ammo from ranged weapons
 		/// </summary>
@@ -270,12 +262,6 @@ namespace Server.Items
 
             if (state == null)
                 return false;
-
-            if (RequiresSE && !state.SupportsExpansion(Expansion.SE))
-            {
-                from.SendLocalizedMessage(1063456); // You must upgrade to Samurai Empire in order to use that ability.
-                return false;
-            }
 
             if (Spells.Bushido.HonorableExecution.IsUnderPenalty(from) || Spells.Ninjitsu.AnimalForm.UnderTransformation(from))
             {

@@ -54,12 +54,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         { 
-            if (from.NetState == null || !from.NetState.SupportsExpansion(Expansion.ML))
-            {
-                from.SendLocalizedMessage(1072608); // You must upgrade to the Mondain's Legacy expansion in order to enter here.				
-                return;
-            }
-            else if (!MondainsLegacy.Labyrinth && (int)from.AccessLevel < (int)AccessLevel.GameMaster)
+            if (!MondainsLegacy.Labyrinth && (int)from.AccessLevel < (int)AccessLevel.GameMaster)
             {
                 from.SendLocalizedMessage(1042753, "Labyrinth"); // ~1_SOMETHING~ has been temporarily disabled.
                 return;
