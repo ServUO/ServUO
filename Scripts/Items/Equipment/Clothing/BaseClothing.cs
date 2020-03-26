@@ -141,7 +141,7 @@ namespace Server.Items
                     return 125;
                 }
 
-                return m_StrReq == -1 ? (Core.AOS ? AosStrReq : OldStrReq) : m_StrReq;
+                return m_StrReq == -1 ? AosStrReq : m_StrReq;
             }
             set
             {
@@ -524,13 +524,6 @@ namespace Server.Items
                 return 10;
             }
         }
-        public virtual int OldStrReq
-        {
-            get
-            {
-                return 0;
-            }
-        }
 
         public virtual int InitMinHits
         {
@@ -666,9 +659,6 @@ namespace Server.Items
 
         public int GetLowerStatReq()
         {
-            if (!Core.AOS)
-                return 0;
-
             return m_AosClothingAttributes.LowerStatReq;
         }
 
@@ -678,8 +668,7 @@ namespace Server.Items
 
             if (mob != null)
             {
-                if (Core.AOS)
-                    m_AosSkillBonuses.AddTo(mob);
+                m_AosSkillBonuses.AddTo(mob);
 
                 #region Mondain's Legacy Sets
                 if (IsSetItem)
@@ -707,8 +696,7 @@ namespace Server.Items
 
             if (mob != null)
             {
-                if (Core.AOS)
-                    m_AosSkillBonuses.Remove();
+                m_AosSkillBonuses.Remove();
 
                 #region Mondain's Legacy Sets
                 if (IsSetItem && m_SetEquipped)
@@ -745,7 +733,7 @@ namespace Server.Items
 
             if (chance >= Utility.Random(100)) // 25% chance to lower durability
             {
-                int selfRepair = !Core.AOS ? 0 : m_AosClothingAttributes.SelfRepair + (IsSetItem && m_SetEquipped ? m_SetSelfRepair : 0);
+                int selfRepair = m_AosClothingAttributes.SelfRepair + (IsSetItem && m_SetEquipped ? m_SetSelfRepair : 0);
 
                 if (selfRepair > 0 && NextSelfRepair < DateTime.UtcNow)
                 {
@@ -1236,7 +1224,7 @@ namespace Server.Items
             if ((prop = m_AosAttributes.LowerAmmoCost) != 0)
 				list.Add(1075208, prop.ToString()); // Lower Ammo Cost ~1_Percentage~%
 
-            if (Core.ML && (prop = m_AosAttributes.IncreasedKarmaLoss) != 0)
+            if ((prop = m_AosAttributes.IncreasedKarmaLoss) != 0)
                 list.Add(1075210, prop.ToString()); // Increased Karma Loss ~1val~%
 
             base.AddResistanceProperties(list);
@@ -1808,8 +1796,7 @@ namespace Server.Items
 
             if (parent != null)
             {
-                if (Core.AOS)
-                    m_AosSkillBonuses.AddTo(parent);
+                m_AosSkillBonuses.AddTo(parent);
 
                 AddStatBonuses(parent);
                 parent.CheckStatTimers();
@@ -1888,7 +1875,7 @@ namespace Server.Items
             }
 
             // Arms Lore Bonus - Verified on EA
-            if (Core.ML && from != null)
+            if (from != null)
             {
                 double div = Siege.SiegeShard ? 12.5 : 20;
                 int bonus = (int)Math.Min(4, (from.Skills.ArmsLore.Value / div));
