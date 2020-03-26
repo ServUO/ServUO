@@ -96,13 +96,7 @@ namespace Server.Mobiles
                 return 1;
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
+
         public override void GenerateLoot()
         {
 			AddLoot(LootPack.UltraRich, 2);

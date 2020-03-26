@@ -58,7 +58,6 @@ namespace Server.Mobiles
         public override int Hides { get { return 20; } }
         public override int Meat { get { return 19; } } // where's it hiding these? :)
         public override HideType HideType { get { return HideType.Barbed; } }
-        public override OppositionGroup OppositionGroup { get { return OppositionGroup.FeyAndUndead; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
         public override TribeType Tribe { get { return TribeType.Undead; } }
 

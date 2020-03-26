@@ -59,13 +59,6 @@ namespace Server.Mobiles
                 return 20.0;
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override bool InitialInnocent
         {
             get
