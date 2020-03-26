@@ -1856,7 +1856,7 @@ namespace Server.Mobiles
 				AddArmorRating(ref rating, ChestArmor);
 				AddArmorRating(ref rating, ShieldArmor);
 
-				return VirtualArmor + VirtualArmorMod + rating;
+				return VirtualArmor + rating;
 			}
 		}
 

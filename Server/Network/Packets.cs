@@ -3611,7 +3611,7 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.Write((short)m.ManaMax);
 
 			m_Stream.Write(m.TotalGold);
-			m_Stream.Write((short)(Core.AOS ? m.PhysicalResistance : (int)(m.ArmorRating + 0.5)));
+			m_Stream.Write((short)(m.PhysicalResistance));
 			m_Stream.Write((short)(Mobile.BodyWeight + m.TotalWeight));
 
 			if (type >= 5)
@@ -3728,7 +3728,7 @@ m_Stream.Write( (int) renderMode );
                 WriteAttr(beheld.Mana, beheld.ManaMax);
 
                 m_Stream.Write(beheld.TotalGold);
-                m_Stream.Write((short)(Core.AOS ? beheld.PhysicalResistance : (int)(beheld.ArmorRating + 0.5)));
+                m_Stream.Write((short)(beheld.PhysicalResistance));
                 m_Stream.Write((short)(Mobile.BodyWeight + beheld.TotalWeight));
 
                 if (type >= 5)
