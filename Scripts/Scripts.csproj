@@ -2453,7 +2453,6 @@
     <Compile Include="Mobiles\Normal\TerathanDrone.cs" />
     <Compile Include="Mobiles\Normal\TerathanMatriarch.cs" />
     <Compile Include="Mobiles\Normal\TerathanWarrior.cs" />
-    <Compile Include="Mobiles\Normal\ThirdDawnParrot.cs" />
     <Compile Include="Mobiles\Normal\TigersClawMaster.cs" />
     <Compile Include="Mobiles\Normal\TimberWolf.cs" />
     <Compile Include="Mobiles\Normal\Titan.cs" />

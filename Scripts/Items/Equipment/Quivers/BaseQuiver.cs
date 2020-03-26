@@ -430,7 +430,7 @@ namespace Server.Items
                 if (ranged != null)
                     ranged.InvalidateProperties();
 
-                #region Mondain's Legacy Sets
+                #region Item Sets
                 if (IsSetItem)
                 {
                     m_SetEquipped = SetHelper.FullSetEquipped(mob, SetID, Pieces);
@@ -454,7 +454,7 @@ namespace Server.Items
                 m_Attributes.RemoveStatBonuses(mob);
                 m_AosSkillBonuses.Remove();
 
-                #region Mondain's Legacy Sets
+                #region Item Sets
                 if (IsSetItem && m_SetEquipped)
                     SetHelper.RemoveSetBonus(mob, SetID, this);
                 #endregion
@@ -463,7 +463,7 @@ namespace Server.Items
 
         public override bool OnDragLift(Mobile from)
         {
-            #region Mondain's Legacy Sets
+            #region Item Sets
             if (Parent is Mobile && from == Parent)
             {
                 if (IsSetItem && m_SetEquipped)
@@ -476,13 +476,11 @@ namespace Server.Items
 
         public override bool CanEquip(Mobile m)
         {
-            #region Stygian Abyss
             if (m.Race == Race.Gargoyle)
             {
                 m.SendLocalizedMessage(1111708); // Gargoyles can't wear 
                 return false;
             }
-            #endregion
 
             if (m.IsPlayer())
             {
@@ -508,12 +506,6 @@ namespace Server.Items
                     m.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
                     return false;
                 }
-            }
-
-            if (m.NetState != null && !m.NetState.SupportsExpansion(Expansion.ML))
-            {
-                m.SendLocalizedMessage(1072791); // You must upgrade to Mondain's Legacy in order to use that item.				
-                return false;
             }
 
             return true;
@@ -715,16 +707,6 @@ namespace Server.Items
             }
             #endregion
         }
-
-		public override void OnSingleClick(Mobile from)
-		{
-			base.OnSingleClick(from);
-
-			if (m_Crafter != null)
-			{
-				LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
-			}
-		}
 
         public int SetResistBonus(ResistanceType resist)
         {

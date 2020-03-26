@@ -47,18 +47,6 @@ namespace Server.Items
             }
         }
 
-        public override bool CanEquip(Mobile m)
-        {
-            if (m.NetState != null && !m.NetState.SupportsExpansion(Expansion.ML))
-            {
-                m.SendLocalizedMessage(1072791); // You must upgrade to Mondain's Legacy in order to use that item.
-				
-                return false;
-            }
-			
-            return true;
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);			

@@ -71,32 +71,10 @@ namespace Server.Spells.Spellweaving
 			return from.Backpack.FindItemByType<ArcaneFocus>();
 		}
 
-		public static bool CheckExpansion(Mobile from)
-		{
-			if (!(from is PlayerMobile))
-			{
-				return true;
-			}
-
-			if (from.NetState == null)
-			{
-				return false;
-			}
-
-			return from.NetState.SupportsExpansion(Expansion.ML);
-		}
-
 		public override bool CheckCast()
 		{
 			if (!base.CheckCast())
 			{
-				return false;
-			}
-
-			if (!CheckExpansion(Caster))
-			{
-				Caster.SendLocalizedMessage(1072176);
-					// You must upgrade to the Mondain's Legacy Expansion Pack before using that ability
 				return false;
 			}
 

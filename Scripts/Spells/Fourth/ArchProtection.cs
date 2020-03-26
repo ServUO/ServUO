@@ -61,47 +61,18 @@ namespace Server.Spells.Fourth
                     eable.Free();
                 }
 
-                if (Core.AOS)
+                Party party = Party.Get(this.Caster);
+
+                for (int i = 0; i < targets.Count; ++i)
                 {
-                    Party party = Party.Get(this.Caster);
+                    Mobile m = targets[i];
 
-                    for (int i = 0; i < targets.Count; ++i)
+                    if (m == this.Caster || (party != null && party.Contains(m)))
                     {
-                        Mobile m = targets[i];
-
-                        if (m == this.Caster || (party != null && party.Contains(m)))
-                        {
-                            this.Caster.DoBeneficial(m);
-                            Spells.Second.ProtectionSpell.Toggle(this.Caster, m, true);
-                        }
+                        this.Caster.DoBeneficial(m);
+                        Spells.Second.ProtectionSpell.Toggle(this.Caster, m, true);
                     }
-                }
-                else
-                {
-                    Effects.PlaySound(p, this.Caster.Map, 0x299);
-
-                    int val = (int)(this.Caster.Skills[SkillName.Magery].Value / 10.0 + 1);
-
-                    if (targets.Count > 0)
-                    {
-                        for (int i = 0; i < targets.Count; ++i)
-                        {
-                            Mobile m = targets[i];
-
-                            if (m.BeginAction(typeof(ArchProtectionSpell)))
-                            {
-                                this.Caster.DoBeneficial(m);
-                                m.VirtualArmorMod += val;
-
-                                AddEntry(m, val);
-                                new InternalTimer(m, this.Caster).Start();
-
-                                m.FixedParticles(0x375A, 9, 20, 5027, EffectLayer.Waist);
-                                m.PlaySound(0x1F7);
-                            }
-                        }
-                    }
-                }
+                }            
             }
 
             this.FinishSequence();
@@ -121,9 +92,6 @@ namespace Server.Spells.Fourth
                 int v = _Table[m];
                 _Table.Remove(m);
                 m.EndAction(typeof(ArchProtectionSpell));
-                m.VirtualArmorMod -= v;
-                if (m.VirtualArmorMod < 0)
-                    m.VirtualArmorMod = 0;
             }
         }
 
@@ -153,7 +121,7 @@ namespace Server.Spells.Fourth
         {
             private readonly ArchProtectionSpell m_Owner;
             public InternalTarget(ArchProtectionSpell owner)
-                : base(Core.ML ? 10 : 12, true, TargetFlags.None)
+                : base(10, true, TargetFlags.None)
             {
                 this.m_Owner = owner;
             }
