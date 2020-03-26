@@ -716,20 +716,7 @@ namespace Server.Guilds
 
 				Guild g = null;
 
-				if (o is Guildstone)
-				{
-					Guildstone stone = o as Guildstone;
-					if (stone.Guild == null || stone.Guild.Disbanded)
-					{
-						from.SendMessage("The guild associated with that Guildstone no longer exists");
-						return;
-					}
-					else
-					{
-						g = stone.Guild;
-					}
-				}
-				else if (o is Mobile)
+				if (o is Mobile)
 				{
 					g = ((Mobile)o).Guild as Guild;
 				}
