@@ -91,13 +91,7 @@ namespace Server.Mobiles
                 return new MonsterStatuetteType[] { MonsterStatuetteType.DreadHorn };
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
+
         public override bool Unprovokable
         {
             get

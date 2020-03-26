@@ -77,7 +77,6 @@ namespace Server.Mobiles
 		public override int Meat { get { return 1; } }
 
 		public override InhumanSpeech SpeechType { get { return InhumanSpeech.Orc; } }
-		public override OppositionGroup OppositionGroup { get { return OppositionGroup.SavagesAndOrcs; } }
         public override TribeType Tribe { get { return TribeType.Orc; } }
 		public override void GenerateLoot()
 

@@ -67,13 +67,7 @@ namespace Server.Mobiles
                 return new Type[] { typeof(SummonersKilt) };
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
+
         public override bool Unprovokable
         {
             get

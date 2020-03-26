@@ -15,14 +15,6 @@ namespace Server.Mobiles
             }
         }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
-
         [Constructable]
         public MLDryad()
             : base(AIType.AI_Mage, FightMode.Evil, 10, 1, 0.2, 0.4)

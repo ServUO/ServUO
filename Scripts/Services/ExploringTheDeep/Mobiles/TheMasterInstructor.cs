@@ -1,4 +1,4 @@
-﻿using Server.Items;
+using Server.Items;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -100,7 +100,6 @@ namespace Server.Mobiles
         }
         
         public override bool AlwaysMurderer { get { return true; } }
-        public override OppositionGroup OppositionGroup { get { return OppositionGroup.FeyAndUndead; } }
         public override bool Unprovokable { get { return true; } }
         public override bool BleedImmune { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }

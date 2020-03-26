@@ -59,11 +59,6 @@ namespace Server.Mobiles
             AddLoot(LootPack.MedScrolls, 2);
         }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get { return OppositionGroup.FeyAndUndead; }
-        }
-
         public override int TreasureMapLevel { get { return Utility.RandomMinMax(1, 3); } }
         public override bool BleedImmune { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }

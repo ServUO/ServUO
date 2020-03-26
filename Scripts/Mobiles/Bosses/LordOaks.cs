@@ -139,13 +139,6 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Fey; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override Poison PoisonImmune
         {
             get

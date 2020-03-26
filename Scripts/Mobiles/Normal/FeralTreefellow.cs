@@ -46,13 +46,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override bool BleedImmune
         {
             get
