@@ -14,7 +14,7 @@ namespace Server.Mobiles
 		{
 			m_Mobile.DebugSay("I have no combatant");
 
-			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
+			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false))
 			{
 				m_Mobile.DebugSay("I have detected {0}, attacking", m_Mobile.FocusMob.Name);
 
@@ -45,7 +45,7 @@ namespace Server.Mobiles
 			if (!m_Mobile.InRange(c, m_Mobile.RangePerception))
 			{
 				// They are somewhat far away, can we find something else?
-				if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
+				if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false))
 				{
 					m_Mobile.Combatant = m_Mobile.FocusMob;
 					m_Mobile.FocusMob = null;
@@ -66,32 +66,32 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (MoveTo(c, true, m_Mobile.RangeFight))
-			{
-				if (!DirectionLocked)
-					m_Mobile.Direction = m_Mobile.GetDirectionTo(c);
-			}
-			else if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
-			{
-				m_Mobile.DebugSay("My move is blocked, so I am going to attack {0}", m_Mobile.FocusMob.Name);
+            if (MoveTo(c, true, m_Mobile.RangeFight))
+            {
+                if (!DirectionLocked)
+                    m_Mobile.Direction = m_Mobile.GetDirectionTo(c);
+            }
+            else if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false))
+            {
+                m_Mobile.DebugSay("My move is blocked, so I am going to attack {0}", m_Mobile.FocusMob.Name);
 
-				m_Mobile.Combatant = m_Mobile.FocusMob;
-				Action = ActionType.Combat;
+                m_Mobile.Combatant = m_Mobile.FocusMob;
+                Action = ActionType.Combat;
 
-				return true;
-			}
-			else if (m_Mobile.GetDistanceToSqrt(c) > m_Mobile.RangePerception + 1)
-			{
-				m_Mobile.DebugSay("I cannot find {0}, so my guard is up", c.Name);
+                return true;
+            }
+            else if (m_Mobile.GetDistanceToSqrt(c) > m_Mobile.RangePerception + 1)
+            {
+                m_Mobile.DebugSay("I cannot find {0}, so my guard is up", c.Name);
 
-				Action = ActionType.Guard;
+                Action = ActionType.Guard;
 
-				return true;
-			}
-			else
-			{
-				m_Mobile.DebugSay("I should be closer to {0}", c.Name);
-			}
+                return true;
+            }
+            else
+            {
+                m_Mobile.DebugSay("I should be closer to {0}", c.Name);
+            }
 
 			if (!m_Mobile.Controlled && !m_Mobile.Summoned && m_Mobile.CanFlee)
 			{
@@ -111,7 +111,7 @@ namespace Server.Mobiles
 
 		public override bool DoActionGuard()
 		{
-			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
+			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false))
 			{
 				m_Mobile.DebugSay("I have detected {0}, attacking", m_Mobile.FocusMob.Name);
 

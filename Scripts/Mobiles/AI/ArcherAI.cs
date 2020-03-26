@@ -12,7 +12,7 @@ namespace Server.Mobiles
 		{
 			m_Mobile.DebugSay("I have no combatant");
 
-			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
+			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false))
 			{
 				m_Mobile.DebugSay("I have detected {0} and I will attack", m_Mobile.FocusMob.Name);
 
@@ -75,22 +75,22 @@ namespace Server.Mobiles
 			return true;
 		}
 
-		public override bool DoActionGuard()
-		{
-			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
-			{
-				m_Mobile.DebugSay("I have detected {0}, attacking", m_Mobile.FocusMob.Name);
+        public override bool DoActionGuard()
+        {
+            if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false))
+            {
+                m_Mobile.DebugSay("I have detected {0}, attacking", m_Mobile.FocusMob.Name);
 
-				m_Mobile.Combatant = m_Mobile.FocusMob;
-				Action = ActionType.Combat;
-			}
-			else
-			{
-				base.DoActionGuard();
-			}
+                m_Mobile.Combatant = m_Mobile.FocusMob;
+                Action = ActionType.Combat;
+            }
+            else
+            {
+                base.DoActionGuard();
+            }
 
-			return true;
-		}
+            return true;
+        }
 
 		public override bool DoActionFlee()
 		{

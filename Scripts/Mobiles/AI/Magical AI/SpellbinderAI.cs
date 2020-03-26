@@ -61,7 +61,7 @@ namespace Server.Mobiles
 
 		public override bool DoActionWander()
 		{
-			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
+			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false))
 			{
 				m_Mobile.DebugSay("I am going to attack {0}", m_Mobile.FocusMob.Name);
 
@@ -143,7 +143,7 @@ namespace Server.Mobiles
 
 				m_Mobile.DebugSay("I am stuck, I'm going to try teleporting away");
 			}
-			else if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
+			else if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false))
 			{
 				m_Mobile.DebugSay("My move is blocked, so I am going to attack {0}", m_Mobile.FocusMob.Name);
 
@@ -316,7 +316,7 @@ namespace Server.Mobiles
 			{
 				// Our combatant is deleted, dead, hidden, or we cannot hurt them
 				// Try to find another combatant
-				if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
+				if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false))
 				{
 					m_Mobile.DebugSay("Something happened to my combatant, so I am going to fight {0}", m_Mobile.FocusMob.Name);
 
@@ -333,7 +333,7 @@ namespace Server.Mobiles
 
 			if (!m_Mobile.InLOS(c))
 			{
-				if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
+				if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false))
 				{
 					m_Mobile.Combatant = c = m_Mobile.FocusMob;
 					m_Mobile.FocusMob = null;
@@ -347,7 +347,7 @@ namespace Server.Mobiles
 			if (!m_Mobile.InRange(c, m_Mobile.RangePerception))
 			{
 				// They are somewhat far away, can we find something else?
-				if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
+				if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false))
 				{
 					m_Mobile.Combatant = m_Mobile.FocusMob;
 					m_Mobile.FocusMob = null;
@@ -447,7 +447,7 @@ namespace Server.Mobiles
 
 		public override bool DoActionGuard()
 		{
-			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
+			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false))
 			{
 				m_Mobile.DebugSay("I am going to attack {0}", m_Mobile.FocusMob.Name);
 
