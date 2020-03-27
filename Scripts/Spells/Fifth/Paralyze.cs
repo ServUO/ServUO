@@ -37,7 +37,7 @@ namespace Server.Spells.Fifth
             {
                 this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
-            else if (Core.AOS && (m.Frozen || m.Paralyzed || (m.Spell != null && m.Spell.IsCasting && !(m.Spell is PaladinSpell))))
+            else if (m.Frozen || m.Paralyzed || (m.Spell != null && m.Spell.IsCasting && !(m.Spell is PaladinSpell)))
             {
                 this.Caster.SendLocalizedMessage(1061923); // The target is already frozen.
             }
@@ -49,29 +49,15 @@ namespace Server.Spells.Fifth
 
                 double duration;
 				
-                if (Core.AOS)
-                {
-                    int secs = (int)((this.GetDamageSkill(this.Caster) / 10) - (this.GetResistSkill(m) / 10));
+                int secs = (int)((this.GetDamageSkill(this.Caster) / 10) - (this.GetResistSkill(m) / 10));
 					
-                    if (!Core.SE)
-                        secs += 2;
+                if (!m.Player)
+                    secs *= 3;
 
-                    if (!m.Player)
-                        secs *= 3;
+                if (secs < 0)
+                    secs = 0;
 
-                    if (secs < 0)
-                        secs = 0;
-
-                    duration = secs;
-                }
-                else
-                {
-                    // Algorithm: ((20% of magery) + 7) seconds [- 50% if resisted]
-                    duration = 7.0 + (this.Caster.Skills[SkillName.Magery].Value * 0.2);
-
-                    if (this.CheckResisted(m))
-                        duration *= 0.75;
-                }
+                duration = secs;
 
                 if (m is PlagueBeastLord)
                 {
@@ -94,7 +80,7 @@ namespace Server.Spells.Fifth
         {
             private readonly ParalyzeSpell m_Owner;
             public InternalTarget(ParalyzeSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(10, false, TargetFlags.Harmful)
             {
                 this.m_Owner = owner;
             }

@@ -3686,7 +3686,7 @@ namespace Server.Mobiles
         #endregion
 
         public virtual bool AutoDispel { get { return false; } }
-        public virtual double AutoDispelChance { get { return 1.0; } }
+        public virtual double AutoDispelChance { get { return 0.1; } }
 
         public virtual bool IsScaryToPets { get { return false; } }
         public virtual bool IsScaredOfScaryThings { get { return true; } }

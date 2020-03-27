@@ -13,14 +13,14 @@ namespace Server.Spells.Ninjitsu
         {
             get
             {
-                return Core.ML ? 10 : 20;
+                return 10;
             }
         }
         public override double RequiredSkill
         {
             get
             {
-                return Core.ML ? 30.0 : 60 ;
+                return 30.0;
             }
         }
         public override TextDefinition AbilityMessage

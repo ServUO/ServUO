@@ -22,7 +22,7 @@ namespace Server.Spells.Ninjitsu
         {
             get
             {
-                return Core.ML ? 60.0 : 30.0;
+                return 60;
             }
         }
         public override TextDefinition AbilityMessage

@@ -97,7 +97,7 @@ namespace Server.Spells.Seventh
         {
             private readonly MassDispelSpell m_Owner;
             public InternalTarget(MassDispelSpell owner)
-                : base(Core.ML ? 10 : 12, true, TargetFlags.None)
+                : base(10, true, TargetFlags.None)
             {
                 this.m_Owner = owner;
             }

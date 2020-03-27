@@ -16,7 +16,7 @@ namespace Server.Spells.Necromancy
             9031,
             Reagent.NoxCrystal,
             Reagent.GraveDust);
-        private static readonly int Range = (Core.ML ? 48 : 18);
+        private static readonly int Range = 48;
         private static readonly Point3D[] m_BritanniaLocs = new Point3D[]
         {
             new Point3D(1470, 843, 0),

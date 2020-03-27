@@ -11,8 +11,6 @@ namespace Server.Gumps
 {
     public class MasterySelectionGump : BaseGump
     {
-        //public const int Red = 0x4800;
-        //public const int Blue = 0x000F;
         public const int Red = 0x8e2525;
         public const int Blue = 0x000066;
 

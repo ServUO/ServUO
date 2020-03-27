@@ -102,68 +102,15 @@ namespace Server.Spells.Second
 
         public override bool CheckCast()
         {
-            if (Core.AOS)
-                return true;
-
-            if (m_Registry.ContainsKey(this.Caster))
-            {
-                this.Caster.SendLocalizedMessage(1005559); // This spell is already in effect.
-                return false;
-            }
-            else if (!this.Caster.CanBeginAction(typeof(DefensiveSpell)))
-            {
-                this.Caster.SendLocalizedMessage(1005385); // The spell will not adhere to you at this time.
-                return false;
-            }
-
             return true;
         }
 
         public override void OnCast()
         {
-            if (Core.AOS)
-            {
-                if (this.CheckSequence())
-                    Toggle(this.Caster, this.Caster, false);
+            if (this.CheckSequence())
+                Toggle(this.Caster, this.Caster, false);
 
-                this.FinishSequence();
-            }
-            else
-            {
-                if (m_Registry.ContainsKey(this.Caster))
-                {
-                    this.Caster.SendLocalizedMessage(1005559); // This spell is already in effect.
-                }
-                else if (!this.Caster.CanBeginAction(typeof(DefensiveSpell)))
-                {
-                    this.Caster.SendLocalizedMessage(1005385); // The spell will not adhere to you at this time.
-                }
-                else if (this.CheckSequence())
-                {
-                    if (this.Caster.BeginAction(typeof(DefensiveSpell)))
-                    {
-                        double value = (int)(this.Caster.Skills[SkillName.EvalInt].Value + this.Caster.Skills[SkillName.Meditation].Value + this.Caster.Skills[SkillName.Inscribe].Value);
-                        value /= 4;
-
-                        if (value < 0)
-                            value = 0;
-                        else if (value > 75)
-                            value = 75.0;
-
-                        Registry.Add(this.Caster, value);
-                        new InternalTimer(this.Caster).Start();
-
-                        this.Caster.FixedParticles(0x375A, 9, 20, 5016, EffectLayer.Waist);
-                        this.Caster.PlaySound(0x1ED);
-                    }
-                    else
-                    {
-                        this.Caster.SendLocalizedMessage(1005385); // The spell will not adhere to you at this time.
-                    }
-                }
-
-                this.FinishSequence();
-            }
+            this.FinishSequence();
         }
 
         #region SA

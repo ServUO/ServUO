@@ -42,7 +42,7 @@ namespace Server.Spells.Mysticism
 
                 SpellHelper.Turn(Caster, target);
 
-                if (Core.SA && HasDelayContext(target))
+                if (HasDelayContext(target))
                 {
                     DoHurtFizzle();
                     return;

@@ -9,7 +9,7 @@ namespace Server.Spells.Fourth
     {
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Arch Protection", "Vas Uus Sanct",
-            Core.AOS ? 239 : 215,
+            239,
             9011,
             Reagent.Garlic,
             Reagent.Ginseng,
@@ -50,7 +50,7 @@ namespace Server.Spells.Fourth
 
                 if (map != null)
                 {
-                    IPooledEnumerable eable = map.GetMobilesInRange(new Point3D(p), Core.AOS ? 2 : 3);
+                    IPooledEnumerable eable = map.GetMobilesInRange(new Point3D(p), 2);
 
                     foreach (Mobile m in eable)
                     {

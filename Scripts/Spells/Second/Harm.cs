@@ -8,7 +8,7 @@ namespace Server.Spells.Second
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Harm", "An Mani",
             212,
-            Core.AOS ? 9001 : 9041,
+            9001,
             Reagent.Nightshade,
             Reagent.SpidersSilk);
         public HarmSpell(Mobile caster, Item scroll)
@@ -55,48 +55,22 @@ namespace Server.Spells.Second
 
                 SpellHelper.CheckReflect((int)this.Circle, ref source, ref m);
 
-                double damage = 0;
-				
-                if (Core.AOS)
-                {
-                    damage = GetNewAosDamage(17, 1, 5, m);
-                }
-                else if (mob != null)
-                {
-                    damage = Utility.Random(1, 15);
-
-                    if (this.CheckResisted(mob))
-                    {
-                        damage *= 0.75;
-
-                        mob.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
-                    }
-
-                    damage *= this.GetDamageScalar(mob);
-                }
+                double damage = GetNewAosDamage(17, 1, 5, m);
 
                 if (!this.Caster.InRange(m, 2))
                     damage *= 0.25; // 1/4 damage at > 2 tile range
                 else if (!this.Caster.InRange(m, 1))
                     damage *= 0.50; // 1/2 damage at 2 tile range
 
-                if (Core.AOS)
+                if (mob != null)
                 {
-                    if (mob != null)
-                    {
-                        mob.FixedParticles(0x374A, 10, 30, 5013, 1153, 2, EffectLayer.Waist);
-                        mob.PlaySound(0x0FC);
-                    }
-                    else
-                    {
-                        Effects.SendLocationParticles(m, 0x374A, 10, 30, 1153, 2, 5013, 0);
-                        Effects.PlaySound(m.Location, m.Map, 0x0FC);
-                    }
+                    mob.FixedParticles(0x374A, 10, 30, 5013, 1153, 2, EffectLayer.Waist);
+                    mob.PlaySound(0x0FC);
                 }
-                else if (mob != null)
+                else
                 {
-                    mob.FixedParticles(0x374A, 10, 15, 5013, EffectLayer.Waist);
-                    mob.PlaySound(0x1F1);
+                    Effects.SendLocationParticles(m, 0x374A, 10, 30, 1153, 2, 5013, 0);
+                    Effects.PlaySound(m.Location, m.Map, 0x0FC);
                 }
 
                 if (damage > 0)
@@ -112,7 +86,7 @@ namespace Server.Spells.Second
         {
             private readonly HarmSpell m_Owner;
             public InternalTarget(HarmSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(10, false, TargetFlags.Harmful)
             {
                 this.m_Owner = owner;
             }

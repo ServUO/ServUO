@@ -8,7 +8,7 @@ namespace Server.Spells.Fifth
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Mind Blast", "Por Corp Wis",
             218,
-            Core.AOS ? 9002 : 9032,
+            9002,
             Reagent.BlackPearl,
             Reagent.MandrakeRoot,
             Reagent.Nightshade,
@@ -16,8 +16,7 @@ namespace Server.Spells.Fifth
         public MindBlastSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
-            if (Core.AOS)
-                m_Info.LeftHandEffect = m_Info.RightHandEffect = 9002;
+            m_Info.LeftHandEffect = m_Info.RightHandEffect = 9002;
         }
 
         public override SpellCircle Circle
@@ -25,13 +24,6 @@ namespace Server.Spells.Fifth
             get
             {
                 return SpellCircle.Fifth;
-            }
-        }
-        public override bool DelayedDamage
-        {
-            get
-            {
-                return !Core.AOS;
             }
         }
         public override void OnCast()
@@ -45,7 +37,7 @@ namespace Server.Spells.Fifth
             {
                 Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
-            else if (Core.AOS)
+            else
             {
                 if (Caster.CanBeHarmful(m) && CheckSequence())
                 {
@@ -65,61 +57,6 @@ namespace Server.Spells.Fifth
                         new TimerStateCallback(AosDelay_Callback),
                         new object[] { Caster, target, m, damage });
                 }
-            }
-            else if (CheckHSequence(m))
-            {
-                Mobile from = Caster, target = m;
-
-                SpellHelper.Turn(from, target);
-
-                if(target != null)
-                    SpellHelper.CheckReflect((int)Circle, ref from, ref target);
-
-                // Algorithm: (highestStat - lowestStat) / 2 [- 50% if resisted]
-
-                int highestStat = target.Str, lowestStat = target.Str;
-
-                if (target.Dex > highestStat)
-                    highestStat = target.Dex;
-
-                if (target.Dex < lowestStat)
-                    lowestStat = target.Dex;
-
-                if (target.Int > highestStat)
-                    highestStat = target.Int;
-
-                if (target.Int < lowestStat)
-                    lowestStat = target.Int;
-
-                if (highestStat > 150)
-                    highestStat = 150;
-
-                if (lowestStat > 150) 
-                    lowestStat = 150;
-                double damage;
-                if (Core.AOS)
-                {
-                    damage = GetDamageScalar(m)*(highestStat - lowestStat)/4; //less damage
-                }
-                else
-                {
-                    damage = GetDamageScalar(m) * (highestStat - lowestStat) / 2; //less damage
-                }
-                if (damage > 45)
-                    damage = 45;
-
-                if (CheckResisted(target))
-                {
-                    damage /= 2;
-                    target.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
-                }
-
-                from.FixedParticles(0x374A, 10, 15, 2038, EffectLayer.Head);
-
-                target.FixedParticles(0x374A, 10, 15, 5038, EffectLayer.Head);
-                target.PlaySound(0x213);
-
-                SpellHelper.Damage(this, target, damage, 0, 0, 100, 0, 0);
             }
 
             FinishSequence();
@@ -151,7 +88,7 @@ namespace Server.Spells.Fifth
         {
             private readonly MindBlastSpell m_Owner;
             public InternalTarget(MindBlastSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(10, false, TargetFlags.Harmful)
             {
                 m_Owner = owner;
             }

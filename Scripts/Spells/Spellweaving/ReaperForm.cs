@@ -88,41 +88,16 @@ namespace Server.Spells.Spellweaving
                 return 10 + this.FocusLevel;
             }
         }
-        public static void Initialize()
-        {
-            if (!Core.SA)
-            {
-                EventSink.Login += new LoginEventHandler(OnLogin);
-            }
-        }
-
-        public static void OnLogin(LoginEventArgs e)
-        {
-            TransformContext context = TransformationSpellHelper.GetContext(e.Mobile);
-
-            if (context != null && context.Type == typeof(ReaperFormSpell))
-                e.Mobile.SendSpeedControl(SpeedControlType.WalkSpeed);
-        }
 
         public override void DoEffect(Mobile m)
         {
             m.PlaySound(0x1BA);
 
             BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.ReaperForm, 1071034, 1153781, "10\t10\t5\t5\t5\t5\t25"));
-
-            if (!Core.SA)
-            {
-                m.SendSpeedControl(SpeedControlType.WalkSpeed);
-            }
         }
 
         public override void RemoveEffect(Mobile m)
         {
-            if (!Core.SA)
-            {
-                m.SendSpeedControl(SpeedControlType.Disable);
-            }
-
             BuffInfo.RemoveBuff(m, BuffIcon.ReaperForm);
         }
     }
