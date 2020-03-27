@@ -5503,22 +5503,6 @@ namespace Server.Mobiles
             EpiphanyHelper.OnKarmaChange(this);
 		}
 
-		public override void OnSkillChange(SkillName skill, double oldBase)
-		{
-			if (Young)
-			{
-                if (SkillsTotal >= 4500)
-                {
-                    Account acc = Account as Account;
-
-                    if (acc != null)
-                    {
-                        acc.RemoveYoungStatus(1019036);
-                        // You have successfully obtained a respectable skill level, and have outgrown your status as a young player!
-                    }
-                }
-			}
-
             if (skill != SkillName.Alchemy && Skills.CurrentMastery == skill && Skills[skill].Value < MasteryInfo.MinSkillRequirement)
             {
                 //SendLocalizedMessage(1156236, String.Format("{0}\t{1}", MasteryInfo.MinSkillRequirement.ToString(), Skills[skill].Info.Name)); // You need at least ~1_SKILL_REQUIREMENT~ ~2_SKILL_NAME~ skill to use that mastery.
