@@ -32,9 +32,9 @@ namespace Server.Items
                 ((CrystallineRing)item).Attributes.CastRecovery = 3;
             }
 
-            if (item is FeyLeggings)
+            if (item is HumanFeyLeggings)
             {
-                var fey = (FeyLeggings)item;
+                var fey = (HumanFeyLeggings)item;
 
                 if (fey.PhysicalBonus != 3)
                     fey.PhysicalBonus = 3;
