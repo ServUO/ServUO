@@ -43,8 +43,6 @@ namespace Server.Mobiles
             Fame = 3500;
             Karma = -3500;
 
-            VirtualArmor = 20;
-
             Item ore = new DullCopperOre(oreAmount);
             ore.ItemID = 0x19B9;
             PackItem(ore);

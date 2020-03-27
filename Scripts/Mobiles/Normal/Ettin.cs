@@ -35,8 +35,6 @@ namespace Server.Mobiles
 
             this.Fame = 3000;
             this.Karma = -3000;
-
-            this.VirtualArmor = 38;
         }
 
         public Ettin(Serial serial)

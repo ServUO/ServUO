@@ -43,8 +43,6 @@ namespace Server.Mobiles
             Fame = 15000;
             Karma = -15000;
 
-            VirtualArmor = 58;
-
             SetSpecialAbility(SpecialAbility.DragonBreath);
             SetAreaEffect(AreaEffect.AuraDamage);
         }        

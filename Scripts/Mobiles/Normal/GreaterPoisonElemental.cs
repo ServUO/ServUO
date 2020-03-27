@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public GreaterPoisonElemental()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "Greater Poison Elemental";
+            Name = "greater poison elemental";
             Body = 162;
             BaseSoundID = 263;
 
@@ -46,8 +46,6 @@ namespace Server.Mobiles
 
             Fame = 12500;
             Karma = -12500;
-
-            VirtualArmor = 70;
 
             PackItem(new Nightshade(4));
             PackItem(new LesserPoisonPotion());

@@ -3,7 +3,6 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("a giant toad corpse")]
-    [TypeAlias("Server.Mobiles.Gianttoad")]
     public class GiantToad : BaseCreature
     {
         [Constructable]
@@ -35,8 +34,6 @@ namespace Server.Mobiles
 
             this.Fame = 750;
             this.Karma = -750;
-
-            this.VirtualArmor = 24;
 
             this.Tamable = true;
             this.ControlSlots = 1;
@@ -94,20 +91,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-            if (version < 1)
-            {
-                this.AI = AIType.AI_Melee;
-                this.FightMode = FightMode.Closest;
-            }
         }
     }
 }

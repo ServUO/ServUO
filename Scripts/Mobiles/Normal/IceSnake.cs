@@ -3,7 +3,6 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("an ice snake corpse")]
-    [TypeAlias("Server.Mobiles.Icesnake")]
     public class IceSnake : BaseCreature
     {
         [Constructable]
@@ -38,8 +37,6 @@ namespace Server.Mobiles
 
             this.Fame = 900;
             this.Karma = -900;
-
-            this.VirtualArmor = 30;
         }
 
         public IceSnake(Serial serial)
@@ -69,14 +66,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

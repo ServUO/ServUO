@@ -11,7 +11,7 @@ namespace Server.Mobiles
         public EffeteUndeadGargoyle()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an Effete Undead Gargoyle";
+            this.Name = "an effete undead gargoyle";
             this.Body = 722;
             this.BaseSoundID = 372;
 
@@ -37,8 +37,6 @@ namespace Server.Mobiles
 
             this.Fame = 3500;
             this.Karma = -3500;
-
-            this.VirtualArmor = 32;
         }
 
         public EffeteUndeadGargoyle(Serial serial)

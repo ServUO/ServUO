@@ -55,7 +55,6 @@ namespace Server.Mobiles
             Fame = 2500;
             Karma = -2500;
 
-            VirtualArmor = 16;
             PackReg(6);
 
             if (Core.AOS)
@@ -109,7 +108,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.AOS ? 1 : 0;
+                return 1;
             }
         }
         public override void GenerateLoot()
