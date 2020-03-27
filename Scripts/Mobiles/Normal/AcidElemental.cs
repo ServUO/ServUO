@@ -46,8 +46,6 @@ namespace Server.Mobiles
             Fame = 10000;
             Karma = -10000;
 
-            VirtualArmor = 70;
-
             PackItem(new Nightshade(4));
         }
 

@@ -185,7 +185,6 @@ namespace Server.Mobiles
 
             PackAnimal.GetContextMenuEntries(this, from, list);
         }
-
         #endregion
 
         public override void OnAfterTame(Mobile tamer)

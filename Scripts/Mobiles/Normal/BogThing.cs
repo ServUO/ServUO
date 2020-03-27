@@ -39,8 +39,6 @@ namespace Server.Mobiles
             this.Fame = 8000;
             this.Karma = -8000;
 
-            this.VirtualArmor = 28;
-
             if (0.25 > Utility.RandomDouble())
                 this.PackItem(new Board(10));
             else
@@ -56,13 +54,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS;
-            }
-        }
         public override Poison PoisonImmune
         {
             get

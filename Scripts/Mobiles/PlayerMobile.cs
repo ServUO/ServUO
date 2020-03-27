@@ -6386,7 +6386,7 @@ namespace Server.Mobiles
 		#region Buff Icons
 		public void ResendBuffs()
 		{
-			if (!BuffInfo.Enabled || m_BuffTable == null)
+			if (m_BuffTable == null)
 			{
 				return;
 			}
@@ -6406,7 +6406,7 @@ namespace Server.Mobiles
 
 		public void AddBuff(BuffInfo b)
 		{
-			if (!BuffInfo.Enabled || b == null)
+			if (b == null)
 			{
 				return;
 			}

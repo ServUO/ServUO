@@ -42,7 +42,6 @@ namespace Server.Mobiles
             Fame = 15000;
             Karma = -15000;
 
-            VirtualArmor = 65;
             SpeechHue = Utility.RandomDyedHue();
 
             PackItem(new PowerCrystal());
@@ -65,13 +64,6 @@ namespace Server.Mobiles
             get
             {
                 return true;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS;
             }
         }
         public override Poison PoisonImmune
@@ -167,14 +159,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

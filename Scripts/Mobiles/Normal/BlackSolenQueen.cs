@@ -44,8 +44,6 @@ namespace Server.Mobiles
             this.Fame = 4500;
             this.Karma = -4500;
 
-            this.VirtualArmor = 45;
-
             SolenHelper.PackPicnicBasket(this);
 
             this.PackItem(new ZoogiFungus((Utility.RandomDouble() > 0.05) ? 5 : 25));
@@ -271,14 +269,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             m_Timer = new SpawnTimer(this);

@@ -42,8 +42,6 @@ namespace Server.Mobiles
 
             Fame = 22000;
             Karma = -22000;
-
-            VirtualArmor = 34;
         }
 
         public DarknightCreeper(Serial serial)
@@ -57,28 +55,21 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.ML;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.SE;
+                return true;
             }
         }
         public override bool Unprovokable
         {
             get
             {
-                return Core.SE;
+                return true;
             }
         }
         public override bool AreaPeaceImmune
         {
             get
             {
-                return Core.SE;
+                return true;
             }
         }
         public override bool BleedImmune
@@ -113,8 +104,6 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.UltraRich, 2);
         }
-
-       
 
         public override void Serialize(GenericWriter writer)
         {

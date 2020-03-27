@@ -42,8 +42,6 @@ namespace Server.Mobiles
             Fame = 4500;
             Karma = -4500;
 
-            this.VirtualArmor = 40;
-
 			switch (Utility.Random(24))
             {
                 case 0: PackItem(new PainSpikeScroll()); break;

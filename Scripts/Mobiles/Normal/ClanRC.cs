@@ -6,7 +6,6 @@ namespace Server.Mobiles
     [CorpseName("a clan ribbon courtier corpse")]
     public class ClanRC : BaseCreature
     {
-        //public override InhumanSpeech SpeechType{ get{ return InhumanSpeech.Ratman; } }
         [Constructable]
         public ClanRC()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -38,8 +37,6 @@ namespace Server.Mobiles
 
             Fame = 1500;
             Karma = -1500;
-
-            VirtualArmor = 48;
         }
 
         public ClanRC(Serial serial)

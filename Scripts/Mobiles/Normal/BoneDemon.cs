@@ -40,8 +40,6 @@ namespace Server.Mobiles
 
             Fame = 20000;
             Karma = -20000;
-
-            VirtualArmor = 44;
         }
 
         public BoneDemon(Serial serial)
@@ -49,25 +47,18 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.SE;
-            }
-        }
         public override bool Unprovokable
         {
             get
             {
-                return Core.SE;
+                return true;
             }
         }
         public override bool AreaPeaceImmune
         {
             get
             {
-                return Core.SE;
+                return true;
             }
         }
         public override Poison PoisonImmune
