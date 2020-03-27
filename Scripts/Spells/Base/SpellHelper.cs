@@ -415,8 +415,6 @@ namespace Server.Spells
                 span /= 2;
 
             return TimeSpan.FromSeconds(span);
-
-            return TimeSpan.FromSeconds(caster.Skills[SkillName.Magery].Value * 1.2);
         }
 
         public static int GetCurseOffset(Mobile m, StatType type)

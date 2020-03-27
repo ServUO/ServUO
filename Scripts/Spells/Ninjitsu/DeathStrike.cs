@@ -119,7 +119,7 @@ namespace Server.Spells.Ninjitsu
             if (info == null)	//sanity
                 return;
 
-            int maxDamage, damage = 0;
+            int damage = 0;
 
             double ninjitsu = info.m_Attacker.Skills[SkillName.Ninjitsu].Value;
             double stalkingBonus = Tracking.GetStalkingBonus(info.m_Attacker, info.m_Target);

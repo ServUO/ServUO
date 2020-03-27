@@ -11,14 +11,10 @@ namespace Server
 	{
 		public static int GetLuckChance(Mobile killer, Mobile victim)
 		{
-			if (!Core.AOS)
-			{
-				return 0;
-			}
-
 			int luck = killer is PlayerMobile ? ((PlayerMobile)killer).RealLuck : killer.Luck;
 
             PlayerMobile pmKiller = killer as PlayerMobile;
+
 			if (pmKiller != null && pmKiller.SentHonorContext != null && pmKiller.SentHonorContext.Target == victim)
 			{
 				luck += pmKiller.SentHonorContext.PerfectionLuckBonus;
@@ -85,7 +81,7 @@ namespace Server
 				return;
 			}
 
-			bool checkLuck = Core.AOS;
+			bool checkLuck = true;
 
 			for (int i = 0; i < m_Entries.Length; ++i)
 			{
@@ -693,12 +689,13 @@ namespace Server
 				typeof(SummonFamiliarScroll), typeof(WraithFormScroll)
 			},
 			new[] // med
-			{typeof(LichFormScroll), typeof(PoisonStrikeScroll), typeof(StrangleScroll), typeof(WitherScroll)},
-			((Core.SE)
-				 ? new[] // high
-				 {typeof(VengefulSpiritScroll), typeof(VampiricEmbraceScroll), typeof(ExorcismScroll)}
-				 : new[] // high
-				 {typeof(VengefulSpiritScroll), typeof(VampiricEmbraceScroll)})
+			{
+                typeof(LichFormScroll), typeof(PoisonStrikeScroll), typeof(StrangleScroll), typeof(WitherScroll)
+            },
+			new [] // high
+            {
+                typeof(VengefulSpiritScroll), typeof(VampiricEmbraceScroll), typeof(ExorcismScroll)
+            }
 		};
 
         private static readonly SpellbookType[] m_BookTypes = new[]
@@ -730,20 +727,20 @@ namespace Server
 
             // Magery scrolls are weighted at 4 because there are four times as many magery
             // spells as other scolls of magic
-            rndMax = 4;
-            if (Core.ML)
-                rndMax += 2;
-            else if (Core.AOS)
-                rndMax += 1;
+            rndMax = 7;
+
             rnd = Utility.Random(rndMax);
             rnd -= 3;
+
             if (rnd < 0)
                 rnd = 0;
 
             minIndex = m_ScrollIndexMin[rnd][minCircle];
             maxIndex = m_ScrollIndexMax[rnd][maxCircle];
+
             if (rnd == 2 && maxCircle == 7)
                 ++maxIndex;
+
             spellBookType = m_BookTypes[rnd];
 
             return Loot.RandomScroll(minIndex, maxIndex, spellBookType);
@@ -773,7 +770,7 @@ namespace Server
 				}
 				else if (m_Type == typeof(BaseJewel))
 				{
-					item = Core.AOS ? Loot.RandomJewelry(isStygian) : Loot.RandomArmorOrShieldOrWeapon(isStygian);
+					item = Loot.RandomJewelry(isStygian);
 				}
 				else if (m_Type == typeof(BaseInstrument))
 				{
