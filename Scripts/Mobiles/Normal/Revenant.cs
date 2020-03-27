@@ -51,8 +51,6 @@ namespace Server.Mobiles
 
 			ControlSlots = 3;
 
-			VirtualArmor = 32;
-
 			Item shroud = new Robe();
             shroud.ItemID = 0x2683;
 			shroud.Hue = 0x455;
@@ -168,14 +166,12 @@ namespace Server.Mobiles
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-
 			writer.Write(0);
 		}
 
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
-
 			int version = reader.ReadInt();
 
 			Delete();

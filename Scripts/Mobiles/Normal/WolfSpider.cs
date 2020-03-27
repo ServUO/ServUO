@@ -124,17 +124,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                Hue = 0;
-                Body = 736;
-            }
-
-            if (version == 1 && (AbilityProfile == null || AbilityProfile.MagicalAbility == MagicalAbility.None))
-            {
-                SetMagicalAbility(MagicalAbility.Poisoning);
-            }
         }
     }
 }

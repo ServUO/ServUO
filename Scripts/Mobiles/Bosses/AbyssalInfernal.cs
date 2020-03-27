@@ -50,8 +50,6 @@ namespace Server.Mobiles
 
             Fame = 28000;
             Karma = -28000;
-
-            VirtualArmor = 40;
         }
 
         public AbyssalInfernal(Serial serial)

@@ -34,8 +34,6 @@ namespace Server.Mobiles
 
             Fame = 600;
             Karma = -600;
-
-            VirtualArmor = 18;
         }
 
         public Zombie(Serial serial)

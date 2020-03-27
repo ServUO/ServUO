@@ -84,7 +84,6 @@ namespace Server.Mobiles
             Fame = 30000;
             Karma = -30000;
 
-            VirtualArmor = 50;
             PackTalismans(5);
             PackResources(8);
 

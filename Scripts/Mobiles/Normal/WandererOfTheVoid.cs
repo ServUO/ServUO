@@ -41,8 +41,6 @@ namespace Server.Mobiles
 
             this.Fame = 20000;
             this.Karma = -20000;
-
-            this.VirtualArmor = 44;
         }
 
         public WandererOfTheVoid(Serial serial)
@@ -68,7 +66,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.AOS ? 4 : 1;
+                return 4;
             }
         }
         public override void GenerateLoot()

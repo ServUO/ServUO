@@ -33,8 +33,6 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Tactics, 91.0, 100.0);
             this.SetSkill(SkillName.Wrestling, 91.0, 100.0);
 
-            this.VirtualArmor = 22;
-
             this.Fame = 2000;
             this.Karma = 5000;
         }
@@ -44,13 +42,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS;
-            }
-        }
         public override bool CanRummageCorpses
         {
             get

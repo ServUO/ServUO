@@ -50,8 +50,6 @@ namespace Server.Mobiles
             Fame = 3600;
             Karma = -3600;
 
-            VirtualArmor = 40;
-
             PackItem(new Scimitar());
             PackItem(new WoodenShield());
 

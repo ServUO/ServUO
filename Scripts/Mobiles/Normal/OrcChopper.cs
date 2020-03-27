@@ -39,13 +39,10 @@ namespace Server.Mobiles
             Fame = 4500;
             Karma = -4500;
 
-            VirtualArmor = 54;
-
             PackItem(new Log(Utility.RandomMinMax(1, 10)));
             PackItem(new Board(Utility.RandomMinMax(10, 20)));
             PackItem(new ExecutionersAxe());
 
-            // TODO: Skull?
             switch (Utility.Random(7))
             {
                 case 0:
@@ -71,8 +68,7 @@ namespace Server.Mobiles
                     break;
             }
 
-            if (Core.AOS)
-                PackItem(Loot.RandomNecromancyReagent());
+            PackItem(Loot.RandomNecromancyReagent());
 
             if (0.5 > Utility.RandomDouble())
                 PackItem(new Yeast());
@@ -113,8 +109,6 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
-
-            c.DropItem(new DoubleAxe());
 
             if (Utility.RandomDouble() < 0.1)
                 c.DropItem(new EvilOrcHelm());

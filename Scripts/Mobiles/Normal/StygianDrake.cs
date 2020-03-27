@@ -41,8 +41,6 @@ namespace Server.Mobiles
             Fame = 5500;
             Karma = -5500;
 
-            VirtualArmor = 46;
-
             Tamable = true;
             ControlSlots = 4;
             MinTameSkill = 85.0;
@@ -69,7 +67,6 @@ namespace Server.Mobiles
         public override FoodType FavoriteFood { get { return FoodType.Meat | FoodType.Fish; } }
         public override bool CanFly { get { return true; } }
         public override bool CanAngerOnTame { get { return true; } }
-        //public override bool StatLossAfterTame { get { return true; } }
 
         public override void GenerateLoot()
         {

@@ -53,18 +53,12 @@ namespace Server.Mobiles
             Fame = 24000;
             Karma = -24000;
 
-            VirtualArmor = 44;
-
             for (int i = 0; i < Utility.RandomMinMax(1, 3); i++)
             {
                 PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
 
-            if (Core.ML)
-            {
-                PackTalismans(5);
-            }
-
+            PackTalismans(5);
             PackGold(2000, 2500);
 
             SetSpecialAbility(SpecialAbility.DragonBreath);

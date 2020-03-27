@@ -37,8 +37,6 @@ namespace Server.Mobiles
             this.Fame = 450;
             this.Karma = -450;
 
-            this.VirtualArmor = 16;
-
             switch ( Utility.Random(5))
             {
                 case 0:

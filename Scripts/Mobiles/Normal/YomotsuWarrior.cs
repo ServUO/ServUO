@@ -40,7 +40,6 @@ namespace Server.Mobiles
             Karma = -4200;
 
             PackItem(new GreenGourd());
-            PackItem(new ExecutionersAxe());
 
             if (Utility.RandomBool())
                 PackItem(new LongPants());
@@ -63,7 +62,7 @@ namespace Server.Mobiles
                     break;
             }
 
-            if (Utility.RandomDouble() < .25)
+            if (Utility.RandomDouble() < 0.25)
                 PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
 
             SetWeaponAbility(WeaponAbility.DoubleStrike);

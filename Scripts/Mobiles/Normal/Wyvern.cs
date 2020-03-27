@@ -38,8 +38,6 @@ namespace Server.Mobiles
 
             this.Fame = 4000;
             this.Karma = -4000;
-
-            this.VirtualArmor = 40;
 			
             this.PackItem(new LesserPoisonPotion());
         }

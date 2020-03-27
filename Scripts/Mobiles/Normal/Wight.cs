@@ -44,8 +44,6 @@ namespace Server.Mobiles
             Fame = 1500;
             Karma = -1500;
 
-            VirtualArmor = 19;
-
             SetWeaponAbility(WeaponAbility.MortalStrike);
             SetWeaponAbility(WeaponAbility.ColdWind);
         }

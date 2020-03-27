@@ -3,7 +3,6 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("a hell cat corpse")]
-    [TypeAlias("Server.Mobiles.Preditorhellcat")]
     public class PredatorHellCat : BaseCreature
     {
         [Constructable]
@@ -39,8 +38,6 @@ namespace Server.Mobiles
 
             Fame = 2500;
             Karma = -2500;
-
-            VirtualArmor = 30;
 
             Tamable = true;
             ControlSlots = 2;
@@ -90,14 +87,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

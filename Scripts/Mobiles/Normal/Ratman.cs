@@ -36,8 +36,6 @@ namespace Server.Mobiles
 
             this.Fame = 1500;
             this.Karma = -1500;
-
-            this.VirtualArmor = 28;
         }
 
         public Ratman(Serial serial)
@@ -76,7 +74,6 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);
-            // TODO: weapon, misc
         }
 
         public override void Serialize(GenericWriter writer)

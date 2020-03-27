@@ -41,8 +41,6 @@ namespace Server.Mobiles
             Fame = 22500;
             Karma = -22500;
 
-            VirtualArmor = 80;
-
             SetSpecialAbility(SpecialAbility.Webbing);
 
             ForceActiveSpeed = 0.3;

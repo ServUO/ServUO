@@ -43,7 +43,6 @@ namespace Server.Mobiles
             Fame = 5000;
             Karma = -3500;
 
-            VirtualArmor = 16;
             SetSpecialAbility(SpecialAbility.ColossalBlow);
         }
 

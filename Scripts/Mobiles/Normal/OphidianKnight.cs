@@ -4,7 +4,6 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("an ophidian corpse")]
-    [TypeAlias("Server.Mobiles.OphidianAvenger")]
     public class OphidianKnight : BaseCreature
     {
         private static readonly string[] m_Names = new string[]
@@ -44,8 +43,6 @@ namespace Server.Mobiles
 
             this.Fame = 10000;
             this.Karma = -10000;
-
-            this.VirtualArmor = 40;
 
             this.PackItem(new LesserPoisonPotion());
         }

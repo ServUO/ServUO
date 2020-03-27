@@ -46,7 +46,6 @@ namespace Server.Mobiles
 			Fame = 6000;
 			Karma = -6000;
 
-            VirtualArmor = 40; 
             SetWeaponAbility(WeaponAbility.Dismount);
 		}
 

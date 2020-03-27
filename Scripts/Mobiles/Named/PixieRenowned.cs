@@ -43,8 +43,6 @@ namespace Server.Mobiles
             this.Fame = 7000;
             this.Karma = 7000;
 
-            this.VirtualArmor = 100;
-
             if (0.02 > Utility.RandomDouble())
                 this.PackStatue();				
         }

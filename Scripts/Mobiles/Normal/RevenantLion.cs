@@ -106,7 +106,6 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Rich, 2);
             AddLoot(LootPack.MedScrolls, 2);
-            // TODO: Bone Pile
         }
 
         public override void Serialize(GenericWriter writer)

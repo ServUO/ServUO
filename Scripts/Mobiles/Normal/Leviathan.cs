@@ -92,13 +92,8 @@ namespace Server.Mobiles
 
             PackItem(new MessageInABottle());
 
-            Rope rope = new Rope();
-            rope.ItemID = 0x14F8;
-            PackItem(rope);
-
-            rope = new Rope();
-            rope.ItemID = 0x14FA;
-            PackItem(rope);
+            PackItem(new Rope());
+			PackItem(new Rope());
 
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
