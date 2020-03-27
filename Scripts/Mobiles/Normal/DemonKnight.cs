@@ -53,8 +53,6 @@ namespace Server.Mobiles
             Fame = 28000;
             Karma = -28000;
 
-            VirtualArmor = 64;
-
             SetWeaponAbility(WeaponAbility.CrushingBlow);
             SetWeaponAbility(WeaponAbility.WhirlwindAttack);
 

@@ -35,13 +35,11 @@ namespace Server.Mobiles
             Fame = 300;
             Karma = 0;
 
-            VirtualArmor = 10;
-
             Tamable = true;
             ControlSlots = 1;
             MinTameSkill = 11.1;
 
-            if (Core.AOS && Utility.Random(1000) == 0) // 0.1% chance to have mad cows
+            if (Utility.Random(1000) == 0) // 0.1% chance to have mad cows
                 FightMode = FightMode.Closest;
         }
 

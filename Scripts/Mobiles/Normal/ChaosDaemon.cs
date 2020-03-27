@@ -38,8 +38,6 @@ namespace Server.Mobiles
             Fame = 3000;
             Karma = -4000;
 
-            VirtualArmor = 15;
-
             SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 

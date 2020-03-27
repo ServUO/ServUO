@@ -3,7 +3,6 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("a cat corpse")]
-    [TypeAlias("Server.Mobiles.Housecat")]
     public class Cat : BaseCreature
     {
         [Constructable]
@@ -35,8 +34,6 @@ namespace Server.Mobiles
 
             this.Fame = 0;
             this.Karma = 150;
-
-            this.VirtualArmor = 8;
 
             this.Tamable = true;
             this.ControlSlots = 1;
@@ -72,14 +69,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

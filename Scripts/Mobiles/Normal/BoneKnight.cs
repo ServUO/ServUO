@@ -37,33 +37,6 @@ namespace Server.Mobiles
 
             this.Fame = 3000;
             this.Karma = -3000;
-
-            this.VirtualArmor = 40;
-			
-            switch ( Utility.Random(6) )
-            {
-                case 0:
-                    this.PackItem(new PlateArms());
-                    break;
-                case 1:
-                    this.PackItem(new PlateChest());
-                    break;
-                case 2:
-                    this.PackItem(new PlateGloves());
-                    break;
-                case 3:
-                    this.PackItem(new PlateGorget());
-                    break;
-                case 4:
-                    this.PackItem(new PlateLegs());
-                    break;
-                case 5:
-                    this.PackItem(new PlateHelm());
-                    break;
-            }
-
-            this.PackItem(new Scimitar());
-            this.PackItem(new WoodenShield());
         }
 
         public BoneKnight(Serial serial)

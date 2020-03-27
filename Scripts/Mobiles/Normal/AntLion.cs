@@ -43,15 +43,13 @@ namespace Server.Mobiles
             Fame = 4500;
             Karma = -4500;
 
-            VirtualArmor = 45;
-
             PackItem(new Bone(3));
             PackItem(new FertileDirt(Utility.RandomMinMax(1, 5)));
 
-            if (Core.ML && Utility.RandomDouble() < .33)
+            if (Utility.RandomDouble() < .33)
                 PackItem(Engines.Plants.Seed.RandomPeculiarSeed(3));
 
-            Item orepile = null; /* no trust, no love :( */
+            Item orepile = null; 
 
             switch (Utility.Random(4))
             {
@@ -200,7 +198,6 @@ namespace Server.Mobiles
         public void BeginAcidBreath()
         {
             PlayerMobile m = Combatant as PlayerMobile;
-            // Mobile m = Combatant;
 
             if (m == null || m.Deleted || !m.Alive || !Alive || m_NextAcidBreath > DateTime.Now || !CanBeHarmful(m))
                 return;

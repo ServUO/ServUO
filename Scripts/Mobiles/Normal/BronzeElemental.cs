@@ -16,7 +16,6 @@ namespace Server.Mobiles
         public BronzeElemental(int oreAmount)
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            // TODO: Gas attack
             Name = "a bronze elemental";
             Body = 108;
             BaseSoundID = 268;
@@ -44,8 +43,6 @@ namespace Server.Mobiles
 
             Fame = 5000;
             Karma = -5000;
-
-            VirtualArmor = 29;
 
             Item ore = new BronzeOre(oreAmount);
             ore.ItemID = 0x19B9;

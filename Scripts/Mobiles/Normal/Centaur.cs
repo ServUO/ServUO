@@ -39,9 +39,8 @@ namespace Server.Mobiles
             Fame = 6500;
             Karma = 0;
 
-            VirtualArmor = 50;
             AddItem(new Bow());
-            PackItem(new Arrow(Utility.RandomMinMax(80, 90))); // OSI it is different: in a sub backpack, this is probably just a limitation of their engine
+            PackItem(new Arrow(Utility.RandomMinMax(80, 90))); 
         }
 
         public Centaur(Serial serial)

@@ -43,8 +43,6 @@ namespace Server.Mobiles
             Fame = 4000;
             Karma = -4000;
 
-            VirtualArmor = 40;
-
             AddItem(new LightSource());
         }
 
@@ -60,13 +58,6 @@ namespace Server.Mobiles
                 return InhumanSpeech.Wisp;
             }
         }
-        /*public override Ethics.Ethic EthicAllegiance
-        {
-            get
-            {
-                return Ethics.Ethic.Evil;
-            }
-        }*/
         public override TimeSpan ReacquireDelay
         {
             get

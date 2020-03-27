@@ -37,8 +37,6 @@ namespace Server.Mobiles
             Fame = 450;
             Karma = -450;
 
-            VirtualArmor = 28;
-
             PackItem(new Log(4));
             PackItem(new Engines.Plants.Seed());
         }
