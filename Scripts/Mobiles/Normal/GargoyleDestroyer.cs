@@ -42,8 +42,6 @@ namespace Server.Mobiles
             this.Fame = 10000;
             this.Karma = -10000;
 
-            this.VirtualArmor = 50;
-
             if (0.2 > Utility.RandomDouble())
                 this.PackItem(new GargoylesPickaxe());
         }
@@ -53,13 +51,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS;
-            }
-        }
         public override int Meat
         {
             get

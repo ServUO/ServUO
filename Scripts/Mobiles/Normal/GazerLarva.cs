@@ -33,8 +33,6 @@ namespace Server.Mobiles
             this.Fame = 900;
             this.Karma = -900;
 
-            this.VirtualArmor = 25;
-
             this.PackItem(new Nightshade(Utility.RandomMinMax(2, 3)));
         }
 

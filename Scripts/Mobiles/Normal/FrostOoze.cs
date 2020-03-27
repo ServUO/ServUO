@@ -34,8 +34,6 @@ namespace Server.Mobiles
 
             this.Fame = 450;
             this.Karma = -450;
-
-            this.VirtualArmor = 38;
         }
 
         public FrostOoze(Serial serial)

@@ -36,8 +36,6 @@ namespace Server.Mobiles
             Fame = 600;
             Karma = -600;
 
-            VirtualArmor = 16;
-
             Tamable = true;
             ControlSlots = 1;
             MinTameSkill = 59.1;
@@ -93,11 +91,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version == 0 && (AbilityProfile == null || AbilityProfile.MagicalAbility == MagicalAbility.None))
-            {
-                SetMagicalAbility(MagicalAbility.Poisoning);
-            }
         }
     }
 }

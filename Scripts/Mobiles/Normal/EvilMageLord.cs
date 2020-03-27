@@ -42,7 +42,6 @@ namespace Server.Mobiles
             Fame = 10500;
             Karma = -10500;
 
-            VirtualArmor = 16;
 			switch (Utility.Random(16))
             {
                 case 0: PackItem(new BloodOathScroll()); break;
@@ -51,10 +50,6 @@ namespace Server.Mobiles
                 case 3: PackItem(new LichFormScroll()); break;
 			}
             PackReg(23);
-            if (Utility.RandomBool())
-                PackItem(new Shoes());
-            else
-                PackItem(new Sandals());
         }
 
         public override int GetDeathSound()
@@ -97,7 +92,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.AOS ? 2 : 0;
+                return 2;
             }
         }
         public override void GenerateLoot()

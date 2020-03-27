@@ -39,8 +39,6 @@ namespace Server.Mobiles
 
             this.Fame = 12500;
             this.Karma = -12500;
-
-            this.VirtualArmor = 50;
         }
 
         public ElderGazer(Serial serial)
@@ -52,7 +50,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.AOS ? 4 : 0;
+                return 4;
             }
         }
         public override void GenerateLoot()

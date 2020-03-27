@@ -42,14 +42,6 @@ namespace Server.Mobiles
         {
         }
 
-        /*public override bool InitialInnocent
-        {
-            get
-            {
-                return true;
-            }
-        }*/
-
         public override bool AlwaysMurderer { get { return true; } }
 
         public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
@@ -119,14 +111,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-	
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
-            base.Deserialize(reader);
-	
+            base.Deserialize(reader);	
             int version = reader.ReadInt();
         }
     }

@@ -3,7 +3,6 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [TypeAlias("Server.Mobiles.DreadSpiderWeak")]
     [CorpseName("a dread spider corpse")]
     public class DreadSpider : BaseCreature
     {
@@ -45,8 +44,6 @@ namespace Server.Mobiles
             Fame = 5000;
             Karma = -5000;
 
-            VirtualArmor = 36;
-
             PackItem(new SpidersSilk(8));
 
             Tamable = true;
@@ -79,11 +76,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version == 0 && (AbilityProfile == null || AbilityProfile.MagicalAbility == MagicalAbility.None))
-            {
-                SetMagicalAbility(MagicalAbility.Poisoning);
-            }
         }
     }
 }
