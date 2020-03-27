@@ -40,8 +40,6 @@ namespace Server.Mobiles
 
             this.Fame = 10000;
             this.Karma = -10000;
-
-            this.VirtualArmor = 40;
         }
 
         public ToxicElemental(Serial serial)
@@ -74,7 +72,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.AOS ? 2 : 3;
+                return 2;
             }
         }
         public override void GenerateLoot()

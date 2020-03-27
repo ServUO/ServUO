@@ -38,8 +38,6 @@ namespace Server.Mobiles
             Fame = 17500;
             Karma = -5500;
 
-            VirtualArmor = 54;
-
             Tamable = false;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)

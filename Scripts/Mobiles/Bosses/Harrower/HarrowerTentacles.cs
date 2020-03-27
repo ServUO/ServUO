@@ -52,8 +52,6 @@ namespace Server.Mobiles
             this.Fame = 15000;
             this.Karma = -15000;
 
-            this.VirtualArmor = 60;
-
             this.m_Timer = new DrainTimer(this);
             this.m_Timer.Start();
 
@@ -64,7 +62,6 @@ namespace Server.Mobiles
             {
                 case 0: PackItem(new VampiricEmbraceScroll()); break;
 			}
-
         }
 
         public HarrowerTentacles(Serial serial)

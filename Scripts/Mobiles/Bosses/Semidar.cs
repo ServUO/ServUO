@@ -43,7 +43,6 @@ namespace Server.Mobiles
             Fame = 24000;
             Karma = -24000;
 
-            VirtualArmor = 20;
             SetSpecialAbility(SpecialAbility.LifeDrain);
 
             ForceActiveSpeed = 0.3;

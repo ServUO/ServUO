@@ -41,8 +41,6 @@ namespace Server.Mobiles
             Fame = 22500;
             Karma = -22500;
 
-            VirtualArmor = 130;
-
             ForceActiveSpeed = 0.35;
             ForcePassiveSpeed = 0.7;
         }

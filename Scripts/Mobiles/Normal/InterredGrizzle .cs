@@ -49,14 +49,7 @@ namespace Server.Mobiles
             }
         }
 		public override bool CanBeParagon { get { return false; } }
-        /*
-        public override bool OnBeforeDeath()
-        {
-        SpillAcid( 1, 4, 10, 6, 10 );
 
-        return base.OnBeforeDeath();
-        }
-        */
         public InterredGrizzle(Serial serial)
             : base(serial)
         {

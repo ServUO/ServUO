@@ -38,8 +38,6 @@ namespace Server.Mobiles
             Fame = 5000;
             Karma = -5000;
 
-            VirtualArmor = 50;
-
             PackItem(new BlackPearl(3));
             Item ore = new IronOre(3);
             ore.ItemID = 0x19B8;

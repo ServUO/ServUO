@@ -33,8 +33,6 @@ namespace Server.Mobiles
             this.Fame = 150;
             this.Karma = -150;
 
-            this.VirtualArmor = 10;
-
             this.Tamable = true;
             this.ControlSlots = 1;
             this.MinTameSkill = 71.1;

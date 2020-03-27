@@ -36,8 +36,6 @@ namespace Server.Mobiles
 
             this.Fame = 1500;
             this.Karma = -1500;
-
-            this.VirtualArmor = 32;
         }
 
         public Quagmire(Serial serial)

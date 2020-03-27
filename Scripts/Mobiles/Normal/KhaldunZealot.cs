@@ -39,7 +39,6 @@ namespace Server.Mobiles
 
             this.Fame = 10000;
             this.Karma = -10000;
-            this.VirtualArmor = 40;
 
             VikingSword weapon = new VikingSword();
             weapon.Hue = 0x835;
@@ -165,14 +164,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

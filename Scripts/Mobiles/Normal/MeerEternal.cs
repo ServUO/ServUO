@@ -42,8 +42,6 @@ namespace Server.Mobiles
             this.Fame = 18000;
             this.Karma = 18000;
 
-            this.VirtualArmor = 34;
-
 			switch (Utility.Random(12))
             {
                 case 0: PackItem(new StrangleScroll()); break;

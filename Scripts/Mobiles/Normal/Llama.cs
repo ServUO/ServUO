@@ -33,8 +33,6 @@ namespace Server.Mobiles
             this.Fame = 300;
             this.Karma = 0;
 
-            this.VirtualArmor = 16;
-
             this.Tamable = true;
             this.ControlSlots = 1;
             this.MinTameSkill = 35.1;
@@ -69,14 +67,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

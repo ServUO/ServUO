@@ -37,8 +37,6 @@ namespace Server.Mobiles
             this.Tamable = true;
             this.ControlSlots = 1;
             this.MinTameSkill = -12.9;
-
-            this.VirtualArmor = 12;
         }
 
         public SkitteringHopper(Serial serial)

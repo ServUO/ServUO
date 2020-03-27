@@ -56,8 +56,6 @@ namespace Server.Mobiles
             Fame = 22000;
             Karma = -22000;
 
-            VirtualArmor = 60;
-
             PackItem(new Arrow(Utility.RandomMinMax(100, 200)));
 
             IronwoodCompositeBow Bow = new IronwoodCompositeBow();

@@ -41,8 +41,6 @@ namespace Server.Mobiles
             Fame = 2000;
             Karma = -2000;
 
-            VirtualArmor = 50;
-
             SetAreaEffect(AreaEffect.AuraOfNausea);
             SetSpecialAbility(SpecialAbility.StickySkin);
         }

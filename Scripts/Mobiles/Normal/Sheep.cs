@@ -37,8 +37,6 @@ namespace Server.Mobiles
             Fame = 300;
             Karma = 0;
 
-            VirtualArmor = 6;
-
             Tamable = true;
             ControlSlots = 1;
             MinTameSkill = 11.1;

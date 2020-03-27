@@ -37,7 +37,6 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.EvalInt, 100.0);
             this.SetSkill(SkillName.Meditation, 120.1, 130.0);
 
-            this.VirtualArmor = 36;
             this.Fame = 10000;
             this.Karma = -10000;
 

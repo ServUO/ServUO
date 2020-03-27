@@ -48,7 +48,6 @@ namespace Server.Mobiles
             get { return 6; }
         }
 
-        //public override int DragonBlood{ get{ return 6; } }
         public override int Hides
         {
             get { return 11; }
@@ -103,11 +102,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             var version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                Hue = 476;
-            }
         }
     }
 }

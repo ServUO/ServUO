@@ -36,8 +36,6 @@ namespace Server.Mobiles
 
             this.Fame = 1000;
             this.Karma = -1000;
-
-            this.VirtualArmor = 14;
         }
 
         public VampireBat(Serial serial)

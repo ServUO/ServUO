@@ -36,8 +36,6 @@ namespace Server.Mobiles
 
             Fame = 18000;
             Karma = -18000;
-
-            VirtualArmor = 60;
         }
 
         public PitFiend(Serial serial)

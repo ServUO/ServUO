@@ -46,8 +46,6 @@ namespace Server.Mobiles
             Fame = 9500;
             Karma = -9500;
 
-            VirtualArmor = 44;
-
             PackNecroReg(24, 45);
         }
 

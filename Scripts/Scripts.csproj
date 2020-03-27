@@ -2254,7 +2254,6 @@
     <Compile Include="Mobiles\Normal\IceSnake.cs" />
     <Compile Include="Mobiles\Normal\Imp.cs" />
     <Compile Include="Mobiles\Normal\Impaler.cs" />
-    <Compile Include="Mobiles\Normal\InjuredWolf.cs" />
     <Compile Include="Mobiles\Normal\InsaneDryad.cs" />
     <Compile Include="Mobiles\Normal\InterredGrizzle .cs" />
     <Compile Include="Mobiles\Normal\IronBeetle.cs" />

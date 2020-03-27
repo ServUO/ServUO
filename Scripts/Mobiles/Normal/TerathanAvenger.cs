@@ -40,8 +40,6 @@ namespace Server.Mobiles
 
             this.Fame = 15000;
             this.Karma = -15000;
-
-            this.VirtualArmor = 50;
         }
 
         public TerathanAvenger(Serial serial)

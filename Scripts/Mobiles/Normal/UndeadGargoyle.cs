@@ -44,8 +44,6 @@ namespace Server.Mobiles
             Fame = 3500;
             Karma = -3500;
 
-            VirtualArmor = 32;
-
             if (0.025 > Utility.RandomDouble())
                 PackItem(new GargoylesPickaxe());
         }

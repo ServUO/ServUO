@@ -44,8 +44,6 @@ namespace Server.Mobiles
 
             Fame = 22500;
             Karma = 22500;
-
-            VirtualArmor = 100;
         }
 
         public LordOaks(Serial serial)

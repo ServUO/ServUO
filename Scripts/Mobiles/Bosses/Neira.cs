@@ -44,7 +44,6 @@ namespace Server.Mobiles
             Fame = 22500;
             Karma = -22500;
 
-            VirtualArmor = 30;
             Female = true;
 
             Item shroud = new HoodedShroudOfShadows();
@@ -61,7 +60,6 @@ namespace Server.Mobiles
 
             AddItem(weapon);
 
-            //new SkeletalMount().Rider = this;
             AddItem(new VirtualMountItem(this));
         }
 

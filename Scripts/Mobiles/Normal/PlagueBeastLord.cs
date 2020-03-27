@@ -41,8 +41,6 @@ namespace Server.Mobiles
 
             this.Fame = 2000;
             this.Karma = -2000;
-
-            this.VirtualArmor = 50;
         }
 
         public PlagueBeastLord(Serial serial)

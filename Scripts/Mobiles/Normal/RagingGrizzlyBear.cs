@@ -37,8 +37,6 @@ namespace Server.Mobiles
             this.Fame = 10000;  //Guessing here
             this.Karma = 10000;  //Guessing here
 
-            this.VirtualArmor = 24;
-
             this.Tamable = false;
         }
 
@@ -71,14 +69,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
