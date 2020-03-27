@@ -45,8 +45,6 @@ namespace Server.Mobiles
 
             Fame = 5000;
             Karma = -5000;
-
-            VirtualArmor = 49;
         }
 
         public PumpkinHead(Serial serial)

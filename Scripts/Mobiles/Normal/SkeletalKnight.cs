@@ -38,30 +38,6 @@ namespace Server.Mobiles
             Fame = 3000;
             Karma = -3000;
 
-            VirtualArmor = 40;
-
-            switch ( Utility.Random(6) )
-            {
-                case 0:
-                    PackItem(new PlateArms());
-                    break;
-                case 1:
-                    PackItem(new PlateChest());
-                    break;
-                case 2:
-                    PackItem(new PlateGloves());
-                    break;
-                case 3:
-                    PackItem(new PlateGorget());
-                    break;
-                case 4:
-                    PackItem(new PlateLegs());
-                    break;
-                case 5:
-                    PackItem(new PlateHelm());
-                    break;
-            }
-
             PackItem(new Scimitar());
             PackItem(new WoodenShield());
         }

@@ -38,8 +38,6 @@ namespace Server.Mobiles
 
             Fame = 500;
             Karma = -500;
-
-            VirtualArmor = 6;
         }
 
         public RestlessSoul(Serial serial)

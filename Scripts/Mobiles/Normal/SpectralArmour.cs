@@ -48,7 +48,6 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Tactics, 90.1, 100.0); 
             this.SetSkill(SkillName.MagicResist, 90.1, 100); 
 
-            this.VirtualArmor = 40; 
             this.Fame = 7000; 
             this.Karma = -7000;             
         }

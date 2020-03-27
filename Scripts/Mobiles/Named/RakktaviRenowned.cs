@@ -42,8 +42,6 @@ namespace Server.Mobiles
 
             this.Fame = 6500;
             this.Karma = -6500;
-
-            this.VirtualArmor = 56;
 			
             this.AddItem(new Bow());
             this.PackItem(new Arrow(Utility.RandomMinMax(10, 30)));

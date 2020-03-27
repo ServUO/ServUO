@@ -40,8 +40,6 @@ namespace Server.Mobiles
 
             this.Fame = 1500;
             this.Karma = -1500;
-
-            this.VirtualArmor = 28;
         }
 
         public TikitaviRenowned(Serial serial)

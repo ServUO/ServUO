@@ -40,7 +40,6 @@ namespace Server.Mobiles
             Fame = 7000;
             Karma = 7000;
 
-            VirtualArmor = 100;
             if (0.02 > Utility.RandomDouble())
                 PackStatue();
         }
@@ -104,7 +103,6 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

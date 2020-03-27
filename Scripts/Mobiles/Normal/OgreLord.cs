@@ -35,8 +35,6 @@ namespace Server.Mobiles
 
             Fame = 15000;
             Karma = -15000;
-
-            VirtualArmor = 50;
         }
 
         public OgreLord(Serial serial)

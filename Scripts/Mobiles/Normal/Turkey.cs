@@ -39,8 +39,6 @@ namespace Server.Mobiles
             Fame = 150;
             Karma = 0;
 
-            VirtualArmor = 2;
-
             Tamable = tamable;
             ControlSlots = 1;
             MinTameSkill = -0.9;
@@ -95,14 +93,12 @@ namespace Server.Mobiles
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-
 			writer.Write((int) 0);
 		}
 
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
-
 			int version = reader.ReadInt();
 
             m_NextGobble = DateTime.UtcNow;

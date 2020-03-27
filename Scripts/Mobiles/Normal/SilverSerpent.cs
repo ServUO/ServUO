@@ -40,8 +40,6 @@ namespace Server.Mobiles
 
             Fame = 7000;
             Karma = -7000;
-
-            VirtualArmor = 40;
         }
 
         public SilverSerpent(Serial serial)

@@ -44,7 +44,7 @@ namespace Server.Mobiles
             Fame = 15000;
             Karma = -15000;
 
-            if (Utility.RandomDouble() < .25)
+            if (Utility.RandomDouble() < 0.25)
                 PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
 
             PackBodyPartOrBones();
@@ -132,33 +132,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version < 1)
-            {
-                for (int i = 0; i < Skills.Length; ++i)
-                {
-                    Skills[i].Cap = Math.Max(100.0, Skills[i].Cap * 0.9);
-
-                    if (Skills[i].Base > Skills[i].Cap)
-                    {
-                        Skills[i].Base = Skills[i].Cap;
-                    }
-                }
-            }
-
-            if (version < 3)
-            {
-                if (AbilityProfile == null || AbilityProfile.MagicalAbility == MagicalAbility.None)
-                {
-                    SetMagicalAbility(MagicalAbility.Poisoning);
-                }
-
-                if (version == 1)
-                {
-                    SetSpecialAbility(SpecialAbility.RuneCorruption);
-                    SetWeaponAbility(WeaponAbility.BleedAttack);
-                }
-            }
         }
     }
 }

@@ -38,9 +38,7 @@ namespace Server.Mobiles
             this.Fame = 11500;
             this.Karma = -11500;
 
-            this.VirtualArmor = 40;
-
-            if (Core.ML && Utility.RandomDouble() < .33)
+            if (Utility.RandomDouble() < 0.33)
                 this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed(1));
 
             if (0.1 > Utility.RandomDouble())

@@ -179,53 +179,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version == 0)
-                Timer.DelayCall(TimeSpan.Zero, delegate { Hue = GetHue(); });
-
-            if (version <= 1)
-                Timer.DelayCall(TimeSpan.Zero, delegate
-                {
-                    if (InternalItem != null)
-                    {
-                        InternalItem.Hue = Hue;
-                    }
-                });
-
-            if (version < 2)
-            {
-                for (int i = 0; i < Skills.Length; ++i)
-                {
-                    Skills[i].Cap = Math.Max(100.0, Skills[i].Cap * 0.9);
-
-                    if (Skills[i].Base > Skills[i].Cap)
-                    {
-                        Skills[i].Base = Skills[i].Cap;
-                    }
-                }
-            }
-
-            if (version < 3)
-            {
-                SetWeaponAbility(WeaponAbility.Dismount);
-            }
-
-            if (version < 3 && Controlled && RawStr >= 301 && ControlSlots == ControlSlotsMin)
-            {
-                Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.5);
-            }
-
-            if (version < 4 && PetTrainingHelper.Enabled && ControlSlots <= 3)
-            {
-                var profile = PetTrainingHelper.GetAbilityProfile(this);
-
-                if (profile == null || !profile.HasCustomized())
-                {
-                    MinTameSkill = 98.7;
-                    ControlSlotsMin = 1;
-                    ControlSlots = 1;
-                }
-            }
         }
 
         private static int GetHue()

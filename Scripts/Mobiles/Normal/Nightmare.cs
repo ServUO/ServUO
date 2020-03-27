@@ -16,7 +16,7 @@ namespace Server.Mobiles
         public Nightmare(string name)
             : base(name, 0x74, 0x3EA7, AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            BaseSoundID = Core.AOS ? 0xA8 : 0x16A;
+            BaseSoundID = 0xA8;
 
             SetStr(496, 525);
             SetDex(86, 105);
@@ -44,8 +44,6 @@ namespace Server.Mobiles
 
             Fame = 14000;
             Karma = -14000;
-
-            VirtualArmor = 60;
 
             Tamable = true;
             ControlSlots = 2;
@@ -153,14 +151,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

@@ -4,7 +4,6 @@ using Server.Services;
 namespace Server.Mobiles
 {
     [CorpseName("a lava snake corpse")]
-    [TypeAlias("Server.Mobiles.Lavasnake")]
     public class LavaSnake : BaseCreature
     {
         [Constructable]
@@ -39,8 +38,6 @@ namespace Server.Mobiles
             Fame = 600;
             Karma = -600;
 
-            VirtualArmor = 24;
-
             PackItem(new SulfurousAsh());
 
             SetSpecialAbility(SpecialAbility.DragonBreath);
@@ -69,14 +66,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             var version = reader.ReadInt();
         }
     }

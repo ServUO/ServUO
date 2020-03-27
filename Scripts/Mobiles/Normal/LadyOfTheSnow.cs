@@ -43,7 +43,6 @@ namespace Server.Mobiles
             Karma = -15200;
 
             PackReg(3);
-            PackItem(new Necklace());
 
             if (0.25 > Utility.RandomDouble())
                 PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
@@ -91,14 +90,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
