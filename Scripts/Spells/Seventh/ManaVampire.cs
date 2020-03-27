@@ -47,27 +47,15 @@ namespace Server.Spells.Seventh
 
                 m.Paralyzed = false;
 
-                int toDrain = 0;
+                int toDrain = (int)(this.GetDamageSkill(this.Caster) - this.GetResistSkill(m));
 
-                if (Core.AOS)
-                {
-                    toDrain = (int)(this.GetDamageSkill(this.Caster) - this.GetResistSkill(m));
+                if (!m.Player)
+                    toDrain /= 2;
 
-                    if (!m.Player)
-                        toDrain /= 2;
-
-                    if (toDrain < 0)
-                        toDrain = 0;
-                    else if (toDrain > m.Mana)
-                        toDrain = m.Mana;
-                }
-                else
-                {
-                    if (this.CheckResisted(m))
-                        m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
-                    else
-                        toDrain = m.Mana;
-                }
+                if (toDrain < 0)
+                    toDrain = 0;
+                else if (toDrain > m.Mana)
+                    toDrain = m.Mana;
 
                 if (toDrain > (this.Caster.ManaMax - this.Caster.Mana))
                     toDrain = this.Caster.ManaMax - this.Caster.Mana;
@@ -75,18 +63,10 @@ namespace Server.Spells.Seventh
                 m.Mana -= toDrain;
                 this.Caster.Mana += toDrain;
 
-                if (Core.AOS)
-                {
-                    m.FixedParticles(0x374A, 1, 15, 5054, 23, 7, EffectLayer.Head);
-                    m.PlaySound(0x1F9);
+                m.FixedParticles(0x374A, 1, 15, 5054, 23, 7, EffectLayer.Head);
+                m.PlaySound(0x1F9);
 
-                    this.Caster.FixedParticles(0x0000, 10, 5, 2054, EffectLayer.Head);
-                }
-                else
-                {
-                    m.FixedParticles(0x374A, 10, 15, 5054, EffectLayer.Head);
-                    m.PlaySound(0x1F9);
-                }
+                this.Caster.FixedParticles(0x0000, 10, 5, 2054, EffectLayer.Head);
 
                 this.HarmfulSpell(m);
             }
@@ -103,7 +83,7 @@ namespace Server.Spells.Seventh
         {
             private readonly ManaVampireSpell m_Owner;
             public InternalTarget(ManaVampireSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(10, false, TargetFlags.Harmful)
             {
                 this.m_Owner = owner;
             }

@@ -79,7 +79,7 @@ namespace Server.Spells.Third
         {
             private readonly TelekinesisSpell m_Owner;
             public InternalTarget(TelekinesisSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.None)
+                : base(10, false, TargetFlags.None)
             {
                 this.m_Owner = owner;
             }

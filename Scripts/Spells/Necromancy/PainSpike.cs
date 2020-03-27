@@ -158,7 +158,7 @@ namespace Server.Spells.Necromancy
         {
             private readonly PainSpikeSpell m_Owner;
             public InternalTarget(PainSpikeSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(10, false, TargetFlags.Harmful)
             {
                 m_Owner = owner;
             }

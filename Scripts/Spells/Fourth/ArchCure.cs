@@ -133,7 +133,7 @@ namespace Server.Spells.Fourth
             if (!this.Caster.CanBeBeneficial(target, false))
                 return false;
 
-            if (Core.AOS && target != this.Caster)
+            if (target != this.Caster)
             {
                 if (this.IsAggressor(target) || this.IsAggressed(target))
                     return false;
@@ -174,7 +174,7 @@ namespace Server.Spells.Fourth
         {
             private readonly ArchCureSpell m_Owner;
             public InternalTarget(ArchCureSpell owner)
-                : base(Core.ML ? 10 : 12, true, TargetFlags.None)
+                : base(10, true, TargetFlags.None)
             {
                 this.m_Owner = owner;
             }

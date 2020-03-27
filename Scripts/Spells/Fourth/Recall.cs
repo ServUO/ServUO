@@ -23,7 +23,7 @@ namespace Server.Spells.Fourth
         private readonly VendorSearchMap m_SearchMap;
         private readonly AuctionMap m_AuctionMap;
 
-        public bool NoSkillRequirement { get { return (Core.SE && (m_Book != null || m_AuctionMap != null || m_SearchMap != null)) || TransformationSpellHelper.UnderTransformation(Caster, typeof(WraithFormSpell)); } }
+        public bool NoSkillRequirement { get { return (m_Book != null || m_AuctionMap != null || m_SearchMap != null) || TransformationSpellHelper.UnderTransformation(Caster, typeof(WraithFormSpell)); } }
 
         public RecallSpell(Mobile caster, Item scroll)
             : this(caster, scroll, null, null)
@@ -155,7 +155,7 @@ namespace Server.Spells.Fourth
             {
                 Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
             }
-            else if (map == null || (!Core.AOS && Caster.Map != map))
+            else if (map == null)
             {
                 Caster.SendLocalizedMessage(1005569); // You can not recall to another facet.
             }
@@ -231,7 +231,7 @@ namespace Server.Spells.Fourth
             private readonly RecallSpell m_Owner;
 
             public InternalTarget(RecallSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.None)
+                : base(10, false, TargetFlags.None)
             {
                 m_Owner = owner;
 

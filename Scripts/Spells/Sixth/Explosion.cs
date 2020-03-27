@@ -27,13 +27,6 @@ namespace Server.Spells.Sixth
         {
             get
             {
-                return !Core.AOS;
-            }
-        }
-        public override bool DelayedDamage
-        {
-            get
-            {
                 return false;
             }
         }
@@ -44,7 +37,7 @@ namespace Server.Spells.Sixth
 
         public void Target(IDamageable m)
         {
-            if (Core.SA && HasDelayContext(m))
+            if (HasDelayContext(m))
             {
                 DoHurtFizzle();
                 return;
@@ -76,7 +69,7 @@ namespace Server.Spells.Sixth
             private readonly Mobile m_Attacker;
 
             public InternalTimer(MagerySpell spell, Mobile attacker, IDamageable target)
-                : base(TimeSpan.FromSeconds(Core.AOS ? 3.0 : 2.5))
+                : base(TimeSpan.FromSeconds(3.0))
             {
                 m_Spell = spell;
                 m_Attacker = attacker;
@@ -94,25 +87,7 @@ namespace Server.Spells.Sixth
 
                 if (m_Attacker.HarmfulCheck(m_Target))
                 {
-                    double damage = 0;
-
-                    if (Core.AOS)
-                    {
-                        damage = m_Spell.GetNewAosDamage(40, 1, 5, m_Target);
-                    }
-                    else if (defender != null)
-                    {
-                        damage = Utility.Random(23, 22);
-
-                        if (m_Spell.CheckResisted(defender))
-                        {
-                            damage *= 0.75;
-
-                            defender.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
-                        }
-
-                        damage *= m_Spell.GetDamageScalar(defender);
-                    }
+                    double damage = m_Spell.GetNewAosDamage(40, 1, 5, m_Target);
 
                     if (defender != null)
                     {
@@ -140,7 +115,7 @@ namespace Server.Spells.Sixth
         {
             private readonly ExplosionSpell m_Owner;
             public InternalTarget(ExplosionSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(10, false, TargetFlags.Harmful)
             {
                 m_Owner = owner;
             }

@@ -73,12 +73,7 @@ namespace Server.Spells.Fourth
                 Effects.PlaySound(p, Caster.Map, 0x20C);
 
                 int itemID = eastToWest ? 0x398C : 0x3996;
-                TimeSpan duration;
-
-                if (Core.AOS)
-                    duration = TimeSpan.FromSeconds((15 + (Caster.Skills.Magery.Fixed / 5)) / 4);
-                else
-                    duration = TimeSpan.FromSeconds(4.0 + (Caster.Skills[SkillName.Magery].Value * 0.5));
+                TimeSpan duration = TimeSpan.FromSeconds((15 + (Caster.Skills.Magery.Fixed / 5)) / 4);
 
                 Point3D pnt = new Point3D(p);
 
@@ -210,7 +205,7 @@ namespace Server.Spells.Fourth
 
             public override bool OnMoveOver(Mobile m)
             {
-                if (Visible && m_Caster != null && (!Core.AOS || m != m_Caster) && SpellHelper.ValidIndirectTarget(m_Caster, m) && m_Caster.CanBeHarmful(m, false))
+                if (Visible && m_Caster != null && m != m_Caster && SpellHelper.ValidIndirectTarget(m_Caster, m) && m_Caster.CanBeHarmful(m, false))
                 {
                     if (SpellHelper.CanRevealCaster(m))
                         m_Caster.RevealingAction();
@@ -218,13 +213,6 @@ namespace Server.Spells.Fourth
                     m_Caster.DoHarmful(m);
 
                     int damage = m_Damage;
-
-                    if (!Core.AOS && m.CheckSkill(SkillName.MagicResist, 0.0, 30.0))
-                    {
-                        damage = 1;
-
-                        m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
-                    }
 
                     AOS.Damage(m, m_Caster, damage, 0, 100, 0, 0, 0);
                     m.PlaySound(0x208);
@@ -274,7 +262,7 @@ namespace Server.Spells.Fourth
 
                             foreach (Mobile m in eable)
                             {
-                                if ((m.Z + 16) > m_Item.Z && (m_Item.Z + 12) > m.Z && (!Core.AOS || m != caster) && SpellHelper.ValidIndirectTarget(caster, m) && caster.CanBeHarmful(m, false))
+                                if ((m.Z + 16) > m_Item.Z && (m_Item.Z + 12) > m.Z && m != caster && SpellHelper.ValidIndirectTarget(caster, m) && caster.CanBeHarmful(m, false))
                                     m_Queue.Enqueue(m);
                             }
 
@@ -290,13 +278,6 @@ namespace Server.Spells.Fourth
                                 caster.DoHarmful(m);
 
                                 int damage = m_Item.m_Damage;
-
-                                if (!Core.AOS && m.CheckSkill(SkillName.MagicResist, 0.0, 30.0))
-                                {
-                                    damage = 1;
-
-                                    m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
-                                }
 
                                 AOS.Damage(m, caster, damage, 0, 100, 0, 0, 0);
                                 m.PlaySound(0x208);
@@ -314,7 +295,7 @@ namespace Server.Spells.Fourth
         {
             private readonly FireFieldSpell m_Owner;
             public InternalTarget(FireFieldSpell owner)
-                : base(Core.TOL ? 15 : Core.ML ? 10 : 12, true, TargetFlags.None)
+                : base(15, true, TargetFlags.None)
             {
                 m_Owner = owner;
             }

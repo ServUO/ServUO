@@ -26,7 +26,7 @@ namespace Server.Spells.Necromancy
         {
             get
             {
-                return TimeSpan.FromSeconds((Core.ML ? 2.0 : 1.5));
+                return TimeSpan.FromSeconds(2.0);
             }
         }
         public override double RequiredSkill
@@ -79,30 +79,10 @@ namespace Server.Spells.Necromancy
             Effects.SendLocationParticles(EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x36B0, 1, 14, 63, 7, 9915, 0);
             Effects.PlaySound(m.Location, m.Map, 0x229);
 
-            double damage = Utility.RandomMinMax((Core.ML ? 32 : 36), 40) * ((300 + (GetDamageSkill(Caster) * 9)) / 1000);
+            double damage = Utility.RandomMinMax(32, 40) * ((300 + (GetDamageSkill(Caster) * 9)) / 1000);
             damage *= strength;
 
-            double sdiBonus;
-
-            if (Core.SE)
-            {
-                if (Core.SA)
-                {
-                    sdiBonus = (double)SpellHelper.GetSpellDamageBonus(Caster, m, CastSkill, m is PlayerMobile) / 100;
-                }
-                else
-                {
-                    sdiBonus = (double)AosAttributes.GetValue(Caster, AosAttribute.SpellDamage) / 100;
-
-                    // PvP spell damage increase cap of 15% from an item’s magic property in Publish 33(SE)
-                    if (m is PlayerMobile && Caster.Player && sdiBonus > 15)
-                        sdiBonus = 15;
-                }
-            }
-            else
-            {
-                sdiBonus = (double)AosAttributes.GetValue(Caster, AosAttribute.SpellDamage) / 100;
-            }
+            double sdiBonus = (double)SpellHelper.GetSpellDamageBonus(Caster, m, CastSkill, m is PlayerMobile) / 100;
 
             double pvmDamage = (damage * (1 + sdiBonus)) * strength;
             double pvpDamage = damage * (1 + sdiBonus);
@@ -132,7 +112,7 @@ namespace Server.Spells.Necromancy
         {
             private readonly PoisonStrikeSpell m_Owner;
             public InternalTarget(PoisonStrikeSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(10, false, TargetFlags.Harmful)
             {
                 m_Owner = owner;
             }

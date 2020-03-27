@@ -57,27 +57,7 @@ namespace Server.Spells.Sixth
                     });
                 }
 
-                double damage = 0;
-
-                if (Core.AOS)
-                {
-                    damage = GetNewAosDamage(40, 1, 5, m);
-                }
-                else if (m is Mobile)
-                {
-                    Mobile mob = m as Mobile;
-                    damage = Utility.Random(24, 18);
-
-                    if (CheckResisted(mob))
-                    {
-                        damage *= 0.75;
-
-                        mob.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
-                    }
-
-                    // Scale damage based on evalint and resist
-                    damage *= GetDamageScalar(mob);
-                }
+                double damage = GetNewAosDamage(40, 1, 5, m);
 
                 // Do the effects
                 Caster.MovingParticles(m, 0x379F, 7, 0, false, true, 3043, 4043, 0x211);

@@ -66,7 +66,7 @@ namespace Server.Spells.Necromancy
                     Effects.PlaySound(this.Caster.Location, map, 0x10B);
                     Effects.SendLocationParticles(EffectItem.Create(this.Caster.Location, map, EffectItem.DefaultDuration), 0x37CC, 1, 40, 97, 3, 9917, 0);
 
-                    foreach (var id in AcquireIndirectTargets(Caster.Location, Core.ML ? 4 : 5))
+                    foreach (var id in AcquireIndirectTargets(Caster.Location, 4))
                     {
                         Mobile m = id as Mobile;
 
@@ -87,27 +87,7 @@ namespace Server.Spells.Necromancy
                         damage *= 300 + karma + (this.GetDamageSkill(this.Caster) * 10);
                         damage /= 1000;
 
-                        int sdiBonus;
-
-                        if (Core.SE)
-                        {
-                            if (Core.SA)
-                            {
-                                sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, m, CastSkill, m is PlayerMobile);
-                            }
-                            else
-                            {
-                                sdiBonus = AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage);
-
-                                // PvP spell damage increase cap of 15% from an item’s magic property in Publish 33(SE)
-                                if (id is PlayerMobile && this.Caster.Player && sdiBonus > 15)
-                                    sdiBonus = 15;
-                            }
-                        }
-                        else
-                        {
-                            sdiBonus = AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage);
-                        }
+                        int sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, m, CastSkill, m is PlayerMobile);
 
                         damage *= (100 + sdiBonus);
                         damage /= 100;

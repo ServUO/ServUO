@@ -69,15 +69,12 @@ namespace Server.Spells.Ninjitsu
                 return false;
             }
 
-            if (Core.ML)
-            {
-                BaseRanged ranged = from.Weapon as BaseRanged;
+            BaseRanged ranged = from.Weapon as BaseRanged;
 
-                if (ranged != null)
-                {
-                    from.SendLocalizedMessage(1075858); // You can only use this with melee attacks.
-                    return false;
-                }
+            if (ranged != null)
+            {
+                from.SendLocalizedMessage(1075858); // You can only use this with melee attacks.
+                return false;
             }
 
             return base.Validate(from);

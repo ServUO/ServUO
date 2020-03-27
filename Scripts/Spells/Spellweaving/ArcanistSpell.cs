@@ -30,7 +30,7 @@ namespace Server.Spells.Spellweaving
 
 			if (focus == null || focus.Deleted)
 			{
-                if (Core.TOL && from is BaseCreature && from.Skills[SkillName.Spellweaving].Value > 0)
+                if (from is BaseCreature && from.Skills[SkillName.Spellweaving].Value > 0)
                 {
                     return (int)Math.Max(1, Math.Min(6, from.Skills[SkillName.Spellweaving].Value / 20));
                 }
@@ -43,11 +43,6 @@ namespace Server.Spells.Spellweaving
 
         public static int GetMasteryFocusLevel(Mobile from)
         {
-            if (!Core.TOL)
-            {
-                return 0;
-            }
-
             if (from.Skills.CurrentMastery == SkillName.Spellweaving)
             {
                 return Math.Max(1, MasteryInfo.GetMasteryLevel(from, SkillName.Spellweaving));
