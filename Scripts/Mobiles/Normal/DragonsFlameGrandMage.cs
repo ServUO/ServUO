@@ -40,7 +40,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);	
 			
-                c.DropItem(new DragonFlameKey());
+            c.DropItem(new DragonFlameKey());
 
             if (Utility.RandomDouble() < 0.5)
                 c.DropItem(new DragonFlameSectBadge());

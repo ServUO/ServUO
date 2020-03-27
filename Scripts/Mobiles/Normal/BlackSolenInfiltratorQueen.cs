@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a solen infiltrator corpse")] // TODO: Corpse name?
+    [CorpseName("a solen infiltrator corpse")] 
     public class BlackSolenInfiltratorQueen : BaseCreature, IBlackSolen
     {
         [Constructable]
@@ -38,8 +38,6 @@ namespace Server.Mobiles
 
             this.Fame = 6500;
             this.Karma = -6500;
-
-            this.VirtualArmor = 50;
 
             SolenHelper.PackPicnicBasket(this);
 

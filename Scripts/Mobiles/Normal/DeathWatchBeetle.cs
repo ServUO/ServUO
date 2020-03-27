@@ -4,12 +4,11 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("a deathwatchbeetle corpse")]
-    [TypeAlias("Server.Mobiles.DeathWatchBeetle")]
     public class DeathwatchBeetle : BaseCreature
     {
         [Constructable]
         public DeathwatchBeetle()
-            : base(AIType.AI_Melee, Core.ML ? FightMode.Aggressor : FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             Name = "a deathwatch beetle";
             Body = 242;
@@ -38,28 +37,6 @@ namespace Server.Mobiles
 
             Fame = 1400;
             Karma = -1400;
-
-            switch ( Utility.Random(12) )
-            {
-                case 0:
-                    PackItem(new LeatherGorget());
-                    break;
-                case 1:
-                    PackItem(new LeatherGloves());
-                    break;
-                case 2:
-                    PackItem(new LeatherArms());
-                    break;
-                case 3:
-                    PackItem(new LeatherLegs());
-                    break;
-                case 4:
-                    PackItem(new LeatherCap());
-                    break;
-                case 5:
-                    PackItem(new LeatherChest());
-                    break;
-            }
 
             if (Utility.RandomDouble() < .5)
                 PackItem(Engines.Plants.Seed.RandomBonsaiSeed());

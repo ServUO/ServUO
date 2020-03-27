@@ -33,8 +33,6 @@ namespace Server.Mobiles
 
             Fame = 1000;
             Karma = -1000;
-
-            VirtualArmor = 55;
         }
 
         public Doppleganger(Serial serial)

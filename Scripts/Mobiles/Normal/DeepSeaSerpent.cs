@@ -39,7 +39,6 @@ namespace Server.Mobiles
             Fame = 6000;
             Karma = -6000;
 
-            VirtualArmor = 60;
             CanSwim = true;
             CantWalk = true;
 
