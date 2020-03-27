@@ -31,8 +31,6 @@ namespace Server.Mobiles
             this.Fame = 4000;
             this.Karma = -4000;
 
-            this.VirtualArmor = 28;
-            this.PackItem(Loot.RandomWeapon());
             this.PackItem(new Bone());
         }
 
@@ -58,13 +56,6 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Undead; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);

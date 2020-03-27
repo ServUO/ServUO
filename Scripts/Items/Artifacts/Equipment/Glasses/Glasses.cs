@@ -21,7 +21,6 @@ namespace Server.Items
         }
 
         public override int AosStrReq { get { return 45; } }
-        public override int OldStrReq { get { return 40; } }
         public override int ArmorBase { get { return 30; } }
 
         public override ArmorMaterialType MaterialType
@@ -46,18 +45,6 @@ namespace Server.Items
             {
                 return ArmorMeditationAllowance.All;
             }
-        }
-
-        public override bool CanEquip(Mobile m)
-        {
-            if (m.NetState != null && !m.NetState.SupportsExpansion(Expansion.ML))
-            {
-                m.SendLocalizedMessage(1072791); // You must upgrade to Mondain's Legacy in order to use that item.
-				
-                return false;
-            }
-			
-            return true;
         }
 
         public override void Serialize(GenericWriter writer)

@@ -38,8 +38,6 @@ namespace Server.Mobiles
             this.Fame = 1000;
             this.Karma = -1000;
 
-            this.VirtualArmor = 18;
-
             if (0.25 > Utility.RandomDouble())
                 this.PackItem(new Board(10));
             else

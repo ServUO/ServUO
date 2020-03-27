@@ -22,13 +22,6 @@ namespace Server.Items
                 return 25;
             }
         }
-        public override bool RequiresSE
-        {
-            get
-            {
-                return true;
-            }
-        }
         public override bool CheckSkills(Mobile from)
         {
             if (this.GetSkill(from, SkillName.Bushido) < 50.0)
@@ -60,17 +53,14 @@ namespace Server.Items
             {
                 BlockMountType type = BlockMountType.RidingSwipe;
                 IMount mount = defender.Mount;
-
-                if (Core.SA)
+                
+                if (defender.Flying)
                 {
-                    if (defender.Flying)
-                    {
-                        type = BlockMountType.RidingSwipeFlying;
-                    }
-                    else if (mount is EtherealMount)
-                    {
-                        type = BlockMountType.RidingSwipeEthereal;
-                    }
+                    type = BlockMountType.RidingSwipeFlying;
+                }
+                else if (mount is EtherealMount)
+                {
+                    type = BlockMountType.RidingSwipeEthereal;
                 }
 
                 Server.Items.Dismount.DoDismount(attacker, defender, mount, 10, type);

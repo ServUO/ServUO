@@ -14,26 +14,6 @@ namespace Server.Items
         Fists		// Fists
     }
 
-    public enum WeaponDamageLevel
-    {
-        Regular,
-        Ruin,
-        Might,
-        Force,
-        Power,
-        Vanq
-    }
-
-    public enum WeaponAccuracyLevel
-    {
-        Regular,
-        Accurate,
-        Surpassingly,
-        Eminently,
-        Exceedingly,
-        Supremely
-    }
-
     public enum WeaponDurabilityLevel
     {
         Regular,

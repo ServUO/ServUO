@@ -10,26 +10,27 @@ namespace Server
 {
 	public class CurrentExpansion
 	{
-		public static readonly Expansion Expansion = Config.GetEnum("Expansion.CurrentExpansion", Expansion.EJ);
+		public static readonly Expansion Expansion = Expansion.EJ;
 
 		[CallPriority(Int32.MinValue)]
 		public static void Configure()
 		{
 			Core.Expansion = Expansion;
 
-			AccountGold.Enabled = Core.TOL;
+			AccountGold.Enabled = true;
 			AccountGold.ConvertOnBank = true;
 			AccountGold.ConvertOnTrade = false;
 			VirtualCheck.UseEditGump = true;
             
-			TownCryerSystem.Enabled = Core.TOL;
+			TownCryerSystem.Enabled = true;
 
-			ObjectPropertyList.Enabled = Core.AOS;
+			ObjectPropertyList.Enabled = true;
 
-            Mobile.InsuranceEnabled = Core.AOS && !Siege.SiegeShard;
-			Mobile.VisibleDamageType = Core.AOS ? VisibleDamageType.Related : VisibleDamageType.None;
-			Mobile.GuildClickMessage = !Core.AOS;
-			Mobile.AsciiClickMessage = !Core.AOS;
+            Mobile.InsuranceEnabled = !Siege.SiegeShard;
+			Mobile.VisibleDamageType = VisibleDamageType.Related;
+			
+			Mobile.GuildClickMessage = false; // Maybe we can remove after?
+			Mobile.AsciiClickMessage = false; // Maybe we can remove after?
 
 			if (!Core.AOS)
 			{
@@ -43,7 +44,7 @@ namespace Server
 				PacketHandlers.SingleClickProps = true; // single click for everything is overriden to check object property list
 			}
 
-			Mobile.ActionDelay = Core.TOL ? 500 : Core.AOS ? 1000 : 500;
+			Mobile.ActionDelay = 500;
 			Mobile.AOSStatusHandler = AOS.GetStatus;
 		}
 	}

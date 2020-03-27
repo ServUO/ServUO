@@ -26,7 +26,7 @@ namespace Server.Spells.Necromancy
                 return SkillName.SpiritSpeak;
             }
         }
-        //public override int CastDelayBase{ get{ return base.CastDelayBase; } } // Reference, 3
+
         public override bool ClearHandsOnCast
         {
             get
@@ -34,21 +34,14 @@ namespace Server.Spells.Necromancy
                 return false;
             }
         }
-        public override double CastDelayFastScalar
-        {
-            get
-            {
-                return (Core.SE ? base.CastDelayFastScalar : 0);
-            }
-        }// Necromancer spells are not affected by fast cast items, though they are by fast cast recovery
+
         public override int ComputeKarmaAward()
         {
             //TODO: Verify this formula being that Necro spells don't HAVE a circle.
             //int karma = -(70 + (10 * (int)Circle));
             int karma = -(40 + (int)(10 * (this.CastDelayBase.TotalSeconds / this.CastDelaySecondsPerTick)));
 
-            if (Core.ML) // Pub 36: "Added a new property called Increased Karma Loss which grants higher karma loss for casting necromancy spells."
-                karma += AOS.Scale(karma, AosAttributes.GetValue(this.Caster, AosAttribute.IncreasedKarmaLoss));
+            karma += AOS.Scale(karma, AosAttributes.GetValue(this.Caster, AosAttribute.IncreasedKarmaLoss));
 
             return karma;
         }

@@ -357,11 +357,11 @@ namespace Server.Engines.Despise
             return base.DoOrderFollow();
         }
 
-        public override bool AcquireFocusMob(int iRange, FightMode acqType, bool bPlayerOnly, bool bFacFriend, bool bFacFoe)
+        public override bool AcquireFocusMob(int iRange, FightMode acqType, bool bPlayerOnly)
         {
             if (m_Creature.Orb == null || m_Creature.ControlMaster == null)
             {
-                return base.AcquireFocusMob(iRange, acqType, bPlayerOnly, bFacFriend, bFacFoe);
+                return base.AcquireFocusMob(iRange, acqType, bPlayerOnly);
             }
 
             if (m_Creature.Orb.Aggression != Aggression.Aggressive)

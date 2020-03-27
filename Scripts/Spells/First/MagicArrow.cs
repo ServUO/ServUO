@@ -26,7 +26,7 @@ namespace Server.Spells.First
         {
             get
             {
-                return !Core.AOS;
+                return false;
             }
         }
         public override bool DelayedDamage
@@ -55,7 +55,7 @@ namespace Server.Spells.First
 
                 SpellHelper.Turn(Caster, d);
 
-                if (Core.SA && HasDelayContext(d))
+                if (HasDelayContext(d))
                 {
                     DoHurtFizzle();
                     return;
@@ -70,25 +70,7 @@ namespace Server.Spells.First
                     });
                 }
 
-                double damage = 0;
-				
-                if (Core.AOS)
-                {
-                    damage = GetNewAosDamage(10, 1, 4, d);
-                }
-                else if (target is Mobile)
-                {
-                    damage = Utility.Random(4, 4);
-
-                    if (CheckResisted((Mobile)target))
-                    {
-                        damage *= 0.75;
-
-                        ((Mobile)target).SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
-                    }
-
-                    damage *= GetDamageScalar((Mobile)target);
-                }
+                double damage  = GetNewAosDamage(10, 1, 4, d);
 
                 if (damage > 0)
                 {
@@ -106,7 +88,7 @@ namespace Server.Spells.First
         {
             private readonly MagicArrowSpell m_Owner;
             public InternalTarget(MagicArrowSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(10, false, TargetFlags.Harmful)
             {
                 m_Owner = owner;
             }

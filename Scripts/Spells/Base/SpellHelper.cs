@@ -94,7 +94,7 @@ namespace Server.Spells
 
         public static bool HasSpellFocus(Mobile m, SkillName focus)
         {
-            SkillName[] list = Core.TOL ? _TOLSchools : _Schools;
+            SkillName[] list = _TOLSchools;
 
             foreach (SkillName skill in list)
             {
@@ -107,16 +107,13 @@ namespace Server.Spells
 
         public static int PvPSpellDamageCap(Mobile m, SkillName castskill)
         {
-            if (!Core.SA)
-                return 15;
-
             if (HasSpellFocus(m, castskill))
             {
                 return 30;
             }
             else
             {
-                return Core.TOL ? 20 : 15;
+                return 20;
             }
         }
 
@@ -135,7 +132,7 @@ namespace Server.Spells
             }
 
             // PvP spell damage increase cap of 15% from an item’s magic property, 30% if spell school focused.
-            if (Core.SE && playerVsPlayer)
+            if (playerVsPlayer)
             {
                 sdiBonus = Math.Min(sdiBonus, PvPSpellDamageCap(caster, skill));
             }
@@ -152,7 +149,7 @@ namespace Server.Spells
             if (!sp.DelayedDamage)
                 return TimeSpan.Zero;
 
-            return (Core.AOS ? AosDamageDelay : OldDamageDelay);
+            return (AosDamageDelay);
         }
 
         public static bool CheckMulti(Point3D p, Map map)
@@ -224,7 +221,7 @@ namespace Server.Spells
             if (!restrict)
                 return false;
 
-            return Aggression.CheckHasAggression(m, Core.AOS);
+            return Aggression.CheckHasAggression(m, true);
         }
 
         public static bool AdjustField(ref Point3D p, Map map, int height, bool mobsBlock)
@@ -412,17 +409,12 @@ namespace Server.Spells
 
         public static TimeSpan GetDuration(Mobile caster, Mobile target)
         {
-            if (Core.AOS)
-            {
-                int span = (((6 * caster.Skills.EvalInt.Fixed) / 50) + 1);
+            int span = (((6 * caster.Skills.EvalInt.Fixed) / 50) + 1);
 
-                if (caster.Spell is CurseSpell && Spells.SkillMasteries.ResilienceSpell.UnderEffects(target))
-                    span /= 2;
+            if (caster.Spell is CurseSpell && Spells.SkillMasteries.ResilienceSpell.UnderEffects(target))
+                span /= 2;
 
-                return TimeSpan.FromSeconds(span);
-            }
-
-            return TimeSpan.FromSeconds(caster.Skills[SkillName.Magery].Value * 1.2);
+            return TimeSpan.FromSeconds(span);
         }
 
         public static int GetCurseOffset(Mobile m, StatType type)
@@ -456,28 +448,25 @@ namespace Server.Spells
 
         public static int GetOffset(Mobile caster, Mobile target, StatType type, bool curse, bool blockSkill)
         {
-            if (Core.AOS)
+            if (!blockSkill)
             {
-                if (!blockSkill)
-                {
-                    //caster.CheckSkill(SkillName.EvalInt, 0.0, 120.0);
-                    // This is handled in Spell.cs
+                //caster.CheckSkill(SkillName.EvalInt, 0.0, 120.0);
+                // This is handled in Spell.cs
 
-                    if (curse)
-                        target.CheckSkill(SkillName.MagicResist, 0.0, 120.0);
-                }
+                if (curse)
+                    target.CheckSkill(SkillName.MagicResist, 0.0, 120.0);
+            }
 
-                double percent = GetOffsetScalar(caster, target, curse);
+            double percent = GetOffsetScalar(caster, target, curse);
 
-                switch( type )
-                {
-                    case StatType.Str:
-                        return (int)Math.Ceiling(target.RawStr * percent);
-                    case StatType.Dex:
-                        return (int)Math.Ceiling(target.RawDex * percent);
-                    case StatType.Int:
-                        return (int)Math.Ceiling(target.RawInt * percent);
-                }
+            switch( type )
+            {
+                case StatType.Str:
+                    return (int)Math.Ceiling(target.RawStr * percent);
+                case StatType.Dex:
+                    return (int)Math.Ceiling(target.RawDex * percent);
+                case StatType.Int:
+                    return (int)Math.Ceiling(target.RawInt * percent);
             }
 
             return 1 + (int)(caster.Skills[SkillName.Magery].Value * 0.1);
@@ -1152,7 +1141,7 @@ namespace Server.Spells
 
         public static bool IsNewDungeon(Map map, Point3D loc)
         {
-            if (map == Map.Trammel && Core.SA)
+            if (map == Map.Trammel)
             {
                 Region r = Region.Find(loc, map);
 
@@ -1277,7 +1266,7 @@ namespace Server.Spells
             bool reflect = false;
             Mobile target = defender as Mobile;
 
-            if (Core.AOS && type >= DamageType.Spell)
+            if (type >= DamageType.Spell)
             {
                 if (target != null && defender is Mobile)
                 {

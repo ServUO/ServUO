@@ -44,7 +44,6 @@ namespace Server.Mobiles
             Fame = 23000;
             Karma = -23000;
 
-            VirtualArmor = 60;
             PackNecroReg(100, 200);
         }
 
@@ -55,13 +54,6 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Undead; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override bool Unprovokable
         {
             get

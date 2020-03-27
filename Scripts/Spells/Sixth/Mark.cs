@@ -51,7 +51,7 @@ namespace Server.Spells.Sixth
             else if (!SpellHelper.CheckTravel(Caster, TravelCheckType.Mark))
             {
             }
-            else if (boat == null && SpellHelper.CheckMulti(Caster.Location, Caster.Map, !Core.AOS))
+            else if (boat == null && SpellHelper.CheckMulti(Caster.Location, Caster.Map, false))
             {
                 Caster.SendLocalizedMessage(501942); // That location is blocked.
             }
@@ -78,7 +78,7 @@ namespace Server.Spells.Sixth
         {
             private readonly MarkSpell m_Owner;
             public InternalTarget(MarkSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.None)
+                : base(10, false, TargetFlags.None)
             {
                 m_Owner = owner;
             }

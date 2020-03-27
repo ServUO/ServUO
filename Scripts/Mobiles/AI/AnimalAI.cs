@@ -21,7 +21,7 @@ namespace Server.Mobiles
 		{
 			// Old:
 #if false
-			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, true, false, true))
+			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, true))
 			{
 				m_Mobile.DebugSay( "There is something near, I go away" );
 				Action = ActionType.Backoff;
@@ -45,7 +45,7 @@ namespace Server.Mobiles
 				m_Mobile.DebugSay("I am low on health!");
 				Action = ActionType.Flee;
 			}
-			else if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
+			else if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false))
 			{
 				m_Mobile.DebugSay("I have detected {0}, attacking", m_Mobile.FocusMob.Name);
 
@@ -115,7 +115,7 @@ namespace Server.Mobiles
 			}
 			else
 			{
-				if (AcquireFocusMob(m_Mobile.RangePerception * 2, FightMode.Closest, true, false, true))
+				if (AcquireFocusMob(m_Mobile.RangePerception * 2, FightMode.Closest, true))
 				{
 					if (WalkMobileRange(m_Mobile.FocusMob, 1, false, m_Mobile.RangePerception, m_Mobile.RangePerception * 2))
 					{

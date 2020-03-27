@@ -80,13 +80,6 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Orc; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.SavagesAndOrcs;
-            }
-        }
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Average);

@@ -43,8 +43,6 @@ namespace Server.Mobiles
             this.Fame = 5000;
             this.Karma = 0;
 
-            this.VirtualArmor = 28; // Don't know what it should be
-
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
                 this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
@@ -53,16 +51,9 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Fey; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.MlRich);
+            this.AddLoot(LootPack.Rich);
             this.AddLoot(LootPack.MedScrolls);
         }
 

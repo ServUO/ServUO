@@ -32,7 +32,7 @@ namespace Server.Spells.Eighth
             if (!base.CheckCast())
                 return false;
 
-            if ((this.Caster.Followers + (Core.SE ? 2 : 1)) > this.Caster.FollowersMax)
+            if ((this.Caster.Followers + 2) > this.Caster.FollowersMax)
             {
                 this.Caster.SendLocalizedMessage(1049645); // You have too many followers to summon that creature.
                 return false;
@@ -58,14 +58,7 @@ namespace Server.Spells.Eighth
             }
             else if (SpellHelper.CheckTown(p, this.Caster) && this.CheckSequence())
             {
-                TimeSpan duration;
-
-                if (Core.AOS)
-                    duration = TimeSpan.FromSeconds(90.0);
-                else
-                    duration = TimeSpan.FromSeconds(Utility.Random(80, 40));
-
-                BaseCreature.Summon(new EnergyVortex(true), false, this.Caster, new Point3D(p), 0x212, duration);
+                BaseCreature.Summon(new EnergyVortex(true), false, this.Caster, new Point3D(p), 0x212, TimeSpan.FromSeconds(90));
             }
 
             this.FinishSequence();
@@ -75,7 +68,7 @@ namespace Server.Spells.Eighth
         {
             private EnergyVortexSpell m_Owner;
             public InternalTarget(EnergyVortexSpell owner)
-                : base(Core.ML ? 10 : 12, true, TargetFlags.None)
+                : base(10, true, TargetFlags.None)
             {
                 this.m_Owner = owner;
             }

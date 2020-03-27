@@ -46,12 +46,10 @@ namespace Server.Mobiles
             Fame = 26000;
             Karma = -26000;
 
-            VirtualArmor = 54;
-
             SetWeaponAbility(WeaponAbility.MortalStrike);
             SetWeaponAbility(WeaponAbility.WhirlwindAttack);
             SetWeaponAbility(WeaponAbility.Block);
-            //Arcane Pyromancy
+            //Arcane Pyromancy - Missing ability 
         }
 
         public AbysmalHorror(Serial serial)
@@ -60,56 +58,16 @@ namespace Server.Mobiles
         }
 
         public override bool CanFlee { get { return false; } }
-
-        public override bool IgnoreYoungProtection
-        {
-            get
-            {
-                return Core.ML;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.SE;
-            }
-        }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return Core.SE;
-            }
-        }
-        public override bool AreaPeaceImmune
-        {
-            get
-            {
-                return Core.SE;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override bool IgnoreYoungProtection { get { return true; } }
+        public override bool Unprovokable { get { return true; } }
+        public override bool AreaPeaceImmune { get { return true; } }
+        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override int TreasureMapLevel { get { return 1; } }
 
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 2);
-        }
-
-       
+        }   
 
         public override void Serialize(GenericWriter writer)
         {

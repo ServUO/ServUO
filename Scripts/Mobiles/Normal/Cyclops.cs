@@ -36,8 +36,6 @@ namespace Server.Mobiles
 
             this.Fame = 4500;
             this.Karma = -4500;
-
-            this.VirtualArmor = 48;
         }
 
         public Cyclops(Serial serial)

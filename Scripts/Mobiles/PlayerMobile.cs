@@ -559,7 +559,7 @@ namespace Server.Mobiles
 
 		public void RecoverAmmo()
 		{
-			if (Core.SE && Alive)
+			if (Alive)
 			{
 				foreach (var kvp in m_RecoverableAmmo)
 				{
@@ -705,25 +705,22 @@ namespace Server.Mobiles
 				return false;
 			}
 
-			if (Core.AOS)
+			IPooledEnumerable mobiles = Map.GetMobilesInRange(location, 0);
+
+			foreach (Mobile m in mobiles)
 			{
-				IPooledEnumerable mobiles = Map.GetMobilesInRange(location, 0);
-
-				foreach (Mobile m in mobiles)
+				if (m.Z >= location.Z && m.Z < location.Z + 16)
 				{
-					if (m.Z >= location.Z && m.Z < location.Z + 16)
-					{
-						mobiles.Free();
-						return false;
-					}
+					mobiles.Free();
+					return false;
 				}
-
-				mobiles.Free();
 			}
+
+			mobiles.Free();
 
 			BounceInfo bi = item.GetBounce();
 
-			if (bi != null && (!Core.SA || AccessLevel > AccessLevel.Counselor))
+			if (bi != null && AccessLevel > AccessLevel.Counselor)
 			{
 				Type type = item.GetType();
 
@@ -855,10 +852,7 @@ namespace Server.Mobiles
             EventSink.UnequipMacro += UnequipMacro;
             #endregion
 
-            if (Core.SE)
-			{
-				Timer.DelayCall(TimeSpan.Zero, CheckPets);
-			}
+    	    Timer.DelayCall(TimeSpan.Zero, CheckPets);
 		}
 
         #region Enhanced Client
@@ -970,7 +964,7 @@ namespace Server.Mobiles
 
 		public override void OnSkillInvalidated(Skill skill)
 		{
-			if (Core.AOS && skill.SkillName == SkillName.MagicResist)
+			if (skill.SkillName == SkillName.MagicResist)
 			{
 				UpdateResistances();
 			}
@@ -1096,7 +1090,7 @@ namespace Server.Mobiles
 			UpdateResistances();
 		}
 
-		public override int MaxWeight { get { return (((Core.ML && Race == Race.Human) ? 100 : 40) + (int)(3.5 * Str)); } }
+		public override int MaxWeight { get { return ((Race == Race.Human ? 100 : 40) + (int)(3.5 * Str)); } }
 
 		private int m_LastGlobalLight = -1, m_LastPersonalLight = -1;
 
@@ -1110,7 +1104,7 @@ namespace Server.Mobiles
 		{
 			global = LightCycle.ComputeLevelFor(this);
 
-			bool racialNightSight = (Core.ML && Race == Race.Elf);
+			bool racialNightSight = Race == Race.Elf;
 
 			if (LightLevel < 21 && (AosAttributes.GetValue(this, AosAttribute.NightSight) > 0 || racialNightSight))
 			{
@@ -1841,74 +1835,35 @@ namespace Server.Mobiles
 			}
 		}
 
-		public override double ArmorRating
-		{
-			get
-			{
-				//BaseArmor ar;
-				double rating = 0.0;
-
-				AddArmorRating(ref rating, NeckArmor);
-				AddArmorRating(ref rating, HandArmor);
-				AddArmorRating(ref rating, HeadArmor);
-				AddArmorRating(ref rating, ArmsArmor);
-				AddArmorRating(ref rating, LegsArmor);
-				AddArmorRating(ref rating, ChestArmor);
-				AddArmorRating(ref rating, ShieldArmor);
-
-				return VirtualArmor + VirtualArmorMod + rating;
-			}
-		}
-
-		private void AddArmorRating(ref double rating, Item armor)
-		{
-			BaseArmor ar = armor as BaseArmor;
-
-			if (ar != null && (!Core.AOS || ar.ArmorAttributes.MageArmor == 0))
-			{
-				rating += ar.ArmorRatingScaled;
-			}
-		}
-
 		#region [Stats]Max
 		[CommandProperty(AccessLevel.GameMaster)]
 		public override int HitsMax
 		{
-			get
-			{
-				int strBase;
-				int strOffs = GetStatOffset(StatType.Str);
+            get
+            {
+                int strBase;
+                int strOffs = GetStatOffset(StatType.Str);
 
-				if (Core.AOS)
-				{
-					strBase = Str; //Str already includes GetStatOffset/str
-					strOffs = AosAttributes.GetValue(this, AosAttribute.BonusHits);
+                strBase = Str; //Str already includes GetStatOffset/str
+                strOffs = AosAttributes.GetValue(this, AosAttribute.BonusHits);
 
-					if (Core.ML && strOffs > 25 && IsPlayer())
-					{
-						strOffs = 25;
-					}
+                if (strOffs > 25 && IsPlayer())
+                {
+                    strOffs = 25;
+                }
 
-					if (AnimalForm.UnderTransformation(this, typeof(BakeKitsune)) ||
-						AnimalForm.UnderTransformation(this, typeof(GreyWolf)))
-					{
-						strOffs += 20;
-					}
+                if (AnimalForm.UnderTransformation(this, typeof(BakeKitsune)) ||
+                    AnimalForm.UnderTransformation(this, typeof(GreyWolf)))
+                {
+                    strOffs += 20;
+                }
 
-                    // Skill Masteries
-                    if (Core.TOL)
-                    {
-                        strOffs += ToughnessSpell.GetHPBonus(this);
-                        strOffs += InvigorateSpell.GetHPBonus(this);
-                    }
-				}
-				else
-				{
-					strBase = RawStr;
-				}
+                // Skill Masteries
+                strOffs += ToughnessSpell.GetHPBonus(this);
+                strOffs += InvigorateSpell.GetHPBonus(this);
 
-				return (strBase / 2) + 50 + strOffs;
-			}
+                return (strBase / 2) + 50 + strOffs;
+            }
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -1918,7 +1873,7 @@ namespace Server.Mobiles
 		public override int ManaMax { get
 		{
 			return base.ManaMax + AosAttributes.GetValue(this, AosAttribute.BonusMana) +
-				   ((Core.ML && Race == Race.Elf) ? 20 : 0) +
+				   (Race == Race.Elf ? 20 : 0) +
                    MasteryInfo.IntuitionBonus(this) +
                    UraliTranceTonic.GetManaBuff(this);
 		} }
@@ -1930,7 +1885,7 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				if (Core.ML && IsPlayer())
+				if (IsPlayer())
 				{
                     var str = base.Str;
 
@@ -1947,7 +1902,7 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				if (Core.ML && IsPlayer())
+				if (IsPlayer())
 				{
 					return Math.Min(base.Int, IntMaxCap);
 				}
@@ -1962,7 +1917,7 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				if (Core.ML && IsPlayer())
+				if (IsPlayer())
 				{
                     var dex = base.Dex;
 
@@ -2112,7 +2067,7 @@ namespace Server.Mobiles
 
             BestialSetHelper.OnHeal(this, from, ref amount);
 
-            if (Core.SA && amount > 0 && from != null && from != this)
+            if (amount > 0 && from != null && from != this)
             {
                 for (int i = Aggressed.Count - 1; i >= 0; i--)
                 {
@@ -2246,7 +2201,7 @@ namespace Server.Mobiles
 
             if (from == this)
 			{
-                if (Core.HS && Alive)
+                if (Alive)
                 {
                     list.Add(new SearchVendors(this));
                 }
@@ -2261,12 +2216,9 @@ namespace Server.Mobiles
 					}
 				}
 
-                if (Core.SA)
-                {
-                    list.Add(new TitlesMenuEntry(this));
-				}
+                list.Add(new TitlesMenuEntry(this));
 
-                if (Alive && Core.SA)
+                if (Alive)
                 {
                     list.Add(new Engines.Points.LoyaltyRating(this));
                 }
@@ -2283,14 +2235,9 @@ namespace Server.Mobiles
                     list.Add(new CallbackEntry(3006168, SiegeBlessItem));
                 }
 
-                if (Core.ML && Alive)
+                if (Alive)
                 {
                     QuestHelper.GetContextMenuEntries(list);
-
-                    if (!Core.SA && m_RewardTitles.Count > 0)
-                    {
-                        list.Add(new CallbackEntry(6229, ShowChangeTitle));
-                    }
                 }
 
                 if (m_Quest != null)
@@ -2311,10 +2258,7 @@ namespace Server.Mobiles
                     }
                 }
 
-				if (Core.HS)
-				{
-					list.Add(new CallbackEntry(RefuseTrades ? 1154112 : 1154113, ToggleTrades)); // Allow Trades / Refuse Trades				
-				}
+			    list.Add(new CallbackEntry(RefuseTrades ? 1154112 : 1154113, ToggleTrades)); // Allow Trades / Refuse Trades				
 
 				if (m_JusticeProtectors.Count > 0)
 				{
@@ -2352,15 +2296,12 @@ namespace Server.Mobiles
 			}
 			else
 			{
-                if (Core.HS)
-                {
-                    BaseGalleon galleon = BaseGalleon.FindGalleonAt(from.Location, from.Map);
+                BaseGalleon galleon = BaseGalleon.FindGalleonAt(from.Location, from.Map);
 
-                    if (galleon != null && galleon.IsOwner(from))
-                        list.Add(new ShipAccessEntry(this, from, galleon));
-                }
+                if (galleon != null && galleon.IsOwner(from))
+                    list.Add(new ShipAccessEntry(this, from, galleon));
 
-                if (Alive && Core.AOS)
+                if (Alive)
 				{
 					Party theirParty = from.Party as Party;
 					Party ourParty = Party as Party;
@@ -2581,17 +2522,9 @@ namespace Server.Mobiles
 				return;
 			}
 
-			if (Core.SE)
+			if (!HasGump(typeof(CancelRenewInventoryInsuranceGump)))
 			{
-				if (!HasGump(typeof(CancelRenewInventoryInsuranceGump)))
-				{
-					SendGump(new CancelRenewInventoryInsuranceGump(this, null));
-				}
-			}
-			else
-			{
-				SendLocalizedMessage(1061075, "", 0x23); // You have cancelled automatically reinsuring all insured items upon death
-				AutoRenewInsurance = false;
+				SendGump(new CancelRenewInventoryInsuranceGump(this, null));
 			}
 		}
 
@@ -3413,11 +3346,7 @@ namespace Server.Mobiles
 		{
 			int disruptThreshold;
 
-			if (!Core.AOS)
-			{
-				disruptThreshold = 0;
-			}
-			else if (from != null && from.Player)
+			if (from != null && from.Player)
 			{
 				disruptThreshold = 19;
 			}
@@ -3426,10 +3355,7 @@ namespace Server.Mobiles
 				disruptThreshold = 26;
 			}
 
-            if (Core.SA)
-            {
-                disruptThreshold += Dex / 12;
-            }
+            disruptThreshold += Dex / 12;
 
 			if (amount > disruptThreshold)
 			{
@@ -3505,7 +3431,7 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				if (Core.ML && Race == Race.Human)
+				if (Race == Race.Human)
 				{
 					return 20.0;
 				}
@@ -3516,10 +3442,10 @@ namespace Server.Mobiles
 
         public override double GetRacialSkillBonus(SkillName skill)
         {
-            if (Core.ML && Race == Race.Human)
+            if (Race == Race.Human)
                 return 20.0;
 
-            if (Core.SA && Race == Race.Gargoyle)
+            if (Race == Race.Gargoyle)
             {
                 if (skill == SkillName.Imbuing)
                     return 30.0;
@@ -3595,7 +3521,7 @@ namespace Server.Mobiles
 
             DropHolding();
 
-            if (Core.AOS && Backpack != null && !Backpack.Deleted)
+            if (Backpack != null && !Backpack.Deleted)
             {
                 var ilist = Backpack.FindItemsByType<Item>(FindItems_Callback);
 
@@ -4065,21 +3991,18 @@ namespace Server.Mobiles
 				return false;
 			}
 
-			if (Core.ML && Skills[SkillName.SpiritSpeak].Value >= 100.0)
+			if (Skills[SkillName.SpiritSpeak].Value >= 100.0)
 			{
 				return false;
 			}
 
-			if (Core.AOS)
+			for (int i = 0; i < hears.Count; ++i)
 			{
-				for (int i = 0; i < hears.Count; ++i)
-				{
-					Mobile m = hears[i];
+				Mobile m = hears[i];
 
-					if (m != this && m.Skills[SkillName.SpiritSpeak].Value >= 100.0)
-					{
-						return false;
-					}
+				if (m != this && m.Skills[SkillName.SpiritSpeak].Value >= 100.0)
+				{
+					return false;
 				}
 			}
 
@@ -4270,7 +4193,7 @@ namespace Server.Mobiles
 				return false;
 			}
 
-			if (Core.ML && target is BaseCreature && ((BaseCreature)target).Controlled && ((BaseCreature)target).ControlMaster == this)
+			if (target is BaseCreature && ((BaseCreature)target).Controlled && ((BaseCreature)target).ControlMaster == this)
 			{
 				return false;
 			}
@@ -5112,17 +5035,13 @@ namespace Server.Mobiles
 		{
 			base.GetProperties(list);
 
-            if (Core.SA)
-            {
-                if (m_SubtitleSkillTitle != null)
-                    list.Add(1042971, m_SubtitleSkillTitle);
+            if (m_SubtitleSkillTitle != null)
+                list.Add(1042971, m_SubtitleSkillTitle);
 
-                if (m_CurrentVeteranTitle > 0)
-                    list.Add(m_CurrentVeteranTitle);
-            }
+            if (m_CurrentVeteranTitle > 0)
+                list.Add(m_CurrentVeteranTitle);
 
-			#region Mondain's Legacy Titles
-			if (Core.ML && m_RewardTitles != null && m_SelectedTitle > -1)
+			if (m_RewardTitles != null && m_SelectedTitle > -1)
 			{
 				if (m_SelectedTitle < m_RewardTitles.Count)
 				{
@@ -5143,19 +5062,15 @@ namespace Server.Mobiles
 					}
 				}
 			}
-			#endregion
 
-			if (Core.ML)
+			for (int i = AllFollowers.Count - 1; i >= 0; i--)
 			{
-				for (int i = AllFollowers.Count - 1; i >= 0; i--)
-				{
-					BaseCreature c = AllFollowers[i] as BaseCreature;
+				BaseCreature c = AllFollowers[i] as BaseCreature;
 
-					if (c != null && c.ControlOrder == OrderType.Guard)
-					{
-						list.Add(501129); // guarded
-						break;
-					}
+				if (c != null && c.ControlOrder == OrderType.Guard)
+				{
+					list.Add(501129); // guarded
+					break;
 				}
 			}
 
@@ -5186,11 +5101,6 @@ namespace Server.Mobiles
             {
                 Waypoints.UpdateToParty(this);
             }
-
-			if (!Core.SE)
-			{
-				return base.OnMove(d);
-			}
 
 			if (IsStaff())
 			{
@@ -5593,22 +5503,8 @@ namespace Server.Mobiles
             EpiphanyHelper.OnKarmaChange(this);
 		}
 
-		public override void OnSkillChange(SkillName skill, double oldBase)
+        public override void OnSkillChange(SkillName skill, double oldBase)
 		{
-			if (Young)
-			{
-                if (SkillsTotal >= 4500 && (!Core.AOS && Skills[skill].Base >= 80.0))
-                {
-                    Account acc = Account as Account;
-
-                    if (acc != null)
-                    {
-                        acc.RemoveYoungStatus(1019036);
-                        // You have successfully obtained a respectable skill level, and have outgrown your status as a young player!
-                    }
-                }
-			}
-
             if (skill != SkillName.Alchemy && Skills.CurrentMastery == skill && Skills[skill].Value < MasteryInfo.MinSkillRequirement)
             {
                 //SendLocalizedMessage(1156236, String.Format("{0}\t{1}", MasteryInfo.MinSkillRequirement.ToString(), Skills[skill].Info.Name)); // You need at least ~1_SKILL_REQUIREMENT~ ~2_SKILL_NAME~ skill to use that mastery.
@@ -5625,7 +5521,7 @@ namespace Server.Mobiles
             {
                 TransformationSpellHelper.CheckCastSkill(this, context);
             }
-		}
+		}  
 
 		public override void OnAccessLevelChanged(AccessLevel oldLevel)
 		{
@@ -5670,16 +5566,6 @@ namespace Server.Mobiles
 			if (checkTurning && (dir & Direction.Mask) != (Direction & Direction.Mask))
 			{
 				return RunMount; // We are NOT actually moving (just a direction change)
-			}
-
-			TransformContext context = TransformationSpellHelper.GetContext(this);
-
-			if (context != null)
-			{
-                if ((!Core.SA && context.Type == typeof(ReaperFormSpell)) || (!Core.HS && context.Type == typeof(Server.Spells.Mysticism.StoneFormSpell)))
-                {
-                    return WalkFoot;
-                }
 			}
 
 			bool running = ((dir & Direction.Running) != 0);
@@ -6486,7 +6372,7 @@ namespace Server.Mobiles
 		#region Buff Icons
 		public void ResendBuffs()
 		{
-			if (!BuffInfo.Enabled || m_BuffTable == null)
+			if (m_BuffTable == null)
 			{
 				return;
 			}
@@ -6506,7 +6392,7 @@ namespace Server.Mobiles
 
 		public void AddBuff(BuffInfo b)
 		{
-			if (!BuffInfo.Enabled || b == null)
+			if (b == null)
 			{
 				return;
 			}
@@ -6571,11 +6457,9 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public ExploringTheDeepQuestChain ExploringTheDeepQuest { get; set; }
 
-        public static bool PetAutoStable { get { return Core.SE; } }
-
         public void AutoStablePets()
 		{
-			if (PetAutoStable && AllFollowers.Count > 0)
+			if (AllFollowers.Count > 0)
 			{
 				for (int i = m_AllFollowers.Count - 1; i >= 0; --i)
 				{
@@ -6618,7 +6502,7 @@ namespace Server.Mobiles
 
 		public void ClaimAutoStabledPets()
 		{
-			if (!PetAutoStable || !Region.AllowAutoClaim(this) || m_AutoStabled.Count <= 0)
+			if (!Region.AllowAutoClaim(this) || m_AutoStabled.Count <= 0)
 			{
 				return;
 			}

@@ -51,26 +51,8 @@ namespace Server.Spells.Fourth
 
                 SpellHelper.CheckReflect((int)Circle, ref source, ref m);
 
-                double damage = 0;
-
-                if (Core.AOS)
-                {
-                    damage = GetNewAosDamage(23, 1, 4, m);
-                }
-                else if (mob != null)
-                {
-                    damage = Utility.Random(12, 9);
-
-                    if (CheckResisted(mob))
-                    {
-                        damage *= 0.75;
-
-                        mob.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
-                    }
-
-                    damage *= GetDamageScalar(mob);
-                }
-
+                double damage = GetNewAosDamage(23, 1, 4, m);
+                
                 if (m is Mobile)
                 {
                     Effects.SendBoltEffect(m, true, 0, false);
@@ -93,7 +75,7 @@ namespace Server.Spells.Fourth
         {
             private readonly LightningSpell m_Owner;
             public InternalTarget(LightningSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(10, false, TargetFlags.Harmful)
             {
                 m_Owner = owner;
             }

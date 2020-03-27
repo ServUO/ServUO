@@ -10,7 +10,7 @@ namespace Server.Mobiles
 		{
 			m_Mobile.DebugSay("I have No Combatant");
 
-			if (AcquireFocusMob(m_Mobile.RangePerception, FightMode.Closest, false, true, true))
+			if (AcquireFocusMob(m_Mobile.RangePerception, FightMode.Closest, false))
 			{
 				if (m_Mobile.Debug)
 					m_Mobile.DebugSay("I have detected " + m_Mobile.FocusMob.Name + " and I will attack");
@@ -63,7 +63,7 @@ namespace Server.Mobiles
 
 		public override bool DoActionGuard()
 		{
-			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, true, true))
+			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false))
 			{
 				if (m_Mobile.Debug)
 					m_Mobile.DebugSay("I have detected {0}, attacking", m_Mobile.FocusMob.Name);

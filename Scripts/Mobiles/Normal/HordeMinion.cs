@@ -34,12 +34,9 @@ namespace Server.Mobiles
             this.Fame = 500;
             this.Karma = -500;
 
-            this.VirtualArmor = 18;
-
             this.AddItem(new LightSource());
 
             this.PackItem(new Bone(3));
-            // TODO: Body parts
         }
 
         public HordeMinion(Serial serial)

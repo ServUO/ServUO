@@ -28,7 +28,7 @@ namespace Server.Spells.Chivalry
         {
             TimeSpan delay = base.GetCastDelay();
 
-            if (Core.SA && UnderEffect(Caster))
+            if (UnderEffect(Caster))
             {
                 double milliseconds = delay.TotalMilliseconds / 2;
 
@@ -40,7 +40,7 @@ namespace Server.Spells.Chivalry
 
         public override void OnCast()
         {
-            if (Core.SA && UnderEffect(Caster))
+            if (UnderEffect(Caster))
             {
                 PlayEffects();
 
@@ -275,7 +275,7 @@ namespace Server.Spells.Chivalry
 				DeltaEnemies();
 				UpdateBuffInfo();
 			}
-            else if (Core.SA)
+            else
             {
                 // Odd but OSI recalculates when the target changes...
                 UpdateDamage();

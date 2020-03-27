@@ -69,34 +69,7 @@ namespace Server.Items
                 return 3.75f;
             }
         }
-        public override int OldStrengthReq
-        {
-            get
-            {
-                return 40;
-            }
-        }
-        public override int OldMinDamage
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int OldMaxDamage
-        {
-            get
-            {
-                return 36;
-            }
-        }
-        public override int OldSpeed
-        {
-            get
-            {
-                return 31;
-            }
-        }
+        
         public override int InitMinHits
         {
             get

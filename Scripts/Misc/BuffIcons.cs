@@ -6,26 +6,15 @@ namespace Server
 {
     public class BuffInfo
     {
-        public static bool Enabled
-        {
-            get
-            {
-                return Core.ML;
-            }
-        }
-
         public static void Initialize()
         {
-            if (Enabled)
+            EventSink.ClientVersionReceived += new ClientVersionReceivedHandler(delegate(ClientVersionReceivedArgs args)
             {
-                EventSink.ClientVersionReceived += new ClientVersionReceivedHandler(delegate(ClientVersionReceivedArgs args)
-                {
-                    PlayerMobile pm = args.State.Mobile as PlayerMobile;
+                PlayerMobile pm = args.State.Mobile as PlayerMobile;
 					
-                    if (pm != null)
-                        Timer.DelayCall(TimeSpan.Zero, pm.ResendBuffs);
-                });
-            }
+                if (pm != null)
+                    Timer.DelayCall(TimeSpan.Zero, pm.ResendBuffs);
+            });
         }
 
         public static int Blank { get { return 1114057; } } // ~1_val~

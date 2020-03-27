@@ -41,8 +41,6 @@ namespace Server.Mobiles
             this.Fame = 4000;
             this.Karma = -4000;
 
-            this.VirtualArmor = 28;
-
             this.PackReg(10);
         }
 
@@ -56,13 +54,6 @@ namespace Server.Mobiles
             get
             {
                 return true;
-            }
-        }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
             }
         }
         public override Poison PoisonImmune

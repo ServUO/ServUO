@@ -80,16 +80,10 @@ namespace Server.Mobiles
                 return Poison.Lethal;
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
+
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosUltraRich, 4);
+            AddLoot(LootPack.UltraRich, 4);
         }
 
         public override void OnDeath(Container c)

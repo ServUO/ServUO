@@ -147,7 +147,7 @@ namespace Server.Spells.Chivalry
             {
                 Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
             }
-            else if (map == null || (!Core.AOS && Caster.Map != map))
+            else if (map == null)
             {
                 Caster.SendLocalizedMessage(1005569); // You can not recall to another facet.
             }
@@ -215,7 +215,7 @@ namespace Server.Spells.Chivalry
             private readonly SacredJourneySpell m_Owner;
 
             public InternalTarget(SacredJourneySpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.None)
+                : base(10, false, TargetFlags.None)
             {
                 m_Owner = owner;
             }

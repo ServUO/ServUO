@@ -10,7 +10,7 @@ namespace Server.Misc
         /* In order to support emailing, fill in EmailServer and FromAddress:
         * Example:
         *  public static readonly string EmailServer = "mail.domain.com";
-        *  public static readonly string FromAddress = "runuo@domain.com";
+        *  public static readonly string FromAddress = "servuo@domain.com";
         * 
         * If you want to add crash reporting emailing, fill in CrashAddresses:
         * Example:

@@ -20,12 +20,7 @@ namespace Server.Items
         
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.NetState == null || !from.NetState.SupportsExpansion(Expansion.ML))
-            {
-                from.SendLocalizedMessage(1072608); // You must upgrade to the Mondain's Legacy expansion in order to enter here.				
-                return;
-            }
-            else if (!MondainsLegacy.Citadel && (int)from.AccessLevel < (int)AccessLevel.GameMaster)
+            if (!MondainsLegacy.Citadel && (int)from.AccessLevel < (int)AccessLevel.GameMaster)
             {
                 from.SendLocalizedMessage(1042753, "The Citadel"); // ~1_SOMETHING~ has been temporarily disabled.
                 return;

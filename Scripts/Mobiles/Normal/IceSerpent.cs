@@ -4,7 +4,6 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("an ice serpent corpse")]
-    [TypeAlias("Server.Mobiles.Iceserpant")]
     public class IceSerpent : BaseCreature
     {
         [Constructable]
@@ -39,9 +38,6 @@ namespace Server.Mobiles
 
             Fame = 3500;
             Karma = -3500;
-
-            VirtualArmor = 32;
-
         }
 
         public IceSerpent(Serial serial)
@@ -80,9 +76,6 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
-            PackItem(Loot.RandomArmorOrShieldOrWeapon());
-
-            PackBodyPartOrBones();
 
             if (0.025 > Utility.RandomDouble())
                 PackItem(new GlacialStaff());
@@ -91,14 +84,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

@@ -152,7 +152,7 @@ namespace Server.Spells.SkillMasteries
 
         private bool DoDamage(Mobile m, InternalItem item)
         {
-            if (item.Visible && Caster != null && (!Core.AOS || m != Caster) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
+            if (item.Visible && Caster != null && m != Caster && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
             {
                 if (SpellHelper.CanRevealCaster(m))
                     Caster.RevealingAction();

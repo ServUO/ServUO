@@ -44,7 +44,6 @@ namespace Server.Mobiles
             Fame = 5000;
             Karma = -5000;
 
-            VirtualArmor = 50;
             PackNecroReg(15, 25);
         }
 
@@ -57,11 +56,6 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.MedScrolls, 2);
-        }
-
-        public override OppositionGroup OppositionGroup
-        {
-            get { return OppositionGroup.FeyAndUndead; }
         }
 
         public override int TreasureMapLevel { get { return Utility.RandomMinMax(1, 3); } }

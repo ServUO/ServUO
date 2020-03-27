@@ -2095,7 +2095,6 @@
     <Compile Include="Mobiles\Normal\BulbousPutrification.cs" />
     <Compile Include="Mobiles\Normal\Bull.cs" />
     <Compile Include="Mobiles\Normal\BullFrog.cs" />
-    <Compile Include="Mobiles\Normal\CapturedHordeMinion.cs" />
     <Compile Include="Mobiles\Normal\Cat.cs" />
     <Compile Include="Mobiles\Normal\Centaur.cs" />
     <Compile Include="Mobiles\Normal\Changeling.cs" />
@@ -2145,7 +2144,6 @@
     <Compile Include="Mobiles\Normal\DesertOstard.cs" />
     <Compile Include="Mobiles\Normal\Devourer.cs" />
     <Compile Include="Mobiles\Normal\DireWolf.cs" />
-    <Compile Include="Mobiles\Normal\DiseasedCat.cs" />
     <Compile Include="Mobiles\Normal\Dog.cs" />
     <Compile Include="Mobiles\Normal\Dolphin.cs" />
     <Compile Include="Mobiles\Normal\Doppleganger.cs" />
@@ -2238,7 +2236,6 @@
     <Compile Include="Mobiles\Normal\GrayGoblinMage.cs" />
     <Compile Include="Mobiles\Normal\GreyWolf.cs" />
     <Compile Include="Mobiles\Normal\GrizzlyBear.cs" />
-    <Compile Include="Mobiles\Normal\Guardian.cs" />
     <Compile Include="Mobiles\Normal\Harpy.cs" />
     <Compile Include="Mobiles\Normal\HeadlessOne.cs" />
     <Compile Include="Mobiles\Normal\HellCat.cs" />
@@ -2249,7 +2246,6 @@
     <Compile Include="Mobiles\Normal\Hiryu.cs" />
     <Compile Include="Mobiles\Normal\HordeMinion.cs" />
     <Compile Include="Mobiles\Normal\Horse.cs" />
-    <Compile Include="Mobiles\Normal\HumanBrigand.cs" />
     <Compile Include="Mobiles\Normal\Hydra.cs" />
     <Compile Include="Mobiles\Normal\IceElemental.cs" />
     <Compile Include="Mobiles\Normal\IceFiend.cs" />
@@ -2453,7 +2449,6 @@
     <Compile Include="Mobiles\Normal\TerathanDrone.cs" />
     <Compile Include="Mobiles\Normal\TerathanMatriarch.cs" />
     <Compile Include="Mobiles\Normal\TerathanWarrior.cs" />
-    <Compile Include="Mobiles\Normal\ThirdDawnParrot.cs" />
     <Compile Include="Mobiles\Normal\TigersClawMaster.cs" />
     <Compile Include="Mobiles\Normal\TimberWolf.cs" />
     <Compile Include="Mobiles\Normal\Titan.cs" />
@@ -2490,8 +2485,6 @@
     <Compile Include="Mobiles\Normal\YomotsuElder.cs" />
     <Compile Include="Mobiles\Normal\YomotsuPriest.cs" />
     <Compile Include="Mobiles\Normal\YomotsuWarrior.cs" />
-    <Compile Include="Mobiles\Normal\YoungNinja.cs" />
-    <Compile Include="Mobiles\Normal\YoungRonin.cs" />
     <Compile Include="Mobiles\Normal\Zombie.cs" />
     <Compile Include="Mobiles\NPCs\Abbein.cs" />
     <Compile Include="Mobiles\NPCs\Acob.cs" />
@@ -3450,18 +3443,18 @@
     <Compile Include="Services\FireCasino\Mobiles.cs" />
     <Compile Include="Services\FireCasino\TentBrownAddon.cs" />
     <Compile Include="Services\FireCasino\TentWhiteAddon.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\AdvancedSearch.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\BaseGuildGump.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\BaseGuildListGump.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\CreateGuildGump.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\DiplomacyGump.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\GuildInfoGump.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\GuildInvitationRequest.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\GuildMemberInfoGump.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\GuildRosterGump.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\OtherGuildInfo.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\WarDeclarationGump.cs" />
-	<Compile Include="Services\Guilds\Guild.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\AdvancedSearch.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\BaseGuildGump.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\BaseGuildListGump.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\CreateGuildGump.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\DiplomacyGump.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\GuildInfoGump.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\GuildInvitationRequest.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\GuildMemberInfoGump.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\GuildRosterGump.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\OtherGuildInfo.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\WarDeclarationGump.cs" />
+    <Compile Include="Services\Guilds\Guild.cs" />
     <Compile Include="Services\HolidaySettings.cs" />
     <Compile Include="Services\HuntmasterChallenge\BestKillBoard.cs" />
     <Compile Include="Services\HuntmasterChallenge\ComplexHuntTrophy.cs" />
@@ -8688,9 +8681,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mobiles\AI\MeleeAI.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mobiles\AI\OppositionGroup.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mobiles\AI\OrcScoutAI.cs">

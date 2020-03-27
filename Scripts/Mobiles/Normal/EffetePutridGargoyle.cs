@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public EffetePutridGargoyle()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an Effete putrid gargoyle";
+            this.Name = "an effete putrid gargoyle";
             this.Body = 4;
             this.BaseSoundID = 372;
 
@@ -37,8 +37,6 @@ namespace Server.Mobiles
 
             this.Fame = 3500;
             this.Karma = -3500;
-
-            this.VirtualArmor = 32;
         }
 
         public EffetePutridGargoyle(Serial serial)

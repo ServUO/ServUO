@@ -37,8 +37,6 @@ namespace Server.Mobiles
             Fame = 1000;
             Karma = -1800;
 
-            VirtualArmor = 34;
-
             SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 

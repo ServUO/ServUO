@@ -45,7 +45,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.AOS;
+                return true;
             }
         }
         public override bool IsHouseSummonable

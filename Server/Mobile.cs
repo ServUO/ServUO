@@ -815,7 +815,6 @@ namespace Server
 		private DateTime m_NextWarmodeChange;
 		private WarmodeTimer m_WarmodeTimer;
 		private int m_Thirst, m_BAC;
-		private int m_VirtualArmorMod;
 		private VirtueInfo m_Virtues;
 		private object m_Party;
 		private List<SkillMod> m_SkillMods;
@@ -1277,21 +1276,6 @@ namespace Server
 
 		public object Party { get { return m_Party; } set { m_Party = value; } }
 		public List<SkillMod> SkillMods { get { return m_SkillMods; } }
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int VirtualArmorMod
-		{
-			get { return m_VirtualArmorMod; }
-			set
-			{
-				if (m_VirtualArmorMod != value)
-				{
-					m_VirtualArmorMod = value;
-
-					Delta(MobileDelta.Armor);
-				}
-			}
-		}
 
 		/// <summary>
 		///     Overridable. Virtual event invoked when <paramref name="skill" /> changes in some way.

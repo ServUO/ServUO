@@ -59,8 +59,6 @@ namespace Server.Mobiles
 				case 12: PackItem(new WraithFormScroll()); break;
 			}
 
-            VirtualArmor = 30;
-
             Tamable = true;
             ControlSlots = 2;
             MinTameSkill = 83.1;

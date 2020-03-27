@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    // Based off a BlackStaff
     [FlipableAttribute(0x905, 0x4070)]
     public class GlassStaff : BaseStaff
     {
@@ -67,34 +66,7 @@ namespace Server.Items
                 return 2.25f;
             }
         }
-        public override int OldStrengthReq
-        {
-            get
-            {
-                return 35;
-            }
-        }
-        public override int OldMinDamage
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int OldMaxDamage
-        {
-            get
-            {
-                return 33;
-            }
-        }
-        public override int OldSpeed
-        {
-            get
-            {
-                return 35;
-            }
-        }
+        
         public override int InitMinHits
         {
             get

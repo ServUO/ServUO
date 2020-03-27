@@ -435,152 +435,112 @@ namespace Server
         #region Accessors
         public static BaseWand RandomWand()
         {
-            if (Core.ML)
-            {
-                return Construct(m_NewWandTypes) as BaseWand;
-            }
-
-            if (Core.AOS)
-            {
-                return Construct(m_WandTypes, m_NewWandTypes) as BaseWand;
-            }
-
-            return Construct(m_OldWandTypes, m_WandTypes, m_NewWandTypes) as BaseWand;
+            return Construct(m_NewWandTypes) as BaseWand;
         }
 
         public static BaseClothing RandomClothing(bool inTokuno = false, bool isMondain = false, bool isStygian = false)
         {
-            #region Stygian Abyss
-            if (Core.SA && isStygian)
+            if (isStygian)
             {
                 return Construct(m_SAClothingTypes, m_AosClothingTypes, m_ClothingTypes) as BaseClothing;
             }
-            #endregion
 
-            #region Mondain's Legacy
-            if (Core.ML && isMondain)
+            if (isMondain)
             {
                 return Construct(m_MLClothingTypes, m_AosClothingTypes, m_ClothingTypes) as BaseClothing;
             }
-            #endregion
 
-            if (Core.SE && inTokuno)
+            if (inTokuno)
             {
                 return Construct(m_SEClothingTypes, m_AosClothingTypes, m_ClothingTypes) as BaseClothing;
             }
 
-            if (Core.AOS)
-            {
-                return Construct(m_AosClothingTypes, m_ClothingTypes) as BaseClothing;
-            }
-
-            return Construct(m_ClothingTypes) as BaseClothing;
+            return Construct(m_AosClothingTypes, m_ClothingTypes) as BaseClothing;
         }
 
         public static BaseWeapon RandomRangedWeapon(bool inTokuno = false, bool isMondain = false, bool isStygian = false)
         {
-            #region Stygian Abyss
-            if (Core.SA && isStygian)
+            if (isStygian)
+            {
                 return Construct(m_SARangedWeaponTypes, m_AosRangedWeaponTypes, m_RangedWeaponTypes) as BaseWeapon;
-            #endregion
+            }
 
-            #region Mondain's Legacy
-            if (Core.ML && isMondain)
+            if (isMondain)
             {
                 return Construct(m_MLRangedWeaponTypes, m_AosRangedWeaponTypes, m_RangedWeaponTypes) as BaseWeapon;
             }
-            #endregion
 
-            if (Core.SE && inTokuno)
+            if (inTokuno)
             {
                 return Construct(m_SERangedWeaponTypes, m_AosRangedWeaponTypes, m_RangedWeaponTypes) as BaseWeapon;
             }
 
-            if (Core.AOS)
-            {
-                return Construct(m_AosRangedWeaponTypes, m_RangedWeaponTypes) as BaseWeapon;
-            }
-
-            return Construct(m_RangedWeaponTypes) as BaseWeapon;
+            return Construct(m_AosRangedWeaponTypes, m_RangedWeaponTypes) as BaseWeapon;
         }
 
         public static BaseWeapon RandomWeapon(bool inTokuno = false, bool isMondain = false, bool isStygian = false)
         {
-            #region Stygian Abyss
-            if (Core.SA && isStygian)
+            if (isStygian)
+            {
                 return Construct(m_SAWeaponTypes, m_AosWeaponTypes, m_WeaponTypes) as BaseWeapon;
-            #endregion
+            }
 
-            #region Mondain's Legacy
-            if (Core.ML && isMondain)
+            if (isMondain)
             {
                 return Construct(m_MLWeaponTypes, m_AosWeaponTypes, m_WeaponTypes) as BaseWeapon;
             }
-            #endregion
 
-            if (Core.SE && inTokuno)
+            if (inTokuno)
             {
                 return Construct(m_SEWeaponTypes, m_AosWeaponTypes, m_WeaponTypes) as BaseWeapon;
             }
 
-            if (Core.AOS)
-            {
-                return Construct(m_AosWeaponTypes, m_WeaponTypes) as BaseWeapon;
-            }
-
-            return Construct(m_WeaponTypes) as BaseWeapon;
+            return Construct(m_AosWeaponTypes, m_WeaponTypes) as BaseWeapon;
         }
 
         public static Item RandomWeaponOrJewelry(bool inTokuno = false, bool isMondain = false, bool isStygian = false)
         {
-            #region Stygian Abyss
-            if (Core.SA && isStygian)
+            if (isStygian)
+            {
                 return Construct(m_SAWeaponTypes, m_AosWeaponTypes, m_WeaponTypes, m_JewelryTypes, m_SAJewelryTypes);
-            #endregion
+            }
 
-            #region Mondain's Legacy
-            if (Core.ML && isMondain)
+            if (isMondain)
             {
                 return Construct(m_MLWeaponTypes, m_AosWeaponTypes, m_WeaponTypes, m_JewelryTypes);
             }
-            #endregion
 
-            if (Core.SE && inTokuno)
+            if (inTokuno)
             {
                 return Construct(m_SEWeaponTypes, m_AosWeaponTypes, m_WeaponTypes, m_JewelryTypes);
             }
 
-            if (Core.AOS)
-            {
-                return Construct(m_AosWeaponTypes, m_WeaponTypes, m_JewelryTypes);
-            }
-
-            return Construct(m_WeaponTypes, m_JewelryTypes);
+            return Construct(m_AosWeaponTypes, m_WeaponTypes, m_JewelryTypes);
         }
 
         public static BaseJewel RandomJewelry(bool isStygian = false)
         {
-            if (Core.SA && isStygian)
+            if (isStygian)
+            {
                 return Construct(m_SAJewelryTypes, m_JewelryTypes) as BaseJewel;
-            else
-                return Construct(m_JewelryTypes) as BaseJewel;
+            }
+
+            return Construct(m_JewelryTypes) as BaseJewel;
         }
 
         public static BaseArmor RandomArmor(bool inTokuno = false, bool isMondain = false, bool isStygian = false)
         {
-            #region Stygian Abyss
-            if (Core.SA && isStygian)
+            if (isStygian)
+            {
                 return Construct(m_SAArmorTypes, m_ArmorTypes) as BaseArmor;
-            #endregion
+            }
 
-            #region Mondain's Legacy
-            if (Core.ML && isMondain)
+            if (isMondain)
             {
                 return Construct(m_MLArmorTypes, m_ArmorTypes) as BaseArmor;
             }
-            #endregion
 
-            if (Core.SE && inTokuno)
+            if (inTokuno)
             {
                 return Construct(m_SEArmorTypes, m_ArmorTypes) as BaseArmor;
             }
@@ -590,102 +550,77 @@ namespace Server
 
         public static BaseHat RandomHat(bool inTokuno = false)
         {
-            if (Core.SE && inTokuno)
+            if (inTokuno)
             {
                 return Construct(m_SEHatTypes, m_AosHatTypes, m_HatTypes) as BaseHat;
             }
 
-            if (Core.AOS)
-            {
-                return Construct(m_AosHatTypes, m_HatTypes) as BaseHat;
-            }
-
-            return Construct(m_HatTypes) as BaseHat;
+            return Construct(m_AosHatTypes, m_HatTypes) as BaseHat;
         }
 
         public static Item RandomArmorOrHat(bool inTokuno = false, bool isMondain = false, bool isStygian = false)
         {
-            #region Stygian Abyss
-            if (Core.SA && isStygian)
+            if (isStygian)
+            {
                 return Construct(m_SAArmorTypes, m_ArmorTypes, m_AosHatTypes, m_HatTypes);
-            #endregion
+            }
 
-            #region Mondain's Legacy
-            if (Core.ML && isMondain)
+            if (isMondain)
             {
                 return Construct(m_MLArmorTypes, m_ArmorTypes, m_AosHatTypes, m_HatTypes);
             }
-            #endregion
 
-            if (Core.SE && inTokuno)
+            if (inTokuno)
             {
                 return Construct(m_SEArmorTypes, m_ArmorTypes, m_SEHatTypes, m_AosHatTypes, m_HatTypes);
             }
 
-            if (Core.AOS)
-            {
-                return Construct(m_ArmorTypes, m_AosHatTypes, m_HatTypes);
-            }
-
-            return Construct(m_ArmorTypes, m_HatTypes);
+            return Construct(m_ArmorTypes, m_AosHatTypes, m_HatTypes);
         }
 
         public static BaseShield RandomShield(bool isStygian = false)
         {
-            if (Core.SA && isStygian)
+            if(isStygian)
             {
                 return Construct(m_AosShieldTypes, m_ShieldTypes, m_SAShieldTypes) as BaseShield;
             }
-            if (Core.AOS)
-            {
-                return Construct(m_AosShieldTypes, m_ShieldTypes) as BaseShield;
-            }
 
-            return Construct(m_ShieldTypes) as BaseShield;
+            return Construct(m_AosShieldTypes, m_ShieldTypes) as BaseShield;
         }
 
         public static BaseArmor RandomArmorOrShield(bool inTokuno = false, bool isMondain = false, bool isStygian = false)
         {
-            #region Stygian Abyss
-            if (Core.SA && isStygian)
+            if (isStygian)
+            {
                 return Construct(m_SAArmorTypes, m_ArmorTypes, m_AosShieldTypes, m_ShieldTypes, m_SAShieldTypes) as BaseArmor;
-            #endregion
+            }
 
-            #region Mondain's Legacy
-            if (Core.ML && isMondain)
+            if (isMondain)
             {
                 return Construct(m_MLArmorTypes, m_ArmorTypes, m_AosShieldTypes, m_ShieldTypes) as BaseArmor;
             }
-            #endregion
 
-            if (Core.SE && inTokuno)
+            if (inTokuno)
             {
                 return Construct(m_SEArmorTypes, m_ArmorTypes, m_AosShieldTypes, m_ShieldTypes) as BaseArmor;
             }
 
-            if (Core.AOS)
-            {
-                return Construct(m_ArmorTypes, m_AosShieldTypes, m_ShieldTypes) as BaseArmor;
-            }
-
-            return Construct(m_ArmorTypes, m_ShieldTypes) as BaseArmor;
+            return Construct(m_ArmorTypes, m_AosShieldTypes, m_ShieldTypes) as BaseArmor;
         }
 
         public static Item RandomArmorOrShieldOrJewelry(bool inTokuno = false, bool isMondain = false, bool isStygian = false)
         {
-            #region Stygian Abyss
-            if (Core.SA && isStygian)
+            if (isStygian)
+            {
                 return Construct(m_SAArmorTypes, m_ArmorTypes, m_AosHatTypes, m_HatTypes, m_AosShieldTypes, m_ShieldTypes, m_JewelryTypes, m_SAJewelryTypes, m_SAShieldTypes);
-            #endregion
+            }
 
-            #region Mondain's Legacy
-            if (Core.ML && isMondain)
+            if (isMondain)
             {
                 return Construct(m_MLArmorTypes, m_ArmorTypes, m_AosHatTypes, m_HatTypes, m_AosShieldTypes, m_ShieldTypes, m_JewelryTypes);
             }
-            #endregion
 
-            if (Core.SE && inTokuno)
+            if (inTokuno)
             {
                 return Construct(
                     m_SEArmorTypes,
@@ -698,18 +633,12 @@ namespace Server
                     m_JewelryTypes);
             }
 
-            if (Core.AOS)
-            {
-                return Construct(m_ArmorTypes, m_AosHatTypes, m_HatTypes, m_AosShieldTypes, m_ShieldTypes, m_JewelryTypes);
-            }
-
-            return Construct(m_ArmorTypes, m_HatTypes, m_ShieldTypes, m_JewelryTypes);
+            return Construct(m_ArmorTypes, m_AosHatTypes, m_HatTypes, m_AosShieldTypes, m_ShieldTypes, m_JewelryTypes);
         }
 
         public static Item RandomArmorOrShieldOrWeapon(bool inTokuno = false, bool isMondain = false, bool isStygian = false)
         {
-            #region Stygian Abyss
-            if (Core.SA && isStygian)
+            if(isStygian)
                 return Construct(
                     m_SAWeaponTypes,
                     m_AosWeaponTypes,
@@ -724,10 +653,8 @@ namespace Server
                     m_AosShieldTypes,
                     m_ShieldTypes,
                     m_SAShieldTypes);
-            #endregion
 
-            #region Mondain's Legacy
-            if (Core.ML && isMondain)
+            if (isMondain)
             {
                 return Construct(
                     m_MLWeaponTypes,
@@ -743,9 +670,8 @@ namespace Server
                     m_AosShieldTypes,
                     m_ShieldTypes);
             }
-            #endregion
 
-            if (Core.SE && inTokuno)
+            if (inTokuno)
             {
                 return Construct(
                     m_SEWeaponTypes,
@@ -763,27 +689,21 @@ namespace Server
                     m_ShieldTypes);
             }
 
-            if (Core.AOS)
-            {
-                return Construct(
-                    m_AosWeaponTypes,
-                    m_WeaponTypes,
-                    m_AosRangedWeaponTypes,
-                    m_RangedWeaponTypes,
-                    m_ArmorTypes,
-                    m_AosHatTypes,
-                    m_HatTypes,
-                    m_AosShieldTypes,
-                    m_ShieldTypes);
-            }
-
-            return Construct(m_WeaponTypes, m_RangedWeaponTypes, m_ArmorTypes, m_HatTypes, m_ShieldTypes);
+            return Construct(
+                m_AosWeaponTypes,
+                m_WeaponTypes,
+                m_AosRangedWeaponTypes,
+                m_RangedWeaponTypes,
+                m_ArmorTypes,
+                m_AosHatTypes,
+                m_HatTypes,
+                m_AosShieldTypes,
+                m_ShieldTypes);
         }
 
         public static Item RandomArmorOrShieldOrWeaponOrJewelry(bool inTokuno = false, bool isMondain = false, bool isStygian = false)
         {
-            #region Stygian Abyss
-            if (Core.SA && isStygian)
+            if(isStygian)
             {
                 return Construct(
                     
@@ -803,10 +723,8 @@ namespace Server
                     m_SAJewelryTypes,
                     m_SAShieldTypes);
             }
-            #endregion
 
-            #region Mondain's Legacy
-            if (Core.ML && isMondain)
+            if (isMondain)
             {
                 return Construct(
                     
@@ -824,9 +742,8 @@ namespace Server
                     m_ShieldTypes,
                     m_JewelryTypes);
             }
-            #endregion
 
-            if (Core.SE && inTokuno)
+            if (inTokuno)
             {
                 return Construct(
                     
@@ -846,23 +763,17 @@ namespace Server
                     m_JewelryTypes);
             }
 
-            if (Core.AOS)
-            {
-                return Construct(
-                    
-                    m_AosWeaponTypes,
-                    m_WeaponTypes,
-                    m_AosRangedWeaponTypes,
-                    m_RangedWeaponTypes,
-                    m_ArmorTypes,
-                    m_AosHatTypes,
-                    m_HatTypes,
-                    m_AosShieldTypes,
-                    m_ShieldTypes,
-                    m_JewelryTypes);
-            }
-
-            return Construct(m_WeaponTypes, m_RangedWeaponTypes, m_ArmorTypes, m_HatTypes, m_ShieldTypes, m_JewelryTypes);
+            return Construct(
+                m_AosWeaponTypes,
+                m_WeaponTypes,
+                m_AosRangedWeaponTypes,
+                m_RangedWeaponTypes,
+                m_ArmorTypes,
+                m_AosHatTypes,
+                m_HatTypes,
+                m_AosShieldTypes,
+                m_ShieldTypes,
+                m_JewelryTypes);
         }
 
         #region Chest of Heirlooms
@@ -899,12 +810,7 @@ namespace Server
 
         public static Item RandomPossibleReagent()
         {
-            if (Core.AOS)
-            {
-                return Construct(m_RegTypes, m_NecroRegTypes);
-            }
-
-            return Construct(m_RegTypes);
+            return Construct(m_RegTypes, m_NecroRegTypes);
         }
 
         public static Item RandomPotion()
@@ -914,12 +820,7 @@ namespace Server
 
         public static BaseInstrument RandomInstrument()
         {
-            if (Core.SE)
-            {
-                return Construct(m_InstrumentTypes, m_SEInstrumentTypes) as BaseInstrument;
-            }
-
-            return Construct(m_InstrumentTypes) as BaseInstrument;
+            return Construct(m_InstrumentTypes, m_SEInstrumentTypes) as BaseInstrument;
         }
 
         public static Item RandomStatue()
@@ -938,7 +839,7 @@ namespace Server
                     types = m_RegularScrollTypes;
                     break;
                 case SpellbookType.Necromancer:
-                    types = (Core.SE ? m_SENecromancyScrollTypes : m_NecromancyScrollTypes);
+                    types = (m_SENecromancyScrollTypes);
                     break;
                 case SpellbookType.Paladin:
                     types = m_PaladinScrollTypes;

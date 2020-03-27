@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    //Based Off Battle Axe
     [FlipableAttribute(0x48B0, 0x48B1)]
     public class GargishBattleAxe : BaseAxe
     {
@@ -68,34 +67,7 @@ namespace Server.Items
                 return 3.50f;
             }
         }
-        public override int OldStrengthReq
-        {
-            get
-            {
-                return 40;
-            }
-        }
-        public override int OldMinDamage
-        {
-            get
-            {
-                return 6;
-            }
-        }
-        public override int OldMaxDamage
-        {
-            get
-            {
-                return 38;
-            }
-        }
-        public override int OldSpeed
-        {
-            get
-            {
-                return 30;
-            }
-        }
+        
         public override int InitMinHits
         {
             get

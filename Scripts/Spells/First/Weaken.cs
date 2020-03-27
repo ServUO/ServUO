@@ -119,7 +119,7 @@ namespace Server.Spells.First
         {
             private readonly WeakenSpell m_Owner;
             public InternalTarget(WeakenSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(10, false, TargetFlags.Harmful)
             {
                 m_Owner = owner;
             }
