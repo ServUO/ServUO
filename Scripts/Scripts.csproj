@@ -2095,7 +2095,6 @@
     <Compile Include="Mobiles\Normal\BulbousPutrification.cs" />
     <Compile Include="Mobiles\Normal\Bull.cs" />
     <Compile Include="Mobiles\Normal\BullFrog.cs" />
-    <Compile Include="Mobiles\Normal\CapturedHordeMinion.cs" />
     <Compile Include="Mobiles\Normal\Cat.cs" />
     <Compile Include="Mobiles\Normal\Centaur.cs" />
     <Compile Include="Mobiles\Normal\Changeling.cs" />
@@ -2145,7 +2144,6 @@
     <Compile Include="Mobiles\Normal\DesertOstard.cs" />
     <Compile Include="Mobiles\Normal\Devourer.cs" />
     <Compile Include="Mobiles\Normal\DireWolf.cs" />
-    <Compile Include="Mobiles\Normal\DiseasedCat.cs" />
     <Compile Include="Mobiles\Normal\Dog.cs" />
     <Compile Include="Mobiles\Normal\Dolphin.cs" />
     <Compile Include="Mobiles\Normal\Doppleganger.cs" />
@@ -2489,8 +2487,6 @@
     <Compile Include="Mobiles\Normal\YomotsuElder.cs" />
     <Compile Include="Mobiles\Normal\YomotsuPriest.cs" />
     <Compile Include="Mobiles\Normal\YomotsuWarrior.cs" />
-    <Compile Include="Mobiles\Normal\YoungNinja.cs" />
-    <Compile Include="Mobiles\Normal\YoungRonin.cs" />
     <Compile Include="Mobiles\Normal\Zombie.cs" />
     <Compile Include="Mobiles\NPCs\Abbein.cs" />
     <Compile Include="Mobiles\NPCs\Acob.cs" />

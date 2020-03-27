@@ -43,8 +43,6 @@ namespace Server.Mobiles
             this.Fame = 3500;
             this.Karma = -3500;
 
-            this.VirtualArmor = 32;
-
             Item ore = new AgapiteOre(oreAmount);
             ore.ItemID = 0x19B9;
             this.PackItem(ore);

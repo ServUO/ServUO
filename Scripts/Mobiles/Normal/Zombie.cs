@@ -36,8 +36,6 @@ namespace Server.Mobiles
             Karma = -600;
 
             VirtualArmor = 18;
-
-            PackBodyPartOrBones();
         }
 
         public Zombie(Serial serial)

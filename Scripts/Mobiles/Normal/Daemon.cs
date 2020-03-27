@@ -38,8 +38,6 @@ namespace Server.Mobiles
             Fame = 15000;
             Karma = -15000;
 
-            VirtualArmor = 58;
-
             switch (Utility.Random(20))
             {
                 case 0:
@@ -58,7 +56,6 @@ namespace Server.Mobiles
                     PackItem(new WitherScroll());
                     break;
             }
-
 
             ControlSlots = 4;
         }

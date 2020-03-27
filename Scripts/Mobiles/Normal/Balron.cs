@@ -42,10 +42,6 @@ namespace Server.Mobiles
 
             Fame = 24000;
             Karma = -24000;
-
-            VirtualArmor = 90;
-
-            PackItem(new Longsword());
         }
 
         public Balron(Serial serial)

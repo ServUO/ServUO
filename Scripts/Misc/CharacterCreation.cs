@@ -61,14 +61,7 @@ namespace Server.Misc
 				m.AddItem(pack);
 			}
 
-			PackItem(new RedBook("a book", m.Name, 20, true));
 			PackItem(new Gold(1000)); // Starting gold can be customized here
-			PackItem(new Candle());
-
-			if (m.Race != Race.Gargoyle)
-				PackItem(new Dagger());
-			else
-				PackItem(new GargishDagger());
 		}
 
 		private static void AddShirt(Mobile m, int shirtHue)
@@ -189,7 +182,6 @@ namespace Server.Misc
 			newChar.Player = true;
 			newChar.AccessLevel = args.Account.AccessLevel;
 			newChar.Female = args.Female;
-			//newChar.Body = newChar.Female ? 0x191 : 0x190;
 
 			if (Core.Expansion >= args.Race.RequiredExpansion)
 				newChar.Race = args.Race; //Sets body
@@ -555,16 +547,7 @@ namespace Server.Misc
 				case 4: // Necromancer
 				{
 					Container regs = new BagOfNecroReagents(50);
-
-					if (!Core.AOS)
-					{
-						foreach (var item in regs.Items)
-							item.LootType = LootType.Newbied;
-					}
-
 					PackItem(regs);
-
-					regs.LootType = LootType.Regular;
 
 					if (elf || human)
 						EquipItem(new BoneHelm());
@@ -751,9 +734,6 @@ namespace Server.Misc
 
 		private static void EquipItem(Item item, bool mustEquip)
 		{
-			if (!Core.AOS)
-				item.LootType = LootType.Newbied;
-
 			if (m_Mobile != null && m_Mobile.EquipItem(item))
 				return;
 
@@ -767,9 +747,6 @@ namespace Server.Misc
 
 		private static void PackItem(Item item)
 		{
-			if (!Core.AOS)
-				item.LootType = LootType.Newbied;
-
 			var pack = m_Mobile.Backpack;
 
 			if (pack != null)
@@ -1213,16 +1190,7 @@ namespace Server.Misc
 				case SkillName.Magery:
 				{
 					var regs = new BagOfReagents(50);
-
-					if (!Core.AOS)
-					{
-						foreach (var item in regs.Items)
-							item.LootType = LootType.Newbied;
-					}
-
 					PackItem(regs);
-
-					regs.LootType = LootType.Regular;
 
 					PackScroll(0);
 					PackScroll(1);
