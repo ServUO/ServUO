@@ -215,8 +215,8 @@ namespace Server.Items
                 }
 
                 //Removes things like blood drinking/balanced/splintering
-                CheckAttributes(item, prefixCol, reforged);
-                CheckAttributes(item, suffixCol, reforged);
+                ValidateAttributes(item, prefixCol, reforged);
+                ValidateAttributes(item, suffixCol, reforged);
 
                 int i = 0;
                 int mods = 0;
@@ -675,7 +675,7 @@ namespace Server.Items
             return false;
         }
 
-        private static void CheckAttributes(Item item, List<NamedInfoCol> list, bool reforged)
+        private static void ValidateAttributes(Item item, List<NamedInfoCol> list, bool reforged)
         {
             if (list == null || list.Count == 0)
                 return;
@@ -777,13 +777,11 @@ namespace Server.Items
         private static bool ApplyPrefixSuffixAttribute(Item item, NamedInfoCol col, int resIndex, int preIndex, int percLow, int percHigh, ref int budget, int luckchance, bool reforged, bool powerful)
         {
             int start = budget;
-            object attribute = col.Attribute;
+            var attribute = col.Attribute;
 
             // Converts Collection entry into actual attribute
             if (attribute is string)
             {
-                var str = (string)attribute;
-
                 switch ((string)attribute)
                 {
                     case "RandomEater": attribute = GetRandomEater(); break;
