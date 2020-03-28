@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a Fairy dragon corpse")]
+    [CorpseName("a fairy dragon corpse")]
     public class FairyDragon : BaseCreature
     {
 
@@ -19,7 +19,7 @@ namespace Server.Mobiles
         public FairyDragon()
             : base(AIType.AI_Mystic, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "Fairy Dragon";
+            Name = "fairy dragon";
             Body = 718;
             BaseSoundID = 362;
 
@@ -49,8 +49,6 @@ namespace Server.Mobiles
 
             Fame = 15000;
             Karma = -15000;
-
-            VirtualArmor = 39;
         }
 
         public FairyDragon(Serial serial)

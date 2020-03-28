@@ -44,8 +44,6 @@ namespace Server.Mobiles
 
             this.Fame = 24000;
             this.Karma = -24000;
-
-            this.VirtualArmor = 70;
         }
 
         public WyvernRenowned(Serial serial)

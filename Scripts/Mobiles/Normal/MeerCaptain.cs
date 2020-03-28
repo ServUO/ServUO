@@ -41,8 +41,6 @@ namespace Server.Mobiles
             this.Fame = 2000;
             this.Karma = 5000;
 
-            this.VirtualArmor = 28;
-
             Container pack = new Backpack();
 
             pack.DropItem(new Bolt(Utility.RandomMinMax(10, 20)));
@@ -98,13 +96,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS;
-            }
-        }
         public override bool CanRummageCorpses
         {
             get

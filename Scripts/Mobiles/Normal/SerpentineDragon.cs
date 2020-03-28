@@ -41,9 +41,7 @@ namespace Server.Mobiles
             Fame = 15000;
             Karma = 15000;
 
-            VirtualArmor = 36;
-
-            if (Core.ML && Utility.RandomDouble() < .33)
+            if (Utility.RandomDouble() < .33)
                 PackItem(Engines.Plants.Seed.RandomPeculiarSeed(3));
 
             Tamable = true;

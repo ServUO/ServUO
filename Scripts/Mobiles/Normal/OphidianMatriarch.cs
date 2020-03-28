@@ -38,8 +38,6 @@ namespace Server.Mobiles
 
             this.Fame = 16000;
             this.Karma = -16000;
-
-            this.VirtualArmor = 50;
         }
 
         public OphidianMatriarch(Serial serial)

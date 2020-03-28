@@ -77,11 +77,10 @@ namespace Server.Mobiles
             Fame = 13000;
             Karma = -13000;
 
-            VirtualArmor = 30;
             if (Utility.RandomDouble() < 0.80)
                 PackItem(new PlagueBeastGland());
 
-            if (Core.ML && Utility.RandomDouble() < 0.33)
+            if (Utility.RandomDouble() < 0.33)
                 PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
 
             m_DevourTotal = 0;

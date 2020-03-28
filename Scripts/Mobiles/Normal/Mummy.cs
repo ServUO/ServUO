@@ -38,9 +38,7 @@ namespace Server.Mobiles
             Fame = 4000;
             Karma = -4000;
 
-            VirtualArmor = 50;
-
-            if (Core.ML && Utility.RandomDouble() < .33)
+            if (Utility.RandomDouble() < 0.33)
                 PackItem(Engines.Plants.Seed.RandomPeculiarSeed(3));
 
             PackItem(new Garlic(5));

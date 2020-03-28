@@ -43,8 +43,6 @@ namespace Server.Mobiles
             this.Fame = 4500;
             this.Karma = -4500;
 
-            this.VirtualArmor = 23;
-
             Item ore = new ShadowIronOre(oreAmount);
             ore.ItemID = 0x19B9;
             this.PackItem(ore);

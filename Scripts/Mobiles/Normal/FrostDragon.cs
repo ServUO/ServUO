@@ -43,8 +43,6 @@ namespace Server.Mobiles
             Fame = 25000;
             Karma = -25000;
 
-            VirtualArmor = 60;
-
             Tamable = true;
             ControlSlots = 5;
             MinTameSkill = 105.0;
@@ -100,11 +98,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                SetWeaponAbility(WeaponAbility.BleedAttack);
-            }
         }
     }
 }

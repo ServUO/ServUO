@@ -53,7 +53,7 @@ namespace Server.Mobiles
             Fame = 11000;
             Karma = -11000;
 
-            if (Core.ML && Utility.RandomDouble() < .33)
+            if (Utility.RandomDouble() < .33)
                 PackItem(Engines.Plants.Seed.RandomPeculiarSeed(Utility.RandomList(1, 1, 1, 1, 2, 2, 2, 3, 3, 4)));
 
             Tamable = true;
@@ -136,14 +136,6 @@ namespace Server.Mobiles
                 case 0:
                     break;
             }
-
-            if (version == 0 && Rider != null)
-                Rider = null;
-
-            if (version == 1)
-            {
-                SetWeaponAbility(WeaponAbility.BleedAttack);
-            }
         }
     }
 
@@ -167,14 +159,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
@@ -199,14 +189,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

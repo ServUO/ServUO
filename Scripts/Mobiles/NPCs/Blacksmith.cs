@@ -74,7 +74,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return VendorShoeType.None;
+                return Utility.RandomBool() ? VendorShoeType.Sandals : VendorShoeType.Shoes;
             }
         }
 

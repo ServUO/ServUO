@@ -37,8 +37,6 @@ namespace Server.Mobiles
             this.Fame = 4000;
             this.Karma = -4000;
 
-            this.VirtualArmor = 50;
-
             this.PackItem(new IronIngot(12));
 
             if (0.05 > Utility.RandomDouble())

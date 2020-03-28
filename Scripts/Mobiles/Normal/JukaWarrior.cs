@@ -40,8 +40,6 @@ namespace Server.Mobiles
             Fame = 10000;
             Karma = -10000;
 
-            VirtualArmor = 22;
-
             if (Utility.RandomDouble() < 0.1)
                 PackItem(new ArcaneGem());
         }

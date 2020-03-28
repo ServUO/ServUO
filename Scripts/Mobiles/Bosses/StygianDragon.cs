@@ -48,8 +48,6 @@ namespace Server.Mobiles
             Fame = 15000;
             Karma = -15000;
 
-            VirtualArmor = 60;
-
             Tamable = false;
 
             SetWeaponAbility(WeaponAbility.Bladeweave);

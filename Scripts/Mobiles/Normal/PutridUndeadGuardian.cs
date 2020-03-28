@@ -35,7 +35,7 @@ namespace Server.Mobiles
             Fame = 3000; 
             Karma = -3000;
 
-            PackNecroReg(10, 15); /// Stratics didn't specify
+            PackNecroReg(10, 15); 
         }
 
         public PutridUndeadGuardian(Serial serial)

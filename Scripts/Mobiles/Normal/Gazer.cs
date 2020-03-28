@@ -39,8 +39,6 @@ namespace Server.Mobiles
             this.Fame = 3500;
             this.Karma = -3500;
 
-            this.VirtualArmor = 36;
-
             this.PackItem(new Nightshade(4));
         }
 

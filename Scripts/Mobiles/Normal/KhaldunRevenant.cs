@@ -45,8 +45,6 @@ namespace Server.Mobiles
             this.Fame = 0;
             this.Karma = 0;
 
-            this.VirtualArmor = 60;
-
             Halberd weapon = new Halberd();
             weapon.Hue = 0x41CE;
             weapon.Movable = false;

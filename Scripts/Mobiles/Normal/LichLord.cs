@@ -44,8 +44,6 @@ namespace Server.Mobiles
             this.Fame = 18000;
             this.Karma = -18000;
 
-            this.VirtualArmor = 50;
-            this.PackItem(new GnarledStaff());
             this.PackNecroReg(12, 40);
 
 			switch (Utility.Random(15))

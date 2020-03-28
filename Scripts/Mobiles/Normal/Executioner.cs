@@ -52,8 +52,6 @@ namespace Server.Mobiles
             Fame = 5000;
             Karma = -5000;
 
-            VirtualArmor = 40;
-
             AddItem(new ThighBoots(Utility.RandomRedHue())); 
             AddItem(new Surcoat(Utility.RandomRedHue()));    
             AddItem(new ExecutionersAxe());

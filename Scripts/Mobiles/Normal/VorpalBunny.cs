@@ -33,8 +33,6 @@ namespace Server.Mobiles
             Fame = 1000;
             Karma = 0;
 
-            VirtualArmor = 4;
-
             DelayBeginTunnel();
 
             ForceActiveSpeed = 0.2;
@@ -84,7 +82,6 @@ namespace Server.Mobiles
                 }
             }
         }
-
 
         public override bool CheckFlee()
         {

@@ -42,8 +42,6 @@ namespace Server.Mobiles
             Fame = 22500;
             Karma = -22500;
 
-            VirtualArmor = 70;
-
             AddItem(new FancyShirt(Utility.RandomGreenHue()));
             AddItem(new LongPants(Utility.RandomYellowHue()));
             AddItem(new JesterHat(Utility.RandomPinkHue()));

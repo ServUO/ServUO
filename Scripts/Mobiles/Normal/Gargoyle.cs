@@ -38,8 +38,6 @@ namespace Server.Mobiles
             this.Fame = 3500;
             this.Karma = -3500;
 
-            this.VirtualArmor = 32;
-
             if (0.025 > Utility.RandomDouble())
                 this.PackItem(new GargoylesPickaxe());
 

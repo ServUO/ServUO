@@ -211,7 +211,7 @@ namespace Server
 					typeof(FireSteed), typeof(ForestOstard), typeof(FrenziedOstard), typeof(FrostSpider), typeof(Gargoyle),
 					typeof(Gazer), typeof(IceSerpent), typeof(GiantRat), typeof(GiantSerpent), typeof(GiantSpider), typeof(GiantToad),
 					typeof(Goat), typeof(GoldenElemental), typeof(Gorilla), typeof(GreatHart), typeof(GreyWolf), typeof(GrizzlyBear),
-					typeof(Guardian), typeof(Harpy), typeof(Harrower), typeof(HellHound), typeof(Hind), typeof(HordeMinion),
+					typeof(Harpy), typeof(Harrower), typeof(HellHound), typeof(Hind), typeof(HordeMinion),
 					typeof(Horse), typeof(IceElemental), typeof(IceFiend), typeof(IceSnake), typeof(Imp), typeof(JackRabbit),
 					typeof(Kirin), typeof(Kraken), typeof(PredatorHellCat), typeof(LavaLizard), typeof(LavaSerpent), typeof(LavaSnake),
 					typeof(Lizardman), typeof(Llama), typeof(Mongbat), typeof(StrongMongbat), typeof(MountainGoat), typeof(Orc),

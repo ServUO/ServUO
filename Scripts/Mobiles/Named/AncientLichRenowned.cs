@@ -43,8 +43,6 @@ namespace Server.Mobiles
             this.Fame = 23000;
             this.Karma = -23000;
 
-            this.VirtualArmor = 60;
-
             this.PackNecroReg(30, 275);
         }
 

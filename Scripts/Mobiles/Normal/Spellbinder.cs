@@ -33,8 +33,6 @@ namespace Server.Mobiles
 
             Fame = 2500;
             Karma = -2500;
-
-            VirtualArmor = 28;
         }
 
         public Spellbinder(Serial serial)

@@ -4,7 +4,6 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("a hell cat corpse")]
-    [TypeAlias("Server.Mobiles.Hellcat")]
     public class HellCat : BaseCreature
     {
         [Constructable]
@@ -39,8 +38,6 @@ namespace Server.Mobiles
 
             Fame = 1000;
             Karma = -1000;
-
-            VirtualArmor = 30;
 
             Tamable = true;
             ControlSlots = 1;
@@ -90,14 +87,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

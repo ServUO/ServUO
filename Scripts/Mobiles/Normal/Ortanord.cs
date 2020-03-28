@@ -43,8 +43,6 @@ namespace Server.Mobiles
             Fame = 8000;
             Karma = -8000;
 
-            VirtualArmor = 40;
-
             if (0.25 > Utility.RandomDouble())
                 PackItem(new DaemonBone(10));
         }
@@ -54,13 +52,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS;
-            }
-        }
         public override Poison PoisonImmune
         {
             get

@@ -41,8 +41,6 @@ namespace Server.Mobiles
             this.Fame = 3500;
             this.Karma = -3500;
 
-            this.VirtualArmor = 40;
-
             this.PackItem(new Log(10));
             this.PackItem(new MandrakeRoot(5));
         }

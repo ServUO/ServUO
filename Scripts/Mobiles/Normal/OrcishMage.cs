@@ -40,8 +40,6 @@ namespace Server.Mobiles
             this.Fame = 3000;
             this.Karma = -3000;
 
-            this.VirtualArmor = 30;
-
             this.PackReg(6);
 
 			switch (Utility.Random(8))

@@ -83,13 +83,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                SetWeaponAbility(WeaponAbility.ArmorIgnore);
-                SetWeaponAbility(WeaponAbility.BleedAttack);
-                SetWeaponAbility(WeaponAbility.ParalyzingBlow);
-            }
         }
     }
 }

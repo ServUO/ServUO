@@ -38,8 +38,6 @@ namespace Server.Mobiles
 
             Fame = 500;
 
-            VirtualArmor = 18;
-
             AddItem(new LightSource());
 
             PackBones();
