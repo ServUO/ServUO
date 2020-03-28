@@ -90,9 +90,6 @@ namespace Server.Engines.NewMagincia
 			SpeechHue = Utility.RandomDyedHue();
 			Hue = Utility.RandomSkinHue();
 
-			if ( IsInvulnerable && !Core.AOS )
-				NameHue = 0x35;
-
 			if ( Female = Utility.RandomBool() )
 			{
 				Body = 0x191;

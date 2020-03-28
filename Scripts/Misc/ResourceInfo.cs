@@ -184,16 +184,8 @@ namespace Server.Items
             dullCopper.RunicMinAttributes = 1;
             dullCopper.RunicMaxAttributes = 2;
 
-            if (Core.ML)
-            {
-                dullCopper.RunicMinIntensity = 40;
-                dullCopper.RunicMaxIntensity = 100;
-            }
-            else
-            {
-                dullCopper.RunicMinIntensity = 10;
-                dullCopper.RunicMaxIntensity = 35;
-            }
+            dullCopper.RunicMinIntensity = 40;
+            dullCopper.RunicMaxIntensity = 100;
 
             CraftAttributeInfo shadowIron = ShadowIron = new CraftAttributeInfo();
 
@@ -207,16 +199,9 @@ namespace Server.Items
 
             shadowIron.RunicMinAttributes = 2;
             shadowIron.RunicMaxAttributes = 2;
-            if (Core.ML)
-            {
-                shadowIron.RunicMinIntensity = 45;
-                shadowIron.RunicMaxIntensity = 100;
-            }
-            else
-            {
-                shadowIron.RunicMinIntensity = 20;
-                shadowIron.RunicMaxIntensity = 45;
-            }
+
+            shadowIron.RunicMinIntensity = 45;
+            shadowIron.RunicMaxIntensity = 100;
 
             CraftAttributeInfo copper = Copper = new CraftAttributeInfo();
 
@@ -228,16 +213,9 @@ namespace Server.Items
             copper.WeaponEnergyDamage = 20;
             copper.RunicMinAttributes = 2;
             copper.RunicMaxAttributes = 3;
-            if (Core.ML)
-            {
-                copper.RunicMinIntensity = 50;
-                copper.RunicMaxIntensity = 100;
-            }
-            else
-            {
-                copper.RunicMinIntensity = 25;
-                copper.RunicMaxIntensity = 50;
-            }
+
+            copper.RunicMinIntensity = 50;
+            copper.RunicMaxIntensity = 100;
 
             CraftAttributeInfo bronze = Bronze = new CraftAttributeInfo();
 
@@ -248,16 +226,9 @@ namespace Server.Items
             bronze.WeaponFireDamage = 40;
             bronze.RunicMinAttributes = 3;
             bronze.RunicMaxAttributes = 3;
-            if (Core.ML)
-            {
-                bronze.RunicMinIntensity = 55;
-                bronze.RunicMaxIntensity = 100;
-            }
-            else
-            {
-                bronze.RunicMinIntensity = 30;
-                bronze.RunicMaxIntensity = 65;
-            }
+
+            bronze.RunicMinIntensity = 55;
+            bronze.RunicMaxIntensity = 100;
 
             CraftAttributeInfo golden = Golden = new CraftAttributeInfo();
 
@@ -271,16 +242,9 @@ namespace Server.Items
             golden.WeaponLowerRequirements = 50;
             golden.RunicMinAttributes = 3;
             golden.RunicMaxAttributes = 4;
-            if (Core.ML)
-            {
-                golden.RunicMinIntensity = 60;
-                golden.RunicMaxIntensity = 100;
-            }
-            else
-            {
-                golden.RunicMinIntensity = 35;
-                golden.RunicMaxIntensity = 75;
-            }
+
+            golden.RunicMinIntensity = 60;
+            golden.RunicMaxIntensity = 100;
 
             CraftAttributeInfo agapite = Agapite = new CraftAttributeInfo();
 
@@ -293,16 +257,9 @@ namespace Server.Items
             agapite.WeaponEnergyDamage = 20;
             agapite.RunicMinAttributes = 4;
             agapite.RunicMaxAttributes = 4;
-            if (Core.ML)
-            {
-                agapite.RunicMinIntensity = 65;
-                agapite.RunicMaxIntensity = 100;
-            }
-            else
-            {
-                agapite.RunicMinIntensity = 40;
-                agapite.RunicMaxIntensity = 80;
-            }
+
+            agapite.RunicMinIntensity = 65;
+            agapite.RunicMaxIntensity = 100;
 
             CraftAttributeInfo verite = Verite = new CraftAttributeInfo();
 
@@ -315,16 +272,9 @@ namespace Server.Items
             verite.WeaponEnergyDamage = 20;
             verite.RunicMinAttributes = 4;
             verite.RunicMaxAttributes = 5;
-            if (Core.ML)
-            {
-                verite.RunicMinIntensity = 70;
-                verite.RunicMaxIntensity = 100;
-            }
-            else
-            {
-                verite.RunicMinIntensity = 45;
-                verite.RunicMaxIntensity = 90;
-            }
+
+            verite.RunicMinIntensity = 70;
+            verite.RunicMaxIntensity = 100;
 
             CraftAttributeInfo valorite = Valorite = new CraftAttributeInfo();
 
@@ -339,16 +289,9 @@ namespace Server.Items
             valorite.WeaponEnergyDamage = 20;
             valorite.RunicMinAttributes = 5;
             valorite.RunicMaxAttributes = 5;
-            if (Core.ML)
-            {
-                valorite.RunicMinIntensity = 85;
-                valorite.RunicMaxIntensity = 100;
-            }
-            else
-            {
-                valorite.RunicMinIntensity = 50;
-                valorite.RunicMaxIntensity = 100;
-            }
+
+            valorite.RunicMinIntensity = 85;
+            valorite.RunicMaxIntensity = 100;
 
             CraftAttributeInfo spined = Spined = new CraftAttributeInfo();
 
@@ -357,16 +300,8 @@ namespace Server.Items
             spined.RunicMinAttributes = 1;
             spined.RunicMaxAttributes = 3;
 
-            if (Core.ML)
-            {
-                spined.RunicMinIntensity = 40;
-                spined.RunicMaxIntensity = 100;
-            }
-            else
-            {
-                spined.RunicMinIntensity = 20;
-                spined.RunicMaxIntensity = 40;
-            }
+            spined.RunicMinIntensity = 40;
+            spined.RunicMaxIntensity = 100;
 
             CraftAttributeInfo horned = Horned = new CraftAttributeInfo();
 
@@ -377,16 +312,9 @@ namespace Server.Items
             horned.ArmorEnergyResist = 3;
             horned.RunicMinAttributes = 3;
             horned.RunicMaxAttributes = 4;
-            if (Core.ML)
-            {
-                horned.RunicMinIntensity = 45;
-                horned.RunicMaxIntensity = 100;
-            }
-            else
-            {
-                horned.RunicMinIntensity = 30;
-                horned.RunicMaxIntensity = 70;
-            }
+
+            horned.RunicMinIntensity = 45;
+            horned.RunicMaxIntensity = 100;
 
             CraftAttributeInfo barbed = Barbed = new CraftAttributeInfo();
 
@@ -397,16 +325,9 @@ namespace Server.Items
             barbed.ArmorEnergyResist = 5;
             barbed.RunicMinAttributes = 4;
             barbed.RunicMaxAttributes = 5;
-            if (Core.ML)
-            {
-                barbed.RunicMinIntensity = 50;
-                barbed.RunicMaxIntensity = 100;
-            }
-            else
-            {
-                barbed.RunicMinIntensity = 40;
-                barbed.RunicMaxIntensity = 100;
-            }
+
+            barbed.RunicMinIntensity = 50;
+            barbed.RunicMaxIntensity = 100;
 
             CraftAttributeInfo red = RedScales = new CraftAttributeInfo();
             red.ArmorPhysicalResist = 1;
@@ -686,14 +607,6 @@ namespace Server.Items
             new CraftResourceInfo(0x8B0, 1053134, "Blue Scales",	CraftAttributeInfo.BlueScales, CraftResource.BlueScales, typeof(BlueScales))
         };
 
-        private static readonly CraftResourceInfo[] m_LeatherInfo = new CraftResourceInfo[]
-        {
-            new CraftResourceInfo(0x000, 1049353, "Normal", CraftAttributeInfo.Blank, CraftResource.RegularLeather,	typeof(Leather), typeof(Hides)),
-            new CraftResourceInfo(0x283, 1049354, "Spined", CraftAttributeInfo.Spined, CraftResource.SpinedLeather,	typeof(SpinedLeather),	typeof(SpinedHides)),
-            new CraftResourceInfo(0x227, 1049355, "Horned", CraftAttributeInfo.Horned, CraftResource.HornedLeather,	typeof(HornedLeather),	typeof(HornedHides)),
-            new CraftResourceInfo(0x1C1, 1049356, "Barbed", CraftAttributeInfo.Barbed, CraftResource.BarbedLeather,	typeof(BarbedLeather),	typeof(BarbedHides))
-        };
-
         private static readonly CraftResourceInfo[] m_AOSLeatherInfo = new CraftResourceInfo[]
         {
             new CraftResourceInfo(0x000, 1049353, "Normal", CraftAttributeInfo.Blank, CraftResource.RegularLeather,	typeof(Leather), typeof(Hides)),
@@ -763,7 +676,7 @@ namespace Server.Items
                     list = m_MetalInfo;
                     break;
                 case CraftResourceType.Leather:
-                    list = Core.AOS ? m_AOSLeatherInfo : m_LeatherInfo;
+                    list = m_AOSLeatherInfo;
                     break;
                 case CraftResourceType.Scales:
                     list = m_ScaleInfo;

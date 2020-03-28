@@ -565,25 +565,11 @@ namespace Server.Multis
 
                     if (heavy)
                     {
-                        if (Core.EJ)
-                        {
-                            cannon = new Carronade(this);
-                        }
-                        else
-                        {
-                            cannon = new HeavyShipCannon(this);
-                        }
+                        cannon = new Carronade(this);
                     }
                     else
                     {
-                        if (Core.EJ)
-                        {
-                            cannon = new Culverin(this);
-                        }
-                        else
-                        {
-                            cannon = new LightShipCannon(this);
-                        }
+                        cannon = new Culverin(this);
                     }
 
                     if (!TryAddCannon(captain, pad.Location, cannon, null))
@@ -616,34 +602,13 @@ namespace Server.Multis
                             break;
                         }
                     case CannonPower.Light:
-                        if (Core.EJ)
-                        {
-                            cannon = new Culverin(this);
-                        }
-                        else
-                        {
-                            cannon = new LightShipCannon(this);
-                        }
+                        cannon = new Culverin(this);
                         break;
                     case CannonPower.Heavy:
-                        if (Core.EJ)
-                        {
-                            cannon = new Carronade(this);
-                        }
-                        else
-                        {
-                            cannon = new HeavyShipCannon(this);
-                        }
+                        cannon = new Carronade(this);
                         break;
                     case CannonPower.Massive:
-                        if (Core.EJ)
-                        {
-                            cannon = new Blundercannon(this);
-                        }
-                        else
-                        {
-                            cannon = new HeavyShipCannon(this);
-                        }
+                        cannon = new Blundercannon(this);
                         break;
                 }
 

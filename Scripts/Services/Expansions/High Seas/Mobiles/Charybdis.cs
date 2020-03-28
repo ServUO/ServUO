@@ -591,10 +591,7 @@ namespace Server.Mobiles
             BaseRunicTool.ApplyAttributesTo(pole, false, 0, Utility.RandomMinMax(2, 5), 50, 100);
             c.DropItem(pole);
 
-            #region TOL
-            if (Core.TOL)
-                SkillMasteryPrimer.CheckPrimerDrop(this);
-            #endregion
+            SkillMasteryPrimer.CheckPrimerDrop(this);
         }
 
         public override void Delete()

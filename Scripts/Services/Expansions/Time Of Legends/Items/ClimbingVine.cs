@@ -61,22 +61,19 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            if (Core.TOL)
+            Vine1 = Map.TerMur.FindItem<ClimbingVine>(new Point3D(687, 1759, 40));
+            Vine2 = Map.TerMur.FindItem<ClimbingVine>(new Point3D(687, 1759, 60));
+
+            if (Vine1 == null)
             {
-                Vine1 = Map.TerMur.FindItem<ClimbingVine>(new Point3D(687, 1759, 40));
-                Vine2 = Map.TerMur.FindItem<ClimbingVine>(new Point3D(687, 1759, 60));
+                Vine1 = new ClimbingVine(new Point3D(679, 1757, 100));
+                Vine1.MoveToWorld(new Point3D(678, 1759, 40), Map.TerMur);
+            }
 
-                if (Vine1 == null)
-                {
-                    Vine1 = new ClimbingVine(new Point3D(679, 1757, 100));
-                    Vine1.MoveToWorld(new Point3D(678, 1759, 40), Map.TerMur);
-                }
-
-                if (Vine2 == null)
-                {
-                    Vine2 = new ClimbingVine(new Point3D(679, 1757, 100));
-                    Vine2.MoveToWorld(new Point3D(678, 1759, 60), Map.TerMur);
-                }
+            if (Vine2 == null)
+            {
+                Vine2 = new ClimbingVine(new Point3D(679, 1757, 100));
+                Vine2.MoveToWorld(new Point3D(678, 1759, 60), Map.TerMur);
             }
         }
     }

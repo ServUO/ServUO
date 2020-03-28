@@ -60,7 +60,7 @@ namespace Server.Regions
 		public bool Disabled { get { return m_Disabled; } set { m_Disabled = value; } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual bool AllowReds { get { return Core.AOS; } }
+		public virtual bool AllowReds { get { return true; } }
 
 		public virtual Type DefaultGuardType
 		{

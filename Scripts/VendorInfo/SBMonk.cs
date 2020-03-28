@@ -31,8 +31,7 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                if (Core.AOS)
-                    Add(new GenericBuyInfo(typeof(MonkRobe), 136, 20, 0x2687, 0x21E));
+                Add(new GenericBuyInfo(typeof(MonkRobe), 136, 20, 0x2687, 0x21E));
             }
         }
 

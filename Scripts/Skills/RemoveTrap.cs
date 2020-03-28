@@ -25,20 +25,9 @@ namespace Server.SkillHandlers
 
         public static TimeSpan OnUse(Mobile m)
         {
-            if (!Core.EJ && m.Skills[SkillName.Lockpicking].Value < 50)
-            {
-                m.SendLocalizedMessage(502366); // You do not know enough about locks.  Become better at picking locks.
-            }
-            else if (!Core.EJ && m.Skills[SkillName.DetectHidden].Value < 50)
-            {
-                m.SendLocalizedMessage(502367); // You are not perceptive enough.  Become better at detect hidden.
-            }
-            else
-            {
-                m.Target = new InternalTarget();
+            m.Target = new InternalTarget();
 
-                m.SendLocalizedMessage(502368); // Wich trap will you attempt to disarm?
-            }
+            m.SendLocalizedMessage(502368); // Wich trap will you attempt to disarm?
 
             return TimeSpan.FromSeconds(10.0); // 10 second delay before beign able to re-use a skill
         }

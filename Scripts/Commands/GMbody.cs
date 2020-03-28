@@ -167,9 +167,6 @@ namespace Server.Commands
 
             private static void EquipItem(Item item, bool mustEquip)
             {
-                if (!Core.AOS)
-                    item.LootType = LootType.Blessed;
-
                 if (m_Mobile != null && m_Mobile.EquipItem(item))
                     return;
 
@@ -183,9 +180,6 @@ namespace Server.Commands
 
             private static void PackItem(Item item)
             {
-                if (!Core.AOS)
-                    item.LootType = LootType.Blessed;
-
                 Container pack = m_Mobile.Backpack;
 
                 if (pack != null)

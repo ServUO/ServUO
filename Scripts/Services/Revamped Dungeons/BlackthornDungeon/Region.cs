@@ -201,11 +201,7 @@ namespace Server.Engines.Blackthorn
                 pet.IsStabled = true;
                 pet.StabledBy = owner;
 
-                if (Core.SE)
-                {
-                    pet.Loyalty = AnimalTrainer.MaxLoyalty; // Wonderfully happy
-                }
-
+                pet.Loyalty = AnimalTrainer.MaxLoyalty; // Wonderfully happy
                 owner.Stabled.Add(pet);
                 owner.SendLocalizedMessage(1153050, pet.Name); // Pets are not permitted in this location. Your pet named ~1_NAME~ has been sent to the stables.
             }

@@ -14,7 +14,7 @@ namespace Server.Engines.ArenaSystem
     public class PVPArenaSystem : PointsSystem
     {
         public static PVPArenaSystem Instance { get; set; }
-        public static bool Enabled { get { return Core.HS; } }
+        public static bool Enabled { get { return true; } }
         public static bool BlockSameIP { get { return true; } }
 
         public override PointsType Loyalty { get { return PointsType.PVPArena; } }

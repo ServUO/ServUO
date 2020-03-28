@@ -21,7 +21,6 @@ namespace Server.Items
     {
         public static bool NewSystem { get { return false; } }
 
-        public static bool NewChestLocations = Config.Get("TreasureMaps.Enabled", true);
         public static double LootChance = Config.Get("TreasureMaps.LootChance", .01);
         private static TimeSpan ResetTime = TimeSpan.FromDays(Config.Get("TreasureMaps.ResetTime", 30.0));
 
@@ -255,10 +254,8 @@ namespace Server.Items
         #endregion
 
         private static Point2D[] m_Locations;
-        private static Point2D[] m_HavenLocations;
 
         public static Point2D[] Locations { get { return m_Locations; } }
-        public static Point2D[] HavenLocations { get { return m_Locations; } }
 
         private int m_Level;
         private bool m_Completed;
@@ -375,15 +372,7 @@ namespace Server.Items
                 map = GetRandomMap();
 
             Facet = map;
-
-            if (!newSystem && level == 0)
-            {
-                ChestLocation = GetRandomHavenLocation();
-            }
-            else
-            {
-                ChestLocation = GetRandomLocation(map, eodon);
-            }
+            ChestLocation = GetRandomLocation(map, eodon);
 
             Width = 300;
             Height = 300;
@@ -439,9 +428,6 @@ namespace Server.Items
 
         public static Point2D GetRandomLocation(Map map, bool eodon)
         {
-            if (!NewChestLocations)
-                return GetRandomClassicLocation();
-
             Rectangle2D[] recs;
 
             int x = 0;
@@ -667,41 +653,6 @@ namespace Server.Items
         public TreasureMap(Serial serial)
             : base(serial)
         { }
-
-        public static Point2D GetRandomClassicLocation()
-        {
-            if (m_Locations == null)
-            {
-                LoadLocations();
-            }
-
-            if (m_Locations.Length > 0)
-            {
-                return m_Locations[Utility.Random(m_Locations.Length)];
-            }
-
-            return Point2D.Zero;
-        }
-
-        public static Point2D GetRandomHavenLocation()
-        {
-            if (m_HavenLocations == null)
-            {
-                LoadLocations();
-            }
-
-            if (m_HavenLocations.Length > 0)
-            {
-                return m_HavenLocations[Utility.Random(m_HavenLocations.Length)];
-            }
-
-            return Point2D.Zero;
-        }
-
-        public static bool IsInHavenIsland(IPoint2D loc)
-        {
-            return (loc.X >= 3314 && loc.X <= 3814 && loc.Y >= 2345 && loc.Y <= 3095);
-        }
 
         public static BaseCreature Spawn(int level, Point3D p, bool guardian, Map map)
         {
@@ -962,10 +913,7 @@ namespace Server.Items
             from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 503019); // You successfully decode a treasure map!
             Decoder = from;
 
-            if (Core.AOS)
-            {
-                LootType = LootType.Blessed;
-            }
+            LootType = LootType.Blessed;
 
             DisplayTo(from);
         }
@@ -1182,7 +1130,7 @@ namespace Server.Items
                 AssignRandomPackage();
             }
 
-            if (Core.AOS && m_Decoder != null && LootType == LootType.Regular)
+            if (m_Decoder != null && LootType == LootType.Regular)
             {
                 LootType = LootType.Blessed;
             }
@@ -1191,45 +1139,6 @@ namespace Server.Items
             {
                 NextReset = DateTime.UtcNow + ResetTime;
             }
-        }
-
-        private static void LoadLocations()
-        {
-            string filePath = Path.Combine(Core.BaseDirectory, "Data/treasure.cfg");
-
-            var list = new List<Point2D>();
-            var havenList = new List<Point2D>();
-
-            if (File.Exists(filePath))
-            {
-                using (StreamReader ip = new StreamReader(filePath))
-                {
-                    string line;
-
-                    while ((line = ip.ReadLine()) != null)
-                    {
-                        try
-                        {
-                            var split = line.Split(' ');
-
-                            int x = Convert.ToInt32(split[0]), y = Convert.ToInt32(split[1]);
-
-                            Point2D loc = new Point2D(x, y);
-                            list.Add(loc);
-
-                            if (IsInHavenIsland(loc))
-                            {
-                                havenList.Add(loc);
-                            }
-                        }
-                        catch
-                        { }
-                    }
-                }
-            }
-
-            m_Locations = list.ToArray();
-            m_HavenLocations = havenList.ToArray();
         }
 
         private bool CheckYoung(Mobile from)
@@ -1258,18 +1167,14 @@ namespace Server.Items
         {
             switch (m_Level)
             {
+                case 0:
+                    return 27;
                 case 1:
-                    return Core.AOS ? 27.0 : -3.0;
+                    return 70;
                 case 2:
-                    return Core.AOS ? 71.0 : 41.0;
+                    return 90;
                 case 3:
-                    return Core.AOS ? 81.0 : 51.0;
                 case 4:
-                    return Core.AOS ? 91.0 : 61.0;
-                case 5:
-                case 6:
-                    return Core.AOS ? 100.0 : 70.0;
-                case 7:
                     return 100.0;
 
                 default:
@@ -1617,14 +1522,7 @@ namespace Server.Items
                 {
                     if (m_From.Body.IsHuman && !m_From.Mounted)
                     {
-                        if (Core.SA)
-                        {
-                            m_From.Animate(AnimationType.Attack, 3);
-                        }
-                        else
-                        {
-                            m_From.Animate(11, 5, 1, true, false, 0);
-                        }
+                        m_From.Animate(AnimationType.Attack, 3);
                     }
 
                     new SoundTimer(m_From, 0x125 + (m_Count % 2)).Start();

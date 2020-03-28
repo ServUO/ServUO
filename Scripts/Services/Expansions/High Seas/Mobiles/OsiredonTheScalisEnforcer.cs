@@ -236,10 +236,7 @@ namespace Server.Mobiles
             c.DropItem(new SpecialFishingNet());
             c.DropItem(new SpecialFishingNet());
 
-            #region TOL
-            if (Core.TOL)
-                SkillMasteryPrimer.CheckPrimerDrop(this);
-            #endregion
+            SkillMasteryPrimer.CheckPrimerDrop(this);
         }
 
         public override void Delete()

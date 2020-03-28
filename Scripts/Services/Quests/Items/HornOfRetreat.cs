@@ -87,7 +87,7 @@ namespace Server.Engines.Quests
                 {
                     this.SendLocalizedMessageTo(from, 500309); // Nothing Happens.
                 }
-                else if (Core.ML && from.Map != Map.Trammel && from.Map != Map.Malas)
+                else if (from.Map != Map.Trammel && from.Map != Map.Malas)
                 {
                     from.SendLocalizedMessage(1076154); // You can only use this in Trammel and Malas.
                 }

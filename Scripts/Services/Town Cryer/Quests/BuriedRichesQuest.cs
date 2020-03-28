@@ -302,21 +302,18 @@ namespace Server.Engines.Quests
 
         public static void Initialize()
         {
-            if (Core.TOL)
+            if (TramInstance == null)
             {
-                if (TramInstance == null)
-                {
-                    TramInstance = new LegendaryCartographer();
-                    TramInstance.MoveToWorld(new Point3D(3005, 811, 0), Map.Trammel);
-                    TramInstance.Direction = Direction.West;
-                }
+                TramInstance = new LegendaryCartographer();
+                TramInstance.MoveToWorld(new Point3D(3005, 811, 0), Map.Trammel);
+                TramInstance.Direction = Direction.West;
+            }
 
-                if (FelInstance == null)
-                {
-                    FelInstance = new LegendaryCartographer();
-                    FelInstance.MoveToWorld(new Point3D(3005, 811, 0), Map.Felucca);
-                    FelInstance.Direction = Direction.West;
-                }
+            if (FelInstance == null)
+            {
+                FelInstance = new LegendaryCartographer();
+                FelInstance.MoveToWorld(new Point3D(3005, 811, 0), Map.Felucca);
+                FelInstance.Direction = Direction.West;
             }
         }
 
@@ -400,11 +397,6 @@ namespace Server.Engines.Quests
             {
                 FelInstance = this;
             }
-
-            if(!Core.TOL)
-            {
-                Delete();
-            }
         }
     }
 
@@ -417,21 +409,18 @@ namespace Server.Engines.Quests
 
         public static void Initialize()
         {
-            if (Core.TOL)
+            if (TramInstance == null)
             {
-                if (TramInstance == null)
-                {
-                    TramInstance = new MasterProvisioner();
-                    TramInstance.MoveToWorld(new Point3D(2989, 636, 0), Map.Trammel);
-                    TramInstance.Direction = Direction.West;
-                }
+                TramInstance = new MasterProvisioner();
+                TramInstance.MoveToWorld(new Point3D(2989, 636, 0), Map.Trammel);
+                TramInstance.Direction = Direction.West;
+            }
 
-                if (FelInstance == null)
-                {
-                    FelInstance = new MasterProvisioner();
-                    FelInstance.MoveToWorld(new Point3D(2989, 636, 0), Map.Felucca);
-                    FelInstance.Direction = Direction.West;
-                }
+            if (FelInstance == null)
+            {
+                FelInstance = new MasterProvisioner();
+                FelInstance.MoveToWorld(new Point3D(2989, 636, 0), Map.Felucca);
+                FelInstance.Direction = Direction.West;
             }
         }
 
@@ -513,11 +502,6 @@ namespace Server.Engines.Quests
             if (Map == Map.Felucca)
             {
                 FelInstance = this;
-            }
-
-            if (!Core.TOL)
-            {
-                Delete();
             }
         }
     }

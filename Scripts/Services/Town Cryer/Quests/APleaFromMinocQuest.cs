@@ -268,21 +268,18 @@ namespace Server.Engines.Quests
 
         public static void Initialize()
         {
-            if (Core.TOL)
+            if (TramInstance == null)
             {
-                if (TramInstance == null)
-                {
-                    TramInstance = new SheriffOfMinoc();
-                    TramInstance.MoveToWorld(new Point3D(2462, 439, 15), Map.Trammel);
-                    TramInstance.Direction = Direction.South;
-                }
+                TramInstance = new SheriffOfMinoc();
+                TramInstance.MoveToWorld(new Point3D(2462, 439, 15), Map.Trammel);
+                TramInstance.Direction = Direction.South;
+            }
 
-                if (FelInstance == null)
-                {
-                    FelInstance = new SheriffOfMinoc();
-                    FelInstance.MoveToWorld(new Point3D(2462, 439, 15), Map.Felucca);
-                    FelInstance.Direction = Direction.South;
-                }
+            if (FelInstance == null)
+            {
+                FelInstance = new SheriffOfMinoc();
+                FelInstance.MoveToWorld(new Point3D(2462, 439, 15), Map.Felucca);
+                FelInstance.Direction = Direction.South;
             }
         }
 
@@ -427,11 +424,6 @@ namespace Server.Engines.Quests
             if (Map == Map.Felucca)
             {
                 FelInstance = this;
-            }
-
-            if (!Core.TOL)
-            {
-                Delete();
             }
         }
     } 

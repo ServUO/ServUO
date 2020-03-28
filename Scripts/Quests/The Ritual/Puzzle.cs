@@ -15,7 +15,7 @@ namespace Server.Engines.Quests.RitualQuest
 
         public static void Initialize()
         {
-            if (Core.SA && Instance == null)
+            if (Instance == null)
             {
                 Instance = new CrystalLotusPuzzle();
                 Instance.MoveToWorld(new Point3D(978, 2876, 37), Map.TerMur);
@@ -366,25 +366,15 @@ namespace Server.Engines.Quests.RitualQuest
 
             Tiles = reader.ReadStrongItemList<PuzzleTile>();
 
-            if (Core.SA)
+            Instance = this;
+
+            foreach (var tile in Tiles)
             {
-                Instance = this;
-
-                foreach (var tile in Tiles)
-                {
-                    tile.Puzzle = this;
-                }
-
-                RegisterRegion();
-                DoSequence();
+                tile.Puzzle = this;
             }
-            else
-            {
-                ColUtility.SafeDelete(Tiles);
-                ColUtility.Free(Tiles);
 
-                Delete();
-            }
+            RegisterRegion();
+            DoSequence();
         }
     }
 

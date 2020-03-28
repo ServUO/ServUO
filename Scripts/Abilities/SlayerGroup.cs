@@ -294,8 +294,6 @@ namespace Server.Items
                     typeof(BloodElemental)
                 };
 
-            if (Core.AOS)
-            {
                 abyss.Super = new SlayerEntry
                     (
                         SlayerName.Exorcism,
@@ -344,61 +342,7 @@ namespace Server.Items
                             typeof(GargoyleAssassin),       typeof(LesserOni)
                         ),
                 };
-            }
-            else
-            {
-                abyss.Super = new SlayerEntry
-                    (
-                        SlayerName.Exorcism,
-
-                        typeof(AbysmalHorror), typeof(Balron),
-                        typeof(BoneDemon), typeof(ChaosDaemon),
-                        typeof(Daemon), typeof(SummonedDaemon),
-                        typeof(DemonKnight), typeof(Devourer),
-                        typeof(Gargoyle), typeof(FireGargoyle),
-                        typeof(Gibberling), typeof(HordeMinion),
-                        typeof(IceFiend), typeof(Imp),
-                        typeof(Impaler), typeof(Ravager),
-                        typeof(StoneGargoyle), typeof(ArcaneDaemon),
-                        typeof(EnslavedGargoyle), typeof(GargoyleDestroyer),
-                        typeof(GargoyleEnforcer), typeof(Moloch)
-                    );
-
-                abyss.Entries = new SlayerEntry[]
-                {
-                    new SlayerEntry
-                        (
-                            SlayerName.DaemonDismissal,
-
-                            typeof(Semidar),        typeof(AbyssalInfernal),
-                            typeof(AbysmalHorror),  typeof(Balron),
-                            typeof(BoneDemon),      typeof(ChaosDaemon),
-                            typeof(Daemon),         typeof(SummonedDaemon),
-                            typeof(DemonKnight),    typeof(Devourer),
-                            typeof(Gibberling),     typeof(HordeMinion),
-                            typeof(IceFiend),       typeof(Imp),
-                            typeof(Impaler),        typeof(Ravager),
-                            typeof(ArcaneDaemon),   typeof(Moloch)
-                        ),
-
-                    new SlayerEntry
-                        (
-                            SlayerName.GargoylesFoe,
-
-                            typeof(FireGargoyle),       typeof(Gargoyle),
-                            typeof(StoneGargoyle),      typeof(EnslavedGargoyle),
-                            typeof(GargoyleDestroyer),  typeof(GargoyleEnforcer)
-                        ),
-
-                    new SlayerEntry
-                        (
-                            SlayerName.BalronDamnation,
-
-                            typeof(Balron)
-                        )
-                };
-            }
-
+            
             arachnid.Opposition = new SlayerGroup[]
                 {
                     reptilian

@@ -9,21 +9,18 @@ namespace Server.Engines.Quests
     {
         public static void Initialize()
         {
-            if (Core.ML)
+            if (m_TramInstance == null)
             {
-                if (m_TramInstance == null)
-                {
-                    m_TramInstance = new HumilityShrinePersistence();
-                    m_TramInstance.MoveToWorld(new Point3D(4270, 3698, 0), Map.Trammel);
+                m_TramInstance = new HumilityShrinePersistence();
+                m_TramInstance.MoveToWorld(new Point3D(4270, 3698, 0), Map.Trammel);
 
-                    SetupMobiles();
-                }
+                SetupMobiles();
+            }
 
-                if (m_FelInstance == null)
-                {
-                    m_FelInstance = new HumilityShrinePersistence();
-                    m_FelInstance.MoveToWorld(new Point3D(4270, 3698, 0), Map.Felucca);
-                }
+            if (m_FelInstance == null)
+            {
+                m_FelInstance = new HumilityShrinePersistence();
+                m_FelInstance.MoveToWorld(new Point3D(4270, 3698, 0), Map.Felucca);
             }
         }
 

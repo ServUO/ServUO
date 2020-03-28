@@ -14,10 +14,7 @@ namespace Server.Engines.Doom
     {
         public static void Initialize()
         {
-            if (Core.SA)
-            {
-                new GaryRegion();
-            }
+            new GaryRegion();
         }
 
         [CommandProperty(AccessLevel.GameMaster)]

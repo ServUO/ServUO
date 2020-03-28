@@ -87,9 +87,9 @@ namespace Server.Items
             BaseWeapon weapon = from.Weapon as BaseWeapon;
 
             if (weapon != null && (weapon.PrimaryAbility == this || weapon.PrimaryAbility == Bladeweave))
-                return Core.TOL ? 30.0 : 70.0;
+                return 30.0;
             else if (weapon != null && (weapon.SecondaryAbility == this || weapon.SecondaryAbility == Bladeweave))
-                return Core.TOL ? 60.0 : 90.0;
+                return 60.0;
 
             return 200.0;
         }
@@ -148,9 +148,9 @@ namespace Server.Items
 
             double reqSkill = GetRequiredSkill(from);
             double reqSecondarySkill = GetRequiredSecondarySkill(from);
-            SkillName secondarySkill = Core.TOL ? GetSecondarySkill(from) : SkillName.Tactics;
+            SkillName secondarySkill = GetSecondarySkill(from);
 
-            if (Core.ML && from.Skills[secondarySkill].Base < reqSecondarySkill)
+            if (from.Skills[secondarySkill].Base < reqSecondarySkill)
             {
                 int loc = GetSkillLocalization(secondarySkill);
 
@@ -174,14 +174,7 @@ namespace Server.Items
                 return true;
             /* </UBWS> */
 
-            if (reqSecondarySkill != 0.0 && !Core.TOL)
-            {
-                from.SendLocalizedMessage(1079308, reqSkill.ToString()); // You need ~1_SKILL_REQUIREMENT~ weapon and tactics skill to perform that attack
-            }
-            else
-            {
-                from.SendLocalizedMessage(1060182, reqSkill.ToString()); // You need ~1_SKILL_REQUIREMENT~ weapon skill to perform that attack
-            }
+            from.SendLocalizedMessage(1060182, reqSkill.ToString()); // You need ~1_SKILL_REQUIREMENT~ weapon skill to perform that attack
 
             return false;
         }
@@ -190,7 +183,7 @@ namespace Server.Items
         {
             switch (skill)
             {
-                default: return Core.TOL ? 1157351 : 1079308;
+                default: return 1157351;
                     // You need ~1_SKILL_REQUIREMENT~ weapon and tactics skill to perform that attack                                                             
                     // You need ~1_SKILL_REQUIREMENT~ tactics skill to perform that attack
                 case SkillName.Bushido:
@@ -255,7 +248,7 @@ namespace Server.Items
 
         public virtual bool Validate(Mobile from)
         {
-            if (!from.Player && (!Core.TOL || CheckMana(from, false)))
+            if (!from.Player && CheckMana(from, false))
                 return true;
 
             NetState state = from.NetState;
@@ -269,7 +262,7 @@ namespace Server.Items
                 return false;
             }
 
-            if (Core.ML && from.Spell != null)
+            if (from.Spell != null)
             {
                 from.SendLocalizedMessage(1063024); // You cannot perform this special move right now.
                 return false;
@@ -395,12 +388,6 @@ namespace Server.Items
 
         public static WeaponAbility GetCurrentAbility(Mobile m)
         {
-            if (!Core.AOS)
-            {
-                ClearCurrentAbility(m);
-                return null;
-            }
-
             WeaponAbility a = (WeaponAbility)m_Table[m];
 
             if (!IsWeaponAbility(m, a))
@@ -420,12 +407,6 @@ namespace Server.Items
 
         public static bool SetCurrentAbility(Mobile m, WeaponAbility a)
         {
-            if (!Core.AOS)
-            {
-                ClearCurrentAbility(m);
-                return false;
-            }
-
             if (!IsWeaponAbility(m, a))
             {
                 ClearCurrentAbility(m);
@@ -458,7 +439,7 @@ namespace Server.Items
         {
             m_Table.Remove(m);
 
-            if (Core.AOS && m.NetState != null)
+            if (m.NetState != null)
                 m.Send(ClearWeaponAbility.Instance);
         }
 
