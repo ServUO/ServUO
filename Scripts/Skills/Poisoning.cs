@@ -64,15 +64,7 @@ namespace Server.SkillHandlers
                     {
                         BaseWeapon weapon = (BaseWeapon)targeted;
 
-                        if (Core.AOS)
-                        {
-                            startTimer = (weapon.PrimaryAbility == WeaponAbility.InfectiousStrike || weapon.SecondaryAbility == WeaponAbility.InfectiousStrike);
-                        }
-                        else if (weapon.Layer == Layer.OneHanded)
-                        {
-                            // Only Bladed or Piercing weapon can be poisoned
-                            startTimer = (weapon.Type == WeaponType.Slashing || weapon.Type == WeaponType.Piercing);
-                        }
+                        startTimer = (weapon.PrimaryAbility == WeaponAbility.InfectiousStrike || weapon.SecondaryAbility == WeaponAbility.InfectiousStrike);
                     }
 
                     if (startTimer)
@@ -85,10 +77,7 @@ namespace Server.SkillHandlers
                     }
                     else // Target can't be poisoned
                     {
-                        if (Core.AOS)
-                            from.SendLocalizedMessage(1060204); // You cannot poison that! You can only poison infectious weapons, food or drink.
-                        else
-                            from.SendLocalizedMessage(502145); // You cannot poison that! You can only poison bladed or piercing weapons, food or drink.
+                        from.SendLocalizedMessage(1060204); // You cannot poison that! You can only poison infectious weapons, food or drink.
                     }
                 }
 

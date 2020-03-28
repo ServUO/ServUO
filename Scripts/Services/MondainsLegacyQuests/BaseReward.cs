@@ -67,22 +67,7 @@ namespace Server.Engines.Quests
 		{
 			if (item != null)
 			{
-				if (Core.SA && RandomItemGenerator.Enabled)
-				{
-					RunicReforging.GenerateRandomItem(item, 0, 10, 850);
-				}
-				else
-				{
-					int attributeCount = Utility.RandomMinMax(1, 5);
-					if(item is BaseJewel)
-						BaseRunicTool.ApplyAttributesTo((BaseJewel)item, false, 0, attributeCount, 10, 100);
-					else if (item is BaseWeapon)
-						BaseRunicTool.ApplyAttributesTo((BaseWeapon)item, false, 0, attributeCount, 10, 100);
-					else if (item is BaseRanged)
-						BaseRunicTool.ApplyAttributesTo((BaseRanged)item, false, 0, attributeCount, 10, 100);
-					else if (item is BaseArmor)
-						BaseRunicTool.ApplyAttributesTo((BaseArmor)item, false, 0, attributeCount, 10, 100);
-				}
+			    RunicReforging.GenerateRandomItem(item, 0, 10, 850);
 			}
 		}
 
@@ -103,38 +88,21 @@ namespace Server.Engines.Quests
 		{
             var ran = Utility.RandomDouble();
 
-            if (Core.HS)
+            if (ran <= 0.0001)
             {
-                if (ran <= 0.0001)
-                {
-                    return new RunicFletcherTool(CraftResource.Heartwood, 15);
-                }
-                else if (ran <= 0.0005)
-                {
-                    return new RunicFletcherTool(CraftResource.YewWood, 25);
-                }
-                else if (ran <= 0.0025)
-                {
-                    return new RunicFletcherTool(CraftResource.AshWood, 35);
-                }
-                else if (ran <= 0.005)
-                {
-                    return new RunicFletcherTool(CraftResource.OakWood, 45);
-                }
+                return new RunicFletcherTool(CraftResource.Heartwood, 15);
             }
-            else if (ran <= 0.01)
+            else if (ran <= 0.0005)
             {
-                switch (Utility.Random(4))
-                {
-                    case 0:
-                        return new RunicFletcherTool(CraftResource.OakWood, 45);
-                    case 1:
-                        return new RunicFletcherTool(CraftResource.AshWood, 35);
-                    case 2:
-                        return new RunicFletcherTool(CraftResource.YewWood, 25);
-                    case 3:
-                        return new RunicFletcherTool(CraftResource.Heartwood, 15);
-                }
+                return new RunicFletcherTool(CraftResource.YewWood, 25);
+            }
+            else if (ran <= 0.0025)
+            {
+                return new RunicFletcherTool(CraftResource.AshWood, 35);
+            }
+            else if (ran <= 0.005)
+            {
+                return new RunicFletcherTool(CraftResource.OakWood, 45);
             }
 
 			return null;
@@ -188,18 +156,7 @@ namespace Server.Engines.Quests
 
         public static Item AlchemyRecipe()
         {
-            RecipeScroll recipes;
-
-            if (Core.TOL)
-            {
-                recipes = GetRecipe(new int[] { 400, 401, 402 });
-            }
-            else
-            {
-                recipes = GetRecipe(new int[] { 400, 401, 402, 454 });
-            }
-
-            return recipes;
+            return GetRecipe(new int[] { 400, 401, 402 }); ;
         }
 
         public static Item CarpentryRecipe()
@@ -222,38 +179,21 @@ namespace Server.Engines.Quests
 		{
             var ran = Utility.RandomDouble();
 
-            if (Core.HS)
+            if (ran <= 0.0001)
             {
-                if (ran <= 0.0001)
-                {
-                    return new RunicDovetailSaw(CraftResource.Heartwood, 15);
-                }
-                else if (ran <= 0.0005)
-                {
-                    return new RunicDovetailSaw(CraftResource.YewWood, 25);
-                }
-                else if (ran <= 0.0025)
-                {
-                    return new RunicDovetailSaw(CraftResource.AshWood, 35);
-                }
-                else if (ran <= 0.005)
-                {
-                    return new RunicDovetailSaw(CraftResource.OakWood, 45);
-                }
+                return new RunicDovetailSaw(CraftResource.Heartwood, 15);
             }
-            else if (ran <= 0.01)
+            else if (ran <= 0.0005)
             {
-                switch (Utility.Random(4))
-                {
-                    case 0:
-                        return new RunicDovetailSaw(CraftResource.OakWood, 45);
-                    case 1:
-                        return new RunicDovetailSaw(CraftResource.AshWood, 35);
-                    case 2:
-                        return new RunicDovetailSaw(CraftResource.YewWood, 25);
-                    case 3:
-                        return new RunicDovetailSaw(CraftResource.Heartwood, 15);
-                }
+                return new RunicDovetailSaw(CraftResource.YewWood, 25);
+            }
+            else if (ran <= 0.0025)
+            {
+                return new RunicDovetailSaw(CraftResource.AshWood, 35);
+            }
+            else if (ran <= 0.005)
+            {
+                return new RunicDovetailSaw(CraftResource.OakWood, 45);
             }
 
 			return null;

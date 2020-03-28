@@ -59,7 +59,7 @@ namespace Server.Engines.Harvest
             oreAndStone.ConsumedPerFeluccaHarvest = 2;
 
             // The digging effect
-            oreAndStone.EffectActions = new int[] { Core.SA ? 3 : 11 };
+            oreAndStone.EffectActions = new int[] { 3 };
             oreAndStone.EffectSounds = new int[] { 0x125, 0x126 };
             oreAndStone.EffectCounts = new int[] { 1 };
             oreAndStone.EffectDelay = TimeSpan.FromSeconds(1.6);
@@ -102,24 +102,21 @@ namespace Server.Engines.Harvest
             oreAndStone.Resources = res;
             oreAndStone.Veins = veins;
 
-            if (Core.ML)
+            oreAndStone.BonusResources = new BonusHarvestResource[]
             {
-                oreAndStone.BonusResources = new BonusHarvestResource[]
-                {
-                    new BonusHarvestResource(0, 99.2, null, null), //Nothing
-                    new BonusHarvestResource(100, .1, 1072562, typeof(BlueDiamond)),
-                    new BonusHarvestResource(100, .1, 1072567, typeof(DarkSapphire)),
-                    new BonusHarvestResource(100, .1, 1072570, typeof(EcruCitrine)),
-                    new BonusHarvestResource(100, .1, 1072564, typeof(FireRuby)),
-                    new BonusHarvestResource(100, .1, 1072566, typeof(PerfectEmerald)),
-                    new BonusHarvestResource(100, .1, 1072568, typeof(Turquoise)),
-                    new BonusHarvestResource(100, .1, 1077180, typeof(SmallPieceofBlackrock)),
-                    new BonusHarvestResource(100, .1, 1113344, typeof(CrystallineBlackrock), Map.TerMur)
-				};
-            }
+                new BonusHarvestResource(0, 99.2, null, null), //Nothing
+                new BonusHarvestResource(100, .1, 1072562, typeof(BlueDiamond)),
+                new BonusHarvestResource(100, .1, 1072567, typeof(DarkSapphire)),
+                new BonusHarvestResource(100, .1, 1072570, typeof(EcruCitrine)),
+                new BonusHarvestResource(100, .1, 1072564, typeof(FireRuby)),
+                new BonusHarvestResource(100, .1, 1072566, typeof(PerfectEmerald)),
+                new BonusHarvestResource(100, .1, 1072568, typeof(Turquoise)),
+                new BonusHarvestResource(100, .1, 1077180, typeof(SmallPieceofBlackrock)),
+                new BonusHarvestResource(100, .1, 1113344, typeof(CrystallineBlackrock), Map.TerMur)
+			};
 
-            oreAndStone.RaceBonus = Core.ML;
-            oreAndStone.RandomizeVeins = Core.ML;
+            oreAndStone.RaceBonus = true;
+            oreAndStone.RandomizeVeins = true;
 
             Definitions.Add(oreAndStone);
             #endregion
@@ -153,7 +150,7 @@ namespace Server.Engines.Harvest
             sand.ConsumedPerFeluccaHarvest = 2;
 
             // The digging effect
-            sand.EffectActions = new int[] { Core.SA ? 3 : 11 };
+            sand.EffectActions = new int[] { 3 };
             sand.EffectSounds = new int[] { 0x125, 0x126 };
             sand.EffectCounts = new int[] { 6 };
             sand.EffectDelay = TimeSpan.FromSeconds(1.6);
@@ -387,9 +384,6 @@ namespace Server.Engines.Harvest
         #region High Seas
         public override bool SpecialHarvest(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc)
         {
-            if (!Core.HS)
-                return base.SpecialHarvest(from, tool, def, map, loc);
-
             HarvestBank bank = def.GetBank(map, loc.X, loc.Y);
 
             if (bank == null)
@@ -481,8 +475,7 @@ namespace Server.Engines.Harvest
         {
             base.OnHarvestStarted(from, tool, def, toHarvest);
 
-            if (Core.ML)
-                from.RevealingAction();
+            from.RevealingAction();
         }
 
         public override void OnBadHarvestTarget(Mobile from, Item tool, object toHarvest)

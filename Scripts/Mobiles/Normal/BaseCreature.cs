@@ -5556,21 +5556,6 @@ namespace Server.Mobiles
             int treasureLevel = TreasureMapInfo.ConvertLevel(TreasureMapLevel);
             GetLootingRights();
 
-            if (treasureLevel == 1 && Map == Map.Trammel && TreasureMap.IsInHavenIsland(this))
-            {
-                Mobile killer = LastKiller;
-
-                if (killer is BaseCreature)
-                {
-                    killer = ((BaseCreature)killer).GetMaster();
-                }
-
-                if (killer is PlayerMobile && ((PlayerMobile)killer).Young)
-                {
-                    treasureLevel = 0;
-                }
-            }
-
             if (!Summoned && !NoKillAwards && !IsBonded && !NoLootOnDeath)
             {
                 if (treasureLevel >= 0)

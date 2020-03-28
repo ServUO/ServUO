@@ -113,7 +113,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return !Core.AOS;
+                return false;
             }
         }
         public override Poison PoisonImmune

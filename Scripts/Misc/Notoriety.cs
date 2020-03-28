@@ -175,18 +175,15 @@ namespace Server.Misc
 			{
 				c.DisplayGuildTitle = false;
 
-				if (c.Map != null && c.Map != Map.Internal)
-				{
-					if (Core.AOS || Guild.NewGuildSystem || c.ControlOrder == OrderType.Attack || c.ControlOrder == OrderType.Guard)
-						g = (Guild)(c.Guild = c.ControlMaster.Guild);
-					else if (c.Map == null || c.Map == Map.Internal || c.ControlMaster.Guild == null)
-						g = (Guild)(c.Guild = null);
-				}
-				else
-				{
-					if (c.Map == null || c.Map == Map.Internal || c.ControlMaster.Guild == null)
-						g = (Guild)(c.Guild = null);
-				}
+                if (c.Map != null && c.Map != Map.Internal)
+                {
+                    g = (Guild)(c.Guild = c.ControlMaster.Guild);
+                }
+                else
+                {
+                    if (c.Map == null || c.Map == Map.Internal || c.ControlMaster.Guild == null)
+                        g = (Guild)(c.Guild = null);
+                }
 			}
 
 			return g;
@@ -296,17 +293,14 @@ namespace Server.Misc
 			if (target == null)
 				return Notoriety.CanBeAttacked;
 
-			if (Core.AOS)
-			{
-				if (target.Blessed)
-					return Notoriety.Invulnerable;
+			if (target.Blessed)
+				return Notoriety.Invulnerable;
 
-				if (target is BaseVendor && ((BaseVendor)target).IsInvulnerable)
-					return Notoriety.Invulnerable;
+			if (target is BaseVendor && ((BaseVendor)target).IsInvulnerable)
+				return Notoriety.Invulnerable;
 
-				if (target is PlayerVendor || target is TownCrier)
-					return Notoriety.Invulnerable;
-			}
+			if (target is PlayerVendor || target is TownCrier)
+				return Notoriety.Invulnerable;
 
 			var context = EnemyOfOneSpell.GetContext(source);
 
@@ -333,7 +327,7 @@ namespace Server.Misc
 
 				master = bc.ControlMaster;
 
-				if (Core.ML && master != null && !bc.ForceNotoriety)
+				if (master != null && !bc.ForceNotoriety)
 				{
 					if (source == master && CheckAggressor(target.Aggressors, source))
 						return Notoriety.CanBeAttacked;
@@ -397,9 +391,6 @@ namespace Server.Misc
 			if (!(target is BaseCreature && ((BaseCreature)target).InitialInnocent))
 			{
 				if (!target.Body.IsHuman && !target.Body.IsGhost && !IsPet(target as BaseCreature) && !(target is PlayerMobile))
-					return Notoriety.CanBeAttacked;
-
-				if (!Core.ML && !target.CanBeginAction(typeof(PolymorphSpell)))
 					return Notoriety.CanBeAttacked;
 			}
 

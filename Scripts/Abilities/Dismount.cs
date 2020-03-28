@@ -21,7 +21,7 @@ namespace Server.Items
         {
             get
             {
-                return Core.TOL ? 25 : 20;
+                return 25;
             }
         }
         public override bool Validate(Mobile from)
@@ -53,7 +53,7 @@ namespace Server.Items
 
             IMount mount = defender.Mount;
 
-            if (mount == null && !defender.Flying && (!Core.ML || !Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender)))
+            if (mount == null && !defender.Flying && !Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
             {
                 attacker.SendLocalizedMessage(1060848); // This attack only works on mounted or flying targets
                 return;
@@ -64,7 +64,7 @@ namespace Server.Items
                 return;
             }
 
-            if (Core.ML && attacker is LesserHiryu && 0.8 >= Utility.RandomDouble())
+            if (attacker is LesserHiryu && 0.8 >= Utility.RandomDouble())
             {
                 return; //Lesser Hiryu have an 80% chance of missing this attack
             }
@@ -72,7 +72,7 @@ namespace Server.Items
             defender.PlaySound(0x140);
             defender.FixedParticles(0x3728, 10, 15, 9955, EffectLayer.Waist);
 
-            int delay = Core.TOL && attacker.Weapon is BaseRanged ? 8 : 10;
+            int delay = attacker.Weapon is BaseRanged ? 8 : 10;
 
             DoDismount(attacker, defender, mount, delay);
 
@@ -88,7 +88,7 @@ namespace Server.Items
 
             if (defender is PlayerMobile)
             {
-                if (Core.ML && Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
+                if (Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
                 {
                     defender.SendLocalizedMessage(1114066, attacker.Name); // ~1_NAME~ knocked you out of animal form!
                 }
@@ -110,9 +110,9 @@ namespace Server.Items
 
             if (attacker is PlayerMobile)
             {
-                ((PlayerMobile)attacker).SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(Core.TOL && attacker.Weapon is BaseRanged ? 8 : 10), false);
+                ((PlayerMobile)attacker).SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(attacker.Weapon is BaseRanged ? 8 : 10), false);
             }
-            else if (Core.ML && attacker is BaseCreature)
+            else if (attacker is BaseCreature)
             {
                 BaseCreature bc = attacker as BaseCreature;
 

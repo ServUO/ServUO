@@ -13,7 +13,7 @@ namespace Server.Engines.Quests.RitualQuest
 
         public static void Initialize()
         {
-            if (Core.SA && Instance == null)
+            if (Instance == null)
             {
                 Instance = new Prugyilonus();
                 Instance.MoveToWorld(new Point3D(750, 3344, 61), Map.TerMur);
@@ -59,14 +59,7 @@ namespace Server.Engines.Quests.RitualQuest
             base.Deserialize(reader);
             reader.ReadInt(); // version
 
-            if (Core.SA)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Delete();
-            }
+            Instance = this;
         }
     }
 
@@ -78,7 +71,7 @@ namespace Server.Engines.Quests.RitualQuest
 
         public static void Initialize()
         {
-            if(Core.SA && Instance == null)
+            if(Instance == null)
             {
                 Instance = new Bexil();
                 Instance.MoveToWorld(new Point3D(662, 3819, -43), Map.TerMur);
@@ -127,14 +120,7 @@ namespace Server.Engines.Quests.RitualQuest
             base.Deserialize(reader);
             reader.ReadInt(); // version
 
-            if (Core.SA)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Delete();
-            }
+            Instance = this;
         }
     }
 
@@ -236,11 +222,6 @@ namespace Server.Engines.Quests.RitualQuest
         {
             base.Deserialize(reader);
             reader.ReadInt(); // version
-
-            if (!Core.SA)
-            {
-                Delete();
-            }
         }
     }
 
@@ -252,7 +233,7 @@ namespace Server.Engines.Quests.RitualQuest
 
         public static void Initialize()
         {
-            if (Core.SA && Instance == null)
+            if (Instance == null)
             {
                 Instance = new Grubbix();
                 Instance.MoveToWorld(new Point3D(1106, 3138, -43), Map.TerMur);
@@ -288,14 +269,7 @@ namespace Server.Engines.Quests.RitualQuest
             base.Deserialize(reader);
             reader.ReadInt(); // version
 
-            if (Core.SA)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Delete();
-            }
+            Instance = this;
         }
     }
 }

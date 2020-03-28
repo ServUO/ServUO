@@ -21,49 +21,16 @@ namespace Server.SkillHandlers
 
 		public static TimeSpan OnUse(Mobile m)
 		{
-			if (Core.AOS)
-			{
-                if (m.Spell != null && m.Spell.IsCasting)
-                {
-                    m.SendLocalizedMessage(502642); // You are already casting a spell.
-                }
-                else if (BeginSpiritSpeak(m))
-                {
-                    return TimeSpan.FromSeconds(5.0);
-                }
+            if (m.Spell != null && m.Spell.IsCasting)
+            {
+                m.SendLocalizedMessage(502642); // You are already casting a spell.
+            }
+            else if (BeginSpiritSpeak(m))
+            {
+                return TimeSpan.FromSeconds(5.0);
+            }
 
-				return TimeSpan.Zero;
-			}
-
-			m.RevealingAction();
-
-			if (m.CheckSkill(SkillName.SpiritSpeak, 0, 100))
-			{
-				if (!m.CanHearGhosts)
-				{
-					Timer t = new SpiritSpeakTimer(m);
-					double secs = m.Skills[SkillName.SpiritSpeak].Base / 50;
-					secs *= 90;
-					if (secs < 15)
-					{
-						secs = 15;
-					}
-
-					t.Delay = TimeSpan.FromSeconds(secs); //15seconds to 3 minutes
-					t.Start();
-					m.CanHearGhosts = true;
-				}
-
-				m.PlaySound(0x24A);
-				m.SendLocalizedMessage(502444); //You contact the neitherworld.
-			}
-			else
-			{
-				m.SendLocalizedMessage(502443); //You fail to contact the neitherworld.
-				m.CanHearGhosts = false;
-			}
-
-			return TimeSpan.FromSeconds(1.0);
+			return TimeSpan.Zero;
 		}
 
 		private class SpiritSpeakTimer : Timer
@@ -126,9 +93,6 @@ namespace Server.SkillHandlers
 
         public static void CheckDisrupt(Mobile m)
         {
-            if (!Core.AOS)
-                return;
-
             if (_Table != null && _Table.ContainsKey(m))
             {
                 if (m is PlayerMobile)

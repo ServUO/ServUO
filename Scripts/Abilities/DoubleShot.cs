@@ -15,7 +15,7 @@ namespace Server.Items
         {
             get
             {
-                return Core.TOL ? 30 : 35;
+                return 30;
             }
         }
 

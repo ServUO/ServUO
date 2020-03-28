@@ -100,7 +100,7 @@ namespace Server.SkillHandlers
 		{
 			for (int i = 0; i < bc.Skills.Length; ++i)
 			{
-                if (!Core.TOL || firstTame)
+                if (firstTame)
                 {
                     bc.Skills[i].Cap = Math.Max(100.0, bc.Skills[i].Base * capScalar);
                 }
@@ -119,7 +119,7 @@ namespace Server.SkillHandlers
 			private bool m_SetSkillTime = true;
 
 			public InternalTarget(Mobile m)
-				: base(Core.AOS ? 3 : 2, false, TargetFlags.None)
+				: base(3, false, TargetFlags.None)
 			{
                 BeginTimeout(m, TimeSpan.FromSeconds(30.0));
             }
@@ -194,20 +194,6 @@ namespace Server.SkillHandlers
 								creature.PlaySound(creature.GetAngerSound());
 								creature.Direction = creature.GetDirectionTo(from);
 
-                                if (!Core.SA)
-                                {
-                                    if (creature.BardPacified && Utility.RandomDouble() > .24)
-                                    {
-                                        Timer.DelayCall(TimeSpan.FromSeconds(2.0), () => creature.BardPacified = true);
-                                    }
-                                    else
-                                    {
-                                        creature.BardEndTime = DateTime.UtcNow;
-                                    }
-
-                                    creature.BardPacified = false;
-                                }
-
 								if (creature.AIObject != null)
 								{
 									creature.AIObject.DoMove(creature.Direction);
@@ -277,7 +263,7 @@ namespace Server.SkillHandlers
 					DamageEntry de = m_Creature.FindMostRecentDamageEntry(false);
 					bool alreadyOwned = m_Creature.Owners.Contains(m_Tamer);
 
-					if (!m_Tamer.InRange(m_Creature, Core.AOS ? 7 : 6))
+					if (!m_Tamer.InRange(m_Creature, 7))
 					{
 						m_BeingTamed.Remove(m_Creature);
 						m_Tamer.NextSkillTime = Core.TickCount;

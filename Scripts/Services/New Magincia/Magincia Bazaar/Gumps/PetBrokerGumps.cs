@@ -541,17 +541,12 @@ namespace Server.Engines.NewMagincia
                     {
                         from.SendGump(new PetInventoryGump(m_Broker, from));
 
-                        if (PetTrainingHelper.Enabled && from is PlayerMobile)
+                        if (from is PlayerMobile)
                         {
                             Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
                             {
                                 BaseGump.SendGump(new NewAnimalLoreGump((PlayerMobile)from, entry.Pet));
                             });
-                        }
-                        else
-                        {
-                            from.CloseGump(typeof(Server.SkillHandlers.AnimalLoreGump));
-                            from.SendGump(new Server.SkillHandlers.AnimalLoreGump(entry.Pet));
                         }
                     }
                     else

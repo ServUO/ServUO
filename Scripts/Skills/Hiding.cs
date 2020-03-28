@@ -36,7 +36,7 @@ namespace Server.SkillHandlers
                 return TimeSpan.FromSeconds(1.0);
             }
 
-            if (Core.ML && m.Target != null)
+            if (m.Target != null)
             {
                 Targeting.Target.Cancel(m);
             }
@@ -48,23 +48,6 @@ namespace Server.SkillHandlers
             if (house != null && house.IsFriend(m))
             {
                 bonus = 100.0;
-            }
-            else if (!Core.AOS)
-            {
-                if (house == null)
-                    house = BaseHouse.FindHouseAt(new Point3D(m.X - 1, m.Y, 127), m.Map, 16);
-
-                if (house == null)
-                    house = BaseHouse.FindHouseAt(new Point3D(m.X + 1, m.Y, 127), m.Map, 16);
-
-                if (house == null)
-                    house = BaseHouse.FindHouseAt(new Point3D(m.X, m.Y - 1, 127), m.Map, 16);
-
-                if (house == null)
-                    house = BaseHouse.FindHouseAt(new Point3D(m.X, m.Y + 1, 127), m.Map, 16);
-
-                if (house != null)
-                    bonus = 50.0;
             }
 
             //int range = 18 - (int)(m.Skills[SkillName.Hiding].Value / 10);

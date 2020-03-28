@@ -167,7 +167,7 @@ namespace Server.SkillHandlers
 					{
 						from.SendLocalizedMessage(1049537); // Your target is already in discord.
 					}
-					else if (!targ.Player || (from is BaseCreature && ((BaseCreature)from).CanDiscord) || (Core.EJ && targ.Player && from.Player && CanDiscordPVP(from)))
+					else if (!targ.Player || (from is BaseCreature && ((BaseCreature)from).CanDiscord) || (targ.Player && from.Player && CanDiscordPVP(from)))
 					{
 						double diff = m_Instrument.GetDifficultyFor(targ) - 10.0;
 						double music = from.Skills[SkillName.Musicianship].Value;
@@ -210,7 +210,7 @@ namespace Server.SkillHandlers
 
                             DiscordanceInfo info;
 
-                            if (Core.EJ && targ.Player && from.Player)
+                            if (targ.Player && from.Player)
                             {
                                 info = new DiscordanceInfo(from, targ, 0, null, true, from.Skills.CurrentMastery == SkillName.Discordance ? 6 : 4);
                                 from.DoHarmful(targ);
@@ -221,48 +221,28 @@ namespace Server.SkillHandlers
                                 int effect;
                                 double scalar;
 
-                                if (Core.AOS)
+                                double discord = from.Skills[SkillName.Discordance].Value;
+
+                                effect = (int)Math.Max(-28.0, (discord / -4.0));
+
+                                if (BaseInstrument.GetBaseDifficulty(targ) >= 160.0)
                                 {
-                                    double discord = from.Skills[SkillName.Discordance].Value;
-
-                                    effect = (int)Math.Max(-28.0, (discord / -4.0));
-
-                                    if (Core.SE && BaseInstrument.GetBaseDifficulty(targ) >= 160.0)
-                                    {
-                                        effect /= 2;
-                                    }
-
-                                    scalar = (double)effect / 100;
-
-                                    mods.Add(new ResistanceMod(ResistanceType.Physical, effect));
-                                    mods.Add(new ResistanceMod(ResistanceType.Fire, effect));
-                                    mods.Add(new ResistanceMod(ResistanceType.Cold, effect));
-                                    mods.Add(new ResistanceMod(ResistanceType.Poison, effect));
-                                    mods.Add(new ResistanceMod(ResistanceType.Energy, effect));
-
-                                    for (int i = 0; i < targ.Skills.Length; ++i)
-                                    {
-                                        if (targ.Skills[i].Value > 0)
-                                        {
-                                            mods.Add(new DefaultSkillMod((SkillName)i, true, targ.Skills[i].Value * scalar));
-                                        }
-                                    }
+                                    effect /= 2;
                                 }
-                                else
+
+                                scalar = (double)effect / 100;
+
+                                mods.Add(new ResistanceMod(ResistanceType.Physical, effect));
+                                mods.Add(new ResistanceMod(ResistanceType.Fire, effect));
+                                mods.Add(new ResistanceMod(ResistanceType.Cold, effect));
+                                mods.Add(new ResistanceMod(ResistanceType.Poison, effect));
+                                mods.Add(new ResistanceMod(ResistanceType.Energy, effect));
+
+                                for (int i = 0; i < targ.Skills.Length; ++i)
                                 {
-                                    effect = (int)(from.Skills[SkillName.Discordance].Value / -5.0);
-                                    scalar = effect * 0.01;
-
-                                    mods.Add(new StatMod(StatType.Str, "DiscordanceStr", (int)(targ.RawStr * scalar), TimeSpan.Zero));
-                                    mods.Add(new StatMod(StatType.Int, "DiscordanceInt", (int)(targ.RawInt * scalar), TimeSpan.Zero));
-                                    mods.Add(new StatMod(StatType.Dex, "DiscordanceDex", (int)(targ.RawDex * scalar), TimeSpan.Zero));
-
-                                    for (int i = 0; i < targ.Skills.Length; ++i)
+                                    if (targ.Skills[i].Value > 0)
                                     {
-                                        if (targ.Skills[i].Value > 0)
-                                        {
-                                            mods.Add(new DefaultSkillMod((SkillName)i, true, Math.Max(100, targ.Skills[i].Value) * scalar));
-                                        }
+                                        mods.Add(new DefaultSkillMod((SkillName)i, true, targ.Skills[i].Value * scalar));
                                     }
                                 }
 

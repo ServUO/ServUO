@@ -157,9 +157,6 @@ namespace Server.Engines.Quests
             SpeechHue = Utility.RandomDyedHue();
             Hue = Utility.RandomSkinHue();
 
-            if (IsInvulnerable && !Core.AOS)
-                NameHue = 0x35;
-
             Female = false;
             Body = 0x190;
 

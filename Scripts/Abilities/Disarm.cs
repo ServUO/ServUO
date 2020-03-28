@@ -60,7 +60,7 @@ namespace Server.Items
             {
                 attacker.SendLocalizedMessage(1004001); // You cannot disarm your opponent.
             }
-            else if (toDisarm == null || toDisarm is BaseShield || toDisarm is Spellbook && !Core.ML)
+            else if (toDisarm == null || toDisarm is BaseShield)
             {
                 attacker.SendLocalizedMessage(1060849); // Your target is already unarmed!
             }
@@ -87,8 +87,7 @@ namespace Server.Items
                     });
                 }
 
-                if(Core.SA)
-                    AddImmunity(defender, Core.TOL && attacker.Weapon is Fists ? TimeSpan.FromSeconds(10) : TimeSpan.FromSeconds(15));
+                AddImmunity(defender, attacker.Weapon is Fists ? TimeSpan.FromSeconds(10) : TimeSpan.FromSeconds(15));
             }
         }
 

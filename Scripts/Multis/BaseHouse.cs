@@ -24,7 +24,7 @@ namespace Server.Multis
 
         public static bool NewVendorSystem { get { return true; } } // Is new player vendor system enabled?
 
-        public static double GlobalBonusStorageScalar { get { return Core.ML ? Core.SA ? 1.4 : 1.2 : 1.0; } }
+        public static double GlobalBonusStorageScalar { get { return 1.4; } }
 
         public const int MaxCoOwners = 15;
         public static int MaxFriends { get { return 140; } }
@@ -78,12 +78,12 @@ namespace Server.Multis
                     return DecayType.Ageless;
 
                 if (m_Owner == null)
-                    return Core.AOS ? DecayType.Condemned : DecayType.ManualRefresh;
+                    return DecayType.Condemned;
 
                 Account acct = m_Owner.Account as Account;
 
                 if (acct == null)
-                    return Core.AOS ? DecayType.Condemned : DecayType.ManualRefresh;
+                    return DecayType.Condemned;
 
                 if (acct.AccessLevel >= AccessLevel.GameMaster)
                     return DecayType.Ageless;
@@ -95,9 +95,6 @@ namespace Server.Multis
                     if (mob != null && mob.AccessLevel >= AccessLevel.GameMaster)
                         return DecayType.Ageless;
                 }
-
-                if (!Core.AOS)
-                    return DecayType.ManualRefresh;
 
                 if (acct.Inactive)
                     return DecayType.Condemned;
@@ -264,16 +261,12 @@ namespace Server.Multis
             if (Deleted)
                 return;
 
-            if (Core.ML)
-                new TempNoHousingRegion(this, null);
+            new TempNoHousingRegion(this, null);
 
-            if (Core.SA)
-            {
-                Rectangle3D[] recs = m_Region.Area;
-                Map map = Map;
+            Rectangle3D[] recs = m_Region.Area;
+            Map map = Map;
 
-                Timer.DelayCall(TimeSpan.FromMilliseconds(250), () => OnAfterDecay(recs, map));
-            }
+            Timer.DelayCall(TimeSpan.FromMilliseconds(250), () => OnAfterDecay(recs, map));
 
             KillVendors();
             Delete();
@@ -340,7 +333,7 @@ namespace Server.Multis
 
         private static readonly Dictionary<Mobile, List<BaseHouse>> m_Table = new Dictionary<Mobile, List<BaseHouse>>();
 
-        public virtual bool IsAosRules { get { return Core.AOS; } }
+        public virtual bool IsAosRules { get { return true; } }
 
         public virtual bool IsActive { get { return true; } }
 
@@ -2725,10 +2718,6 @@ namespace Server.Multis
             if (targ.IsStaff() && from.AccessLevel <= targ.AccessLevel)
             {
                 from.SendLocalizedMessage(501346); // Uh oh...a bigger boot may be required!
-            }
-            else if (IsFriend(targ) && !Core.ML)
-            {
-                from.SendLocalizedMessage(501348); // You cannot eject a friend of the house!
             }
             else if (targ is PlayerVendor)
             {

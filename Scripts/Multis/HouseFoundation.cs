@@ -73,7 +73,7 @@ namespace Server.Multis
         {
             get
             {
-                return (Core.AOS ? 0 : 10000);
+                return 0;
             }
         }
 
@@ -1739,7 +1739,7 @@ namespace Server.Multis
             Mobile from = state.Mobile;
             DesignContext context = DesignContext.Find(from);
 
-            if (context != null && (Core.SE || from.AccessLevel >= AccessLevel.GameMaster))
+            if (context != null)
             {
                 // Read data detailing component graphic and location
                 int itemID = pvSrc.ReadInt32();
@@ -1784,7 +1784,7 @@ namespace Server.Multis
             Mobile from = state.Mobile;
             DesignContext context = DesignContext.Find(from);
 
-            if (context != null)	// No need to check for Core.SE if trying to remove something that shouldn't be able to be placed anyways
+            if (context != null)
             {
                 // Read data detailing which component to delete
                 int itemID = pvSrc.ReadInt32();

@@ -106,14 +106,6 @@ namespace Server
             if (m != null && phys == 0 && fire == 100 && cold == 0 && pois == 0 && nrgy == 0)
                 Mobiles.MeerMage.StopEffect(m, true);
 
-            if (!Core.AOS)
-            {
-                if(m != null)
-                    m.Damage(damage, from);
-
-                return damage;
-            }
-
             #region Mondain's Legacy
             if (m != null)
             {
@@ -135,7 +127,7 @@ namespace Server
             Fix(ref chaos);
             Fix(ref direct);
 
-            if (Core.ML && chaos > 0)
+            if (chaos > 0)
             {
                 switch (Utility.Random(5))
                 {
@@ -176,18 +168,15 @@ namespace Server
                 totalDamage = physDamage + fireDamage + coldDamage + poisonDamage + energyDamage;
                 totalDamage /= 10000;
 
-                if (Core.ML)
-                {
-                    totalDamage += damage * direct / 100;
+                totalDamage += damage * direct / 100;
 
-                    if (quiver != null)
-                        totalDamage += totalDamage * quiver.DamageIncrease / 100;
-                }
+                if (quiver != null)
+                    totalDamage += totalDamage * quiver.DamageIncrease / 100;
 
                 if (m != null)
                     BaseFishPie.ScaleDamage(from, m, ref totalDamage, phys, fire, cold, pois, nrgy, direct);
 
-                if (Core.HS && ArmorPierce.IsUnderEffects(m))
+                if (ArmorPierce.IsUnderEffects(m))
                 {
                     totalDamage += (int)((double)totalDamage * .1);
                 }
@@ -195,18 +184,18 @@ namespace Server
                 if (totalDamage < 1)
                     totalDamage = 1;           
             }
-            else if (Core.ML && m is PlayerMobile)
+            else if (m is PlayerMobile)
             {
                 if (quiver != null)
                     damage += damage * quiver.DamageIncrease / 100;
 
-                totalDamage = Math.Min(damage, Core.TOL && ranged ? 30 : 35);	// Direct Damage cap of 30/35
+                totalDamage = Math.Min(damage, ranged ? 30 : 35);	// Direct Damage cap of 30/35
             }
             else
             {
                 totalDamage = damage;
 
-                if (Core.ML && quiver != null)
+                if (quiver != null)
                     totalDamage += totalDamage * quiver.DamageIncrease / 100;
             }
 
@@ -238,12 +227,7 @@ namespace Server
                     int originalDamage = totalDamage;
                     totalDamage = (int)(totalDamage * 1.2);
 
-                    if (!Core.TOL && totalDamage > 35 && from is PlayerMobile) /* capped @ 35, seems no expansion */
-                    {
-                        totalDamage = 35;
-                    }
-
-                    if (Core.ML && m is BaseCreature)
+                    if (m is BaseCreature)
                     {
                         from.Damage((int)(originalDamage * (1 - (((from.Skills.MagicResist.Value * .5) + 10) / 100))), m);
                     }
@@ -297,7 +281,7 @@ namespace Server
             if (type == DamageType.Spell && m != null && Feint.Registry.ContainsKey(m) && Feint.Registry[m].Enemy == from)
                 totalDamage -= (int)((double)damage * ((double)Feint.Registry[m].DamageReduction / 100));
 
-            if (m.Hidden && Core.ML && type >= DamageType.Spell)
+            if (m.Hidden && type >= DamageType.Spell)
             {
                 int chance = (int)Math.Min(33, 100 - (Server.Spells.SkillMasteries.ShadowSpell.GetDifficultyFactor(m) * 100));
 
@@ -381,7 +365,7 @@ namespace Server
 
             totalDamage = m.Damage(totalDamage, from, true, false);
 
-            if (Core.SA && type == DamageType.Melee && from is BaseCreature &&
+            if (type == DamageType.Melee && from is BaseCreature &&
                 (m is PlayerMobile || (m is BaseCreature && !((BaseCreature)m).IsMonster)))
             {
                 from.RegisterDamage(totalDamage / 4, m);
@@ -536,16 +520,6 @@ namespace Server
     {
         public static bool IsValid(AosAttribute attribute)
         {
-            if (!Core.AOS)
-            {
-                return false;
-            }
-
-            if (!Core.ML && attribute == AosAttribute.IncreasedKarmaLoss)
-            {
-                return false;
-            }
-
             return true;
         }
 
@@ -887,7 +861,7 @@ namespace Server
 
         public override void SetValue(int bitmask, int value)
         {
-            if (Core.SA && bitmask == (int)AosAttribute.WeaponSpeed && Owner is BaseWeapon)
+            if (bitmask == (int)AosAttribute.WeaponSpeed && Owner is BaseWeapon)
             {
                 ((BaseWeapon)Owner).WeaponAttributes.ScaleLeech(value);
             }
@@ -1369,16 +1343,6 @@ namespace Server
     {
         public static bool IsValid(AosWeaponAttribute attribute)
         {
-            if (!Core.AOS)
-            {
-                return false;
-            }
-
-            if (!Core.SA && attribute >= AosWeaponAttribute.BloodDrinker)
-            {
-                return false;
-            }
-
             return true;
         }
 
@@ -1969,9 +1933,6 @@ namespace Server
 
         public static int GetValue(Mobile m, ExtendedWeaponAttribute attribute)
         {
-            if (!Core.AOS)
-                return 0;
-
             int value = 0;
 
             #region Enhancement
@@ -2133,16 +2094,6 @@ namespace Server
     {
         public static bool IsValid(AosArmorAttribute attribute)
         {
-            if (!Core.AOS)
-            {
-                return false;
-            }
-
-            if (!Core.SA && attribute >= AosArmorAttribute.ReactiveParalyze)
-            {
-                return false;
-            }
-
             return true;
         }
 
@@ -2420,8 +2371,7 @@ namespace Server
                 Mobile m = m_Mods[i].Owner;
                 m_Mods[i].Remove();
 
-                if (Core.ML)
-                    CheckCancelMorph(m);
+                CheckCancelMorph(m);
             }
             m_Mods = null;
         }
@@ -2744,11 +2694,6 @@ namespace Server
     {
         public static bool IsValid(SAAbsorptionAttribute attribute)
         {
-            if (!Core.SA)
-            {
-                return false;
-            }
-
             return true;
         }
 
@@ -3421,9 +3366,6 @@ namespace Server
 
         public int GetValue(int bitmask)
         {
-            if (!Core.AOS)
-                return 0;
-
             uint mask = (uint)bitmask;
 
             if ((m_Names & mask) == 0)

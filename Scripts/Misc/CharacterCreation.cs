@@ -42,9 +42,9 @@ namespace Server.Misc
 				return false;
 			if (profession < 4)
 				return true;
-			if (Core.AOS && profession < 6)
+			if (profession < 6)
 				return true;
-			if (Core.SE && profession < 8)
+			if (profession < 8)
 				return true;
 			return false;
 		}
@@ -183,10 +183,7 @@ namespace Server.Misc
 			newChar.AccessLevel = args.Account.AccessLevel;
 			newChar.Female = args.Female;
 
-			if (Core.Expansion >= args.Race.RequiredExpansion)
-				newChar.Race = args.Race; //Sets body
-			else
-				newChar.Race = Race.DefaultRace;
+		    newChar.Race = args.Race; //Sets body
 
 			newChar.Hue = args.Hue | 0x8000;
 
@@ -1076,8 +1073,7 @@ namespace Server.Misc
 				}
 				case SkillName.Chivalry:
 				{
-					if (Core.ML)
-						PackItem(new BookOfChivalry((ulong)0x3FF));
+					PackItem(new BookOfChivalry((ulong)0x3FF));
 
 					break;
 				}
@@ -1231,14 +1227,11 @@ namespace Server.Misc
 				}
 				case SkillName.Necromancy:
 				{
-					if (Core.ML)
-					{
-						Container regs = new BagOfNecroReagents(50);
+					Container regs = new BagOfNecroReagents(50);
 
-						PackItem(regs);
+					PackItem(regs);
 
-						regs.LootType = LootType.Regular;
-					}
+					regs.LootType = LootType.Regular;
 
 					// RunUO fix
 					Spellbook

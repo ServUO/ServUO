@@ -52,7 +52,7 @@ namespace Server.Regions
         {
             if (m.AccessLevel == AccessLevel.Player && House != null && House.IsFriend(m))
             {
-                if (Core.AOS && House is HouseFoundation)
+                if (House is HouseFoundation)
                 {
                     House.RefreshDecay();
                 }
@@ -127,16 +127,10 @@ namespace Server.Regions
             else if ((House.Public || !House.IsAosRules) && House.IsBanned(m) && House.IsInside(m))
             {
                 m.Location = House.BanLocation;
-
-                if (!Core.SE)
-                    m.SendLocalizedMessage(501284); // You may not enter.
             }
             else if (House.IsAosRules && !House.Public && !House.HasAccess(m) && House.IsInside(m))
             {
                 m.Location = House.BanLocation;
-
-                if (!Core.SE)
-                    m.SendLocalizedMessage(501284); // You may not enter.
             }
             else if (House.IsCombatRestricted(m) && House.IsInside(m) && !House.IsInside(oldLocation, 16))
             {
@@ -188,17 +182,10 @@ namespace Server.Regions
             else if ((House.Public || !House.IsAosRules) && House.IsBanned(from) && House.IsInside(newLocation, 16))
             {
                 from.Location = House.BanLocation;
-
-                if (!Core.SE)
-                    from.SendLocalizedMessage(501284); // You may not enter.
-
                 return false;
             }
             else if (House.IsAosRules && !House.Public && !House.HasAccess(from) && House.IsInside(newLocation, 16))
             {
-                if (!Core.SE)
-                    from.SendLocalizedMessage(501284); // You may not enter.
-
                 return false;
             }
             else if (House.IsCombatRestricted(from) && !House.IsInside(oldLocation, 16) && House.IsInside(newLocation, 16))
@@ -225,8 +212,7 @@ namespace Server.Regions
                 from.SendGump(new NoticeGump(1060635, 30720, 1061826, 32512, 320, 180, null, null));
             }
 
-            if(Core.AOS)
-                House.AddVisit(from);
+            House.AddVisit(from);
 
             return true;
         }
@@ -293,7 +279,7 @@ namespace Server.Regions
             if (!from.Alive)
                 return;
 			
-            if (Core.ML && Insensitive.Equals(e.Speech, "I wish to resize my house"))
+            if (Insensitive.Equals(e.Speech, "I wish to resize my house"))
             {
                 if (from.Map != sign.Map || !from.InRange(sign, 0))
                 {

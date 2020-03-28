@@ -525,12 +525,7 @@ namespace Server.Items
 
             for (int i = 0; i < 2; i++)
             {
-                Item item;
-
-                if (Core.AOS)
-                    item = Loot.RandomArmorOrShieldOrWeaponOrJewelry();
-                else
-                    item = Loot.RandomArmorOrShieldOrWeapon();
+                Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry();
 
                 if (item is BaseWeapon)
                 {

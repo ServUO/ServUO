@@ -54,7 +54,7 @@ namespace Server.Engines.Plants
 
 				if ( targeted is FertileDirt )
 				{
-					int _dirtNeeded = Core.ML ? 20 : 40;
+                    int _dirtNeeded = 20;
 
 					FertileDirt dirt = (FertileDirt)targeted;
 

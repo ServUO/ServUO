@@ -1377,10 +1377,7 @@ namespace Server.Items
 
             InvalidateDamageState();
 
-            if (Core.EJ)
-            {
-                Timer.DelayCall(() => Replace());
-            }
+            Timer.DelayCall(() => Replace());
         }
 
         private void Replace()

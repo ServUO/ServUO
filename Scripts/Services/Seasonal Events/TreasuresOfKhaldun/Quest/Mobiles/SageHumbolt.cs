@@ -23,14 +23,11 @@ namespace Server.Engines.Khaldun
 
         public static void Initialize()
         {
-            if (Core.TOL)
+            if (TramInstance == null)
             {
-                if (TramInstance == null)
-                {
-                    TramInstance = new SageHumbolt();
-                    TramInstance.MoveToWorld(new Point3D(5808, 3270, -15), Map.Trammel);
-                    TramInstance.Direction = Direction.North;
-                }
+                TramInstance = new SageHumbolt();
+                TramInstance.MoveToWorld(new Point3D(5808, 3270, -15), Map.Trammel);
+                TramInstance.Direction = Direction.North;
             }
         }
 
@@ -143,9 +140,6 @@ namespace Server.Engines.Khaldun
             {
                 TramInstance = this;
             }
-
-            if (!Core.TOL)
-                Delete();
         }
     }
 }

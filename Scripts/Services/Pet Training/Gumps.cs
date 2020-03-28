@@ -556,19 +556,33 @@ namespace Server.Mobiles
 
         private static string FormatAttributes(int cur, int max)
         {
-            return AnimalLoreGump.FormatAttributes(cur, max);
+            if (max == 0)
+                return "<div align=right>---</div>";
+
+            return String.Format("<div align=right>{0}/{1}</div>", cur, max);
         }
 
         private static string FormatStat(int val)
         {
-            return AnimalLoreGump.FormatStat(val);
+            if (val == 0)
+                return "<div align=right>---</div>";
+
+            return String.Format("<div align=right>{0}</div>", val);
+        }
+
+        public static string FormatDouble(double val)
+        {
+            if (val == 0)
+                return "<div align=right>---</div>";
+
+            return String.Format("<div align=right>{0:F1}</div>", val);
         }
 
         public static string FormatDouble(double val, bool dontshowzero = true, bool percentage = false)
         {
             if (dontshowzero)
             {
-                return AnimalLoreGump.FormatDouble(val);
+                return FormatDouble(val);
             }
 
             if (percentage)
@@ -597,7 +611,10 @@ namespace Server.Mobiles
 
         public static string FormatDamage(int min, int max)
         {
-            return AnimalLoreGump.FormatDamage(min, max);
+            if (min <= 0 || max <= 0)
+                return "<div align=right>---</div>";
+
+            return String.Format("<div align=right>{0}-{1}</div>", min, max);
         }
 
         public string FormatPetSlots(int min, int max)

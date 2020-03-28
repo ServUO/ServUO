@@ -266,19 +266,16 @@ namespace Server
             {
             }
 
-            if (Core.ML)
+            if (!FindItem(new Point3D(1431, 1696, 0), Map.Trammel, 0x307F))
             {
-                if (!FindItem(new Point3D(1431, 1696, 0), Map.Trammel, 0x307F))
-                {
-                    var addon = new ArcaneCircleAddon();
-                    addon.MoveToWorld(new Point3D(1431, 1696, 0), Map.Trammel);
-                }
+                var addon = new ArcaneCircleAddon();
+                addon.MoveToWorld(new Point3D(1431, 1696, 0), Map.Trammel);
+            }
 
-                if (!FindItem(new Point3D(1431, 1696, 0), Map.Felucca, 0x307F))
-                {
-                    var addon = new ArcaneCircleAddon();
-                    addon.MoveToWorld(new Point3D(1431, 1696, 0), Map.Felucca);
-                }
+            if (!FindItem(new Point3D(1431, 1696, 0), Map.Felucca, 0x307F))
+            {
+                var addon = new ArcaneCircleAddon();
+                addon.MoveToWorld(new Point3D(1431, 1696, 0), Map.Felucca);
             }
         }
 
@@ -359,7 +356,7 @@ namespace Server
 
         public static bool CheckArtifactChance(Mobile m, BaseCreature bc)
         {
-            if (!Core.ML || bc is BasePeerless) // Peerless drops to the corpse, this is handled elsewhere
+            if (bc is BasePeerless) // Peerless drops to the corpse, this is handled elsewhere
                 return false;
 
             return Paragon.CheckArtifactChance(m, bc);

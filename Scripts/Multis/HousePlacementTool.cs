@@ -124,7 +124,7 @@ namespace Server.Items
             {
                 case 1: // Classic Houses
                     {
-                        m_From.SendGump(new HousePlacementListGump(m_Tool, m_From, Core.EJ ? HousePlacementEntry.HousesEJ : HousePlacementEntry.ClassicHouses, true));
+                        m_From.SendGump(new HousePlacementListGump(m_Tool, m_From, HousePlacementEntry.HousesEJ, true));
                         break;
                     }
                 case 2: // 2-Story Customizable Houses
@@ -331,7 +331,7 @@ namespace Server.Items
                     m_Placed = m_Entry.OnPlacement(m_Tool, from, p);
                 else if (reg.IsPartOf<TempNoHousingRegion>())
                     from.SendLocalizedMessage(501270); // Lord British has decreed a 'no build' period, thus you cannot build this house at this time.
-                else if (reg.IsPartOf<TreasureRegion>() || reg.IsPartOf<HouseRegion>())
+                else if (reg.IsPartOf<HouseRegion>())
                     from.SendLocalizedMessage(1043287); // The house could not be created here.  Either something is blocking the house, or the house would not be on valid terrain.
                 else if (reg.IsPartOf<HouseRaffleRegion>())
                     from.SendLocalizedMessage(1150493); // You must have a deed for this plot of land in order to build here.
@@ -569,14 +569,7 @@ namespace Server.Items
         {
             m_Table = new Hashtable();
 
-            if (Core.EJ)
-            {
-                FillTable(m_HousesEJ);
-            }
-            else
-            {
-                FillTable(m_ClassicHouses);
-            }
+            FillTable(m_HousesEJ);
 
             FillTable(m_TwoStoryFoundations);
             FillTable(m_ThreeStoryFoundations);

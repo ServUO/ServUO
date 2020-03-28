@@ -82,7 +82,7 @@ namespace Server.Engines.Harvest
                 this.m_Current = this.m_Maximum - amount;
 
                 double minutes = min + (rnd * (max - min));
-                if (this.m_Definition.RaceBonus && from.Race == Race.Elf)	//def.RaceBonus = Core.ML
+                if (this.m_Definition.RaceBonus && from.Race == Race.Elf)
                     minutes *= .75;	//25% off the time.  
 
                 this.m_NextRespawn = DateTime.UtcNow + TimeSpan.FromMinutes(minutes);

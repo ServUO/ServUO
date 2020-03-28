@@ -678,7 +678,7 @@ namespace Server.Items
                 // First, we try to get the max intensity from the PropInfo. If null or we're getting an intensity for imbuing purpopses, we go to the default MaxIntenity
                 if (info == null || (imbuing && !_ForceUseNewTable.Any(i => i == id)))
                 {
-                    if (Core.SA && item is BaseWeapon && (id == 25 || id == 27))
+                    if (item is BaseWeapon && (id == 25 || id == 27))
                     {
                         return GetSpecialMaxIntensity((BaseWeapon)item);
                     }
@@ -687,7 +687,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    if (Core.SA && item is BaseWeapon && (id == 25 || id == 27))
+                    if (item is BaseWeapon && (id == 25 || id == 27))
                     {
                         return GetSpecialMaxIntensity((BaseWeapon)item);
                     }

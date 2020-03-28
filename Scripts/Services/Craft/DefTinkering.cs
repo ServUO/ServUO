@@ -202,16 +202,13 @@ namespace Server.Engines.Craft
             AddCraft(typeof(GoldRing), 1044049, 1024234, 65.0, 115.0, typeof(IronIngot), 1044036, 3, 1044037);
             AddCraft(typeof(GoldBracelet), 1044049, 1024230, 55.0, 105.0, typeof(IronIngot), 1044036, 3, 1044037);
 
-            if (Core.SA)
-            {
-                index = AddCraft(typeof(GargishNecklace), 1044049, 1095784, 60.0, 110.0, typeof(IronIngot), 1044036, 3, 1044037);
+            index = AddCraft(typeof(GargishNecklace), 1044049, 1095784, 60.0, 110.0, typeof(IronIngot), 1044036, 3, 1044037);
 
-                index = AddCraft(typeof(GargishBracelet), 1044049, 1095785, 55.0, 105.0, typeof(IronIngot), 1044036, 3, 1044037);
+            index = AddCraft(typeof(GargishBracelet), 1044049, 1095785, 55.0, 105.0, typeof(IronIngot), 1044036, 3, 1044037);
 
-                index = AddCraft(typeof(GargishRing), 1044049, 1095786, 65.0, 115.0, typeof(IronIngot), 1044036, 3, 1044037);
+            index = AddCraft(typeof(GargishRing), 1044049, 1095786, 65.0, 115.0, typeof(IronIngot), 1044036, 3, 1044037);
 
-                index = AddCraft(typeof(GargishEarrings), 1044049, 1095787, 55.0, 105.0, typeof(IronIngot), 1044036, 3, 1044037);
-            }
+            index = AddCraft(typeof(GargishEarrings), 1044049, 1095787, 55.0, 105.0, typeof(IronIngot), 1044036, 3, 1044037);
 
             AddJewelrySet(GemType.StarSapphire, typeof(StarSapphire));
             AddJewelrySet(GemType.Emerald, typeof(Emerald));
@@ -228,11 +225,8 @@ namespace Server.Engines.Craft
             #endregion
 
             #region Wooden Items
-            if (Core.SE)
-            {
-                index = AddCraft(typeof(Nunchaku), 1044042, 1030158, 70.0, 120.0, typeof(IronIngot), 1044036, 3, 1044037);
-                AddRes(index, typeof(Board), 1044041, 8, 1044351);
-            }
+            index = AddCraft(typeof(Nunchaku), 1044042, 1030158, 70.0, 120.0, typeof(IronIngot), 1044036, 3, 1044037);
+            AddRes(index, typeof(Board), 1044041, 8, 1044351);
 
             AddCraft(typeof(JointingPlane), 1044042, 1024144, 0.0, 50.0, typeof(Board), 1044041, 4, 1044351);
             AddCraft(typeof(MouldingPlane), 1044042, 1024140, 0.0, 50.0, typeof(Board), 1044041, 4, 1044351);
@@ -241,85 +235,76 @@ namespace Server.Engines.Craft
             AddCraft(typeof(Axle), 1044042, 1024187, -25.0, 25.0, typeof(Board), 1044041, 2, 1044351);
             AddCraft(typeof(RollingPin), 1044042, 1024163, 0.0, 50.0, typeof(Board), 1044041, 5, 1044351);
             
-            if (Core.HS)
-            {
-                AddCraft(typeof(Ramrod), 1044042, 1095839, 0.0, 50.0, typeof(Board), 1044041, 8, 1044253);
+            AddCraft(typeof(Ramrod), 1044042, 1095839, 0.0, 50.0, typeof(Board), 1044041, 8, 1044253);
 
-                if (!Core.EJ)
-                {
-                    index = AddCraft(typeof(Swab), 1044042, 1095840, 0.0, 50.0, typeof(Cloth), 1044286, 1, 1044253);
-                    AddRes(index, typeof(Board), 1044041, 4, 1044253);
-                }
-            }
+            index = AddCraft(typeof(Swab), 1044042, 1095840, 0.0, 50.0, typeof(Cloth), 1044286, 1, 1044253);
+            AddRes(index, typeof(Board), 1044041, 4, 1044253);
             
-            if (Core.SA)
-            {
-                index = AddCraft(typeof(SoftenedReeds), 1044042, 1112249, 75.0, 100.0, typeof(DryReeds), 1112248, 1, 1112250);
-                AddRes(index, typeof(ScouringToxin), 1112292, 2, 1112326);
-                SetRequiresBasketWeaving(index);
-                SetRequireResTarget(index);
+            index = AddCraft(typeof(SoftenedReeds), 1044042, 1112249, 75.0, 100.0, typeof(DryReeds), 1112248, 1, 1112250);
+            AddRes(index, typeof(ScouringToxin), 1112292, 2, 1112326);
+            SetRequiresBasketWeaving(index);
+            SetRequireResTarget(index);
 
-                index = AddCraft(typeof(RoundBasket), 1044042, 1112293, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 2, 1112251);
-                AddRes(index, typeof(Shaft), 1027125, 3, 1044351);
-                SetRequireResTarget(index);
-                SetRequiresBasketWeaving(index);
+            index = AddCraft(typeof(RoundBasket), 1044042, 1112293, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 2, 1112251);
+            AddRes(index, typeof(Shaft), 1027125, 3, 1044351);
+            SetRequireResTarget(index);
+            SetRequiresBasketWeaving(index);
 
-                index = AddCraft(typeof(RoundBasketHandles), 1044042, 1112357, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 2, 1112251);
-                AddRes(index, typeof(Shaft), 1027125, 3, 1044351);
-                SetRequireResTarget(index);
-                SetRequiresBasketWeaving(index);
+            index = AddCraft(typeof(RoundBasketHandles), 1044042, 1112357, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 2, 1112251);
+            AddRes(index, typeof(Shaft), 1027125, 3, 1044351);
+            SetRequireResTarget(index);
+            SetRequiresBasketWeaving(index);
 
-                index = AddCraft(typeof(SmallBushel), 1044042, 1112337, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 1, 1112251);
-                AddRes(index, typeof(Shaft), 1027125, 2, 1044351);
-                SetRequireResTarget(index);
-                SetRequiresBasketWeaving(index);
+            index = AddCraft(typeof(SmallBushel), 1044042, 1112337, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 1, 1112251);
+            AddRes(index, typeof(Shaft), 1027125, 2, 1044351);
+            SetRequireResTarget(index);
+            SetRequiresBasketWeaving(index);
 
-                index = AddCraft(typeof(PicnicBasket2), 1044042, 1023706, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 1, 1112251);
-                AddRes(index, typeof(Shaft), 1027125, 2, 1044351);
-                SetRequireResTarget(index);
-                SetRequiresBasketWeaving(index);
+            index = AddCraft(typeof(PicnicBasket2), 1044042, 1023706, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 1, 1112251);
+            AddRes(index, typeof(Shaft), 1027125, 2, 1044351);
+            SetRequireResTarget(index);
+            SetRequiresBasketWeaving(index);
 
-                index = AddCraft(typeof(WinnowingBasket), 1044042, 1026274, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 2, 1112251);
-                AddRes(index, typeof(Shaft), 1027125, 3, 1044351);
-                SetRequireResTarget(index);
-                SetRequiresBasketWeaving(index);
+            index = AddCraft(typeof(WinnowingBasket), 1044042, 1026274, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 2, 1112251);
+            AddRes(index, typeof(Shaft), 1027125, 3, 1044351);
+            SetRequireResTarget(index);
+            SetRequiresBasketWeaving(index);
 
-                index = AddCraft(typeof(SquareBasket), 1044042, 1112295, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 2, 1112251);
-                AddRes(index, typeof(Shaft), 1027125, 3, 1044351);
-                SetRequireResTarget(index);
-                SetRequiresBasketWeaving(index);
+            index = AddCraft(typeof(SquareBasket), 1044042, 1112295, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 2, 1112251);
+            AddRes(index, typeof(Shaft), 1027125, 3, 1044351);
+            SetRequireResTarget(index);
+            SetRequiresBasketWeaving(index);
 
-                index = AddCraft(typeof(BasketCraftable), 1044042, 1022448, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 2, 1112251);
-                AddRes(index, typeof(Shaft), 1027125, 3, 1044351);
-                SetRequireResTarget(index);
-                SetRequiresBasketWeaving(index);
+            index = AddCraft(typeof(BasketCraftable), 1044042, 1022448, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 2, 1112251);
+            AddRes(index, typeof(Shaft), 1027125, 3, 1044351);
+            SetRequireResTarget(index);
+            SetRequiresBasketWeaving(index);
 
-                index = AddCraft(typeof(TallRoundBasket), 1044042, 1112297, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 3, 1112251);
-                AddRes(index, typeof(Shaft), 1027125, 4, 1044351);
-                SetRequireResTarget(index);
-                SetRequiresBasketWeaving(index);
+            index = AddCraft(typeof(TallRoundBasket), 1044042, 1112297, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 3, 1112251);
+            AddRes(index, typeof(Shaft), 1027125, 4, 1044351);
+            SetRequireResTarget(index);
+            SetRequiresBasketWeaving(index);
 
-                index = AddCraft(typeof(SmallSquareBasket), 1044042, 1112296, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 1, 1112251);
-                AddRes(index, typeof(Shaft), 1027125, 2, 1044351);
-                SetRequireResTarget(index);
-                SetRequiresBasketWeaving(index);
+            index = AddCraft(typeof(SmallSquareBasket), 1044042, 1112296, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 1, 1112251);
+            AddRes(index, typeof(Shaft), 1027125, 2, 1044351);
+            SetRequireResTarget(index);
+            SetRequiresBasketWeaving(index);
 
-                index = AddCraft(typeof(TallBasket), 1044042, 1112299, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 3, 1112251);
-                AddRes(index, typeof(Shaft), 1027125, 4, 1044351);
-                SetRequireResTarget(index);
-                SetRequiresBasketWeaving(index);
+            index = AddCraft(typeof(TallBasket), 1044042, 1112299, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 3, 1112251);
+            AddRes(index, typeof(Shaft), 1027125, 4, 1044351);
+            SetRequireResTarget(index);
+            SetRequiresBasketWeaving(index);
 
-                index = AddCraft(typeof(SmallRoundBasket), 1044042, 1112298, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 1, 1112251);
-                AddRes(index, typeof(Shaft), 1027125, 2, 1044351);
-                SetRequireResTarget(index);
-                SetRequiresBasketWeaving(index);
+            index = AddCraft(typeof(SmallRoundBasket), 1044042, 1112298, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 1, 1112251);
+            AddRes(index, typeof(Shaft), 1027125, 2, 1044351);
+            SetRequireResTarget(index);
+            SetRequiresBasketWeaving(index);
 
-                index = AddCraft(typeof(EnchantedPicnicBasket), 1044042, 1158333, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 2, 1112251);
-                AddRes(index, typeof(Shaft), 1027125, 3, 1044351);
-                AddRecipe(index, (int)TinkerRecipes.EnchantedPicnicBasket);
-                SetRequireResTarget(index);
-                SetRequiresBasketWeaving(index);
-            }
+            index = AddCraft(typeof(EnchantedPicnicBasket), 1044042, 1158333, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 2, 1112251);
+            AddRes(index, typeof(Shaft), 1027125, 3, 1044351);
+            AddRecipe(index, (int)TinkerRecipes.EnchantedPicnicBasket);
+            SetRequireResTarget(index);
+            SetRequiresBasketWeaving(index);
             #endregion
 
             #region Tools
@@ -336,8 +321,8 @@ namespace Server.Engines.Craft
             AddCraft(typeof(Shovel), 1044046, 1023898, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
             AddCraft(typeof(Hammer), 1044046, 1024138, 30.0, 80.0, typeof(IronIngot), 1044036, 1, 1044037);
             AddCraft(typeof(Tongs), 1044046, 1024028, 35.0, 85.0, typeof(IronIngot), 1044036, 1, 1044037);
-            AddCraft(Core.AOS ? typeof(SmithyHammer) : typeof(SmithHammer), 1044046, 1025091, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
-            AddCraft(Core.AOS ? typeof(SledgeHammerWeapon) : typeof(SledgeHammer), 1044046, 1024021, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
+            AddCraft(typeof(SmithyHammer), 1044046, 1025091, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
+            AddCraft(typeof(SledgeHammerWeapon), 1044046, 1024021, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
             AddCraft(typeof(Inshave), 1044046, 1024326, 30.0, 80.0, typeof(IronIngot), 1044036, 2, 1044037);
             AddCraft(typeof(Pickaxe), 1044046, 1023718, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);            
             AddCraft(typeof(Lockpick), 1044046, 1025371, 45.0, 95.0, typeof(IronIngot), 1044036, 1, 1044037);
@@ -348,13 +333,10 @@ namespace Server.Engines.Craft
             AddCraft(typeof(ScribesPen), 1044046, 1044168, 25.0, 75.0, typeof(IronIngot), 1044036, 1, 1044037);
             AddCraft(typeof(Clippers), 1044046, 1112117, 50.0, 50.0, typeof(IronIngot), 1044036, 4, 1044037);
             
-            if (Core.ML)
-            {
-                index = AddCraft(typeof(MetalContainerEngraver), 1044046, 1072154, 75.0, 100.0, typeof(IronIngot), 1044036, 4, 1044037);
-                AddRes(index, typeof(Springs), 1044171, 1, 1044253);
-                AddRes(index, typeof(Gears), 1044254, 2, 1044253);
-                AddRes(index, typeof(Diamond), 1062608, 1, 1044240);
-            }
+            index = AddCraft(typeof(MetalContainerEngraver), 1044046, 1072154, 75.0, 100.0, typeof(IronIngot), 1044036, 4, 1044037);
+            AddRes(index, typeof(Springs), 1044171, 1, 1044253);
+            AddRes(index, typeof(Gears), 1044254, 2, 1044253);
+            AddRes(index, typeof(Diamond), 1062608, 1, 1044240);
 
             AddCraft(typeof(Pitchfork), 1044046, 1023719, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
             //TODO: focus of theurgy - 20th Anniversary Event 
@@ -370,12 +352,9 @@ namespace Server.Engines.Craft
             AddCraft(typeof(Hinge), 1044047, 1024181, 5.0, 55.0, typeof(IronIngot), 1044036, 2, 1044037);
             AddCraft(typeof(BolaBall), 1044047, 1023699, 45.0, 95.0, typeof(IronIngot), 1044036, 10, 1044037);
             
-            if (Core.ML)
-            {
-                index = AddCraft(typeof(JeweledFiligree), 1044047, 1072894, 70.0, 110.0, typeof(IronIngot), 1044036, 2, 1044037);
-                AddRes(index, typeof(StarSapphire), 1044231, 1, 1044253);
-                AddRes(index, typeof(Ruby), 1044234, 1, 1044253);
-            }            
+            index = AddCraft(typeof(JeweledFiligree), 1044047, 1072894, 70.0, 110.0, typeof(IronIngot), 1044036, 2, 1044037);
+            AddRes(index, typeof(StarSapphire), 1044231, 1, 1044253);
+            AddRes(index, typeof(Ruby), 1044234, 1, 1044253);        
             #endregion
 
             #region Utensils
@@ -392,12 +371,9 @@ namespace Server.Engines.Craft
             AddCraft(typeof(PewterMug), 1044048, 1024097, 10.0, 60.0, typeof(IronIngot), 1044036, 2, 1044037);
             AddCraft(typeof(SkinningKnife), 1044048, 1023781, 25.0, 75.0, typeof(IronIngot), 1044036, 2, 1044037);
             
-            if (Core.SA)
-            {
-                index = AddCraft(typeof(GargishCleaver), 1044048, 1097478, 20.0, 70.0, typeof(IronIngot), 1044036, 3, 1044037);
+            AddCraft(typeof(GargishCleaver), 1044048, 1097478, 20.0, 70.0, typeof(IronIngot), 1044036, 3, 1044037);
 
-                index = AddCraft(typeof(GargishButcherKnife), 1044048, 1097486, 25.0, 75.0, typeof(IronIngot), 1044036, 2, 1044037);
-            }
+            AddCraft(typeof(GargishButcherKnife), 1044048, 1097486, 25.0, 75.0, typeof(IronIngot), 1044036, 2, 1044037);
             #endregion
 
             #region Misc
@@ -410,49 +386,33 @@ namespace Server.Engines.Craft
             AddCraft(typeof(Lantern), 1044050, 1022597, 30.0, 80.0, typeof(IronIngot), 1044036, 2, 1044037);
             AddCraft(typeof(HeatingStand), 1044050, 1026217, 60.0, 110.0, typeof(IronIngot), 1044036, 4, 1044037);
 
-            if (Core.SE)
-            {
-                index = AddCraft(typeof(ShojiLantern), 1044050, 1029404, 65.0, 115.0, typeof(IronIngot), 1044036, 10, 1044037);
-                AddRes(index, typeof(Board), 1044041, 5, 1044351);
+            index = AddCraft(typeof(ShojiLantern), 1044050, 1029404, 65.0, 115.0, typeof(IronIngot), 1044036, 10, 1044037);
+            AddRes(index, typeof(Board), 1044041, 5, 1044351);
 
-                index = AddCraft(typeof(PaperLantern), 1044050, 1029406, 65.0, 115.0, typeof(IronIngot), 1044036, 10, 1044037);
-                AddRes(index, typeof(Board), 1044041, 5, 1044351);
+            index = AddCraft(typeof(PaperLantern), 1044050, 1029406, 65.0, 115.0, typeof(IronIngot), 1044036, 10, 1044037);
+            AddRes(index, typeof(Board), 1044041, 5, 1044351);
 
-                index = AddCraft(typeof(RoundPaperLantern), 1044050, 1029418, 65.0, 115.0, typeof(IronIngot), 1044036, 10, 1044037);
-                AddRes(index, typeof(Board), 1044041, 5, 1044351);
+            index = AddCraft(typeof(RoundPaperLantern), 1044050, 1029418, 65.0, 115.0, typeof(IronIngot), 1044036, 10, 1044037);
+            AddRes(index, typeof(Board), 1044041, 5, 1044351);
 
-                index = AddCraft(typeof(WindChimes), 1044050, 1030290, 80.0, 130.0, typeof(IronIngot), 1044036, 15, 1044037);
+            index = AddCraft(typeof(WindChimes), 1044050, 1030290, 80.0, 130.0, typeof(IronIngot), 1044036, 15, 1044037);
 
-                index = AddCraft(typeof(FancyWindChimes), 1044050, 1030291, 80.0, 130.0, typeof(IronIngot), 1044036, 15, 1044037);
-            }
+            AddCraft(typeof(FancyWindChimes), 1044050, 1030291, 80.0, 130.0, typeof(IronIngot), 1044036, 15, 1044037);
 
-            if (Core.SA)
-            {
-                index = AddCraft(typeof(TerMurStyleCandelabra), 1044050, 1095313, 55.0, 105.0, typeof(IronIngot), 1044036, 4, 1044037);
-            }
-
-            // Removed for Dark Tides Cannon Changes
-            if (Core.HS && !Core.EJ)
-            {
-                index = AddCraft(typeof(Matches), 1044050, 1096648, 15.0, 70.0, typeof(Matchcord), 1095184, 10, 1044367);
-                AddRes(index, typeof(Board), 1044041, 4, 1044351);
-            }
+            AddCraft(typeof(TerMurStyleCandelabra), 1044050, 1095313, 55.0, 105.0, typeof(IronIngot), 1044036, 4, 1044037);
 
             index = AddCraft(typeof(BroadcastCrystal), 1044050, 1153097, 80.0, 130.0, typeof(IronIngot), 1044036, 20, 1044037);
             AddRes(index, typeof(Emerald), 1062601, 10, 1044240);
             AddRes(index, typeof(Ruby), 1062603, 10, 1044240);
             AddRes(index, typeof(CopperWire), 1026265, 1, 1150700);
             
-            if (Core.SA)
-            {
-                index = AddCraft(typeof(GorgonLense), 1044050, 1112625, 90.0, 120.0, typeof(MedusaDarkScales), 1112626, 2, 1053097);
-                AddRes(index, typeof(CrystalDust), 1112328, 3, 1044253);
-                ForceNonExceptional(index);
-                SetItemHue(index, 1266);
+            index = AddCraft(typeof(GorgonLense), 1044050, 1112625, 90.0, 120.0, typeof(MedusaDarkScales), 1112626, 2, 1053097);
+            AddRes(index, typeof(CrystalDust), 1112328, 3, 1044253);
+            ForceNonExceptional(index);
+            SetItemHue(index, 1266);
 
-                index = AddCraft(typeof(ScaleCollar), 1044050, 1112480, 50.0, 100.0, typeof(RedScales), 1112626, 4, 1053097);
-                AddRes(index, typeof(Scourge), 1032677, 1, 1044253);
-            }
+            index = AddCraft(typeof(ScaleCollar), 1044050, 1112480, 50.0, 100.0, typeof(RedScales), 1112626, 4, 1053097);
+            AddRes(index, typeof(Scourge), 1032677, 1, 1044253);
 
             index = AddCraft(typeof(DragonLamp), 1044050, 1098404, 75.0, 125.0, typeof(IronIngot), 1044036, 8, 1044253);
             AddRes(index, typeof(Candelabra), 1011213, 1, 1154172);
@@ -469,73 +429,70 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(WorkableGlass), 1154170, 1, 1154171);
             SetNeededThemePack(index, ThemePack.Kings);
 
-            if (Core.TOL)
-            {
-                index = AddCraft(typeof(CraftableHouseItem), 1044050, 1155851, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
-                SetData(index, CraftableItemType.CurledMetalSignHanger);
-                SetDisplayID(index, 2971);
+            index = AddCraft(typeof(CraftableHouseItem), 1044050, 1155851, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
+            SetData(index, CraftableItemType.CurledMetalSignHanger);
+            SetDisplayID(index, 2971);
 
-                index = AddCraft(typeof(CraftableHouseItem), 1044050, 1155852, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
-                SetData(index, CraftableItemType.FlourishedMetalSignHanger);
-                SetDisplayID(index, 2973);
+            index = AddCraft(typeof(CraftableHouseItem), 1044050, 1155852, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
+            SetData(index, CraftableItemType.FlourishedMetalSignHanger);
+            SetDisplayID(index, 2973);
 
-                index = AddCraft(typeof(CraftableHouseItem), 1044050, 1155853, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
-                SetData(index, CraftableItemType.InwardCurledMetalSignHanger);
-                SetDisplayID(index, 2975);
+            index = AddCraft(typeof(CraftableHouseItem), 1044050, 1155853, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
+            SetData(index, CraftableItemType.InwardCurledMetalSignHanger);
+            SetDisplayID(index, 2975);
 
-                index = AddCraft(typeof(CraftableHouseItem), 1044050, 1155854, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
-                SetData(index, CraftableItemType.EndCurledMetalSignHanger);
-                SetDisplayID(index, 2977);
+            index = AddCraft(typeof(CraftableHouseItem), 1044050, 1155854, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
+            SetData(index, CraftableItemType.EndCurledMetalSignHanger);
+            SetDisplayID(index, 2977);
 
-                index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156080, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
-                SetData(index, DoorType.LeftMetalDoor_S_In);
-                SetDisplayID(index, 1653);
-                AddCreateItem(index, CraftableMetalHouseDoor.Create);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156080, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            SetData(index, DoorType.LeftMetalDoor_S_In);
+            SetDisplayID(index, 1653);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
 
-                index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156081, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
-                SetData(index, DoorType.RightMetalDoor_S_In);
-                SetDisplayID(index, 1659);
-                AddCreateItem(index, CraftableMetalHouseDoor.Create);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156081, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            SetData(index, DoorType.RightMetalDoor_S_In);
+            SetDisplayID(index, 1659);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
 
-                index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156082, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
-                SetData(index, DoorType.LeftMetalDoor_E_Out);
-                SetDisplayID(index, 1660);
-                AddCreateItem(index, CraftableMetalHouseDoor.Create);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156082, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            SetData(index, DoorType.LeftMetalDoor_E_Out);
+            SetDisplayID(index, 1660);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
 
-                index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156083, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
-                SetData(index, DoorType.RightMetalDoor_E_Out);
-                SetDisplayID(index, 1663);
-                AddCreateItem(index, CraftableMetalHouseDoor.Create);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156083, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            SetData(index, DoorType.RightMetalDoor_E_Out);
+            SetDisplayID(index, 1663);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
 
-                index = AddCraft(typeof(WallSafeDeed), 1044050, 1155860, 0.0, 0.0, typeof(IronIngot), 1044036, 20, 1044253);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(WallSafeDeed), 1044050, 1155860, 0.0, 0.0, typeof(IronIngot), 1044036, 20, 1044253);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156352, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
-                SetData(index, DoorType.LeftMetalDoor_E_In);
-                SetDisplayID(index, 1660);
-                AddCreateItem(index, CraftableMetalHouseDoor.Create);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156352, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            SetData(index, DoorType.LeftMetalDoor_E_In);
+            SetDisplayID(index, 1660);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
 
-                index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156353, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
-                SetData(index, DoorType.RightMetalDoor_E_In);
-                SetDisplayID(index, 1663);
-                AddCreateItem(index, CraftableMetalHouseDoor.Create);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156353, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            SetData(index, DoorType.RightMetalDoor_E_In);
+            SetDisplayID(index, 1663);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
 
-                index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156350, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
-                SetData(index, DoorType.LeftMetalDoor_S_Out);
-                SetDisplayID(index, 1653);
-                AddCreateItem(index, CraftableMetalHouseDoor.Create);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156350, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            SetData(index, DoorType.LeftMetalDoor_S_Out);
+            SetDisplayID(index, 1653);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
 
-                index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156351, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
-                SetData(index, DoorType.RightMetalDoor_S_Out);
-                SetDisplayID(index, 1659);
-                AddCreateItem(index, CraftableMetalHouseDoor.Create);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156351, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            SetData(index, DoorType.RightMetalDoor_S_Out);
+            SetDisplayID(index, 1659);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
 
-                index = AddCraft(typeof(KotlPowerCore), 1044050, 1124179, 85.0, 135.0, typeof(WorkableGlass), 1154170, 5, 1154171);
-                AddRes(index, typeof(CopperWire), 1026265, 5, 1150700);
-                AddRes(index, typeof(IronIngot), 1044036, 100, 1044253);
-                AddRes(index, typeof(MoonstoneCrystalShard), 1124142, 5, 1156701);
-                AddRecipe(index, (int)TinkerRecipes.KotlPowerCore);
-            }
+            index = AddCraft(typeof(KotlPowerCore), 1044050, 1124179, 85.0, 135.0, typeof(WorkableGlass), 1154170, 5, 1154171);
+            AddRes(index, typeof(CopperWire), 1026265, 5, 1150700);
+            AddRes(index, typeof(IronIngot), 1044036, 100, 1044253);
+            AddRes(index, typeof(MoonstoneCrystalShard), 1124142, 5, 1156701);
+            AddRecipe(index, (int)TinkerRecipes.KotlPowerCore);
 
             index = AddCraft(typeof(WeatheredBronzeGlobeSculptureDeed), 1044050, 1156881, 85.0, 135.0, typeof(BronzeIngot), 1038039, 200, 1044253);
             AddRecipe(index, (int)TinkerRecipes.WeatheredBronzeGlobeSculpture);
@@ -577,48 +534,39 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(BarrelLid), 1044251, 1, 1044253);
             AddRes(index, typeof(BarrelTap), 1044252, 1, 1044253);
             
-            if (Core.SA)
-            {
-                index = AddCraft(typeof(ModifiedClockworkAssembly), 1044051, 1113031, 65.0, 115.0, typeof(ClockworkAssembly), 1073426, 1, 502910);
-                AddRes(index, typeof(PowerCrystal), 1112811, 1, 502910);
-                AddRes(index, typeof(VoidEssence), 1112327, 1, 502910);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ModifiedClockworkAssembly), 1044051, 1113031, 65.0, 115.0, typeof(ClockworkAssembly), 1073426, 1, 502910);
+            AddRes(index, typeof(PowerCrystal), 1112811, 1, 502910);
+            AddRes(index, typeof(VoidEssence), 1112327, 1, 502910);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(ModifiedClockworkAssembly), 1044051, 1113032, 65.0, 115.0, typeof(ClockworkAssembly), 1073426, 1, 502910);
-                AddRes(index, typeof(PowerCrystal), 1112811, 1, 502910);
-                AddRes(index, typeof(VoidEssence), 1112327, 2, 502910);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ModifiedClockworkAssembly), 1044051, 1113032, 65.0, 115.0, typeof(ClockworkAssembly), 1073426, 1, 502910);
+            AddRes(index, typeof(PowerCrystal), 1112811, 1, 502910);
+            AddRes(index, typeof(VoidEssence), 1112327, 2, 502910);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(ModifiedClockworkAssembly), 1044051, 1113033, 65.0, 115.0, typeof(ClockworkAssembly), 1073426, 1, 502910);
-                AddRes(index, typeof(PowerCrystal), 1112811, 1, 502910);
-                AddRes(index, typeof(VoidEssence), 1112327, 3, 502910);
-                ForceNonExceptional(index);                
-            }
+            index = AddCraft(typeof(ModifiedClockworkAssembly), 1044051, 1113033, 65.0, 115.0, typeof(ClockworkAssembly), 1073426, 1, 502910);
+            AddRes(index, typeof(PowerCrystal), 1112811, 1, 502910);
+            AddRes(index, typeof(VoidEssence), 1112327, 3, 502910);
+            ForceNonExceptional(index);                
 
-            if (Core.ML)
-            {
-                index = AddCraft(typeof(HitchingRope), 1044051, 1071124, 60.0, 120.0, typeof(Rope), 1020934, 1, 1044253);
-                AddSkill(index, SkillName.AnimalLore, 15.0, 100.0);
-                AddRes(index, typeof(ResolvesBridle), 1074761, 1, 1044253);
+            index = AddCraft(typeof(HitchingRope), 1044051, 1071124, 60.0, 120.0, typeof(Rope), 1020934, 1, 1044253);
+            AddSkill(index, SkillName.AnimalLore, 15.0, 100.0);
+            AddRes(index, typeof(ResolvesBridle), 1074761, 1, 1044253);
 
-                index = AddCraft(typeof(HitchingPost), 1044051, 1071127, 90.0, 160.0, typeof(IronIngot), 1044036, 50, 1044253);
-                AddRes(index, typeof(AnimalPheromone), 1071200, 1, 1044253);
-                AddRes(index, typeof(HitchingRope), 1071124, 2, 1044253);
-                AddRes(index, typeof(PhillipsWoodenSteed), 1063488, 1, 1044253);
-            }
+            index = AddCraft(typeof(HitchingPost), 1044051, 1071127, 90.0, 160.0, typeof(IronIngot), 1044036, 50, 1044253);
+            AddRes(index, typeof(AnimalPheromone), 1071200, 1, 1044253);
+            AddRes(index, typeof(HitchingRope), 1071124, 2, 1044253);
+            AddRes(index, typeof(PhillipsWoodenSteed), 1063488, 1, 1044253);
 
-            if (Core.SA)
-            {
-                index = AddCraft(typeof(ArcanicRuneStone), 1044051, 1113352, 90.0, 140.0, typeof(CrystalShards), 1073161, 1, 1044253);
-                AddRes(index, typeof(PowerCrystal), 1112811, 5, 502910);
-                AddSkill(index, SkillName.Magery, 80.0, 85.0);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ArcanicRuneStone), 1044051, 1113352, 90.0, 140.0, typeof(CrystalShards), 1073161, 1, 1044253);
+            AddRes(index, typeof(PowerCrystal), 1112811, 5, 502910);
+            AddSkill(index, SkillName.Magery, 80.0, 85.0);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(VoidOrb), 1044051, 1113354, 90.0, 104.3, typeof(DarkSapphire), 1032690, 1, 1044253);
-                AddSkill(index, SkillName.Magery, 80.0, 100.0);
-                AddRes(index, typeof(BlackPearl), 1015001, 50, 1044253);
-                ForceNonExceptional(index);
-            }
+            index = AddCraft(typeof(VoidOrb), 1044051, 1113354, 90.0, 104.3, typeof(DarkSapphire), 1032690, 1, 1044253);
+            AddSkill(index, SkillName.Magery, 80.0, 100.0);
+            AddRes(index, typeof(BlackPearl), 1015001, 50, 1044253);
+            ForceNonExceptional(index);
 
             index = AddCraft(typeof(AdvancedTrainingDummySouthDeed), 1044051, 1150595, 90.0, 120.0, typeof(TrainingDummySouthDeed), 1044336, 1, 1044253);
             AddRes(index, typeof(PlateChest), 1025141, 1, 1044253);
@@ -644,20 +592,17 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(CopperWire), 1026265, 1, 1044253);
             ForceNonExceptional(index);
 
-            if (Core.TOL)
-            {
-                index = AddCraft(typeof(KotlAutomatonHead), 1044051, 1156998, 100.0, 580.0, typeof(IronIngot), 1044036, 300, 1044037);
-                SetMinSkillOffset(index, 25.0);
-                AddRes(index, typeof(AutomatonActuator), 1156997, 1, 1156999);
-                AddRes(index, typeof(StasisChamberPowerCore), 1156623, 1, 1157000);
-                AddRes(index, typeof(InoperativeAutomatonHead), 1157002, 1, 1157001);
-                AddRecipe(index, (int)TinkerRecipes.KotlAutomatonHead);
+            index = AddCraft(typeof(KotlAutomatonHead), 1044051, 1156998, 100.0, 580.0, typeof(IronIngot), 1044036, 300, 1044037);
+            SetMinSkillOffset(index, 25.0);
+            AddRes(index, typeof(AutomatonActuator), 1156997, 1, 1156999);
+            AddRes(index, typeof(StasisChamberPowerCore), 1156623, 1, 1157000);
+            AddRes(index, typeof(InoperativeAutomatonHead), 1157002, 1, 1157001);
+            AddRecipe(index, (int)TinkerRecipes.KotlAutomatonHead);
 
-                index = AddCraft(typeof(PersonalTelescope), 1044051, 1125284, 95.0, 196.0, typeof(IronIngot), 1044036, 25, 1044037);
-                AddRes(index, typeof(WorkableGlass), 1154170, 1, 1154171);
-                AddRes(index, typeof(SextantParts), 1044175, 1, 1044253);
-                AddRecipe(index, (int)TinkerRecipes.Telescope);
-            }
+            index = AddCraft(typeof(PersonalTelescope), 1044051, 1125284, 95.0, 196.0, typeof(IronIngot), 1044036, 25, 1044037);
+            AddRes(index, typeof(WorkableGlass), 1154170, 1, 1154171);
+            AddRes(index, typeof(SextantParts), 1044175, 1, 1044253);
+            AddRecipe(index, (int)TinkerRecipes.Telescope);
             #endregion
 
             #region Traps
@@ -675,83 +620,77 @@ namespace Server.Engines.Craft
             #endregion
 
             #region Magic Jewlery
-            if (Core.ML)
-            {
-                index = AddCraft(typeof(BrilliantAmberBracelet), 1073107, 1073453, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
-                AddRes(index, typeof(Amber), 1062607, 20, 1044240);
-                AddRes(index, typeof(BrilliantAmber), 1032697, 10, 1044240);
+            index = AddCraft(typeof(BrilliantAmberBracelet), 1073107, 1073453, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
+            AddRes(index, typeof(Amber), 1062607, 20, 1044240);
+            AddRes(index, typeof(BrilliantAmber), 1032697, 10, 1044240);
 
-                index = AddCraft(typeof(FireRubyBracelet), 1073107, 1073454, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
-                AddRes(index, typeof(Ruby), 1062603, 20, 1044240);
-                AddRes(index, typeof(FireRuby), 1032695, 10, 1044240);
+            index = AddCraft(typeof(FireRubyBracelet), 1073107, 1073454, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
+            AddRes(index, typeof(Ruby), 1062603, 20, 1044240);
+            AddRes(index, typeof(FireRuby), 1032695, 10, 1044240);
 
-                index = AddCraft(typeof(DarkSapphireBracelet), 1073107, 1073455, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
-                AddRes(index, typeof(Sapphire), 1062602, 20, 1044240);
-                AddRes(index, typeof(DarkSapphire), 1032690, 10, 1044240);
+            index = AddCraft(typeof(DarkSapphireBracelet), 1073107, 1073455, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
+            AddRes(index, typeof(Sapphire), 1062602, 20, 1044240);
+            AddRes(index, typeof(DarkSapphire), 1032690, 10, 1044240);
 
-                index = AddCraft(typeof(WhitePearlBracelet), 1073107, 1073456, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
-                AddRes(index, typeof(Tourmaline), 1062606, 20, 1044240);
-                AddRes(index, typeof(WhitePearl), 1032694, 10, 1044240);
+            index = AddCraft(typeof(WhitePearlBracelet), 1073107, 1073456, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
+            AddRes(index, typeof(Tourmaline), 1062606, 20, 1044240);
+            AddRes(index, typeof(WhitePearl), 1032694, 10, 1044240);
 
-                index = AddCraft(typeof(EcruCitrineRing), 1073107, 1073457, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
-                AddRes(index, typeof(Citrine), 1062604, 20, 1044240);
-                AddRes(index, typeof(EcruCitrine), 1032693, 10, 1044240);
+            index = AddCraft(typeof(EcruCitrineRing), 1073107, 1073457, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
+            AddRes(index, typeof(Citrine), 1062604, 20, 1044240);
+            AddRes(index, typeof(EcruCitrine), 1032693, 10, 1044240);
 
-                index = AddCraft(typeof(BlueDiamondRing), 1073107, 1073458, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
-                AddRes(index, typeof(Diamond), 1062608, 20, 1044240);
-                AddRes(index, typeof(BlueDiamond), 1032696, 10, 1044240);
+            index = AddCraft(typeof(BlueDiamondRing), 1073107, 1073458, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
+            AddRes(index, typeof(Diamond), 1062608, 20, 1044240);
+            AddRes(index, typeof(BlueDiamond), 1032696, 10, 1044240);
 
-                index = AddCraft(typeof(PerfectEmeraldRing), 1073107, 1073459, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
-                AddRes(index, typeof(Emerald), 1062601, 20, 1044240);
-                AddRes(index, typeof(PerfectEmerald), 1032692, 10, 1044240);
+            index = AddCraft(typeof(PerfectEmeraldRing), 1073107, 1073459, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
+            AddRes(index, typeof(Emerald), 1062601, 20, 1044240);
+            AddRes(index, typeof(PerfectEmerald), 1032692, 10, 1044240);
 
-                index = AddCraft(typeof(TurqouiseRing), 1073107, 1073460, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
-                AddRes(index, typeof(Amethyst), 1062605, 20, 1044240);
-                AddRes(index, typeof(Turquoise), 1032691, 10, 1044240);
+            index = AddCraft(typeof(TurqouiseRing), 1073107, 1073460, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
+            AddRes(index, typeof(Amethyst), 1062605, 20, 1044240);
+            AddRes(index, typeof(Turquoise), 1032691, 10, 1044240);
 
-                index = AddCraft(typeof(ResilientBracer), 1073107, 1072933, 100.0, 125.0, typeof(IronIngot), 1044036, 2, 1044037);
-                SetMinSkillOffset(index, 25.0);
-                AddRes(index, typeof(CapturedEssence), 1032686, 1, 1044253);
-                AddRes(index, typeof(BlueDiamond), 1032696, 10, 1044253);
-                AddRes(index, typeof(Diamond), 1062608, 50, 1044253);
-                AddRecipe(index, (int)TinkerRecipes.ResilientBracer);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ResilientBracer), 1073107, 1072933, 100.0, 125.0, typeof(IronIngot), 1044036, 2, 1044037);
+            SetMinSkillOffset(index, 25.0);
+            AddRes(index, typeof(CapturedEssence), 1032686, 1, 1044253);
+            AddRes(index, typeof(BlueDiamond), 1032696, 10, 1044253);
+            AddRes(index, typeof(Diamond), 1062608, 50, 1044253);
+            AddRecipe(index, (int)TinkerRecipes.ResilientBracer);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(EssenceOfBattle), 1073107, 1072935, 100.0, 125.0, typeof(IronIngot), 1044036, 2, 1044037);
-                SetMinSkillOffset(index, 25.0);
-                AddRes(index, typeof(CapturedEssence), 1032686, 1, 1044253);
-                AddRes(index, typeof(FireRuby), 1032695, 10, 1044253);
-                AddRes(index, typeof(Ruby), 1062603, 50, 1044253);
-                AddRecipe(index, (int)TinkerRecipes.EssenceOfBattle);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(EssenceOfBattle), 1073107, 1072935, 100.0, 125.0, typeof(IronIngot), 1044036, 2, 1044037);
+            SetMinSkillOffset(index, 25.0);
+            AddRes(index, typeof(CapturedEssence), 1032686, 1, 1044253);
+            AddRes(index, typeof(FireRuby), 1032695, 10, 1044253);
+            AddRes(index, typeof(Ruby), 1062603, 50, 1044253);
+            AddRecipe(index, (int)TinkerRecipes.EssenceOfBattle);
+            ForceNonExceptional(index);
 
 
-                index = AddCraft(typeof(PendantOfTheMagi), 1073107, 1072937, 100.0, 125.0, typeof(IronIngot), 1044036, 2, 1044037);
-                SetMinSkillOffset(index, 25.0);
-                AddRes(index, typeof(EyeOfTheTravesty), 1032685, 1, 1044253);
-                AddRes(index, typeof(WhitePearl), 1032694, 5, 1044253);
-                AddRes(index, typeof(StarSapphire), 1062600, 50, 1044253);
-                AddRecipe(index, (int)TinkerRecipes.PendantOfTheMagi);
-                ForceNonExceptional(index);
-            }
+            index = AddCraft(typeof(PendantOfTheMagi), 1073107, 1072937, 100.0, 125.0, typeof(IronIngot), 1044036, 2, 1044037);
+            SetMinSkillOffset(index, 25.0);
+            AddRes(index, typeof(EyeOfTheTravesty), 1032685, 1, 1044253);
+            AddRes(index, typeof(WhitePearl), 1032694, 5, 1044253);
+            AddRes(index, typeof(StarSapphire), 1062600, 50, 1044253);
+            AddRecipe(index, (int)TinkerRecipes.PendantOfTheMagi);
+            ForceNonExceptional(index);
 
-            if (Core.TOL)
-            {
-                index = AddCraft(typeof(DrSpectorsLenses), 1073107, 1156991, 100.0, 580.0, typeof(IronIngot), 1044036, 20, 1044037);
-                SetMinSkillOffset(index, 25.0);
-                AddRes(index, typeof(BlackrockMoonstone), 1156993, 1, 1156992);
-                AddRes(index, typeof(HatOfTheMagi), 1061597, 1, 1044253);
-                AddRecipe(index, (int)TinkerRecipes.DrSpectorLenses);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(DrSpectorsLenses), 1073107, 1156991, 100.0, 580.0, typeof(IronIngot), 1044036, 20, 1044037);
+            SetMinSkillOffset(index, 25.0);
+            AddRes(index, typeof(BlackrockMoonstone), 1156993, 1, 1156992);
+            AddRes(index, typeof(HatOfTheMagi), 1061597, 1, 1044253);
+            AddRecipe(index, (int)TinkerRecipes.DrSpectorLenses);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(BraceletOfPrimalConsumption), 1073107, 1157350, 100.0, 580.0, typeof(IronIngot), 1044036, 3, 1044037);
-                SetMinSkillOffset(index, 25.0);
-                AddRes(index, typeof(RingOfTheElements), 1061104, 1, 1044253);
-                AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1044253);
-                AddRes(index, typeof(WhitePearl), 1032694, 4, 1044240);
-                AddRecipe(index, (int)TinkerRecipes.BraceletOfPrimalConsumption);
-                ForceNonExceptional(index);
-            }
+            index = AddCraft(typeof(BraceletOfPrimalConsumption), 1073107, 1157350, 100.0, 580.0, typeof(IronIngot), 1044036, 3, 1044037);
+            SetMinSkillOffset(index, 25.0);
+            AddRes(index, typeof(RingOfTheElements), 1061104, 1, 1044253);
+            AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1044253);
+            AddRes(index, typeof(WhitePearl), 1032694, 4, 1044240);
+            AddRecipe(index, (int)TinkerRecipes.BraceletOfPrimalConsumption);
+            ForceNonExceptional(index);
             #endregion
 
             // Set the overridable material
@@ -771,8 +710,8 @@ namespace Server.Engines.Craft
 
             MarkOption = true;
             Repair = true;
-            CanEnhance = Core.AOS;
-            CanAlter = Core.SA;
+            CanEnhance = true;
+            CanAlter = true;
         }
     }
 

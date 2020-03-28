@@ -9,7 +9,7 @@ namespace Server.Engines.PartySystem
         public PartyMemberInfo(Mobile m)
         {
             this.m_Mobile = m;
-            this.m_CanLoot = !Core.ML;
+            this.m_CanLoot = false;
         }
 
         public Mobile Mobile

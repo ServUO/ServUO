@@ -100,7 +100,7 @@ namespace Server.Multis
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
-            else if (Core.HS && BaseBoat.HasBoat(from))
+            else if (BaseBoat.HasBoat(from))
             {
                 from.SendLocalizedMessage(1116758); //You already have a ship deployed!
             }
