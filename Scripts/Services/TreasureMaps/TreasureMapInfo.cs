@@ -704,6 +704,27 @@ namespace Server.Items
             Type[] list = null;
             int amount = 0;
             double dropChance = 0.0;
+           
+            #region Gold
+            var goldAmount = GetGoldCount(level);
+            Bag lootBag = new BagOfGold();
+
+            while (goldAmount > 0)
+            {
+                if (goldAmount <= 20000)
+                {
+                    lootBag.DropItem(new Gold(goldAmount));
+                    goldAmount = 0;
+                }
+                else
+                {
+                    lootBag.DropItem(new Gold(20000));
+                    goldAmount -= 20000;
+                }
+
+                chest.DropItem(lootBag);
+            }
+            #endregion
 
             #region Regs
             list = GetReagentList(level, package, facet);
@@ -711,12 +732,14 @@ namespace Server.Items
             if (list != null)
             {
                 amount = GetRegAmount(quality);
+                lootBag = new BagOfRegs();
 
                 for (int i = 0; i < amount; i++)
                 {
-                    chest.DropItemStacked(Loot.Construct(list));
+                    lootBag.DropItemStacked(Loot.Construct(list));
                 }
 
+                chest.DropItem(lootBag);
                 list = null;
             }
             #endregion
@@ -726,34 +749,18 @@ namespace Server.Items
 
             if (amount > 0)
             {
-                var bag = new BagOfGems();
+                lootBag = new BagOfGems();
 
                 foreach (var gemType in Loot.GemTypes)
                 {
                     var gem = Loot.Construct(gemType);
                     gem.Amount = amount;
 
-                    bag.DropItem(gem);
+                    lootBag.DropItem(gem);
 
                 }
 
-                var goldAmount = GetGoldCount(level);
-
-                while (goldAmount > 0)
-                {
-                    if (goldAmount <= 20000)
-                    {
-                        bag.DropItem(new Gold(goldAmount));
-                        goldAmount = 0;
-                    }
-                    else
-                    {
-                        bag.DropItem(new Gold(20000));
-                        goldAmount -= 20000;
-                    }
-                }
-
-                chest.DropItem(bag);
+                chest.DropItem(lootBag);
             }
             #endregion
 

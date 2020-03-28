@@ -9770,7 +9770,7 @@
     <Compile Include="Services\Town Cryer\TownCryerModeratorEntry.cs" />
     <Compile Include="Services\Town Cryer\TownCryerNewsEntry.cs" />
     <Compile Include="Services\Town Cryer\TownCryerSystem.cs" />
-    <Compile Include="Services\TreasureMaps\BagOfGems.cs" />
+    <Compile Include="Services\TreasureMaps\LootBags.cs" />
     <Compile Include="Services\TreasureMaps\TreasureMap.cs" />
     <Compile Include="Services\TreasureMaps\TreasureMapChest.cs" />
     <Compile Include="Services\TreasureMaps\TreasureMapInfo.cs" />
