@@ -55,7 +55,7 @@ namespace Server.Mobiles
             Karma = -8500;
 
             
-            if (Core.ML && Utility.RandomDouble() < .33)
+            if (Utility.RandomDouble() < .33)
                 PackItem(Engines.Plants.Seed.RandomPeculiarSeed(1));
 
             PackBodyPartOrBones();

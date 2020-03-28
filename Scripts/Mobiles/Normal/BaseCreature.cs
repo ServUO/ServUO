@@ -5560,20 +5560,20 @@ namespace Server.Mobiles
             {
                 if (treasureLevel >= 0)
                 {
-					if (m_Paragon && Paragon.ChestChance > Utility.RandomDouble())
-					{
-						PackItem( new ParagonChest( this.Name, treasureLevel ) );
-					}
-                    else if (TreasureMapChance >= Utility.RandomDouble())
-                    {
-                        Map map = Map;
-
-                        if (map == Map.Trammel && Siege.SiegeShard)
-                            map = Map.Felucca;
-
-                        PackItem(new TreasureMap(treasureLevel, map, SpellHelper.IsEodon(map, Location)));
-                    }
+                if (m_Paragon && Paragon.ChestChance > Utility.RandomDouble())
+                {
+                  PackItem( new ParagonChest( this.Name, treasureLevel ) );
                 }
+                else if (TreasureMapChance >= Utility.RandomDouble())
+                {
+                    Map map = Map;
+
+                    if (map == Map.Trammel && Siege.SiegeShard)
+                        map = Map.Felucca;
+
+                    PackItem(new TreasureMap(treasureLevel, map, SpellHelper.IsEodon(map, Location)));
+                }
+            }
 
                 if (m_Paragon && Paragon.ChocolateIngredientChance > Utility.RandomDouble())
                 {

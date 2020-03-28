@@ -1,5 +1,3 @@
-/* Based on Skeletal Dragon, still have to get detailed info on Skeletal Drake
-    2017/4/09 update: brought more into line with the one extant data point*/
 using System;
 
 namespace Server.Mobiles
@@ -41,8 +39,6 @@ namespace Server.Mobiles
 
             Fame = 15000;
             Karma = -15000;
-
-            VirtualArmor = 80;
         }
 
         public SkeletalDrake(Serial serial)

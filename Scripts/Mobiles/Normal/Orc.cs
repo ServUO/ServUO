@@ -38,30 +38,6 @@ namespace Server.Mobiles
             this.Fame = 1500;
             this.Karma = -1500;
 
-            this.VirtualArmor = 28;
-
-            switch ( Utility.Random(20) )
-            {
-                case 0:
-                    this.PackItem(new Scimitar());
-                    break;
-                case 1:
-                    this.PackItem(new Katana());
-                    break;
-                case 2:
-                    this.PackItem(new WarMace());
-                    break;
-                case 3:
-                    this.PackItem(new WarHammer());
-                    break;
-                case 4:
-                    this.PackItem(new Kryss());
-                    break;
-                case 5:
-                    this.PackItem(new Pitchfork());
-                    break;
-            }
-
             this.PackItem(new ThighBoots());
 
             switch ( Utility.Random(3) )

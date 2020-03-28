@@ -44,8 +44,6 @@ namespace Server.Mobiles
             Fame = 8000;
             Karma = -8000;
 
-            VirtualArmor = 50;
-
 			switch (Utility.Random(25))
             {
                 case 0: PackItem(new LichFormScroll()); break;
@@ -55,8 +53,6 @@ namespace Server.Mobiles
 				case 4: PackItem(new WitherScroll()); break;
 			}
 
-
-            PackItem(new GnarledStaff());
             PackNecroReg(17, 24);
         }
 

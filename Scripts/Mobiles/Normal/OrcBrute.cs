@@ -39,8 +39,6 @@ namespace Server.Mobiles
             Fame = 15000;
             Karma = -15000;
 
-            VirtualArmor = 50;
-
             Item ore = new ShadowIronOre(25);
             ore.ItemID = 0x19B9;
             PackItem(ore);
@@ -59,14 +57,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS;
-            }
-        }
+   
         public override Poison PoisonImmune
         {
             get

@@ -5,8 +5,6 @@ namespace Server.Mobiles
     [CorpseName("an oni corpse")]
     public class Oni : BaseCreature
     {
-        //private DateTime m_NextAbilityTime;
-
         [Constructable]
         public Oni()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -42,7 +40,7 @@ namespace Server.Mobiles
             Fame = 15000;
             Karma = -15000;
 
-            if (Utility.RandomDouble() < .33)
+            if (Utility.RandomDouble() < 0.33)
                 PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
 
             SetSpecialAbility(SpecialAbility.AngryFire);
@@ -100,14 +98,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

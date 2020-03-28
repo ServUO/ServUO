@@ -46,8 +46,6 @@ namespace Server.Mobiles
             Fame = 7000;
             Karma = -10000;
 
-            VirtualArmor = 55;
-
             SetWeaponAbility(WeaponAbility.ConcussionBlow);
         }
 

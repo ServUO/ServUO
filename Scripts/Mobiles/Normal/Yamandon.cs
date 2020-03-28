@@ -4,7 +4,6 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [TypeAlias("Server.Mobiles.Yamadon")]
     [CorpseName("a yamandon corpse")]
     public class Yamandon : BaseCreature
     {
@@ -140,14 +139,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
 

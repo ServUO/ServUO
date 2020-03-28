@@ -38,9 +38,6 @@ namespace Server.Mobiles
             this.Fame = 2500;
             this.Karma = -2500;
 
-            this.VirtualArmor = 34;
-
-            // TODO: Skull?
             switch ( Utility.Random(7) )
             {
                 case 0:
@@ -66,8 +63,7 @@ namespace Server.Mobiles
                     break;
             }
 
-            if (Core.AOS)
-                this.PackItem(Loot.RandomNecromancyReagent());
+            this.PackItem(Loot.RandomNecromancyReagent());
 
             if (0.5 > Utility.RandomDouble())
                 PackItem(new Yeast());
@@ -75,11 +71,8 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-            if (Core.ML)
-            {
-                if (Utility.RandomDouble() < 0.05)
-                    c.DropItem(new StoutWhip());
-            }
+            if (Utility.RandomDouble() < 0.05)
+                c.DropItem(new StoutWhip());
 
             base.OnDeath(c);
         }

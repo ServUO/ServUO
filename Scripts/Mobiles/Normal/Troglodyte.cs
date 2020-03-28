@@ -41,9 +41,7 @@ namespace Server.Mobiles
             Fame = 5000;
             Karma = -5000;
 
-            VirtualArmor = 28; // Don't know what it should be
-
-            PackItem(new Bandage(5));  // How many?
+            PackItem(new Bandage(5));  
             PackItem(new Ribs());
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)

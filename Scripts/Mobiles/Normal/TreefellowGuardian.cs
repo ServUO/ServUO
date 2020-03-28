@@ -36,7 +36,6 @@ namespace Server.Mobiles
             Fame = 500;
             Karma = 1500;
 
-            VirtualArmor = 24;
             PackItem(new Log(Utility.RandomMinMax(23, 34)));
 
             if (0.05 > Utility.RandomDouble())

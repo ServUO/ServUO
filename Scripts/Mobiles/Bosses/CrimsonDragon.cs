@@ -49,8 +49,6 @@ namespace Server.Mobiles
             Fame = 20000;
             Karma = -20000;
 
-            VirtualArmor = 70;
-
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 

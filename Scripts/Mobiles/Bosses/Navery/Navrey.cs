@@ -59,8 +59,6 @@ namespace Server.Mobiles
             Fame = 24000;
             Karma = -24000;
 
-            VirtualArmor = 90;
-
             for (int i = 0; i < Utility.RandomMinMax(1, 3); i++)
             {
                 PackItem(Loot.RandomScroll(0, Loot.MysticismScrollTypes.Length, SpellbookType.Mystic));

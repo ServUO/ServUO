@@ -37,10 +37,6 @@ namespace Server.Mobiles
 
             this.Fame = 3000;
             this.Karma = -3000;
-
-            this.VirtualArmor = 32;
-
-            this.PackItem(new Club());
         }
 
         public Ogre(Serial serial)

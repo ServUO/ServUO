@@ -39,8 +39,6 @@ namespace Server.Mobiles
 
             this.Fame = 10000;
             this.Karma = -10000;
-
-            this.VirtualArmor = 56;
         }
 
         public Efreet(Serial serial)
@@ -52,7 +50,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.AOS ? 4 : 5;
+                return 4;
             }
         }
         public override void GenerateLoot()

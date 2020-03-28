@@ -36,10 +36,6 @@ namespace Server.Mobiles
 
             this.Fame = 4000;
             this.Karma = -4000;
-
-            this.VirtualArmor = 50;
-
-            this.PackItem(new DoubleAxe()); // TODO: Weapon??
         }
 
         public FrostTroll(Serial serial)

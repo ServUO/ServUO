@@ -38,8 +38,6 @@ namespace Server.Mobiles
 
             this.Fame = 2000;
             this.Karma = -2000;
-
-            this.VirtualArmor = 24;
 			
             this.PackItem(new SpidersSilk(2));
         }
@@ -62,7 +60,6 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);
-            // TODO: weapon?
         }
 
         public override void Serialize(GenericWriter writer)

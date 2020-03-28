@@ -110,7 +110,6 @@ namespace Server.Mobiles
         {
             this.AddLoot(LootPack.Meager);
             this.AddLoot(LootPack.Average);
-            // TODO: evil orc helm
         }
 
         public override bool IsEnemy(Mobile m)

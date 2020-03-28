@@ -35,8 +35,6 @@ namespace Server.Mobiles
 
             this.Fame = 2500;
             this.Karma = -2500;
-
-            this.VirtualArmor = 28;
         }
 
         public Ghoul(Serial serial)

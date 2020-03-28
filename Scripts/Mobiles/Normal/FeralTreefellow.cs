@@ -35,7 +35,6 @@ namespace Server.Mobiles
             Fame = 1000;  //Unknown
             Karma = -3000;  //Unknown
 
-            VirtualArmor = 24;
             PackItem(new Log(Utility.RandomMinMax(23, 34)));
 
             SetWeaponAbility(WeaponAbility.Dismount);

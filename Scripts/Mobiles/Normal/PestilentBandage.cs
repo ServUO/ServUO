@@ -6,12 +6,6 @@ namespace Server.Mobiles
     [CorpseName("a pestilent bandage corpse")]
     public class PestilentBandage : BaseCreature
     {
-        // Neither Stratics nor UOGuide have much description 
-        // beyond being a "Grey Mummy". BodyValue, Sound and 
-        // Hue are all guessed until they can be verified.
-        // Loot and Fame/Karma are also guesses at this point.
-        //
-        // They also apparently have a Poison Attack, which I've stolen from Yamandons.
         public override double HealChance { get { return 1.0; } }
 
         [Constructable]
@@ -50,9 +44,7 @@ namespace Server.Mobiles
             Fame = 20000;
             Karma = -20000;
 
-            // VirtualArmor = 28; // Don't know what it should be
-
-            PackItem(new Bandage(5));  // How many?
+            PackItem(new Bandage(5));  
 
             SetAreaEffect(AreaEffect.PoisonBreath);
         }

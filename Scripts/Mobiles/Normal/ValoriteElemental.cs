@@ -16,7 +16,6 @@ namespace Server.Mobiles
         public ValoriteElemental(int oreAmount)
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            // TODO: Gas attack
             Name = "a valorite elemental";
             Body = 112;
             BaseSoundID = 268;
@@ -46,8 +45,6 @@ namespace Server.Mobiles
 
             Fame = 3500;
             Karma = -3500;
-
-            VirtualArmor = 38;
 
             Item ore = new ValoriteOre(oreAmount);
             ore.ItemID = 0x19B9;

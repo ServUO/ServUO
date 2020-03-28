@@ -44,8 +44,6 @@ namespace Server.Mobiles
             Fame = 5000;
             Karma = -5000; 
 
-            VirtualArmor = 16;
-
             SetSpecialAbility(SpecialAbility.TailSwipe);
             SetSpecialAbility(SpecialAbility.ColossalBlow);
         }

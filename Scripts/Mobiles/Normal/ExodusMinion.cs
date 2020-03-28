@@ -34,7 +34,6 @@ namespace Server.Mobiles
 
             this.Fame = 18000;
             this.Karma = -18000;
-            this.VirtualArmor = 65;
 
             this.PackItem(new PowerCrystal());
             this.PackItem(new ArcaneGem());

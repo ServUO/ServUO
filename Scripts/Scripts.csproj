@@ -2236,7 +2236,6 @@
     <Compile Include="Mobiles\Normal\GrayGoblinMage.cs" />
     <Compile Include="Mobiles\Normal\GreyWolf.cs" />
     <Compile Include="Mobiles\Normal\GrizzlyBear.cs" />
-    <Compile Include="Mobiles\Normal\Guardian.cs" />
     <Compile Include="Mobiles\Normal\Harpy.cs" />
     <Compile Include="Mobiles\Normal\HeadlessOne.cs" />
     <Compile Include="Mobiles\Normal\HellCat.cs" />
@@ -2247,7 +2246,6 @@
     <Compile Include="Mobiles\Normal\Hiryu.cs" />
     <Compile Include="Mobiles\Normal\HordeMinion.cs" />
     <Compile Include="Mobiles\Normal\Horse.cs" />
-    <Compile Include="Mobiles\Normal\HumanBrigand.cs" />
     <Compile Include="Mobiles\Normal\Hydra.cs" />
     <Compile Include="Mobiles\Normal\IceElemental.cs" />
     <Compile Include="Mobiles\Normal\IceFiend.cs" />
@@ -2256,7 +2254,6 @@
     <Compile Include="Mobiles\Normal\IceSnake.cs" />
     <Compile Include="Mobiles\Normal\Imp.cs" />
     <Compile Include="Mobiles\Normal\Impaler.cs" />
-    <Compile Include="Mobiles\Normal\InjuredWolf.cs" />
     <Compile Include="Mobiles\Normal\InsaneDryad.cs" />
     <Compile Include="Mobiles\Normal\InterredGrizzle .cs" />
     <Compile Include="Mobiles\Normal\IronBeetle.cs" />

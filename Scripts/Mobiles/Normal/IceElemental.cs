@@ -40,8 +40,6 @@ namespace Server.Mobiles
             Fame = 4000;
             Karma = -4000;
 
-            VirtualArmor = 40;
-
             PackItem(new BlackPearl());
             PackReg(3);
 
