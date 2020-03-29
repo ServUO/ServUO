@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Engines.Craft;
 
-using CustomsFramework;
-
 namespace Server.Items
 {
     public abstract class Food : Item, IEngravable, IQuality
