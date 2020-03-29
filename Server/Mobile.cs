@@ -825,8 +825,8 @@ namespace Server
 		private Race m_Race;
         #endregion
 
-        private static readonly TimeSpan WarmodeSpamCatch = TimeSpan.FromSeconds((Core.SE ? 1.0 : 0.5));
-		private static readonly TimeSpan WarmodeSpamDelay = TimeSpan.FromSeconds((Core.SE ? 4.0 : 2.0));
+        private static readonly TimeSpan WarmodeSpamCatch = TimeSpan.FromSeconds((1.0));
+		private static readonly TimeSpan WarmodeSpamDelay = TimeSpan.FromSeconds((4.0));
 
 		private const int WarmodeCatchCount = 4;
 		// Allow four warmode changes in 0.5 seconds, any more will be delay for two seconds
@@ -3104,12 +3104,7 @@ namespace Server
 			{
 				// We are actually moving (not just a direction change)
 
-				if (!Core.ML && m_Spell != null && !m_Spell.OnCasterMoving(d))
-				{
-					return false;
-				}
-
-				if (m_Paralyzed || m_Frozen || (Core.ML && m_Spell != null && !m_Spell.CheckMovement(this)))
+				if (m_Paralyzed || m_Frozen || (m_Spell != null && !m_Spell.CheckMovement(this)))
 				{
 					SendLocalizedMessage(500111); // You are frozen and can not move.
 
@@ -3953,7 +3948,7 @@ namespace Server
 			return item.OnInventoryDeath(this);
 		}
 
-		public virtual bool RetainPackLocsOnDeath { get { return Core.AOS; } }
+		public virtual bool RetainPackLocsOnDeath { get { return true; } }
 
 		public virtual void Kill()
 		{
@@ -7573,15 +7568,7 @@ namespace Server
 		{
 			if (m_Squelched)
 			{
-				if (Core.ML)
-				{
-					SendLocalizedMessage(500168); // You can not say anything, you have been muted.
-				}
-				else
-				{
-					SendMessage("You can not say anything, you have been squelched."); //Cliloc ITSELF changed during ML.
-				}
-
+				SendLocalizedMessage(500168); // You can not say anything, you have been muted.
 				e.Blocked = true;
 			}
 
@@ -8914,10 +8901,7 @@ namespace Server
 						}
 					}
 
-                    if (Core.SA)
-                    {
-                        NextActionTime = Core.TickCount + Mobile.ActionDelay;
-                    }
+                    NextActionTime = Core.TickCount + Mobile.ActionDelay;
 
 					OnWarmodeChanged();
 				}
@@ -9209,7 +9193,7 @@ namespace Server
 
 			return this == m ||
 				   (m.m_Map == m_Map && (!m.Hidden || (IsStaff() && m_AccessLevel >= m.AccessLevel)) &&
-					((m.Alive || (Core.SE && Skills.SpiritSpeak.Value >= 100.0)) || !Alive || IsStaff() || m.Warmode));
+					((m.Alive || (Skills.SpiritSpeak.Value >= 100.0)) || !Alive || IsStaff() || m.Warmode));
 		}
 
 		public virtual bool CanBeRenamedBy(Mobile from)

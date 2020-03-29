@@ -2037,24 +2037,15 @@ namespace Server.Items
 
             if (DisplaysContent) //CheckContentDisplay( from ) )
             {
-                if (Core.ML)
+                if (ParentsContain<Item>() || IsLockedDown || IsSecure) //Root Parent is the Mobile.  Parent could be another containter.
                 {
-                    if (ParentsContain<Item>() || IsLockedDown || IsSecure) //Root Parent is the Mobile.  Parent could be another containter.
-                    {
-                        list.Add(1073841, "{0}\t{1}\t{2}", TotalItems, MaxItems, TotalWeight);
-                        // Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~ stones
-                    }
-                    else
-                    {
-                        list.Add(1072241, "{0}\t{1}\t{2}\t{3}", TotalItems, MaxItems, TotalWeight, MaxWeight);
-                        // Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~/~4_MAXWEIGHT~ stones
-                    }
-
-                    //TODO: Where do the other clilocs come into play? 1073839 & 1073840?
+                    list.Add(1073841, "{0}\t{1}\t{2}", TotalItems, MaxItems, TotalWeight);
+                    // Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~ stones
                 }
                 else
                 {
-                    list.Add(1050044, "{0}\t{1}", TotalItems, TotalWeight); // ~1_COUNT~ items, ~2_WEIGHT~ stones
+                    list.Add(1072241, "{0}\t{1}\t{2}\t{3}", TotalItems, MaxItems, TotalWeight, MaxWeight);
+                    // Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~/~4_MAXWEIGHT~ stones
                 }
             }
         }
