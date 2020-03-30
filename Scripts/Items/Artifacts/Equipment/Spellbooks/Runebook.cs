@@ -344,6 +344,10 @@ namespace Server.Items
             }
         }
 
+        public virtual void OnTravel()
+        {
+        }
+
         public override void OnAfterDuped(Item newItem)
         {
             Runebook book = newItem as Runebook;
