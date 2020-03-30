@@ -106,23 +106,6 @@ namespace Server.Mobiles
             return 0x2C3;
         }
 
-        public override void OnGotMeleeAttack(Mobile attacker)
-        {
-            base.OnGotMeleeAttack(attacker);
-
-            if (!Core.SE && 0.2 > Utility.RandomDouble() && attacker is BaseCreature)
-            {
-                BaseCreature c = (BaseCreature)attacker;
-
-                if (c.Controlled && c.ControlMaster != null)
-                {
-                    c.ControlTarget = c.ControlMaster;
-                    c.ControlOrder = OrderType.Attack;
-                    c.Combatant = c.ControlMaster;
-                }
-            }
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -76,7 +76,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return (Core.SE) ? 3.0 : 1.0;
+                return 3.0;
             }
         }
         // TODO: Undead summoning?

@@ -127,51 +127,35 @@ namespace Server.Items
 		{
 			if (attacker.Player && 0.4 >= Utility.RandomDouble())
 			{
-				if (Core.SE)
-				{
-					PlayerMobile p = attacker as PlayerMobile;
+                PlayerMobile p = attacker as PlayerMobile;
 
-					if (p != null && AmmoType != null)
-					{
-						Type ammo = AmmoType;
+                if (p != null && AmmoType != null)
+                {
+                    Type ammo = AmmoType;
 
-						if (p.RecoverableAmmo.ContainsKey(ammo))
-						{
-							p.RecoverableAmmo[ammo]++;
-						}
-						else
-						{
-							p.RecoverableAmmo.Add(ammo, 1);
-						}
+                    if (p.RecoverableAmmo.ContainsKey(ammo))
+                    {
+                        p.RecoverableAmmo[ammo]++;
+                    }
+                    else
+                    {
+                        p.RecoverableAmmo.Add(ammo, 1);
+                    }
 
-						if (!p.Warmode)
-						{
-							if (m_RecoveryTimer == null)
-							{
-								m_RecoveryTimer = Timer.DelayCall(TimeSpan.FromSeconds(10), p.RecoverAmmo);
-							}
+                    if (!p.Warmode)
+                    {
+                        if (m_RecoveryTimer == null)
+                        {
+                            m_RecoveryTimer = Timer.DelayCall(TimeSpan.FromSeconds(10), p.RecoverAmmo);
+                        }
 
-							if (!m_RecoveryTimer.Running)
-							{
-								m_RecoveryTimer.Start();
-							}
-						}
-					}
-				}
-				else
-				{
-					Point3D loc = damageable.Location;
-
-					var ammo = Ammo;
-
-					if (ammo != null)
-					{
-						ammo.MoveToWorld(
-							new Point3D(loc.X + Utility.RandomMinMax(-1, 1), loc.Y + Utility.RandomMinMax(-1, 1), loc.Z),
-							damageable.Map);
-					}
-				}
-			}
+                        if (!m_RecoveryTimer.Running)
+                        {
+                            m_RecoveryTimer.Start();
+                        }
+                    }
+                }
+            }
 
 			base.OnMiss(attacker, damageable);
 		}

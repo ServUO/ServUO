@@ -40,7 +40,7 @@ namespace Server.Items
         {
             get
             {
-                return ((Core.SE) ? 17 : 16);
+                return 17;
             }
         }
         public override void Serialize(GenericWriter writer)

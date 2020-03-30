@@ -124,11 +124,6 @@ namespace Server.Items
         {
             get
             {
-                if (!Core.SE)
-                {
-                    return false;
-                }
-
                 return (DateTime.UtcNow < (m_TimeOfDeath + InstancedCorpseTime));
             }
         }

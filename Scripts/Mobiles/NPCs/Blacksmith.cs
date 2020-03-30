@@ -144,7 +144,7 @@ namespace Server.Mobiles
 
         public override void OnSuccessfulBulkOrderReceive(Mobile from)
         {
-            if (Core.SE && from is PlayerMobile)
+            if (from is PlayerMobile)
                 ((PlayerMobile)from).NextSmithBulkOrder = TimeSpan.Zero;
         }
 
