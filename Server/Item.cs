@@ -8,8 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-using CustomsFramework;
-
 using Server.ContextMenus;
 using Server.Items;
 using Server.Network;
@@ -672,55 +670,6 @@ namespace Server
 
     public class Item : IEntity, IHued, IComparable<Item>, ISerializable, ISpawnable
     {
-        #region Customs Framework
-        private List<BaseModule> m_Modules = new List<BaseModule>();
-
-        [CommandProperty(AccessLevel.Developer)]
-        public List<BaseModule> Modules { get { return m_Modules; } set { m_Modules = value; } }
-
-        public BaseModule GetModule(string name)
-        {
-            return Modules.FirstOrDefault(mod => mod.Name == name);
-        }
-
-        public BaseModule GetModule(Type type)
-        {
-            return Modules.FirstOrDefault(mod => mod.GetType() == type);
-        }
-
-        public List<BaseModule> GetModules(string name)
-        {
-            return Modules.Where(mod => mod.Name == name).ToList();
-        }
-
-        public List<BaseModule> SearchModules(string search)
-        {
-            var keywords = search.ToLower().Split(' ');
-            var modules = new List<BaseModule>();
-
-            foreach (BaseModule mod in Modules)
-            {
-                bool match = true;
-                string name = mod.Name.ToLower();
-
-                foreach (string keyword in keywords)
-                {
-                    if (name.IndexOf(keyword, StringComparison.Ordinal) == -1)
-                    {
-                        match = false;
-                    }
-                }
-
-                if (match)
-                {
-                    modules.Add(mod);
-                }
-            }
-
-            return modules;
-        }
-        #endregion
-
         public static readonly List<Item> EmptyItems = new List<Item>();
 
         public int CompareTo(IEntity other)
@@ -4609,11 +4558,6 @@ namespace Server
 
         public virtual void OnAfterDelete()
         {
-            foreach (BaseModule module in World.GetModules(this))
-            {
-                module.Delete();
-            }
-
             if(Sockets != null)
             {
                 Sockets.IterateReverse(socket =>

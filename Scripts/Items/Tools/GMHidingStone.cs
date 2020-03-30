@@ -7,7 +7,6 @@ Updated Release: 01/01/09
 Purpose: A stone that allows for multiple hide/appear effects for GM and above.
 */                                                            
 using System;
-using CustomsFramework;
 
 namespace Server.Items
 {
@@ -110,7 +109,7 @@ namespace Server.Items
         }
         public override void OnDoubleClick(Mobile m)
         {
-            if (Utilities.IsStaff(m))
+            if (m.IsStaff())
             {
                 if (m.Hidden)
                 {
