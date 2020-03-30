@@ -5485,16 +5485,22 @@ namespace Server
 				DisruptiveAction();
 
 				Paralyzed = false;
-
-                SendDamagePacket(from, amount);
-				OnDamage(amount, from, newHits < 0);
-
+				
 				IMount m = Mount;
 
 				if (m != null && informMount)
 				{
+					int temp = amount;
 					m.OnRiderDamaged(from, ref amount, newHits < 0);
+					if (temp > amount)
+					{
+						int absorbed = temp-amount;
+						newHits +=absorbed;
+					}
 				}
+				
+				SendDamagePacket(from, amount);
+				OnDamage(amount, from, newHits < 0);
 
 				if (newHits < 0)
 				{
