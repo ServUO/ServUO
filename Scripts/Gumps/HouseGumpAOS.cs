@@ -172,13 +172,10 @@ namespace Server.Gumps
             2974, 2976, 2978
         };
 
-        private static readonly int[] m_FoundationNumbers = (Core.ML ? new int[]
+        private static readonly int[] m_FoundationNumbers = new int[]
         {
-            20, 189, 765, 65, 101, 11767, 11771, 11207, 11715, 11181, 13938, 13942, 16806, 16732, 19208, 39614, 39888 
-        } : new int[]
-            {
-                20, 189, 765, 65, 101
-            });
+            20, 189, 765, 65, 101, 11767, 11771, 11207, 11715, 11181, 13938, 13942, 16806, 16732, 19208, 39614, 39888
+        };
 
         private static readonly int[] m_PostNumbers = new int[]
         {
@@ -229,26 +226,6 @@ namespace Server.Gumps
                 AddButtonLabeled(250, page != HouseGumpPageAOS.Vendors ? 410 : 390, 0, 1060675); // CLOSE
             }
 
-            if (!Core.TOL)
-            {
-                AddImage(10, 10, 100);
-
-                if (m_House.Sign != null)
-                {
-                    ArrayList lines = Wrap(m_House.Sign.GetName());
-
-                    if (lines != null)
-                    {
-                        for (int i = 0, y = (114 - (lines.Count * 14)) / 2; i < lines.Count; ++i, y += 14)
-                        {
-                            string s = (string)lines[i];
-
-                            AddLabel(10 + ((160 - (s.Length * 8)) / 2), y, 0, s);
-                        }
-                    }
-                }
-            }
-
             if (page == HouseGumpPageAOS.Vendors)
             {
                 AddHtmlLocalized(10, 120, 400, 20, 1062428, LabelColor, false, false); // <CENTER>SHOPS</CENTER>
@@ -271,11 +248,11 @@ namespace Server.Gumps
                 AddButtonLabeled(10, 410, GetButtonID(0, 3), 1060677); // Revoke Access
             }
 
-            AddPageButton(Core.TOL ? 10 : 150, 10, GetButtonID(1, 0), 1060668, HouseGumpPageAOS.Information);
-            AddPageButton(Core.TOL ? 10 : 150, 30, GetButtonID(1, 1), 1060669, HouseGumpPageAOS.Security);
-            AddPageButton(Core.TOL ? 10 : 150, 50, GetButtonID(1, 2), 1060670, HouseGumpPageAOS.Storage);
-            AddPageButton(Core.TOL ? 10 : 150, 70, GetButtonID(1, 3), 1060671, HouseGumpPageAOS.Customize);
-            AddPageButton(Core.TOL ? 10 : 150, 90, GetButtonID(1, 4), 1060672, HouseGumpPageAOS.Ownership);
+            AddPageButton(10, 10, GetButtonID(1, 0), 1060668, HouseGumpPageAOS.Information);
+            AddPageButton(10, 30, GetButtonID(1, 1), 1060669, HouseGumpPageAOS.Security);
+            AddPageButton(10, 50, GetButtonID(1, 2), 1060670, HouseGumpPageAOS.Storage);
+            AddPageButton(10, 70, GetButtonID(1, 3), 1060671, HouseGumpPageAOS.Customize);
+            AddPageButton(10, 90, GetButtonID(1, 4), 1060672, HouseGumpPageAOS.Ownership);
 
             switch ( page )
             {
@@ -518,8 +495,8 @@ namespace Server.Gumps
                             _HouseSigns.Add(3140);
                         }
 					
-                        int signsPerPage = Core.ML ? 24 : 18;
-                        int totalSigns = Core.ML ? 56 : 54;
+                        int signsPerPage = 24;
+                        int totalSigns = 56;
                         int pages = (int)Math.Ceiling((double)totalSigns / signsPerPage);
 
                         for (int i = 0; i < pages; ++i)
@@ -1347,7 +1324,7 @@ namespace Server.Gumps
                                 {
                                     if (isOwner && m_House.MovingCrate == null && m_House.InternalizedVendors.Count == 0)
                                     {
-                                        if (Core.ML && from.AccessLevel < AccessLevel.GameMaster && DateTime.UtcNow <= m_House.BuiltOn.AddHours(1))
+                                        if (from.AccessLevel < AccessLevel.GameMaster && DateTime.UtcNow <= m_House.BuiltOn.AddHours(1))
                                         {
                                             from.SendLocalizedMessage(1080178); // You must wait one hour between each house demolition.
                                         }
@@ -1411,7 +1388,7 @@ namespace Server.Gumps
                         {
                             FoundationType newType;
 
-                            if (Core.ML && index >= 5)
+                            if (index >= 5)
                             {
                                 switch( index )
                                 {

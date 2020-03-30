@@ -26,9 +26,6 @@ namespace Server.Multis
         {
             Weight = 1.0;
 
-            if (!Core.AOS)
-                LootType = LootType.Newbied;
-
             MultiID = id;
             Offset = offset;
             BoatDirection = Direction.North;
@@ -73,7 +70,7 @@ namespace Server.Multis
             {
                 from.SendLocalizedMessage(1010567, null, 0x25); // You may not place a boat from this location.
             }
-            else if (Core.HS && BaseBoat.HasBoat(from) && !Boat.IsRowBoat)
+            else if (BaseBoat.HasBoat(from) && !Boat.IsRowBoat)
             {
                 from.SendLocalizedMessage(1116758); // You already have a ship deployed!
             }
@@ -83,10 +80,7 @@ namespace Server.Multis
             }
             else if (!from.HasGump(typeof(BoatPlacementGump)))
             {
-                if (Core.SE)
-                    from.SendLocalizedMessage(502482); // Where do you wish to place the ship?
-                else
-                    from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 502482); // Where do you wish to place the ship?
+                from.SendLocalizedMessage(502482); // Where do you wish to place the ship?
 
                 from.SendGump(new BoatPlacementGump(this, from));
             }

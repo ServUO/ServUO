@@ -23,47 +23,44 @@ namespace Server.Engines.Astronomy
 
         public static void Initialize()
         {
-            if (Core.EJ)
+            if (TramInstance == null)
             {
-                if (TramInstance == null)
-                {
-                    TramInstance = new Willebrord();
-                    TramInstance.MoveToWorld(new Point3D(4706, 1128, 6), Map.Trammel);
-                }
+                TramInstance = new Willebrord();
+                TramInstance.MoveToWorld(new Point3D(4706, 1128, 6), Map.Trammel);
+            }
 
-                if (Map.Trammel.FindItem<AstronomyTent>(new Point3D(4707, 1127, 0)) == null)
-                {
-                    var tent = new AstronomyTent();
-                    tent.MoveToWorld(new Point3D(4707, 1127, 0), Map.Trammel);
-                }
+            if (Map.Trammel.FindItem<AstronomyTent>(new Point3D(4707, 1127, 0)) == null)
+            {
+                var tent = new AstronomyTent();
+                tent.MoveToWorld(new Point3D(4707, 1127, 0), Map.Trammel);
+            }
 
-                if (Map.Trammel.FindItem<PersonalTelescope>(new Point3D(4705, 1128, 0)) == null)
-                {
-                    var tele = new PersonalTelescope();
-                    tele.Movable = false;
-                    tele.MoveToWorld(new Point3D(4705, 1128, 0), Map.Trammel);
-                }
+            if (Map.Trammel.FindItem<PersonalTelescope>(new Point3D(4705, 1128, 0)) == null)
+            {
+                var tele = new PersonalTelescope();
+                tele.Movable = false;
+                tele.MoveToWorld(new Point3D(4705, 1128, 0), Map.Trammel);
+            }
 
-                if (Map.Trammel.FindItem<BrassOrrery>(new Point3D(4705, 1126, 0)) == null)
-                {
-                    var orrery = new BrassOrrery();
-                    orrery.Movable = false;
-                    orrery.MoveToWorld(new Point3D(4705, 1126, 0), Map.Trammel);
-                }
+            if (Map.Trammel.FindItem<BrassOrrery>(new Point3D(4705, 1126, 0)) == null)
+            {
+                var orrery = new BrassOrrery();
+                orrery.Movable = false;
+                orrery.MoveToWorld(new Point3D(4705, 1126, 0), Map.Trammel);
+            }
 
-                if (Map.Trammel.FindItem<ConstellationLedger>(new Point3D(4709, 1127, 0)) == null)
-                {
-                    var ledger = new ConstellationLedger();
-                    ledger.Movable = false;
-                    ledger.MoveToWorld(new Point3D(4709, 1127, 4), Map.Trammel);
-                }
+            if (Map.Trammel.FindItem<ConstellationLedger>(new Point3D(4709, 1127, 0)) == null)
+            {
+                var ledger = new ConstellationLedger();
+                ledger.Movable = false;
+                ledger.MoveToWorld(new Point3D(4709, 1127, 4), Map.Trammel);
+            }
 
-                if (Map.Trammel.FindItem<PrimerOnBritannianAstronomy>(new Point3D(4709, 1126, 0)) == null)
-                {
-                    var book = new PrimerOnBritannianAstronomy();
-                    book.Movable = false;
-                    book.MoveToWorld(new Point3D(4709, 1126, 4), Map.Trammel);
-                }
+            if (Map.Trammel.FindItem<PrimerOnBritannianAstronomy>(new Point3D(4709, 1126, 0)) == null)
+            {
+                var book = new PrimerOnBritannianAstronomy();
+                book.Movable = false;
+                book.MoveToWorld(new Point3D(4709, 1126, 4), Map.Trammel);
             }
         }
 

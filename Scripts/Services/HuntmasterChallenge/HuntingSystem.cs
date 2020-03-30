@@ -46,7 +46,7 @@ namespace Server.Engines.HuntsmasterChallenge
 
 		public static void Initialize()
 		{
-			if(Core.SA && m_Instance == null)
+			if(m_Instance == null)
 				m_Instance = new HuntingSystem();
 		}
 		

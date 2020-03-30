@@ -727,15 +727,7 @@ namespace Server.Mobiles
             }
 
             creature.PlaySound(creature.GetAngerSound());
-
-            if (Core.SA)
-            {
-                creature.Animate(AnimationType.Pillage, 0);
-            }
-            else
-            {
-                creature.Animate(def.AngerAnimation, 5, 1, true, false, 0);
-            }
+            creature.Animate(AnimationType.Pillage, 0);
 
             creature.Direction = creature.GetDirectionTo(target);
 
@@ -885,7 +877,7 @@ namespace Server.Mobiles
             public static void Initialize()
             {
                 Definitions.Add(new DragonBreathDefinition(
-                    Core.AOS ? 0.16 : 0.05,
+                    0.16,
                     1.0,
                     1.3,
                     1.0,
@@ -903,7 +895,7 @@ namespace Server.Mobiles
 
                 // Skeletal Dragon / Renowned
                 Definitions.Add(new DragonBreathDefinition(
-                    Core.AOS ? 0.16 : 0.05,
+                    0.16,
                     1.0,
                     1.3,
                     1.0,
@@ -963,7 +955,7 @@ namespace Server.Mobiles
 
                 // Frost Dragon/Drake
                 Definitions.Add(new DragonBreathDefinition(
-                    Core.AOS ? 0.16 : 0.05,
+                    0.16,
                     1.0,
                     1.3,
                     1.0,
@@ -983,7 +975,7 @@ namespace Server.Mobiles
 
                 // Antlion
                 Definitions.Add(new DragonBreathDefinition(
-                    Core.AOS ? 0.16 : 0.05,
+                    0.16,
                     1.0,
                     1.3,
                     1.0,
@@ -1840,79 +1832,39 @@ namespace Server.Mobiles
 
 			int phy = 0; int  fire = 0; int cold = 0; int poison = 0; int energy = 0;
 
-			if (Core.ML)
+			if (defender.PhysicalResistance > 0)
 			{
-				if (defender.PhysicalResistance > 0)
-				{
-					phy = defender.PhysicalResistance / 2;
+				phy = defender.PhysicalResistance / 2;
 
-					mods.Add(new ResistanceMod(ResistanceType.Physical, -phy));
-				}
-
-				if (defender.FireResistance > 0)
-				{
-					fire = defender.FireResistance / 2;
-
-					mods.Add(new ResistanceMod(ResistanceType.Fire, -fire));
-				}
-
-				if (defender.ColdResistance > 0)
-				{
-					cold = defender.ColdResistance / 2;
-
-					mods.Add(new ResistanceMod(ResistanceType.Cold, -cold));
-				}
-
-				if (defender.PoisonResistance > 0)
-				{
-					poison = defender.PoisonResistance / 2;
-
-					mods.Add(new ResistanceMod(ResistanceType.Poison, -poison));
-				}
-
-				if (defender.EnergyResistance > 0)
-				{
-					energy = defender.EnergyResistance / 2;
-
-					mods.Add(new ResistanceMod(ResistanceType.Energy, -energy));
-				}
+				mods.Add(new ResistanceMod(ResistanceType.Physical, -phy));
 			}
-			else
+
+			if (defender.FireResistance > 0)
 			{
-				if (defender.PhysicalResistance > 0)
-				{
-					phy = (defender.PhysicalResistance > 70) ? 70 : defender.PhysicalResistance;
+				fire = defender.FireResistance / 2;
 
-					mods.Add(new ResistanceMod(ResistanceType.Physical, -phy));
-				}
+				mods.Add(new ResistanceMod(ResistanceType.Fire, -fire));
+			}
 
-				if (defender.FireResistance > 0)
-				{
-					fire = (defender.FireResistance > 70) ? 70 : defender.FireResistance;
+			if (defender.ColdResistance > 0)
+			{
+				cold = defender.ColdResistance / 2;
 
-					mods.Add(new ResistanceMod(ResistanceType.Fire, -fire));
-				}
+				mods.Add(new ResistanceMod(ResistanceType.Cold, -cold));
+			}
 
-				if (defender.ColdResistance > 0)
-				{
-					cold = (defender.ColdResistance > 70) ? 70 : defender.ColdResistance;
+			if (defender.PoisonResistance > 0)
+			{
+				poison = defender.PoisonResistance / 2;
 
-					mods.Add(new ResistanceMod(ResistanceType.Cold, -cold));
-				}
+				mods.Add(new ResistanceMod(ResistanceType.Poison, -poison));
+			}
 
-				if (defender.PoisonResistance > 0)
-				{
-					poison = (defender.PoisonResistance > 70) ? 70 : defender.PoisonResistance;
+			if (defender.EnergyResistance > 0)
+			{
+				energy = defender.EnergyResistance / 2;
 
-					mods.Add(new ResistanceMod(ResistanceType.Poison, -poison));
-				}
-
-				if (defender.EnergyResistance > 0)
-				{
-					energy = (defender.EnergyResistance > 70) ? 70 : defender.EnergyResistance;
-
-					mods.Add(new ResistanceMod(ResistanceType.Energy, -energy));
-				}
+				mods.Add(new ResistanceMod(ResistanceType.Energy, -energy));
 			}
 
 			for (int i = 0; i < mods.Count; ++i)
@@ -2519,15 +2471,7 @@ namespace Server.Mobiles
 
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
-            if (Core.SA)
-            {
-                defender.Animate(AnimationType.Die, 0);
-            }
-            else
-            {
-                defender.Animate(21, 6, 1, true, false, 0);
-            }
-
+            defender.Animate(AnimationType.Die, 0);
             creature.PlaySound(0xEE);
             defender.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1070696); // You have been stunned by a colossal blow!
 

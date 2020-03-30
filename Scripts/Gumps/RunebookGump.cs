@@ -216,25 +216,14 @@ namespace Server.Gumps
                         AddLabelIntern(145 + (half * 160), 60, 0, index + 2);
                     }
 
-                    if (Core.AOS)
-                    {
-                        AddButton(135 + (half * 160), 140, 2103, 2104, 50 + index, GumpButtonType.Reply, 0);
-                        AddHtmlLocalized(150 + (half * 160), 136, 110, 20, 1062722, false, false); // Recall
+                    AddButton(135 + (half * 160), 140, 2103, 2104, 50 + index, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(150 + (half * 160), 136, 110, 20, 1062722, false, false); // Recall
 
-                        AddButton(135 + (half * 160), 158, 2103, 2104, 100 + index, GumpButtonType.Reply, 0);
-                        AddHtmlLocalized(150 + (half * 160), 154, 110, 20, 1062723, false, false); // Gate Travel
+                    AddButton(135 + (half * 160), 158, 2103, 2104, 100 + index, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(150 + (half * 160), 154, 110, 20, 1062723, false, false); // Gate Travel
 
-                        AddButton(135 + (half * 160), 176, 2103, 2104, 75 + index, GumpButtonType.Reply, 0);
-                        AddHtmlLocalized(150 + (half * 160), 172, 110, 20, 1062724, false, false); // Sacred Journey
-                    }
-                    else
-                    {
-                        AddButton(135 + (half * 160), 140, 2103, 2104, 50 + index, GumpButtonType.Reply, 0);
-                        AddHtmlLocalized(150 + (half * 160), 136, 110, 20, 1062722, false, false); // Recall
-
-                        AddButton(135 + (half * 160), 158, 2103, 2104, 100 + index, GumpButtonType.Reply, 0);
-                        AddHtmlLocalized(150 + (half * 160), 154, 110, 20, 1062723, false, false); // Gate Travel
-                    }
+                    AddButton(135 + (half * 160), 176, 2103, 2104, 75 + index, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(150 + (half * 160), 172, 110, 20, 1062724, false, false); // Sacred Journey
                 }
             }
         }
@@ -286,7 +275,7 @@ namespace Server.Gumps
 
             public override void OnResponse(Mobile from, string text)
             {
-                if (m_Book.Deleted || !from.InRange(m_Book.GetWorldLocation(), (Core.ML ? 3 : 1)))
+                if (m_Book.Deleted || !from.InRange(m_Book.GetWorldLocation(), 3))
                     return;
 
                 if (m_Book.CheckAccess(from))
@@ -310,7 +299,7 @@ namespace Server.Gumps
             {
                 from.SendLocalizedMessage(502415); // Request cancelled.
 
-                if (!m_Book.Deleted && from.InRange(m_Book.GetWorldLocation(), (Core.ML ? 3 : 1)))
+                if (!m_Book.Deleted && from.InRange(m_Book.GetWorldLocation(), 3))
                 {
                     from.CloseGump(typeof(RunebookGump));
                     from.SendGump(new RunebookGump(from, m_Book));
@@ -337,7 +326,7 @@ namespace Server.Gumps
         {
             Mobile from = state.Mobile;
 
-            if (Book.Deleted || !from.InRange(Book.GetWorldLocation(), (Core.ML ? 3 : 1)) || !Multis.DesignContext.Check(from))
+            if (Book.Deleted || !from.InRange(Book.GetWorldLocation(), 3) || !Multis.DesignContext.Check(from))
             {
                 Book.Openers.Remove(from);
                 return;

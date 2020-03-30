@@ -47,12 +47,9 @@ namespace Server.SkillHandlers
 
             double bonus = Math.Sqrt((xDelta * xDelta) + (yDelta * yDelta));
 
-            m_Table.Remove(tracker);	//Reset as of Pub 40, counting it as bug for Core.SE.
+            m_Table.Remove(tracker);
 
-            if (Core.ML)
-                return Math.Min(bonus, 10 + tracker.Skills.Tracking.Value / 10);
-
-            return bonus;
+            return Math.Min(bonus, 10 + tracker.Skills.Tracking.Value / 10);
         }
 
         public static void ClearTrackingInfo(Mobile tracker)
@@ -196,7 +193,7 @@ namespace Server.SkillHandlers
             foreach (Mobile m in eable)
             {
                 // Ghosts can no longer be tracked 
-                if (m != from && (!Core.AOS || m.Alive) && (!m.Hidden || m.IsPlayer() || from.AccessLevel > m.AccessLevel) && check(m) && CheckDifficulty(from, m))
+                if (m != from && m.Alive && (!m.Hidden || m.IsPlayer() || from.AccessLevel > m.AccessLevel) && check(m) && CheckDifficulty(from, m))
                     list.Add(m);
             }
             eable.Free();
@@ -229,21 +226,20 @@ namespace Server.SkillHandlers
 
                 this.m_From.QuestArrow = new TrackArrow(this.m_From, m, this.m_Range * 2);
 
-                if (Core.SE)
-                    Tracking.AddInfo(this.m_From, m);
+                Tracking.AddInfo(this.m_From, m);
             }
         }
 
         // Tracking players uses tracking and detect hidden vs. hiding and stealth 
         private static bool CheckDifficulty(Mobile from, Mobile m)
         {
-            if (!Core.AOS || !m.Player)
+            if (!m.Player)
                 return true;
 
             int tracking = from.Skills[SkillName.Tracking].Fixed;	
             int detectHidden = from.Skills[SkillName.DetectHidden].Fixed;
 
-            if (Core.ML && m.Race == Race.Elf)
+            if (m.Race == Race.Elf)
                 tracking /= 2; //The 'Guide' says that it requires twice as Much tracking SKILL to track an elf.  Not the total difficulty to track.
 
             int hiding = m.Skills[SkillName.Hiding].Fixed;
@@ -259,12 +255,10 @@ namespace Server.SkillHandlers
                 divisor += 200;
 
             int chance;
+
             if (divisor > 0)
             {
-                if (Core.SE)
-                    chance = 50 * (tracking * 2 + detectHidden) / divisor;
-                else
-                    chance = 50 * (tracking + detectHidden + 10 * Utility.RandomMinMax(1, 20)) / divisor;
+                chance = 50 * (tracking * 2 + detectHidden) / divisor;
             }
             else
                 chance = 100;

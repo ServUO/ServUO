@@ -36,9 +36,6 @@ namespace Server.Engines.Points
             PlayerMobile pm = killer as PlayerMobile;
             BaseCreature bc = victim as BaseCreature;
 
-            if (!Core.AOS)
-                return;
-
             if (pm == null || bc == null || bc.NoKillAwards || !pm.Alive)
                 return;
 
@@ -62,32 +59,25 @@ namespace Server.Engines.Points
             {
                 Item i = null;
 
-                if (Core.TOL)
+                int ran = Utility.Random(m_RewardTable.Length + 1);
+
+                if (ran >= m_RewardTable.Length)
                 {
-                    int ran = Utility.Random(m_RewardTable.Length + 1);
+                    i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
+                    RunicReforging.GenerateRandomArtifactItem(i, luck, Utility.RandomMinMax(800, 1200));
+                    NegativeAttributes attrs = RunicReforging.GetNegativeAttributes(i);
 
-                    if (ran >= m_RewardTable.Length)
+                    if (attrs != null)
                     {
-                        i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
-                        RunicReforging.GenerateRandomArtifactItem(i, luck, Utility.RandomMinMax(800, 1200));
-                        NegativeAttributes attrs = RunicReforging.GetNegativeAttributes(i);
-
-                        if (attrs != null)
-                        {
-                            attrs.Prized = 1;
-                        }
-                    }
-                    else
-                    {
-                        Type[] list = m_RewardTable[ran];
-                        Type t = list.Length == 1 ? list[0] : list[Utility.Random(list.Length)];
-
-                        i = Activator.CreateInstance(t) as Item;
+                        attrs.Prized = 1;
                     }
                 }
                 else
                 {
-                    i = Activator.CreateInstance(m_DoomArtifact[Utility.Random(m_DoomArtifact.Length)]) as Item;
+                    Type[] list = m_RewardTable[ran];
+                    Type t = list.Length == 1 ? list[0] : list[Utility.Random(list.Length)];
+
+                    i = Activator.CreateInstance(t) as Item;
                 }
 
                 if (i != null)

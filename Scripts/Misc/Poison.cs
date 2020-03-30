@@ -18,38 +18,22 @@ namespace Server
 		[CallPriority(10)]
 		public static void Configure()
 		{
-			if (Core.AOS)
-			{
-				Register(new PoisonImpl("Lesser", 0, 4, 16, 7.5, 3.0, 2.25, 10, 4));
-				Register(new PoisonImpl("Regular", 1, 8, 18, 10.0, 3.0, 3.25, 10, 3));
-				Register(new PoisonImpl("Greater", 2, 12, 20, 15.0, 3.0, 4.25, 10, 2));
-				Register(new PoisonImpl("Deadly", 3, 16, 30, 30.0, 3.0, 5.25, 15, 2));
-				Register(new PoisonImpl("Lethal", 4, 20, 50, 35.0, 3.0, 5.25, 20, 2));
-			}
-			else
-			{
-				Register(new PoisonImpl("Lesser", 0, 4, 26, 2.500, 3.5, 3.0, 10, 2));
-				Register(new PoisonImpl("Regular", 1, 5, 26, 3.125, 3.5, 3.0, 10, 2));
-				Register(new PoisonImpl("Greater", 2, 6, 26, 6.250, 3.5, 3.0, 10, 2));
-				Register(new PoisonImpl("Deadly", 3, 7, 26, 12.500, 3.5, 4.0, 10, 2));
-				Register(new PoisonImpl("Lethal", 4, 9, 26, 25.000, 3.5, 5.0, 10, 2));
-			}
+			Register(new PoisonImpl("Lesser", 0, 4, 16, 7.5, 3.0, 2.25, 10, 4));
+			Register(new PoisonImpl("Regular", 1, 8, 18, 10.0, 3.0, 3.25, 10, 3));
+			Register(new PoisonImpl("Greater", 2, 12, 20, 15.0, 3.0, 4.25, 10, 2));
+			Register(new PoisonImpl("Deadly", 3, 16, 30, 30.0, 3.0, 5.25, 15, 2));
+			Register(new PoisonImpl("Lethal", 4, 20, 50, 35.0, 3.0, 5.25, 20, 2));
 
-			#region Mondain's Legacy
-			if (Core.ML)
-			{
-				Register(new PoisonImpl("LesserDarkglow", 10, 4, 16, 7.5, 3.0, 2.25, 10, 4));
-				Register(new PoisonImpl("RegularDarkglow", 11, 8, 18, 10.0, 3.0, 3.25, 10, 3));
-				Register(new PoisonImpl("GreaterDarkglow", 12, 12, 20, 15.0, 3.0, 4.25, 10, 2));
-				Register(new PoisonImpl("DeadlyDarkglow", 13, 16, 30, 30.0, 3.0, 5.25, 15, 2));
+			Register(new PoisonImpl("LesserDarkglow", 10, 4, 16, 7.5, 3.0, 2.25, 10, 4));
+			Register(new PoisonImpl("RegularDarkglow", 11, 8, 18, 10.0, 3.0, 3.25, 10, 3));
+			Register(new PoisonImpl("GreaterDarkglow", 12, 12, 20, 15.0, 3.0, 4.25, 10, 2));
+			Register(new PoisonImpl("DeadlyDarkglow", 13, 16, 30, 30.0, 3.0, 5.25, 15, 2));
 
-				Register(new PoisonImpl("LesserParasitic", 14, 4, 16, 7.5, 3.0, 2.25, 10, 4));
-				Register(new PoisonImpl("RegularParasitic", 15, 8, 18, 10.0, 3.0, 3.25, 10, 3));
-				Register(new PoisonImpl("GreaterParasitic", 16, 12, 20, 15.0, 3.0, 4.25, 10, 2));
-				Register(new PoisonImpl("DeadlyParasitic", 17, 16, 30, 30.0, 3.0, 5.25, 15, 2));
-				Register(new PoisonImpl("LethalParasitic", 18, 20, 50, 35.0, 3.0, 5.25, 20, 2));
-			}
-			#endregion
+			Register(new PoisonImpl("LesserParasitic", 14, 4, 16, 7.5, 3.0, 2.25, 10, 4));
+			Register(new PoisonImpl("RegularParasitic", 15, 8, 18, 10.0, 3.0, 3.25, 10, 3));
+			Register(new PoisonImpl("GreaterParasitic", 16, 12, 20, 15.0, 3.0, 4.25, 10, 2));
+			Register(new PoisonImpl("DeadlyParasitic", 17, 16, 30, 30.0, 3.0, 5.25, 15, 2));
+			Register(new PoisonImpl("LethalParasitic", 18, 20, 50, 35.0, 3.0, 5.25, 20, 2));
 		}
 
 		public static Poison IncreaseLevel(Poison oldPoison)
@@ -176,7 +160,7 @@ namespace Server
             {
                 bool usingPetals = OrangePetals.UnderEffect(m_Mobile);
 
-                if (Core.SA && usingPetals && m_Poison.RealLevel >= 3 && 0.25 > Utility.RandomDouble())
+                if (usingPetals && m_Poison.RealLevel >= 3 && 0.25 > Utility.RandomDouble())
                 {
                     OrangePetals.RemoveContext(m_Mobile);
                     usingPetals = false;
@@ -184,7 +168,7 @@ namespace Server
                     m_Mobile.LocalOverheadMessage(MessageType.Regular, 0x3F, 1053093); // * The strength of the poison overcomes your resistance! *
                 }
 
-                if ((Core.AOS && m_Poison.RealLevel < 4 && TransformationSpellHelper.UnderTransformation(m_Mobile, typeof(VampiricEmbraceSpell))) ||
+                if ((m_Poison.RealLevel < 4 && TransformationSpellHelper.UnderTransformation(m_Mobile, typeof(VampiricEmbraceSpell))) ||
                     (m_Poison.RealLevel <= 3 && usingPetals) ||
                     AnimalForm.UnderTransformation(m_Mobile, typeof(Unicorn)))
                 {
@@ -211,23 +195,14 @@ namespace Server
                     return;
                 }
 
-                int damage;
+                int damage = 1 + (int)(m_Mobile.Hits * m_Poison.m_Scalar);
 
-                if (!Core.AOS && m_LastDamage != 0 && Utility.RandomBool())
-                {
-                    damage = m_LastDamage;
-                }
-                else
-                {
-                    damage = 1 + (int)(m_Mobile.Hits * m_Poison.m_Scalar);
+                if (damage < m_Poison.m_Minimum)
+                    damage = m_Poison.m_Minimum;
+                else if (damage > m_Poison.m_Maximum)
+                    damage = m_Poison.m_Maximum;
 
-                    if (damage < m_Poison.m_Minimum)
-                        damage = m_Poison.m_Minimum;
-                    else if (damage > m_Poison.m_Maximum)
-                        damage = m_Poison.m_Maximum;
-
-                    m_LastDamage = damage;
-                }
+                m_LastDamage = damage;
 
                 if (m_From != null)
                 {
@@ -246,27 +221,22 @@ namespace Server
                 if (honorTarget != null && honorTarget.ReceivedHonorContext != null)
                     honorTarget.ReceivedHonorContext.OnTargetPoisoned();
 
-                #region Mondain's Legacy
-                if (Core.ML)
+                if (m_From != null && m_Mobile != m_From && !m_From.InRange(m_Mobile.Location, 1) && m_Poison.m_Level >= 10 && m_Poison.m_Level <= 13) // darkglow
                 {
-                    if (m_From != null && m_Mobile != m_From && !m_From.InRange(m_Mobile.Location, 1) && m_Poison.m_Level >= 10 && m_Poison.m_Level <= 13) // darkglow
-                    {
-                        m_From.SendLocalizedMessage(1072850); // Darkglow poison increases your damage!
-                        damage = (int)Math.Floor(damage * 1.1);
-                    }
+                    m_From.SendLocalizedMessage(1072850); // Darkglow poison increases your damage!
+                    damage = (int)Math.Floor(damage * 1.1);
+                }
 
-                    if (m_From != null && m_Mobile != m_From && m_From.InRange(m_Mobile.Location, 1) && m_Poison.m_Level >= 14 && m_Poison.m_Level <= 18) // parasitic
-                    {
-                        int toHeal = Math.Min(m_From.HitsMax - m_From.Hits, damage);
+                if (m_From != null && m_Mobile != m_From && m_From.InRange(m_Mobile.Location, 1) && m_Poison.m_Level >= 14 && m_Poison.m_Level <= 18) // parasitic
+                {
+                    int toHeal = Math.Min(m_From.HitsMax - m_From.Hits, damage);
 
-                        if (toHeal > 0)
-                        {
-                            m_From.SendLocalizedMessage(1060203, toHeal.ToString()); // You have had ~1_HEALED_AMOUNT~ hit points of damage healed.
-                            m_From.Heal(toHeal, m_Mobile, false);
-                        }
+                    if (toHeal > 0)
+                    {
+                        m_From.SendLocalizedMessage(1060203, toHeal.ToString()); // You have had ~1_HEALED_AMOUNT~ hit points of damage healed.
+                        m_From.Heal(toHeal, m_Mobile, false);
                     }
                 }
-                #endregion
 
                 AOS.Damage(m_Mobile, m_From, damage, 0, 0, 0, 100, 0);
 

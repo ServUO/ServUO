@@ -70,7 +70,7 @@ namespace Server.Engines.Harvest
             fish.ConsumedPerFeluccaHarvest = 1;
 
             // The fishing
-            fish.EffectActions = new int[] { Core.SA ? 6 : 12 };
+            fish.EffectActions = new int[] { 6 };
             fish.EffectSounds = new int[0];
             fish.EffectCounts = new int[] { 1 };
             fish.EffectDelay = TimeSpan.Zero;
@@ -96,15 +96,12 @@ namespace Server.Engines.Harvest
             fish.Resources = res;
             fish.Veins = veins;
 
-            if (Core.ML)
+            fish.BonusResources = new BonusHarvestResource[]
             {
-                fish.BonusResources = new BonusHarvestResource[]
-                {
-                    new BonusHarvestResource(0, 97.0, null, null), //set to same chance as mining ml gems
-			        new BonusHarvestResource(80.0, 2.0, 1113764, typeof(DelicateScales)),
-                	new BonusHarvestResource(80.0, 1.0, 1072597, typeof(WhitePearl))
-                };
-            }
+                new BonusHarvestResource(0, 97.0, null, null), //set to same chance as mining ml gems
+			    new BonusHarvestResource(80.0, 2.0, 1113764, typeof(DelicateScales)),
+                new BonusHarvestResource(80.0, 1.0, 1072597, typeof(WhitePearl))
+            };
 
             this.m_Definition = fish;
             this.Definitions.Add(fish);
@@ -218,7 +215,7 @@ namespace Server.Engines.Harvest
                 }
 
                 #region High Seas Charydbis
-                if (Core.HS && tool is FishingPole && CharydbisSpawner.SpawnInstance != null && CharydbisSpawner.SpawnInstance.IsSummoned)
+                if (tool is FishingPole && CharydbisSpawner.SpawnInstance != null && CharydbisSpawner.SpawnInstance.IsSummoned)
                 {
                     Item oracle = from.Backpack.FindItemByType(typeof(OracleOfTheSea));
                     FishingPole pole = tool as FishingPole;
@@ -320,19 +317,13 @@ namespace Server.Engines.Harvest
 
         public override Item Construct(Type type, Mobile from, Item tool)
         {
-            // Searing Weapon Support
+            // Searing Weapon Support, handled elsewhere
             if (type == typeof(BaseWeapon))
                 return null;
 
             if (type == typeof(TreasureMap))
             {
-                int level;
-                if (from is PlayerMobile && ((PlayerMobile)from).Young && from.Map == Map.Trammel && TreasureMap.IsInHavenIsland(from))
-                    level = 0;
-                else
-                    level = 1;
-
-                return new TreasureMap(level, from.Map == Map.Felucca ? Map.Felucca : Map.Trammel);
+                return new TreasureMap(0, from.Map == Map.Felucca ? Map.Felucca : Map.Trammel);
             }
             else if (type == typeof(MessageInABottle))
             {
@@ -358,7 +349,7 @@ namespace Server.Engines.Harvest
                         Item preLoot = null;
                         bool dredge = HasTypeHook(tool, HookType.Dredging);
 
-                        switch (Utility.Random(Core.HS ? 17 : 16))
+                        switch (Utility.Random(17))
                         {
                             case 0: // Body parts
                             case 1:
@@ -709,8 +700,7 @@ namespace Server.Engines.Harvest
                 Timer.DelayCall(TimeSpan.FromSeconds(1.5),
                     delegate
                     {
-                        if (Core.ML)
-                            from.RevealingAction();
+                        from.RevealingAction();
 
                         int sound = 0x364;
                         int effect = 0x352D;
@@ -730,8 +720,7 @@ namespace Server.Engines.Harvest
         {
             base.OnHarvestFinished(from, tool, def, vein, bank, resource, harvested);
 
-            if (Core.ML)
-                from.RevealingAction();
+            from.RevealingAction();
         }
 
         public override object GetLock(Mobile from, Item tool, HarvestDefinition def, object toHarvest)

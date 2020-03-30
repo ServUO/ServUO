@@ -426,14 +426,7 @@ namespace Server.Engines.Harvest
 
             if (!from.Mounted)
             {
-                if (Core.SA)
-                {
-                    from.Animate(AnimationType.Attack, Utility.RandomList(def.EffectActions));
-                }
-                else
-                {
-                    from.Animate(Utility.RandomList(def.EffectActions), 5, 1, true, false, 0);
-                }
+                from.Animate(AnimationType.Attack, Utility.RandomList(def.EffectActions));
             }
         }
 

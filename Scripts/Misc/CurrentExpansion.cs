@@ -32,11 +32,6 @@ namespace Server
 			Mobile.GuildClickMessage = false; // Maybe we can remove after?
 			Mobile.AsciiClickMessage = false; // Maybe we can remove after?
 
-			if (!Core.AOS)
-			{
-				return;
-			}
-
 			AOS.DisableStatInfluences();
 
 			if (ObjectPropertyList.Enabled)

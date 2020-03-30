@@ -228,41 +228,36 @@ namespace Server.Items
                 #region Magical Items
                 double propsScale = 1.0;
 
-                if (Core.SE)
+                switch (level)
                 {
-                    switch (level)
-                    {
-                        case 1:
-                            count = isSos ? Utility.RandomMinMax(2, 6) : 32;
-							propsScale = 0.5625;
-                            break;
-                        case 2:
-                            count = isSos ? Utility.RandomMinMax(10, 15) : 40;
-							propsScale = 0.6875;
-                            break;
-                        case 3:
-                            count = isSos ? Utility.RandomMinMax(15, 20) : 48;
-							propsScale = 0.875;
-                            break;
-                        case 4:
-                            count = isSos ? Utility.RandomMinMax(15, 20) : 56;
-                            break;
-                        case 5:
-                            count = isSos ? Utility.RandomMinMax(15, 20) : 64;
-                            break;
-                        case 6:
-                            count = isSos ? Utility.RandomMinMax(15, 20) : 72;
-                            break;
-                        case 7:
-                            count = isSos ? Utility.RandomMinMax(15, 20) : 80;
-                            break;
-                        default:
-                            count = 0;
-                            break;
-                    }
+                    case 1:
+                        count = isSos ? Utility.RandomMinMax(2, 6) : 32;
+						propsScale = 0.5625;
+                        break;
+                    case 2:
+                        count = isSos ? Utility.RandomMinMax(10, 15) : 40;
+						propsScale = 0.6875;
+                        break;
+                    case 3:
+                        count = isSos ? Utility.RandomMinMax(15, 20) : 48;
+						propsScale = 0.875;
+                        break;
+                    case 4:
+                        count = isSos ? Utility.RandomMinMax(15, 20) : 56;
+                        break;
+                    case 5:
+                        count = isSos ? Utility.RandomMinMax(15, 20) : 64;
+                        break;
+                    case 6:
+                        count = isSos ? Utility.RandomMinMax(15, 20) : 72;
+                        break;
+                    case 7:
+                        count = isSos ? Utility.RandomMinMax(15, 20) : 80;
+                        break;
+                    default:
+                        count = 0;
+                        break;
                 }
-                else
-                    count = level * 6;
 
                 for (int i = 0; i < count; ++i)
                 {
@@ -270,7 +265,7 @@ namespace Server.Items
 
                     item = Loot.RandomArmorOrShieldOrWeaponOrJewelry();
 
-                    if (item != null && Core.HS && RandomItemGenerator.Enabled)
+                    if (item != null && RandomItemGenerator.Enabled)
                     {
                         int min, max;
                         GetRandomItemStat(out min, out max, propsScale);
@@ -437,15 +432,12 @@ namespace Server.Items
             if (special != null)
                 cont.DropItem(special);
 
-            if (Core.SA)
-            {
-                int rolls = 2;
+            int rolls = 2;
 
-                if (level >= 5)
-                    rolls += level - 2;
+            if (level >= 5)
+                rolls += level - 2;
 
-                RefinementComponent.Roll(cont, rolls, 0.10);
-            }
+            RefinementComponent.Roll(cont, rolls, 0.10);
         }
 
         private static Item GetRandomSpecial(int level, Map map)
@@ -730,7 +722,7 @@ namespace Server.Items
         {
             base.LockPick(from);
 
-            if (Map != null && ((TreasureMapInfo.NewSystem && FailedLockpick) || (Core.SA && 0.05 >= Utility.RandomDouble())))
+            if (Map != null && ((TreasureMapInfo.NewSystem && FailedLockpick) || 0.05 >= Utility.RandomDouble()))
             {
                 var grubber = new Grubber();
                 grubber.MoveToWorld(Map.GetSpawnPosition(Location, 1), Map);
@@ -819,71 +811,35 @@ namespace Server.Items
         {
             int rnd = Utility.Random(15);
 
-            if (Core.SE)
+            if (rnd < 1)
             {
-                if (rnd < 1)
-                {
-                    attributeCount = Utility.RandomMinMax(3, 5);
-                    min = 50;
-                    max = 100;
-                }
-                else if (rnd < 3)
-                {
-                    attributeCount = Utility.RandomMinMax(2, 5);
-                    min = 40;
-                    max = 80;
-                }
-                else if (rnd < 6)
-                {
-                    attributeCount = Utility.RandomMinMax(2, 4);
-                    min = 30;
-                    max = 60;
-                }
-                else if (rnd < 10)
-                {
-                    attributeCount = Utility.RandomMinMax(1, 3);
-                    min = 20;
-                    max = 40;
-                }
-                else
-                {
-                    attributeCount = 1;
-                    min = 10;
-                    max = 20;
-                }
+                attributeCount = Utility.RandomMinMax(3, 5);
+                min = 50;
+                max = 100;
+            }
+            else if (rnd < 3)
+            {
+                attributeCount = Utility.RandomMinMax(2, 5);
+                min = 40;
+                max = 80;
+            }
+            else if (rnd < 6)
+            {
+                attributeCount = Utility.RandomMinMax(2, 4);
+                min = 30;
+                max = 60;
+            }
+            else if (rnd < 10)
+            {
+                attributeCount = Utility.RandomMinMax(1, 3);
+                min = 20;
+                max = 40;
             }
             else
             {
-                if (rnd < 1)
-                {
-                    attributeCount = Utility.RandomMinMax(2, 5);
-                    min = 20;
-                    max = 70;
-                }
-                else if (rnd < 3)
-                {
-                    attributeCount = Utility.RandomMinMax(2, 4);
-                    min = 20;
-                    max = 50;
-                }
-                else if (rnd < 6)
-                {
-                    attributeCount = Utility.RandomMinMax(2, 3);
-                    min = 20;
-                    max = 40;
-                }
-                else if (rnd < 10)
-                {
-                    attributeCount = Utility.RandomMinMax(1, 2);
-                    min = 10;
-                    max = 30;
-                }
-                else
-                {
-                    attributeCount = 1;
-                    min = 10;
-                    max = 20;
-                }
+                attributeCount = 1;
+                min = 10;
+                max = 20;
             }
         }
 

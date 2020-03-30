@@ -1729,12 +1729,7 @@ namespace Server.Engines.Craft
 				{
 					item = customCraft.CompleteCraft(out num);
 				}
-				else if (!Core.SA && typeof(MapItem).IsAssignableFrom(ItemType) && from.Map != Map.Trammel && from.Map != Map.Felucca)
-				{
-					item = new IndecipherableMap();
-					from.SendLocalizedMessage(1070800); // The map you create becomes mysteriously indecipherable.
-				}
-                else if (CreateItem != null)
+				else if (CreateItem != null)
                 {
                     item = CreateItem(from, this, tool);
                 }
@@ -1788,12 +1783,12 @@ namespace Server.Engines.Craft
                             oldItem.Delete();
                         }
 					}
-					#endregion
-
-                    #region High Seas
-                    if (Core.HS && item is MapItem)
-                        ((MapItem)item).Facet = from.Map;
                     #endregion
+
+                    if (item is MapItem)
+                    {
+                        ((MapItem)item).Facet = from.Map;
+                    }
 
                     CraftContext context = craftSystem.GetContext(from);
                     int originalHue = item.Hue;

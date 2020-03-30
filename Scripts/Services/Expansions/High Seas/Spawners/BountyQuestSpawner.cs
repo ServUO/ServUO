@@ -647,25 +647,11 @@ namespace Server.Engines.Quests
 
                     if (Utility.RandomBool())
                     {
-                        if (Core.EJ)
-                        {
-                            deed = new CarronadeDeed();
-                        }
-                        else
-                        {
-                            deed = new HeavyShipCannonDeed();
-                        }
+                        deed = new CarronadeDeed();
                     }
                     else
                     {
-                        if (Core.EJ)
-                        {
-                            deed = new CulverinDeed();
-                        }
-                        else
-                        {
-                            deed = new LightShipCannonDeed();
-                        }
+                        deed = new CulverinDeed();
                     }
 
                     hold.DropItem(deed);

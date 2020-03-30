@@ -5556,39 +5556,24 @@ namespace Server.Mobiles
             int treasureLevel = TreasureMapInfo.ConvertLevel(TreasureMapLevel);
             GetLootingRights();
 
-            if (treasureLevel == 1 && Map == Map.Trammel && TreasureMap.IsInHavenIsland(this))
-            {
-                Mobile killer = LastKiller;
-
-                if (killer is BaseCreature)
-                {
-                    killer = ((BaseCreature)killer).GetMaster();
-                }
-
-                if (killer is PlayerMobile && ((PlayerMobile)killer).Young)
-                {
-                    treasureLevel = 0;
-                }
-            }
-
             if (!Summoned && !NoKillAwards && !IsBonded && !NoLootOnDeath)
             {
                 if (treasureLevel >= 0)
                 {
-					if (m_Paragon && Paragon.ChestChance > Utility.RandomDouble())
-					{
-						PackItem( new ParagonChest( this.Name, treasureLevel ) );
-					}
-                    else if (TreasureMapChance >= Utility.RandomDouble())
-                    {
-                        Map map = Map;
-
-                        if (map == Map.Trammel && Siege.SiegeShard)
-                            map = Map.Felucca;
-
-                        PackItem(new TreasureMap(treasureLevel, map, SpellHelper.IsEodon(map, Location)));
-                    }
+                if (m_Paragon && Paragon.ChestChance > Utility.RandomDouble())
+                {
+                  PackItem( new ParagonChest( this.Name, treasureLevel ) );
                 }
+                else if (TreasureMapChance >= Utility.RandomDouble())
+                {
+                    Map map = Map;
+
+                    if (map == Map.Trammel && Siege.SiegeShard)
+                        map = Map.Felucca;
+
+                    PackItem(new TreasureMap(treasureLevel, map, SpellHelper.IsEodon(map, Location)));
+                }
+            }
 
                 if (m_Paragon && Paragon.ChocolateIngredientChance > Utility.RandomDouble())
                 {

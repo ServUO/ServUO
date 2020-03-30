@@ -83,11 +83,6 @@ namespace Server.Misc
                 }
             }
 
-            if (!Core.SA && ((from.Stam * 100) / Math.Max(from.StamMax, 1)) < 10)
-            {
-                --from.Stam;
-            }
-
             if (from.Stam == 0)
             {
                 from.SendLocalizedMessage(from.Mounted ? 500108 : 500110); // Your mount is too fatigued to move. : You are too fatigued to move.
@@ -99,7 +94,7 @@ namespace Server.Misc
 
             if (pm != null)
             {
-                int amt = Core.SA ? 10 : (from.Mounted ? 48 : 16);
+                int amt = 10;
 
                 if ((++pm.StepsTaken % amt) == 0)
                     --from.Stam;

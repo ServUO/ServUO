@@ -397,7 +397,7 @@ namespace Server.Items
                 new PropInfo(1, 10, 100, 100), new PropInfo(2, 10, 100, 100), new PropInfo(3, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(4, 15, 15), new PropInfo(5, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(6, 15, 15, new int[] { 20 })));
 
             Register(60, new ItemPropertyInfo("WeaponVelocity", 1080416, 130, typeof(RelicFragment), typeof(Tourmaline),	typeof(EssenceDirection), 1, 2, 50, 1112048,
-                new PropInfo(1, 50, 50), new PropInfo(2, 50, 50)));
+                new PropInfo(2, 50, 50)));
 
             Register(61, new ItemPropertyInfo(AosAttribute.BalancedWeapon, 1072792, 150, typeof(RelicFragment), typeof(Amber), typeof(EssenceBalance), 0, 1, 1, 1112047,
                 new PropInfo(1, 1, 1), new PropInfo(2, 1, 1)));
@@ -678,7 +678,7 @@ namespace Server.Items
                 // First, we try to get the max intensity from the PropInfo. If null or we're getting an intensity for imbuing purpopses, we go to the default MaxIntenity
                 if (info == null || (imbuing && !_ForceUseNewTable.Any(i => i == id)))
                 {
-                    if (Core.SA && item is BaseWeapon && (id == 25 || id == 27))
+                    if (item is BaseWeapon && (id == 25 || id == 27))
                     {
                         return GetSpecialMaxIntensity((BaseWeapon)item);
                     }
@@ -687,7 +687,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    if (Core.SA && item is BaseWeapon && (id == 25 || id == 27))
+                    if (item is BaseWeapon && (id == 25 || id == 27))
                     {
                         return GetSpecialMaxIntensity((BaseWeapon)item);
                     }
@@ -995,6 +995,21 @@ namespace Server.Items
 
             if (str == "SearingWeapon")
                 return 62;
+
+            if (str == "Slayer")
+                return 101;
+
+            if (str == "ElementalDamage")
+                return 51;
+
+            if (str == "HitSpell")
+                return 37;
+
+            if (str == "HitArea")
+                return 30;
+
+            if (str == "RandomEater")
+                return 208;
 
             return -1;
         }

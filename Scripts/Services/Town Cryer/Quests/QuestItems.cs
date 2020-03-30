@@ -55,19 +55,16 @@ namespace Server.Engines.Quests
 
         public static void Initialize()
         {
-            if (Core.TOL)
+            if (TramInstance == null)
             {
-                if (TramInstance == null)
-                {
-                    TramInstance = new CorpseOfBennetYardley();
-                    TramInstance.MoveToWorld(new Point3D(5688, 653, 0), Map.Trammel);
-                }
+                TramInstance = new CorpseOfBennetYardley();
+                TramInstance.MoveToWorld(new Point3D(5688, 653, 0), Map.Trammel);
+            }
 
-                if (FelInstance == null)
-                {
-                    FelInstance = new CorpseOfBennetYardley();
-                    FelInstance.MoveToWorld(new Point3D(5688, 653, 0), Map.Felucca);
-                }
+            if (FelInstance == null)
+            {
+                FelInstance = new CorpseOfBennetYardley();
+                FelInstance.MoveToWorld(new Point3D(5688, 653, 0), Map.Felucca);
             }
         }
 
@@ -131,9 +128,6 @@ namespace Server.Engines.Quests
             {
                 FelInstance = this;
             }
-
-            if (!Core.TOL)
-                Delete();
         }
     }
 
@@ -492,19 +486,16 @@ namespace Server.Engines.Quests
 
         public static void Initialize()
         {
-            if (Core.TOL)
+            if (TramInstance == null)
             {
-                if (TramInstance == null)
-                {
-                    TramInstance = new PaladinCorpse();
-                    TramInstance.MoveToWorld(new Point3D(5396, 118, 0), Map.Trammel);
-                }
+                TramInstance = new PaladinCorpse();
+                TramInstance.MoveToWorld(new Point3D(5396, 118, 0), Map.Trammel);
+            }
 
-                if (FelInstance == null)
-                {
-                    FelInstance = new PaladinCorpse();
-                    FelInstance.MoveToWorld(new Point3D(5396, 118, 0), Map.Felucca);
-                }
+            if (FelInstance == null)
+            {
+                FelInstance = new PaladinCorpse();
+                FelInstance.MoveToWorld(new Point3D(5396, 118, 0), Map.Felucca);
             }
         }
 
@@ -550,9 +541,6 @@ namespace Server.Engines.Quests
             {
                 FelInstance = this;
             }
-
-            if (!Core.TOL)
-                Delete();
         }
     }
 

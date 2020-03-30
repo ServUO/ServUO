@@ -44,11 +44,8 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(WarHammer), 25, 20, 0x1439, 0));
                 Add(new GenericBuyInfo(typeof(WarMace), 31, 20, 0x1407, 0));
 
-                if (Core.AOS)
-                {
-                    Add(new GenericBuyInfo(typeof(Scepter), 39, 20, 0x26BC, 0));
-                    Add(new GenericBuyInfo(typeof(BladedStaff), 40, 20, 0x26BD, 0));
-                }
+                Add(new GenericBuyInfo(typeof(Scepter), 39, 20, 0x26BC, 0));
+                Add(new GenericBuyInfo(typeof(BladedStaff), 40, 20, 0x26BD, 0));
 
                 Add(new GenericBuyInfo(typeof(Hatchet), 25, 20, 0xF44, 0));
                 Add(new GenericBuyInfo(typeof(Hatchet), 27, 20, 0xF43, 0));
@@ -97,17 +94,14 @@ namespace Server.Mobiles
                             Add(new GenericBuyInfo(typeof(LargeBattleAxe), 33, 20, 0x13FB, 0));
                             Add(new GenericBuyInfo(typeof(WarAxe), 29, 20, 0x13B0, 0));
 
-                            if (Core.AOS)
-                            {
-                                Add(new GenericBuyInfo(typeof(BoneHarvester), 35, 20, 0x26BB, 0));
-                                Add(new GenericBuyInfo(typeof(CrescentBlade), 37, 20, 0x26C1, 0));
-                                Add(new GenericBuyInfo(typeof(DoubleBladedStaff), 35, 20, 0x26BF, 0));
-                                Add(new GenericBuyInfo(typeof(Lance), 34, 20, 0x26C0, 0));
-                                Add(new GenericBuyInfo(typeof(Pike), 39, 20, 0x26BE, 0));
-                                Add(new GenericBuyInfo(typeof(Scythe), 39, 20, 0x26BA, 0));
-                                Add(new GenericBuyInfo(typeof(CompositeBow), 50, 20, 0x26C2, 0));
-                                Add(new GenericBuyInfo(typeof(RepeatingCrossbow), 57, 20, 0x26C3, 0));
-                            }
+                            Add(new GenericBuyInfo(typeof(BoneHarvester), 35, 20, 0x26BB, 0));
+                            Add(new GenericBuyInfo(typeof(CrescentBlade), 37, 20, 0x26C1, 0));
+                            Add(new GenericBuyInfo(typeof(DoubleBladedStaff), 35, 20, 0x26BF, 0));
+                            Add(new GenericBuyInfo(typeof(Lance), 34, 20, 0x26C0, 0));
+                            Add(new GenericBuyInfo(typeof(Pike), 39, 20, 0x26BE, 0));
+                            Add(new GenericBuyInfo(typeof(Scythe), 39, 20, 0x26BA, 0));
+                            Add(new GenericBuyInfo(typeof(CompositeBow), 50, 20, 0x26C2, 0));
+                            Add(new GenericBuyInfo(typeof(RepeatingCrossbow), 57, 20, 0x26C3, 0));
 
                             break;
                         }
@@ -147,21 +141,18 @@ namespace Server.Mobiles
                 Add(typeof(Bow), 17);
                 Add(typeof(Crossbow), 23); 
 
-                if (Core.AOS)
-                {
-                    Add(typeof(CompositeBow), 25);
-                    Add(typeof(RepeatingCrossbow), 28);
-                    Add(typeof(Scepter), 20);
-                    Add(typeof(BladedStaff), 20);
-                    Add(typeof(Scythe), 19);
-                    Add(typeof(BoneHarvester), 17);
-                    Add(typeof(Scepter), 18);
-                    Add(typeof(BladedStaff), 16);
-                    Add(typeof(Pike), 19);
-                    Add(typeof(DoubleBladedStaff), 17);
-                    Add(typeof(Lance), 17);
-                    Add(typeof(CrescentBlade), 18);
-                }
+                Add(typeof(CompositeBow), 25);
+                Add(typeof(RepeatingCrossbow), 28);
+                Add(typeof(Scepter), 20);
+                Add(typeof(BladedStaff), 20);
+                Add(typeof(Scythe), 19);
+                Add(typeof(BoneHarvester), 17);
+                Add(typeof(Scepter), 18);
+                Add(typeof(BladedStaff), 16);
+                Add(typeof(Pike), 19);
+                Add(typeof(DoubleBladedStaff), 17);
+                Add(typeof(Lance), 17);
+                Add(typeof(CrescentBlade), 18);
 
                 Add(typeof(Spear), 15);
                 Add(typeof(Pitchfork), 9);

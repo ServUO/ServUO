@@ -267,10 +267,7 @@ namespace Server.Engines.Quests.RitualQuest
 
             public static void Initialize()
             {
-                if (Core.SA)
-                {
-                    new BexilRegion();
-                }
+                new BexilRegion();
             }
 
             public BexilRegion()

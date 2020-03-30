@@ -69,6 +69,8 @@ namespace Server.Spells.Mysticism
 
                         double damage = (((Caster.Skills[CastSkill].Value + (Caster.Skills[DamageSkill].Value / 2)) * .66) + Utility.RandomMinMax(1, 6));
 
+                        Caster.DoHarmful(d);
+
                         SpellHelper.Damage(this, d, damage, 0, 0, 0, 0, 0, 100, 0);
 
                         if (d is Mobile)

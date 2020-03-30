@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using System;
 using Server.Items;
 using Server.Multis;
@@ -136,19 +136,16 @@ namespace Server.Mobiles
 
         public static void Initialize()
         {
-            if (Core.HS)
+            if (TramInstance == null)
             {
-                if (TramInstance == null)
-                {
-                    TramInstance = new SeaMarketOfficer();
-                    TramInstance.MoveToWorld(new Point3D(4543, 2299, -1), Map.Trammel);
-                }
+                TramInstance = new SeaMarketOfficer();
+                TramInstance.MoveToWorld(new Point3D(4543, 2299, -1), Map.Trammel);
+            }
 
-                if (FelInstance == null)
-                {
-                    FelInstance = new SeaMarketOfficer();
-                    FelInstance.MoveToWorld(new Point3D(4543, 2299, -1), Map.Felucca);
-                }
+            if (FelInstance == null)
+            {
+                FelInstance = new SeaMarketOfficer();
+                FelInstance.MoveToWorld(new Point3D(4543, 2299, -1), Map.Felucca);
             }
         }
     }

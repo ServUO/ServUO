@@ -339,9 +339,6 @@ namespace Server.Engines.ResortAndCasino
             SpeechHue = 1276;
             Hue = Utility.RandomSkinHue();
 
-            if (IsInvulnerable && !Core.AOS)
-                NameHue = 0x35;
-
             Female = true;
             Body = 0x191;
             HairItemID = Race.RandomHair(true);

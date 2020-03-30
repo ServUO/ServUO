@@ -163,7 +163,7 @@ namespace Server.SkillHandlers
 				{
 					m_Thief.SendLocalizedMessage(502710); // You can't steal that!
 				}
-				else if (Core.AOS && si == null && toSteal is Container && !ItemFlags.GetStealable(toSteal))
+				else if (si == null && toSteal is Container && !ItemFlags.GetStealable(toSteal))
 				{
 					m_Thief.SendLocalizedMessage(502710); // You can't steal that!
 				}

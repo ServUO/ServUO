@@ -142,12 +142,6 @@ namespace Server.Misc
                 else if (offset < 0)
                     m.SendLocalizedMessage(1019063); // You have lost a little karma.
             }
-
-            if (!Core.AOS && wasPositiveKarma && m.Karma < 0 && m is PlayerMobile && !((PlayerMobile)m).KarmaLocked)
-            {
-                ((PlayerMobile)m).KarmaLocked = true;
-                m.SendLocalizedMessage(1042511, "", 0x22); // Karma is locked.  A mantra spoken at a shrine will unlock it again.
-            }
         }
 
         public static List<string> GetFameKarmaEntries(Mobile m)
@@ -217,11 +211,11 @@ namespace Server.Misc
 
             bool showSkillTitle = beheld.ShowFameTitle && ((beholder == beheld) || (beheld.Fame >= 5000));
 
-            if (Core.SA && beheld.ShowFameTitle && beheld is PlayerMobile && ((PlayerMobile)beheld).FameKarmaTitle != null)
+            if (beheld.ShowFameTitle && beheld is PlayerMobile && ((PlayerMobile)beheld).FameKarmaTitle != null)
             {
                 title.AppendFormat(((PlayerMobile)beheld).FameKarmaTitle, beheld.Name, beheld.Female ? "Lady" : "Lord");
             }
-			else if (beheld.ShowFameTitle || (beholder == beheld))
+            else if (beheld.ShowFameTitle || (beholder == beheld))
             {
                 title.Append(ComputeFameTitle(beheld));
             }
@@ -234,63 +228,16 @@ namespace Server.Misc
             {
                 PlayerMobile.ChampionTitleInfo info = ((PlayerMobile)beheld).ChampionTitles;
 
-                if (Core.SA)
-                {
-                    if (((PlayerMobile)beheld).CurrentChampTitle != null)
-                        title.AppendFormat(((PlayerMobile)beheld).CurrentChampTitle);
-                }
-				else if (info.Harrower > 0)
-                    title.AppendFormat(": {0} of Evil", HarrowerTitles[Math.Min(HarrowerTitles.Length, info.Harrower) - 1]);
-                else
-                {
-                    int highestValue = 0, highestType = 0;
-                    for (int i = 0; i < ChampionSpawnInfo.Table.Length; i++)
-                    {
-                        int v = info.GetValue(i);
-
-                        if (v > highestValue)
-                        {
-                            highestValue = v;
-                            highestType = i;
-                        }
-                    }
-
-                    int offset = 0;
-                    if (highestValue > 800)
-                        offset = 3;
-                    else if (highestValue > 300)
-                        offset = (int)(highestValue / 300);
-
-                    if (offset > 0)
-                    {
-                        ChampionSpawnInfo champInfo = ChampionSpawnInfo.GetInfo((ChampionSpawnType)highestType);
-                        title.AppendFormat(": {0} of the {1}", champInfo.LevelNames[Math.Min(offset, champInfo.LevelNames.Length) - 1], champInfo.Name);
-                    }
-                }
+                if (((PlayerMobile)beheld).CurrentChampTitle != null)
+                    title.AppendFormat(((PlayerMobile)beheld).CurrentChampTitle);
             }
 
             string customTitle = beheld.Title;
 
-            if (Core.SA)
-            {
-                if (beheld is PlayerMobile && ((PlayerMobile)beheld).PaperdollSkillTitle != null)
-                    title.Append(", ").Append(((PlayerMobile)beheld).PaperdollSkillTitle);
-                else if (beheld is BaseVendor) 
-					title.AppendFormat(" {0}", customTitle);
-            }
-            else if (customTitle != null && (customTitle = customTitle.Trim()).Length > 0)
-            {
+            if (beheld is PlayerMobile && ((PlayerMobile)beheld).PaperdollSkillTitle != null)
+                title.Append(", ").Append(((PlayerMobile)beheld).PaperdollSkillTitle);
+            else if (beheld is BaseVendor)
                 title.AppendFormat(" {0}", customTitle);
-            }
-            else if (showSkillTitle && beheld.Player)
-            {
-                string skillTitle = GetSkillTitle(beheld);
-
-                if (skillTitle != null)
-                {
-                    title.Append(", ").Append(skillTitle);
-                }
-            }
 
             return title.ToString();
         }
@@ -332,9 +279,6 @@ namespace Server.Misc
         private static Skill GetHighestSkill(Mobile m)
         {
             Skills skills = m.Skills;
-
-            if (!Core.AOS)
-                return skills.Highest;
 
             Skill highest = null;
 

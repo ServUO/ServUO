@@ -42,7 +42,7 @@ namespace Server.Gumps
             {
                 if (ai.Attacker.Player && ai.CanReportMurder && !ai.Reported)
                 {
-                    if (!Core.SE || !((PlayerMobile)m).RecentlyReported.Contains(ai.Attacker))
+                    if (!((PlayerMobile)m).RecentlyReported.Contains(ai.Attacker))
                     {
                         if (!killers.Contains(ai.Attacker))
                         {
@@ -123,11 +123,8 @@ namespace Server.Gumps
                             killer.Kills++;
                             killer.ShortTermMurders++;
 
-                            if (Core.SE)
-                            {
-                                ((PlayerMobile)from).RecentlyReported.Add(killer);
-                                Timer.DelayCall(TimeSpan.FromMinutes(10), new TimerStateCallback(ReportedListExpiry_Callback), new object[] { from, killer });
-                            }
+                            ((PlayerMobile)from).RecentlyReported.Add(killer);
+                            Timer.DelayCall(TimeSpan.FromMinutes(10), new TimerStateCallback(ReportedListExpiry_Callback), new object[] { from, killer });
 
                             if (killer is PlayerMobile)
                             {

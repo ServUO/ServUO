@@ -1,4 +1,4 @@
-﻿using Server.Items;
+using Server.Items;
 using System;
 
 namespace Server.Mobiles
@@ -140,7 +140,7 @@ namespace Server.Mobiles
         public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
         public override bool BleedImmune { get { return true; } }
         public override bool DeleteOnRelease { get { return true; } }
-        public override bool BardImmune { get { return !Core.AOS || Controlled; } }
+        public override bool BardImmune { get { return Controlled; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
         public override bool CanAngerOnTame { get { return true; } }
         public override bool StatLossAfterTame { get { return true; } }
