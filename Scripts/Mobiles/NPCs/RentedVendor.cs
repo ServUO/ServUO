@@ -189,7 +189,7 @@ namespace Server.Mobiles
         }
         public override bool IsOwner(Mobile m)
         {
-            return m == Owner || m.AccessLevel >= AccessLevel.GameMaster || (Core.ML && AccountHandler.CheckAccount(m, Owner));
+            return m == Owner || m.AccessLevel >= AccessLevel.GameMaster || AccountHandler.CheckAccount(m, Owner);
         }
 
         public bool IsLandlord(Mobile m)

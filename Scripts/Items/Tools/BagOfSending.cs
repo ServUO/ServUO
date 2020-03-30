@@ -302,13 +302,13 @@ namespace Server.Items
                     {
                         MessageHelper.SendLocalizedMessageTo(m_Bag, from, 1054110, 0x59); // Your bank box is full.
                     }
-                    else if (Core.ML && reqCharges > m_Bag.Charges)
+                    else if (reqCharges > m_Bag.Charges)
                     {
                         from.SendLocalizedMessage(1079932); //You don't have enough charges to send that much weight
                     }
                     else
                     {
-                        m_Bag.Charges -= (Core.ML ? reqCharges : 1);
+                        m_Bag.Charges -= reqCharges;
                         MessageHelper.SendLocalizedMessageTo(m_Bag, from, 1054150, 0x59); // The item was placed in your bank box.
                     }
                 }

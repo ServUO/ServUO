@@ -86,16 +86,6 @@ namespace Server.Mobiles
         }
 
         #region Pack Animal Methods
-        public override bool OnBeforeDeath()
-        {
-            if (!base.OnBeforeDeath())
-                return false;
-
-            PackAnimal.CombineBackpacks(this);
-
-            return true;
-        }
-
         public override DeathMoveResult GetInventoryMoveResultFor(Item item)
         {
             return DeathMoveResult.MoveToCorpse;
@@ -200,32 +190,6 @@ namespace Server.Mobiles
                 return true;
 
             return false;
-        }
-
-        public static void CombineBackpacks(BaseCreature animal)
-        {
-            if (Core.AOS)
-                return;
-
-            if (animal.IsBonded || animal.IsDeadPet)
-                return;
-
-            Container pack = animal.Backpack;
-
-            if (pack != null)
-            {
-                Container newPack = new Backpack();
-
-                for (int i = pack.Items.Count - 1; i >= 0; --i)
-                {
-                    if (i >= pack.Items.Count)
-                        continue;
-
-                    newPack.DropItem(pack.Items[i]);
-                }
-
-                pack.DropItem(newPack);
-            }
         }
 
         public static void TryPackOpen(BaseCreature animal, Mobile from)

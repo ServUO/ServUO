@@ -79,7 +79,7 @@ namespace Server.Items
 		public virtual void CheckGate(Mobile m, int range)
 		{
 			#region Mondain's Legacy
-			if (m.Hidden && m.IsPlayer() && Core.ML)
+			if (m.Hidden && m.IsPlayer())
 				m.RevealingAction();
 			#endregion
 
@@ -374,81 +374,56 @@ namespace Server.Items
 
 		public MoongateConfirmGump(Mobile from, Moongate gate)
 			: base(Core.AOS ? 110 : 20, Core.AOS ? 100 : 30)
-		{
-			m_From = from;
-			m_Gate = gate;
+        {
+            m_From = from;
+            m_Gate = gate;
 
-			if (Core.AOS)
-			{
-				Closable = false;
+            Closable = false;
 
-				AddPage(0);
+            AddPage(0);
 
-				AddBackground(0, 0, 420, 280, 5054);
+            AddBackground(0, 0, 420, 280, 5054);
 
-				AddImageTiled(10, 10, 400, 20, 2624);
-				AddAlphaRegion(10, 10, 400, 20);
+            AddImageTiled(10, 10, 400, 20, 2624);
+            AddAlphaRegion(10, 10, 400, 20);
 
-				AddHtmlLocalized(10, 10, 400, 20, 1062051, 30720, false, false); // Gate Warning
+            AddHtmlLocalized(10, 10, 400, 20, 1062051, 30720, false, false); // Gate Warning
 
-				AddImageTiled(10, 40, 400, 200, 2624);
-				AddAlphaRegion(10, 40, 400, 200);
+            AddImageTiled(10, 40, 400, 200, 2624);
+            AddAlphaRegion(10, 40, 400, 200);
 
-				if (from.Map != Map.Felucca && gate.TargetMap == Map.Felucca && gate.ShowFeluccaWarning)
-					AddHtmlLocalized(
-						10,
-						40,
-						400,
-						200,
-						1062050,
-						32512,
-						false,
-						true); // This Gate goes to Felucca... Continue to enter the gate, Cancel to stay here
-				else
-					AddHtmlLocalized(
-						10,
-						40,
-						400,
-						200,
-						1062049,
-						32512,
-						false,
-						true); // Dost thou wish to step into the moongate? Continue to enter the gate, Cancel to stay here
+            if (from.Map != Map.Felucca && gate.TargetMap == Map.Felucca && gate.ShowFeluccaWarning)
+                AddHtmlLocalized(
+                    10,
+                    40,
+                    400,
+                    200,
+                    1062050,
+                    32512,
+                    false,
+                    true); // This Gate goes to Felucca... Continue to enter the gate, Cancel to stay here
+            else
+                AddHtmlLocalized(
+                    10,
+                    40,
+                    400,
+                    200,
+                    1062049,
+                    32512,
+                    false,
+                    true); // Dost thou wish to step into the moongate? Continue to enter the gate, Cancel to stay here
 
-				AddImageTiled(10, 250, 400, 20, 2624);
-				AddAlphaRegion(10, 250, 400, 20);
+            AddImageTiled(10, 250, 400, 20, 2624);
+            AddAlphaRegion(10, 250, 400, 20);
 
-				AddButton(10, 250, 4005, 4007, 1, GumpButtonType.Reply, 0);
-				AddHtmlLocalized(40, 250, 170, 20, 1011036, 32767, false, false); // OKAY
+            AddButton(10, 250, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(40, 250, 170, 20, 1011036, 32767, false, false); // OKAY
 
-				AddButton(210, 250, 4005, 4007, 0, GumpButtonType.Reply, 0);
-				AddHtmlLocalized(240, 250, 170, 20, 1011012, 32767, false, false); // CANCEL
-			}
-			else
-			{
-				AddPage(0);
+            AddButton(210, 250, 4005, 4007, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(240, 250, 170, 20, 1011012, 32767, false, false); // CANCEL
+        }
 
-				AddBackground(0, 0, 420, 400, 5054);
-				AddBackground(10, 10, 400, 380, 3000);
-
-				AddHtml(
-					20,
-					40,
-					380,
-					60,
-					@"Dost thou wish to step into the moongate? Continue to enter the gate, Cancel to stay here",
-					false,
-					false);
-
-				AddHtmlLocalized(55, 110, 290, 20, 1011012, false, false); // CANCEL
-				AddButton(20, 110, 4005, 4007, 0, GumpButtonType.Reply, 0);
-
-				AddHtmlLocalized(55, 140, 290, 40, 1011011, false, false); // CONTINUE
-				AddButton(20, 140, 4005, 4007, 1, GumpButtonType.Reply, 0);
-			}
-		}
-
-		public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(NetState state, RelayInfo info)
 		{
 			if (info.ButtonID == 1)
 				m_Gate.EndConfirmation(m_From);

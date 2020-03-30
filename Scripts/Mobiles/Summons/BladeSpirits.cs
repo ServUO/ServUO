@@ -49,7 +49,7 @@ namespace Server.Mobiles
             this.Karma = 0;
 
             this.VirtualArmor = 40;
-            this.ControlSlots = (Core.SE) ? 2 : 1;
+            this.ControlSlots = 2;
         }
 
         public BladeSpirits(Serial serial)
@@ -61,7 +61,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.AOS;
+                return true;
             }
         }
         public override bool IsHouseSummonable
@@ -121,7 +121,7 @@ namespace Server.Mobiles
 
         public override void OnThink()
         {
-            if (Core.SE && this.Summoned)
+            if (this.Summoned)
             {
                 ArrayList spirtsOrVortexes = new ArrayList();
                 IPooledEnumerable eable = GetMobilesInRange(5);

@@ -11,7 +11,7 @@ namespace Server.Items
 			: base(0x2808)
 		{
 			// Item ID should be 0x2809 - Temporary solution for clients 7.0.0.0 and up
-			Stackable = Core.ML;
+			Stackable = true;
 			Weight = 1.0;
 		}
 

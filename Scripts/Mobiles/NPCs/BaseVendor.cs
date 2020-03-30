@@ -178,24 +178,21 @@ namespace Server.Mobiles
                         int totalHours = (totalSeconds + 3599) / 3600;
                         int totalMinutes = (totalSeconds + 59) / 60;
 
-                        if (((Core.SE) ? totalMinutes == 0 : totalHours == 0))
+                        if (totalMinutes == 0)
                         {
                             m_From.SendLocalizedMessage(1049038); // You can get an order now.
 
-                            if (Core.AOS)
-                            {
-                                Item bulkOrder = m_Vendor.CreateBulkOrder(m_From, true);
+                            Item bulkOrder = m_Vendor.CreateBulkOrder(m_From, true);
 
-                                if (bulkOrder is LargeBOD)
-                                {
-									m_From.CloseGump(typeof (LargeBODAcceptGump));
-                                    m_From.SendGump(new LargeBODAcceptGump(m_From, (LargeBOD)bulkOrder));
-                                }
-                                else if (bulkOrder is SmallBOD)
-                                {
-									m_From.CloseGump(typeof (SmallBODAcceptGump));
-                                    m_From.SendGump(new SmallBODAcceptGump(m_From, (SmallBOD)bulkOrder));
-                                }
+                            if (bulkOrder is LargeBOD)
+                            {
+                                m_From.CloseGump(typeof(LargeBODAcceptGump));
+                                m_From.SendGump(new LargeBODAcceptGump(m_From, (LargeBOD)bulkOrder));
+                            }
+                            else if (bulkOrder is SmallBOD)
+                            {
+                                m_From.CloseGump(typeof(SmallBODAcceptGump));
+                                m_From.SendGump(new SmallBODAcceptGump(m_From, (SmallBOD)bulkOrder));
                             }
                         }
                         else
@@ -203,15 +200,8 @@ namespace Server.Mobiles
                             int oldSpeechHue = m_Vendor.SpeechHue;
                             m_Vendor.SpeechHue = 0x3B2;
 
-                            if (Core.SE)
-                            {
-                                m_Vendor.SayTo(m_From, 1072058, totalMinutes.ToString(), 0x3B2);
-                                // An offer may be available in about ~1_minutes~ minutes.
-                            }
-                            else
-                            {
-                                m_Vendor.SayTo(m_From, 1049039, totalHours.ToString(), 0x3B2); // An offer may be available in about ~1_hours~ hours.
-                            }
+                            m_Vendor.SayTo(m_From, 1072058, totalMinutes.ToString(), 0x3B2);
+                            // An offer may be available in about ~1_minutes~ minutes.
 
                             m_Vendor.SpeechHue = oldSpeechHue;
                         }
@@ -1182,7 +1172,7 @@ namespace Server.Mobiles
                     }
                 }
 				
-                if (Core.ML && pm != null && pm.NextBODTurnInTime > DateTime.UtcNow)
+                if (pm != null && pm.NextBODTurnInTime > DateTime.UtcNow)
 				{
                     SayTo(from, 1079976, 0x3B2); // You'll have to wait a few seconds while I inspect the last order.
 					return false;
@@ -1269,7 +1259,7 @@ namespace Server.Mobiles
 				OnSuccessfulBulkOrderReceive(from);
                 Server.Engines.CityLoyalty.CityLoyaltySystem.OnBODTurnIn(from, gold);
 
-				if (Core.ML && pm != null)
+				if (pm != null)
 				{
 					pm.NextBODTurnInTime = DateTime.UtcNow + TimeSpan.FromSeconds(2.0);
 				}

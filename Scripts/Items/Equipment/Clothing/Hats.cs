@@ -475,7 +475,7 @@ namespace Server.Items
 
             if (Quality == ItemQuality.Exceptional)
             {
-                DistributeBonuses(from, (tool is BaseRunicTool ? 6 : (Core.SE ? 15 : 14)));
+                DistributeBonuses(from, tool is BaseRunicTool ? 6 : 15);
             }
 
             return base.OnCraft(quality, makersMark, from, craftSystem, typeRes, tool, craftItem, resHue);
@@ -1041,14 +1041,14 @@ namespace Server.Items
         {
             get
             {
-                return (Core.ML ? 14 : 7);
+                return 14;
             }
         }
         public override int InitMaxHits
         {
             get
             {
-                return (Core.ML ? 28 : 12);
+                return 28;
             }
         }
 

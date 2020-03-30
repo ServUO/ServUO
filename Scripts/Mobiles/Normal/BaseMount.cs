@@ -202,7 +202,7 @@ namespace Server.Mobiles
                 if (message)
                     dismounted.SendLocalizedMessage(1040023); // You have been knocked off of your mount!
             }
-            else if (Core.ML && Spells.Ninjitsu.AnimalForm.UnderTransformation(dismounted))
+            else if (Spells.Ninjitsu.AnimalForm.UnderTransformation(dismounted))
             {
                 Spells.Ninjitsu.AnimalForm.RemoveContext(dismounted, true);
             }
@@ -450,10 +450,7 @@ namespace Server.Mobiles
 
             if (from.IsBodyMod && !from.Body.IsHuman)
             {
-                if (Core.AOS) // You cannot ride a mount in your current form.
-                    PrivateOverheadMessage(Network.MessageType.Regular, 0x3B2, 1062061, from.NetState);
-                else
-                    from.SendLocalizedMessage(1061628); // You can't do that while polymorphed.
+                PrivateOverheadMessage(Network.MessageType.Regular, 0x3B2, 1062061, from.NetState);
 
                 return;
             }

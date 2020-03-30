@@ -124,11 +124,6 @@ namespace Server.Items
         {
             get
             {
-                if (!Core.SE)
-                {
-                    return false;
-                }
-
                 return (DateTime.UtcNow < (m_TimeOfDeath + InstancedCorpseTime));
             }
         }
@@ -535,7 +530,7 @@ namespace Server.Items
                 {
                     Item item = initialContent[i];
 
-                    if (Core.AOS && owner.Player && item.Parent == owner.Backpack)
+                    if (owner.Player && item.Parent == owner.Backpack)
                     {
                         c.AddItem(item);
                     }
@@ -544,7 +539,7 @@ namespace Server.Items
                         c.DropItem(item);
                     }
 
-                    if (owner.Player && Core.AOS)
+                    if (owner.Player)
                     {
                         c.SetRestoreInfo(item, item.Location);
                     }
@@ -555,7 +550,7 @@ namespace Server.Items
                     c.AssignInstancedLoot();
                     c.HasAssignedInstancedLoot = true;
                 }
-                else if (Core.AOS)
+                else
                 {
                     PlayerMobile pm = owner as PlayerMobile;
 
@@ -1128,7 +1123,7 @@ namespace Server.Items
         {
             base.GetContextMenuEntries(from, list);
 
-            if (Core.AOS && m_Owner == from && from.Alive)
+            if (m_Owner == from && from.Alive)
             {
                 list.Add(new OpenCorpseEntry());
             }
@@ -1378,7 +1373,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            Open(from, Core.AOS);
+            Open(from, true);
 
             if (m_Owner == from)
             {

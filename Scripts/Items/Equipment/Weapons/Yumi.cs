@@ -64,7 +64,7 @@ namespace Server.Items
         {
             get
             {
-                return Core.ML ? 13 : 18;
+                return 13;
             }
         }
         public override int AosMaxDamage

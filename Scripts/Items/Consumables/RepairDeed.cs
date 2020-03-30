@@ -68,7 +68,7 @@ namespace Server.Items
         {
             get
             {
-                return Core.ML;
+                return true;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]

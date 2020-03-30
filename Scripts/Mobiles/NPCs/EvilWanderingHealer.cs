@@ -71,7 +71,7 @@ namespace Server.Mobiles
 		{
 			base.OnDeath(c);
 
-			if (Core.ML && Utility.RandomDouble() <= 0.25)
+			if (Utility.RandomDouble() <= 0.25)
 				c.AddItem(Loot.Construct(typeof(MapFragment)));
 		}
 

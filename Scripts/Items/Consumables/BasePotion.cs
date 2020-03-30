@@ -76,7 +76,7 @@ namespace Server.Items
         {
             get
             {
-                return (Core.ML);
+                return true;
             }
         }
 
@@ -93,7 +93,7 @@ namespace Server.Items
         {
             this.m_PotionEffect = effect;
 
-            this.Stackable = Core.ML;
+            this.Stackable = true;
             this.Weight = 1.0;
         }
 
@@ -204,9 +204,6 @@ namespace Server.Items
                         break;
                     }
             }
-
-            if (version == 0)
-                this.Stackable = Core.ML;
         }
 
         public abstract void Drink(Mobile from);
@@ -235,17 +232,14 @@ namespace Server.Items
             int EP = AosAttributes.GetValue(m, AosAttribute.EnhancePotions);
             int skillBonus = m.Skills.Alchemy.Fixed / 330 * 10;
 
-            if (Core.ML && EP > 50 && m.IsPlayer())
+            if (EP > 50 && m.IsPlayer())
                 EP = 50;
 
-            return (EP + skillBonus);
+            return EP + skillBonus;
         }
 
         public static TimeSpan Scale(Mobile m, TimeSpan v)
         {
-            if (!Core.AOS)
-                return v;
-
             double scalar = 1.0 + (0.01 * EnhancePotions(m));
 
             return TimeSpan.FromSeconds(v.TotalSeconds * scalar);
@@ -253,9 +247,6 @@ namespace Server.Items
 
         public static double Scale(Mobile m, double v)
         {
-            if (!Core.AOS)
-                return v;
-
             double scalar = 1.0 + (0.01 * EnhancePotions(m));
 
             return v * scalar;
@@ -263,9 +254,6 @@ namespace Server.Items
 
         public static int Scale(Mobile m, int v)
         {
-            if (!Core.AOS)
-                return v;
-
             return AOS.Scale(v, 100 + EnhancePotions(m));
         }
 

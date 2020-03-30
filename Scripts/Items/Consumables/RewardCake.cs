@@ -31,7 +31,7 @@ namespace Server.Items
         {
             get
             {
-                return Core.ML;
+                return true;
             }
         }
         public override void OnDoubleClick(Mobile from)

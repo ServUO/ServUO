@@ -65,7 +65,6 @@ namespace Server.Mobiles
 			AddLoot( LootPack.UltraRich, 2 );
 		}
 
-		public override bool BardImmune{ get{ return !Core.AOS; } }
 		public override Poison PoisonImmune{ get{ return Poison.Lethal; } }
 
 		public Vasanord( Serial serial ) : base( serial )

@@ -81,13 +81,13 @@ namespace Server.Items
 
         [Constructable]
         public Runebook(int maxCharges, int id = 0x22C5)
-            : base(Core.AOS ? id : 0xEFA)
+            : base(id)
         {
-            Weight = (Core.SE ? 1.0 : 3.0);
+            Weight = 1.0;
             LootType = LootType.Blessed;
             Hue = 0x461;
 
-            Layer = (Core.AOS ? Layer.Invalid : Layer.OneHanded);
+            Layer = Layer.Invalid;
 
             m_Entries = new List<RunebookEntry>();
 
@@ -100,7 +100,7 @@ namespace Server.Items
 
         [Constructable]
         public Runebook()
-            : this(Core.SE ? 12 : 6)
+            : this(12)
         {
         }
 
@@ -170,9 +170,6 @@ namespace Server.Items
             int version = reader.ReadInt();
 
             LootType = LootType.Blessed;
-
-            if (Core.SE && Weight == 3.0)
-                Weight = 1.0;
 
             switch (version)
             {
@@ -274,7 +271,7 @@ namespace Server.Items
         {
             get
             {
-                return Core.AOS;
+                return true;
             }
         }
 
@@ -326,7 +323,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(GetWorldLocation(), (Core.ML ? 3 : 1)) && CheckAccess(from))
+            if (from.InRange(GetWorldLocation(), 3) && CheckAccess(from))
             {
                 if (RootParent is BaseCreature)
                 {
@@ -486,7 +483,7 @@ namespace Server.Items
             if (charges > 10)
                 charges = 10;
 
-            MaxCharges = (Core.SE ? charges * 2 : charges);
+            MaxCharges = charges * 2;
 
             if (makersMark)
                 Crafter = from;

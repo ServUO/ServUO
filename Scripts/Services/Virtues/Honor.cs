@@ -166,7 +166,7 @@ namespace Server.Services.Virtues
 				}
 			}
 
-			if (Core.ML && target is PlayerMobile)
+			if (target is PlayerMobile)
 			{
 				source.SendLocalizedMessage(1075614); // You cannot honor other players.
 				return;

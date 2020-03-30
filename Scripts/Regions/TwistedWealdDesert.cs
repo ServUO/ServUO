@@ -28,8 +28,8 @@ namespace Server.Regions
         public override void OnExit(Mobile m)
         {
             if (m.NetState != null &&
-                !TransformationSpellHelper.UnderTransformation(m, typeof(AnimalForm)) &&
-                m.SendSpeedControl(SpeedControlType.Disable));
+                !TransformationSpellHelper.UnderTransformation(m, typeof(AnimalForm)))
+                m.SendSpeedControl(SpeedControlType.Disable);
         }
 
         private static void Desert_OnLogin(LoginEventArgs e) 

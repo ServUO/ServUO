@@ -43,7 +43,7 @@ namespace Server.Mobiles
             if (m == null)	//sanity
                 return;
 
-            if (!Core.SE || m.Alive)
+            if (m.Alive)
                 m.AddToBackpack(item);
             else
             {
@@ -85,7 +85,7 @@ namespace Server.Mobiles
 
                         prot.SendLocalizedMessage(1049368); // You have been rewarded for your dedication to Justice!
 
-                        if (!Core.SE || prot.Alive)
+                        if (prot.Alive)
                             prot.AddToBackpack(powerScroll);
                         else
                         {

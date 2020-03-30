@@ -907,7 +907,7 @@ namespace Server.Items
         public Cookies()
             : base(0x160b)
         {
-            Stackable = Core.ML;
+            Stackable = true;
             Weight = 1.0;
             FillFactor = 4;
         }
@@ -1285,7 +1285,7 @@ namespace Server.Items
         public Quiche()
             : base(0x1041)
         {
-            Stackable = Core.ML;
+            Stackable = true;
             Weight = 1.0;
             FillFactor = 5;
         }

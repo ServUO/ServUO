@@ -57,14 +57,11 @@ namespace Server.Mobiles
 
             PackReg(6);
 
-            if (Core.AOS)
+            switch (Utility.Random(18))
             {
-                switch (Utility.Random(18))
-                {
-                    case 0: PackItem(new BloodOathScroll()); break;
-                    case 1: PackItem(new CurseWeaponScroll()); break;
-                    case 2: PackItem(new StrangleScroll()); break;
-                }
+                case 0: PackItem(new BloodOathScroll()); break;
+                case 1: PackItem(new CurseWeaponScroll()); break;
+                case 2: PackItem(new StrangleScroll()); break;
             }
         }
 

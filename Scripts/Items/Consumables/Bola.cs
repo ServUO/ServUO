@@ -58,17 +58,14 @@ namespace Server.Items
             {
                 EtherealMount.StopMounting(from);
 
-                if (Core.AOS)
-                {
-                    Item one = from.FindItemOnLayer(Layer.OneHanded);
-                    Item two = from.FindItemOnLayer(Layer.TwoHanded);
+                Item one = from.FindItemOnLayer(Layer.OneHanded);
+                Item two = from.FindItemOnLayer(Layer.TwoHanded);
 
-                    if (one != null)
-                        from.AddToBackpack(one);
+                if (one != null)
+                    from.AddToBackpack(one);
 
-                    if (two != null)
-                        from.AddToBackpack(two);
-                }
+                if (two != null)
+                    from.AddToBackpack(two);
 
                 from.Target = new BolaTarget(this);
                 from.LocalOverheadMessage(MessageType.Emote, 201, 1049632); // * You begin to swing the bola...*
@@ -113,7 +110,7 @@ namespace Server.Items
             {
                 from.PrivateOverheadMessage(MessageType.Regular, 946, 1042060, from.NetState); // You cannot see that target!
             }
-            else if (!to.Mounted && !to.Flying && (!Core.ML || !AnimalForm.UnderTransformation(to)))
+            else if (!to.Mounted && !to.Flying && !AnimalForm.UnderTransformation(to))
             {
                 to.PrivateOverheadMessage(MessageType.Regular, 946, 1049628, from.NetState); // You have no reason to throw a bola at that.
             }
@@ -221,7 +218,7 @@ namespace Server.Items
                     {
                         from.PrivateOverheadMessage(MessageType.Regular, 946, 1070902, from.NetState); // You can't use this while in an animal form!
                     }
-                    else if (!to.Mounted && !to.Flying && (!Core.ML || !AnimalForm.UnderTransformation(to)))
+                    else if (!to.Mounted && !to.Flying && !AnimalForm.UnderTransformation(to))
                     {
                         to.PrivateOverheadMessage(MessageType.Regular, 946, 1049628, from.NetState); // You have no reason to throw a bola at that.
                     }
