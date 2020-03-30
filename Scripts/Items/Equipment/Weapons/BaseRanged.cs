@@ -61,29 +61,25 @@ namespace Server.Items
             long nextShoot;
 
             if (attacker is PlayerMobile)
-                nextShoot = ((PlayerMobile)attacker).NextMovementTime + (Core.SE ? 250 : Core.AOS ? 500 : 1000);
+                nextShoot = ((PlayerMobile)attacker).NextMovementTime + 250;
             else
                 nextShoot = attacker.LastMoveTime + attacker.ComputeMovementSpeed();
 
 			// Make sure we've been standing still for .25/.5/1 second depending on Era
-            if (nextShoot <= Core.TickCount ||
-				(Core.AOS && WeaponAbility.GetCurrentAbility(attacker) is MovingShot))
+            if (nextShoot <= Core.TickCount || WeaponAbility.GetCurrentAbility(attacker) is MovingShot)
 			{
 				bool canSwing = true;
 
-				if (Core.AOS)
-				{
-					canSwing = (!attacker.Paralyzed && !attacker.Frozen);
+                canSwing = !attacker.Paralyzed && !attacker.Frozen;
 
-					if (canSwing)
-					{
-						Spell sp = attacker.Spell as Spell;
+                if (canSwing)
+                {
+                    Spell sp = attacker.Spell as Spell;
 
-						canSwing = (sp == null || !sp.IsCasting || !sp.BlocksMovement);
-					}
-				}
+                    canSwing = sp == null || !sp.IsCasting || !sp.BlocksMovement;
+                }
 
-				if (canSwing && attacker.HarmfulCheck(damageable))
+                if (canSwing && attacker.HarmfulCheck(damageable))
 				{
 					attacker.DisruptiveAction();
 					attacker.Send(new Swing(0, attacker, damageable));

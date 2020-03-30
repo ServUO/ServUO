@@ -450,10 +450,7 @@ namespace Server.Mobiles
 
             if (from.IsBodyMod && !from.Body.IsHuman)
             {
-                if (Core.AOS) // You cannot ride a mount in your current form.
-                    PrivateOverheadMessage(Network.MessageType.Regular, 0x3B2, 1062061, from.NetState);
-                else
-                    from.SendLocalizedMessage(1061628); // You can't do that while polymorphed.
+                PrivateOverheadMessage(Network.MessageType.Regular, 0x3B2, 1062061, from.NetState);
 
                 return;
             }

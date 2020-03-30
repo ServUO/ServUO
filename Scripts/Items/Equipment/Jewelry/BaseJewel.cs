@@ -665,7 +665,7 @@ namespace Server.Items
 
         public override void OnAdded(object parent)
         {
-            if (Core.AOS && parent is Mobile)
+            if (parent is Mobile)
             {
                 Mobile from = (Mobile)parent;
 
@@ -716,7 +716,7 @@ namespace Server.Items
 
         public override void OnRemoved(object parent)
         {
-            if (Core.AOS && parent is Mobile)
+            if (parent is Mobile)
             {
                 Mobile from = (Mobile)parent;
 
@@ -1198,7 +1198,7 @@ namespace Server.Items
                         m_AosResistances = new AosElementAttributes(this, reader);
                         m_AosSkillBonuses = new AosSkillBonuses(this, reader);
 
-                        if (Core.AOS && Parent is Mobile)
+                        if (Parent is Mobile)
                             m_AosSkillBonuses.AddTo((Mobile)Parent);
 
                         int strBonus = m_AosAttributes.BonusStr;

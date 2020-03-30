@@ -10,7 +10,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Name = NameList.RandomName("daemon");
-            this.Body = Core.AOS ? 10 : 9;
+            this.Body = 10;
             this.BaseSoundID = 357;
 
             this.SetStr(200);

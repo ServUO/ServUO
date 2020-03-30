@@ -178,10 +178,6 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (!Core.AOS && SmartAI && !m_Mobile.StunReady && m_Mobile.Skills[SkillName.Wrestling].Value >= 80.0 &&
-				m_Mobile.Skills[SkillName.Anatomy].Value >= 80.0)
-				EventSink.InvokeStunRequest(new StunRequestEventArgs(m_Mobile));
-
 			if (!m_Mobile.InRange(c, m_Mobile.RangePerception))
 			{
 				// They are somewhat far away, can we find something else?
@@ -680,7 +676,7 @@ namespace Server.Mobiles
 				{
 					var field = (PoisonFieldSpell.InternalItem)item;
 
-					if (field.Visible && field.Caster != null && (!Core.AOS || m_Mobile != field.Caster) &&
+					if (field.Visible && field.Caster != null && m_Mobile != field.Caster &&
 						SpellHelper.ValidIndirectTarget(field.Caster, m_Mobile) && field.Caster.CanBeHarmful(m_Mobile, false))
 					{
 						eable.Free();
@@ -691,7 +687,7 @@ namespace Server.Mobiles
 				{
 					var field = (ParalyzeFieldSpell.InternalItem)item;
 
-					if (field.Visible && field.Caster != null && (!Core.AOS || m_Mobile != field.Caster) &&
+					if (field.Visible && field.Caster != null && m_Mobile != field.Caster &&
 						SpellHelper.ValidIndirectTarget(field.Caster, m_Mobile) && field.Caster.CanBeHarmful(m_Mobile, false))
 					{
 						eable.Free();
@@ -702,7 +698,7 @@ namespace Server.Mobiles
 				{
 					var field = (FireFieldSpell.FireFieldItem)item;
 
-					if (field.Visible && field.Caster != null && (!Core.AOS || m_Mobile != field.Caster) &&
+					if (field.Visible && field.Caster != null && m_Mobile != field.Caster &&
 						SpellHelper.ValidIndirectTarget(field.Caster, m_Mobile) && field.Caster.CanBeHarmful(m_Mobile, false))
 					{
 						eable.Free();

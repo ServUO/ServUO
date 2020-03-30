@@ -187,7 +187,7 @@ namespace Server.Items
 			}
 		}
 
-		public override bool DisplayLootType { get { return Core.AOS; } }
+		public override bool DisplayLootType { get { return true; } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public SlayerName Slayer
@@ -662,7 +662,7 @@ namespace Server.Items
 
 		public override void OnAdded(object parent)
 		{
-			if (Core.AOS && parent is Mobile)
+			if (parent is Mobile)
 			{
 				Mobile from = (Mobile)parent;
 
@@ -703,7 +703,7 @@ namespace Server.Items
 
 		public override void OnRemoved(object parent)
 		{
-			if (Core.AOS && parent is Mobile)
+			if (parent is Mobile)
 			{
 				Mobile from = (Mobile)parent;
 
@@ -1130,7 +1130,7 @@ namespace Server.Items
                 m_NegativeAttributes = new NegativeAttributes(this);
             }
 
-			if (Core.AOS && Parent is Mobile)
+			if (Parent is Mobile)
 			{
 				m_AosSkillBonuses.AddTo((Mobile)Parent);
 			}

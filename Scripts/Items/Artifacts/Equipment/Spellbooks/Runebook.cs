@@ -81,13 +81,13 @@ namespace Server.Items
 
         [Constructable]
         public Runebook(int maxCharges, int id = 0x22C5)
-            : base(Core.AOS ? id : 0xEFA)
+            : base(id)
         {
             Weight = (Core.SE ? 1.0 : 3.0);
             LootType = LootType.Blessed;
             Hue = 0x461;
 
-            Layer = (Core.AOS ? Layer.Invalid : Layer.OneHanded);
+            Layer = Layer.Invalid;
 
             m_Entries = new List<RunebookEntry>();
 
@@ -274,7 +274,7 @@ namespace Server.Items
         {
             get
             {
-                return Core.AOS;
+                return true;
             }
         }
 

@@ -67,7 +67,7 @@ namespace Server.Items
 
 		public override void Drink(Mobile from)
 		{
-			if (Core.AOS && (from.Paralyzed || from.Frozen || (from.Spell != null && from.Spell.IsCasting)))
+			if (from.Paralyzed || from.Frozen || (from.Spell != null && from.Spell.IsCasting))
 			{
 				from.SendLocalizedMessage(1062725); // You can not use a purple potion while paralyzed.
 				return;
@@ -145,7 +145,7 @@ namespace Server.Items
 
 			if (direct)
 			{
-				alchemyBonus = (int)(from.Skills.Alchemy.Value / (Core.AOS ? 5 : 10));
+				alchemyBonus = (int)(from.Skills.Alchemy.Value / 5);
 			}
 
 			int min = Scale(from, MinDamage);
@@ -169,11 +169,7 @@ namespace Server.Items
 
                 damage += alchemyBonus;
 
-                if (!Core.AOS && damage > 40)
-                {
-                    damage = 40;
-                }
-                else if (Core.AOS && list.Count > 2)
+                if (list.Count > 2)
                 {
                     damage /= list.Count - 1;
                 }

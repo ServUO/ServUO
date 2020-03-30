@@ -604,9 +604,6 @@ namespace Server.Mobiles
             Hue = Utility.RandomSkinHue();
             SpeechHue = 0x3B2;
 
-            if (!Core.AOS)
-                NameHue = 0x35;
-
             if (Female = Utility.RandomBool())
             {
                 Body = 0x191;

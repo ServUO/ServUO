@@ -484,9 +484,6 @@ namespace Server.Mobiles
             Title = "the town crier";
             Hue = Utility.RandomSkinHue();
 
-            if (!Core.AOS)
-                NameHue = 0x35;
-
             if (Female = Utility.RandomBool())
             {
                 Body = 0x191;
@@ -745,9 +742,6 @@ namespace Server.Mobiles
                         break;
                     }
             }
-
-            if (Core.AOS && NameHue == 0x35)
-                NameHue = -1;
         }
 
         private void AutoShout_Callback()

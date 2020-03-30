@@ -357,11 +357,8 @@ namespace Server.Mobiles
 
 				from.Stabled.Add(pet);
 
-				SayTo(from, Core.AOS ? 1049677 : 502679);
-				// [AOS: Your pet has been stabled.] Very well, thy pet is stabled. 
-				// Thou mayst recover it by saying 'claim' to me. In one real world week, 
-				// I shall sell it off if it is not claimed!
-			}
+				SayTo(from, 1049677); // Your pet has been stabled.
+            }
 			else
 			{
 				SayTo(from, 502677); // But thou hast not the funds in thy bank account!

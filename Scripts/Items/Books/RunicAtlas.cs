@@ -504,20 +504,17 @@ namespace Server.Items
         {
             RunebookEntry e = Atlas.Entries[Selected];
 
-            if (Core.AOS)
+            if (RunebookGump.HasSpell(User, 209))
             {
-                if (RunebookGump.HasSpell(User, 209))
-                {
-                    SendLocationMessage(e, User);
+                SendLocationMessage(e, User);
 
-                    Atlas.OnTravel();
-                    new SacredJourneySpell(User, null, e, null).Cast();
-                    Atlas.NextUse = DateTime.UtcNow;
-                }
-                else
-                {
-                    User.SendLocalizedMessage(500015); // You do not have that spell!
-                }
+                Atlas.OnTravel();
+                new SacredJourneySpell(User, null, e, null).Cast();
+                Atlas.NextUse = DateTime.UtcNow;
+            }
+            else
+            {
+                User.SendLocalizedMessage(500015); // You do not have that spell!
             }
 
             Atlas.Openers.Remove(User);

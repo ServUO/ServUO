@@ -115,24 +115,5 @@ namespace Server.Items
                     }
             }
         }
-
-        public override void OnHit(Mobile attacker, IDamageable defender, double damageBonus)
-        {
-            base.OnHit(attacker, defender, damageBonus);
-
-            if (!Core.AOS && defender is Mobile && (attacker.Player || attacker.Body.IsHuman) && this.Layer == Layer.TwoHanded && (attacker.Skills[SkillName.Anatomy].Value / 400.0) >= Utility.RandomDouble())
-            {
-                StatMod mod = ((Mobile)defender).GetStatMod("Concussion");
-
-                if (mod == null)
-                {
-                    ((Mobile)defender).SendMessage("You receive a concussion blow!");
-                    ((Mobile)defender).AddStatMod(new StatMod(StatType.Int, "Concussion", -(((Mobile)defender).RawInt / 2), TimeSpan.FromSeconds(30.0)));
-
-                    attacker.SendMessage("You deliver a concussion blow!");
-                    attacker.PlaySound(0x11C);
-                }
-            }
-        }
     }
 }

@@ -58,17 +58,14 @@ namespace Server.Items
             {
                 EtherealMount.StopMounting(from);
 
-                if (Core.AOS)
-                {
-                    Item one = from.FindItemOnLayer(Layer.OneHanded);
-                    Item two = from.FindItemOnLayer(Layer.TwoHanded);
+                Item one = from.FindItemOnLayer(Layer.OneHanded);
+                Item two = from.FindItemOnLayer(Layer.TwoHanded);
 
-                    if (one != null)
-                        from.AddToBackpack(one);
+                if (one != null)
+                    from.AddToBackpack(one);
 
-                    if (two != null)
-                        from.AddToBackpack(two);
-                }
+                if (two != null)
+                    from.AddToBackpack(two);
 
                 from.Target = new BolaTarget(this);
                 from.LocalOverheadMessage(MessageType.Emote, 201, 1049632); // * You begin to swing the bola...*

@@ -197,62 +197,51 @@ namespace Server.Items
 
             bool setDesc = false;
 
-            if (Core.AOS)
+            m_Galleon = BaseBoat.FindBoatAt(m) as BaseGalleon;
+
+            if (m_Galleon != null)
             {
-                m_Galleon = BaseBoat.FindBoatAt(m) as BaseGalleon;
-
-                if (m_Galleon != null)
-                {
-                    Type = RecallRuneType.Ship;
-                }
-                else
-                {
-                    m_House = BaseHouse.FindHouseAt(m);
-
-                    if (m_House == null)
-                    {
-                        Target = m.Location;
-                        m_TargetMap = m.Map;
-
-                        Type = RecallRuneType.Normal;
-                    }
-                    else
-                    {
-                        HouseSign sign = m_House.Sign;
-
-                        if (sign != null)
-                            m_Description = sign.Name;
-                        else
-                            m_Description = null;
-
-                        if (m_Description == null || (m_Description = m_Description.Trim()).Length == 0)
-                            m_Description = "an unnamed house";
-
-                        setDesc = true;
-
-                        int x = m_House.BanLocation.X;
-                        int y = m_House.BanLocation.Y + 2;
-                        int z = m_House.BanLocation.Z;
-
-                        Map map = m_House.Map;
-
-                        if (map != null && !map.CanFit(x, y, z, 16, false, false))
-                            z = map.GetAverageZ(x, y);
-
-                        Target = new Point3D(x, y, z);
-                        m_TargetMap = map;
-
-                        Type = RecallRuneType.Shop;
-                    }
-                }
+                Type = RecallRuneType.Ship;
             }
             else
             {
-                m_House = null;
-                Target = m.Location;
-                m_TargetMap = m.Map;
+                m_House = BaseHouse.FindHouseAt(m);
 
-                Type = RecallRuneType.Normal;
+                if (m_House == null)
+                {
+                    Target = m.Location;
+                    m_TargetMap = m.Map;
+
+                    Type = RecallRuneType.Normal;
+                }
+                else
+                {
+                    HouseSign sign = m_House.Sign;
+
+                    if (sign != null)
+                        m_Description = sign.Name;
+                    else
+                        m_Description = null;
+
+                    if (m_Description == null || (m_Description = m_Description.Trim()).Length == 0)
+                        m_Description = "an unnamed house";
+
+                    setDesc = true;
+
+                    int x = m_House.BanLocation.X;
+                    int y = m_House.BanLocation.Y + 2;
+                    int z = m_House.BanLocation.Z;
+
+                    Map map = m_House.Map;
+
+                    if (map != null && !map.CanFit(x, y, z, 16, false, false))
+                        z = map.GetAverageZ(x, y);
+
+                    Target = new Point3D(x, y, z);
+                    m_TargetMap = map;
+
+                    Type = RecallRuneType.Shop;
+                }
             }
 
             if (!setDesc)

@@ -19,7 +19,7 @@ namespace Server.Items
             EventSink.BandageTargetRequest += BandageTargetRequest;
         }
 
-		public static int Range = (Core.AOS ? 2 : 1);
+		public static int Range = 2;
 
 		public override double DefaultWeight { get { return 0.1; } }
 
@@ -502,19 +502,9 @@ namespace Server.Items
                 if (chance > Utility.RandomDouble())
                 {
                     healerNumber = 500969; // You finish applying the bandages.
-
-                    double min, max;
-
-                    if (Core.AOS)
-                    {
-                        min = (anatomy / 8.0) + (healing / 5.0) + 4.0;
-                        max = (anatomy / 6.0) + (healing / 2.5) + 4.0;
-                    }
-                    else
-                    {
-                        min = (anatomy / 5.0) + (healing / 5.0) + 3.0;
-                        max = (anatomy / 5.0) + (healing / 2.0) + 10.0;
-                    }
+                    
+                    double min = (anatomy / 8.0) + (healing / 5.0) + 4.0;
+                    double max = (anatomy / 6.0) + (healing / 2.5) + 4.0;
 
                     double toHeal = min + (Utility.RandomDouble() * (max - min));
 
@@ -523,14 +513,7 @@ namespace Server.Items
                         toHeal += m_Patient.HitsMax / 100;
                     }
 
-                    if (Core.AOS)
-                    {
-                        toHeal -= toHeal * m_Slips * 0.35; // TODO: Verify algorithm
-                    }
-                    else
-                    {
-                        toHeal -= m_Slips * 4;
-                    }
+                    toHeal -= toHeal * m_Slips * 0.35; // TODO: Verify algorithm
 
                     #region City Loyalty
                     if (Server.Engines.CityLoyalty.CityLoyaltySystem.HasTradeDeal(m_Healer, Server.Engines.CityLoyalty.TradeDeal.GuildOfHealers))
@@ -722,36 +705,17 @@ namespace Server.Items
 
 			if (healer == patient)
             {
-                if (Core.AOS)
-                {
-                    seconds = Math.Min(8, Math.Ceiling(11.0 - dex / 20));
-                    seconds = Math.Max(seconds, 4);
-                }
-                else
-                {
-                    seconds = 9.4 + (0.6 * ((double)(120 - dex) / 10));
-                }
+                seconds = Math.Min(8, Math.Ceiling(11.0 - dex / 20));
+                seconds = Math.Max(seconds, 4);
             }
-            else if (Core.AOS && skill == SkillName.Veterinary)
+            else if (skill == SkillName.Veterinary)
             {
                 seconds = 2.0;
             }
-            else if (Core.AOS)
+            else
             {
                 seconds = Math.Ceiling((double)4 - dex / 60);
                 seconds = Math.Max(seconds, 2);
-            }
-            else if (dex >= 100)
-            {
-                seconds = 3.0 + resDelay;
-            }
-            else if (dex >= 40)
-            {
-                seconds = 4.0 + resDelay;
-            }
-            else
-            {
-                seconds = 5.0 + resDelay;
             }
 			
 			return TimeSpan.FromSeconds(seconds);
