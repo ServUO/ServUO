@@ -17,7 +17,7 @@ namespace Server.Mobiles
         {
             Name = "an energy vortex";
 
-            if (Core.SE && 0.002 > Utility.RandomDouble()) // Per OSI FoF, it's a 1/500 chance.
+            if (0.002 > Utility.RandomDouble()) // Per OSI FoF, it's a 1/500 chance.
             {
                 // Llama vortex!
                 Body = 0xDC;
@@ -34,7 +34,7 @@ namespace Server.Mobiles
             SetDex(weak ? 150 : 200);
             SetInt(100);
 
-            SetHits((Core.SE && !weak) ? 140 : 70);
+            SetHits(!weak ? 140 : 70);
             SetStam(250);
             SetMana(0);
 
@@ -57,7 +57,7 @@ namespace Server.Mobiles
             Karma = 0;
 
             VirtualArmor = 40;
-            ControlSlots = (Core.SE) ? 2 : 1;
+            ControlSlots = 2;
         }
 
         public EnergyVortex(Serial serial)
@@ -124,7 +124,7 @@ namespace Server.Mobiles
 
         public override void OnThink()
         {
-            if (Core.SE && Summoned)
+            if (Summoned)
             {
                 ArrayList spirtsOrVortexes = new ArrayList();
                 IPooledEnumerable eable = GetMobilesInRange(5);

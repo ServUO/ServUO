@@ -31,7 +31,7 @@ namespace Server.Items
         {
             get
             {
-                if (Core.SA && !(this.Parent is Mobile))
+                if (!(this.Parent is Mobile))
                     return true;
 
                 return base.UseIntOrDexProperty;

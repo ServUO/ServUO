@@ -106,12 +106,10 @@ namespace Server.Items
 
                     ConfirmCleanupItem(items[i]);
 
-                    #region SA
-                    if (Core.SA && .01 > Utility.RandomDouble())
+                    if (.01 > Utility.RandomDouble())
                         TrashBarrel.DropToCavernOfDiscarded(items[i]);
                     else
                         items[i].Delete();
-                    #endregion
                 }
 
                 if (m_Cleanup.Any(x => x.mobiles != null))

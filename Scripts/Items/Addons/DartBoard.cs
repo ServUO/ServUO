@@ -80,15 +80,8 @@ namespace Server.Items
                 return;
             }
 
-            if (Core.SA)
-            {
-                from.Animate(AnimationType.Attack, 4);
-            }
-            else
-            {
-                from.Animate(from.Mounted ? 26 : 9, 7, 1, true, false, 0);
-            }
-            
+            from.Animate(AnimationType.Attack, 4);
+
             from.MovingEffect(this, knife.ItemID, 7, 1, false, false);
             from.PlaySound(0x238);
 

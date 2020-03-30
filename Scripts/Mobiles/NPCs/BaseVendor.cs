@@ -29,7 +29,7 @@ namespace Server.Mobiles
 
 	public abstract class BaseVendor : BaseCreature, IVendor
 	{
-        public static bool UseVendorEconomy = Core.AOS && !Siege.SiegeShard;
+        public static bool UseVendorEconomy = !Siege.SiegeShard;
         public static int BuyItemChange = Config.Get("Vendors.BuyItemChange", 1000);
         public static int SellItemChange = Config.Get("Vendors.SellItemChange", 1000);
         public static int EconomyStockAmount = Config.Get("Vendors.EconomyStockAmount", 500);
@@ -1716,7 +1716,7 @@ namespace Server.Mobiles
 
 			var discount = 0.0;
 
-			if (Core.SA && HasHonestyDiscount)
+			if (HasHonestyDiscount)
 			{
 				double discountPc = 0;
 				switch (VirtueHelper.GetLevel(buyer, VirtueName.Honesty))
@@ -1884,7 +1884,7 @@ namespace Server.Mobiles
                         0x3B2,
                         "I would not presume to charge thee anything.  Here are the goods you requested.", 
                         null,
-                        !Core.AOS);
+                        true);
 				}
 				else if (fromBank)
 				{
@@ -1893,7 +1893,7 @@ namespace Server.Mobiles
                         0x3B2,
 						"The total of thy purchase is {0} gold, which has been withdrawn from your bank account.  My thanks for the patronage.",
                         totalCost.ToString(),
-                        !Core.AOS);
+                        true);
 				}
 				else
 				{
@@ -1909,7 +1909,7 @@ namespace Server.Mobiles
                         0x3B2,
 						"I would not presume to charge thee anything.  Unfortunately, I could not sell you all the goods you requested.",
                         null,
-                        !Core.AOS);
+                        true);
 				}
 				else if (fromBank)
 				{
@@ -1918,7 +1918,7 @@ namespace Server.Mobiles
                         0x3B2,
                         "The total of thy purchase is {0} gold, which has been withdrawn from your bank account.  My thanks for the patronage.  Unfortunately, I could not sell you all the goods you requested.", 
                         totalCost.ToString(),
-                        !Core.AOS);
+                        true);
 				}
 				else
 				{
@@ -1927,7 +1927,7 @@ namespace Server.Mobiles
                         0x3B2,
 						"The total of thy purchase is {0} gold.  My thanks for the patronage.  Unfortunately, I could not sell you all the goods you requested.",
                         totalCost.ToString(),
-                        !Core.AOS);
+                        true);
 				}
 			}
 

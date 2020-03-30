@@ -930,8 +930,7 @@ namespace Server.Mobiles
 
 			var skill = (100.0 / 7.0) * circle;
 
-			return m_Mobile.Mana >= m_ManaTable[circle - 1] &&
-				   (Core.SA || m_Mobile.Skills[SkillName.Magery].Value >= skill - 20);
+			return m_Mobile.Mana >= m_ManaTable[circle - 1];
 		}
 
 		public virtual Spell GetRandomDamageSpell()

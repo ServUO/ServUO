@@ -373,7 +373,7 @@ namespace Server.Items
 		private readonly Moongate m_Gate;
 
 		public MoongateConfirmGump(Mobile from, Moongate gate)
-			: base(Core.AOS ? 110 : 20, Core.AOS ? 100 : 30)
+			: base(110, 100)
         {
             m_From = from;
             m_Gate = gate;

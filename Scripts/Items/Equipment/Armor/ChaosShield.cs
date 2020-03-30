@@ -11,9 +11,6 @@ namespace Server.Items
         public ChaosShield()
             : base(0x1BC3)
         {
-            if (!Core.AOS)
-                this.LootType = LootType.Newbied;
-
             this.Weight = 5.0;
         }
 
@@ -97,35 +94,6 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.Write((int)0);//version
-        }
-
-        public override bool OnEquip(Mobile from)
-        {
-            return this.Validate(from) && base.OnEquip(from);
-        }
-
-        public override void OnSingleClick(Mobile from)
-        {
-            if (this.Validate(this.Parent as Mobile))
-                base.OnSingleClick(from);
-        }
-
-        public virtual bool Validate(Mobile m)
-        {
-            if (m == null || !m.Player || m.IsStaff() || Core.AOS)
-                return true;
-
-            Guild g = m.Guild as Guild;
-
-            if (g == null || g.Type != GuildType.Chaos)
-            {
-                m.FixedEffect(0x3728, 10, 13);
-                this.Delete();
-
-                return false;
-            }
-
-            return true;
         }
     }
 }

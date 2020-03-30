@@ -588,8 +588,7 @@ namespace Server.Items
             {
                 get
                 {
-                    return Core.SA && 
-                           m_Context != null && m_Context.Healer == m_Context.Patient &&
+                    return m_Context != null && m_Context.Healer == m_Context.Patient &&
                            m_Context.Healer.Skills[SkillName.Healing].Value >= 80 &&
                            m_Context.Healer.Skills[SkillName.Anatomy].Value >= 80;
                 }

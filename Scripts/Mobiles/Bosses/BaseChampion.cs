@@ -204,26 +204,23 @@ namespace Server.Mobiles
                 GivePowerScrollTo(m, ps, this);
             }
 
-            if (Core.TOL)
+            // Randomize - Primers
+            for (int i = 0; i < toGive.Count; ++i)
             {
-                // Randomize - Primers
-                for (int i = 0; i < toGive.Count; ++i)
-                {
-                    int rand = Utility.Random(toGive.Count);
-                    Mobile hold = toGive[i];
-                    toGive[i] = toGive[rand];
-                    toGive[rand] = hold;
-                }
+                int rand = Utility.Random(toGive.Count);
+                Mobile hold = toGive[i];
+                toGive[i] = toGive[rand];
+                toGive[rand] = hold;
+            }
 
-                for (int i = 0; i < ChampionSystem.PowerScrollAmount; ++i)
-                {
-                    Mobile m = toGive[i % toGive.Count];
+            for (int i = 0; i < ChampionSystem.PowerScrollAmount; ++i)
+            {
+                Mobile m = toGive[i % toGive.Count];
 
-                    SkillMasteryPrimer p = CreateRandomPrimer();
-                    m.SendLocalizedMessage(1156209); // You have received a mastery primer!
+                SkillMasteryPrimer p = CreateRandomPrimer();
+                m.SendLocalizedMessage(1156209); // You have received a mastery primer!
 
-                    GivePowerScrollTo(m, p, this);
-                }
+                GivePowerScrollTo(m, p, this);
             }
 
             ColUtility.Free(toGive);
@@ -272,8 +269,7 @@ namespace Server.Mobiles
                         c.DropItem(new ChampionSkull(this.SkullType));
                 }
 
-                if(Core.SA)
-                    RefinementComponent.Roll(c, 3, 0.10);
+                RefinementComponent.Roll(c, 3, 0.10);
             }
 
             base.OnDeath(c);

@@ -8,7 +8,7 @@ namespace Server.Mobiles
         [Constructable]
         public EvilWanderingHealer()
         {
-            this.Title = (Core.AOS) ? "the Priest Of Mondain" : "the evil wandering healer";
+            this.Title = "the Priest Of Mondain";
             this.Karma = -10000;
 
             this.AddItem(new GnarledStaff());
@@ -58,7 +58,7 @@ namespace Server.Mobiles
 
         public override bool CheckResurrect(Mobile m)
         {
-            if (Core.AOS && m.Criminal)
+            if (m.Criminal)
             {
                 this.Say(501222); // Thou art a criminal.  I shall not resurrect thee.
                 return false;
@@ -87,9 +87,6 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (version < 1 && this.Title == "the wandering healer" && Core.AOS)
-                this.Title = "the priest of Mondain";
         }
     }
 }

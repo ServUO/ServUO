@@ -16,20 +16,10 @@ namespace Server.Mobiles
             var robe = new Robe(Utility.RandomNeutralHue());
             var sandals = new Sandals();
 
-            if (!Core.UOTD)
-            {
-                Body = Race.Human.MaleBody;
+            Body = 124;
 
-                AddItem(robe);
-                AddItem(sandals);
-            }
-            else
-            {
-                Body = 124;
-
-                PackItem(robe);
-                PackItem(sandals);
-            }
+            PackItem(robe);
+            PackItem(sandals);
 
             SetStr(81, 105);
             SetDex(91, 115);

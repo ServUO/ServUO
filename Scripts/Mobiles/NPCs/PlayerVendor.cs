@@ -298,9 +298,6 @@ namespace Server.Mobiles
 
             CantWalk = true;
 
-            if (!Core.AOS)
-                NameHue = 0x35;
-
             InitStats(100, 100, 100);
             InitBody();
             InitOutfit();
@@ -586,9 +583,6 @@ namespace Server.Mobiles
             }
 
             Blessed = false;
-
-            if (Core.AOS && NameHue == 0x35)
-                NameHue = -1;
 
             if (PlayerVendors == null)
                 PlayerVendors = new List<PlayerVendor>();

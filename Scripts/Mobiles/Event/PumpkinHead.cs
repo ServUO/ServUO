@@ -61,51 +61,25 @@ namespace Server.Mobiles
         {
             if (Utility.RandomDouble() < .05)
             {
-                if (Core.TOL)
+                switch (Utility.Random(5))
                 {
-                    switch (Utility.Random(5))
-                    {
-                        case 0:
-                            PackItem(new ObsidianSkull());
-                            break;
-                        case 1:
-                            PackItem(new CrystalSkull());
-                            break;
-                        case 2:
-                            PackItem(new JadeSkull());
-                            break;
-                        case 3:
-                            PackItem(new CarvablePumpkinTall());
-                            break;
-                        case 4:
-                            PackItem(new CarvableGordPumpkinTall());
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                else
-                {
-                    switch (Utility.Random(5))
-                    {
-                        case 0:
-                            PackItem(new PaintedEvilClownMask());
-                            break;
-                        case 1:
-                            PackItem(new PaintedDaemonMask());
-                            break;
-                        case 2:
-                            PackItem(new PaintedPlagueMask());
-                            break;
-                        case 3:
-                            PackItem(new PaintedEvilJesterMask());
-                            break;
-                        case 4:
-                            PackItem(new PaintedPorcelainMask());
-                            break;
-                        default:
-                            break;
-                    }
+                    case 0:
+                        PackItem(new ObsidianSkull());
+                        break;
+                    case 1:
+                        PackItem(new CrystalSkull());
+                        break;
+                    case 2:
+                        PackItem(new JadeSkull());
+                        break;
+                    case 3:
+                        PackItem(new CarvablePumpkinTall());
+                        break;
+                    case 4:
+                        PackItem(new CarvableGordPumpkinTall());
+                        break;
+                    default:
+                        break;
                 }
             }
 

@@ -153,17 +153,11 @@ namespace Server.Items
 
             for (int i = 0; i < level * 2; ++i)
             {
-                Item item;
+                Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry();
 
-                if (Core.AOS)
-                    item = Loot.RandomArmorOrShieldOrWeaponOrJewelry();
-                else
-                    item = Loot.RandomArmorOrShieldOrWeapon();
-
-                if (item != null && Core.HS && RandomItemGenerator.Enabled)
+                if (item != null && RandomItemGenerator.Enabled)
                 {
-                    int min, max;
-                    TreasureMapChest.GetRandomItemStat(out min, out max);
+                    TreasureMapChest.GetRandomItemStat(out int min, out int max);
 
                     RunicReforging.GenerateRandomItem(item, 0, min, max);
 
