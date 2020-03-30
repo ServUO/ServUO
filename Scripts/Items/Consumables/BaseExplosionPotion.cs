@@ -88,25 +88,13 @@ namespace Server.Items
 			{
 				from.SendLocalizedMessage(500236); // You should throw it now!
 
-				if (Core.ML)
-				{
-					m_Timer = Timer.DelayCall(
-						TimeSpan.FromSeconds(1.0),
-						TimeSpan.FromSeconds(1.25),
-						5,
-						new TimerStateCallback(Detonate_OnTick),
-						new object[] {from, 3}); // 3.6 seconds explosion delay
-				}
-				else
-				{
-					m_Timer = Timer.DelayCall(
-						TimeSpan.FromSeconds(0.75),
-						TimeSpan.FromSeconds(1.0),
-						4,
-						new TimerStateCallback(Detonate_OnTick),
-						new object[] {from, 3}); // 2.6 seconds explosion delay
-				}
-			}
+                m_Timer = Timer.DelayCall(
+                        TimeSpan.FromSeconds(1.0),
+                        TimeSpan.FromSeconds(1.25),
+                        5,
+                        new TimerStateCallback(Detonate_OnTick),
+                        new object[] { from, 3 }); // 3.6 seconds explosion delay
+            }
 		}
 
 		public void Explode(Mobile from, bool direct, Point3D loc, Map map)

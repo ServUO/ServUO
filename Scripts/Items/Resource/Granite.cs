@@ -9,7 +9,7 @@ namespace Server.Items
             : base(0x1779)
         {
             Hue = CraftResources.GetHue(resource);
-            Stackable = Core.ML;
+            Stackable = true;
 
             m_Resource = resource;
         }
@@ -39,7 +39,7 @@ namespace Server.Items
         {
             get
             {
-                return Core.ML ? 1.0 : 10.0;
+                return 1.0;
             }// Pub 57
         }
         public override int LabelNumber
@@ -73,9 +73,6 @@ namespace Server.Items
                         break;
                     }
             }
-			
-            if (version < 1)
-                Stackable = Core.ML;
         }
 
         public override void GetProperties(ObjectPropertyList list)

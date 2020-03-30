@@ -524,14 +524,7 @@ namespace Server.Items
                         ApplyAttribute(primary, min, max, AosAttribute.DefendChance, 1, 15);
                         break;
                     case 2:
-                        if (Core.ML)
-                        {
-                            ApplyAttribute(primary, min, max, AosAttribute.ReflectPhysical, 1, 15);
-                        }
-                        else
-                        {
-                            ApplyAttribute(primary, min, max, AosAttribute.AttackChance, 1, 15);
-                        }
+                        ApplyAttribute(primary, min, max, AosAttribute.ReflectPhysical, 1, 15);
                         break;
                     case 3:
                         ApplyAttribute(primary, min, max, AosAttribute.CastSpeed, 1, 1);

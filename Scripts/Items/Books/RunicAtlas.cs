@@ -552,7 +552,7 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(502415); // Request cancelled.
 
-                if (from is PlayerMobile && !Atlas.Deleted && from.InRange(Atlas.GetWorldLocation(), (Core.ML ? 3 : 1)))
+                if (from is PlayerMobile && !Atlas.Deleted && from.InRange(Atlas.GetWorldLocation(), 3))
                 {
                     from.SendGump(new RunicAtlasGump((PlayerMobile)from, Atlas));
                 }

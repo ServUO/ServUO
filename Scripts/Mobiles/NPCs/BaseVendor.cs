@@ -1182,7 +1182,7 @@ namespace Server.Mobiles
                     }
                 }
 				
-                if (Core.ML && pm != null && pm.NextBODTurnInTime > DateTime.UtcNow)
+                if (pm != null && pm.NextBODTurnInTime > DateTime.UtcNow)
 				{
                     SayTo(from, 1079976, 0x3B2); // You'll have to wait a few seconds while I inspect the last order.
 					return false;
@@ -1269,7 +1269,7 @@ namespace Server.Mobiles
 				OnSuccessfulBulkOrderReceive(from);
                 Server.Engines.CityLoyalty.CityLoyaltySystem.OnBODTurnIn(from, gold);
 
-				if (Core.ML && pm != null)
+				if (pm != null)
 				{
 					pm.NextBODTurnInTime = DateTime.UtcNow + TimeSpan.FromSeconds(2.0);
 				}

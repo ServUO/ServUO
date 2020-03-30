@@ -37,7 +37,7 @@ namespace Server.Items
         public Dough()
             : base(0x103d)
         {
-            Stackable = Core.ML;
+            Stackable = true;
             Weight = 1.0;
         }
 
@@ -180,7 +180,7 @@ namespace Server.Items
         public SweetDough()
             : base(0x103d)
         {
-            Stackable = Core.ML;
+            Stackable = true;
             Weight = 1.0;
             Hue = 150;
         }

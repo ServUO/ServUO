@@ -1041,14 +1041,14 @@ namespace Server.Items
         {
             get
             {
-                return (Core.ML ? 14 : 7);
+                return 14;
             }
         }
         public override int InitMaxHits
         {
             get
             {
-                return (Core.ML ? 28 : 12);
+                return 28;
             }
         }
 

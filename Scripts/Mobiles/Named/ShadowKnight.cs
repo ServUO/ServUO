@@ -78,7 +78,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.ML;
+                return true;
             }
         }
 

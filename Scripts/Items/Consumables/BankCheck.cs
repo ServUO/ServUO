@@ -110,9 +110,7 @@ namespace Server.Items
 		{
 			base.GetProperties(list);
 
-			var worth = Core.ML ? m_Worth.ToString("#,0") : m_Worth.ToString();
-
-			list.Add(1060738, worth); // value: ~1_val~
+			list.Add(1060738, m_Worth.ToString("#,0")); // value: ~1_val~
 		}
 
 #if NEWPARENT

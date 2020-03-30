@@ -74,7 +74,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.ML;
+                return true;
             }
         }
         public override bool BardImmune

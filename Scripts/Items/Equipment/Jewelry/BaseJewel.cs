@@ -957,7 +957,7 @@ namespace Server.Items
             if ((prop = m_AosAttributes.LowerRegCost) != 0)
                 list.Add(1060434, prop.ToString()); // lower reagent cost ~1_val~%      
 
-            if (Core.ML && (prop = m_AosAttributes.IncreasedKarmaLoss) != 0)
+            if ((prop = m_AosAttributes.IncreasedKarmaLoss) != 0)
                 list.Add(1075210, prop.ToString()); // Increased Karma Loss ~1val~%
 
             base.AddResistanceProperties(list);

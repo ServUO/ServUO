@@ -48,10 +48,7 @@ namespace Server.Mobiles
         {
             get
             {
-                if (Core.ML)
-                    return Price.ToString("N0", CultureInfo.GetCultureInfo("en-US"));
-
-                return Price.ToString();
+                return Price.ToString("N0", CultureInfo.GetCultureInfo("en-US"));
             }
         }
         public string Description

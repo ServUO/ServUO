@@ -216,7 +216,7 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (m_Mobile.Spell == null && DateTime.UtcNow > NextCastTime && m_Mobile.InRange(c, Core.ML ? 10 : 12))
+			if (m_Mobile.Spell == null && DateTime.UtcNow > NextCastTime && m_Mobile.InRange(c, 10))
 			{
 				Spell spell = null;
 
@@ -263,7 +263,7 @@ namespace Server.Mobiles
 			{
 				var map = m_Mobile.Map;
 
-				if (map == null || !m_Mobile.InRange(LastTargetLoc, Core.ML ? 10 : 12))
+				if (map == null || !m_Mobile.InRange(LastTargetLoc, 10))
 				{
 					LastTarget = null;
 				}
@@ -540,7 +540,7 @@ namespace Server.Mobiles
 				var comb = m_Mobile.Combatant as Mobile;
 
 				if (comb != null && !comb.Deleted && comb.Alive && !comb.IsDeadBondedPet &&
-					m_Mobile.InRange(comb, Core.ML ? 10 : 12) && CanDispel(comb))
+					m_Mobile.InRange(comb, 10) && CanDispel(comb))
 				{
 					active = comb;
 					activePrio = m_Mobile.GetDistanceToSqrt(comb);
@@ -554,7 +554,7 @@ namespace Server.Mobiles
 					var info = aggressed[i];
 					var m = info.Defender;
 
-					if (m != comb && m.Combatant == m_Mobile && m_Mobile.InRange(m, Core.ML ? 10 : 12) && CanDispel(m))
+					if (m != comb && m.Combatant == m_Mobile && m_Mobile.InRange(m, 10) && CanDispel(m))
 					{
 						var prio = m_Mobile.GetDistanceToSqrt(m);
 
@@ -574,7 +574,7 @@ namespace Server.Mobiles
 					var info = aggressors[i];
 					var m = info.Attacker;
 
-					if (m != comb && m.Combatant == m_Mobile && m_Mobile.InRange(m, Core.ML ? 10 : 12) && CanDispel(m))
+					if (m != comb && m.Combatant == m_Mobile && m_Mobile.InRange(m, 10) && CanDispel(m))
 					{
 						var prio = m_Mobile.GetDistanceToSqrt(m);
 
@@ -606,7 +606,7 @@ namespace Server.Mobiles
 					actPrio = inactPrio = m_Mobile.GetDistanceToSqrt(comb);
 				}
 
-				IPooledEnumerable eable = m_Mobile.GetMobilesInRange(Core.ML ? 10 : 12);
+				IPooledEnumerable eable = m_Mobile.GetMobilesInRange(10);
 
 				foreach (Mobile m in eable)
 				{
@@ -1476,8 +1476,8 @@ namespace Server.Mobiles
 
 					var teleRange = targ.Range;
 
-					if (teleRange < 0)
-						teleRange = Core.ML ? 11 : 12;
+                    if (teleRange < 0)
+                        teleRange = 11;
 
 					for (var i = 0; i < 10; ++i)
 					{

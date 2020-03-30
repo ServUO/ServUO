@@ -64,7 +64,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 			
-            if (Core.ML && m_IsRewardItem)
+            if (m_IsRewardItem)
                 list.Add(1076218); // 2nd Year Veteran Reward
         }
 

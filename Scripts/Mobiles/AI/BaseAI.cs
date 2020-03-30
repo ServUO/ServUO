@@ -1861,16 +1861,9 @@ namespace Server.Mobiles
 
 			m_Mobile.ControlTarget = null;
 
-			if (Core.ML)
-			{
-				WalkRandomInHome(3, 2, 1);
-			}
-			else
-			{
-				m_Mobile.ControlOrder = OrderType.None;
-			}
+            WalkRandomInHome(3, 2, 1);
 
-			return true;
+            return true;
 		}
 
 		private class TransferItem : Item

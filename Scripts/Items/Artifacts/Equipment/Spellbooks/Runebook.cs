@@ -326,7 +326,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(GetWorldLocation(), (Core.ML ? 3 : 1)) && CheckAccess(from))
+            if (from.InRange(GetWorldLocation(), 3) && CheckAccess(from))
             {
                 if (RootParent is BaseCreature)
                 {

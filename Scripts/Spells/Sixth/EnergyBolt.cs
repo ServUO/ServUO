@@ -77,7 +77,7 @@ namespace Server.Spells.Sixth
         {
             private readonly EnergyBoltSpell m_Owner;
             public InternalTarget(EnergyBoltSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(10, false, TargetFlags.Harmful)
             {
                 m_Owner = owner;
             }

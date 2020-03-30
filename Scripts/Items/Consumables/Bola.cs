@@ -110,7 +110,7 @@ namespace Server.Items
             {
                 from.PrivateOverheadMessage(MessageType.Regular, 946, 1042060, from.NetState); // You cannot see that target!
             }
-            else if (!to.Mounted && !to.Flying && (!Core.ML || !AnimalForm.UnderTransformation(to)))
+            else if (!to.Mounted && !to.Flying && !AnimalForm.UnderTransformation(to))
             {
                 to.PrivateOverheadMessage(MessageType.Regular, 946, 1049628, from.NetState); // You have no reason to throw a bola at that.
             }
@@ -218,7 +218,7 @@ namespace Server.Items
                     {
                         from.PrivateOverheadMessage(MessageType.Regular, 946, 1070902, from.NetState); // You can't use this while in an animal form!
                     }
-                    else if (!to.Mounted && !to.Flying && (!Core.ML || !AnimalForm.UnderTransformation(to)))
+                    else if (!to.Mounted && !to.Flying && !AnimalForm.UnderTransformation(to))
                     {
                         to.PrivateOverheadMessage(MessageType.Regular, 946, 1049628, from.NetState); // You have no reason to throw a bola at that.
                     }

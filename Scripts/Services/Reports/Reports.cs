@@ -139,9 +139,7 @@ namespace Server.Engines.Reports
 
         public static SkillDistribution[] GetSkillDistribution()
         {
-            int skip = (Core.ML ? 0 : Core.SE ? 1 : Core.AOS ? 3 : 6);
-
-            SkillDistribution[] distribs = new SkillDistribution[SkillInfo.Table.Length - skip];
+            SkillDistribution[] distribs = new SkillDistribution[SkillInfo.Table.Length];
 
             for (int i = 0; i < distribs.Length; ++i)
                 distribs[i] = new SkillDistribution(SkillInfo.Table[i]);
@@ -152,7 +150,7 @@ namespace Server.Engines.Reports
                 {
                     Skills skills = mob.Skills;
 
-                    for (int i = 0; i < skills.Length - skip; ++i)
+                    for (int i = 0; i < skills.Length; ++i)
                     {
                         Skill skill = skills[i];
 

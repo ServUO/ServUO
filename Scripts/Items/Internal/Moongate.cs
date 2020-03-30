@@ -79,7 +79,7 @@ namespace Server.Items
 		public virtual void CheckGate(Mobile m, int range)
 		{
 			#region Mondain's Legacy
-			if (m.Hidden && m.IsPlayer() && Core.ML)
+			if (m.Hidden && m.IsPlayer())
 				m.RevealingAction();
 			#endregion
 

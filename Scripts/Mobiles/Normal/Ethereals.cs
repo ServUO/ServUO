@@ -275,7 +275,7 @@ namespace Server.Mobiles
         {
             base.GetProperties(list);
 
-            if (Core.ML && m_IsRewardItem)
+            if (m_IsRewardItem)
             {
                 list.Add(RewardSystem.GetRewardYearLabel(this, new object[] { })); // X Year Veteran Reward
             }
