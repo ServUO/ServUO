@@ -276,7 +276,7 @@ namespace Server.Engines.Quests
                             if (slay.Region != null)
                             {
                                 AddHtmlLocalized(103, offset, 312, 20, 1018327, 0x15F90, false, false); // Location
-                                AddHtmlObject(223, offset, 312, 20, slay.Region.Name, White, false, false); // %location%
+                                AddHtmlObject(223, offset, 312, 20, slay.Region, White, false, false); // %location%
 
                                 offset += 16;
                             }
@@ -388,7 +388,7 @@ namespace Server.Engines.Quests
 
                             if (escort.Label == 0)
                             {
-                                AddHtmlObject(173, offset, 200, 16, escort.Region.Name, White, false, false);
+                                AddHtmlObject(173, offset, 200, 16, escort.Region, White, false, false);
                             }
                             else
                             {

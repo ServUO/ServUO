@@ -191,7 +191,7 @@ namespace Server.Engines.Quests
     {
         private Type[] m_Creatures;
         private string m_Name;
-        private Region m_Region;
+        private string m_Region;
 
         public SlayObjective(Type creature, string name, int amount)
             : this(new Type[] { creature }, name, amount, null, 0)
@@ -231,7 +231,7 @@ namespace Server.Engines.Quests
 
             if (region != null)
             {
-                m_Region = QuestHelper.FindRegion(region);
+                m_Region = QuestHelper.ValidateRegion(region) ? region : null;
 
                 if (m_Region == null)
                     Console.WriteLine(String.Format("Invalid region name ('{0}') in '{1}' objective!", region, GetType()));
@@ -260,7 +260,7 @@ namespace Server.Engines.Quests
                 m_Name = value;
             }
         }
-        public Region Region
+        public string Region
         { 
             get
             {
@@ -289,7 +289,7 @@ namespace Server.Engines.Quests
             {
                 if (type.IsAssignableFrom(mob.GetType()))
                 {
-                    if (m_Region != null && !m_Region.Contains(mob.Location))
+                    if (m_Region != null && !mob.Region.IsPartOf(m_Region))
                         return false;
 
                     return true;
@@ -304,17 +304,25 @@ namespace Server.Engines.Quests
             if (obj is Mobile)
             {
                 Mobile mob = (Mobile)obj;
-			
+
                 if (IsObjective(mob))
-                { 
+                {
                     if (!Completed)
                         CurProgress += 1;
-						
-                    OnKill(mob);					
+
+                    OnKill(mob);
                     return true;
                 }
+                else
+                {
+                    Console.WriteLine("Not objective");
+                }
             }
-			
+            else
+            {
+                Console.WriteLine("Not mobile");
+            }
+
             return false;
         }
 
@@ -648,7 +656,7 @@ namespace Server.Engines.Quests
 
     public class EscortObjective : BaseObjective
     {
-        public Region Region { get; set; }
+        public string Region { get; set; }
         public int Fame { get; set; }
         public int Compassion { get; set; }
         public int Label { get; set; }
@@ -676,13 +684,17 @@ namespace Server.Engines.Quests
         public EscortObjective(string region, int fame, int compassion, int seconds, int label)
             : base(1, seconds)
         {
-            Region = QuestHelper.FindRegion(region);
+            if (region != null)
+            {
+                Region = QuestHelper.ValidateRegion(region) ? region : null;
+
+                if (Region == null)
+                    Console.WriteLine(String.Format("Invalid region name ('{0}') in '{1}' objective!", region, GetType()));
+            }
+
             Fame = fame;
             Compassion = compassion;
             Label = label;
-
-            if (Region == null)
-                Console.WriteLine(String.Format("Invalid region name ('{0}') in '{1}' objective!", region, GetType()));
         }        
 
         public override void OnCompleted()
@@ -713,7 +725,7 @@ namespace Server.Engines.Quests
     public class ApprenticeObjective : BaseObjective
     {
         private SkillName m_Skill;
-        private Region m_Region;
+        private string m_Region;
         private object m_Enter;
         private object m_Leave;
 
@@ -729,7 +741,7 @@ namespace Server.Engines.Quests
 		
             if (region != null)
             {
-                m_Region = QuestHelper.FindRegion(region);					
+                m_Region = QuestHelper.ValidateRegion(region) ? region : null;			
                 m_Enter = enterRegion;	
                 m_Leave = leaveRegion;
 				
@@ -749,7 +761,7 @@ namespace Server.Engines.Quests
                 m_Skill = value;
             }
         }
-        public Region Region
+        public string Region
         {
             get
             {

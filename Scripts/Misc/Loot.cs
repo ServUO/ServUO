@@ -877,44 +877,7 @@ namespace Server
 
         public static BaseTalisman RandomTalisman()
         {
-            BaseTalisman talisman = new BaseTalisman(BaseTalisman.GetRandomItemID());
-
-            talisman.Summoner = BaseTalisman.GetRandomSummoner();
-
-            if (talisman.Summoner.IsEmpty)
-            {
-                talisman.Removal = BaseTalisman.GetRandomRemoval();
-
-                if (talisman.Removal != TalismanRemoval.None)
-                {
-                    talisman.MaxCharges = BaseTalisman.GetRandomCharges();
-                    talisman.MaxChargeTime = 1200;
-                }
-            }
-            else
-            {
-                talisman.MaxCharges = Utility.RandomMinMax(10, 50);
-
-                if (talisman.Summoner.IsItem)
-                {
-                    talisman.MaxChargeTime = 60;
-                }
-                else
-                {
-                    talisman.MaxChargeTime = 1800;
-                }
-            }
-
-            talisman.Blessed = BaseTalisman.GetRandomBlessed();
-            talisman.Slayer = BaseTalisman.GetRandomSlayer();
-            talisman.Protection = BaseTalisman.GetRandomProtection();
-            talisman.Killer = BaseTalisman.GetRandomKiller();
-            talisman.Skill = BaseTalisman.GetRandomSkill();
-            talisman.ExceptionalBonus = BaseTalisman.GetRandomExceptional();
-            talisman.SuccessBonus = BaseTalisman.GetRandomSuccessful();
-            talisman.Charges = talisman.MaxCharges;
-
-            return talisman;
+            return new RandomTalisman();
         }
         #endregion
 

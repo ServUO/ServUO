@@ -44,7 +44,7 @@ namespace Server.Engines.Quests
         public void CompleteQuest()
         {
             OnCompleted();
-            Objectives[0].CurProgress++;
+            Objectives[0].Complete();
             TownCryerSystem.CompleteQuest(Owner, 1158275, 1158276, 0x65B);
             GiveRewards();
         }

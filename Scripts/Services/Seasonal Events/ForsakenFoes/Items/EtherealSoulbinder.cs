@@ -120,7 +120,7 @@ namespace Server.Items
             var bc = e.Creature as BaseCreature;
             var killer = e.Killer;
 
-            if (bc != null && bc.IsSoulbound && killer is PlayerMobile && killer.Backpack != null)
+            if (bc != null && bc.IsSoulBound && killer is PlayerMobile && killer.Backpack != null)
             {
                 EtherealSoulbinder es = killer.Backpack.FindItemsByType<EtherealSoulbinder>().Where(x => x.SoulPoint < x.MaxSoulPoint).FirstOrDefault();
 

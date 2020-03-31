@@ -57,7 +57,7 @@ namespace Server.Engines.Shadowguard
 							
 							Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
 							{
-                                if (pirate.Alive)
+                                if (pirate.Alive && !pirate.BlockReflect)
                                 {
                                     // this is gay, but can't figure out a better way to do!
                                     pirate.BlockReflect = true;

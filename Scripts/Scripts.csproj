@@ -10167,7 +10167,7 @@
     <Compile Include="Services\MondainsLegacyQuests\BaseEscort.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Quests\BaseQuest.cs">
+    <Compile Include="Services\MondainsLegacyQuests\BaseQuest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\MondainsLegacyQuests\BaseQuestItem.cs">
