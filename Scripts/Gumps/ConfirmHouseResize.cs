@@ -142,7 +142,7 @@ namespace Server.Gumps
             else if (info.ButtonID == 0)
             {
                 m_Mobile.CloseGump(typeof(ConfirmHouseResize));
-                m_Mobile.SendGump(new HouseGumpAOS(HouseGumpPageAOS.Customize, m_Mobile, m_House));
+                m_Mobile.SendGump(new HouseGump(HouseGumpPage.Customize, m_Mobile, m_House));
             }
         }
     }

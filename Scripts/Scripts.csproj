@@ -350,7 +350,7 @@
     <Compile Include="Gumps\HouseDemolishGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gumps\HouseGumpAOS.cs">
+    <Compile Include="Gumps\HouseGump.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gumps\HouseTransferGump.cs">
