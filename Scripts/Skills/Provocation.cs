@@ -1,7 +1,6 @@
 #region References
 using System;
 
-using Server.Engines.XmlSpawner2;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
