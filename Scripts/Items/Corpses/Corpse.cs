@@ -1266,19 +1266,7 @@ namespace Server.Items
 
                             if (robe != null)
                             {
-                                if (Core.SA)
-                                {
-                                    robe.Delete();
-                                }
-                                else
-                                {
-                                    Map map = from.Map;
-
-                                    if (map != null && map != Map.Internal)
-                                    {
-                                        robe.MoveToWorld(from.Location, map);
-                                    }
-                                }
+                                robe.Delete();
                             }
                         }
 

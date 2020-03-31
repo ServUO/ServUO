@@ -285,7 +285,7 @@ namespace Server.Mobiles
                 return BlockMountType.None;
             }
 
-            if (Core.TOL && entry.m_Type >= BlockMountType.RidingSwipe && entry.m_Expiration > DateTime.UtcNow)
+            if (entry.m_Type >= BlockMountType.RidingSwipe && entry.m_Expiration > DateTime.UtcNow)
             {
                 return BlockMountType.DismountRecovery;
             }
@@ -568,7 +568,7 @@ namespace Server.Mobiles
             {
                 if (m_Type >= BlockMountType.RidingSwipe)
                 {
-                    if (Core.SA && DateTime.UtcNow < m_Expiration)
+                    if (DateTime.UtcNow < m_Expiration)
                     {
                         return false;
                     }
@@ -584,7 +584,7 @@ namespace Server.Mobiles
                             default:
                             case BlockMountType.RidingSwipe:
                                 {
-                                    if ((!Core.SA && m_Mount == null) || m_Mount is Mobile && ((Mobile)m_Mount).Hits >= ((Mobile)m_Mount).HitsMax)
+                                    if (m_Mount is Mobile && ((Mobile)m_Mount).Hits >= ((Mobile)m_Mount).HitsMax)
                                     {
                                         BaseMount.ExpireMountPrevention(m_Mobile);
                                         return true;

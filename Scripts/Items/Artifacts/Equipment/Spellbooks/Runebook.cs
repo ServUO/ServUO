@@ -346,8 +346,6 @@ namespace Server.Items
 
         public virtual void OnTravel()
         {
-            if (!Core.SA)
-                NextUse = DateTime.UtcNow + UseDelay;
         }
 
         public override void OnAfterDuped(Item newItem)

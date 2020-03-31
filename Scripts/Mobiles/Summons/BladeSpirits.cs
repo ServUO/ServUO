@@ -25,7 +25,7 @@ namespace Server.Mobiles
             this.SetDex(weak ? 100 : 150);
             this.SetInt(100);
 
-            this.SetHits((Core.SE && !weak) ? 160 : 80);
+            this.SetHits(!weak ? 160 : 80);
             this.SetStam(250);
             this.SetMana(0);
 

@@ -70,7 +70,7 @@ namespace Server.Items
         {
             base.AddNameProperties(list);
 
-            if (Core.EJ && LastParryChance > 0)
+            if (LastParryChance > 0)
             {
                 list.Add(1158861, LastParryChance.ToString()); // Last Parry Chance: ~1_val~%
             }

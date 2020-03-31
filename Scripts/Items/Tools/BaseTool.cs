@@ -222,7 +222,7 @@ namespace Server.Items
             {
                 CraftSystem system = CraftSystem;
 
-                if (Core.TOL && m_RepairMode)
+                if (m_RepairMode)
                 {
                     Repair.Do(from, system, this);
                 }

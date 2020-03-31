@@ -101,7 +101,7 @@ namespace Server.Engines.Craft
 
             #region SA
             // Alter option
-            if (Core.SA && m_CraftSystem.CanAlter)
+            if (m_CraftSystem.CanAlter)
             {
                 AddButton(270, 402, 4005, 4007, GetButtonID(6, 9), GumpButtonType.Reply, 0);
                 AddHtmlLocalized(304, 405, 250, 18, 1094726, LabelColor, false, false); // ALTER ITEM (Gargoyle)
@@ -109,11 +109,8 @@ namespace Server.Engines.Craft
             // ****************************************
 
             // Quest item
-            if (Core.SA)
-            {
-                AddButton(270, 422, 4005, 4007, GetButtonID(6, 10), GumpButtonType.Reply, 0);
-                AddHtmlLocalized(305, 425, 150, 18, context != null && context.QuestOption == CraftQuestOption.QuestItem ? 1112534 : 1112533, LabelColor, false, false); // QUEST ITEM
-            }
+            AddButton(270, 422, 4005, 4007, GetButtonID(6, 10), GumpButtonType.Reply, 0);
+            AddHtmlLocalized(305, 425, 150, 18, context != null && context.QuestOption == CraftQuestOption.QuestItem ? 1112534 : 1112533, LabelColor, false, false); // QUEST ITEM
             // ****************************************
             #endregion
 

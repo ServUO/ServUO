@@ -220,7 +220,7 @@ namespace Server.Items
 
             public BaseGalleon CheckGalleonPlacement(Mobile from, BaseAddon addon, Point3D p, Map map)
             {
-                if (!Core.HS || addon.Components.Count > 1)
+                if (addon.Components.Count > 1)
                 {
                     return null;
                 }

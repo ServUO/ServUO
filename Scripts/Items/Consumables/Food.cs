@@ -186,14 +186,7 @@ namespace Server.Items
 
                 if (from.Body.IsHuman && !from.Mounted)
                 {
-                    if (Core.SA)
-                    {
-                        from.Animate(AnimationType.Eat, 0);
-                    }
-                    else
-                    {
-                        from.Animate(34, 5, 1, true, false, 0);
-                    }
+                    from.Animate(AnimationType.Eat, 0);
                 }
 
                 if (m_Poison != null)

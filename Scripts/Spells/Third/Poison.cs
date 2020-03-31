@@ -56,7 +56,7 @@ namespace Server.Spells.Third
 
                     int total = (Caster.Skills.Magery.Fixed + Caster.Skills.Poisoning.Fixed) / 2;
 
-                    if (Core.SA && Caster.InRange(m, 8))
+                    if (Caster.InRange(m, 8))
                     {
                         int range = (int)Caster.GetDistanceToSqrt(m.Location);
 

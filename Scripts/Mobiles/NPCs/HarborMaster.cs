@@ -60,7 +60,7 @@ namespace Server.Mobiles
         {
             base.AddCustomContextEntries(from, list);
 
-            if (Core.HS && from.Alive)
+            if (from.Alive)
             {
                 list.Add(new ShipRecallRuneEntry(from, this));
 

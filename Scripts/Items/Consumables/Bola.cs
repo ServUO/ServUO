@@ -149,9 +149,6 @@ namespace Server.Items
 
         private static bool CheckHit(Mobile to, Mobile from)
         {
-            if (!Core.TOL)
-                return true;
-
             double toChance = Math.Min(45 + BaseArmor.GetRefinedDefenseChance(to),
                                        AosAttributes.GetValue(to, AosAttribute.DefendChance)) + 1;
             double fromChance = AosAttributes.GetValue(from, AosAttribute.AttackChance) + 1;
