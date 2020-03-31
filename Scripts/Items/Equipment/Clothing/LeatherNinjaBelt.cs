@@ -148,14 +148,7 @@ namespace Server.Items
         {
             if (from.Body.IsHuman)
             {
-                if (Core.SA)
-                {
-                    from.Animate(AnimationType.Attack, 4);
-                }
-                else
-                {
-                    from.Animate(from.Mounted ? 26 : 9, 7, 1, true, false, 0);
-                }                
+                from.Animate(AnimationType.Attack, 4);
             }
 
             from.PlaySound(0x23A);

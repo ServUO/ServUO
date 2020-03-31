@@ -184,7 +184,7 @@ namespace Server.Items
                             return;
                         }
 
-                        if ((item.IsChildOf(from.Backpack) || (Core.ML && item.Parent == from)) && m_Powder.IsChildOf(from.Backpack))
+                        if ((item.IsChildOf(from.Backpack) || item.Parent == from) && m_Powder.IsChildOf(from.Backpack))
                         {
                             int origMaxHP = wearable.MaxHitPoints;
                             int origCurHP = wearable.HitPoints;

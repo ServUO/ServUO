@@ -14,7 +14,7 @@ namespace Server.Items
         public BookOfBushido(ulong content)
             : base(content, 0x238C)
         {
-            this.Layer = (Core.ML ? Layer.OneHanded : Layer.Invalid);
+            this.Layer = Layer.OneHanded;
         }
 
         public BookOfBushido(Serial serial)
@@ -55,9 +55,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (version == 0 && Core.ML)
-                this.Layer = Layer.OneHanded;
         }
     }
 }

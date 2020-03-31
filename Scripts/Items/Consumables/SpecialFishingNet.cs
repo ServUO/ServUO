@@ -195,14 +195,7 @@ namespace Server.Items
 
                 SpellHelper.Turn(from, p);
 
-                if (Core.SA)
-                {
-                    from.Animate(AnimationType.Attack, 6);
-                }
-                else
-                {
-                    from.Animate(12, 5, 1, true, false, 0);
-                }
+                from.Animate(AnimationType.Attack, 6);
 
                 Effects.SendLocationEffect(p, map, 0x352D, 16, 4);
                 Effects.PlaySound(p, map, 0x364);

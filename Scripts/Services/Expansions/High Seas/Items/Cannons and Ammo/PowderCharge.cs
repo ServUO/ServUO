@@ -76,10 +76,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (Core.EJ)
-            {
-                Replacer.Replace(this, new PowderCharge());
-            }
+            Replacer.Replace(this, new PowderCharge());
         }
     }
 
@@ -117,10 +114,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (Core.EJ)
-            {
-                Replacer.Replace(this, new PowderCharge());
-            }
+            Replacer.Replace(this, new PowderCharge());
         }
     }
 }

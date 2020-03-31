@@ -56,18 +56,5 @@ namespace Server.Items
 
             from.Target = new BladedItemTarget(this);
         }
-
-        public override void OnHit(Mobile attacker, IDamageable damageable, double damageBonus)
-        {
-            base.OnHit(attacker, damageable, damageBonus);
-
-            if (!Core.AOS && this.Poison != null && this.PoisonCharges > 0 && damageable is Mobile)
-            {
-                --this.PoisonCharges;
-
-                if (Utility.RandomDouble() >= 0.5) // 50% chance to poison
-                    ((Mobile)damageable).ApplyPoison(attacker, this.Poison);
-            }
-        }
     }
 }

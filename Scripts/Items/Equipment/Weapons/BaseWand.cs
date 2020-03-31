@@ -33,7 +33,7 @@ namespace Server.Items
             this.Effect = effect;
             this.Charges = Utility.RandomMinMax(minCharges, maxCharges);
 
-            if (Core.AOS && m_WandEffect < WandEffect.None)
+            if (m_WandEffect < WandEffect.None)
             {
                 this.Attributes.SpellChanneling = 1;
                 this.Attributes.CastSpeed = -1;

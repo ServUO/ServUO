@@ -348,7 +348,7 @@ namespace Server.Mobiles
 										break;
 									}
 
-									if ((!Core.ML && amount > 5000) || (Core.ML && amount > 60000))
+									if (amount > 60000)
 									{
 										// Thou canst not withdraw so much at one time!
 										vendor.Say(500381);

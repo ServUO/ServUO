@@ -8,8 +8,7 @@ namespace Server.Engines.Quests
     {
         public static void Initialize()
         {
-            if (Core.SA)
-                Spawn();
+            Spawn();
         }
 
         public static Point3D HomeLocation { get { return new Point3D(1150, 964, -42); } }

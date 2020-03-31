@@ -33,7 +33,7 @@ namespace Server.Items
 
         public override void Drink(Mobile from)
         {
-            if (Core.AOS && (from.Paralyzed || from.Frozen || (from.Spell != null && from.Spell.IsCasting)))
+            if (from.Paralyzed || from.Frozen || (from.Spell != null && from.Spell.IsCasting))
             {
                 from.SendLocalizedMessage(1062725); // You can not use that potion while paralyzed.
                 return;

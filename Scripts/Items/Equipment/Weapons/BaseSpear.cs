@@ -62,27 +62,5 @@ namespace Server.Items
 
             int version = reader.ReadInt();
         }
-
-        public override void OnHit(Mobile attacker, IDamageable defender, double damageBonus)
-        {
-            base.OnHit(attacker, defender, damageBonus);
-
-            if (!Core.AOS && defender is Mobile && this.Layer == Layer.TwoHanded && (attacker.Skills[SkillName.Anatomy].Value / 400.0) >= Utility.RandomDouble())
-            {
-                ((Mobile)defender).SendMessage("You receive a paralyzing blow!"); // Is this not localized?
-                ((Mobile)defender).Freeze(TimeSpan.FromSeconds(2.0));
-
-                attacker.SendMessage("You deliver a paralyzing blow!"); // Is this not localized?
-                attacker.PlaySound(0x11C);
-            }
-
-            if (!Core.AOS && defender is Mobile && this.Poison != null && this.PoisonCharges > 0)
-            {
-                --this.PoisonCharges;
-
-                if (Utility.RandomDouble() >= 0.5) // 50% chance to poison
-                    ((Mobile)defender).ApplyPoison(attacker, this.Poison);
-            }
-        }
     }
 }

@@ -14,7 +14,7 @@ namespace Server.Items
         public NecromancerSpellbook(ulong content)
             : base(content, 0x2253)
         {
-            this.Layer = (Core.ML ? Layer.OneHanded : Layer.Invalid);
+            this.Layer = Layer.OneHanded;
         }
 
         public NecromancerSpellbook(Serial serial)
@@ -40,7 +40,7 @@ namespace Server.Items
         {
             get
             {
-                return ((Core.SE) ? 17 : 16);
+                return 17;
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -55,9 +55,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (version == 0 && Core.ML)
-                this.Layer = Layer.OneHanded;
         }
     }
 

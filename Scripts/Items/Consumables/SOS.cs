@@ -319,27 +319,9 @@ namespace Server.Items
 
                 AddPage(0);
 
-                if (Core.ML)
-                {
-                    AddBackground(0, 0, 250, 350, 9390);
+                AddBackground(0, 0, 250, 350, 9390);
 
-                    AddHtmlLocalized(30, 50, 190, 420, entry.Message, fmt, 0, false, false);
-                }
-                else
-                {
-                    AddBackground(0, 40, 350, 300, 2520);
-
-                    AddHtmlLocalized(30, 80, 285, 160, 1018326, true, true); /* This is a message hastily scribbled by a passenger aboard a sinking ship.
-                                                                              * While it is probably too late to save the passengers and crew,
-                                                                              * perhaps some treasure went down with the ship!
-                                                                              * The message gives the ship's last known sextant co-ordinates.
-                                                                              */
-
-                    AddHtmlLocalized(35, 240, 230, 20, entry.Message, fmt, 0, false, false);
-
-                    AddButton(35, 265, 4005, 4007, 0, GumpButtonType.Reply, 0);
-                    AddHtmlLocalized(70, 265, 100, 20, 1011036, false, false); // OKAY
-                }
+                AddHtmlLocalized(30, 50, 190, 420, entry.Message, fmt, 0, false, false);
             }
         }
         #endif

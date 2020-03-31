@@ -138,9 +138,9 @@ namespace Server.Items
         }
         public void AttackAnimation(Mobile from, Mobile to)
         {
-            if (from.Body.IsHuman && !from.Mounted && !Core.SA)
+            if (from.Body.IsHuman && !from.Mounted)
             {
-                from.Animate(33, 2, 1, true, true, 0);
+                from.Animate(AnimationType.Attack, 4);
             }
 
             from.PlaySound(0x223);

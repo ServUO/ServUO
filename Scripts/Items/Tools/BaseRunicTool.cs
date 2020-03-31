@@ -524,14 +524,7 @@ namespace Server.Items
                         ApplyAttribute(primary, min, max, AosAttribute.DefendChance, 1, 15);
                         break;
                     case 2:
-                        if (Core.ML)
-                        {
-                            ApplyAttribute(primary, min, max, AosAttribute.ReflectPhysical, 1, 15);
-                        }
-                        else
-                        {
-                            ApplyAttribute(primary, min, max, AosAttribute.AttackChance, 1, 15);
-                        }
+                        ApplyAttribute(primary, min, max, AosAttribute.ReflectPhysical, 1, 15);
                         break;
                     case 3:
                         ApplyAttribute(primary, min, max, AosAttribute.CastSpeed, 1, 1);
@@ -1072,20 +1065,18 @@ namespace Server.Items
 
         private static void ApplySkillBonus(AosSkillBonuses attrs, int min, int max, int index, int low, int high)
         {
-            SkillName[] possibleSkills = (attrs.Owner is Spellbook ? m_PossibleSpellbookSkills : m_PossibleBonusSkills);
-            int count = (Core.SE ? possibleSkills.Length : possibleSkills.Length - 2);
+            SkillName[] possibleSkills = attrs.Owner is Spellbook ? m_PossibleSpellbookSkills : m_PossibleBonusSkills;
 
-            SkillName sk, check;
-            double bonus;
+            SkillName sk;
             bool found;
 
             do
             {
                 found = false;
-                sk = possibleSkills[Utility.Random(count)];
+                sk = possibleSkills[Utility.Random(possibleSkills.Length)];
 
                 for (int i = 0; !found && i < 5; ++i)
-                    found = (attrs.GetValues(i, out check, out bonus) && check == sk);
+                    found = (attrs.GetValues(i, out SkillName check, out double bonus) && check == sk);
             }
             while (found);
 

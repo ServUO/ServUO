@@ -124,19 +124,16 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            if (Core.T2A)
+            if (InstanceTram == null)
             {
-                if (InstanceTram == null)
-                {
-                    StrangeContraptionAddon item = new StrangeContraptionAddon();
-                    item.MoveToWorld(new Point3D(5668, 1925, 0), Map.Trammel);
-                }
+                StrangeContraptionAddon item = new StrangeContraptionAddon();
+                item.MoveToWorld(new Point3D(5668, 1925, 0), Map.Trammel);
+            }
 
-                if (InstanceFel == null)
-                {
-                    StrangeContraptionAddon item = new StrangeContraptionAddon();
-                    item.MoveToWorld(new Point3D(5668, 1925, 0), Map.Felucca);
-                }
+            if (InstanceFel == null)
+            {
+                StrangeContraptionAddon item = new StrangeContraptionAddon();
+                item.MoveToWorld(new Point3D(5668, 1925, 0), Map.Felucca);
             }
         }
 
@@ -206,20 +203,13 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (Core.T2A)
+            if (Map == Map.Trammel)
             {
-                if (Map == Map.Trammel)
-                {
-                    InstanceTram = this;
-                }
-                else if (Map == Map.Felucca)
-                {
-                    InstanceFel = this;
-                }
+                InstanceTram = this;
             }
-            else
+            else if (Map == Map.Felucca)
             {
-                Delete();
+                InstanceFel = this;
             }
         }
     }

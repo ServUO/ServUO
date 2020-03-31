@@ -28,40 +28,23 @@ namespace Server.Items
             SkillName.Musicianship,
             SkillName.Provocation,
             SkillName.Discordance,
-            SkillName.Peacemaking
-        };
-        private static readonly SkillName[] m_AOSSkills = new SkillName[]
-        {
+            SkillName.Peacemaking,
             SkillName.Chivalry,
             SkillName.Focus,
             SkillName.Necromancy,
             SkillName.Stealing,
             SkillName.Stealth,
-            SkillName.SpiritSpeak
-        };
-        private static readonly SkillName[] m_SESkills = new SkillName[]
-        {
+            SkillName.SpiritSpeak,
             SkillName.Ninjitsu,
-            SkillName.Bushido
+            SkillName.Bushido,
+            SkillName.Spellweaving,
+            SkillName.Throwing,
+            SkillName.Mysticism,
+            SkillName.Imbuing
         };
-        private static readonly SkillName[] m_MLSkills = new SkillName[]
-        {
-            SkillName.Spellweaving
-        };
-        
-        private static SkillName[] m_SASkills = new SkillName[]
-        {
-        SkillName.Throwing,
-        SkillName.Mysticism,
-        SkillName.Imbuing
-        };
-        /*
-        private static SkillName[] m_HSSkills = new SkillName[]
-        {
-        SkillName.Fishing
-        };
-        */
+
         private static readonly List<SkillName> _Skills = new List<SkillName>();
+
         public PowerScroll()
             : this(SkillName.Alchemy, 0.0)
         {
@@ -89,27 +72,6 @@ namespace Server.Items
                 if (_Skills.Count == 0)
                 {
                     _Skills.AddRange(m_Skills);
-                    if (Core.AOS)
-                    {
-                        _Skills.AddRange(m_AOSSkills);
-                        if (Core.SE)
-                        {
-                            _Skills.AddRange(m_SESkills);
-                            if (Core.ML)
-                            {
-                                _Skills.AddRange(m_MLSkills);
-                                if (Core.SA)
-                                {
-                                    _Skills.AddRange( m_SASkills );
-                                }
-                                /*
-                                if (Core.HS)
-                                _Skills.AddRange( m_HSSkills );
-                                }
-                                */
-                            }
-                        }
-                    }
                 }
                 return _Skills;
             }

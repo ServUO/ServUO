@@ -4,8 +4,6 @@ Released: 03/26/06
 */
 using System;
 
-using CustomsFramework;
-
 namespace Server.Mobiles
 {
     public class GMEthereal : EtherealMount
@@ -97,7 +95,7 @@ namespace Server.Mobiles
         
         public override void OnDoubleClick(Mobile from)
         {
-            if (Utilities.IsStaff(from))
+            if (from.IsStaff())
             {
                 if (from.Mounted)
                     from.SendLocalizedMessage(1005583); // Please dismount first.

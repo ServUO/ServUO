@@ -11,9 +11,6 @@ namespace Server.Items
         public GargishOrderShield()
             : base(0x422A)
         {
-            if (!Core.AOS)
-                this.LootType = LootType.Newbied;
-            //Weight = 7.0;
         }
 
         public GargishOrderShield(Serial serial)
@@ -108,35 +105,6 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write((int)0); //version
-        }
-
-        public override bool OnEquip(Mobile from)
-        {
-            return this.Validate(from) && base.OnEquip(from);
-        }
-
-        public override void OnSingleClick(Mobile from)
-        {
-            if (this.Validate(this.Parent as Mobile))
-                base.OnSingleClick(from);
-        }
-
-        public virtual bool Validate(Mobile m)
-        {
-            if (Core.AOS || m == null || !m.Player || m.AccessLevel != AccessLevel.Player)
-                return true;
-
-            Guild g = m.Guild as Guild;
-
-            if (g == null || g.Type != GuildType.Order)
-            {
-                m.FixedEffect(0x3728, 10, 13);
-                this.Delete();
-
-                return false;
-            }
-
-            return true;
-        }
+        }      
     }
 }

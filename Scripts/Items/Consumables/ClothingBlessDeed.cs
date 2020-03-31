@@ -79,7 +79,7 @@ namespace Server.Items
         {
             get
             {
-                return Core.AOS;
+                return true;
             }
         }
         public override void Serialize(GenericWriter writer)

@@ -58,7 +58,7 @@ namespace Server.Mobiles
 
         public override bool ReacquireOnMovement { get { return !Controlled; } }
         
-        public override double BonusPetDamageScalar { get { return Controlled ? 1.0 : (Core.SE) ? 3.0 : 1.0; } }
+        public override double BonusPetDamageScalar { get { return Controlled ? 1.0 : 3.0; } }
         public override bool AutoDispel { get { return !Controlled; } }
         public override HideType HideType { get { return HideType.Barbed; } }
         public override int Hides { get { return 20; } }
@@ -104,23 +104,6 @@ namespace Server.Mobiles
         public override int GetHurtSound()
         {
             return 0x2C3;
-        }
-
-        public override void OnGotMeleeAttack(Mobile attacker)
-        {
-            base.OnGotMeleeAttack(attacker);
-
-            if (!Core.SE && 0.2 > Utility.RandomDouble() && attacker is BaseCreature)
-            {
-                BaseCreature c = (BaseCreature)attacker;
-
-                if (c.Controlled && c.ControlMaster != null)
-                {
-                    c.ControlTarget = c.ControlMaster;
-                    c.ControlOrder = OrderType.Attack;
-                    c.Combatant = c.ControlMaster;
-                }
-            }
         }
 
         public override void Serialize(GenericWriter writer)

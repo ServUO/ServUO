@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Engines.Craft;
 
-using CustomsFramework;
-
 namespace Server.Items
 {
     public abstract class Food : Item, IEngravable, IQuality
@@ -188,14 +186,7 @@ namespace Server.Items
 
                 if (from.Body.IsHuman && !from.Mounted)
                 {
-                    if (Core.SA)
-                    {
-                        from.Animate(AnimationType.Eat, 0);
-                    }
-                    else
-                    {
-                        from.Animate(34, 5, 1, true, false, 0);
-                    }
+                    from.Animate(AnimationType.Eat, 0);
                 }
 
                 if (m_Poison != null)
@@ -909,7 +900,7 @@ namespace Server.Items
         public Cookies()
             : base(0x160b)
         {
-            Stackable = Core.ML;
+            Stackable = true;
             Weight = 1.0;
             FillFactor = 4;
         }
@@ -1287,7 +1278,7 @@ namespace Server.Items
         public Quiche()
             : base(0x1041)
         {
-            Stackable = Core.ML;
+            Stackable = true;
             Weight = 1.0;
             FillFactor = 5;
         }

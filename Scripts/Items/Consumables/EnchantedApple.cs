@@ -62,50 +62,12 @@ namespace Server.Items
                     IEntity mto = new Entity(Serial.Zero, new Point3D(from.X, from.Y, from.Z + 50), from.Map);
                     Effects.SendMovingParticles(mfrom, mto, 0x2255, 1, 0, false, false, 13, 3, 9501, 1, 0, EffectLayer.Head, 0x100);
 
-                    if (Core.TOL)
-                    {
-                        int power = CleansingWindsSpell.RemoveCurses(from);
-                        power = Math.Min(power, 15);
-
-                        from.SendLocalizedMessage(EatMessage);
-
-                        StartInfluence(from, FoodID, Duration, TimeSpan.FromSeconds(30 + power));
-                        Consume();
-
-                        return true;
-                    }
-                    else if (Core.SA)
-                    {
-                        int totalCurses = GetTotalCurses(from);
-
-                        if (totalCurses > 2 && totalCurses > Utility.Random(10))
-                        {
-                            from.SendLocalizedMessage(1150174); // The apple was not strong enough to purify you.
-
-                            Consume();
-
-                            return false;
-                        }
-                    }
-
-                    EvilOmenSpell.TryEndEffect(from);
-                    StrangleSpell.RemoveCurse(from);
-                    CorpseSkinSpell.RemoveCurse(from);
-                    WeakenSpell.RemoveEffects(from);
-                    FeeblemindSpell.RemoveEffects(from);
-                    ClumsySpell.RemoveEffects(from);
-                    CurseSpell.RemoveEffect(from);
-                    MortalStrike.EndWound(from);
-                    BloodOathSpell.RemoveCurse(from);
-                    MindRotSpell.ClearMindRotScalar(from);
-                    SpellPlagueSpell.RemoveFromList(from);
-                    SleepSpell.EndSleep(from);
-
-                    BuffInfo.RemoveBuff(from, BuffIcon.MassCurse);
+                    int power = CleansingWindsSpell.RemoveCurses(from);
+                    power = Math.Min(power, 15);
 
                     from.SendLocalizedMessage(EatMessage);
 
-                    StartInfluence(from, FoodID, Duration, Cooldown);
+                    StartInfluence(from, FoodID, Duration, TimeSpan.FromSeconds(30 + power));
                     Consume();
 
                     return true;

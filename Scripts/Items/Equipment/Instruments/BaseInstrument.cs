@@ -405,7 +405,7 @@ namespace Server.Items
             if (bc != null && bc.IsParagon)
                 val += 40.0;
 
-            if (Core.SE && val > MaxBardingDifficulty)
+            if (val > MaxBardingDifficulty)
                 val = MaxBardingDifficulty;
 
             return val;

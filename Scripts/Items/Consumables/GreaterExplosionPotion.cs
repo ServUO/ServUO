@@ -19,14 +19,14 @@ namespace Server.Items
         {
             get
             {
-                return Core.AOS ? 20 : 15;
+                return 20;
             }
         }
         public override int MaxDamage
         {
             get
             {
-                return Core.AOS ? 40 : 30;
+                return 40;
             }
         }
         public override void Serialize(GenericWriter writer)
