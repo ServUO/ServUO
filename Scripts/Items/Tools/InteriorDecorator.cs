@@ -238,7 +238,7 @@ namespace Server.Items
                             addon = container;
                         }
 
-                        if (count == 1 && Core.SE)
+                        if (count == 1)
                             isDecorableComponent = true;
 
                         if (item is EnormousVenusFlytrapAddon)

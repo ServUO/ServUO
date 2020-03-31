@@ -340,8 +340,7 @@ namespace Server.Items
 
                 pet.IsStabled = true;
 
-                if (Core.SE)
-                    pet.Loyalty = BaseCreature.MaxLoyalty; // Wonderfully happy
+                pet.Loyalty = BaseCreature.MaxLoyalty; // Wonderfully happy
 
                 if (!m_Stored.ContainsKey(from))
                     m_Stored.Add(from, new List<BaseCreature>());
@@ -391,8 +390,7 @@ namespace Server.Items
 
                     pet.IsStabled = false;
 
-                    if (Core.SE)
-                        pet.Loyalty = BaseCreature.MaxLoyalty; // Wonderfully Happy
+                    pet.Loyalty = BaseCreature.MaxLoyalty; // Wonderfully Happy
 
                     stabled.RemoveAt(i);
                     --i;

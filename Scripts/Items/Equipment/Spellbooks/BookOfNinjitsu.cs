@@ -14,7 +14,7 @@ namespace Server.Items
         public BookOfNinjitsu(ulong content)
             : base(content, 0x23A0)
         {
-            Layer = (Core.ML ? Layer.OneHanded : Layer.Invalid);
+            Layer = Layer.OneHanded;
         }
 
         public BookOfNinjitsu(Serial serial)

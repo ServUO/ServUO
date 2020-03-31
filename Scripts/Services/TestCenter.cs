@@ -128,19 +128,19 @@ namespace Server.Misc
         {
             SkillName index;
 
-            if (!Enum.TryParse(name, true, out index) || (!Core.SE && (int)index > 51) || (!Core.AOS && (int)index > 48))
+            if (!Enum.TryParse(name, true, out index))
             {
-                @from.SendLocalizedMessage(1005631); // You have specified an invalid skill to set.
+                from.SendLocalizedMessage(1005631); // You have specified an invalid skill to set.
                 return;
             }
 
-            Skill skill = @from.Skills[index];
+            Skill skill = from.Skills[index];
 
             if (skill != null)
             {
                 if (value < 0 || value > skill.Cap)
                 {
-                    @from.SendMessage(String.Format("Your skill in {0} is capped at {1:F1}.", skill.Info.Name, skill.Cap));
+                    from.SendMessage(String.Format("Your skill in {0} is capped at {1:F1}.", skill.Info.Name, skill.Cap));
                 }
                 else
                 {
@@ -149,7 +149,7 @@ namespace Server.Misc
 
                     if (((skill.Owner.Total - oldFixedPoint) + newFixedPoint) > skill.Owner.Cap)
                     {
-                        @from.SendMessage("You can not exceed the skill cap.  Try setting another skill lower first.");
+                        from.SendMessage("You can not exceed the skill cap.  Try setting another skill lower first.");
                     }
                     else
                     {
@@ -159,7 +159,7 @@ namespace Server.Misc
             }
             else
             {
-                @from.SendLocalizedMessage(1005631); // You have specified an invalid skill to set.
+                from.SendLocalizedMessage(1005631); // You have specified an invalid skill to set.
             }
         }
 
@@ -182,9 +182,6 @@ namespace Server.Misc
 
         private static Item MakeNewbie(Item item)
         {
-            if (!Core.AOS)
-                item.LootType = LootType.Newbied;
-
             return item;
         }
 
@@ -478,155 +475,60 @@ namespace Server.Misc
 
             PlaceItemIn(bank, 18, 124, cont);
 
-            if (Core.SE)
+            cont = new Bag();
+            cont.Hue = 0x501;
+            cont.Name = "Tokuno Minor Artifacts";
+
+            PlaceItemIn(cont, 42, 70, new Exiler());
+            PlaceItemIn(cont, 38, 53, new HanzosBow());
+            PlaceItemIn(cont, 45, 40, new TheDestroyer());
+            PlaceItemIn(cont, 92, 80, new DragonNunchaku());
+            PlaceItemIn(cont, 42, 56, new PeasantsBokuto());
+            PlaceItemIn(cont, 44, 71, new TomeOfEnlightenment());
+            PlaceItemIn(cont, 35, 35, new ChestOfHeirlooms());
+            PlaceItemIn(cont, 29, 0, new HonorableSwords());
+            PlaceItemIn(cont, 49, 85, new AncientUrn());
+            PlaceItemIn(cont, 51, 58, new FluteOfRenewal());
+            PlaceItemIn(cont, 70, 51, new PigmentsOfTokuno());
+            PlaceItemIn(cont, 40, 79, new AncientSamuraiDo());
+            PlaceItemIn(cont, 51, 61, new LegsOfStability());
+            PlaceItemIn(cont, 88, 78, new GlovesOfTheSun());
+            PlaceItemIn(cont, 55, 62, new AncientFarmersKasa());
+            PlaceItemIn(cont, 55, 83, new ArmsOfTacticalExcellence());
+            PlaceItemIn(cont, 50, 85, new DaimyosHelm());
+            PlaceItemIn(cont, 52, 78, new BlackLotusHood());
+            PlaceItemIn(cont, 52, 79, new DemonForks());
+            PlaceItemIn(cont, 33, 49, new PilferedDancerFans());
+
+            PlaceItemIn(bank, 58, 124, cont);
+
+            cont = new Bag();
+            cont.Name = "Bag of Bows";
+
+            PlaceItemIn(cont, 31, 84, new Bow());
+            PlaceItemIn(cont, 78, 74, new CompositeBow());
+            PlaceItemIn(cont, 53, 71, new Crossbow());
+            PlaceItemIn(cont, 56, 39, new HeavyCrossbow());
+            PlaceItemIn(cont, 82, 72, new RepeatingCrossbow());
+            PlaceItemIn(cont, 49, 45, new Yumi());
+
+            for (int i = 0; i < cont.Items.Count; i++)
             {
-                cont = new Bag();
-                cont.Hue = 0x501;
-                cont.Name = "Tokuno Minor Artifacts";
+                BaseRanged bow = cont.Items[i] as BaseRanged;
 
-                PlaceItemIn(cont, 42, 70, new Exiler());
-                PlaceItemIn(cont, 38, 53, new HanzosBow());
-                PlaceItemIn(cont, 45, 40, new TheDestroyer());
-                PlaceItemIn(cont, 92, 80, new DragonNunchaku());
-                PlaceItemIn(cont, 42, 56, new PeasantsBokuto());
-                PlaceItemIn(cont, 44, 71, new TomeOfEnlightenment());
-                PlaceItemIn(cont, 35, 35, new ChestOfHeirlooms());
-                PlaceItemIn(cont, 29, 0, new HonorableSwords());
-                PlaceItemIn(cont, 49, 85, new AncientUrn());
-                PlaceItemIn(cont, 51, 58, new FluteOfRenewal());
-                PlaceItemIn(cont, 70, 51, new PigmentsOfTokuno());
-                PlaceItemIn(cont, 40, 79, new AncientSamuraiDo());
-                PlaceItemIn(cont, 51, 61, new LegsOfStability());
-                PlaceItemIn(cont, 88, 78, new GlovesOfTheSun());
-                PlaceItemIn(cont, 55, 62, new AncientFarmersKasa());
-                PlaceItemIn(cont, 55, 83, new ArmsOfTacticalExcellence());
-                PlaceItemIn(cont, 50, 85, new DaimyosHelm());
-                PlaceItemIn(cont, 52, 78, new BlackLotusHood());
-                PlaceItemIn(cont, 52, 79, new DemonForks());
-                PlaceItemIn(cont, 33, 49, new PilferedDancerFans());
-
-                PlaceItemIn(bank, 58, 124, cont);
-            }
-
-            if (Core.SE)	//This bag came only after SE.
-            {
-                cont = new Bag();
-                cont.Name = "Bag of Bows";
-
-                PlaceItemIn(cont, 31, 84, new Bow());
-                PlaceItemIn(cont, 78, 74, new CompositeBow());
-                PlaceItemIn(cont, 53, 71, new Crossbow());
-                PlaceItemIn(cont, 56, 39, new HeavyCrossbow());
-                PlaceItemIn(cont, 82, 72, new RepeatingCrossbow());
-                PlaceItemIn(cont, 49, 45, new Yumi());
-
-                for (int i = 0; i < cont.Items.Count; i++)
+                if (bow != null)
                 {
-                    BaseRanged bow = cont.Items[i] as BaseRanged;
-
-                    if (bow != null)
-                    {
-                        bow.Attributes.WeaponSpeed = 35;
-                        bow.Attributes.WeaponDamage = 35;
-                    }
+                    bow.Attributes.WeaponSpeed = 35;
+                    bow.Attributes.WeaponDamage = 35;
                 }
-
-                PlaceItemIn(bank, 108, 135, cont);
             }
+
+            PlaceItemIn(bank, 108, 135, cont);
         }
 
         public static void FillBankbox(Mobile m)
         {
-            if (Core.AOS)
-            {
-                FillBankAOS(m);
-                return;
-            }
-
-            BankBox bank = m.BankBox;
-
-            bank.DropItem(new BankCheck(1000000));
-
-            // Full spellbook
-            Spellbook book = new Spellbook();
-
-            book.Content = UInt64.MaxValue;
-
-            bank.DropItem(book);
-
-            // Treasure maps
-            bank.DropItem(new TreasureMap(1, Map.Trammel));
-            bank.DropItem(new TreasureMap(2, Map.Trammel));
-            bank.DropItem(new TreasureMap(3, Map.Trammel));
-            bank.DropItem(new TreasureMap(4, Map.Trammel));
-            bank.DropItem(new TreasureMap(5, Map.Trammel));
-
-            // Bag containing 50 of each reagent
-            bank.DropItem(new BagOfAllReagents(50));
-
-            // Craft tools
-            bank.DropItem(MakeNewbie(new Scissors()));
-            bank.DropItem(MakeNewbie(new SewingKit(1000)));
-            bank.DropItem(MakeNewbie(new SmithHammer(1000)));
-            bank.DropItem(MakeNewbie(new FletcherTools(1000)));
-            bank.DropItem(MakeNewbie(new DovetailSaw(1000)));
-            bank.DropItem(MakeNewbie(new MortarPestle(1000)));
-            bank.DropItem(MakeNewbie(new ScribesPen(1000)));
-            bank.DropItem(MakeNewbie(new TinkerTools(1000)));
-
-            // A few dye tubs
-            bank.DropItem(new Dyes());
-            bank.DropItem(new DyeTub());
-            bank.DropItem(new DyeTub());
-            bank.DropItem(new BlackDyeTub());
-
-            DyeTub darkRedTub = new DyeTub();
-
-            darkRedTub.DyedHue = 0x485;
-            darkRedTub.Redyable = false;
-
-            bank.DropItem(darkRedTub);
-
-            // Some food
-            bank.DropItem(MakeNewbie(new Apple(1000)));
-
-            // Resources
-            bank.DropItem(MakeNewbie(new Feather(1000)));
-            bank.DropItem(MakeNewbie(new BoltOfCloth(1000)));
-            bank.DropItem(MakeNewbie(new BlankScroll(1000)));
-            bank.DropItem(MakeNewbie(new Hides(1000)));
-            bank.DropItem(MakeNewbie(new Bandage(1000)));
-            bank.DropItem(MakeNewbie(new Bottle(1000)));
-            bank.DropItem(MakeNewbie(new Log(1000)));
-
-            bank.DropItem(MakeNewbie(new IronIngot(5000)));
-            bank.DropItem(MakeNewbie(new DullCopperIngot(5000)));
-            bank.DropItem(MakeNewbie(new ShadowIronIngot(5000)));
-            bank.DropItem(MakeNewbie(new CopperIngot(5000)));
-            bank.DropItem(MakeNewbie(new BronzeIngot(5000)));
-            bank.DropItem(MakeNewbie(new GoldIngot(5000)));
-            bank.DropItem(MakeNewbie(new AgapiteIngot(5000)));
-            bank.DropItem(MakeNewbie(new VeriteIngot(5000)));
-            bank.DropItem(MakeNewbie(new ValoriteIngot(5000)));
-
-            // Reagents
-            bank.DropItem(MakeNewbie(new BlackPearl(1000)));
-            bank.DropItem(MakeNewbie(new Bloodmoss(1000)));
-            bank.DropItem(MakeNewbie(new Garlic(1000)));
-            bank.DropItem(MakeNewbie(new Ginseng(1000)));
-            bank.DropItem(MakeNewbie(new MandrakeRoot(1000)));
-            bank.DropItem(MakeNewbie(new Nightshade(1000)));
-            bank.DropItem(MakeNewbie(new SulfurousAsh(1000)));
-            bank.DropItem(MakeNewbie(new SpidersSilk(1000)));
-
-            // Some extra starting gold
-            bank.DropItem(MakeNewbie(new Gold(9000)));
-
-            // 5 blank recall runes
-            for (int i = 0; i < 5; ++i)
-                bank.DropItem(MakeNewbie(new RecallRune()));
-
-            AddPowerScrolls(bank);
+            FillBankAOS(m);
         }
 
         public static void AddPowerScrolls(BankBox bank)

@@ -4,12 +4,6 @@ namespace Server.Items
 {
     public class LesserCurePotion : BaseCurePotion
     {
-        private static readonly CureLevelInfo[] m_OldLevelInfo = new CureLevelInfo[]
-        {
-            new CureLevelInfo(Poison.Lesser, 0.75), // 75% chance to cure lesser poison
-            new CureLevelInfo(Poison.Regular, 0.50), // 50% chance to cure regular poison
-            new CureLevelInfo(Poison.Greater, 0.15)// 15% chance to cure greater poison
-        };
         private static readonly CureLevelInfo[] m_AosLevelInfo = new CureLevelInfo[]
         {
             new CureLevelInfo(Poison.Lesser, 1.00),
@@ -33,7 +27,7 @@ namespace Server.Items
         {
             get
             {
-                return Core.AOS ? m_AosLevelInfo : m_OldLevelInfo;
+                return m_AosLevelInfo;
             }
         }
         public override void Serialize(GenericWriter writer)

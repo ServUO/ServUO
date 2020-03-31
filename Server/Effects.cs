@@ -125,7 +125,7 @@ namespace Server
 
 					if (boltEffect == null)
 					{
-                        if (Core.SA && hue == 0)
+                        if (hue == 0)
                         {
                             boltEffect = Packet.Acquire(new BoltEffectNew(e));
                         }

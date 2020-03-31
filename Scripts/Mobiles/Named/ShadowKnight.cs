@@ -78,32 +78,25 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.ML;
+                return true;
             }
         }
 
         public override bool CanFlee { get { return false; } }
         public override TribeType Tribe { get { return TribeType.Undead; } }
 
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.SE;
-            }
-        }
         public override bool Unprovokable
         {
             get
             {
-                return Core.SE;
+                return true;
             }
         }
         public override bool AreaPeaceImmune
         {
             get
             {
-                return Core.SE;
+                return true;
             }
         }
         public override Poison PoisonImmune

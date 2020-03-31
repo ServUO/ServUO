@@ -11,9 +11,6 @@ namespace Server.Items
         public OrderShield()
             : base(0x1BC4)
         {
-            if (!Core.AOS)
-                LootType = LootType.Newbied;
-
             Weight = 7.0;
         }
 
@@ -95,35 +92,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-        }
-
-        public override bool OnEquip(Mobile from)
-        {
-            return this.Validate(from) && base.OnEquip(from);
-        }
-
-        public override void OnSingleClick(Mobile from)
-        {
-            if (this.Validate(this.Parent as Mobile))
-                base.OnSingleClick(from);
-        }
-
-        public virtual bool Validate(Mobile m)
-        {
-            if (Core.AOS || m == null || !m.Player || m.IsStaff())
-                return true;
-
-            Guild g = m.Guild as Guild;
-
-            if (g == null || g.Type != GuildType.Order)
-            {
-                m.FixedEffect(0x3728, 10, 13);
-                this.Delete();
-
-                return false;
-            }
-
-            return true;
         }
     }
 }

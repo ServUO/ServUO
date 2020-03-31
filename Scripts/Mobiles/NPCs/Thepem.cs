@@ -137,8 +137,15 @@ namespace Server.Engines.Quests
             }
             else
             {
-                SayTo(from, 1113035); // Oooh, shiney. I have no use for this, though.
-                return false;
+                if (item is Gold)
+                {
+                    return base.CheckGold(from, item);
+                }
+                else
+                {
+                    SayTo(from, 1113035); // Oooh, shiney. I have no use for this, though.
+                    return false;
+                }
             }
         }
 

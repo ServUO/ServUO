@@ -121,13 +121,6 @@ namespace Server.Mobiles
                 return 1.0;
             }
         }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.SE;
-            }
-        }
 		public override bool AllureImmune
 		{
 			get
@@ -139,14 +132,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.SE;
+                return true;
             }
         }
         public override bool Uncalmable
         {
             get
             {
-                return Core.SE;
+                return true;
             }
         }
         public override Poison PoisonImmune

@@ -7,7 +7,7 @@ namespace Server.Items
     {
         [Constructable]
         public FireballWand()
-            : base(WandEffect.Fireball, 5, Core.ML ? 109 : 15)
+            : base(WandEffect.Fireball, 5, 109)
         {
         }
 

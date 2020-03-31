@@ -504,20 +504,17 @@ namespace Server.Items
         {
             RunebookEntry e = Atlas.Entries[Selected];
 
-            if (Core.AOS)
+            if (RunebookGump.HasSpell(User, 209))
             {
-                if (RunebookGump.HasSpell(User, 209))
-                {
-                    SendLocationMessage(e, User);
+                SendLocationMessage(e, User);
 
-                    Atlas.OnTravel();
-                    new SacredJourneySpell(User, null, e, null).Cast();
-                    Atlas.NextUse = DateTime.UtcNow;
-                }
-                else
-                {
-                    User.SendLocalizedMessage(500015); // You do not have that spell!
-                }
+                Atlas.OnTravel();
+                new SacredJourneySpell(User, null, e, null).Cast();
+                Atlas.NextUse = DateTime.UtcNow;
+            }
+            else
+            {
+                User.SendLocalizedMessage(500015); // You do not have that spell!
             }
 
             Atlas.Openers.Remove(User);
@@ -555,7 +552,7 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(502415); // Request cancelled.
 
-                if (from is PlayerMobile && !Atlas.Deleted && from.InRange(Atlas.GetWorldLocation(), (Core.ML ? 3 : 1)))
+                if (from is PlayerMobile && !Atlas.Deleted && from.InRange(Atlas.GetWorldLocation(), 3))
                 {
                     from.SendGump(new RunicAtlasGump((PlayerMobile)from, Atlas));
                 }

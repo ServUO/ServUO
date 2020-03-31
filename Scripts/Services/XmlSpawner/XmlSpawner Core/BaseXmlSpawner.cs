@@ -7224,20 +7224,17 @@ namespace Server.Mobiles
 											return false;
 										}
 
-										if (Core.AOS)
-										{
-											Item item = Loot.Construct(Loot.NecromancyScrollTypes, index);
-											if (item != null)
-											{
-												pack.DropItem(item);
-												// could call applyobjectstringproperties on a nested propertylist here to set item attributes
-												if (itemargstring != null)
-												{
-													ApplyObjectStringProperties(spawner, itemargstring, item, trigmob, refobject, out status_str);
-												}
-											}
-										}
-									}
+                                        Item item = Loot.Construct(Loot.NecromancyScrollTypes, index);
+                                        if (item != null)
+                                        {
+                                            pack.DropItem(item);
+                                            // could call applyobjectstringproperties on a nested propertylist here to set item attributes
+                                            if (itemargstring != null)
+                                            {
+                                                ApplyObjectStringProperties(spawner, itemargstring, item, trigmob, refobject, out status_str);
+                                            }
+                                        }
+                                    }
 									else
 									{
 										status_str = "NECROSCROLL takes 1 arg : " + itemtypestr;
@@ -7830,28 +7827,19 @@ namespace Server.Mobiles
 		{
 			BaseCreature.Cap(ref minLevel, 0, 5);
 			BaseCreature.Cap(ref maxLevel, 0, 5);
-			if (Core.AOS)
-			{
-				Item item = Loot.RandomJewelry();
+            Item item = Loot.RandomJewelry();
 
-				if (item == null)
-					return null;
+            if (item == null)
+                return null;
 
-				int attributeCount, min, max;
-				BaseCreature.GetRandomAOSStats(minLevel, maxLevel, out attributeCount, out min, out max);
+            int attributeCount, min, max;
+            BaseCreature.GetRandomAOSStats(minLevel, maxLevel, out attributeCount, out min, out max);
 
-				if (item is BaseJewel)
-					BaseRunicTool.ApplyAttributesTo((BaseJewel)item, attributeCount, min, max);
+            if (item is BaseJewel)
+                BaseRunicTool.ApplyAttributesTo((BaseJewel)item, attributeCount, min, max);
 
-				return item;
-			}
-			else
-			{
-				Item jewel = Loot.RandomJewelry();
-
-				return jewel;
-			}
-		}
+            return item;
+        }
 
         public static Item MagicArmor(int minLevel, int maxLevel, bool jewel, bool shield)
         {

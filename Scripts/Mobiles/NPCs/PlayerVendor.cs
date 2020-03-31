@@ -48,10 +48,7 @@ namespace Server.Mobiles
         {
             get
             {
-                if (Core.ML)
-                    return Price.ToString("N0", CultureInfo.GetCultureInfo("en-US"));
-
-                return Price.ToString();
+                return Price.ToString("N0", CultureInfo.GetCultureInfo("en-US"));
             }
         }
         public string Description
@@ -300,9 +297,6 @@ namespace Server.Mobiles
             m_SellItems = new Hashtable();
 
             CantWalk = true;
-
-            if (!Core.AOS)
-                NameHue = 0x35;
 
             InitStats(100, 100, 100);
             InitBody();
@@ -590,9 +584,6 @@ namespace Server.Mobiles
 
             Blessed = false;
 
-            if (Core.AOS && NameHue == 0x35)
-                NameHue = -1;
-
             if (PlayerVendors == null)
                 PlayerVendors = new List<PlayerVendor>();
 
@@ -603,9 +594,6 @@ namespace Server.Mobiles
         {
             Hue = Utility.RandomSkinHue();
             SpeechHue = 0x3B2;
-
-            if (!Core.AOS)
-                NameHue = 0x35;
 
             if (Female = Utility.RandomBool())
             {

@@ -1070,7 +1070,7 @@ namespace Server.Mobiles
 
 		public virtual bool DoActionCombat()
 		{
-			if (Core.AOS && CheckHerding())
+			if (CheckHerding())
 			{
 				m_Mobile.DebugSay("Praise the shepherd!");
 			}
@@ -1093,7 +1093,7 @@ namespace Server.Mobiles
 
 		public virtual bool DoActionGuard()
 		{
-			if (Core.AOS && CheckHerding())
+			if (CheckHerding())
 			{
 				m_Mobile.DebugSay("Praise the shepherd!");
 			}
@@ -1493,11 +1493,8 @@ namespace Server.Mobiles
 						{
 							m_Mobile.Warmode = false;
 
-							if (Core.AOS)
-							{
-								m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
-                            }
-						}
+                            m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
+                        }
 					}
 				}
 			}
@@ -1689,12 +1686,9 @@ namespace Server.Mobiles
 
 				m_Mobile.Warmode = false;
 
-				if (Core.AOS)
-				{
-					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
-                }
+                m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
 
-				WalkMobileRange(controlMaster, 1, false, 0, 1);
+                WalkMobileRange(controlMaster, 1, false, 0, 1);
 			}
 
 			return true;
@@ -1721,18 +1715,10 @@ namespace Server.Mobiles
 				m_Mobile.DebugSay(
 					"I think he might be dead. He's not anywhere around here at least. That's cool. I'm glad he's dead.");
 
-				if (Core.AOS)
-				{
-					m_Mobile.ControlTarget = m_Mobile.ControlMaster;
-					m_Mobile.ControlOrder = OrderType.Follow;
-				}
-				else
-				{
-					m_Mobile.ControlTarget = null;
-					m_Mobile.ControlOrder = OrderType.None;
-				}
+                m_Mobile.ControlTarget = m_Mobile.ControlMaster;
+                m_Mobile.ControlOrder = OrderType.Follow;
 
-				if (m_Mobile.FightMode == FightMode.Closest || m_Mobile.FightMode == FightMode.Aggressor)
+                if (m_Mobile.FightMode == FightMode.Closest || m_Mobile.FightMode == FightMode.Aggressor)
 				{
 					Mobile newCombatant = null;
 					var newScore = 0.0;
@@ -1875,16 +1861,9 @@ namespace Server.Mobiles
 
 			m_Mobile.ControlTarget = null;
 
-			if (Core.ML)
-			{
-				WalkRandomInHome(3, 2, 1);
-			}
-			else
-			{
-				m_Mobile.ControlOrder = OrderType.None;
-			}
+            WalkRandomInHome(3, 2, 1);
 
-			return true;
+            return true;
 		}
 
 		private class TransferItem : Item
@@ -1903,11 +1882,7 @@ namespace Server.Mobiles
 
 				Movable = false;
 
-				if (!Core.AOS)
-				{
-					Name = creature.Name;
-				}
-				else if (ItemID == ShrinkTable.DefaultItemID ||
+				if (ItemID == ShrinkTable.DefaultItemID ||
 						 creature.GetType().IsDefined(typeof(FriendlyNameAttribute), false) || creature is Reptalon)
 				{
 					Name = FriendlyNameAttribute.GetFriendlyNameFor(creature.GetType()).ToString();
