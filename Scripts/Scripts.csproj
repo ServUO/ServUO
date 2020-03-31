@@ -329,9 +329,6 @@
     <Compile Include="Gumps\DawnsMusicBoxGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gumps\FacetGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Gumps\Go\ChildNode.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -353,7 +350,7 @@
     <Compile Include="Gumps\HouseDemolishGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gumps\HouseGumpAOS.cs">
+    <Compile Include="Gumps\HouseGump.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gumps\HouseTransferGump.cs">

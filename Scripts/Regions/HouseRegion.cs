@@ -292,7 +292,7 @@ namespace Server.Regions
                 else if (isOwner)
                 {
                     from.CloseGump(typeof(ConfirmHouseResize));
-                    from.CloseGump(typeof(HouseGumpAOS));
+                    from.CloseGump(typeof(HouseGump));
                     from.SendGump(new ConfirmHouseResize(from, House));	
                 }
                 else
