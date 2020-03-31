@@ -38,9 +38,6 @@ namespace Server.Mobiles
 
             Fame = 22000;
             Karma = -22000;
-
-            if (IsSoulboundEnemies)
-                IsSoulbound = true;
         }
 
         public override void GenerateLoot()

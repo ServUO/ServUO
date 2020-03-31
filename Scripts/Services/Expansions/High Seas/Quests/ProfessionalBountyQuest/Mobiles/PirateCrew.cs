@@ -125,9 +125,6 @@ namespace Server.Mobiles
 
             Fame = 8000;
             Karma = -8000;
-
-            if (IsSoulboundEnemies)
-                IsSoulbound = true;
         }
 
         public override void OnActionCombat()

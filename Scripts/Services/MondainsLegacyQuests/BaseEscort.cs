@@ -277,7 +277,7 @@ namespace Server.Engines.Quests
             return master;
         }
 
-        public virtual Region GetDestination()
+        public virtual string GetDestination()
         {
             return null;
         }
@@ -296,7 +296,7 @@ namespace Server.Engines.Quests
                 if (escorter == null)
                     return false;
 
-                if (escort.Region != null && escort.Region.Contains(Location))
+                if (escort.Region != null && Region.IsPartOf(escort.Region))
                 {
                     Say(1042809, escorter.Name); // We have arrived! I thank thee, ~1_PLAYER_NAME~! I have no further need of thy services. Here is thy pay.
 
@@ -365,9 +365,9 @@ namespace Server.Engines.Quests
             }
             else if (!m_Checked)
             {
-                Region region = GetDestination();
+                var region = GetDestination();
 
-                if (region != null && region.Contains(Location))
+                if (region != null && Region.IsPartOf(region))
                 {
                     m_DeleteTimer = Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerCallback(Delete));
                     m_Checked = true;

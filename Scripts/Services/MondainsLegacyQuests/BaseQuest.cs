@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server.Mobiles;
 
 namespace Server.Engines.Quests
@@ -197,7 +199,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return m_Quester is BaseQuestItem ? (BaseQuestItem)m_Quester : null;
+                return m_Quester as BaseQuestItem;
             }
         }
 		
@@ -205,7 +207,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return m_Quester is MondainQuester ? (MondainQuester)m_Quester : null;
+                return m_Quester as MondainQuester;
             }
         }
 		
@@ -213,21 +215,14 @@ namespace Server.Engines.Quests
         {
             get
             {
-                for (int i = 0; i < m_Objectives.Count; i++)
+                if (AllObjectives)
                 {
-                    if (m_Objectives[i].Completed)
-                    {
-                        if (!AllObjectives)
-                            return true;
-                    }
-                    else
-                    {
-                        if (AllObjectives)
-                            return false;
-                    }
+                    return m_Objectives.All(obj => obj.Completed);
                 }
-
-                return AllObjectives;
+                else
+                {
+                    return m_Objectives.Any(obj => obj.Completed);
+                }
             }
         }
 		
@@ -235,21 +230,14 @@ namespace Server.Engines.Quests
         {
             get
             {
-                for (int i = 0; i < m_Objectives.Count; i++)
+                if (AllObjectives)
                 {
-                    if (m_Objectives[i].Failed)
-                    {
-                        if (AllObjectives)
-                            return true;
-                    }
-                    else
-                    {
-                        if (!AllObjectives)
-                            return false;
-                    }
+                    return m_Objectives.All(obj => obj.Failed);
                 }
-				
-                return !AllObjectives;
+                else
+                {
+                    return m_Objectives.Any(obj => obj.Failed);
+                }
             }
         }
 		
@@ -337,10 +325,10 @@ namespace Server.Engines.Quests
                     escort.StartFollow();
                     escort.AddHash(Owner);
 
-                    Region region = escort.GetDestination();
+                    var region = escort.GetDestination();
 
-                    if (region != null)
-                        escort.Say(1042806, region.Name); // Lead on! Payment will be made when we arrive at ~1_DESTINATION~!
+                    if (!string.IsNullOrEmpty(region))
+                        escort.Say(1042806, region); // Lead on! Payment will be made when we arrive at ~1_DESTINATION~!
                     else
                         escort.Say(1042806, "destination"); // Lead on! Payment will be made when we arrive at ~1_DESTINATION~!
 
@@ -535,7 +523,7 @@ namespace Server.Engines.Quests
             if (removeChain)
                 m_Owner.Chains.Remove(ChainID);
 			
-            if (Completed && (RestartDelay > TimeSpan.Zero || ForceRemember || DoneOnce) && NextQuest == null && Owner.AccessLevel == AccessLevel.Player)
+            if (Completed && (RestartDelay > TimeSpan.Zero || ForceRemember || DoneOnce) && NextQuest == null)
             {
                 Type type = GetType();	
 				

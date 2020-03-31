@@ -253,8 +253,6 @@ namespace Server.Items
         };
         #endregion
 
-        public static Point2D[] Locations { get; }
-
         private int m_Level;
         private bool m_Completed;
         private Mobile m_CompletedBy;
