@@ -371,7 +371,7 @@ namespace Server.Mobiles
 
         protected DateTime SummonEnd { get { return m_SummonEnd; } set { m_SummonEnd = value; } }
 
-        public virtual int DefaultHitsRegen 
+        public virtual int DefaultHitsRegen
         {
             get
             {
@@ -754,23 +754,23 @@ namespace Server.Mobiles
         private SkillName _Mastery;
 
         [CommandProperty(AccessLevel.GameMaster)]
-		public SkillName Mastery 
-		{
-			get { return _Mastery; } 
-			set
-			{
-				var old = _Mastery;
-				_Mastery = value;
+        public SkillName Mastery
+        {
+            get { return _Mastery; }
+            set
+            {
+                var old = _Mastery;
+                _Mastery = value;
 
                 if (old != _Mastery)
                 {
                     UpdateMasteryInfo();
                 }
-			}
-		}
-		
-		public virtual MasteryInfo[] Masteries { get; set; }
-		public DateTime NextMastery { get; set; }
+            }
+        }
+
+        public virtual MasteryInfo[] Masteries { get; set; }
+        public DateTime NextMastery { get; set; }
 
         public void UpdateMasteryInfo()
         {
@@ -820,6 +820,37 @@ namespace Server.Mobiles
                 }
             }
         }
+        #endregion
+
+        #region Soulbound
+        private bool _IsSoulBound;
+
+        public bool IsSoulBound
+        {
+            get
+            {
+                if (!IsSoulboundEnemies)
+                {
+                    return false;
+                }
+
+                return _IsSoulBound || _SoulboundCreatures.Any(c => c == GetType());
+            }
+            set
+            {
+                if (IsSoulboundEnemies)
+                {
+                    _IsSoulBound = value;
+                }
+            }
+        }
+
+        public static bool IsSoulboundEnemies { get { return PointsSystem.FellowshipData.Enabled; } }
+
+        public static Type[] _SoulboundCreatures =
+        {
+            typeof(MerchantCaptain), typeof(PirateCrew), typeof(PirateCaptain), typeof(MerchantCrew), typeof(Osiredon), typeof(Charydbis), typeof(CorgulTheSoulBinder),
+        };
         #endregion
 
         public virtual double WeaponAbilityChance { get { return 0.4; } }
@@ -915,28 +946,28 @@ namespace Server.Mobiles
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsParagon
-		{
-			get{ return m_Paragon; }
-			set
-			{
-				if (m_Paragon == value)
-				{
-					return;
-				}
-				else if (value)
-				{
-					Paragon.Convert(this);
-				}
-				else
-				{
-					Paragon.UnConvert(this);
-				}
+        {
+            get { return m_Paragon; }
+            set
+            {
+                if (m_Paragon == value)
+                {
+                    return;
+                }
+                else if (value)
+                {
+                    Paragon.Convert(this);
+                }
+                else
+                {
+                    Paragon.UnConvert(this);
+                }
 
-				m_Paragon = value;
+                m_Paragon = value;
 
-				InvalidateProperties();
-			}
-		}
+                InvalidateProperties();
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsChampionSpawn
@@ -944,15 +975,15 @@ namespace Server.Mobiles
             get { return m_IsChampionSpawn; }
             set
             {
-				if (m_IsChampionSpawn != value)
-				{
-	                if (!m_IsChampionSpawn && value)
-	                    SetToChampionSpawn();
-	
-	                m_IsChampionSpawn = value;
+                if (m_IsChampionSpawn != value)
+                {
+                    if (!m_IsChampionSpawn && value)
+                        SetToChampionSpawn();
+
+                    m_IsChampionSpawn = value;
 
                     OnChampionSpawnChange();
-				}
+                }
             }
         }
 
@@ -992,11 +1023,11 @@ namespace Server.Mobiles
                         InitialFocus = (Mobile)value;
                     }
                 }
-                else if (AttacksFocus && 
-                        initialFocus != null && 
-                        value != initialFocus && 
-                        !initialFocus.Hidden &&  
-                        Map == initialFocus.Map && 
+                else if (AttacksFocus &&
+                        initialFocus != null &&
+                        value != initialFocus &&
+                        !initialFocus.Hidden &&
+                        Map == initialFocus.Map &&
                         InRange(initialFocus.Location, RangePerception))
                 {
                     //Keeps focus
@@ -1059,21 +1090,21 @@ namespace Server.Mobiles
         public virtual bool CanFly { get { return false; } }
 
         public virtual bool CanAutoStable
-		{ 
-			get 
-			{
-				if(!(ControlMaster is PlayerMobile))
-					return false;
+        {
+            get
+            {
+                if (!(ControlMaster is PlayerMobile))
+                    return false;
 
-				if(Allured || Summoned)
-					return false;
+                if (Allured || Summoned)
+                    return false;
 
-				if(this is IMount && ((IMount)this).Rider != null)
-					return false;
+                if (this is IMount && ((IMount)this).Rider != null)
+                    return false;
 
-				return true;
-			}
-		}
+                return true;
+            }
+        }
 
         public virtual bool TaintedLifeAura { get { return false; } }
         public virtual bool BreathImmune { get { return false; } }
@@ -1172,7 +1203,7 @@ namespace Server.Mobiles
         public const int MaxOwners = 5;
 
         // Tribe Opposition (Replaces Opposition Group
-        public virtual TribeType Tribe{ get{ return TribeType.None ; } } // What opposition list am I in?
+        public virtual TribeType Tribe { get { return TribeType.None; } } // What opposition list am I in?
 
         public virtual bool IsTribeEnemy(Mobile m)
         {
@@ -1184,7 +1215,7 @@ namespace Server.Mobiles
 
             BaseCreature c = (BaseCreature)m;
 
-            switch(Tribe)
+            switch (Tribe)
             {
                 case TribeType.Terathan: return (c.Tribe == TribeType.Ophidian);
                 case TribeType.Ophidian: return (c.Tribe == TribeType.Terathan);
@@ -1226,45 +1257,45 @@ namespace Server.Mobiles
             }
         }
 
-		public virtual bool IsFriend(Mobile m)
-		{
-			if (Tribe != TribeType.None && IsTribeEnemy(m))
-			{
-				return false;
-			}
+        public virtual bool IsFriend(Mobile m)
+        {
+            if (Tribe != TribeType.None && IsTribeEnemy(m))
+            {
+                return false;
+            }
 
-			if (!(m is BaseCreature))
-			{
-				return false;
-			}
+            if (!(m is BaseCreature))
+            {
+                return false;
+            }
 
-			BaseCreature c = (BaseCreature)m;
+            BaseCreature c = (BaseCreature)m;
 
-			if (m_iTeam != c.m_iTeam)
-			{
-				return false;
-			}
+            if (m_iTeam != c.m_iTeam)
+            {
+                return false;
+            }
 
-			return ((m_bSummoned || m_bControlled) == (c.m_bSummoned || c.m_bControlled));
-		}
+            return ((m_bSummoned || m_bControlled) == (c.m_bSummoned || c.m_bControlled));
+        }
         #endregion
 
-		public virtual bool IsEnemy(Mobile m)
-		{
-			XmlIsEnemy a = (XmlIsEnemy)XmlAttach.FindAttachment(this, typeof(XmlIsEnemy));
+        public virtual bool IsEnemy(Mobile m)
+        {
+            XmlIsEnemy a = (XmlIsEnemy)XmlAttach.FindAttachment(this, typeof(XmlIsEnemy));
 
-			if (a != null)
-			{
-				return a.IsEnemy(m);
-			}
+            if (a != null)
+            {
+                return a.IsEnemy(m);
+            }
 
-			if (m is BaseGuard)
-			{
-				return false;
-			}
+            if (m is BaseGuard)
+            {
+                return false;
+            }
 
-			if (Combatant != m)
-			{
+            if (Combatant != m)
+            {
                 if (m is PlayerMobile && ((PlayerMobile)m).HonorActive)
                 {
                     return false;
@@ -1274,12 +1305,12 @@ namespace Server.Mobiles
                 {
                     return false;
                 }
-			}
+            }
 
-			if (Tribe != TribeType.None && IsTribeEnemy(m))
-			{
-				return true;
-			}
+            if (Tribe != TribeType.None && IsTribeEnemy(m))
+            {
+                return true;
+            }
 
             BaseCreature c = m as BaseCreature;
 
@@ -1328,36 +1359,36 @@ namespace Server.Mobiles
             }
 
             if (c is Server.Engines.Quests.Haven.MilitiaFighter)
-			{
-				return true;
-			}
+            {
+                return true;
+            }
 
-			BaseCreature t = this;
+            BaseCreature t = this;
 
-			// Summons should have same rules as their master
-			if (c.m_bSummoned && c.SummonMaster != null && c.SummonMaster is BaseCreature)
-			{
-				c = c.SummonMaster as BaseCreature;
-			}
+            // Summons should have same rules as their master
+            if (c.m_bSummoned && c.SummonMaster != null && c.SummonMaster is BaseCreature)
+            {
+                c = c.SummonMaster as BaseCreature;
+            }
 
-			// Summons should have same rules as their master
-			if (t.m_bSummoned && t.SummonMaster != null && t.SummonMaster is BaseCreature)
-			{
-				t = t.SummonMaster as BaseCreature;
-			}
+            // Summons should have same rules as their master
+            if (t.m_bSummoned && t.SummonMaster != null && t.SummonMaster is BaseCreature)
+            {
+                t = t.SummonMaster as BaseCreature;
+            }
 
-			// Creatures on other teams are my enemies
-			if (t.m_iTeam != c.m_iTeam)
-			{
-				return true;
-			}
+            // Creatures on other teams are my enemies
+            if (t.m_iTeam != c.m_iTeam)
+            {
+                return true;
+            }
 
-			// If I'm summoned/controlled and they aren't summoned/controlled, they are my enemy
-			// If I'm not summoned/controlled and they are summoned/controlled, they are my enemy
+            // If I'm summoned/controlled and they aren't summoned/controlled, they are my enemy
+            // If I'm not summoned/controlled and they are summoned/controlled, they are my enemy
             // Summoned creatures must have masters to count as summoned here
-			return (((t.m_bSummoned && t.SummonMaster != null) || t.m_bControlled) !=
+            return (((t.m_bSummoned && t.SummonMaster != null) || t.m_bControlled) !=
                 ((c.m_bSummoned && c.SummonMaster != null) || c.m_bControlled));
-		}
+        }
 
         public override string ApplyNameSuffix(string suffix)
         {
@@ -1369,7 +1400,7 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    suffix = String.Concat( suffix, " (Paragon)" );
+                    suffix = String.Concat(suffix, " (Paragon)");
                 }
             }
 
@@ -1417,7 +1448,7 @@ namespace Server.Mobiles
             }
 
             int taming = (int)((useBaseSkill ? m.Skills[SkillName.AnimalTaming].Base : m.Skills[SkillName.AnimalTaming].Value) * 10);
-            int lore =   (int)((useBaseSkill ? m.Skills[SkillName.AnimalLore].Base : m.Skills[SkillName.AnimalLore].Value) * 10);
+            int lore = (int)((useBaseSkill ? m.Skills[SkillName.AnimalLore].Base : m.Skills[SkillName.AnimalLore].Value) * 10);
             int bonus = 0, chance = 700;
 
             int SkillBonus = taming - (int)(dMinTameSkill * 10);
@@ -1614,7 +1645,7 @@ namespace Server.Mobiles
         {
             get
             {
-                if(_NavPoints == null)
+                if (_NavPoints == null)
                     _NavPoints = new Dictionary<Map, List<Point2D>>();
 
                 return _NavPoints;
@@ -1871,7 +1902,7 @@ namespace Server.Mobiles
             base.OnDamage(amount, from, willKill);
         }
 
-		public virtual void OnDamagedBySpell(Mobile from)
+        public virtual void OnDamagedBySpell(Mobile from)
         {
         }
 
@@ -2257,9 +2288,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(29); // version
-
-            writer.Write(IsSoulbound);
+            writer.Write(30); // version
 
             writer.Write(m_ForceActiveSpeed);
             writer.Write(m_ForcePassiveSpeed);
@@ -2444,8 +2473,10 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 30:
+                    goto case 28;
                 case 29:
-                    IsSoulbound = reader.ReadBool();
+                    reader.ReadBool();
                     goto case 28;
                 case 28:
                     m_ForceActiveSpeed = reader.ReadDouble();
@@ -2453,13 +2484,13 @@ namespace Server.Mobiles
                     goto case 27;
                 case 27: // Pet Slot Fix
                 case 26:
-                {
-                    CanMove = reader.ReadBool();
-                    _LockDirection = reader.ReadBool();
+                    {
+                        CanMove = reader.ReadBool();
+                        _LockDirection = reader.ReadBool();
 
-                    ApproachWait = reader.ReadBool();
-                    ApproachRange = reader.ReadInt();
-                }
+                        ApproachWait = reader.ReadBool();
+                        ApproachRange = reader.ReadInt();
+                    }
                     break;
             }
 
@@ -2992,7 +3023,7 @@ namespace Server.Mobiles
                  dropped is LeftLeg || dropped is Torso || dropped is RightArm || dropped is RightLeg || dropped is IronIngot ||
                  dropped is DullCopperIngot || dropped is ShadowIronIngot || dropped is CopperIngot || dropped is BronzeIngot ||
                  dropped is GoldIngot || dropped is AgapiteIngot || dropped is VeriteIngot || dropped is ValoriteIngot))*/
-                // Why do we need all this crap, when its checked in CheckFootPreference?
+            // Why do we need all this crap, when its checked in CheckFootPreference?
             {
                 Item f = dropped;
 
@@ -3109,10 +3140,10 @@ namespace Server.Mobiles
                 return true;
             }
 
-	        if (!from.InRange(Location, 2))
+            if (!from.InRange(Location, 2))
                 return base.OnDragDrop(from, dropped);
 
-	        bool gainedPath = false;
+            bool gainedPath = false;
 
             var honestySocket = dropped.GetSocket<HonestyItemSocket>();
 
@@ -3125,10 +3156,10 @@ namespace Server.Mobiles
                 return false;
             }
 
-	        from.SendMessage(gainedPath ? "You have gained a path in Honesty!" : "You have gained in Honesty.");
-	        SayTo(from, 1074582); //Ah!  You found my property.  Thank you for your honesty in returning it to me.
-	        dropped.Delete();
-	        return true;
+            from.SendMessage(gainedPath ? "You have gained a path in Honesty!" : "You have gained in Honesty.");
+            SayTo(from, 1074582); //Ah!  You found my property.  Thank you for your honesty in returning it to me.
+            dropped.Delete();
+            return true;
         }
 
         protected virtual BaseAI ForcedAI { get { return null; } }
@@ -3579,7 +3610,7 @@ namespace Server.Mobiles
         public DateTime BardEndTime { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double MinTameSkill 
+        public double MinTameSkill
         {
             get { return m_dMinTameSkill; }
             set
@@ -3600,7 +3631,7 @@ namespace Server.Mobiles
                         m_CurrentTameSkill = value;
                     }
                 }
-            } 
+            }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -3784,13 +3815,13 @@ namespace Server.Mobiles
                 level = 2;
             else if (total > 35)
                 level = 1;
-                
+
             return Poison.GetPoison(Math.Max(current, level));
         }
 
         private bool TryHitPoison()
         {
-            if(!PetTrainingHelper.Enabled || !Controlled)
+            if (!PetTrainingHelper.Enabled || !Controlled)
                 return HitPoisonChance >= Utility.RandomDouble();
 
             var profile = AbilityProfile;
@@ -4898,16 +4929,16 @@ namespace Server.Mobiles
                 Skills[name].Cap = Skills[name].Base;
             }
 
-            if (name == SkillName.Poisoning && Skills[name].Base > 0 && 
+            if (name == SkillName.Poisoning && Skills[name].Base > 0 &&
                 !Controlled &&
                 (AbilityProfile == null || !AbilityProfile.HasAbility(MagicalAbility.Poisoning)))
             {
                 SetMagicalAbility(MagicalAbility.Poisoning);
             }
 
-            if (!Controlled && name == SkillName.Magery && 
-                (AbilityProfile == null || !AbilityProfile.HasAbility(MagicalAbility.Magery)) && 
-                Skills[SkillName.Magery].Base > 0 && 
+            if (!Controlled && name == SkillName.Magery &&
+                (AbilityProfile == null || !AbilityProfile.HasAbility(MagicalAbility.Magery)) &&
+                Skills[SkillName.Magery].Base > 0 &&
                 (AI == AIType.AI_Mage || AI == AIType.AI_Necro || AI == AIType.AI_NecroMage || AI == AIType.AI_Mystic || AI == AIType.AI_Spellweaving))
 
             {
@@ -4931,7 +4962,7 @@ namespace Server.Mobiles
                 Skills[name].Cap = Skills[name].Base;
             }
 
-            if (name == SkillName.Poisoning && Skills[name].Base > 0 && 
+            if (name == SkillName.Poisoning && Skills[name].Base > 0 &&
                 !Controlled &&
                 (AbilityProfile == null || !AbilityProfile.HasAbility(MagicalAbility.Poisoning)))
             {
@@ -4939,8 +4970,8 @@ namespace Server.Mobiles
             }
 
             if (!Controlled && name == SkillName.Magery &&
-                (AbilityProfile == null || !AbilityProfile.HasAbility(MagicalAbility.Magery)) && 
-                Skills[SkillName.Magery].Base > 0 && 
+                (AbilityProfile == null || !AbilityProfile.HasAbility(MagicalAbility.Magery)) &&
+                Skills[SkillName.Magery].Base > 0 &&
                 (AI == AIType.AI_Mage || AI == AIType.AI_Necro || AI == AIType.AI_NecroMage || AI == AIType.AI_Mystic || AI == AIType.AI_Spellweaving))
 
             {
@@ -5509,7 +5540,7 @@ namespace Server.Mobiles
                 }
             }
 
-            if (IsSoulbound)
+            if (IsSoulBound)
             {
                 list.Add(1159188); // <BASEFONT COLOR=#FF8300>Soulbound<BASEFONT COLOR=#FFFFFF>
             }
@@ -5518,38 +5549,10 @@ namespace Server.Mobiles
                 list.Add(1155480); // Ambusher
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            if (Controlled && Commandable)
-            {
-                int number;
-
-                if (Summoned)
-                {
-                    number = 1049646; // (summoned)
-                }
-                else if (IsBonded)
-                {
-                    number = 1049608; // (bonded)
-                }
-                else
-                {
-                    number = 502006; // (tame)
-                }
-
-                PrivateOverheadMessage(MessageType.Regular, 0x3B2, number, from.NetState);
-            }
-
-            base.OnSingleClick(from);
-        }
-
         public virtual double TreasureMapChance { get { return TreasureMap.LootChance; } }
         public virtual int TreasureMapLevel { get { return -1; } }
 
         public virtual bool IgnoreYoungProtection { get { return false; } }
-
-        public bool IsSoulbound { get; set; }
-        public bool IsSoulboundEnemies { get { return PointsSystem.FellowshipData.Enabled; } }
 
         public override bool OnBeforeDeath()
         {

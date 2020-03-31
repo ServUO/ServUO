@@ -771,9 +771,9 @@ namespace Server.Engines.Quests
             Say(Utility.RandomMinMax(1072301, 1072303));
         }
 
-        public override Region GetDestination()
+        public override string GetDestination()
         {
-            return QuestHelper.FindRegion(m_Destinations[m_Quest]);
+            return QuestHelper.ValidateRegion(m_Destinations[m_Quest]) ? m_Destinations[m_Quest] : null;
         }
 
         public override void Serialize(GenericWriter writer)

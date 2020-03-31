@@ -99,9 +99,6 @@ namespace Server.Mobiles
             Karma = -25000;
 
             m_NextReturn = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(120, 180));
-
-            if (IsSoulboundEnemies)
-                IsSoulbound = true;
         }
 
         public double SharedChance { get { return Map != null && Map.Rules == MapRules.FeluccaRules ? .12 : .08; } }

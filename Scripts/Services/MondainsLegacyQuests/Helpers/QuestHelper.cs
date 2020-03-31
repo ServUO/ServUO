@@ -453,32 +453,12 @@ namespace Server.Engines.Quests
             return pm.Quests.Any(q => q.ChainID != QuestChain.None && q.ChainID == quest.ChainID && q.GetType() != quest.GetType());
         }
 
-        public static Region FindRegion(string name)
+        public static bool ValidateRegion(string name)
         {
-            if (name == null)
-                return null;
-				
-            Region reg = null;
-			
-            if (Map.Trammel.Regions.TryGetValue(name, out reg))
-                return reg;
-				
-            if (Map.Felucca.Regions.TryGetValue(name, out reg))
-                return reg; 
-				
-            if (Map.Ilshenar.Regions.TryGetValue(name, out reg))
-                return reg; 
-			
-            if (Map.Malas.Regions.TryGetValue(name, out reg))
-                return reg; 
-				
-            if (Map.Tokuno.Regions.TryGetValue(name, out reg))
-                return reg;
+            if (string.IsNullOrEmpty(name))
+                return false;
 
-            if (Map.TerMur.Regions.TryGetValue(name, out reg))
-                return reg;
-				
-            return reg;
+            return Region.Regions.Any(r => r.Name == name);
         }
 
         public static void CompleteQuest(PlayerMobile from, BaseQuest quest)
@@ -696,11 +676,11 @@ namespace Server.Engines.Quests
 
         public static bool CheckCreature(PlayerMobile player, Mobile creature)
         {
-            for (int i = player.Quests.Count - 1; i >= 0; i --)
+            for (int i = player.Quests.Count - 1; i >= 0; i--)
             {
                 BaseQuest quest = player.Quests[i];
 				
-                for (int j = quest.Objectives.Count - 1; j >= 0; j --)
+                for (int j = quest.Objectives.Count - 1; j >= 0; j--)
                 {
                     if (quest.Objectives[j] is SlayObjective)
                     {
@@ -709,10 +689,14 @@ namespace Server.Engines.Quests
                         if (slay.Update(creature))
                         {
                             if (quest.Completed)
+                            {
                                 quest.OnCompleted();
+                            }
                             else if (slay.Completed)
-                                player.PlaySound(quest.UpdateSound);	
-								
+                            {
+                                player.PlaySound(quest.UpdateSound);
+                            }
+                            
                             return true;
                         }
                     }
@@ -724,11 +708,11 @@ namespace Server.Engines.Quests
 
         public static bool CheckItem(PlayerMobile player, Item item)
         {
-            for (int i = player.Quests.Count - 1; i >= 0; i --)
+            for (int i = player.Quests.Count - 1; i >= 0; i--)
             {
                 BaseQuest quest = player.Quests[i];
 				
-                for (int j = quest.Objectives.Count - 1; j >= 0; j --)
+                for (int j = quest.Objectives.Count - 1; j >= 0; j--)
                 {
                     BaseObjective objective = quest.Objectives[j];
 					
@@ -739,10 +723,14 @@ namespace Server.Engines.Quests
                         if (obtain.Update(item))
                         {
                             if (quest.Completed)
+                            {
                                 quest.OnCompleted();
+                            }
                             else if (obtain.Completed)
+                            {
                                 player.PlaySound(quest.UpdateSound);
-									
+                            }
+                            
                             return true;
                         }
                     }
@@ -773,11 +761,11 @@ namespace Server.Engines.Quests
 
         public static bool CheckSkill(PlayerMobile player, Skill skill)
         { 
-            for (int i = player.Quests.Count - 1; i >= 0; i --)
+            for (int i = player.Quests.Count - 1; i >= 0; i--)
             {
                 BaseQuest quest = player.Quests[i];
 				
-                for (int j = quest.Objectives.Count - 1; j >= 0; j --)
+                for (int j = quest.Objectives.Count - 1; j >= 0; j--)
                 {
                     BaseObjective objective = quest.Objectives[j];
 					
@@ -786,11 +774,15 @@ namespace Server.Engines.Quests
                         ApprenticeObjective apprentice = (ApprenticeObjective)objective;
 						
                         if (apprentice.Update(skill))
-                        { 
+                        {
                             if (quest.Completed)
+                            {
                                 quest.OnCompleted();
+                            }
                             else if (apprentice.Completed)
+                            {
                                 player.PlaySound(quest.UpdateSound);
+                            }
                         }
                     }
                 }
@@ -819,7 +811,9 @@ namespace Server.Engines.Quests
                         if (apprentice.Region != null)
                         {
                             if (player.Region.IsPartOf(apprentice.Region) && skill.SkillName == apprentice.Skill)
+                            {
                                 return true;
+                            }
                         }
                     }
                 }
