@@ -5930,50 +5930,10 @@ namespace Server.Mobiles
 			// found the item
 			if (testitem != null)
 			{
-				// check to see if it is a quest token item.  If so, then check validity, otherwise just finding it is enough
-				if (testitem is IXmlQuest && ((IXmlQuest)testitem).IsValid)
-				{
-					IXmlQuest token = (IXmlQuest)testitem;
-
-					if (objstr.Length > objoffset)
-					{
-						has_no_such_item = true;
-						// get any objectives and test for them.  If any of the required conditions are true, then block trigger
-						for (int n = objoffset; n < objstr.Length; n++)
-						{
-							int x=0;
-							if(int.TryParse(objstr[n], out x))
-							{
-								switch (x - objoffset + 1)
-								{
-									case 1:
-										if (token.Completed1) has_no_such_item = false;
-										break;
-									case 2:
-										if (token.Completed2) has_no_such_item = false;
-										break;
-									case 3:
-										if (token.Completed3) has_no_such_item = false;
-										break;
-									case 4:
-										if (token.Completed4) has_no_such_item = false;
-										break;
-									case 5:
-										if (token.Completed5) has_no_such_item = false;
-										break;
-								}
-							}
-						}
-					}
-					else
-						has_no_such_item = false;
-				}
-				else
-				{
-					// is the equippedonly flag set?  If so then see if the item is equipped
-					if ((equippedonly && testitem.Parent == m) || !equippedonly)
-						has_no_such_item = false;
-				}
+				// is the equippedonly flag set?  If so then see if the item is equipped
+				if ((equippedonly && testitem.Parent == m) || !equippedonly)
+					has_no_such_item = false;
+					
 			}
 			return has_no_such_item;
 		}
@@ -6090,54 +6050,10 @@ namespace Server.Mobiles
 			// found the item
 			if (testitem != null)
 			{
-				// check to see if it is a quest token item.  If so, then check validity, otherwise just finding it is enough
-				if (testitem is IXmlQuest)
-				{
-					IXmlQuest token = (IXmlQuest)testitem;
+				// is the equippedonly flag set?  If so then see if the item is equipped
+				if ((equippedonly && testitem.Parent == m) || !equippedonly)
+					has_valid_item = true;
 
-					if (token.IsValid)
-					{
-						if (objstr.Length > objoffset)
-						{
-							has_valid_item = true;
-							// get any objectives and test for them.  If any of the required conditions are false, then dont trigger
-							for (int n = objoffset; n < objstr.Length; n++)
-							{
-								int x=0;
-								if(int.TryParse(objstr[n], out x))
-								{
-									switch (x - objoffset + 1)
-									{
-										case 1:
-											if (!token.Completed1) has_valid_item = false;
-											break;
-										case 2:
-											if (!token.Completed2) has_valid_item = false;
-											break;
-										case 3:
-											if (!token.Completed3) has_valid_item = false;
-											break;
-										case 4:
-											if (!token.Completed4) has_valid_item = false;
-											break;
-										case 5:
-											if (!token.Completed5) has_valid_item = false;
-											break;
-									}
-								}
-							}
-						}
-						else
-							// if an objective list has not been specified then just a valid item is enough
-							has_valid_item = true;
-					}
-				}
-				else
-				{
-					// is the equippedonly flag set?  If so then see if the item is equipped
-					if ((equippedonly && testitem.Parent == m) || !equippedonly)
-						has_valid_item = true;
-				}
 			}
 			return has_valid_item;
 		}
@@ -9370,8 +9286,7 @@ namespace Server.Mobiles
 									}
 									else//non stackable, we have to find them all
 									{
-										// dont save quest holders
-										if (itemTarget is XmlQuestBook || itemTarget is IXmlQuest || quantity<=1)
+										if (quantity<=1)
 										{
 											toRemove.Add(itemTarget);
 										}
@@ -9530,13 +9445,7 @@ namespace Server.Mobiles
 									}
 									else
 									{
-										// dont save quest holders
-										if (itemTarget is XmlQuestBook || itemTarget is IXmlQuest)
-										{
-											itemTarget.Delete();
-										}
-										else
-											savedItem = itemTarget;
+										savedItem = itemTarget;
 									}
 
 									// if the saved item was being held then release it otherwise the player can take it back
@@ -9675,13 +9584,7 @@ namespace Server.Mobiles
 									}
 									else
 									{
-										// dont save quest holders
-										if (itemTarget is XmlQuestBook || itemTarget is XmlQuestHolder || itemTarget is XmlQuestToken)
-										{
-											itemTarget.Delete();
-										}
-										else
-											savedItem = itemTarget;
+										savedItem = itemTarget;
 									}
 								}
 

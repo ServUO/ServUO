@@ -9,10 +9,8 @@ using Server.Items;
 using Server.Mobiles;
 using Server.Engines.Quests;
 
-
 namespace Server.Engines.XmlSpawner2
 {
-
     public class PacketHandlerOverrides
     {
         public static void Initialize()
@@ -33,12 +31,6 @@ namespace Server.Engines.XmlSpawner2
             // behave exactly the same way, it simply adds a hook in to call the OnUse method for attachments
             // they might have.
             Timer.DelayCall( TimeSpan.Zero, new TimerCallback( UseReqOverride ) );
-
-            // This will REPLACE the default packet handler called when the quest button on the paperdoll is pressed with the xmlquest gump.
-            //Timer.DelayCall(TimeSpan.Zero, new TimerCallback(QuestButtonOverride));
-            // This will ADD the xmlquest gump to the default packet handler called when the quest button on the paperdoll is pressed.
-            EventSink.QuestGumpRequest += new QuestGumpRequestHandler(XmlQuest.QuestButton);
-
         }
 
         public static void ContentChangeOverride()
@@ -55,11 +47,6 @@ namespace Server.Engines.XmlSpawner2
 #if(CLIENT6017)
             PacketHandlers.Register6017(0x06, 5, true, new OnPacketReceive(XmlAttach.UseReq));
 #endif
-        }
-
-        public static void QuestButtonOverride()
-        {
-            PacketHandlers.RegisterEncoded( 0x32, true, new OnEncodedPacketReceive( XmlQuest.QuestButton ) );
         }
     }
 }

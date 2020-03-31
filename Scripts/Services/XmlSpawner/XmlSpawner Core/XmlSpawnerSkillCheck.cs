@@ -265,16 +265,7 @@ namespace Server.Mobiles
                             // call the spawner handler
         					spawner.OnSkillUse(m, skill, success);
         				}
-    				} else
-    				if(rs.target is IXmlQuest)
-                    {
-                        IXmlQuest quest = (IXmlQuest)rs.target;
-                        if ( quest.HandlesOnSkillUse )
-                        {
-                           // call the xmlquest handler
-        					quest.OnSkillUse(m, skill, success);
-        				}
-                    }
+    				} 
 				}
             }
         }
