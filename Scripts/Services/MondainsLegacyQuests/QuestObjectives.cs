@@ -313,14 +313,6 @@ namespace Server.Engines.Quests
                     OnKill(mob);
                     return true;
                 }
-                else
-                {
-                    Console.WriteLine("Not objective");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Not mobile");
             }
 
             return false;

@@ -10,7 +10,8 @@ namespace Server.Items
     {
         Yellow,
         Blue,
-        Red
+        Red,
+        Green
     }
 
     public class BagOfSending : Item, TranslocationItem
@@ -130,19 +131,24 @@ namespace Server.Items
                     case BagOfSendingHue.Red:
                         Hue = 0x89B;
                         break;
+                    case BagOfSendingHue.Green:
+                        Hue = 0x08A0;
+                        break;
                 }
             }
         }
         public static BagOfSendingHue RandomHue()
         {
-            switch ( Utility.Random(3) )
+            switch (Utility.Random(4))
             {
                 case 0:
                     return BagOfSendingHue.Yellow;
                 case 1:
                     return BagOfSendingHue.Blue;
-                default:
+                case 2:
                     return BagOfSendingHue.Red;
+                default:
+                    return BagOfSendingHue.Green;
             }
         }
 
