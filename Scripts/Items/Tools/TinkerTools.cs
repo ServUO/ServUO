@@ -51,8 +51,7 @@ namespace Server.Items
         {
             base.GetContextMenuEntries(from, list);
 
-            if (Core.TOL)
-                list.Add(new ToggleRepairContextMenuEntry(from, this));
+            list.Add(new ToggleRepairContextMenuEntry(from, this));
         }
 
         public class ToggleRepairContextMenuEntry : ContextMenuEntry
@@ -129,8 +128,7 @@ namespace Server.Items
         {
             base.GetContextMenuEntries(from, list);
 
-            if (Core.TOL)
-                list.Add(new ToggleRepairContextMenuEntry(from, this));
+            list.Add(new ToggleRepairContextMenuEntry(from, this));
         }
 
         public class ToggleRepairContextMenuEntry : ContextMenuEntry

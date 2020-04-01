@@ -202,7 +202,7 @@ namespace Server.Mobiles
                 if (message)
                     dismounted.SendLocalizedMessage(1040023); // You have been knocked off of your mount!
             }
-            else if (Core.ML && Spells.Ninjitsu.AnimalForm.UnderTransformation(dismounted))
+            else if (Spells.Ninjitsu.AnimalForm.UnderTransformation(dismounted))
             {
                 Spells.Ninjitsu.AnimalForm.RemoveContext(dismounted, true);
             }
@@ -285,7 +285,7 @@ namespace Server.Mobiles
                 return BlockMountType.None;
             }
 
-            if (Core.TOL && entry.m_Type >= BlockMountType.RidingSwipe && entry.m_Expiration > DateTime.UtcNow)
+            if (entry.m_Type >= BlockMountType.RidingSwipe && entry.m_Expiration > DateTime.UtcNow)
             {
                 return BlockMountType.DismountRecovery;
             }
@@ -450,10 +450,7 @@ namespace Server.Mobiles
 
             if (from.IsBodyMod && !from.Body.IsHuman)
             {
-                if (Core.AOS) // You cannot ride a mount in your current form.
-                    PrivateOverheadMessage(Network.MessageType.Regular, 0x3B2, 1062061, from.NetState);
-                else
-                    from.SendLocalizedMessage(1061628); // You can't do that while polymorphed.
+                PrivateOverheadMessage(Network.MessageType.Regular, 0x3B2, 1062061, from.NetState);
 
                 return;
             }
@@ -571,7 +568,7 @@ namespace Server.Mobiles
             {
                 if (m_Type >= BlockMountType.RidingSwipe)
                 {
-                    if (Core.SA && DateTime.UtcNow < m_Expiration)
+                    if (DateTime.UtcNow < m_Expiration)
                     {
                         return false;
                     }
@@ -587,7 +584,7 @@ namespace Server.Mobiles
                             default:
                             case BlockMountType.RidingSwipe:
                                 {
-                                    if ((!Core.SA && m_Mount == null) || m_Mount is Mobile && ((Mobile)m_Mount).Hits >= ((Mobile)m_Mount).HitsMax)
+                                    if (m_Mount is Mobile && ((Mobile)m_Mount).Hits >= ((Mobile)m_Mount).HitsMax)
                                     {
                                         BaseMount.ExpireMountPrevention(m_Mobile);
                                         return true;

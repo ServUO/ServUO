@@ -177,9 +177,6 @@ namespace Server.Items
 
             if (house != null && house.IsFriend(from) && from.IsPlayer() && house.RefreshDecay())
                 from.SendLocalizedMessage(1043293); // Your house's age and contents have been refreshed.
-
-            if (!Core.AOS && house != null && house.Public && !house.IsFriend(from))
-                house.AddVisit(from);
         }
 
         public override bool UseLocks()

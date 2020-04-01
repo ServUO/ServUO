@@ -113,25 +113,18 @@ namespace Server.Mobiles
                 return true;
             }
         }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.SE;
-            }
-        }
         public override bool Unprovokable
         {
             get
             {
-                return Core.SE;
+                return true;
             }
         }
         public override bool Uncalmable
         {
             get
             {
-                return Core.SE;
+                return true;
             }
         }
 

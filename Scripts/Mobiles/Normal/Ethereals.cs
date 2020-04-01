@@ -188,7 +188,7 @@ namespace Server.Mobiles
 
         public override double DefaultWeight { get { return 1.0; } }
 
-        public override bool DisplayLootType { get { return Core.AOS; } }
+        public override bool DisplayLootType { get { return true; } }
         public virtual int FollowerSlots { get { return 1; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -275,7 +275,7 @@ namespace Server.Mobiles
         {
             base.GetProperties(list);
 
-            if (Core.ML && m_IsRewardItem)
+            if (m_IsRewardItem)
             {
                 list.Add(RewardSystem.GetRewardYearLabel(this, new object[] { })); // X Year Veteran Reward
             }
@@ -542,7 +542,7 @@ namespace Server.Mobiles
                 get
                 {
                     return
-                            TimeSpan.FromSeconds(Core.AOS ? 3.0 : 2.0);
+                            TimeSpan.FromSeconds(3.0);
                 }
             }
 

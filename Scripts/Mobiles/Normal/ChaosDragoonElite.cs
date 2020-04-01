@@ -191,13 +191,6 @@ namespace Server.Mobiles
                 return true;
             }
         }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS;
-            }
-        }
         public override bool CanRummageCorpses
         {
             get

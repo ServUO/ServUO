@@ -132,7 +132,7 @@ namespace Server.Multis
                 }
             }
 
-            m.SendGump(new HouseGumpAOS(HouseGumpPageAOS.Information, m, m_Owner));
+            m.SendGump(new HouseGump(HouseGumpPage.Information, m, m_Owner));
         }
 
         public void ClaimGump_Callback(Mobile from, bool okay, object state)
@@ -225,7 +225,7 @@ namespace Server.Multis
                 }
                 else
                 {
-                    from.SendGump(new HouseGumpAOS(HouseGumpPageAOS.Vendors, from, m_Sign.Owner));
+                    from.SendGump(new HouseGump(HouseGumpPage.Vendors, from, m_Sign.Owner));
                 }
             }
         }

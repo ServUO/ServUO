@@ -16,9 +16,6 @@ namespace Server.Mobiles
         public PricedHealer(int price)
         {
             this.m_Price = price;
-
-            if (!Core.AOS)
-                this.NameHue = 0x35;
         }
 
         public PricedHealer(Serial serial)

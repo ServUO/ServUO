@@ -32,7 +32,7 @@ namespace Server.Items
         {
             get
             {
-                return (Core.ML);
+                return true;
             }
         }
         public override void Serialize(GenericWriter writer)

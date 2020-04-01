@@ -12,7 +12,7 @@ namespace Server.Items
         {
             this.Hue = 2101;
             this.Weight = 2.0;
-            this.Stackable = Core.ML;
+            this.Stackable = true;
         }
 
         public TribalPaint(Serial serial)

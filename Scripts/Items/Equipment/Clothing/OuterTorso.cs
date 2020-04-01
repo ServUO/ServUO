@@ -514,7 +514,7 @@ namespace Server.Items
         {
             get
             {
-                return Core.ML;
+                return true;
             }
         }
 
@@ -704,7 +704,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (Core.ML && m_IsRewardItem)
+            if (m_IsRewardItem)
                 list.Add(RewardSystem.GetRewardYearLabel(this, new object[] { Hue, m_LabelNumber })); // X Year Veteran Reward
         }
 

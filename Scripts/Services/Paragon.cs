@@ -135,9 +135,6 @@ namespace Server.Mobiles
 
         public static bool CheckConvert(BaseCreature bc, Point3D location, Map m)
         {
-            if (!Core.AOS)
-                return false;
-
             if (Array.IndexOf(Maps, m) == -1)
                 return false;
 
@@ -156,9 +153,6 @@ namespace Server.Mobiles
 
         public static bool CheckArtifactChance(Mobile m, BaseCreature bc)
         {
-            if (!Core.AOS)
-                return false;
-
             double fame = (double)bc.Fame;
 
             if (fame > 32000)

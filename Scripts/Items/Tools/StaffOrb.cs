@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using CustomsFramework;
 using Server.ContextMenus;
 
 namespace Server.Items
@@ -203,7 +202,7 @@ namespace Server.Items
         private void SwitchAccessLevels(Mobile from)
         {
             // check current access level
-            if (Utilities.IsPlayer(from))
+            if (from.IsPlayer())
             {
                 // return to staff status
                 from.AccessLevel = m_StaffLevel;

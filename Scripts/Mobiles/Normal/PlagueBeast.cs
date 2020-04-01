@@ -250,10 +250,7 @@ namespace Server.Mobiles
 
             if (IsParagon)
                 maxhits = (int)(maxhits * Paragon.HitsBuff);
-
-            if (hp < 1000 && !Core.AOS)
-                hp = (hp * 100) / 60;
-
+            
             if (HitsMaxSeed >= maxhits)
             {
                 HitsMaxSeed = maxhits;

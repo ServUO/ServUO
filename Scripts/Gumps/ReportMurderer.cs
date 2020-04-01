@@ -81,8 +81,6 @@ namespace Server.Gumps
                 Titles.AwardFame(g, fameAward, false);
                 Titles.AwardKarma(g, karmaAward, true);
 
-                Server.Items.XmlQuest.RegisterKill(m, g);
-
                 if (killers.Contains(g))
                 {
                     EventSink.InvokePlayerMurdered(new PlayerMurderedEventArgs(g, m));

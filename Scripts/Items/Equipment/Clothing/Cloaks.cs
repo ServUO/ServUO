@@ -229,7 +229,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (Core.ML && IsRewardItem)
+            if (IsRewardItem)
                 list.Add(RewardSystem.GetRewardYearLabel(this, new object[] { Hue, m_LabelNumber })); // X Year Veteran Reward
         }
 

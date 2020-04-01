@@ -46,7 +46,7 @@ namespace Server.Mobiles
         {
             base.AddCustomContextEntries(from, list);
 
-            if (Core.ML && from.Alive)
+            if (from.Alive)
             {
                 list.Add(new RechargeEntry(from, this));
             }
@@ -71,7 +71,7 @@ namespace Server.Mobiles
 
             public override void OnClick()
             {
-                if (!Core.ML || m_Vendor == null || m_Vendor.Deleted)
+                if (m_Vendor == null || m_Vendor.Deleted)
                     return;
 
                 if (Tool != null)

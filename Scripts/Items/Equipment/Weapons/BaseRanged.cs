@@ -61,29 +61,25 @@ namespace Server.Items
             long nextShoot;
 
             if (attacker is PlayerMobile)
-                nextShoot = ((PlayerMobile)attacker).NextMovementTime + (Core.SE ? 250 : Core.AOS ? 500 : 1000);
+                nextShoot = ((PlayerMobile)attacker).NextMovementTime + 250;
             else
                 nextShoot = attacker.LastMoveTime + attacker.ComputeMovementSpeed();
 
 			// Make sure we've been standing still for .25/.5/1 second depending on Era
-            if (nextShoot <= Core.TickCount ||
-				(Core.AOS && WeaponAbility.GetCurrentAbility(attacker) is MovingShot))
+            if (nextShoot <= Core.TickCount || WeaponAbility.GetCurrentAbility(attacker) is MovingShot)
 			{
 				bool canSwing = true;
 
-				if (Core.AOS)
-				{
-					canSwing = (!attacker.Paralyzed && !attacker.Frozen);
+                canSwing = !attacker.Paralyzed && !attacker.Frozen;
 
-					if (canSwing)
-					{
-						Spell sp = attacker.Spell as Spell;
+                if (canSwing)
+                {
+                    Spell sp = attacker.Spell as Spell;
 
-						canSwing = (sp == null || !sp.IsCasting || !sp.BlocksMovement);
-					}
-				}
+                    canSwing = sp == null || !sp.IsCasting || !sp.BlocksMovement;
+                }
 
-				if (canSwing && attacker.HarmfulCheck(damageable))
+                if (canSwing && attacker.HarmfulCheck(damageable))
 				{
 					attacker.DisruptiveAction();
 					attacker.Send(new Swing(0, attacker, damageable));
@@ -131,51 +127,35 @@ namespace Server.Items
 		{
 			if (attacker.Player && 0.4 >= Utility.RandomDouble())
 			{
-				if (Core.SE)
-				{
-					PlayerMobile p = attacker as PlayerMobile;
+                PlayerMobile p = attacker as PlayerMobile;
 
-					if (p != null && AmmoType != null)
-					{
-						Type ammo = AmmoType;
+                if (p != null && AmmoType != null)
+                {
+                    Type ammo = AmmoType;
 
-						if (p.RecoverableAmmo.ContainsKey(ammo))
-						{
-							p.RecoverableAmmo[ammo]++;
-						}
-						else
-						{
-							p.RecoverableAmmo.Add(ammo, 1);
-						}
+                    if (p.RecoverableAmmo.ContainsKey(ammo))
+                    {
+                        p.RecoverableAmmo[ammo]++;
+                    }
+                    else
+                    {
+                        p.RecoverableAmmo.Add(ammo, 1);
+                    }
 
-						if (!p.Warmode)
-						{
-							if (m_RecoveryTimer == null)
-							{
-								m_RecoveryTimer = Timer.DelayCall(TimeSpan.FromSeconds(10), p.RecoverAmmo);
-							}
+                    if (!p.Warmode)
+                    {
+                        if (m_RecoveryTimer == null)
+                        {
+                            m_RecoveryTimer = Timer.DelayCall(TimeSpan.FromSeconds(10), p.RecoverAmmo);
+                        }
 
-							if (!m_RecoveryTimer.Running)
-							{
-								m_RecoveryTimer.Start();
-							}
-						}
-					}
-				}
-				else
-				{
-					Point3D loc = damageable.Location;
-
-					var ammo = Ammo;
-
-					if (ammo != null)
-					{
-						ammo.MoveToWorld(
-							new Point3D(loc.X + Utility.RandomMinMax(-1, 1), loc.Y + Utility.RandomMinMax(-1, 1), loc.Z),
-							damageable.Map);
-					}
-				}
-			}
+                        if (!m_RecoveryTimer.Running)
+                        {
+                            m_RecoveryTimer.Start();
+                        }
+                    }
+                }
+            }
 
 			base.OnMiss(attacker, damageable);
 		}

@@ -7,7 +7,7 @@ namespace Server.Items
     {
         [Constructable]
         public HarmWand()
-            : base(WandEffect.Harming, 5, Core.ML ? 109 : 30)
+            : base(WandEffect.Harming, 5, 109)
         {
         }
 

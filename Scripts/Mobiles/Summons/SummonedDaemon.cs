@@ -10,7 +10,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Name = NameList.RandomName("daemon");
-            this.Body = Core.AOS ? 10 : 9;
+            this.Body = 10;
             this.BaseSoundID = 357;
 
             this.SetStr(200);
@@ -36,7 +36,7 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Wrestling, 98.1, 99.0);
 
             this.VirtualArmor = 58;
-            this.ControlSlots = Core.SE ? 4 : 5;
+            this.ControlSlots = 4;
         }
 
         public SummonedDaemon(Serial serial)

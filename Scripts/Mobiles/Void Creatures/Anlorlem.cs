@@ -59,13 +59,6 @@ namespace Server.Mobiles
                 return 3;
             }
         }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS;
-            }
-        }
         public override bool Unprovokable
         {
             get

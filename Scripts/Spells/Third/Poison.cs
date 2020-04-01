@@ -56,7 +56,7 @@ namespace Server.Spells.Third
 
                     int total = (Caster.Skills.Magery.Fixed + Caster.Skills.Poisoning.Fixed) / 2;
 
-                    if (Core.SA && Caster.InRange(m, 8))
+                    if (Caster.InRange(m, 8))
                     {
                         int range = (int)Caster.GetDistanceToSqrt(m.Location);
 
@@ -108,7 +108,7 @@ namespace Server.Spells.Third
             private readonly PoisonSpell m_Owner;
 
             public InternalTarget(PoisonSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(10, false, TargetFlags.Harmful)
             {
                 m_Owner = owner;
             }
