@@ -29,7 +29,7 @@ namespace Server.Items
             ResistBasePoison = 0;
             ResistBaseEnergy = 0;
 
-            HitsMax = 70000;
+            HitsMax = 65001;
             Hits = HitsMax;
         }
 
@@ -72,12 +72,12 @@ namespace Server.Items
             {
                 var eligables = DamageStore.Keys.Where(m => m.InRange(Location, 20)).ToList();
 
-                if (eligables.Count > 0 && 0.5 > Utility.RandomDouble())
+                for (int i = 0; i < eligables.Count; i++)
                 {
-                    var winner = eligables[Utility.Random(eligables.Count)];
-
-                    if (winner != null)
+                    if (0.25 > Utility.RandomDouble())
                     {
+                        var winner = eligables[i];
+
                         winner.AddToBackpack(new MaritimeCargo(CargoQuality.Mythical));
                         winner.SendLocalizedMessage(1158907); // You recover maritime trade cargo!
                     }
