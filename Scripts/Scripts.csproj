@@ -10726,16 +10726,10 @@
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlDate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlDeathAction.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlDialog.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlEnemyMastery.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlFire.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlFollow.cs">
@@ -10750,25 +10744,10 @@
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlIsEnemy.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlLifeDrain.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlLightning.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlLocalVariable.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlMagicWord.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlManaDrain.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlMessage.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlMinionStrike.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlMorph.cs">
@@ -10790,9 +10769,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlSound.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlStamDrain.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlUse.cs">
