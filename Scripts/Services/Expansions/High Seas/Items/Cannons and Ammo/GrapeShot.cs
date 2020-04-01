@@ -80,10 +80,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (Core.EJ)
-            {
-                Replacer.Replace(this, new Grapeshot());
-            }
+            Replacer.Replace(this, new Grapeshot());
         }
     }
 
@@ -122,10 +119,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (Core.EJ)
-            {
-                Replacer.Replace(this, new Grapeshot());
-            }
+            Replacer.Replace(this, new Grapeshot());
         }
     }
 }

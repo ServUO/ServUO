@@ -34,10 +34,6 @@ namespace Server.Mobiles
 
             Fame = 600;
             Karma = -600;
-
-            VirtualArmor = 18;
-
-            PackBodyPartOrBones();
         }
 
         public Zombie(Serial serial)
@@ -62,13 +58,6 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Undead; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);

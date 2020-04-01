@@ -33,8 +33,6 @@ namespace Server.Mobiles
             Fame = 1000;
             Karma = 0;
 
-            VirtualArmor = 4;
-
             DelayBeginTunnel();
 
             ForceActiveSpeed = 0.2;
@@ -59,7 +57,6 @@ namespace Server.Mobiles
 
         public override int Meat { get { return 1; } }
         public override int Hides { get { return 1; } }
-        public override bool BardImmune { get { return !Core.AOS; } }
 		
         public override void GenerateLoot()
         {
@@ -84,7 +81,6 @@ namespace Server.Mobiles
                 }
             }
         }
-
 
         public override bool CheckFlee()
         {

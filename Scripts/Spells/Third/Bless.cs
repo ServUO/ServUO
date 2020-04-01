@@ -110,7 +110,7 @@ namespace Server.Spells.Third
         {
             private readonly BlessSpell m_Owner;
             public InternalTarget(BlessSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Beneficial)
+                : base(10, false, TargetFlags.Beneficial)
             {
                 this.m_Owner = owner;
             }

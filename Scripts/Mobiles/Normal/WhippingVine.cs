@@ -39,8 +39,6 @@ namespace Server.Mobiles
             this.Fame = 1000;
             this.Karma = -1000;
 
-            this.VirtualArmor = 45;
-
             this.PackReg(3);
             this.PackItem(new FertileDirt(Utility.RandomMinMax(1, 10)));
 
@@ -61,13 +59,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS;
-            }
-        }
         public override Poison PoisonImmune
         {
             get

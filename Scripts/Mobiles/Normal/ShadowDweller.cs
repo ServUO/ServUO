@@ -41,8 +41,6 @@ namespace Server.Mobiles
             this.Fame = 8000;
             this.Karma = -8000;
 
-            this.VirtualArmor = 50;
-            //PackItem( new GnarledStaff() );
             this.PackNecroReg(17, 24);
 
             SetSpecialAbility(SpecialAbility.LifeLeech);
@@ -53,13 +51,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override bool CanRummageCorpses
         {
             get

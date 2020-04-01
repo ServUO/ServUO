@@ -42,45 +42,6 @@ namespace Server.Mobiles
             Fame = 1500;
             Karma = -1500;
 
-            VirtualArmor = 28;
-
-            switch ( Utility.Random(20) )
-            {
-                case 0:
-                    PackItem(new Scimitar());
-                    break;
-                case 1:
-                    PackItem(new Katana());
-                    break;
-                case 2:
-                    PackItem(new WarMace());
-                    break;
-                case 3:
-                    PackItem(new WarHammer());
-                    break;
-                case 4:
-                    PackItem(new Kryss());
-                    break;
-                case 5:
-                    PackItem(new Pitchfork());
-                    break;
-            }
-
-            PackItem(new ThighBoots());
-
-            switch ( Utility.Random(3) )
-            {
-                case 0:
-                    PackItem(new Ribs());
-                    break;
-                case 1:
-                    PackItem(new Shaft());
-                    break;
-                case 2:
-                    PackItem(new Candle());
-                    break;
-            }
-
             if (0.2 > Utility.RandomDouble())
                 PackItem(new BolaBall());
         }
@@ -116,12 +77,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                Body = 723;
-                Hue = 1900;
-            }
         }
     }
 }

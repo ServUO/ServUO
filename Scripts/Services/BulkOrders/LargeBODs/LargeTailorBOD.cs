@@ -54,7 +54,7 @@ namespace Server.Engines.BulkOrders
                     break;
                 case 9:
                     entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.ShoeSet);
-                    useMaterials = Core.ML;
+                    useMaterials = true;
                     break;
                 case 10:
                     entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.StuddedSet);

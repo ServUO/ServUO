@@ -24,9 +24,6 @@ namespace Server.Engines.ShameRevamped
 
         public static void Generate(CommandEventArgs e)
         {
-            if (!Core.ML)
-                return;
-
             RemoveItems();
 
             CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "XmlLoad RevampedSpawns/ShameRevamped.xml");

@@ -51,8 +51,6 @@ namespace Server.Mobiles
 
             Fame = 13000;
             Karma = -13000;
-
-            VirtualArmor = 58;
         }
 
         public DragonsFlameMage(Serial serial)
@@ -65,7 +63,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosFilthyRich, 4);
+            AddLoot(LootPack.FilthyRich, 4);
         }
 
         public override void AlterSpellDamageFrom(Mobile from, ref int damage)

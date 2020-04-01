@@ -48,7 +48,6 @@ namespace Server.Spells.Bushido
                 return false;
             }
         }
-        //public override int CastDelayBase{ get{ return 1; } }
         public override double CastDelayFastScalar
         {
             get
@@ -62,19 +61,6 @@ namespace Server.Spells.Bushido
             {
                 return 7;
             }
-        }
-        public static bool CheckExpansion(Mobile from)
-        {
-            if (!Core.SE)
-                return false;
-
-            if (!(from is PlayerMobile))
-                return true;
-
-            if (from.NetState == null)
-                return false;
-
-            return from.NetState.SupportsExpansion(Expansion.SE);
         }
 
         public static void OnEffectEnd(Mobile caster, Type type)
@@ -91,12 +77,6 @@ namespace Server.Spells.Bushido
 
             if (!base.CheckCast())
                 return false;
-
-            if (!CheckExpansion(this.Caster))
-            {
-                this.Caster.SendLocalizedMessage(1063456); // You must upgrade to Samurai Empire in order to use that ability.
-                return false;
-            }
 
             if (this.Caster.Skills[this.CastSkill].Value < this.RequiredSkill)
             {

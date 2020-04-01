@@ -565,25 +565,11 @@ namespace Server.Multis
 
                     if (heavy)
                     {
-                        if (Core.EJ)
-                        {
-                            cannon = new Carronade(this);
-                        }
-                        else
-                        {
-                            cannon = new HeavyShipCannon(this);
-                        }
+                        cannon = new Carronade(this);
                     }
                     else
                     {
-                        if (Core.EJ)
-                        {
-                            cannon = new Culverin(this);
-                        }
-                        else
-                        {
-                            cannon = new LightShipCannon(this);
-                        }
+                        cannon = new Culverin(this);
                     }
 
                     if (!TryAddCannon(captain, pad.Location, cannon, null))
@@ -616,34 +602,13 @@ namespace Server.Multis
                             break;
                         }
                     case CannonPower.Light:
-                        if (Core.EJ)
-                        {
-                            cannon = new Culverin(this);
-                        }
-                        else
-                        {
-                            cannon = new LightShipCannon(this);
-                        }
+                        cannon = new Culverin(this);
                         break;
                     case CannonPower.Heavy:
-                        if (Core.EJ)
-                        {
-                            cannon = new Carronade(this);
-                        }
-                        else
-                        {
-                            cannon = new HeavyShipCannon(this);
-                        }
+                        cannon = new Carronade(this);
                         break;
                     case CannonPower.Massive:
-                        if (Core.EJ)
-                        {
-                            cannon = new Blundercannon(this);
-                        }
-                        else
-                        {
-                            cannon = new HeavyShipCannon(this);
-                        }
+                        cannon = new Blundercannon(this);
                         break;
                 }
 
@@ -854,7 +819,7 @@ namespace Server.Multis
 
         public override void OnAfterDelete()
         {
-            foreach (var fixture in Fixtures.Where(f => !f.Deleted))
+            foreach (var fixture in Fixtures.Where(f => !f.Deleted).ToList())
             {
                 fixture.Delete();
             }
@@ -863,7 +828,7 @@ namespace Server.Multis
             {
                 List<Item> cannons = new List<Item>(Cannons);
 
-                foreach (var cannon in cannons.Where(c => c != null && !c.Deleted))
+                foreach (var cannon in cannons.Where(c => c != null && !c.Deleted).ToList())
                 {
                     cannon.Delete();
                 }
@@ -873,7 +838,7 @@ namespace Server.Multis
 
             if (Addons != null)
             {
-                foreach (var addon in Addons.Keys.Where(a => a != null && !a.Deleted))
+                foreach (var addon in Addons.Keys.Where(a => a != null && !a.Deleted).ToList())
                 {
                     addon.Delete();
                 }

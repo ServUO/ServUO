@@ -224,12 +224,7 @@ namespace Server.Mobiles
         {
             if (from.Alive)
             {
-                if (from.NetState == null || !from.NetState.SupportsExpansion(Expansion.ML))
-                {
-                    from.SendLocalizedMessage(1073651); // You must have Mondain's Legacy before proceeding...			
-                    return;
-                }
-                else if (!MondainsLegacy.PublicDonations && (int)from.AccessLevel < (int)AccessLevel.GameMaster)
+                if (!MondainsLegacy.PublicDonations && (int)from.AccessLevel < (int)AccessLevel.GameMaster)
                 {
                     from.SendLocalizedMessage(1042753, "Public donations"); // ~1_SOMETHING~ has been temporarily disabled.
                     return;

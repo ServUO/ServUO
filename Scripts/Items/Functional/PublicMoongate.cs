@@ -373,22 +373,11 @@ namespace Server.Items
 			new[]
 			{
 				new PMEntry(new Point3D(850, 3525, -38), 1113603), // Royal City
-				Core.TOL
-					? new PMEntry(new Point3D(719, 1863, 40), 1156262)
-					: new PMEntry(new Point3D(926, 3989, -36), 1112572) // Valley of Eodon
-				// Holy City
-			});
+				new PMEntry(new Point3D(719, 1863, 40), 1156262) // Valley of Eodon
+            });
 
-		public static readonly PMList[] UORLists = {Trammel, Felucca};
-		public static readonly PMList[] UORListsYoung = {Trammel};
-		public static readonly PMList[] LBRLists = {Trammel, Felucca, Ilshenar};
-		public static readonly PMList[] LBRListsYoung = {Trammel, Ilshenar};
-		public static readonly PMList[] AOSLists = {Trammel, Felucca, Ilshenar, Malas};
-		public static readonly PMList[] AOSListsYoung = {Trammel, Ilshenar, Malas};
-		public static readonly PMList[] SELists = {Trammel, Felucca, Ilshenar, Malas, Tokuno};
-		public static readonly PMList[] SEListsYoung = {Trammel, Ilshenar, Malas, Tokuno};
-		public static readonly PMList[] SALists = {Trammel, Felucca, Ilshenar, Malas, Tokuno, TerMur};
-		public static readonly PMList[] SAListsYoung = {Trammel, Ilshenar, Malas, Tokuno, TerMur};
+		public static readonly PMList[] Lists = {Trammel, Felucca, Ilshenar, Malas, Tokuno, TerMur};
+		public static readonly PMList[] ListsYoung = {Trammel, Ilshenar, Malas, Tokuno, TerMur};
 		public static readonly PMList[] RedLists = {Felucca};
 		public static readonly PMList[] SigilLists = {Felucca};
 
@@ -510,28 +499,7 @@ namespace Server.Items
 			{
 				if (mobile.IsStaff())
 				{
-					var flags = mobile.NetState == null ? ClientFlags.None : mobile.NetState.Flags;
-
-					if (Core.SA && (flags & ClientFlags.TerMur) != 0)
-					{
-						checkLists = PMList.SALists;
-					}
-					else if (Core.SE && (flags & ClientFlags.Tokuno) != 0)
-					{
-						checkLists = PMList.SELists;
-					}
-					else if (Core.AOS && (flags & ClientFlags.Malas) != 0)
-					{
-						checkLists = PMList.AOSLists;
-					}
-					else if ((flags & ClientFlags.Ilshenar) != 0)
-					{
-						checkLists = PMList.LBRLists;
-					}
-					else
-					{
-						checkLists = PMList.UORLists;
-					}
+					checkLists = PMList.Lists;
 				}
 				else if (Server.Engines.VvV.VvVSigil.ExistsOn(mobile))
 				{
@@ -543,34 +511,14 @@ namespace Server.Items
 				}
 				else
 				{
-					var flags = mobile.NetState == null ? ClientFlags.None : mobile.NetState.Flags;
 					var young = mobile is PlayerMobile && ((PlayerMobile)mobile).Young;
 
-					if (Core.SA && (flags & ClientFlags.TerMur) != 0)
-					{
-						checkLists = young ? PMList.SAListsYoung : PMList.SALists;
-					}
-					else if (Core.SE && (flags & ClientFlags.Tokuno) != 0)
-					{
-						checkLists = young ? PMList.SEListsYoung : PMList.SELists;
-					}
-					else if (Core.AOS && (flags & ClientFlags.Malas) != 0)
-					{
-						checkLists = young ? PMList.AOSListsYoung : PMList.AOSLists;
-					}
-					else if ((flags & ClientFlags.Ilshenar) != 0)
-					{
-						checkLists = young ? PMList.LBRListsYoung : PMList.LBRLists;
-					}
-					else
-					{
-						checkLists = young ? PMList.UORListsYoung : PMList.UORLists;
-					}
+					checkLists = young ? PMList.ListsYoung : PMList.Lists;
 				}
 			}
 			else
 			{
-				checkLists = PMList.SELists;
+				checkLists = PMList.Lists;
 			}
 
 			m_Lists = new PMList[checkLists.Length];

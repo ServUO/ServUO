@@ -33,8 +33,7 @@ namespace Server.Mobiles
             {
                 Add(new GenericBuyInfo(typeof(Spellbook), 18, 10, 0xEFA, 0));
 				
-                if (Core.AOS)
-                    Add(new GenericBuyInfo(typeof(NecromancerSpellbook), 115, 10, 0x2253, 0));
+                Add(new GenericBuyInfo(typeof(NecromancerSpellbook), 115, 10, 0x2253, 0));
 				
                 Add(new GenericBuyInfo(typeof(ScribesPen), 8, 10, 0xFBF, 0));
 
@@ -62,14 +61,11 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(SpidersSilk), 3, 20, 0xF8D, 0));
                 Add(new GenericBuyInfo(typeof(SulfurousAsh), 3, 20, 0xF8C, 0));
 
-                if (Core.AOS)
-                {
-                    Add(new GenericBuyInfo(typeof(BatWing), 3, 999, 0xF78, 0));
-                    Add(new GenericBuyInfo(typeof(DaemonBlood), 6, 999, 0xF7D, 0));
-                    Add(new GenericBuyInfo(typeof(PigIron), 5, 999, 0xF8A, 0));
-                    Add(new GenericBuyInfo(typeof(NoxCrystal), 6, 999, 0xF8E, 0));
-                    Add(new GenericBuyInfo(typeof(GraveDust), 3, 999, 0xF8F, 0));
-                }
+                Add(new GenericBuyInfo(typeof(BatWing), 3, 999, 0xF78, 0));
+                Add(new GenericBuyInfo(typeof(DaemonBlood), 6, 999, 0xF7D, 0));
+                Add(new GenericBuyInfo(typeof(PigIron), 5, 999, 0xF8A, 0));
+                Add(new GenericBuyInfo(typeof(NoxCrystal), 6, 999, 0xF8E, 0));
+                Add(new GenericBuyInfo(typeof(GraveDust), 3, 999, 0xF8F, 0));
 
                 Type[] types = Loot.RegularScrollTypes;
 
@@ -103,14 +99,11 @@ namespace Server.Mobiles
                 Add(typeof(SpidersSilk), 2); 
                 Add(typeof(SulfurousAsh), 2); 
 
-                if (Core.AOS)
-                {
-                    Add(typeof(BatWing), 1);
-                    Add(typeof(DaemonBlood), 3);
-                    Add(typeof(PigIron), 2);
-                    Add(typeof(NoxCrystal), 3);
-                    Add(typeof(GraveDust), 1);
-                }
+                Add(typeof(BatWing), 1);
+                Add(typeof(DaemonBlood), 3);
+                Add(typeof(PigIron), 2);
+                Add(typeof(NoxCrystal), 3);
+                Add(typeof(GraveDust), 1);
 
                 Add(typeof(RecallRune), 13);
                 Add(typeof(Spellbook), 25);
@@ -120,26 +113,23 @@ namespace Server.Mobiles
                 for (int i = 0; i < types.Length; ++i)
                     Add(types[i], ((i / 8) + 2) * 2);
 
-                if (Core.SE)
-                { 
-                    Add(typeof(ExorcismScroll), 3);
-                    Add(typeof(AnimateDeadScroll), 8);
-                    Add(typeof(BloodOathScroll), 8);
-                    Add(typeof(CorpseSkinScroll), 8);
-                    Add(typeof(CurseWeaponScroll), 8);
-                    Add(typeof(EvilOmenScroll), 8);
-                    Add(typeof(PainSpikeScroll), 8);
-                    Add(typeof(SummonFamiliarScroll), 8);
-                    Add(typeof(HorrificBeastScroll), 8);
-                    Add(typeof(MindRotScroll), 10);
-                    Add(typeof(PoisonStrikeScroll), 10);
-                    Add(typeof(WraithFormScroll), 15);
-                    Add(typeof(LichFormScroll), 16);
-                    Add(typeof(StrangleScroll), 16);
-                    Add(typeof(WitherScroll), 16);
-                    Add(typeof(VampiricEmbraceScroll), 20);
-                    Add(typeof(VengefulSpiritScroll), 20);
-                }
+                Add(typeof(ExorcismScroll), 3);
+                Add(typeof(AnimateDeadScroll), 8);
+                Add(typeof(BloodOathScroll), 8);
+                Add(typeof(CorpseSkinScroll), 8);
+                Add(typeof(CurseWeaponScroll), 8);
+                Add(typeof(EvilOmenScroll), 8);
+                Add(typeof(PainSpikeScroll), 8);
+                Add(typeof(SummonFamiliarScroll), 8);
+                Add(typeof(HorrificBeastScroll), 8);
+                Add(typeof(MindRotScroll), 10);
+                Add(typeof(PoisonStrikeScroll), 10);
+                Add(typeof(WraithFormScroll), 15);
+                Add(typeof(LichFormScroll), 16);
+                Add(typeof(StrangleScroll), 16);
+                Add(typeof(WitherScroll), 16);
+                Add(typeof(VampiricEmbraceScroll), 20);
+                Add(typeof(VengefulSpiritScroll), 20);
             }
         }
     }

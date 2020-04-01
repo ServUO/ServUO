@@ -68,7 +68,7 @@ namespace Server.Mobiles
         public override bool CanRummageCorpses { get { return true; } }
         public override bool AlwaysMurderer { get { return true; } }
         public override int Meat { get { return 1; } }
-        public override int TreasureMapLevel { get { return Core.AOS ? 2 : 0; } }
+        public override int TreasureMapLevel { get { return 2; } }
 
         public override void GenerateLoot()
         {

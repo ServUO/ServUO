@@ -49,7 +49,7 @@ namespace Server.Spells.Bushido
 
             if (weap != null)
             {
-                if (Core.ML && Caster.Skills[weap.Skill].Base < 50)
+                if (Caster.Skills[weap.Skill].Base < 50)
                 {
                     if (messages)
                     {
@@ -86,24 +86,21 @@ namespace Server.Spells.Bushido
             if (weap == null)
                 weap = defender.FindItemOnLayer(Layer.TwoHanded) as BaseWeapon;
 
-            if (Core.ML)
+            if (defender.Spell != null && defender.Spell.IsCasting)
             {
-                if (defender.Spell != null && defender.Spell.IsCasting)
+                return false;
+            }
+
+            if (weap != null)
+            {
+                if (defender.Skills[weap.Skill].Base < 50)
                 {
                     return false;
                 }
-				
-                if (weap != null)
-                {
-                    if (defender.Skills[weap.Skill].Base < 50)
-                    {
-                        return false;
-                    }
-                }
-                else if (!(defender.FindItemOnLayer(Layer.TwoHanded) is BaseShield))
-                {
-                    return false;
-                }
+            }
+            else if (!(defender.FindItemOnLayer(Layer.TwoHanded) is BaseShield))
+            {
+                return false;
             }
 			
             if (IsEvading(defender) && BaseWeapon.CheckParry(defender))
@@ -111,10 +108,7 @@ namespace Server.Spells.Bushido
                 defender.Emote("*evades*"); // Yes.  Eew.  Blame OSI.
                 defender.FixedEffect(0x37B9, 10, 16);
 
-                if (Core.SA)
-                {
-                    defender.Animate(AnimationType.Block, 0);
-                }
+                defender.Animate(AnimationType.Block, 0);
 
                 return true;
             }
@@ -136,9 +130,6 @@ namespace Server.Spells.Bushido
             * o 3-6 seconds w/o tactics/anatomy
             * o 6-7 seconds w/ GM+ Bushido and GM tactics/anatomy 
             */
-            if (!Core.ML)
-                return TimeSpan.FromSeconds(8.0);
-
             double seconds = 3;
 
             if (m.Skills.Bushido.Value > 60)
@@ -160,9 +151,6 @@ namespace Server.Spells.Bushido
             * o 16-40% bonus w/o tactics/anatomy
             * o 42-50% bonus w/ GM+ bushido and GM tactics/anatomy
             */
-            if (!Core.ML)
-                return 1.5;
-
             double bonus = 0;
 
             if (m.Skills.Bushido.Value >= 60)

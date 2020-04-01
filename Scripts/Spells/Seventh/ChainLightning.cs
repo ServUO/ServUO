@@ -64,24 +64,10 @@ namespace Server.Spells.Seventh
                 {
                     var id = dam;
                     var m = id as Mobile;
-                    double damage;
+                    double damage = GetNewAosDamage(51, 1, 5, id is PlayerMobile, id);
 
-                    if (Core.AOS)
-                        damage = GetNewAosDamage(51, 1, 5, id is PlayerMobile, id);
-                    else
-                        damage = Utility.Random(27, 22);
-
-                    if (Core.AOS && count > 2)
+                    if (count > 2)
                         damage = (damage * 2) / count;
-                    else if (!Core.AOS)
-                        damage /= count;
-
-                    if (!Core.AOS && m != null && CheckResisted(m))
-                    {
-                        damage *= 0.5;
-
-                        m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
-                    }
 
                     Mobile source = Caster;
                     SpellHelper.CheckReflect((int)Circle, ref source, ref id, SpellDamageType);
@@ -107,7 +93,7 @@ namespace Server.Spells.Seventh
         {
             private readonly ChainLightningSpell m_Owner;
             public InternalTarget(ChainLightningSpell owner)
-                : base(Core.ML ? 10 : 12, true, TargetFlags.None)
+                : base(10, true, TargetFlags.None)
             {
                 m_Owner = owner;
             }

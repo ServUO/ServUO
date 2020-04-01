@@ -34,7 +34,6 @@ namespace Server.Mobiles
 
             this.Fame = 5000;
             this.Karma = -5000;
-            // VirtualArmor = 6; Not sure
         }
 
         public CorruptedSoul(Serial serial)
@@ -77,10 +76,6 @@ namespace Server.Mobiles
                 return true;
             }
         }
-        /*public override int GetAngerSound()
-        {
-        return 0x0;
-        }*/
         public override int GetAttackSound()
         {
             return 0x233;

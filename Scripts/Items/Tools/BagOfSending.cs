@@ -10,7 +10,8 @@ namespace Server.Items
     {
         Yellow,
         Blue,
-        Red
+        Red,
+        Green
     }
 
     public class BagOfSending : Item, TranslocationItem
@@ -130,19 +131,24 @@ namespace Server.Items
                     case BagOfSendingHue.Red:
                         Hue = 0x89B;
                         break;
+                    case BagOfSendingHue.Green:
+                        Hue = 0x08A0;
+                        break;
                 }
             }
         }
         public static BagOfSendingHue RandomHue()
         {
-            switch ( Utility.Random(3) )
+            switch (Utility.Random(4))
             {
                 case 0:
                     return BagOfSendingHue.Yellow;
                 case 1:
                     return BagOfSendingHue.Blue;
-                default:
+                case 2:
                     return BagOfSendingHue.Red;
+                default:
+                    return BagOfSendingHue.Green;
             }
         }
 
@@ -302,13 +308,13 @@ namespace Server.Items
                     {
                         MessageHelper.SendLocalizedMessageTo(m_Bag, from, 1054110, 0x59); // Your bank box is full.
                     }
-                    else if (Core.ML && reqCharges > m_Bag.Charges)
+                    else if (reqCharges > m_Bag.Charges)
                     {
                         from.SendLocalizedMessage(1079932); //You don't have enough charges to send that much weight
                     }
                     else
                     {
-                        m_Bag.Charges -= (Core.ML ? reqCharges : 1);
+                        m_Bag.Charges -= reqCharges;
                         MessageHelper.SendLocalizedMessageTo(m_Bag, from, 1054150, 0x59); // The item was placed in your bank box.
                     }
                 }

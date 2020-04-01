@@ -131,7 +131,7 @@ namespace Server.SkillHandlers
                         from.SendLocalizedMessage(501001);//You cannot determain anything useful.
                     }
                 }
-                else if (Core.SA && target is Item)
+                else if (target is Item)
                 {
                     Item item = (Item)target;
 

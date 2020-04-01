@@ -43,9 +43,6 @@ namespace Server.Mobiles
             SpeechHue = Utility.RandomDyedHue();
             Hue = Utility.RandomSkinHue();
 
-            if (Blessed && !Core.AOS)
-                NameHue = 0x35;
-
             if (Female = GetGender())
             {
                 Body = 0x191;
@@ -78,9 +75,8 @@ namespace Server.Mobiles
 
         public virtual void InitOutfit()
         {
-            if (Core.SE && this.Map == Map.Tokuno)
+            if (this.Map == Map.Tokuno)
             {
-
                 if (Utility.Random(2) == 0)
                     SetWearable(new Kasa(GetRandomHue()));
                 if (Utility.Random(2) == 0)

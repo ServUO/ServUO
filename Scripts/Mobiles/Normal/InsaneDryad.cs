@@ -15,14 +15,6 @@ namespace Server.Mobiles
             }
         }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
-
         [Constructable]
         public MLDryad()
             : base(AIType.AI_Mage, FightMode.Evil, 10, 1, 0.2, 0.4)
@@ -58,14 +50,12 @@ namespace Server.Mobiles
             Fame = 5000;
             Karma = 5000;
 
-            VirtualArmor = 28; // Don't know what it should be
-
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
                 PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
 
-            if (Core.ML && Utility.RandomDouble() < .60)
+            if (Utility.RandomDouble() < 0.6)
                 PackItem(Seed.RandomPeculiarSeed(1));
         }
 
@@ -175,14 +165,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
@@ -226,15 +214,13 @@ namespace Server.Mobiles
 
         public override void Serialize(GenericWriter writer)
         {
-            base.Serialize(writer);
-			
+            base.Serialize(writer);		
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
-            base.Deserialize(reader);
-			
+            base.Deserialize(reader);	
             int version = reader.ReadInt();
         }
     }

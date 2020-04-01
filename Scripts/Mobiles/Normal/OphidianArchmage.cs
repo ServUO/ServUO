@@ -3,7 +3,6 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("an ophidian corpse")]
-    [TypeAlias("Server.Mobiles.OphidianJusticar", "Server.Mobiles.OphidianZealot")]
     public class OphidianArchmage : BaseCreature
     {
         private static readonly string[] m_Names = new string[]
@@ -45,8 +44,6 @@ namespace Server.Mobiles
             this.Fame = 11500;
             this.Karma = -11500;
 
-            this.VirtualArmor = 44;
-
             this.PackReg(5, 15);
             this.PackNecroReg(5, 15);
         }
@@ -73,13 +70,6 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Ophidian; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.TerathansAndOphidians;
-            }
-        }
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich);

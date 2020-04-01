@@ -114,9 +114,10 @@ namespace Server.Spells.SkillMasteries
 
                         Server.Timer.DelayCall(TimeSpan.FromSeconds(skill / 60), () =>
                             {
-                                if (!TransformationSpellHelper.UnderTransformation(mob, typeof(AnimalForm)) &&
-                                    (Core.SA || !TransformationSpellHelper.UnderTransformation(mob, typeof(Server.Spells.Spellweaving.ReaperFormSpell))))
+                                if (!TransformationSpellHelper.UnderTransformation(mob, typeof(AnimalForm)))
+                                {
                                     mob.SendSpeedControl(SpeedControlType.Disable);
+                                }
                             });
                     }
                 }

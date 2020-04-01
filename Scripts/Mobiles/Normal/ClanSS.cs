@@ -38,8 +38,6 @@ namespace Server.Mobiles
             Fame = 6500;
             Karma = -6500;
 
-            VirtualArmor = 56;
-
             AddItem(new Bow());
             PackItem(new Arrow(Utility.RandomMinMax(50, 70)));
         }

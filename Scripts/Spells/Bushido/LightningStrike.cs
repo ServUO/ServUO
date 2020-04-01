@@ -13,7 +13,7 @@ namespace Server.Spells.Bushido
         {
             get
             {
-                return Core.SA ? 10 : 5;
+                return 10;
             }
         }
         public override double RequiredSkill
@@ -98,7 +98,7 @@ namespace Server.Spells.Bushido
         public override void CheckGain(Mobile m)
         {
             // Lighning strike will gain to 120, albeit slow
-            if (Core.SA && m.Skills[MoveSkill].Value >= 87.5)
+            if (m.Skills[MoveSkill].Value >= 87.5)
             {
                 if (0.25 > Utility.RandomDouble())
                 {

@@ -41,8 +41,6 @@ namespace Server.Mobiles
             Fame = 22500;
             Karma = -22500;
 
-            VirtualArmor = 80;
-
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
@@ -54,11 +52,10 @@ namespace Server.Mobiles
         public override bool AutoDispel { get { return !Controlled; } }
         public override bool BleedImmune { get { return true; } }
         public override bool ReacquireOnMovement { get { return !Controlled; } }
-        public override double BonusPetDamageScalar { get { return (Core.SE) ? 3.0 : 1.0; } }
+        public override double BonusPetDamageScalar { get { return 3.0; } }
         public override int Hides { get { return 20; } }
         public override int Meat { get { return 19; } } // where's it hiding these? :)
         public override HideType HideType { get { return HideType.Barbed; } }
-        public override OppositionGroup OppositionGroup { get { return OppositionGroup.FeyAndUndead; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
         public override TribeType Tribe { get { return TribeType.Undead; } }
 

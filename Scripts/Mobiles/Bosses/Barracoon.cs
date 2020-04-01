@@ -42,8 +42,6 @@ namespace Server.Mobiles
             Fame = 22500;
             Karma = -22500;
 
-            VirtualArmor = 70;
-
             AddItem(new FancyShirt(Utility.RandomGreenHue()));
             AddItem(new LongPants(Utility.RandomYellowHue()));
             AddItem(new JesterHat(Utility.RandomPinkHue()));
@@ -123,13 +121,6 @@ namespace Server.Mobiles
                 return 1.0;
             }
         }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.SE;
-            }
-        }
 		public override bool AllureImmune
 		{
 			get
@@ -141,14 +132,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.SE;
+                return true;
             }
         }
         public override bool Uncalmable
         {
             get
             {
-                return Core.SE;
+                return true;
             }
         }
         public override Poison PoisonImmune

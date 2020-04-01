@@ -41,8 +41,6 @@ namespace Server.Mobiles
 
             this.Fame = 7000;
             this.Karma = 7000;
-
-            this.VirtualArmor = 120;
         }
 
         public EtherealWarrior(Serial serial)
@@ -61,19 +59,12 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.AOS ? 5 : 0;
+                return 5;
             }
         }
 
         public override TribeType Tribe { get { return TribeType.Fey; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override int Feathers
         {
             get
@@ -158,18 +149,6 @@ namespace Server.Mobiles
                         break;
                 }
             }
-            /*defender.Damage(Utility.Random(10, 10), this);
-            defender.Stam -= Utility.Random(10, 10);
-            defender.Mana -= Utility.Random(10, 10);*/
-        }
-
-        public override void OnGotMeleeAttack(Mobile attacker)
-        {
-            base.OnGotMeleeAttack(attacker);
-
-            /*attacker.Damage(Utility.Random(10, 10), this);
-            attacker.Stam -= Utility.Random(10, 10);
-            attacker.Mana -= Utility.Random(10, 10);*/
         }
 
         public override void Serialize(GenericWriter writer) 

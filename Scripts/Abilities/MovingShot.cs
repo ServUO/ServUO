@@ -23,7 +23,7 @@ namespace Server.Items
         {
             get
             {
-                return Core.TOL ? -35 : -25;
+                return -35;
             }
         }
         public override bool ValidatesDuringHit

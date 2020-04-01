@@ -6,14 +6,14 @@ using System.Collections.Generic;
 using Server.Mobiles;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class InTheWeeds : BaseQuest
-    { 
+    {
         public InTheWeeds()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(FNPitchfork), "Farmer Nash's Pitchfork", 1, 0xE87));
-			
+
             AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -26,9 +26,9 @@ namespace Server.Engines.Quests
             }
         }
         /* Help Farmer Nash find his pitchfork by pulling the weeds in his garden until you uncover it. (Pull weeds by double clicking them) When you find it, return it to him for your reward. I hate to trouble you, but sometimes a problem needs a plow and sometimes it needs a sword. I am good with a plow, but terrible with a sword. 
-        I have been plagued with a strange weed for some time. Every day I have to clean them out of my garden and carry them away with my pitch fork. Yesterday I was working there and… well, I must have nodded off because when I woke my pitchfork was gone! 
-        I have heard talk of thieves who seek treasure in the sacred tomb, but I really don’t think they took my pitchfork, in fact I think it just got lost in the weeds! 
-        I would find it myself, but now that we are so close to the edge of the world, many wild creatures are lurking about and some might be hiding in these weeds. I’ve seen the creatures that have been roaming these parts recently and I fear for my life! The problem is, if I don’t get my crop in the ground soon, we won’t make it through the winter. Will you help?*/
+        I have been plagued with a strange weed for some time. Every day I have to clean them out of my garden and carry them away with my pitch fork. Yesterday I was working there andâ€¦ well, I must have nodded off because when I woke my pitchfork was gone! 
+        I have heard talk of thieves who seek treasure in the sacred tomb, but I really donâ€™t think they took my pitchfork, in fact I think it just got lost in the weeds! 
+        I would find it myself, but now that we are so close to the edge of the world, many wild creatures are lurking about and some might be hiding in these weeds. Iâ€™ve seen the creatures that have been roaming these parts recently and I fear for my life! The problem is, if I donâ€™t get my crop in the ground soon, we wonâ€™t make it through the winter. Will you help?*/
         public override object Description
         {
             get
@@ -36,7 +36,7 @@ namespace Server.Engines.Quests
                 return 1113500;
             }
         }
-        /* I understand.  I certainly don’t want you to do something you don’t want to do. */
+        /* I understand.  I certainly donâ€™t want you to do something you donâ€™t want to do. */
         public override object Refuse
         {
             get
@@ -44,7 +44,7 @@ namespace Server.Engines.Quests
                 return 1113501;
             }
         }
-        /* Did you find my pitchfork?  I'm sure it is under those weeds somewhere.  It was a gift from King Draxinusom when he assigned me this job, I can’t bear to lose it! */
+        /* Did you find my pitchfork?  I'm sure it is under those weeds somewhere.  It was a gift from King Draxinusom when he assigned me this job, I canâ€™t bear to lose it! */
         public override object Uncomplete
         {
             get
@@ -62,60 +62,60 @@ namespace Server.Engines.Quests
         }
         public override bool CanOffer()
         {
-            return Core.SA;
+            return true;
         }
 
-                public override void OnAccept()
-		{
-                       base.OnAccept();
+        public override void OnAccept()
+        {
+            base.OnAccept();
 
-		       Map map2 = Map.TerMur;
+            Map map2 = Map.TerMur;
 
-                       int X = 922;
-                       int Y = 3864;     
+            int X = 922;
+            int Y = 3864;
 
-                       for (int i = 0; i < 10; ++i)
-                       {
-                          for (int j = 0; j < 13; ++j)
-                          {  
-                              Item creep = new CreepyWeeds();
-                              Point3D loc = new Point3D(X, Y, -40);      
-                              creep.MoveToWorld(loc, map2);       
+            for (int i = 0; i < 10; ++i)
+            {
+                for (int j = 0; j < 13; ++j)
+                {
+                    Item creep = new CreepyWeeds();
+                    Point3D loc = new Point3D(X, Y, -40);
+                    creep.MoveToWorld(loc, map2);
 
-                               Y += 1;                    
-                          } 
-                            
-                          Y = 3864; 
-                          X += 1;                              
-                       }  
+                    Y += 1;
                 }
-     
-                public override void OnCompleted()
-		{
-                   Owner.SendLocalizedMessage( 1072273, null, 0x23 ); // You've completed a quest!  Don't forget to collect your reward.							
-		   Owner.PlaySound( CompleteSound );
 
-		   Map map = Map.TerMur;
+                Y = 3864;
+                X += 1;
+            }
+        }
 
-	           ArrayList list = new ArrayList(); 
+        public override void OnCompleted()
+        {
+            Owner.SendLocalizedMessage(1072273, null, 0x23); // You've completed a quest!  Don't forget to collect your reward.							
+            Owner.PlaySound(CompleteSound);
 
-                   Point3D loc = new Point3D(922, 3864, -40); 
+            Map map = Map.TerMur;
 
-	           IPooledEnumerable eable2 = map.GetItemsInRange( loc, 20 );
+            ArrayList list = new ArrayList();
 
-	           foreach( Item item2 in eable2 )
-	           {
-                        if ( item2 is CreepyWeeds ) 
-                           list.Add(item2); 
-	           } 
+            Point3D loc = new Point3D(922, 3864, -40);
 
-	           foreach (Item item in list) 
-                        item.Delete(); 
-		}      
+            IPooledEnumerable eable2 = map.GetItemsInRange(loc, 20);
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+            foreach (Item item2 in eable2)
+            {
+                if (item2 is CreepyWeeds)
+                    list.Add(item2);
+            }
+
+            foreach (Item item in list)
+                item.Delete();
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
             writer.Write((int)0); // version
         }
@@ -133,7 +133,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public FarmerNash()
             : base("Farmer Nash")
-        { 
+        {
         }
 
         public FarmerNash(Serial serial)
@@ -145,7 +145,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(InTheWeeds)
                 };
@@ -154,10 +154,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = false;
             Race = Race.Gargoyle;
-			
+
             Hue = 0x840C;
             HairItemID = 0x2045;
             HairHue = 0x453;

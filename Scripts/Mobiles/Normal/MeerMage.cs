@@ -43,8 +43,6 @@ namespace Server.Mobiles
             Fame = 8000;
             Karma = 8000;
 
-            VirtualArmor = 16;
-
 			switch (Utility.Random(8))
             {
                 case 0: PackItem(new StrangleScroll()); break;
@@ -243,7 +241,7 @@ namespace Server.Mobiles
                     m.PlaySound(0x00E);
                     m.PlaySound(0x1BC);
 
-                    AOS.Damage(m, this, Utility.RandomMinMax(30, 40) - (Core.AOS ? 0 : 10), 100, 0, 0, 0, 0);
+                    AOS.Damage(m, this, Utility.RandomMinMax(30, 40), 100, 0, 0, 0, 0);
 
                     states[1] = count + 1;
 

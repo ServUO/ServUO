@@ -74,13 +74,6 @@ namespace Server.Items
                 return 95;
             }
         }
-        public override int OldStrReq
-        {
-            get
-            {
-                return 95;
-            }
-        }
         public override bool AllowMaleWearer
         {
             get

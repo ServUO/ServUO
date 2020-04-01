@@ -38,9 +38,7 @@ namespace Server.Mobiles
             this.Fame = 4000;
             this.Karma = -4000;
 
-            this.VirtualArmor = 30;
-
-            if (Core.ML && Utility.RandomDouble() < .33)
+            if (Utility.RandomDouble() < 0.33)
                 this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed(4));
         }
 
@@ -66,13 +64,6 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Terathan; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.TerathansAndOphidians;
-            }
-        }
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Average);

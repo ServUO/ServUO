@@ -514,7 +514,7 @@ namespace Server.Items
         {
             get
             {
-                return Core.ML;
+                return true;
             }
         }
 
@@ -694,22 +694,6 @@ namespace Server.Items
             }
         }
 
-        public override void OnAdded(object parent)
-        {
-            base.OnAdded(parent);
-
-            if (parent is Mobile)
-                ((Mobile)parent).VirtualArmorMod += 2;
-        }
-
-        public override void OnRemoved(object parent)
-        {
-            base.OnRemoved(parent);
-
-            if (parent is Mobile)
-                ((Mobile)parent).VirtualArmorMod -= 2;
-        }
-
         public override bool Dye(Mobile from, DyeTub sender)
         {
             from.SendLocalizedMessage(sender.FailMessage);
@@ -720,7 +704,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (Core.ML && m_IsRewardItem)
+            if (m_IsRewardItem)
                 list.Add(RewardSystem.GetRewardYearLabel(this, new object[] { Hue, m_LabelNumber })); // X Year Veteran Reward
         }
 
@@ -784,9 +768,6 @@ namespace Server.Items
                         break;
                     }
             }
-
-            if (Parent is Mobile)
-                ((Mobile)Parent).VirtualArmorMod += 2;
         }
     }
 
@@ -840,22 +821,6 @@ namespace Server.Items
             {
                 return 3;
             }
-        }
-
-        public override void OnAdded(object parent)
-        {
-            base.OnAdded(parent);
-
-            if (parent is Mobile)
-                ((Mobile)parent).VirtualArmorMod += 2;
-        }
-
-        public override void OnRemoved(object parent)
-        {
-            base.OnRemoved(parent);
-
-            if (parent is Mobile)
-                ((Mobile)parent).VirtualArmorMod -= 2;
         }
 
         public override bool Dye(Mobile from, DyeTub sender)
@@ -932,9 +897,6 @@ namespace Server.Items
                         break;
                     }
             }
-
-            if (Parent is Mobile)
-                ((Mobile)Parent).VirtualArmorMod += 2;
         }
     }
 

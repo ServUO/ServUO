@@ -32,7 +32,7 @@ namespace Server.Items
 
         public override void Drink(Mobile from)
         {
-            if (Core.AOS && (from.Paralyzed || from.Frozen || (from.Spell != null && from.Spell.IsCasting)))
+            if (from.Paralyzed || from.Frozen || (from.Spell != null && from.Spell.IsCasting))
             {
                 from.SendLocalizedMessage(1062725); // You can not use that potion while paralyzed.
                 return;
@@ -311,7 +311,7 @@ namespace Server.Items
 
             public override bool OnMoveOver(Mobile m)
             {
-                if (Visible && m_From != null && (!Core.AOS || m != m_From) && SpellHelper.ValidIndirectTarget(m_From, m) && m_From.CanBeHarmful(m, false))
+                if (Visible && m_From != null && m != m_From && SpellHelper.ValidIndirectTarget(m_From, m) && m_From.CanBeHarmful(m, false))
                 {
                     m_From.DoHarmful(m);
 
@@ -364,7 +364,7 @@ namespace Server.Items
                     {
                         Mobile m = mobiles[i];
 						
-                        if ((m.Z + 16) > m_Item.Z && (m_Item.Z + 12) > m.Z && (!Core.AOS || m != from) && SpellHelper.ValidIndirectTarget(from, m) && from.CanBeHarmful(m, false))
+                        if ((m.Z + 16) > m_Item.Z && (m_Item.Z + 12) > m.Z && m != from && SpellHelper.ValidIndirectTarget(from, m) && from.CanBeHarmful(m, false))
                         {
                             if (from != null)
                                 from.DoHarmful(m);

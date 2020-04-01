@@ -75,16 +75,13 @@ namespace Server.Mobiles
                     Add(new GenericBuyInfo(types[i], 12 + ((i / 8) * 10), 20, itemID, 0, true));
                 }
 
-                if (Core.AOS)
-                {
-                    Add(new GenericBuyInfo(typeof(BatWing), 3, 999, 0xF78, 0));
-                    Add(new GenericBuyInfo(typeof(GraveDust), 3, 999, 0xF8F, 0));
-                    Add(new GenericBuyInfo(typeof(DaemonBlood), 6, 999, 0xF7D, 0));
-                    Add(new GenericBuyInfo(typeof(NoxCrystal), 6, 999, 0xF8E, 0));
-                    Add(new GenericBuyInfo(typeof(PigIron), 5, 999, 0xF8A, 0));
+                Add(new GenericBuyInfo(typeof(BatWing), 3, 999, 0xF78, 0));
+                Add(new GenericBuyInfo(typeof(GraveDust), 3, 999, 0xF8F, 0));
+                Add(new GenericBuyInfo(typeof(DaemonBlood), 6, 999, 0xF7D, 0));
+                Add(new GenericBuyInfo(typeof(NoxCrystal), 6, 999, 0xF8E, 0));
+                Add(new GenericBuyInfo(typeof(PigIron), 5, 999, 0xF8A, 0));
 
-                    Add(new GenericBuyInfo(typeof(NecromancerSpellbook), 115, 10, 0x2253, 0));
-                }
+                Add(new GenericBuyInfo(typeof(NecromancerSpellbook), 115, 10, 0x2253, 0));
 
                 Add(new GenericBuyInfo(typeof(RecallRune), 15, 10, 0x1f14, 0));
                 Add(new GenericBuyInfo(typeof(Spellbook), 18, 10, 0xEFA, 0));
@@ -128,14 +125,11 @@ namespace Server.Mobiles
                 Add(typeof(Spellbook), 9);
                 Add(typeof(BlankScroll), 3);
 
-                if (Core.AOS)
-                {
-                    Add(typeof(BatWing), 2);
-                    Add(typeof(GraveDust), 2);
-                    Add(typeof(DaemonBlood), 3);
-                    Add(typeof(NoxCrystal), 3);
-                    Add(typeof(PigIron), 3);
-                }
+                Add(typeof(BatWing), 2);
+                Add(typeof(GraveDust), 2);
+                Add(typeof(DaemonBlood), 3);
+                Add(typeof(NoxCrystal), 3);
+                Add(typeof(PigIron), 3);
 
                 Type[] types = Loot.RegularScrollTypes;
 

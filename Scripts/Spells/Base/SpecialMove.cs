@@ -255,12 +255,6 @@ namespace Server.Spells
             if (m == null)
                 return null;
 
-            if (!Core.SE)
-            {
-                ClearCurrentMove(m);
-                return null;
-            }
-
             SpecialMove move = null;
             m_Table.TryGetValue(m, out move);
 
@@ -275,12 +269,6 @@ namespace Server.Spells
 
         public static bool SetCurrentMove(Mobile m, SpecialMove move)
         {
-            if (!Core.SE)
-            {
-                ClearCurrentMove(m);
-                return false;
-            }
-
             if (move != null && !move.Validate(m))
             {
                 ClearCurrentMove(m);

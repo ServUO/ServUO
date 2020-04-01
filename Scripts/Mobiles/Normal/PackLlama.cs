@@ -41,8 +41,6 @@ namespace Server.Mobiles
             Fame = 0;
             Karma = 200;
 
-            VirtualArmor = 16;
-
             Tamable = true;
             ControlSlots = 1;
             MinTameSkill = 29.1;
@@ -81,16 +79,6 @@ namespace Server.Mobiles
         }
 
         #region Pack Animal Methods
-        public override bool OnBeforeDeath()
-        {
-            if (!base.OnBeforeDeath())
-                return false;
-
-            PackAnimal.CombineBackpacks(this);
-
-            return true;
-        }
-
         public override DeathMoveResult GetInventoryMoveResultFor(Item item)
         {
             return DeathMoveResult.MoveToCorpse;

@@ -48,7 +48,6 @@ namespace Server.Mobiles
             this.Fame = 4000;
             this.Karma = -4000;
 
-            this.VirtualArmor = 100;
             if (0.02 > Utility.RandomDouble())
                 this.PackStatue();				
         }
@@ -92,14 +91,6 @@ namespace Server.Mobiles
         public SAPixie(Serial serial)
             : base(serial)
         {
-        }
-
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
         }
 
         public override void Serialize(GenericWriter writer)

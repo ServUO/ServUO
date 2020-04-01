@@ -40,8 +40,6 @@ namespace Server.Mobiles
             this.Fame = 3000;
             this.Karma = -3000;
 
-            this.VirtualArmor = 30;
-
             this.PackReg(6);
 
 			switch (Utility.Random(8))
@@ -92,13 +90,6 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Orc; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.SavagesAndOrcs;
-            }
-        }
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Average);

@@ -50,8 +50,6 @@ namespace Server.Mobiles
             Fame = 3600;
             Karma = -3600;
 
-            VirtualArmor = 40;
-
             PackItem(new Scimitar());
             PackItem(new WoodenShield());
 
@@ -128,11 +126,6 @@ namespace Server.Mobiles
         public Drelgor(Serial serial)
             : base(serial)
         {
-        }
-
-        public override OppositionGroup OppositionGroup
-        {
-            get { return OppositionGroup.FeyAndUndead; }
         }
 
         public override void Serialize(GenericWriter writer)

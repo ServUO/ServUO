@@ -39,8 +39,6 @@ namespace Server.Mobiles
             Fame = 3400;
             Karma = -3400;
 
-            VirtualArmor = 50;
-
             SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 

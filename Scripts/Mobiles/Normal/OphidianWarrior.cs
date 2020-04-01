@@ -41,8 +41,6 @@ namespace Server.Mobiles
 
             this.Fame = 4500;
             this.Karma = -4500;
-
-            this.VirtualArmor = 36;
         }
 
         public OphidianWarrior(Serial serial)
@@ -67,13 +65,6 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Ophidian; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.TerathansAndOphidians;
-            }
-        }
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);

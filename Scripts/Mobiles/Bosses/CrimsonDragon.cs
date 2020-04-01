@@ -49,8 +49,6 @@ namespace Server.Mobiles
             Fame = 20000;
             Karma = -20000;
 
-            VirtualArmor = 70;
-
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
@@ -167,7 +165,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosSuperBoss, 8);
+            AddLoot(LootPack.SuperBoss, 8);
             AddLoot(LootPack.Gems, 12);
         }
 

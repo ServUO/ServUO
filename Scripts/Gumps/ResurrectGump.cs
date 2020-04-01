@@ -256,29 +256,6 @@ namespace Server.Gumps
                     Misc.Titles.AwardFame(from, -amount, true);
                 }
 
-                if (!Core.AOS && from.ShortTermMurders >= 5)
-                {
-                    double loss = (100.0 - (4.0 + (from.ShortTermMurders / 5.0))) / 100.0; // 5 to 15% loss
-
-                    if (loss < 0.85)
-                        loss = 0.85;
-                    else if (loss > 0.95)
-                        loss = 0.95;
-
-                    if (from.RawStr * loss > 10)
-                        from.RawStr = (int)(from.RawStr * loss);
-                    if (from.RawInt * loss > 10)
-                        from.RawInt = (int)(from.RawInt * loss);
-                    if (from.RawDex * loss > 10)
-                        from.RawDex = (int)(from.RawDex * loss);
-
-                    for (int s = 0; s < from.Skills.Length; s++)
-                    {
-                        if (from.Skills[s].Base * loss > 35)
-                            from.Skills[s].Base *= loss;
-                    }
-                }
-
                 if (from.Alive && m_HitsScalar > 0)
                     from.Hits = (int)(from.HitsMax * m_HitsScalar);
 

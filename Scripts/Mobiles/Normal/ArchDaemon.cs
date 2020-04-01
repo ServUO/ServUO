@@ -42,8 +42,6 @@ namespace Server.Mobiles
 
 			Fame = 24000;
             Karma = -24000;
-
-            VirtualArmor = 90;
         }
 
         public ArchDaemon(Serial serial)

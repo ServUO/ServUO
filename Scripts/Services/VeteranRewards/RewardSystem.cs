@@ -61,11 +61,6 @@ namespace Server.Engines.VeteranRewards
 
         public static bool HasAccess(Mobile mob, RewardEntry entry)
         {
-            if (Core.Expansion < entry.RequiredExpansion)
-            {
-                return false;
-            }
-
             TimeSpan ts;
             return HasAccess(mob, entry.List, out ts);
         }
@@ -652,28 +647,9 @@ namespace Server.Engines.VeteranRewards
             else if (level < 0)
                 level = 0;
 
-            if (!Core.SA)
-            {
-                if (SkillCapRewards)
-                {
-                    int newLevel = SkillCap + (int)((float)level * SkillCapBonusIncrement);
-                    if (newLevel > SkillCap + SkillCapBonus)
-                    {
-                        newLevel = SkillCap + SkillCapBonus;
-                    }
-                    e.Mobile.SkillsCap = newLevel;
-                }
-                else
-                {
-                    e.Mobile.SkillsCap = SkillCap;
-                }
-            }
-            else
-            {
-                e.Mobile.SkillsCap = SkillCap + SkillCapBonus;
-            }
+            e.Mobile.SkillsCap = SkillCap + SkillCapBonus;
 
-            if (Core.ML && e.Mobile is PlayerMobile && !((PlayerMobile)e.Mobile).HasStatReward && HasHalfLevel(e.Mobile))
+            if (e.Mobile is PlayerMobile && !((PlayerMobile)e.Mobile).HasStatReward && HasHalfLevel(e.Mobile))
             {
                 Server.Gumps.BaseGump.SendGump(new StatRewardGump((PlayerMobile)e.Mobile));
             }

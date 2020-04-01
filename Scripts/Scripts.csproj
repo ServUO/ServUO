@@ -329,9 +329,6 @@
     <Compile Include="Gumps\DawnsMusicBoxGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gumps\FacetGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Gumps\Go\ChildNode.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -353,7 +350,7 @@
     <Compile Include="Gumps\HouseDemolishGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gumps\HouseGumpAOS.cs">
+    <Compile Include="Gumps\HouseGump.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gumps\HouseTransferGump.cs">
@@ -2095,7 +2092,6 @@
     <Compile Include="Mobiles\Normal\BulbousPutrification.cs" />
     <Compile Include="Mobiles\Normal\Bull.cs" />
     <Compile Include="Mobiles\Normal\BullFrog.cs" />
-    <Compile Include="Mobiles\Normal\CapturedHordeMinion.cs" />
     <Compile Include="Mobiles\Normal\Cat.cs" />
     <Compile Include="Mobiles\Normal\Centaur.cs" />
     <Compile Include="Mobiles\Normal\Changeling.cs" />
@@ -2145,7 +2141,6 @@
     <Compile Include="Mobiles\Normal\DesertOstard.cs" />
     <Compile Include="Mobiles\Normal\Devourer.cs" />
     <Compile Include="Mobiles\Normal\DireWolf.cs" />
-    <Compile Include="Mobiles\Normal\DiseasedCat.cs" />
     <Compile Include="Mobiles\Normal\Dog.cs" />
     <Compile Include="Mobiles\Normal\Dolphin.cs" />
     <Compile Include="Mobiles\Normal\Doppleganger.cs" />
@@ -2238,7 +2233,6 @@
     <Compile Include="Mobiles\Normal\GrayGoblinMage.cs" />
     <Compile Include="Mobiles\Normal\GreyWolf.cs" />
     <Compile Include="Mobiles\Normal\GrizzlyBear.cs" />
-    <Compile Include="Mobiles\Normal\Guardian.cs" />
     <Compile Include="Mobiles\Normal\Harpy.cs" />
     <Compile Include="Mobiles\Normal\HeadlessOne.cs" />
     <Compile Include="Mobiles\Normal\HellCat.cs" />
@@ -2249,7 +2243,6 @@
     <Compile Include="Mobiles\Normal\Hiryu.cs" />
     <Compile Include="Mobiles\Normal\HordeMinion.cs" />
     <Compile Include="Mobiles\Normal\Horse.cs" />
-    <Compile Include="Mobiles\Normal\HumanBrigand.cs" />
     <Compile Include="Mobiles\Normal\Hydra.cs" />
     <Compile Include="Mobiles\Normal\IceElemental.cs" />
     <Compile Include="Mobiles\Normal\IceFiend.cs" />
@@ -2258,7 +2251,6 @@
     <Compile Include="Mobiles\Normal\IceSnake.cs" />
     <Compile Include="Mobiles\Normal\Imp.cs" />
     <Compile Include="Mobiles\Normal\Impaler.cs" />
-    <Compile Include="Mobiles\Normal\InjuredWolf.cs" />
     <Compile Include="Mobiles\Normal\InsaneDryad.cs" />
     <Compile Include="Mobiles\Normal\InterredGrizzle .cs" />
     <Compile Include="Mobiles\Normal\IronBeetle.cs" />
@@ -2453,7 +2445,6 @@
     <Compile Include="Mobiles\Normal\TerathanDrone.cs" />
     <Compile Include="Mobiles\Normal\TerathanMatriarch.cs" />
     <Compile Include="Mobiles\Normal\TerathanWarrior.cs" />
-    <Compile Include="Mobiles\Normal\ThirdDawnParrot.cs" />
     <Compile Include="Mobiles\Normal\TigersClawMaster.cs" />
     <Compile Include="Mobiles\Normal\TimberWolf.cs" />
     <Compile Include="Mobiles\Normal\Titan.cs" />
@@ -2490,8 +2481,6 @@
     <Compile Include="Mobiles\Normal\YomotsuElder.cs" />
     <Compile Include="Mobiles\Normal\YomotsuPriest.cs" />
     <Compile Include="Mobiles\Normal\YomotsuWarrior.cs" />
-    <Compile Include="Mobiles\Normal\YoungNinja.cs" />
-    <Compile Include="Mobiles\Normal\YoungRonin.cs" />
     <Compile Include="Mobiles\Normal\Zombie.cs" />
     <Compile Include="Mobiles\NPCs\Abbein.cs" />
     <Compile Include="Mobiles\NPCs\Acob.cs" />
@@ -3450,18 +3439,18 @@
     <Compile Include="Services\FireCasino\Mobiles.cs" />
     <Compile Include="Services\FireCasino\TentBrownAddon.cs" />
     <Compile Include="Services\FireCasino\TentWhiteAddon.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\AdvancedSearch.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\BaseGuildGump.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\BaseGuildListGump.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\CreateGuildGump.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\DiplomacyGump.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\GuildInfoGump.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\GuildInvitationRequest.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\GuildMemberInfoGump.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\GuildRosterGump.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\OtherGuildInfo.cs" />
-	<Compile Include="Services\Guilds\GuildGumps\WarDeclarationGump.cs" />
-	<Compile Include="Services\Guilds\Guild.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\AdvancedSearch.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\BaseGuildGump.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\BaseGuildListGump.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\CreateGuildGump.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\DiplomacyGump.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\GuildInfoGump.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\GuildInvitationRequest.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\GuildMemberInfoGump.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\GuildRosterGump.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\OtherGuildInfo.cs" />
+    <Compile Include="Services\Guilds\GuildGumps\WarDeclarationGump.cs" />
+    <Compile Include="Services\Guilds\Guild.cs" />
     <Compile Include="Services\HolidaySettings.cs" />
     <Compile Include="Services\HuntmasterChallenge\BestKillBoard.cs" />
     <Compile Include="Services\HuntmasterChallenge\ComplexHuntTrophy.cs" />
@@ -8690,9 +8679,6 @@
     <Compile Include="Mobiles\AI\MeleeAI.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\AI\OppositionGroup.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Mobiles\AI\OrcScoutAI.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -9781,11 +9767,10 @@
     <Compile Include="Services\Town Cryer\TownCryerModeratorEntry.cs" />
     <Compile Include="Services\Town Cryer\TownCryerNewsEntry.cs" />
     <Compile Include="Services\Town Cryer\TownCryerSystem.cs" />
-    <Compile Include="Services\TreasureMaps\BagOfGems.cs" />
+    <Compile Include="Services\TreasureMaps\LootBags.cs" />
     <Compile Include="Services\TreasureMaps\TreasureMap.cs" />
     <Compile Include="Services\TreasureMaps\TreasureMapChest.cs" />
     <Compile Include="Services\TreasureMaps\TreasureMapInfo.cs" />
-    <Compile Include="Services\TreasureMaps\TreasureMapProtection.cs" />
     <Compile Include="Services\UltimaStore\PlayerProfile.cs" />
     <Compile Include="Services\UltimaStore\StoreEntry.cs" />
     <Compile Include="Services\UltimaStore\SystemConfig.cs" />
@@ -10179,7 +10164,7 @@
     <Compile Include="Services\MondainsLegacyQuests\BaseEscort.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Quests\BaseQuest.cs">
+    <Compile Include="Services\MondainsLegacyQuests\BaseQuest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\MondainsLegacyQuests\BaseQuestItem.cs">
@@ -10729,9 +10714,6 @@
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\PacketHandlerOverrides.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\TemporaryQuestObject.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlAddFame.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10855,12 +10837,6 @@
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttach\XmlGetAttachGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlItems\QuestHolder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlItems\QuestNote.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlItems\SimpleMap.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10879,21 +10855,9 @@
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlItems\TimedSwitches.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlItems\Tokens.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlItems\XmlQuestMaker.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlItems\XmlSpawnerAddon.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlMobiles\TalkingBaseCreature.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlMobiles\XmlQuestNPC.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    </Compile>   
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlPropsGumps\XmlPropsGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10919,57 +10883,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlPropsGumps\XmlSetTimeSpanGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlQuest\QuestLeadersBoard.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlQuest\QuestLeadersStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlQuest\QuestLogGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlQuest\QuestRewardGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlQuest\QuestRewardStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlQuest\XmlPlayerQuestGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlQuest\XmlQuest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlQuest\XmlQuestAttachment.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlQuest\XmlQuestBook.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlQuest\XmlQuestBookGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlQuest\XmlQuestGumps.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlQuest\XmlQuestHolder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlQuest\XmlQuestHolderGumps.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlQuest\XmlQuestLeaders.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlQuest\XmlQuestPoints.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlQuest\XmlQuestPointsRewards.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlQuest\XmlQuestToken.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlSpawner2.cs">

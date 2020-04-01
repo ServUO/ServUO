@@ -22,7 +22,7 @@ namespace Server.Multis
         {
             get
             {
-                return Core.ML;
+                return true;
             }
         }
         public static void Register(DecayLevel level, TimeSpan min, TimeSpan max)

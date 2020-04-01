@@ -851,7 +851,15 @@ namespace Server.Engines.VvV
 
                 if (OnGoing && NextAnnouncement < DateTime.UtcNow)
                 {
-                    System.SendVvVMessage(1154957, team.Guild.Name); // ~1_NAME~ is occupying the city!
+                    if (ViceVsVirtueSystem.EnhancedRules)
+                    {
+                        System.SendVvVMessage(String.Format("{0} is occupying {1}!", team.Guild.Name, City == VvVCity.SkaraBrae ? "Skara Brae" : City.ToString()));
+                    }
+                    else
+                    {
+                        System.SendVvVMessage(1154957, team.Guild.Name); // ~1_NAME~ is occupying the city!
+                    }
+
                     NextAnnouncement = DateTime.UtcNow + TimeSpan.FromMinutes(Announcement);
                 }
             }
@@ -859,10 +867,19 @@ namespace Server.Engines.VvV
             {
                 if (NextAnnouncement < DateTime.UtcNow)
                 {
-                    System.SendVvVMessage(1154958); // The City is unoccupied! Slay opposing forces to claim the city for your guild!
+                    if (ViceVsVirtueSystem.EnhancedRules)
+                    {
+                        System.SendVvVMessage(1050039, String.Format("#{0}\tis unoccupied! Slay opposing forces to claim the city for your guild!", ViceVsVirtueSystem.GetCityLocalization(City).ToString()));
+                    }
+                    else
+                    {
+                        System.SendVvVMessage(1154958); // The City is unoccupied! Slay opposing forces to claim the city for your guild!
+                    }
+
                     NextAnnouncement = DateTime.UtcNow + TimeSpan.FromMinutes(Announcement);
                 }
             }
+
         }
 
         public void CheckScore()

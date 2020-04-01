@@ -39,8 +39,6 @@ namespace Server.Mobiles
 			Fame = 775;
 			Karma = -775;
 
-			VirtualArmor = 28;
-
             SetWeaponAbility(WeaponAbility.ArmorIgnore);
 		}
 
@@ -75,15 +73,6 @@ namespace Server.Mobiles
 		{
 			base.Deserialize( reader );
 			int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                Body = 0x9d;
-                Hue = 1141;
-            }
-
-			if ( BaseSoundID == 387 )
-				BaseSoundID = 0x388;
 		}
 	}
 }

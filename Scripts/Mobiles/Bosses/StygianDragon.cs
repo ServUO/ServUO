@@ -48,8 +48,6 @@ namespace Server.Mobiles
             Fame = 15000;
             Karma = -15000;
 
-            VirtualArmor = 60;
-
             Tamable = false;
 
             SetWeaponAbility(WeaponAbility.Bladeweave);
@@ -99,7 +97,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosSuperBoss, 4);
+            AddLoot(LootPack.SuperBoss, 4);
             AddLoot(LootPack.Gems, 8);
         }
 

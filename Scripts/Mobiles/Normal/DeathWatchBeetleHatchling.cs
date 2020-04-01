@@ -4,12 +4,11 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("a deathwatchbeetle hatchling corpse")]
-    [TypeAlias("Server.Mobiles.DeathWatchBeetleHatchling")]
     public class DeathwatchBeetleHatchling : BaseCreature
     {
         [Constructable]
         public DeathwatchBeetleHatchling()
-            : base(AIType.AI_Melee, Core.ML ? FightMode.Aggressor : FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             this.Name = "a deathwatch beetle hatchling";
             this.Body = 242;
@@ -44,28 +43,6 @@ namespace Server.Mobiles
                 Item i = Loot.RandomReagent();
                 i.Amount = 3;
                 this.PackItem(i);
-            }
-			
-            switch ( Utility.Random(12) )
-            {
-                case 0:
-                    this.PackItem(new LeatherGorget());
-                    break;
-                case 1:
-                    this.PackItem(new LeatherGloves());
-                    break;
-                case 2:
-                    this.PackItem(new LeatherArms());
-                    break;
-                case 3:
-                    this.PackItem(new LeatherLegs());
-                    break;
-                case 4:
-                    this.PackItem(new LeatherCap());
-                    break;
-                case 5:
-                    this.PackItem(new LeatherChest());
-                    break;
             }
         }
 

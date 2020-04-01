@@ -41,7 +41,7 @@ namespace Server.Items
         {
             get
             {
-                return Core.HS ? 1.0 : 0.1;
+                return 1.0;
             }
         }
         public static void RemoveContext(Mobile m)

@@ -92,7 +92,7 @@ namespace Server.Items
 
         public static void ScaleDamage(Mobile from, Mobile to, ref int totalDamage, int phys, int fire, int cold, int pois, int nrgy, int direct)
         {
-            if (Core.EJ && from is PlayerMobile && to is PlayerMobile)
+            if (from is PlayerMobile && to is PlayerMobile)
             {
                 return;
             }

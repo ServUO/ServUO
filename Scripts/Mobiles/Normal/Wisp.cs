@@ -41,8 +41,6 @@ namespace Server.Mobiles
             Fame = 4000;
             Karma = 0;
 
-            VirtualArmor = 40;
-
             if (Utility.RandomDouble() < 0.33)
                 PackItem(Engines.Plants.Seed.RandomPeculiarSeed(4));
 
@@ -71,13 +69,6 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Fey; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich);

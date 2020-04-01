@@ -254,7 +254,7 @@ namespace Server.Spells.Necromancy
         {
             private readonly StrangleSpell m_Owner;
             public InternalTarget(StrangleSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(10, false, TargetFlags.Harmful)
             {
                 this.m_Owner = owner;
             }

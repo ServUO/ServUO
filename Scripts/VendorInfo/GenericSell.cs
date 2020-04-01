@@ -64,9 +64,7 @@ namespace Server.Mobiles
                 else if (armor.Quality == ItemQuality.Exceptional)
                     price = (int)(price * 1.25);
 
-                price += 100 * (int)armor.Durability;
-
-                price += 100 * (int)armor.ProtectionLevel;
+                price += 5 * armor.ArmorAttributes.DurabilityBonus;
 
                 if (price < 1)
                     price = 1;

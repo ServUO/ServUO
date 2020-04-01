@@ -124,11 +124,9 @@ namespace Server.Mobiles
         public override bool IsScaryToPets { get { return !Controlled; } }
         public override bool IsBondable { get { return false; } }
         public override FoodType FavoriteFood { get { return FoodType.None; } }
-        public override bool CanBeDistracted { get { return false; } }
         public override bool DeleteOnRelease { get { return true; } }
         public override bool AutoDispel { get { return !Controlled; } }
         public override bool BleedImmune { get { return true; } }
-        public override bool BardImmune { get { return !Core.AOS || !Controlled; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
 
         public override void OnDeath(Container c)

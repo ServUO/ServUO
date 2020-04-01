@@ -152,7 +152,7 @@ namespace Server.Spells.SkillMasteries
 
         private bool DoDamage(Mobile m, InternalItem item)
         {
-            if (item.Visible && Caster != null && (!Core.AOS || m != Caster) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
+            if (item.Visible && Caster != null && m != Caster && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
             {
                 if (SpellHelper.CanRevealCaster(m))
                     Caster.RevealingAction();
@@ -170,9 +170,10 @@ namespace Server.Spells.SkillMasteries
                 damage *= (100 + sdiBonus);
                 damage /= 100;
 
-                AOS.Damage(m, Caster, damage, 0, 0, 0, 0, 0, 100, 0, DamageType.SpellAOE);
-
+                Caster.DoHarmful(m);
                 m.FixedParticles(0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255);
+
+                AOS.Damage(m, Caster, damage, 0, 0, 0, 0, 0, 100, 0, DamageType.SpellAOE);
 
                 int manaRip = Math.Min(m.Mana, damage / 4);
 

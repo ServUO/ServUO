@@ -109,7 +109,7 @@ namespace Server.Mobiles
 
 			var from = e.Mobile;
 
-			if (m_Mobile is BaseVendor && from.InRange(m_Mobile, Core.AOS ? 1 : 4) && !e.Handled)
+			if (m_Mobile is BaseVendor && from.InRange(m_Mobile, 1) && !e.Handled)
 			{
 				if (e.HasKeyword(0x14D)) // *vendor sell*
 				{

@@ -16,17 +16,14 @@ namespace Server.Engines.Khaldun
 	{
         public static void Initialize()
         {
-            if (Core.EJ)
+            EventSink.WorldSave += OnWorldSave;
+
+            if (!Siege.SiegeShard)
             {
-                EventSink.WorldSave += OnWorldSave;
-
-                if (!Siege.SiegeShard)
-                {
-                    KhaldunCampRegion.InstanceTram = new KhaldunCampRegion(Map.Trammel);
-                }
-
-                KhaldunCampRegion.InstanceFel = new KhaldunCampRegion(Map.Felucca);
+                KhaldunCampRegion.InstanceTram = new KhaldunCampRegion(Map.Trammel);
             }
+
+            KhaldunCampRegion.InstanceFel = new KhaldunCampRegion(Map.Felucca);
         }
 
         private static void OnWorldSave(WorldSaveEventArgs e)

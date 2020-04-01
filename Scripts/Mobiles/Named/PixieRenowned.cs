@@ -43,8 +43,6 @@ namespace Server.Mobiles
             this.Fame = 7000;
             this.Karma = 7000;
 
-            this.VirtualArmor = 100;
-
             if (0.02 > Utility.RandomDouble())
                 this.PackStatue();				
         }
@@ -96,13 +94,7 @@ namespace Server.Mobiles
                 return 1;
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
+
         public override void GenerateLoot()
         {
 			AddLoot(LootPack.UltraRich, 2);

@@ -35,8 +35,6 @@ namespace Server.Mobiles
 
             this.Fame = 3500;
             this.Karma = -3500;
-
-            this.VirtualArmor = 40;
         }
 
         public Troll(Serial serial)

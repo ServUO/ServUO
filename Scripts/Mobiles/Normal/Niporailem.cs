@@ -58,7 +58,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.SpiritSpeak, 120.0);
             SetSkill(SkillName.Focus, 30.0, 40.0);
 
-            PackNecroReg(12, 24); /// Stratics didn't specify
+            PackNecroReg(12, 24); 
 
             Fame = 15000;
             Karma = -15000;

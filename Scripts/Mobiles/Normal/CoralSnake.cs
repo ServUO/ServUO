@@ -40,8 +40,6 @@ namespace Server.Mobiles
             Fame = 300;
             Karma = -300;
 
-            VirtualArmor = 16;
-
             Tamable = false;
             ControlSlots = 1;
             MinTameSkill = 59.1;
@@ -62,7 +60,6 @@ namespace Server.Mobiles
             get { return Poison.Deadly; }
         }
 
-        //public override bool DeathAdderCharmable{ get{ return true; } }
         public override int Meat
         {
             get { return 1; }

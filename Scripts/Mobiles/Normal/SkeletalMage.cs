@@ -41,7 +41,6 @@ namespace Server.Mobiles
             Fame = 3000;
             Karma = -3000;
 
-            VirtualArmor = 38;
             PackReg(3);
             PackNecroReg(3, 10);
             PackItem(new Bone());
@@ -53,7 +52,6 @@ namespace Server.Mobiles
         }
 
         public override bool BleedImmune { get { return true; } }
-        public override OppositionGroup OppositionGroup { get { return OppositionGroup.FeyAndUndead; } }
         public override Poison PoisonImmune { get { return Poison.Regular; } }
         public override TribeType Tribe { get { return TribeType.Undead; } }
 

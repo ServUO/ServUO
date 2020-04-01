@@ -6,7 +6,6 @@ namespace Server.Mobiles
     [CorpseName("a clan chitter assistant corpse")]
     public class ClanCA : BaseCreature
     {
-        //public override InhumanSpeech SpeechType{ get{ return InhumanSpeech.Ratman; } }
         [Constructable]
         public ClanCA()
             : base(AIType.AI_Archer, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -39,8 +38,6 @@ namespace Server.Mobiles
 
             this.Fame = 6500;
             this.Karma = -6500;
-
-            this.VirtualArmor = 56;
 
             this.AddItem(new Bow());
             this.PackItem(new Arrow(Utility.RandomMinMax(50, 70)));
@@ -87,12 +84,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (this.Body == 42)
-            {
-                this.Body = 0x8E;
-                this.Hue = 0;
-            }
         }
     }
 }

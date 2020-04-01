@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using CustomsFramework;
 
 using Server.Accounting;
 using Server.Commands;
@@ -559,58 +558,7 @@ namespace Server
 			throw new ArgumentException();
 		}
 		#endregion
-
-		#region Customs Framework
-		private List<BaseModule> m_Modules = new List<BaseModule>();
-
-		[CommandProperty(AccessLevel.Developer)]
-		public List<BaseModule> Modules { get { return m_Modules; } set { m_Modules = value; } }
-
-		//public List<BaseModule> Modules { get; private set; }
-
-		public BaseModule GetModule(string name)
-		{
-			return Modules.FirstOrDefault(mod => mod.Name == name);
-		}
-
-		public BaseModule GetModule(Type type)
-		{
-			return Modules.FirstOrDefault(mod => mod.GetType() == type);
-		}
-
-		public List<BaseModule> GetModules(string name)
-		{
-			return Modules.Where(mod => mod.Name == name).ToList();
-		}
-
-		public List<BaseModule> SearchModules(string search)
-		{
-			var keywords = search.ToLower().Split(' ');
-			var modules = new List<BaseModule>();
-
-			foreach (BaseModule mod in Modules)
-			{
-				bool match = true;
-				string name = mod.Name.ToLower();
-
-				foreach (string keyword in keywords)
-				{
-					if (name.IndexOf(keyword, StringComparison.Ordinal) == -1)
-					{
-						match = false;
-					}
-				}
-
-				if (match)
-				{
-					modules.Add(mod);
-				}
-			}
-
-			return modules;
-		}
-		#endregion
-
+		
 		private static bool m_DragEffects = true;
 
 		public static bool DragEffects { get { return m_DragEffects; } set { m_DragEffects = value; } }
@@ -815,7 +763,6 @@ namespace Server
 		private DateTime m_NextWarmodeChange;
 		private WarmodeTimer m_WarmodeTimer;
 		private int m_Thirst, m_BAC;
-		private int m_VirtualArmorMod;
 		private VirtueInfo m_Virtues;
 		private object m_Party;
 		private List<SkillMod> m_SkillMods;
@@ -826,8 +773,8 @@ namespace Server
 		private Race m_Race;
         #endregion
 
-        private static readonly TimeSpan WarmodeSpamCatch = TimeSpan.FromSeconds((Core.SE ? 1.0 : 0.5));
-		private static readonly TimeSpan WarmodeSpamDelay = TimeSpan.FromSeconds((Core.SE ? 4.0 : 2.0));
+        private static readonly TimeSpan WarmodeSpamCatch = TimeSpan.FromSeconds((1.0));
+		private static readonly TimeSpan WarmodeSpamDelay = TimeSpan.FromSeconds((4.0));
 
 		private const int WarmodeCatchCount = 4;
 		// Allow four warmode changes in 0.5 seconds, any more will be delay for two seconds
@@ -1277,21 +1224,6 @@ namespace Server
 
 		public object Party { get { return m_Party; } set { m_Party = value; } }
 		public List<SkillMod> SkillMods { get { return m_SkillMods; } }
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int VirtualArmorMod
-		{
-			get { return m_VirtualArmorMod; }
-			set
-			{
-				if (m_VirtualArmorMod != value)
-				{
-					m_VirtualArmorMod = value;
-
-					Delta(MobileDelta.Armor);
-				}
-			}
-		}
 
 		/// <summary>
 		///     Overridable. Virtual event invoked when <paramref name="skill" /> changes in some way.
@@ -3120,12 +3052,7 @@ namespace Server
 			{
 				// We are actually moving (not just a direction change)
 
-				if (!Core.ML && m_Spell != null && !m_Spell.OnCasterMoving(d))
-				{
-					return false;
-				}
-
-				if (m_Paralyzed || m_Frozen || (Core.ML && m_Spell != null && !m_Spell.CheckMovement(this)))
+				if (m_Paralyzed || m_Frozen || (m_Spell != null && !m_Spell.CheckMovement(this)))
 				{
 					SendLocalizedMessage(500111); // You are frozen and can not move.
 
@@ -3601,18 +3528,13 @@ namespace Server
 
 		public virtual bool IsPlayer()
 		{
-			return Utilities.IsPlayer(this);
-		}
+            return AccessLevel == AccessLevel.Player;
+        }
 
 		public virtual bool IsStaff()
 		{
-			return Utilities.IsStaff(this);
-		}
-
-		public virtual bool IsOwner()
-		{
-			return Utilities.IsOwner(this);
-		}
+            return AccessLevel >= AccessLevel.Counselor;
+        }
 
 		public virtual bool IsSnoop(Mobile from)
 		{
@@ -3929,14 +3851,6 @@ namespace Server
 				m_AutoManifestTimer.Stop();
 			}
 
-			foreach (BaseModule module in World.GetModules(this))
-			{
-				if (module != null)
-				{
-					module.Delete();
-				}
-			}
-
 			Timer.DelayCall(EventSink.InvokeMobileDeleted, new MobileDeletedEventArgs(this));
 		}
 
@@ -3969,7 +3883,7 @@ namespace Server
 			return item.OnInventoryDeath(this);
 		}
 
-		public virtual bool RetainPackLocsOnDeath { get { return Core.AOS; } }
+		public virtual bool RetainPackLocsOnDeath { get { return true; } }
 
 		public virtual void Kill()
 		{
@@ -5571,16 +5485,22 @@ namespace Server
 				DisruptiveAction();
 
 				Paralyzed = false;
-
-                SendDamagePacket(from, amount);
-				OnDamage(amount, from, newHits < 0);
-
+				
 				IMount m = Mount;
 
 				if (m != null && informMount)
 				{
+					int temp = amount;
 					m.OnRiderDamaged(from, ref amount, newHits < 0);
+					if (temp > amount)
+					{
+						int absorbed = temp-amount;
+						newHits +=absorbed;
+					}
 				}
+				
+				SendDamagePacket(from, amount);
+				OnDamage(amount, from, newHits < 0);
 
 				if (newHits < 0)
 				{
@@ -7589,15 +7509,7 @@ namespace Server
 		{
 			if (m_Squelched)
 			{
-				if (Core.ML)
-				{
-					SendLocalizedMessage(500168); // You can not say anything, you have been muted.
-				}
-				else
-				{
-					SendMessage("You can not say anything, you have been squelched."); //Cliloc ITSELF changed during ML.
-				}
-
+				SendLocalizedMessage(500168); // You can not say anything, you have been muted.
 				e.Blocked = true;
 			}
 
@@ -8930,10 +8842,7 @@ namespace Server
 						}
 					}
 
-                    if (Core.SA)
-                    {
-                        NextActionTime = Core.TickCount + Mobile.ActionDelay;
-                    }
+                    NextActionTime = Core.TickCount + Mobile.ActionDelay;
 
 					OnWarmodeChanged();
 				}
@@ -9225,7 +9134,7 @@ namespace Server
 
 			return this == m ||
 				   (m.m_Map == m_Map && (!m.Hidden || (IsStaff() && m_AccessLevel >= m.AccessLevel)) &&
-					((m.Alive || (Core.SE && Skills.SpiritSpeak.Value >= 100.0)) || !Alive || IsStaff() || m.Warmode));
+					((m.Alive || (Skills.SpiritSpeak.Value >= 100.0)) || !Alive || IsStaff() || m.Warmode));
 		}
 
 		public virtual bool CanBeRenamedBy(Mobile from)

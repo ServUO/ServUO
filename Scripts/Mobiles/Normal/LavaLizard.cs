@@ -1,10 +1,8 @@
 using Server.Items;
-using Server.Services;
 
 namespace Server.Mobiles
 {
     [CorpseName("a lava lizard corpse")]
-    [TypeAlias("Server.Mobiles.Lavalizard")]
     public class LavaLizard : BaseCreature
     {
         [Constructable]
@@ -73,14 +71,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             var version = reader.ReadInt();
         }
     }

@@ -43,17 +43,13 @@ namespace Server.Mobiles
             this.Fame = 11000;
             this.Karma = -11000;
 
-            this.VirtualArmor = 50;
-
             this.CanSwim = true;
             this.CantWalk = true;
 
             //Rope is supposed to be a rare drop.  ref UO Guide Kraken
-            if (Utility.RandomDouble() < .05)
+            if (Utility.RandomDouble() < 0.05)
             {
-                Rope rope = new Rope();
-                rope.ItemID = 0x14F8;
-                this.PackItem(rope);
+                PackItem(new Rope());
             }                       
         }
 

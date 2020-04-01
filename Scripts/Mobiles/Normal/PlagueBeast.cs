@@ -77,11 +77,10 @@ namespace Server.Mobiles
             Fame = 13000;
             Karma = -13000;
 
-            VirtualArmor = 30;
             if (Utility.RandomDouble() < 0.80)
                 PackItem(new PlagueBeastGland());
 
-            if (Core.ML && Utility.RandomDouble() < 0.33)
+            if (Utility.RandomDouble() < 0.33)
                 PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
 
             m_DevourTotal = 0;
@@ -251,10 +250,7 @@ namespace Server.Mobiles
 
             if (IsParagon)
                 maxhits = (int)(maxhits * Paragon.HitsBuff);
-
-            if (hp < 1000 && !Core.AOS)
-                hp = (hp * 100) / 60;
-
+            
             if (HitsMaxSeed >= maxhits)
             {
                 HitsMaxSeed = maxhits;

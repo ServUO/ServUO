@@ -38,8 +38,6 @@ namespace Server.Mobiles
 
             this.Fame = 20000;
             this.Karma = 20000;
-
-            this.VirtualArmor = 50;
         }
 
         public Silvani(Serial serial)
@@ -49,13 +47,6 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Fey; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override bool CanFly
         {
             get

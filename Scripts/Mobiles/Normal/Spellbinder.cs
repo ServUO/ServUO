@@ -33,8 +33,6 @@ namespace Server.Mobiles
 
             Fame = 2500;
             Karma = -2500;
-
-            VirtualArmor = 28;
         }
 
         public Spellbinder(Serial serial)
@@ -56,13 +54,7 @@ namespace Server.Mobiles
                 return Poison.Regular;
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);

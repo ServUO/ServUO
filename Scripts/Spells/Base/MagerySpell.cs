@@ -25,7 +25,7 @@ namespace Server.Spells
             if (base.ConsumeReagents())
                 return true;
 
-            if (ArcaneGem.ConsumeCharges(Caster, (Core.SE ? 1 : 1 + (int)Circle)))
+            if (ArcaneGem.ConsumeCharges(Caster, 1))
                 return true;
 
             return false;
@@ -85,17 +85,6 @@ namespace Server.Spells
         public virtual double GetResistPercent(Mobile target)
         {
             return GetResistPercentForCircle(target, Circle);
-        }
-
-        public override TimeSpan GetCastDelay()
-        {
-            if (!Core.ML && Scroll is BaseWand)
-                return TimeSpan.Zero;
-
-            if (!Core.AOS)
-                return TimeSpan.FromSeconds(0.5 + (0.25 * (int)Circle));
-
-            return base.GetCastDelay();
         }
     }
 }

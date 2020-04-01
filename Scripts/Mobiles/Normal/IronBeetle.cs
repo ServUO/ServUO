@@ -49,8 +49,6 @@ namespace Server.Mobiles
             MinTameSkill = 71.1;
             ControlSlots = 4;
 
-            VirtualArmor = 38;
-
             m_MiningTimer = Timer.DelayCall(MiningInterval, MiningInterval, DoMining);
         }
 
@@ -270,14 +268,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             m_MiningTimer = Timer.DelayCall(MiningInterval, MiningInterval, DoMining);

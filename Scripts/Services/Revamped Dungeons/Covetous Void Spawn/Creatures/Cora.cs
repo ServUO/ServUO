@@ -66,9 +66,16 @@ using Server.Engines.VoidPool;
 
         public void AuraEffect(Mobile m)
         {
-            int mana = Utility.Random(1, m.Mana);
-            m.Mana -= mana;
-            m.SendLocalizedMessage(1153114, mana.ToString()); // Cora drains ~1_VAL~ points of your mana!
+            if (m is PlayerMobile && Services.TownCryer.TownCryerSystem.UnderMysteriousPotionEffects((PlayerMobile)m, true))
+            {
+                m.SayTo(m, 1158288, 1154); // *You resist Cora's attack!*
+            }
+            else
+            {
+                int mana = Utility.Random(1, m.Mana);
+                m.Mana -= mana;
+                m.SendLocalizedMessage(1153114, mana.ToString()); // Cora drains ~1_VAL~ points of your mana!
+            }
         }
 
         public override bool TeleportsTo { get { return true; } }
@@ -152,7 +159,7 @@ using Server.Engines.VoidPool;
                 z = this.Map.GetAverageZ(x, y);
                 Point3D p = new Point3D(x, y, z);
 
-                if (Server.Spells.SpellHelper.AdjustField(ref p, this.Map, 12, false))/*this.Map.CanFit(x, y, z, 16, false, false, true))/*this.Map.CanSpawnMobile(x, y, z)*/
+                if (Server.Spells.SpellHelper.AdjustField(ref p, this.Map, 12, false))
                 {
                     MovementPath path = new MovementPath(this, p);
 
@@ -313,6 +320,8 @@ using Server.Engines.VoidPool;
 
         public override void OnKilledBy(Mobile mob)
         {
+            base.OnKilledBy(mob);
+
             if (Siege.SiegeShard && mob is PlayerMobile)
             {
                 int chance = Server.Engines.Despise.DespiseBoss.ArtifactChance + (int)Math.Min(10, ((PlayerMobile)mob).Luck / 180);

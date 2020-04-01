@@ -77,7 +77,6 @@ namespace Server.Items
         public override int InitMinHits { get { return 40; } }
         public override int InitMaxHits { get { return 50; } }
         public override int AosStrReq { get { return 20; } }
-        public override int OldStrReq { get { return 20; } }
         public override int ArmorBase { get { return 18; } }
 
         public override ArmorMaterialType MaterialType
@@ -219,7 +218,6 @@ namespace Server.Items
         public override int InitMinHits { get { return 40; } }
         public override int InitMaxHits { get { return 50; } }
         public override int AosStrReq { get { return 25; } }
-        public override int OldStrReq { get { return 25; } }
         public override int ArmorBase { get { return 18; } }
 
         public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Leather; } }
@@ -353,7 +351,6 @@ namespace Server.Items
         public override int InitMinHits { get { return 40; } }
         public override int InitMaxHits { get { return 50; } }
         public override int AosStrReq { get { return 20; } }
-        public override int OldStrReq { get { return 20; } }
         public override int ArmorBase { get { return 18; } }
 
         public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Leather; } }
@@ -492,7 +489,6 @@ namespace Server.Items
         public override int InitMinHits { get { return 40; } }
         public override int InitMaxHits { get { return 50; } }
         public override int AosStrReq { get { return 20; } }
-        public override int OldStrReq { get { return 20; } }
         public override int ArmorBase { get { return 18; } }
 
         public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Leather; } }

@@ -174,7 +174,7 @@ namespace Server.Spells.Sixth
 
             public override bool OnMoveOver(Mobile m)
             {
-                if (Visible && m_Caster != null && (!Core.AOS || m != m_Caster) && SpellHelper.ValidIndirectTarget(m_Caster, m) && m_Caster.CanBeHarmful(m, false))
+                if (Visible && m_Caster != null && m != m_Caster && SpellHelper.ValidIndirectTarget(m_Caster, m) && m_Caster.CanBeHarmful(m, false))
                 {
                     if (SpellHelper.CanRevealCaster(m))
                         m_Caster.RevealingAction();
@@ -183,20 +183,14 @@ namespace Server.Spells.Sixth
 
                     double duration;
 
-                    if (Core.AOS)
-                    {
-                        duration = 2.0 + ((int)(m_Caster.Skills[SkillName.EvalInt].Value / 10) - (int)(m.Skills[SkillName.MagicResist].Value / 10));
+                    duration = 2.0 + ((int)(m_Caster.Skills[SkillName.EvalInt].Value / 10) - (int)(m.Skills[SkillName.MagicResist].Value / 10));
 
-                        if (!m.Player)
-                            duration *= 3.0;
+                    if (!m.Player)
+                        duration *= 3.0;
 
-                        if (duration < 0.0)
-                            duration = 0.0;
-                    }
-                    else
-                    {
-                        duration = 7.0 + (m_Caster.Skills[SkillName.Magery].Value * 0.2);
-                    }
+                    if (duration < 0.0)
+                        duration = 0.0;
+    
 
                     m.Paralyze(TimeSpan.FromSeconds(duration));
 
@@ -231,7 +225,7 @@ namespace Server.Spells.Sixth
         {
             private readonly ParalyzeFieldSpell m_Owner;
             public InternalTarget(ParalyzeFieldSpell owner)
-                : base(Core.TOL ? 15 : Core.ML ? 10 : 12, true, TargetFlags.None)
+                : base(15, true, TargetFlags.None)
             {
                 m_Owner = owner;
             }

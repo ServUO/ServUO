@@ -321,8 +321,7 @@ namespace Server.Items
             {
                 Mobile from = (Mobile)parent;
 
-                if (Core.AOS)
-                    m_AosSkillBonuses.AddTo(from);
+                m_AosSkillBonuses.AddTo(from);
 
                 from.CheckStatTimers();
             }
@@ -340,8 +339,7 @@ namespace Server.Items
                 m.RemoveStatMod(modName + "Dex");
                 m.RemoveStatMod(modName + "Int");
 
-                if (Core.AOS)
-                    m_AosSkillBonuses.Remove();
+                m_AosSkillBonuses.Remove();
 
                 m.CheckStatTimers();
             }
@@ -568,7 +566,7 @@ namespace Server.Items
                     break;
             }
 
-            if (Core.AOS && Parent is Mobile)
+            if (Parent is Mobile)
                 m_AosSkillBonuses.AddTo((Mobile)Parent);
 
             int strBonus = m_AosAttributes.BonusStr;

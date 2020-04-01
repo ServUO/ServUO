@@ -43,8 +43,6 @@ namespace Server.Mobiles
             Fame = 15000;
             Karma = -15000;
 
-            VirtualArmor = 16;
-
             Container bag = new Bag();
 
             int count = Utility.RandomMinMax(10, 20);
@@ -64,7 +62,7 @@ namespace Server.Mobiles
 
             PackItem(new ArcaneGem());
 
-            if (Core.ML && Utility.RandomDouble() < .33)
+            if (Utility.RandomDouble() < .33)
                 PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
 
             m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(2, 5));

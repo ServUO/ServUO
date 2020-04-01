@@ -40,8 +40,6 @@ namespace Server.Mobiles
 
             this.Fame = 15000;
             this.Karma = -15000;
-
-            this.VirtualArmor = 50;
         }
 
         public TerathanAvenger(Serial serial)
@@ -80,13 +78,6 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Terathan; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.TerathansAndOphidians;
-            }
-        }
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich, 2);

@@ -219,22 +219,6 @@ namespace Server.Items
             }
         }
 
-        public override void OnAdded(object parent)
-        {
-            base.OnAdded(parent);
-
-            if (parent is Mobile)
-                ((Mobile)parent).VirtualArmorMod += 2;
-        }
-
-        public override void OnRemoved(object parent)
-        {
-            base.OnRemoved(parent);
-
-            if (parent is Mobile)
-                ((Mobile)parent).VirtualArmorMod -= 2;
-        }
-
         public override bool Dye(Mobile from, DyeTub sender)
         {
             from.SendLocalizedMessage(sender.FailMessage);
@@ -245,7 +229,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (Core.ML && IsRewardItem)
+            if (IsRewardItem)
                 list.Add(RewardSystem.GetRewardYearLabel(this, new object[] { Hue, m_LabelNumber })); // X Year Veteran Reward
         }
 
@@ -309,9 +293,6 @@ namespace Server.Items
                         break;
                     }
             }
-
-            if (Parent is Mobile)
-                ((Mobile)Parent).VirtualArmorMod += 2;
         }
     }
 

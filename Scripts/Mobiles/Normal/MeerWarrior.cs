@@ -33,8 +33,6 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Tactics, 91.0, 100.0);
             this.SetSkill(SkillName.Wrestling, 91.0, 100.0);
 
-            this.VirtualArmor = 22;
-
             this.Fame = 2000;
             this.Karma = 5000;
         }
@@ -44,13 +42,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS;
-            }
-        }
         public override bool CanRummageCorpses
         {
             get
@@ -75,7 +66,7 @@ namespace Server.Mobiles
             if (from != null && !willKill && amount > 3 && !this.InRange(from, 7))
             {
                 this.MovingEffect(from, 0xF51, 10, 0, false, false);
-                SpellHelper.Damage(TimeSpan.FromSeconds(1.0), from, this, Utility.RandomMinMax(30, 40) - (Core.AOS ? 0 : 10), 100, 0, 0, 0, 0);
+                SpellHelper.Damage(TimeSpan.FromSeconds(1.0), from, this, Utility.RandomMinMax(30, 40), 100, 0, 0, 0, 0);
             }
 
             base.OnDamage(amount, from, willKill);

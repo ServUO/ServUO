@@ -4,7 +4,6 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("a frozen ogre lord's corpse")]
-    [TypeAlias("Server.Mobiles.ArticOgreLord")]
     public class ArcticOgreLord : BaseCreature
     {
         [Constructable]
@@ -37,10 +36,6 @@ namespace Server.Mobiles
 
             Fame = 15000;
             Karma = -15000;
-
-            VirtualArmor = 50;
-
-            PackItem(new Club());
         }
 
         public ArcticOgreLord(Serial serial)

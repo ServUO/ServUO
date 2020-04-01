@@ -59,8 +59,6 @@ namespace Server.Mobiles
             Fame = 24000;
             Karma = -24000;
 
-            VirtualArmor = 90;
-
             for (int i = 0; i < Utility.RandomMinMax(1, 3); i++)
             {
                 PackItem(Loot.RandomScroll(0, Loot.MysticismScrollTypes.Length, SpellbookType.Mystic));
@@ -109,7 +107,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosSuperBoss, 3);
+            AddLoot(LootPack.SuperBoss, 3);
         }
 
         public override void OnDeath(Container c)

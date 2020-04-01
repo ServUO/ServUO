@@ -272,21 +272,18 @@ namespace Server.Engines.Quests
 
         public static void Initialize()
         {
-            if (Core.TOL)
+            if (TramInstance == null)
             {
-                if (TramInstance == null)
-                {
-                    TramInstance = new Arnold();
-                    TramInstance.MoveToWorld(new Point3D(363, 913, 0), Map.Trammel);
-                    TramInstance.Direction = Direction.East;
-                }
+                TramInstance = new Arnold();
+                TramInstance.MoveToWorld(new Point3D(363, 913, 0), Map.Trammel);
+                TramInstance.Direction = Direction.East;
+            }
 
-                if (FelInstance == null)
-                {
-                    FelInstance = new Arnold();
-                    FelInstance.MoveToWorld(new Point3D(363, 913, 0), Map.Felucca);
-                    FelInstance.Direction = Direction.East;
-                }
+            if (FelInstance == null)
+            {
+                FelInstance = new Arnold();
+                FelInstance.MoveToWorld(new Point3D(363, 913, 0), Map.Felucca);
+                FelInstance.Direction = Direction.East;
             }
         }
 
@@ -380,9 +377,6 @@ namespace Server.Engines.Quests
             {
                 FelInstance = this;
             }
-
-            if (!Core.TOL)
-                Delete();
         }
     }
 }

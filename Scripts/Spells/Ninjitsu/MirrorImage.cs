@@ -31,7 +31,7 @@ namespace Server.Spells.Ninjitsu
         {
             get
             {
-                return Core.ML ? 20.0 : 40.0;
+                return 20.0;
             }
         }
         public override int RequiredMana

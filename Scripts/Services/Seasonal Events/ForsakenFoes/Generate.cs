@@ -13,67 +13,42 @@ namespace Server.Engines.Fellowship
     {
         public static void Initialize()
         {
-            if (Core.EJ)
+            EventSink.WorldSave += OnWorldSave;
+
+            if (MiningCooperativeMerchant.InstanceTram == null && !Siege.SiegeShard)
             {
-                EventSink.WorldSave += OnWorldSave;
+                MiningCooperativeMerchant.InstanceTram = new MiningCooperativeMerchant();
+                MiningCooperativeMerchant.InstanceTram.MoveToWorld(new Point3D(2497, 432, 15), Map.Trammel);
 
-                if (MiningCooperativeMerchant.InstanceTram == null && !Siege.SiegeShard)
-                {
-                    MiningCooperativeMerchant.InstanceTram = new MiningCooperativeMerchant();
-                    MiningCooperativeMerchant.InstanceTram.MoveToWorld(new Point3D(2497, 432, 15), Map.Trammel);
-
-                    MiningCooperativeMerchant.InstanceTram.Home = MiningCooperativeMerchant.InstanceTram.Location;
-                    MiningCooperativeMerchant.InstanceTram.RangeHome = 5;
-                }
-
-                if (MiningCooperativeMerchant.InstanceFel == null)
-                {
-                    MiningCooperativeMerchant.InstanceFel = new MiningCooperativeMerchant();
-                    MiningCooperativeMerchant.InstanceFel.MoveToWorld(new Point3D(2497, 432, 15), Map.Felucca);
-
-                    MiningCooperativeMerchant.InstanceFel.Home = MiningCooperativeMerchant.InstanceFel.Location;
-                    MiningCooperativeMerchant.InstanceFel.RangeHome = 5;
-                }
-
-                if (FellowshipAdept.InstanceTram == null && !Siege.SiegeShard)
-                {
-                    FellowshipAdept.InstanceTram = new FellowshipAdept();
-                    FellowshipAdept.InstanceTram.MoveToWorld(new Point3D(1711, 1570, 44), Map.Trammel);
-
-                    FellowshipAdept.InstanceTram.Home = FellowshipAdept.InstanceTram.Location;
-                    FellowshipAdept.InstanceTram.RangeHome = 5;
-                }
-
-                if (FellowshipAdept.InstanceFel == null)
-                {
-                    FellowshipAdept.InstanceFel = new FellowshipAdept();
-                    FellowshipAdept.InstanceFel.MoveToWorld(new Point3D(1711, 1570, 44), Map.Felucca);
-
-                    FellowshipAdept.InstanceFel.Home = FellowshipAdept.InstanceFel.Location;
-                    FellowshipAdept.InstanceFel.RangeHome = 5;
-                }
+                MiningCooperativeMerchant.InstanceTram.Home = MiningCooperativeMerchant.InstanceTram.Location;
+                MiningCooperativeMerchant.InstanceTram.RangeHome = 5;
             }
-            else
+
+            if (MiningCooperativeMerchant.InstanceFel == null)
             {
-                if (MiningCooperativeMerchant.InstanceTram != null)
-                {
-                    MiningCooperativeMerchant.InstanceTram.Delete();
-                }
+                MiningCooperativeMerchant.InstanceFel = new MiningCooperativeMerchant();
+                MiningCooperativeMerchant.InstanceFel.MoveToWorld(new Point3D(2497, 432, 15), Map.Felucca);
 
-                if (MiningCooperativeMerchant.InstanceFel != null)
-                {
-                    MiningCooperativeMerchant.InstanceFel.Delete();
-                }
+                MiningCooperativeMerchant.InstanceFel.Home = MiningCooperativeMerchant.InstanceFel.Location;
+                MiningCooperativeMerchant.InstanceFel.RangeHome = 5;
+            }
 
-                if (FellowshipAdept.InstanceTram != null)
-                {
-                    FellowshipAdept.InstanceTram.Delete();
-                }
+            if (FellowshipAdept.InstanceTram == null && !Siege.SiegeShard)
+            {
+                FellowshipAdept.InstanceTram = new FellowshipAdept();
+                FellowshipAdept.InstanceTram.MoveToWorld(new Point3D(1711, 1570, 44), Map.Trammel);
 
-                if (FellowshipAdept.InstanceFel != null)
-                {
-                    FellowshipAdept.InstanceFel.Delete();
-                }
+                FellowshipAdept.InstanceTram.Home = FellowshipAdept.InstanceTram.Location;
+                FellowshipAdept.InstanceTram.RangeHome = 5;
+            }
+
+            if (FellowshipAdept.InstanceFel == null)
+            {
+                FellowshipAdept.InstanceFel = new FellowshipAdept();
+                FellowshipAdept.InstanceFel.MoveToWorld(new Point3D(1711, 1570, 44), Map.Felucca);
+
+                FellowshipAdept.InstanceFel.Home = FellowshipAdept.InstanceFel.Location;
+                FellowshipAdept.InstanceFel.RangeHome = 5;
             }
         }
 

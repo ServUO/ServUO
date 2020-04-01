@@ -28,26 +28,11 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            if (Core.EJ)
-            {
-                Infos[typeof(Cannonball)] = new AmmoInfo(typeof(HeavyCannonball), AmmunitionType.Cannonball, 1095804, 5000, 5000, 3);
-                Infos[typeof(Grapeshot)] = new AmmoInfo(typeof(HeavyGrapeshot), AmmunitionType.Grapeshot, 1095741, 100, 150, 3);
+            Infos[typeof(Cannonball)] = new AmmoInfo(typeof(HeavyCannonball), AmmunitionType.Cannonball, 1095804, 5000, 5000, 3);
+            Infos[typeof(Grapeshot)] = new AmmoInfo(typeof(HeavyGrapeshot), AmmunitionType.Grapeshot, 1095741, 100, 150, 3);
 
-                Infos[typeof(FlameCannonball)] = new AmmoInfo(typeof(HeavyFlameCannonball), AmmunitionType.FlameCannonball, 1149633, 5000, 5000, 3, true, 50, 50, 0, 0, 0, false);
-                Infos[typeof(FrostCannonball)] = new AmmoInfo(typeof(HeavyFrostCannonball), AmmunitionType.FrostCannonball, 1149634, 30, 50, 3, true, 50, 0, 50, 0, 0, false);
-            }
-            else
-            {
-                Infos[typeof(LightCannonball)] = new AmmoInfo(typeof(LightCannonball), AmmunitionType.Cannonball, 1095804, 5000, 5000, 3);
-                Infos[typeof(HeavyCannonball)] = new AmmoInfo(typeof(HeavyCannonball), AmmunitionType.Cannonball, 1095804, 6500, 6500, 3);
-                Infos[typeof(LightGrapeshot)] = new AmmoInfo(typeof(LightGrapeshot), AmmunitionType.Grapeshot, 1095741, 40, 50, 3);
-                Infos[typeof(HeavyGrapeshot)] = new AmmoInfo(typeof(HeavyGrapeshot), AmmunitionType.Grapeshot, 1095741, 50, 75, 3);
-
-                Infos[typeof(HeavyFlameCannonball)] = new AmmoInfo(typeof(HeavyFlameCannonball), AmmunitionType.FlameCannonball, 1149633, 5000, 5000, 3, true, 50, 50, 0, 0, 0, false);
-                Infos[typeof(LightFlameCannonball)] = new AmmoInfo(typeof(LightFlameCannonball), AmmunitionType.FlameCannonball, 1149633, 5000, 5000, 3, true, 50, 50, 0, 0, 0, false);
-                Infos[typeof(HeavyFrostCannonball)] = new AmmoInfo(typeof(HeavyFrostCannonball), AmmunitionType.FrostCannonball, 1149634, 5000, 5000, 3, true, 50, 0, 50, 0, 0, false);
-                Infos[typeof(LightFrostCannonball)] = new AmmoInfo(typeof(LightFrostCannonball), AmmunitionType.FrostCannonball, 1149634, 5000, 5000, 3, true, 50, 0, 50, 0, 0, false);
-            }
+            Infos[typeof(FlameCannonball)] = new AmmoInfo(typeof(HeavyFlameCannonball), AmmunitionType.FlameCannonball, 1149633, 5000, 5000, 3, true, 50, 50, 0, 0, 0, false);
+            Infos[typeof(FrostCannonball)] = new AmmoInfo(typeof(HeavyFrostCannonball), AmmunitionType.FrostCannonball, 1149634, 30, 50, 3, true, 50, 0, 50, 0, 0, false);
         }
 
         public Type Type { get; set; }

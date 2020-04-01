@@ -11,8 +11,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-using CustomsFramework;
-
 using Server.Network;
 using System.Collections;
 #endregion
@@ -772,7 +770,6 @@ namespace Server
 		}
 
 		private static readonly Type[] m_SerialTypeArray = {typeof(Serial)};
-		private static readonly Type[] m_CustomsSerialTypeArray = {typeof(CustomSerial)};
 
 		private static void VerifyType(Type t)
 		{
@@ -794,61 +791,6 @@ namespace Server
 				try
 				{
 					if (t.GetConstructor(m_SerialTypeArray) == null)
-					{
-						warningSb = new StringBuilder();
-
-						warningSb.AppendLine("       - No serialization constructor");
-					}
-
-					if (
-						t.GetMethod(
-							"Serialize",
-							BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) == null)
-					{
-						if (warningSb == null)
-						{
-							warningSb = new StringBuilder();
-						}
-
-						warningSb.AppendLine("       - No Serialize() method");
-					}
-
-					if (
-						t.GetMethod(
-							"Deserialize",
-							BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) == null)
-					{
-						if (warningSb == null)
-						{
-							warningSb = new StringBuilder();
-						}
-
-						warningSb.AppendLine("       - No Deserialize() method");
-					}
-
-					if (warningSb != null && warningSb.Length > 0)
-					{
-						Utility.PushColor(ConsoleColor.Yellow);
-						Console.WriteLine("Warning: {0}\n{1}", t, warningSb);
-						Utility.PopColor();
-					}
-				}
-				catch
-				{
-					Utility.PushColor(ConsoleColor.Yellow);
-					Console.WriteLine("Warning: Exception in serialization verification of type {0}", t);
-					Utility.PopColor();
-				}
-			}
-			else if (t.IsSubclassOf(typeof(SaveData)))
-			{
-				Interlocked.Increment(ref m_CustomsCount);
-
-				StringBuilder warningSb = null;
-
-				try
-				{
-					if (t.GetConstructor(m_CustomsSerialTypeArray) == null)
 					{
 						warningSb = new StringBuilder();
 

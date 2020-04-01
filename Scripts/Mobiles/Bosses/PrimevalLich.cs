@@ -55,8 +55,6 @@ namespace Server.Mobiles
             Fame = 28000;
             Karma = -28000;
 
-            VirtualArmor = 80;
-
             m_Timer = new TeleportTimer(this);
             m_Timer.Start();
         }

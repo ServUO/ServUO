@@ -41,8 +41,6 @@ namespace Server.Mobiles
 
             Fame = 6000;
             Karma = -6000;
-
-            VirtualArmor = 40;
         }
 
         public RottingCorpse(Serial serial)
@@ -81,13 +79,6 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Undead; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 2);

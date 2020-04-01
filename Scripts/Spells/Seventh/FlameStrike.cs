@@ -49,25 +49,7 @@ namespace Server.Spells.Seventh
 
                 SpellHelper.CheckReflect((int)this.Circle, ref source, ref m);
 
-                double damage = 0;
-
-                if (Core.AOS)
-                {
-                    damage = GetNewAosDamage(48, 1, 5, m);
-                }
-                else if (m is Mobile)
-                {
-                    damage = Utility.Random(27, 22);
-
-                    if (this.CheckResisted((Mobile)m))
-                    {
-                        damage *= 0.6;
-
-                        ((Mobile)m).SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
-                    }
-
-                    damage *= this.GetDamageScalar((Mobile)m);
-                }
+                double damage = GetNewAosDamage(48, 1, 5, m);
 
                 if (m != null)
                 {
@@ -88,7 +70,7 @@ namespace Server.Spells.Seventh
         {
             private readonly FlameStrikeSpell m_Owner;
             public InternalTarget(FlameStrikeSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(10, false, TargetFlags.Harmful)
             {
                 this.m_Owner = owner;
             }

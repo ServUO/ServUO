@@ -119,40 +119,26 @@ namespace Server.Spells.Ninjitsu
             if (info == null)	//sanity
                 return;
 
-            int maxDamage, damage = 0;
+            int damage = 0;
 
             double ninjitsu = info.m_Attacker.Skills[SkillName.Ninjitsu].Value;
             double stalkingBonus = Tracking.GetStalkingBonus(info.m_Attacker, info.m_Target);
 
-            if (Core.ML)
-            {
-                double scalar = (info.m_Attacker.Skills[SkillName.Hiding].Value + info.m_Attacker.Skills[SkillName.Stealth].Value) / 220;
+            double scalar = (info.m_Attacker.Skills[SkillName.Hiding].Value + info.m_Attacker.Skills[SkillName.Stealth].Value) / 220;
 
-                if (scalar > 1)
-                    scalar = 1;
+            if (scalar > 1)
+                scalar = 1;
 
-                // New formula doesn't apply DamageBonus anymore, caps must be, directly, 60/30.
-                if (info.m_Steps >= 5)
-                    damage = (int)Math.Floor(Math.Min(60, (ninjitsu / 3) * (0.3 + 0.7 * scalar) + stalkingBonus));
-                else
-                    damage = (int)Math.Floor(Math.Min(30, (ninjitsu / 9) * (0.3 + 0.7 * scalar) + stalkingBonus));
-
-                if (info.m_isRanged)
-                    damage /= 2;
-            }
+            // New formula doesn't apply DamageBonus anymore, caps must be, directly, 60/30.
+            if (info.m_Steps >= 5)
+                damage = (int)Math.Floor(Math.Min(60, (ninjitsu / 3) * (0.3 + 0.7 * scalar) + stalkingBonus));
             else
-            {
-                int divisor = (info.m_Steps >= 5) ? 30 : 80;
-                double baseDamage = ninjitsu / divisor * 10;
+                damage = (int)Math.Floor(Math.Min(30, (ninjitsu / 9) * (0.3 + 0.7 * scalar) + stalkingBonus));
 
-                maxDamage = (info.m_Steps >= 5) ? 62 : 22; // DamageBonus is 8 at most. That brings the cap up to 70/30.
-                damage = Math.Max(0, Math.Min(maxDamage, (int)(baseDamage + stalkingBonus))) + info.m_DamageBonus;
-            }
+            if (info.m_isRanged)
+                damage /= 2;
 
-            if (Core.ML)
-                AOS.Damage(info.m_Target, info.m_Attacker, damage, 0, 0, 0, 0, 0, 0, 100); // Damage is direct.
-            else
-                AOS.Damage(info.m_Target, info.m_Attacker, damage, true, 100, 0, 0, 0, 0); // Damage is physical.
+            AOS.Damage(info.m_Target, info.m_Attacker, damage, 0, 0, 0, 0, 0, 0, 100); // Damage is direct.
 
             if (info.m_Timer != null)
                 info.m_Timer.Stop();
@@ -179,10 +165,7 @@ namespace Server.Spells.Ninjitsu
 
         public static void Initialize()
         {
-            if (Core.SE)
-            {
-                EventSink.Movement += new MovementEventHandler(EventSink_Movement);
-            }
+            EventSink.Movement += new MovementEventHandler(EventSink_Movement);
         }
 
         public static void EventSink_Movement(MovementEventArgs e)

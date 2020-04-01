@@ -63,7 +63,6 @@ namespace Server.Mobiles
             Fame = 24000;
             Karma = -24000;
 
-            VirtualArmor = 80;
             PackResources(8);
             PackTalismans(5);
 
@@ -97,7 +96,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosSuperBoss, 8);
+            AddLoot(LootPack.SuperBoss, 8);
         }
 
         public override void OnDeath(Container c)

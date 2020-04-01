@@ -41,8 +41,6 @@ namespace Server.Mobiles
             this.Fame = 3000;
             this.Karma = -3000;
 
-            this.VirtualArmor = 35;
-
             SolenHelper.PackPicnicBasket(this);
 
             this.PackItem(new ZoogiFungus((0.05 > Utility.RandomDouble()) ? 13 : 3));

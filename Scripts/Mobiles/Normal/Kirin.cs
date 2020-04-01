@@ -89,13 +89,6 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Fey; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override int Meat
         {
             get
@@ -167,18 +160,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-                this.AI = AIType.AI_Mage;
         }
     }
 }

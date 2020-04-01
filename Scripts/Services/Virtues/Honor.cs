@@ -166,7 +166,7 @@ namespace Server.Services.Virtues
 				}
 			}
 
-			if (Core.ML && target is PlayerMobile)
+			if (target is PlayerMobile)
 			{
 				source.SendLocalizedMessage(1075614); // You cannot honor other players.
 				return;
@@ -352,7 +352,11 @@ namespace Server.Services.Virtues
 						TimeSpan.FromSeconds(5),
 						from,
 						String.Format("{0}\t{1}", m_Perfection, from.Name)));
-			}
+
+                BuffInfo.AddBuff(
+                    from,
+                    new BuffInfo(BuffIcon.Perfection, 1153786, 1151394, String.Format("{0}\t{1}", m_Target.Name, m_Perfection)));
+            }
 			else
 			{
 				m_Source.SendLocalizedMessage(1063255); // You gain in Perfection as you precisely strike your opponent.

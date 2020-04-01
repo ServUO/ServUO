@@ -46,7 +46,6 @@ namespace Server.Mobiles
             Karma = -2500;
 
             PackItem(new RawRibs(5));
-            //	VirtualArmor = 16;
         }
 
         public bool Carve(Mobile from, Item item)

@@ -46,8 +46,6 @@ namespace Server.Mobiles
 			
             if (Utility.RandomDouble() < .33)
                 PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
-				
-            AddItem(new Tessen());
 			
             if (0.02 >= Utility.RandomDouble())
                 PackItem(new OrigamiPaper());

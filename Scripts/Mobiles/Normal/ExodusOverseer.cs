@@ -37,7 +37,6 @@ namespace Server.Mobiles
 
             this.Fame = 10000;
             this.Karma = -10000;
-            this.VirtualArmor = 50;
 
             if (Utility.Random(2) == 0)
                 this.PackItem(new PowerCrystal());
@@ -78,13 +77,6 @@ namespace Server.Mobiles
             get
             {
                 return true;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS;
             }
         }
         public override Poison PoisonImmune

@@ -109,10 +109,7 @@ namespace Server.Spells.Chivalry
                     FeeblemindSpell.RemoveEffects(m);
                     ClumsySpell.RemoveEffects(m);
 
-                    if (Core.ML)
-                    {
-                        BloodOathSpell.RemoveCurse(m);
-                    }
+                    BloodOathSpell.RemoveCurse(m);
 
                     MindRotSpell.ClearMindRotScalar(m);
                     SpellPlagueSpell.RemoveFromList(m);
@@ -132,7 +129,7 @@ namespace Server.Spells.Chivalry
         {
             private readonly RemoveCurseSpell m_Owner;
             public InternalTarget(RemoveCurseSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Beneficial)
+                : base(10, false, TargetFlags.Beneficial)
             {
                 this.m_Owner = owner;
             }

@@ -33,7 +33,6 @@ namespace Server.Items
         public override int EnergyResistance { get { return 0; } }
 
         public override int AosStrReq { get { return 10; } }
-        public override int OldStrReq { get { return 10; } }
         public override int ArmorBase { get { return 13; } }
         public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Leather; } }
         public override CraftResource DefaultResource { get { return CraftResource.RegularLeather; } }

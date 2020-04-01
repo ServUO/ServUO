@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a giant black widow spider corpse")] // stupid corpse name
+    [CorpseName("a giant black widow spider corpse")] 
     public class GiantBlackWidow : BaseCreature
     {
         [Constructable]
@@ -38,8 +38,6 @@ namespace Server.Mobiles
 
             this.Fame = 3500;
             this.Karma = -3500;
-
-            this.VirtualArmor = 24;
 
             this.PackItem(new SpidersSilk(5));
             this.PackItem(new LesserPoisonPotion());

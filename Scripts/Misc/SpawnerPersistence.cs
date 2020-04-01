@@ -38,7 +38,8 @@ namespace Server
             TramKhaldun     = 0x00000040,
             FixAddonDeco    = 0x00000080,
             LifeStealers    = 0x00000100,
-            LootNerf2       = 0x00000200
+            LootNerf2       = 0x00000200,
+            RemoveUnused    = 0x00000400
         }
 
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
@@ -164,6 +165,12 @@ namespace Server
             {
                 case 12:
                 case 11:
+                    if ((VersionFlag & SpawnerVersion.RemoveUnused) == 0)
+                    {
+                        RemoveUnused();
+                        VersionFlag |= SpawnerVersion.RemoveUnused;
+                    }
+
                     if ((VersionFlag & SpawnerVersion.LootNerf2) == 0)
                     {
                         LootNerf2();
@@ -264,6 +271,21 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Remove Unused
+        public static void RemoveUnused()
+        {
+            Remove("Emino");
+            Remove("FierceDragon");
+            Remove("HaochisGuardsman");
+            Remove("Mardoth");
+            Remove("DeadlyImp");
+            Remove("Relnia");
+            Remove("Zoel");
+            Remove("Horus");
+            Remove("Haochi");
+        }
+        #endregion
 
         #region Loot Nerf 2
         public static void LootNerf2()

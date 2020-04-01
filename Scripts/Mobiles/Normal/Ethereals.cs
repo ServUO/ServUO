@@ -188,7 +188,7 @@ namespace Server.Mobiles
 
         public override double DefaultWeight { get { return 1.0; } }
 
-        public override bool DisplayLootType { get { return Core.AOS; } }
+        public override bool DisplayLootType { get { return true; } }
         public virtual int FollowerSlots { get { return 1; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -275,7 +275,7 @@ namespace Server.Mobiles
         {
             base.GetProperties(list);
 
-            if (Core.ML && m_IsRewardItem)
+            if (m_IsRewardItem)
             {
                 list.Add(RewardSystem.GetRewardYearLabel(this, new object[] { })); // X Year Veteran Reward
             }
@@ -542,7 +542,7 @@ namespace Server.Mobiles
                 get
                 {
                     return
-                            TimeSpan.FromSeconds(Core.AOS ? 3.0 : 2.0);
+                            TimeSpan.FromSeconds(3.0);
                 }
             }
 
@@ -1207,19 +1207,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool Validate(Mobile from)
-        {
-            #region TOL
-            if (from.NetState != null && !from.NetState.SupportsExpansion(Expansion.ML))
-            {
-                from.SendLocalizedMessage(1156139); // * You must upgrade to the Time of Legends in order to use this. *                               
-                return false;
-            }
-            #endregion
-
-            return base.Validate(from);
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -1254,19 +1241,6 @@ namespace Server.Mobiles
         public EtherealLasher(Serial serial)
             : base(serial)
         {
-        }
-
-        public override bool Validate(Mobile from)
-        {
-            #region TOL
-            if (from.NetState != null && !from.NetState.SupportsExpansion(Expansion.ML))
-            {
-                from.SendLocalizedMessage(1156139); // * You must upgrade to the Time of Legends in order to use this. *                               
-                return false;
-            }
-            #endregion
-
-            return base.Validate(from);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -1305,19 +1279,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool Validate(Mobile from)
-        {
-            #region TOL
-            if (from.NetState != null && !from.NetState.SupportsExpansion(Expansion.ML))
-            {
-                from.SendLocalizedMessage(1156139); // * You must upgrade to the Time of Legends in order to use this. *                               
-                return false;
-            }
-            #endregion
-
-            return base.Validate(from);
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -1352,19 +1313,6 @@ namespace Server.Mobiles
         public EtherealWarBoar(Serial serial)
             : base(serial)
         {
-        }
-
-        public override bool Validate(Mobile from)
-        {
-            #region TOL
-            if (from.NetState != null && !from.NetState.SupportsExpansion(Expansion.ML))
-            {
-                from.SendLocalizedMessage(1156139); // * You must upgrade to the Time of Legends in order to use this. *                               
-                return false;
-            }
-            #endregion
-
-            return base.Validate(from);
         }
 
         public override void Serialize(GenericWriter writer)

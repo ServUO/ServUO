@@ -72,19 +72,12 @@ namespace Server.Spells.Seventh
             }
             else if (!this.Caster.CanBeginAction(typeof(PolymorphSpell)))
             {
-                if (Core.ML)
-                    EndPolymorph(this.Caster);
-                else
-                    this.Caster.SendLocalizedMessage(1005559); // This spell is already in effect.
+                EndPolymorph(this.Caster);
                 return false;
             }
             else if (this.m_NewBody == 0)
             {
-                Gump gump;
-                if (Core.SE)
-                    gump = new NewPolymorphGump(this.Caster, this.Scroll);
-                else
-                    gump = new PolymorphGump(this.Caster, this.Scroll);
+                Gump gump = new NewPolymorphGump(this.Caster, this.Scroll);
 
                 this.Caster.SendGump(gump);
                 return false;
@@ -101,10 +94,7 @@ namespace Server.Spells.Seventh
             }
             else if (!this.Caster.CanBeginAction(typeof(PolymorphSpell)))
             {
-                if (Core.ML)
-                    EndPolymorph(this.Caster);
-                else
-                    this.Caster.SendLocalizedMessage(1005559); // This spell is already in effect.
+                EndPolymorph(this.Caster);
             }
             else if (TransformationSpellHelper.UnderTransformation(this.Caster))
             {
@@ -145,19 +135,6 @@ namespace Server.Spells.Seventh
 
                         BaseArmor.ValidateMobile(this.Caster);
                         BaseClothing.ValidateMobile(this.Caster);
-
-                        if (!Core.ML)
-                        {
-                            StopTimer(this.Caster);
-
-                            Timer t = new InternalTimer(this.Caster);
-
-                            m_Timers[this.Caster] = t;
-
-                            BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Polymorph, 1075824, 1075823, t.Delay, Caster, String.Format("{0}\t{1}", GetArticleCliloc(m_NewBody), GetFormCliloc(m_NewBody))));
-
-                            t.Start();
-                        }
                     }
                 }
                 else

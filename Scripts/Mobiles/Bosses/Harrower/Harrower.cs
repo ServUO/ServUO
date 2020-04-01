@@ -62,8 +62,6 @@ namespace Server.Mobiles
             Fame = 22500;
             Karma = -22500;
 
-            VirtualArmor = 60;
-
             SetDamageType(ResistanceType.Physical, 50);
             SetDamageType(ResistanceType.Energy, 50);
 

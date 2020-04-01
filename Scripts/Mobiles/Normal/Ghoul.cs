@@ -35,8 +35,6 @@ namespace Server.Mobiles
 
             this.Fame = 2500;
             this.Karma = -2500;
-
-            this.VirtualArmor = 28;
         }
 
         public Ghoul(Serial serial)
@@ -61,13 +59,6 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Undead; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);

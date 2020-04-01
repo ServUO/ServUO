@@ -37,8 +37,6 @@ namespace Server.Mobiles
             this.Fame = 450;
             this.Karma = -450;
 
-            this.VirtualArmor = 16;
-
             switch ( Utility.Random(5))
             {
                 case 0:
@@ -81,14 +79,6 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Undead; } }
 
-         public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
-        
         public override bool IsEnemy(Mobile m)
         {
             if(Region.IsPartOf("Haven Island"))

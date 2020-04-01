@@ -44,8 +44,6 @@ namespace Server.Mobiles
 
             Fame = 22500;
             Karma = 22500;
-
-            VirtualArmor = 100;
         }
 
         public LordOaks(Serial serial)
@@ -115,37 +113,23 @@ namespace Server.Mobiles
                 return true;
             }
         }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.SE;
-            }
-        }
         public override bool Unprovokable
         {
             get
             {
-                return Core.SE;
+                return true;
             }
         }
         public override bool Uncalmable
         {
             get
             {
-                return Core.SE;
+                return true;
             }
         }
 
         public override TribeType Tribe { get { return TribeType.Fey; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override Poison PoisonImmune
         {
             get

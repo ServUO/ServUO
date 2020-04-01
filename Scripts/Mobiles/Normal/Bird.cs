@@ -35,8 +35,6 @@ namespace Server.Mobiles
             this.Body = 6;
             this.BaseSoundID = 0x1B;
 
-            this.VirtualArmor = Utility.RandomMinMax(0, 6);
-
             this.SetStr(10);
             this.SetDex(25, 35);
             this.SetInt(10);
@@ -116,8 +114,6 @@ namespace Server.Mobiles
             this.Body = 6;
             this.BaseSoundID = 0xBF;
 
-            this.VirtualArmor = Utility.RandomMinMax(0, 6);
-
             this.SetStr(10);
             this.SetDex(25, 35);
             this.SetInt(10);
@@ -174,14 +170,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

@@ -98,24 +98,10 @@ namespace Server.Spells.Seventh
                 foreach (var id in targets)
                 {
                     Mobile m = id as Mobile;
-                    double damage;
+                    double damage = GetNewAosDamage(51, 1, 5, id is PlayerMobile, id);
 
-                    if (Core.AOS)
-                        damage = GetNewAosDamage(51, 1, 5, id is PlayerMobile, id);
-                    else
-                        damage = Utility.Random(27, 22);
-
-                    if (Core.AOS && count > 2)
+                    if (count > 2)
                         damage = (damage * 2) / count;
-                    else if (!Core.AOS)
-                        damage /= count;
-
-                    if (!Core.AOS && m != null && CheckResisted(m))
-                    {
-                        damage *= 0.5;
-
-                        m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
-                    }
 
                     IDamageable source = Caster;
                     IDamageable target = id;
@@ -151,7 +137,7 @@ namespace Server.Spells.Seventh
             private readonly Item m_Item;
 
             public InternalTarget(MeteorSwarmSpell owner, Item item)
-                : base(Core.ML ? 10 : 12, true, TargetFlags.None)
+                : base(10, true, TargetFlags.None)
             {
                 m_Owner = owner;
                 m_Item = item;

@@ -33,7 +33,7 @@ namespace Server.Spells.Eighth
         {
             get
             {
-                return !Core.AOS;
+                return false;
             }
         }
         public override void OnCast()
@@ -44,25 +44,11 @@ namespace Server.Spells.Eighth
                 {
                     Mobile m = id as Mobile;
 
-                    int damage;
+                    int damage = id.Hits / 2;
 
-                    if (Core.AOS)
-                    {
-                        damage = id.Hits / 2;
-
-                        if (m == null || !m.Player)
-                            damage = Math.Max(Math.Min(damage, 100), 15);
-                        damage += Utility.RandomMinMax(0, 15);
-                    }
-                    else
-                    {
-                        damage = (id.Hits * 6) / 10;
-
-                        if ((m == null || !m.Player) && damage < 10)
-                            damage = 10;
-                        else if (damage > 75)
-                            damage = 75;
-                    }
+                    if (m == null || !m.Player)
+                        damage = Math.Max(Math.Min(damage, 100), 15);
+                    damage += Utility.RandomMinMax(0, 15);
 
                     Caster.DoHarmful(id);
                     SpellHelper.Damage(this, id, damage, 100, 0, 0, 0, 0);

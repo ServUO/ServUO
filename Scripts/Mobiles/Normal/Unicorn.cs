@@ -88,13 +88,6 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Fey; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override Poison PoisonImmune
         {
             get
@@ -146,7 +139,7 @@ namespace Server.Mobiles
 
                 if (p != null)
                 {
-                    int chanceToCure = 10000 + (int)(Skills[SkillName.Magery].Value * 75) - ((p.RealLevel + 1) * (Core.AOS ? (p.RealLevel < 4 ? 3300 : 3100) : 1750));
+                    int chanceToCure = 10000 + (int)(Skills[SkillName.Magery].Value * 75) - ((p.RealLevel + 1) * (p.RealLevel < 4 ? 3300 : 3100));
                     chanceToCure /= 100;
 
                     if (chanceToCure > Utility.Random(100))
@@ -185,20 +178,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                SetWeaponAbility(WeaponAbility.ArmorIgnore);
-            }
         }
     }
 }

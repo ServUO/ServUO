@@ -31,7 +31,7 @@ namespace Server.Engines.BulkOrders
         public static readonly int MaxCachedDeeds = 2;
         public static readonly int Delay = 6;
 
-        public static bool NewSystemEnabled = Core.TOL;
+        public static bool NewSystemEnabled = true;
         public static BulkOrderSystem Instance { get; set; }
 
         public Dictionary<PlayerMobile, BODContext> BODPlayerData { get; set; }

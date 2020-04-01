@@ -16,20 +16,10 @@ namespace Server.Mobiles
             var robe = new Robe(Utility.RandomNeutralHue());
             var sandals = new Sandals();
 
-            if (!Core.UOTD)
-            {
-                Body = Race.Human.MaleBody;
+            Body = 124;
 
-                AddItem(robe);
-                AddItem(sandals);
-            }
-            else
-            {
-                Body = 124;
-
-                PackItem(robe);
-                PackItem(sandals);
-            }
+            PackItem(robe);
+            PackItem(sandals);
 
             SetStr(81, 105);
             SetDex(91, 115);
@@ -55,17 +45,13 @@ namespace Server.Mobiles
             Fame = 2500;
             Karma = -2500;
 
-            VirtualArmor = 16;
             PackReg(6);
 
-            if (Core.AOS)
+            switch (Utility.Random(18))
             {
-                switch (Utility.Random(18))
-                {
-                    case 0: PackItem(new BloodOathScroll()); break;
-                    case 1: PackItem(new CurseWeaponScroll()); break;
-                    case 2: PackItem(new StrangleScroll()); break;
-                }
+                case 0: PackItem(new BloodOathScroll()); break;
+                case 1: PackItem(new CurseWeaponScroll()); break;
+                case 2: PackItem(new StrangleScroll()); break;
             }
         }
 
@@ -109,7 +95,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.AOS ? 1 : 0;
+                return 1;
             }
         }
         public override void GenerateLoot()

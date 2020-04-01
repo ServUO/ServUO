@@ -42,8 +42,6 @@ namespace Server.Mobiles
             this.Fame = 18000;
             this.Karma = 18000;
 
-            this.VirtualArmor = 34;
-
 			switch (Utility.Random(12))
             {
                 case 0: PackItem(new StrangleScroll()); break;
@@ -66,13 +64,6 @@ namespace Server.Mobiles
                 return true;
             }
         }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS;
-            }
-        }
         public override bool CanRummageCorpses
         {
             get
@@ -91,7 +82,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.AOS ? 5 : 4;
+                return 5;
             }
         }
         public override bool InitialInnocent
@@ -260,7 +251,7 @@ namespace Server.Mobiles
 
                 this.PlaySound(0x209);
                 this.DoHarmful(combatant);
-                this.Hits += AOS.Damage(combatant, this, Utility.RandomMinMax(30, 40) - (Core.AOS ? 0 : 10), 100, 0, 0, 0, 0);
+                this.Hits += AOS.Damage(combatant, this, Utility.RandomMinMax(30, 40), 100, 0, 0, 0, 0);
             }
         }
     }

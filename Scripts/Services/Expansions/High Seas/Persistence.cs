@@ -16,17 +16,14 @@ namespace Server.Items
 
         public static void Configure()
         {
-            if (Core.HS)
-            {
-                EventSink.WorldSave += OnSave;
-                EventSink.WorldLoad += OnLoad;
+            EventSink.WorldSave += OnSave;
+            EventSink.WorldLoad += OnLoad;
 
-                SeaMarketRegion.RestrictBoats = DefaultRestrictBoats;
+            SeaMarketRegion.RestrictBoats = DefaultRestrictBoats;
 
-                m_Instance = new HighSeasPersistance();
+            m_Instance = new HighSeasPersistance();
 
-                CommandSystem.Register("RestrictBoats", AccessLevel.GameMaster, new CommandEventHandler(SeaMarketRegion.SetRestriction_OnCommand));
-            }
+            CommandSystem.Register("RestrictBoats", AccessLevel.GameMaster, new CommandEventHandler(SeaMarketRegion.SetRestriction_OnCommand));
         }
 
         private static HighSeasPersistance m_Instance;

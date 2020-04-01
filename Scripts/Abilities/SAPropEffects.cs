@@ -400,17 +400,10 @@ namespace Server.Items
         {
             StartForceWalk(defender);
 
-            if (Core.EJ)
-            {
-                if (!(defender is PlayerMobile) || !IsBleedImmune(defender))
-                {
-                    BleedAttack.BeginBleed(defender, from, true);
-                    AddBleedImmunity(defender);
-                }
-            }
-            else
+            if (!(defender is PlayerMobile) || !IsBleedImmune(defender))
             {
                 BleedAttack.BeginBleed(defender, from, true);
+                AddBleedImmunity(defender);
             }
 
             defender.SendLocalizedMessage(1112486); // A shard of the brittle weapon has become lodged in you!
@@ -449,7 +442,7 @@ namespace Server.Items
 
         public static bool CheckHit(Mobile attacker, Mobile defender, WeaponAbility ability, Item weapon)
         {
-            if (defender == null || (Core.EJ && (ability == WeaponAbility.Disarm || ability == WeaponAbility.InfectiousStrike || SkillMasterySpell.HasSpell(attacker, typeof(SkillMasterySpell)))))
+            if (defender == null || ability == WeaponAbility.Disarm || ability == WeaponAbility.InfectiousStrike || SkillMasterySpell.HasSpell(attacker, typeof(SkillMasterySpell)))
                 return false;
 
             SplinteringWeaponContext context = PropertyEffect.GetContext<SplinteringWeaponContext>(attacker, defender, EffectsType.Splintering);

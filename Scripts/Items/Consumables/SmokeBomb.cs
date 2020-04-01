@@ -10,7 +10,7 @@ namespace Server.Items
 		public SmokeBomb()
 			: base(0x2808)
 		{
-			Stackable = Core.ML;
+			Stackable = true;
 			Weight = 1.0;
 		}
 

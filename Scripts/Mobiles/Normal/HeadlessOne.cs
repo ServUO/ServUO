@@ -32,8 +32,6 @@ namespace Server.Mobiles
 
             this.Fame = 450;
             this.Karma = -450;
-
-            this.VirtualArmor = 18;
         }
 
         public HeadlessOne(Serial serial)
@@ -58,7 +56,6 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Poor);
-            // TODO: body parts
         }
 
         public override void Serialize(GenericWriter writer)

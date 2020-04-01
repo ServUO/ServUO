@@ -22,8 +22,6 @@ namespace Server.Mobiles
 
             Fame = 25000;
             Karma = -25000;
-
-            VirtualArmor = 60;
         }
 
         public DragonsFlameGrandMage(Serial serial)
@@ -35,14 +33,14 @@ namespace Server.Mobiles
         public override bool ShowFameTitle { get {return false;} }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosFilthyRich, 6);
+            AddLoot(LootPack.FilthyRich, 6);
         }
 
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);	
 			
-                c.DropItem(new DragonFlameKey());
+            c.DropItem(new DragonFlameKey());
 
             if (Utility.RandomDouble() < 0.5)
                 c.DropItem(new DragonFlameSectBadge());

@@ -42,8 +42,6 @@ namespace Server.Mobiles
             Fame = 3000;
             Karma = -3000;
 
-            VirtualArmor = 18;
-
             if (0.25 > Utility.RandomDouble())
                 PackItem(new Board(10));
             else
@@ -59,7 +57,6 @@ namespace Server.Mobiles
 
         public override Poison PoisonImmune { get { return Poison.Lesser; } }
         public override bool DisallowAllMoves { get { return true; } }
-        public override OppositionGroup OppositionGroup { get { return OppositionGroup.FeyAndUndead; } }
 
         private static List<Mobile> m_TangleCooldown = new List<Mobile>();
         private Dictionary<Mobile, Timer> m_DamageTable = new Dictionary<Mobile, Timer>();
@@ -140,7 +137,6 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

@@ -43,8 +43,6 @@ namespace Server.Mobiles
             Fame = 22500;
             Karma = -22500;
 
-            VirtualArmor = 80;
-
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
@@ -78,7 +76,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return (Core.SE) ? 3.0 : 1.0;
+                return 3.0;
             }
         }
         // TODO: Undead summoning?

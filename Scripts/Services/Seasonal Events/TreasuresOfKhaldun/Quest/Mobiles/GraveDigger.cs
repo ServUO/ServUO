@@ -24,14 +24,11 @@ namespace Server.Engines.Khaldun
 
         public static void Initialize()
         {
-            if (Core.TOL)
+            if (TramInstance == null)
             {
-                if (TramInstance == null)
-                {
-                    TramInstance = new GraveDigger();
-                    TramInstance.MoveToWorld(new Point3D(1382, 1447, 10), Map.Trammel);
-                    TramInstance.Direction = Direction.South;
-                }
+                TramInstance = new GraveDigger();
+                TramInstance.MoveToWorld(new Point3D(1382, 1447, 10), Map.Trammel);
+                TramInstance.Direction = Direction.South;
             }
         }
 
@@ -126,13 +123,6 @@ namespace Server.Engines.Khaldun
             {
                 TramInstance = this;
             }
-            /*else if (Map == Map.Felucca)
-            {
-                FelInstance = this;
-            }*/
-
-            if (!Core.TOL)
-                Delete();
         }
     }
 }

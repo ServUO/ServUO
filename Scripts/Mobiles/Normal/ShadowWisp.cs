@@ -38,8 +38,6 @@ namespace Server.Mobiles
 
             Fame = 500;
 
-            VirtualArmor = 18;
-
             AddItem(new LightSource());
 
             PackBones();
@@ -50,13 +48,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

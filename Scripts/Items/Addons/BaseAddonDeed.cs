@@ -15,9 +15,6 @@ namespace Server.Items
             : base(0x14F0)
         {
             Weight = 1.0;
-
-            if (!Core.AOS)
-                LootType = LootType.Newbied;
         }
 
         public BaseAddonDeed(Serial serial)
@@ -223,7 +220,7 @@ namespace Server.Items
 
             public BaseGalleon CheckGalleonPlacement(Mobile from, BaseAddon addon, Point3D p, Map map)
             {
-                if (!Core.HS || addon.Components.Count > 1)
+                if (addon.Components.Count > 1)
                 {
                     return null;
                 }

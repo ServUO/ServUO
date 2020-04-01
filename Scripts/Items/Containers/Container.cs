@@ -452,17 +452,10 @@ namespace Server.Items
         {
             get
             {
-                if (Core.ML)
+                Mobile m = ParentEntity as Mobile;
+                if (m != null && m.Player && m.Backpack == this)
                 {
-                    Mobile m = ParentEntity as Mobile;
-                    if (m != null && m.Player && m.Backpack == this)
-                    {
-                        return 550;
-                    }
-                    else
-                    {
-                        return base.DefaultMaxWeight;
-                    }
+                    return 550;
                 }
                 else
                 {
