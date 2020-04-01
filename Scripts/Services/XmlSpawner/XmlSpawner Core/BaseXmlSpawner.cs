@@ -634,7 +634,6 @@ namespace Server.Mobiles
 			AddItemKeyword("TAKEN");
 			AddItemKeyword("GIVEN");
 			AddItemKeyword("ITEM");
-			AddItemKeyword("MULTIADDON");
             AddItemKeyword("RANDOMITEM");
 		}
 
@@ -11069,29 +11068,6 @@ namespace Server.Mobiles
 								}
 								break;
 
-							}
-						case itemKeyword.MULTIADDON:
-							{
-								// syntax is MULTIADDON,filename
-								if (itemkeywordargs.Length == 2)
-								{
-									string filename = itemkeywordargs[1];
-
-									// read in the multi.txt file
-
-									Item item = XmlSpawnerAddon.ReadMultiFile(filename, out status_str);
-
-									if (item != null)
-									{
-										AddSpawnItem(spawner, TheSpawn, item, location, map, triggermob, requiresurface, spawnpositioning, substitutedtypeName, out status_str);
-									}
-								}
-								else
-								{
-									status_str = "MULTIADDON takes 1 arg : " + itemtypestr;
-									return false;
-								}
-								break;
 							}
                         case itemKeyword.RANDOMITEM:
                             {

@@ -10714,18 +10714,6 @@
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\PacketHandlerOverrides.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlAddFame.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlAddKarma.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlAddTithing.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlAddVirtue.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlAnimate.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10739,9 +10727,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlDeathAction.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlDex.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlDialog.cs">
@@ -10760,9 +10745,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlHue.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlInt.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlIsEnemy.cs">
@@ -10813,12 +10795,6 @@
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlStamDrain.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlStr.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlTitle.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlUse.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10836,28 +10812,7 @@
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttach\XmlGetAttachGump.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlItems\SimpleMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlItems\SimpleNote.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlItems\SimpleSwitches.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlItems\SimpleTileTrap.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlItems\SingleUseSwitch.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlItems\TimedSwitches.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlItems\XmlSpawnerAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>   
+    </Compile> 
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlPropsGumps\XmlPropsGump.cs">
       <SubType>Code</SubType>
     </Compile>
