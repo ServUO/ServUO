@@ -113,21 +113,18 @@ namespace Server.Misc
 			true, // Bushido = 52
 			true, //Ninjitsu = 53
 			true, // Spellweaving = 54
-
-			#region Stygian Abyss
 			true, // Mysticism = 55
 			true, // Imbuing = 56
 			false // Throwing = 57
-			#endregion
 		};
 
 		public static void Initialize()
 		{
-			Mobile.SkillCheckLocationHandler = XmlSpawnerSkillCheck.Mobile_SkillCheckLocation;
-			Mobile.SkillCheckDirectLocationHandler = XmlSpawnerSkillCheck.Mobile_SkillCheckDirectLocation;
+			Mobile.SkillCheckLocationHandler = new SkillCheckLocationHandler(Mobile_SkillCheckLocation);
+			Mobile.SkillCheckDirectLocationHandler = new SkillCheckDirectLocationHandler(Mobile_SkillCheckDirectLocation);
 
-			Mobile.SkillCheckTargetHandler = XmlSpawnerSkillCheck.Mobile_SkillCheckTarget;
-			Mobile.SkillCheckDirectTargetHandler = XmlSpawnerSkillCheck.Mobile_SkillCheckDirectTarget;
+			Mobile.SkillCheckTargetHandler = new SkillCheckTargetHandler(Mobile_SkillCheckTarget);
+			Mobile.SkillCheckDirectTargetHandler = new SkillCheckDirectTargetHandler(Mobile_SkillCheckDirectTarget);
 		}
 
 		public static bool Mobile_SkillCheckLocation(Mobile from, SkillName skillName, double minSkill, double maxSkill)
