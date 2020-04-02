@@ -25,9 +25,9 @@ namespace Server.Items
                 return 1074161;
             }
         }// Access to Bedlam by invitation only
-
-        public override bool ForceShowProperties { get { return true; } }
-
+        
+        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+        
         public virtual Type Quest
         {
             get

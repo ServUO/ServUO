@@ -209,6 +209,13 @@ namespace Server.Items
             return true;
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            DisplayDurabilityTo(from);
+
+            base.OnSingleClick(from);
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack) || Parent == from)

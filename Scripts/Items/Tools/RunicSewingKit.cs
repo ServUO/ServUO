@@ -50,6 +50,23 @@ namespace Server.Items
             list.Add(1061119, v); // ~1_LEATHER_TYPE~ runic sewing kit
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            string v = " ";
+
+            if (!CraftResources.IsStandard(this.Resource))
+            {
+                int num = CraftResources.GetLocalizationNumber(this.Resource);
+
+                if (num > 0)
+                    v = String.Format("#{0}", num);
+                else
+                    v = CraftResources.GetName(this.Resource);
+            }
+
+            this.LabelTo(from, 1061119, v); // ~1_LEATHER_TYPE~ runic sewing kit
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

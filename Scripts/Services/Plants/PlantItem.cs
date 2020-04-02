@@ -57,7 +57,7 @@ namespace Server.Engines.Plants
 
 		public PlantSystem PlantSystem { get { return m_PlantSystem; } }
 
-		public override bool ForceShowProperties{ get{ return true; } }
+		public override bool ForceShowProperties{ get{ return ObjectPropertyList.Enabled; } }
 
         #region Magincia/Raised Garden Plant Support
         public virtual bool RequiresUpkeep { get { return true; } }
@@ -69,6 +69,18 @@ namespace Server.Engines.Plants
         public virtual int OnPlantLocalization { get { return 1061922; } }
         public virtual int CantUseLocalization { get { return 1061921; } }
         #endregion
+
+        public override void OnSingleClick( Mobile from )
+		{
+			if ( m_PlantStatus >= PlantStatus.DeadTwigs )
+				LabelTo( from, LabelNumber );
+			else if ( m_PlantStatus >= PlantStatus.DecorativePlant )
+				LabelTo( from, 1061924 ); // a decorative plant
+			else if ( m_PlantStatus >= PlantStatus.FullGrownPlant )
+				LabelTo( from, PlantTypeInfo.GetInfo( m_PlantType ).Name );
+			else
+				LabelTo( from, 1029913 ); // plant bowl
+		}
 
 		[CommandProperty( AccessLevel.GameMaster )]
 		public PlantStatus PlantStatus

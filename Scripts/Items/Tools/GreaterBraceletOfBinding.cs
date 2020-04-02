@@ -46,6 +46,11 @@ namespace Server.Items
             list.Add(1151769); // Greater Bracelet of Binding
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            LabelTo(from, 1151769); // Greater Bracelet of Binding
+        }
+
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
         }

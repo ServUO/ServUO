@@ -29,6 +29,11 @@ namespace Server.Items
         {
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            LabelTo(from, 1063449, m_Name);
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);

@@ -346,7 +346,7 @@ namespace Server.Items
             bool xEast = false, ySouth = false;
 
             if (Sextant.Format(loc, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
-                result.AppendFormat("{0}Â°{1}'{2},{3}Â°{4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+                result.AppendFormat("{0}°{1}'{2},{3}°{4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
             else
                 result.AppendFormat("{0},{1}", loc.X, loc.Y);
 
@@ -404,6 +404,25 @@ namespace Server.Items
                 case HouseRaffleState.Completed:
                     {
                         list.Add(1060658, "winner\t{0}", (this.m_Winner == null) ? "unknown" : this.m_Winner.Name); // ~1_val~: ~2_val~
+                        break;
+                    }
+            }
+        }
+
+        public override void OnSingleClick(Mobile from)
+        {
+            base.OnSingleClick(from);
+
+            switch (this.m_State)
+            {
+                case HouseRaffleState.Active:
+                    {
+                        this.LabelTo(from, 1060658, String.Format("Ends\t{0}", this.m_Started + this.m_Duration)); // ~1_val~: ~2_val~
+                        break;
+                    }
+                case HouseRaffleState.Completed:
+                    {
+                        this.LabelTo(from, 1060658, String.Format("Winner\t{0}", (this.m_Winner == null) ? "Unknown" : this.m_Winner.Name)); // ~1_val~: ~2_val~
                         break;
                     }
             }

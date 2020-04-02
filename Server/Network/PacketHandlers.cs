@@ -1670,6 +1670,11 @@ namespace Server.Network
 			}
 		}
 
+		public static bool SingleClickProps { get; set; }
+
+		public static Func<Mobile, Mobile, bool> MobileClickOverride;
+		public static Func<Mobile, Item, bool> ItemClickOverride;
+
 		private static void HandleSingleClick(Mobile m, IEntity target)
 		{
 			if (m == null || target == null || target.Deleted || !m.CanSee(target))
@@ -1677,19 +1682,48 @@ namespace Server.Network
 				return;
 			}
 
-			if (target is Item ti)
+			if (target is Item)
 			{
-				if (Utility.InUpdateRange(m.Location, ti.GetWorldLocation()))
+				var o = (Item)target;
+
+				if (Utility.InUpdateRange(m.Location, o.GetWorldLocation()))
 				{
-                    ti.OnAosSingleClick(m);
-                }
+					if (ItemClickOverride == null || !ItemClickOverride(m, o))
+					{
+						if (SingleClickProps && m.ViewOPL)
+						{
+							o.OnAosSingleClick(m);
+						}
+						else if (m.Region.OnSingleClick(m, o))
+						{
+							if (o.Parent is Item)
+							{
+								((Item)o.Parent).OnSingleClickContained(m, o);
+							}
+
+							o.OnSingleClick(m);
+						}
+					}
+				}
 			}
-			else if (target is Mobile tm)
+			else if (target is Mobile)
 			{
-				if (Utility.InUpdateRange(m, tm))
+				var o = (Mobile)target;
+
+				if (Utility.InUpdateRange(m, o))
 				{
-                    tm.OnAosSingleClick(m);
-                }
+					if (MobileClickOverride == null || !MobileClickOverride(m, o))
+					{
+						if (SingleClickProps && m.ViewOPL)
+						{
+							o.OnAosSingleClick(m);
+						}
+						else if (m.Region.OnSingleClick(m, o))
+						{
+							o.OnSingleClick(m);
+						}
+					}
+				}
 			}
 		}
 
@@ -1906,7 +1940,7 @@ namespace Server.Network
 
 		public static void BatchQueryProperties(NetState state, PacketReader pvSrc)
 		{
-			if (state == null || state.Mobile == null)
+			if (state == null || state.Mobile == null || !state.Mobile.ViewOPL)
 			{
 				return;
 			}
@@ -1949,7 +1983,7 @@ namespace Server.Network
 
 		public static void QueryProperties(NetState state, PacketReader pvSrc)
 		{
-			if (state == null || state.Mobile == null)
+			if (state == null || state.Mobile == null || !state.Mobile.ViewOPL)
 			{
 				return;
 			}
@@ -2198,9 +2232,16 @@ namespace Server.Network
 		{
 			var target = World.FindEntity(pvSrc.ReadInt32());
 
-            if (target != null)
+            if (target != null && ObjectPropertyList.Enabled)
             {
-                ContextMenu.Display(state.Mobile, target);
+                if (!state.Mobile.ViewOPL)
+                {
+                    HandleSingleClick(state.Mobile, target);
+                }
+                else
+                {
+                    ContextMenu.Display(state.Mobile, target);
+                }
             }
 		}
 

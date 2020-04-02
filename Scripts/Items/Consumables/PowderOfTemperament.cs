@@ -94,6 +94,13 @@ namespace Server.Items
             LabelToAffix(m, 1017323, AffixType.Append, ": " + m_UsesRemaining.ToString()); // Durability
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            DisplayDurabilityTo(from);
+
+            base.OnSingleClick(from);
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack))

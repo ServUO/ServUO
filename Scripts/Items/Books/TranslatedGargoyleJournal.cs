@@ -119,6 +119,11 @@ namespace Server.Items
             list.Add("Translated Gargoyle Journal");
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            this.LabelTo(from, "Translated Gargoyle Journal");
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

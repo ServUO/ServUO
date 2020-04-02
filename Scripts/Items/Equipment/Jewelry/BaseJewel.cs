@@ -1002,6 +1002,16 @@ namespace Server.Items
             }
         }
 
+        public override void OnSingleClick(Mobile from)
+		{
+			base.OnSingleClick(from);
+
+			if (m_Crafter != null)
+			{
+				LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+			}
+		}
+
         public override bool DropToWorld(Mobile from, Point3D p)
         {
             bool drop = base.DropToWorld(from, p);

@@ -18,11 +18,15 @@ namespace Server.Misc
 
             beholder.Send(new DisplayPaperdoll(beheld, Titles.ComputeTitle(beholder, beheld), beheld.AllowEquipFrom(beholder)));
 
-            foreach (var item in beheld.Items)
-                beholder.Send(item.OPLPacket);
+            if (beholder.ViewOPL)
+            {
+                List<Item> items = beheld.Items;
 
-            // NOTE: OSI sends MobileUpdate when opening your own paperdoll.
-            // It has a very bad rubber-banding affect. What positive affects does it have?
+                for (int i = 0; i < items.Count; ++i)
+                    beholder.Send(items[i].OPLPacket);
+                // NOTE: OSI sends MobileUpdate when opening your own paperdoll.
+                // It has a very bad rubber-banding affect. What positive affects does it have?
+            }
         }
     }
 }

@@ -1921,6 +1921,16 @@ namespace Server.Items
             return false;
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            base.OnSingleClick(from);
+
+            if (CheckContentDisplay(from))
+            {
+                LabelTo(from, "({0} items, {1} stones)", TotalItems, TotalWeight);
+            }
+        }
+
 		public List<Mobile> Openers { get; set; }
 
         public virtual bool IsPublicContainer { get { return false; } }
@@ -1963,9 +1973,14 @@ namespace Server.Items
                 to.Send(new ContainerContent(to, this));
             }
 
-            foreach (var o in Items)
+			if (to.ViewOPL)
             {
-                to.Send(o.OPLPacket);
+                var items = Items;
+
+				foreach (var o in items)
+                {
+					to.Send(o.OPLPacket);
+                }
             }
         }
 

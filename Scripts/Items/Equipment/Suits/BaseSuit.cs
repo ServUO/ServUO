@@ -72,6 +72,12 @@ namespace Server.Items
             return true;
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            if (this.Validate())
+                base.OnSingleClick(from);
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (this.Validate())

@@ -105,6 +105,11 @@ namespace Server
 			}
 		}
 
+		public override void OnSingleClick(Mobile from)
+		{
+			LabelTo(from, "Offer: {0:#,0} platinum, {1:#,0} gold", Plat, Gold);
+		}
+
 		public override void GetProperties(ObjectPropertyList list)
 		{
 			base.GetProperties(list);

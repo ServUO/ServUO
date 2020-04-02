@@ -128,6 +128,18 @@ namespace Server.Items
             LabelToAffix(m, 1017323, AffixType.Append, ": " + m_UsesRemaining.ToString()); // Durability
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            DisplayDurabilityTo(from);
+
+            base.OnSingleClick(from);
+
+			if (m_Crafter != null)
+			{
+				LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+			}
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack) || Parent == from)

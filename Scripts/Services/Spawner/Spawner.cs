@@ -274,6 +274,16 @@ namespace Server.Mobiles
             }
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            base.OnSingleClick(from);
+
+            if (m_Running)
+                LabelTo(from, "[Running]");
+            else
+                LabelTo(from, "[Off]");
+        }
+
         public void Start()
         {
             if (!m_Running)

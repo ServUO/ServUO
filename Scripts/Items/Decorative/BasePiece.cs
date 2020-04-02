@@ -69,6 +69,16 @@ namespace Server.Items
             }
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            if (this.m_Board == null || this.m_Board.Deleted)
+                this.Delete();
+            else if (!this.IsChildOf(this.m_Board))
+                this.m_Board.DropItem(this);
+            else
+                base.OnSingleClick(from);
+        }
+
         public override bool OnDragLift(Mobile from)
         {
             if (this.m_Board == null || this.m_Board.Deleted)

@@ -778,7 +778,9 @@ namespace Server
 
 		private const int WarmodeCatchCount = 4;
 		// Allow four warmode changes in 0.5 seconds, any more will be delay for two seconds
-        
+
+		public virtual bool ViewOPL { get { return ObjectPropertyList.Enabled; } }
+
 		[CommandProperty(AccessLevel.Decorator)]
 		public Race Race
 		{
@@ -4598,7 +4600,7 @@ namespace Server
 					item.SendInfoTo(state);
 				}
 
-				if (item.Parent != null)
+				if (ViewOPL && item.Parent != null)
 				{
 					state.Send(item.OPLPacket);
 				}
@@ -7575,8 +7577,11 @@ namespace Server
 								ns.Send(new BondedStatus(0, m.m_Serial, 1));
 							}
 
-                            ns.Send(m.OPLPacket);
-                        }
+							if (ViewOPL)
+							{
+								ns.Send(m.OPLPacket);
+							}
+						}
 					}
 				}
 
@@ -8900,8 +8905,11 @@ namespace Server
 							state.Send(new BondedStatus(0, m_Serial, 1));
 						}
 
-                        state.Send(OPLPacket);
-                    }
+						if (state.Mobile.ViewOPL)
+						{
+							state.Send(OPLPacket);
+						}
+					}
 				}
 
 				eable.Free();
@@ -9808,6 +9816,11 @@ namespace Server
 
 		public void InvalidateProperties()
 		{
+			if (!ObjectPropertyList.Enabled)
+			{
+				return;
+			}
+
 			if (m_Map != null && m_Map != Map.Internal && !World.Loading)
 			{
 				ObjectPropertyList oldList = m_PropertyList;
@@ -10069,8 +10082,11 @@ namespace Server
 										m.m_NetState.Send(new BondedStatus(0, m_Serial, 1));
 									}
 
-                                    m.m_NetState.Send(OPLPacket);
-                                }
+									if (m.ViewOPL)
+									{
+										m.m_NetState.Send(OPLPacket);
+									}
+								}
 
 								// Will they enter in our update range? (Y: Update)
 								update = Utility.InUpdateRange(this, newLocation, m);
@@ -10101,8 +10117,11 @@ namespace Server
 										ourState.Send(new BondedStatus(0, m.m_Serial, 1));
 									}
 
-                                    ourState.Send(m.OPLPacket);
-                                }
+									if (ViewOPL)
+									{
+										ourState.Send(m.OPLPacket);
+									}
+								}
 							}
 						}
 
@@ -10142,8 +10161,11 @@ namespace Server
 									ns.Send(new BondedStatus(0, m_Serial, 1));
 								}
 
-                                ns.Send(OPLPacket);
-                            }
+								if (ns.Mobile.ViewOPL)
+								{
+									ns.Send(OPLPacket);
+								}
+							}
 						}
 
 						eable.Free();
@@ -10631,8 +10653,11 @@ namespace Server
 							state.Send(new BondedStatus(0, m_Serial, 1));
 						}
 
-                        state.Send(OPLPacket);
-                    }
+						if (state.Mobile.ViewOPL)
+						{
+							state.Send(OPLPacket);
+						}
+					}
 				}
 
 				eable.Free();
@@ -11142,7 +11167,7 @@ namespace Server
 			bool sendUpdate = false, sendRemove = false;
 			bool sendPublicStats = false, sendPrivateStats = false;
 			bool sendMoving = false, sendNonlocalMoving = false;
-			bool sendOPLUpdate = (delta & MobileDelta.Properties) != 0;
+			bool sendOPLUpdate = ObjectPropertyList.Enabled && (delta & MobileDelta.Properties) != 0;
 
             bool sendHair = false, sendFacialHair = false, removeHair = false, removeFacialHair = false, sendFace = false, removeFace = false;
 
@@ -12386,7 +12411,114 @@ namespace Server
 		public static bool OldPropertyTitles { get { return m_OldPropertyTitles; } set { m_OldPropertyTitles = value; } }
 
 		public virtual bool ShowFameTitle { get { return true; } } 
-		public virtual bool ShowAccessTitle { get { return false; } }		
+		public virtual bool ShowAccessTitle { get { return false; } }
+
+		/// <summary>
+		///     Overridable. Event invoked when the Mobile is single clicked.
+		/// </summary>
+		public virtual void OnSingleClick(Mobile from)
+		{
+			if (m_Deleted)
+			{
+				return;
+			}
+			else if (IsPlayer() && DisableHiddenSelfClick && Hidden && from == this)
+			{
+				return;
+			}
+
+			if (m_GuildClickMessage)
+			{
+				BaseGuild guild = m_Guild;
+
+				if (guild != null && (m_DisplayGuildTitle || (m_Player && guild.Type != GuildType.Regular)))
+				{
+					string title = GuildTitle;
+					string type;
+
+					if (title == null)
+					{
+						title = "";
+					}
+					else
+					{
+						title = title.Trim();
+					}
+
+					if (guild.Type >= 0 && (int)guild.Type < m_GuildTypes.Length)
+					{
+						type = m_GuildTypes[(int)guild.Type];
+					}
+					else
+					{
+						type = "";
+					}
+
+					string text = String.Format(title.Length <= 0 ? "[{1}]{2}" : "[{0}, {1}]{2}", title, guild.Abbreviation, type);
+
+					PrivateOverheadMessage(MessageType.Regular, SpeechHue, true, text, from.NetState);
+				}
+			}
+
+			int hue;
+
+			if (m_NameHue != -1)
+			{
+				hue = m_NameHue;
+			}
+			else if (IsStaff())
+			{
+				hue = 11;
+			}
+			else
+			{
+				hue = Notoriety.GetHue(Notoriety.Compute(from, this));
+			}
+
+			string name = Name;
+
+			if (name == null)
+			{
+				name = String.Empty;
+			}
+
+			string prefix = "";
+
+			if (ShowFameTitle && (m_Player || m_Body.IsHuman) && m_Fame >= 10000)
+			{
+				prefix = (m_Female ? "Lady" : "Lord");
+			}
+
+			string suffix = "";
+
+			if (ClickTitle && Title != null && Title.Length > 0)
+			{
+				suffix = Title;
+			}
+
+			suffix = ApplyNameSuffix(suffix);
+
+			string val;
+
+			if (prefix.Length > 0 && suffix.Length > 0)
+			{
+				val = String.Concat(prefix, " ", name, " ", suffix);
+			}
+			else if (prefix.Length > 0)
+			{
+				val = String.Concat(prefix, " ", name);
+			}
+			else if (suffix.Length > 0)
+			{
+				val = String.Concat(name, " ", suffix);
+			}
+			else
+			{
+				val = name;
+			}
+
+			PrivateOverheadMessage(MessageType.Label, hue, m_AsciiClickMessage, val, from.NetState);
+		}
 
 		public bool CheckSkill(SkillName skill, double minSkill, double maxSkill)
 		{

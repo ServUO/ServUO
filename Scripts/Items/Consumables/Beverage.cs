@@ -1065,6 +1065,14 @@ namespace Server.Items
             return quality;
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            base.OnSingleClick(from);
+
+            if (ShowQuantity)
+                LabelTo(from, GetQuantityDescription());
+        }
+
         public virtual bool ValidateUse(Mobile from, bool message)
         {
             if (Deleted)

@@ -2245,6 +2245,11 @@ namespace Server
 
         public void InvalidateProperties()
         {
+            if (!ObjectPropertyList.Enabled)
+            {
+                return;
+            }
+
             if (m_Map != null && m_Map != Map.Internal && !World.Loading)
             {
                 ObjectPropertyList oldList = m_PropertyList;
@@ -3648,7 +3653,7 @@ namespace Server
 
         public void SendInfoTo(NetState state)
         {
-            SendInfoTo(state, state.Mobile != null);
+            SendInfoTo(state, state.Mobile != null && state.Mobile.ViewOPL);
         }
 
         public virtual void SendInfoTo(NetState state, bool sendOplPacket)
@@ -4015,7 +4020,7 @@ namespace Server
 
             if (map != null && !Deleted)
             {
-                bool sendOPLUpdate = (flags & ItemDelta.Properties) != 0;
+                bool sendOPLUpdate = ObjectPropertyList.Enabled && (flags & ItemDelta.Properties) != 0;
 
                 Container contParent = m_Parent as Container;
 
@@ -4045,7 +4050,10 @@ namespace Server
                                         ns.Send(new ContainerContentUpdate(this));
                                     }
 
-                                    ns.Send(OPLPacket);
+                                    if (rootParent.ViewOPL)
+                                    {
+                                        ns.Send(OPLPacket);
+                                    }
                                 }
                             }
                         }
@@ -4089,7 +4097,10 @@ namespace Server
                                                 ns.Send(new ContainerContentUpdate(this));
                                             }
 
-                                            ns.Send(OPLPacket);
+                                            if (tradeRecip.ViewOPL)
+                                            {
+                                                ns.Send(OPLPacket);
+                                            }
                                         }
                                     }
                                 }
@@ -4134,7 +4145,10 @@ namespace Server
                                                     ns.Send(new ContainerContentUpdate(this));
                                                 }
 
-                                                ns.Send(OPLPacket);
+                                                if (mob.ViewOPL)
+                                                {
+                                                    ns.Send(OPLPacket);
+                                                }
                                             }
                                         }
                                     }
@@ -4195,7 +4209,10 @@ namespace Server
                                     state.Send(p);
                                 }
 
-                                state.Send(OPLPacket);
+                                if (m.ViewOPL)
+                                {
+                                    state.Send(OPLPacket);
+                                }
                             }
                         }
                     }
@@ -4233,7 +4250,10 @@ namespace Server
 
                                 state.Send(p);
 
-                                state.Send(OPLPacket);
+                                if (m.ViewOPL)
+                                {
+                                    state.Send(OPLPacket);
+                                }
                             }
                         }
 
@@ -5850,7 +5870,15 @@ namespace Server
 
         public virtual bool CanTarget { get { return true; } }
         public virtual bool DisplayLootType { get { return true; } }
-        
+
+        public virtual void OnSingleClickContained(Mobile from, Item item)
+        {
+            if (m_Parent is Item)
+            {
+                ((Item)m_Parent).OnSingleClickContained(from, item);
+            }
+        }
+
         public virtual void OnAosSingleClick(Mobile from)
         {
             ObjectPropertyList opl = PropertyList;
@@ -5859,7 +5887,54 @@ namespace Server
             {
                 from.Send(new MessageLocalized(m_Serial, m_ItemID, MessageType.Label, 0x3B2, 3, opl.Header, Name, opl.HeaderArgs));
             }
-        }        
+        }
+
+        public virtual void OnSingleClick(Mobile from)
+        {
+            if (Deleted || !from.CanSee(this))
+            {
+                return;
+            }
+
+            if (DisplayLootType)
+            {
+                LabelLootTypeTo(from);
+            }
+
+            NetState ns = from.NetState;
+
+            if (ns != null)
+            {
+                if (Name == null)
+                {
+                    if (m_Amount <= 1)
+                    {
+                        ns.Send(new MessageLocalized(m_Serial, m_ItemID, MessageType.Label, 0x3B2, 3, LabelNumber, "", ""));
+                    }
+                    else
+                    {
+                        ns.Send(
+                            new MessageLocalizedAffix(
+                                m_Serial,
+                                m_ItemID,
+                                MessageType.Label,
+                                0x3B2,
+                                3,
+                                LabelNumber,
+                                "",
+                                AffixType.Append,
+                                String.Format(" : {0}", m_Amount),
+                                ""));
+                    }
+                }
+                else
+                {
+                    ns.Send(
+                        new UnicodeMessage(
+                            m_Serial, m_ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", Name + (m_Amount > 1 ? " : " + m_Amount : "")));
+                }
+            }
+        }
 
         private static bool m_ScissorCopyLootType;
 
