@@ -137,6 +137,11 @@ namespace Server.Items
             list.Add("Fropoz's Journal");
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            this.LabelTo(from, "Fropoz's Journal");
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

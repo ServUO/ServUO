@@ -24,6 +24,11 @@ namespace Server.Items
             this.Weight = weight;
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            this.LabelTo(from, 1050039, String.Format("#{0}\t#1041645", this.LabelNumber));
+        }
+
         public override void AddNameProperties(ObjectPropertyList list)
         {
             if (m_IsBarnacleItem)

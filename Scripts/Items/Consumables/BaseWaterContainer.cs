@@ -1,4 +1,4 @@
-namespace Server.Items
+﻿namespace Server.Items
 {
     public abstract class BaseWaterContainer : Container, IHasQuantity
     {
@@ -74,6 +74,21 @@ namespace Server.Items
             if (IsEmpty)
             {
                 base.OnDoubleClick(from);
+            }
+        }
+
+        public override void OnSingleClick(Mobile from)
+        {
+            if (IsEmpty)
+            {
+                base.OnSingleClick(from);
+            }
+            else
+            {
+                if (Name == null)
+                    LabelTo(from, LabelNumber);
+                else
+                    LabelTo(from, Name);
             }
         }
 

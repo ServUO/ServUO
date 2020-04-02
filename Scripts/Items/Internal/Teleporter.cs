@@ -187,6 +187,31 @@ namespace Server.Items
             list.Add(1060660, "Creatures\t{0}", m_Creatures ? "Yes" : "No");
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            base.OnSingleClick(from);
+
+            if (m_Active)
+            {
+                if (m_MapDest != null && m_PointDest != Point3D.Zero)
+                {
+                    LabelTo(from, "{0} [{1}]", m_PointDest, m_MapDest);
+                }
+                else if (m_MapDest != null)
+                {
+                    LabelTo(from, "[{0}]", m_MapDest);
+                }
+                else if (m_PointDest != Point3D.Zero)
+                {
+                    LabelTo(from, m_PointDest.ToString());
+                }
+            }
+            else
+            {
+                LabelTo(from, "(inactive)");
+            }
+        }
+
         public virtual bool CanTeleport(Mobile m)
         {
             if (!m_Active)

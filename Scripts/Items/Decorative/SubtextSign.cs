@@ -37,6 +37,13 @@ namespace Server.Items
                 this.InvalidateProperties();
             }
         }
+        public override void OnSingleClick(Mobile from)
+        {
+            base.OnSingleClick(from);
+
+            if (!String.IsNullOrEmpty(this.m_Subtext))
+                this.LabelTo(from, this.m_Subtext);
+        }
 
         public override void AddNameProperties(ObjectPropertyList list)
         {

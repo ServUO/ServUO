@@ -188,6 +188,23 @@ namespace Server.Items
 			((Container)parent).UpdateTotals();
 		}
 
+		public override void OnSingleClick(Mobile from)
+		{
+			from.Send(
+				new MessageLocalizedAffix(
+                    from.NetState,
+					Serial,
+					ItemID,
+					MessageType.Label,
+					0x3B2,
+					3,
+					1041361,
+					"",
+					AffixType.Append,
+					String.Concat(" ", m_Worth.ToString()),
+					"")); // A bank check:
+		}
+
 		public override void OnDoubleClick(Mobile from)
 		{
 			// This probably isn't OSI accurate, but we can't just make the quests redundant.

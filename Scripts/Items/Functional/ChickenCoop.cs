@@ -127,7 +127,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
 
         public override void GetProperties(ObjectPropertyList list)
         {

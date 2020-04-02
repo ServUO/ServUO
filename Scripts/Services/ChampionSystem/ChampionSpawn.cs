@@ -1045,6 +1045,14 @@ namespace Server.Engines.CannedEvil
             }
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            if (m_Active)
+                LabelTo(from, "{0} (Active; Level: {1}; Kills: {2}/{3})", m_Type, Level, m_Kills, MaxKills);
+            else
+                LabelTo(from, "{0} (Inactive)", m_Type);
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             from.SendGump(new PropertiesGump(from, this));

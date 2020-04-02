@@ -1012,6 +1012,48 @@ namespace Server.Items
             }
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            if (m_Completed)
+            {
+                from.Send(
+                    new MessageLocalizedAffix(
+                        from.NetState,
+                        Serial,
+                        ItemID,
+                        MessageType.Label,
+                        0x3B2,
+                        3,
+                        1048030,
+                        "",
+                        AffixType.Append,
+                        String.Format(" completed by {0}", m_CompletedBy == null ? "someone" : m_CompletedBy.Name),
+                        ""));
+            }
+            else if (m_Decoder != null)
+            {
+                if (m_Level == 6)
+                {
+                    LabelTo(from, 1063453);
+                }
+                else
+                {
+                    LabelTo(from, 1041516 + m_Level);
+                }
+            }
+            else
+            {
+                if (m_Level == 6)
+                {
+                    LabelTo(from, 1041522, String.Format("#{0}\t \t#{1}", 1063452, Facet == Map.Felucca ? 1041502 : 1041503));
+                }
+                else
+                {
+                    LabelTo(from, 1041522, String.Format("#{0}\t \t#{1}", 1041510 + m_Level, Facet == Map.Felucca ? 1041502 : 1041503));
+                }
+            }
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

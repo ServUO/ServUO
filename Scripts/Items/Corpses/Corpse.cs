@@ -1392,6 +1392,27 @@ namespace Server.Items
             }
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            int hue = Notoriety.GetHue(NotorietyHandlers.CorpseNotoriety(from, this));
+
+            if (ItemID == 0x2006) // Corpse form
+            {
+                if (m_CorpseName != null)
+                {
+                    from.Send(new AsciiMessage(Serial, ItemID, MessageType.Label, hue, 3, "", m_CorpseName));
+                }
+                else
+                {
+                    from.Send(new MessageLocalized(Serial, ItemID, MessageType.Label, hue, 3, 1046414, "", Name));
+                }
+            }
+            else // Bone form
+            {
+                from.Send(new MessageLocalized(Serial, ItemID, MessageType.Label, hue, 3, 1046414, "", Name));
+            }
+        }
+
         public bool Carve(Mobile from, Item item)
         {
             if (IsCriminalAction(from) && Map != null && (Map.Rules & MapRules.HarmfulRestrictions) != 0)

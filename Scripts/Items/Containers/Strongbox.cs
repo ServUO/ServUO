@@ -112,6 +112,21 @@ namespace Server.Items
                 base.AddNameProperty(list);
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            if (this.m_Owner != null)
+            {
+                this.LabelTo(from, 1042887, this.m_Owner.Name); // a strong box owned by ~1_OWNER_NAME~
+
+                if (this.CheckContentDisplay(from))
+                    this.LabelTo(from, "({0} items, {1} stones)", this.TotalItems, this.TotalWeight);
+            }
+            else
+            {
+                base.OnSingleClick(from);
+            }
+        }
+
         public override bool IsAccessibleTo(Mobile m)
         {
             if (this.m_Owner == null || this.m_Owner.Deleted || this.m_House == null || this.m_House.Deleted || m.AccessLevel >= AccessLevel.GameMaster)

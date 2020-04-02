@@ -26,8 +26,13 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
-
+        public override bool ForceShowProperties
+        {
+            get
+            {
+                return ObjectPropertyList.Enabled;
+            }
+        }
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
         {

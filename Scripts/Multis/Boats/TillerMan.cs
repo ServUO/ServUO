@@ -65,6 +65,14 @@ namespace Server.Items
                 base.AddNameProperty(list);
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            if (Boat != null && Boat.ShipName != null)
+                LabelTo(from, 1042884, Boat.ShipName); // the tiller man of the ~1_SHIP_NAME~
+            else
+                base.OnSingleClick(from);
+        }
+
         public Mobile Pilot { get { return Boat != null ? Boat.Pilot : null; } }
 
         public override void OnDoubleClickDead(Mobile m)

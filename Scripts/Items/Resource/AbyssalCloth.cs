@@ -16,9 +16,9 @@ namespace Server.Items
         public AbyssalCloth(int amount)
             : base(0x1767)
         {
-            Stackable = true;
-            Amount = amount;			
-			Hue = 2075;
+            this.Stackable = true;
+            this.Amount = amount;			
+			this.Hue = 2075;
         }
 
         public AbyssalCloth(Serial serial)
@@ -38,7 +38,7 @@ namespace Server.Items
         {
             get
             {
-                return LabelNumber;
+                return this.LabelNumber;
             }
         }
         bool ICommodity.IsDeedable
@@ -63,9 +63,16 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
 		
+		public override void OnSingleClick(Mobile from)
+        {
+            int number = (this.Amount == 1) ? 1049124 : 1049123;
+
+            from.Send(new MessageLocalized(this.Serial, this.ItemID, MessageType.Regular, 0x3B2, 3, number, "", this.Amount.ToString()));
+        }
+		
 		public bool Scissor(Mobile from, Scissors scissors)
         {
-            if (Deleted || !from.CanSee(this))
+            if (this.Deleted || !from.CanSee(this))
                 return false;
 
             base.ScissorHelper(from, new Bandage(), 1);

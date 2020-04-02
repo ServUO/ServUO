@@ -79,6 +79,13 @@ namespace Server.Items
                 return null;
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            base.OnSingleClick(from);
+
+            this.LabelTo(from, 1094795, GetTitle()); // An alter service contract (~1_SKILL_NAME~)
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);

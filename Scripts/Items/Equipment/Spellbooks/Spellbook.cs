@@ -772,22 +772,36 @@ namespace Server.Items
 				to.Send(new DisplaySpellbook(this));
 			}
 
-            if (ns.NewSpellbook)
-            {
-                to.Send(new NewSpellbookContent(this, ItemID, BookOffset + 1, m_Content));
-            }
-            else
-            {
-                if (ns.ContainerGridLines)
-                {
-                    to.Send(new SpellbookContent6017(m_Count, BookOffset + 1, m_Content, this));
-                }
-                else
-                {
-                    to.Send(new SpellbookContent(m_Count, BookOffset + 1, m_Content, this));
-                }
-            }
-        }
+			if (ObjectPropertyList.Enabled)
+			{
+				if (ns.NewSpellbook)
+				{
+					to.Send(new NewSpellbookContent(this, ItemID, BookOffset + 1, m_Content));
+				}
+				else
+				{
+					if (ns.ContainerGridLines)
+					{
+						to.Send(new SpellbookContent6017(m_Count, BookOffset + 1, m_Content, this));
+					}
+					else
+					{
+						to.Send(new SpellbookContent(m_Count, BookOffset + 1, m_Content, this));
+					}
+				}
+			}
+			else
+			{
+				if (ns.ContainerGridLines)
+				{
+					to.Send(new SpellbookContent6017(m_Count, BookOffset + 1, m_Content, this));
+				}
+				else
+				{
+					to.Send(new SpellbookContent(m_Count, BookOffset + 1, m_Content, this));
+				}
+			}
+		}
 
         public override void AddNameProperties(ObjectPropertyList list)
         {
@@ -981,6 +995,18 @@ namespace Server.Items
         public virtual void AddProperty(ObjectPropertyList list)
         {
         }
+
+		public override void OnSingleClick(Mobile from)
+		{
+			base.OnSingleClick(from);
+
+			if (m_Crafter != null)
+			{
+				LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+			}
+
+			LabelTo(from, 1042886, m_Count.ToString());
+		}
 
 		public override void OnDoubleClick(Mobile from)
 		{

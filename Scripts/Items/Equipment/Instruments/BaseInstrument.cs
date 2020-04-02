@@ -533,6 +533,59 @@ namespace Server.Items
                 Timer.DelayCall(TimeSpan.Zero, new TimerCallback(InvalidateProperties));
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            ArrayList attrs = new ArrayList();
+
+            if (DisplayLootType)
+            {
+                if (LootType == LootType.Blessed)
+                    attrs.Add(new EquipInfoAttribute(1038021)); // blessed
+                else if (LootType == LootType.Cursed)
+                    attrs.Add(new EquipInfoAttribute(1049643)); // cursed
+            }
+
+            if (m_Quality == ItemQuality.Exceptional)
+                attrs.Add(new EquipInfoAttribute(1018305 - (int)m_Quality));
+
+            if (m_ReplenishesCharges)
+                attrs.Add(new EquipInfoAttribute(1070928)); // Replenish Charges
+
+            // TODO: Must this support item identification?
+            if (m_Slayer != SlayerName.None)
+            {
+                SlayerEntry entry = SlayerGroup.GetEntryByName(m_Slayer);
+                if (entry != null)
+                    attrs.Add(new EquipInfoAttribute(entry.Title));
+            }
+
+            if (m_Slayer2 != SlayerName.None)
+            {
+                SlayerEntry entry = SlayerGroup.GetEntryByName(m_Slayer2);
+                if (entry != null)
+                    attrs.Add(new EquipInfoAttribute(entry.Title));
+            }
+
+            int number;
+
+            if (Name == null)
+            {
+                number = LabelNumber;
+            }
+            else
+            {
+                LabelTo(from, Name);
+                number = 1041000;
+            }
+
+            if (attrs.Count == 0 && Crafter == null && Name != null)
+                return;
+
+            EquipmentInfo eqInfo = new EquipmentInfo(number, m_Crafter, false, (EquipInfoAttribute[])attrs.ToArray(typeof(EquipInfoAttribute)));
+
+            from.Send(new DisplayEquipmentInfo(this, eqInfo));
+        }
+
         public BaseInstrument(Serial serial)
             : base(serial)
         {

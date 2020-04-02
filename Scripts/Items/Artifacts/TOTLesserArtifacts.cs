@@ -1172,6 +1172,11 @@ namespace Server.Items
         {
             list.Add(1070935, m_UrnName); // Ancient Urn of ~1_name~
         }
+
+        public override void OnSingleClick(Mobile from)
+        {
+            LabelTo(from, 1070935, m_UrnName); // Ancient Urn of ~1_name~
+        }
     }
 
     public class HonorableSwords : Item
@@ -1238,6 +1243,11 @@ namespace Server.Items
         public override void AddNameProperty(ObjectPropertyList list)
         {
             list.Add(1070936, m_SwordsName); // Honorable Swords of ~1_name~
+        }
+
+        public override void OnSingleClick(Mobile from)
+        {
+            LabelTo(from, 1070936, m_SwordsName); // Honorable Swords of ~1_name~
         }
     }
 

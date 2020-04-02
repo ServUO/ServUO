@@ -70,6 +70,16 @@ namespace Server.Items
             }
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            base.OnSingleClick(from);
+
+            if (this.m_Next == null)
+                this.LabelTo(from, "(Unlinked)");
+            else
+                this.LabelTo(from, "(Linked: {0})", this.m_Next.Location);
+        }
+
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);

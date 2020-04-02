@@ -129,8 +129,13 @@ namespace Server.Engines.Quests.Collector
                 this.InvalidateProperties();
             }
         }
-        public override bool ForceShowProperties { get { return true; } }
-
+        public override bool ForceShowProperties
+        {
+            get
+            {
+                return ObjectPropertyList.Enabled;
+            }
+        }
         public static string RandomName(Mobile from)
         {
             int index = Utility.Random(m_Names.Length);
@@ -148,6 +153,16 @@ namespace Server.Engines.Quests.Collector
                 list.Add(1055138); // a partially reconstructed obsidian statue
             else
                 list.Add(1055139, this.m_StatueName); // an obsidian statue of ~1_STATUE_NAME~
+        }
+
+        public override void OnSingleClick(Mobile from)
+        {
+            if (this.m_Quantity < m_Partial)
+                this.LabelTo(from, 1055137); // a section of an obsidian statue
+            else if (this.m_Quantity < m_Completed)
+                this.LabelTo(from, 1055138); // a partially reconstructed obsidian statue
+            else
+                this.LabelTo(from, 1055139, this.m_StatueName); // an obsidian statue of ~1_STATUE_NAME~
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)

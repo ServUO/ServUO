@@ -125,10 +125,13 @@ namespace Server.Commands
                                     else
                                         ns.Send(new MobileIncomingOld(targ, from));
 
-                                    ns.Send(from.OPLPacket);
+                                    if (targ.ViewOPL)
+                                    {
+                                        ns.Send(from.OPLPacket);
 
-                                    foreach (Item item in from.Items)
-                                        ns.Send(item.OPLPacket);
+                                        foreach (Item item in from.Items)
+                                            ns.Send(item.OPLPacket);
+                                    }
                                 }
                                 else
                                 {

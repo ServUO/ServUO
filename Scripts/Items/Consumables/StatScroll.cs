@@ -70,6 +70,16 @@ namespace Server.Items
                 list.Add("a scroll of power ({0}{1} Maximum Stats)", (Value - m_StatCap) >= 0 ? "+" : "", Value - m_StatCap);
         }
 
+        public override void OnSingleClick(Mobile from)
+        {
+            int level = ((int)Value - (m_StatCap + 5)) / 5;
+			
+            if (level >= 0 && level <= 4 && (int)Value % 5 == 0)
+                base.LabelTo(from, 1049463 + level, "#1049476");
+            else
+                base.LabelTo(from, "a scroll of power ({0}{1} Maximum Stats)", (Value - m_StatCap) >= 0 ? "+" : "", Value - m_StatCap);
+        }
+
         public override bool CanUse(Mobile from)
         {
             if (!base.CanUse(from))
