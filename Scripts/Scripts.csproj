@@ -10714,16 +10714,10 @@
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\PacketHandlerOverrides.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlAnimate.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlAosAttributes.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlData.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlDate.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlDialog.cs">
@@ -10735,9 +10729,6 @@
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlFollow.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlFreeze.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlHue.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10747,19 +10738,10 @@
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlLocalVariable.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlMessage.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlMorph.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlNextSpawn.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlPoison.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlRestrictEquip.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlSaveItem.cs">
