@@ -379,13 +379,6 @@ namespace Server.Mobiles
             }
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            base.OnSingleClick(from);
-
-            LabelTo(from, "Veteran Reward");
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

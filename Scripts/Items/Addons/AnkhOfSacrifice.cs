@@ -20,13 +20,8 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties
-        {
-            get
-            {
-                return ObjectPropertyList.Enabled;
-            }
-        }
+        public override bool ForceShowProperties { get { return true; } }
+
         public override int LabelNumber
         {
             get

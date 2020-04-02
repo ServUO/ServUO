@@ -2139,13 +2139,6 @@ namespace Server.Mobiles
 			XmlAttach.AddAttachmentProperties(this, list);
 		}
 
-		public override void OnSingleClick(Mobile from)
-		{
-			LabelTo(from, "XmlSpawner");
-			LabelTo(from, Name + (m_Running == true ? " [On]" : " [Off]"));
-		}
-
-
 		public override void OnDelete()
 		{
 			base.OnDelete();

@@ -264,12 +264,6 @@ namespace Server.Mobiles
             }
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            base.OnSingleClick(from);
-            this.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1060768, from.NetState); // enraged
-        }
-
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);

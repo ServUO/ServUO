@@ -75,13 +75,7 @@ namespace Server.Multis
             list.Add(1061638); // A House Sign
         }
 
-        public override bool ForceShowProperties
-        {
-            get
-            {
-                return ObjectPropertyList.Enabled;
-            }
-        }
+        public override bool ForceShowProperties { get { return true; } }
 
         private bool m_GettingProperties;
 
