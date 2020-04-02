@@ -41,12 +41,6 @@ namespace Server.Engines.Quests.Collector
             list.Add(1060847, "#1055126\t#" + info.Name); // a painted image of:
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            ImageTypeInfo info = ImageTypeInfo.Get(this.m_Image);
-            this.LabelTo(from, 1060847, "#1055126\t#" + info.Name); // a painted image of:
-        }
-
         public override void OnDoubleClick(Mobile from)
         {
             if (!from.InRange(this.GetWorldLocation(), 2))

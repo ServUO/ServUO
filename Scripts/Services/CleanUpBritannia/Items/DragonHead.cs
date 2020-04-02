@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
@@ -186,13 +186,8 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties
-        {
-            get
-            {
-                return ObjectPropertyList.Enabled;
-            }
-        }
+        public override bool ForceShowProperties { get { return true; } }
+
         public Item Deed
         {
             get

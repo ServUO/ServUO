@@ -145,16 +145,6 @@ namespace Server.Items
                 list.Add("a power scroll of {0} ({1} Skill)", this.GetName(), this.Value);
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            double level = (this.Value - 105.0) / 5.0;
-
-            if (level >= 0.0 && level <= 3.0 && this.Value % 5.0 == 0.0)
-                base.LabelTo(from, 1049639 + (int)level, this.GetNameLocalized());
-            else
-                base.LabelTo(from, "a power scroll of {0} ({1} Skill)", this.GetName(), this.Value);
-        }
-
         public override bool CanUse(Mobile from)
         {
             if (!base.CanUse(from))

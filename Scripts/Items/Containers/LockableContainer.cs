@@ -436,19 +436,6 @@ namespace Server.Items
             }
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            base.OnSingleClick(from);
-
-			if (m_Crafter != null)
-			{
-				LabelTo(from, 1050043, m_Crafter.Name); // crafted by ~1_NAME~
-			}
-
-			if (m_IsShipwreckedItem)
-                LabelTo(from, 1041645);	//recovered from a shipwreck
-        }
-
         #region ICraftable Members
 
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)

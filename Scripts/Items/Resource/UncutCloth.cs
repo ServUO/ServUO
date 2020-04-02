@@ -70,13 +70,6 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            int number = (this.Amount == 1) ? 1049124 : 1049123;
-
-            from.Send(new MessageLocalized(this.Serial, this.ItemID, MessageType.Regular, 0x3B2, 3, number, "", this.Amount.ToString()));
-        }
-
         public bool Scissor(Mobile from, Scissors scissors)
         {
             if (this.Deleted || !from.CanSee(this))

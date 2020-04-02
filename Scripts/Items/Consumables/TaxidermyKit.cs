@@ -296,9 +296,9 @@ namespace Server.Items
 
 	public class TrophyAddon : Item, IAddon
 	{
-		public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+        public override bool ForceShowProperties { get { return true; } }
 
-		private int m_WestID;
+        private int m_WestID;
 		private int m_NorthID;
 		private int m_DeedNumber;
 		private int m_AddonNumber;
