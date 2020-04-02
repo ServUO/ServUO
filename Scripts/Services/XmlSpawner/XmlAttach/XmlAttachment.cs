@@ -52,12 +52,6 @@ namespace Server.Engines.XmlSpawner2
 
 		void OnBeforeKilled(Mobile killed, Mobile killer);
 
-		/*
-		bool HandlesOnSkillUse { get; }
-
-		void OnSkillUse( Mobile m, Skill skill, bool success);
-		*/
-
 		object AttachedTo { get; set; }
 
 		object OwnedBy { get; set; }
@@ -196,11 +190,6 @@ namespace Server.Engines.XmlSpawner2
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public virtual bool HandlesOnKilled { get { return false; } }
-
-		/*
-		[CommandProperty( AccessLevel.GameMaster )]
-		public virtual bool HandlesOnSkillUse { get{return false; } }
-		*/
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public virtual string Name { get { return m_Name; } set { m_Name = value; } }
@@ -351,12 +340,6 @@ namespace Server.Engines.XmlSpawner2
 		{
 		}
 
-		/*
-		public virtual void OnSkillUse( Mobile m, Skill skill, bool success)
-		{
-		}
-		*/
-
 		public virtual void OnWeaponHit(Mobile attacker, Mobile defender, BaseWeapon weapon, int damageGiven)
 		{
 		}
@@ -403,7 +386,6 @@ namespace Server.Engines.XmlSpawner2
 
 			if (item != null)
 			{
-				// delete the item
 				item.Delete();
 			}
 		}
@@ -422,7 +404,6 @@ namespace Server.Engines.XmlSpawner2
 
 			if (mob != null)
 			{
-				// delete the mobile
 				mob.Delete();
 			}
 		}
@@ -438,7 +419,6 @@ namespace Server.Engines.XmlSpawner2
 
 			OnDelete();
 
-			// dereference the attachment object
 			AttachedTo = null;
 			OwnedBy = null;
 		}
