@@ -139,8 +139,6 @@ namespace Server.Items
                 {
                     from.LocalOverheadMessage(MessageType.Emote, 0x3B2, 1111878); //You conclude that item cannot be magically unraveled.
                 }
-
-                Server.Engines.XmlSpawner2.XmlAttach.RevealAttachments(from, o);
             }
 
             public static int GetPriceFor(Item item)

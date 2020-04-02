@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Engines.Craft;
-using Server.Engines.XmlSpawner2;
 using Server.Network;
 using Server.Mobiles;
 using AMA = Server.Items.ArmorMeditationAllowance;
@@ -2200,8 +2199,6 @@ namespace Server.Items
                     from.AddStatMod(new StatMod(StatType.Int, modName + "Int", intBonus, TimeSpan.Zero));
             }
 
-            Server.Engines.XmlSpawner2.XmlAttach.CheckOnEquip(this, from);
-
             return base.OnEquip(from);
         }
 
@@ -2226,8 +2223,6 @@ namespace Server.Items
                     SetHelper.RemoveSetBonus(m, SetID, this);
                 #endregion
             }
-
-            Server.Engines.XmlSpawner2.XmlAttach.CheckOnRemoved(this, parent);
 
             base.OnRemoved(parent);
         }
@@ -2671,8 +2666,6 @@ namespace Server.Items
 
             if (m_HitPoints >= 0 && m_MaxHitPoints > 0)
                 list.Add(1060639, "{0}\t{1}", m_HitPoints, m_MaxHitPoints); // durability ~1_val~ / ~2_val~
-
-            Server.Engines.XmlSpawner2.XmlAttach.AddAttachmentProperties(this, list);
 
             if (IsSetItem && !m_SetEquipped)
             {
