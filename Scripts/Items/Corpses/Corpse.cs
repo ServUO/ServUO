@@ -7,8 +7,6 @@ using Server.ContextMenus;
 using Server.Engines.PartySystem;
 using Server.Engines.Quests;
 using Server.Engines.Quests.Doom;
-using Server.Engines.Quests.Haven;
-using Server.Engines.XmlSpawner2;
 using Server.Guilds;
 using Server.Misc;
 using Server.Mobiles;
@@ -468,13 +466,6 @@ namespace Server.Items
 
         public static string GetCorpseName(Mobile m)
         {
-            XmlData x = (XmlData)XmlAttach.FindAttachment(m, typeof(XmlData), "CorpseName");
-
-            if (x != null)
-            {
-                return x.Data;
-            }
-
             if (m is BaseCreature)
             {
                 BaseCreature bc = (BaseCreature)m;
@@ -513,14 +504,8 @@ namespace Server.Items
             bool shouldFillCorpse = true;
 
             Corpse c;
-            if (owner is MilitiaFighter)
-            {
-                c = new MilitiaFighterCorpse(owner, hair, facialhair, shouldFillCorpse ? equipItems : new List<Item>());
-            }
-            else
-            {
-                c = new Corpse(owner, hair, facialhair, shouldFillCorpse ? equipItems : new List<Item>());
-            }
+			
+            c = new Corpse(owner, hair, facialhair, shouldFillCorpse ? equipItems : new List<Item>());
 
             owner.Corpse = c;
 

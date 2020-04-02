@@ -5,7 +5,6 @@ using Server.Targeting;
 
 namespace Server.Items
 {
-    [TypeAlias("Server.Items.DragonBarding")]
     public class DragonBardingDeed : Item, ICraftable
     {
         private bool m_Exceptional;
@@ -67,7 +66,7 @@ namespace Server.Items
         public DragonBardingDeed()
             : base(0x14F0)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -77,15 +76,6 @@ namespace Server.Items
             if (this.m_Exceptional && this.m_Crafter != null)
 				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
         }
-		public override void OnSingleClick(Mobile from)
-		{
-			base.OnSingleClick(from);
-
-			if (m_Crafter != null)
-			{
-				LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
-			}
-		}
         
         public override void OnDoubleClick(Mobile from)
         {

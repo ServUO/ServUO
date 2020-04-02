@@ -138,18 +138,6 @@ namespace Server.Items
                 list.Add(1060746, this.Receivers.Count.ToString()); // links: ~1_val~
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            base.OnSingleClick(from);
-
-            this.LabelTo(from, this.Active ? 1060742 : 1060743); // active / inactive
-            this.LabelTo(from, 1060745); // broadcast
-            this.LabelTo(from, 1060741, this.Charges.ToString()); // charges: ~1_val~
-
-            if (this.Receivers.Count > 0)
-                this.LabelTo(from, 1060746, this.Receivers.Count.ToString()); // links: ~1_val~
-        }
-
         public override void OnSpeech(SpeechEventArgs e)
         {
             if (!this.Active || this.Receivers.Count == 0 || (this.RootParent != null && !(this.RootParent is Mobile)))
@@ -387,14 +375,6 @@ namespace Server.Items
 
             list.Add(this.Active ? 1060742 : 1060743); // active / inactive
             list.Add(1060744); // receiver
-        }
-
-        public override void OnSingleClick(Mobile from)
-        {
-            base.OnSingleClick(from);
-
-            this.LabelTo(from, this.Active ? 1060742 : 1060743); // active / inactive
-            this.LabelTo(from, 1060744); // receiver
         }
 
         public void TransmitMessage(Mobile from, string message)

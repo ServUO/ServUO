@@ -219,13 +219,6 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            base.OnSingleClick(from);
-
-            this.LabelTo(from, 1070880); // Winter 2004
-        }
-
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
