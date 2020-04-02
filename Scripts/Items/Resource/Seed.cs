@@ -91,9 +91,9 @@ namespace Server.Engines.Plants
 		{
 		}
 
-		public override bool ForceShowProperties{ get{ return ObjectPropertyList.Enabled; } }
+        public override bool ForceShowProperties { get { return true; } }
 
-		public int GetLabel( out string args )
+        public int GetLabel( out string args )
 		{
 			PlantTypeInfo typeInfo = PlantTypeInfo.GetInfo( m_PlantType );
 			PlantHueInfo hueInfo = PlantHueInfo.GetInfo( m_PlantHue );
@@ -135,15 +135,8 @@ namespace Server.Engines.Plants
 
 		public override void AddNameProperty( ObjectPropertyList list )
 		{
-			string args;
-			list.Add( GetLabel( out args ), args );
-		}
-
-		public override void OnSingleClick( Mobile from )
-		{
-			string args;
-			LabelTo( from, GetLabel( out args ), args );
-		}
+            list.Add(GetLabel(out string args), args);
+        }
 
 		public override void OnDoubleClick( Mobile from )
 		{

@@ -1264,32 +1264,6 @@ namespace Server.Items
             }
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            List<EquipInfoAttribute> attrs = new List<EquipInfoAttribute>();
-
-            AddEquipInfoAttributes(from, attrs);
-
-            int number;
-
-            if (Name == null)
-            {
-                number = LabelNumber;
-            }
-            else
-            {
-                LabelTo(from, Name);
-                number = 1041000;
-            }
-
-            if (attrs.Count == 0 && Crafter == null && Name != null)
-                return;
-
-            EquipmentInfo eqInfo = new EquipmentInfo(number, m_Crafter, false, attrs.ToArray());
-
-            from.Send(new DisplayEquipmentInfo(this, eqInfo));
-        }
-
         public override bool DropToWorld(Mobile from, Point3D p)
         {
             bool drop = base.DropToWorld(from, p);

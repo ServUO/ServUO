@@ -310,17 +310,6 @@ namespace Server.Items
             return true;
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            if (m_Description != null && m_Description.Length > 0)
-                LabelTo(from, m_Description);
-
-            base.OnSingleClick(from);
-
-            if (m_Crafter != null)
-                LabelTo(from, 1050043, m_Crafter.TitleName);
-        }
-
         public override void OnDoubleClick(Mobile from)
         {
             if (from.InRange(GetWorldLocation(), 3) && CheckAccess(from))

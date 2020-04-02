@@ -31,13 +31,6 @@ namespace Server.Engines.Quests.Hag
             list.Add("a charred corpse");
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            int hue = Notoriety.GetHue(NotorietyHandlers.CorpseNotoriety(from, this));
-
-            from.Send(new AsciiMessage(this.Serial, this.ItemID, MessageType.Label, hue, 3, "", "a charred corpse"));
-        }
-
         public override void Open(Mobile from, bool checkSelfLoot)
         {
             if (!from.InRange(this.GetWorldLocation(), 2))

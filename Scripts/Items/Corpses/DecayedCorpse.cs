@@ -59,11 +59,6 @@ namespace Server.Items
             list.Add(1046414, this.Name); // the remains of ~1_NAME~
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            this.LabelTo(from, 1046414, this.Name); // the remains of ~1_NAME~
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

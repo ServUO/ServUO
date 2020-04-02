@@ -1921,16 +1921,6 @@ namespace Server.Items
             return false;
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            base.OnSingleClick(from);
-
-            if (CheckContentDisplay(from))
-            {
-                LabelTo(from, "({0} items, {1} stones)", TotalItems, TotalWeight);
-            }
-        }
-
 		public List<Mobile> Openers { get; set; }
 
         public virtual bool IsPublicContainer { get { return false; } }
@@ -1973,14 +1963,9 @@ namespace Server.Items
                 to.Send(new ContainerContent(to, this));
             }
 
-			if (to.ViewOPL)
+            foreach (var o in Items)
             {
-                var items = Items;
-
-				foreach (var o in items)
-                {
-					to.Send(o.OPLPacket);
-                }
+                to.Send(o.OPLPacket);
             }
         }
 

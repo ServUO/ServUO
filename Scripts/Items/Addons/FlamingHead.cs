@@ -37,13 +37,9 @@ namespace Server.Items
                 return 1041266;
             }
         }// Flaming Head
-        public override bool ForceShowProperties
-        {
-            get
-            {
-                return ObjectPropertyList.Enabled;
-            }
-        }
+
+        public override bool ForceShowProperties { get { return true; } }
+
         public Item Deed
         { 
             get

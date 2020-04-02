@@ -208,11 +208,6 @@ namespace Server.Items
             list.Add("Khabur's Journal");
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            this.LabelTo(from, "Khabur's Journal");
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
