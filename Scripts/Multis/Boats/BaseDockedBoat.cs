@@ -124,14 +124,6 @@ namespace Server.Multis
             list.Add(LabelNumber);
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            if (ShipName != null)
-                LabelTo(from, ShipName);
-            else
-                base.OnSingleClick(from);
-        }
-
         public void OnPlacement(Mobile from, Point3D p, int itemID, Direction d)
         {
             if (Deleted)

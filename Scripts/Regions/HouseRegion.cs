@@ -439,21 +439,6 @@ namespace Server.Regions
             return base.OnDoubleClick(from, o);
         }
 
-        public override bool OnSingleClick(Mobile from, object o)
-        {
-            if (o is Item)
-            {
-                Item item = (Item)o;
-
-                if (House.IsLockedDown(item))
-                    item.LabelTo(from, 501643); // [locked down]
-                else if (House.IsSecure(item))
-                    item.LabelTo(from, 501644); // [locked down & secure]
-            }
-
-            return base.OnSingleClick(from, o);
-        }
-
         public override void OnDelete(Item item)
         {
             if (House.IsLockedDown(item) || House.IsSecure(item))

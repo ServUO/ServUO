@@ -24,8 +24,6 @@ namespace Server
             
 			TownCryerSystem.Enabled = true;
 
-			ObjectPropertyList.Enabled = true;
-
             Mobile.InsuranceEnabled = !Siege.SiegeShard;
 			Mobile.VisibleDamageType = VisibleDamageType.Related;
 			
@@ -33,11 +31,6 @@ namespace Server
 			Mobile.AsciiClickMessage = false; // Maybe we can remove after?
 
 			AOS.DisableStatInfluences();
-
-			if (ObjectPropertyList.Enabled)
-			{
-				PacketHandlers.SingleClickProps = true; // single click for everything is overriden to check object property list
-			}
 
 			Mobile.ActionDelay = 500;
 			Mobile.AOSStatusHandler = AOS.GetStatus;

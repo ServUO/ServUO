@@ -2958,18 +2958,6 @@ namespace Server.Mobiles
 			}
 		}
 
-		public override void OnAosSingleClick(Mobile from)
-		{
-			if (ViewOPL)
-			{
-				base.OnAosSingleClick(from);
-			}
-			else if (from.Region.OnSingleClick(from, this))
-			{
-				OnSingleClick(from);
-			}
-		}
-
 		public override void DisruptiveAction()
 		{
 			if (Meditating)

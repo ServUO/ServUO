@@ -18,7 +18,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+        public override bool ForceShowProperties { get { return true; } }
         public virtual int ArtifactRarity { get { return 10; } }
 
         public override void GetProperties(ObjectPropertyList list)
