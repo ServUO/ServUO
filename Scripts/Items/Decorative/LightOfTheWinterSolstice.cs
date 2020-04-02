@@ -60,13 +60,6 @@ namespace Server.Items
                 this.m_Dipper = value;
             }
         }
-        public override void OnSingleClick(Mobile from)
-        {
-            base.OnSingleClick(from);
-
-            this.LabelTo(from, 1070881, this.m_Dipper); // Hand Dipped by ~1_name~
-            this.LabelTo(from, 1070880); // Winter 2004
-        }
 
         public override void GetProperties(ObjectPropertyList list)
         {

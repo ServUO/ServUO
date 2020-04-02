@@ -127,11 +127,6 @@ namespace Server.Items
             list.Add(1054131, this.m_Charges.ToString() + (this.m_PetName.Length == 0 ? "\t " : "\t" + this.m_PetName)); // a crystal ball of pet summoning: [charges: ~1_charges~] : [linked pet: ~2_petName~]
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            this.LabelTo(from, 1054131, this.m_Charges.ToString() + (this.m_PetName.Length == 0 ? "\t " : "\t" + this.m_PetName)); // a crystal ball of pet summoning: [charges: ~1_charges~] : [linked pet: ~2_petName~]
-        }
-
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);

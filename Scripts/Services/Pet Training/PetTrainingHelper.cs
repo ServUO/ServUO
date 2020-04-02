@@ -819,7 +819,7 @@ namespace Server.Mobiles
                 new TrainingDefinition(typeof(TigerCub), Class.ClawedAndTailed, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 3),
                 new TrainingDefinition(typeof(GrizzledMare), Class.ClawedTailedAndNecromantic, MagicalAbility.GrizzledMare, SpecialAbilityGrizzledMare, WepAbility2, AreaEffectArea4, 1, 3),
                 new TrainingDefinition(typeof(HungryCoconutCrab), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 2),
-                new TrainingDefinition(typeof(SkeletalCat), Class.ClawedTailedAndNecromantic, MagicalAbility.Hellcat, SpecialAbilitySkeletalCat, WepAbility4, AreaEffectArea3, 2, 3),
+                new TrainingDefinition(typeof(SkeletalCat), Class.ClawedTailedAndNecromantic, MagicalAbility.Hellcat, SpecialAbilitySkeletalCat, WepAbility4, AreaEffectArea3, 2, 4),
                 new TrainingDefinition(typeof(CoconutCrab), Class.None, MagicalAbility.CoconutCrab, SpecialAbilityCoconutCrab, WepAbility2, AreaEffectArea2, 1, 3),
             };
             #endregion

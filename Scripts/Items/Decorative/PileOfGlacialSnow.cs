@@ -5,52 +5,32 @@ namespace Server.Items
 {
     public class PileOfGlacialSnow : Item
     {
+		public override int LabelNumber { get { return 1070874; } }// a Pile of Glacial Snow
+		
         [Constructable]
         public PileOfGlacialSnow()
             : base(0x913)
         {
-            this.Hue = 0x480;
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            Hue = 0x480;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public PileOfGlacialSnow(Serial serial)
             : base(serial)
         {
         }
-
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1070874;
-            }
-        }// a Pile of Glacial Snow
+		
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                this.Weight = 1.0;
-                this.LootType = LootType.Blessed;
-            }
-        }
-
-        public override void OnSingleClick(Mobile from)
-        {
-            base.OnSingleClick(from);
-
-            this.LabelTo(from, 1070880); // Winter 2004
         }
 
         public override void GetProperties(ObjectPropertyList list)

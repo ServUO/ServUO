@@ -73,12 +73,5 @@ namespace Server.Items
 
             return true;
         }
-
-        public override void OnSingleClick(Mobile from)
-        {
-            int number = (this.Amount == 1) ? 1049122 : 1049121;
-
-            from.Send(new MessageLocalized(this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, number, "", (this.Amount * 50).ToString()));
-        }
     }
 }

@@ -9,7 +9,6 @@ using Server.Engines.PartySystem;
 using Server.Engines.Points;
 using Server.Engines.Quests;
 using Server.Engines.Quests.Doom;
-using Server.Engines.Quests.Haven;
 using Server.Engines.VvV;
 using Server.Engines.XmlSpawner2;
 using Server.Items;
@@ -1356,11 +1355,6 @@ namespace Server.Mobiles
                 {
                     return true;
                 }
-            }
-
-            if (c is Server.Engines.Quests.Haven.MilitiaFighter)
-            {
-                return true;
             }
 
             BaseCreature t = this;

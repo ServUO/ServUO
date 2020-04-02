@@ -341,21 +341,6 @@ namespace Server.Items
             return quality;
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            base.OnSingleClick(from);
-
-            string desc;
-
-            if (m_KeyVal == 0)
-                desc = "(blank)";
-            else if ((desc = m_Description) == null || (desc = desc.Trim()).Length <= 0)
-                desc = "";
-
-            if (desc.Length > 0)
-                from.Send(new UnicodeMessage(Serial, ItemID, MessageType.Regular, 0x3B2, 3, "ENU", "", desc));
-        }
-
         public bool UseOn(Mobile from, ILockable o)
         {
             if (o.KeyValue == KeyValue)

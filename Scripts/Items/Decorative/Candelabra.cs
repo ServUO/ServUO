@@ -23,10 +23,10 @@ namespace Server.Items
         public Candelabra()
             : base(0xA27)
         {
-            this.Duration = TimeSpan.Zero; // Never burnt out
-            this.Burning = false;
-            this.Light = LightType.Circle225;
-            this.Weight = 3.0;
+            Duration = TimeSpan.Zero; // Never burnt out
+            Burning = false;
+            Light = LightType.Circle225;
+            Weight = 3.0;
         }
 
         public Candelabra(Serial serial)
@@ -63,14 +63,6 @@ namespace Server.Items
 
             if (this.m_IsShipwreckedItem)
                 list.Add(1041645); // recovered from a shipwreck
-        }
-
-        public override void OnSingleClick(Mobile from)
-        {
-            base.OnSingleClick(from);
-
-            if (this.m_IsShipwreckedItem)
-                this.LabelTo(from, 1041645);	//recovered from a shipwreck
         }
 
         #region IShipwreckedItem Members

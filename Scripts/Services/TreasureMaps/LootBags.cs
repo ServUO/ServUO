@@ -7,6 +7,7 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1048032; } } // a bag
 
+        [Constructable]
         public BagOfGems()
         {
             ItemID = 0xA333;
@@ -35,6 +36,7 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1048032; } } // a bag
 
+        [Constructable]
         public BagOfGold()
         {
             ItemID = 0xA331;
@@ -63,6 +65,7 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1048032; } } // a bag
 
+        [Constructable]
         public BagOfRegs()
         {
             ItemID = 0xA32F;

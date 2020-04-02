@@ -13,14 +13,6 @@ namespace Server.Items
             Visible = false;
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            if (this.Name != null)
-                from.Send(new AsciiMessage(Serial, ItemID, MessageType.Label, 0, 3, "", this.Name));
-            else
-                from.Send(new AsciiMessage(Serial, ItemID, MessageType.Label, 0, 3, "", "a dungeon wall"));
-        }
-
         public override bool HandlesOnMovement { get { return true; } }
 
         public override void OnMovement(Mobile m, Point3D oldLocation)

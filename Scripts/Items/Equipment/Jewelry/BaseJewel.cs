@@ -704,13 +704,10 @@ namespace Server.Items
                 }
                 #endregion
             }
-
+            
             if (parent is Mobile)
             {
-                if (Server.Engines.XmlSpawner2.XmlAttach.CheckCanEquip(this, (Mobile)parent))
-                    Server.Engines.XmlSpawner2.XmlAttach.CheckOnEquip(this, (Mobile)parent);
-                else
-                    ((Mobile)parent).AddToBackpack(this);
+                ((Mobile)parent).AddToBackpack(this);
             }
         }
 
@@ -735,8 +732,6 @@ namespace Server.Items
                     SetHelper.RemoveSetBonus(from, SetID, this);
                 #endregion
             }
-
-            Server.Engines.XmlSpawner2.XmlAttach.CheckOnRemoved(this, parent);
         }
 
         public virtual void SetProtection(Type type, TextDefinition name, int amount)
@@ -1006,16 +1001,6 @@ namespace Server.Items
                 case GemType.Diamond: return 1062608;
             }
         }
-
-        public override void OnSingleClick(Mobile from)
-		{
-			base.OnSingleClick(from);
-
-			if (m_Crafter != null)
-			{
-				LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
-			}
-		}
 
         public override bool DropToWorld(Mobile from, Point3D p)
         {
