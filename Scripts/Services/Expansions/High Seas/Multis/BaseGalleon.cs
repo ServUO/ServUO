@@ -819,30 +819,39 @@ namespace Server.Multis
 
         public override void OnAfterDelete()
         {
-            foreach (var fixture in Fixtures.Where(f => !f.Deleted).ToList())
+            List<Item> list = new List<Item>(Fixtures.Where(f => !f.Deleted));
+
+            foreach (var fixture in list)
             {
                 fixture.Delete();
             }
 
             if (Cannons != null)
             {
-                List<Item> cannons = new List<Item>(Cannons);
+                list = new List<Item>(Cannons);
 
-                foreach (var cannon in cannons.Where(c => c != null && !c.Deleted).ToList())
+                foreach (var cannon in list)
                 {
                     cannon.Delete();
                 }
 
-                ColUtility.Free(cannons);
+                ColUtility.Free(Cannons);
             }
 
             if (Addons != null)
             {
-                foreach (var addon in Addons.Keys.Where(a => a != null && !a.Deleted).ToList())
+                list = new List<Item>(Addons.Keys.Where(a => a != null && !a.Deleted));
+
+                foreach (var addon in list)
                 {
                     addon.Delete();
                 }
+
+                Addons.Clear();
             }
+
+            ColUtility.Free(list);
+            ColUtility.Free(Fixtures);
 
             if (CapturedCaptain != null)
             {
