@@ -704,6 +704,11 @@ namespace Server.Items
                 }
                 #endregion
             }
+            
+            if (parent is Mobile)
+            {
+                ((Mobile)parent).AddToBackpack(this);
+            }
         }
 
         public override void OnRemoved(object parent)
