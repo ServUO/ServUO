@@ -3,7 +3,6 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("a leopard corpse")]
-    [TypeAlias("Server.Mobiles.Snowleopard")]
     public class SnowLeopard : BaseCreature
     {
         [Constructable]
