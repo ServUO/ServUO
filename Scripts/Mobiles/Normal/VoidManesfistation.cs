@@ -36,27 +36,27 @@ namespace Server.Mobiles
 			
 			SetDamage(25, 31);
 			
-			this.SetDamageType(ResistanceType.Physical, 100);
+			SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 15, 30);
-            this.SetResistance(ResistanceType.Fire, 50, 65);
-            this.SetResistance(ResistanceType.Cold, 50, 65);
-            this.SetResistance(ResistanceType.Poison, 50, 65);
-            this.SetResistance(ResistanceType.Energy, 50, 65);
+            SetResistance(ResistanceType.Physical, 15, 30);
+            SetResistance(ResistanceType.Fire, 50, 65);
+            SetResistance(ResistanceType.Cold, 50, 65);
+            SetResistance(ResistanceType.Poison, 50, 65);
+            SetResistance(ResistanceType.Energy, 50, 65);
 
-            this.SetSkill(SkillName.MagicResist, 140.0);
-            this.SetSkill(SkillName.Tactics, 130);
-			this.SetSkill(SkillName.Magery, 130.0);
-			this.SetSkill(SkillName.EvalInt, 130.0);
-			this.SetSkill(SkillName.Mysticism, 120);
-			this.SetSkill(SkillName.Focus, 120);
-			this.SetSkill(SkillName.Meditation, 120);
-			this.SetSkill(SkillName.Wrestling, 130);
-			this.SetSkill(SkillName.Necromancy, 120);
-			this.SetSkill(SkillName.SpiritSpeak, 120);
+            SetSkill(SkillName.MagicResist, 140.0);
+            SetSkill(SkillName.Tactics, 130);
+			SetSkill(SkillName.Magery, 130.0);
+			SetSkill(SkillName.EvalInt, 130.0);
+			SetSkill(SkillName.Mysticism, 120);
+			SetSkill(SkillName.Focus, 120);
+			SetSkill(SkillName.Meditation, 120);
+			SetSkill(SkillName.Wrestling, 130);
+			SetSkill(SkillName.Necromancy, 120);
+			SetSkill(SkillName.SpiritSpeak, 120);
 
-            this.Fame = 15000;
-            this.Karma = -15000;
+            Fame = 15000;
+            Karma = -15000;
 
             m_NextSummon = DateTime.UtcNow;
             m_NextAIChange = DateTime.UtcNow;

@@ -39,25 +39,6 @@ namespace Server.Mobiles
             this.Fame = 2500;
             this.Karma = -2500;
 
-            switch ( Utility.Random(5) )
-            {
-                case 0:
-                    this.PackItem(new Lockpick());
-                    break;
-                case 1:
-                    this.PackItem(new MortarPestle());
-                    break;
-                case 2:
-                    this.PackItem(new Bottle());
-                    break;
-                case 3:
-                    this.PackItem(new RawRibs());
-                    break;
-                case 4:
-                    this.PackItem(new Shovel());
-                    break;
-            }
-
             this.PackItem(new RingmailChest());
 
             if (0.3 > Utility.RandomDouble())

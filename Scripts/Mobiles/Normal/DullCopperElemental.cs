@@ -8,12 +8,6 @@ namespace Server.Mobiles
     {
         [Constructable]
         public DullCopperElemental()
-            : this(2)
-        {
-        }
-
-        [Constructable]
-        public DullCopperElemental(int oreAmount)
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "a dull copper elemental";
@@ -43,9 +37,7 @@ namespace Server.Mobiles
             Fame = 3500;
             Karma = -3500;
 
-            Item ore = new DullCopperOre(oreAmount);
-            ore.ItemID = 0x19B9;
-            PackItem(ore);
+			PackItem(new DullCopperOre(2));
         }
 
         public DullCopperElemental(Serial serial)
@@ -53,27 +45,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool AutoDispel
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override bool AutoDispel { get { return true; } }
+        public override bool BleedImmune { get { return true; } }    
+        public override int TreasureMapLevel { get { return 1; } }
 
         public override bool OnBeforeDeath()
         {

@@ -5,7 +5,6 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [TypeAlias("Server.Mobiles.Tiger")]
     [CorpseName("a tiger corpse")]
     public class WildTiger : BaseMount
     {

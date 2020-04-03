@@ -43,33 +43,6 @@ namespace Server.Mobiles
             PackItem(new Board(Utility.RandomMinMax(10, 20)));
             PackItem(new ExecutionersAxe());
 
-            switch (Utility.Random(7))
-            {
-                case 0:
-                    PackItem(new Arrow());
-                    break;
-                case 1:
-                    PackItem(new Lockpick());
-                    break;
-                case 2:
-                    PackItem(new Shaft());
-                    break;
-                case 3:
-                    PackItem(new Ribs());
-                    break;
-                case 4:
-                    PackItem(new Bandage());
-                    break;
-                case 5:
-                    PackItem(new BeverageBottle(BeverageType.Wine));
-                    break;
-                case 6:
-                    PackItem(new Jug(BeverageType.Cider));
-                    break;
-            }
-
-            PackItem(Loot.RandomNecromancyReagent());
-
             if (0.5 > Utility.RandomDouble())
                 PackItem(new Yeast());
 

@@ -40,6 +40,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.Wrestling, 80.2, 90.0);
             SetSkill(SkillName.Hiding, 105.0, 110.0);
             SetSkill(SkillName.Stealth, 105.0, 110.0);
+			
+			PackItem(new SpidersSilk(8));
 
             Tamable = true;
             ControlSlots = 2;
@@ -80,8 +82,7 @@ namespace Server.Mobiles
             }
         }
         public override void GenerateLoot()
-        {
-            PackItem(new SpidersSilk(8));
+        {           
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.Gems, 2);
         }

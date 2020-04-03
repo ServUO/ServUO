@@ -41,27 +41,6 @@ namespace Server.Mobiles
 
             PackItem(new GreenGourd());
 
-            if (Utility.RandomBool())
-                PackItem(new LongPants());
-            else
-                PackItem(new ShortPants());
-
-            switch ( Utility.Random(4) )
-            {
-                case 0:
-                    PackItem(new Shoes());
-                    break;
-                case 1:
-                    PackItem(new Sandals());
-                    break;
-                case 2:
-                    PackItem(new Boots());
-                    break;
-                case 3:
-                    PackItem(new ThighBoots());
-                    break;
-            }
-
             if (Utility.RandomDouble() < 0.25)
                 PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
 
