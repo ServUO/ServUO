@@ -66,24 +66,27 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 			
-			switch (Utility.Random(5))
-            {
-                case 0:
-                    c.DropItem(new BoneArms());
-                    break;
-                case 1:
-                    c.DropItem(new BoneChest());
-                    break;
-                case 2:
-                    c.DropItem(new BoneGloves());
-                    break;
-                case 3:
-                    c.DropItem(new BoneLegs());
-                    break;
-                case 4:
-                    c.DropItem(new BoneHelm());
-                    break;
-            }
+			if (!Controlled)
+			{
+				switch (Utility.Random(5))
+				{
+					case 0:
+						c.DropItem(new BoneArms());
+						break;
+					case 1:
+						c.DropItem(new BoneChest());
+						break;
+					case 2:
+						c.DropItem(new BoneGloves());
+						break;
+					case 3:
+						c.DropItem(new BoneLegs());
+						break;
+					case 4:
+						c.DropItem(new BoneHelm());
+						break;
+				}
+			}
         }
 
         public override void Serialize(GenericWriter writer)
