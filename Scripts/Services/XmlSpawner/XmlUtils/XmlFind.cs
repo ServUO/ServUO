@@ -125,8 +125,6 @@ namespace Server.Mobiles
 			public bool Dosearchnull;
 			public bool Dosearcherr;
 			public bool Dosearchage;
-			public bool Dosearchwithattach;
-			public bool Dosearchattach;
 			public bool Dohidevalidint = false;
 			public bool Searchagedirection;
 			public double Searchage;
@@ -134,7 +132,6 @@ namespace Server.Mobiles
 			public string Searchregion;
 			public string Searchcondition;
 			public string Searchtype;
-			public string Searchattachtype;
 			public string Searchname;
 			public string Searchspawnentry;
 
@@ -142,8 +139,8 @@ namespace Server.Mobiles
 			public Point3D Currentloc;
 
 			public SearchCriteria(bool dotype, bool doname, bool dorange, bool doregion, bool doentry, bool doentrytype, bool docondition, bool dofel, bool dotram,
-				bool domal, bool doilsh, bool dotok, bool doter, bool doint, bool donull, bool doerr, bool doage, bool dowithattach, bool doattach, bool dohidevalid,
-				bool agedirection, double age, int range, string region, string condition, string type, string attachtype, string name, string entry
+				bool domal, bool doilsh, bool dotok, bool doter, bool doint, bool donull, bool doerr, bool doage, bool dohidevalid,
+				bool agedirection, double age, int range, string region, string condition, string type, string name, string entry
 				)
 			{
 				Dosearchtype = dotype;
@@ -163,8 +160,6 @@ namespace Server.Mobiles
 				Dosearchnull = donull;
 				Dosearcherr = doerr;
 				Dosearchage = doage;
-				Dosearchwithattach = dowithattach;
-				Dosearchattach = doattach;
 				Dohidevalidint = dohidevalid;
 				Searchagedirection = agedirection;
 				Searchage = age;
@@ -172,7 +167,6 @@ namespace Server.Mobiles
 				Searchregion = region;
 				Searchcondition = condition;
 				Searchtype = type;
-				Searchattachtype = attachtype;
 				Searchname = name;
 				Searchspawnentry = entry;
 
@@ -301,13 +295,6 @@ namespace Server.Mobiles
 					return (r.Contains(mob.Location));
 
 				}
-			return false;
-		}
-
-		private static bool TestAttach(object o)
-		{
-			if (XmlAttach.FindAttachments(o) != null) return true;
-
 			return false;
 		}
 
@@ -446,7 +433,6 @@ namespace Server.Mobiles
 			}
 
 			Type targetType = null;
-			Type targetattachType = null;
 
 			Map tokunomap = null;
 			try
@@ -466,21 +452,8 @@ namespace Server.Mobiles
 				}
 			}
 
-			// if the attachment type is specified then get the search type
-			if (criteria.Dosearchattach && criteria.Searchattachtype != null && criteria.Searchattachtype.Length > 0)
-			{
-				targetattachType = SpawnerType.GetType(criteria.Searchattachtype);
-				if (targetattachType == null)
-				{
-					status_str = "Invalid type: " + criteria.Searchattachtype;
-					return newarray;
-				}
-			}
-
 			// do the search through items
 
-			if (!criteria.Dosearchattach)
-			{
 				// make a copy so that we dont get enumeration errors if World.Items.Values changes while searching
 				ArrayList itemarray = null;
 
@@ -506,7 +479,6 @@ namespace Server.Mobiles
 						bool hasrange = false;
 						bool hasregion = false;
 						bool hasmap = false;
-						bool hasattach = false;
 						bool hasspawnerr = false;
 						bool hasvalidhidden = false;
 
@@ -573,13 +545,6 @@ namespace Server.Mobiles
 							hasregion = true;
 						}
 						if (criteria.Dosearchregion && !hasregion) continue;
-
-						// check for attachments
-						if (criteria.Dosearchwithattach && TestAttach(i))
-						{
-							hasattach = true;
-						}
-						if (criteria.Dosearchwithattach && !hasattach) continue;
 
 						// check for condition
 						if (criteria.Dosearchcondition && (criteria.Searchcondition != null))
@@ -707,10 +672,9 @@ namespace Server.Mobiles
 						newarray.Add(new SearchEntry(i));
 					}
 				}
-			}
 
 			// do the search through mobiles
-			if (!criteria.Dosearcherr && !criteria.Dosearchattach)
+			if (!criteria.Dosearcherr)
 			{
 				// make a copy so that we dont get enumeration errors if World.Mobiles.Values changes while searching
 				ArrayList mobilearray = null;
@@ -735,7 +699,6 @@ namespace Server.Mobiles
 						bool hasregion = false;
 						bool hasmap = false;
 						bool hasage = false;
-						bool hasattach = false;
 						bool hasvalidhidden = false;
 
 						if (i == null || i.Deleted) continue;
@@ -798,13 +761,6 @@ namespace Server.Mobiles
 						}
 						if (criteria.Dosearchname && !hasname) continue;
 
-						// check for attachments
-						if (criteria.Dosearchwithattach && TestAttach(i))
-						{
-							hasattach = true;
-						}
-						if (criteria.Dosearchwithattach && !hasattach) continue;
-
 						// check for condition
 						if (criteria.Dosearchcondition && (criteria.Searchcondition != null))
 						{
@@ -819,35 +775,6 @@ namespace Server.Mobiles
 					}
 				}
 
-			}
-
-			// need to keep track of valid internalized XmlSaveItem items
-			if (criteria.Dohidevalidint)
-			{
-				foreach (XmlAttachment i in XmlAttach.Values)
-				{
-					if (i is XmlSaveItem)
-					{
-						XmlSaveItem s = (XmlSaveItem)i;
-						if (s.Container != null)
-						{
-							ignoreList.Add(s.Container);
-						}
-					}
-				}
-			}
-
-			if (criteria.Dosearchattach)
-			{
-
-				foreach (XmlAttachment i in XmlAttach.Values)
-				{
-					// check for type
-					if (i != null && !i.Deleted && (targetattachType == null || i.GetType().IsSubclassOf(targetattachType) || i.GetType().Equals(targetattachType)))
-					{
-						newarray.Add(new SearchEntry(i));
-					}
-				}
 			}
 
 			ArrayList removelist = new ArrayList();
@@ -947,8 +874,6 @@ namespace Server.Mobiles
 			false, // donull
 			false, // doerr
 			false, // doage
-			false, // dowithattach
-			false, // doattach
 			false, // dohidevalid
 			true, // agedirection
 			0, // age
@@ -956,7 +881,6 @@ namespace Server.Mobiles
 			null, // region
 			null, // condition
 			type, // type
-			null, // attachtype
 			null, // name
 			null // entry 
 			),
@@ -1149,11 +1073,6 @@ namespace Server.Mobiles
 			AddImageTiled(6, y + 20, 132, 19, 0xBBC);
 			AddTextEntry(6, y + 20, 250, 19, 0, 101, m_SearchCriteria.Searchtype);
 
-			// add the search for attachments button
-			AddLabel(100, y, 0x384, "attach");
-			// add the toggle to enable search by attachment
-			AddCheck(77, y, 0xD2, 0xD3, m_SearchCriteria.Dosearchwithattach, 317);
-
 			y += 41;
 			// add the search condition entry
 			AddLabel(28, y, 0x384, "property test");
@@ -1171,15 +1090,6 @@ namespace Server.Mobiles
 			//AddImageTiled( 5, 350, 135, 23, 0x52 );
 			AddImageTiled(6, y + 20, 132, 19, 0xBBC);
 			AddTextEntry(6, y + 20, 250, 19, 0, 102, m_SearchCriteria.Searchname);
-
-			y += 41;
-			// add the search attachment type entry
-			AddLabel(28, y, 0x384, "attachment type");
-			// add the toggle to enable search by attachment type
-			AddCheck(5, y, 0xD2, 0xD3, m_SearchCriteria.Dosearchattach, 325);
-			//AddImageTiled( 5, 285, 135, 23, 0x52 );
-			AddImageTiled(6, y + 20, 132, 19, 0xBBC);
-			AddTextEntry(6, y + 20, 250, 19, 0, 125, m_SearchCriteria.Searchattachtype);
 
 			y += 41;
 			// add the search spawner entries
@@ -1426,78 +1336,6 @@ namespace Server.Mobiles
 									mapstr = mob.Map.ToString();
 
 						}
-						else
-							if (o is XmlAttachment)
-							{
-								XmlAttachment a = (XmlAttachment)e.Object;
-								// change the color
-								namestr = a.Name;
-
-								string str = a.GetType().ToString();
-								if (a.Owner is Mobile)
-								{
-									Mobile m = a.Owner as Mobile;
-
-									ownstr = m.Name;
-									if (m.Player)
-										texthue = 44;
-									else
-										texthue = 24;
-								}
-								else
-									if (a.Owner is Item)
-									{
-										Item item = a.Owner as Item;
-
-										texthue = 50;
-										if (item.Name != null)
-										{
-											ownstr = item.Name;
-										}
-										else
-										{
-											ownstr = item.ItemData.Name;
-										}
-									}
-								if (str != null)
-								{
-									string[] arglist = str.Split('.');
-									typestr = arglist[arglist.Length - 1];
-								}
-								if (a.AttachedTo is Mobile)
-								{
-									Mobile m = (Mobile)a.AttachedTo;
-									locstr = m.Location.ToString();
-									if (m.Map != null)
-										mapstr = m.Map.ToString();
-								}
-								if (a.AttachedTo is Item)
-								{
-									Item item = (Item)a.AttachedTo;
-									if (item.Map != null)
-										mapstr = item.Map.ToString();
-									if (item.Parent != null)
-									{
-										if (item.RootParent is Mobile)
-										{
-											locstr = ((Mobile)item.RootParent).Location.ToString();
-
-										}
-										else
-											if (item.RootParent is Item)
-											{
-												locstr = ((Item)item.RootParent).Location.ToString();
-											}
-									}
-									else
-										locstr = item.Location.ToString();
-								}
-								if (a.Deleted)
-								{
-									mapstr = "Deleted";
-								}
-
-							}
 
 					if (e.Selected) texthue = 33;
 
@@ -1505,12 +1343,6 @@ namespace Server.Mobiles
 
 					// display the name
 					AddLabelCropped(248, 22 * (i % MaxEntriesPerPage) + 31, 110, 21, texthue, namestr ?? string.Empty);
-
-					// display the attachment button if it has attachments
-					if (XmlAttach.HasAttachments(o))
-					{
-						AddButton(238, 22 * (i % MaxEntriesPerPage) + 35, 2103, 2103, 5000 + i, GumpButtonType.Reply, 0);
-					}
 
 					// display the type
 					AddImageTiled(360, 22 * (i % MaxEntriesPerPage) + 31, 90, 21, 0xBBC);
@@ -1577,48 +1409,6 @@ namespace Server.Mobiles
 						m_From.Location = mob.Location;
 						m_From.Map = mob.Map;
 					}
-					else
-						if (o is XmlAttachment)
-						{
-							XmlAttachment a = (XmlAttachment)o;
-							if (a == null || a.Deleted) return;
-							if (a.AttachedTo is Mobile)
-							{
-								Mobile mob = (Mobile)a.AttachedTo;
-								if (mob == null || mob.Deleted || mob.Map == null || mob.Map == Map.Internal) return;
-								m_From.Location = mob.Location;
-								m_From.Map = mob.Map;
-							}
-							else
-								if (a.AttachedTo is Item)
-								{
-									Item item = (Item)a.AttachedTo;
-									Point3D itemloc;
-									if (item.Parent != null)
-									{
-										if (item.RootParent is Mobile)
-										{
-											itemloc = ((Mobile)(item.RootParent)).Location;
-										}
-										else
-											if (item.RootParent is Container)
-											{
-												itemloc = ((Container)(item.RootParent)).Location;
-											}
-											else
-											{
-												return;
-											}
-									}
-									else
-									{
-										itemloc = item.Location;
-									}
-									if (item == null || item.Deleted || item.Map == null || item.Map == Map.Internal) return;
-									m_From.Location = itemloc;
-									m_From.Map = item.Map;
-								}
-						}
 			}
 		}
 
@@ -1666,13 +1456,6 @@ namespace Server.Mobiles
 						if (x == null || x.Deleted /*|| x.Map == null*/) return;
 						m_From.SendGump(new PropertiesGump(m_From, o));
 					}
-					else
-						if (o is XmlAttachment)
-						{
-							XmlAttachment x = (XmlAttachment)o;
-							if (x == null || x.Deleted /*|| x.Map == null*/) return;
-							m_From.SendGump(new PropertiesGump(m_From, o));
-						}
 
 			}
 		}
@@ -2170,10 +1953,6 @@ namespace Server.Mobiles
 			if (tr != null)
 				m_SearchCriteria.Searchname = tr.Text;
 
-			tr = info.GetTextEntry(125);        // attachment type info
-			if (tr != null)
-				m_SearchCriteria.Searchattachtype = tr.Text;
-
 			tr = info.GetTextEntry(103);        // entry info
 			if (tr != null)
 				m_SearchCriteria.Searchspawnentry = tr.Text;
@@ -2225,8 +2004,6 @@ namespace Server.Mobiles
 			m_SearchCriteria.Dosearchnull = info.IsSwitched(314);
 
 			m_SearchCriteria.Dohidevalidint = info.IsSwitched(316);
-			m_SearchCriteria.Dosearchwithattach = info.IsSwitched(317);
-			m_SearchCriteria.Dosearchattach = info.IsSwitched(325);
 			m_SearchCriteria.Dosearchregion = info.IsSwitched(319);
 
 			switch (info.ButtonID)
@@ -2456,18 +2233,7 @@ namespace Server.Mobiles
 								e.Selected = !e.Selected;
 							}
 						}
-						if (info.ButtonID >= 5000 && info.ButtonID < 5000 + MaxEntries)
-						{
-							int i = info.ButtonID - 5000;
 
-							if (m_SearchList != null && i >= 0 && m_SearchList.Count > i + DisplayFrom)
-							{
-								SearchEntry e = (SearchEntry)m_SearchList[i + DisplayFrom];
-
-								state.Mobile.CloseGump(typeof(XmlGetAttGump));
-								state.Mobile.SendGump(new XmlGetAttGump(state.Mobile, e.Object, 10, 10));
-							}
-						}
 						break;
 					}
 			}
@@ -2637,15 +2403,6 @@ namespace Server.Mobiles
 												}
 												catch { }
 											}
-											else
-												if (o is XmlAttachment)
-												{
-													try
-													{
-														((XmlAttachment)o).Delete();
-													}
-													catch { }
-												}
 									}
 
 								}

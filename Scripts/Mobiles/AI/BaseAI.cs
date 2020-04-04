@@ -2792,14 +2792,11 @@ namespace Server.Mobiles
 
 			if (acqType == FightMode.Aggressor && m_Mobile.Aggressors.Count == 0 && m_Mobile.Aggressed.Count == 0)
 			{
-				if (m_Mobile.Tribe == TribeType.None)
-				{
-					if ((XmlIsEnemy)XmlAttach.FindAttachment(m_Mobile, typeof(XmlIsEnemy)) == null)
-					{
-						m_Mobile.FocusMob = null;
-						return false;
-					}
-				}
+                if (m_Mobile.Tribe == TribeType.None)
+                {
+                    m_Mobile.FocusMob = null;
+                    return false;
+                }
 			}
 
 			if (m_Mobile.NextReacquireTime > Core.TickCount)
