@@ -13,8 +13,8 @@ namespace Server.Items
         public RangerGloves()
             : base(0x13D5)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x59C;
+            Weight = 1.0;
+            Hue = 0x59C;
         }
 
         public RangerGloves(Serial serial)
@@ -71,18 +71,11 @@ namespace Server.Items
                 return 45;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 25;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 16;
             }
         }
         public override ArmorMaterialType MaterialType

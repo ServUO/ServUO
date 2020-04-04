@@ -8,7 +8,7 @@ namespace Server.Items
         public StuddedHiroSode()
             : base(0x277F)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public StuddedHiroSode(Serial serial)
@@ -65,18 +65,11 @@ namespace Server.Items
                 return 55;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 30;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 3;
             }
         }
         public override ArmorMaterialType MaterialType

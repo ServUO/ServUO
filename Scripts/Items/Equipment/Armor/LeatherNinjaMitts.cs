@@ -65,18 +65,11 @@ namespace Server.Items
                 return 25;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 10;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 3;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -120,8 +113,6 @@ namespace Server.Items
                             reader.ReadInt();
                             reader.ReadInt();
                         }
-
-                        this.Weight = 2.0;
 
                         break;
                     }

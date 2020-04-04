@@ -9,10 +9,10 @@ namespace Server.Items
         public EvilOrcHelm()
             : base()
         {
-            this.Hue = 0x96E;
-            this.Attributes.BonusStr = 10;
-            this.Attributes.BonusInt = this.IntOrDexPropertyValue;
-            this.Attributes.BonusDex = this.IntOrDexPropertyValue;
+            Hue = 0x96E;
+            Attributes.BonusStr = 10;
+            Attributes.BonusInt = IntOrDexPropertyValue;
+            Attributes.BonusDex = IntOrDexPropertyValue;
         }
 
         public EvilOrcHelm(Serial serial)

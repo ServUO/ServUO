@@ -9,7 +9,7 @@ namespace Server.Items
         public HideGloves()
             : base(0x2B75)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public HideGloves(Serial serial)
@@ -73,15 +73,7 @@ namespace Server.Items
                 return 45;
             }
         }
-        public override int AosStrReq
-        {
-            get
-            {
-                return 15;
-            }
-        }
-
-        public override int ArmorBase
+        public override int StrReq
         {
             get
             {
@@ -112,14 +104,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
         }
     }

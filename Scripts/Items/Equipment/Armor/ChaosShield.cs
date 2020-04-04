@@ -1,5 +1,4 @@
 using System;
-using Server.Guilds;
 using Server.Engines.Craft;
 
 namespace Server.Items
@@ -11,7 +10,7 @@ namespace Server.Items
         public ChaosShield()
             : base(0x1BC3)
         {
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         public ChaosShield(Serial serial)
@@ -68,31 +67,23 @@ namespace Server.Items
                 return 125;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 95;
             }
         }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 32;
-            }
-        }
+
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);//version
         }
     }

@@ -20,8 +20,7 @@ namespace Server.Items
         {
         }
 
-        public override int AosStrReq { get { return 45; } }
-        public override int ArmorBase { get { return 30; } }
+        public override int StrReq { get { return 45; } }
 
         public override ArmorMaterialType MaterialType
         {
@@ -57,11 +56,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                xWeaponAttributesDeserializeHelper(reader, this);
-            }
         }
     }
 }

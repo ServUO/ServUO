@@ -63,19 +63,11 @@ namespace Server.Items
             }
         }
 
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 10;
-            }
-        }
-
-        public override int ArmorBase
-        {
-            get
-            {
-                return 13;
             }
         }
 

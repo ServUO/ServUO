@@ -10,7 +10,7 @@ namespace Server.Items
         public LeatherNinjaJacket()
             : base(0x2793)
         {
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         public LeatherNinjaJacket(Serial serial)
@@ -67,18 +67,11 @@ namespace Server.Items
                 return 65;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 10;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 3;
             }
         }
         public override ArmorMaterialType MaterialType

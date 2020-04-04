@@ -8,7 +8,7 @@ namespace Server.Items
         public HeavyPlateJingasa()
             : base(0x2777)
         {
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         public HeavyPlateJingasa(Serial serial)
@@ -65,18 +65,11 @@ namespace Server.Items
                 return 70;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 55;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 4;
             }
         }
         public override ArmorMaterialType MaterialType

@@ -10,7 +10,7 @@ namespace Server.Items
         public LeatherHiroSode()
             : base(0x277E)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public LeatherHiroSode(Serial serial)
@@ -67,18 +67,11 @@ namespace Server.Items
                 return 50;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 25;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 3;
             }
         }
         public override ArmorMaterialType MaterialType

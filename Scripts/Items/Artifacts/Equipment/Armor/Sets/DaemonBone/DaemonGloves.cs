@@ -10,10 +10,10 @@ namespace Server.Items
         public DaemonGloves()
             : base(0x1450)
         {
-            this.Weight = 2.0;
-            this.Hue = 0x648;
+            Weight = 2.0;
+            Hue = 0x648;
 
-            this.ArmorAttributes.SelfRepair = 1;
+            ArmorAttributes.SelfRepair = 1;
         }
 
         public DaemonGloves(Serial serial)
@@ -70,18 +70,11 @@ namespace Server.Items
                 return 255;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 55;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 46;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -108,21 +101,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (this.Weight == 1.0)
-                this.Weight = 2.0;
-
-            if (this.ArmorAttributes.SelfRepair == 0)
-                this.ArmorAttributes.SelfRepair = 1;
         }
     }
 }

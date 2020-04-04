@@ -170,7 +170,7 @@ namespace Server.Items
                 return 0;
             }
         }
-        public virtual int AosStrReq
+        public virtual int StrReq
         {
             get
             {
@@ -744,7 +744,7 @@ namespace Server.Items
                     return 125;
                 }
 
-                return m_StrReq == -1 ? AosStrReq : m_StrReq;
+                return m_StrReq == -1 ? StrReq : m_StrReq;
             }
             set
             {

@@ -11,7 +11,7 @@ namespace Server.Items
         public FemaleLeatherChest()
             : base(0x1C06)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public FemaleLeatherChest(Serial serial)
@@ -68,18 +68,11 @@ namespace Server.Items
                 return 40;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 25;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 13;
             }
         }
         public override ArmorMaterialType MaterialType

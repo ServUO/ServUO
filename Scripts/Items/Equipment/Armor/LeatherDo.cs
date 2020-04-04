@@ -10,7 +10,7 @@ namespace Server.Items
         public LeatherDo()
             : base(0x27C6)
         {
-            this.Weight = 6.0;
+            Weight = 6.0;
         }
 
         public LeatherDo(Serial serial)
@@ -67,18 +67,11 @@ namespace Server.Items
                 return 45;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 40;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 3;
             }
         }
         public override ArmorMaterialType MaterialType

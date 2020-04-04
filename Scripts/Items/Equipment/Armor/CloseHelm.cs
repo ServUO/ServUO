@@ -65,18 +65,11 @@ namespace Server.Items
                 return 60;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 55;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 30;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -86,6 +79,7 @@ namespace Server.Items
                 return ArmorMaterialType.Plate;
             }
         }
+		
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

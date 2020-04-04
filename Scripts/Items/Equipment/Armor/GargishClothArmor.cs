@@ -76,8 +76,7 @@ namespace Server.Items
         public override int BaseEnergyResistance { get { return 6; } }
         public override int InitMinHits { get { return 40; } }
         public override int InitMaxHits { get { return 50; } }
-        public override int AosStrReq { get { return 20; } }
-        public override int ArmorBase { get { return 18; } }
+        public override int StrReq { get { return 20; } }
 
         public override ArmorMaterialType MaterialType
         {
@@ -217,8 +216,7 @@ namespace Server.Items
         public override int BaseEnergyResistance { get { return 6; } }
         public override int InitMinHits { get { return 40; } }
         public override int InitMaxHits { get { return 50; } }
-        public override int AosStrReq { get { return 25; } }
-        public override int ArmorBase { get { return 18; } }
+        public override int StrReq { get { return 25; } }
 
         public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Leather; } }
         public override CraftResource DefaultResource { get { return CraftResource.None; } }
@@ -350,8 +348,7 @@ namespace Server.Items
         public override int BaseEnergyResistance { get { return 6; } }
         public override int InitMinHits { get { return 40; } }
         public override int InitMaxHits { get { return 50; } }
-        public override int AosStrReq { get { return 20; } }
-        public override int ArmorBase { get { return 18; } }
+        public override int StrReq { get { return 20; } }
 
         public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Leather; } }
         public override CraftResource DefaultResource { get { return CraftResource.None; } }        
@@ -488,8 +485,7 @@ namespace Server.Items
         public override int BaseEnergyResistance { get { return 6; } }
         public override int InitMinHits { get { return 40; } }
         public override int InitMaxHits { get { return 50; } }
-        public override int AosStrReq { get { return 20; } }
-        public override int ArmorBase { get { return 18; } }
+        public override int StrReq { get { return 20; } }
 
         public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Leather; } }
         public override CraftResource DefaultResource { get { return CraftResource.None; } }

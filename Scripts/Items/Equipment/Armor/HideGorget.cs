@@ -9,7 +9,7 @@ namespace Server.Items
         public HideGorget()
             : base(0x2B76)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public HideGorget(Serial serial)
@@ -73,14 +73,7 @@ namespace Server.Items
                 return 45;
             }
         }
-        public override int AosStrReq
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override int ArmorBase
+        public override int StrReq
         {
             get
             {
@@ -118,9 +111,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (this.Weight == 2.0)
-                this.Weight = 1.0;
         }
     }
 }

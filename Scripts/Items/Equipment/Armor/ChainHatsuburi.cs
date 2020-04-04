@@ -8,7 +8,7 @@ namespace Server.Items
         public ChainHatsuburi()
             : base(0x2774)
         {
-            this.Weight = 7.0;
+            Weight = 7.0;
         }
 
         public ChainHatsuburi(Serial serial)
@@ -65,18 +65,11 @@ namespace Server.Items
                 return 75;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 50;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 3;
             }
         }
         public override ArmorMaterialType MaterialType

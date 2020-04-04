@@ -9,7 +9,7 @@ namespace Server.Items
         public WoodlandLegs()
             : base(0x2B6B)
         {
-            this.Weight = 8.0;
+            Weight = 8.0;
         }
 
         public WoodlandLegs(Serial serial)
@@ -66,18 +66,11 @@ namespace Server.Items
                 return 65;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 90;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 40;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -97,14 +90,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
         }
     }

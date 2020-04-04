@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    [TypeAlias("Server.Items.MaleGargishStoneArms")]
     public class GargishStoneArms : BaseArmor
     {
         [Constructable]
@@ -33,7 +32,7 @@ namespace Server.Items
         public override int InitMinHits { get { return 40; } }
         public override int InitMaxHits { get { return 50; } }
 
-        public override int AosStrReq { get { return 40; } }
+        public override int StrReq { get { return 40; } }
 
         public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Stone; } }
 
@@ -50,9 +49,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (this.ItemID != 0x284)
-                this.ItemID = 0x284;
         }
     }
 }

@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    // Based off a HeaterShield
     [FlipableAttribute(0x4204, 0x4208)]
     public class LargePlateShield : BaseShield
     {
@@ -10,7 +9,7 @@ namespace Server.Items
         public LargePlateShield()
             : base(0x4204)
         {
-
+			Weight = 8.0;
         }
 
         public LargePlateShield(Serial serial)
@@ -67,18 +66,11 @@ namespace Server.Items
                 return 65;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 90;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 23;
             }
         }
         public override bool CanBeWornByGargoyles
