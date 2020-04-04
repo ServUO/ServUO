@@ -876,18 +876,14 @@ namespace Server.Items
                 from.SendLocalizedMessage(3000201); // You must wait to perform another action.
                 return false;
 			}
-				#region Personal Bless Deed
+		    #region Personal Bless Deed
 			else if (BlessedBy != null && BlessedBy != from)
 			{
 				from.SendLocalizedMessage(1075277); // That item is blessed by another player.
 
 				return false;
 			}
-			else if (!XmlAttach.CheckCanEquip(this, from))
-			{
-				return false;
-			}
-				#endregion
+			#endregion
 
 			else
 			{
@@ -940,8 +936,6 @@ namespace Server.Items
             {
                 AddMysticMod(from);
             }
-
-			XmlAttach.CheckOnEquip(this, from);
 
             InDoubleStrike = false;
 
@@ -1045,8 +1039,6 @@ namespace Server.Items
                 m.CheckStatTimers();
 
                 m.Delta(MobileDelta.WeaponDamage);
-
-                XmlAttach.CheckOnRemoved(this, parent);
 			}
 
             LastParryChance = 0;
@@ -1594,8 +1586,6 @@ namespace Server.Items
                             attacker.FixedEffect(0x376A, 6, 1);
                         }
                         #endregion
-
-                        XmlAttach.OnArmorHit(attacker, defender, shield, this, originalDamage);
                     }
 
                     #region Stygian Abyss
@@ -1624,8 +1614,6 @@ namespace Server.Items
 
                     if (toHit is Item && !((Item)toHit).Deleted && (attacker is VeriteElemental || attacker is ValoriteElemental))
                         VeriteElemental.OnHit(defender, (Item)toHit, damage);
-
-                    damage -= XmlAttach.OnArmorHit(attacker, defender, (Item)toHit, this, originalDamage);
 				}
 			}
 
@@ -2528,7 +2516,6 @@ namespace Server.Items
 
             BaseFamiliar.OnHit(attacker, damageable);
             WhiteTigerFormSpell.OnHit(attacker, defender);
-			XmlAttach.OnWeaponHit(this, attacker, defender, damageGiven);
 		}
 
         public Direction GetOppositeDir(Direction d)
@@ -5178,8 +5165,6 @@ namespace Server.Items
                         break;
                 }
             }
-
-            XmlAttach.AddAttachmentProperties(this, list);
 
             if (m_Hits >= 0 && m_MaxHits > 0)
             {

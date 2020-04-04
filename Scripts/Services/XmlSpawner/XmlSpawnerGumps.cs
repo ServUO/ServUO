@@ -1,4 +1,4 @@
-﻿#define NEWPROPSGUMP
+#define NEWPROPSGUMP
 #define BOOKTEXTENTRY
 
 using System;
@@ -134,7 +134,6 @@ namespace Server.Mobiles
 				"MY,prop (for spawner mob)\n" +
 				"GET,[itemname or serial or SETITEM(*)][,itemtype],prop (*: the setitem of spawner, it's written SETITEM, upper char!)\n" +
 				"GET,[itemname or serial or SETITEM][,itemtype],«ATTACHMENT,type,name,property»\n" +
-				"GETVAR,varname (XmlLocalVariable)\n" +
 				"GETONMOB,mobname[,mobtype],prop\n" +
 				"GETONMOB,mobname[,mobtype],«ATTACHMENT,type,nome,prop»\n" +
 				"GETONCARRIED,itemname[,itemtype][,equippedonly (true/false)],prop\n" +
@@ -190,7 +189,6 @@ namespace Server.Mobiles
 				"OFFSET,x,y,[,z]\n" +
 				"ANIMATE,action[,framecount][,repeatcount][,forward true/false][,repeat true/false][,delay]\n" +
 				"FACETO,x,y (turns the mobile to face in a direction by the coords given)\n" +
-				"SETVALUE,nomevar,valore,durata (XmlValue)\n" +
 				"FLASH,number (1 fade black - 2 fade white - 3 light flash - 4 light to black flash - 5 black flash SOLO PG)\n" +
 				"PRIVMSG[,probability (0.01=1% 1=100%)][,color]/text (shows a message only to that player)\n" +
 				"BCAST[,color][,font]/message\n" +

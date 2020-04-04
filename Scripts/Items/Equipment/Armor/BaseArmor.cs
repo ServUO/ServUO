@@ -2166,10 +2166,7 @@ namespace Server.Items
                 }
             }
 
-            if (!Server.Engines.XmlSpawner2.XmlAttach.CheckCanEquip(this, from))
-                return false;
-            else
-                return base.CanEquip(from);
+            return base.CanEquip(from);
         }
 
         public override bool CheckPropertyConfliction(Mobile m)

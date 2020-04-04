@@ -889,26 +889,12 @@ namespace Server
         {
             get
             {
-                return ExtendedGetValue((int)attribute);
+                return GetValue((int)attribute);
             }
             set
             {
                 SetValue((int)attribute, value);
             }
-        }
-
-        public int ExtendedGetValue(int bitmask)
-        {
-            int value = GetValue(bitmask);
-
-            XmlAosAttributes xaos = (XmlAosAttributes)XmlAttach.FindAttachment(Owner, typeof(XmlAosAttributes));
-
-            if (xaos != null)
-            {
-                value += xaos.GetValue(bitmask);
-            }
-
-            return (value);
         }
 
         public override string ToString()
@@ -1419,26 +1405,12 @@ namespace Server
         {
             get
             {
-                return ExtendedGetValue((int)attribute);
+                return GetValue((int)attribute);
             }
             set
             {
                 SetValue((int)attribute, value);
             }
-        }
-
-        public int ExtendedGetValue(int bitmask)
-        {
-            int value = GetValue(bitmask);
-
-            XmlAosAttributes xaos = (XmlAosAttributes)XmlAttach.FindAttachment(Owner, typeof(XmlAosAttributes));
-
-            if (xaos != null)
-            {
-                value += xaos.GetValue(bitmask);
-            }
-
-            return (value);
         }
 
         public void ScaleLeech(int weaponSpeed)
@@ -2180,26 +2152,12 @@ namespace Server
         {
             get
             {
-                return ExtendedGetValue((int)attribute);
+                return GetValue((int)attribute);
             }
             set
             {
                 SetValue((int)attribute, value);
             }
-        }
-
-        public int ExtendedGetValue(int bitmask)
-        {
-            int value = GetValue(bitmask);
-
-            XmlAosAttributes xaos = (XmlAosAttributes)XmlAttach.FindAttachment(Owner, typeof(XmlAosAttributes));
-
-            if (xaos != null)
-            {
-                value += xaos.GetValue(bitmask);
-            }
-
-            return (value);
         }
 
         public override string ToString()
@@ -3026,26 +2984,12 @@ namespace Server
         {
             get
             {
-                return ExtendedGetValue((int)attribute);
+                return GetValue((int)attribute);
             }
             set
             {
                 SetValue((int)attribute, value);
             }
-        }
-
-        public int ExtendedGetValue(int bitmask)
-        {
-            int value = GetValue(bitmask);
-
-            XmlAosAttributes xaos = (XmlAosAttributes)XmlAttach.FindAttachment(Owner, typeof(XmlAosAttributes));
-
-            if (xaos != null)
-            {
-                value += xaos.GetValue(bitmask);
-            }
-
-            return (value);
         }
 
         public override string ToString()
