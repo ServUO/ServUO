@@ -120,21 +120,6 @@ namespace Server.Items
 
         public abstract AMT MaterialType { get; }
 
-        public virtual int RevertArmorBase
-        {
-            get
-            {
-                return ArmorBase;
-            }
-        }
-        public virtual int ArmorBase
-        {
-            get
-            {
-                return 0;
-            }
-        }
-
         public virtual AMA DefMedAllowance
         {
             get
@@ -310,6 +295,30 @@ namespace Server.Items
             set
             {
                 m_Meditate = value;
+            }
+        }
+
+        public int ArmorBase
+        {
+            get
+            {
+                switch (MaterialType)
+                {
+                    default:
+                    case ArmorMaterialType.Cloth: return 0;
+                    case ArmorMaterialType.Spined:
+                    case ArmorMaterialType.Horned:
+                    case ArmorMaterialType.Barbed:
+                    case ArmorMaterialType.Leather: return 13;
+                    case ArmorMaterialType.Studded: return 16;
+                    case ArmorMaterialType.Ringmail: return 22;
+                    case ArmorMaterialType.Chainmail: return 28;
+                    case ArmorMaterialType.Bone: return 30;
+                    case ArmorMaterialType.Plate:
+                    case ArmorMaterialType.Dragon:
+                    case ArmorMaterialType.Wood:
+                    case ArmorMaterialType.Stone: return 40;
+                }
             }
         }
 
