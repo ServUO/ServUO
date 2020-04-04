@@ -67,8 +67,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 2);
-            AddLoot( LootPack.Parrot );
+            AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.Parrot);
             AddLoot(LootPack.HighScrolls, 2);
             AddLoot(LootPack.MedScrolls);
         }
@@ -76,14 +76,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

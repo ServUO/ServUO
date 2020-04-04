@@ -281,7 +281,7 @@ namespace Server.Gumps
                     AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1075626, LabelColor, false, false);       //Reflect Physical Damage
                     yOffset += 1;
 
-                    AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10124, GumpButtonType.Reply, 0);
+                    AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10145, GumpButtonType.Reply, 0);
                     AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1079757, LabelColor, false, false);       //Lower Requirements
                     yOffset += 1;
 

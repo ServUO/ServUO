@@ -26,20 +26,7 @@ namespace Server.Mobiles
 {
 	public class XmlSpawner : Item, ISpawner
 	{
-		private static bool m_XmlPoints;
-		private static bool m_XmlSockets;
-
-		public static bool PointsEnabled { get { return m_XmlPoints; } }
-		public static bool SocketsEnabled { get { return m_XmlSockets; } }
-
-		public static void Configure()
-		{
-			m_XmlPoints = Config.Get("XmlSpawner2.Points", false);
-			m_XmlSockets = Config.Get("XmlSpawner2.Sockets", false);
-		}
-
 		#region Type declarations
-
 		public enum TODModeType { Realtime, Gametime }
 
 		public enum SpawnPositionType { Random, RowFill, ColFill, Perimeter, Player, Waypoint, RelXY, DeltaLocation, Location, Wet, Tiles, NoTiles, ItemID, NoItemID }
@@ -70,13 +57,11 @@ namespace Server.Mobiles
 					trigLocation = m.Location;
 			}
 		}
-
 		#endregion
 
 		#region Constant declarations
 		public const byte MaxLoops = 10; //maximum number of recursive calls from spawner to itself. this is to prevent stack overflow from xmlspawner scripting
 		public const string Version = "4.00";
-		//private const double SpawnIdleTime = 72.0;              // time in hours after which idle spawns will be relocated. A value < 0 disables this feature. This does not work properly under RunUO 2.0
 		private const int ShowBoundsItemId = 14089;             // 14089 Fire Column // 3555 Campfire // 8708 Skull Pole
 		private const string SpawnDataSetName = "Spawns";
 		private const string SpawnTablePointName = "Points";
@@ -275,8 +260,6 @@ namespace Server.Mobiles
 		private bool m_DebugThis = false;
 
 		private TimerPriority m_BasePriority = TimerPriority.OneSecond;
-
-
 		#endregion
 
 		#region Property Overrides
@@ -379,28 +362,6 @@ namespace Server.Mobiles
 		private bool UseSectorActivate = false;
 
 		public bool SingleSector { get { return UseSectorActivate; } }
-
-		/*
-		public override void OnSectorDeactivate()
-		{
-			sectorIsActive = false;
-			base.OnSectorDeactivate();
-		}
-
-		public override void OnSectorActivate()
-		{
-			sectorIsActive = true;
-
-			base.OnSectorActivate();
-
-			// perform the smart respawning
-			if(SmartSpawning && IsInactivated && UseSectorActivate)
-			{
-				SmartRespawn();
-			}
-
-		}
-		*/
 
 		public bool InActivationRange(Sector s1, Sector s2)
 		{
@@ -615,20 +576,6 @@ namespace Server.Mobiles
 						}
 					}
 
-					// if the spawner is in a single sector, then we can use the OnSectorActivation method to test for activity
-					// note, sectors will activate when within +-2 sectors
-					/*
-										if((sectorList.Count == 1) && (Location.X >= m_X) && (Location.X <= m_X + m_Width) &&
-											(Location.Y >= m_Y) && (Location.Y <= m_Y + m_Height))
-										{
-
-											UseSectorActivate = true;
-										}
-										else
-										{
-											UseSectorActivate = false;
-										}
-										*/
 					UseSectorActivate = false;
 				}
 				_TraceStart(2);
@@ -659,7 +606,6 @@ namespace Server.Mobiles
 
 		public int SecCount { get { return seccount; } }
 
-
 		public bool IsInactivated
 		{
 			get { return m_IsInactivated; }
@@ -668,7 +614,6 @@ namespace Server.Mobiles
 				m_IsInactivated = value;
 			}
 		}
-
 
 		public int ActiveSectorCount
 		{
@@ -1234,19 +1179,6 @@ namespace Server.Mobiles
 				}
 			}
 		}
-
-		/*
-		[CommandProperty(AccessLevel.GameMaster)]
-		public override string Name
-		{
-			get { return m_Name; }
-			set
-			{
-				m_Name = value;
-				InvalidateProperties();
-			}
-		}
-		*/
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public int MaxCount
@@ -2836,7 +2768,6 @@ string setname17 = _traceName[17] = "FactionOnKill";
 string setname18 = _traceName[18] = "CheckAcquire";
 
 
-
 private const int MaxTraces = 20;
 private static DateTime[] _traceStart = new DateTime[MaxTraces];
 public static TimeSpan[] _traceTotal = new TimeSpan[MaxTraces];
@@ -3149,7 +3080,6 @@ public static void _TraceEnd(int index)
 			}
 		}
 
-
 		public override bool HandlesOnMovement
 		{
 			get
@@ -3157,7 +3087,6 @@ public static void _TraceEnd(int index)
 				return (m_Running && m_ProximityRange >= 0);
 			}
 		}
-
 
 		public void AddToMovementList(Mobile m)
 		{
@@ -3613,16 +3542,6 @@ public static void _TraceEnd(int index)
 					// check for smart spawning and restart timers after deser if needed
 					// note, HasActiveSectors will recalculate the sector list and UseSectorActivate property
 					bool recalc_sectors = spawner.HasActiveSectors;
-					/*
-										if(spawner.SmartSpawning && spawner.IsInactivated && !spawner.UseSectorActivate)
-										{
-											spawner.DoSectorTimer(TimeSpan.FromSeconds(1));
-											timercount++;
-										}
-					*/
-					// add in the totalitem mod to keep them from adding to container counts
-					//spawner.TotalItems = -1;
-					//spawner.UpdateTotal(spawner, TotalType.Items, -1);
 
 					spawner.RestoreISpawner();
 				}
@@ -3649,7 +3568,6 @@ public static void _TraceEnd(int index)
 			// ok, I'm lazy. I dont like all that typing, so these are two aliases for the longer commands
 			CommandSystem.Register("XmlShow", AccessLevel.Administrator, new CommandEventHandler(ShowSpawnPoints_OnCommand));
 			CommandSystem.Register("XmlHide", AccessLevel.Administrator, new CommandEventHandler(HideSpawnPoints_OnCommand));
-
 			CommandSystem.Register("XmlHome", AccessLevel.GameMaster, new CommandEventHandler(XmlHome_OnCommand));
 			CommandSystem.Register("XmlUnLoad", DiskAccessLevel, new CommandEventHandler(UnLoad_OnCommand));
 			CommandSystem.Register("XmlSpawnerUnLoad", DiskAccessLevel, new CommandEventHandler(UnLoad_OnCommand));
@@ -3666,11 +3584,9 @@ public static void _TraceEnd(int index)
 			CommandSystem.Register("XmlDefaults", AccessLevel.Administrator, new CommandEventHandler(XmlDefaults_OnCommand));
 			CommandSystem.Register("XmlGet", AccessLevel.GameMaster, new CommandEventHandler(XmlGetValue_OnCommand));
 			TargetCommands.Register(new XmlSetCommand());
-			//CommandSystem.Register( "XmlSet", AccessLevel.GameMaster, new CommandEventHandler( XmlSetValue_OnCommand ) );
 			CommandSystem.Register("OptimalSmartSpawning", AccessLevel.Administrator, new CommandEventHandler(OptimalSmartSpawning_OnCommand));
 			CommandSystem.Register("SmartStat", AccessLevel.GameMaster, new CommandEventHandler(SmartStat_OnCommand));
 			CommandSystem.Register("XmlGo", AccessLevel.GameMaster, new CommandEventHandler(SpawnEditorGo_OnCommand));
-			//CommandSystem.Register( "TagList", AccessLevel.Administrator, new CommandEventHandler( ShowTagList_OnCommand ) );
 			TargetCommands.Register( new XmlSaveSingle() );
 
 #if(TRACE)
@@ -3744,7 +3660,6 @@ public static void _TraceEnd(int index)
 				}
 			}
 		}
-
 
 		[Usage("TagList property")]
 		[Description("Lists the keyword taglist for a spawner")]
@@ -5539,11 +5454,6 @@ public static void _TraceEnd(int index)
 						}
 		}
 
-
-
-		//------------------------------------------------------------------------------------------------------------------------------------
-		// The following code was taken from Sno's xml exporter package and slightly modified to create xmlspawners instead of regular spawners
-		//------------------------------------------------------------------------------------------------------------------------------------
 		[Usage("XmlImportSpawners filename")]
 		[Description("Loads xml files created by Sno's xml exporter as xmlspawners.")]
 		public static void XmlImportSpawners_OnCommand(CommandEventArgs e)
@@ -5678,10 +5588,6 @@ public static void _TraceEnd(int index)
 			}
 			return names;
 		}
-		//------------------------------------------------------------------------------------------------------------------------------------
-		// end of modified xml importer by Sno
-		//------------------------------------------------------------------------------------------------------------------------------------
-
 
 		[Usage("XmlImportMSF filename")]
 		[Description("Loads msf files created by Morxeton's megaspawner as xmlspawners.")]
@@ -7525,7 +7431,6 @@ public static void _TraceEnd(int index)
 				TotalCount++;
 			}
 
-
 			// Write out the file
 			bool file_error = false;
 			if (TotalCount > 0)
@@ -8014,23 +7919,6 @@ public static void _TraceEnd(int index)
 					{
 						Mobile m = (Mobile)o;
 
-						// check to see if the spawn has been idle for a long time
-						// if it has then reposition it because it might be in an inaccessible location
-						// note, vendors and special cases of positioning from the Spawn method will not get relocated
-						// i'm not saying I like those special cases, but they should be treated consistently
-						// doesnt work properly under RunUO 2.0 and also doesnt properly take spawn control keywords into consideration
-						// when repositioning, so disable this for now
-						/*
-						if (SpawnIdleTime > 0 && !m.Deleted && !(m is BaseVendor) && (m.CreationTime < DateTime.UtcNow - TimeSpan.FromHours(SpawnIdleTime))
-							&& m.Map != null && m.Map != Map.Internal && !m.Map.GetSector(m.Location).Active)
-						{
-							// determine whether the requiresurface flag is set
-							m.Location = GetSpawnPosition(so.RequireSurface, m);
-
-							// and reset the creation time (simulates respawning the identical mob at a new location)
-							//m.CreationTime = DateTime.UtcNow;
-						}
-						 * */
 						bool despawned = false;
 						// check to see if the despawn time has elapsed.  If so, and the sector is not active then delete it.
 						if (DespawnTime.TotalHours > 0 && !m.Deleted && (m.CreationTime < DateTime.UtcNow - DespawnTime)
@@ -8926,22 +8814,6 @@ public static void _TraceEnd(int index)
 				if (sgroup != 0)
 				{
 					SpawnSubGroup(sgroup, smartspawn, loops);
-
-					/*
-					for( int j = 0; j < m_SpawnObjects.Count; j++)
-					{
-						SpawnObject so = (SpawnObject)m_SpawnObjects[j];
-
-						if(so.SubGroup == sgroup)
-						{
-							// get the SpawnsPerTick count and spawn up to that number
-							bool success = Spawn( j, smartspawn, so.SpawnsPerTick );
-									
-							if(success && !smartspawn)
-								RefreshNextSpawnTime(so);
-						}
-					}
-					 */
 				}
 				else
 				{
@@ -9264,17 +9136,6 @@ public static void _TraceEnd(int index)
 
 								Point3D loc;
 
-								/*
-								if( ( m is BaseVendor ) &&
-									( this.Map.CanFit( this.Location, SpawnFitSize, true, false ) == true ) )
-								{
-									loc = this.Location;
-								} 
-								else
-								{
-									loc = GetSpawnPosition(requiresurface);
-								}
-								*/
 								loc = GetSpawnPosition(requiresurface, packrange, packcoord, spawnpositioning, m);
 
 								if (!smartspawn)
@@ -9312,9 +9173,6 @@ public static void _TraceEnd(int index)
 								string status_str;
 
 								BaseXmlSpawner.ApplyObjectStringProperties(this, substitutedtypeName, m, m_mob_who_triggered, this, out status_str);
-
-								// if the object has an OnAfterSpawnAndModify method, then invoke it
-								//BaseXmlSpawner.InvokeOnAfterSpawnAndModify(o);
 
 								if (status_str != null)
 								{
@@ -9825,7 +9683,6 @@ public static void _TraceEnd(int index)
 
 		}
 
-
 		public static bool IsValidMapLocation(int X, int Y, Map map)
 		{
 			if (map == null || map == Map.Internal) return false;
@@ -9956,11 +9813,6 @@ public static void _TraceEnd(int index)
 
 				holdSmartSpawningHash[o.GetType()]=prop;
 			}
-			//else
-			//{
-				// look it up in the hash table
-				//prop = holdSmartSpawningHash[o.GetType()];
-			//}
 
 			if (prop != null)
 			{
@@ -9978,7 +9830,6 @@ public static void _TraceEnd(int index)
 		{
 			get
 			{
-
 				// go through the spawn lists
 				foreach (SpawnObject so in m_SpawnObjects)
 				{
@@ -10226,11 +10077,8 @@ public static void _TraceEnd(int index)
 
 					if (includetile && !excludetile && ((lflags & tileflag) == tileflag))
 					{
-						//Console.WriteLine("found landtile {0}/{1} at {2},{3},{4}", ltile.ID, ltile.ID & 0x3fff, x, y, ltile.Z + ltile.Height);
 						p=new Point3D(x, y, ltile.Z + ltile.Height);
 						allok=true;
-						//locations.Add(new Point3D(x, y, ltile.Z + ltile.Height));
-						//continue;
 					}
 
 					StaticTile[] statictiles = map.Tiles.GetStaticTiles(x, y, true);
@@ -10306,11 +10154,8 @@ public static void _TraceEnd(int index)
 	
 							if (includetile && !excludetile && ((iflags & tileflag) == tileflag))
 							{
-								//prende precedenza su tutto il resto!
 								p=new Point3D(x, y, i.Z + i.ItemData.Height);
 								allok=true;
-								//locations.Add(new Point3D(x, y, i.Z + i.ItemData.Height));
-								//break;
 							}
 						}
 						itemslist.Free();
@@ -10343,7 +10188,6 @@ public static void _TraceEnd(int index)
 			}
 		}
 
-		// 2004.02.08 :: Omega Red
 		public Point2D GetRandomRegionPoint(Region r)
 		{
 			int count = r.Area.Length;
@@ -10603,9 +10447,6 @@ public static void _TraceEnd(int index)
 									spawnPositionWayTable = new Dictionary<string, List<Item>>();
 								}
 
-								// try to find the waypoint list in the local table
-								//WayList = spawnPositionWayTable[prefix];
-
 								// no existing list so create a new one
 								if (!spawnPositionWayTable.TryGetValue(prefix, out WayList) || WayList == null)
 								{
@@ -10696,8 +10537,6 @@ public static void _TraceEnd(int index)
 							x = p.X;
 							y = p.Y;
 						}
-
-
 					}
 					else
 					{
@@ -11198,7 +11037,6 @@ public static void _TraceEnd(int index)
 					DeleteFromList(deletelist);
 
 					// Check if the spawn object should be removed
-					//if( TheSpawn.MaxCount < 1 )
 					if (delete_this_entry)
 					{
 						m_SpawnObjects.Remove(TheSpawn);
@@ -11329,7 +11167,6 @@ public static void _TraceEnd(int index)
 
 		#region Timers
 
-
 		private static void DoGlobalSectorTimer(TimeSpan delay)
 		{
 			if (m_GlobalSectorTimer != null)
@@ -11414,7 +11251,6 @@ public static void _TraceEnd(int index)
 			protected override void OnTick()
 			{
 				// check the sectors
-
 				if (m_Spawner != null && !m_Spawner.Deleted && m_Spawner.Running && m_Spawner.IsInactivated)
 				{
 					if (m_Spawner.SmartSpawning)
@@ -11536,9 +11372,6 @@ public static void _TraceEnd(int index)
 
 		public void DoTimer3(TimeSpan delay)
 		{
-			//            if ( !m_proximityActivated )
-			//                return;
-
 			m_RefractEnd = DateTime.UtcNow + delay;
 			m_refractActivated = true;
 
@@ -11680,9 +11513,6 @@ public static void _TraceEnd(int index)
 			writer.Write(m_FirstModified);
 			writer.Write(m_LastModified);
 
-			// Version 25
-			// eliminated the textentrybook serialization (they autodelete on deser now)
-
 			// Version 24
 			if (m_SpawnObjects != null)
 			{
@@ -11778,8 +11608,7 @@ public static void _TraceEnd(int index)
 					writer.Write(so.KillsNeeded);
 				}
 			}
-			writer.Write(m_RegionName);	// 2004.02.08 :: Omega Red
-
+			writer.Write(m_RegionName);	
 
 			// Version 15
 			writer.Write(m_ExternalTriggering);
@@ -11889,7 +11718,6 @@ public static void _TraceEnd(int index)
 						writer.Write((Mobile)o);
 					else
 					{
-
 						// if this is a keyword tag then add some more info
 						if (o is BaseXmlSpawner.KeywordTag)
 						{
@@ -12274,39 +12102,6 @@ public static void _TraceEnd(int index)
 							m_SpawnObjects.Add(TheSpawnObject);
 
 							string typeName = BaseXmlSpawner.ParseObjectType(TypeName);
-							// does it have a substitution that might change its validity?
-							// if so then let it go
-							/*if(typeName!=null && typeName.StartsWith("#WAYPOINT"))
-							{
-								string[] args = BaseXmlSpawner.ParseSemicolonArgs(substitutedtypeName, 2);
-								string[] keyvalueargs = BaseXmlSpawner.ParseCommaArgs(args[0], 10);
-								SpawnPositionInfo spawnpositioning = new SpawnPositionInfo(SpawnPositionType.Waypoint, null, keyvalueargs);
-								if (spawnPositionWayTable == null)
-								{
-									spawnPositionWayTable = new Dictionary<string, List<Item>>();
-								}
-
-								// try to find the waypoint list in the local table
-								//WayList = spawnPositionWayTable[prefix];
-								List<Item> WayList;
-
-								// no existing list so create a new one
-								if (!spawnPositionWayTable.TryGetValue(prefix, out WayList) || WayList == null)
-								{
-									WayList = new List<Item>();
-
-									foreach (Item i in World.Items.Values)
-									{
-										if (i is WayPoint && i.Name != null && i.Map == Map && i.Name.StartsWith(prefix))
-										{
-											// add it to the list of items
-											WayList.Add(i);
-										}
-									}
-									// add the new list to the local table
-									spawnPositionWayTable[prefix] = WayList;
-								}
-							}*/
 
 							if (typeName == null || ((SpawnerType.GetType(typeName) == null) &&
 								(!BaseXmlSpawner.IsTypeOrItemKeyword(typeName) && typeName.IndexOf('{') == -1 && !typeName.StartsWith("*") && !typeName.StartsWith("#"))))
@@ -12534,7 +12329,6 @@ public static void _TraceEnd(int index)
 					if (!found)
 					{
 						CommandLogging.WriteLine(from, "{0} {1} added to XmlSpawner {2} '{3}' [{4}, {5}] ({6}) : {7}", from.AccessLevel, CommandLogging.Format(from), spawner.Serial, spawner.Name, spawner.GetWorldLocation().X, spawner.GetWorldLocation().Y, spawner.Map, name);
-
 					}
 				}
 
@@ -12648,8 +12442,6 @@ public static void _TraceEnd(int index)
 
 				return NewSpawnObjects.ToArray();
 			}
-
-
 
 			internal static SpawnObject[] LoadSpawnObjectsFromString2(string ObjectList)
 			{

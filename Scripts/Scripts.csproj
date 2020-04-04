@@ -2572,7 +2572,6 @@
     <Compile Include="Mobiles\NPCs\Emerillo.cs" />
     <Compile Include="Mobiles\NPCs\Enigma.cs" />
     <Compile Include="Mobiles\NPCs\Enrico.cs" />
-    <Compile Include="Mobiles\NPCs\EnshroudedFigure.cs" />
     <Compile Include="Mobiles\NPCs\EscortableMage.cs" />
     <Compile Include="Mobiles\NPCs\Escortables.cs" />
     <Compile Include="Mobiles\NPCs\EvilHealer.cs" />
@@ -2607,9 +2606,7 @@
     <Compile Include="Mobiles\NPCs\HarborMaster.cs" />
     <Compile Include="Mobiles\NPCs\Healer.cs" />
     <Compile Include="Mobiles\NPCs\HealerGuildmaster.cs" />
-    <Compile Include="Mobiles\NPCs\Henchman.cs" />
     <Compile Include="Mobiles\NPCs\Herbalist.cs" />
-    <Compile Include="Mobiles\NPCs\HiddenFigure.cs" />
     <Compile Include="Mobiles\NPCs\HireBard.cs" />
     <Compile Include="Mobiles\NPCs\HireBardArcher.cs" />
     <Compile Include="Mobiles\NPCs\HireBeggar.cs" />
@@ -2629,7 +2626,6 @@
     <Compile Include="Mobiles\NPCs\IronWorker.cs" />
     <Compile Include="Mobiles\NPCs\Jacob.cs" />
     <Compile Include="Mobiles\NPCs\Jamal.cs" />
-    <Compile Include="Mobiles\NPCs\JedahEntille.cs" />
     <Compile Include="Mobiles\NPCs\Jelrice.cs" />
     <Compile Include="Mobiles\NPCs\Jeweler.cs" />
     <Compile Include="Mobiles\NPCs\Jillian.cs" />

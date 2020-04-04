@@ -40,19 +40,6 @@ namespace Server.Mobiles
 
             this.PackItem(new ThighBoots());
 
-            switch ( Utility.Random(3) )
-            {
-                case 0:
-                    this.PackItem(new Ribs());
-                    break;
-                case 1:
-                    this.PackItem(new Shaft());
-                    break;
-                case 2:
-                    this.PackItem(new Candle());
-                    break;
-            }
-
             if (0.2 > Utility.RandomDouble())
                 this.PackItem(new BolaBall());
 
