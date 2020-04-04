@@ -8,7 +8,7 @@ namespace Server.Items
         public StuddedDo()
             : base(0x27C7)
         {
-            this.Weight = 8.0;
+            Weight = 8.0;
         }
 
         public StuddedDo(Serial serial)
@@ -65,19 +65,11 @@ namespace Server.Items
                 return 50;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 55;
-            }
-        }
-
-        public override int ArmorBase
-        {
-            get
-            {
-                return 3;
             }
         }
         public override ArmorMaterialType MaterialType

@@ -9,7 +9,7 @@ namespace Server.Items
         public ChainCoif()
             : base(0x13BB)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public ChainCoif(Serial serial)
@@ -66,18 +66,11 @@ namespace Server.Items
                 return 60;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 60;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 28;
             }
         }
         public override ArmorMaterialType MaterialType

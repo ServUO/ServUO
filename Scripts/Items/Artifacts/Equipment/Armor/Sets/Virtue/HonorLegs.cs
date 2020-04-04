@@ -10,17 +10,17 @@ namespace Server.Items
         public HonorLegs()
             : base(0x2B06)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 9.0;
-            this.SetHue = 0;
-            this.Hue = 0x226;
+            LootType = LootType.Blessed;
+            Weight = 9.0;
+            SetHue = 0;
+            Hue = 0x226;
 			
-            this.SetSelfRepair = 5;			
-            this.SetPhysicalBonus = 5;
-            this.SetFireBonus = 5;
-            this.SetColdBonus = 5;
-            this.SetPoisonBonus = 5;
-            this.SetEnergyBonus = 5;
+            SetSelfRepair = 5;			
+            SetPhysicalBonus = 5;
+            SetFireBonus = 5;
+            SetColdBonus = 5;
+            SetPoisonBonus = 5;
+            SetEnergyBonus = 5;
         }
 
         public HonorLegs(Serial serial)
@@ -98,7 +98,7 @@ namespace Server.Items
                 return 255;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
@@ -115,14 +115,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
             int version = reader.ReadInt();
         }
     }

@@ -1,9 +1,7 @@
 using System;
-using Server.Guilds;
 
 namespace Server.Items
 {
-    // Based off an OrderShield
     [FlipableAttribute(0x422A, 0x422C)]
     public class GargishOrderShield : BaseShield
     {
@@ -11,6 +9,7 @@ namespace Server.Items
         public GargishOrderShield()
             : base(0x422A)
         {
+			Weight = 7.0;
         }
 
         public GargishOrderShield(Serial serial)
@@ -67,18 +66,11 @@ namespace Server.Items
                 return 125;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 95;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 30;
             }
         }
         public override bool CanBeWornByGargoyles

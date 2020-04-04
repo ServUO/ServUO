@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    // Based off a BronzeShield
     [FlipableAttribute(0x4202, 0x420A)]
     public class SmallPlateShield : BaseShield
     {
@@ -10,7 +9,7 @@ namespace Server.Items
         public SmallPlateShield()
             : base(0x4202)
         {
-            this.Weight = 6.0;
+            Weight = 6.0;
         }
 
         public SmallPlateShield(Serial serial)
@@ -67,18 +66,11 @@ namespace Server.Items
                 return 30;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 35;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 10;
             }
         }
         public override bool CanBeWornByGargoyles

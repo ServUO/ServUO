@@ -9,7 +9,7 @@ namespace Server.Items
         public HideFemaleChest()
             : base(0x2B79)
         {
-            this.Weight = 6.0;
+            Weight = 6.0;
         }
 
         public HideFemaleChest(Serial serial)
@@ -73,18 +73,11 @@ namespace Server.Items
                 return 45;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 35;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 15;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -118,14 +111,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
         }
     }

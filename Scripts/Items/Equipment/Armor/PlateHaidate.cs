@@ -10,7 +10,7 @@ namespace Server.Items
         public PlateHaidate()
             : base(0x278D)
         {
-            this.Weight = 7.0;
+            Weight = 7.0;
         }
 
         public PlateHaidate(Serial serial)
@@ -67,18 +67,11 @@ namespace Server.Items
                 return 65;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 80;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 3;
             }
         }
         public override ArmorMaterialType MaterialType

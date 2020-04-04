@@ -8,7 +8,7 @@ namespace Server.Items
         public PlateMempo()
             : base(0x2779)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public PlateMempo(Serial serial)
@@ -65,18 +65,11 @@ namespace Server.Items
                 return 70;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 50;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 4;
             }
         }
         public override ArmorMaterialType MaterialType

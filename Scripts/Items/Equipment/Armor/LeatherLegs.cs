@@ -11,7 +11,7 @@ namespace Server.Items
         public LeatherLegs()
             : base(0x13CB)
         {
-            this.Weight = 4.0;
+            Weight = 4.0;
         }
 
         public LeatherLegs(Serial serial)
@@ -68,18 +68,11 @@ namespace Server.Items
                 return 40;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 20;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 13;
             }
         }
         public override ArmorMaterialType MaterialType

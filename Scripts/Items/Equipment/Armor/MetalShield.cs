@@ -10,7 +10,7 @@ namespace Server.Items
         public MetalShield()
             : base(0x1B7B)
         {
-            this.Weight = 6.0;
+            Weight = 6.0;
         }
 
         public MetalShield(Serial serial)
@@ -67,31 +67,22 @@ namespace Server.Items
                 return 65;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 45;
             }
         }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 11;
-            }
-        }
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);//version
         }
     }

@@ -10,7 +10,7 @@ namespace Server.Items
         public HeaterShield()
             : base(0x1B76)
         {
-            this.Weight = 8.0;
+            Weight = 8.0;
         }
 
         public HeaterShield(Serial serial)
@@ -67,31 +67,22 @@ namespace Server.Items
                 return 65;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 90;
             }
         }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 23;
-            }
-        }
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);//version
         }
     }

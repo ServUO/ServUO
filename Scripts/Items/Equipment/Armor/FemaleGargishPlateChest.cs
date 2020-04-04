@@ -32,7 +32,7 @@ namespace Server.Items
         public override int InitMinHits { get { return 50; } }
         public override int InitMaxHits { get { return 65; } }
 
-        public override int AosStrReq { get { return 95; } }
+        public override int StrReq { get { return 95; } }
 
         public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Plate; } }
 

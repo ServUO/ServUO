@@ -66,19 +66,11 @@ namespace Server.Items
                 return 45;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 30;
-            }
-        }
-
-        public override int ArmorBase
-        {
-            get
-            {
-                return 16;
             }
         }
         public override ArmorMaterialType MaterialType
