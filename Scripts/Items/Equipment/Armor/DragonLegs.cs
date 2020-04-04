@@ -9,7 +9,7 @@ namespace Server.Items
         public DragonLegs()
             : base(0x2647)
         {
-            this.Weight = 6.0;
+            Weight = 6.0;
         }
 
         public DragonLegs(Serial serial)
@@ -66,18 +66,11 @@ namespace Server.Items
                 return 75;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 75;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 40;
             }
         }
         public override ArmorMaterialType MaterialType

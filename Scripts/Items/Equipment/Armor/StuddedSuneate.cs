@@ -8,7 +8,7 @@ namespace Server.Items
         public StuddedSuneate()
             : base(0x27D2)
         {
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         public StuddedSuneate(Serial serial)
@@ -65,19 +65,11 @@ namespace Server.Items
                 return 50;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 30;
-            }
-        }
-
-        public override int ArmorBase
-        {
-            get
-            {
-                return 3;
             }
         }
         public override ArmorMaterialType MaterialType

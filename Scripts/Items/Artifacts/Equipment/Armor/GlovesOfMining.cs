@@ -68,18 +68,11 @@ namespace Server.Items
                 return 40;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 20;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 13;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -187,18 +180,11 @@ namespace Server.Items
                 return 45;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 25;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 16;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -300,18 +286,11 @@ namespace Server.Items
                 return 50;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 40;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 22;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -425,18 +404,11 @@ namespace Server.Items
                 return 50;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 40;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 22;
             }
         }
         public override ArmorMaterialType MaterialType

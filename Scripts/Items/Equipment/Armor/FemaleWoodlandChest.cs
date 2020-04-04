@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    //Is this a filler-type item? the clilocs don't match up and at a glacnce I can't find direct reference of it
     [FlipableAttribute(0x2B6D, 0x3164)]
     public class FemaleElvenPlateChest : BaseArmor
     {
@@ -10,7 +9,7 @@ namespace Server.Items
         public FemaleElvenPlateChest()
             : base(0x2B6D)
         {
-            this.Weight = 8.0;
+            Weight = 8.0;
         }
 
         public FemaleElvenPlateChest(Serial serial)
@@ -67,7 +66,7 @@ namespace Server.Items
                 return 65;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
@@ -81,13 +80,6 @@ namespace Server.Items
                 return false;
             }
         }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 30;
-            }
-        }
         public override ArmorMaterialType MaterialType
         {
             get
@@ -98,14 +90,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
         }
     }

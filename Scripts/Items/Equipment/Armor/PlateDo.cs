@@ -10,7 +10,7 @@ namespace Server.Items
         public PlateDo()
             : base(0x277D)
         {
-            this.Weight = 10.0;
+            Weight = 10.0;
         }
 
         public PlateDo(Serial serial)
@@ -67,18 +67,11 @@ namespace Server.Items
                 return 70;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 85;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 3;
             }
         }
         public override ArmorMaterialType MaterialType

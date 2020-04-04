@@ -10,7 +10,7 @@ namespace Server.Items
         public LeatherSuneate()
             : base(0x2786)
         {
-            this.Weight = 4.0;
+            Weight = 4.0;
         }
 
         public LeatherSuneate(Serial serial)
@@ -67,18 +67,11 @@ namespace Server.Items
                 return 40;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 20;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 3;
             }
         }
         public override ArmorMaterialType MaterialType

@@ -8,7 +8,7 @@ namespace Server.Items
         public LeatherGorget()
             : base(0x13C7)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public LeatherGorget(Serial serial)
@@ -65,18 +65,11 @@ namespace Server.Items
                 return 40;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 20;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 13;
             }
         }
         public override ArmorMaterialType MaterialType

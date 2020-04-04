@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    // Based off a MetalShield
     [FlipableAttribute(0x4203, 0x4209)]
     public class MediumPlateShield : BaseShield
     {
@@ -10,7 +9,7 @@ namespace Server.Items
         public MediumPlateShield()
             : base(0x4203)
         {
-            //Weight = 6.0;
+            Weight = 6.0;
         }
 
         public MediumPlateShield(Serial serial)
@@ -67,18 +66,11 @@ namespace Server.Items
                 return 65;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 45;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 11;
             }
         }
         public override bool CanBeWornByGargoyles

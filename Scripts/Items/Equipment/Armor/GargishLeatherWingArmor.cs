@@ -32,8 +32,7 @@ namespace Server.Items
         public override int PoisonResistance { get { return 0; } }
         public override int EnergyResistance { get { return 0; } }
 
-        public override int AosStrReq { get { return 10; } }
-        public override int ArmorBase { get { return 13; } }
+        public override int StrReq { get { return 10; } }
         public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Leather; } }
         public override CraftResource DefaultResource { get { return CraftResource.RegularLeather; } }
         public override ArmorMeditationAllowance DefMedAllowance { get { return ArmorMeditationAllowance.All; } }

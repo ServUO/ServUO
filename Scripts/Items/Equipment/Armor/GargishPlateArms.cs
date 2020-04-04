@@ -3,7 +3,6 @@ using System;
 
 namespace Server.Items
 {
-    [TypeAlias("Server.Items.MaleGargishPlateArms")]
     public class GargishPlateArms : BaseArmor
     {
         [Constructable]
@@ -34,7 +33,7 @@ namespace Server.Items
         public override int InitMinHits { get { return 50; } }
         public override int InitMaxHits { get { return 65; } }
 
-        public override int AosStrReq { get { return 80; } }
+        public override int StrReq { get { return 80; } }
         
         public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Plate; } }
 

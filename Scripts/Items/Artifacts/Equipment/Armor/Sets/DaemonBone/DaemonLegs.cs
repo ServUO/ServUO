@@ -10,10 +10,10 @@ namespace Server.Items
         public DaemonLegs()
             : base(0x1452)
         {
-            this.Weight = 3.0;
-            this.Hue = 0x648;
+            Weight = 3.0;
+            Hue = 0x648;
 
-            this.ArmorAttributes.SelfRepair = 1;
+            ArmorAttributes.SelfRepair = 1;
         }
 
         public DaemonLegs(Serial serial)
@@ -70,18 +70,11 @@ namespace Server.Items
                 return 255;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 55;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 46;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -115,9 +108,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (this.ArmorAttributes.SelfRepair == 0)
-                this.ArmorAttributes.SelfRepair = 1;
         }
     }
 }

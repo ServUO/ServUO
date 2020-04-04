@@ -13,8 +13,8 @@ namespace Server.Items
         public RangerLegs()
             : base(0x13DA)
         {
-            this.Weight = 3.0;
-            this.Hue = 0x59C;
+            Weight = 3.0;
+            Hue = 0x59C;
         }
 
         public RangerLegs(Serial serial)
@@ -71,18 +71,11 @@ namespace Server.Items
                 return 45;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 30;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 16;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -116,9 +109,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (this.Weight == 3.0)
-                this.Weight = 5.0;
         }
     }
 }

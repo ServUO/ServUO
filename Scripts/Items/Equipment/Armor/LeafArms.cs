@@ -11,7 +11,7 @@ namespace Server.Items
         public LeafArms()
             : base(0x2FC8)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public LeafArms(Serial serial)
@@ -75,18 +75,11 @@ namespace Server.Items
                 return 40;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 15;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 13;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -113,14 +106,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
         }
     }

@@ -67,18 +67,11 @@ namespace Server.Items
                 return 50;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 30;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 20;
             }
         }
         public override double DefaultWeight

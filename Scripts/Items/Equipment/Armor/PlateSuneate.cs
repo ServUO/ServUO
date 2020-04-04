@@ -8,7 +8,7 @@ namespace Server.Items
         public PlateSuneate()
             : base(0x2788)
         {
-            this.Weight = 7.0;
+            Weight = 7.0;
         }
 
         public PlateSuneate(Serial serial)
@@ -65,18 +65,11 @@ namespace Server.Items
                 return 65;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 80;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 3;
             }
         }
         public override ArmorMaterialType MaterialType

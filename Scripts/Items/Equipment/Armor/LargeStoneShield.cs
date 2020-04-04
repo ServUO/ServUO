@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    // Based off a WoodenKiteShield
     [FlipableAttribute(0x4205, 0x420B)]
     public class LargeStoneShield : BaseShield
     {
@@ -10,7 +9,7 @@ namespace Server.Items
         public LargeStoneShield()
             : base(0x4205)
         {
-            //Weight = 5.0;
+            Weight = 8.0;
         }
 
         public LargeStoneShield(Serial serial)
@@ -67,18 +66,11 @@ namespace Server.Items
                 return 65;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 20;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 12;
             }
         }
         public override bool CanBeWornByGargoyles

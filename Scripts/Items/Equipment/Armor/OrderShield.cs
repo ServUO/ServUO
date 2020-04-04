@@ -1,5 +1,4 @@
 using System;
-using Server.Guilds;
 using Server.Engines.Craft;
 
 namespace Server.Items
@@ -68,18 +67,11 @@ namespace Server.Items
                 return 125;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 95;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 30;
             }
         }
 		

@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    // Based off a MetalKiteShield
     [FlipableAttribute(0x4201, 0x4206)]
     public class GargishKiteShield : BaseShield, IDyable
     {
@@ -10,7 +9,7 @@ namespace Server.Items
         public GargishKiteShield()
             : base(0x4201)
         {
-            //Weight = 7.0;
+            Weight = 7.0;
         }
 
         public GargishKiteShield(Serial serial)
@@ -67,18 +66,11 @@ namespace Server.Items
                 return 60;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 45;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 16;
             }
         }
         public override bool CanBeWornByGargoyles

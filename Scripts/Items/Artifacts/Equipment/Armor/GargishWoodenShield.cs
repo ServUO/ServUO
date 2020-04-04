@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    // Based off a WoodenShield
     [FlipableAttribute(0x4200, 0x4207)]
     public class GargishWoodenShield : BaseShield
 	{
@@ -11,7 +10,7 @@ namespace Server.Items
         public GargishWoodenShield()
             : base(0x4200)
         {
-            //Weight = 5.0;
+            Weight = 5.0;
         }
 
         public GargishWoodenShield(Serial serial)
@@ -68,18 +67,11 @@ namespace Server.Items
                 return 25;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 20;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 8;
             }
         }
         public override bool CanBeWornByGargoyles

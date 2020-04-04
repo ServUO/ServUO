@@ -10,7 +10,7 @@ namespace Server.Items
         public LeatherNinjaPants()
             : base(0x2791)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public LeatherNinjaPants(Serial serial)
@@ -67,18 +67,11 @@ namespace Server.Items
                 return 50;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 10;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 3;
             }
         }
         public override ArmorMaterialType MaterialType

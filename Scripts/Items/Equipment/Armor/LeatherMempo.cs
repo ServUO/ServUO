@@ -8,7 +8,7 @@ namespace Server.Items
         public LeatherMempo()
             : base(0x277A)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public LeatherMempo(Serial serial)
@@ -65,18 +65,11 @@ namespace Server.Items
                 return 40;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 30;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 3;
             }
         }
         public override ArmorMaterialType MaterialType

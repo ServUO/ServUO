@@ -8,7 +8,7 @@ namespace Server.Items
         public LeatherJingasa()
             : base(0x2776)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public LeatherJingasa(Serial serial)
@@ -65,18 +65,11 @@ namespace Server.Items
                 return 30;
             }
         }
-        public override int AosStrReq
+        public override int StrReq
         {
             get
             {
                 return 25;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 3;
             }
         }
         public override ArmorMaterialType MaterialType
