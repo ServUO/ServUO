@@ -33,26 +33,21 @@ namespace Server.Items
                 return WeaponAbility.ConcussionBlow;
             }
         }
-        /*
-        Boomerang 0x8FF: MysticArc, ConcussionBlow
-        Cyclone 2305/0x901: MovingShot, InfusedThrow
-        Soul Glaive 2314/0x090A: ArmorIgnore, MortalStrike
-        */
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 25;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 11;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {

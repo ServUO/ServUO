@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    // Based off a Halberd
     [FlipableAttribute(0x908, 0x4075)]
     public class GargishTalwar : BaseSword
     {
@@ -32,21 +31,21 @@ namespace Server.Items
                 return WeaponAbility.Dismount;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 40;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 16;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {

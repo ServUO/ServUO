@@ -11,8 +11,8 @@ namespace Server.Items
         public Sai()
             : base(0x27AF)
         {
-            this.Weight = 7.0;
-            this.Layer = Layer.TwoHanded;
+            Weight = 7.0;
+            Layer = Layer.TwoHanded;
         }
 
         public Sai(Serial serial)
@@ -34,21 +34,21 @@ namespace Server.Items
                 return WeaponAbility.ArmorPierce;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 15;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 10;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
@@ -122,14 +122,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

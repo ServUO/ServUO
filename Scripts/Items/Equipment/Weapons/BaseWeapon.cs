@@ -176,11 +176,11 @@ namespace Server.Items
 		public virtual WeaponType DefType { get { return WeaponType.Slashing; } }
 		public virtual WeaponAnimation DefAnimation { get { return WeaponAnimation.Slash1H; } }
 
-		public virtual int AosStrengthReq { get { return 0; } }
+		public virtual int StrengthReq { get { return 0; } }
 		public virtual int AosDexterityReq { get { return 0; } }
 		public virtual int AosIntelligenceReq { get { return 0; } }
-		public virtual int AosMinDamage { get { return 0; } }
-		public virtual int AosMaxDamage { get { return 0; } }
+		public virtual int MinDamage { get { return 0; } }
+		public virtual int MaxDamage { get { return 0; } }
 		public virtual int AosSpeed { get { return 0; } }
 		public virtual float MlSpeed { get { return 0.0f; } }
 		public virtual int AosMaxRange { get { return DefMaxRange; } }
@@ -461,9 +461,9 @@ namespace Server.Items
 		public int MissSound { get { return (m_MissSound == -1 ? AosMissSound : m_MissSound); } set { m_MissSound = value; } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public int MinDamage
+		public int MinimumDamage
 		{
-			get { return (m_MinDamage == -1 ? AosMinDamage : m_MinDamage); }
+			get { return (m_MinDamage == -1 ? MinDamage : m_MinDamage); }
 			set
 			{
 				m_MinDamage = value;
@@ -472,9 +472,9 @@ namespace Server.Items
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public int MaxDamage
+		public int MaximumDamage
 		{
-			get { return (m_MaxDamage == -1 ? AosMaxDamage : m_MaxDamage); }
+			get { return (m_MaxDamage == -1 ? MaxDamage : m_MaxDamage); }
 			set
 			{
 				m_MaxDamage = value;
@@ -511,7 +511,7 @@ namespace Server.Items
                     return 125;
                 }
 
-                return m_StrReq == -1 ? AosStrengthReq : m_StrReq;
+                return m_StrReq == -1 ? StrengthReq : m_StrReq;
             }
 			set
 			{

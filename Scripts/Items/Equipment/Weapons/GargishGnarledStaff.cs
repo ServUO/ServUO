@@ -9,7 +9,7 @@ namespace Server.Items
         public GargishGnarledStaff()
             : base(0x48B8)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public GargishGnarledStaff(Serial serial)
@@ -31,21 +31,21 @@ namespace Server.Items
                 return WeaponAbility.ForceOfNature;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 20;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 15;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
@@ -81,31 +81,19 @@ namespace Server.Items
                 return 50;
             }
         }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
+        
+		public override Race RequiredRace { get { return Race.Gargoyle; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
+		
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

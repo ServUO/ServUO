@@ -18,14 +18,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override void AddWeightProperty(ObjectPropertyList list)
-        {
-            base.AddWeightProperty(list);
-
-            list.Add(1060410, WeaponAttributes.DurabilityBonus.ToString()); // durability ~1_val~%
-        }
-
+		
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -9,7 +9,7 @@ namespace Server.Items
         public Nunchaku()
             : base(0x27AE)
         {
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         public Nunchaku(Serial serial)
@@ -31,21 +31,21 @@ namespace Server.Items
                 return WeaponAbility.DoubleStrike;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 15;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 12;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
@@ -98,14 +98,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

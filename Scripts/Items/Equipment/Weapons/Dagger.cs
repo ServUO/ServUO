@@ -11,7 +11,7 @@ namespace Server.Items
         public Dagger()
             : base(0xF52)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Dagger(Serial serial)
@@ -33,21 +33,21 @@ namespace Server.Items
                 return WeaponAbility.InfectiousStrike;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 10;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 10;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
@@ -107,14 +107,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

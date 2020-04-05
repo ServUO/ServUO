@@ -28,8 +28,8 @@ namespace Server.Items
 
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
-        public override int AosMinDamage { get { return 9; } }
-        public override int AosMaxDamage { get { return 11; } }
+        public override int MinDamage { get { return 9; } }
+        public override int MaxDamage { get { return 11; } }
 
         public SmugglersEdge(Serial serial)
             : base(serial)
@@ -69,9 +69,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version == 0)
-                Attributes.WeaponSpeed = 30;
         }
     }
 
@@ -96,8 +93,8 @@ namespace Server.Items
 
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
-        public override int AosMinDamage { get { return 9; } }
-        public override int AosMaxDamage { get { return 11; } }
+        public override int MinDamage { get { return 9; } }
+        public override int MaxDamage { get { return 11; } }
 
         public GargishSmugglersEdge(Serial serial)
             : base(serial)
@@ -137,9 +134,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version == 0)
-                Attributes.WeaponSpeed = 30;
         }
     }
 }

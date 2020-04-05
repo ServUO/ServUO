@@ -9,7 +9,7 @@ namespace Server.Items
         public RepeatingCrossbow()
             : base(0x26C3)
         {
-            this.Weight = 6.0;
+            Weight = 6.0;
         }
 
         public RepeatingCrossbow(Serial serial)
@@ -52,21 +52,21 @@ namespace Server.Items
                 return WeaponAbility.MovingShot;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 30;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 11;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
@@ -112,14 +112,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

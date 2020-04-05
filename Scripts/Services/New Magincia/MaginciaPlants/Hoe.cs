@@ -22,9 +22,9 @@ namespace Server.Items
 
         public override WeaponAbility PrimaryAbility { get { return WeaponAbility.DoubleStrike; } }
         public override WeaponAbility SecondaryAbility { get { return WeaponAbility.Disarm; } }
-        public override int AosStrengthReq { get { return 50; } }
-        public override int AosMinDamage { get { return 12; } }
-        public override int AosMaxDamage { get { return 16; } }
+        public override int StrengthReq { get { return 50; } }
+        public override int MinDamage { get { return 12; } }
+        public override int MaxDamage { get { return 16; } }
         public override int AosSpeed { get { return 35; } }
         public override float MlSpeed { get { return 3.00f; } }
         public override int InitMinHits { get { return 31; } }
