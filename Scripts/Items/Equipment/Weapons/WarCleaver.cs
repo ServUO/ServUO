@@ -34,21 +34,21 @@ namespace Server.Items
                 return WeaponAbility.Bladeweave;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 15;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 10;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
@@ -90,14 +90,14 @@ namespace Server.Items
             {
                 return 30;
             }
-        }// TODO
+        }
         public override int InitMaxHits
         {
             get
             {
                 return 60;
             }
-        }// TODO
+        }
         public override SkillName DefSkill
         {
             get

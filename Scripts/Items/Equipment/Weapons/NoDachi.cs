@@ -11,8 +11,8 @@ namespace Server.Items
         public NoDachi()
             : base(0x27A2)
         {
-            this.Weight = 10.0;
-            this.Layer = Layer.TwoHanded;
+            Weight = 10.0;
+            Layer = Layer.TwoHanded;
         }
 
         public NoDachi(Serial serial)
@@ -34,21 +34,21 @@ namespace Server.Items
                 return WeaponAbility.RidingSwipe;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 40;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 16;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
@@ -101,14 +101,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

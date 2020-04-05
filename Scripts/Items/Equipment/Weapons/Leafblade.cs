@@ -11,7 +11,7 @@ namespace Server.Items
         public Leafblade()
             : base(0x2D22)
         {
-            this.Weight = 8.0;
+            Weight = 8.0;
         }
 
         public Leafblade(Serial serial)
@@ -33,21 +33,21 @@ namespace Server.Items
                 return WeaponAbility.ArmorIgnore;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 20;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 11;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
@@ -89,25 +89,23 @@ namespace Server.Items
             {
                 return 30;
             }
-        }// TODO
+        }
         public override int InitMaxHits
         {
             get
             {
                 return 60;
             }
-        }// TODO
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
         }
     }

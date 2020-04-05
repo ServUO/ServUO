@@ -11,7 +11,7 @@ namespace Server.Items
         public GnarledStaff()
             : base(0x13F8)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public GnarledStaff(Serial serial)
@@ -33,21 +33,21 @@ namespace Server.Items
                 return WeaponAbility.ForceOfNature;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 20;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 15;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
@@ -86,14 +86,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

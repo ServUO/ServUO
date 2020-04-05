@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    // Based off a Warfork
     [FlipableAttribute(0x907, 0x4076)]
     public class Shortblade : BaseSword
     {
@@ -32,21 +31,21 @@ namespace Server.Items
                 return WeaponAbility.MortalStrike;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 45;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 10;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {

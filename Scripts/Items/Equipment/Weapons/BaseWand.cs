@@ -29,15 +29,15 @@ namespace Server.Items
         public BaseWand(WandEffect effect, int minCharges, int maxCharges)
             : base(Utility.RandomList(0xDF2, 0xDF3, 0xDF4, 0xDF5))
         {
-            this.Weight = 1.0;
-            this.Effect = effect;
-            this.Charges = Utility.RandomMinMax(minCharges, maxCharges);
+            Weight = 1.0;
+            Effect = effect;
+            Charges = Utility.RandomMinMax(minCharges, maxCharges);
 
             if (m_WandEffect < WandEffect.None)
             {
-                this.Attributes.SpellChanneling = 1;
-                this.Attributes.CastSpeed = -1;
-                this.WeaponAttributes.MageWeapon = Utility.RandomMinMax(1, 10);
+                Attributes.SpellChanneling = 1;
+                Attributes.CastSpeed = -1;
+                WeaponAttributes.MageWeapon = Utility.RandomMinMax(1, 10);
             }
         }
 
@@ -60,21 +60,21 @@ namespace Server.Items
                 return WeaponAbility.Disarm;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 5;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 9;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {

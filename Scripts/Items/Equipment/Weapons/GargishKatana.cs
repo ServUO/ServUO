@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    //Based Off Katana
     [FlipableAttribute(0x48BA, 0x48BB)]
     public class GargishKatana : BaseSword
     {
@@ -10,7 +9,7 @@ namespace Server.Items
         public GargishKatana()
             : base(0x48BA)
         {
-            this.Weight = 6.0;
+            Weight = 6.0;
         }
 
         public GargishKatana(Serial serial)
@@ -32,21 +31,21 @@ namespace Server.Items
                 return WeaponAbility.ArmorIgnore;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 25;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 10;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
@@ -96,31 +95,19 @@ namespace Server.Items
                 return 90;
             }
         }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
+        
+		public override Race RequiredRace { get { return Race.Gargoyle; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
+		
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

@@ -19,9 +19,9 @@ namespace Server.Items
 
         public override WeaponAbility PrimaryAbility { get { return WeaponAbility.Block; } }
         public override WeaponAbility SecondaryAbility { get { return WeaponAbility.ForceOfNature; } }
-        public override int AosStrengthReq { get { return 20; } }
-        public override int AosMinDamage { get { return 15; } }
-        public override int AosMaxDamage { get { return 18; } }
+        public override int StrengthReq { get { return 20; } }
+        public override int MinDamage { get { return 15; } }
+        public override int MaxDamage { get { return 18; } }
         public override float MlSpeed { get { return 3.25f; } }
         
         public override int InitMinHits { get { return 30; } }

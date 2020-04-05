@@ -33,21 +33,21 @@ namespace Server.Items
                 return WeaponAbility.ConcussionBlow;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 45;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 14;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {

@@ -11,8 +11,8 @@ namespace Server.Items
         public ElvenSpellblade()
             : base(0x2D20)
         {
-            this.Weight = 5.0;
-            this.Layer = Layer.TwoHanded;
+            Weight = 5.0;
+            Layer = Layer.TwoHanded;
         }
 
         public ElvenSpellblade(Serial serial)
@@ -34,21 +34,21 @@ namespace Server.Items
                 return WeaponAbility.BleedAttack;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 35;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 12;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
@@ -101,14 +101,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
         }
     }

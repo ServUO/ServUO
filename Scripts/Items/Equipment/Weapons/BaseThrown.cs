@@ -48,7 +48,7 @@ namespace Server.Items
                      * As per OSI tests: with 140 Strength you achieve max range for all throwing weapons.
                      */
 
-                    return (baseRange - 3) + ((attacker.Str - AosStrengthReq) / ((140 - AosStrengthReq) / 3));
+                    return (baseRange - 3) + ((attacker.Str - StrengthReq) / ((140 - StrengthReq) / 3));
                 }
                 else
                 {

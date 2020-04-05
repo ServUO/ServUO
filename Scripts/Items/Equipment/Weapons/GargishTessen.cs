@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    //Based Of Tessen
     [FlipableAttribute(0x48CC, 0x48CD)]
     public class GargishTessen : BaseBashing
     {
@@ -10,8 +9,8 @@ namespace Server.Items
         public GargishTessen()
             : base(0x48CC)
         {
-            this.Weight = 6.0;
-            this.Layer = Layer.TwoHanded;
+            Weight = 6.0;
+            Layer = Layer.TwoHanded;
         }
 
         public GargishTessen(Serial serial)
@@ -33,21 +32,21 @@ namespace Server.Items
                 return WeaponAbility.DualWield;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 10;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 10;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
@@ -104,31 +103,19 @@ namespace Server.Items
                 return WeaponAnimation.Bash2H;
             }
         }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
+        
+		public override Race RequiredRace { get { return Race.Gargoyle; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
+		
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
