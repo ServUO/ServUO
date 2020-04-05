@@ -5,6 +5,8 @@ namespace Server.Items
 {
     public class SturdyPickaxe : BaseAxe, IUsesRemaining
     {
+		public override int LabelNumber { get { return 1045126; } }// sturdy pickaxe
+		
         [Constructable]
         public SturdyPickaxe()
             : this(180)
@@ -25,14 +27,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1045126;
-            }
-        }// sturdy pickaxe
+        
         public override HarvestSystem HarvestSystem
         {
             get
@@ -75,14 +70,7 @@ namespace Server.Items
                 return 15;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 35;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {

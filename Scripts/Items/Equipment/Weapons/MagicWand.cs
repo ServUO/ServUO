@@ -54,14 +54,7 @@ namespace Server.Items
                 return 11;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 40;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
@@ -86,14 +79,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

@@ -80,7 +80,7 @@ namespace Server.Commands
 			csv.AddValue("Int Requirement", wep.IntRequirement);
 			csv.AddValue("Skill", wep.Skill);
 			csv.AddValue("Race", wep.RequiredRace);
-			csv.AddValue("Speed", wep.MlSpeed);
+			csv.AddValue("Speed", wep.Speed);
 			csv.AddValue("Min Damage", wep.MinDamage);
 			csv.AddValue("Max Damage", wep.MaxDamage);
 		}

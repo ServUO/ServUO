@@ -32,7 +32,7 @@ namespace Server.Items
         public override int InitMaxHits { get { return 60; } }
         public override int StrengthReq { get { return 15; } }
         public override SkillName DefSkill { get { return SkillName.Fencing; } }
-        public override float MlSpeed { get { return 2.00f; } }
+        public override float Speed { get { return 2.00f; } }
         public override int MinDamage { get { return 10; } }
         public override int MaxDamage { get { return 12; } }
         public override int PhysicalResistance { get { return 12; } }

@@ -22,7 +22,7 @@ namespace Server.Items
         public override int StrengthReq { get { return 20; } }
         public override int MinDamage { get { return 15; } }
         public override int MaxDamage { get { return 18; } }
-        public override float MlSpeed { get { return 3.25f; } }
+        public override float Speed { get { return 3.25f; } }
         
         public override int InitMinHits { get { return 30; } }
         public override int InitMaxHits { get { return 60; } }
