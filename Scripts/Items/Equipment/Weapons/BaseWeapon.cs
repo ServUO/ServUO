@@ -160,41 +160,41 @@ namespace Server.Items
         #endregion
 
         #region Virtual Properties
-        public virtual WeaponAbility PrimaryAbility { get { return null; } }
-		public virtual WeaponAbility SecondaryAbility { get { return null; } }
+        public virtual WeaponAbility PrimaryAbility => null;
+		public virtual WeaponAbility SecondaryAbility => null;
 
-		public virtual int DefMaxRange { get { return 1; } }
-		public virtual int DefHitSound { get { return 0; } }
-		public virtual int DefMissSound { get { return 0; } }
-		public virtual SkillName DefSkill { get { return SkillName.Swords; } }
-		public virtual WeaponType DefType { get { return WeaponType.Slashing; } }
-		public virtual WeaponAnimation DefAnimation { get { return WeaponAnimation.Slash1H; } }
+		public virtual int DefMaxRange => 1;
+		public virtual int DefHitSound => 0;
+		public virtual int DefMissSound => 0;
+		public virtual SkillName DefSkill => SkillName.Swords;
+		public virtual WeaponType DefType => WeaponType.Slashing;
+		public virtual WeaponAnimation DefAnimation => WeaponAnimation.Slash1H;
 
-		public virtual int StrengthReq { get { return 0; } }
-		public virtual int AosDexterityReq { get { return 0; } }
-		public virtual int AosIntelligenceReq { get { return 0; } }
-		public virtual int MinDamage { get { return 0; } }
-		public virtual int MaxDamage { get { return 0; } }
-		public virtual float Speed { get { return 0.0f; } }
-		public virtual int AosMaxRange { get { return DefMaxRange; } }
-		public virtual int AosHitSound { get { return DefHitSound; } }
-		public virtual int AosMissSound { get { return DefMissSound; } }
-		public virtual SkillName AosSkill { get { return DefSkill; } }
-		public virtual WeaponType AosType { get { return DefType; } }
-		public virtual WeaponAnimation AosAnimation { get { return DefAnimation; } }
+		public virtual int StrengthReq => 0;
+		public virtual int DexterityReq => 0;
+		public virtual int IntelligenceReq => 0;
+		public virtual int MinDamage => 0;
+		public virtual int MaxDamage => 0;
+		public virtual float Speed => 0.0f;
+		public virtual int AosMaxRange => DefMaxRange;
+		public virtual int AosHitSound => DefHitSound;
+		public virtual int AosMissSound => DefMissSound; 
+		public virtual SkillName AosSkill => DefSkill; 
+		public virtual WeaponType AosType => DefType; 
+		public virtual WeaponAnimation AosAnimation => DefAnimation;
 
-		public virtual int InitMinHits { get { return 0; } }
-		public virtual int InitMaxHits { get { return 0; } }
+		public virtual int InitMinHits => 0;
+		public virtual int InitMaxHits => 0; 
 
-        public virtual bool CanFortify { get { return !IsImbued && NegativeAttributes.Antique < 4; } }
-        public virtual bool CanRepair { get { return m_NegativeAttributes.NoRepair == 0; } }
-		public virtual bool CanAlter { get { return true; } }
+        public virtual bool CanFortify => !IsImbued && NegativeAttributes.Antique < 4;
+        public virtual bool CanRepair => m_NegativeAttributes.NoRepair == 0; 
+		public virtual bool CanAlter => true; 
 
-		public override int PhysicalResistance { get { return m_AosWeaponAttributes.ResistPhysicalBonus; } }
-		public override int FireResistance { get { return m_AosWeaponAttributes.ResistFireBonus; } }
-		public override int ColdResistance { get { return m_AosWeaponAttributes.ResistColdBonus; } }
-		public override int PoisonResistance { get { return m_AosWeaponAttributes.ResistPoisonBonus; } }
-		public override int EnergyResistance { get { return m_AosWeaponAttributes.ResistEnergyBonus; } }
+		public override int PhysicalResistance => m_AosWeaponAttributes.ResistPhysicalBonus; 
+		public override int FireResistance => m_AosWeaponAttributes.ResistFireBonus;
+		public override int ColdResistance => m_AosWeaponAttributes.ResistColdBonus; 
+		public override int PoisonResistance => m_AosWeaponAttributes.ResistPoisonBonus;
+		public override int EnergyResistance => m_AosWeaponAttributes.ResistEnergyBonus;
 
         public override double DefaultWeight
         {
@@ -514,10 +514,10 @@ namespace Server.Items
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public int DexRequirement { get { return (m_DexReq == -1 ? AosDexterityReq : m_DexReq); } set { m_DexReq = value; } }
+		public int DexRequirement { get { return (m_DexReq == -1 ? DexterityReq : m_DexReq); } set { m_DexReq = value; } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public int IntRequirement { get { return (m_IntReq == -1 ? AosIntelligenceReq : m_IntReq); } set { m_IntReq = value; } }
+		public int IntRequirement { get { return (m_IntReq == -1 ? IntelligenceReq : m_IntReq); } set { m_IntReq = value; } }
 
         public Mobile FocusWeilder { get; set; }
         public Mobile EnchantedWeilder { get; set; }

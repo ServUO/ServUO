@@ -16,7 +16,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsModified => Slayer != SlayerName.None;
         public override int StrengthReq => 80;
-        public override int AosDexterityReq => 80;
+        public override int DexterityReq => 80;
 
         public override bool CanEquip(Mobile from)
         {
