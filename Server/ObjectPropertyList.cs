@@ -14,7 +14,7 @@ namespace Server
         private int m_Strings;
 
         public IEntity Entity { get; }
-        public int Hash { get { return 0x40000000 + m_Hash; } }
+        public int Hash => 0x40000000 + m_Hash; 
 
         public int Header { get; set; }
         public string HeaderArgs { get; set; }

@@ -206,7 +206,7 @@ namespace Server.Mobiles
 			private int m_Count;
 			private DateTime m_Stamp;
 
-			public DateTime TimeStamp { get { return m_Stamp; } }
+			public DateTime TimeStamp => m_Stamp; 
 
 			public int Count
 			{
@@ -359,7 +359,7 @@ namespace Server.Mobiles
         #region Getters & Setters
         public List<Mobile> RecentlyReported { get { return m_RecentlyReported; } set { m_RecentlyReported = value; } }
 
-		public List<Mobile> AutoStabled { get { return m_AutoStabled; } }
+		public List<Mobile> AutoStabled => m_AutoStabled; 
 
 		public bool NinjaWepCooldown { get; set; }
 
@@ -417,7 +417,7 @@ namespace Server.Mobiles
 		public DateTime LastOnline { get { return m_LastOnline; } set { m_LastOnline = value; } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public long LastMoved { get { return LastMoveTime; } }
+		public long LastMoved => LastMoveTime; 
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public TimeSpan NpcGuildGameTime { get { return m_NpcGuildGameTime; } set { m_NpcGuildGameTime = value; } }
@@ -555,7 +555,7 @@ namespace Server.Mobiles
         #region Auto Arrow Recovery
         private readonly Dictionary<Type, int> m_RecoverableAmmo = new Dictionary<Type, int>();
 
-		public Dictionary<Type, int> RecoverableAmmo { get { return m_RecoverableAmmo; } }
+		public Dictionary<Type, int> RecoverableAmmo => m_RecoverableAmmo; 
 
 		public void RecoverAmmo()
 		{
@@ -637,7 +637,7 @@ namespace Server.Mobiles
 		#endregion
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public TimeSpan DisguiseTimeLeft { get { return DisguiseTimers.TimeRemaining(this); } }
+		public TimeSpan DisguiseTimeLeft => DisguiseTimers.TimeRemaining(this); 
 
 		private DateTime m_PeacedUntil;
 
@@ -1090,7 +1090,7 @@ namespace Server.Mobiles
 			UpdateResistances();
 		}
 
-		public override int MaxWeight { get { return ((Race == Race.Human ? 100 : 40) + (int)(3.5 * Str)); } }
+		public override int MaxWeight => ((Race == Race.Human ? 100 : 40) + (int)(3.5 * Str)); 
 
 		private int m_LastGlobalLight = -1, m_LastPersonalLight = -1;
 
@@ -1867,7 +1867,7 @@ namespace Server.Mobiles
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public override int StamMax { get { return base.StamMax + AosAttributes.GetValue(this, AosAttribute.BonusStam); } }
+		public override int StamMax => base.StamMax + AosAttributes.GetValue(this, AosAttribute.BonusStam); 
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public override int ManaMax { get
@@ -2106,7 +2106,7 @@ namespace Server.Mobiles
 			return DesignContext.Check(this);
 		}
 
-		public SkillName[] AnimalFormRestrictedSkills { get { return m_AnimalFormRestrictedSkills; } }
+		public SkillName[] AnimalFormRestrictedSkills => m_AnimalFormRestrictedSkills; 
 
 		private readonly SkillName[] m_AnimalFormRestrictedSkills = new[]
 		{
@@ -3459,7 +3459,7 @@ namespace Server.Mobiles
 
 		private List<Item> m_EquipSnapshot;
 
-		public List<Item> EquipSnapshot { get { return m_EquipSnapshot; } }
+		public List<Item> EquipSnapshot => m_EquipSnapshot; 
 
 		private bool FindItems_Callback(Item item)
 		{
@@ -4144,11 +4144,11 @@ namespace Server.Mobiles
 			m_AntiMacroTable = new Hashtable();
 		}
 
-		public List<Mobile> VisibilityList { get { return m_VisList; } }
+		public List<Mobile> VisibilityList => m_VisList; 
 
-		public List<Mobile> PermaFlags { get { return m_PermaFlags; } }
+		public List<Mobile> PermaFlags => m_PermaFlags; 
 
-        public override int Luck { get { return AosAttributes.GetValue(this, AosAttribute.Luck) + TenthAnniversarySculpture.GetLuckBonus(this); } }
+        public override int Luck => AosAttributes.GetValue(this, AosAttribute.Luck) + TenthAnniversarySculpture.GetLuckBonus(this); 
 
         public int RealLuck
 		{ 
@@ -4932,7 +4932,7 @@ namespace Server.Mobiles
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public DateTime SessionStart { get { return m_SessionStart; } }
+		public DateTime SessionStart => m_SessionStart; 
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public TimeSpan GameTime
@@ -5001,7 +5001,7 @@ namespace Server.Mobiles
 			DisguiseTimers.RemoveTimer(this);
 		}
 
-		public override bool NewGuildDisplay { get { return Guilds.Guild.NewGuildSystem; } }
+		public override bool NewGuildDisplay => Guilds.Guild.NewGuildSystem; 
 
 		public delegate void PlayerPropertiesEventHandler(PlayerPropertiesEventArgs e);
 
@@ -5197,11 +5197,11 @@ namespace Server.Mobiles
 		private List<object> m_RewardTitles;
 		private int m_SelectedTitle;
 
-		public Dictionary<Collection, int> Collections { get { return m_Collections; } }
+		public Dictionary<Collection, int> Collections => m_Collections; 
 
-		public List<object> RewardTitles { get { return m_RewardTitles; } }
+		public List<object> RewardTitles => m_RewardTitles; 
 
-        public int SelectedTitle { get { return m_SelectedTitle; } }
+        public int SelectedTitle => m_SelectedTitle; 
 
         public bool RemoveRewardTitle(object o, bool silent)
         {
@@ -5545,9 +5545,9 @@ namespace Server.Mobiles
 		private long m_NextMovementTime;
 		private bool m_HasMoved;
 
-        public long NextMovementTime { get { return m_NextMovementTime; } }
+        public long NextMovementTime => m_NextMovementTime; 
 
-		public virtual bool UsesFastwalkPrevention { get { return IsPlayer(); } }
+		public virtual bool UsesFastwalkPrevention => IsPlayer(); 
 
 		public override int ComputeMovementSpeed(Direction dir, bool checkTurning)
 		{
@@ -5906,7 +5906,7 @@ namespace Server.Mobiles
 		private SpeechLog m_SpeechLog;
         private bool m_TempSquelched;
 
-		public SpeechLog SpeechLog { get { return m_SpeechLog; } }
+		public SpeechLog SpeechLog => m_SpeechLog; 
 
         [CommandProperty(AccessLevel.Administrator)]
         public bool TempSquelched { get { return m_TempSquelched; } set { m_TempSquelched = value; } }

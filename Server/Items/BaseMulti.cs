@@ -82,7 +82,7 @@ namespace Server.Items
 			}
 		}
 
-		public virtual bool AllowsRelativeDrop { get { return false; } }
+		public virtual bool AllowsRelativeDrop => false; 
 	
 		public override int GetUpdateRange(Mobile m)
 		{
@@ -101,7 +101,7 @@ namespace Server.Items
             return v;
 		}
 
-		public virtual MultiComponentList Components { get { return MultiData.GetComponents(ItemID); } }
+		public virtual MultiComponentList Components => MultiData.GetComponents(ItemID); 
 
 		public virtual bool Contains(Point2D p)
 		{

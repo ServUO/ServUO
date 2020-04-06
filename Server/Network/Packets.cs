@@ -511,9 +511,9 @@ namespace Server.Network
 		private readonly int m_Number;
 		private readonly int m_Charges;
 
-		public int Number { get { return m_Number; } }
+		public int Number => m_Number; 
 
-		public int Charges { get { return m_Charges; } }
+		public int Charges => m_Charges; 
 
 		public EquipInfoAttribute(int number)
 			: this(number, -1)
@@ -533,13 +533,13 @@ namespace Server.Network
 		private readonly bool m_Unidentified;
 		private readonly EquipInfoAttribute[] m_Attributes;
 
-		public int Number { get { return m_Number; } }
+		public int Number => m_Number; 
 
-		public Mobile Crafter { get { return m_Crafter; } }
+		public Mobile Crafter => m_Crafter; 
 
-		public bool Unidentified { get { return m_Unidentified; } }
+		public bool Unidentified => m_Unidentified; 
 
-		public EquipInfoAttribute[] Attributes { get { return m_Attributes; } }
+		public EquipInfoAttribute[] Attributes => m_Attributes; 
 
 		public EquipmentInfo(int number, Mobile crafter, bool unidentified, EquipInfoAttribute[] attributes)
 		{
@@ -4697,7 +4697,7 @@ m_Stream.Write( (int) renderMode );
 	{
 		private static ThirdPartyFeature m_Disabled = 0;
 
-		public static ThirdPartyFeature DisabledFeatures { get { return m_Disabled; } }
+		public static ThirdPartyFeature DisabledFeatures => m_Disabled; 
 
 		public static void Disable(ThirdPartyFeature feature)
 		{
@@ -5184,9 +5184,9 @@ m_Stream.Write( (int) renderMode );
 
 		private PacketState m_State;
 
-		public int PacketID { get { return m_PacketID; } }
+		public int PacketID => m_PacketID; 
 
-		public PacketState State { get { return m_State; } }
+		public PacketState State => m_State; 
 
 		protected Packet(int packetID)
         {
@@ -5225,7 +5225,7 @@ m_Stream.Write( (int) renderMode );
             m_Stream.Write((short)0);
         }
 
-		public PacketWriter UnderlyingStream { get { return m_Stream; } }
+		public PacketWriter UnderlyingStream => m_Stream; 
 
 		private const int CompressorBufferSize = 0x10000;
 		private static readonly BufferPool m_CompressorBuffers = new BufferPool("Compressor", 4, CompressorBufferSize);

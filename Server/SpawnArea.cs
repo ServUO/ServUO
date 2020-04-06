@@ -181,13 +181,13 @@ namespace Server
 
 		public Point2D Center { get; private set; }
 
-		public Rectangle3D Bounds { get { return _Bounds; } }
+		public Rectangle3D Bounds => _Bounds; 
 
-		public int Count { get { return _Points.Count; } }
+		public int Count => _Points.Count; 
 
-		public Bitmap Image { get { return GetImage(); } }
+		public Bitmap Image => GetImage(); 
 
-		bool ICollection<Point3D>.IsReadOnly { get { return true; } }
+		bool ICollection<Point3D>.IsReadOnly => true; 
 
 		private SpawnArea(Map facet, string region, TileFlag[] filters, SpawnValidator validator)
 		{

@@ -31,15 +31,15 @@ namespace Server.Diagnostics
 
 		private readonly Stopwatch _stopwatch;
 
-		public string Name { get { return _name; } }
+		public string Name => _name; 
 
-		public long Count { get { return _count; } }
+		public long Count => _count; 
 
-		public TimeSpan AverageTime { get { return TimeSpan.FromTicks(_totalTime.Ticks / Math.Max(1, _count)); } }
+		public TimeSpan AverageTime => TimeSpan.FromTicks(_totalTime.Ticks / Math.Max(1, _count)); 
 
-		public TimeSpan PeakTime { get { return _peakTime; } }
+		public TimeSpan PeakTime => _peakTime; 
 
-		public TimeSpan TotalTime { get { return _totalTime; } }
+		public TimeSpan TotalTime => _totalTime; 
 
 		protected BaseProfile(string name)
 		{

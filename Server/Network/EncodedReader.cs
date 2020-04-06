@@ -9,7 +9,7 @@ namespace Server.Network
 			m_Reader = reader;
 		}
 
-		public byte[] Buffer { get { return m_Reader.Buffer; } }
+		public byte[] Buffer => m_Reader.Buffer; 
 
 		public void Trace(NetState state)
 		{

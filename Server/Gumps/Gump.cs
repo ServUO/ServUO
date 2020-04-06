@@ -55,7 +55,7 @@ namespace Server.Gumps
 
 		public int TypeID { get; set; }
 
-		public List<GumpEntry> Entries { get { return m_Entries; } }
+		public List<GumpEntry> Entries => m_Entries; 
 
 		public int Serial
 		{

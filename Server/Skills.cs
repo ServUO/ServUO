@@ -254,19 +254,19 @@ namespace Server
 			}
 		}
 
-		public Skills Owner { get { return m_Owner; } }
+		public Skills Owner => m_Owner; 
 
-		public SkillName SkillName { get { return (SkillName)m_Info.SkillID; } }
+		public SkillName SkillName => (SkillName)m_Info.SkillID; 
 
-		public int SkillID { get { return m_Info.SkillID; } }
-
-		[CommandProperty(AccessLevel.Counselor)]
-		public string Name { get { return m_Info.Name; } }
-
-		public SkillInfo Info { get { return m_Info; } }
+		public int SkillID => m_Info.SkillID; 
 
 		[CommandProperty(AccessLevel.Counselor)]
-		public SkillLock Lock { get { return m_Lock; } }
+		public string Name => m_Info.Name; 
+
+		public SkillInfo Info => m_Info; 
+
+		[CommandProperty(AccessLevel.Counselor)]
+		public SkillLock Lock => m_Lock; 
 
         [CommandProperty(AccessLevel.Counselor)]
         public int VolumeLearned
@@ -367,7 +367,7 @@ namespace Server
 
 		public static bool UseStatMods { get { return m_UseStatMods; } set { m_UseStatMods = value; } }
 
-		public int Fixed { get { return (int)(Value * 10); } }
+		public int Fixed => (int)(Value * 10); 
 
 		[CommandProperty(AccessLevel.Counselor)]
 		public double Value
@@ -563,7 +563,7 @@ namespace Server
 
 		public SkillUseCallback Callback { get; set; }
 
-		public int SkillID { get { return m_SkillID; } }
+		public int SkillID => m_SkillID; 
 
 		public string Name { get; set; }
 
@@ -589,7 +589,7 @@ namespace Server
 
         public bool UseWhileCasting { get; set; }
 
-        public int Localization { get { return 1044060 + SkillID; } }
+        public int Localization => 1044060 + SkillID; 
 
         private static SkillInfo[] m_Table = new SkillInfo[58]
 		{
@@ -852,11 +852,11 @@ namespace Server
 
 		public int Total { get { return m_Total; } set { m_Total = value; } }
 
-		public Mobile Owner { get { return m_Owner; } }
+		public Mobile Owner => m_Owner; 
 
-		public int Length { get { return m_Skills.Length; } }
+		public int Length => m_Skills.Length; 
 
-		public Skill this[SkillName name] { get { return this[(int)name]; } }
+		public Skill this[SkillName name] => this[(int)name]; 
 
 		public Skill this[int skillID]
 		{

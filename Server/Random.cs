@@ -51,9 +51,9 @@ namespace Server
 			}
 		}
 
-		public static bool IsHardwareRNG { get { return _Random is IHardwareRNG; } }
+		public static bool IsHardwareRNG => _Random is IHardwareRNG; 
 
-		public static Type Type { get { return _Random.GetType(); } }
+		public static Type Type => _Random.GetType(); 
 
 		public static int Next(int c)
 		{
