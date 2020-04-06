@@ -8,7 +8,7 @@ namespace Server
 	{
 		private static readonly IComparer m_Comparer = CaseInsensitiveComparer.Default;
 
-		public static IComparer Comparer { get { return m_Comparer; } }
+		public static IComparer Comparer => m_Comparer; 
 
 		public static int Compare(string a, string b)
 		{

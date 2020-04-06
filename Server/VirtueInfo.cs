@@ -5,7 +5,7 @@ namespace Server
 	{
 		private int[] m_Values;
 
-		public int[] Values { get { return m_Values; } }
+		public int[] Values => m_Values; 
 
 		public int GetValue(int index)
 		{

@@ -48,7 +48,7 @@ namespace Server.Network
 		private static readonly EncodedPacketHandler[] m_EncodedHandlersLow;
 		private static readonly Dictionary<int, EncodedPacketHandler> m_EncodedHandlersHigh;
 
-		public static PacketHandler[] Handlers { get { return m_Handlers; } }
+		public static PacketHandler[] Handlers => m_Handlers; 
 
 		static PacketHandlers()
 		{

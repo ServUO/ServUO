@@ -206,8 +206,8 @@ namespace Server
 			m_Item = item;
 		}
 
-		public Mobile Mobile { get { return m_Mobile; } }
-		public Item Item { get { return m_Item; } }
+		public Mobile Mobile => m_Mobile; 
+		public Item Item => m_Item; 
 	}
 
 	public class CheckEquipItemEventArgs : EventArgs
@@ -261,8 +261,8 @@ namespace Server
 		private readonly NetState m_State;
 		private readonly ClientVersion m_Version;
 
-		public NetState State { get { return m_State; } }
-		public ClientVersion Version { get { return m_Version; } }
+		public NetState State => m_State; 
+		public ClientVersion Version => m_Version; 
 
 		public ClientVersionReceivedArgs(NetState state, ClientVersion cv)
 		{
@@ -275,7 +275,7 @@ namespace Server
     {
         private readonly NetState m_State;
 
-        public NetState State { get { return m_State; } }
+        public NetState State => m_State; 
 
         public ClientTypeReceivedArgs(NetState state)
         {
@@ -299,7 +299,7 @@ namespace Server
 	{
 		private readonly Mobile m_Mobile;
 
-		public Mobile Mobile { get { return m_Mobile; } }
+		public Mobile Mobile => m_Mobile; 
 
 		public GuildGumpRequestArgs(Mobile mobile)
 		{
@@ -311,7 +311,7 @@ namespace Server
 	{
 		private readonly Mobile m_Mobile;
 
-		public Mobile Mobile { get { return m_Mobile; } }
+		public Mobile Mobile => m_Mobile; 
 
 		public QuestGumpRequestArgs(Mobile mobile)
 		{
@@ -324,8 +324,8 @@ namespace Server
 		private readonly Mobile m_Mobile;
 		private readonly int m_Index;
 
-		public Mobile Mobile { get { return m_Mobile; } }
-		public int Index { get { return m_Index; } }
+		public Mobile Mobile => m_Mobile; 
+		public int Index => m_Index; 
 
 		public SetAbilityEventArgs(Mobile mobile, int index)
 		{
@@ -339,8 +339,8 @@ namespace Server
 		private readonly NetState m_State;
 		private readonly int m_Index;
 
-		public NetState State { get { return m_State; } }
-		public int Index { get { return m_Index; } }
+		public NetState State => m_State; 
+		public int Index => m_Index; 
 
 		public DeleteRequestEventArgs(NetState state, int index)
 		{
@@ -355,9 +355,9 @@ namespace Server
 		private readonly string m_Username;
 		private readonly string m_Password;
 
-		public NetState State { get { return m_State; } }
-		public string Username { get { return m_Username; } }
-		public string Password { get { return m_Password; } }
+		public NetState State => m_State; 
+		public string Username => m_Username; 
+		public string Password => m_Password; 
 		public bool Accepted { get; set; }
 		public CityInfo[] CityInfo { get; set; }
 
@@ -375,9 +375,9 @@ namespace Server
 		private Mobile m_Aggressor;
 		private bool m_Criminal;
 
-		public Mobile Aggressed { get { return m_Aggressed; } }
-		public Mobile Aggressor { get { return m_Aggressor; } }
-		public bool Criminal { get { return m_Criminal; } }
+		public Mobile Aggressed => m_Aggressed; 
+		public Mobile Aggressor => m_Aggressor; 
+		public bool Criminal => m_Criminal; 
 
 		private static readonly Queue<AggressiveActionEventArgs> m_Pool = new Queue<AggressiveActionEventArgs>();
 
@@ -419,8 +419,8 @@ namespace Server
 		private readonly Mobile m_Beholder;
 		private readonly Mobile m_Beheld;
 
-		public Mobile Beholder { get { return m_Beholder; } }
-		public Mobile Beheld { get { return m_Beheld; } }
+		public Mobile Beholder => m_Beholder; 
+		public Mobile Beheld => m_Beheld; 
 
 		public ProfileRequestEventArgs(Mobile beholder, Mobile beheld)
 		{
@@ -435,9 +435,9 @@ namespace Server
 		private readonly Mobile m_Beheld;
 		private readonly string m_Text;
 
-		public Mobile Beholder { get { return m_Beholder; } }
-		public Mobile Beheld { get { return m_Beheld; } }
-		public string Text { get { return m_Text; } }
+		public Mobile Beholder => m_Beholder; 
+		public Mobile Beheld => m_Beheld; 
+		public string Text => m_Text; 
 
 		public ChangeProfileRequestEventArgs(Mobile beholder, Mobile beheld, string text)
 		{
@@ -452,8 +452,8 @@ namespace Server
 		private readonly Mobile m_Beholder;
 		private readonly Mobile m_Beheld;
 
-		public Mobile Beholder { get { return m_Beholder; } }
-		public Mobile Beheld { get { return m_Beheld; } }
+		public Mobile Beholder => m_Beholder; 
+		public Mobile Beheld => m_Beheld; 
 
 		public PaperdollRequestEventArgs(Mobile beholder, Mobile beheld)
 		{
@@ -468,9 +468,9 @@ namespace Server
 		private readonly string m_Username;
 		private readonly string m_Password;
 
-		public NetState State { get { return m_State; } }
-		public string Username { get { return m_Username; } }
-		public string Password { get { return m_Password; } }
+		public NetState State => m_State; 
+		public string Username => m_Username; 
+		public string Password => m_Password; 
 		public bool Accepted { get; set; }
 		public ALRReason RejectReason { get; set; }
 
@@ -489,9 +489,9 @@ namespace Server
 		private readonly Mobile m_Beheld;
 		private readonly int m_GumpID;
 
-		public Mobile Beholder { get { return m_Beholder; } }
-		public Mobile Beheld { get { return m_Beheld; } }
-		public int GumpID { get { return m_GumpID; } }
+		public Mobile Beholder => m_Beholder; 
+		public Mobile Beheld => m_Beheld; 
+		public int GumpID => m_GumpID; 
 
 		public VirtueItemRequestEventArgs(Mobile beholder, Mobile beheld, int gumpID)
 		{
@@ -506,8 +506,8 @@ namespace Server
 		private readonly Mobile m_Beholder;
 		private readonly Mobile m_Beheld;
 
-		public Mobile Beholder { get { return m_Beholder; } }
-		public Mobile Beheld { get { return m_Beheld; } }
+		public Mobile Beholder => m_Beholder; 
+		public Mobile Beheld => m_Beheld; 
 
 		public VirtueGumpRequestEventArgs(Mobile beholder, Mobile beheld)
 		{
@@ -521,8 +521,8 @@ namespace Server
 		private readonly Mobile m_Mobile;
 		private readonly int m_VirtueID;
 
-		public Mobile Mobile { get { return m_Mobile; } }
-		public int VirtueID { get { return m_VirtueID; } }
+		public Mobile Mobile => m_Mobile; 
+		public int VirtueID => m_VirtueID; 
 
 		public VirtueMacroRequestEventArgs(Mobile mobile, int virtueID)
 		{
@@ -594,9 +594,9 @@ namespace Server
 		private readonly Mobile m_Target;
 		private readonly string m_Name;
 
-		public Mobile From { get { return m_From; } }
-		public Mobile Target { get { return m_Target; } }
-		public string Name { get { return m_Name; } }
+		public Mobile From => m_From; 
+		public Mobile Target => m_Target; 
+		public string Name => m_Name;
 
 		public RenameRequestEventArgs(Mobile from, Mobile target, string name)
 		{
@@ -610,7 +610,7 @@ namespace Server
 	{
 		private readonly Mobile m_Mobile;
 
-		public Mobile Mobile { get { return m_Mobile; } }
+		public Mobile Mobile => m_Mobile; 
 
 		public LogoutEventArgs(Mobile m)
 		{
@@ -622,7 +622,7 @@ namespace Server
 	{
 		private readonly Socket m_Socket;
 
-		public Socket Socket { get { return m_Socket; } }
+		public Socket Socket => m_Socket; 
 		public bool AllowConnection { get; set; }
 
 		public SocketConnectEventArgs(Socket s)
@@ -636,7 +636,7 @@ namespace Server
 	{
 		private readonly Mobile m_Mobile;
 
-		public Mobile Mobile { get { return m_Mobile; } }
+		public Mobile Mobile => m_Mobile; 
 
 		public ConnectedEventArgs(Mobile m)
 		{
@@ -648,7 +648,7 @@ namespace Server
 	{
 		private readonly Mobile m_Mobile;
 
-		public Mobile Mobile { get { return m_Mobile; } }
+		public Mobile Mobile => m_Mobile; 
 
 		public DisconnectedEventArgs(Mobile m)
 		{
@@ -661,8 +661,8 @@ namespace Server
 		private readonly Mobile m_Mobile;
 		private readonly string m_Action;
 
-		public Mobile Mobile { get { return m_Mobile; } }
-		public string Action { get { return m_Action; } }
+		public Mobile Mobile => m_Mobile; 
+		public string Action => m_Action; 
 
 		public AnimateRequestEventArgs(Mobile m, string action)
 		{
@@ -677,9 +677,9 @@ namespace Server
 		private readonly Item m_Spellbook;
 		private readonly int m_SpellID;
 
-		public Mobile Mobile { get { return m_Mobile; } }
-		public Item Spellbook { get { return m_Spellbook; } }
-		public int SpellID { get { return m_SpellID; } }
+		public Mobile Mobile => m_Mobile; 
+		public Item Spellbook => m_Spellbook; 
+		public int SpellID => m_SpellID; 
 
 		public CastSpellRequestEventArgs(Mobile m, int spellID, Item book)
 		{
@@ -695,9 +695,9 @@ namespace Server
 		private readonly Item m_Bandage;
 		private readonly Mobile m_Target;
 
-		public Mobile Mobile { get { return m_Mobile; } }
-		public Item Bandage { get { return m_Bandage; } }
-		public Mobile Target { get { return m_Target; } }
+		public Mobile Mobile => m_Mobile; 
+		public Item Bandage => m_Bandage; 
+		public Mobile Target => m_Target; 
 
 		public BandageTargetRequestEventArgs(Mobile m, Item bandage, Mobile target)
 		{
@@ -712,8 +712,8 @@ namespace Server
 		private readonly Mobile m_Mobile;
 		private readonly int m_Type;
 
-		public Mobile Mobile { get { return m_Mobile; } }
-		public int Type { get { return m_Type; } }
+		public Mobile Mobile => m_Mobile; 
+		public int Type => m_Type; 
 
 		public OpenSpellbookRequestEventArgs(Mobile m, int type)
 		{
@@ -726,7 +726,7 @@ namespace Server
 	{
 		private readonly Mobile m_Mobile;
 
-		public Mobile Mobile { get { return m_Mobile; } }
+		public Mobile Mobile => m_Mobile; 
 
 		public StunRequestEventArgs(Mobile m)
 		{
@@ -738,7 +738,7 @@ namespace Server
 	{
 		private readonly Mobile m_Mobile;
 
-		public Mobile Mobile { get { return m_Mobile; } }
+		public Mobile Mobile => m_Mobile; 
 
 		public DisarmRequestEventArgs(Mobile m)
 		{
@@ -750,7 +750,7 @@ namespace Server
 	{
 		private readonly Mobile m_Mobile;
 
-		public Mobile Mobile { get { return m_Mobile; } }
+		public Mobile Mobile => m_Mobile; 
 
 		public HelpRequestEventArgs(Mobile m)
 		{
@@ -765,7 +765,7 @@ namespace Server
 	{
 		private readonly Exception m_Exception;
 
-		public Exception Exception { get { return m_Exception; } }
+		public Exception Exception => m_Exception; 
 		public bool Close { get; set; }
 
 		public CrashedEventArgs(Exception e)
@@ -779,8 +779,8 @@ namespace Server
 		private readonly Mobile m_Mobile;
 		private readonly int m_OldValue;
 
-		public Mobile Mobile { get { return m_Mobile; } }
-		public int OldValue { get { return m_OldValue; } }
+		public Mobile Mobile => m_Mobile; 
+		public int OldValue => m_OldValue; 
 
 		public HungerChangedEventArgs(Mobile mobile, int oldValue)
 		{
@@ -795,8 +795,8 @@ namespace Server
 		private Direction m_Direction;
 		private bool m_Blocked;
 
-		public Mobile Mobile { get { return m_Mobile; } }
-		public Direction Direction { get { return m_Direction; } }
+		public Mobile Mobile => m_Mobile; 
+		public Direction Direction => m_Direction; 
 		public bool Blocked { get { return m_Blocked; } set { m_Blocked = value; } }
 
 		private static readonly Queue<MovementEventArgs> m_Pool = new Queue<MovementEventArgs>();
@@ -839,10 +839,10 @@ namespace Server
 		private readonly IAccount m_Account;
 		private readonly List<ServerInfo> m_Servers;
 
-		public NetState State { get { return m_State; } }
-		public IAccount Account { get { return m_Account; } }
+		public NetState State => m_State; 
+		public IAccount Account => m_Account; 
 		public bool Rejected { get; set; }
-		public List<ServerInfo> Servers { get { return m_Servers; } }
+		public List<ServerInfo> Servers => m_Servers; 
 
 		public void AddServer(string name, IPEndPoint address)
 		{
@@ -867,8 +867,8 @@ namespace Server
 		private readonly SkillName m_Name;
 		private readonly int m_Value;
 
-		public SkillName Name { get { return m_Name; } }
-		public int Value { get { return m_Value; } }
+		public SkillName Name => m_Name; 
+		public int Value => m_Value; 
 
 		public SkillNameValue(SkillName name, int value)
 		{
@@ -899,27 +899,27 @@ namespace Server
         private readonly int m_Face;
         private readonly int m_FaceHue;
 
-        public NetState State { get { return m_State; } }
-		public IAccount Account { get { return m_Account; } }
+        public NetState State => m_State; 
+		public IAccount Account => m_Account; 
 		public Mobile Mobile { get; set; }
-		public string Name { get { return m_Name; } }
-		public bool Female { get { return m_Female; } }
-		public int Hue { get { return m_Hue; } }
-		public int Str { get { return m_Str; } }
-		public int Dex { get { return m_Dex; } }
-		public int Int { get { return m_Int; } }
-		public CityInfo City { get { return m_City; } }
-		public SkillNameValue[] Skills { get { return m_Skills; } }
-		public int ShirtHue { get { return m_ShirtHue; } }
-		public int PantsHue { get { return m_PantsHue; } }
-		public int HairID { get { return m_HairID; } }
-		public int HairHue { get { return m_HairHue; } }
-		public int BeardID { get { return m_BeardID; } }
-		public int BeardHue { get { return m_BeardHue; } }
+		public string Name => m_Name; 
+		public bool Female => m_Female; 
+		public int Hue => m_Hue; 
+		public int Str => m_Str; 
+		public int Dex => m_Dex; 
+		public int Int => m_Int; 
+		public CityInfo City => m_City; 
+		public SkillNameValue[] Skills => m_Skills; 
+		public int ShirtHue => m_ShirtHue; 
+		public int PantsHue => m_PantsHue; 
+		public int HairID => m_HairID; 
+		public int HairHue => m_HairHue; 
+		public int BeardID => m_BeardID; 
+		public int BeardHue => m_BeardHue; 
 		public int Profession { get; set; }
-		public Race Race { get { return m_Race; } }
-        public int FaceID { get { return m_Face; } }
-        public int FaceHue { get { return m_FaceHue; } }
+		public Race Race => m_Race; 
+        public int FaceID => m_Face; 
+        public int FaceHue => m_FaceHue; 
 
         public CharacterCreatedEventArgs(
             NetState state,
@@ -993,7 +993,7 @@ namespace Server
 	{
 		private readonly Mobile m_Mobile;
 
-		public Mobile Mobile { get { return m_Mobile; } }
+		public Mobile Mobile => m_Mobile; 
 
 		public OpenDoorMacroEventArgs(Mobile mobile)
 		{
@@ -1008,11 +1008,11 @@ namespace Server
 		private readonly int m_Hue;
 		private readonly int[] m_Keywords;
 
-		public Mobile Mobile { get { return m_Mobile; } }
+		public Mobile Mobile => m_Mobile; 
 		public string Speech { get; set; }
-		public MessageType Type { get { return m_Type; } }
-		public int Hue { get { return m_Hue; } }
-		public int[] Keywords { get { return m_Keywords; } }
+		public MessageType Type => m_Type;
+		public int Hue => m_Hue; 
+		public int[] Keywords => m_Keywords; 
 		public bool Handled { get; set; }
 		public bool Blocked { get; set; }
 
@@ -1043,7 +1043,7 @@ namespace Server
 	{
 		private readonly Mobile m_Mobile;
 
-		public Mobile Mobile { get { return m_Mobile; } }
+		public Mobile Mobile => m_Mobile; 
 
 		public LoginEventArgs(Mobile mobile)
 		{
@@ -1055,7 +1055,7 @@ namespace Server
 	{
 		private readonly bool m_Msg;
 
-		public bool Message { get { return m_Msg; } }
+		public bool Message => m_Msg; 
 
 		public WorldSaveEventArgs(bool msg)
 		{
@@ -1089,7 +1089,7 @@ namespace Server
 			Blocked = false;
 		}
 
-		public NetState NetState { get { return m_State; } }
+		public NetState NetState => m_State; 
 		public bool Blocked { get; set; }
 	}
 
@@ -1104,8 +1104,8 @@ namespace Server
 			m_KilledBy = killedBy;
 		}
 
-		public Mobile Killed { get { return m_Killed; } }
-		public Mobile KilledBy { get { return m_KilledBy; } }
+		public Mobile Killed => m_Killed; 
+		public Mobile KilledBy => m_KilledBy; 
 	}
 
 	public class OnItemUseEventArgs : EventArgs
@@ -1119,8 +1119,8 @@ namespace Server
 			m_Item = item;
 		}
 
-		public Mobile From { get { return m_From; } }
-		public Item Item { get { return m_Item; } }
+		public Mobile From => m_From; 
+		public Item Item => m_Item; 
 	}
 
 	public class OnEnterRegionEventArgs : EventArgs
@@ -1136,9 +1136,9 @@ namespace Server
 			m_NewRegion = newRegion;
 		}
 
-		public Mobile From { get { return m_From; } }
-		public Region OldRegion { get { return m_OldRegion; } }
-        public Region NewRegion { get { return m_NewRegion; } }
+		public Mobile From => m_From; 
+		public Region OldRegion => m_OldRegion; 
+        public Region NewRegion => m_NewRegion; 
 	}
 
 	public class OnConsumeEventArgs : EventArgs
@@ -1158,11 +1158,11 @@ namespace Server
 			m_Quantity = quantity;
 		}
 
-		public Mobile Consumer { get { return m_Consumer; } }
+		public Mobile Consumer => m_Consumer; 
 
-		public Item Consumed { get { return m_Consumed; } }
+		public Item Consumed => m_Consumed; 
 
-		public int Quantity { get { return m_Quantity; } }
+		public int Quantity => m_Quantity; 
 	}
 
 	public class OnPropertyChangedEventArgs : EventArgs
@@ -1369,9 +1369,9 @@ namespace Server
         private IEntity m_Target;
         private short m_SpellID;
 
-        public Mobile Mobile { get { return m_Mobile; } }
-        public IEntity Target { get { return m_Target; } }
-        public short SpellID { get { return m_SpellID; } }
+        public Mobile Mobile => m_Mobile; 
+        public IEntity Target => m_Target; 
+        public short SpellID => m_SpellID; 
 
         public TargetedSpellEventArgs(Mobile m, IEntity target, short spellID)
         {
@@ -1387,9 +1387,9 @@ namespace Server
         private IEntity m_Target;
         private short m_SkillID;
 
-        public Mobile Mobile { get { return m_Mobile; } }
-        public IEntity Target { get { return m_Target; } }
-        public short SkillID { get { return m_SkillID; } }
+        public Mobile Mobile => m_Mobile; 
+        public IEntity Target => m_Target; 
+        public short SkillID => m_SkillID; 
 
         public TargetedSkillEventArgs(Mobile m, IEntity target, short skillID)
         {
@@ -1405,9 +1405,9 @@ namespace Server
         private IEntity m_Source;
         private IEntity m_Target;
 
-        public Mobile Mobile { get { return m_Mobile; } }
-        public IEntity Source { get { return m_Source; } }
-        public IEntity Target { get { return m_Target; } }
+        public Mobile Mobile => m_Mobile; 
+        public IEntity Source => m_Source; 
+        public IEntity Target => m_Target; 
 
         public TargetedItemUseEventArgs(Mobile mobile, IEntity src, IEntity target)
         {
@@ -1423,9 +1423,9 @@ namespace Server
         private Item m_Tool;
         private int m_ResourceType;
 
-        public Mobile Mobile { get { return m_Mobile; } }
-        public Item Tool { get { return m_Tool; } }
-        public int ResourceType { get { return m_ResourceType; } }
+        public Mobile Mobile => m_Mobile; 
+        public Item Tool => m_Tool; 
+        public int ResourceType => m_ResourceType; 
 
         public TargetByResourceMacroEventArgs(Mobile mobile, Item tool, int type)
         {
@@ -1440,8 +1440,8 @@ namespace Server
         private Mobile m_Mobile;
         private List<int> m_List;
 
-        public Mobile Mobile { get { return m_Mobile; } }
-        public List<int> List { get { return m_List; } }
+        public Mobile Mobile => m_Mobile; 
+        public List<int> List => m_List; 
 
         public EquipMacroEventArgs(Mobile mobile, List<int> list)
         {
@@ -1455,8 +1455,8 @@ namespace Server
         private Mobile m_Mobile;
         private List<int> m_List;
 
-        public Mobile Mobile { get { return m_Mobile; } }
-        public List<int> List { get { return m_List; } }
+        public Mobile Mobile => m_Mobile; 
+        public List<int> List => m_List; 
 
         public UnequipMacroEventArgs(Mobile mobile, List<int> list)
         {

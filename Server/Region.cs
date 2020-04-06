@@ -125,7 +125,7 @@ namespace Server
 	{
 		private static readonly List<Region> m_Regions = new List<Region>();
 
-		public static List<Region> Regions { get { return m_Regions; } }
+		public static List<Region> Regions => m_Regions; 
 
 		public static Region Find(Point3D p, Map map)
 		{
@@ -195,33 +195,33 @@ namespace Server
 		private Point3D m_GoLocation;
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public string Name { get { return m_Name; } }
+		public string Name => m_Name; 
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public Map Map { get { return m_Map; } }
+		public Map Map => m_Map; 
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public Region Parent { get { return m_Parent; } }
+		public Region Parent => m_Parent; 
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public List<Region> Children { get { return m_Children; } }
+		public List<Region> Children => m_Children; 
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public Rectangle3D[] Area { get { return m_Area; } }
+		public Rectangle3D[] Area => m_Area; 
 
-		public Sector[] Sectors { get { return m_Sectors; } }
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool Dynamic { get { return m_Dynamic; } }
+		public Sector[] Sectors => m_Sectors; 
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public int Priority { get { return m_Priority; } }
+		public bool Dynamic => m_Dynamic; 
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public int ChildLevel { get { return m_ChildLevel; } }
+		public int Priority => m_Priority; 
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public bool Registered { get { return m_Registered; } }
+		public int ChildLevel => m_ChildLevel; 
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public bool Registered => m_Registered; 
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public Point3D GoLocation { get { return m_GoLocation; } set { m_GoLocation = value; } }
@@ -230,13 +230,13 @@ namespace Server
 		public MusicName Music { get; set; }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public bool IsDefault { get { return m_Map.DefaultRegion == this; } }
+		public bool IsDefault => m_Map.DefaultRegion == this; 
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual MusicName DefaultMusic { get { return m_Parent != null ? m_Parent.Music : MusicName.Invalid; } }
+		public virtual MusicName DefaultMusic => m_Parent != null ? m_Parent.Music : MusicName.Invalid; 
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual double InsuranceMultiplier { get { return 1.0; } }
+        public virtual double InsuranceMultiplier => 1.0; 
 
         public Region(string name, Map map, int priority, params Rectangle2D[] area)
 			: this(name, map, priority, ConvertTo3D(area))

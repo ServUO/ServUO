@@ -82,7 +82,7 @@ namespace Server.ContextMenus
 		/// <summary>
 		///     Returns true if this ContextMenu requires packet version 2.
 		/// </summary>
-		public bool RequiresNewPacket { get { return Entries.Any(t => t.Number < 3000000 || t.Number > 3032767); } }
+		public bool RequiresNewPacket => Entries.Any(t => t.Number < 3000000 || t.Number > 3032767); 
 
 		public void Dispose()
 		{

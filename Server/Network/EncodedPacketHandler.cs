@@ -15,10 +15,10 @@ namespace Server.Network
 			m_OnReceive = onReceive;
 		}
 
-		public int PacketID { get { return m_PacketID; } }
+		public int PacketID => m_PacketID; 
 
-		public OnEncodedPacketReceive OnReceive { get { return m_OnReceive; } }
+		public OnEncodedPacketReceive OnReceive => m_OnReceive; 
 
-		public bool Ingame { get { return m_Ingame; } }
+		public bool Ingame => m_Ingame; 
 	}
 }
