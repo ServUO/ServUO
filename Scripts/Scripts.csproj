@@ -2530,7 +2530,6 @@
     <Compile Include="Mobiles\NPCs\BaseGuildmaster.cs" />
     <Compile Include="Mobiles\NPCs\BaseHealer.cs" />
     <Compile Include="Mobiles\NPCs\BaseHire.cs" />
-    <Compile Include="Mobiles\NPCs\BaseShieldGuard.cs" />
     <Compile Include="Mobiles\NPCs\BaseVendor.cs" />
     <Compile Include="Mobiles\NPCs\Beekeeper.cs" />
     <Compile Include="Mobiles\NPCs\Belulah.cs" />
@@ -2549,7 +2548,6 @@
     <Compile Include="Mobiles\NPCs\Cailla.cs" />
     <Compile Include="Mobiles\NPCs\Calendor.cs" />
     <Compile Include="Mobiles\NPCs\Carpenter.cs" />
-    <Compile Include="Mobiles\NPCs\ChaosGuard.cs" />
     <Compile Include="Mobiles\NPCs\Chiyo.cs" />
     <Compile Include="Mobiles\NPCs\Churchill.cs" />
     <Compile Include="Mobiles\NPCs\Ciala.cs" />
@@ -2672,7 +2670,6 @@
     <Compile Include="Mobiles\NPCs\Odell.cs" />
     <Compile Include="Mobiles\NPCs\Olaeni.cs" />
     <Compile Include="Mobiles\NPCs\Olla.cs" />
-    <Compile Include="Mobiles\NPCs\OrderGuard.cs" />
     <Compile Include="Mobiles\NPCs\Patricus.cs" />
     <Compile Include="Mobiles\NPCs\Peasant.cs" />
     <Compile Include="Mobiles\NPCs\PersonalAttendant.cs" />
