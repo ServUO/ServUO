@@ -54,21 +54,13 @@ namespace Server.Items
                 return 12;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 56;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
                 return 2.00f;
             }
-        }
-       
+        }    
         public override int InitMinHits
         {
             get

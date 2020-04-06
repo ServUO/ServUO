@@ -52,14 +52,7 @@ namespace Server.Items
                 return 14;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 46;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {

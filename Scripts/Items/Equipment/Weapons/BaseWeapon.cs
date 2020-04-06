@@ -124,9 +124,7 @@ namespace Server.Items
 		private SlayerName m_Slayer;
 		private SlayerName m_Slayer2;
 
-		#region Mondain's Legacy
 		private TalismanSlayerName m_Slayer3;
-		#endregion
 
 		private SkillMod m_MageMod, m_MysticMod;
 		private CraftResource m_Resource;
@@ -152,17 +150,13 @@ namespace Server.Items
 		private WeaponType m_Type;
 		private WeaponAnimation m_Animation;
 
-        #region Stygian Abyss
         private int m_TimesImbued;
         private bool m_IsImbued;
         private bool m_DImodded;
-        #endregion
 
-        #region Runic Reforging
         private ItemPower m_ItemPower;
         private ReforgedPrefix m_ReforgedPrefix;
         private ReforgedSuffix m_ReforgedSuffix;
-        #endregion
         #endregion
 
         #region Virtual Properties
@@ -181,8 +175,7 @@ namespace Server.Items
 		public virtual int AosIntelligenceReq { get { return 0; } }
 		public virtual int MinDamage { get { return 0; } }
 		public virtual int MaxDamage { get { return 0; } }
-		public virtual int AosSpeed { get { return 0; } }
-		public virtual float MlSpeed { get { return 0.0f; } }
+		public virtual float Speed { get { return 0.0f; } }
 		public virtual int AosMaxRange { get { return DefMaxRange; } }
 		public virtual int AosHitSound { get { return DefHitSound; } }
 		public virtual int AosMissSound { get { return DefMissSound; } }
@@ -483,7 +476,7 @@ namespace Server.Items
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public float Speed
+		public float WeaponSpeed
 		{
             get
             {
@@ -492,7 +485,7 @@ namespace Server.Items
                     return m_Speed;
                 }
 
-                return MlSpeed;
+                return Speed;
             }
 			set
 			{
@@ -531,7 +524,6 @@ namespace Server.Items
 
         public int LastParryChance { get; set; }
 
-        #region Stygian Abyss
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimesImbued
         {
@@ -576,7 +568,6 @@ namespace Server.Items
         public virtual void OnAfterImbued(Mobile m, int mod, int value)
         {
         }
-        #endregion
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool SearingWeapon
@@ -594,8 +585,6 @@ namespace Server.Items
                 }
             }
         }
-
-        #region Runic Reforging
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemPower ItemPower
@@ -617,7 +606,6 @@ namespace Server.Items
             get { return m_ReforgedSuffix; }
             set { m_ReforgedSuffix = value; InvalidateProperties(); }
         }
-        #endregion
         #endregion
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -652,15 +640,9 @@ namespace Server.Items
 			weap.m_AosWeaponAttributes = new AosWeaponAttributes(newItem, m_AosWeaponAttributes);
             weap.m_NegativeAttributes = new NegativeAttributes(newItem, m_NegativeAttributes);
             weap.m_ExtendedWeaponAttributes = new ExtendedWeaponAttributes(newItem, m_ExtendedWeaponAttributes);
-
-			#region Mondain's Legacy
 			weap.m_SetAttributes = new AosAttributes(newItem, m_SetAttributes);
 			weap.m_SetSkillBonuses = new AosSkillBonuses(newItem, m_SetSkillBonuses);
-			#endregion
-
-			#region SA
 			weap.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(newItem, m_SAAbsorptionAttributes);
-			#endregion
 		}
 
 		public virtual void UnscaleDurability()
@@ -725,12 +707,10 @@ namespace Server.Items
 		{
 			int v = m_AosWeaponAttributes.LowerStatReq;
 
-			#region Mondain's Legacy
 			if (m_Resource == CraftResource.Heartwood)
 			{
 				return v;
 			}
-			#endregion
 
 			CraftResourceInfo info = CraftResources.GetInfo(m_Resource);
 
@@ -876,15 +856,12 @@ namespace Server.Items
                 from.SendLocalizedMessage(3000201); // You must wait to perform another action.
                 return false;
 			}
-		    #region Personal Bless Deed
 			else if (BlessedBy != null && BlessedBy != from)
 			{
 				from.SendLocalizedMessage(1075277); // That item is blessed by another player.
 
 				return false;
 			}
-			#endregion
-
 			else
 			{
 				return base.CanEquip(from);
@@ -952,7 +929,6 @@ namespace Server.Items
 
 			    m_AosSkillBonuses.AddTo(from);
 
-				#region Mondain's Legacy Sets
 				if (IsSetItem)
 				{
 					m_SetEquipped = SetHelper.FullSetEquipped(from, SetID, Pieces);
@@ -963,7 +939,6 @@ namespace Server.Items
 						SetHelper.AddSetBonus(from, SetID);
 					}
 				}
-				#endregion
 
                 if (HasSocket<Caddellite>())
                 {
@@ -1014,12 +989,10 @@ namespace Server.Items
 
                 SkillMasterySpell.OnWeaponRemoved(m, this);
 
-				#region Mondain's Legacy Sets
 				if (IsSetItem && m_SetEquipped)
 				{
 					SetHelper.RemoveSetBonus(m, SetID, this);
 				}
-				#endregion
 
                 if (HasSocket<Caddellite>())
                 {
@@ -2111,7 +2084,7 @@ namespace Server.Items
             {
                 if (!ranged || 0.5 > Utility.RandomDouble())
                 {
-                    percentageBonus += (int)(146.0 / MlSpeed);
+                    percentageBonus += (int)(146.0 / Speed);
                 }
             }
 
