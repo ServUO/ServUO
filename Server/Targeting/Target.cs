@@ -20,7 +20,7 @@ namespace Server.Targeting
 		private bool m_AllowNonlocal;
 		private DateTime m_TimeoutTime;
 
-		public DateTime TimeoutTime { get { return m_TimeoutTime; } }
+		public DateTime TimeoutTime => m_TimeoutTime; 
 
 		protected Target(int range, bool allowGround, TargetFlags flags)
 		{
@@ -133,7 +133,7 @@ namespace Server.Targeting
 
 		public bool AllowNonlocal { get { return m_AllowNonlocal; } set { m_AllowNonlocal = value; } }
 
-		public int TargetID { get { return m_TargetID; } }
+		public int TargetID => m_TargetID; 
 
 		public virtual Packet GetPacketFor(NetState ns)
 		{

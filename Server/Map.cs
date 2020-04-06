@@ -400,19 +400,19 @@ namespace Server
 
 		private static readonly Map[] m_Maps = new Map[0x100];
 
-		public static Map[] Maps { get { return m_Maps; } }
+		public static Map[] Maps => m_Maps; 
 
-		public static Map Felucca { get { return m_Maps[0]; } }
-		public static Map Trammel { get { return m_Maps[1]; } }
-		public static Map Ilshenar { get { return m_Maps[2]; } }
-		public static Map Malas { get { return m_Maps[3]; } }
-		public static Map Tokuno { get { return m_Maps[4]; } }
-		public static Map TerMur { get { return m_Maps[5]; } }
-		public static Map Internal { get { return m_Maps[0x7F]; } }
+		public static Map Felucca => m_Maps[0]; 
+		public static Map Trammel => m_Maps[1]; 
+		public static Map Ilshenar => m_Maps[2]; 
+		public static Map Malas => m_Maps[3]; 
+		public static Map Tokuno => m_Maps[4]; 
+		public static Map TerMur => m_Maps[5]; 
+		public static Map Internal => m_Maps[0x7F]; 
 
 		private static readonly List<Map> m_AllMaps = new List<Map>();
 
-		public static List<Map> AllMaps { get { return m_AllMaps; } }
+		public static List<Map> AllMaps => m_AllMaps; 
 
 		private readonly int m_MapID;
 		private readonly int m_MapIndex;
@@ -1876,15 +1876,15 @@ namespace Server
 			}
 		}
 
-		public int MapID { get { return m_MapID; } }
+		public int MapID => m_MapID;
 
-		public int MapIndex { get { return m_MapIndex; } }
+		public int MapIndex => m_MapIndex; 
 
-		public int Width { get { return m_Width; } }
+		public int Width => m_Width; 
 
-		public int Height { get { return m_Height; } }
+		public int Height => m_Height; 
 
-		public Dictionary<string, Region> Regions { get { return m_Regions; } }
+		public Dictionary<string, Region> Regions => m_Regions; 
 
 		public void RegisterRegion(Region reg)
 		{
@@ -1921,7 +1921,7 @@ namespace Server
 
 		public MapRules Rules { get; set; }
 
-		public Sector InvalidSector { get { return m_InvalidSector; } }
+		public Sector InvalidSector => m_InvalidSector; 
 
 		public string Name { get; set; }
 
@@ -2077,8 +2077,8 @@ namespace Server
 				public void Reset()
 				{ }
 
-				object IEnumerator.Current { get { return null; } }
-				public K Current { get { return default(K); } }
+				object IEnumerator.Current => null; 
+				public K Current => default(K); 
 
 				public bool MoveNext()
 				{
@@ -2236,9 +2236,9 @@ namespace Server
 				m_Bounds = bounds;
 			}
 
-			public NetState Current { get { return m_CurrentList[m_CurrentIndex]; } }
+			public NetState Current => m_CurrentList[m_CurrentIndex]; 
 
-			object IEnumerator.Current { get { return m_CurrentList[m_CurrentIndex]; } }
+			object IEnumerator.Current => m_CurrentList[m_CurrentIndex]; 
 
 			void IDisposable.Dispose()
 			{ }
@@ -2359,9 +2359,9 @@ namespace Server
 				m_Bounds = bounds;
 			}
 
-			public IEntity Current { get { return (IEntity)m_CurrentList[m_CurrentIndex]; } }
+			public IEntity Current => (IEntity)m_CurrentList[m_CurrentIndex]; 
 
-			object IEnumerator.Current { get { return m_CurrentList[m_CurrentIndex]; } }
+			object IEnumerator.Current => m_CurrentList[m_CurrentIndex]; 
 
 			void IDisposable.Dispose()
 			{ }
@@ -2518,9 +2518,9 @@ namespace Server
 				m_Bounds = bounds;
 			}
 
-			public Item Current { get { return m_CurrentList[m_CurrentIndex]; } }
+			public Item Current => m_CurrentList[m_CurrentIndex]; 
 
-			object IEnumerator.Current { get { return m_CurrentList[m_CurrentIndex]; } }
+			object IEnumerator.Current => m_CurrentList[m_CurrentIndex]; 
 
 			void IDisposable.Dispose()
 			{ }
@@ -2640,9 +2640,9 @@ namespace Server
 				m_Bounds = bounds;
 			}
 
-			public Mobile Current { get { return m_CurrentList[m_CurrentIndex]; } }
+			public Mobile Current => m_CurrentList[m_CurrentIndex]; 
 
-			object IEnumerator.Current { get { return m_CurrentList[m_CurrentIndex]; } }
+			object IEnumerator.Current => m_CurrentList[m_CurrentIndex]; 
 
 			void IDisposable.Dispose()
 			{ }
@@ -2740,9 +2740,9 @@ namespace Server
 				m_Location = loc;
 			}
 
-			public StaticTile[] Current { get { return m_Current; } }
+			public StaticTile[] Current => m_Current; 
 
-			object IEnumerator.Current { get { return m_Current; } }
+			object IEnumerator.Current => m_Current; 
 
 			void IDisposable.Dispose()
 			{ }

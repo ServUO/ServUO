@@ -107,7 +107,7 @@ namespace Server
 		private static readonly Dictionary<string, Entry> _Entries =
 			new Dictionary<string, Entry>(StringComparer.OrdinalIgnoreCase);
 
-		public static IEnumerable<Entry> Entries { get { return _Entries.Values; } }
+		public static IEnumerable<Entry> Entries => _Entries.Values; 
 
 		public static void Load()
 		{

@@ -11,13 +11,13 @@ namespace Server.Menus.Questions
 		private readonly int m_Serial;
 		private static int m_NextSerial;
 
-		int IMenu.Serial { get { return m_Serial; } }
+		int IMenu.Serial => m_Serial; 
 
-		int IMenu.EntryLength { get { return m_Answers.Length; } }
+		int IMenu.EntryLength => m_Answers.Length; 
 
 		public string Question { get; set; }
 
-		public string[] Answers { get { return m_Answers; } }
+		public string[] Answers => m_Answers; 
 
 		public QuestionMenu(string question, string[] answers)
 		{

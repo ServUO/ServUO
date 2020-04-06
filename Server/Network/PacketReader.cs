@@ -19,9 +19,9 @@ namespace Server.Network
 			m_Index = fixedSize ? 1 : 3;
 		}
 
-		public byte[] Buffer { get { return m_Data; } }
+		public byte[] Buffer => m_Data; 
 
-		public int Size { get { return m_Size; } }
+		public int Size => m_Size; 
 
 		public void Trace(NetState state)
 		{

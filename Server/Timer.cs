@@ -426,7 +426,7 @@ namespace Server
 			: this(delay, interval, 0)
 		{ }
 
-		public virtual bool DefRegCreation { get { return true; } }
+		public virtual bool DefRegCreation => true; 
 
 		public void RegCreation()
 		{
@@ -682,9 +682,9 @@ namespace Server
 		{
 			private readonly TimerCallback m_Callback;
 
-			public TimerCallback Callback { get { return m_Callback; } }
+			public TimerCallback Callback => m_Callback; 
 
-			public override bool DefRegCreation { get { return false; } }
+			public override bool DefRegCreation => false; 
 
 			public DelayCallTimer(TimeSpan delay, TimeSpan interval, int count, TimerCallback callback)
 				: base(delay, interval, count)
@@ -712,9 +712,9 @@ namespace Server
 			private readonly TimerStateCallback m_Callback;
 			private readonly object m_State;
 
-			public TimerStateCallback Callback { get { return m_Callback; } }
+			public TimerStateCallback Callback => m_Callback; 
 
-			public override bool DefRegCreation { get { return false; } }
+			public override bool DefRegCreation => false; 
 
 			public DelayStateCallTimer(TimeSpan delay, TimeSpan interval, int count, TimerStateCallback callback, object state)
 				: base(delay, interval, count)
@@ -744,9 +744,9 @@ namespace Server
 			private readonly TimerStateCallback<T> m_Callback;
 			private readonly T m_State;
 
-			public TimerStateCallback<T> Callback { get { return m_Callback; } }
+			public TimerStateCallback<T> Callback => m_Callback; 
 
-			public override bool DefRegCreation { get { return false; } }
+			public override bool DefRegCreation => false; 
 
 			public DelayStateCallTimer(TimeSpan delay, TimeSpan interval, int count, TimerStateCallback<T> callback, T state)
 				: base(delay, interval, count)
@@ -777,9 +777,9 @@ namespace Server
 			private readonly T1 m_State1;
 			private readonly T2 m_State2;
 
-			public TimerStateCallback<T1, T2> Callback { get { return m_Callback; } }
+			public TimerStateCallback<T1, T2> Callback => m_Callback; 
 
-			public override bool DefRegCreation { get { return false; } }
+			public override bool DefRegCreation => false; 
 
 			public DelayStateCallTimer(TimeSpan delay, TimeSpan interval, int count, TimerStateCallback<T1, T2> callback, T1 state1, T2 state2)
 				: base(delay, interval, count)
@@ -812,9 +812,9 @@ namespace Server
 			private readonly T2 m_State2;
 			private readonly T3 m_State3;
 
-			public TimerStateCallback<T1, T2, T3> Callback { get { return m_Callback; } }
+			public TimerStateCallback<T1, T2, T3> Callback => m_Callback; 
 
-			public override bool DefRegCreation { get { return false; } }
+			public override bool DefRegCreation => false; 
 
 			public DelayStateCallTimer(TimeSpan delay, TimeSpan interval, int count, TimerStateCallback<T1, T2, T3> callback, T1 state1, T2 state2, T3 state3)
 				: base(delay, interval, count)
@@ -849,9 +849,9 @@ namespace Server
 			private readonly T3 m_State3;
 			private readonly T4 m_State4;
 
-			public TimerStateCallback<T1, T2, T3, T4> Callback { get { return m_Callback; } }
+			public TimerStateCallback<T1, T2, T3, T4> Callback => m_Callback; 
 
-			public override bool DefRegCreation { get { return false; } }
+			public override bool DefRegCreation => false; 
 
 			public DelayStateCallTimer(TimeSpan delay, TimeSpan interval, int count, TimerStateCallback<T1, T2, T3, T4> callback, T1 state1, T2 state2, T3 state3, T4 state4)
 				: base(delay, interval, count)

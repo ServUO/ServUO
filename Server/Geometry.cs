@@ -563,13 +563,13 @@ namespace Server
 		public Point3D End { get { return m_End; } set { m_End = value; } }
 
 		[CommandProperty(AccessLevel.Counselor)]
-		public int Width { get { return m_End.X - m_Start.X; } }
+		public int Width => m_End.X - m_Start.X; 
 
 		[CommandProperty(AccessLevel.Counselor)]
-		public int Height { get { return m_End.Y - m_Start.Y; } }
+		public int Height => m_End.Y - m_Start.Y; 
 
 		[CommandProperty(AccessLevel.Counselor)]
-		public int Depth { get { return m_End.Z - m_Start.Z; } }
+		public int Depth => m_End.Z - m_Start.Z; 
 
 		public bool Contains(Point3D p)
 		{
