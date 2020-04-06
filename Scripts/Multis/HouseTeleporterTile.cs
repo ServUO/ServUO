@@ -48,7 +48,7 @@ namespace Server.Multis
 			}
 		}
 
-        private bool IsMoveOver { get { return ItemID == 0x574A || ItemID == 0xA1CB || ItemID == 0xA1CC || ItemID == 0x40BB; } }
+        private bool IsMoveOver => ItemID == 0x574A || ItemID == 0xA1CB || ItemID == 0xA1CC || ItemID == 0x40BB; 
 
         [CommandProperty(AccessLevel.GameMaster)]
 		public int Charges
@@ -86,7 +86,7 @@ namespace Server.Multis
         [CommandProperty(AccessLevel.GameMaster)]
         public bool UsesCharges { get; set; }
 
-        public override int LabelNumber { get { return Link == null ? 1114916 : 1113917; } } // house teleporter (unlinked) -or- House Teleporter
+        public override int LabelNumber => Link == null ? 1114916 : 1113917; // house teleporter (unlinked) -or- House Teleporter
 
         public HouseTeleporterTile(bool vetReward)
             : base(vetReward ? 0x40BB : 0x574A, null)
@@ -614,7 +614,7 @@ namespace Server.Multis
 
     public class HouseTeleporterTileBag : Bag
     {
-        public override int LabelNumber { get { return 1113917; } }
+        public override int LabelNumber => 1113917; 
 
         [Constructable]
         public HouseTeleporterTileBag()
@@ -658,7 +658,7 @@ namespace Server.Multis
 
     public class HouseTeleporterInstructions : Item
     {
-        public override int LabelNumber { get { return 1115122; } } // Care Instructions
+        public override int LabelNumber => 1115122; // Care Instructions
 
         public bool VetReward { get; set; }
 

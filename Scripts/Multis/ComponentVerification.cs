@@ -8,8 +8,8 @@ namespace Server.Multis
 {
 	public class ComponentVerification
 	{
-        public int[] ItemTable { get { return m_ItemTable; } }
-        public int[] MultiTable { get { return m_MultiTable; } }
+        public int[] ItemTable => m_ItemTable; 
+        public int[] MultiTable => m_MultiTable; 
 
         private readonly int[] m_ItemTable;
 		private readonly int[] m_MultiTable;
@@ -269,7 +269,7 @@ namespace Server.Multis
 			}
 		}
 
-		public DataRecord[] Records { get { return m_Records; } }
+		public DataRecord[] Records => m_Records; 
 
 		public int GetColumnID(string name)
 		{
@@ -328,9 +328,9 @@ namespace Server.Multis
 			m_Data = data;
 		}
 
-		public Spreadsheet Spreadsheet { get { return m_Spreadsheet; } }
-		public object[] Data { get { return m_Data; } }
-		public object this[string name] { get { return this[m_Spreadsheet.GetColumnID(name)]; } }
+		public Spreadsheet Spreadsheet => m_Spreadsheet; 
+		public object[] Data => m_Data; 
+		public object this[string name] => this[m_Spreadsheet.GetColumnID(name)]; 
 
 		public object this[int id]
 		{

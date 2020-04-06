@@ -22,13 +22,13 @@ namespace Server.Multis
     {
         public static int AccountHouseLimit { get; } = Config.Get("Housing.AccountHouseLimit", 1);
 
-        public static bool NewVendorSystem { get { return true; } } // Is new player vendor system enabled?
+        public static bool NewVendorSystem => true; // Is new player vendor system enabled?
 
-        public static double GlobalBonusStorageScalar { get { return 1.4; } }
+        public static double GlobalBonusStorageScalar => 1.4; 
 
         public const int MaxCoOwners = 15;
-        public static int MaxFriends { get { return 140; } }
-        public static int MaxBans { get { return 140; } }
+        public static int MaxFriends => 140; 
+        public static int MaxBans => 140; 
 
         #region Dynamic decay system
         private DecayLevel m_CurrentStage;
@@ -68,7 +68,7 @@ namespace Server.Multis
         [CommandProperty(AccessLevel.GameMaster)]
         public bool RestrictDecay { get; set; }
 
-        public virtual TimeSpan DecayPeriod { get { return TimeSpan.FromDays(5.0); } }
+        public virtual TimeSpan DecayPeriod => TimeSpan.FromDays(5.0); 
 
         public virtual DecayType DecayType
         {
@@ -313,7 +313,7 @@ namespace Server.Multis
             }
         }
 
-        public virtual TimeSpan RestrictedPlacingTime { get { return TimeSpan.FromHours(1.0); } }
+        public virtual TimeSpan RestrictedPlacingTime => TimeSpan.FromHours(1.0); 
 
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual double BonusStorageScalar
@@ -333,9 +333,9 @@ namespace Server.Multis
 
         private static readonly Dictionary<Mobile, List<BaseHouse>> m_Table = new Dictionary<Mobile, List<BaseHouse>>();
 
-        public virtual bool IsAosRules { get { return true; } }
+        public virtual bool IsAosRules => true; 
 
-        public virtual bool IsActive { get { return true; } }
+        public virtual bool IsActive => true; 
 
         public virtual HousePlacementEntry GetAosEntry()
         {
@@ -2654,7 +2654,7 @@ namespace Server.Multis
             return true;
         }
 
-        public override bool Decays { get { return false; } }
+        public override bool Decays => false; 
 
         public void AddStrongBox(Mobile from)
         {
@@ -4185,12 +4185,12 @@ namespace Server.Multis
             }
         }
 
-        public virtual HousePlacementEntry ConvertEntry { get { return null; } }
-        public virtual int ConvertOffsetX { get { return 0; } }
-        public virtual int ConvertOffsetY { get { return 0; } }
-        public virtual int ConvertOffsetZ { get { return 0; } }
+        public virtual HousePlacementEntry ConvertEntry => null; 
+        public virtual int ConvertOffsetX => 0; 
+        public virtual int ConvertOffsetY => 0; 
+        public virtual int ConvertOffsetZ => 0; 
 
-        public virtual int DefaultPrice { get { return 0; } }
+        public virtual int DefaultPrice => 0; 
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Price { get; set; }
