@@ -265,9 +265,9 @@ namespace Server.Mobiles
 		#region Property Overrides
 
 		// does not decay
-		public override bool Decays { get { return false; } }
+		public override bool Decays => false;
 		// is not counted in the normal item count
-		public override bool IsVirtualItem { get { return true; } }
+		public override bool IsVirtualItem => true;
 
 		#endregion
 
@@ -318,13 +318,13 @@ namespace Server.Mobiles
 			}
 		}
 
-		public TimeSpan RealTOD { get { return DateTime.UtcNow.TimeOfDay; } }
+		public TimeSpan RealTOD => DateTime.UtcNow.TimeOfDay; 
 
-		public int RealDay { get { return DateTime.UtcNow.Day; } }
+		public int RealDay => DateTime.UtcNow.Day; 
 
-		public int RealMonth { get { return DateTime.UtcNow.Month; } }
+		public int RealMonth => DateTime.UtcNow.Month; 
 
-		public DayOfWeek RealDayOfWeek { get { return DateTime.UtcNow.DayOfWeek; } }
+		public DayOfWeek RealDayOfWeek => DateTime.UtcNow.DayOfWeek; 
 
 		public MoonPhase MoonPhase
 		{
@@ -361,7 +361,7 @@ namespace Server.Mobiles
 		private bool sectorIsActive = false;
 		private bool UseSectorActivate = false;
 
-		public bool SingleSector { get { return UseSectorActivate; } }
+		public bool SingleSector => UseSectorActivate; 
 
 		public bool InActivationRange(Sector s1, Sector s2)
 		{
@@ -604,7 +604,7 @@ namespace Server.Mobiles
 			}
 		}
 
-		public int SecCount { get { return seccount; } }
+		public int SecCount => seccount; 
 
 		public bool IsInactivated
 		{
@@ -1890,9 +1890,9 @@ namespace Server.Mobiles
 
 		#region ISpawner interface support
 
-		public bool UnlinkOnTaming { get { return true; } }
-		public Point3D HomeLocation { get { return this.Location; } }
-		public int Range { get { return HomeRange; } }
+		public bool UnlinkOnTaming => true; 
+		public Point3D HomeLocation => this.Location; 
+		public int Range => HomeRange; 
 
 		public virtual void GetSpawnProperties(ISpawnable spawn, ObjectPropertyList list)
 		{ }
@@ -3024,7 +3024,7 @@ public static void _TraceEnd(int index)
 			}
 		}
 
-		public bool HandlesOnSkillUse { get { return (m_Running && m_SkillTrigger != null && m_SkillTrigger.Length > 0); } }
+		public bool HandlesOnSkillUse => (m_Running && m_SkillTrigger != null && m_SkillTrigger.Length > 0); 
 
 		// this is the handler for skill use
 		public void OnSkillUse(Mobile m, Skill skill, bool success)
@@ -3053,7 +3053,7 @@ public static void _TraceEnd(int index)
 		}
 
 
-		public override bool HandlesOnSpeech { get { return (m_Running && m_SpeechTrigger != null && m_SpeechTrigger.Length > 0); } }
+		public override bool HandlesOnSpeech => (m_Running && m_SpeechTrigger != null && m_SpeechTrigger.Length > 0); 
 
 		public override void OnSpeech(SpeechEventArgs e)
 		{

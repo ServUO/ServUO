@@ -33,16 +33,16 @@ namespace Server.Engines.CannedEvil
 		private static double m_ScrollChance;
 		private static bool m_ForceGenerate = false;
 
-		public static int GoldShowerPiles { get { return m_GoldShowerPiles; } }
-		public static int GoldShowerMinAmount { get { return m_GoldShowerMinAmount; } }
-		public static int GoldShowerMaxAmount { get { return m_GoldShowerMaxAmount; } }
-		public static int HarrowerGoldShowerPiles { get { return m_HarrowerGoldPiles; } }
-		public static int HarrowerGoldShowerMinAmount { get { return m_HarrowerGoldMinAmount; } }
-		public static int HarrowerGoldShowerMaxAmount { get { return m_HarrowerGoldMaxAmount; } }
-		public static int PowerScrollAmount { get { return m_PowerScrollAmount; } }
-		public static int StatScrollAmount { get { return m_StatScrollAmount; } }
+		public static int GoldShowerPiles => m_GoldShowerPiles; 
+		public static int GoldShowerMinAmount => m_GoldShowerMinAmount; 
+		public static int GoldShowerMaxAmount => m_GoldShowerMaxAmount; 
+		public static int HarrowerGoldShowerPiles => m_HarrowerGoldPiles; 
+		public static int HarrowerGoldShowerMinAmount => m_HarrowerGoldMinAmount; 
+		public static int HarrowerGoldShowerMaxAmount => m_HarrowerGoldMaxAmount; 
+		public static int PowerScrollAmount => m_PowerScrollAmount; 
+		public static int StatScrollAmount => m_StatScrollAmount; 
 
-        public static List<ChampionSpawn> AllSpawns { get { return m_AllSpawns; } }
+        public static List<ChampionSpawn> AllSpawns => m_AllSpawns; 
 
 		public static int RankForLevel(int l)
 		{
@@ -66,8 +66,8 @@ namespace Server.Engines.CannedEvil
 				default: return 0.25d;
 			}
 		}
-		public static double TranscendenceChance { get { return m_TranscendenceChance; } }
-		public static double ScrollChance { get { return m_ScrollChance; } }
+		public static double TranscendenceChance => m_TranscendenceChance;
+		public static double ScrollChance => m_ScrollChance;
 
 		public static void Configure()
 		{

@@ -492,7 +492,7 @@ namespace Server.Accounting
 		public DateTime Created { get; set; }
 
 		[CommandProperty(AccessLevel.Administrator)]
-		public TimeSpan Age { get { return DateTime.UtcNow - Created; } }
+		public TimeSpan Age => DateTime.UtcNow - Created; 
 
 		/// <summary>
 		///     Gets or sets the date and time when this account was last accessed.
@@ -583,13 +583,13 @@ namespace Server.Accounting
 		///     not supported by the client.
 		/// </summary>
 		[CommandProperty(AccessLevel.Administrator)]
-		public int Limit { get { return (Siege.SiegeShard ? Siege.CharacterSlots : 7); } }
+		public int Limit => (Siege.SiegeShard ? Siege.CharacterSlots : 7); 
 
 		/// <summary>
 		///     Gets the maxmimum amount of characters that this account can hold.
 		/// </summary>
 		[CommandProperty(AccessLevel.Administrator)]
-		public int Length { get { return m_Mobiles.Length; } }
+		public int Length => m_Mobiles.Length; 
 
 		/// <summary>
 		///     Gets or sets the character at a specified index for this account.
@@ -1615,7 +1615,7 @@ namespace Server.Accounting
 		///     One Platinum represents the value of CurrencyThreshold in Gold.
 		/// </summary>
 		[CommandProperty(AccessLevel.Administrator)]
-		public int TotalPlat { get { return (int)Math.Truncate(TotalCurrency); } }
+		public int TotalPlat => (int)Math.Truncate(TotalCurrency); 
 
 		/// <summary>
 		///     Attempts to deposit the given amount of Gold and Platinum into this account.

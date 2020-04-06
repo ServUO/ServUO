@@ -13,7 +13,7 @@ namespace Server.Items
 {
     public class HousePlacementTool : Item
     {
-        public virtual bool UseCustomHousePlots { get { return Server.Misc.TestCenter.Enabled; } }
+        public virtual bool UseCustomHousePlots => Server.Misc.TestCenter.Enabled; 
 
         [Constructable]
         public HousePlacementTool()
@@ -28,7 +28,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1060651; } } // a house placement tool
+        public override int LabelNumber => 1060651; // a house placement tool
 
         public override void OnDoubleClick(Mobile from)
         {
