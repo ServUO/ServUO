@@ -36,7 +36,7 @@ namespace Server.Misc
 		/// </summary>
 		private const int LocationSize = 4;
 
-		public static bool GGSActive { get { return !Siege.SiegeShard; } }
+		public static bool GGSActive => !Siege.SiegeShard; 
 
 		static SkillCheck()
 		{

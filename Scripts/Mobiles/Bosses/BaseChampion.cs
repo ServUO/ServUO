@@ -22,7 +22,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-		public override bool CanBeParagon { get { return false; } }
+		public override bool CanBeParagon => false; 
         public abstract ChampionSkullType SkullType { get; }
         public abstract Type[] UniqueList { get; }
         public abstract Type[] SharedList { get; }
@@ -36,7 +36,7 @@ namespace Server.Mobiles
             }
         }
 
-        public virtual bool CanGivePowerscrolls { get { return true; } }
+        public virtual bool CanGivePowerscrolls => true; 
 
         public static void GivePowerScrollTo(Mobile m, Item item, BaseChampion champ)
         {
