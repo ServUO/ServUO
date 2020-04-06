@@ -450,9 +450,6 @@ namespace Server.Spells
         {
             if (!blockSkill)
             {
-                //caster.CheckSkill(SkillName.EvalInt, 0.0, 120.0);
-                // This is handled in Spell.cs
-
                 if (curse)
                     target.CheckSkill(SkillName.MagicResist, 0.0, 120.0);
             }
@@ -700,32 +697,6 @@ namespace Server.Spells
                 return;
             }
 
-            /*
-            int offset = Utility.Random( 8 ) * 2;
-
-            for( int i = 0; i < m_Offsets.Length; i += 2 )
-            {
-            int x = caster.X + m_Offsets[(offset + i) % m_Offsets.Length];
-            int y = caster.Y + m_Offsets[(offset + i + 1) % m_Offsets.Length];
-
-            if( map.CanSpawnMobile( x, y, caster.Z ) )
-            {
-            BaseCreature.Summon( creature, caster, new Point3D( x, y, caster.Z ), sound, duration );
-            return;
-            }
-            else
-            {
-            int z = map.GetAverageZ( x, y );
-
-            if( map.CanSpawnMobile( x, y, z ) )
-            {
-            BaseCreature.Summon( creature, caster, new Point3D( x, y, z ), sound, duration );
-            return;
-            }
-            }
-            }
-            * */
-
             creature.Delete();
             caster.SendLocalizedMessage(501942); // That location is blocked.
         }
@@ -779,7 +750,7 @@ namespace Server.Spells
             return false;
         }
 
-        public static bool RestrictRedTravel { get { return Config.Get("General.RestrictRedsToFel", false); } }
+        public static bool RestrictRedTravel => Config.Get("General.RestrictRedsToFel", false); 
 
         private delegate bool TravelValidator(Map map, Point3D loc);
 
@@ -793,7 +764,6 @@ namespace Server.Spells
             new TravelValidator(IsFeluccaDungeon),
             new TravelValidator(IsTrammelSolenHive),
             new TravelValidator(IsFeluccaSolenHive),
-            new TravelValidator(IsCrystalCave),
             new TravelValidator(IsDoomGauntlet),
             new TravelValidator(IsDoomFerry),
             new TravelValidator(IsSafeZone),
@@ -812,14 +782,14 @@ namespace Server.Spells
 
         private static readonly bool[,] m_Rules = new bool[,]
         {
-					/*T2A(Fel),	Khaldun,	Ilshenar,	Wind(Tram),	Wind(Fel),	Dungeons(Fel),	Solen(Tram),	Solen(Fel),	CrystalCave(Malas),	Gauntlet(Malas),	Gauntlet(Ferry),	SafeZone,	ChampionSpawn,	Dungeons(Tokuno[Malas]),	LampRoom(Doom),	GuardianRoom(Doom),	Heartwood,	MLDungeons, SA Dungeons		Tomb of Kings	Maze of Death	SA Entrance,    Eodon*/
-/* Recall From */	{ false,	false,		true,		true,		false,		false,			true,			false,		false,				false,				false,				true,		false,			true,						false,			false,				false,		false,      true,           true,           false,          false,          true} ,
-/* Recall To */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,			false,						false,			false,				false,		false,      false,          false,          false,          false,          false },
-/* Gate From */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,			false,						false,			false,				false,		false,      false,          false,          false,          false,          false },
-/* Gate To */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,			false,						false,			false,				false,		false,      false,          false,          false,          false,          false },
-/* Mark In */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,			false,						false,			false,				false,		false,      false,          false,          false,          false,          false },
-/* Tele From */		{ true,		true,		true,		true,		true,		true,			true,			true,		false,				true,				true,				true,		true,			true,						true,			true,				false,		true,       true,           false,          false,          false,          true },
-/* Tele To */		{ true,		true,		true,		true,		true,		true,			true,			true,		false,				true,				false,				false,		true,			true,						true,			true,				false,		false,      true,           false,          false,          false,          true },
+					/*T2A(Fel),	Khaldun,	Ilshenar,	Wind(Tram),	Wind(Fel),	Dungeons(Fel),	Solen(Tram),	Solen(Fel),	Gauntlet(Malas),	Gauntlet(Ferry),	SafeZone,	ChampionSpawn,	Dungeons(Tokuno[Malas]),	LampRoom(Doom),	GuardianRoom(Doom),	Heartwood,	MLDungeons, SA Dungeons		Tomb of Kings	Maze of Death	SA Entrance,    Eodon*/
+/* Recall From */	{ false,	false,		true,		true,		false,		false,			true,			false,		false,				false,				true,		false,			true,						false,			false,				false,		false,      true,           true,           false,          false,          true} ,
+/* Recall To */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,		false,			false,						false,			false,				false,		false,      false,          false,          false,          false,          false },
+/* Gate From */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,		false,			false,						false,			false,				false,		false,      false,          false,          false,          false,          false },
+/* Gate To */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,		false,			false,						false,			false,				false,		false,      false,          false,          false,          false,          false },
+/* Mark In */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,		false,			false,						false,			false,				false,		false,      false,          false,          false,          false,          false },
+/* Tele From */		{ true,		true,		true,		true,		true,		true,			true,			true,		true,				true,				true,		true,			true,						true,			true,				false,		true,       true,           false,          false,          false,          true },
+/* Tele To */		{ true,		true,		true,		true,		true,		true,			true,			true,		true,				false,				false,		true,			true,						true,			true,				false,		false,      true,           false,          false,          false,          true },
         };
 
         public static void SendInvalidMessage(Mobile caster, TravelCheckType type)
@@ -904,8 +874,6 @@ namespace Server.Spells
                 if (isValid && current != null && !current.CheckTravel(caster, loc, type))
                     isValid = false;
 
-                #region Mondain's Legacy
-
                 if (caster.Region != null)
                 {
                     if (caster.Region.IsPartOf("Blighted Grove") && loc.Z < -10)
@@ -913,16 +881,11 @@ namespace Server.Spells
                 }
 
                 if ((int)type <= 4 && (IsNewDungeon(caster.Map, caster.Location) || IsNewDungeon(map, loc)))
-                    isValid = false;
-                
-                #endregion
-
-                #region High Seas
+                    isValid = false;      
 
                 if (BaseBoat.IsDriving(caster))
                     return false;
 
-                #endregion
             }
 
             for (int i = 0; isValid && i < m_Validators.Length; ++i)
@@ -1010,19 +973,6 @@ namespace Server.Spells
         public static bool IsKhaldun(Map map, Point3D loc)
         {
             return (Region.Find(loc, map).Name == "Khaldun");
-        }
-
-        public static bool IsCrystalCave(Map map, Point3D loc)
-        {
-            if (map != Map.Malas || loc.Z >= -80)
-                return false;
-
-            int x = loc.X, y = loc.Y;
-
-            return (x >= 1182 && y >= 437 && x < 1211 && y < 470) ||
-                   (x >= 1156 && y >= 470 && x < 1211 && y < 503) ||
-                   (x >= 1176 && y >= 503 && x < 1208 && y < 509) ||
-                   (x >= 1188 && y >= 509 && x < 1201 && y < 513);
         }
 
         public static bool IsSafeZone(Map map, Point3D loc)
@@ -1552,7 +1502,7 @@ namespace Server.Spells
             private DFAlgorithm m_DFA;
             private Spell m_Spell;
 
-            public Spell Spell { get { return m_Spell; } }
+            public Spell Spell => m_Spell; 
 
             public SpellDamageTimerAOS(Spell s, IDamageable target, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, TimeSpan delay, DFAlgorithm dfa)
                 : base(delay)
