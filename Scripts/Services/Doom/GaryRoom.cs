@@ -152,7 +152,7 @@ namespace Server.Engines.Doom
                     else
                     {
                         Spawn = Activator.CreateInstance(_MonsterList[roll]) as BaseCreature;
-                        Server.Engines.XmlSpawner2.XmlAttach.AttachTo(Spawn, new Server.Engines.XmlSpawner2.XmlData("Notoriety", "red"));
+                        Spawn.Kills = 100;
 
                         if (Spawn is Dragon)
                         {

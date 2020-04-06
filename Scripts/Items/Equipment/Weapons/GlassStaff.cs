@@ -9,7 +9,7 @@ namespace Server.Items
         public GlassStaff()
             : base(0x905)
         {
-            this.Weight = 4.0;
+            Weight = 4.0;
         }
 
         public GlassStaff(Serial serial)
@@ -31,35 +31,28 @@ namespace Server.Items
                 return WeaponAbility.MortalStrike;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 20;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 11;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 14;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 39;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {

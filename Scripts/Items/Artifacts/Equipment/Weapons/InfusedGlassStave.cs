@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    // Based off a BlackStaff
     [FlipableAttribute(0x905, 0x4070)]
     public class InfusedGlassStave : BaseStaff
 	{
@@ -35,35 +34,28 @@ namespace Server.Items
                 return WeaponAbility.MortalStrike;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 20;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 11;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 14;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 39;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {

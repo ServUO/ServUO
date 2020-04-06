@@ -31,35 +31,28 @@ namespace Server.Items
                 return WeaponAbility.InfectiousStrike;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 10;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 10;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 12;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 53;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
@@ -116,20 +109,10 @@ namespace Server.Items
                 return WeaponAnimation.Pierce1H;
             }
         }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
+        
+		public override Race RequiredRace { get { return Race.Gargoyle; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
+		
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

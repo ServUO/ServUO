@@ -11,7 +11,7 @@ namespace Server.Items
         public Axe()
             : base(0xF49)
         {
-            this.Weight = 4.0;
+            Weight = 4.0;
         }
 
         public Axe(Serial serial)
@@ -33,35 +33,28 @@ namespace Server.Items
                 return WeaponAbility.Dismount;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 35;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 14;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 17;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 37;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
@@ -86,14 +79,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

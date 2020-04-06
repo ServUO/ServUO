@@ -26,11 +26,6 @@ namespace Server.Engines.XmlSpawner2
             // use of the text entry book interface for editing spawner entries.
             // Regular BaseBooks will still call their default handlers for ContentChange and HeaderChange
             Timer.DelayCall(TimeSpan.Zero, new TimerCallback(ContentChangeOverride));
-
-            // this replaces the default packet handler for Use requests.  Items and Mobiles will still 
-            // behave exactly the same way, it simply adds a hook in to call the OnUse method for attachments
-            // they might have.
-            Timer.DelayCall( TimeSpan.Zero, new TimerCallback( UseReqOverride ) );
         }
 
         public static void ContentChangeOverride()
@@ -38,14 +33,6 @@ namespace Server.Engines.XmlSpawner2
             PacketHandlers.Register(0x66, 0, true, new OnPacketReceive(XmlTextEntryBook.ContentChange));
 #if(CLIENT6017)
             PacketHandlers.Register6017(0x66, 0, true, new OnPacketReceive(XmlTextEntryBook.ContentChange));
-#endif
-        }
-
-        public static void UseReqOverride()
-        {
-            PacketHandlers.Register(0x06, 5, true, new OnPacketReceive(XmlAttach.UseReq));
-#if(CLIENT6017)
-            PacketHandlers.Register6017(0x06, 5, true, new OnPacketReceive(XmlAttach.UseReq));
 #endif
         }
     }

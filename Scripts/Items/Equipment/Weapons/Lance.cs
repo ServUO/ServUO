@@ -11,7 +11,7 @@ namespace Server.Items
         public Lance()
             : base(0x26C0)
         {
-            this.Weight = 12.0;
+            Weight = 12.0;
         }
 
         public Lance(Serial serial)
@@ -33,35 +33,28 @@ namespace Server.Items
                 return WeaponAbility.ConcussionBlow;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 95;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 18;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 22;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 24;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
@@ -121,14 +114,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

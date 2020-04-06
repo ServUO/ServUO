@@ -11,8 +11,8 @@ namespace Server.Items
         public OrnateAxe()
             : base(0x2D28)
         {
-            this.Weight = 12.0;
-            this.Layer = Layer.TwoHanded;
+            Weight = 12.0;
+            Layer = Layer.TwoHanded;
         }
 
         public OrnateAxe(Serial serial)
@@ -34,35 +34,28 @@ namespace Server.Items
                 return WeaponAbility.CrushingBlow;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 45;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 17;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 20;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 26;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
@@ -94,14 +87,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
         }
     }

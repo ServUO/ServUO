@@ -11,7 +11,7 @@ namespace Server.Items
         public LargeBattleAxe()
             : base(0x13FB)
         {
-            this.Weight = 6.0;
+            Weight = 6.0;
         }
 
         public LargeBattleAxe(Serial serial)
@@ -33,35 +33,28 @@ namespace Server.Items
                 return WeaponAbility.BleedAttack;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 80;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 17;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 20;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 29;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
@@ -86,14 +79,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

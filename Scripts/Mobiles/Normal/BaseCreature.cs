@@ -1281,13 +1281,6 @@ namespace Server.Mobiles
 
         public virtual bool IsEnemy(Mobile m)
         {
-            XmlIsEnemy a = (XmlIsEnemy)XmlAttach.FindAttachment(this, typeof(XmlIsEnemy));
-
-            if (a != null)
-            {
-                return a.IsEnemy(m);
-            }
-
             if (m is BaseGuard)
             {
                 return false;
@@ -1606,13 +1599,6 @@ namespace Server.Mobiles
 
             Poison p = PoisonImmune;
 
-            XmlPoison xp = (XmlPoison)XmlAttach.FindAttachment(this, typeof(XmlPoison));
-
-            if (xp != null)
-            {
-                p = xp.PoisonImmune;
-            }
-
             return (p != null && p.RealLevel >= poison.RealLevel);
         }
 
@@ -1670,9 +1656,7 @@ namespace Server.Mobiles
         {
             get
             {
-                XmlData x = (XmlData)XmlAttach.FindAttachment(this, typeof(XmlData), "NoSpecials");
-
-                return x != null && x.Data == "True";
+                return false;
             }
         }
 
@@ -1680,9 +1664,7 @@ namespace Server.Mobiles
         {
             get
             {
-                XmlData x = (XmlData)XmlAttach.FindAttachment(this, typeof(XmlData), "Notoriety");
-
-                return x != null && x.Data == "blue";
+                return false;
             }
         }
 
@@ -1690,9 +1672,7 @@ namespace Server.Mobiles
         {
             get
             {
-                XmlData x = (XmlData)XmlAttach.FindAttachment(this, typeof(XmlData), "Notoriety");
-
-                return x != null && x.Data == "red";
+                return false;
             }
         }
 
@@ -1700,9 +1680,7 @@ namespace Server.Mobiles
         {
             get
             {
-                XmlData x = (XmlData)XmlAttach.FindAttachment(this, typeof(XmlData), "Notoriety");
-
-                return x != null && x.Data == "gray";
+                return false;
             }
         }
 
@@ -3740,13 +3718,6 @@ namespace Server.Mobiles
         public virtual void OnGaveMeleeAttack(Mobile defender)
         {
             Poison p = GetHitPoison();
-
-            XmlPoison xp = (XmlPoison)XmlAttach.FindAttachment(this, typeof(XmlPoison));
-
-            if (xp != null)
-            {
-                p = xp.HitPoison;
-            }
 
             if (m_Paragon)
             {

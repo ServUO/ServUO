@@ -9,7 +9,7 @@ namespace Server.Items
         public MagicalShortbow()
             : base(0x2D2B)
         {
-            this.Weight = 6.0;
+            Weight = 6.0;
         }
 
         public MagicalShortbow(Serial serial)
@@ -52,35 +52,28 @@ namespace Server.Items
                 return WeaponAbility.PsychicAttack;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 45;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 12;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 16;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 38;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
@@ -112,14 +105,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
         }
     }

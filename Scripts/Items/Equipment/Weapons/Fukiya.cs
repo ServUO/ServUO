@@ -15,8 +15,8 @@ namespace Server.Items
         public Fukiya()
             : base(0x27AA)
         {
-            this.Weight = 4.0;
-            this.Layer = Layer.OneHanded;
+            Weight = 4.0;
+            Layer = Layer.OneHanded;
         }
 
         public Fukiya(Serial serial)

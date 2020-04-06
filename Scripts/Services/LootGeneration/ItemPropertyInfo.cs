@@ -716,7 +716,7 @@ namespace Server.Items
 
         public static int GetSpecialMaxIntensity(BaseWeapon wep)
         {
-            int max = (int)(wep.MlSpeed * 2500 / (100 + wep.Attributes.WeaponSpeed));
+            int max = (int)(wep.Speed * 2500 / (100 + wep.Attributes.WeaponSpeed));
 
             if (wep is BaseRanged)
             {

@@ -190,7 +190,7 @@ namespace Server.Engines.Blackthorn
 				{
                     BaseCreature bc = Activator.CreateInstance(_SpawnTable[(int)this.InvasionType][Utility.Random(_SpawnTable[(int)this.InvasionType].Length)]) as BaseCreature;
 
-                    Server.Engines.XmlSpawner2.XmlAttach.AttachTo(bc, new Server.Engines.XmlSpawner2.XmlData("Notoriety", "red"));
+                    bc.Kills = 100;
 
                     if (SpawnMobile(bc, spawnrec))
                     {

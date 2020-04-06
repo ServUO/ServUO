@@ -11,7 +11,7 @@ namespace Server.Items
         public CrescentBlade()
             : base(0x26C1)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public CrescentBlade(Serial serial)
@@ -33,35 +33,28 @@ namespace Server.Items
                 return WeaponAbility.MortalStrike;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 55;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 12;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 15;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 47;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
@@ -100,14 +93,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

@@ -9,8 +9,8 @@ namespace Server.Items
         public GargishBattleAxe()
             : base(0x48B0)
         {
-            this.Weight = 4.0;
-            this.Layer = Layer.TwoHanded;
+            Weight = 4.0;
+            Layer = Layer.TwoHanded;
         }
 
         public GargishBattleAxe(Serial serial)
@@ -32,35 +32,28 @@ namespace Server.Items
                 return WeaponAbility.ConcussionBlow;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 35;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 16;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 19;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 31;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {

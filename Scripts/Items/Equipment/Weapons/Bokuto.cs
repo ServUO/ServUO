@@ -9,7 +9,7 @@ namespace Server.Items
         public Bokuto()
             : base(0x27A8)
         {
-            this.Weight = 7.0;
+            Weight = 7.0;
         }
 
         public Bokuto(Serial serial)
@@ -31,35 +31,28 @@ namespace Server.Items
                 return WeaponAbility.NerveStrike;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 20;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 10;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 12;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 53;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
@@ -98,14 +91,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

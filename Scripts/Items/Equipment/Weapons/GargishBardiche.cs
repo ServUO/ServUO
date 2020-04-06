@@ -31,35 +31,28 @@ namespace Server.Items
                 return WeaponAbility.Dismount;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 45;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 17;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 20;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 28;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {

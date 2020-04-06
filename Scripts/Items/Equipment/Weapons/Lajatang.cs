@@ -11,8 +11,8 @@ namespace Server.Items
         public Lajatang()
             : base(0x27A7)
         {
-            this.Weight = 12.0;
-            this.Layer = Layer.TwoHanded;
+            Weight = 12.0;
+            Layer = Layer.TwoHanded;
         }
 
         public Lajatang(Serial serial)
@@ -34,35 +34,28 @@ namespace Server.Items
                 return WeaponAbility.FrenziedWhirlwind;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 65;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 16;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 19;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 32;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
@@ -122,14 +115,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

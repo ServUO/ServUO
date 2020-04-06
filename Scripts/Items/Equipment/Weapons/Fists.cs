@@ -25,35 +25,28 @@ namespace Server.Items
             }
         }
 
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 0;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 1;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 6;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 50;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {

@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    // Based off a GnarledStaff
     [FlipableAttribute(0x906, 0x406F)]
     public class SerpentStoneStaff : BaseStaff
     {
@@ -32,35 +31,28 @@ namespace Server.Items
                 return WeaponAbility.Dismount;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 35;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 16;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 19;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 33;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {

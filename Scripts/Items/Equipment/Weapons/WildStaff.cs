@@ -9,7 +9,7 @@ namespace Server.Items
         public WildStaff()
             : base(0x2D25)
         {
-            this.Weight = 8.0;
+            Weight = 8.0;
         }
 
         public WildStaff(Serial serial)
@@ -31,35 +31,28 @@ namespace Server.Items
                 return WeaponAbility.ForceOfNature;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 15;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 10;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 13;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 48;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
@@ -84,14 +77,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
         }
     }

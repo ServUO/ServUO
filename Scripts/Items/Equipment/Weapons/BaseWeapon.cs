@@ -124,9 +124,7 @@ namespace Server.Items
 		private SlayerName m_Slayer;
 		private SlayerName m_Slayer2;
 
-		#region Mondain's Legacy
 		private TalismanSlayerName m_Slayer3;
-		#endregion
 
 		private SkillMod m_MageMod, m_MysticMod;
 		private CraftResource m_Resource;
@@ -152,56 +150,51 @@ namespace Server.Items
 		private WeaponType m_Type;
 		private WeaponAnimation m_Animation;
 
-        #region Stygian Abyss
         private int m_TimesImbued;
         private bool m_IsImbued;
         private bool m_DImodded;
-        #endregion
 
-        #region Runic Reforging
         private ItemPower m_ItemPower;
         private ReforgedPrefix m_ReforgedPrefix;
         private ReforgedSuffix m_ReforgedSuffix;
         #endregion
-        #endregion
 
         #region Virtual Properties
-        public virtual WeaponAbility PrimaryAbility { get { return null; } }
-		public virtual WeaponAbility SecondaryAbility { get { return null; } }
+        public virtual WeaponAbility PrimaryAbility => null;
+		public virtual WeaponAbility SecondaryAbility => null;
 
-		public virtual int DefMaxRange { get { return 1; } }
-		public virtual int DefHitSound { get { return 0; } }
-		public virtual int DefMissSound { get { return 0; } }
-		public virtual SkillName DefSkill { get { return SkillName.Swords; } }
-		public virtual WeaponType DefType { get { return WeaponType.Slashing; } }
-		public virtual WeaponAnimation DefAnimation { get { return WeaponAnimation.Slash1H; } }
+		public virtual int DefMaxRange => 1;
+		public virtual int DefHitSound => 0;
+		public virtual int DefMissSound => 0;
+		public virtual SkillName DefSkill => SkillName.Swords;
+		public virtual WeaponType DefType => WeaponType.Slashing;
+		public virtual WeaponAnimation DefAnimation => WeaponAnimation.Slash1H;
 
-		public virtual int AosStrengthReq { get { return 0; } }
-		public virtual int AosDexterityReq { get { return 0; } }
-		public virtual int AosIntelligenceReq { get { return 0; } }
-		public virtual int AosMinDamage { get { return 0; } }
-		public virtual int AosMaxDamage { get { return 0; } }
-		public virtual int AosSpeed { get { return 0; } }
-		public virtual float MlSpeed { get { return 0.0f; } }
-		public virtual int AosMaxRange { get { return DefMaxRange; } }
-		public virtual int AosHitSound { get { return DefHitSound; } }
-		public virtual int AosMissSound { get { return DefMissSound; } }
-		public virtual SkillName AosSkill { get { return DefSkill; } }
-		public virtual WeaponType AosType { get { return DefType; } }
-		public virtual WeaponAnimation AosAnimation { get { return DefAnimation; } }
+		public virtual int StrengthReq => 0;
+		public virtual int DexterityReq => 0;
+		public virtual int IntelligenceReq => 0;
+		public virtual int MinDamage => 0;
+		public virtual int MaxDamage => 0;
+		public virtual float Speed => 0.0f;
+		public virtual int AosMaxRange => DefMaxRange;
+		public virtual int AosHitSound => DefHitSound;
+		public virtual int AosMissSound => DefMissSound; 
+		public virtual SkillName AosSkill => DefSkill; 
+		public virtual WeaponType AosType => DefType; 
+		public virtual WeaponAnimation AosAnimation => DefAnimation;
 
-		public virtual int InitMinHits { get { return 0; } }
-		public virtual int InitMaxHits { get { return 0; } }
+		public virtual int InitMinHits => 0;
+		public virtual int InitMaxHits => 0; 
 
-        public virtual bool CanFortify { get { return !IsImbued && NegativeAttributes.Antique < 4; } }
-        public virtual bool CanRepair { get { return m_NegativeAttributes.NoRepair == 0; } }
-		public virtual bool CanAlter { get { return true; } }
+        public virtual bool CanFortify => !IsImbued && NegativeAttributes.Antique < 4;
+        public virtual bool CanRepair => m_NegativeAttributes.NoRepair == 0; 
+		public virtual bool CanAlter => true; 
 
-		public override int PhysicalResistance { get { return m_AosWeaponAttributes.ResistPhysicalBonus; } }
-		public override int FireResistance { get { return m_AosWeaponAttributes.ResistFireBonus; } }
-		public override int ColdResistance { get { return m_AosWeaponAttributes.ResistColdBonus; } }
-		public override int PoisonResistance { get { return m_AosWeaponAttributes.ResistPoisonBonus; } }
-		public override int EnergyResistance { get { return m_AosWeaponAttributes.ResistEnergyBonus; } }
+		public override int PhysicalResistance => m_AosWeaponAttributes.ResistPhysicalBonus; 
+		public override int FireResistance => m_AosWeaponAttributes.ResistFireBonus;
+		public override int ColdResistance => m_AosWeaponAttributes.ResistColdBonus; 
+		public override int PoisonResistance => m_AosWeaponAttributes.ResistPoisonBonus;
+		public override int EnergyResistance => m_AosWeaponAttributes.ResistEnergyBonus;
 
         public override double DefaultWeight
         {
@@ -461,9 +454,9 @@ namespace Server.Items
 		public int MissSound { get { return (m_MissSound == -1 ? AosMissSound : m_MissSound); } set { m_MissSound = value; } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public int MinDamage
+		public int MinimumDamage
 		{
-			get { return (m_MinDamage == -1 ? AosMinDamage : m_MinDamage); }
+			get { return (m_MinDamage == -1 ? MinDamage : m_MinDamage); }
 			set
 			{
 				m_MinDamage = value;
@@ -472,9 +465,9 @@ namespace Server.Items
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public int MaxDamage
+		public int MaximumDamage
 		{
-			get { return (m_MaxDamage == -1 ? AosMaxDamage : m_MaxDamage); }
+			get { return (m_MaxDamage == -1 ? MaxDamage : m_MaxDamage); }
 			set
 			{
 				m_MaxDamage = value;
@@ -483,7 +476,7 @@ namespace Server.Items
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public float Speed
+		public float WeaponSpeed
 		{
             get
             {
@@ -492,7 +485,7 @@ namespace Server.Items
                     return m_Speed;
                 }
 
-                return MlSpeed;
+                return Speed;
             }
 			set
 			{
@@ -511,7 +504,7 @@ namespace Server.Items
                     return 125;
                 }
 
-                return m_StrReq == -1 ? AosStrengthReq : m_StrReq;
+                return m_StrReq == -1 ? StrengthReq : m_StrReq;
             }
 			set
 			{
@@ -521,17 +514,16 @@ namespace Server.Items
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public int DexRequirement { get { return (m_DexReq == -1 ? AosDexterityReq : m_DexReq); } set { m_DexReq = value; } }
+		public int DexRequirement { get { return (m_DexReq == -1 ? DexterityReq : m_DexReq); } set { m_DexReq = value; } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public int IntRequirement { get { return (m_IntReq == -1 ? AosIntelligenceReq : m_IntReq); } set { m_IntReq = value; } }
+		public int IntRequirement { get { return (m_IntReq == -1 ? IntelligenceReq : m_IntReq); } set { m_IntReq = value; } }
 
         public Mobile FocusWeilder { get; set; }
         public Mobile EnchantedWeilder { get; set; }
 
         public int LastParryChance { get; set; }
 
-        #region Stygian Abyss
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimesImbued
         {
@@ -576,7 +568,6 @@ namespace Server.Items
         public virtual void OnAfterImbued(Mobile m, int mod, int value)
         {
         }
-        #endregion
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool SearingWeapon
@@ -594,8 +585,6 @@ namespace Server.Items
                 }
             }
         }
-
-        #region Runic Reforging
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemPower ItemPower
@@ -617,7 +606,6 @@ namespace Server.Items
             get { return m_ReforgedSuffix; }
             set { m_ReforgedSuffix = value; InvalidateProperties(); }
         }
-        #endregion
         #endregion
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -652,15 +640,9 @@ namespace Server.Items
 			weap.m_AosWeaponAttributes = new AosWeaponAttributes(newItem, m_AosWeaponAttributes);
             weap.m_NegativeAttributes = new NegativeAttributes(newItem, m_NegativeAttributes);
             weap.m_ExtendedWeaponAttributes = new ExtendedWeaponAttributes(newItem, m_ExtendedWeaponAttributes);
-
-			#region Mondain's Legacy
 			weap.m_SetAttributes = new AosAttributes(newItem, m_SetAttributes);
 			weap.m_SetSkillBonuses = new AosSkillBonuses(newItem, m_SetSkillBonuses);
-			#endregion
-
-			#region SA
 			weap.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(newItem, m_SAAbsorptionAttributes);
-			#endregion
 		}
 
 		public virtual void UnscaleDurability()
@@ -725,12 +707,10 @@ namespace Server.Items
 		{
 			int v = m_AosWeaponAttributes.LowerStatReq;
 
-			#region Mondain's Legacy
 			if (m_Resource == CraftResource.Heartwood)
 			{
 				return v;
 			}
-			#endregion
 
 			CraftResourceInfo info = CraftResources.GetInfo(m_Resource);
 
@@ -876,19 +856,12 @@ namespace Server.Items
                 from.SendLocalizedMessage(3000201); // You must wait to perform another action.
                 return false;
 			}
-				#region Personal Bless Deed
 			else if (BlessedBy != null && BlessedBy != from)
 			{
 				from.SendLocalizedMessage(1075277); // That item is blessed by another player.
 
 				return false;
 			}
-			else if (!XmlAttach.CheckCanEquip(this, from))
-			{
-				return false;
-			}
-				#endregion
-
 			else
 			{
 				return base.CanEquip(from);
@@ -941,8 +914,6 @@ namespace Server.Items
                 AddMysticMod(from);
             }
 
-			XmlAttach.CheckOnEquip(this, from);
-
             InDoubleStrike = false;
 
 			return true;
@@ -958,7 +929,6 @@ namespace Server.Items
 
 			    m_AosSkillBonuses.AddTo(from);
 
-				#region Mondain's Legacy Sets
 				if (IsSetItem)
 				{
 					m_SetEquipped = SetHelper.FullSetEquipped(from, SetID, Pieces);
@@ -969,7 +939,6 @@ namespace Server.Items
 						SetHelper.AddSetBonus(from, SetID);
 					}
 				}
-				#endregion
 
                 if (HasSocket<Caddellite>())
                 {
@@ -1020,12 +989,10 @@ namespace Server.Items
 
                 SkillMasterySpell.OnWeaponRemoved(m, this);
 
-				#region Mondain's Legacy Sets
 				if (IsSetItem && m_SetEquipped)
 				{
 					SetHelper.RemoveSetBonus(m, SetID, this);
 				}
-				#endregion
 
                 if (HasSocket<Caddellite>())
                 {
@@ -1045,8 +1012,6 @@ namespace Server.Items
                 m.CheckStatTimers();
 
                 m.Delta(MobileDelta.WeaponDamage);
-
-                XmlAttach.CheckOnRemoved(this, parent);
 			}
 
             LastParryChance = 0;
@@ -1594,8 +1559,6 @@ namespace Server.Items
                             attacker.FixedEffect(0x376A, 6, 1);
                         }
                         #endregion
-
-                        XmlAttach.OnArmorHit(attacker, defender, shield, this, originalDamage);
                     }
 
                     #region Stygian Abyss
@@ -1624,8 +1587,6 @@ namespace Server.Items
 
                     if (toHit is Item && !((Item)toHit).Deleted && (attacker is VeriteElemental || attacker is ValoriteElemental))
                         VeriteElemental.OnHit(defender, (Item)toHit, damage);
-
-                    damage -= XmlAttach.OnArmorHit(attacker, defender, (Item)toHit, this, originalDamage);
 				}
 			}
 
@@ -2123,7 +2084,7 @@ namespace Server.Items
             {
                 if (!ranged || 0.5 > Utility.RandomDouble())
                 {
-                    percentageBonus += (int)(146.0 / MlSpeed);
+                    percentageBonus += (int)(146.0 / Speed);
                 }
             }
 
@@ -2528,7 +2489,6 @@ namespace Server.Items
 
             BaseFamiliar.OnHit(attacker, damageable);
             WhiteTigerFormSpell.OnHit(attacker, defender);
-			XmlAttach.OnWeaponHit(this, attacker, defender, damageGiven);
 		}
 
         public Direction GetOppositeDir(Direction d)
@@ -5178,8 +5138,6 @@ namespace Server.Items
                         break;
                 }
             }
-
-            XmlAttach.AddAttachmentProperties(this, list);
 
             if (m_Hits >= 0 && m_MaxHits > 0)
             {

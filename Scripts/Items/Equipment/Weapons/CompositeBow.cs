@@ -9,7 +9,7 @@ namespace Server.Items
         public CompositeBow()
             : base(0x26C2)
         {
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         public CompositeBow(Serial serial)
@@ -52,35 +52,28 @@ namespace Server.Items
                 return WeaponAbility.MovingShot;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 45;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 16;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 20;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 25;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
@@ -119,14 +112,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

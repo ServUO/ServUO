@@ -5,6 +5,8 @@ namespace Server.Items
 {
     public class SturdyPickaxe : BaseAxe, IUsesRemaining
     {
+		public override int LabelNumber { get { return 1045126; } }// sturdy pickaxe
+		
         [Constructable]
         public SturdyPickaxe()
             : this(180)
@@ -25,14 +27,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1045126;
-            }
-        }// sturdy pickaxe
+        
         public override HarvestSystem HarvestSystem
         {
             get
@@ -54,35 +49,28 @@ namespace Server.Items
                 return WeaponAbility.Disarm;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 50;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 13;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 15;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 35;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {

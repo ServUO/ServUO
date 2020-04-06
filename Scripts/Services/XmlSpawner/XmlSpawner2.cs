@@ -2005,71 +2005,67 @@ namespace Server.Mobiles
 			from.SendGump(g);
 		}
 
-		public override void GetProperties(ObjectPropertyList list)
-		{
-			base.GetProperties(list);
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
 
-			if (m_Running)
-			{
-				list.Add(1060742); // active
-			}
-			else
-			{
-				list.Add(1060743); // inactive
-			}
+            if (m_Running)
+            {
+                list.Add(1060742); // active
+            }
+            else
+            {
+                list.Add(1060743); // inactive
+            }
 
-			// add whitespace to the beginning to avoid any problem with names that begin with # and are interpreted as cliloc ids
-			list.Add(1042971, " " + Name); // ~1_val~
-			list.Add(1060656, m_Count.ToString()); // amount to make: ~1_val~
-			list.Add(1061169, m_HomeRange.ToString()); // range ~1_val~
+            // add whitespace to the beginning to avoid any problem with names that begin with # and are interpreted as cliloc ids
+            list.Add(1042971, " " + Name); // ~1_val~
+            list.Add(1060656, m_Count.ToString()); // amount to make: ~1_val~
+            list.Add(1061169, m_HomeRange.ToString()); // range ~1_val~
 
-			int nlist_items = 6;
+            int nlist_items = 6;
 
-			if (m_Group)
-			{
-				list.Add(1060658 + 6 - nlist_items, "group\t{0}", m_Group); // ~1_val~: ~2_val~
-				nlist_items--;
-			}
+            if (m_Group)
+            {
+                list.Add(1060658 + 6 - nlist_items, "group\t{0}", m_Group); // ~1_val~: ~2_val~
+                nlist_items--;
+            }
 
-			if (m_Team != 0)
-			{
-				list.Add(1060658 + 6 - nlist_items, "team\t{0}", m_Team); // ~1_val~: ~2_val~
-				nlist_items--;
-			}
+            if (m_Team != 0)
+            {
+                list.Add(1060658 + 6 - nlist_items, "team\t{0}", m_Team); // ~1_val~: ~2_val~
+                nlist_items--;
+            }
 
-			list.Add(1060658 + 6 - nlist_items, "speed\t{0} to {1}", m_MinDelay, m_MaxDelay); // ~1_val~: ~2_val~
-			nlist_items--;
+            list.Add(1060658 + 6 - nlist_items, "speed\t{0} to {1}", m_MinDelay, m_MaxDelay); // ~1_val~: ~2_val~
+            nlist_items--;
 
-			// display the duration parameter in the prop gump if it is non-zero
-			if (m_Duration > TimeSpan.FromMinutes(0))
-			{
-				list.Add(1060658 + 6 - nlist_items, "Duration\t{0}", m_Duration);
-				nlist_items--;
-			}
+            // display the duration parameter in the prop gump if it is non-zero
+            if (m_Duration > TimeSpan.FromMinutes(0))
+            {
+                list.Add(1060658 + 6 - nlist_items, "Duration\t{0}", m_Duration);
+                nlist_items--;
+            }
 
-			// display the proximity range parameter in the prop gump if it is active
-			if (m_ProximityRange != -1)
-			{
-				list.Add(1060658 + 6 - nlist_items, "ProximityRange\t{0}", m_ProximityRange);
-				nlist_items--;
-			}
+            // display the proximity range parameter in the prop gump if it is active
+            if (m_ProximityRange != -1)
+            {
+                list.Add(1060658 + 6 - nlist_items, "ProximityRange\t{0}", m_ProximityRange);
+                nlist_items--;
+            }
 
-			if (m_SpawnObjects != null)
-				for (int i = 0; i < nlist_items && i < m_SpawnObjects.Count; ++i)
-				{
-					string typename = m_SpawnObjects[i].TypeName;
-					if (typename != null && typename.Length > 20)
-					{
-						typename = typename.Substring(0, 20);
-					}
+            if (m_SpawnObjects != null)
+                for (int i = 0; i < nlist_items && i < m_SpawnObjects.Count; ++i)
+                {
+                    string typename = m_SpawnObjects[i].TypeName;
+                    if (typename != null && typename.Length > 20)
+                    {
+                        typename = typename.Substring(0, 20);
+                    }
 
-					list.Add(1060658 + (6 - nlist_items) + i, " {0}\t{1}", typename, m_SpawnObjects[i].SpawnedObjects.Count);
-				}
-
-			// ARTEGORDONMOD
-			// mod to display attachment properties
-			XmlAttach.AddAttachmentProperties(this, list);
-		}
+                    list.Add(1060658 + (6 - nlist_items) + i, " {0}\t{1}", typename, m_SpawnObjects[i].SpawnedObjects.Count);
+                }
+        }
 
 		public override void OnDelete()
 		{
@@ -11076,18 +11072,10 @@ public static void _TraceEnd(int index)
 			// look for constructor arguments to be passed to it with the syntax type,arg1,arg2,.../
 			string[] typewordargs = BaseXmlSpawner.ParseObjectArgs(itemtypestring);
 
-			return CreateObject(type, typewordargs, requireconstructable, false);
+			return CreateObject(type, typewordargs, requireconstructable);
 		}
 
-		public static object CreateObject(Type type, string itemtypestring, bool requireconstructable, bool requireattachable)
-		{
-			// look for constructor arguments to be passed to it with the syntax type,arg1,arg2,.../
-			string[] typewordargs = BaseXmlSpawner.ParseObjectArgs(itemtypestring);
-
-			return CreateObject(type, typewordargs, requireconstructable, requireattachable);
-		}
-
-		public static object CreateObject(Type type, string[] typewordargs, bool requireconstructable, bool requireattachable)
+		public static object CreateObject(Type type, string[] typewordargs, bool requireconstructable)
 		{
 			if (type == null) return null;
 
@@ -11109,12 +11097,12 @@ public static void _TraceEnd(int index)
 
 				if (ctor == null) continue;
 
-				// if both requireconstructable and requireattachable are true, then allow either condition
+				// if requireconstructable is true, then allow either condition
 #if(RESTRICTCONSTRUCTABLE)
-			   if (!(requireconstructable && Add.IsConstructable(ctor,requester)) && !(requireattachable && XmlAttach.IsAttachable(ctor, requester)))
+			   if (!(requireconstructable && Add.IsConstructable(ctor,requester)))
 					continue;
 #else
-				if (!(requireconstructable && IsConstructable(ctor)) && !(requireattachable && XmlAttach.IsAttachable(ctor)))
+				if (!(requireconstructable && IsConstructable(ctor)))
 					continue;
 #endif
 

@@ -11,7 +11,7 @@ namespace Server.Items
         public TwoHandedAxe()
             : base(0x1443)
         {
-            this.Weight = 8.0;
+            Weight = 8.0;
         }
 
         public TwoHandedAxe(Serial serial)
@@ -33,35 +33,28 @@ namespace Server.Items
                 return WeaponAbility.ShadowStrike;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 40;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 16;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 19;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 31;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
@@ -86,14 +79,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

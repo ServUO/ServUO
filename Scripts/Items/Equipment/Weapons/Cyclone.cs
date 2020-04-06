@@ -8,8 +8,8 @@ namespace Server.Items
         public Cyclone()
             : base(0x901)
         {
-            this.Weight = 6.0;
-            this.Layer = Layer.OneHanded;
+            Weight = 6.0;
+            Layer = Layer.OneHanded;
         }
 
         public Cyclone(Serial serial)
@@ -33,35 +33,28 @@ namespace Server.Items
                 return WeaponAbility.InfusedThrow;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 40;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 13;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 17;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 25;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {

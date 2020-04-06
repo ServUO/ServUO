@@ -11,7 +11,7 @@ namespace Server.Items
         public Broadsword()
             : base(0xF5E)
         {
-            this.Weight = 6.0;
+            Weight = 6.0;
         }
 
         public Broadsword(Serial serial)
@@ -33,35 +33,28 @@ namespace Server.Items
                 return WeaponAbility.ArmorIgnore;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 30;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 13;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 17;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 33;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
@@ -100,14 +93,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

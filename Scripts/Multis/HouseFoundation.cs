@@ -855,7 +855,7 @@ namespace Server.Multis
 
         public static void Designer_Action(NetState state, IEntity e, EncodedReader pvSrc)
         {
-            pvSrc.Trace(state);
+            //pvSrc.Trace(state);
             // TODO: What does this do?
         }
 

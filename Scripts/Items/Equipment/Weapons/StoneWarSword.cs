@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    // Based off a VikingSword
     [FlipableAttribute(0x900, 0x4071)]
     public class StoneWarSword : BaseSword
     {
@@ -32,35 +31,28 @@ namespace Server.Items
                 return WeaponAbility.ParalyzingBlow;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 40;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 15;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 19;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 28;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {

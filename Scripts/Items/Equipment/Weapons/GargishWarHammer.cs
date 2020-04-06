@@ -9,8 +9,8 @@ namespace Server.Items
         public GargishWarHammer()
             : base(0x48C0)
         {
-            this.Weight = 10.0;
-            this.Layer = Layer.TwoHanded;
+            Weight = 10.0;
+            Layer = Layer.TwoHanded;
         }
 
         public GargishWarHammer(Serial serial)
@@ -32,35 +32,28 @@ namespace Server.Items
                 return WeaponAbility.CrushingBlow;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 95;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 17;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 20;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 28;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
@@ -89,31 +82,19 @@ namespace Server.Items
                 return WeaponAnimation.Bash2H;
             }
         }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
+        
+		public override Race RequiredRace { get { return Race.Gargoyle; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
+		
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

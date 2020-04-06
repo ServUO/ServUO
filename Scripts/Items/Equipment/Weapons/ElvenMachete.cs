@@ -9,7 +9,7 @@ namespace Server.Items
         public ElvenMachete()
             : base(0x2D35)
         {
-            this.Weight = 6.0;
+            Weight = 6.0;
         }
 
         public ElvenMachete(Serial serial)
@@ -31,35 +31,28 @@ namespace Server.Items
                 return WeaponAbility.Bladeweave;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 20;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 11;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 15;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 41;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
@@ -98,14 +91,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
         }
     }

@@ -6,6 +6,8 @@ namespace Server.Items
     public class FNPitchfork : BaseSpear
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113498; } }// Farmer Nash's Pitchfork		
+		
         [Constructable]
         public FNPitchfork()
             : base(0xE87)
@@ -17,14 +19,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113498;
-            }
-        }// Farmer Nash's Pitchfork
+        
         public override WeaponAbility PrimaryAbility
         {
             get
@@ -39,35 +34,28 @@ namespace Server.Items
                 return WeaponAbility.Dismount;
             }
         }
-        public override int AosStrengthReq
+        public override int StrengthReq
         {
             get
             {
                 return 50;
             }
         }
-        public override int AosMinDamage
+        public override int MinDamage
         {
             get
             {
                 return 13;
             }
         }
-        public override int AosMaxDamage
+        public override int MaxDamage
         {
             get
             {
                 return 14;
             }
         }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 43;
-            }
-        }
-        public override float MlSpeed
+        public override float Speed
         {
             get
             {
@@ -92,18 +80,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (this.Weight == 10.0)
-                this.Weight = 11.0;
         }
     }
 }

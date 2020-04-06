@@ -10709,42 +10709,9 @@
     <Compile Include="Services\XmlSpawner\PacketHandlerOverrides.cs">
       <SubType>Code</SubType>
     </Compile>
-	    <Compile Include="Services\XmlSpawner\SpawnerExporter.cs">
+    <Compile Include="Services\XmlSpawner\SpawnerExporter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\XmlSpawner\XmlAttachments\XmlAosAttributes.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlAttachments\XmlData.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlAttachments\XmlDialog.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlAttachments\XmlIsEnemy.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlAttachments\XmlLocalVariable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlAttachments\XmlPoison.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlAttachments\XmlSaveItem.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlAttachments\XmlValue.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlAttach\XmlAttach.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlAttach\XmlAttachment.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlAttach\XmlGetAttachGump.cs">
-      <SubType>Code</SubType>
-    </Compile> 
     <Compile Include="Services\XmlSpawner\XmlPropsGumps\XmlPropsGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10788,9 +10755,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlUtils\XmlCategorizedAddGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlUtils\XmlEdit.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlUtils\XmlFind.cs">
