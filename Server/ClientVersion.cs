@@ -23,17 +23,17 @@ namespace Server
 		private readonly ClientType m_Type;
 		private readonly string m_SourceString;
 
-		public int Major { get { return m_Major; } }
+		public int Major => m_Major; 
 
-		public int Minor { get { return m_Minor; } }
+		public int Minor => m_Minor; 
 
-		public int Revision { get { return m_Revision; } }
+		public int Revision => m_Revision; 
 
-		public int Patch { get { return m_Patch; } }
+		public int Patch => m_Patch; 
 
-		public ClientType Type { get { return m_Type; } }
+		public ClientType Type => m_Type;
 
-		public string SourceString { get { return m_SourceString; } }
+		public string SourceString => m_SourceString; 
 
 		public ClientVersion(int maj, int min, int rev, int pat)
 			: this(maj, min, rev, pat, ClientType.Regular)
