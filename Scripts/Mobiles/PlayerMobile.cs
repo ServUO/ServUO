@@ -3999,7 +3999,7 @@ namespace Server.Mobiles
 
 		public override void DoSpeech(string text, int[] keywords, MessageType type, int hue)
 		{
-			if (Guilds.Guild.NewGuildSystem && (type == MessageType.Guild || type == MessageType.Alliance))
+			if (type == MessageType.Guild || type == MessageType.Alliance)
 			{
 				Guild g = Guild as Guild;
 				if (g == null)
@@ -5000,8 +5000,6 @@ namespace Server.Mobiles
 
 			DisguiseTimers.RemoveTimer(this);
 		}
-
-		public override bool NewGuildDisplay => Guilds.Guild.NewGuildSystem; 
 
 		public delegate void PlayerPropertiesEventHandler(PlayerPropertiesEventArgs e);
 

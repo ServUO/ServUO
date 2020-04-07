@@ -621,10 +621,7 @@ namespace Server.Guilds
 
 		public static void Initialize()
 		{
-			if (Guild.NewGuildSystem)
-			{
-				new WarTimer().Start();
-			}
+		    new WarTimer().Start();
 		}
 
 		public WarTimer()
@@ -692,7 +689,7 @@ namespace Server.Guilds
 				{
 					from.SendGump(new PropertiesGump(from, g));
 
-					if (NewGuildSystem && from.AccessLevel >= AccessLevel.GameMaster && from is PlayerMobile)
+					if (from.AccessLevel >= AccessLevel.GameMaster && from is PlayerMobile)
 					{
 						from.SendGump(new GuildInfoGump((PlayerMobile)from, g));
 					}
@@ -725,7 +722,7 @@ namespace Server.Guilds
 				{
 					from.SendGump(new PropertiesGump(from, g));
 
-					if (NewGuildSystem && from.AccessLevel >= AccessLevel.GameMaster && from is PlayerMobile)
+					if (from.AccessLevel >= AccessLevel.GameMaster && from is PlayerMobile)
 					{
 						from.SendGump(new GuildInfoGump((PlayerMobile)from, g));
 					}
@@ -742,7 +739,8 @@ namespace Server.Guilds
 		public static void EventSink_GuildGumpRequest(GuildGumpRequestArgs args)
 		{
 			PlayerMobile pm = args.Mobile as PlayerMobile;
-			if (!NewGuildSystem || pm == null)
+
+			if (pm == null)
 			{
 				return;
 			}
@@ -762,8 +760,6 @@ namespace Server.Guilds
 			args.Guild = new Guild(args.Id);
 		}
 		#endregion
-
-		public static bool NewGuildSystem { get { return true; } }
 
 		public static readonly int RegistrationFee = 25000;
 		public static readonly int AbbrevLimit = 4;
@@ -1014,11 +1010,6 @@ namespace Server.Guilds
 
 		public static void HandleDeath(Mobile victim, Mobile killer)
 		{
-			if (!NewGuildSystem)
-			{
-				return;
-			}
-
 			if (killer == null)
 			{
 				killer = victim.FindMostRecentDamager(false);
@@ -1071,7 +1062,6 @@ namespace Server.Guilds
 
 		private DateTime m_LastFealty;
 
-		private GuildType m_Type;
 		private DateTime m_TypeLastChange;
 
 		private List<Guild> m_AllyDeclarations, m_AllyInvitations;
@@ -1266,11 +1256,6 @@ namespace Server.Guilds
 				}
 			}
 
-			if (!NewGuildSystem && m_Guildstone != null)
-			{
-				m_Guildstone.Delete();
-			}
-
 			m_Guildstone = null;
 
 			CheckExpiredWars();
@@ -1291,12 +1276,7 @@ namespace Server.Guilds
                 return false;
             }
 
-			if (NewGuildSystem)
-			{
-				return (Alliance != null && Alliance.IsMember(this) && Alliance.IsMember(g));
-			}
-
-			return m_Allies.Contains(g);
+			return (Alliance != null && Alliance.IsMember(this) && Alliance.IsMember(g));
 		}
 
 		public bool IsEnemy(Guild g)
@@ -1306,41 +1286,28 @@ namespace Server.Guilds
                 return false;
             }
 
-			if (NewGuildSystem)
-			{
-				return IsWar(g);
-			}
-
-			if (m_Type != GuildType.Regular && g.m_Type != GuildType.Regular && m_Type != g.m_Type)
-			{
-				return true;
-			}
-
-			return m_Enemies.Contains(g);
+		    return IsWar(g);
 		}
 
-		public bool IsWar(Guild g)
-		{
-			if (g == null)
-			{
-				return false;
-			}
+        public bool IsWar(Guild g)
+        {
+            if (g == null)
+            {
+                return false;
+            }
 
-			if (NewGuildSystem)
-			{
-				Guild guild = GetAllianceLeader(this);
-				Guild otherGuild = GetAllianceLeader(g);
+            Guild guild = GetAllianceLeader(this);
+            Guild otherGuild = GetAllianceLeader(g);
 
-				if (guild.FindActiveWar(otherGuild) != null)
-				{
-					return true;
-				}
+            if (guild.FindActiveWar(otherGuild) != null)
+            {
+                return true;
+            }
 
-				return false;
-			}
+            return false;
 
-			return m_Enemies.Contains(g);
-		}
+            return m_Enemies.Contains(g);
+        }
 		#endregion
 
 		#region Serialization
@@ -1358,7 +1325,7 @@ namespace Server.Guilds
 				Alliance.CheckLeader();
 			}
 
-			writer.Write(5); //version
+			writer.Write(6); //version
 
 			#region War Serialization
 			writer.Write(m_PendingWars.Count);
@@ -1397,8 +1364,6 @@ namespace Server.Guilds
 
 			writer.Write(m_TypeLastChange);
 
-			writer.Write((int)m_Type);
-
 			writer.Write(m_LastFealty);
 
 			writer.Write(m_Leader);
@@ -1427,6 +1392,7 @@ namespace Server.Guilds
 
 			switch (version)
 			{
+                case 6:
 				case 5:
 					{
 						int count = reader.ReadInt();
@@ -1472,7 +1438,10 @@ namespace Server.Guilds
 					}
 				case 2:
 					{
-						m_Type = (GuildType)reader.ReadInt();
+                        if (version < 6)
+                        {
+                            reader.ReadInt();
+                        }
 
 						goto case 1;
 					}
@@ -1533,17 +1502,12 @@ namespace Server.Guilds
 				m_PendingWars = new List<WarDeclaration>();
 			}
 
-			/*
-            if ( ( !NewGuildSystem && m_Guildstone == null )|| m_Members.Count == 0 )
-            Disband();
-            */
-
 			Timer.DelayCall(TimeSpan.Zero, VerifyGuild_Callback);
 		}
 
 		private void VerifyGuild_Callback()
 		{
-			if ((!NewGuildSystem && m_Guildstone == null) || m_Members.Count == 0)
+			if (m_Members.Count == 0)
 			{
 				Disband();
 			}
@@ -1583,14 +1547,7 @@ namespace Server.Guilds
 
                 EventSink.InvokeJoinGuild(new JoinGuildEventArgs(m, this));
 
-                if (!NewGuildSystem)
-				{
-					m.GuildFealty = m_Leader;
-				}
-				else
-				{
-					m.GuildFealty = null;
-				}
+				m.GuildFealty = null;
 
 				if (m is PlayerMobile)
 				{
@@ -1796,36 +1753,32 @@ namespace Server.Guilds
 
 			GuildChat(from, (pm == null) ? 0x3B2 : pm.GuildMessageHue, text);
 		}
-		#endregion
+        #endregion
 
-		#region Voting
-		public bool CanVote(Mobile m)
-		{
-			if (NewGuildSystem)
-			{
-				PlayerMobile pm = m as PlayerMobile;
-				if (pm == null || !pm.GuildRank.GetFlag(RankFlags.CanVote))
-				{
-					return false;
-				}
-			}
+        #region Voting
+        public bool CanVote(Mobile m)
+        {
+            PlayerMobile pm = m as PlayerMobile;
 
-			return (m != null && !m.Deleted && m.Guild == this);
-		}
+            if (pm == null || !pm.GuildRank.GetFlag(RankFlags.CanVote))
+            {
+                return false;
+            }
 
-		public bool CanBeVotedFor(Mobile m)
-		{
-			if (NewGuildSystem)
-			{
-				PlayerMobile pm = m as PlayerMobile;
-				if (pm == null || pm.LastOnline + InactiveTime < DateTime.UtcNow)
-				{
-					return false;
-				}
-			}
+            return (m != null && !m.Deleted && m.Guild == this);
+        }
 
-			return (m != null && !m.Deleted && m.Guild == this);
-		}
+        public bool CanBeVotedFor(Mobile m)
+        {
+            PlayerMobile pm = m as PlayerMobile;
+
+            if (pm == null || pm.LastOnline + InactiveTime < DateTime.UtcNow)
+            {
+                return false;
+            }
+
+            return (m != null && !m.Deleted && m.Guild == this);
+        }
 
 		public void CalculateGuildmaster()
 		{
@@ -1890,7 +1843,7 @@ namespace Server.Guilds
 				}
 			}
 
-			if (NewGuildSystem && (highVotes * 100) / Math.Max(votingMembers, 1) < MajorityPercentage && m_Leader != null &&
+			if ((highVotes * 100) / Math.Max(votingMembers, 1) < MajorityPercentage && m_Leader != null &&
 				winner != m_Leader && !m_Leader.Deleted && m_Leader.Guild == this)
 			{
 				winner = m_Leader;
@@ -1952,22 +1905,6 @@ namespace Server.Guilds
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public string Charter { get { return m_Charter; } set { m_Charter = value; } }
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public override GuildType Type
-		{
-			get { return m_Type; }
-			set
-			{
-				if (m_Type != value)
-				{
-					m_Type = value;
-					m_TypeLastChange = DateTime.UtcNow;
-
-					InvalidateMemberProperties();
-				}
-			}
-		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public DateTime LastFealty { get { return m_LastFealty; } set { m_LastFealty = value; } }
