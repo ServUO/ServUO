@@ -9,7 +9,7 @@ namespace Server.Diagnostics
 	{
 		private static readonly Dictionary<string, TimerProfile> _profiles = new Dictionary<string, TimerProfile>();
 
-		public static IEnumerable<TimerProfile> Profiles { get { return _profiles.Values; } }
+		public static IEnumerable<TimerProfile> Profiles => _profiles.Values; 
 
 		public static TimerProfile Acquire(string name)
 		{

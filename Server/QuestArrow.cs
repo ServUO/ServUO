@@ -10,11 +10,11 @@ namespace Server
 		private readonly IPoint3D m_Target;
 		private bool m_Running;
 
-		public Mobile Mobile { get { return m_Mobile; } }
+		public Mobile Mobile => m_Mobile; 
 
-		public IPoint3D Target { get { return m_Target; } }
+		public IPoint3D Target => m_Target; 
 
-		public bool Running { get { return m_Running; } }
+		public bool Running => m_Running; 
 
 		public void Update()
 		{

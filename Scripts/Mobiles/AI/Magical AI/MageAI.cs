@@ -23,12 +23,12 @@ namespace Server.Mobiles
 {
 	public class MageAI : BaseAI
 	{
-		public virtual SkillName CastSkill { get { return SkillName.Magery; } }
-		public virtual bool UsesMagery { get { return true; } }
-        public virtual double HealChance { get { return .25; } }
+		public virtual SkillName CastSkill => SkillName.Magery; 
+		public virtual bool UsesMagery => true; 
+        public virtual double HealChance => 0.25; 
 
 		protected const double DispelChance = 0.75; // 75% chance to dispel at gm skill
-		protected double TeleportChance { get { return m_Mobile.TeleportChance; } }
+		protected double TeleportChance => m_Mobile.TeleportChance; 
 
 		private LandTarget m_RevealTarget;
 

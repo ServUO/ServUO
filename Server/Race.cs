@@ -8,22 +8,19 @@ namespace Server
 	[Parsable]
 	public abstract class Race
 	{
-		public static Race DefaultRace { get { return m_Races[0]; } }
+		public static Race DefaultRace => m_Races[0]; 
 
 		private static readonly Race[] m_Races = new Race[0x100];
 
-		public static Race[] Races { get { return m_Races; } }
+		public static Race[] Races => m_Races; 
 
-		public static Race Human { get { return m_Races[0]; } }
-		public static Race Elf { get { return m_Races[1]; } }
-
-		#region Stygian Abyss
-		public static Race Gargoyle { get { return m_Races[2]; } }
-		#endregion
+		public static Race Human => m_Races[0]; 
+		public static Race Elf => m_Races[1]; 
+		public static Race Gargoyle => m_Races[2]; 
 
 		private static readonly List<Race> m_AllRaces = new List<Race>();
 
-		public static List<Race> AllRaces { get { return m_AllRaces; } }
+		public static List<Race> AllRaces => m_AllRaces; 
 
 		private readonly int m_RaceID;
 		private readonly int m_RaceIndex;
@@ -100,13 +97,13 @@ namespace Server
 
 		private readonly Expansion m_RequiredExpansion;
 
-		public Expansion RequiredExpansion { get { return m_RequiredExpansion; } }
+		public Expansion RequiredExpansion => m_RequiredExpansion; 
 
-		public int MaleBody { get { return m_MaleBody; } }
-		public int MaleGhostBody { get { return m_MaleGhostBody; } }
+		public int MaleBody => m_MaleBody; 
+		public int MaleGhostBody => m_MaleGhostBody; 
 
-		public int FemaleBody { get { return m_FemaleBody; } }
-		public int FemaleGhostBody { get { return m_FemaleGhostBody; } }
+		public int FemaleBody => m_FemaleBody; 
+		public int FemaleGhostBody => m_FemaleGhostBody; 
 
 		protected Race(
 			int raceID,
@@ -213,9 +210,9 @@ namespace Server
 			return (female ? m_FemaleGhostBody : m_MaleGhostBody);
 		}
 
-		public int RaceID { get { return m_RaceID; } }
+		public int RaceID => m_RaceID; 
 
-		public int RaceIndex { get { return m_RaceIndex; } }
+		public int RaceIndex => m_RaceIndex; 
 
 		public string Name { get { return m_Name; } set { m_Name = value; } }
 

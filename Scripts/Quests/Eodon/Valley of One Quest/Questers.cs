@@ -7,7 +7,7 @@ namespace Server.Mobiles
 {
     public class Hawkwind2 : MondainQuester
     {
-        public override Type[] Quests { get { return new Type[] { typeof(TimeIsOfTheEssenceQuest) }; } }
+        public override Type[] Quests => new Type[] { typeof(TimeIsOfTheEssenceQuest) };
 
         [Constructable]
         public Hawkwind2()
@@ -38,41 +38,28 @@ namespace Server.Mobiles
 
         public override void InitBody()
         {
-            InitStats(100, 100, 25);
-
-            Female = false;
-            Race = Race.Human;
-            Hue = 0x83EB;
-        }
-
-        public override void InitOutfit()
-        {
-            Robe robe = new Robe();
-
-            robe.ItemID = 0x7816;
-            AddItem(robe);
+            Body = 689;
+            InitStats(100, 100, 100);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 
     public class SirGeoffery : MondainQuester
     {
-        public override Type[] Quests { get { return new Type[] { typeof(UnitingTheTribesQuest) }; } }
+        public override Type[] Quests => new Type[] { typeof(UnitingTheTribesQuest) }; 
 
-        public override bool ChangeRace { get { return false; } }
+        public override bool ChangeRace => false; 
 
         [Constructable]
         public SirGeoffery()
@@ -135,25 +122,23 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 
     public class SakkhraHighChieftess : MondainQuester
     {
-        public override Type[] Quests { get { return new Type[] { typeof(TheGreatHuntQuest) }; } }
+        public override Type[] Quests => new Type[] { typeof(TheGreatHuntQuest) }; 
 
         [Constructable]
         public SakkhraHighChieftess()
-            : base(BaseEodonTribesman.GetRandomName(), "the sakkhra high chieftess")
+            : base(BaseEodonTribesman.GetRandomName(), "the Sakkhra High Chieftess")
         {
         }
 
@@ -186,28 +171,23 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (Title != "the sakkhra high chieftess")
-                Title = "the sakkhra high chieftess";
         }
     }
 
     public class UraliHighChieftess : MondainQuester
     {
-        public override Type[] Quests { get { return new Type[] { typeof(EmptyNestQuest) }; } }
+        public override Type[] Quests => new Type[] { typeof(EmptyNestQuest) }; 
 
         [Constructable]
         public UraliHighChieftess()
-            : base(BaseEodonTribesman.GetRandomName(), "the urali high chieftess")
+            : base(BaseEodonTribesman.GetRandomName(), "the Urali High Chieftess")
         {
         }
 
@@ -241,28 +221,23 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (Title != "the urali high chieftess")
-                Title = "the urali high chieftess";
         }
     }
 
     public class JukariHighChief : MondainQuester
     {
-        public override Type[] Quests { get { return new Type[] { typeof(TheGreatVolcanoQuest) }; } }
+        public override Type[] Quests => new Type[] { typeof(TheGreatVolcanoQuest) }; 
 
         [Constructable]
         public JukariHighChief()
-            : base(BaseEodonTribesman.GetRandomName(), "the jukari high chief")
+            : base(BaseEodonTribesman.GetRandomName(), "the Jukari High Chief")
         {
         }
 
@@ -292,28 +267,23 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (Title != "the jukari high chief")
-                Title = "the jukari high chief";
         }
     }
 
     public class KurakHighChief : MondainQuester
     {
-        public override Type[] Quests { get { return new Type[] { typeof(PrideOfTheAmbushQuest) }; } }
+        public override Type[] Quests => new Type[] { typeof(PrideOfTheAmbushQuest) }; 
 
         [Constructable]
         public KurakHighChief()
-            : base(BaseEodonTribesman.GetRandomName(), "the kurak high chief")
+            : base(BaseEodonTribesman.GetRandomName(), "the Kurak High Chief")
         {
         }
 
@@ -344,28 +314,23 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (Title != "the kurak high chief")
-                Title = "the kurak high chief";
         }
     }
 
     public class BarakoHighChief : MondainQuester
     {
-        public override Type[] Quests { get { return new Type[] { typeof(TheGreatApeQuest) }; } }
+        public override Type[] Quests => new Type[] { typeof(TheGreatApeQuest) }; 
 
         [Constructable]
         public BarakoHighChief()
-            : base(BaseEodonTribesman.GetRandomName(), "the barako high chief")
+            : base(BaseEodonTribesman.GetRandomName(), "the Barako High Chief")
         {
         }
 
@@ -398,18 +363,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (Title != "the barako high chief")
-                Title = "the barako high chief";
         }
     }
 }

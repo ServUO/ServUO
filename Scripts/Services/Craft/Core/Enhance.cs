@@ -31,6 +31,7 @@ namespace Server.Engines.Craft
 
             _SpecialTable[typeof(ClockworkLeggings)] = DefBlacksmithy.CraftSystem;
             _SpecialTable[typeof(GargishClockworkLeggings)] = DefBlacksmithy.CraftSystem;
+            _SpecialTable[typeof(JukaBow)] = DefBowFletching.CraftSystem;
         }
 
         private static bool IsSpecial(Item item, CraftSystem system)

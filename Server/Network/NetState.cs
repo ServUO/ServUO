@@ -57,10 +57,10 @@ namespace Server.Network
 		private readonly DateTime m_ConnectedOn;
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-        public DateTime ConnectedOn { get { return m_ConnectedOn; } }
+        public DateTime ConnectedOn => m_ConnectedOn; 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public TimeSpan ConnectedFor { get { return (DateTime.UtcNow - m_ConnectedOn); } }
+		public TimeSpan ConnectedFor => (DateTime.UtcNow - m_ConnectedOn); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
 		public uint AuthID { get; set; }
@@ -69,7 +69,7 @@ namespace Server.Network
 		public uint Seed { get; set; }
 
 		[CommandProperty(AccessLevel.Administrator)]
-		public IPAddress Address { get { return m_Address; } }
+		public IPAddress Address => m_Address; 
 
 		private static bool m_Paused;
 
@@ -230,63 +230,63 @@ namespace Server.Network
 		}
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool NewSpellbook { get { return ((_ProtocolChanges & ProtocolChanges.NewSpellbook) != 0); } }
+		public bool NewSpellbook => ((_ProtocolChanges & ProtocolChanges.NewSpellbook) != 0); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool DamagePacket { get { return ((_ProtocolChanges & ProtocolChanges.DamagePacket) != 0); } }
+		public bool DamagePacket => ((_ProtocolChanges & ProtocolChanges.DamagePacket) != 0); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool Unpack { get { return ((_ProtocolChanges & ProtocolChanges.Unpack) != 0); } }
+		public bool Unpack => ((_ProtocolChanges & ProtocolChanges.Unpack) != 0); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool BuffIcon { get { return ((_ProtocolChanges & ProtocolChanges.BuffIcon) != 0); } }
+		public bool BuffIcon => ((_ProtocolChanges & ProtocolChanges.BuffIcon) != 0); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool NewHaven { get { return ((_ProtocolChanges & ProtocolChanges.NewHaven) != 0); } }
+		public bool NewHaven => ((_ProtocolChanges & ProtocolChanges.NewHaven) != 0); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool ContainerGridLines { get { return ((_ProtocolChanges & ProtocolChanges.ContainerGridLines) != 0); } }
+		public bool ContainerGridLines => ((_ProtocolChanges & ProtocolChanges.ContainerGridLines) != 0); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool ExtendedSupportedFeatures { get { return ((_ProtocolChanges & ProtocolChanges.ExtendedSupportedFeatures) != 0); } }
+		public bool ExtendedSupportedFeatures => ((_ProtocolChanges & ProtocolChanges.ExtendedSupportedFeatures) != 0); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool StygianAbyss { get { return ((_ProtocolChanges & ProtocolChanges.StygianAbyss) != 0); } }
+		public bool StygianAbyss => ((_ProtocolChanges & ProtocolChanges.StygianAbyss) != 0); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool HighSeas { get { return ((_ProtocolChanges & ProtocolChanges.HighSeas) != 0); } }
+		public bool HighSeas => ((_ProtocolChanges & ProtocolChanges.HighSeas) != 0); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool NewCharacterList { get { return ((_ProtocolChanges & ProtocolChanges.NewCharacterList) != 0); } }
+		public bool NewCharacterList => ((_ProtocolChanges & ProtocolChanges.NewCharacterList) != 0); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool NewCharacterCreation { get { return ((_ProtocolChanges & ProtocolChanges.NewCharacterCreation) != 0); } }
+		public bool NewCharacterCreation => ((_ProtocolChanges & ProtocolChanges.NewCharacterCreation) != 0); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool ExtendedStatus { get { return ((_ProtocolChanges & ProtocolChanges.ExtendedStatus) != 0); } }
+		public bool ExtendedStatus => ((_ProtocolChanges & ProtocolChanges.ExtendedStatus) != 0); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool NewMobileIncoming { get { return ((_ProtocolChanges & ProtocolChanges.NewMobileIncoming) != 0); } }
+		public bool NewMobileIncoming => ((_ProtocolChanges & ProtocolChanges.NewMobileIncoming) != 0); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool NewSecureTrading { get { return ((_ProtocolChanges & ProtocolChanges.NewSecureTrading) != 0); } }
+		public bool NewSecureTrading => ((_ProtocolChanges & ProtocolChanges.NewSecureTrading) != 0); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool UltimaStore { get { return ((_ProtocolChanges & ProtocolChanges.UltimaStore) != 0); } }
+		public bool UltimaStore => ((_ProtocolChanges & ProtocolChanges.UltimaStore) != 0); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool EndlessJourney { get { return ((_ProtocolChanges & ProtocolChanges.EndlessJourney) != 0); } }
+		public bool EndlessJourney => ((_ProtocolChanges & ProtocolChanges.EndlessJourney) != 0); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool IsUOTDClient { get { return ((Flags & ClientFlags.UOTD) != 0 || (m_Version != null && m_Version.Type == ClientType.UOTD)); } }
+		public bool IsUOTDClient => ((Flags & ClientFlags.UOTD) != 0 || (m_Version != null && m_Version.Type == ClientType.UOTD)); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool IsSAClient { get { return (m_Version != null && m_Version.Type == ClientType.SA); } }
+		public bool IsSAClient => (m_Version != null && m_Version.Type == ClientType.SA); 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-        public bool IsEnhancedClient { get { return IsUOTDClient || (m_Version != null && m_Version.Major >= 67); } }
+        public bool IsEnhancedClient => IsUOTDClient || (m_Version != null && m_Version.Major >= 67); 
 
-        public List<SecureTrade> Trades { get { return m_Trades; } }
+        public List<SecureTrade> Trades => m_Trades; 
 
 		public void ValidateAllTrades()
 		{
@@ -401,9 +401,9 @@ namespace Server.Network
 		[CommandProperty(AccessLevel.Administrator, true)]
 		public int Sequence { get; set; }
 
-		public List<Gump> Gumps { get { return m_Gumps; } }
-		public List<HuePicker> HuePickers { get { return m_HuePickers; } }
-		public List<IMenu> Menus { get { return m_Menus; } }
+		public List<Gump> Gumps => m_Gumps; 
+		public List<HuePicker> HuePickers => m_HuePickers; 
+		public List<IMenu> Menus => m_Menus; 
 
 		private static int m_GumpCap = 512, m_HuePickerCap = 512, m_MenuCap = 512;
 
@@ -579,7 +579,7 @@ namespace Server.Network
 
 		private static readonly List<NetState> m_Instances = new List<NetState>();
 
-		public static List<NetState> Instances { get { return m_Instances; } }
+		public static List<NetState> Instances => m_Instances; 
 
 		public const int SendBufferCapacity = 1024, SendBufferSize = 8092;
 		public const int ReceiveBufferCapacity = 1024, ReceiveBufferSize = 2048;
@@ -587,8 +587,8 @@ namespace Server.Network
 		private static readonly BufferPool m_SendBufferPool = new BufferPool("Send", SendBufferCapacity, SendBufferSize);
 		private static readonly BufferPool m_ReceiveBufferPool = new BufferPool("Receive", ReceiveBufferCapacity, ReceiveBufferSize);
 
-		public static BufferPool SendBuffers { get { return m_SendBufferPool; } }
-		public static BufferPool ReceiveBuffers { get { return m_ReceiveBufferPool; } }
+		public static BufferPool SendBuffers => m_SendBufferPool; 
+		public static BufferPool ReceiveBuffers => m_ReceiveBufferPool; 
 
 		public NetState(Socket socket, MessagePump messagePump)
 		{
@@ -1091,7 +1091,7 @@ namespace Server.Network
 		private bool m_Disposing;
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool IsDisposing { get { return m_Disposing; } }
+		public bool IsDisposing => m_Disposing; 
 
 		public void Dispose()
 		{
@@ -1241,14 +1241,14 @@ namespace Server.Network
 		}
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool Running { get { return m_Running; } }
+		public bool Running => m_Running; 
 
 		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool Seeded { get; set; }
 
 		public Socket Socket { get; private set; }
 
-		public ByteQueue Buffer { get { return m_Buffer; } }
+		public ByteQueue Buffer => m_Buffer; 
 
 		public ExpansionInfo ExpansionInfo
 		{
@@ -1269,7 +1269,7 @@ namespace Server.Network
 		}
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public Expansion Expansion { get { return (Expansion)ExpansionInfo.ID; } }
+		public Expansion Expansion => (Expansion)ExpansionInfo.ID; 
 
 		public bool SupportsExpansion(ExpansionInfo info, bool checkCoreExpansion)
 		{

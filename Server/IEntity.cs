@@ -34,9 +34,9 @@ namespace Server
 		public Point3D Location { get; set; }
 		public Map Map { get; set; }
 
-		public int X { get { return Location.X; } }
-		public int Y { get { return Location.Y; } }
-		public int Z { get { return Location.Z; } }
+		public int X => Location.X; 
+		public int Y => Location.Y; 
+		public int Z => Location.Z; 
 
 		public bool Deleted { get; private set; }
 

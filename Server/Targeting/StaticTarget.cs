@@ -13,24 +13,24 @@ namespace Server.Targeting
 		}
 
 		[CommandProperty(AccessLevel.Counselor)]
-		public Point3D Location { get { return m_Location; } }
+		public Point3D Location => m_Location; 
 
 		[CommandProperty(AccessLevel.Counselor)]
-		public string Name { get { return TileData.ItemTable[m_ItemID].Name; } }
+		public string Name => TileData.ItemTable[m_ItemID].Name; 
 
 		[CommandProperty(AccessLevel.Counselor)]
-		public TileFlag Flags { get { return TileData.ItemTable[m_ItemID].Flags; } }
+		public TileFlag Flags => TileData.ItemTable[m_ItemID].Flags; 
 
 		[CommandProperty(AccessLevel.Counselor)]
-		public int X { get { return m_Location.X; } }
+		public int X => m_Location.X; 
 
 		[CommandProperty(AccessLevel.Counselor)]
-		public int Y { get { return m_Location.Y; } }
+		public int Y => m_Location.Y; 
 
 		[CommandProperty(AccessLevel.Counselor)]
-		public int Z { get { return m_Location.Z; } }
+		public int Z => m_Location.Z; 
 
 		[CommandProperty(AccessLevel.Counselor)]
-		public int ItemID { get { return m_ItemID; } }
+		public int ItemID => m_ItemID; 
 	}
 }

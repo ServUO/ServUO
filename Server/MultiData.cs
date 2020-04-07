@@ -12,7 +12,7 @@ namespace Server
 {
 	public static class MultiData
 	{
-        public static Dictionary<int, MultiComponentList> Components { get { return m_Components; } }
+        public static Dictionary<int, MultiComponentList> Components => m_Components; 
         private static readonly Dictionary<int, MultiComponentList> m_Components;
 
 		private static readonly BinaryReader m_IndexReader;
@@ -304,16 +304,16 @@ namespace Server
 
 		public static readonly MultiComponentList Empty = new MultiComponentList();
 
-		public Point2D Min { get { return m_Min; } }
-		public Point2D Max { get { return m_Max; } }
+		public Point2D Min => m_Min; 
+		public Point2D Max => m_Max; 
 
-		public Point2D Center { get { return m_Center; } }
+		public Point2D Center => m_Center; 
 
-		public int Width { get { return m_Width; } }
-		public int Height { get { return m_Height; } }
+		public int Width => m_Width; 
+		public int Height => m_Height; 
 
-		public StaticTile[][][] Tiles { get { return m_Tiles; } }
-		public MultiTileEntry[] List { get { return m_List; } }
+		public StaticTile[][][] Tiles => m_Tiles; 
+		public MultiTileEntry[] List => m_List; 
 
 		public void Add(int itemID, int x, int y, int z)
 		{
