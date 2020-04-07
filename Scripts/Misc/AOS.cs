@@ -296,37 +296,32 @@ namespace Server
             SkillMasterySpell.OnDamage(m, from, type, ref totalDamage);
             #endregion
 
-            #region Pet Training
             if (from is BaseCreature || m is BaseCreature)
             {
                 SpecialAbility.CheckCombatTrigger(from, m, ref totalDamage, type);
 
-                if (PetTrainingHelper.Enabled)
+                if (from is BaseCreature && m is BaseCreature)
                 {
-                    if (from is BaseCreature && m is BaseCreature)
+                    var profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)from);
+
+                    if (profile != null)
                     {
-                        var profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)from);
-
-                        if (profile != null)
-                        {
-                            profile.CheckProgress((BaseCreature)m);
-                        }
-
-                        profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)m);
-
-                        if (profile != null && 0.3 > Utility.RandomDouble())
-                        {
-                            profile.CheckProgress((BaseCreature)from);
-                        }
+                        profile.CheckProgress((BaseCreature)m);
                     }
 
-                    if (from is BaseCreature && ((BaseCreature)from).Controlled && m.Player)
+                    profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)m);
+
+                    if (profile != null && 0.3 > Utility.RandomDouble())
                     {
-                        totalDamage /= 2;
+                        profile.CheckProgress((BaseCreature)from);
                     }
                 }
+
+                if (from is BaseCreature && ((BaseCreature)from).Controlled && m.Player)
+                {
+                    totalDamage /= 2;
+                }
             }
-            #endregion
 
             if (type <= DamageType.Ranged)
             {

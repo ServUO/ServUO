@@ -116,8 +116,6 @@ namespace Server.Mobiles
 
     public static class PetTrainingHelper
     {
-        public static bool Enabled { get { return true; } }
-
         public static List<TrainingPoint> TrainingPoints { get { return _TrainingPoints; } }
         public static List<TrainingPoint> _TrainingPoints;
 
@@ -1372,7 +1370,7 @@ namespace Server.Mobiles
 
         public static bool CheckSecondarySkill(BaseCreature bc, SkillName skill)
         {
-            if (Enabled && bc.Controlled)
+            if (bc.Controlled)
             {
                 var profile = GetAbilityProfile(bc);
 
@@ -1389,7 +1387,7 @@ namespace Server.Mobiles
 
         public static void OnWeaponAbilityUsed(BaseCreature bc, SkillName skill)
         {
-            if (Enabled && bc.Controlled)
+            if (bc.Controlled)
             {
                 var profile = GetAbilityProfile(bc);
 

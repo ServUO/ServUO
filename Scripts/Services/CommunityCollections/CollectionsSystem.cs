@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -68,7 +68,7 @@ namespace Server.Services.Community_Collections
 				m_Path,
 				reader =>
 				{
-					m_Mobiles.AddRange(reader.ReadMobileList().Cast<BaseCollectionMobile>());
+					m_Mobiles.AddRange(reader.ReadMobileList().OfType<BaseCollectionMobile>());
 					List<BaseCollectionMobile> mobs = new List<BaseCollectionMobile>();
 					mobs.AddRange(m_Mobiles);
 

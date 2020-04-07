@@ -1121,8 +1121,6 @@ namespace Server
             list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~           
         }
 
-		public virtual bool NewGuildDisplay => false; 
-
 		public virtual void GetProperties(ObjectPropertyList list)
 		{
 			AddNameProperties(list);

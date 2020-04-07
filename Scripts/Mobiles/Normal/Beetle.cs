@@ -181,7 +181,7 @@ namespace Server.Mobiles
         {
             base.OnAfterTame(tamer);
 
-            if (Owners.Count == 0 && PetTrainingHelper.Enabled)
+            if (Owners.Count == 0)
             {
                 SetInt(500);
             }
@@ -199,23 +199,6 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (version < 1 && PetTrainingHelper.Enabled && ControlSlots <= 3)
-            {
-                var profile = PetTrainingHelper.GetAbilityProfile(this);
-
-                if (profile == null || !profile.HasCustomized())
-                {
-                    MinTameSkill = 98.7;
-                    ControlSlotsMin = 1;
-                    ControlSlots = 1;
-                }
-
-                if ((ControlMaster != null || IsStabled) && Int < 500)
-                {
-                    SetInt(500);
-                }
-            }
         }
     }
 }

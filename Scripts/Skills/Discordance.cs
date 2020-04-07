@@ -268,7 +268,7 @@ namespace Server.SkillHandlers
                         }
 						else
 						{
-                            if (from is BaseCreature && PetTrainingHelper.Enabled)
+                            if (from is BaseCreature)
                                 from.CheckSkill(SkillName.Discordance, 0, from.Skills[SkillName.Discordance].Cap);
 
 							from.SendLocalizedMessage(1049540); // You attempt to disrupt your target, but fail.
