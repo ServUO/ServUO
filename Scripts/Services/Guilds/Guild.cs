@@ -1295,7 +1295,7 @@ namespace Server.Guilds
             {
                 return false;
             }
-            
+
             Guild guild = GetAllianceLeader(this);
             Guild otherGuild = GetAllianceLeader(g);
 
