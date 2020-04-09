@@ -306,7 +306,7 @@ namespace Server.Mobiles
                     if (!from.Alive || from == this || from.AccessLevel > AccessLevel.Player)
                         continue;
 
-                    if (from is PlayerMobile || (from is BaseCreature && (((BaseCreature)from).Controlled) || ((BaseCreature)from).Summoned))
+                    if (points.Count > 0 && (from is PlayerMobile || (from is BaseCreature && (((BaseCreature)from).Controlled) || ((BaseCreature)from).Summoned)))
                     {
                         Point3D point = points[Utility.Random(points.Count)];
                         from.MoveToWorld(point, pmmap);
