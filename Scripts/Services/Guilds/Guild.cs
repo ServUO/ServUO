@@ -1304,8 +1304,6 @@ namespace Server.Guilds
                 return true;
             }
 
-            return false;
-
             return m_Enemies.Contains(g);
         }
 		#endregion
