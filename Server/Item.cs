@@ -5227,7 +5227,7 @@ namespace Server
                 int top = item.Z + id.CalcHeight;
                 if (top > p.Z) myTop = top;
 
-                if (top > maxZ || top < z)
+                if (top > maxZ || (top >= landTop && top < z))
                 {
                     continue;
                 }
