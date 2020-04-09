@@ -5163,7 +5163,6 @@ namespace Server
             if (map == null)
                 return Point3D.Zero;
 
-            int myTop = -255;
             int x = p.m_X, y = p.m_Y;
             int z = int.MinValue;
 
@@ -5176,12 +5175,10 @@ namespace Server
             if (!landTile.Ignored && (landFlags & TileFlag.Impassable) == 0)
             {
                 if (landAvg <= maxZ)
-                {
                     z = landAvg;
-                }
             }
 
-            var tiles = map.Tiles.GetStaticTiles(x, y, true);
+            StaticTile[] tiles = map.Tiles.GetStaticTiles(x, y, true);
 
             for (int i = 0; i < tiles.Length; ++i)
             {
@@ -5189,48 +5186,36 @@ namespace Server
                 ItemData id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
 
                 if (!id.Surface)
-                {
                     continue;
-                }
 
                 int top = tile.Z + id.CalcHeight;
-                if (top > p.Z) myTop = top;
 
                 if (top > maxZ || top < z)
-                {
                     continue;
-                }
 
                 z = top;
             }
 
-            var items = new List<Item>();
+            List<Item> items = new List<Item>();
 
-            var eable = map.GetItemsInRange(p, 0);
+            IPooledEnumerable<Item> eable = map.GetItemsInRange(p, 0);
 
             foreach (Item item in eable)
             {
                 if (item is BaseMulti || item.ItemID > TileData.MaxItemValue)
-                {
                     continue;
-                }
 
                 items.Add(item);
 
                 ItemData id = item.ItemData;
 
                 if (!id.Surface)
-                {
                     continue;
-                }
 
                 int top = item.Z + id.CalcHeight;
-                if (top > p.Z) myTop = top;
 
-                if (top > maxZ || (top >= landTop && top < z))
-                {
+                if (top > maxZ || top < z)
                     continue;
-                }
 
                 z = top;
             }
@@ -5238,14 +5223,10 @@ namespace Server
             eable.Free();
 
             if (z == int.MinValue)
-            {
                 return Point3D.Zero;
-            }
 
             if (z > maxZ)
-            {
                 return Point3D.Zero;
-            }
 
             m_OpenSlots = (1 << 20) - 1;
 
@@ -5260,27 +5241,19 @@ namespace Server
                 int checkTop = checkZ + id.CalcHeight;
 
                 if (checkTop == checkZ && !id.Surface)
-                {
                     ++checkTop;
-                }
 
                 int zStart = checkZ - z;
                 int zEnd = checkTop - z;
 
                 if (zStart >= 20 || zEnd < 0)
-                {
                     continue;
-                }
 
                 if (zStart < 0)
-                {
                     zStart = 0;
-                }
 
                 if (zEnd > 19)
-                {
                     zEnd = 19;
-                }
 
                 int bitCount = zEnd - zStart;
 
@@ -5296,27 +5269,19 @@ namespace Server
                 int checkTop = checkZ + id.CalcHeight;
 
                 if (checkTop == checkZ && !id.Surface)
-                {
                     ++checkTop;
-                }
 
                 int zStart = checkZ - z;
                 int zEnd = checkTop - z;
 
                 if (zStart >= 20 || zEnd < 0)
-                {
                     continue;
-                }
 
                 if (zStart < 0)
-                {
                     zStart = 0;
-                }
 
                 if (zEnd > 19)
-                {
                     zEnd = 19;
-                }
 
                 int bitCount = zEnd - zStart;
 
@@ -5326,58 +5291,41 @@ namespace Server
             int height = ItemData.Height;
 
             if (height == 0)
-            {
                 ++height;
-            }
 
             if (height > 30)
-            {
                 height = 30;
-            }
 
-            /*
-            if (myTop != -255)
+            int match = (1 << height) - 1;
+            bool okay = false;
+
+            for (int i = 0; i < 20; ++i)
             {
-                int match = (1 << height) - 1;
-                bool okay = false;
+                if ((i + height) > 20)
+                    match >>= 1;
 
-                for (int i = 0; i < 20; ++i)
+                okay = ((m_OpenSlots >> i) & match) == match;
+
+                if (okay)
                 {
-                    if ((i + height) > 20)
-                    {
-                        match >>= 1;
-                    }
-
-                    okay = ((m_OpenSlots >> i) & match) == match;
-                  
-                    if (okay)
-                    {
-                        z += i;
-                        break;
-                    }                   
+                    z += i;
+                    break;
                 }
-			    if (!okay)
-			    {
-				    return Point3D.Zero;
-			    }
             }
-            */
+
+            if (!okay)
+                return Point3D.Zero;
 
             height = ItemData.Height;
 
             if (height == 0)
-            {
                 ++height;
-            }
 
             if (landAvg > z && (z + height) > landZ)
-            {
                 return Point3D.Zero;
-            }
-            else if ((landFlags & TileFlag.Impassable) != 0 && landAvg > surfaceZ && (z + height) > landZ)
-            {
+
+            if ((landFlags & TileFlag.Impassable) != 0 && landAvg > surfaceZ && (z + height) > landZ)
                 return Point3D.Zero;
-            }
 
             for (int i = 0; i < tiles.Length; ++i)
             {
@@ -5388,13 +5336,10 @@ namespace Server
                 int checkTop = checkZ + id.CalcHeight;
 
                 if (checkTop > z && (z + height) > checkZ)
-                {
                     return Point3D.Zero;
-                }
-                else if ((id.Surface || id.Impassable) && checkTop > surfaceZ && (z + height) > checkZ)
-                {
+
+                if ((id.Surface || id.Impassable) && checkTop > surfaceZ && (z + height) > checkZ)
                     return Point3D.Zero;
-                }
             }
 
             for (int i = 0; i < items.Count; ++i)
@@ -5402,14 +5347,8 @@ namespace Server
                 Item item = items[i];
                 ItemData id = item.ItemData;
 
-                if (item.Z > p.Z + 17 || item.Z < p.Z) continue;
-
-                z += id.CalcHeight;
-
-                if (((item.Z + id.CalcHeight) >= maxZ) || (myTop != -255 && (item.Z + id.CalcHeight) > myTop)) /*&& (z + height) > item.Z)*/
-                {
+                if ((item.Z + id.CalcHeight) > z && (z + height) > item.Z)
                     return Point3D.Zero;
-                }
             }
 
             return new Point3D(x, y, z);
