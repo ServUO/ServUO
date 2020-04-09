@@ -69,17 +69,14 @@ namespace Server.Mobiles
         {
             base.GetProperties(list);
 
-            if (PetTrainingHelper.Enabled)
-            {
-                list.Add(1072269); // Quest Giver
-            }
+            list.Add(1072269); // Quest Giver
         }
 
         private DateTime _NextTalk;
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (PetTrainingHelper.Enabled && m.Alive && !m.Hidden && m is PlayerMobile)
+            if (m.Alive && !m.Hidden && m is PlayerMobile)
             {
                 PlayerMobile pm = (PlayerMobile)m;
 
@@ -97,7 +94,7 @@ namespace Server.Mobiles
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (PetTrainingHelper.Enabled && m is PlayerMobile && m.InRange(Location, 5))
+            if (m is PlayerMobile && m.InRange(Location, 5))
             {
                 CheckQuest((PlayerMobile)m);
             }

@@ -115,7 +115,7 @@ namespace Server.Mobiles
 
         public override void OnAfterTame(Mobile tamer)
         {
-            if (Owners.Count == 0 && PetTrainingHelper.Enabled)
+            if (Owners.Count == 0)
             {
                 if (RawStr > 0)
                     RawStr = (int)Math.Max(1, RawStr * 0.5);

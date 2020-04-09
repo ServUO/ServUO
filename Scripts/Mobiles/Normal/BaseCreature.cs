@@ -617,14 +617,11 @@ namespace Server.Mobiles
                 SetSpecialAbility(SpecialAbility.Heal);
             }
 
-            if (PetTrainingHelper.Enabled)
-            {
-                if (Skills[SkillName.Focus].Value == 0)
-                    SetSkill(SkillName.Focus, 2, 20);
+            if (Skills[SkillName.Focus].Value == 0)
+                SetSkill(SkillName.Focus, 2, 20);
 
-                if (Skills[SkillName.DetectHidden].Value == 0 && !(this is BaseVendor))
-                    SetSkill(SkillName.DetectHidden, Utility.RandomList(10, 60));
-            }
+            if (Skills[SkillName.DetectHidden].Value == 0 && !(this is BaseVendor))
+                SetSkill(SkillName.DetectHidden, Utility.RandomList(10, 60));
         }
 
         public void SetMagicalAbility(MagicalAbility ability)
@@ -678,7 +675,7 @@ namespace Server.Mobiles
 
         private void SetAverage(double min, double max, double value)
         {
-            if (PetTrainingHelper.Enabled && CanLowerSlot() && max > min)
+            if (CanLowerSlot() && max > min)
             {
                 if (_InitAverage == null)
                     _InitAverage = new List<double>();
@@ -2658,49 +2655,11 @@ namespace Server.Mobiles
             double activeSpeed = m_dActiveSpeed;
             double passiveSpeed = m_dPassiveSpeed;
 
-            if (version >= 28)
-            {
-                SpeedInfo.GetSpeedsNew(this, ref activeSpeed, ref passiveSpeed);
+            SpeedInfo.GetSpeeds(this, ref activeSpeed, ref passiveSpeed);
 
-                m_dActiveSpeed = activeSpeed;
-                m_dPassiveSpeed = passiveSpeed;
-            }
-            else
-            {
-                SpeedInfo.GetSpeeds(this, ref activeSpeed, ref passiveSpeed);
-
-                bool isStandardActive = false;
-                for (int i = 0; !isStandardActive && i < m_StandardActiveSpeeds.Length; ++i)
-                {
-                    isStandardActive = (m_dActiveSpeed == m_StandardActiveSpeeds[i]);
-                }
-
-                bool isStandardPassive = false;
-                for (int i = 0; !isStandardPassive && i < m_StandardPassiveSpeeds.Length; ++i)
-                {
-                    isStandardPassive = (m_dPassiveSpeed == m_StandardPassiveSpeeds[i]);
-                }
-
-                if (isStandardActive && m_dCurrentSpeed == m_dActiveSpeed)
-                {
-                    m_dCurrentSpeed = activeSpeed;
-                }
-                else if (isStandardPassive && m_dCurrentSpeed == m_dPassiveSpeed)
-                {
-                    m_dCurrentSpeed = passiveSpeed;
-                }
-
-                if (isStandardActive && !m_Paragon)
-                {
-                    m_dActiveSpeed = activeSpeed;
-                }
-
-                if (isStandardPassive && !m_Paragon)
-                {
-                    m_dPassiveSpeed = passiveSpeed;
-                }
-            }
-
+            m_dActiveSpeed = activeSpeed;
+            m_dPassiveSpeed = passiveSpeed;
+           
             if (version >= 14)
             {
                 m_RemoveIfUntamed = reader.ReadBool();
@@ -3638,7 +3597,7 @@ namespace Server.Mobiles
             get { return m_iControlSlots; }
             set
             {
-                if (PetTrainingHelper.Enabled && ControlSlotsMin == 0 && ControlSlotsMax == 0)
+                if (ControlSlotsMin == 0 && ControlSlotsMax == 0)
                 {
                     m_iControlSlots = value;
 
@@ -3734,7 +3693,7 @@ namespace Server.Mobiles
 
                 if (Controlled)
                 {
-                    if (!PetTrainingHelper.Enabled || (AbilityProfile != null && AbilityProfile.HasAbility(MagicalAbility.Poisoning)))
+                    if (AbilityProfile != null && AbilityProfile.HasAbility(MagicalAbility.Poisoning))
                     {
                         CheckSkill(SkillName.Poisoning, 0, Skills[SkillName.Poisoning].Cap);
                     }
@@ -3755,7 +3714,7 @@ namespace Server.Mobiles
 
         public virtual Poison GetHitPoison()
         {
-            if (!PetTrainingHelper.Enabled || !Controlled)
+            if (!Controlled)
                 return HitPoison;
 
             int current = 0;
@@ -3786,7 +3745,7 @@ namespace Server.Mobiles
 
         private bool TryHitPoison()
         {
-            if (!PetTrainingHelper.Enabled || !Controlled)
+            if (!Controlled)
                 return HitPoisonChance >= Utility.RandomDouble();
 
             var profile = AbilityProfile;
@@ -5003,7 +4962,7 @@ namespace Server.Mobiles
             double activeSpeed = 0.0;
             double passiveSpeed = 0.0;
 
-            SpeedInfo.GetSpeedsNew(this, ref activeSpeed, ref passiveSpeed);
+            SpeedInfo.GetSpeeds(this, ref activeSpeed, ref passiveSpeed);
 
             m_dActiveSpeed = activeSpeed;
             m_dPassiveSpeed = passiveSpeed;
@@ -6009,7 +5968,7 @@ namespace Server.Mobiles
                             }
                             else
                             {
-                                if (PetTrainingHelper.Enabled && ds.m_Mobile is PlayerMobile)
+                                if (ds.m_Mobile is PlayerMobile)
                                 {
                                     foreach (var pet in ((PlayerMobile)ds.m_Mobile).AllFollowers.Where(p => DamageEntries.Any(de => de.Damager == p)))
                                     {
@@ -6284,7 +6243,7 @@ namespace Server.Mobiles
 
         public virtual void OnAfterTame(Mobile tamer)
         {
-            if (StatLossAfterTame && (!PetTrainingHelper.Enabled || Owners.Count == 0))
+            if (StatLossAfterTame && Owners.Count == 0)
             {
                 AnimalTaming.ScaleStats(this, 0.5);
             }
@@ -6519,7 +6478,7 @@ namespace Server.Mobiles
                     CheckSkill(SkillName.Healing, 0.0, Skills[SkillName.Healing].Cap);
                     CheckSkill(SkillName.Anatomy, 0.0, Skills[SkillName.Anatomy].Cap);
                 }
-                else if (PetTrainingHelper.Enabled && Controlled)
+                else if (Controlled)
                 {
                     CheckSkill(SkillName.Healing, 0.0, 10);
                     CheckSkill(SkillName.Anatomy, 0.0, 10);

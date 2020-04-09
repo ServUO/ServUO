@@ -24,7 +24,7 @@ namespace Server.Gumps
 
             AddPage(0);
 
-            int offset = (Guild.NewGuildSystem) ? 20 : 0;
+            int offset = 20;
 
             AddBackground(0, 0, 220, 160 + offset, 5054);
 
@@ -48,7 +48,7 @@ namespace Server.Gumps
             AddButton(10, 110, GetFirstID(SecureLevel.Friends), 4007, 3, GumpButtonType.Reply, 0);
             AddHtmlLocalized(45, 110, 150, 20, 1061279, GetColor(SecureLevel.Friends), false, false); // Friends
 
-            if (Guild.NewGuildSystem && owner == from && from.Guild != null && ((PlayerMobile)from).GuildRank.Rank >= 1)
+            if (owner == from && from.Guild != null && ((PlayerMobile)from).GuildRank.Rank >= 1)
             {
                 AddButton(10, 130, GetFirstID(SecureLevel.Guild), 4007, 5, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(45, 130, 150, 20, 1063455, GetColor(SecureLevel.Guild), false, false); // Guild Members

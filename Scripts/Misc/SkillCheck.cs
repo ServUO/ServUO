@@ -368,8 +368,7 @@ namespace Server.Misc
 			if (from is BaseCreature && ((BaseCreature)from).IsDeadPet)
 				return;
 
-			if (skill.SkillName == SkillName.Focus && from is BaseCreature &&
-				(!PetTrainingHelper.Enabled || !((BaseCreature)from).Controlled))
+			if (skill.SkillName == SkillName.Focus && from is BaseCreature && !((BaseCreature)from).Controlled)
 				return;
 
 			if (skill.Base < skill.Cap && skill.Lock == SkillLock.Up)

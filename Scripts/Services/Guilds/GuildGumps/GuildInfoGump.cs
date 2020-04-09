@@ -19,52 +19,52 @@ namespace Server.Guilds
         public GuildInfoGump(PlayerMobile pm, Guild g, bool isResigning, bool isResigningVvV)
             : base(pm, g)
         {
-            this.m_IsResigning = isResigning;
-            this.m_IsResigningVvV = isResigningVvV;
-            this.PopulateGump();
+            m_IsResigning = isResigning;
+            m_IsResigningVvV = isResigningVvV;
+            PopulateGump();
         }
 
         public override void PopulateGump()
         {
-            bool isLeader = IsLeader(this.player, this.guild);
+            bool isLeader = IsLeader(player, guild);
             base.PopulateGump();
 
-            this.AddHtmlLocalized(96, 43, 110, 26, 1063014, 0xF, false, false); // My Guild
+            AddHtmlLocalized(96, 43, 110, 26, 1063014, 0xF, false, false); // My Guild
 
-            this.AddImageTiled(65, 80, 160, 26, 0xA40);
-            this.AddImageTiled(67, 82, 156, 22, 0xBBC);
-            this.AddHtmlLocalized(70, 83, 150, 20, 1062954, 0x0, false, false); // <i>Guild Name</i>
-            this.AddHtml(233, 84, 320, 26, this.guild.Name, false, false);
+            AddImageTiled(65, 80, 160, 26, 0xA40);
+            AddImageTiled(67, 82, 156, 22, 0xBBC);
+            AddHtmlLocalized(70, 83, 150, 20, 1062954, 0x0, false, false); // <i>Guild Name</i>
+            AddHtml(233, 84, 320, 26, guild.Name, false, false);
 
-            this.AddImageTiled(65, 114, 160, 26, 0xA40);
-            this.AddImageTiled(67, 116, 156, 22, 0xBBC);
-            this.AddHtmlLocalized(70, 117, 150, 20, 1063025, 0x0, false, false); // <i>Alliance</i>
+            AddImageTiled(65, 114, 160, 26, 0xA40);
+            AddImageTiled(67, 116, 156, 22, 0xBBC);
+            AddHtmlLocalized(70, 117, 150, 20, 1063025, 0x0, false, false); // <i>Alliance</i>
 
-            if (this.guild.Alliance != null && this.guild.Alliance.IsMember(this.guild))
+            if (guild.Alliance != null && guild.Alliance.IsMember(guild))
             {
-                this.AddHtml(233, 118, 320, 26, this.guild.Alliance.Name, false, false);
-                this.AddButton(40, 120, 0x4B9, 0x4BA, 6, GumpButtonType.Reply, 0);	//Alliance Roster
+                AddHtml(233, 118, 320, 26, guild.Alliance.Name, false, false);
+                AddButton(40, 120, 0x4B9, 0x4BA, 6, GumpButtonType.Reply, 0);	//Alliance Roster
             }
 
-            this.AddImageTiled(65, 166, 480, 4, 0x238D);
+            AddImageTiled(65, 166, 480, 4, 0x238D);
 
-            string s = this.guild.Charter;
+            string s = guild.Charter;
             if (String.IsNullOrEmpty(s))
                 s = "The guild leader has not yet set the guild charter.";
 
-            this.AddHtml(65, 186, 480, 80, s, true, true);
+            AddHtml(65, 186, 480, 80, s, true, true);
             if (isLeader)
-                this.AddButton(40, 221, 0x4B9, 0x4BA, 4, GumpButtonType.Reply, 0);	//Charter Edit button
+                AddButton(40, 221, 0x4B9, 0x4BA, 4, GumpButtonType.Reply, 0);	//Charter Edit button
 
-            s = this.guild.Website;
+            s = guild.Website;
 
             if (string.IsNullOrEmpty(s))
                 s = "Guild website not yet set.";
 
-            this.AddHtml(65, 276, 480, 30, s, true, false);
+            AddHtml(65, 276, 480, 30, s, true, false);
 
             if (isLeader)
-                this.AddButton(40, 283, 0x4B9, 0x4BA, 5, GumpButtonType.Reply, 0);	//Website Edit button
+                AddButton(40, 283, 0x4B9, 0x4BA, 5, GumpButtonType.Reply, 0);	//Website Edit button
 
             AddBackground(65, 370, 170, 26, 0x2486);
 
@@ -88,7 +88,7 @@ namespace Server.Guilds
 
             AddBackground(445, 370, 100, 26, 0x2486);
             AddButton(447, 375, 0x845, 0x846, 7, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(472, 373, 60, 26, 3006115, (this.m_IsResigning) ? 0x5000 : 0, false, false); // Resign
+            AddHtmlLocalized(472, 373, 60, 26, 3006115, (m_IsResigning) ? 0x5000 : 0, false, false); // Resign
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
@@ -97,17 +97,15 @@ namespace Server.Guilds
 
             PlayerMobile pm = sender.Mobile as PlayerMobile;
 
-            if (!IsMember(pm, this.guild))
+            if (!IsMember(pm, guild))
                 return;
-
-            pm.DisplayGuildTitle = info.IsSwitched(0);
 
             switch (info.ButtonID)
             {
                 //1-3 handled by base.OnResponse
                 case 4:
                     {
-                        if (IsLeader(pm, this.guild))
+                        if (IsLeader(pm, guild))
                         {
                             pm.SendLocalizedMessage(1013071); // Enter the new guild charter (50 characters max):
 
@@ -117,7 +115,7 @@ namespace Server.Guilds
                     }
                 case 5:
                     {
-                        if (IsLeader(pm, this.guild))
+                        if (IsLeader(pm, guild))
                         {
                             pm.SendLocalizedMessage(1013072); // Enter the new website for the guild (50 characters max):
                             pm.BeginPrompt(new PromptCallback(SetWebsite_Callback), true);	//Have the same callback handle both canceling and deletion cause the 2nd callback would just get a text of ""
@@ -127,22 +125,22 @@ namespace Server.Guilds
                 case 6:
                     {
                         //Alliance Roster
-                        if (this.guild.Alliance != null && this.guild.Alliance.IsMember(this.guild))
-                            pm.SendGump(new AllianceInfo.AllianceRosterGump(pm, this.guild, this.guild.Alliance));
+                        if (guild.Alliance != null && guild.Alliance.IsMember(guild))
+                            pm.SendGump(new AllianceInfo.AllianceRosterGump(pm, guild, guild.Alliance));
 
                         break;
                     }
                 case 7:
                     {
                         //Resign
-                        if (!this.m_IsResigning)
+                        if (!m_IsResigning)
                         {
                             pm.SendLocalizedMessage(1063332); // Are you sure you wish to resign from your guild?
-                            pm.SendGump(new GuildInfoGump(pm, this.guild, true, false));
+                            pm.SendGump(new GuildInfoGump(pm, guild, true, false));
                         }
                         else
                         {
-                            this.guild.RemoveMember(pm, 1063411); // You resign from your guild.
+                            guild.RemoveMember(pm, 1063411); // You resign from your guild.
                         }
                         break;
                     }
@@ -180,7 +178,7 @@ namespace Server.Guilds
 
         public void SetCharter_Callback(Mobile from, string text)
         {
-            if (!IsLeader(from, this.guild))
+            if (!IsLeader(from, guild))
                 return;
 
             string charter = Utility.FixHtml(text.Trim());
@@ -191,7 +189,7 @@ namespace Server.Guilds
             }
             else
             {
-                this.guild.Charter = charter;
+                guild.Charter = charter;
                 from.SendLocalizedMessage(1070775); // You submit a new guild charter.
                 return;
             }
@@ -199,7 +197,7 @@ namespace Server.Guilds
 
         public void SetWebsite_Callback(Mobile from, string text)
         {
-            if (!IsLeader(from, this.guild))
+            if (!IsLeader(from, guild))
                 return;
 
             string site = Utility.FixHtml(text.Trim());
@@ -208,7 +206,7 @@ namespace Server.Guilds
                 from.SendLocalizedMessage(1070777, "50"); // Your guild website cannot exceed ~1_val~ characters.
             else
             {
-                this.guild.Website = site;
+                guild.Website = site;
                 from.SendLocalizedMessage(1070778); // You submit a new guild website.
                 return;
             }

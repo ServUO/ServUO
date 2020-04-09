@@ -47,7 +47,7 @@ namespace Server.Misc
 			if (m.Guild == null)
 				return GuildStatus.None;
 
-			if (((Guild)m.Guild).Enemies.Count == 0 && m.Guild.Type == GuildType.Regular)
+			if (((Guild)m.Guild).Enemies.Count == 0)
 				return GuildStatus.Peaceful;
 
 			return GuildStatus.Warring;

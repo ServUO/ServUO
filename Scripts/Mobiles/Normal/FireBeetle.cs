@@ -136,14 +136,11 @@ namespace Server.Mobiles
 
         public override double GetControlChance(Mobile m, bool useBaseSkill)
         {
-            if (PetTrainingHelper.Enabled)
-            {
-                var profile = PetTrainingHelper.GetAbilityProfile(this);
+            var profile = PetTrainingHelper.GetAbilityProfile(this);
 
-                if (profile != null && profile.HasCustomized())
-                {
-                    return base.GetControlChance(m, useBaseSkill);
-                }
+            if (profile != null && profile.HasCustomized())
+            {
+                return base.GetControlChance(m, useBaseSkill);
             }
 
             return 1.0;
@@ -153,7 +150,7 @@ namespace Server.Mobiles
         {
             base.OnAfterTame(tamer);
 
-            if (Owners.Count == 0 && PetTrainingHelper.Enabled)
+            if (Owners.Count == 0)
             {
                 SetInt(500);
             }
