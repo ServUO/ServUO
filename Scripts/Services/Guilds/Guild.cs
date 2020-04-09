@@ -1295,7 +1295,7 @@ namespace Server.Guilds
             {
                 return false;
             }
-
+            
             Guild guild = GetAllianceLeader(this);
             Guild otherGuild = GetAllianceLeader(g);
 
@@ -1303,8 +1303,6 @@ namespace Server.Guilds
             {
                 return true;
             }
-
-            return false;
 
             return m_Enemies.Contains(g);
         }
