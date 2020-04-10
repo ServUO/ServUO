@@ -1945,23 +1945,9 @@ namespace Server.Items
 
             ValidatePositions();
 
-            if (ns.HighSeas)
-            {
-                to.Send(new ContainerDisplayHS(this));
-            }
-            else
-            {
-                to.Send(new ContainerDisplay(this));
-            }
+            to.Send(new ContainerDisplay(this));
 
-            if (ns.ContainerGridLines)
-            {
-                to.Send(new ContainerContent6017(to, this));
-            }
-            else
-            {
-                to.Send(new ContainerContent(to, this));
-            }
+            to.Send(new ContainerContent(to, this));
 
             foreach (var o in Items)
             {

@@ -31,27 +31,13 @@ namespace Server
 			from.Send(new MobileStatus(from, to));
 			from.Send(new UpdateSecureTrade(m_From.Container, false, false));
 
-			if (from6017)
-			{
-				from.Send(new SecureTradeEquip6017(m_To.Container, to));
-			}
-			else
-			{
-				from.Send(new SecureTradeEquip(m_To.Container, to));
-			}
+            from.Send(new SecureTradeEquip(m_To.Container, to));
 
-			from.Send(new UpdateSecureTrade(m_From.Container, false, false));
+            from.Send(new UpdateSecureTrade(m_From.Container, false, false));
 
-			if (from6017)
-			{
-				from.Send(new SecureTradeEquip6017(m_From.Container, from));
-			}
-			else
-			{
-				from.Send(new SecureTradeEquip(m_From.Container, from));
-			}
+            from.Send(new SecureTradeEquip(m_From.Container, from));
 
-			from.Send(new DisplaySecureTrade(to, m_From.Container, m_To.Container, to.Name));
+            from.Send(new DisplaySecureTrade(to, m_From.Container, m_To.Container, to.Name));
 			from.Send(new UpdateSecureTrade(m_From.Container, false, false));
 
 			if (from.Account != null && from704565)
@@ -63,27 +49,13 @@ namespace Server
 			to.Send(new MobileStatus(to, from));
 			to.Send(new UpdateSecureTrade(m_To.Container, false, false));
 
-			if (to6017)
-			{
-				to.Send(new SecureTradeEquip6017(m_From.Container, from));
-			}
-			else
-			{
-				to.Send(new SecureTradeEquip(m_From.Container, from));
-			}
+            to.Send(new SecureTradeEquip(m_From.Container, from));
 
-			to.Send(new UpdateSecureTrade(m_To.Container, false, false));
+            to.Send(new UpdateSecureTrade(m_To.Container, false, false));
 
-			if (to6017)
-			{
-				to.Send(new SecureTradeEquip6017(m_To.Container, to));
-			}
-			else
-			{
-				to.Send(new SecureTradeEquip(m_To.Container, to));
-			}
+            to.Send(new SecureTradeEquip(m_To.Container, to));
 
-			to.Send(new DisplaySecureTrade(from, m_To.Container, m_From.Container, from.Name));
+            to.Send(new DisplaySecureTrade(from, m_To.Container, m_From.Container, from.Name));
 			to.Send(new UpdateSecureTrade(m_To.Container, false, false));
 
 			if (to.Account != null && to704565)
