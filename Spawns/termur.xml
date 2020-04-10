@@ -45,11 +45,11 @@
     <Name>Spawner</Name>
     <UniqueId>06162ea7-48f1-4f62-b193-fd5221ce4932</UniqueId>
     <Map>TerMur</Map>
-    <X>800</X>
-    <Y>3393</Y>
-    <Width>10</Width>
+    <X>802</X>
+    <Y>3394</Y>
+    <Width>9</Width>
     <Height>10</Height>
-    <CentreX>805</CentreX>
+    <CentreX>806</CentreX>
     <CentreY>3398</CentreY>
     <CentreZ>0</CentreZ>
     <Range>5</Range>
@@ -549,12 +549,12 @@
     <Name>Gargish Bazaar2</Name>
     <UniqueId>20bef6bd-62ba-43a4-a7f7-4ca7dcea6075</UniqueId>
     <Map>TerMur</Map>
-    <X>710</X>
-    <Y>3418</Y>
-    <Width>10</Width>
+    <X>713</X>
+    <Y>3420</Y>
+    <Width>8</Width>
     <Height>10</Height>
-    <CentreX>715</CentreX>
-    <CentreY>3423</CentreY>
+    <CentreX>716</CentreX>
+    <CentreY>3424</CentreY>
     <CentreZ>-20</CentreZ>
     <Range>5</Range>
     <MaxCount>1</MaxCount>
@@ -717,10 +717,10 @@
     <Name>TerMur 3</Name>
     <UniqueId>2c24d859-eb0a-4192-aa08-d42b8841b4d3</UniqueId>
     <Map>TerMur</Map>
-    <X>812</X>
-    <Y>3423</Y>
-    <Width>10</Width>
-    <Height>10</Height>
+    <X>814</X>
+    <Y>3424</Y>
+    <Width>8</Width>
+    <Height>8</Height>
     <CentreX>817</CentreX>
     <CentreY>3428</CentreY>
     <CentreZ>0</CentreZ>
@@ -802,11 +802,11 @@
     <UniqueId>2de7d0af-47f3-43a4-946c-23fc9e4bbeaf</UniqueId>
     <Map>TerMur</Map>
     <X>779</X>
-    <Y>3485</Y>
-    <Width>10</Width>
+    <Y>3488</Y>
+    <Width>8</Width>
     <Height>10</Height>
-    <CentreX>784</CentreX>
-    <CentreY>3490</CentreY>
+    <CentreX>782</CentreX>
+    <CentreY>3491</CentreY>
     <CentreZ>-20</CentreZ>
     <Range>5</Range>
     <MaxCount>1</MaxCount>
@@ -885,14 +885,14 @@
     <Name>Gargish Bazaar1</Name>
     <UniqueId>30fea729-4021-4b3e-b8f1-49a05e02d80c</UniqueId>
     <Map>TerMur</Map>
-    <X>697</X>
-    <Y>3429</Y>
-    <Width>10</Width>
-    <Height>10</Height>
-    <CentreX>702</CentreX>
-    <CentreY>3434</CentreY>
+    <X>701</X>
+    <Y>3431</Y>
+    <Width>8</Width>
+    <Height>8</Height>
+    <CentreX>704</CentreX>
+    <CentreY>3435</CentreY>
     <CentreZ>-20</CentreZ>
-    <Range>5</Range>
+    <Range>4</Range>
     <MaxCount>1</MaxCount>
     <MinDelay>5</MinDelay>
     <MaxDelay>10</MaxDelay>
@@ -1347,15 +1347,15 @@
     <Name>Termur Mystic</Name>
     <UniqueId>41d192fe-9591-48b4-aeb2-9cfffcd7c107</UniqueId>
     <Map>TerMur</Map>
-    <X>767</X>
-    <Y>3481</Y>
-    <Width>10</Width>
-    <Height>10</Height>
-    <CentreX>772</CentreX>
-    <CentreY>3486</CentreY>
+    <X>770</X>
+    <Y>3484</Y>
+    <Width>8</Width>
+    <Height>12</Height>
+    <CentreX>773</CentreX>
+    <CentreY>3489</CentreY>
     <CentreZ>-20</CentreZ>
-    <Range>5</Range>
-    <MaxCount>1</MaxCount>
+    <Range>8</Range>
+    <MaxCount>2</MaxCount>
     <MinDelay>5</MinDelay>
     <MaxDelay>10</MaxDelay>
     <DelayInSec>False</DelayInSec>
@@ -1383,7 +1383,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>mage:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>mage:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=mystic:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Holy City</Name>
@@ -1599,12 +1599,12 @@
     <Name>TerMur Mastercook/Juicer/Brewer</Name>
     <UniqueId>4e0e1cf8-11cb-4a5a-9f11-2bf5e81c6d8a</UniqueId>
     <Map>TerMur</Map>
-    <X>801</X>
-    <Y>3486</Y>
-    <Width>10</Width>
-    <Height>10</Height>
-    <CentreX>806</CentreX>
-    <CentreY>3491</CentreY>
+    <X>804</X>
+    <Y>3487</Y>
+    <Width>7</Width>
+    <Height>9</Height>
+    <CentreX>807</CentreX>
+    <CentreY>3492</CentreY>
     <CentreZ>-20</CentreZ>
     <Range>5</Range>
     <MaxCount>2</MaxCount>
@@ -1851,11 +1851,11 @@
     <Name>Spawner</Name>
     <UniqueId>5dfefcb2-8c76-4296-9df0-f8d6a1659e5f</UniqueId>
     <Map>TerMur</Map>
-    <X>788</X>
-    <Y>3486</Y>
-    <Width>10</Width>
-    <Height>10</Height>
-    <CentreX>793</CentreX>
+    <X>792</X>
+    <Y>3488</Y>
+    <Width>9</Width>
+    <Height>9</Height>
+    <CentreX>796</CentreX>
     <CentreY>3491</CentreY>
     <CentreZ>-20</CentreZ>
     <Range>5</Range>
@@ -1979,10 +1979,10 @@
     <Map>TerMur</Map>
     <X>769</X>
     <Y>3473</Y>
-    <Width>4</Width>
-    <Height>4</Height>
-    <CentreX>771</CentreX>
-    <CentreY>3475</CentreY>
+    <Width>8</Width>
+    <Height>8</Height>
+    <CentreX>773</CentreX>
+    <CentreY>3476</CentreY>
     <CentreZ>-20</CentreZ>
     <Range>5</Range>
     <MaxCount>3</MaxCount>
@@ -2019,11 +2019,11 @@
     <Name>Jeweler</Name>
     <UniqueId>62d0055e-dd50-4a66-9baf-6919e7832734</UniqueId>
     <Map>TerMur</Map>
-    <X>773</X>
-    <Y>3425</Y>
-    <Width>10</Width>
-    <Height>10</Height>
-    <CentreX>778</CentreX>
+    <X>776</X>
+    <Y>3427</Y>
+    <Width>9</Width>
+    <Height>9</Height>
+    <CentreX>780</CentreX>
     <CentreY>3430</CentreY>
     <CentreZ>-10</CentreZ>
     <Range>5</Range>
@@ -2187,9 +2187,9 @@
     <Name>Spawner</Name>
     <UniqueId>6723039a-4096-4b64-a30c-e8961277f997</UniqueId>
     <Map>TerMur</Map>
-    <X>813</X>
+    <X>810</X>
     <Y>3418</Y>
-    <Width>4</Width>
+    <Width>8</Width>
     <Height>4</Height>
     <CentreX>815</CentreX>
     <CentreY>3420</CentreY>
@@ -2475,7 +2475,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>barkeeper:MX=6:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>barkeeper:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>MedusaSNest3</Name>
@@ -2783,7 +2783,7 @@
     <CentreY>3438</CentreY>
     <CentreZ>0</CentreZ>
     <Range>5</Range>
-    <MaxCount>1</MaxCount>
+    <MaxCount>2</MaxCount>
     <MinDelay>5</MinDelay>
     <MaxDelay>10</MaxDelay>
     <DelayInSec>False</DelayInSec>
@@ -3321,14 +3321,14 @@
     <Name>Gargish Bazaar8</Name>
     <UniqueId>a225d68b-3808-4ad8-b1d5-539664d0de4c</UniqueId>
     <Map>TerMur</Map>
-    <X>725</X>
-    <Y>3426</Y>
-    <Width>2</Width>
-    <Height>2</Height>
+    <X>724</X>
+    <Y>3425</Y>
+    <Width>5</Width>
+    <Height>5</Height>
     <CentreX>726</CentreX>
     <CentreY>3427</CentreY>
     <CentreZ>-20</CentreZ>
-    <Range>5</Range>
+    <Range>4</Range>
     <MaxCount>1</MaxCount>
     <MinDelay>5</MinDelay>
     <MaxDelay>10</MaxDelay>
@@ -4036,11 +4036,11 @@
     <Name>Gargish Bazaar6</Name>
     <UniqueId>d45d20d5-f661-4f4f-ac8c-9c89fe67b297</UniqueId>
     <Map>TerMur</Map>
-    <X>727</X>
-    <Y>3444</Y>
-    <Width>2</Width>
-    <Height>2</Height>
-    <CentreX>728</CentreX>
+    <X>725</X>
+    <Y>3442</Y>
+    <Width>6</Width>
+    <Height>6</Height>
+    <CentreX>727</CentreX>
     <CentreY>3445</CentreY>
     <CentreZ>-20</CentreZ>
     <Range>5</Range>
@@ -4666,14 +4666,14 @@
     <Name>Spawner</Name>
     <UniqueId>edac18a2-5a3f-45e9-8761-3454151c8b03</UniqueId>
     <Map>TerMur</Map>
-    <X>801</X>
-    <Y>3382</Y>
-    <Width>10</Width>
-    <Height>10</Height>
+    <X>802</X>
+    <Y>3384</Y>
+    <Width>9</Width>
+    <Height>9</Height>
     <CentreX>806</CentreX>
-    <CentreY>3387</CentreY>
+    <CentreY>3388</CentreY>
     <CentreZ>0</CentreZ>
-    <Range>5</Range>
+    <Range>4</Range>
     <MaxCount>1</MaxCount>
     <MinDelay>5</MinDelay>
     <MaxDelay>10</MaxDelay>
