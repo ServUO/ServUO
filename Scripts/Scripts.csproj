@@ -254,6 +254,9 @@
     <Compile Include="Commands\VisibilityList.cs">
       <SubType>Code</SubType>
     </Compile>
+	  <Compile Include="Commands\WhatIsIt.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Commands\Wipe.cs">
       <SubType>Code</SubType>
     </Compile>
