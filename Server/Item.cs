@@ -717,8 +717,6 @@ namespace Server
 
         #region Packet caches
         private Packet m_WorldPacket;
-        private Packet m_WorldPacketSA;
-        private Packet m_WorldPacketHS;
         private Packet m_RemovePacket;
 
         private Packet m_OPLPacket;
@@ -2263,10 +2261,8 @@ namespace Server
         }
 
         private readonly object _wpl = new object();
-        private readonly object _wplsa = new object();
-        private readonly object _wplhs = new object();
-
-        public Packet WorldPacket
+        
+        public virtual Packet WorldPacket
         {
             get
             {
@@ -2294,67 +2290,9 @@ namespace Server
             }
         }
 
-        public Packet WorldPacketSA
-        {
-            get
-            {
-                // This needs to be invalidated when any of the following changes:
-                //  - ItemID
-                //  - Amount
-                //  - Location
-                //  - Hue
-                //  - Packet Flags
-                //  - Direction
-
-                if (m_WorldPacketSA == null)
-                {
-                    lock (_wplsa)
-                    {
-                        if (m_WorldPacketSA == null)
-                        {
-                            m_WorldPacketSA = new WorldItemSA(this);
-                            m_WorldPacketSA.SetStatic();
-                        }
-                    }
-                }
-
-                return m_WorldPacketSA;
-            }
-        }
-
-        public virtual Packet WorldPacketHS
-        {
-            get
-            {
-                // This needs to be invalidated when any of the following changes:
-                //  - ItemID
-                //  - Amount
-                //  - Location
-                //  - Hue
-                //  - Packet Flags
-                //  - Direction
-
-                if (m_WorldPacketHS == null)
-                {
-                    lock (_wplhs)
-                    {
-                        if (m_WorldPacketHS == null)
-                        {
-                            m_WorldPacketHS = new WorldItemHS(this);
-                            m_WorldPacketHS.SetStatic();
-                        }
-                    }
-                }
-
-                return m_WorldPacketHS;
-            }
-        }
-
         public virtual void ReleaseWorldPackets()
         {
             Packet.Release(ref m_WorldPacket);
-            Packet.Release(ref m_WorldPacketSA);
-            Packet.Release(ref m_WorldPacketHS);
         }
 
         [CommandProperty(AccessLevel.Decorator)]
@@ -3662,18 +3600,7 @@ namespace Server
         
         protected virtual Packet GetWorldPacketFor(NetState state)
         {
-            if (state.HighSeas)
-            {
-                return WorldPacketHS;
-            }
-            else if (state.StygianAbyss)
-            {
-                return WorldPacketSA;
-            }
-            else
-            {
-                return WorldPacket;
-            }
+            return WorldPacket;
         }
 
         public virtual bool IsVirtualItem => false; 
@@ -4034,14 +3961,7 @@ namespace Server
                             {
                                 if (rootParent.CanSee(this) && rootParent.InRange(worldLoc, GetUpdateRange(rootParent)))
                                 {
-                                    if (ns.ContainerGridLines)
-                                    {
-                                        ns.Send(new ContainerContentUpdate6017(this));
-                                    }
-                                    else
-                                    {
-                                        ns.Send(new ContainerContentUpdate(this));
-                                    }
+                                    ns.Send(new ContainerContentUpdate(this));
 
                                     ns.Send(OPLPacket);
                                 }
@@ -4078,14 +3998,7 @@ namespace Server
                                     {
                                         if (tradeRecip.CanSee(this) && tradeRecip.InRange(worldLoc, GetUpdateRange(tradeRecip)))
                                         {
-                                            if (ns.ContainerGridLines)
-                                            {
-                                                ns.Send(new ContainerContentUpdate6017(this));
-                                            }
-                                            else
-                                            {
-                                                ns.Send(new ContainerContentUpdate(this));
-                                            }
+                                            ns.Send(new ContainerContentUpdate(this));
 
                                             ns.Send(OPLPacket);
                                         }
@@ -4123,14 +4036,7 @@ namespace Server
                                         {
                                             if (mob.CanSee(this))
                                             {
-                                                if (ns.ContainerGridLines)
-                                                {
-                                                    ns.Send(new ContainerContentUpdate6017(this));
-                                                }
-                                                else
-                                                {
-                                                    ns.Send(new ContainerContentUpdate(this));
-                                                }
+                                                ns.Send(new ContainerContentUpdate(this));
 
                                                 ns.Send(OPLPacket);
                                             }
@@ -4171,14 +4077,7 @@ namespace Server
                                 {
                                     if (m_Parent is Item)
                                     {
-                                        if (state.ContainerGridLines)
-                                        {
-                                            state.Send(new ContainerContentUpdate6017(this));
-                                        }
-                                        else
-                                        {
-                                            state.Send(new ContainerContentUpdate(this));
-                                        }
+                                        state.Send(new ContainerContentUpdate(this));
                                     }
                                     else if (m_Parent is Mobile)
                                     {

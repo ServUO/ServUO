@@ -23,14 +23,7 @@ namespace Server.Targeting
 
 		public override Packet GetPacketFor(NetState ns)
 		{
-			if (ns.HighSeas)
-			{
-				return new MultiTargetReqHS(this);
-			}
-			else
-			{
-				return new MultiTargetReq(this);
-			}
-		}
+            return new MultiTargetReq(this);
+        }
 	}
 }

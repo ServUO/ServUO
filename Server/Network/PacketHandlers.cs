@@ -1503,16 +1503,9 @@ namespace Server.Network
 		{
 			Mobile m = state.Mobile;
 
-			if (state.StygianAbyss)
-			{
-				state.Send(new MobileUpdate(m));
-			}
-			else
-			{
-				state.Send(new MobileUpdateOld(m));
-			}
+            state.Send(new MobileUpdate(m));
 
-			state.Send(MobileIncoming.Create(state, m, m));
+            state.Send(MobileIncoming.Create(state, m, m));
 
 			m.SendEverything();
 
@@ -2503,20 +2496,9 @@ namespace Server.Network
 
 			state.Send(MobileIncoming.Create(state, m, m));
 
-			if (state.NewMobileIncoming)
-			{
-				state.Send(new MobileUpdate(m));
-			}
-			else if (state.StygianAbyss)
-			{
-				state.Send(new MobileUpdate(m));
-			}
-			else
-			{
-				state.Send(new MobileUpdateOld(m));
-			}
+            state.Send(new MobileUpdate(m));
 
-			m.SendEverything();
+            m.SendEverything();
 
 			m.CheckLightLevels(true);
 
@@ -2978,15 +2960,8 @@ namespace Server.Network
 
 				state.Send(SupportedFeatures.Instantiate(state));
 
-				if (state.NewCharacterList)
-				{
-                    state.Send(new CharacterList(state.Account, state.CityInfo, state.IsEnhancedClient));
-                }
-				else
-				{
-					state.Send(new CharacterListOld(state.Account, state.CityInfo));
-				}
-			}
+                state.Send(new CharacterList(state.Account, state.CityInfo, state.IsEnhancedClient));
+            }
 			else
 			{
 				state.Dispose();

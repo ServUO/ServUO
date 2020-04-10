@@ -747,46 +747,17 @@ namespace Server.Items
 			}
 			else if (Parent is Item)
 			{
-				// What will happen if the client doesn't know about our parent?
-				if (ns.ContainerGridLines)
-				{
-					to.Send(new ContainerContentUpdate6017(this));
-				}
-				else
-				{
-					to.Send(new ContainerContentUpdate(this));
-				}
-			}
+                to.Send(new ContainerContentUpdate(this));
+            }
 			else if (Parent is Mobile)
 			{
 				// What will happen if the client doesn't know about our parent?
 				to.Send(new EquipUpdate(this));
 			}
 
-			if (ns.HighSeas)
-			{
-				to.Send(new DisplaySpellbookHS(this));
-			}
-			else
-			{
-				to.Send(new DisplaySpellbook(this));
-			}
+            to.Send(new DisplaySpellbook(this));
 
-            if (ns.NewSpellbook)
-            {
-                to.Send(new NewSpellbookContent(this, ItemID, BookOffset + 1, m_Content));
-            }
-            else
-            {
-                if (ns.ContainerGridLines)
-                {
-                    to.Send(new SpellbookContent6017(m_Count, BookOffset + 1, m_Content, this));
-                }
-                else
-                {
-                    to.Send(new SpellbookContent(m_Count, BookOffset + 1, m_Content, this));
-                }
-            }
+            to.Send(new SpellbookContent(this, ItemID, BookOffset + 1, m_Content));
         }
 
         public override void AddNameProperties(ObjectPropertyList list)
