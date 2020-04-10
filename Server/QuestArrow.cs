@@ -35,22 +35,15 @@ namespace Server
 				return;
 			}
 
-			if (ns.HighSeas)
-			{
-				if (m_Target is IEntity)
-				{
-					ns.Send(new SetArrowHS(x, y, ((IEntity)m_Target).Serial));
-				}
-				else
-				{
-					ns.Send(new SetArrowHS(x, y, Serial.MinusOne));
-				}
-			}
-			else
-			{
-				ns.Send(new SetArrow(x, y));
-			}
-		}
+            if (m_Target is IEntity)
+            {
+                ns.Send(new SetArrow(x, y, ((IEntity)m_Target).Serial));
+            }
+            else
+            {
+                ns.Send(new SetArrow(x, y, Serial.MinusOne));
+            }
+        }
 
 		public void Stop()
 		{
@@ -70,22 +63,15 @@ namespace Server
 
 			if (ns != null)
 			{
-				if (ns.HighSeas)
-				{
-					if (m_Target is IEntity)
-					{
-						ns.Send(new CancelArrowHS(x, y, ((IEntity)m_Target).Serial));
-					}
-					else
-					{
-						ns.Send(new CancelArrowHS(x, y, Serial.MinusOne));
-					}
-				}
-				else
-				{
-					ns.Send(new CancelArrow());
-				}
-			}
+                if (m_Target is IEntity)
+                {
+                    ns.Send(new CancelArrow(x, y, ((IEntity)m_Target).Serial));
+                }
+                else
+                {
+                    ns.Send(new CancelArrow(x, y, Serial.MinusOne));
+                }
+            }
 
 			m_Running = false;
 			OnStop();
