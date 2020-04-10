@@ -2690,18 +2690,10 @@ namespace Server
 			{
 				m_ContextMenu = value;
 
-				if (m_ContextMenu != null && m_NetState != null)
+				if (m_ContextMenu != null)
 				{
-					// Old packet is preferred until assistants catch up
-					if (m_NetState.NewHaven && m_ContextMenu.RequiresNewPacket)
-					{
-						Send(new DisplayContextMenu(m_ContextMenu));
-					}
-					else
-					{
-						Send(new DisplayContextMenuOld(m_ContextMenu));
-					}
-				}
+                    Send(new DisplayContextMenu(m_ContextMenu));
+                }
 			}
 		}
 
@@ -3314,33 +3306,16 @@ namespace Server
 
 					if (ns != null && m.InUpdateRange(m_Location) && m.CanSee(this))
 					{
-						if (ns.StygianAbyss)
-						{
-							Packet p;
-							int noto = Notoriety.Compute(m, this);
-							p = cache[0][noto];
+                        int noto = Notoriety.Compute(m, this);
+                        Packet p = cache[0][noto];
 
-							if (p == null)
-							{
-								cache[0][noto] = p = Packet.Acquire(new MobileMoving(this, noto));
-							}
+                        if (p == null)
+                        {
+                            cache[0][noto] = p = Packet.Acquire(new MobileMoving(this, noto));
+                        }
 
-							ns.Send(p);
-						}
-						else
-						{
-							Packet p;
-							int noto = Notoriety.Compute(m, this);
-							p = cache[1][noto];
-
-							if (p == null)
-							{
-								cache[1][noto] = p = Packet.Acquire(new MobileMovingOld(this, noto));
-							}
-
-							ns.Send(p);
-						}
-					}
+                        ns.Send(p);
+                    }
 				}
 
 				for (int i = 0; i < cache.Length; ++i)
@@ -4575,15 +4550,8 @@ namespace Server
 
 				if (item.Parent is Item)
 				{
-					if (state.ContainerGridLines)
-					{
-						state.Send(new ContainerContentUpdate6017(item));
-					}
-					else
-					{
-						state.Send(new ContainerContentUpdate(item));
-					}
-				}
+                    state.Send(new ContainerContentUpdate(item));
+                }
 				else if (item.Parent is Mobile)
 				{
 					state.Send(new EquipUpdate(item));
@@ -5547,37 +5515,15 @@ namespace Server
 
                         if (amount > 0 && (ourState != null || theirState != null))
                         {
-                            Packet p = null; // = new DamagePacket( this, amount );
+                            var p = Packet.Acquire(new DamagePacket(this, amount));
 
                             if (ourState != null)
                             {
-                                if (ourState.DamagePacket)
-                                {
-                                    p = Packet.Acquire(new DamagePacket(this, amount));
-                                }
-                                else
-                                {
-                                    p = Packet.Acquire(new DamagePacketOld(this, amount));
-                                }
-
                                 ourState.Send(p);
                             }
 
                             if (theirState != null && theirState != ourState)
                             {
-                                bool newPacket = theirState.DamagePacket;
-
-                                if (newPacket && (p == null || !(p is DamagePacket)))
-                                {
-                                    Packet.Release(p);
-                                    p = Packet.Acquire(new DamagePacket(this, amount));
-                                }
-                                else if (!newPacket && (p == null || !(p is DamagePacketOld)))
-                                {
-                                    Packet.Release(p);
-                                    p = Packet.Acquire(new DamagePacketOld(this, amount));
-                                }
-
                                 theirState.Send(p);
                             }
 
@@ -5610,36 +5556,17 @@ namespace Server
 
 			var eable = map.GetClientsInRange(m_Location);
 
-			Packet pNew = null;
-			Packet pOld = null;
+            var p = Packet.Acquire(new DamagePacket(this, amount));
 
-			foreach (NetState ns in eable)
+            foreach (NetState ns in eable)
 			{
 				if (ns.Mobile.CanSee(this))
 				{
-					if (ns.DamagePacket)
-					{
-						if (pNew == null)
-						{
-							pNew = Packet.Acquire(new DamagePacket(this, amount));
-						}
-
-						ns.Send(pNew);
-					}
-					else
-					{
-						if (pOld == null)
-						{
-							pOld = Packet.Acquire(new DamagePacketOld(this, amount));
-						}
-
-						ns.Send(pOld);
-					}
-				}
+                    ns.Send(p);
+                }
 			}
 
-			Packet.Release(pNew);
-			Packet.Release(pOld);
+			Packet.Release(p);
 
 			eable.Free();
 		}
@@ -7636,16 +7563,9 @@ namespace Server
 						ns.Send(new MapPatches());
 						ns.Send(SeasonChange.Instantiate(GetSeason(), true));
 
-						if (ns.StygianAbyss)
-						{
-							ns.Send(new MobileUpdate(this));
-						}
-						else
-						{
-							ns.Send(new MobileUpdateOld(this));
-						}
+                        ns.Send(new MobileUpdate(this));
 
-						ClearFastwalkStack();
+                        ClearFastwalkStack();
 					}
 
 					if (ns != null)
@@ -7660,19 +7580,10 @@ namespace Server
 
 						ns.Send(MobileIncoming.Create(ns, this, this));
 
-						if (ns.StygianAbyss)
-						{
-							ns.Send(new MobileUpdate(this));
-							CheckLightLevels(true);
-							ns.Send(new MobileUpdate(this));
-						}
-						else
-						{
-							ns.Send(new MobileUpdateOld(this));
-							CheckLightLevels(true);
-							ns.Send(new MobileUpdateOld(this));
-						}
-					}
+                        ns.Send(new MobileUpdate(this));
+                        CheckLightLevels(true);
+                        ns.Send(new MobileUpdate(this));
+                    }
 
 					SendEverything();
 					SendIncomingPacket();
@@ -7684,19 +7595,10 @@ namespace Server
 
 						ns.Send(MobileIncoming.Create(ns, this, this));
 
-						if (ns.StygianAbyss)
-						{
-							ns.Send(SupportedFeatures.Instantiate(ns));
-							ns.Send(new MobileUpdate(this));
-							ns.Send(new MobileAttributes(this));
-						}
-						else
-						{
-							ns.Send(SupportedFeatures.Instantiate(ns));
-							ns.Send(new MobileUpdateOld(this));
-							ns.Send(new MobileAttributes(this));
-						}
-					}
+                        ns.Send(SupportedFeatures.Instantiate(ns));
+                        ns.Send(new MobileUpdate(this));
+                        ns.Send(new MobileAttributes(this));
+                    }
 
 					OnMapChange(oldMap);
 				}
@@ -9904,16 +9806,9 @@ namespace Server
 
 				ns.Send(MobileIncoming.Create(ns, this, this));
 
-				if (ns.StygianAbyss)
-				{
-					ns.Send(new MobileUpdate(this));
-				}
-				else
-				{
-					ns.Send(new MobileUpdateOld(this));
-				}
+                ns.Send(new MobileUpdate(this));
 
-				ns.Send(new MobileAttributes(this));
+                ns.Send(new MobileAttributes(this));
 
 				CheckLightLevels(true);
 
@@ -9970,16 +9865,9 @@ namespace Server
 				{
 					m_NetState.Sequence = 0;
 
-					if (m_NetState.StygianAbyss)
-					{
-						m_NetState.Send(new MobileUpdate(this));
-					}
-					else
-					{
-						m_NetState.Send(new MobileUpdateOld(this));
-					}
+                    m_NetState.Send(new MobileUpdate(this));
 
-					ClearFastwalkStack();
+                    ClearFastwalkStack();
 
                     EventSink.InvokeTeleportMovement(new TeleportMovementEventArgs(this, oldLocation, newLocation));
 
@@ -11254,16 +11142,9 @@ namespace Server
 				{
 					ourState.Sequence = 0;
 
-					if (ourState.StygianAbyss)
-					{
-						ourState.Send(new MobileUpdate(m));
-					}
-					else
-					{
-						ourState.Send(new MobileUpdateOld(m));
-					}
+                    ourState.Send(new MobileUpdate(m));
 
-					ClearFastwalkStack();
+                    ClearFastwalkStack();
 				}
 
 				if (sendIncoming)
@@ -11271,36 +11152,25 @@ namespace Server
 					ourState.Send(MobileIncoming.Create(ourState, m, m));
 				}
 
-				if (ourState.StygianAbyss)
-				{
-					if (sendMoving)
-					{
-						int noto = Notoriety.Compute(m, m);
-						ourState.Send(cache[0][noto] = Packet.Acquire(new MobileMoving(m, noto)));
-					}
+                if (sendMoving)
+                {
+                    int noto = Notoriety.Compute(m, m);
+                    ourState.Send(cache[0][noto] = Packet.Acquire(new MobileMoving(m, noto)));
+                }
 
-					if (sendHealthbarPoison)
-					{
-						ourState.Send(new HealthbarPoison(m));
-                        ourState.Send(new HealthbarPoisonEC(m));
-					}
+                if (sendHealthbarPoison)
+                {
+                    ourState.Send(new HealthbarPoison(m));
+                    ourState.Send(new HealthbarPoisonEC(m));
+                }
 
-					if (sendHealthbarYellow)
-					{
-						ourState.Send(new HealthbarYellow(m));
-                        ourState.Send(new HealthbarYellowEC(m));
-					}
-				}
-				else
-				{
-					if (sendMoving || sendHealthbarPoison || sendHealthbarYellow)
-					{
-						int noto = Notoriety.Compute(m, m);
-						ourState.Send(cache[1][noto] = Packet.Acquire(new MobileMovingOld(m, noto)));
-					}
-				}
+                if (sendHealthbarYellow)
+                {
+                    ourState.Send(new HealthbarYellow(m));
+                    ourState.Send(new HealthbarYellowEC(m));
+                }
 
-				if (sendPublicStats || sendPrivateStats)
+                if (sendPublicStats || sendPrivateStats)
 				{
 					ourState.Send(new MobileStatusExtended(m, m_NetState));
 				}
@@ -11435,64 +11305,45 @@ namespace Server
 							}
 						}
 
-						if (state.StygianAbyss)
-						{
-							if (sendMoving)
-							{
-								int noto = Notoriety.Compute(beholder, m);
+                        if (sendMoving)
+                        {
+                            int noto = Notoriety.Compute(beholder, m);
 
-								Packet p = cache[0][noto];
+                            Packet p = cache[0][noto];
 
-								if (p == null)
-								{
-									cache[0][noto] = p = Packet.Acquire(new MobileMoving(m, noto));
-								}
+                            if (p == null)
+                            {
+                                cache[0][noto] = p = Packet.Acquire(new MobileMoving(m, noto));
+                            }
 
-								state.Send(p);
-							}
+                            state.Send(p);
+                        }
 
-							if (sendHealthbarPoison)
-							{
-								if (hbpPacket == null)
-								{
-									hbpPacket = Packet.Acquire(new HealthbarPoison(m));
-                                    hbpPacketEC = Packet.Acquire(new HealthbarPoisonEC(m));
-								}
+                        if (sendHealthbarPoison)
+                        {
+                            if (hbpPacket == null)
+                            {
+                                hbpPacket = Packet.Acquire(new HealthbarPoison(m));
+                                hbpPacketEC = Packet.Acquire(new HealthbarPoisonEC(m));
+                            }
 
-								state.Send(hbpPacket);
-                                state.Send(hbpPacketEC);
-							}
+                            state.Send(hbpPacket);
+                            state.Send(hbpPacketEC);
+                        }
 
-							if (sendHealthbarYellow)
-							{
-								if (hbyPacket == null)
-								{
-									hbyPacket = Packet.Acquire(new HealthbarYellow(m));
-                                    hbyPacketEC = Packet.Acquire(new HealthbarYellowEC(m));
-								}
+                        if (sendHealthbarYellow)
+                        {
+                            if (hbyPacket == null)
+                            {
+                                hbyPacket = Packet.Acquire(new HealthbarYellow(m));
+                                hbyPacketEC = Packet.Acquire(new HealthbarYellowEC(m));
+                            }
 
-								state.Send(hbyPacket);
-                                state.Send(hbyPacketEC);
-							}
-						}
-						else
-						{
-							if (sendMoving || sendHealthbarPoison || sendHealthbarYellow)
-							{
-								int noto = Notoriety.Compute(beholder, m);
+                            state.Send(hbyPacket);
+                            state.Send(hbyPacketEC);
+                        }
 
-								Packet p = cache[1][noto];
-
-								if (p == null)
-								{
-									cache[1][noto] = p = Packet.Acquire(new MobileMovingOld(m, noto));
-								}
-
-								state.Send(p);
-							}
-						}
-
-						if (sendPublicStats)
+                        if (sendPublicStats)
 						{
 							if (m.CanBeRenamedBy(beholder))
 							{
