@@ -18,45 +18,45 @@ namespace Server.Mobiles
         public HarrowerTentacles(Mobile harrower)
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.m_Harrower = harrower;
+            m_Harrower = harrower;
 
-            this.Name = "tentacles of the harrower";
-            this.Body = 129;
+            Name = "tentacles of the harrower";
+            Body = 129;
 
-            this.SetStr(901, 1000);
-            this.SetDex(126, 140);
-            this.SetInt(1001, 1200);
+            SetStr(901, 1000);
+            SetDex(126, 140);
+            SetInt(1001, 1200);
 
-            this.SetHits(541, 600);
+            SetHits(541, 600);
 
-            this.SetDamage(13, 20);
+            SetDamage(13, 20);
 
-            this.SetDamageType(ResistanceType.Physical, 20);
-            this.SetDamageType(ResistanceType.Fire, 20);
-            this.SetDamageType(ResistanceType.Cold, 20);
-            this.SetDamageType(ResistanceType.Poison, 20);
-            this.SetDamageType(ResistanceType.Energy, 20);
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Fire, 20);
+            SetDamageType(ResistanceType.Cold, 20);
+            SetDamageType(ResistanceType.Poison, 20);
+            SetDamageType(ResistanceType.Energy, 20);
 
-            this.SetResistance(ResistanceType.Physical, 55, 65);
-            this.SetResistance(ResistanceType.Fire, 35, 45);
-            this.SetResistance(ResistanceType.Cold, 35, 45);
-            this.SetResistance(ResistanceType.Poison, 35, 45);
-            this.SetResistance(ResistanceType.Energy, 35, 45);
+            SetResistance(ResistanceType.Physical, 55, 65);
+            SetResistance(ResistanceType.Fire, 35, 45);
+            SetResistance(ResistanceType.Cold, 35, 45);
+            SetResistance(ResistanceType.Poison, 35, 45);
+            SetResistance(ResistanceType.Energy, 35, 45);
 
-            this.SetSkill(SkillName.Meditation, 100.0);
-            this.SetSkill(SkillName.MagicResist, 120.1, 140.0);
-            this.SetSkill(SkillName.Swords, 90.1, 100.0);
-            this.SetSkill(SkillName.Tactics, 90.1, 100.0);
-            this.SetSkill(SkillName.Wrestling, 90.1, 100.0);
+            SetSkill(SkillName.Meditation, 100.0);
+            SetSkill(SkillName.MagicResist, 120.1, 140.0);
+            SetSkill(SkillName.Swords, 90.1, 100.0);
+            SetSkill(SkillName.Tactics, 90.1, 100.0);
+            SetSkill(SkillName.Wrestling, 90.1, 100.0);
 
-            this.Fame = 15000;
-            this.Karma = -15000;
+            Fame = 15000;
+            Karma = -15000;
 
-            this.m_Timer = new DrainTimer(this);
-            this.m_Timer.Start();
+            m_Timer = new DrainTimer(this);
+            m_Timer.Start();
 
-            this.PackReg(50);
-            this.PackNecroReg(15, 75);
+            PackReg(50);
+            PackNecroReg(15, 75);
 
 			switch (Utility.Random(3))
             {
@@ -81,34 +81,14 @@ namespace Server.Mobiles
                 this.m_Harrower = value;
             }
         }
-        public override bool AutoDispel
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override bool DisallowAllMoves
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool AutoDispel => true;
+
+        public override bool Unprovokable => true;
+
+        public override Poison PoisonImmune => Poison.Lethal;
+
+        public override bool DisallowAllMoves => true;
+
         public override void CheckReflect(Mobile caster, ref bool reflect)
         {
             reflect = true;
@@ -149,7 +129,6 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
 
             writer.Write(this.m_Harrower);
@@ -158,21 +137,11 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
-            switch ( version )
-            {
-                case 0:
-                    {
-                        this.m_Harrower = reader.ReadMobile();
-
-                        this.m_Timer = new DrainTimer(this);
-                        this.m_Timer.Start();
-
-                        break;
-                    }
-            }
+            this.m_Harrower = reader.ReadMobile();
+			this.m_Timer = new DrainTimer(this);
+            this.m_Timer.Start();
         }
 
         public override void OnAfterDelete()

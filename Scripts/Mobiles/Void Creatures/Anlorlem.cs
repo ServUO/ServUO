@@ -3,17 +3,17 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("an Anlorlem corpse")]
+    [CorpseName("an anlorlem corpse")]
     public class Anlorlem : BaseVoidCreature
     {
-        public override VoidEvolution Evolution { get { return VoidEvolution.Grouping; } }
-        public override int Stage { get { return 2; } }
+        public override VoidEvolution Evolution => VoidEvolution.Grouping; 
+        public override int Stage => 2; 
 
         [Constructable]
         public Anlorlem()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "an Anlorlem";
+            Name = "anlorlem";
             Body = 72;
             Hue = 2071;
             BaseSoundID = 644;
@@ -42,8 +42,6 @@ namespace Server.Mobiles
             Fame = 16000;
             Karma = -16000;
 
-            VirtualArmor = 50;
-
             PackItem(new DaemonBone(15));
         }
 
@@ -52,34 +50,14 @@ namespace Server.Mobiles
         {
         }
 
-		public override int TreasureMapLevel
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool ReacquireOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Greater;
-            }
-        }
+		public override int TreasureMapLevel => 3;
+
+        public override bool Unprovokable => true;
+
+        public override bool ReacquireOnMovement => true;
+
+        public override Poison PoisonImmune => Poison.Greater;
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.FilthyRich);

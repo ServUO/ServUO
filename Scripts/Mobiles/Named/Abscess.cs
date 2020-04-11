@@ -52,27 +52,12 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-        public override int Hides
-        {
-            get
-            {
-                return 40;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 19;
-            }
-        }
-        public override bool GivesMLMinorArtifact
-        {
-            get
-            {
-                return true;
-            }
-        }       
+        public override int Hides => 40;
+
+        public override int Meat => 19;
+
+        public override bool GivesMLMinorArtifact => true;
+   
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 4);
@@ -91,14 +76,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
             int version = reader.ReadInt();
         }
     }
