@@ -47,9 +47,9 @@ namespace Server.Items
         {
             var p = list.FirstOrDefault(x => x.Mobile == from);
 
-            return Locked && LockingPerson.Account != from.Account && p != null && !p.Permission;
+            return LockingPerson.Account == from.Account || p != null && p.Permission;
         }
-        
+
         public override void Open(Mobile from)
         {
             if (Locked && from.AccessLevel < AccessLevel.GameMaster && LockingPerson.Account != from.Account)
@@ -174,7 +174,7 @@ namespace Server.Items
 
         public override bool TryDropItem(Mobile from, Item dropped, bool sendFullMessage)
         {
-            if (CheckPermission(from))
+            if (Locked && !CheckPermission(from))
             {
                 from.SendLocalizedMessage(1151591); // You cannot place items into a locked chest!
                 return false;

@@ -1024,27 +1024,13 @@ namespace Server.Mobiles
 					return;
 				}
 
-				if (ns.ContainerGridLines)
-				{
-					from.Send(new VendorBuyContent6017(list));
-				}
-				else
-				{
-					from.Send(new VendorBuyContent(list));
-				}
+                from.Send(new VendorBuyContent(list));
 
-				from.Send(new VendorBuyList(this, list));
+                from.Send(new VendorBuyList(this, list));
 
-				if (ns.HighSeas)
-				{
-					from.Send(new DisplayBuyListHS(this));
-				}
-				else
-				{
-					from.Send(new DisplayBuyList(this));
-				}
+                from.Send(new DisplayBuyList(this));
 
-				from.Send(new MobileStatusExtended(from)); //make sure their gold amount is sent
+                from.Send(new MobileStatusExtended(from)); //make sure their gold amount is sent
 
 				if (opls != null)
 				{
