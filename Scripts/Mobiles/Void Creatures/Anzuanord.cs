@@ -6,52 +6,50 @@ namespace Server.Mobiles
     [CorpseName("an anzuanord corpse")]
     public class Anzuanord : BaseVoidCreature
     {
-        public override VoidEvolution Evolution { get { return VoidEvolution.Survival; } }
-        public override int Stage { get { return 1; } }
+        public override VoidEvolution Evolution => VoidEvolution.Survival; 
+        public override int Stage => 1; 
 
         [Constructable]
         public Anzuanord()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an Anzuanord";
-            this.Body = 74;
-            this.Hue = 2071;
-            this.BaseSoundID = 422;
+            Name = "anzuanord";
+            Body = 74;
+            Hue = 2071;
+            BaseSoundID = 422;
 
-            this.SetStr(705);
-            this.SetDex(900, 910);
-            this.SetInt(900, 1000);
+            SetStr(705);
+            SetDex(900, 910);
+            SetInt(900, 1000);
 
-            this.SetHits(180);
+            SetHits(180);
 
-            this.SetDamage(8, 10);
+            SetDamage(8, 10);
 
-            this.SetDamageType(ResistanceType.Physical, 20);
-            this.SetDamageType(ResistanceType.Fire, 20);
-            this.SetDamageType(ResistanceType.Cold, 20);
-            this.SetDamageType(ResistanceType.Poison, 20);
-            this.SetDamageType(ResistanceType.Energy, 20);
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Fire, 20);
+            SetDamageType(ResistanceType.Cold, 20);
+            SetDamageType(ResistanceType.Poison, 20);
+            SetDamageType(ResistanceType.Energy, 20);
 
-            this.SetResistance(ResistanceType.Physical, 0, 10);
-            this.SetResistance(ResistanceType.Poison, 15, 20);
-            this.SetResistance(ResistanceType.Physical, 15, 10);
-            this.SetResistance(ResistanceType.Poison, 0, 20);
-            this.SetResistance(ResistanceType.Physical, 100);
+            SetResistance(ResistanceType.Physical, 0, 10);
+            SetResistance(ResistanceType.Poison, 15, 20);
+            SetResistance(ResistanceType.Physical, 15, 10);
+            SetResistance(ResistanceType.Poison, 0, 20);
+            SetResistance(ResistanceType.Physical, 100);
 
-            this.SetSkill(SkillName.Anatomy, 5.0, 10.0);
-            this.SetSkill(SkillName.MagicResist, 40.0, 50.0);
-            this.SetSkill(SkillName.Tactics, 40.0, 50.0);
-            this.SetSkill(SkillName.Wrestling, 40.0, 50.0);
-            this.SetSkill(SkillName.Magery, 70.0, 80.0);
-            this.SetSkill(SkillName.EvalInt, 80.0, 90.0);
-            this.SetSkill(SkillName.Meditation, 50.0, 60.0);
+            SetSkill(SkillName.Anatomy, 5.0, 10.0);
+            SetSkill(SkillName.MagicResist, 40.0, 50.0);
+            SetSkill(SkillName.Tactics, 40.0, 50.0);
+            SetSkill(SkillName.Wrestling, 40.0, 50.0);
+            SetSkill(SkillName.Magery, 70.0, 80.0);
+            SetSkill(SkillName.EvalInt, 80.0, 90.0);
+            SetSkill(SkillName.Meditation, 50.0, 60.0);
 
-            this.Fame = 2500;
-            this.Karma = -2500;
+            Fame = 2500;
+            Karma = -2500;
 
-            this.PackItem(new DaemonBone(5));
-
-            this.VirtualArmor = 50;
+            PackItem(new DaemonBone(5));
         }
 
         public Anzuanord(Serial serial)
@@ -59,52 +57,20 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BardImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 7;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Spined;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Meat;
-            }
-        }
-        public override PackInstinct PackInstinct
-        {
-            get
-            {
-                return PackInstinct.Daemon;
-            }
-        }
+        public override bool BardImmune => true;
+
+        public override int Meat => 1;
+
+        public override int Hides => 7;
+
+        public override HideType HideType => HideType.Spined;
+
+        public override PackInstinct PackInstinct => PackInstinct.Daemon;
+
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager);
-            this.AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.Meager);
+            AddLoot(LootPack.MedScrolls, 2);
         }
 
         public override void Serialize(GenericWriter writer)

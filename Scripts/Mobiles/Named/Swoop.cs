@@ -10,7 +10,6 @@ namespace Server.Mobiles
         [Constructable]
         public Swoop()
         {
-
             Name = "Swoop";
             Hue = 0xE0;
 
@@ -51,7 +50,7 @@ namespace Server.Mobiles
             SetSpecialAbility(SpecialAbility.GraspingClaw);
         }
 
-		public override bool CanBeParagon { get { return false; } }
+		public override bool CanBeParagon => false;
 
         public override void OnDeath( Container c )
         {
@@ -93,27 +92,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanFly
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool GivesMLMinorArtifact
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int Feathers
-        {
-            get
-            {
-                return 72;
-            }
-        }
+        public override bool CanFly => true;
+
+        public override bool GivesMLMinorArtifact => true;
+
+        public override int Feathers => 72;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 2);
@@ -123,14 +107,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

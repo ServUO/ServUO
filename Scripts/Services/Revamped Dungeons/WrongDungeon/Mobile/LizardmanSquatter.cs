@@ -36,8 +36,6 @@ namespace Server.Mobiles
 
             Fame = 10000;
             Karma = -10000;
-
-            VirtualArmor = 28;
         }
 
         public LizardmanSquatter(Serial serial)
@@ -45,48 +43,18 @@ namespace Server.Mobiles
         {
         }
 
-        public override InhumanSpeech SpeechType
-        {
-            get
-            {
-                return InhumanSpeech.Lizardman;
-            }
-        }
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 12;
-            }
-        }
-		public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Spined;
-            }
-        }
+        public override InhumanSpeech SpeechType => InhumanSpeech.Lizardman;
+		
+        public override bool CanRummageCorpses => true;
+		
+        public override int Meat => 1;
+		
+        public override int Hides => 12;
+		
+		public override int TreasureMapLevel => 2;
+		
+        public override HideType HideType => HideType.Spined;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);

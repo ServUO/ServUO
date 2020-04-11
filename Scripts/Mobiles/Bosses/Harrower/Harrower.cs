@@ -86,87 +86,31 @@ namespace Server.Mobiles
         {
         }
 
-        public static ArrayList Instances
-        {
-            get
-            {
-                return m_Instances;
-            }
-        }
-        public static bool CanSpawn
-        {
-            get
-            {
-                return (m_Instances.Count == 0);
-            }
-        }
-        public Type[] UniqueList
-        {
-            get
-            {
-                return new Type[] { typeof(AcidProofRobe) };
-            }
-        }
-        public Type[] SharedList
-        {
-            get
-            {
-                return new Type[] { typeof(TheRobeOfBritanniaAri) };
-            }
-        }
-        public Type[] DecorativeList
-        {
-            get
-            {
-                return new Type[] { typeof(EvilIdolSkull), typeof(SkullPole) };
-            }
-        }
-        public override bool AutoDispel
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        [CommandProperty(AccessLevel.GameMaster)]
-        public override int HitsMax
-        {
-            get
-            {
-                return m_TrueForm ? 65000 : 30000;
-            }
-        }
-        [CommandProperty(AccessLevel.GameMaster)]
-        public override int ManaMax
-        {
-            get
-            {
-                return 5000;
-            }
-        }
-        public override bool DisallowAllMoves
-        {
-            get
-            {
-                return m_TrueForm;
-            }
-        }
+        public static ArrayList Instances => m_Instances;
 
-        public override bool TeleportsTo { get { return true; } }
+        public static bool CanSpawn => (m_Instances.Count == 0);
+
+        public Type[] UniqueList => new Type[] { typeof(AcidProofRobe) };
+
+        public Type[] SharedList => new Type[] { typeof(TheRobeOfBritanniaAri) };
+
+        public Type[] DecorativeList => new Type[] { typeof(EvilIdolSkull), typeof(SkullPole) };
+
+        public override bool AutoDispel => true;
+
+        public override bool Unprovokable => true;
+
+        public override Poison PoisonImmune => Poison.Lethal;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public override int HitsMax => m_TrueForm ? 65000 : 30000;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public override int ManaMax => 5000;
+
+        public override bool DisallowAllMoves => m_TrueForm;
+
+        public override bool TeleportsTo => true; 
 
         public static Harrower Spawn(Point3D platLoc, Map platMap)
         {
@@ -266,7 +210,6 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)1); // version
 
             writer.Write(m_IsSpawned);
@@ -278,25 +221,12 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            switch ( version )
-            {
-                case 1:
-                    {
-                        m_IsSpawned = reader.ReadBool();
-                        goto case 0;
-                    }
-                case 0:
-                    {
-                        m_TrueForm = reader.ReadBool();
-                        m_GateItem = reader.ReadItem();
-                        m_Tentacles = reader.ReadStrongMobileList<HarrowerTentacles>();
-
-                        break;
-                    }
-            }
+			
+			m_IsSpawned = reader.ReadBool();
+			m_TrueForm = reader.ReadBool();
+            m_GateItem = reader.ReadItem();
+            m_Tentacles = reader.ReadStrongMobileList<HarrowerTentacles>();
 
             if (m_IsSpawned)
                 m_Instances.Add(this);

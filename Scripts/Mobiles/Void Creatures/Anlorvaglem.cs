@@ -6,8 +6,8 @@ namespace Server.Mobiles
     [CorpseName("an anlorvaglem corpse")]
     public class Anlorvaglem : BaseVoidCreature
     {
-        public override VoidEvolution Evolution { get { return VoidEvolution.Grouping; } }
-        public override int Stage { get { return 3; } }
+        public override VoidEvolution Evolution => VoidEvolution.Grouping; 
+        public override int Stage => 3; 
 
         [Constructable]
         public Anlorvaglem()
@@ -44,8 +44,6 @@ namespace Server.Mobiles
             Fame = 8000;
             Karma = -8000;
 
-            VirtualArmor = 48;
-
             PackItem(new DaemonBone(30));
         }
 
@@ -54,34 +52,14 @@ namespace Server.Mobiles
         {
         }
 
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool ReacquireOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override Poison PoisonImmune => Poison.Lethal;
+
+        public override bool Unprovokable => true;
+
+        public override bool BardImmune => true;
+
+        public override bool ReacquireOnMovement => true;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich);
@@ -90,14 +68,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
             int version = reader.ReadInt();
         }
     }
