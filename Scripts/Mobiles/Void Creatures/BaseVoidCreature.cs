@@ -15,16 +15,16 @@ namespace Server.Mobiles
 
     public class BaseVoidCreature : BaseCreature
     {
-        public static int MutateCheck { get { return Utility.RandomMinMax(30, 120); } }
+        public static int MutateCheck => Utility.RandomMinMax(30, 120); 
 
-        public static bool RemoveFromSpawners { get { return true; } }
+        public static bool RemoveFromSpawners => true; 
 
         private DateTime m_NextMutate;
         private bool m_BuddyMutate;
 
-        public virtual int GroupAmount { get { return 2; } }
-        public virtual VoidEvolution Evolution { get { return VoidEvolution.None; } }
-        public virtual int Stage { get { return 0; } }
+        public virtual int GroupAmount => 2; 
+        public virtual VoidEvolution Evolution => VoidEvolution.None; 
+        public virtual int Stage => 0; 
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool BuddyMutate { get { return m_BuddyMutate; } set { m_BuddyMutate = value; } }
@@ -32,8 +32,8 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextMutate { get { return m_NextMutate; } set { m_NextMutate = value; } }
 
-        public override bool PlayerRangeSensitive { get { return Evolution != VoidEvolution.Killing && Stage < 3; } }
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool PlayerRangeSensitive => Evolution != VoidEvolution.Killing && Stage < 3; 
+        public override bool AlwaysMurderer => true; 
 
         public BaseVoidCreature(AIType aiType, FightMode fightMode, int perception, int range, double passive, double active)
             : base(aiType, FightMode.Good, perception, range, passive, active)
@@ -208,7 +208,6 @@ namespace Server.Mobiles
                         {
                             if (so.SpawnedObjects[i] == this)
                             {
-                                //so.SpawnedObjects.Remove(spawn);
                                 so.SpawnedObjects[i] = _MutateTo;
 
                                 Spawner = null;
