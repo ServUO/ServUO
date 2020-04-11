@@ -3070,29 +3070,9 @@ namespace Server.Mobiles
             {
                 return true;
             }
-
             if (!from.InRange(Location, 2))
-                return base.OnDragDrop(from, dropped);
-
-            bool gainedPath = false;
-
-            var honestySocket = dropped.GetSocket<HonestyItemSocket>();
-
-            if (honestySocket != null)
             {
-                if (honestySocket.HonestyOwner == this)
-                {
-                    VirtueHelper.Award(from, VirtueName.Honesty, 120, ref gainedPath);
-                    from.SendMessage(gainedPath ? "You have gained a path in Honesty!" : "You have gained in Honesty.");
-                    SayTo(from, 1074582); //Ah!  You found my property.  Thank you for your honesty in returning it to me.
-                    dropped.Delete();
-                    return true;
-                }
-                else
-                {
-                    this.SayTo(from, 501550, 0x3B2); // I am not interested in this.
-                    return false;
-                }
+                return base.OnDragDrop(from, dropped);
             }
             
             return false;          

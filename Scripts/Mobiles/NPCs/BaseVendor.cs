@@ -1139,10 +1139,28 @@ namespace Server.Mobiles
 
 		public override bool OnDragDrop(Mobile from, Item dropped)
 		{
-            if (dropped.GetSocket<HonestyItemSocket>() != null)
+            #region Honesty Item Check
+            var honestySocket = dropped.GetSocket<HonestyItemSocket>();
+
+            if (honestySocket != null)
             {
-                return base.OnDragDrop(from, dropped);
+                bool gainedPath = false;
+
+                if (honestySocket.HonestyOwner == this)
+                {
+                    VirtueHelper.Award(from, VirtueName.Honesty, 120, ref gainedPath);
+                    from.SendMessage(gainedPath ? "You have gained a path in Honesty!" : "You have gained in Honesty.");
+                    SayTo(from, 1074582); //Ah!  You found my property.  Thank you for your honesty in returning it to me.
+                    dropped.Delete();
+                    return true;
+                }
+                else
+                {
+                    this.SayTo(from, 501550, 0x3B2); // I am not interested in this.
+                    return false;
+                }              
             }
+            #endregion
 
             if (ConvertsMageArmor && dropped is BaseArmor && CheckConvertArmor(from, (BaseArmor)dropped))
             {
