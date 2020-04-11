@@ -1139,6 +1139,11 @@ namespace Server.Mobiles
 
 		public override bool OnDragDrop(Mobile from, Item dropped)
 		{
+            if (dropped.GetSocket<HonestyItemSocket>() != null)
+            {
+                return base.OnDragDrop(from, dropped);
+            }
+
             if (ConvertsMageArmor && dropped is BaseArmor && CheckConvertArmor(from, (BaseArmor)dropped))
             {
                 return false;

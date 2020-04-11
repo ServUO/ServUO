@@ -140,6 +140,11 @@ namespace Server.Engines.VvV
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
+            if (dropped.GetSocket<HonestyItemSocket>() != null)
+            {
+                return base.OnDragDrop(from, dropped);
+            }
+
             if (ViceVsVirtueSystem.IsVvV(from))
             {
                 if (!(dropped is IOwnerRestricted) || ((IOwnerRestricted)dropped).Owner == from)

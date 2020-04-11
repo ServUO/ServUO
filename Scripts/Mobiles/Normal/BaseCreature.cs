@@ -3078,19 +3078,24 @@ namespace Server.Mobiles
 
             var honestySocket = dropped.GetSocket<HonestyItemSocket>();
 
-            if (honestySocket != null && honestySocket.HonestyOwner == this)
+            if (honestySocket != null)
             {
-                VirtueHelper.Award(from, VirtueName.Honesty, 120, ref gainedPath);
+                if (honestySocket.HonestyOwner == this)
+                {
+                    VirtueHelper.Award(from, VirtueName.Honesty, 120, ref gainedPath);
+                    from.SendMessage(gainedPath ? "You have gained a path in Honesty!" : "You have gained in Honesty.");
+                    SayTo(from, 1074582); //Ah!  You found my property.  Thank you for your honesty in returning it to me.
+                    dropped.Delete();
+                    return true;
+                }
+                else
+                {
+                    this.SayTo(from, 501550, 0x3B2); // I am not interested in this.
+                    return false;
+                }
             }
-            else
-            {
-                return false;
-            }
-
-            from.SendMessage(gainedPath ? "You have gained a path in Honesty!" : "You have gained in Honesty.");
-            SayTo(from, 1074582); //Ah!  You found my property.  Thank you for your honesty in returning it to me.
-            dropped.Delete();
-            return true;
+            
+            return false;          
         }
 
         protected virtual BaseAI ForcedAI => null; 
