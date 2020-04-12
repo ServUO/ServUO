@@ -1944,7 +1944,9 @@ namespace Server.Multis
         public void SetLockdown(Mobile m, Item i, bool locked)
         {
             if (LockDowns == null || (locked && LockDowns.ContainsKey(i)) || (!locked && !LockDowns.ContainsKey(i)))
+            {
                 return;
+            }
 
             if (i is BaseAddonContainer)
                 i.Movable = false;
@@ -2412,7 +2414,15 @@ namespace Server.Multis
                     SetLockdown(m, item, false);
 
                     if (item is RewardBrazier)
+                    {
                         ((RewardBrazier)item).TurnOff();
+                    }
+
+                    // Handled here since it never gets added to the lockdown list
+                    if (item is VendorRentalContract)
+                    {
+                        VendorRentalContracts.Remove(item);
+                    }
 
                     return true;
                 }
@@ -3029,7 +3039,7 @@ namespace Server.Multis
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)22); // version
+            writer.Write((int)23); // version
 
             writer.Write((int)_CurrentDecay);
 
@@ -3160,6 +3170,7 @@ namespace Server.Multis
 
             switch (version)
             {
+                case 23: // Vendor rental contract fix
                 case 22:
                     {
                         _CurrentDecay = (DecayType)reader.ReadInt();
@@ -3475,6 +3486,23 @@ namespace Server.Multis
             if (version == 19)
             {
                 Timer.DelayCall(CheckUnregisteredAddons);
+            }
+
+            if (version < 23)
+            {
+                Timer.DelayCall(FixRentalContracts);
+            }
+        }
+
+        private void FixRentalContracts()
+        {
+            var list = new List<Item>(VendorRentalContracts.Where(c => c.RootParent != null || FindHouseAt(c) != this));
+
+            foreach (var contract in list)
+            {
+                VendorRentalContracts.Remove(contract);
+                contract.IsLockedDown = false;
+                contract.Movable = true;
             }
         }
 
