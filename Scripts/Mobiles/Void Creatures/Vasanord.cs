@@ -7,8 +7,8 @@ namespace Server.Mobiles
 	[CorpseName( "a plant corpse" )]
 	public class Vasanord : BaseVoidCreature
 	{
-        public override VoidEvolution Evolution { get { return VoidEvolution.Survival; } }
-        public override int Stage { get { return 3; } }
+        public override VoidEvolution Evolution => VoidEvolution.Survival; 
+        public override int Stage => 3; 
 
 		[Constructable]
 		public Vasanord() : base( AIType.AI_Mage, FightMode.Closest, 10, 1, 0.6, 1.2 )
@@ -47,8 +47,6 @@ namespace Server.Mobiles
 			Fame = 15000;
 			Karma = -15000;
 
-			VirtualArmor = 28;
-
 		    PackItem( new DaemonBone( 30 ) );
 		}
 
@@ -65,7 +63,7 @@ namespace Server.Mobiles
 			AddLoot( LootPack.UltraRich, 2 );
 		}
 
-		public override Poison PoisonImmune{ get{ return Poison.Lethal; } }
+		public override Poison PoisonImmune => Poison.Lethal; 
 
 		public Vasanord( Serial serial ) : base( serial )
 		{

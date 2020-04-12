@@ -19,7 +19,6 @@ namespace Server.Misc
 
         public static void Initialize()
         {
-            // Register our speech handler
             if (Enabled)
                 EventSink.Speech += new SpeechEventHandler(EventSink_Speech);
         }
@@ -176,20 +175,13 @@ namespace Server.Misc
             keg.Held = 100;
             keg.Type = type;
             keg.Hue = hue;
-
-            return MakeNewbie(keg);
+			
+			return keg;
         }
 
-        private static Item MakeNewbie(Item item)
-        {
-            return item;
-        }
-
-        public static void FillBankAOS(Mobile m)
+        public static void FillBank(Mobile m)
         {
             BankBox bank = m.BankBox;
-
-            // The new AOS bankboxes don't have powerscrolls, they are automatically 'applied':
 
             for (int i = 0; i < PowerScroll.Skills.Count; ++i)
                 m.Skills[PowerScroll.Skills[i]].Cap = 120.0;
@@ -528,19 +520,7 @@ namespace Server.Misc
 
         public static void FillBankbox(Mobile m)
         {
-            FillBankAOS(m);
-        }
-
-        public static void AddPowerScrolls(BankBox bank)
-        {
-            Bag bag = new Bag();
-
-            for (int i = 0; i < PowerScroll.Skills.Count; ++i)
-                bag.DropItem(new PowerScroll(PowerScroll.Skills[i], 120.0));
-
-            bag.DropItem(new StatCapScroll(250));
-
-            bank.DropItem(bag);
+            FillBank(m);
         }
 
         public class TCHelpGump : Gump
@@ -570,7 +550,7 @@ namespace Server.Misc
                 {
                     case 1:
                         {
-                            sender.LaunchBrowser("http://ServUO.craftuo.com/");
+                            sender.LaunchBrowser("https://servuo.com");
                             break;
                         }
                     case 2: // List of skills

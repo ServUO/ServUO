@@ -813,7 +813,7 @@ namespace Server
 
             if (message)
             {
-                Broadcast(0x35, false, AccessLevel.Counselor, "The world is saving, please wait.");
+                Broadcast(0x35, false, AccessLevel.Player, "The world is saving, please wait.");
             }
 
             SaveStrategy strategy = SaveStrategy.Acquire();
@@ -883,7 +883,7 @@ namespace Server
 
             if (message)
             {
-                Broadcast(0x35, false, AccessLevel.Counselor, "World save done in {0:F1} seconds.", watch.Elapsed.TotalSeconds);
+                Broadcast(0x35, false, AccessLevel.Player, "World save done in {0:F1} seconds.", watch.Elapsed.TotalSeconds);
             }
 
             NetState.Resume();
