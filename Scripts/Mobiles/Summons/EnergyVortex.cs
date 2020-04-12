@@ -56,7 +56,6 @@ namespace Server.Mobiles
             Fame = 0;
             Karma = 0;
 
-            VirtualArmor = 40;
             ControlSlots = 2;
         }
 
@@ -65,48 +64,18 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool DeleteCorpseOnDeath
-        {
-            get
-            {
-                return Summoned;
-            }
-        }
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }// Or Llama vortices will appear gray.
-        public override double DispelDifficulty
-        {
-            get
-            {
-                return 80.0;
-            }
-        }
-        public override double DispelFocus
-        {
-            get
-            {
-                return 20.0;
-            }
-        }
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
+        public override bool DeleteCorpseOnDeath => Summoned;
+
+        public override bool AlwaysMurderer => true; // Or Llama vortices will appear gray.
+		
+        public override double DispelDifficulty => 80.0;
+
+        public override double DispelFocus => 20.0;
+
+        public override bool BleedImmune => true;
+
+        public override Poison PoisonImmune => Poison.Lethal;
+
         public override double GetFightModeRanking(Mobile m, FightMode acqType, bool bPlayerOnly)
         {
             return (m.Int + m.Skills[SkillName.Magery].Value) / Math.Max(GetDistanceToSqrt(m), 1.0);
@@ -155,18 +124,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (BaseSoundID == 263)
-                BaseSoundID = 0;
         }
     }
 }

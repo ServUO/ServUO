@@ -11,7 +11,7 @@ namespace Server.Mobiles
         public LadyMelisande()
             : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a lady melisande";
+            Name = "Lady Melisande";
             Body = 0x102;
             BaseSoundID = 451;
 
@@ -48,8 +48,6 @@ namespace Server.Mobiles
 
             Fame = 25000;
             Karma = -25000;
-
-            VirtualArmor = 50;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
@@ -133,27 +131,11 @@ namespace Server.Mobiles
             base.OnDamage(amount, from, willKill);				
         }
 	
-        public override bool GivesMLMinorArtifact
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override bool GivesMLMinorArtifact => true;
+
+        public override Poison PoisonImmune => Poison.Lethal;
+
+        public override int TreasureMapLevel => 5;
 
         public LadyMelisande(Serial serial)
             : base(serial)
@@ -163,14 +145,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
             int version = reader.ReadInt();
         }
 		
@@ -230,20 +210,9 @@ namespace Server.Mobiles
         #endregion
 
         #region Helpers
-        public override bool CanSpawnHelpers
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int MaxHelpersWaves
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override bool CanSpawnHelpers => true;
+
+        public override int MaxHelpersWaves => 1;
 
         public override void SpawnHelpers()
         {
