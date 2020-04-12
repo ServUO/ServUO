@@ -1,7 +1,7 @@
 using System;
- using Server;
- using Server.Items;
- using Server.Mobiles;
+using Server.Engines.Quests;
+using Server.Items;
+using Server.Mobiles;
 
 namespace Server.Multis
 {
@@ -70,8 +70,8 @@ namespace Server.Multis
              
              switch ( Utility.Random( 2 ) )
              {
-                 case 0: Prisoner = new Noble(); break;
-                 case 1: Prisoner = new SeekerOfAdventure(); break;
+                 case 0: Prisoner = new EscortableNoble(); break;
+                 case 1: Prisoner = new EscortableSeekerOfAdventure(); break;
              }
 
              Prisoner.IsPrisoner = true;
@@ -115,7 +115,6 @@ namespace Server.Multis
          public override void Serialize( GenericWriter writer )
          {
              base.Serialize( writer );
-
              writer.Write( (int) 1 ); // version
 
              writer.Write( m_Gate );
@@ -124,7 +123,6 @@ namespace Server.Multis
          public override void Deserialize( GenericReader reader )
          {
              base.Deserialize( reader );
-
              int version = reader.ReadInt();
 
              switch ( version )

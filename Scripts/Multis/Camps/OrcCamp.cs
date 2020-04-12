@@ -1,4 +1,5 @@
 using System;
+using Server.Engines.Quests;
 using Server.Items;
 using Server.Mobiles;
 
@@ -17,16 +18,10 @@ namespace Server.Multis
         {
         }
 
-        public virtual Mobile Orcs
-        {
-            get
-            {
-                return new Orc();
-            }
-        }
+        public virtual Mobile Orcs => new Orc();
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public override TimeSpan DecayDelay { get { return TimeSpan.FromMinutes(5.0); } }
+        public override TimeSpan DecayDelay => TimeSpan.FromMinutes(5.0); 
 
         public override void AddComponents()
         {
@@ -66,10 +61,10 @@ namespace Server.Multis
             switch ( Utility.Random(2) )
             {
                 case 0:
-                    Prisoner = new Noble();
+                    Prisoner = new EscortableNoble();
                     break;
                 default:
-                    Prisoner = new SeekerOfAdventure();
+                    Prisoner = new EscortableSeekerOfAdventure();
                     break;
             }
 
@@ -134,14 +129,12 @@ namespace Server.Multis
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)2); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch ( version )
