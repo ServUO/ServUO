@@ -117,13 +117,7 @@ namespace Server.Regions
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual bool YoungProtected
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool YoungProtected => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string RuneName

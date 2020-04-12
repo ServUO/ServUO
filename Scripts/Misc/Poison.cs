@@ -66,10 +66,9 @@ namespace Server
 
 		private readonly int m_MessageInterval;
 
-		public override string Name { get { return m_Name; } }
-		public override int Level { get { return m_Level; } }
+		public override string Name => m_Name; 
+		public override int Level => m_Level; 
 
-		#region Mondain's Legacy
 		public override int RealLevel
 		{
 			get
@@ -105,7 +104,6 @@ namespace Server
 				return 1062412 + m_Level; // ~poison~ poison charges: ~1_val~
 			}
 		}
-		#endregion
 
 		public PoisonImpl(
 			string name,

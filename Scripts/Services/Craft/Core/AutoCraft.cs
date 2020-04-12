@@ -57,7 +57,7 @@ namespace Server.Engines.Craft
     public class AutoCraftTimer : Timer
     {
         private static Dictionary<Mobile, AutoCraftTimer> m_AutoCraftTable = new Dictionary<Mobile, AutoCraftTimer>();
-        public static Dictionary<Mobile, AutoCraftTimer> AutoCraftTable { get { return m_AutoCraftTable; } }
+        public static Dictionary<Mobile, AutoCraftTimer> AutoCraftTable => m_AutoCraftTable; 
 
         private Mobile m_From;
         private CraftSystem m_CraftSystem;
@@ -68,8 +68,8 @@ namespace Server.Engines.Craft
         private int m_Ticks;
         private Type m_TypeRes;
 
-        public int Amount { get { return m_Amount; } }
-        public int Attempts { get { return m_Attempts; } }
+        public int Amount => m_Amount; 
+        public int Attempts => m_Attempts; 
 
         public AutoCraftTimer(Mobile from, CraftSystem system, CraftItem item, ITool tool, int amount, TimeSpan delay, TimeSpan interval)
             : base(delay, interval)
