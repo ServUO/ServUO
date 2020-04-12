@@ -6,7 +6,7 @@ namespace Server.Mobiles
     [CorpseName("a shadow knight corpse")]
     public class ShadowKnight : BaseCreature
     {
-        public override bool CanStealth { get { return true; } }
+        public override bool CanStealth => true; 
 
         private Timer m_SoundTimer;
         private bool m_HasTeleportedAway;
@@ -51,8 +51,6 @@ namespace Server.Mobiles
             Fame = 25000;
             Karma = -25000;
 
-            VirtualArmor = 54;
-
             SetWeaponAbility(WeaponAbility.ConcussionBlow);
             SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
@@ -74,45 +72,19 @@ namespace Server.Mobiles
 			base.OnDamagedBySpell(from);
 		}
 
-        public override bool IgnoreYoungProtection
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool IgnoreYoungProtection => true;
 
-        public override bool CanFlee { get { return false; } }
-        public override TribeType Tribe { get { return TribeType.Undead; } }
+        public override bool CanFlee => false; 
+		
+        public override TribeType Tribe => TribeType.Undead; 
 
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AreaPeaceImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override bool Unprovokable => true;
+
+        public override bool AreaPeaceImmune => true;
+
+        public override Poison PoisonImmune => Poison.Lethal;
+
+        public override int TreasureMapLevel => 1;
 
         public override void GenerateLoot()
         {
