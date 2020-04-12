@@ -2528,7 +2528,6 @@
     <Compile Include="Mobiles\NPCs\Bard.cs" />
     <Compile Include="Mobiles\NPCs\BardGuildmaster.cs" />
     <Compile Include="Mobiles\NPCs\Barkeeper.cs" />
-    <Compile Include="Mobiles\NPCs\BaseEscortable.cs" />
     <Compile Include="Mobiles\NPCs\BaseGuard.cs" />
     <Compile Include="Mobiles\NPCs\BaseGuildmaster.cs" />
     <Compile Include="Mobiles\NPCs\BaseHealer.cs" />
@@ -2543,7 +2542,6 @@
     <Compile Include="Mobiles\NPCs\Bowyer.cs" />
     <Compile Include="Mobiles\NPCs\Braen.cs" />
     <Compile Include="Mobiles\NPCs\Bravehorn.cs" />
-    <Compile Include="Mobiles\NPCs\BrideGroom.cs" />
     <Compile Include="Mobiles\NPCs\Brinnae.cs" />
     <Compile Include="Mobiles\NPCs\Broolol.cs" />
     <Compile Include="Mobiles\NPCs\Butcher.cs" />
@@ -2573,7 +2571,6 @@
     <Compile Include="Mobiles\NPCs\Emerillo.cs" />
     <Compile Include="Mobiles\NPCs\Enigma.cs" />
     <Compile Include="Mobiles\NPCs\Enrico.cs" />
-    <Compile Include="Mobiles\NPCs\EscortableMage.cs" />
     <Compile Include="Mobiles\NPCs\Escortables.cs" />
     <Compile Include="Mobiles\NPCs\EvilHealer.cs" />
     <Compile Include="Mobiles\NPCs\EvilWanderingHealer.cs" />
@@ -2587,7 +2584,6 @@
     <Compile Include="Mobiles\NPCs\Furtrader.cs" />
     <Compile Include="Mobiles\NPCs\GabrielPiete.cs" />
     <Compile Include="Mobiles\NPCs\Garamon.cs" />
-    <Compile Include="Mobiles\NPCs\GargishNoble.cs" />
     <Compile Include="Mobiles\NPCs\GargishRefugee.cs" />
     <Compile Include="Mobiles\NPCs\GargishWanderingHealer.cs" />
     <Compile Include="Mobiles\NPCs\GargishWarrior.cs" />
@@ -2649,9 +2645,7 @@
     <Compile Include="Mobiles\NPCs\Mapmaker.cs" />
     <Compile Include="Mobiles\NPCs\Margo.cs" />
     <Compile Include="Mobiles\NPCs\Maul.cs" />
-    <Compile Include="Mobiles\NPCs\Merchant.cs" />
     <Compile Include="Mobiles\NPCs\MerchantGuildmaster.cs" />
-    <Compile Include="Mobiles\NPCs\Messenger.cs" />
     <Compile Include="Mobiles\NPCs\Mielan.cs" />
     <Compile Include="Mobiles\NPCs\Miller.cs" />
     <Compile Include="Mobiles\NPCs\Miner.cs" />
@@ -2668,13 +2662,11 @@
     <Compile Include="Mobiles\NPCs\Neil.cs" />
     <Compile Include="Mobiles\NPCs\Nillaen.cs" />
     <Compile Include="Mobiles\NPCs\Ninja.cs" />
-    <Compile Include="Mobiles\NPCs\Noble.cs" />
     <Compile Include="Mobiles\NPCs\Nythalia.cs" />
     <Compile Include="Mobiles\NPCs\Odell.cs" />
     <Compile Include="Mobiles\NPCs\Olaeni.cs" />
     <Compile Include="Mobiles\NPCs\Olla.cs" />
     <Compile Include="Mobiles\NPCs\Patricus.cs" />
-    <Compile Include="Mobiles\NPCs\Peasant.cs" />
     <Compile Include="Mobiles\NPCs\PersonalAttendant.cs" />
     <Compile Include="Mobiles\NPCs\PlayerBarkeeper.cs" />
     <Compile Include="Mobiles\NPCs\PlayerVendor.cs" />
@@ -2697,7 +2689,6 @@
     <Compile Include="Mobiles\NPCs\SarsmeaSmythe.cs" />
     <Compile Include="Mobiles\NPCs\Scribe.cs" />
     <Compile Include="Mobiles\NPCs\Sculptor.cs" />
-    <Compile Include="Mobiles\NPCs\SeekerOfAdventure.cs" />
     <Compile Include="Mobiles\NPCs\Shipwright.cs" />
     <Compile Include="Mobiles\NPCs\Siarra.cs" />
     <Compile Include="Mobiles\NPCs\Sledge.cs" />
