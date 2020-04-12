@@ -81,7 +81,6 @@ namespace Server.Mobiles
             Fame = 3000;
             Karma = -3000;
 
-            VirtualArmor = 38;
             PackReg(3);
             PackNecroReg(3, 10);
             PackItem(new Bone());
@@ -92,9 +91,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BleedImmune { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Regular; } }
-        public override TribeType Tribe { get { return TribeType.Undead; } }
+        public override bool BleedImmune => true; 
+		
+        public override Poison PoisonImmune => Poison.Regular; 
+		
+        public override TribeType Tribe => TribeType.Undead; 
 
         public override void GenerateLoot()
         {
