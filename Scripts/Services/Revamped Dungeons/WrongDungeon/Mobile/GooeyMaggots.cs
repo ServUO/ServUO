@@ -10,34 +10,32 @@ namespace Server.Mobiles
         public GooeyMaggots()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Gooey Maggots";
-            this.Body = 319;
-            this.BaseSoundID = 898;
+            Name = "Gooey Maggots";
+            Body = 319;
+            BaseSoundID = 898;
 
-            this.SetStr(738, 763);
-            this.SetDex(61, 70);
-            this.SetInt(10);
+            SetStr(738, 763);
+            SetDex(61, 70);
+            SetInt(10);
 
-            this.SetMana(0);
+            SetMana(0);
 
-            this.SetDamage(3, 9);
+            SetDamage(3, 9);
 
-            this.SetDamageType(ResistanceType.Physical, 50);
-            this.SetDamageType(ResistanceType.Poison, 50);
+            SetDamageType(ResistanceType.Physical, 50);
+            SetDamageType(ResistanceType.Poison, 50);
 
-            this.SetResistance(ResistanceType.Physical, 60, 70);
-            this.SetResistance(ResistanceType.Fire, 60, 70);
-            this.SetResistance(ResistanceType.Cold, 50, 60);
-            this.SetResistance(ResistanceType.Poison, 60, 70);
-            this.SetResistance(ResistanceType.Energy, 60, 70);
+            SetResistance(ResistanceType.Physical, 60, 70);
+            SetResistance(ResistanceType.Fire, 60, 70);
+            SetResistance(ResistanceType.Cold, 50, 60);
+            SetResistance(ResistanceType.Poison, 60, 70);
+            SetResistance(ResistanceType.Energy, 60, 70);
 
-            this.SetSkill(SkillName.Tactics, 80.2, 89.7);
-            this.SetSkill(SkillName.Wrestling, 80.2, 87.5);
+            SetSkill(SkillName.Tactics, 80.2, 89.7);
+            SetSkill(SkillName.Wrestling, 80.2, 87.5);
 
-            this.Fame = 1000;
-            this.Karma = -1000;
-
-            this.VirtualArmor = 24;
+            Fame = 1000;
+            Karma = -1000;
 
             Timer selfDeleteTimer = new InternalSelfDeleteTimer(this);
             selfDeleteTimer.Start();
@@ -55,7 +53,7 @@ namespace Server.Mobiles
 
         protected override void OnLocationChange(Point3D oldLocation)
         {
-            new GooeyMaggotSlime().MoveToWorld(oldLocation, this.Map);
+            new GooeyMaggotSlime().MoveToWorld(oldLocation, Map);
 
             base.OnLocationChange(oldLocation);
         }
@@ -74,7 +72,7 @@ namespace Server.Mobiles
                 if (creature.Map != Map.Internal)
                 {
                     creature.Delete();
-                    this.Stop();
+                    Stop();
                 }
             }
         }
@@ -111,8 +109,8 @@ namespace Server.Mobiles
         public GooeyMaggotSlime(int itemID)
             : base(itemID)
         {
-            this.Movable = false;
-            this.Hue = 363;
+            Movable = false;
+            Hue = 363;
 
             new InternalTimer(this).Start();
         }
@@ -131,7 +129,7 @@ namespace Server.Mobiles
                         from.SendLocalizedMessage(1152145); // You are are free to move again.
                     }));
 
-                this.Delete();
+                Delete();
             }
 
             return base.OnMoveOver(from);
@@ -162,14 +160,14 @@ namespace Server.Mobiles
             public InternalTimer(Item slime)
                 : base(TimeSpan.FromSeconds(10.0))
             {
-                this.Priority = TimerPriority.OneSecond;
+                Priority = TimerPriority.OneSecond;
 
-                this.m_Slime = slime;
+                m_Slime = slime;
             }
 
             protected override void OnTick()
             {
-                this.m_Slime.Delete();
+                m_Slime.Delete();
             }
         }
     }
