@@ -6,51 +6,49 @@ namespace Server.Mobiles
     [CorpseName("a betballem corpse")]
     public class Betballem : BaseVoidCreature
     {
-        public override VoidEvolution Evolution { get { return VoidEvolution.Killing; } }
-        public override int Stage { get { return 1; } }
+        public override VoidEvolution Evolution => VoidEvolution.Killing; 
+        public override int Stage => 1; 
 
         [Constructable]
         public Betballem()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a betballem";
-            this.Body = 776;
-            this.Hue = 2071;
-            this.BaseSoundID = 357;
+            Name = "betballem";
+            Body = 776;
+            Hue = 2071;
+            BaseSoundID = 357;
 
-            this.SetStr(270);
-            this.SetDex(890);
-            this.SetInt(80);
+            SetStr(270);
+            SetDex(890);
+            SetInt(80);
 
-            this.SetHits(90, 100);
-            this.SetDamage(5, 10);
+            SetHits(90, 100);
+            SetDamage(5, 10);
 
-            this.SetDamageType(ResistanceType.Physical, 20);
-            this.SetDamageType(ResistanceType.Fire, 20);
-            this.SetDamageType(ResistanceType.Cold, 20);
-            this.SetDamageType(ResistanceType.Poison, 20);
-            this.SetDamageType(ResistanceType.Energy, 20);
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Fire, 20);
+            SetDamageType(ResistanceType.Cold, 20);
+            SetDamageType(ResistanceType.Poison, 20);
+            SetDamageType(ResistanceType.Energy, 20);
 
-            this.SetResistance(ResistanceType.Physical, 30, 40);
-            this.SetResistance(ResistanceType.Fire, 30, 40);
-            this.SetResistance(ResistanceType.Fire, 10, 20);
-            this.SetResistance(ResistanceType.Fire, 10, 20);
-            this.SetResistance(ResistanceType.Fire, 100);
+            SetResistance(ResistanceType.Physical, 30, 40);
+            SetResistance(ResistanceType.Fire, 30, 40);
+            SetResistance(ResistanceType.Fire, 10, 20);
+            SetResistance(ResistanceType.Fire, 10, 20);
+            SetResistance(ResistanceType.Fire, 100);
 
-            this.SetSkill(SkillName.MagicResist, 40.0, 50.0);
-            this.SetSkill(SkillName.Tactics, 20.1, 30.0);
-            this.SetSkill(SkillName.Wrestling, 30.1, 40.0);
-            this.SetSkill(SkillName.Anatomy, 0.0, 10.0);
+            SetSkill(SkillName.MagicResist, 40.0, 50.0);
+            SetSkill(SkillName.Tactics, 20.1, 30.0);
+            SetSkill(SkillName.Wrestling, 30.1, 40.0);
+            SetSkill(SkillName.Anatomy, 0.0, 10.0);
 
-            this.Fame = 500;
-            this.Karma = -500;
+            Fame = 500;
+            Karma = -500;
 
-            this.VirtualArmor = 38;
+            AddItem(new LightSource());
 
-            this.AddItem(new LightSource());
-
-            this.PackItem(new FertileDirt(Utility.RandomMinMax(1, 4)));
-            this.PackItem(new DaemonBone(5));
+            PackItem(new FertileDirt(Utility.RandomMinMax(1, 4)));
+            PackItem(new DaemonBone(5));
         }
 
         public override void OnDeath(Container c)
@@ -68,40 +66,19 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool Unprovokable => true;
 
-        public override bool BardImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool BardImmune => true;
+
+        public override bool CanRummageCorpses => true;
+
+        public override bool BleedImmune => true;
+
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.Meager);
-            this.AddLoot(LootPack.Gems);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Gems);
         }
 
         public override int GetIdleSound()

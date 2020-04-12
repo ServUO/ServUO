@@ -9,33 +9,31 @@ namespace Server.Mobiles
         public ShipRat()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Ship Rat";
-            this.Body = 0xD7;
-            this.BaseSoundID = 0x188;
+            Name = "Ship Rat";
+            Body = 0xD7;
+            BaseSoundID = 0x188;
 
-            this.SetStr(32, 74);
-            this.SetDex(46, 65);
-            this.SetInt(16, 30);
+            SetStr(32, 74);
+            SetDex(46, 65);
+            SetInt(16, 30);
 
-            this.SetHits(26, 39);
-            this.SetMana(0);
+            SetHits(26, 39);
+            SetMana(0);
 
-            this.SetDamage(4, 8);
+            SetDamage(4, 8);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 15, 20);
-            this.SetResistance(ResistanceType.Fire, 5, 10);
-            this.SetResistance(ResistanceType.Poison, 25, 35);
+            SetResistance(ResistanceType.Physical, 15, 20);
+            SetResistance(ResistanceType.Fire, 5, 10);
+            SetResistance(ResistanceType.Poison, 25, 35);
 
-            this.SetSkill(SkillName.MagicResist, 25.1, 30.0);
-            this.SetSkill(SkillName.Tactics, 29.3, 44.0);
-            this.SetSkill(SkillName.Wrestling, 29.3, 44.0);
+            SetSkill(SkillName.MagicResist, 25.1, 30.0);
+            SetSkill(SkillName.Tactics, 29.3, 44.0);
+            SetSkill(SkillName.Wrestling, 29.3, 44.0);
 
-            this.Fame = 300;
-            this.Karma = -300;
-
-            this.VirtualArmor = 18;
+            Fame = 300;
+            Karma = -300;
         }
 
         public ShipRat(Serial serial)
@@ -43,37 +41,19 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 6;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Fish | FoodType.Meat | FoodType.FruitsAndVegies | FoodType.Eggs;
-            }
-        }
+        public override int Meat => 1;
+
+        public override int Hides => 6;
+
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Poor);
+            AddLoot(LootPack.Poor);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write((int)0); // version
-
         }
 
         public override void Deserialize(GenericReader reader)

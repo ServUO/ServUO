@@ -42,8 +42,6 @@ namespace Server.Mobiles
             Karma = -3000;
             CantWalk = true;
 
-            VirtualArmor = 60;
-
             m_Timer = new PullTimer(this);
             m_Timer.Start();
 
@@ -58,6 +56,7 @@ namespace Server.Mobiles
                 case 6: PackItem(new EcruCitrine()); break;
                 case 7: PackItem(new WhitePearl()); break;
             }
+			
             PackItem(new ParasiticPlant());
             PackItem(new LuminescentFungi());
         }
@@ -154,7 +153,7 @@ namespace Server.Mobiles
 
         }
 
-        public override bool CanRummageCorpses { get { return true; } }
+        public override bool CanRummageCorpses => true; 
 
         public override void GenerateLoot()
         {
@@ -164,20 +163,16 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
-
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             m_Timer = new PullTimer(this);
             m_Timer.Start();
-
         }
     }
 }

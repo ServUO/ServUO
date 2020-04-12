@@ -11,54 +11,53 @@ namespace Server.Mobiles
         public ExodusZealot()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Body = 401;
-            this.Female = false;
-            this.Hue = 33875;
-            this.HairItemID = Race.Human.RandomHair(this);
-            this.HairHue = Race.Human.RandomHairHue();
+            Body = 401;
+            Female = false;
+            Hue = 33875;
+            HairItemID = Race.Human.RandomHair(this);
+            HairHue = Race.Human.RandomHairHue();
 
-			this.Name = NameList.RandomName("male");
-            this.Title = "The Exodus Zealot";
+			Name = NameList.RandomName("male");
+            Title = "the Exodus Zealot";
 
-            this.SetStr(150, 210);
-            this.SetDex(75, 90);
-            this.SetInt(255, 310);
+            SetStr(150, 210);
+            SetDex(75, 90);
+            SetInt(255, 310);
 
-            this.SetHits(325, 390);
+            SetHits(325, 390);
 
-            this.SetDamage(6, 12);
+            SetDamage(6, 12);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 30, 40);
-            this.SetResistance(ResistanceType.Fire, 20, 30);
-            this.SetResistance(ResistanceType.Cold, 35, 40);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 30, 40);
+            SetResistance(ResistanceType.Physical, 30, 40);
+            SetResistance(ResistanceType.Fire, 20, 30);
+            SetResistance(ResistanceType.Cold, 35, 40);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.Wrestling, 70.0, 100.0);
-            this.SetSkill(SkillName.Tactics, 80.0, 100.0);
-            this.SetSkill(SkillName.MagicResist, 50.0, 70.0);
-            this.SetSkill(SkillName.Anatomy, 70.0, 100.0);
-			this.SetSkill(SkillName.Magery, 85.0, 100.0);
-			this.SetSkill(SkillName.EvalInt, 80.0, 100.0);
-			this.SetSkill(SkillName.Poisoning, 70.0, 100.0);
+            SetSkill(SkillName.Wrestling, 70.0, 100.0);
+            SetSkill(SkillName.Tactics, 80.0, 100.0);
+            SetSkill(SkillName.MagicResist, 50.0, 70.0);
+            SetSkill(SkillName.Anatomy, 70.0, 100.0);
+			SetSkill(SkillName.Magery, 85.0, 100.0);
+			SetSkill(SkillName.EvalInt, 80.0, 100.0);
+			SetSkill(SkillName.Poisoning, 70.0, 100.0);
 
-            this.Fame = 10000;
-            this.Karma = -10000;
-			this.VirtualArmor = 30;
+            Fame = 10000;
+            Karma = -10000;
 
             Item boots = new ThighBoots();
             boots.Movable = false;
-            this.SetWearable(boots);
+            SetWearable(boots);
 
             Item item = new HoodedShroudOfShadows(2702);
             item.LootType = LootType.Blessed;
-            this.SetWearable(item);
+            SetWearable(item);
 
             item = new Spellbook();
             item.LootType = LootType.Blessed;
-            this.SetWearable(item);
+            SetWearable(item);
         }
 
         public ExodusZealot(Serial serial)
@@ -66,14 +65,16 @@ namespace Server.Mobiles
         {
         }
         
-        public override bool AlwaysMurderer { get { return true; } }
-        public override bool ShowFameTitle { get { return false; } }
-		public override Poison PoisonImmune{ get{ return Poison.Lethal; } }
+        public override bool AlwaysMurderer => true; 
+		
+        public override bool ShowFameTitle => false; 
+		
+		public override Poison PoisonImmune => Poison.Lethal; 
 		
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
-			this.AddLoot(LootPack.MedScrolls);
+            AddLoot(LootPack.FilthyRich);
+			AddLoot(LootPack.MedScrolls);
         }
 
         public override void Serialize(GenericWriter writer)

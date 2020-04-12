@@ -36,8 +36,6 @@ namespace Server.Mobiles
 
             Fame = 3500;
             Karma = -3500;
-
-            VirtualArmor = 40;
         }
 
         public CaveTrollWrong(Serial serial)
@@ -45,27 +43,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override bool CanRummageCorpses => true;
+
+        public override int TreasureMapLevel => 2;
+
+        public override int Meat => 2;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average);

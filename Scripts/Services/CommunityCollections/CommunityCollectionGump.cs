@@ -468,19 +468,6 @@ namespace Server.Gumps
                     from.Backpack.ConsumeTotal(m_Selected.Type, amount, true, true);
                     m_Collection.Donate((PlayerMobile)from, m_Selected, amount);
                 }
-                else if(m_Selected.Type == typeof(BankCheck))
-                {
-                    int count = from.Backpack.GetChecksWorth(true);
-
-                    if(count < amount)
-                    {
-                        from.SendLocalizedMessage(1073182); // You do not have enough to make a donation of that magnitude!
-                        return;
-                    }
-
-                    from.Backpack.TakeFromChecks(amount, true);
-                    m_Collection.Donate((PlayerMobile)from, m_Selected, amount);
-                }
                 else
                 {
                     if (amount * m_Selected.Points < 1)
@@ -640,11 +627,7 @@ namespace Server.Gumps
             {
                 if (CheckType(item, type, derives) && colItem.Validate(pm, GetActual(item)))
                 {
-                    if (type == typeof(BankCheck))
-                    {
-                        count += pm.Backpack.GetChecksWorth(true);
-                    }
-                    else if (item is CommodityDeed)
+                    if (item is CommodityDeed)
                     {
                         count += ((CommodityDeed)item).Commodity.Amount;
                     }

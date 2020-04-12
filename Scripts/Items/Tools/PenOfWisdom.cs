@@ -347,11 +347,17 @@ namespace Server.Items
 
                             bp.ConsumeTotal(typeof(MarkScroll), Checked.Count, true);
                             bp.ConsumeTotal(typeof(RecallRune), Checked.Count, true);
-                            Pen.UsesRemaining -= 1;
-                            Pen.InvalidateProperties();
+                            Pen.UsesRemaining--;
 
-                            from.SendLocalizedMessage(1115331); // The Pen magically marks runes and binds them to the runebook.
-                            from.SendLocalizedMessage(1115366); // The pen's magical power is consumed and it crumbles to dust.
+                            if (Pen.UsesRemaining <= 0)
+                            {
+                                Pen.Delete();
+                                from.SendLocalizedMessage(1115366); // The pen's magical power is consumed and it crumbles to dust.
+                            }
+                            else
+                            {
+                                from.SendLocalizedMessage(1115331); // The Pen magically marks runes and binds them to the runebook.
+                            }
                         }
 
                         break;
