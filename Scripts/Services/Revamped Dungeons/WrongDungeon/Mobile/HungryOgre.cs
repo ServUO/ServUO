@@ -10,37 +10,33 @@ namespace Server.Mobiles
         public HungryOgre()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Hungry Ogre";
-            this.Body = 0x1;
-            this.BaseSoundID = 427;
+            Name = "Hungry Ogre";
+            Body = 0x1;
+            BaseSoundID = 427;
 
-            this.SetStr(188, 223);
-            this.SetDex(62, 79);
-            this.SetInt(49, 59);
+            SetStr(188, 223);
+            SetDex(62, 79);
+            SetInt(49, 59);
 
-            this.SetHits(1107, 1205);
-            this.SetMana(49, 59);
+            SetHits(1107, 1205);
+            SetMana(49, 59);
 
-            this.SetDamage(15, 20);
+            SetDamage(15, 20);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 50, 60);
-            this.SetResistance(ResistanceType.Fire, 70, 80);
-            this.SetResistance(ResistanceType.Cold, 50, 60);
-            this.SetResistance(ResistanceType.Poison, 70, 80);
-            this.SetResistance(ResistanceType.Energy, 60, 70);
+            SetResistance(ResistanceType.Physical, 50, 60);
+            SetResistance(ResistanceType.Fire, 70, 80);
+            SetResistance(ResistanceType.Cold, 50, 60);
+            SetResistance(ResistanceType.Poison, 70, 80);
+            SetResistance(ResistanceType.Energy, 60, 70);
 
-            this.SetSkill(SkillName.MagicResist, 61.1, 69.9);
-            this.SetSkill(SkillName.Tactics, 102.3, 109.6);
-            this.SetSkill(SkillName.Wrestling, 100.9, 108.7);
+            SetSkill(SkillName.MagicResist, 61.1, 69.9);
+            SetSkill(SkillName.Tactics, 102.3, 109.6);
+            SetSkill(SkillName.Wrestling, 100.9, 108.7);
 
-            this.Fame = 12000;
-            this.Karma = -12000;
-
-            this.VirtualArmor = 32;
-
-            this.PackItem(new Club());
+            Fame = 12000;
+            Karma = -12000;
         }
 
         public HungryOgre(Serial serial)
@@ -48,9 +44,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanRummageCorpses { get { return true; } }
-        public override int TreasureMapLevel { get { return 1; } }
-        public override int Meat { get { return 2; } }
+        public override bool CanRummageCorpses => true; 
+		
+        public override int TreasureMapLevel => 1; 
+		
+        public override int Meat => 2; 
 
         public override void GenerateLoot()
         {

@@ -85,8 +85,6 @@ namespace Server.Mobiles
             Fame = 22500;
             Karma = -22500;
 
-            VirtualArmor = 50;
-
             CanSwim = true;
             CantWalk = true;
 
@@ -103,7 +101,7 @@ namespace Server.Mobiles
         {
         }
 
-        public static Type[] Artifacts { get { return m_Artifacts; } }
+        public static Type[] Artifacts => m_Artifacts; 
 
         public Mobile Fisher
         {
@@ -141,8 +139,9 @@ namespace Server.Mobiles
             }
         }
 
-        public override double TreasureMapChance { get { return 0.25; } }
-        public override int TreasureMapLevel { get { return 5; } }
+        public override double TreasureMapChance => 0.25; 
+		
+        public override int TreasureMapLevel => 5; 
 
         public override void OnActionCombat()
         {
