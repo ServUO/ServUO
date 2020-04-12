@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Mobiles 
 {
-    [CorpseName("a Tyball Shadow corpse")]
+    [CorpseName("a tyball shadow corpse")]
     public class TyballsShadow : BaseCreature
     {
         [Constructable]
@@ -44,7 +44,6 @@ namespace Server.Mobiles
 
             Fame = 20000; 
             Karma = -20000;
-            VirtualArmor = 65;
         }
 
         public TyballsShadow(Serial serial)
@@ -52,34 +51,14 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BardImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool Uncalmable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool BardImmune => true;
+
+        public override bool Unprovokable => true;
+
+        public override bool Uncalmable => true;
+
+        public override bool AlwaysMurderer => true;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 3);
