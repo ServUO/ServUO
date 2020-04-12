@@ -48,8 +48,6 @@ namespace Server.Mobiles
 
             Fame = 24000;
             Karma = -24000;
-            
-            VirtualArmor = 70;
 
             if (Instances == null)
                 Instances = new List<ObsidianWyvern>();
@@ -131,12 +129,15 @@ namespace Server.Mobiles
             base.OnDeath(c);
         }
 
-        public override bool ReacquireOnMovement { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Deadly; } }
-        public override Poison HitPoison { get { return Poison.Deadly; } }
-        public override bool AutoDispel { get { return true; } }
-        public override bool BardImmune { get { return true; } }
-		public override FoodType FavoriteFood { get { return FoodType.Meat; } }
+        public override bool ReacquireOnMovement => true; 
+		
+        public override Poison PoisonImmune => Poison.Deadly; 
+		
+        public override Poison HitPoison => Poison.Deadly; 
+		
+        public override bool AutoDispel => true; 
+		
+        public override bool BardImmune => true; 
 
         public override void GenerateLoot()
         {
@@ -156,7 +157,6 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
             writer.Write((int)0); // version
-
         }
 
         public override void Deserialize(GenericReader reader)
