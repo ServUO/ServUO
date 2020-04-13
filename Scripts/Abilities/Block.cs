@@ -22,9 +22,9 @@ namespace Server.Items
         {
         }
 
-        public override int BaseMana { get { return 20; } }
+        public override int BaseMana => 20; 
 
-        public override int AccuracyBonus { get { return -15; } }
+        public override int AccuracyBonus => -15; 
 
         public override SkillName GetSecondarySkill(Mobile from)
         {

@@ -44,44 +44,36 @@ namespace Server.Items
         private SlayerGroup m_Group;
         public SlayerEntry(SlayerName name, params Type[] types)
         {
-            this.m_Name = name;
-            this.m_Types = types;
+            m_Name = name;
+            m_Types = types;
         }
 
         public SlayerGroup Group
         {
             get
             {
-                return this.m_Group;
+                return m_Group;
             }
             set
             {
-                this.m_Group = value;
+                m_Group = value;
             }
         }
-        public SlayerName Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
-        public Type[] Types
-        {
-            get
-            {
-                return this.m_Types;
-            }
-        }
+		
+        public SlayerName Name => m_Name;
+
+        public Type[] Types => m_Types;
+
         public int Title
         {
             get
             {
                 int[] titles = m_AosTitles;
 
-                return titles[(int)this.m_Name - 1];
+                return titles[(int)m_Name - 1];
             }
         }
+		
         public bool Slays(Mobile m)
         {
 
@@ -95,9 +87,9 @@ namespace Server.Items
 
             Type t = m.GetType();
 
-            for (int i = 0; i < this.m_Types.Length; ++i)
+            for (int i = 0; i < m_Types.Length; ++i)
             {
-                if (this.m_Types[i].IsAssignableFrom(t))
+                if (m_Types[i].IsAssignableFrom(t))
                     return true;
             }
 

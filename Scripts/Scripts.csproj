@@ -8632,16 +8632,7 @@
     <Compile Include="Misc\WelcomeTimer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Abilities\BaseSummoned.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Abilities\Enhancement.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Abilities\EnhancementTimer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Abilities\TimedResistanceMod.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mobiles\AI\AIControlMobileTarget.cs">

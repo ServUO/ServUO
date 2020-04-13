@@ -10,21 +10,10 @@ namespace Server.Items
         {
         }
 
-        public override int BaseMana
-        {
-            get
-            {
-                return 20;
-            }
-        }
+        public override int BaseMana => 20;
 
-		public override bool ConsumeAmmo
-		{
-			get
-			{
-				return false;
-			}
-		}
+		public override bool ConsumeAmmo => false;
+
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
             if (!this.Validate(attacker))

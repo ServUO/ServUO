@@ -17,13 +17,8 @@ namespace Server.Items
         {
         }
 
-        public override int BaseMana
-        {
-            get
-            {
-                return 30;
-            }
-        }
+        public override int BaseMana => 30;
+
         public static bool IsImmune(Mobile m)
         {
             return m_Table.Contains(m);

@@ -21,7 +21,7 @@ namespace Server.Items
         Bane,
         BoneBreaker, 
         Swarm,
-        Sparks,
+        Sparks
     }
 
     /// <summary>
@@ -37,16 +37,16 @@ namespace Server.Items
         private TimeSpan m_TickDuration;
         private Timer m_Timer;
 
-        public Mobile Mobile { get { return m_Mobile; } }
-        public Mobile Victim { get { return m_Victim; } }
-        public Item Owner { get { return m_Owner; } }
-        public EffectsType Effect { get { return m_Effect; } }
-        public TimeSpan Duration { get { return m_Duration; } }
-        public TimeSpan TickDuration { get { return m_TickDuration; } }
-        public Timer Timer { get { return m_Timer; } }
+        public Mobile Mobile => m_Mobile; 
+        public Mobile Victim => m_Victim; 
+        public Item Owner => m_Owner; 
+        public EffectsType Effect => m_Effect; 
+        public TimeSpan Duration => m_Duration; 
+        public TimeSpan TickDuration => m_TickDuration; 
+        public Timer Timer => m_Timer; 
 
         private static List<PropertyEffect> m_Effects = new List<PropertyEffect>();
-        public static List<PropertyEffect> Effects { get { return m_Effects; } }
+        public static List<PropertyEffect> Effects => m_Effects; 
 
         public PropertyEffect(Mobile from, Mobile victim, Item owner, EffectsType effect, TimeSpan duration, TimeSpan tickduration)
         {
@@ -473,7 +473,7 @@ namespace Server.Items
 
     public class SearingWeaponContext : PropertyEffect
     {
-        public static int Damage { get { return Utility.RandomMinMax(10, 15); } }
+        public static int Damage => Utility.RandomMinMax(10, 15); 
 
         public SearingWeaponContext(Mobile from, Mobile defender)
             : base(from, defender, null, EffectsType.Searing, TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(4))

@@ -10,7 +10,7 @@ namespace Server.Items
         {
         }
 
-        public override int BaseMana { get { return 35; } }
+        public override int BaseMana => 35; 
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
@@ -96,8 +96,8 @@ namespace Server.Items
             private DateTime m_LastHit;
             private int m_Tick, m_Hits;
 
-            public Mobile Target { get { return m_Target; } }
-            public Mobile From { get { return m_From; } }
+            public Mobile Target => m_Target;
+            public Mobile From => m_From;
             public int Hits { get { return m_Hits; } set { m_Hits = value; } }
             public DateTime LastHit { get { return m_LastHit; } set { m_LastHit = value; } }
 
