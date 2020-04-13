@@ -36,14 +36,12 @@ namespace Server.Items
         Parasitic,
         Darkglow,
 		ExplodingTarPotion,
-        #region TOL Publish 93
         Barrab,
         Jukari,
         Kurak,
         Barako,
         Urali,
         Sakkhra,
-        #endregion,
         Shatter,
         FearEssence
     }
@@ -56,45 +54,28 @@ namespace Server.Items
         {
             get
             {
-                return this.m_PotionEffect;
+                return m_PotionEffect;
             }
             set
             {
-                this.m_PotionEffect = value;
-                this.InvalidateProperties();
+                m_PotionEffect = value;
+                InvalidateProperties();
             }
         }
 
-        TextDefinition ICommodity.Description
-        {
-            get
-            {
-                return this.LabelNumber;
-            }
-        }
-        bool ICommodity.IsDeedable
-        {
-            get
-            {
-                return true;
-            }
-        }
+        TextDefinition ICommodity.Description => LabelNumber;
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041314 + (int)this.m_PotionEffect;
-            }
-        }
+        bool ICommodity.IsDeedable => true;
+
+        public override int LabelNumber => 1041314 + (int)m_PotionEffect;
 
         public BasePotion(int itemID, PotionEffect effect)
             : base(itemID)
         {
-            this.m_PotionEffect = effect;
+            m_PotionEffect = effect;
 
-            this.Stackable = true;
-            this.Weight = 1.0;
+            Stackable = true;
+            Weight = 1.0;
         }
 
         public BasePotion(Serial serial)
@@ -102,13 +83,7 @@ namespace Server.Items
         {
         }
 
-        public virtual bool RequireFreeHand
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool RequireFreeHand => true;
 
         public static bool HasFreeHand(Mobile m)
         {
@@ -130,28 +105,28 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.Movable)
+            if (!Movable)
                 return;
 
-            if (!from.BeginAction(this.GetType()))
+            if (!from.BeginAction(GetType()))
             {
                 from.SendLocalizedMessage(500119); // You must wait to perform another action.
                 return;
             }
 
-            Timer.DelayCall(TimeSpan.FromMilliseconds(500), () => from.EndAction(this.GetType()));
+            Timer.DelayCall(TimeSpan.FromMilliseconds(500), () => from.EndAction(GetType()));
 
-            if (from.InRange(this.GetWorldLocation(), 1))
+            if (from.InRange(GetWorldLocation(), 1))
             {
-                if (!this.RequireFreeHand || HasFreeHand(from))
+                if (!RequireFreeHand || HasFreeHand(from))
                 {
-                    if (this is BaseExplosionPotion && this.Amount > 1)
+                    if (this is BaseExplosionPotion && Amount > 1)
                     {
-                        BasePotion pot = (BasePotion)Activator.CreateInstance(this.GetType());
+                        BasePotion pot = (BasePotion)Activator.CreateInstance(GetType());
 
                         if (pot != null)
                         {
-                            this.Amount--;
+                            Amount--;
 
                             if (from.Backpack != null && !from.Backpack.Deleted)
                             {
@@ -166,7 +141,7 @@ namespace Server.Items
                     }
                     else
                     {
-                        this.Drink(from);
+                        Drink(from);
                     }
                 }
                 else
@@ -183,27 +158,17 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)1); // version
 
-            writer.Write((int)this.m_PotionEffect);
+            writer.Write((int)m_PotionEffect);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
-            switch ( version )
-            {
-                case 1:
-                case 0:
-                    {
-                        this.m_PotionEffect = (PotionEffect)reader.ReadInt();
-                        break;
-                    }
-            }
+            m_PotionEffect = (PotionEffect)reader.ReadInt();
         }
 
         public abstract void Drink(Mobile from);
@@ -252,10 +217,8 @@ namespace Server.Items
 
         public override bool WillStack(Mobile from, Item dropped)
         {
-            return dropped is BasePotion && ((BasePotion)dropped).m_PotionEffect == this.m_PotionEffect && base.WillStack(from, dropped);
+            return dropped is BasePotion && ((BasePotion)dropped).m_PotionEffect == m_PotionEffect && base.WillStack(from, dropped);
         }
-
-        #region ICraftable Members
 
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
@@ -265,7 +228,7 @@ namespace Server.Items
 
                 if (pack != null)
                 {
-                    if ((int)this.PotionEffect >= (int)PotionEffect.Invisibility)
+                    if ((int)PotionEffect >= (int)PotionEffect.Invisibility)
                         return 1;
 
                     List<PotionKeg> kegs = pack.FindItemsByType<PotionKeg>();
@@ -280,12 +243,12 @@ namespace Server.Items
                         if (keg.Held <= 0 || keg.Held >= 100)
                             continue;
 
-                        if (keg.Type != this.PotionEffect)
+                        if (keg.Type != PotionEffect)
                             continue;
 
                         ++keg.Held;
 
-                        this.Consume();
+                        Consume();
                         from.AddToBackpack(new Bottle());
 
                         return -1; // signal placed in keg
@@ -295,6 +258,5 @@ namespace Server.Items
 
             return 1;
         }
-        #endregion
     }
 }

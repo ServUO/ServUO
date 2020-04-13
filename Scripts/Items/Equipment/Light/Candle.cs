@@ -9,13 +9,13 @@ namespace Server.Items
             : base(0xA28)
         {
             if (Burnout)
-                this.Duration = TimeSpan.FromMinutes(20);
+                Duration = TimeSpan.FromMinutes(20);
             else
-                this.Duration = TimeSpan.Zero;
+                Duration = TimeSpan.Zero;
 
-            this.Burning = false;
-            this.Light = LightType.Circle150;
-            this.Weight = 1.0;
+            Burning = false;
+            Light = LightType.Circle150;
+            Weight = 1.0;
         }
 
         public Candle(Serial serial)
@@ -23,20 +23,9 @@ namespace Server.Items
         {
         }
 
-        public override int LitItemID
-        {
-            get
-            {
-                return 0xA0F;
-            }
-        }
-        public override int UnlitItemID
-        {
-            get
-            {
-                return 0xA28;
-            }
-        }
+        public override int LitItemID => 0xA0F;
+        public override int UnlitItemID => 0xA28;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

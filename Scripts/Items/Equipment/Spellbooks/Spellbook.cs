@@ -30,7 +30,7 @@ namespace Server.Items
 	public enum BookQuality
 	{
 		Regular,
-		Exceptional,
+		Exceptional
 	}
 
     public class Spellbook : Item, ICraftable, ISlayer, IEngravable, IVvVItem, IOwnerRestricted, IWearableDurability
@@ -84,7 +84,7 @@ namespace Server.Items
 		private Mobile m_Crafter;
 		private SlayerName m_Slayer;
 		private SlayerName m_Slayer2;
-		//Currently though there are no dual slayer spellbooks, OSI has a habit of putting dual slayer stuff in later
+
 		[Constructable]
 		public Spellbook()
 			: this((ulong)0)
@@ -135,7 +135,7 @@ namespace Server.Items
 			}
 		}
 
-		public override bool DisplayWeight { get { return false; } }
+		public override bool DisplayWeight => false; 
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public AosAttributes Attributes { get { return m_AosAttributes; } set { } }
@@ -146,9 +146,9 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public NegativeAttributes NegativeAttributes { get { return m_NegativeAttributes; } set { } }
 
-		public virtual SpellbookType SpellbookType { get { return SpellbookType.Regular; } }
-		public virtual int BookOffset { get { return 0; } }
-		public virtual int BookCount { get { return 64; } }
+		public virtual SpellbookType SpellbookType => SpellbookType.Regular;
+		public virtual int BookOffset => 0;
+		public virtual int BookCount => 64;
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public ulong Content
@@ -174,7 +174,7 @@ namespace Server.Items
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public int SpellCount { get { return m_Count; } }
+		public int SpellCount => m_Count;
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public Mobile Crafter
@@ -187,7 +187,7 @@ namespace Server.Items
 			}
 		}
 
-		public override bool DisplayLootType { get { return true; } }
+		public override bool DisplayLootType => true;
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public SlayerName Slayer
@@ -211,7 +211,6 @@ namespace Server.Items
 			}
 		}
 
-        #region IVvVItem / IOwnerRestricted
         private bool _VvVItem;
         private Mobile _Owner;
         private string _OwnerName;
@@ -235,9 +234,7 @@ namespace Server.Items
             get { return _OwnerName; }
             set { _OwnerName = value; InvalidateProperties(); }
         }
-        #endregion
 
-        #region IWearableDurability
         private int m_MaxHitPoints;
         private int m_HitPoints;
 
@@ -274,10 +271,10 @@ namespace Server.Items
             }
         }
 
-        public virtual bool CanFortify { get { return false; } }
+        public virtual bool CanFortify => false;
 
-        public virtual int InitMinHits { get { return 0; } }
-        public virtual int InitMaxHits { get { return 0; } }
+        public virtual int InitMinHits => 0;
+        public virtual int InitMaxHits => 0;
 
         public virtual void ScaleDurability()
         {
@@ -316,7 +313,6 @@ namespace Server.Items
 
             return damage;
         }
-        #endregion
 
         public static void Initialize()
 		{
@@ -971,7 +967,6 @@ namespace Server.Items
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-
 			writer.Write(6); // version
 
             m_NegativeAttributes.Serialize(writer);
@@ -1002,7 +997,6 @@ namespace Server.Items
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
-
 			int version = reader.ReadInt();
 
 			switch (version)
