@@ -15,9 +15,9 @@ namespace Server.Engines.Craft
         private TextDefinition m_TD;
         public Recipe(int id, CraftSystem system, CraftItem item)
         {
-            this.m_ID = id;
-            this.m_System = system;
-            this.m_CraftItem = item;
+            m_ID = id;
+            m_System = system;
+            m_CraftItem = item;
 
             if (m_Recipes.ContainsKey(id))
                 throw new Exception("Attempting to create recipe with preexisting ID.");
@@ -26,20 +26,10 @@ namespace Server.Engines.Craft
             m_LargestRecipeID = Math.Max(id, m_LargestRecipeID);
         }
 
-        public static Dictionary<int, Recipe> Recipes
-        {
-            get
-            {
-                return m_Recipes;
-            }
-        }
-        public static int LargestRecipeID
-        {
-            get
-            {
-                return m_LargestRecipeID;
-            }
-        }
+        public static Dictionary<int, Recipe> Recipes => m_Recipes;
+
+        public static int LargestRecipeID => m_LargestRecipeID;
+
         public CraftSystem CraftSystem
         {
             get
@@ -62,13 +52,9 @@ namespace Server.Engines.Craft
                 this.m_CraftItem = value;
             }
         }
-        public int ID
-        {
-            get
-            {
-                return this.m_ID;
-            }
-        }
+		
+        public int ID => this.m_ID;
+
         public TextDefinition TextDefinition
         {
             get

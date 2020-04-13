@@ -14,20 +14,11 @@ namespace System
 
         private static Stream m_OldOutput;
         private static bool m_Newline;
-        public override Encoding Encoding
-        {
-            get
-            {
-                return Encoding.ASCII;
-            }
-        }
-        private string Timestamp
-        {
-            get
-            {
-                return String.Format("{0:D2}:{1:D2}:{2:D2} ", DateTime.UtcNow.Hour, DateTime.UtcNow.Minute, DateTime.UtcNow.Second);
-            }
-        }
+		
+        public override Encoding Encoding => Encoding.ASCII;
+
+        private string Timestamp => String.Format("{0:D2}:{1:D2}:{2:D2} ", DateTime.UtcNow.Hour, DateTime.UtcNow.Minute, DateTime.UtcNow.Second);
+
         public static void Initialize()
         {
             if (_Enabled)

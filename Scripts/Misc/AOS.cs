@@ -106,7 +106,6 @@ namespace Server
             if (m != null && phys == 0 && fire == 100 && cold == 0 && pois == 0 && nrgy == 0)
                 Mobiles.MeerMage.StopEffect(m, true);
 
-            #region Mondain's Legacy
             if (m != null)
             {
                 m.Items.ForEach(i =>
@@ -117,7 +116,6 @@ namespace Server
                         damage = prot.Protection.ScaleDamage(from, damage);
                 });
             }
-            #endregion
 
             Fix(ref phys);
             Fix(ref fire);
@@ -257,7 +255,6 @@ namespace Server
             }
             #endregion
 
-            #region Stygian Abyss
             //SHould this go in after or before dragon barding absorb?
             if (ignoreArmor)
                 DamageEaterContext.CheckDamage(m, totalDamage, 0, 0, 0, 0, 0, 100);
@@ -266,17 +263,12 @@ namespace Server
 
             if (fire > 0 && totalDamage > 0)
                 SwarmContext.CheckRemove(m);
-            #endregion
 
             SpiritualityVirtue.GetDamageReduction(m, ref totalDamage);
 
-            #region Berserk
             BestialSetHelper.OnDamage(m, from, ref totalDamage);
-            #endregion
 
-            #region Epiphany Set
             EpiphanyHelper.OnHit(m, totalDamage);
-            #endregion
 
             if (type == DamageType.Spell && m != null && Feint.Registry.ContainsKey(m) && Feint.Registry[m].Enemy == from)
                 totalDamage -= (int)((double)damage * ((double)Feint.Registry[m].DamageReduction / 100));
@@ -292,9 +284,7 @@ namespace Server
                 }
             }
 
-            #region Skill Mastery
             SkillMasterySpell.OnDamage(m, from, type, ref totalDamage);
-            #endregion
 
             if (from is BaseCreature || m is BaseCreature)
             {
@@ -368,7 +358,6 @@ namespace Server
 
             SpiritSpeak.CheckDisrupt(m);
 
-            #region Stygian Abyss
             if (m.Spell != null)
                 ((Spell)m.Spell).CheckCasterDisruption(true, phys, fire, cold, pois, nrgy);
 
@@ -381,7 +370,6 @@ namespace Server
 
             Spells.Mysticism.SleepSpell.OnDamage(m);
             Spells.Mysticism.PurgeMagicSpell.OnMobileDoDamage(from);
-            #endregion
 
             BaseCostume.OnDamaged(m);
 
@@ -419,13 +407,11 @@ namespace Server
                 }
                 else if (context.Type == typeof(VampiricEmbraceSpell))
                 {
-                    #region High Seas
                     if (target is BaseCreature && ((BaseCreature)target).TaintedLifeAura)
                     {
                         AOS.Damage(from, target, AOS.Scale(damageGiven, 20), false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
                         from.SendLocalizedMessage(1116778); //The tainted life force energy damages you as your body tries to absorb it.
                     }
-                    #endregion
                     else
                     {
                         from.Hits += AOS.Scale(damageGiven, 20);
@@ -545,9 +531,7 @@ namespace Server
             if (attribute == AosAttribute.Luck || attribute == AosAttribute.RegenMana || attribute == AosAttribute.DefendChance || attribute == AosAttribute.EnhancePotions)
                 value += SphynxFortune.GetAosAttributeBonus(m, attribute);
 
-            #region Enhancement
             value += Enhancement.GetValue(m, attribute);
-            #endregion
 
             for (int i = 0; i < m.Items.Count; ++i)
             {
@@ -579,10 +563,7 @@ namespace Server
             }
 
             #region Malus/Buff Handler
-
-            #region Skill Mastery
             value += SkillMasterySpell.GetAttributeBonus(m, attribute);
-            #endregion
 
             if (attribute == AosAttribute.WeaponDamage)
             {
@@ -611,17 +592,13 @@ namespace Server
                 if (Block.IsBlocking(m))
                     value -= 30;
 
-                #region SA
                 if (m is PlayerMobile && m.Race == Race.Gargoyle)
                 {
                     value += ((PlayerMobile)m).GetRacialBerserkBuff(false);
                 }
-                #endregion
 
-                #region High Seas
                 if (BaseFishPie.IsUnderEffects(m, FishPieEffect.WeaponDam))
                     value += 5;
-                #endregion
             }
             else if (attribute == AosAttribute.SpellDamage)
             {
@@ -638,22 +615,16 @@ namespace Server
 
                 value += ArcaneEmpowermentSpell.GetSpellBonus(m, true);
 
-                #region SA
                 if (m is PlayerMobile && m.Race == Race.Gargoyle)
                 {
                     value += ((PlayerMobile)m).GetRacialBerserkBuff(true);
                 }
-                #endregion
 
-                #region City Loyalty
                 if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.GuildOfArcaneArts))
                     value += 5;
-                #endregion
 
-                #region High Seas
                 if (BaseFishPie.IsUnderEffects(m, FishPieEffect.SpellDamage))
                     value += 5;
-                #endregion
             }
             else if (attribute == AosAttribute.CastSpeed)
             {
@@ -663,18 +634,14 @@ namespace Server
                 if (EssenceOfWindSpell.IsDebuffed(m))
                     value -= EssenceOfWindSpell.GetFCMalus(m);
 
-                #region City Loyalty
                 if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.BardicCollegium))
                     value += 1;
-                #endregion
 
-                #region SA
                 if (Spells.Mysticism.SleepSpell.IsUnderSleepEffects(m))
                     value -= 2;
 
                 if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mysticism.StoneFormSpell)))
                     value -= 2;
-                #endregion
             }
             else if (attribute == AosAttribute.CastRecovery)
             {
@@ -683,10 +650,8 @@ namespace Server
 
                 value -= ThunderstormSpell.GetCastRecoveryMalus(m);
 
-                #region SA
                 if (Spells.Mysticism.SleepSpell.IsUnderSleepEffects(m))
                     value -= 3;
-                #endregion
             }
             else if (attribute == AosAttribute.WeaponSpeed)
             {
@@ -712,12 +677,9 @@ namespace Server
                 if (EssenceOfWindSpell.IsDebuffed(m))
                     value -= EssenceOfWindSpell.GetSSIMalus(m);
 
-                #region City Loyalty
                 if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.GuildOfAssassins))
                     value += 5;
-                #endregion
 
-                #region SA
                 if (Spells.Mysticism.SleepSpell.IsUnderSleepEffects(m))
                     value -= 45;
 
@@ -726,7 +688,6 @@ namespace Server
 
                 if (StickySkin.IsUnderEffects(m))
                     value -= 30;
-                #endregion
             }
             else if (attribute == AosAttribute.AttackChance)
             {
@@ -752,23 +713,17 @@ namespace Server
                 if (move != null)
                     value += move.GetAccuracyBonus(m);
 
-                #region City Loyalty
                 if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.WarriorsGuild))
                     value += 5;
-                #endregion
 
-                #region SA
                 if (Spells.Mysticism.SleepSpell.IsUnderSleepEffects(m))
                     value -= 45;
 
                 if (m.Race == Race.Gargoyle)
                     value += 5;  //Gargoyles get a +5 HCI
-                #endregion
 
-                #region High Seas
                 if (BaseFishPie.IsUnderEffects(m, FishPieEffect.HitChance))
                     value += 8;
-                #endregion
             }
             else if (attribute == AosAttribute.DefendChance)
             {
@@ -792,19 +747,14 @@ namespace Server
                 if (SkillHandlers.Discordance.GetEffect(m, ref discordanceEffect))
                     value -= discordanceEffect;
 
-                #region High Seas
                 if (BaseFishPie.IsUnderEffects(m, FishPieEffect.DefChance))
                     value += 8;
-                #endregion
             }
             else if (attribute == AosAttribute.RegenHits)
             {
-                #region City Loyalty
                 if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.MaritimeGuild))
                     value += 2;
-                #endregion
 
-                #region High Seas
                 if (m is PlayerMobile && BaseFishPie.IsUnderEffects(m, FishPieEffect.HitsRegen))
                     value += 3;
 
@@ -813,38 +763,31 @@ namespace Server
 
                 if (SearingWeaponContext.HasContext(m))
                     value -= m is PlayerMobile ? 20 : 60;
-                #endregion
 
                 //Virtue Artifacts
                 value += AnkhPendant.GetHitsRegenModifier(m);
             }
             else if (attribute == AosAttribute.RegenStam)
             {
-                #region High Seas
                 if (m is PlayerMobile && BaseFishPie.IsUnderEffects(m, FishPieEffect.StamRegen))
                     value += 3;
 
                 if (SurgeShield.IsUnderEffects(m, SurgeType.Stam))
                     value += 10;
-                #endregion
 
                 //Virtue Artifacts
                 value += AnkhPendant.GetStamRegenModifier(m);
             }
             else if (attribute == AosAttribute.RegenMana)
             {
-                #region City Loyalty
                 if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.MerchantsAssociation))
                     value += 1;
-                #endregion
 
-                #region High Seas
                 if (m is PlayerMobile && BaseFishPie.IsUnderEffects(m, FishPieEffect.ManaRegen))
                     value += 3;
 
                 if (SurgeShield.IsUnderEffects(m, SurgeType.Mana))
                     value += 10;
-                #endregion
 
                 //Virtue Artifacts
                 value += AnkhPendant.GetManaRegenModifier(m);
@@ -1774,7 +1717,6 @@ namespace Server
             }
         }
 
-        #region SA
         [CommandProperty(AccessLevel.GameMaster)]
         public int BloodDrinker
         {
@@ -1865,7 +1807,6 @@ namespace Server
                 this[AosWeaponAttribute.ReactiveParalyze] = value;
             }
         }
-        #endregion
     }
 
     [Flags]
@@ -1902,9 +1843,7 @@ namespace Server
         {
             int value = 0;
 
-            #region Enhancement
             value += Enhancement.GetValue(m, attribute);
-            #endregion
 
             for (int i = 0; i < m.Items.Count; ++i)
             {
@@ -2051,10 +1990,8 @@ namespace Server
         SelfRepair = 0x00000002,
         MageArmor = 0x00000004,
         DurabilityBonus = 0x00000008,
-        #region Stygian Abyss
         ReactiveParalyze = 0x00000010,
         SoulCharge = 0x00000020
-        #endregion
     }
 
     public sealed class AosArmorAttributes : BaseAttributes
@@ -2616,7 +2553,6 @@ namespace Server
         }
     }
 
-    #region Stygian Abyss
     [Flags]
     public enum SAAbsorptionAttribute
     {
@@ -2674,9 +2610,7 @@ namespace Server
 
             int value = 0;
 
-            #region Enhancement
             value += Enhancement.GetValue(m, attribute);
-            #endregion
 
             for (int i = 0; i < m.Items.Count; ++i)
             {
@@ -2944,7 +2878,6 @@ namespace Server
             }
         }
     }
-    #endregion
 
     [Flags]
     public enum AosElementAttribute
@@ -3126,12 +3059,6 @@ namespace Server
 
             if (Prized > 0)
                 list.Add(1154910);
-
-            //if (Massive > 0)
-            //    list.Add(1038003);
-
-            //if (Unwieldly > 0)
-            //    list.Add(1154909);
 
             if (Antique > 0)
                 list.Add(1076187);

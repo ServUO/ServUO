@@ -37,13 +37,8 @@ namespace Server.Misc
             Timer.DelayCall(TimeSpan.FromSeconds((0.2 + (Utility.RandomDouble() * 0.8)) * interval.TotalSeconds), interval, new TimerCallback(OnTick));
         }
 
-        public Map Facet
-        {
-            get
-            {
-                return this.m_Facet;
-            }
-        }
+        public Map Facet => this.m_Facet;
+
         public Rectangle2D[] Area
         {
             get
@@ -428,13 +423,8 @@ namespace Server.Misc
         {
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "weather map";
-            }
-        }
+        public override string DefaultName => "weather map";
+
         public override void OnDoubleClick(Mobile from)
         {
             Map facet = from.Map;
@@ -460,14 +450,12 @@ namespace Server.Misc
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

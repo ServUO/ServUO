@@ -14,12 +14,12 @@ namespace Server.Regions
     { 
 		private Dictionary<Mobile, Timer> m_Table;
 
-		public Dictionary<Mobile, Timer> Table { get { return m_Table; } }
+		public Dictionary<Mobile, Timer> Table => m_Table; 
 
-		public virtual int EnterMessage { get { return 0; } }
-		public virtual int EnterSound { get { return 0; } }
+		public virtual int EnterMessage => 0; 
+		public virtual int EnterSound => 0; 
 
-		public virtual TimeSpan DamageInterval { get { return TimeSpan.FromSeconds(1); } }
+		public virtual TimeSpan DamageInterval => TimeSpan.FromSeconds(1); 
 
         public DamagingRegion(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)
@@ -146,11 +146,10 @@ namespace Server.Regions
     }
 
     public class CrystalField : DamagingRegion
-    {
-		// An electric wind chills your blood, making it difficult to traverse the cave unharmed.
-		public override int EnterMessage { get { return 1072396; } }
+    {		
+		public override int EnterMessage => 1072396; // An electric wind chills your blood, making it difficult to traverse the cave unharmed.
 
-		public override int EnterSound { get { return 0x22F; } }
+		public override int EnterSound => 0x22F; 
 
         public CrystalField(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)
@@ -187,7 +186,7 @@ namespace Server.Regions
 
     public class PoisonedSemetery : DamagingRegion
     { 
-		public override TimeSpan DamageInterval { get { return TimeSpan.FromSeconds(5); } }
+		public override TimeSpan DamageInterval => TimeSpan.FromSeconds(5); 
 
         public PoisonedSemetery(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)
@@ -206,7 +205,7 @@ namespace Server.Regions
 
     public class PoisonedTree : DamagingRegion
     { 
-		public override TimeSpan DamageInterval { get { return TimeSpan.FromSeconds(1); } }
+		public override TimeSpan DamageInterval => TimeSpan.FromSeconds(1); 
 
         public PoisonedTree(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)
@@ -242,7 +241,7 @@ namespace Server.Regions
 
     public class ParoxysmusBossEntry : DamagingRegion
     {
-        public override TimeSpan DamageInterval { get { return TimeSpan.FromSeconds(2); } }
+        public override TimeSpan DamageInterval => TimeSpan.FromSeconds(2); 
 
         public ParoxysmusBossEntry(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)
@@ -275,7 +274,7 @@ namespace Server.Regions
 
     public class AcidRiver : DamagingRegion
     {
-        public override TimeSpan DamageInterval { get { return TimeSpan.FromSeconds(2); } }
+        public override TimeSpan DamageInterval => TimeSpan.FromSeconds(2); 
 
         public AcidRiver(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)
@@ -322,7 +321,7 @@ namespace Server.Regions
 
     public class TheLostCityEntry : DamagingRegion
     {
-        public override TimeSpan DamageInterval { get { return TimeSpan.FromMilliseconds(500); } }
+        public override TimeSpan DamageInterval => TimeSpan.FromMilliseconds(500); 
 
         public TheLostCityEntry(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)

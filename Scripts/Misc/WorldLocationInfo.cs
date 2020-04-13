@@ -14,8 +14,8 @@ namespace Server
         private string m_RegionName;
         private Rectangle2D[] m_Bounds;
 
-        public string RegionName { get { return m_RegionName; } }
-        public Rectangle2D[] Bounds { get { return m_Bounds; } }
+        public string RegionName => m_RegionName; 
+        public Rectangle2D[] Bounds => m_Bounds; 
 
         public WorldLocationInfo(string regionName, params Rectangle2D[] bounds)
         {
@@ -84,10 +84,7 @@ namespace Server
                 new WorldLocationInfo("a frozen tundra of the Lost Lands", new Rectangle2D(5120, 2300, 500, 130),
                                                                            new Rectangle2D(5700, 2300, 440, 260)),
 
-                new WorldLocationInfo("somewhere in the Lost Lands", new Rectangle2D(5120, 2300, 1020, 1800))
-
-                //new WorldLocationInfo("", new Rectangle2D()),
-				
+                new WorldLocationInfo("somewhere in the Lost Lands", new Rectangle2D(5120, 2300, 1020, 1800))		
 			},
 			new WorldLocationInfo[] // Trammel
 			{

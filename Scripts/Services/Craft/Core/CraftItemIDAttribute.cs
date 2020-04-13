@@ -8,15 +8,9 @@ namespace Server.Engines.Craft
         private readonly int m_ItemID;
         public CraftItemIDAttribute(int itemID)
         {
-            this.m_ItemID = itemID;
+            m_ItemID = itemID;
         }
 
-        public int ItemID
-        {
-            get
-            {
-                return this.m_ItemID;
-            }
-        }
+        public int ItemID => m_ItemID;	
     }
 }

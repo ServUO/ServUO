@@ -70,13 +70,11 @@ namespace Server.Engines.Craft
                 AddHtmlLocalized(445, 390, 150, 18, 1044151, LabelColor, false, false); // MAKE NOW
             }
 
-            #region Stygian Abyss
             AddButton(265, 387, 4005, 4007, 2, GumpButtonType.Reply, 0);
             AddHtmlLocalized(300, 390, 150, 18, 1112623, LabelColor, false, false); //MAKE NUMBER
 
             AddButton(135, 387, 4005, 4007, 3, GumpButtonType.Reply, 0);
             AddHtmlLocalized(170, 390, 150, 18, 1112624, LabelColor, false, false); //MAKE MAX
-            #endregion
 
             AddButton(15, 387, 4014, 4016, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(50, 390, 150, 18, 1044150, LabelColor, false, false); // BACK
@@ -92,11 +90,6 @@ namespace Server.Engines.Craft
             DrawItem();
             DrawSkill();
             DrawResource();
-
-            /*
-            if( craftItem.RequiresSE )
-            AddHtmlLocalized( 170, 302 + (m_OtherCount++ * 20), 310, 18, 1063363, LabelColor, false, false ); //* Requires the "Samurai Empire" expansion
-            * */
 
             if (craftItem.RequiredExpansion != Expansion.None)
             {

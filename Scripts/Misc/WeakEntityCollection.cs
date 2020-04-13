@@ -11,8 +11,8 @@ namespace Server
 	{
 		public sealed class EntityCollection : List<IEntity>
 		{
-			public IEnumerable<Item> Items { get { return this.OfType<Item>(); } }
-			public IEnumerable<Mobile> Mobiles { get { return this.OfType<Mobile>(); } }
+			public IEnumerable<Item> Items => this.OfType<Item>(); 
+			public IEnumerable<Mobile> Mobiles => this.OfType<Mobile>(); 
 
 			public EntityCollection()
 				: this(0x400)

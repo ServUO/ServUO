@@ -278,20 +278,6 @@ namespace Server.Gumps
 
                         this.AddLabel(150, 350, LabelHue, os);
 
-                        /*string str;
-
-                        try{ str = FormatTimeSpan( Core.Process.TotalProcessorTime ); }
-                        catch{ str = "(unable to retrieve)"; }
-
-                        AddLabel( 20, 330, LabelHue, "Process Time:" );
-                        AddLabel( 250, 330, LabelHue, str );*/
-
-                        /*try{ str = Core.Process.PriorityClass.ToString(); }
-                        catch{ str = "(unable to retrieve)"; }
-
-                        AddLabel( 20, 350, LabelHue, "Process Priority:" );
-                        AddLabel( 250, 350, LabelHue, str );*/
-
                         this.AddPageButton(200, 20, this.GetButtonID(0, 0), "General", AdminGumpPage.Information_General);
                         this.AddPageButton(200, 40, this.GetButtonID(0, 5), "Performance", AdminGumpPage.Information_Perf);
 
@@ -396,18 +382,11 @@ namespace Server.Gumps
 
                         this.AddButtonLabeled(20, 150, this.GetButtonID(3, 200), "Save");
 
-                        /*if ( !Core.Service )
-                        {*/
                         this.AddButtonLabeled(20, 180, this.GetButtonID(3, 201), "Shutdown (With Save)");
                         this.AddButtonLabeled(20, 200, this.GetButtonID(3, 202), "Shutdown (Without Save)");
 
                         this.AddButtonLabeled(20, 230, this.GetButtonID(3, 203), "Shutdown & Restart (With Save)");
                         this.AddButtonLabeled(20, 250, this.GetButtonID(3, 204), "Shutdown & Restart (Without Save)");
-                        /*}
-                        else
-                        {
-                        AddLabel( 20, 215, LabelHue, "Shutdown/Restart not available." );
-                        }*/
 
                         this.AddHtml(10, 295, 400, 20, this.Color(this.Center("Broadcast"), LabelColor32), false, false);
 
@@ -681,10 +660,6 @@ namespace Server.Gumps
                         this.AddButtonLabeled(20, y, this.GetButtonID(7, 8), "Squelch");
                         this.AddButtonLabeled(200, y, this.GetButtonID(7, 9), "Unsquelch");
                         y += 20;
-
-                        /*AddButtonLabeled(  20, y, GetButtonID( 7, 10 ), "Hide" );
-                        AddButtonLabeled( 200, y, GetButtonID( 7, 11 ), "Unhide" );
-                        y += 20;*/
 
                         this.AddButtonLabeled(20, y, this.GetButtonID(7, 12), "Kill");
                         this.AddButtonLabeled(200, y, this.GetButtonID(7, 13), "Resurrect");
@@ -2092,7 +2067,7 @@ namespace Server.Gumps
                                 this.InvokeCommand("RebuildCategorization");
                                 notice = "Categorization menu has been regenerated. The server should be restarted.";
                                 break;
-                            case 601:
+                case 601:
                                 this.InvokeCommand("DocGen");
                                 notice = "Documentation has been generated.";
                                 break;
@@ -2104,7 +2079,7 @@ namespace Server.Gumps
                                 this.InvokeCommand("GenReports");
                                 notice = "Reports generated.";
                                 break;
-		            case 604:
+		        case 604:
                                 this.InvokeCommand("DumpTimers");
                                 notice = "Timers dumped.";
                                 break;

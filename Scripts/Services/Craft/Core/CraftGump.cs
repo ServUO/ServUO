@@ -18,7 +18,7 @@ namespace Server.Engines.Craft
         private const int LabelColor = 0x7FFF;
         private const int FontColor = 0xFFFFFF;
 
-        public bool Locked { get { return AutoCraftTimer.HasTimer(m_From); } }
+        public bool Locked => AutoCraftTimer.HasTimer(m_From); 
 
         private enum CraftPage
         {
@@ -26,10 +26,6 @@ namespace Server.Engines.Craft
             PickResource,
             PickResource2
         }
-
-        /*public CraftGump( Mobile from, CraftSystem craftSystem, ITool tool ): this( from, craftSystem, -1, -1, tool, null )
-        {
-        }*/
 
         public CraftGump(Mobile from, CraftSystem craftSystem, ITool tool, object notice)
             : this(from, craftSystem, tool, notice, CraftPage.None)
@@ -99,7 +95,6 @@ namespace Server.Engines.Craft
             }
             // ****************************************
 
-            #region SA
             // Alter option
             if (m_CraftSystem.CanAlter)
             {
@@ -112,12 +107,10 @@ namespace Server.Engines.Craft
             AddButton(270, 422, 4005, 4007, GetButtonID(6, 10), GumpButtonType.Reply, 0);
             AddHtmlLocalized(305, 425, 150, 18, context != null && context.QuestOption == CraftQuestOption.QuestItem ? 1112534 : 1112533, LabelColor, false, false); // QUEST ITEM
             // ****************************************
-            #endregion
 
             AddButton(270, 442, 4005, 4007, GetButtonID(6, 2), GumpButtonType.Reply, 0);
             AddHtmlLocalized(305, 445, 150, 18, 1044013, LabelColor, false, false); // MAKE LAST
 
-            #region Stygian Abyss
             int total = 1;
             int made = 0;
 
@@ -140,7 +133,6 @@ namespace Server.Engines.Craft
             string args = String.Format("{0}\t{1}", made.ToString(), total.ToString());
 
             AddHtmlLocalized(270, 468, 150, 18, 1079443, args, LabelColor, false, false); //~1_DONE~/~2_TOTAL~ COMPLETED
-            #endregion
 
             // Resmelt option
             if (m_CraftSystem.Resmelt)
@@ -513,7 +505,6 @@ namespace Server.Engines.Craft
             CraftGroupCol groups = system.CraftGroups;
             CraftContext context = system.GetContext(m_From);
 
-            #region Stygian Abyss
 			if (Locked)
 			{
 				if (type == 6 && index == 11)
@@ -523,7 +514,6 @@ namespace Server.Engines.Craft
 				}
 				return;
 			}
-            #endregion
 
             switch ( type )
             {
