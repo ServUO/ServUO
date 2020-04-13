@@ -2,10 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-using Server;
 using Server.Mobiles;
-using Server.Spells;
-using Server.Spells.Ninjitsu;
 using Server.Network;
 using Server.Spells.SkillMasteries;
 

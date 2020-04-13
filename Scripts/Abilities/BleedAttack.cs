@@ -139,7 +139,7 @@ namespace Server.Items
             private readonly Mobile m_From;
             private readonly Mobile m_Mobile;
             private int m_Count;
-            private int m_MaxCount;
+            private readonly int m_MaxCount;
             private readonly bool m_BloodDrinker;
 
             public BleedTimer(Mobile from, Mobile m, bool blooddrinker)
