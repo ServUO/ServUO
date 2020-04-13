@@ -91,7 +91,6 @@ namespace Server.SkillHandlers
 				{
 					m_Thief.SendLocalizedMessage(1048147); // Your backpack can't hold anything else.
 				}
-                #region VvV Sigils
                 else if (toSteal is VvVSigil && ViceVsVirtueSystem.Instance != null)
                 {
                     VvVPlayerEntry entry = ViceVsVirtueSystem.Instance.GetPlayerEntry<VvVPlayerEntry>(m_Thief);
@@ -153,8 +152,6 @@ namespace Server.SkillHandlers
                         m_Thief.SendLocalizedMessage(1155415); //	Only participants in Vice vs Virtue may use this item.
                     }
                 }
-                #endregion
-
                 else if (si == null && (toSteal.Parent == null || !toSteal.Movable) && !ItemFlags.GetStealable(toSteal))
 				{
 					m_Thief.SendLocalizedMessage(502710); // You can't steal that!
@@ -325,12 +322,10 @@ namespace Server.SkillHandlers
 						stolen = TryStealItem(pack.Items[randomIndex], ref caught);
 					}
 
-                    #region Monster Stealables
                     if (target is BaseCreature && from is PlayerMobile)
                     {
                         Server.Engines.CreatureStealing.StealingHandler.HandleSteal(target as BaseCreature, from as PlayerMobile);
                     }
-                    #endregion
 				}
 				else
 				{
@@ -453,12 +448,12 @@ namespace Server.SkillHandlers
 		private readonly Mobile m_Victim;
 		private DateTime m_Expires;
 
-		public Item Stolen { get { return m_Stolen; } }
-		public Mobile Thief { get { return m_Thief; } }
-		public Mobile Victim { get { return m_Victim; } }
-		public DateTime Expires { get { return m_Expires; } }
+		public Item Stolen => m_Stolen;
+		public Mobile Thief => m_Thief;
+		public Mobile Victim => m_Victim;
+		public DateTime Expires => m_Expires;
 
-		public bool IsExpired { get { return (DateTime.UtcNow >= m_Expires); } }
+		public bool IsExpired => (DateTime.UtcNow >= m_Expires);
 
 		public StolenItem(Item stolen, Mobile thief, Mobile victim)
 		{

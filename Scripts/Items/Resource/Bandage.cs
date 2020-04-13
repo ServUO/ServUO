@@ -1,4 +1,3 @@
-#region References
 using System;
 using System.Collections.Generic;
 
@@ -8,7 +7,6 @@ using Server.Targeting;
 using Server.Network;
 using Server.Engines.Despise;
 using Server.Services.Virtues;
-#endregion
 
 namespace Server.Items
 {
@@ -21,7 +19,7 @@ namespace Server.Items
 
 		public static int Range = 2;
 
-		public override double DefaultWeight { get { return 0.1; } }
+		public override double DefaultWeight => 0.1;
 
 		[Constructable]
 		public Bandage()
@@ -40,8 +38,8 @@ namespace Server.Items
 			: base(serial)
 		{ }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         public virtual bool Dye(Mobile from, DyeTub sender)
 		{
@@ -58,14 +56,12 @@ namespace Server.Items
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-
 			writer.Write(0); // version
 		}
 
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
-
 			int version = reader.ReadInt();
 		}
 
@@ -188,12 +184,12 @@ namespace Server.Items
 		private Timer m_Timer;
         private int m_HealingBonus;
 
-		public Mobile Healer { get { return m_Healer; } }
-		public Mobile Patient { get { return m_Patient; } }
+		public Mobile Healer => m_Healer;
+		public Mobile Patient => m_Patient;
 		public int Slips { get { return m_Slips; } set { m_Slips = value; } }
         public int HealedPoisonOrBleed { get { return m_HealedPoisonOrBleed; } set { m_HealedPoisonOrBleed = value; } }
-		public Timer Timer { get { return m_Timer; } }
-        public int HealingBonus { get { return m_HealingBonus; } }
+		public Timer Timer => m_Timer;
+        public int HealingBonus => m_HealingBonus;
 
 		public void Slip()
 		{
@@ -515,10 +511,8 @@ namespace Server.Items
 
                     toHeal -= toHeal * m_Slips * 0.35; // TODO: Verify algorithm
 
-                    #region City Loyalty
                     if (Server.Engines.CityLoyalty.CityLoyaltySystem.HasTradeDeal(m_Healer, Server.Engines.CityLoyalty.TradeDeal.GuildOfHealers))
                         toHeal += (int)Math.Ceiling(toHeal * 0.05);
-                    #endregion
 
                     if (m_HealedPoisonOrBleed > 0)
                     {
