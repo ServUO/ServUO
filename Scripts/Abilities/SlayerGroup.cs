@@ -567,26 +567,16 @@ namespace Server.Items
                     eodon,
                     eodonTribe,
                     dino, 
-                    myrmidex,
+                    myrmidex
 				};
 
             m_TotalEntries = CompileEntries(m_Groups);
         }
 
-        public static SlayerEntry[] TotalEntries
-        {
-            get
-            {
-                return m_TotalEntries;
-            }
-        }
-        public static SlayerGroup[] Groups
-        {
-            get
-            {
-                return m_Groups;
-            }
-        }
+        public static SlayerEntry[] TotalEntries => m_TotalEntries;
+
+        public static SlayerGroup[] Groups => m_Groups;
+
         public SlayerGroup[] Opposition
         {
             get

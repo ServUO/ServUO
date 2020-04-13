@@ -11,13 +11,8 @@ namespace Server.Items
         {
         }
 
-        public override int BaseMana
-        {
-            get
-            {
-                return 20;
-            }
-        }
+        public override int BaseMana => 20;
+
         public override bool OnBeforeDamage(Mobile attacker, Mobile defender)
         {
             if (!this.Validate(attacker) || !this.CheckMana(attacker, true))

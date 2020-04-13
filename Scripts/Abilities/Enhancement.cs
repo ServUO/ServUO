@@ -296,24 +296,3 @@ namespace Server
         }
     }
 }
-/*
-AOS.cs
-MagicalEnhancements.GetValue( m, attribute );
-Usage of setting total (intended use)
-MagicalEnhancements.SetValue( m, AosAttribute.Luck, 50 );
-Example of a timed stackable Enhancement (supports to an extent)
-private Mobile m_Mobile;
-
-public void Luckboon()
-{
-MagicalEnhancements.AddMobile( m );
-MagicalEnhancements.EnhancementList[m].Attributes.Luck += 200;
-Timer.DelayCall( TimeSpan.FromSeconds( 30 ), new TimerCallback( Expire ) );
-}
-
-private void Expire()
-{
-if ( m_Mobile != null && MagicalEnhancements.EnhancementList.ContainsKey( m ) )
-MagicalEnhancements.EnhancementList[m].Attributes.Luck -= 200;
-}
-*/

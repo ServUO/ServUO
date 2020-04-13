@@ -8,14 +8,8 @@ namespace Server.Items
         {
         }
 
-        public override int BaseMana
-        {
-            get
-            {
-                return 25;
-            }
-        }
-
+        public override int BaseMana => 25;
+		
         public override SkillName GetSecondarySkill(Mobile from)
         {
             return SkillName.Poisoning;

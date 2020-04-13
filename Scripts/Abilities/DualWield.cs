@@ -14,8 +14,9 @@ namespace Server.Items
         {
         }
 
-        public static Dictionary<Mobile, DualWieldTimer> Registry { get { return m_Registry; } }
-        public override int BaseMana { get { return 20; } }
+        public static Dictionary<Mobile, DualWieldTimer> Registry => m_Registry; 
+		
+        public override int BaseMana => 20; 
 
         public static readonly TimeSpan Duration = TimeSpan.FromSeconds(8);
 

@@ -12,13 +12,8 @@ namespace Server.Items
         {
         }
 
-        public override int BaseMana
-        {
-            get
-            {
-                return 30;
-            }
-        }
+        public override int BaseMana => 30;
+
         public override bool CheckSkills(Mobile from)
         {
             if (this.GetSkill(from, SkillName.Bushido) < 50.0)

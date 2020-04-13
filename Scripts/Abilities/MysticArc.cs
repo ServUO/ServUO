@@ -11,13 +11,7 @@ namespace Server.Items
         private Mobile m_Target;
         private Mobile m_Mobile;
 
-        public override int BaseMana
-        {
-            get
-            {
-                return 20;
-            }
-        }
+        public override int BaseMana => 20;
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {

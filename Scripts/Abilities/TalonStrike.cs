@@ -19,31 +19,15 @@ namespace Server.Items
             return from.Skills[SkillName.Ninjitsu].Base > from.Skills[SkillName.Bushido].Base ? SkillName.Ninjitsu : SkillName.Bushido;
         }
 
-        public static Hashtable Registry
-        {
-            get
-            {
-                return m_Registry;
-            }
-        }
-        public override int BaseMana
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override double DamageScalar
-        {
-            get
-            {
-                return 1.2;
-            }
-        }
+        public static Hashtable Registry => m_Registry;
+
+        public override int BaseMana => 20;
+
+        public override double DamageScalar => 1.2;
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (Registry.Contains(defender) || !this.Validate(attacker) || !this.CheckMana(attacker, true))
+            if (Registry.Contains(defender) || !Validate(attacker) || !CheckMana(attacker, true))
                 return;
 
             ClearCurrentAbility(attacker);
@@ -75,43 +59,43 @@ namespace Server.Items
             public InternalTimer(Mobile defender, int totalDamage, Mobile attacker)
                 : base(TimeSpan.Zero, TimeSpan.FromSeconds(0.25), 12)// 3 seconds at .25 seconds apart = 12.  Confirm delay inbetween of .25 each.
             {
-                this.m_Defender = defender;
-                this.m_DamageRemaining = (double)totalDamage;
-                this.Priority = TimerPriority.TwentyFiveMS;
+                m_Defender = defender;
+                m_DamageRemaining = (double)totalDamage;
+                Priority = TimerPriority.TwentyFiveMS;
 
-                this.m_Attacker = attacker;
+                m_Attacker = attacker;
 
-                this.DamagePerTick = (double)totalDamage / 12 + .01;
+                DamagePerTick = (double)totalDamage / 12 + .01;
             }
 
             protected override void OnTick()
             {
-                if (!this.m_Defender.Alive || this.m_DamageRemaining <= 0)
+                if (!m_Defender.Alive || m_DamageRemaining <= 0)
                 {
-                    this.Stop();
-                    Server.Items.TalonStrike.Registry.Remove(this.m_Defender);
+                    Stop();
+                    Server.Items.TalonStrike.Registry.Remove(m_Defender);
                     return;
                 }
 
-                this.m_DamageRemaining -= this.DamagePerTick;
-                this.m_DamageToDo += this.DamagePerTick;
+                m_DamageRemaining -= DamagePerTick;
+                m_DamageToDo += DamagePerTick;
 
-                if (this.m_DamageRemaining <= 0 && this.m_DamageToDo < 1)
-                    this.m_DamageToDo = 1.0; //Confirm this 'round up' at the end
+                if (m_DamageRemaining <= 0 && m_DamageToDo < 1)
+                    m_DamageToDo = 1.0; //Confirm this 'round up' at the end
 
-                int damage = (int)this.m_DamageToDo;
+                int damage = (int)m_DamageToDo;
 
                 if (damage > 0)
                 {
                     //m_Defender.Damage( damage, m_Attacker, false );
-                    this.m_Defender.Hits -= damage;	//Don't show damage, don't disrupt
-                    this.m_DamageToDo -= damage;
+                    m_Defender.Hits -= damage;	//Don't show damage, don't disrupt
+                    m_DamageToDo -= damage;
                 }
 
-                if (!this.m_Defender.Alive || this.m_DamageRemaining <= 0)
+                if (!m_Defender.Alive || m_DamageRemaining <= 0)
                 {
-                    this.Stop();
-                    Server.Items.TalonStrike.Registry.Remove(this.m_Defender);
+                    Stop();
+                    Server.Items.TalonStrike.Registry.Remove(m_Defender);
                 }
             }
         }

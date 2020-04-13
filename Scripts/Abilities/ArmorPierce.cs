@@ -19,21 +19,9 @@ namespace Server.Items
             return from.Skills[SkillName.Ninjitsu].Base > from.Skills[SkillName.Bushido].Base ? SkillName.Ninjitsu : SkillName.Bushido;
         }
 
-        public override int BaseMana
-        {
-            get
-            {
-                return 30;
-            }
-        }
+        public override int BaseMana => 30;
 
-        public override double DamageScalar
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public override double DamageScalar => 1.0;
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {

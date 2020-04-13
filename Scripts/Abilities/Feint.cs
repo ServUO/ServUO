@@ -10,13 +10,13 @@ namespace Server.Items
     public class Feint : WeaponAbility
 	{
         private static Dictionary<Mobile, FeintTimer> m_Registry = new Dictionary<Mobile, FeintTimer>();
-        public static Dictionary<Mobile, FeintTimer> Registry { get { return m_Registry; } }
+        public static Dictionary<Mobile, FeintTimer> Registry => m_Registry; 
 
 		public Feint()
 		{
 		}
 
-		public override int BaseMana { get { return 30; } }
+		public override int BaseMana => 30; 
 
         public override SkillName GetSecondarySkill(Mobile from)
         {
@@ -68,10 +68,10 @@ namespace Server.Items
             private Mobile m_Enemy;
             private int m_DamageReduction;
 
-            public Mobile Owner { get { return m_Owner; } }
-            public Mobile Enemy { get { return m_Enemy; } }
+            public Mobile Owner => m_Owner; 
+            public Mobile Enemy => m_Enemy; 
 
-            public int DamageReduction { get { return m_DamageReduction; } }
+            public int DamageReduction => m_DamageReduction; 
 
             public FeintTimer(Mobile owner, Mobile enemy, int DamageReduction)
                 : base(TimeSpan.FromSeconds(6.0))

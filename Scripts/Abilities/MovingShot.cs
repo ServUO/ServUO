@@ -12,27 +12,12 @@ namespace Server.Items
         {
         }
 
-        public override int BaseMana
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override int AccuracyBonus
-        {
-            get
-            {
-                return -35;
-            }
-        }
-        public override bool ValidatesDuringHit
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override int BaseMana => 20;
+
+        public override int AccuracyBonus => -35;
+
+        public override bool ValidatesDuringHit => false;
+
         public override bool OnBeforeSwing(Mobile attacker, Mobile defender)
         {
             return (this.Validate(attacker) && this.CheckMana(attacker, true));
