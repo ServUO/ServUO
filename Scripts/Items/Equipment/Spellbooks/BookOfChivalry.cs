@@ -14,7 +14,6 @@ namespace Server.Items
         public BookOfChivalry(ulong content)
             : base(content, 0x2252)
         {
-            this.Layer = Layer.OneHanded;
         }
 
         public BookOfChivalry(Serial serial)
@@ -22,38 +21,19 @@ namespace Server.Items
         {
         }
 
-        public override SpellbookType SpellbookType
-        {
-            get
-            {
-                return SpellbookType.Paladin;
-            }
-        }
-        public override int BookOffset
-        {
-            get
-            {
-                return 200;
-            }
-        }
-        public override int BookCount
-        {
-            get
-            {
-                return 10;
-            }
-        }
+        public override SpellbookType SpellbookType => SpellbookType.Paladin;
+        public override int BookOffset => 200;
+        public override int BookCount => 10;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

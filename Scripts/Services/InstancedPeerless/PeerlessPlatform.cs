@@ -1,22 +1,4 @@
-﻿//
-//  X-RunUO - Ultima Online Server Emulator
-//  Copyright (C) 2015 Pedro Pardal
-//
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 3.0 of the License, or (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU Lesser General Public License for more details.
-//
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this program.
-//
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Server;
 using Server.Items;
@@ -30,8 +12,8 @@ namespace Server.Engines.InstancedPeerless
 		public abstract Type KeyType { get; }
 		public abstract Type BossType { get; }
 
-		public virtual int OfferGumpTitle { get { return 1113737; } } // Monster's Lair
-		public virtual int OfferGumpDesc { get { return 1113738; } } // Your party has gained entrance to a monster's lair. You may choose to join the fight or stay away.
+		public virtual int OfferGumpTitle => 1113737; // Monster's Lair
+		public virtual int OfferGumpDesc => 1113738; // Your party has gained entrance to a monster's lair. You may choose to join the fight or stay away.
 
 		private List<PeerlessKeyBrazier> m_Braziers = new List<PeerlessKeyBrazier>();
 		private List<PeerlessInstance> m_Instances = new List<PeerlessInstance>();
@@ -57,7 +39,7 @@ namespace Server.Engines.InstancedPeerless
 		public abstract void AddInstances();
 		public abstract void AddBraziers();
 
-		public override bool ShareHue { get { return false; } }
+		public override bool ShareHue => false; 
 
 		public void Validate()
 		{
@@ -242,7 +224,6 @@ namespace Server.Engines.InstancedPeerless
 		public override void Serialize( GenericWriter writer )
 		{
 			base.Serialize( writer );
-
 			writer.Write( (int) 0 ); // version
 
 			writer.Write( m_ExitLocation );
@@ -261,7 +242,6 @@ namespace Server.Engines.InstancedPeerless
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
-
 			int version = reader.ReadInt();
 
 			switch ( version )

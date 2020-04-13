@@ -4,11 +4,11 @@ namespace Server.Items
 {
     public class Torch : BaseEquipableLight
     {
-        public override int LitItemID { get { return 0xA12; } }
-        public override int UnlitItemID { get { return 0xF6B; } }
+        public override int LitItemID => 0xA12;
+        public override int UnlitItemID => 0xF6B;
 
-        public override int LitSound { get { return 0x54; } }
-        public override int UnlitSound { get { return 0x4BB; } }
+        public override int LitSound => 0x54; 
+        public override int UnlitSound => 0x4BB; 
 
         [Constructable]
         public Torch()

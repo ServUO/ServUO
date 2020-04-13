@@ -8,7 +8,7 @@ namespace Server.Items
         public TwilightLantern()
             : base()
         {
-            this.Hue = Utility.RandomBool() ? 142 : 947;
+            Hue = Utility.RandomBool() ? 142 : 947;
         }
 
         public TwilightLantern(Serial serial)
@@ -16,13 +16,8 @@ namespace Server.Items
         {
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "Twilight Lantern";
-            }
-        }
+        public override string DefaultName => "Twilight Lantern";
+
         public override bool AllowEquipedCast(Mobile from)
         {
             return true;
@@ -38,14 +33,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

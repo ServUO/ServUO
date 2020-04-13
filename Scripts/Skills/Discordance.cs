@@ -318,7 +318,6 @@ namespace Server.SkillHandlers
             {
             }
 
-
             public DiscordanceInfo(Mobile from, Mobile creature, int effect, ArrayList mods, bool pvp, int duration)
 			{
 				m_From = from;

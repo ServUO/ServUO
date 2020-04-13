@@ -65,10 +65,10 @@ namespace Server.SkillHandlers
             public Map m_Map;
             public TrackingInfo(Mobile tracker, Mobile target)
             {
-                this.m_Tracker = tracker;
-                this.m_Target = target;
-                this.m_Location = new Point2D(target.X, target.Y);
-                this.m_Map = target.Map;
+                m_Tracker = tracker;
+                m_Target = target;
+                m_Location = new Point2D(target.X, target.Y);
+                m_Map = target.Map;
             }
         }
     }
@@ -80,37 +80,37 @@ namespace Server.SkillHandlers
         public TrackWhatGump(Mobile from)
             : base(20, 30)
         {
-            this.m_From = from;
-            this.m_Success = from.CheckSkill(SkillName.Tracking, 0.0, 21.1);
+            m_From = from;
+            m_Success = from.CheckSkill(SkillName.Tracking, 0.0, 21.1);
 
-            this.AddPage(0);
+            AddPage(0);
 
-            this.AddBackground(0, 0, 440, 135, 5054);
+            AddBackground(0, 0, 440, 135, 5054);
 
-            this.AddBackground(10, 10, 420, 75, 2620);
-            this.AddBackground(10, 85, 420, 25, 3000);
+            AddBackground(10, 10, 420, 75, 2620);
+            AddBackground(10, 85, 420, 25, 3000);
 
-            this.AddItem(20, 20, 9682);
-            this.AddButton(20, 110, 4005, 4007, 1, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(20, 90, 100, 20, 1018087, false, false); // Animals
+            AddItem(20, 20, 9682);
+            AddButton(20, 110, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(20, 90, 100, 20, 1018087, false, false); // Animals
 
-            this.AddItem(120, 20, 9607);
-            this.AddButton(120, 110, 4005, 4007, 2, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(120, 90, 100, 20, 1018088, false, false); // Monsters
+            AddItem(120, 20, 9607);
+            AddButton(120, 110, 4005, 4007, 2, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(120, 90, 100, 20, 1018088, false, false); // Monsters
 
-            this.AddItem(220, 20, 8454);
-            this.AddButton(220, 110, 4005, 4007, 3, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(220, 90, 100, 20, 1018089, false, false); // Human NPCs
+            AddItem(220, 20, 8454);
+            AddButton(220, 110, 4005, 4007, 3, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(220, 90, 100, 20, 1018089, false, false); // Human NPCs
 
-            this.AddItem(320, 20, 8455);
-            this.AddButton(320, 110, 4005, 4007, 4, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(320, 90, 100, 20, 1018090, false, false); // Players
+            AddItem(320, 20, 8455);
+            AddButton(320, 110, 4005, 4007, 4, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(320, 90, 100, 20, 1018090, false, false); // Players
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
             if (info.ButtonID >= 1 && info.ButtonID <= 4)
-                TrackWhoGump.DisplayTo(this.m_Success, this.m_From, info.ButtonID - 1);
+                TrackWhoGump.DisplayTo(m_Success, m_From, info.ButtonID - 1);
         }
     }
 
@@ -129,30 +129,30 @@ namespace Server.SkillHandlers
         private TrackWhoGump(Mobile from, List<Mobile> list, int range)
             : base(20, 30)
         {
-            this.m_From = from;
-            this.m_List = list;
-            this.m_Range = range;
+            m_From = from;
+            m_List = list;
+            m_Range = range;
 
-            this.AddPage(0);
+            AddPage(0);
 
-            this.AddBackground(0, 0, 440, 155, 5054);
+            AddBackground(0, 0, 440, 155, 5054);
 
-            this.AddBackground(10, 10, 420, 75, 2620);
-            this.AddBackground(10, 85, 420, 45, 3000);
+            AddBackground(10, 10, 420, 75, 2620);
+            AddBackground(10, 85, 420, 45, 3000);
 
             if (list.Count > 4)
             {
-                this.AddBackground(0, 155, 440, 155, 5054);
+                AddBackground(0, 155, 440, 155, 5054);
 
-                this.AddBackground(10, 165, 420, 75, 2620);
-                this.AddBackground(10, 240, 420, 45, 3000);
+                AddBackground(10, 165, 420, 75, 2620);
+                AddBackground(10, 240, 420, 45, 3000);
 
                 if (list.Count > 8)
                 {
-                    this.AddBackground(0, 310, 440, 155, 5054);
+                    AddBackground(0, 310, 440, 155, 5054);
 
-                    this.AddBackground(10, 320, 420, 75, 2620);
-                    this.AddBackground(10, 395, 420, 45, 3000);
+                    AddBackground(10, 320, 420, 75, 2620);
+                    AddBackground(10, 395, 420, 45, 3000);
                 }
             }
 
@@ -160,11 +160,11 @@ namespace Server.SkillHandlers
             {
                 Mobile m = list[i];
 
-                this.AddItem(20 + ((i % 4) * 100), 20 + ((i / 4) * 155), ShrinkTable.Lookup(m));
-                this.AddButton(20 + ((i % 4) * 100), 130 + ((i / 4) * 155), 4005, 4007, i + 1, GumpButtonType.Reply, 0);
+                AddItem(20 + ((i % 4) * 100), 20 + ((i / 4) * 155), ShrinkTable.Lookup(m));
+                AddButton(20 + ((i % 4) * 100), 130 + ((i / 4) * 155), 4005, 4007, i + 1, GumpButtonType.Reply, 0);
 
                 if (m.Name != null)
-                    this.AddHtml(20 + ((i % 4) * 100), 90 + ((i / 4) * 155), 90, 40, m.Name, false, false);
+                    AddHtml(20 + ((i % 4) * 100), 90 + ((i / 4) * 155), 90, 40, m.Name, false, false);
             }
         }
 
@@ -220,13 +220,13 @@ namespace Server.SkillHandlers
         {
             int index = info.ButtonID - 1;
 
-            if (index >= 0 && index < this.m_List.Count && index < 12)
+            if (index >= 0 && index < m_List.Count && index < 12)
             {
-                Mobile m = this.m_List[index];
+                Mobile m = m_List[index];
 
-                this.m_From.QuestArrow = new TrackArrow(this.m_From, m, this.m_Range * 2);
+                m_From.QuestArrow = new TrackArrow(m_From, m, m_Range * 2);
 
-                Tracking.AddInfo(this.m_From, m);
+                Tracking.AddInfo(m_From, m);
             }
         }
 
@@ -291,7 +291,7 @@ namespace Server.SkillHandlers
             private readonly Mobile m_From;
             public InternalSorter(Mobile from)
             {
-                this.m_From = from;
+                m_From = from;
             }
 
             public int Compare(Mobile x, Mobile y)
@@ -303,7 +303,7 @@ namespace Server.SkillHandlers
                 else if (y == null)
                     return 1;
 
-                return this.m_From.GetDistanceToSqrt(x).CompareTo(this.m_From.GetDistanceToSqrt(y));
+                return m_From.GetDistanceToSqrt(x).CompareTo(m_From.GetDistanceToSqrt(y));
             }
         }
     }
@@ -315,32 +315,32 @@ namespace Server.SkillHandlers
         public TrackArrow(Mobile from, IEntity target, int range)
             : base(from, target)
         {
-            this.m_From = from;
-            this.m_Timer = new TrackTimer(from, target, range, this);
-            this.m_Timer.Start();
+            m_From = from;
+            m_Timer = new TrackTimer(from, target, range, this);
+            m_Timer.Start();
         }
 
         public override void OnClick(bool rightClick)
         {
             if (rightClick)
             {
-                Tracking.ClearTrackingInfo(this.m_From);
+                Tracking.ClearTrackingInfo(m_From);
 
-                this.m_From = null;
+                m_From = null;
 
-                this.Stop();
+                Stop();
             }
         }
 
         public override void OnStop()
         {
-            this.m_Timer.Stop();
+            m_Timer.Stop();
 
-            if (this.m_From != null)
+            if (m_From != null)
             {
-                Tracking.ClearTrackingInfo(this.m_From);
+                Tracking.ClearTrackingInfo(m_From);
 
-                this.m_From.SendLocalizedMessage(503177); // You have lost your quarry.
+                m_From.SendLocalizedMessage(503177); // You have lost your quarry.
             }
         }
     }
@@ -355,33 +355,33 @@ namespace Server.SkillHandlers
         public TrackTimer(Mobile from, IEntity target, int range, QuestArrow arrow)
             : base(TimeSpan.FromSeconds(0.25), TimeSpan.FromSeconds(2.5))
         {
-            this.m_From = from;
-            this.m_Target = target;
-            this.m_Range = range;
+            m_From = from;
+            m_Target = target;
+            m_Range = range;
 
-            this.m_Arrow = arrow;
+            m_Arrow = arrow;
         }
 
         protected override void OnTick()
         {
-            if (!this.m_Arrow.Running)
+            if (!m_Arrow.Running)
             {
-                this.Stop();
+                Stop();
                 return;
             }
-            else if (this.m_From.NetState == null || this.m_From.Deleted || this.m_Target.Deleted || this.m_From.Map != this.m_Target.Map || !this.m_From.InRange(this.m_Target, this.m_Range) || this.m_Target is Mobile && (((Mobile)this.m_Target).Hidden && ((Mobile)this.m_Target).AccessLevel > this.m_From.AccessLevel))
+            else if (m_From.NetState == null || m_From.Deleted || m_Target.Deleted || m_From.Map != m_Target.Map || !m_From.InRange(m_Target, m_Range) || m_Target is Mobile && (((Mobile)m_Target).Hidden && ((Mobile)m_Target).AccessLevel > m_From.AccessLevel))
             {
-                this.m_Arrow.Stop();
-                this.Stop();
+                m_Arrow.Stop();
+                Stop();
                 return;
             }
 
-            if (this.m_LastX != this.m_Target.Location.X || this.m_LastY != this.m_Target.Location.Y)
+            if (m_LastX != m_Target.Location.X || m_LastY != m_Target.Location.Y)
             {
-                this.m_LastX = this.m_Target.Location.X;
-                this.m_LastY = this.m_Target.Location.Y;
+                m_LastX = m_Target.Location.X;
+                m_LastY = m_Target.Location.Y;
 
-                this.m_Arrow.Update();
+                m_Arrow.Update();
             }
         }
     }
