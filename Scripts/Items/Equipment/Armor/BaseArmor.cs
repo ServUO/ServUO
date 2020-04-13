@@ -12,12 +12,10 @@ namespace Server.Items
 {
     public abstract class BaseArmor : Item, IScissorable, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, ITalismanProtection, IEngravable, IArtifact, ICombatEquipment, IQuality
     {
-        #region IEngravable
         private string _EngravedText;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string EngravedText { get { return _EngravedText; } set { _EngravedText = value; InvalidateProperties(); } }
-        #endregion
 
         private bool _VvVItem;
         private Mobile _Owner;
@@ -67,13 +65,10 @@ namespace Server.Items
         private bool m_Identified, m_PlayerConstructed;
         private int m_PhysicalBonus, m_FireBonus, m_ColdBonus, m_PoisonBonus, m_EnergyBonus;
 
-        #region Runic Reforging
         private ItemPower m_ItemPower;
         private ReforgedPrefix m_ReforgedPrefix;
         private ReforgedSuffix m_ReforgedSuffix;
-        #endregion
 
-        #region Stygian Abyss
         private int m_GorgonLenseCharges;
         private LenseType m_GorgonLenseType;
 
@@ -86,7 +81,6 @@ namespace Server.Items
         private int m_ColdNonImbuing;
         private int m_PoisonNonImbuing;
         private int m_EnergyNonImbuing;
-        #endregion
 
         private AosAttributes m_AosAttributes;
         private AosArmorAttributes m_AosArmorAttributes;
@@ -103,111 +97,31 @@ namespace Server.Items
         private int m_StrReq = -1, m_DexReq = -1, m_IntReq = -1;
         private AMA m_Meditate = (AMA)(-1);
 
-        public virtual bool AllowMaleWearer
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public virtual bool AllowFemaleWearer
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool AllowMaleWearer => true;
+        public virtual bool AllowFemaleWearer => true;
 
         public abstract AMT MaterialType { get; }
 
-        public virtual AMA DefMedAllowance
-        {
-            get
-            {
-                return AMA.None;
-            }
-        }
-        public virtual AMA AosMedAllowance
-        {
-            get
-            {
-                return DefMedAllowance;
-            }
-        }
-        public virtual int AosStrBonus
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int AosDexBonus
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int AosIntBonus
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int StrReq
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int AosDexReq
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int AosIntReq
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual bool CanFortify
-        {
-            get
-            {
-                return !IsImbued && NegativeAttributes.Antique < 4;
-            }
-        }
+        public virtual AMA DefMedAllowance => AMA.None;
+        public virtual AMA AosMedAllowance => DefMedAllowance;
 
-        public virtual bool CanRepair
-        {
-            get
-            {
-                return m_NegativeAttributes.NoRepair == 0;
-            }
-        }
+        public virtual int AosStrBonus => 0;
+        public virtual int AosDexBonus => 0;
+        public virtual int AosIntBonus => 0;
 
-		public virtual bool CanAlter { get { return true; } }
+        public virtual int StrReq => 0;
+        public virtual int DexReq => 0;
+        public virtual int IntReq => 0;
 
-        public virtual bool UseIntOrDexProperty
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public virtual int IntOrDexPropertyValue
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual bool CanFortify => !IsImbued && NegativeAttributes.Antique < 4;
+
+        public virtual bool CanRepair => m_NegativeAttributes.NoRepair == 0;
+
+		public virtual bool CanAlter => true; 
+
+        public virtual bool UseIntOrDexProperty => false;
+		
+        public virtual int IntOrDexPropertyValue => 0;
 
         public override void OnAfterDuped(Item newItem)
         {
@@ -339,13 +253,7 @@ namespace Server.Items
             }
         }
 
-        public double BaseArmorRatingScaled
-        {
-            get
-            {
-                return (BaseArmorRating * ArmorScalar);
-            }
-        }
+        public double BaseArmorRatingScaled => (BaseArmorRating * ArmorScalar);
 
         public virtual double ArmorRating
         {
@@ -581,7 +489,6 @@ namespace Server.Items
         }
         #endregion
 
-        #region Stygian Abyss
         [CommandProperty(AccessLevel.GameMaster)]
         public int GorgonLenseCharges
         {
@@ -676,9 +583,7 @@ namespace Server.Items
         public virtual void OnAfterImbued(Mobile m, int mod, int value)
         {
         }
-        #endregion
 
-        #region Runic Reforging
         [CommandProperty(AccessLevel.GameMaster)]
         public ReforgedPrefix ReforgedPrefix 
         { 
@@ -699,7 +604,6 @@ namespace Server.Items
             get { return m_ItemPower; } 
             set { m_ItemPower = value; InvalidateProperties(); } 
         }
-        #endregion
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int StrBonus
@@ -767,7 +671,7 @@ namespace Server.Items
         {
             get
             {
-                return (m_DexReq == -1 ? AosDexReq : m_DexReq);
+                return (m_DexReq == -1 ? DexReq : m_DexReq);
             }
             set
             {
@@ -781,7 +685,7 @@ namespace Server.Items
         {
             get
             {
-                return (m_IntReq == -1 ? AosIntReq : m_IntReq);
+                return (m_IntReq == -1 ? IntReq : m_IntReq);
             }
             set
             {
@@ -933,13 +837,7 @@ namespace Server.Items
             }
         }
 
-        public virtual int ArtifactRarity
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int ArtifactRarity => 0;
 
         public override bool DisplayWeight
         {
@@ -960,7 +858,6 @@ namespace Server.Items
 
         [CommandProperty(AccessLevel.GameMaster)]
         public AosSkillBonuses SkillBonuses { get { return m_AosSkillBonuses; } set { } }
-
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SAAbsorptionAttributes AbsorptionAttributes { get { return m_SAAbsorptionAttributes; } set { } }
@@ -1083,96 +980,20 @@ namespace Server.Items
             }
         }
 
-        public virtual int BasePhysicalResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int BaseFireResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int BaseColdResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int BasePoisonResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int BaseEnergyResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int BasePhysicalResistance => 0;
+        public virtual int BaseFireResistance => 0;
+        public virtual int BaseColdResistance => 0;
+        public virtual int BasePoisonResistance => 0;
+        public virtual int BaseEnergyResistance => 0;
 
-        public override int PhysicalResistance
-        {
-            get
-            {
-                return BasePhysicalResistance + m_PhysicalBonus;
-            }
-        }
+        public override int PhysicalResistance => BasePhysicalResistance + m_PhysicalBonus;
+        public override int FireResistance => BaseFireResistance + m_FireBonus;
+        public override int ColdResistance => BaseColdResistance + m_ColdBonus;
+        public override int PoisonResistance => BasePoisonResistance + m_PoisonBonus;
+        public override int EnergyResistance => BaseEnergyResistance + m_EnergyBonus;
 
-        public override int FireResistance
-        {
-            get
-            {
-                return BaseFireResistance + m_FireBonus;
-            }
-        }
-
-        public override int ColdResistance
-        {
-            get
-            {
-                return BaseColdResistance + m_ColdBonus;
-            }
-        }
-
-        public override int PoisonResistance
-        {
-            get
-            {
-                return BasePoisonResistance + m_PoisonBonus;
-            }
-        }
-
-        public override int EnergyResistance
-        {
-            get
-            {
-                return BaseEnergyResistance + m_EnergyBonus;
-            }
-        }
-
-        public virtual int InitMinHits
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int InitMaxHits
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int InitMinHits => 0;
+        public virtual int InitMaxHits => 0;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ArmorBodyType BodyPosition
@@ -1382,7 +1203,6 @@ namespace Server.Items
 
                 m_AosSkillBonuses.AddTo(from);
 
-                #region Mondain's Legacy Sets
                 if (IsSetItem)
                 {
                     m_SetEquipped = SetHelper.FullSetEquipped(from, SetID, Pieces);
@@ -1393,7 +1213,6 @@ namespace Server.Items
                         SetHelper.AddSetBonus(from, SetID);
                     }
                 }
-                #endregion
 
                 from.Delta(MobileDelta.Armor); // Tell them armor rating has changed
             }
@@ -1468,7 +1287,6 @@ namespace Server.Items
             EngravedText = 0x40000000         
         }
 
-        #region Mondain's Legacy Sets
         private static void SetSaveFlag(ref SetFlag flags, SetFlag toSet, bool setIf)
         {
             if (setIf)
@@ -1495,9 +1313,8 @@ namespace Server.Items
             Hue = 0x00000100,
             LastEquipped = 0x00000200,
             SetEquipped = 0x00000400,
-            SetSelfRepair = 0x00000800,
+            SetSelfRepair = 0x00000800
         }
-        #endregion
 
         public void xWeaponAttributesDeserializeHelper(GenericReader reader, BaseArmor item)
         {
@@ -1983,13 +1800,11 @@ namespace Server.Items
                     }
             }
 
-            #region Mondain's Legacy Sets
             if (m_SetAttributes == null)
                 m_SetAttributes = new AosAttributes(this);
 
             if (m_SetSkillBonuses == null)
                 m_SetSkillBonuses = new AosSkillBonuses(this);
-            #endregion
 
             if (m_AosSkillBonuses == null)
                 m_AosSkillBonuses = new AosSkillBonuses(this);
@@ -2022,21 +1837,9 @@ namespace Server.Items
 
             if (Parent is Mobile)
                 ((Mobile)Parent).CheckStatTimers();
-
-            if (version < 7)
-                m_PlayerConstructed = true; // we don't know, so, assume it's crafted
-
-            if (version < 13)
-                ApplyResourceResistances(CraftResource.None);
         }
 
-        public virtual CraftResource DefaultResource
-        {
-            get
-            {
-                return CraftResource.Iron;
-            }
-        }
+        public virtual CraftResource DefaultResource => CraftResource.Iron;
 
         public BaseArmor(int itemID)
             : base(itemID)
@@ -2056,10 +1859,8 @@ namespace Server.Items
 
             m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
 
-            #region Mondain's Legacy Sets
             m_SetAttributes = new AosAttributes(this);
             m_SetSkillBonuses = new AosSkillBonuses(this);
-            #endregion
 
             m_AosSkillBonuses = new AosSkillBonuses(this);
             m_NegativeAttributes = new NegativeAttributes(this);
@@ -2067,9 +1868,9 @@ namespace Server.Items
             m_TalismanProtection = new TalismanAttribute();
         }
 
-        public virtual Race RequiredRace { get { return null; } }
+        public virtual Race RequiredRace => null; 
 
-        public virtual bool CanBeWornByGargoyles { get { return false; } }
+        public virtual bool CanBeWornByGargoyles => false; 
 
         public override bool CanEquip(Mobile from)
         {
@@ -2224,10 +2025,8 @@ namespace Server.Items
                 ((Mobile)parent).Delta(MobileDelta.Armor); // Tell them armor rating has changed
                 m.CheckStatTimers();
 
-                #region Mondain's Legacy Sets
                 if (IsSetItem && m_SetEquipped)
                     SetHelper.RemoveSetBonus(m, SetID, this);
-                #endregion
             }
 
             base.OnRemoved(parent);
@@ -2444,7 +2243,6 @@ namespace Server.Items
             if (m_GorgonLenseCharges > 0)
                 list.Add(1112590, m_GorgonLenseCharges.ToString()); //Gorgon Lens Charges: ~1_val~         
 
-            #region Mondain's Legacy Sets
             if (IsSetItem)
             {
                 if (MixedSet)
@@ -2468,7 +2266,6 @@ namespace Server.Items
                     GetSetProperties(list);
                 }
             }
-            #endregion
 
             AddDamageTypeProperty(list);
 
@@ -2709,7 +2506,6 @@ namespace Server.Items
             if (makersMark)
                 Crafter = from;
 
-            #region Mondain's Legacy
             if (!craftItem.ForceNonExceptional)
             {
 				if (typeRes == null)
@@ -2717,7 +2513,6 @@ namespace Server.Items
 
 				Resource = CraftResources.GetFromType(typeRes);
             }
-            #endregion
 
             if (typeRes == null || craftItem.ForceNonExceptional)
 				typeRes = craftItem.Resources.GetAt(0).ItemType;
@@ -2732,7 +2527,6 @@ namespace Server.Items
             if (tool is BaseRunicTool && !craftItem.ForceNonExceptional)
                 ((BaseRunicTool)tool).ApplyAttributesTo(this);
 
-            #region Mondain's Legacy
             if (!craftItem.ForceNonExceptional)
             {
                 CraftResourceInfo resInfo = CraftResources.GetInfo(m_Resource);
@@ -2747,7 +2541,6 @@ namespace Server.Items
 
                 DistributeMaterialBonus(attrInfo);
             }
-            #endregion
 
             return quality;
         }
@@ -2789,13 +2582,11 @@ namespace Server.Items
             }
 
             // Imbuing needs to keep track of what is natrual, what is imbued bonuses
-            #region Stygian Abyss
             m_PhysNonImbuing = m_PhysicalBonus;
             m_FireNonImbuing = m_FireBonus;
             m_ColdNonImbuing = m_ColdBonus;
             m_PoisonNonImbuing = m_PoisonBonus;
             m_EnergyNonImbuing = m_EnergyBonus;
-            #endregion
 
             // Gives MageArmor property for certain armor types
             if (m_AosArmorAttributes.MageArmor <= 0 && IsMageArmorType(this))
@@ -2851,7 +2642,6 @@ namespace Server.Items
                 m_AosAttributes.WeaponDamage += attrInfo.ArmorDamage;
                 m_AosAttributes.AttackChance += attrInfo.ArmorHitChance;
                 m_AosAttributes.RegenHits += attrInfo.ArmorRegenHits;
-                //m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage;
             }
             else
             {
@@ -2859,7 +2649,6 @@ namespace Server.Items
                 {
                     case 0: m_AosAttributes.WeaponDamage += attrInfo.ArmorDamage; break;
                     case 1: m_AosAttributes.AttackChance += attrInfo.ArmorHitChance; break;
-                    //case 2: m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage; break;
                     case 2: m_AosAttributes.Luck += attrInfo.ArmorLuck; break;
                     case 3: m_AosArmorAttributes.LowerStatReq += attrInfo.ArmorLowerRequirements; break;
                 }
@@ -2900,7 +2689,6 @@ namespace Server.Items
         };
         #endregion
 
-        #region Mondain's Legacy Sets
         public override bool OnDragLift(Mobile from)
         {
             if (Parent is Mobile && from == Parent)
@@ -2912,43 +2700,15 @@ namespace Server.Items
             return base.OnDragLift(from);
         }
 
-        public virtual SetItem SetID
-        {
-            get
-            {
-                return SetItem.None;
-            }
-        }
-        public virtual bool MixedSet
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public virtual int Pieces
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual SetItem SetID => SetItem.None;
+		
+        public virtual bool MixedSet => false;
 
-        public virtual bool BardMasteryBonus
-        {
-            get
-            {
-                return (SetID == SetItem.Virtuoso);
-            }
-        }
+        public virtual int Pieces => 0;
 
-        public bool IsSetItem
-        {
-            get
-            {
-                return (SetID != SetItem.None);
-            }
-        }
+        public virtual bool BardMasteryBonus => (SetID == SetItem.Virtuoso);
+
+        public bool IsSetItem => (SetID != SetItem.None);
 
         private int m_SetHue;
         private bool m_SetEquipped;
@@ -3197,7 +2957,6 @@ namespace Server.Items
 
             return 0;
         }
-        #endregion
 
         public virtual void SetProtection(Type type, TextDefinition name, int amount)
         {

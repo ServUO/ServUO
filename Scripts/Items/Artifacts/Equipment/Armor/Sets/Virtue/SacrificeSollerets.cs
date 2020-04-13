@@ -5,7 +5,8 @@ namespace Server.Items
     [FlipableAttribute(0x2B12, 0x2B13)]
     public class SacrificeSollerets : BaseClothing
     {
-		public override bool IsArtifact { get { return true; } }
+		public override bool IsArtifact => true; 
+		
         [Constructable]
         public SacrificeSollerets()
             : base(0x2B13, Layer.Shoes)
@@ -27,48 +28,16 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075194;
-            }
-        }// Sollerets of Sacrifice (Virtue Armor Set)
-        public override SetItem SetID
-        {
-            get
-            {
-                return SetItem.Virtue;
-            }
-        }
-        public override int Pieces
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int AosStrReq
-        {
-            get
-            {
-                return 10;
-            }
-        }
+        public override int LabelNumber => 1075194; // Sollerets of Sacrifice (Virtue Armor Set)
+		
+        public override SetItem SetID => SetItem.Virtue;
+        public override int Pieces => 8;
+
+        public override int InitMinHits => 0;
+        public override int InitMaxHits => 0;
+
+        public override int StrReq => 10;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
