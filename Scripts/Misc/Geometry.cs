@@ -214,27 +214,11 @@ namespace Server.Misc
                 this.quadrant = quadrant;
             }
 
-            public Point2D Point
-            {
-                get
-                {
-                    return this.point;
-                }
-            }
-            public int Angle
-            {
-                get
-                {
-                    return this.angle;
-                }
-            }
-            public int Quadrant
-            {
-                get
-                {
-                    return this.quadrant;
-                }
-            }
+            public Point2D Point => this.point;
+
+            public int Angle => this.angle;
+
+            public int Quadrant => this.quadrant;
         }
     }
 }

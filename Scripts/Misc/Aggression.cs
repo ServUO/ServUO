@@ -14,7 +14,7 @@ namespace Server.Misc
         private const string AggressedFormat = "{0} is attacking you!";
         private const int Hue = 0x22;
 
-        public static TimeSpan CombatHeatDelay { get { return Delay; } }
+        public static TimeSpan CombatHeatDelay => Delay; 
 
         public static void Initialize()
         {

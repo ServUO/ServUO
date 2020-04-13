@@ -17,55 +17,24 @@ namespace Server.Engines.Craft
 
         public CraftSubRes(Type type, TextDefinition name, double reqSkill, int genericNameNumber, object message)
         {
-            this.m_Type = type;
-            this.m_NameNumber = name;
-            this.m_NameString = name;
-            this.m_ReqSkill = reqSkill;
-            this.m_GenericNameNumber = genericNameNumber;
-            this.m_Message = message;
+            m_Type = type;
+            m_NameNumber = name;
+            m_NameString = name;
+            m_ReqSkill = reqSkill;
+            m_GenericNameNumber = genericNameNumber;
+            m_Message = message;
         }
 
-        public Type ItemType
-        {
-            get
-            {
-                return this.m_Type;
-            }
-        }
-        public string NameString
-        {
-            get
-            {
-                return this.m_NameString;
-            }
-        }
-        public int NameNumber
-        {
-            get
-            {
-                return this.m_NameNumber;
-            }
-        }
-        public int GenericNameNumber
-        {
-            get
-            {
-                return this.m_GenericNameNumber;
-            }
-        }
-        public object Message
-        {
-            get
-            {
-                return this.m_Message;
-            }
-        }
-        public double RequiredSkill
-        {
-            get
-            {
-                return this.m_ReqSkill;
-            }
-        }
+        public Type ItemType => m_Type;
+
+        public string NameString => m_NameString;
+
+        public int NameNumber => m_NameNumber;
+
+        public int GenericNameNumber => m_GenericNameNumber;
+
+        public object Message => m_Message;
+
+        public double RequiredSkill => m_ReqSkill;
     }
 }

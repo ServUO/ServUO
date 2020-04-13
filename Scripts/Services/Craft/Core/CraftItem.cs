@@ -143,7 +143,6 @@ namespace Server.Engines.Craft
 
             if (!_itemIds.TryGetValue(type, out itemId))
             {
-                #region Mondain's Legacy
                 if (type == typeof(ArcaneBookshelfSouthDeed))
                 {
                     itemId = 0x2DEF;
@@ -178,7 +177,6 @@ namespace Server.Engines.Craft
                 {
                     itemId = 0x2D0A;
                 }
-                #endregion
 
                 if (itemId == 0)
                 {
@@ -367,17 +365,11 @@ namespace Server.Engines.Craft
 
 		private static readonly Type[] m_ColoredItemTable = 
 		{
-			#region Mondain's Legacy
 			typeof(BaseContainer), typeof(ParrotPerchAddonDeed),
-			#endregion
-
 			typeof(BaseWeapon), typeof(BaseArmor), typeof(BaseClothing), typeof(BaseJewel), typeof(DragonBardingDeed),
 			typeof(BaseAddonDeed), typeof(BaseAddon),
-
-            #region Stygian Abyss
             typeof(PlantPigment), typeof(SoftenedReeds), typeof(DryReeds), typeof(PlantClippings),
             typeof(MedusaLightScales), typeof(MedusaDarkScales)
-            #endregion
 		};
 
         private static readonly Type[] m_ClothColoredItemTable =
@@ -391,9 +383,7 @@ namespace Server.Engines.Craft
 
 		private static readonly Type[] m_ColoredResourceTable =
 		{
-			#region Mondain's Legacy
 			typeof(Board), typeof(Log),
-			#endregion
 			typeof(BaseIngot), typeof(BaseOre), typeof(BaseLeather), typeof(BaseHides), typeof(AbyssalCloth), typeof(UncutCloth), typeof(Cloth),
 			typeof(BaseGranite), typeof(BaseScales), typeof(PlantClippings), typeof(DryReeds), typeof(SoftenedReeds),
 			typeof(PlantPigment), typeof(BaseContainer)
@@ -401,11 +391,9 @@ namespace Server.Engines.Craft
 
 		private static readonly Type[] m_MarkableTable =
 		{
-			#region Mondain's Legacy
 			typeof(BlueDiamondRing), typeof(BrilliantAmberBracelet), typeof(DarkSapphireBracelet), typeof(EcruCitrineRing),
 			typeof(FireRubyBracelet), typeof(PerfectEmeraldRing), typeof(TurqouiseRing), typeof(WhitePearlBracelet),
 			typeof(BaseContainer), typeof(CraftableFurniture),
-			#endregion
 
 			typeof(BaseArmor), typeof(BaseWeapon), typeof(BaseClothing), typeof(BaseInstrument), typeof(BaseTool),
 			typeof(BaseHarvestTool), typeof(BaseQuiver), typeof(DragonBardingDeed), typeof(Fukiya), typeof(FukiyaDarts),
@@ -612,7 +600,6 @@ namespace Server.Engines.Craft
             return false;
         }
 
-        #region SA
         public bool IsPlantHueType(Type[][] types)
         {
             for (int i = 0; i < types.Length; ++i)
@@ -701,7 +688,6 @@ namespace Server.Engines.Craft
 
             return -1;
         }
-        #endregion
 
 		public int ConsumeQuantity(Container cont, Type[][] types, int[] amounts)
 		{
@@ -820,7 +806,6 @@ namespace Server.Engines.Craft
 			return amount;
 		}
 
-        #region SA
         public int GetPlantHueAmount(Mobile from, CraftSystem craftSystem, Container cont, Type[] types)
         {
             Item[] items = cont.FindItemsByType(types, true);
@@ -843,7 +828,6 @@ namespace Server.Engines.Craft
 
             return amount;
         }
-        #endregion
 
 		public bool ConsumeRes(
 			Mobile from,
@@ -1696,7 +1680,6 @@ namespace Server.Engines.Craft
 					AncientSmithyHammer hammer = from.FindItemOnLayer(Layer.OneHanded) as AncientSmithyHammer;
 					if (hammer != null && hammer != tool)
 					{
-						#region Mondain's Legacy
 						if (hammer is HammerOfHephaestus)
 						{
 							if (hammer.UsesRemaining > 0)
@@ -1718,7 +1701,6 @@ namespace Server.Engines.Craft
 								hammer.Delete();
 							}
 						}
-						#endregion
 					}
 				}
 
@@ -1740,7 +1722,6 @@ namespace Server.Engines.Craft
 
 				if (item != null)
 				{
-					#region Mondain's Legacy
 					if (item is Board)
 					{
 						Type resourceType = typeRes;
@@ -1783,7 +1764,6 @@ namespace Server.Engines.Craft
                             oldItem.Delete();
                         }
 					}
-                    #endregion
 
                     if (item is MapItem)
                     {
@@ -1892,7 +1872,6 @@ namespace Server.Engines.Craft
 
                 tool.UsesRemaining--;
 
-                #region Mondain's Legacy
                 if (tool is HammerOfHephaestus)
                 {
                     if (tool.UsesRemaining < 1)
@@ -1900,7 +1879,6 @@ namespace Server.Engines.Craft
                         tool.UsesRemaining = 0;
                     }
                 }
-                #endregion
                 else
                 {
                     if (tool.UsesRemaining < 1 && tool.BreakOnDepletion)
@@ -2116,7 +2094,6 @@ namespace Server.Engines.Craft
 			}
 		}
 
-        #region SA
         public static void RemoveResTarget(Mobile from)
         {
             if (m_HasTarget.Contains(from))
@@ -2223,6 +2200,5 @@ namespace Server.Engines.Craft
                 CraftItem.RemoveResTarget(from);
             }
         }
-        #endregion
 	}
 }

@@ -15,10 +15,7 @@ namespace Server.Misc
             */
             RegisterRace(new Human(0, 0));
             RegisterRace(new Elf(1, 1));
-
-            #region Stygian Abyss
             RegisterRace(new Gargoyle(2, 2));
-            #endregion
         }
 
         public static void RegisterRace(Race race)
@@ -294,7 +291,6 @@ namespace Server.Misc
             }
         }
 
-        #region SA
         private class Gargoyle : Race
         {
             public Gargoyle(int raceID, int raceIndex)
@@ -425,6 +421,5 @@ namespace Server.Misc
                 return RandomSkinHue();
             }
         }
-        #endregion
     }
 }

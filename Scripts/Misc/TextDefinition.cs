@@ -30,20 +30,10 @@ namespace Server
             this.m_String = text;
         }
 
-        public int Number
-        {
-            get
-            {
-                return this.m_Number;
-            }
-        }
-        public string String
-        {
-            get
-            {
-                return this.m_String;
-            }
-        }
+        public int Number => this.m_Number;
+
+        public string String => this.m_String;
+
         public static void Serialize(GenericWriter writer, TextDefinition def)
         {
             if (def == null)
