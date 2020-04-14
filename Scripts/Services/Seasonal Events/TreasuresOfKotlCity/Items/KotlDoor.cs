@@ -1,7 +1,5 @@
-using System;
-using Server;
-using Server.Network;
 using Server.Items;
+using Server.Network;
 
 namespace Server.Engines.TreasuresOfKotlCity
 {
@@ -17,7 +15,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
             KeyValue = Key.RandomValue();
 
-            if(Instance == null)
+            if (Instance == null)
                 Instance = this;
         }
 
@@ -53,7 +51,7 @@ namespace Server.Engines.TreasuresOfKotlCity
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if(Instance == null)
+            if (Instance == null)
                 Instance = this;
         }
     }

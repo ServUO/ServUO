@@ -1,6 +1,3 @@
-using Server;
-using System;
-
 namespace Server.Items
 {
     public class WizardsHatBearingTheCrestOfBlackthorn2 : WizardsHat
@@ -16,7 +13,7 @@ namespace Server.Items
             Attributes.BonusStr = 10;
             Attributes.BonusDex = 5;
             StrRequirement = 45;
-            Hue = 66;            
+            Hue = 66;
         }
 
         public override int BasePhysicalResistance { get { return 25; } }

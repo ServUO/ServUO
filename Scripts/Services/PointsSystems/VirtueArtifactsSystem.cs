@@ -1,15 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using Server;
-using Server.Items;
-using Server.Misc;
-using Server.Mobiles;
-using Server.Network;
-using Server.Engines.CannedEvil;
-using Server.Engines.SeasonalEvents;
 using Server.Engines.Points;
+using Server.Engines.SeasonalEvents;
+using Server.Items;
+using Server.Mobiles;
+using System;
 
 namespace Server.Misc
 {
@@ -43,10 +36,10 @@ namespace Server.Misc
         {
             Region r = m.Region;
 
-	        if (m is BaseCreature && ((BaseCreature)m).IsChampionSpawn)
-		        return false;
-	        
-	        if (r.IsPartOf<Server.Regions.HouseRegion>() || Server.Multis.BaseBoat.FindBoatAt(m, m.Map) != null)
+            if (m is BaseCreature && ((BaseCreature)m).IsChampionSpawn)
+                return false;
+
+            if (r.IsPartOf<Server.Regions.HouseRegion>() || Server.Multis.BaseBoat.FindBoatAt(m, m.Map) != null)
                 return false;
 
             return (r.IsPartOf("Covetous") || r.IsPartOf("Deceit") || r.IsPartOf("Despise") || r.IsPartOf("Destard") ||

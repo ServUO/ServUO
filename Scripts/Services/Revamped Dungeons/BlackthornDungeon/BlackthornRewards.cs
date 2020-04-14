@@ -1,15 +1,14 @@
-using Server;
+using Server.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Server.Items;
 
 namespace Server.Engines.Blackthorn
 {
     public static class BlackthornRewards
     {
         public static List<CollectionItem> Rewards { get; set; }
-        
+
         public static void Initialize()
         {
             Rewards = new List<CollectionItem>();

@@ -1,10 +1,5 @@
-using Server;
-using System;
-using Server.Mobiles;
-using Server.Items;
-using Server.Gumps;
 using Server.Commands;
-using System.Collections.Generic;
+using System;
 
 namespace Server.Engines.NewMagincia
 {

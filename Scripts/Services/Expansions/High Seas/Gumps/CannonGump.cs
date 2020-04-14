@@ -1,8 +1,6 @@
-using System;
-using Server;
 using Server.Items;
-using Server.Targeting;
 using Server.Network;
+using System;
 
 namespace Server.Gumps
 {
@@ -36,17 +34,17 @@ namespace Server.Gumps
 
             AddHtmlLocalized(45, 40, 100, 16, 1149626, LabelColor, false, false);  //CLEAN
 
-            if(!charged)
+            if (!charged)
                 AddHtmlLocalized(45, 60, 100, 16, 1149630, LabelColor, false, false);  //CHARGE
             else
                 AddHtmlLocalized(45, 60, 100, 16, 1149629, LabelColor, false, false);  //REMOVE
 
-            if(!loaded)
+            if (!loaded)
                 AddHtmlLocalized(45, 80, 100, 16, 1149635, LabelColor, false, false);  //LOAD
             else
                 AddHtmlLocalized(45, 80, 100, 16, 1149629, LabelColor, false, false);  //REMOVE
 
-            if(!primed)
+            if (!primed)
                 AddHtmlLocalized(45, 100, 100, 16, 1149637, LabelColor, false, false); //PRIME
             else if (cannon.CanLight)
                 AddHtmlLocalized(45, 100, 100, 16, 1149638, LabelColor, false, false); //FIRE
@@ -67,14 +65,14 @@ namespace Server.Gumps
                 AddHtmlLocalized(150, 80, 100, 16, 1149636, RedHue, false, false); //Not Loaded
             else
                 AddHtmlLocalized(150, 80, 100, 16, 1114057, AmmoInfo.GetAmmoName(cannon).ToString(), GreenHue, false, false);
-                //AddHtmlLocalized(150, 80, 100, 16, cannon.AmmoType == AmmoType.Grapeshot ? 1095741 : 1116029, GreenHue, false, false);
+            //AddHtmlLocalized(150, 80, 100, 16, cannon.AmmoType == AmmoType.Grapeshot ? 1095741 : 1116029, GreenHue, false, false);
 
             if (!primed)
                 AddHtmlLocalized(150, 100, 100, 16, 1149639, RedHue, false, false); //No Fuse
             else
                 AddHtmlLocalized(150, 100, 100, 16, 1149640, GreenHue, false, false); //Primed
 
-            AddButton(10, 40, 0xFA5, 0xFA7,  1, GumpButtonType.Reply, 0);
+            AddButton(10, 40, 0xFA5, 0xFA7, 1, GumpButtonType.Reply, 0);
             AddButton(10, 60, 0xFA5, 0xFA7, 2, GumpButtonType.Reply, 0);
             AddButton(10, 80, 0xFA5, 0xFA7, 3, GumpButtonType.Reply, 0);
             AddButton(10, 100, 0xFA5, 0xFA7, 4, GumpButtonType.Reply, 0);

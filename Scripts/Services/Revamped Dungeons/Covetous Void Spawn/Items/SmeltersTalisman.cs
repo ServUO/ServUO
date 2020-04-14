@@ -1,7 +1,4 @@
-using Server;
 using System;
-using System.Collections.Generic;
-using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -29,18 +26,18 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int UsesRemaining 
+        public int UsesRemaining
         {
             get { return _UsesRemaining; }
-            set 
-            { 
+            set
+            {
                 _UsesRemaining = value;
 
                 if (_UsesRemaining <= 0 && this.RootParent is Mobile)
                     ((Mobile)RootParent).SendLocalizedMessage(1152621); // Your talisman's magic is exhausted.
 
                 InvalidateProperties();
-            } 
+            }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]

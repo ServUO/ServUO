@@ -25,7 +25,7 @@ namespace Server.Items
             LockLevel = 90;
             RequiredSkill = 90;
             MaxLockLevel = 100;
-            
+
             TrapType = TrapType.PoisonTrap;
             TrapPower = 100;
             Timer.DelayCall(TimeSpan.FromSeconds(1), Fill);
@@ -162,7 +162,7 @@ namespace Server.Items
 
         public KhaldunChest(Serial serial) : base(serial)
         {
-        }        
+        }
 
         public void TryDelayedLock()
         {

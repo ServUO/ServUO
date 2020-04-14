@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a wolf corpse")]
@@ -43,13 +41,13 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool AlwaysMurderer => true; 
-		
-        public override int Meat => 1; 
-		
-        public override int Hides => 5; 
+        public override bool AlwaysMurderer => true;
 
-        public override PackInstinct PackInstinct => PackInstinct.Canine; 
+        public override int Meat => 1;
+
+        public override int Hides => 5;
+
+        public override PackInstinct PackInstinct => PackInstinct.Canine;
 
         public override void Serialize(GenericWriter writer)
         {

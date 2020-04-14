@@ -1,17 +1,16 @@
-using Server.Commands;
 using System;
 using System.Collections.Generic;
 
 namespace Server.Items
 {
     public enum Parts
-    {     
-        None = -1,   
+    {
+        None = -1,
         Flywheel,
         WireSpool,
         PowerCore,
         BearingAssembly,
-    };    
+    };
 
     [Furniture]
     [Flipable(0x285D, 0x285E)]
@@ -24,8 +23,8 @@ namespace Server.Items
         private List<Item> m_Barrels;
         private Timer m_RestartTimer;
         private DateTime m_RestartTime;
-		
-		public List<Item> Barrels
+
+        public List<Item> Barrels
         {
             get { return m_Barrels; }
             set { m_Barrels = value; }
@@ -94,7 +93,7 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-            
+
             list.Add(1154425, String.Format("#{0}", 1154427 + (int)m_Type)); // *You barely make out some words on a rusted nameplate*<BR>REPLACEMENT PARTS: ~1_PART~
         }
 
@@ -125,7 +124,7 @@ namespace Server.Items
             m_RestartTimer = null;
 
             int index = Utility.Random(0, 8);
-            int randomkey = Utility.Random(-4, 4);            
+            int randomkey = Utility.Random(-4, 4);
             bool loot = false;
             Item barrel = null;
 
@@ -182,11 +181,11 @@ namespace Server.Items
                         barrel = new WoodenKeyBarrel(key);
                     }
 
-                    m_Barrels.Add(barrel);                 
+                    m_Barrels.Add(barrel);
 
                     barrel.MoveToWorld(new Point3D(itemx, itemy, z), Map);
                 }
-            }            
+            }
         }
 
         public void Stop()
@@ -202,7 +201,7 @@ namespace Server.Items
             m_RestartTimer = null;
 
             if (m_Barrels != null)
-            {                
+            {
                 for (int i = 0; i < m_Barrels.Count; ++i)
                 {
                     if (m_Barrels[i] != null)
@@ -211,7 +210,7 @@ namespace Server.Items
 
                 m_Barrels.Clear();
             }
-            
+
             for (int i = Items.Count - 1; i >= 0; --i)
             {
                 if (i < Items.Count)
@@ -243,7 +242,7 @@ namespace Server.Items
             writer.Write((int)0); // version
 
             writer.Write((bool)m_Active);
-            writer.Write((int)m_Type);            
+            writer.Write((int)m_Type);
             writer.Write(m_Barrels, true);
 
             writer.Write(m_RestartTimer != null);
@@ -265,8 +264,8 @@ namespace Server.Items
             {
                 m_RestartTime = reader.ReadDeltaTime();
             }
-			
-			BeginRestart(TimeSpan.FromSeconds(10.0));
+
+            BeginRestart(TimeSpan.FromSeconds(10.0));
         }
     }
 

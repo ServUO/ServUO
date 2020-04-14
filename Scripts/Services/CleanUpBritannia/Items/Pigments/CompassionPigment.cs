@@ -1,68 +1,66 @@
-using System;
-using Server;
 using Server.Targeting;
-using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
-	public enum CompassionPigmentType
-	{
-		PhoenixRed = 0,
-		AuraOfAmber,
-		DeepViolet,
-		PolishedBronze,
-		VibrantCrimson,
-		Lavender,
-		GleamingFuchsia,
-		DeepBlue,
-		GlossyFuchsia,
-		DarkVoid,
-		MurkySeagreen,
-		ReflectiveShadow,
-		LiquidSunshine,
-		ShadowyBlue,
-		BlackAndGreen,
-		GlossyBlue,
-		HunterGreen,
-		SlateBlue,
-		MotherOfPearl,
-		StarBlue,
-		MurkyAmber,
-		VibranSeagreen,
+    public enum CompassionPigmentType
+    {
+        PhoenixRed = 0,
+        AuraOfAmber,
+        DeepViolet,
+        PolishedBronze,
+        VibrantCrimson,
+        Lavender,
+        GleamingFuchsia,
+        DeepBlue,
+        GlossyFuchsia,
+        DarkVoid,
+        MurkySeagreen,
+        ReflectiveShadow,
+        LiquidSunshine,
+        ShadowyBlue,
+        BlackAndGreen,
+        GlossyBlue,
+        HunterGreen,
+        SlateBlue,
+        MotherOfPearl,
+        StarBlue,
+        MurkyAmber,
+        VibranSeagreen,
         VibrantOcher,
         MossyGreen,
         OliveGreen,
         MottledSunsetBlue,
         TyrianPurple,
         IntenseTeal
-	}
+    }
 
-	public class CompassionPigmentInfo
-	{
-		public CompassionPigmentType Type { get; private set; }
-		public int Hue { get; private set; }
-		public int LabelNumber { get; private set; }
+    public class CompassionPigmentInfo
+    {
+        public CompassionPigmentType Type { get; private set; }
+        public int Hue { get; private set; }
+        public int LabelNumber { get; private set; }
 
-		public CompassionPigmentInfo( CompassionPigmentType type, int hue, int labelNumber )
-		{
-			Type = type;
-			Hue = hue;
-			LabelNumber = labelNumber;
-		}
+        public CompassionPigmentInfo(CompassionPigmentType type, int hue, int labelNumber)
+        {
+            Type = type;
+            Hue = hue;
+            LabelNumber = labelNumber;
+        }
 
-		public static CompassionPigmentInfo GetInfo( CompassionPigmentType type )
-		{
-			int v = (int) type;
+        public static CompassionPigmentInfo GetInfo(CompassionPigmentType type)
+        {
+            int v = (int)type;
 
-			if ( v < 0 || v >= m_Table.Length )
-				v = 0;
+            if (v < 0 || v >= m_Table.Length)
+                v = 0;
 
-			return m_Table[v];
-		}
+            return m_Table[v];
+        }
 
-		private static CompassionPigmentInfo[] m_Table = new CompassionPigmentInfo[]
-		{
-			new CompassionPigmentInfo( CompassionPigmentType.PhoenixRed, 1964, 1151651 ), // Phoenix Red Pigment
+        private static CompassionPigmentInfo[] m_Table = new CompassionPigmentInfo[]
+        {
+            new CompassionPigmentInfo( CompassionPigmentType.PhoenixRed, 1964, 1151651 ), // Phoenix Red Pigment
 			new CompassionPigmentInfo( CompassionPigmentType.AuraOfAmber, 1967, 1152308 ), // Aura of Amber Pigment
 			new CompassionPigmentInfo( CompassionPigmentType.DeepViolet, 1929, 1151912 ), // Deep Violet Pigment
 			new CompassionPigmentInfo( CompassionPigmentType.PolishedBronze, 1944, 1151909 ), // Polished Bronze Pigment
@@ -91,166 +89,166 @@ namespace Server.Items
             new CompassionPigmentInfo( CompassionPigmentType.TyrianPurple, 2716, 1154735 ), // Tyrian Purple Pigment
             new CompassionPigmentInfo( CompassionPigmentType.IntenseTeal, 2691, 1154732 ), // Intense Teal Pigment
         };
-	}
+    }
 
-	public class CompassionPigment : Item, IUsesRemaining
-	{
-		public override int LabelNumber
-		{
-			get
-			{
-				return CompassionPigmentInfo.GetInfo( m_Type ).LabelNumber;
-			}
-		}
+    public class CompassionPigment : Item, IUsesRemaining
+    {
+        public override int LabelNumber
+        {
+            get
+            {
+                return CompassionPigmentInfo.GetInfo(m_Type).LabelNumber;
+            }
+        }
 
-		private CompassionPigmentType m_Type;
-		private int m_UsesRemaining;
+        private CompassionPigmentType m_Type;
+        private int m_UsesRemaining;
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public CompassionPigmentType Type
-		{
-			get { return m_Type; }
-			set
-			{
-				m_Type = value;
-				InvalidateHue();
-			}
-		}
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CompassionPigmentType Type
+        {
+            get { return m_Type; }
+            set
+            {
+                m_Type = value;
+                InvalidateHue();
+            }
+        }
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public int UsesRemaining
-		{
-			get { return m_UsesRemaining; }
-			set
-			{
-				m_UsesRemaining = value;
-				InvalidateProperties();
-			}
-		}
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int UsesRemaining
+        {
+            get { return m_UsesRemaining; }
+            set
+            {
+                m_UsesRemaining = value;
+                InvalidateProperties();
+            }
+        }
 
-		public bool ShowUsesRemaining
-		{
-			get { return true; }
-			set
-			{
-			}
-		}
+        public bool ShowUsesRemaining
+        {
+            get { return true; }
+            set
+            {
+            }
+        }
 
-		private void InvalidateHue()
-		{
-			Hue = CompassionPigmentInfo.GetInfo( m_Type ).Hue;
-		}
+        private void InvalidateHue()
+        {
+            Hue = CompassionPigmentInfo.GetInfo(m_Type).Hue;
+        }
 
-		private static CompassionPigmentType GetRandomType()
-		{
-			var values = Enum.GetValues( typeof( CompassionPigmentType ) );
-			return (CompassionPigmentType) values.GetValue( Utility.Random( values.Length ) );
-		}
+        private static CompassionPigmentType GetRandomType()
+        {
+            var values = Enum.GetValues(typeof(CompassionPigmentType));
+            return (CompassionPigmentType)values.GetValue(Utility.Random(values.Length));
+        }
 
-		[Constructable]
-		public CompassionPigment()
-			: this( GetRandomType() )
-		{
-		}
+        [Constructable]
+        public CompassionPigment()
+            : this(GetRandomType())
+        {
+        }
 
-		[Constructable]
-		public CompassionPigment( CompassionPigmentType type )
-			: this( type, 5 )
-		{
-		}
+        [Constructable]
+        public CompassionPigment(CompassionPigmentType type)
+            : this(type, 5)
+        {
+        }
 
-		[Constructable]
-		public CompassionPigment( CompassionPigmentType type, int uses )
-			: base( 0xEFF )
-		{
-			m_Type = type;
-			m_UsesRemaining = uses;
+        [Constructable]
+        public CompassionPigment(CompassionPigmentType type, int uses)
+            : base(0xEFF)
+        {
+            m_Type = type;
+            m_UsesRemaining = uses;
 
-			Weight = 1.0;
+            Weight = 1.0;
 
-			InvalidateHue();
-		}
+            InvalidateHue();
+        }
 
-		public override void OnDoubleClick( Mobile from )
-		{
-			from.SendLocalizedMessage( 1070929 ); // Select the artifact or enhanced magic item to dye.
+        public override void OnDoubleClick(Mobile from)
+        {
+            from.SendLocalizedMessage(1070929); // Select the artifact or enhanced magic item to dye.
 
-			from.Target = new DyeTarget( this );
-		}
+            from.Target = new DyeTarget(this);
+        }
 
         public override void AddUsesRemainingProperties(ObjectPropertyList list)
         {
-			list.Add( 1060584, m_UsesRemaining.ToString() ); // uses remaining: ~1_val~
-		}
+            list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+        }
 
-		public CompassionPigment( Serial serial )
-			: base( serial )
-		{
-		}
+        public CompassionPigment(Serial serial)
+            : base(serial)
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write( (int) 0 );
+            writer.Write((int)0);
 
-			writer.Write( (int) m_Type );
-			writer.Write( (int) m_UsesRemaining );
-		}
+            writer.Write((int)m_Type);
+            writer.Write((int)m_UsesRemaining);
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadInt();
+            int version = reader.ReadInt();
 
-			m_Type = (CompassionPigmentType) reader.ReadInt();
-			m_UsesRemaining = reader.ReadInt();
-		}
+            m_Type = (CompassionPigmentType)reader.ReadInt();
+            m_UsesRemaining = reader.ReadInt();
+        }
 
-		private class DyeTarget : Target
-		{
-			private CompassionPigment m_Pigment;
+        private class DyeTarget : Target
+        {
+            private CompassionPigment m_Pigment;
 
-			public DyeTarget( CompassionPigment pigment )
-				: base( 8, false, TargetFlags.None )
-			{
-				m_Pigment = pigment;
-			}
+            public DyeTarget(CompassionPigment pigment)
+                : base(8, false, TargetFlags.None)
+            {
+                m_Pigment = pigment;
+            }
 
-			protected override void OnTarget( Mobile from, object targeted )
-			{
-				Item item = targeted as Item;
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                Item item = targeted as Item;
 
-				if ( item == null )
-					return;
+                if (item == null)
+                    return;
 
-				if ( !item.IsChildOf( from.Backpack ) )
-				{
-					from.SendLocalizedMessage( 1062334 ); // This item must be in your backpack to be used.
-				}
+                if (!item.IsChildOf(from.Backpack))
+                {
+                    from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
+                }
                 else if (item is MetalPigmentsOfTokuno || item is LesserPigmentsOfTokuno || item is PigmentsOfTokuno || item is CompassionPigment)
                 {
-					from.SendLocalizedMessage( 1042083 ); // You cannot dye that.
-				}
-				else if ( item.IsLockedDown )
-				{
-					from.SendLocalizedMessage( 1070932 ); // You may not dye artifacts and enhanced magic items which are locked down.
-				}
-				else if (BasePigmentsOfTokuno.IsValidItem(item))
-				{
-					item.Hue = m_Pigment.Hue;
+                    from.SendLocalizedMessage(1042083); // You cannot dye that.
+                }
+                else if (item.IsLockedDown)
+                {
+                    from.SendLocalizedMessage(1070932); // You may not dye artifacts and enhanced magic items which are locked down.
+                }
+                else if (BasePigmentsOfTokuno.IsValidItem(item))
+                {
+                    item.Hue = m_Pigment.Hue;
 
-					m_Pigment.UsesRemaining--;
+                    m_Pigment.UsesRemaining--;
 
-					if ( m_Pigment.UsesRemaining <= 0 )
-						m_Pigment.Delete();
-				}
-				else
-				{
-					from.SendLocalizedMessage( 1070931 ); // You can only dye artifacts and enhanced magic items with this tub.
-				}
-			}
-		}
-	}
+                    if (m_Pigment.UsesRemaining <= 0)
+                        m_Pigment.Delete();
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1070931); // You can only dye artifacts and enhanced magic items with this tub.
+                }
+            }
+        }
+    }
 }

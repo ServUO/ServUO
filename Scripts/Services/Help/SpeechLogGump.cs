@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Server.Accounting;
 using Server.Gumps;
 using Server.Network;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Server.Engines.Help
 {
@@ -87,7 +87,7 @@ namespace Server.Engines.Help
         {
             Mobile from = sender.Mobile;
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 1: // Previous page
                     {

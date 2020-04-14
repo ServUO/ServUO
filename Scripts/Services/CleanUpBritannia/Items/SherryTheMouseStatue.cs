@@ -1,6 +1,6 @@
-﻿using System;
-using Server.Mobiles;
+﻿using Server.Mobiles;
 using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -62,7 +62,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

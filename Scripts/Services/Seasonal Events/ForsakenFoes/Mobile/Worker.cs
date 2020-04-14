@@ -1,8 +1,7 @@
-using System;
-using Server.Items;
-using Server.Gumps;
-using Server.Mobiles;
 using Server.Engines.Quests;
+using Server.Gumps;
+using Server.Items;
+using Server.Mobiles;
 using System.Collections.Generic;
 using System.IO;
 
@@ -25,7 +24,7 @@ namespace Server.Engines.Fellowship
     {
         public static string FilePath = Path.Combine("Saves/Misc", "FellowshipChain.bin");
         public static Dictionary<Mobile, FellowshipChain> FellowshipChainList = new Dictionary<Mobile, FellowshipChain>();
-        
+
         public static void Configure()
         {
             EventSink.WorldSave += OnSave;

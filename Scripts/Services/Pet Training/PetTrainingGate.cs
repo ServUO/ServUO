@@ -1,7 +1,5 @@
-using Server;
-using System;
-using Server.Mobiles;
 using Server.Gumps;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -53,7 +51,7 @@ namespace Server.Items
             return true;
         }
 
-        public PetTrainingGate(Serial serial) 
+        public PetTrainingGate(Serial serial)
             : base(serial)
         {
         }

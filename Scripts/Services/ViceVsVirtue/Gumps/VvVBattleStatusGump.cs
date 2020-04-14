@@ -1,10 +1,7 @@
-using System;
-using Server;
-using Server.Items;
-using Server.Mobiles;
-using Server.Gumps;
 using Server.Guilds;
-using Server.Network;
+using Server.Gumps;
+using Server.Mobiles;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Engines.VvV
@@ -34,13 +31,13 @@ namespace Server.Engines.VvV
             List<BattleTeam> teams = new List<BattleTeam>(Battle.Teams);
             teams.Sort();
 
-            double offset = 216 / (double)VvVBattle.ScoreToWin; 
+            double offset = 216 / (double)VvVBattle.ScoreToWin;
 
             for (int i = 0; i < teams.Count; i++)
             {
                 BattleTeam team = teams[i];
 
-                if(team.Guild != null)
+                if (team.Guild != null)
                     AddHtml(87, 115 + (31 * i), 50, 20, String.Format("<basefont color=#FFFFFF>{0}", team.Guild.Abbreviation), false, false);
 
                 AddBackground(145, 120 + (31 * i), (int)Math.Min(216, (team.Score * offset)), 12, 30584);

@@ -1,8 +1,5 @@
 using System;
 
-using Server;
-using Server.Events.Halloween;
-
 namespace Server.Items
 {
     public class JackInTheBox : Item

@@ -1,4 +1,3 @@
-using System;
 using Server;
 using Server.Items;
 
@@ -8,7 +7,7 @@ public class SquareBasket : BaseContainer
     public SquareBasket()
         : base(0x24D5)
     {
-        this.Weight = 1.0; 
+        this.Weight = 1.0;
     }
 
     public SquareBasket(Serial serial)

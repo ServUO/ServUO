@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     [Furniture]
     [Flipable(0x0A30, 0x0A38)]

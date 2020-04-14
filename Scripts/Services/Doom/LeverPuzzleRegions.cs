@@ -1,4 +1,3 @@
-using System;
 using Server.Mobiles;
 using Server.Regions;
 
@@ -90,7 +89,7 @@ namespace Server.Engines.Doom
         public Mobile m_Occupant;
         private readonly LeverPuzzleController Controller;
         public LeverPuzzleRegion(LeverPuzzleController controller, int[] loc)
-            : base(null, Map.Malas, Region.Find(LeverPuzzleController.lr_Enter, Map.Malas), new Rectangle2D(loc[0],loc[1],1,1))
+            : base(null, Map.Malas, Region.Find(LeverPuzzleController.lr_Enter, Map.Malas), new Rectangle2D(loc[0], loc[1], 1, 1))
         {
             this.Controller = controller;
             this.Register();

@@ -1,7 +1,4 @@
-using System;
-using Server;
 using Server.Items;
-using Server.Gumps;
 
 namespace Server.Engines.TreasuresOfKotlCity
 {

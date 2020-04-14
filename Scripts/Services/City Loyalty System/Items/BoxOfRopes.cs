@@ -1,14 +1,12 @@
-using System;
-using Server;
-using Server.Mobiles;
-using System.Collections.Generic;
 using Server.Engines.CityLoyalty;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Server.Items
 {
-	public class BoxOfRopes : Container
-	{
+    public class BoxOfRopes : Container
+    {
         public City City { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -70,26 +68,26 @@ namespace Server.Items
             : base(serial)
         {
         }
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
 
             writer.Write((int)City);
 
             Defrag();
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
 
             City = (City)reader.ReadInt();
 
             if (CitySystem != null && CitySystem.Captain != null)
                 CitySystem.Captain.Box = this;
-		}
-	}
+        }
+    }
 }

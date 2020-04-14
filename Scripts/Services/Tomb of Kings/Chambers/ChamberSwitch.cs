@@ -1,7 +1,4 @@
-﻿using System;
-using Server;
-
-namespace Server.Engines.TombOfKings
+﻿namespace Server.Engines.TombOfKings
 {
     public class ChamberSwitch : Item
     {

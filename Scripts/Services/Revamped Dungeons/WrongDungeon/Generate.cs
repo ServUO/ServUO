@@ -1,8 +1,6 @@
-using Server;
 using Server.Commands;
 using Server.Items;
 using Server.Mobiles;
-using System.Linq;
 
 namespace Server.Engines
 {
@@ -11,7 +9,7 @@ namespace Server.Engines
         public static void Initialize()
         {
             CommandSystem.Register("GenWrongRevamp", AccessLevel.Administrator, Generate_NewWrong);
-        }        
+        }
 
         public static void Generate_NewWrong(CommandEventArgs e)
         {

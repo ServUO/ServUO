@@ -1,14 +1,11 @@
-using System;
-using Server;
-using Server.Mobiles;
 using Server.Engines.HuntsmasterChallenge;
-using System.Linq;
+using System;
 
 namespace Server.Items
 {
     [FlipableAddon(Direction.South, Direction.East)]
-	public class HuntTrophyAddon : BaseAddon
-	{
+    public class HuntTrophyAddon : BaseAddon
+    {
         private string m_Owner;
         private int m_Measurement;
         private string m_Location;
@@ -65,7 +62,7 @@ namespace Server.Items
 
         public override BaseAddonDeed Deed { get { return new HuntTrophyAddonDeed(m_Owner, Index, m_Measurement, m_DateKilled, m_Location); } }
 
-		public HuntTrophyAddon(string name, int index, int measurement, string killed, string location)
+        public HuntTrophyAddon(string name, int index, int measurement, string killed, string location)
         {
             Index = index;
 
@@ -91,7 +88,7 @@ namespace Server.Items
             {
                 AddComponent(new HuntTrophyComponent(SouthID + 1), 0, -1, 0);
             }
-		}
+        }
 
         public virtual void Flip(Mobile from, Direction direction)
         {
@@ -202,8 +199,8 @@ namespace Server.Items
 
         public HuntTrophyAddon(Serial serial)
             : base(serial)
-		{
-		}
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -247,7 +244,7 @@ namespace Server.Items
                     break;
             }
         }
-	}
+    }
 
     public class HuntTrophyAddonDeed : BaseAddonDeed
     {

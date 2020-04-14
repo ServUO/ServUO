@@ -1,12 +1,9 @@
-using Server;
-using System;
-
 namespace Server.Items
 {
     public class GargishHalfApronBearingTheCrestOfBlackthorn1 : GargoyleHalfApron
     {
         public override bool IsArtifact { get { return true; } }
-        
+
         [Constructable]
         public GargishHalfApronBearingTheCrestOfBlackthorn1()
             : base()
@@ -17,7 +14,7 @@ namespace Server.Items
             Attributes.DefendChance = 5;
             StrRequirement = 10;
             Hue = 2527;
-        }   
+        }
 
         public GargishHalfApronBearingTheCrestOfBlackthorn1(Serial serial)
             : base(serial)

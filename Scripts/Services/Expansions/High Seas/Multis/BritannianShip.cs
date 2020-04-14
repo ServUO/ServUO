@@ -1,18 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Server;
 using Server.Items;
+using System;
 
 namespace Server.Multis
 {
     public class BritannianShip : BaseGalleon
     {
         public override int NorthID { get { return 0x40 + (DamageValue * 4); } }
-        public override int EastID { get { return  0x41 + (DamageValue * 4); } }
+        public override int EastID { get { return 0x41 + (DamageValue * 4); } }
         public override int SouthID { get { return 0x42 + (DamageValue * 4); } }
-        public override int WestID { get { return  0x43 + (DamageValue * 4); } }
+        public override int WestID { get { return 0x43 + (DamageValue * 4); } }
 
         public override int HoldDistance { get { return 9; } }
         public override int TillerManDistance { get { return 7; } }
@@ -57,7 +53,7 @@ namespace Server.Multis
 
         public override int[][] CannonTileIDs { get { return m_CannonTileIDs; } }
         private int[][] m_CannonTileIDs = new int[][]
-        {  
+        {
             new int[] { 23612, 23631, 23630, 23632, 23634, 23639, 23637, 23643, 23641 }, //SOUTH
             new int[] { 23666, 23684, 23685, 23686, 23688, 23691, 23693, 23695, 23697 }, //WEST
             new int[] { 23558, 23576, 23577, 23580, 23578, 23583, 23585, 23587, 23589 }, //NORTH 
@@ -115,7 +111,7 @@ namespace Server.Multis
         public override int[][] WheelItemIDs { get { return m_WheelItemIDs; } }
         private int[][] m_WheelItemIDs = new int[][]
         {
-            
+
             new int[] { 23618 },
             new int[] { 23618 },
             new int[] { 23618 },
@@ -281,7 +277,7 @@ namespace Server.Multis
             }
 
             return base.ExemptOverheadComponent(newPnt, itemID, x, y, height);
-        }    
+        }
 
         public BritannianShip(Serial serial)
             : base(serial)
@@ -303,7 +299,7 @@ namespace Server.Multis
 
     public class BritannianShipDeed : BaseBoatDeed
     {
-        public override int LabelNumber { get { return 1150017; } } 
+        public override int LabelNumber { get { return 1150017; } }
         public override BaseBoat Boat { get { return new BritannianShip(this.BoatDirection); } }
 
         [Constructable]

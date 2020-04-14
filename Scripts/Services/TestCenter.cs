@@ -1,10 +1,10 @@
-using System;
-using System.Text;
 using Server.Commands;
 using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Network;
+using System;
+using System.Text;
 
 namespace Server.Misc
 {
@@ -175,8 +175,8 @@ namespace Server.Misc
             keg.Held = 100;
             keg.Type = type;
             keg.Hue = hue;
-			
-			return keg;
+
+            return keg;
         }
 
         public static void FillBank(Mobile m)
@@ -546,7 +546,7 @@ namespace Server.Misc
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                switch ( info.ButtonID )
+                switch (info.ButtonID)
                 {
                     case 1:
                         {

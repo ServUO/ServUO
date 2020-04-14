@@ -1,4 +1,3 @@
-using Server.Items;
 using System;
 
 namespace Server.Mobiles
@@ -14,7 +13,7 @@ namespace Server.Mobiles
         public HPKraken(Serial serial) : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

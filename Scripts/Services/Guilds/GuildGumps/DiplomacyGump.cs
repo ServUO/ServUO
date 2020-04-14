@@ -1,8 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
+using System.Collections.Generic;
 
 namespace Server.Guilds
 {
@@ -66,7 +65,7 @@ namespace Server.Guilds
                     return -1;
                 else if (y == null)
                     return 1;
-				
+
                 GuildCompareStatus aStatus = GuildCompareStatus.Peace;
                 GuildCompareStatus bStatus = GuildCompareStatus.Peace;
 
@@ -135,7 +134,7 @@ namespace Server.Guilds
             new InfoField<Guild>[]
             {
                 new InfoField<Guild>(1062954, 280, GuildDiplomacyGump.NameComparer.Instance), //Guild Name
-                new InfoField<Guild>(1062957, 50,	GuildDiplomacyGump.AbbrevComparer.Instance), //Abbrev
+                new InfoField<Guild>(1062957, 50,   GuildDiplomacyGump.AbbrevComparer.Instance), //Abbrev
                 new InfoField<Guild>(1062958, 120, new GuildDiplomacyGump.StatusComparer(g))//Guild Title
             })
         {
@@ -188,7 +187,7 @@ namespace Server.Guilds
             if (alliance != null)
             {
                 Guild leader = alliance.Leader;
-				
+
                 if (leader != null)
                 {
                     if (this.guild == leader && alliance.IsPendingMember(g) || g == leader && alliance.IsPendingMember(this.guild))
@@ -223,14 +222,14 @@ namespace Server.Guilds
             if (g == null)
                 return true;
 
-            switch( this.m_Display )
+            switch (this.m_Display)
             {
                 case GuildDisplayType.Relations:
                     {
                         //if( !( guild.IsWar( g ) || guild.IsAlly( g ) ) )
                         if (!(this.guild.FindActiveWar(g) != null || this.guild.IsAlly(g)))	//As per OSI, only the guild leader wars show up under the sorting by relation
                             return true;
-					
+
                         return false;
                     }
                 case GuildDisplayType.AwaitingAction:

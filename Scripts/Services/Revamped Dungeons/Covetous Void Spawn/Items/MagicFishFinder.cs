@@ -1,9 +1,7 @@
-using Server;
+using Server.Commands;
 using System;
-using Server.Mobiles;
 using System.Collections.Generic;
 using System.Linq;
-using Server.Commands;
 
 namespace Server.Items
 {
@@ -207,7 +205,7 @@ namespace Server.Items
                     kvp.Value.Add(new SchoolEntry(kvp.Key, new Point2D(p.X, p.Y)));
                 }
 
-                if(kvp.Value.Count == 0)
+                if (kvp.Value.Count == 0)
                     Console.WriteLine("Warning: {0} has 0 School entries!", kvp.Key);
             }
 

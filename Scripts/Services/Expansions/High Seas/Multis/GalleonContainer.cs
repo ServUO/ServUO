@@ -1,9 +1,6 @@
-﻿using Server;
-using System;
-using Server.Multis;
+﻿using Server.ContextMenus;
 using Server.Mobiles;
-using Server.Network;
-using Server.ContextMenus;
+using Server.Multis;
 using Server.Targeting;
 using System.Collections.Generic;
 
@@ -125,7 +122,7 @@ namespace Server.Items
                 base.OnDoubleClick(from);
             else if (!m_Galleon.Contains(from))
             {
-                if(m_Galleon.TillerMan != null)
+                if (m_Galleon.TillerMan != null)
                     m_Galleon.TillerManSay("You must be on the ship to open the container.");
             }
             else if (m_Galleon.Owner is PlayerMobile && !m_Galleon.Scuttled && m_Galleon.GetSecurityLevel(from) < SecurityLevel.Crewman)

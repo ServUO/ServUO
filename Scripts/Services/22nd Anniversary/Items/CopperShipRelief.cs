@@ -1,4 +1,3 @@
-using System;
 using Server.Gumps;
 
 namespace Server.Items
@@ -13,7 +12,7 @@ namespace Server.Items
         public string DisplayName { get { return _DisplayName; } set { _DisplayName = value; InvalidateProperties(); } }
 
         public AddonFacing Facing { get; set; }
-        
+
         [Constructable]
         public CopperShipReliefAddon(AddonFacing facing, string name)
         {

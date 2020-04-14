@@ -1,8 +1,5 @@
-using System;
-using Server;
-using Server.Mobiles;
-using System.Collections.Generic;
 using Server.Engines.HuntsmasterChallenge;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -107,7 +104,7 @@ namespace Server.Items
         {
             foreach (HuntingDisplayTrophy trophy in m_DisplayTrophies)
             {
-                if(trophy != null && !trophy.Deleted)
+                if (trophy != null && !trophy.Deleted)
                     trophy.InvalidateProperties();
             }
         }

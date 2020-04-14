@@ -1,8 +1,5 @@
-using Server;
-using System;
-using Server.Mobiles;
-using Server.Items;
 using Server.ContextMenus;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Engines.NewMagincia
@@ -83,7 +80,7 @@ namespace Server.Engines.NewMagincia
         {
             base.GetContextMenuEntries(from, list);
 
-            if(m_Plot != null && m_Plot.Active)
+            if (m_Plot != null && m_Plot.Active)
                 list.Add(new RecallRuneEntry(from, this));
         }
 

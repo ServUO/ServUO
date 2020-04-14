@@ -1,9 +1,8 @@
-﻿using System;
-using Server.Commands;
-using Server.Mobiles;
-using Server.Targeting;
-using Server.Network;
+﻿using Server.Commands;
 using Server.Engines.Quests;
+using Server.Mobiles;
+using Server.Network;
+using Server.Targeting;
 
 namespace Server.Items
 {
@@ -335,7 +334,7 @@ namespace Server.Items
                     }
                     else
                     {
-						from.SendLocalizedMessage(500309); // Nothing Happens.                        
+                        from.SendLocalizedMessage(500309); // Nothing Happens.                        
                     }
                 }
             }

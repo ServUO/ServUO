@@ -1,11 +1,9 @@
-using System;
-using Server;
 using Server.Items;
 
 namespace Server.Engines.VvV
 {
     public class VvVWand1 : BaseWand, IArcaneEquip
-	{
+    {
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
 
@@ -82,8 +80,8 @@ namespace Server.Engines.VvV
 
         public VvVWand1(Serial serial)
             : base(serial)
-		{
-		}
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -104,9 +102,9 @@ namespace Server.Engines.VvV
         }
 
         public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
 
             switch (version)
             {
@@ -135,8 +133,8 @@ namespace Server.Engines.VvV
 
             if (version == 0)
                 Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
-		}
-	}
+        }
+    }
 
     public class VvVWand2 : BaseWand, IArcaneEquip
     {

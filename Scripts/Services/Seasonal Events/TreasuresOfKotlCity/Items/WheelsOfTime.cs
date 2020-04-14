@@ -1,7 +1,6 @@
-using System;
-using Server;
 using Server.Items;
 using Server.Network;
+using System;
 
 namespace Server.Engines.TreasuresOfKotlCity
 {
@@ -87,7 +86,7 @@ namespace Server.Engines.TreasuresOfKotlCity
             {
                 KotlBattleSimulator.Instance.EndSimulation();
             }
-            
+
             if (RockBarrier != null && RockBarrier.Location != RockBarrierLocation)
             {
                 RockBarrier.MoveToWorld(RockBarrierLocation, Map.TerMur);

@@ -1,9 +1,8 @@
-using Server;
-using System;
+using Server.Commands;
 using Server.Mobiles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Server.Commands;
 
 namespace Server.Items
 {
@@ -377,7 +376,7 @@ namespace Server.Items
                     });
                 });
 
-            if(!startup)
+            if (!startup)
                 MorphItems();
 
             if (Boss != null)
@@ -538,7 +537,7 @@ namespace Server.Items
             {
                 Spawn.ForEach(bc =>
                     {
-                        if(bc != null && bc.Alive)
+                        if (bc != null && bc.Alive)
                             bc.Kill();
                     });
 

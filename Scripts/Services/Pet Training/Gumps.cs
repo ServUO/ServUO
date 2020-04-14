@@ -1,11 +1,9 @@
-using System;
-using Server;
 using Server.Gumps;
 using Server.Items;
-using Server.SkillHandlers;
+using Server.Misc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Server.Misc;
 
 namespace Server.Mobiles
 {
@@ -361,7 +359,7 @@ namespace Server.Mobiles
                     }
 
                     y += 18;
-                }                
+                }
 
                 if (profile.Advancements != null)
                 {
@@ -383,7 +381,7 @@ namespace Server.Mobiles
                         AddImage(28, 76, 0x826);
 
                         AddHtmlLocalized(47, 74, 160, 18, 1157505, 0xC8, false, false); // Pet Advancements
-                        
+
                         for (int i = profileadvcount; i >= 0; i--)
                         {
                             if (++idx > 9)
@@ -541,7 +539,7 @@ namespace Server.Mobiles
         public int Pages(AbilityProfile profile)
         {
             if (profile == null || profile.Advancements == null || profile.Advancements.Count == 0)
-                return 8;            
+                return 8;
 
             return 8 + AdvPage(profile);
         }
@@ -640,7 +638,7 @@ namespace Server.Mobiles
 
         public override void AddGumpLayout()
         {
-            List<BaseCreature> pets = new List<BaseCreature>(User.AllFollowers.OfType<BaseCreature>().Where(p => 
+            List<BaseCreature> pets = new List<BaseCreature>(User.AllFollowers.OfType<BaseCreature>().Where(p =>
                 p.TrainingProfile != null &&
                 p.TrainingProfile.HasBegunTraining &&
                 p.Map == User.Map));
@@ -960,7 +958,7 @@ namespace Server.Mobiles
                     continue;
                 }
 
-                if ((Definition.MagicalAbilities & abil) == 0 ||  AbilityProfile.HasAbility(abil) ||
+                if ((Definition.MagicalAbilities & abil) == 0 || AbilityProfile.HasAbility(abil) ||
                     !AbilityProfile.CanChooseMagicalAbility(abil) || /*(abil <= MagicalAbility.WrestlingMastery && AbilityProfile.AbilityCount() >= 3) ||*/
                     ((abil & MagicalAbility.Tokuno) != 0 && !AbilityProfile.TokunoTame))
                 {
@@ -1079,7 +1077,7 @@ namespace Server.Mobiles
 
                 return false;
             }
- 
+
             if (o is SpecialAbility[])
             {
                 if (!AbilityProfile.CanChooseSpecialAbility((SpecialAbility[])o))
@@ -1320,7 +1318,7 @@ namespace Server.Mobiles
             int max = TrainingPoint.GetMax(Creature);
             PetTrainingHelper.GetStartValue(TrainingPoint, Creature, ref start);
             StartValue = start;
-            
+
             if (StartValue > Value)
             {
                 Value = StartValue;
@@ -1771,7 +1769,7 @@ namespace Server.Mobiles
                 return false;
 
             scroll = User.Backpack.Items.OfType<PowerScroll>().FirstOrDefault(ps => ps.Skill == name && ps.Value == 100 + (value / 10));
-            
+
             return scroll != null;
         }
     }
@@ -1813,7 +1811,7 @@ namespace Server.Mobiles
 
                 AddButton(25, y, 4017, 4019, i + 100, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(60, y, 200, 18, PetTrainingHelper.GetCategoryLocalization(entry.TrainPoint), false, false);
-                
+
                 var loc = PetTrainingHelper.GetLocalization(entry.TrainPoint);
 
                 if (loc[0] != null)

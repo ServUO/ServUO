@@ -1,14 +1,13 @@
-﻿using System;
-using Server.Mobiles;
-using Server.Targeting;
+﻿using Server.Mobiles;
 using Server.Network;
+using Server.Targeting;
 
 namespace Server.Items
 {
     public class SorcerersRewardChest : Item
     {
         public override int LabelNumber { get { return 1023712; } } // strong box
-        
+
         [Constructable]
         public SorcerersRewardChest() : base(0x9AA)
         {
@@ -19,7 +18,7 @@ namespace Server.Items
         public override void OnDoubleClick(Mobile from)
         {
             from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154226); // *It's an unassuming strong box. You examine the lock more closely and determine there is no way to pick it. You'll need to find a key.*
-            
+
             base.OnDoubleClick(from);
         }
 
@@ -117,7 +116,7 @@ namespace Server.Items
                     from.BankBox.DropItem(item);
 
                 m_From.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154228); // *You insert the key into the mechanism and turn it. To your delight the lock opens with a click and you remove the contents*
-                
+
                 m_Key.Delete();
             }
             else

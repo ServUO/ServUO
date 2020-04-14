@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
+using Server.Commands;
 using Server.Gumps;
 using Server.Network;
-using Server.Commands;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -17,7 +17,7 @@ namespace Server.Items
         {
             Decorate.Generate("exodus", "Data/Decoration/Exodus", Map.Ilshenar);
         }
-        
+
         private static readonly TimeSpan m_UseTimeout = TimeSpan.FromMinutes(2.0);
         private Dictionary<Mobile, DamageTimer> DamageTable = new Dictionary<Mobile, DamageTimer>();
         private int m_SideLength;
@@ -345,7 +345,7 @@ namespace Server.Items
                 this.AddImage(547, 0, 0x28C9);
 
                 this.AddBackground(95, 20, 442, 90, 0xA28);
-                
+
                 this.AddHtmlLocalized(165, 35, 300, 45, 1153747, false, false); // <center>GENERATOR CONTROL nexus</center>
                 this.AddHtmlLocalized(165, 60, 300, 70, 1153748, false, false); // <center>Use the Directional Controls to</center>
                 this.AddHtmlLocalized(165, 75, 300, 85, 1153749, false, false); // <center>Close the Grid Circuit</center>

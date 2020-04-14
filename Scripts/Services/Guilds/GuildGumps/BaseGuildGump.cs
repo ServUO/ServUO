@@ -1,8 +1,8 @@
-using System;
 using Server.Gumps;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Network;
+using System;
 
 namespace Server.Guilds
 {
@@ -20,7 +20,7 @@ namespace Server.Guilds
         {
             this.m_Guild = g;
             this.m_Player = pm;
-			
+
             pm.CloseGump(typeof(BaseGuildGump));
         }
 
@@ -89,7 +89,7 @@ namespace Server.Guilds
                     return false;
             }
 
-            return true;			
+            return true;
         }
 
         public static string Color(string text, int color)
@@ -122,7 +122,7 @@ namespace Server.Guilds
             if (!IsMember(pm, this.guild))
                 return;
 
-            switch( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 1:
                     {

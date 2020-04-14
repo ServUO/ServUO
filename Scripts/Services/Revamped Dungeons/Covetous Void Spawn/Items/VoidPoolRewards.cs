@@ -1,12 +1,5 @@
-using Server;
-using System;
-using System.Collections.Generic;
-using Server.Mobiles;
 using Server.Items;
-using System.Linq;
-using Server.Targeting;
-using Server.Engines.Quests;
-using Server.Multis;
+using System.Collections.Generic;
 
 namespace Server.Engines.VoidPool
 {
@@ -48,8 +41,8 @@ namespace Server.Engines.VoidPool
             Rewards.Add(new CollectionItem(typeof(WoodsmansTalisman), 0x2F5A, 1152680, (int)CraftResource.Bloodwood, 200));// Bloodwood
             Rewards.Add(new CollectionItem(typeof(WoodsmansTalisman), 0x2F5A, 1152681, (int)CraftResource.Frostwood, 500));// Frostwood
 
-            Rewards.Add(new CollectionItem(typeof(TemporaryForgeDeed), 0xFB1,  1152682, 0, 250));
-            Rewards.Add(new CollectionItem(typeof(MagicalFishFinder),  0x14F6, 1152683, 2500, 250));
+            Rewards.Add(new CollectionItem(typeof(TemporaryForgeDeed), 0xFB1, 1152682, 0, 250));
+            Rewards.Add(new CollectionItem(typeof(MagicalFishFinder), 0x14F6, 1152683, 2500, 250));
 
             //TODO: Hues for below
             Rewards.Add(new CollectionItem(typeof(BraceletOfProtection), 0x1086, 1152730, 1157, 1840));

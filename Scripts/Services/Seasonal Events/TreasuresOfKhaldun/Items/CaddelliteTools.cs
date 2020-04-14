@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public interface ICaddelliteTool
@@ -26,7 +24,7 @@ namespace Server.Items
 
             list.Add(1158692); // * Can Harvest Caddellite Infused Resources in the Lost Lands *
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

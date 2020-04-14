@@ -1,7 +1,5 @@
-using System;
-using Server;
 using Server.Items;
-using Server.Mobiles;
+using System;
 using System.Collections.Generic;
 
 namespace Server.SkillHandlers
@@ -99,7 +97,7 @@ namespace Server.SkillHandlers
 
             if (LocBuffer.ContainsKey(type))
                 return LocBuffer[type];
- 
+
             Item item = Loot.Construct(type);
 
             if (item != null)
@@ -110,7 +108,7 @@ namespace Server.SkillHandlers
                 return LocBuffer[type]; ;
             }
 
-            if(type != null)
+            if (type != null)
                 Console.WriteLine("Warning, missing name cliloc for type {0}.", type.Name);
             return -1;
         }

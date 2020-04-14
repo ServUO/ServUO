@@ -1,6 +1,5 @@
-using System;
-using System.Collections;
 using Server.Mobiles;
+using System.Collections;
 using CalcMoves = Server.Movement.Movement;
 using MoveImpl = Server.Movement.MovementImpl;
 
@@ -172,7 +171,7 @@ namespace Server.PathAlgorithms.FastAStar
 
             for (int i = 0; i < 8; ++i)
             {
-                switch ( i )
+                switch (i)
                 {
                     default:
                     case 0:

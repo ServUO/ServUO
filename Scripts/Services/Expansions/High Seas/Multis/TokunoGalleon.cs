@@ -1,6 +1,3 @@
-using System;
-using Server;
-using System.Collections.Generic;
 using Server.Items;
 
 namespace Server.Multis
@@ -8,9 +5,9 @@ namespace Server.Multis
     public class TokunoGalleon : BaseGalleon
     {
         public override int NorthID { get { return 0x30 + (DamageValue * 4); } }
-        public override int EastID { get { return  0x31 + (DamageValue * 4); } }
+        public override int EastID { get { return 0x31 + (DamageValue * 4); } }
         public override int SouthID { get { return 0x32 + (DamageValue * 4); } }
-        public override int WestID { get { return  0x33 + (DamageValue * 4); } }
+        public override int WestID { get { return 0x33 + (DamageValue * 4); } }
 
         public override int HoldDistance { get { return -5; } }
         public override int CaptiveOffset { get { return 2; } }
@@ -122,7 +119,7 @@ namespace Server.Multis
         public override int[][] WheelItemIDs { get { return m_WheelItemIDs; } }
         private int[][] m_WheelItemIDs = new int[][]
         {
-            
+
             new int[] { 37650 },
             new int[] { 37652 },
             new int[] { 37654 },

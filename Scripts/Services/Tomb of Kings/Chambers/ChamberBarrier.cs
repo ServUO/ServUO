@@ -1,6 +1,4 @@
-﻿using System;
-using Server;
-using Server.Items;
+﻿using Server.Items;
 
 namespace Server.Engines.TombOfKings
 {

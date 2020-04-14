@@ -1,21 +1,18 @@
-using Server;
-using Server.Engines.CityLoyalty;
-using Server.Gumps;
-using Server.ContextMenus;
-using Server.Guilds;
-using Server.Mobiles;
-using Server.Engines.Quests;
 using Server.Commands;
+using Server.ContextMenus;
+using Server.Engines.CityLoyalty;
 using Server.Engines.Khaldun;
+using Server.Engines.Quests;
+using Server.Guilds;
+using Server.Gumps;
 using Server.Items;
-
+using Server.Mobiles;
 using System;
-using System.IO;
-using System.Text;
-using System.Xml;
-using System.Globalization;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Xml;
 
 namespace Server.Services.TownCryer
 {
@@ -233,7 +230,7 @@ namespace Server.Services.TownCryer
         {
             if (ModeratorEntries.Count > 0 ||
                 CityEntries.Count > 0 ||
-                GuildEntries.Count > 0 || 
+                GuildEntries.Count > 0 ||
                 GreetingsEntries.Any(e => e.Expires != DateTime.MinValue) ||
                 MysteriousPotionEffects != null)
             {
@@ -351,7 +348,7 @@ namespace Server.Services.TownCryer
 
         public static bool UnderMysteriousPotionEffects(Mobile m, bool checkQuest = false)
         {
-            return 
+            return
                 MysteriousPotionEffects != null && MysteriousPotionEffects.ContainsKey(m) && MysteriousPotionEffects[m] > DateTime.UtcNow &&
                 (!checkQuest || (m is PlayerMobile && QuestHelper.HasQuest<AForcedSacraficeQuest2>((PlayerMobile)m)));
         }
@@ -735,7 +732,7 @@ namespace Server.Services.TownCryer
         {
             PlayerMobile pm = Owner.From as PlayerMobile;
 
-            if(pm != null)
+            if (pm != null)
             {
                 Guild g = pm.Guild as Guild;
 

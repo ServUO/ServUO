@@ -1,8 +1,8 @@
-using System;
+using Server.Engines.Quests;
 using Server.Mobiles;
 using Server.Spells;
+using System;
 using System.Linq;
-using Server.Engines.Quests;
 
 namespace Server.Items
 {
@@ -17,7 +17,7 @@ namespace Server.Items
         private bool m_DestEffect;
         private int m_SoundID;
         private TimeSpan m_Delay;
-        
+
         [Constructable]
         public Whirlpool(Point3D pointDest, Map mapDest)
             : this(pointDest, mapDest, false)

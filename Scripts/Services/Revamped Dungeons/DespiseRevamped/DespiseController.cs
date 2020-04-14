@@ -1,10 +1,9 @@
-using Server;
-using System;
-using Server.Mobiles;
+using Server.Commands;
 using Server.Items;
+using Server.Mobiles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Server.Commands;
 
 namespace Server.Engines.Despise
 {
@@ -43,7 +42,7 @@ namespace Server.Engines.Despise
         public Region EvilRegion { get { return m_EvilRegion; } }
         public Region LowerRegion { get { return m_LowerRegion; } }
         public Region StartRegion { get { return m_StartRegion; } }
-        
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Enabled
         {
@@ -115,7 +114,7 @@ namespace Server.Engines.Despise
             m_NextBossEncounter = DateTime.UtcNow;
             m_Boss = null;
 
-            if(m_Enabled)
+            if (m_Enabled)
                 BeginTimer();
 
             CreateSpawners();
@@ -141,7 +140,7 @@ namespace Server.Engines.Despise
             m_LowerRegion = new DespiseRegion("Despise Lower", m_LowerLevelBounds, true);
             m_EvilRegion = new DespiseRegion("Despise Evil", m_EvilBounds);
             m_GoodRegion = new DespiseRegion("Despise Good", m_GoodBounds);
-            m_StartRegion = new DespiseRegion("Despise Start", new Rectangle2D[] { new Rectangle2D(5568, 623, 22, 20) } );
+            m_StartRegion = new DespiseRegion("Despise Start", new Rectangle2D[] { new Rectangle2D(5568, 623, 22, 20) });
         }
 
         private void EndTimer()
@@ -269,8 +268,8 @@ namespace Server.Engines.Despise
             {
                 if (value)
                 {
-                    if(m_GoodSpawners != null) m_GoodSpawners.Clear();
-                    if(m_EvilSpawners != null) m_EvilSpawners.Clear();
+                    if (m_GoodSpawners != null) m_GoodSpawners.Clear();
+                    if (m_EvilSpawners != null) m_EvilSpawners.Clear();
 
                     CreateSpawners();
                 }
@@ -294,7 +293,7 @@ namespace Server.Engines.Despise
                         m_EvilSpawners.Add((XmlSpawner)item);
                 }
             }
-            
+
             //Console.Write("Done.");
             //Console.WriteLine("Located {0} Evil spawners, and {1} Good Spawners", m_EvilSpawners.Count, m_GoodSpawners.Count);
         }
@@ -442,7 +441,7 @@ namespace Server.Engines.Despise
                     orb.Delete();
                     m.SendLocalizedMessage(1153312); // The Wisp Orb dissolves into aether.
                 }
-                else  if (orb != null && orb.Pet != null && orb.Pet.Alive)
+                else if (orb != null && orb.Pet != null && orb.Pet.Alive)
                     orb.Pet.MoveToWorld(p, Map.Trammel);
 
                 m.SendLocalizedMessage(1153346); // You are summoned back to your stronghold.
@@ -621,21 +620,21 @@ namespace Server.Engines.Despise
 
         public static Rectangle2D[] EvilBounds { get { return m_EvilBounds; } }
         private static Rectangle2D[] m_EvilBounds = new Rectangle2D[]
-		{
-			new Rectangle2D(5381, 644, 149, 120)
-		};
+        {
+            new Rectangle2D(5381, 644, 149, 120)
+        };
 
         public static Rectangle2D[] GoodBounds { get { return m_GoodBounds; } }
         private static Rectangle2D[] m_GoodBounds = new Rectangle2D[]
-		{
-			new Rectangle2D(5380, 515, 134, 121)
-		};
+        {
+            new Rectangle2D(5380, 515, 134, 121)
+        };
 
         public static Rectangle2D[] LowerLevelBounds { get { return m_LowerLevelBounds; } }
         private static Rectangle2D[] m_LowerLevelBounds = new Rectangle2D[]
-		{
-			new Rectangle2D(5379, 771, 247, 250)
-		};
+        {
+            new Rectangle2D(5379, 771, 247, 250)
+        };
 
         private static Rectangle2D EvilKickBounds = new Rectangle2D(5500, 571, 20, 5);
         private static Rectangle2D GoodKickBounds = new Rectangle2D(5484, 567, 15, 8);
@@ -672,21 +671,21 @@ namespace Server.Engines.Despise
         }
 
         public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
 
             m_EvilSpawners = new List<XmlSpawner>();
             m_GoodSpawners = new List<XmlSpawner>();
 
             m_Instance = this;
-			m_Enabled = reader.ReadBool();
-			m_NextBossEncounter = reader.ReadDateTime();
-			m_Boss = reader.ReadMobile() as DespiseBoss;
-			m_DeadLine = reader.ReadDateTime();
-			m_SequenceAlignment = (Alignment)reader.ReadInt();
+            m_Enabled = reader.ReadBool();
+            m_NextBossEncounter = reader.ReadDateTime();
+            m_Boss = reader.ReadMobile() as DespiseBoss;
+            m_DeadLine = reader.ReadDateTime();
+            m_SequenceAlignment = (Alignment)reader.ReadInt();
 
-            if(version < 4)
+            if (version < 4)
                 Timer.DelayCall(TimeSpan.FromSeconds(30), CheckSpawnersVersion3);
 
             if (version < 5)
@@ -723,27 +722,27 @@ namespace Server.Engines.Despise
             if (!m_Enabled)
                 return;
 
-			BeginTimer();
-			
-			if(m_DeadLine > DateTime.UtcNow)
-			{
-				if(m_Boss != null && m_Boss.Alive)
-				{
-					BeginSequenceTimer();
-					return;
-				}
-			}
-			else if (m_DeadLine != DateTime.MinValue)
-			{
-				BeginCleanupTimer();
-				return;
-			}
-			
-			Timer.DelayCall(EndSequence);
+            BeginTimer();
+
+            if (m_DeadLine > DateTime.UtcNow)
+            {
+                if (m_Boss != null && m_Boss.Alive)
+                {
+                    BeginSequenceTimer();
+                    return;
+                }
+            }
+            else if (m_DeadLine != DateTime.MinValue)
+            {
+                BeginCleanupTimer();
+                return;
+            }
+
+            Timer.DelayCall(EndSequence);
 
             if (version < 2)
                 Timer.DelayCall(TimeSpan.FromSeconds(30), RemoveAnkh);
-		}
+        }
 
         public void CheckSpawnersVersion3(CommandEventArgs e)
         {
@@ -775,7 +774,7 @@ namespace Server.Engines.Despise
                     if (Region.Find(spawner.Location, spawner.Map) == m_GoodRegion ||
                         Region.Find(spawner.Location, spawner.Map) == m_EvilRegion)
                     {
-                        if(obj.TypeName.IndexOf(@",{RND,1,5}") < 0)
+                        if (obj.TypeName.IndexOf(@",{RND,1,5}") < 0)
                             obj.TypeName = obj.TypeName + @",{RND,1,5}";
                     }
                 }

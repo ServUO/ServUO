@@ -1,7 +1,3 @@
-using System;
-using Server;
-using Server.Items;
-
 namespace Server.Mobiles
 {
     [CorpseName("a desert scorpion corpse")]
@@ -68,5 +64,5 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
         }
     }
-	
+
 }

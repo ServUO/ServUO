@@ -1,7 +1,7 @@
-using System;
-using Server.Gumps; 
+using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -25,7 +25,7 @@ namespace Server.Items
 
         public static void PlayerDeath(PlayerDeathEventArgs args)
         {
-            PlayerMobile pm = (PlayerMobile)args.Mobile;           
+            PlayerMobile pm = (PlayerMobile)args.Mobile;
 
             if (pm != null && pm.Backpack != null)
             {
@@ -49,7 +49,7 @@ namespace Server.Items
                             pm.CloseGump(typeof(ResurrectGump));
                             pm.SendGump(new GemResurrectGump(pm, gem));
                         }
-                    });                    
+                    });
                 }
             }
         }

@@ -1,18 +1,17 @@
-using System;
 using Server.Commands;
-using Server.Items;
-using Server.Gumps;
-using Server.Network;
 using Server.Engines.Quests;
+using Server.Gumps;
+using Server.Items;
+using Server.Network;
 
 namespace Server.Mobiles
-{    
-	public class CousteauPerron : Mobile
-	{	
-        public virtual bool IsInvulnerable {  get { return true; } }
-		
-		[Constructable]
-		public CousteauPerron()
+{
+    public class CousteauPerron : Mobile
+    {
+        public virtual bool IsInvulnerable { get { return true; } }
+
+        [Constructable]
+        public CousteauPerron()
         {
             this.Name = "Cousteau Perron";
             this.Title = "The Master Tinker";
@@ -37,8 +36,8 @@ namespace Server.Mobiles
             AddItem(gloves);
         }
 
-        public CousteauPerron(Serial serial): base(serial)
-		{		
+        public CousteauPerron(Serial serial) : base(serial)
+        {
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -85,7 +84,7 @@ namespace Server.Mobiles
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            PlayerMobile pm = from as PlayerMobile;            
+            PlayerMobile pm = from as PlayerMobile;
 
             if (pm != null)
             {
@@ -115,17 +114,17 @@ namespace Server.Mobiles
         }
 
         public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize( writer );
-			writer.Write( (int) 0 );
-		}
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize( reader );
-			int version = reader.ReadInt();	
-		}        
-	}
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 }
 
 namespace Server.Gumps

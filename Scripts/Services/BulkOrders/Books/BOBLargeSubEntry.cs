@@ -23,7 +23,7 @@ namespace Server.Engines.BulkOrders
         {
             int version = reader.ReadEncodedInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {

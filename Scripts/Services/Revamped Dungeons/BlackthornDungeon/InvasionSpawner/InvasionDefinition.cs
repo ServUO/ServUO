@@ -1,11 +1,3 @@
-using System;
-using Server;
-using System.Collections.Generic;
-using System.Linq;
-using Server.Mobiles;
-using Server.Items;
-using Server.Engines.CityLoyalty;
-
 namespace Server.Engines.Blackthorn
 {
     public class InvasionDefinition

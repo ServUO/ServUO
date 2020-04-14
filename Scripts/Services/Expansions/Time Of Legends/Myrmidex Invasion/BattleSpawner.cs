@@ -1,10 +1,9 @@
-using System;
-using Server;
-using Server.Mobiles;
-using Server.Items;
-using System.Linq;
-using System.Collections.Generic;
 using Server.Commands;
+using Server.Items;
+using Server.Mobiles;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Engines.MyrmidexInvasion
 {
@@ -233,7 +232,7 @@ namespace Server.Engines.MyrmidexInvasion
 
             if (winners != null)
             {
-                foreach(var pm in winners.Where(pm => Players.ContainsKey(pm) && Players[pm] > MinCredit))
+                foreach (var pm in winners.Where(pm => Players.ContainsKey(pm) && Players[pm] > MinCredit))
                 {
                     AllianceEntry entry = MyrmidexInvasionSystem.GetEntry(pm);
 
@@ -307,7 +306,7 @@ namespace Server.Engines.MyrmidexInvasion
         {
             var list = MyrmidexTeam.Keys.ToList();
 
-            for(int i = 0; i < list.Count; i++)
+            for (int i = 0; i < list.Count; i++)
             {
                 var wave = list[i];
                 var bcList = MyrmidexTeam[wave];
@@ -319,7 +318,7 @@ namespace Server.Engines.MyrmidexInvasion
                 {
                     ColUtility.Free(bcList);
 
-                    if(MyrmidexTeam.ContainsKey(wave))
+                    if (MyrmidexTeam.ContainsKey(wave))
                         MyrmidexTeam.Remove(wave);
 
                     RegionMessage(i == 0 ? 1156604 : 1156605); // The Eodonians have secured new ground, the front line has moved up!
@@ -341,7 +340,7 @@ namespace Server.Engines.MyrmidexInvasion
                 {
                     ColUtility.Free(bcList);
 
-                    if(TribeTeam.ContainsKey(wave))
+                    if (TribeTeam.ContainsKey(wave))
                         TribeTeam.Remove(wave);
 
                     RegionMessage(i == 0 ? 1156602 : 1156603); // The Myrmidex have secured new ground, the front line has moved up!
@@ -495,7 +494,7 @@ namespace Server.Engines.MyrmidexInvasion
 
         public void RegionMessage(int message)
         {
-            foreach(var pm in BattleRegion.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (var pm in BattleRegion.GetEnumeratedMobiles().OfType<PlayerMobile>())
             {
                 pm.SendLocalizedMessage(message);
             }
@@ -542,7 +541,7 @@ namespace Server.Engines.MyrmidexInvasion
         {
             List<DamageStore> rights = bc.GetLootingRights();
 
-            foreach(var ds in rights.Where(ds => ds.m_Mobile is PlayerMobile && ds.m_HasRight && MyrmidexInvasionSystem.AreEnemies(ds.m_Mobile, bc)))
+            foreach (var ds in rights.Where(ds => ds.m_Mobile is PlayerMobile && ds.m_HasRight && MyrmidexInvasionSystem.AreEnemies(ds.m_Mobile, bc)))
             {
                 if (MyrmidexInvasionSystem.IsAlliedWith(bc, Allegiance.Myrmidex))
                 {
@@ -581,7 +580,7 @@ namespace Server.Engines.MyrmidexInvasion
 
         private Type[][] _MyrmidexTypes =
         {
-            new Type[] { typeof(MyrmidexDrone) }, 
+            new Type[] { typeof(MyrmidexDrone) },
             new Type[] { typeof(MyrmidexWarrior), typeof(TribeWarrior) },
             new Type[] { typeof(MyrmidexWarrior), typeof(TribeWarrior), typeof(TribeShaman) }
         };
@@ -603,7 +602,7 @@ namespace Server.Engines.MyrmidexInvasion
                 myrcount += kvp.Value.Count;
             }
 
-            foreach(var kvp in TribeTeam)
+            foreach (var kvp in TribeTeam)
             {
                 trcount += kvp.Value.Count;
             }
@@ -803,22 +802,22 @@ namespace Server.Engines.MyrmidexInvasion
         private static Point2D[][][] _NavPoints2 =
         {       
             //Lane 1                                                                                                                                               
-            new Point2D[][] { 
+            new Point2D[][] {
                               new Point2D[] { new Point2D(906, 1877), new Point2D(904, 1860), new Point2D(903, 1845), new Point2D(903, 1830), new Point2D(903, 1815), /*shares with next*/ new Point2D(909, 1807), new Point2D(921, 1807), new Point2D(935, 1801), new Point2D(950, 1797), new Point2D(959, 1798), new Point2D(973, 1802) },
                               new Point2D[] { new Point2D(973, 1815), new Point2D(973, 1830), new Point2D(973, 1845), new Point2D(973, 1860), new Point2D(973, 1875) } },
 
             //Lane 2
-            new Point2D[][] { 
+            new Point2D[][] {
                               new Point2D[] { new Point2D(909, 1877), new Point2D(909, 1860), new Point2D(909, 1845), new Point2D(909, 1830), new Point2D(909, 1815), /*shares with prev*/ new Point2D(909, 1807), new Point2D(921, 1807), new Point2D(935, 1801), new Point2D(950, 1797), new Point2D(959, 1798), new Point2D(973, 1802), new Point2D(979, 1805) },
                               new Point2D[] { new Point2D(979, 1820), new Point2D(979, 1820), new Point2D(979, 1835), new Point2D(979, 1850), new Point2D(979, 1865), new Point2D(979, 1880) } },
             
             //Lance 3
-            new Point2D[][] { 
+            new Point2D[][] {
                               new Point2D[] { new Point2D(915, 1877), new Point2D(915, 1860), new Point2D(915, 1845), new Point2D(915, 1830), new Point2D(915, 1815), /*shares with next*/ new Point2D(921, 1807), new Point2D(935, 1801), new Point2D(950, 1797), new Point2D(959, 1798), new Point2D(973, 1802), new Point2D(979, 1805), new Point2D(985, 1809) },
                               new Point2D[] { new Point2D(985, 1825), new Point2D(985, 1840), new Point2D(985, 1855), new Point2D(985, 1870), new Point2D(985, 1885) } },
 
             // Lane 4
-            new Point2D[][] { 
+            new Point2D[][] {
                               new Point2D[] { new Point2D(919, 1877), new Point2D(920, 1860), new Point2D(921, 1845), new Point2D(921, 1830), new Point2D(921, 1815), /*shares with prev*/ new Point2D(921, 1807), new Point2D(935, 1801), new Point2D(950, 1797), new Point2D(959, 1798), new Point2D(973, 1802), new Point2D(979, 1805), new Point2D(985, 1809), new Point2D(991, 1813) },
                               new Point2D[] { new Point2D(991, 1830), new Point2D(991, 1845), new Point2D(991, 1860), new Point2D(991, 1875), new Point2D(991, 1885) } }
         };

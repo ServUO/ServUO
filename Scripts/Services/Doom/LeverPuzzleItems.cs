@@ -1,7 +1,7 @@
-using System;
 using Server.Mobiles;
 using Server.Network;
 using Server.Spells;
+using System;
 
 namespace Server.Engines.Doom
 {

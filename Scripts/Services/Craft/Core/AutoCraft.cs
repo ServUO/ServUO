@@ -1,8 +1,7 @@
-using System;
-using Server;
-using Server.Prompts;
-using System.Collections.Generic;
 using Server.Items;
+using Server.Prompts;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Craft
 {
@@ -57,7 +56,7 @@ namespace Server.Engines.Craft
     public class AutoCraftTimer : Timer
     {
         private static Dictionary<Mobile, AutoCraftTimer> m_AutoCraftTable = new Dictionary<Mobile, AutoCraftTimer>();
-        public static Dictionary<Mobile, AutoCraftTimer> AutoCraftTable => m_AutoCraftTable; 
+        public static Dictionary<Mobile, AutoCraftTimer> AutoCraftTable => m_AutoCraftTable;
 
         private Mobile m_From;
         private CraftSystem m_CraftSystem;
@@ -68,8 +67,8 @@ namespace Server.Engines.Craft
         private int m_Ticks;
         private Type m_TypeRes;
 
-        public int Amount => m_Amount; 
-        public int Attempts => m_Attempts; 
+        public int Amount => m_Amount;
+        public int Attempts => m_Attempts;
 
         public AutoCraftTimer(Mobile from, CraftSystem system, CraftItem item, ITool tool, int amount, TimeSpan delay, TimeSpan interval)
             : base(delay, interval)

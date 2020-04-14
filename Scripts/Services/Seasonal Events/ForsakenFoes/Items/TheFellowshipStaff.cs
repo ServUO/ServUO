@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [Flipable(0xA343, 0xA344)]
@@ -12,7 +10,7 @@ namespace Server.Items
 
         [Constructable]
         public TheFellowshipStaff()
-            : base (0xA343)
+            : base(0xA343)
         {
             Hue = 2721;
         }
@@ -23,7 +21,7 @@ namespace Server.Items
         public override int MinDamage { get { return 15; } }
         public override int MaxDamage { get { return 18; } }
         public override float Speed { get { return 3.25f; } }
-        
+
         public override int InitMinHits { get { return 30; } }
         public override int InitMaxHits { get { return 60; } }
 
@@ -37,7 +35,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

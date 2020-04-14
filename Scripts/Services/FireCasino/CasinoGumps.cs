@@ -1,13 +1,10 @@
-using System;
-using Server;
-using System.Collections.Generic;
-using Server.Items;
-using Server.Mobiles;
-using Server.Gumps;
-using System.Globalization;
 using Server.Accounting;
 using Server.Engines.Points;
+using Server.Gumps;
+using Server.Mobiles;
 using Server.Network;
+using System;
+using System.Globalization;
 
 namespace Server.Engines.ResortAndCasino
 {
@@ -508,7 +505,7 @@ namespace Server.Engines.ResortAndCasino
                             Refresh();
                         }
                     }
-                    
+
                     break;
                 case 7:
                     Game.Reset();
@@ -755,7 +752,7 @@ namespace Server.Engines.ResortAndCasino
         public override void BuildRolling()
         {
             AddHtmlLocalized(120, 325, 150, 16, 1153383, Yellow, false, false); // Amount of Bet:
-            
+
             AddHtml(275, 325, 100, 16, Color("#FFFF00", Game.Bet1.ToString(CultureInfo.GetCultureInfo("en-US"))), false, false);
             AddHtml(325, 325, 100, 16, Color("#FFFF00", Game.Bet2.ToString(CultureInfo.GetCultureInfo("en-US"))), false, false);
             AddHtml(375, 325, 100, 16, Color("#FFFF00", Game.Bet3.ToString(CultureInfo.GetCultureInfo("en-US"))), false, false);

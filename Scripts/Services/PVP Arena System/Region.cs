@@ -1,21 +1,13 @@
-using Server;
-using System;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
 using Server.Regions;
 using Server.Spells;
-using Server.Spells.Eighth;
-using Server.Spells.Seventh;
-using Server.Spells.Sixth;
 using Server.Spells.Fifth;
 using Server.Spells.Fourth;
+using Server.Spells.Seventh;
+using Server.Spells.Sixth;
 using Server.Spells.Third;
-using Server.Spells.Mysticism;
-using Server.Spells.Spellweaving;
-using Server.Spells.Necromancy;
-using Server.Spells.Ninjitsu;
-using Server.Targeting;
+using System;
 
 namespace Server.Engines.ArenaSystem
 {
@@ -25,8 +17,8 @@ namespace Server.Engines.ArenaSystem
 
         public ArenaRegion(PVPArena arena)
             : base(String.Format("Duel Arena {0}", arena.Definition.Name),
-                    arena.Definition.Map, 
-                    Region.DefaultPriority, 
+                    arena.Definition.Map,
+                    Region.DefaultPriority,
                     arena.Definition.RegionBounds)
         {
             Arena = arena;
@@ -95,7 +87,7 @@ namespace Server.Engines.ArenaSystem
                     return false;
                 }
 
-                if(!duel.FieldSpellsAllowed && (spell is FireFieldSpell || spell is ParalyzeFieldSpell || spell is PoisonFieldSpell || spell is EnergyFieldSpell
+                if (!duel.FieldSpellsAllowed && (spell is FireFieldSpell || spell is ParalyzeFieldSpell || spell is PoisonFieldSpell || spell is EnergyFieldSpell
                     || spell is WallOfStoneSpell))
                 {
                     m.SendLocalizedMessage(1010391); // A magical aura surrounds you and prevents the spell.
@@ -174,7 +166,7 @@ namespace Server.Engines.ArenaSystem
         }
 
         public override bool AllowHarmful(Mobile from, IDamageable target)
-		{
+        {
             Region theirs = Region.Find(target.Location, target.Map);
 
             if (theirs is ArenaRegion)
@@ -183,7 +175,7 @@ namespace Server.Engines.ArenaSystem
             }
 
             return base.AllowHarmful(from, target);
-		}
+        }
 
         public override bool AllowBeneficial(Mobile from, Mobile target)
         {

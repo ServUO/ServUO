@@ -1,6 +1,6 @@
-using System;
 using Server.Items;
 using Server.Targeting;
+using System;
 
 namespace Server.Engines.Craft
 {
@@ -52,7 +52,7 @@ namespace Server.Engines.Craft
                     if (num == 1044267)
                     {
                         bool anvil, forge;
-			
+
                         DefBlacksmithy.CheckAnvilAndForge(from, 2, out anvil, out forge);
 
                         if (!anvil)
@@ -60,7 +60,7 @@ namespace Server.Engines.Craft
                         else if (!forge)
                             num = 1044265; // You must be near a forge.
                     }
-					
+
                     from.SendGump(new CraftGump(from, m_CraftSystem, m_Tool, num));
                 }
                 else
@@ -85,7 +85,7 @@ namespace Server.Engines.Craft
                         isStoreBought = false;
                     }
 
-                    switch ( result )
+                    switch (result)
                     {
                         default:
                         case SmeltResult.Invalid:
@@ -98,7 +98,7 @@ namespace Server.Engines.Craft
                             message = isStoreBought ? 500418 : 1044270;
                             break; // You melt the item down into ingots.
                     }
-					
+
                     from.SendGump(new CraftGump(from, m_CraftSystem, m_Tool, message));
                 }
             }
@@ -127,7 +127,7 @@ namespace Server.Engines.Craft
 
                     double difficulty = 0.0;
 
-                    switch ( resource )
+                    switch (resource)
                     {
                         case CraftResource.DullCopper:
                             difficulty = 65.0;

@@ -1,117 +1,115 @@
-﻿using System;
-using Server;
-using Server.Gumps;
+﻿using Server.Gumps;
 
 namespace Server.Items
 {
-	public enum HonorTileType
-	{
-		North = 0,
-		West = 1,
-	}
+    public enum HonorTileType
+    {
+        North = 0,
+        West = 1,
+    }
 
-	public class HonorVirtueTileAddon : BaseAddon
-	{
-		public override BaseAddonDeed Deed { get { return new HonorVirtueTileDeed(); } }
+    public class HonorVirtueTileAddon : BaseAddon
+    {
+        public override BaseAddonDeed Deed { get { return new HonorVirtueTileDeed(); } }
 
-		private HonorTileType m_HonorTileType;
+        private HonorTileType m_HonorTileType;
 
-		private int offset;
+        private int offset;
 
-		[Constructable]
-		public HonorVirtueTileAddon( HonorTileType type )
-		{
-			m_HonorTileType = type;
+        [Constructable]
+        public HonorVirtueTileAddon(HonorTileType type)
+        {
+            m_HonorTileType = type;
 
-			offset = 0;
+            offset = 0;
 
-			if ( type == HonorTileType.North )
-			{
-				offset = 4;
-			}
+            if (type == HonorTileType.North)
+            {
+                offset = 4;
+            }
 
-			AddComponent( new AddonComponent( 5319 + offset ), 0, 0, 0 );
-			AddComponent( new AddonComponent( 5320 + offset ), 0, 1, 0 );
-			AddComponent( new AddonComponent( 5321 + offset ), 1, 1, 0 );
-			AddComponent( new AddonComponent( 5322 + offset ), 1, 0, 0 );
-		}
+            AddComponent(new AddonComponent(5319 + offset), 0, 0, 0);
+            AddComponent(new AddonComponent(5320 + offset), 0, 1, 0);
+            AddComponent(new AddonComponent(5321 + offset), 1, 1, 0);
+            AddComponent(new AddonComponent(5322 + offset), 1, 0, 0);
+        }
 
-		public HonorVirtueTileAddon( Serial serial )
-			: base( serial )
-		{
-		}
+        public HonorVirtueTileAddon(Serial serial)
+            : base(serial)
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write( (int) 0 ); // version
-		}
+            writer.Write((int)0); // version
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
             int version = reader.ReadInt();
         }
-	}
+    }
 
-	public class HonorVirtueTileDeed : BaseAddonDeed, IRewardOption
-	{
-		public override BaseAddon Addon { get { return new HonorVirtueTileAddon( m_HonorTileType ); } }
-		public override int LabelNumber { get { return 1080485; } } // Honor Virtue Tile Deed
+    public class HonorVirtueTileDeed : BaseAddonDeed, IRewardOption
+    {
+        public override BaseAddon Addon { get { return new HonorVirtueTileAddon(m_HonorTileType); } }
+        public override int LabelNumber { get { return 1080485; } } // Honor Virtue Tile Deed
 
-		private HonorTileType m_HonorTileType;
+        private HonorTileType m_HonorTileType;
 
-		[Constructable]
-		public HonorVirtueTileDeed()
-		{
-			LootType = LootType.Blessed;
-		}
+        [Constructable]
+        public HonorVirtueTileDeed()
+        {
+            LootType = LootType.Blessed;
+        }
 
-		public override void OnDoubleClick( Mobile from )
-		{
-			if ( IsChildOf( from.Backpack ) )
-			{
-				from.CloseGump( typeof( RewardOptionGump ) );
-				from.SendGump( new RewardOptionGump( this ) );
-			}
-			else
-				from.SendLocalizedMessage( 1062334 ); // This item must be in your backpack to be used.       	
-		}
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (IsChildOf(from.Backpack))
+            {
+                from.CloseGump(typeof(RewardOptionGump));
+                from.SendGump(new RewardOptionGump(this));
+            }
+            else
+                from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.       	
+        }
 
-		public HonorVirtueTileDeed( Serial serial )
-			: base( serial )
-		{
-		}
+        public HonorVirtueTileDeed(Serial serial)
+            : base(serial)
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write( (int) 0 ); // version
-		}
+            writer.Write((int)0); // version
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
             int version = reader.ReadInt();
         }
 
-		public void GetOptions( RewardOptionList list )
-		{
-			list.Add( (int) HonorTileType.North, 1080230 );
-			list.Add( (int) HonorTileType.West, 1080229 );
-		}
+        public void GetOptions(RewardOptionList list)
+        {
+            list.Add((int)HonorTileType.North, 1080230);
+            list.Add((int)HonorTileType.West, 1080229);
+        }
 
 
-		public void OnOptionSelected( Mobile from, int choice )
-		{
-			m_HonorTileType = (HonorTileType) choice;
+        public void OnOptionSelected(Mobile from, int choice)
+        {
+            m_HonorTileType = (HonorTileType)choice;
 
-			if ( !Deleted )
-				base.OnDoubleClick( from );
-		}
-	}
+            if (!Deleted)
+                base.OnDoubleClick(from);
+        }
+    }
 }

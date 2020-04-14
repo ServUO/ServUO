@@ -1,9 +1,4 @@
 #region References
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
 using Server.ContextMenus;
 using Server.Engines.CannedEvil;
 using Server.Engines.Harvest;
@@ -11,8 +6,10 @@ using Server.Mobiles;
 using Server.Multis;
 using Server.Network;
 using Server.Regions;
-using Server.Targeting;
 using Server.Spells;
+using Server.Targeting;
+using System;
+using System.Collections.Generic;
 #endregion
 
 namespace Server.Items
@@ -487,7 +484,7 @@ namespace Server.Items
             }
 
             var n = (ld.Name ?? String.Empty).ToLower();
-                
+
             if (n != "dirt" && n != "grass" && n != "jungle" && n != "forest" && n != "snow")
             {
                 return false;
@@ -504,7 +501,7 @@ namespace Server.Items
                 }
 
                 n = (td.Name ?? String.Empty).ToLower();
-                
+
                 if (n != "dirt" && n != "grass" && n != "jungle" && n != "forest" && n != "snow")
                 {
                     return false;

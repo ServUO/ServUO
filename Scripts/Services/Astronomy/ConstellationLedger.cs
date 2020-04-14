@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Server;
-using Server.Items;
 using Server.Gumps;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Astronomy
 {
@@ -47,7 +42,7 @@ namespace Server.Engines.Astronomy
                 AddBackground(0, 0, 820, 620, 0x2454);
                 AddHtmlLocalized(10, 28, 800, 18, 1114513, "#1158520", 0x0, false, false); // Constellation Ledger
                 AddHtmlLocalized(295, 55, 515, 36, 1158521, String.Format("{0}\t{1}", AstronomySystem.DiscoveredConstellations.Count, AstronomySystem.MaxConstellations), 0x0, false, false); // Constellations Discovered: ~1_VAL~ / ~2_VAL~
-                
+
                 AddHtmlLocalized(55, 100, 100, 36, 1114513, "#1158522", 0x0, false, false); // Constellation Name
                 AddHtmlLocalized(245, 100, 80, 36, 1114513, "#1158523", 0x0, false, false); // Astronomer
                 AddHtmlLocalized(375, 100, 80, 36, 1114513, "#1158524", 0x0, false, false); // Discovery Date
@@ -82,7 +77,7 @@ namespace Server.Engines.Astronomy
             {
                 switch (info.ButtonID)
                 {
-                    case 0: 
+                    case 0:
                         return;
                     case 1:
                         Page = 0;

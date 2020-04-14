@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.Commands;
 using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Craft
 {
@@ -52,7 +52,7 @@ namespace Server.Engines.Craft
                 this.m_CraftItem = value;
             }
         }
-		
+
         public int ID => this.m_ID;
 
         public TextDefinition TextDefinition
@@ -79,7 +79,7 @@ namespace Server.Engines.Craft
             m.SendMessage("Target a player to teach them all of the recipies.");
 
             m.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, new TargetCallback(
-                delegate(Mobile from, object targeted)
+                delegate (Mobile from, object targeted)
                 {
                     if (targeted is PlayerMobile)
                     {
@@ -103,7 +103,7 @@ namespace Server.Engines.Craft
             m.SendMessage("Target a player to have them forget all of the recipies they've learned.");
 
             m.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, new TargetCallback(
-                delegate(Mobile from, object targeted)
+                delegate (Mobile from, object targeted)
                 {
                     if (targeted is PlayerMobile)
                     {

@@ -35,40 +35,40 @@ namespace Server.Engines.Reports
         //*********************************************************************
         public int _interval;
         private const float _graphLegendSpacer = 15F;
-        private const float	_labelFontSize = 7f;
-        private const int	_legendFontSize = 9;
+        private const float _labelFontSize = 7f;
+        private const int _legendFontSize = 9;
         private const float _legendRectangleSize = 10F;
         private const float _spacer = 5F;
         private BarGraphRenderMode _renderMode;
         // Overall related members
-        private Color	_backColor;
-        private string	_fontFamily;
-        private string	_longestTickValue = string.Empty;// Used to calculate max value width
-        private float	_maxTickValueWidth;// Used to calculate left offset of bar graph
-        private float	_totalHeight;
-        private float	_totalWidth;
+        private Color _backColor;
+        private string _fontFamily;
+        private string _longestTickValue = string.Empty;// Used to calculate max value width
+        private float _maxTickValueWidth;// Used to calculate left offset of bar graph
+        private float _totalHeight;
+        private float _totalWidth;
         // Graph related members
-        private float	_barWidth;
-        private float	_bottomBuffer;// Space from bottom to x axis
-        private bool	_displayBarData;
-        private Color	_fontColor;
-        private float	_graphHeight;
-        private float	_graphWidth;
-        private float	_maxValue = 0.0f;// = final tick value * tick count
-        private float	_scaleFactor;// = _maxValue / _graphHeight
-        private float	_spaceBtwBars;// For now same as _barWidth
-        private float	_topBuffer;// Space from top to the top of y axis
-        private float	_xOrigin;// x position where graph starts drawing
-        private float	_yOrigin;// y position where graph starts drawing
-        private string	_yLabel;
+        private float _barWidth;
+        private float _bottomBuffer;// Space from bottom to x axis
+        private bool _displayBarData;
+        private Color _fontColor;
+        private float _graphHeight;
+        private float _graphWidth;
+        private float _maxValue = 0.0f;// = final tick value * tick count
+        private float _scaleFactor;// = _maxValue / _graphHeight
+        private float _spaceBtwBars;// For now same as _barWidth
+        private float _topBuffer;// Space from top to the top of y axis
+        private float _xOrigin;// x position where graph starts drawing
+        private float _yOrigin;// y position where graph starts drawing
+        private string _yLabel;
         private int _yTickCount;
-        private float	_yTickValue;// Value for each tick = _maxValue/_yTickCount
+        private float _yTickValue;// Value for each tick = _maxValue/_yTickCount
 
         // Legend related members
-        private bool	_displayLegend;
-        private float	_legendWidth;
-        private string	_longestLabel = string.Empty;// Used to calculate legend width
-        private float	_maxLabelWidth = 0.0f;
+        private bool _displayLegend;
+        private float _legendWidth;
+        private string _longestLabel = string.Empty;// Used to calculate legend width
+        private float _maxLabelWidth = 0.0f;
         private string _xTitle, _yTitle;
         public BarGraphRenderer()
         {
@@ -81,7 +81,7 @@ namespace Server.Engines.Reports
             this.BackgroundColor = bgColor;
         }
 
-        public string FontFamily 
+        public string FontFamily
         {
             get
             {
@@ -103,28 +103,28 @@ namespace Server.Engines.Reports
                 this._renderMode = value;
             }
         }
-        public Color BackgroundColor 
+        public Color BackgroundColor
         {
             set
             {
                 this._backColor = value;
             }
         }
-        public int BottomBuffer 
+        public int BottomBuffer
         {
             set
             {
                 this._bottomBuffer = Convert.ToSingle(value);
             }
         }
-        public Color FontColor 
+        public Color FontColor
         {
             set
             {
                 this._fontColor = value;
             }
         }
-        public int Height 
+        public int Height
         {
             get
             {
@@ -135,7 +135,7 @@ namespace Server.Engines.Reports
                 this._totalHeight = Convert.ToSingle(value);
             }
         }
-        public int Width 
+        public int Width
         {
             get
             {
@@ -146,7 +146,7 @@ namespace Server.Engines.Reports
                 this._totalWidth = Convert.ToSingle(value);
             }
         }
-        public bool ShowLegend 
+        public bool ShowLegend
         {
             get
             {
@@ -157,7 +157,7 @@ namespace Server.Engines.Reports
                 this._displayLegend = value;
             }
         }
-        public bool ShowData 
+        public bool ShowData
         {
             get
             {
@@ -168,14 +168,14 @@ namespace Server.Engines.Reports
                 this._displayBarData = value;
             }
         }
-        public int TopBuffer 
+        public int TopBuffer
         {
             set
             {
                 this._topBuffer = Convert.ToSingle(value);
             }
         }
-        public string VerticalLabel 
+        public string VerticalLabel
         {
             get
             {
@@ -186,7 +186,7 @@ namespace Server.Engines.Reports
                 this._yLabel = value;
             }
         }
-        public int VerticalTickCount 
+        public int VerticalTickCount
         {
             get
             {
@@ -213,7 +213,7 @@ namespace Server.Engines.Reports
         //*********************************************************************
         public void CollectDataPoints(string[] labels, string[] values)
         {
-            if (labels.Length == values.Length) 
+            if (labels.Length == values.Length)
             {
                 for (int i = 0; i < labels.Length; i++)
                 {
@@ -222,13 +222,13 @@ namespace Server.Engines.Reports
 
                     // For now put 0.0 for start position and sweep size
                     this.DataPoints.Add(new DataItem(shortLbl, labels[i], temp, 0.0f, 0.0f, this.GetColor(i)));
-				
+
                     // Find max value from data; this is only temporary _maxValue
                     if (this._maxValue < temp)
                         this._maxValue = temp;
 
                     // Find the longest description
-                    if (this._displayLegend) 
+                    if (this._displayLegend)
                     {
                         string currentLbl = labels[i] + " (" + shortLbl + ")";
                         float currentWidth = this.CalculateImgFontWidth(currentLbl, _legendFontSize, this.FontFamily);
@@ -317,7 +317,7 @@ namespace Server.Engines.Reports
             int width = Convert.ToInt32(this._totalWidth);
 
             Bitmap bmp = new Bitmap(width, height);
-			
+
             using (Graphics graph = Graphics.FromImage(bmp))
             {
                 graph.CompositingQuality = CompositingQuality.HighQuality;
@@ -345,7 +345,7 @@ namespace Server.Engines.Reports
             Font valFont = null;
             StringFormat sfFormat = null;
 
-            try 
+            try
             {
                 brsFont = new SolidBrush(this._fontColor);
                 valFont = new Font(this._fontFamily, _labelFontSize);
@@ -361,7 +361,7 @@ namespace Server.Engines.Reports
                 int pointIndex = 0;
 
                 // Draw bars and the value above each bar
-                using (Pen pen = new Pen(this._fontColor,0.15f))
+                using (Pen pen = new Pen(this._fontColor, 0.15f))
                 {
                     using (SolidBrush whiteBrsh = new SolidBrush(Color.FromArgb(128, Color.White)))
                     {
@@ -437,7 +437,7 @@ namespace Server.Engines.Reports
                                             }
                                         }
 
-                                        graph.DrawString(item.Value.ToString("#,###.##"), valFont, brsFont, recVal, sfFormat);	
+                                        graph.DrawString(item.Value.ToString("#,###.##"), valFont, brsFont, recVal, sfFormat);
                                     }
                                 }
 
@@ -487,7 +487,7 @@ namespace Server.Engines.Reports
                                             }
                                         }
 
-                                        graph.DrawString(item.Value.ToString("#,###.##"), valFont, brsFont, recVal, sfFormat);	
+                                        graph.DrawString(item.Value.ToString("#,###.##"), valFont, brsFont, recVal, sfFormat);
                                     }
                                 }
                             }
@@ -495,7 +495,7 @@ namespace Server.Engines.Reports
                     }
                 }
             }
-            finally 
+            finally
             {
                 if (brsFont != null)
                     brsFont.Dispose();
@@ -520,7 +520,7 @@ namespace Server.Engines.Reports
             StringFormat sfVLabel = null;
 
             float fo = (this._yTitle == null ? 0.0f : 20.0f);
-			
+
             try
             {
                 brs = new SolidBrush(this._fontColor);
@@ -544,7 +544,7 @@ namespace Server.Engines.Reports
                 lblFormat.FormatFlags |= StringFormatFlags.NoClip;
 
                 // Draw vertical label at the top of y-axis and place it in the middle top of y-axis
-                lblFont = new Font(this._fontFamily, _labelFontSize + 2.0f,FontStyle.Bold);
+                lblFont = new Font(this._fontFamily, _labelFontSize + 2.0f, FontStyle.Bold);
                 RectangleF recVLabel = new RectangleF(0, this._yOrigin - 2 * _spacer - lblFont.Height, this._xOrigin * 2, lblFont.Height);
                 sfVLabel.Alignment = StringAlignment.Center;
                 sfVLabel.FormatFlags |= StringFormatFlags.NoClip;
@@ -554,14 +554,14 @@ namespace Server.Engines.Reports
 
                 lblFont = new Font(this._fontFamily, _labelFontSize);
                 // Draw all tick values and tick marks
-                using (Pen smallPen = new Pen(Color.FromArgb(96, this._fontColor),0.8f))
+                using (Pen smallPen = new Pen(Color.FromArgb(96, this._fontColor), 0.8f))
                 {
                     for (int i = 0; i < this._yTickCount; i++)
                     {
                         float currentY = this._topBuffer + (i * this._yTickValue / this._scaleFactor);	// Position for tick mark
                         float labelY = currentY - lblFont.Height / 2;						// Place label in the middle of tick
                         RectangleF lblRec = new RectangleF(_spacer + fo - 6, labelY, this._maxTickValueWidth, lblFont.Height);
-				
+
                         float currentTick = this._maxValue - i * this._yTickValue;					// Calculate tick value from top to bottom
                         graph.DrawString(currentTick.ToString("#,###.##"), lblFont, brs, lblRec, lblFormat);	// Draw tick value  
                         graph.DrawLine(pen, this._xOrigin, currentY, this._xOrigin - 4.0f, currentY);						// Draw tick mark
@@ -764,12 +764,12 @@ namespace Server.Engines.Reports
         // This method calculates all measurement aspects of the bar graph from the given data points
         //
         //*********************************************************************
-        private void CalculateGraphDimension() 
+        private void CalculateGraphDimension()
         {
             this.FindLongestTickValue();
-			
+
             // Need to add another character for spacing; this is not used for drawing, just for calculation
-            this._longestTickValue += "0";		
+            this._longestTickValue += "0";
             //_maxTickValueWidth = CalculateImgFontWidth(_longestTickValue, _labelFontSize, FontFamily);
             this._maxTickValueWidth = 0.0f;
 
@@ -777,7 +777,7 @@ namespace Server.Engines.Reports
             string tickString;
             for (int i = 0; i < this._yTickCount; i++)
             {
-                currentTick = this._maxValue - i * this._yTickValue;	
+                currentTick = this._maxValue - i * this._yTickValue;
                 tickString = currentTick.ToString("#,###.##");
 
                 float measured = this.CalculateImgFontWidth(tickString, _labelFontSize, this.FontFamily);
@@ -789,7 +789,7 @@ namespace Server.Engines.Reports
             float leftOffset = _spacer + this._maxTickValueWidth + (this._yTitle == null ? 0.0f : 20.0f);
             float rtOffset = 0.0f;
 
-            if (this._displayLegend) 
+            if (this._displayLegend)
             {
                 this._legendWidth = _spacer + _legendRectangleSize + _spacer + this._maxLabelWidth + _spacer;
                 rtOffset = _graphLegendSpacer + this._legendWidth + _spacer;
@@ -823,7 +823,7 @@ namespace Server.Engines.Reports
             string tickString;
             for (int i = 0; i < this._yTickCount; i++)
             {
-                currentTick = this._maxValue - i * this._yTickValue;	
+                currentTick = this._maxValue - i * this._yTickValue;
                 tickString = currentTick.ToString("#,###.##");
                 if (this._longestTickValue.Length < tickString.Length)
                     this._longestTickValue = tickString;
@@ -846,11 +846,11 @@ namespace Server.Engines.Reports
                 font = new Font(family, size);
 
                 // Calculate the size of the string.
-                bmp = new Bitmap(1,1,PixelFormat.Format32bppArgb);
+                bmp = new Bitmap(1, 1, PixelFormat.Format32bppArgb);
                 graph = Graphics.FromImage(bmp);
                 SizeF oSize = graph.MeasureString(text, font);
                 oSize.Width = 4 + (float)Math.Ceiling(oSize.Width);
-			
+
                 return oSize.Width;
             }
             finally
@@ -872,7 +872,7 @@ namespace Server.Engines.Reports
         private string MakeShortLabel(string text)
         {
             string label = text;
-            if (text.Length > 2) 
+            if (text.Length > 2)
             {
                 int midPostition = Convert.ToInt32(Math.Floor(text.Length / 2.0));
                 label = text.Substring(0, 1) + text.Substring(midPostition, 1) + text.Substring(text.Length - 1, 1);
@@ -926,7 +926,7 @@ namespace Server.Engines.Reports
                 // This implementation does not support negative value
                 if (item.Value >= 0)
                     item.SweepSize = item.Value / this._scaleFactor;
-				
+
                 // (_spaceBtwBars/2) makes half white space for the first bar
                 item.StartPos = (this._spaceBtwBars / 2) + i * (this._barWidth + this._spaceBtwBars);
                 i++;

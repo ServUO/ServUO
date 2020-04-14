@@ -1,33 +1,31 @@
-using Server;
-using System;
-using Server.Mobiles;
 using Server.Gumps;
-using System.Collections.Generic;
-using Server.Targeting;
 using Server.Items;
+using Server.Targeting;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Regions
 {
-	public class MazeOfDeathRegion : Region
-	{
-		public static void Initialize()
-		{
-			new MazeOfDeathRegion();
-			
-			m_Path = new List<Point3D>();
-			
-			m_Path.Add(new Point3D(1062, 1060, -42));
-			m_Path.Add(new Point3D(1062, 1059, -42));
-			m_Path.Add(new Point3D(1062, 1058, -42));
-			m_Path.Add(new Point3D(1061, 1058, -42));
+    public class MazeOfDeathRegion : Region
+    {
+        public static void Initialize()
+        {
+            new MazeOfDeathRegion();
+
+            m_Path = new List<Point3D>();
+
+            m_Path.Add(new Point3D(1062, 1060, -42));
+            m_Path.Add(new Point3D(1062, 1059, -42));
+            m_Path.Add(new Point3D(1062, 1058, -42));
+            m_Path.Add(new Point3D(1061, 1058, -42));
             m_Path.Add(new Point3D(1060, 1058, -42));
             m_Path.Add(new Point3D(1060, 1057, -42));
-			m_Path.Add(new Point3D(1059, 1057, -42));
-			m_Path.Add(new Point3D(1059, 1056, -42));
-			m_Path.Add(new Point3D(1059, 1055, -42));
-			m_Path.Add(new Point3D(1060, 1055, -42));
-			m_Path.Add(new Point3D(1060, 1054, -42));
-			m_Path.Add(new Point3D(1060, 1053, -42));
+            m_Path.Add(new Point3D(1059, 1057, -42));
+            m_Path.Add(new Point3D(1059, 1056, -42));
+            m_Path.Add(new Point3D(1059, 1055, -42));
+            m_Path.Add(new Point3D(1060, 1055, -42));
+            m_Path.Add(new Point3D(1060, 1054, -42));
+            m_Path.Add(new Point3D(1060, 1053, -42));
             m_Path.Add(new Point3D(1059, 1053, -42));
             m_Path.Add(new Point3D(1059, 1052, -42));
             m_Path.Add(new Point3D(1059, 1051, -42));
@@ -190,25 +188,25 @@ namespace Server.Regions
                     toAdd--;
                 }
             }
-		}
-		
-		private static Rectangle2D[] m_Bounds = new Rectangle2D[]
-		{
-			new Rectangle2D(1057, 1028, 16, 40),
+        }
+
+        private static Rectangle2D[] m_Bounds = new Rectangle2D[]
+        {
+            new Rectangle2D(1057, 1028, 16, 40),
             new Rectangle2D(1057, 990, 16, 38)
-		};
+        };
 
         private static Rectangle2D m_TrapBounds = new Rectangle2D(1057, 990, 7, 71);
-		
-		private static List<Point3D> m_Path;
-		public static List<Point3D> Path { get { return m_Path; } }
-		
-		private static Rectangle2D m_Entrance = new Rectangle2D(1057, 1062, 7, 5);
-		
-		public MazeOfDeathRegion() : base("Maze of Death", Map.TerMur, Region.DefaultPriority, m_Bounds)
-		{
-			Register();
-		}
+
+        private static List<Point3D> m_Path;
+        public static List<Point3D> Path { get { return m_Path; } }
+
+        private static Rectangle2D m_Entrance = new Rectangle2D(1057, 1062, 7, 5);
+
+        public MazeOfDeathRegion() : base("Maze of Death", Map.TerMur, Region.DefaultPriority, m_Bounds)
+        {
+            Register();
+        }
 
         public override bool OnBeginSpellCast(Mobile m, ISpell s)
         {
@@ -223,22 +221,22 @@ namespace Server.Regions
 
             return base.OnBeginSpellCast(m, s);
         }
-	
-		public override bool OnTarget( Mobile m, Target t, object o )
-		{
-			if(m.AccessLevel == AccessLevel.Player && t is Server.Spells.Third.TeleportSpell.InternalTarget)
-			{
-                m.SendLocalizedMessage(501802); // that spell doesn't seem to work.
-				return false;
-			}
-				
-			return base.OnTarget(m, t, o);
-		}
 
-		public override void OnEnter( Mobile m )
-		{
-			if(m.Backpack == null)
-				return;
+        public override bool OnTarget(Mobile m, Target t, object o)
+        {
+            if (m.AccessLevel == AccessLevel.Player && t is Server.Spells.Third.TeleportSpell.InternalTarget)
+            {
+                m.SendLocalizedMessage(501802); // that spell doesn't seem to work.
+                return false;
+            }
+
+            return base.OnTarget(m, t, o);
+        }
+
+        public override void OnEnter(Mobile m)
+        {
+            if (m.Backpack == null)
+                return;
 
             if (m.NetState != null)
             {
@@ -253,18 +251,18 @@ namespace Server.Regions
                 }
             }
 
-			base.OnEnter(m);
-		}
-		
-		public override void OnExit( Mobile m )
-		{
-			m.CloseGump(typeof(CompassDirectionGump));
-			base.OnExit(m);
-		}
-		
-		public override void OnLocationChanged( Mobile m, Point3D oldLocation )
-		{
-			base.OnLocationChanged(m, oldLocation);
+            base.OnEnter(m);
+        }
+
+        public override void OnExit(Mobile m)
+        {
+            m.CloseGump(typeof(CompassDirectionGump));
+            base.OnExit(m);
+        }
+
+        public override void OnLocationChanged(Mobile m, Point3D oldLocation)
+        {
+            base.OnLocationChanged(m, oldLocation);
 
             if (oldLocation.X > 1063 && m.Location.X <= 1063)
             {
@@ -275,33 +273,33 @@ namespace Server.Regions
             }
             else if (oldLocation.Y == 991 && m.Location.Y == 990)
             {
-                if(m.HasGump(typeof(CompassDirectionGump)))
+                if (m.HasGump(typeof(CompassDirectionGump)))
                     m.SendLocalizedMessage(1113585); // The compass' arrows flicker. You must be near the right location.
             }
-			
-			if(m != null && m.Backpack != null)
-			{
-				Item item = m.Backpack.FindItemByType(typeof(GoldenCompass));
+
+            if (m != null && m.Backpack != null)
+            {
+                Item item = m.Backpack.FindItemByType(typeof(GoldenCompass));
 
                 if (m.Alive && !m_Path.Contains(m.Location) && m_TrapBounds.Contains(m.Location))
                     SpringTrap(m);
 
-				else if (m.Alive && m.HasGump(typeof(CompassDirectionGump)))
-				{
-					//May need to check old gump to get x,y so new gump opens in same spot!
-					m.CloseGump(typeof(CompassDirectionGump));
-					m.SendGump(new CompassDirectionGump(m));
-				}
-			}
-		}
-		
-		public override void OnDeath( Mobile m )
-		{
-			base.OnDeath(m);
-			
-			if(m.Player && m_TrapBounds.Contains(m.Location))
-				Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerStateCallback(Kick_Callback), m);
-		}
+                else if (m.Alive && m.HasGump(typeof(CompassDirectionGump)))
+                {
+                    //May need to check old gump to get x,y so new gump opens in same spot!
+                    m.CloseGump(typeof(CompassDirectionGump));
+                    m.SendGump(new CompassDirectionGump(m));
+                }
+            }
+        }
+
+        public override void OnDeath(Mobile m)
+        {
+            base.OnDeath(m);
+
+            if (m.Player && m_TrapBounds.Contains(m.Location))
+                Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerStateCallback(Kick_Callback), m);
+        }
 
         public void SpringTrap(Mobile from)
         {
@@ -315,8 +313,8 @@ namespace Server.Regions
             {
                 default:
                 case 0:
-                    Effects.SendLocationEffect( from, from.Map, 0x3709, 30 );
-					from.PlaySound( 0x54 );
+                    Effects.SendLocationEffect(from, from.Map, 0x3709, 30);
+                    from.PlaySound(0x54);
                     cliloc = 1010524; // Searing heat scorches thy skin.
                     AOS.Damage(from, damage, 0, 100, 0, 0, 0);
                     break;
@@ -331,8 +329,8 @@ namespace Server.Regions
                     AOS.Damage(from, damage, 0, 0, 0, 0, 100);
                     break;
                 case 3:
-                    Effects.SendLocationEffect( from, from.Map, 0x113A, 20, 10 );
-					from.PlaySound( 0x231 );
+                    Effects.SendLocationEffect(from, from.Map, 0x113A, 20, 10);
+                    from.PlaySound(0x231);
                     from.ApplyPoison(from, Poison.Deadly);
                     cliloc = 1010523; // A toxic vapor envelops thee.
                     AOS.Damage(from, damage, 0, 0, 0, 100, 0);
@@ -342,31 +340,31 @@ namespace Server.Regions
             from.LocalOverheadMessage(Server.Network.MessageType.Regular, 0xEE, cliloc);
         }
 
-		public void Kick_Callback(object o)
-		{
+        public void Kick_Callback(object o)
+        {
             Mobile m = (Mobile)o;
 
-            if(m != null)
-			    KickToEntrance(m);
-		}
-		
-		public void KickToEntrance(Mobile from)
-		{
-			if(from == null || from.Map == null)
-				return;
-				
-			int x = Utility.RandomMinMax(m_Entrance.X, m_Entrance.X + m_Entrance.Width);
-			int y = Utility.RandomMinMax(m_Entrance.Y, m_Entrance.Y + m_Entrance.Height);
-			int z = from.Map.GetAverageZ(x, y);
-			
-			Point3D p = new Point3D(x, y, z);
-			
-			from.MoveToWorld(p, Map.TerMur);
-			
-			if(from.Player && !from.Alive && from.Corpse != null)
-				from.Corpse.MoveToWorld(p, Map.TerMur);
-				
-			from.SendMessage("You have been teleported to the beginning of the maze.");
-		}
-	}
+            if (m != null)
+                KickToEntrance(m);
+        }
+
+        public void KickToEntrance(Mobile from)
+        {
+            if (from == null || from.Map == null)
+                return;
+
+            int x = Utility.RandomMinMax(m_Entrance.X, m_Entrance.X + m_Entrance.Width);
+            int y = Utility.RandomMinMax(m_Entrance.Y, m_Entrance.Y + m_Entrance.Height);
+            int z = from.Map.GetAverageZ(x, y);
+
+            Point3D p = new Point3D(x, y, z);
+
+            from.MoveToWorld(p, Map.TerMur);
+
+            if (from.Player && !from.Alive && from.Corpse != null)
+                from.Corpse.MoveToWorld(p, Map.TerMur);
+
+            from.SendMessage("You have been teleported to the beginning of the maze.");
+        }
+    }
 }

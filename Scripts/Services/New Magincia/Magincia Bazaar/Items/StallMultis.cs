@@ -1,6 +1,3 @@
-using Server;
-using System;
-using Server.Multis;
 using Server.Items;
 using System.Collections.Generic;
 
@@ -11,8 +8,8 @@ namespace Server.Engines.NewMagincia
         private List<Item> m_Fillers;
 
         public List<Item> Fillers
-        { 
-            get { return m_Fillers; } 
+        {
+            get { return m_Fillers; }
         }
 
         public BaseBazaarMulti(int id) : base(id)
@@ -30,7 +27,7 @@ namespace Server.Engines.NewMagincia
         {
             foreach (Item item in m_Fillers)
             {
-                if(item != null && !item.Deleted)
+                if (item != null && !item.Deleted)
                     item.Location = new Point3D(X + (item.X - old.X), Y + (item.Y - old.Y), Z + (item.Z - old.Z));
             }
         }
@@ -100,7 +97,7 @@ namespace Server.Engines.NewMagincia
     public class CommodityStyle1 : BaseBazaarMulti
     {
         [Constructable]
-        public CommodityStyle1 () : base(0x1772)
+        public CommodityStyle1() : base(0x1772)
         {
             Item comp = new Static(1801);
             comp.MoveToWorld(new Point3D(this.X + 1, this.Y + 1, this.Z), this.Map);

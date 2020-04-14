@@ -1,6 +1,3 @@
-using System;
-using Server;
-using System.Collections.Generic;
 using Server.Items;
 
 namespace Server.Multis
@@ -8,9 +5,9 @@ namespace Server.Multis
     public class GargishGalleon : BaseGalleon
     {
         public override int NorthID { get { return 0x24 + (DamageValue * 4); } }
-        public override int EastID { get { return  0x25 + (DamageValue * 4); } }
+        public override int EastID { get { return 0x25 + (DamageValue * 4); } }
         public override int SouthID { get { return 0x26 + (DamageValue * 4); } }
-        public override int WestID { get { return  0x27 + (DamageValue * 4); } }
+        public override int WestID { get { return 0x27 + (DamageValue * 4); } }
 
         public override int HoldDistance { get { return 6; } }
         public override int TillerManDistance { get { return 1; } }
@@ -137,7 +134,7 @@ namespace Server.Multis
         public override int[][] WheelItemIDs { get { return m_WheelItemIDs; } }
         private int[][] m_WheelItemIDs = new int[][]
         {
-            
+
             new int[] { 33604 },
             new int[] { 33906 },
             new int[] { 34208 },

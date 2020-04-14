@@ -1,67 +1,65 @@
-using Server;
+using Server.Engines.Points;
+using Server.Gumps;
+using Server.Items;
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
-using Server.Mobiles;
-using Server.Items;
-using Server.Gumps;
 using System.Linq;
-using Server.Engines.Points;
-using Server.Commands;
 
 namespace Server.Engines.VoidPool
 {
-	public enum ScoreType
-	{
-		Current,
-		BestSingle,
-		OverallTotal,
+    public enum ScoreType
+    {
+        Current,
+        BestSingle,
+        OverallTotal,
         BestWave
-	}
+    }
 
-	public class VoidPoolGump : Gump
-	{
+    public class VoidPoolGump : Gump
+    {
         public static readonly int Red = 0x4800;
         public static readonly int Orange = 0xB104;
-	
-		public PlayerMobile User { get; set; }
-		public VoidPoolController Controller { get; set; }
-	
-		public VoidPoolGump(VoidPoolController controller, PlayerMobile pm) : base(50, 50)
-		{
-			Controller = controller;
-			User = pm;
-			
-			AddGumpLayout();
-		}
-		
-		public void AddGumpLayout()
-		{
+
+        public PlayerMobile User { get; set; }
+        public VoidPoolController Controller { get; set; }
+
+        public VoidPoolGump(VoidPoolController controller, PlayerMobile pm) : base(50, 50)
+        {
+            Controller = controller;
+            User = pm;
+
+            AddGumpLayout();
+        }
+
+        public void AddGumpLayout()
+        {
             AddBackground(0, 0, 400, 565, 9350);
-			
-			AddHtmlLocalized(10, 10, 200, 16, 1152531, Red, false, false); // The Void Pool
-			AddHtmlLocalized(10, 30, 200, 16, Controller.Map == Map.Felucca ? 1012001 : 1012000, Red, false, false); // FEl/Tram
-			
-			if(Controller.OnGoing)
-			{
-				AddHtmlLocalized(10, 50, 200, 16, 1152914, Orange, false, false); // Current Battle:
-				AddHtmlLocalized(180, 50, 200, 16, 1152915, Controller.Wave.ToString(), Orange, false, false); // Wave ~1_WAVE~
-			}
-			else
-			{
-				AddHtmlLocalized(10, 50, 200, 16, 1152916, Orange, false, false); // Next Battle:
-				
-				if(Controller.NextStart > DateTime.UtcNow)
-					AddHtmlLocalized(180, 50, 200, 16, 1152917, ((int)(Controller.NextStart - DateTime.UtcNow).TotalMinutes).ToString(), Orange, false, false); // Starts in ~1_MIN~ min.
-			}
-			
-			AddButton(140, 70, 4005, 4006, 1, GumpButtonType.Reply, 0);
-			AddHtmlLocalized(180, 70, 200, 16, 1152535, Orange, false, false); 		//Current Battle Scoreboard
+
+            AddHtmlLocalized(10, 10, 200, 16, 1152531, Red, false, false); // The Void Pool
+            AddHtmlLocalized(10, 30, 200, 16, Controller.Map == Map.Felucca ? 1012001 : 1012000, Red, false, false); // FEl/Tram
+
+            if (Controller.OnGoing)
+            {
+                AddHtmlLocalized(10, 50, 200, 16, 1152914, Orange, false, false); // Current Battle:
+                AddHtmlLocalized(180, 50, 200, 16, 1152915, Controller.Wave.ToString(), Orange, false, false); // Wave ~1_WAVE~
+            }
+            else
+            {
+                AddHtmlLocalized(10, 50, 200, 16, 1152916, Orange, false, false); // Next Battle:
+
+                if (Controller.NextStart > DateTime.UtcNow)
+                    AddHtmlLocalized(180, 50, 200, 16, 1152917, ((int)(Controller.NextStart - DateTime.UtcNow).TotalMinutes).ToString(), Orange, false, false); // Starts in ~1_MIN~ min.
+            }
+
+            AddButton(140, 70, 4005, 4006, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(180, 70, 200, 16, 1152535, Orange, false, false); 		//Current Battle Scoreboard
 
             AddButton(140, 90, 4005, 4006, 2, GumpButtonType.Reply, 0);
-			AddHtmlLocalized(180, 90, 200, 16, 1152536, Orange, false, false); 		//Best Single Battle Scoreboard
+            AddHtmlLocalized(180, 90, 200, 16, 1152536, Orange, false, false); 		//Best Single Battle Scoreboard
 
             AddButton(140, 110, 4005, 4006, 3, GumpButtonType.Reply, 0);
-			AddHtmlLocalized(180, 110, 200, 16, 1152537, Orange, false, false); 		//Overall Total Scores
+            AddHtmlLocalized(180, 110, 200, 16, 1152537, Orange, false, false); 		//Overall Total Scores
 
             var stats = VoidPoolStats.GetStats(Controller);
 
@@ -70,37 +68,37 @@ namespace Server.Engines.VoidPool
                 AddButton(140, 130, 4005, 4006, 4, GumpButtonType.Reply, 0);
                 AddHtml(180, 130, 200, 16, String.Format("<basefont color=#A52A2A>Best Wave: {0}", stats.BestWave.Waves.ToString()), false, false);
             }
-			
-			AddHtmlLocalized(10, 150, 400, 16, 1152552, Orange, false, false);			// See Loyalty Menu for Reward Points
-			AddHtmlLocalized(10, 170, 400, 16, 1152553, Orange, false, false);			// See Vela in Cove for rewards
-			
-			AddHtmlLocalized(10, 190, 380, 175, 1152533, Orange, true, true);
-			AddHtmlLocalized(10, 375, 380, 175, 1152534, Orange, true, true);
-		}
-		
-		public override void OnResponse(Server.Network.NetState state, RelayInfo info)
-		{
+
+            AddHtmlLocalized(10, 150, 400, 16, 1152552, Orange, false, false);          // See Loyalty Menu for Reward Points
+            AddHtmlLocalized(10, 170, 400, 16, 1152553, Orange, false, false);          // See Vela in Cove for rewards
+
+            AddHtmlLocalized(10, 190, 380, 175, 1152533, Orange, true, true);
+            AddHtmlLocalized(10, 375, 380, 175, 1152534, Orange, true, true);
+        }
+
+        public override void OnResponse(Server.Network.NetState state, RelayInfo info)
+        {
             var stats = VoidPoolStats.GetStats(Controller);
 
-			switch(info.ButtonID)
-			{
-				default: break;
-				case 1:
-					User.SendGump(new ScoresGump(Controller, User, ScoreType.Current));
-					break;
-				case 2:
+            switch (info.ButtonID)
+            {
+                default: break;
+                case 1:
+                    User.SendGump(new ScoresGump(Controller, User, ScoreType.Current));
+                    break;
+                case 2:
                     User.SendGump(new ScoresGump(Controller, User, ScoreType.BestSingle));
-					break;
-				case 3:
+                    break;
+                case 3:
                     User.SendGump(new ScoresGump(Controller, User, ScoreType.OverallTotal));
-					break;
+                    break;
                 case 4:
                     if (stats.BestWave != null)
                         User.SendGump(new ScoresGump(Controller, User, ScoreType.BestWave));
                     break;
-			}
-		}
-	}
+            }
+        }
+    }
 
     public class ScoresGump : Gump
     {
@@ -146,7 +144,7 @@ namespace Server.Engines.VoidPool
             AddHtmlLocalized(10, 10, 200, 16, 1152531, Red, false, false); // The Void Pool
             AddHtmlLocalized(10, 30, 200, 16, Controller.Map == Map.Felucca ? 1012001 : 1012000, Red, false, false); // FEl/Tram
 
-            if(loc is int)
+            if (loc is int)
                 AddHtmlLocalized(10, 50, 200, 16, (int)loc, Red, false, false);
             else if (loc is string)
                 AddHtml(10, 50, 200, 16, String.Format("<basefont color=#8B0000>{0}", (string)loc), false, false);

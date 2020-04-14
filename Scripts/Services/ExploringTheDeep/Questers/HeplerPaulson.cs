@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using Server.Items;
-using Server.Gumps;
-using Server.Network;
 using Server.Commands;
 using Server.Engines.Quests;
+using Server.Gumps;
+using Server.Items;
+using Server.Network;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -16,7 +15,7 @@ namespace Server.Mobiles
         public override void InitSBInfo()
         {
             m_SBInfos.Add(new SBHepler());
-        }        
+        }
 
         [Constructable]
         public HeplerPaulson()
@@ -57,7 +56,7 @@ namespace Server.Mobiles
 
             PlayerMobile pm = (PlayerMobile)m;
 
-            if(pm.Young)
+            if (pm.Young)
             {
                 m.SendLocalizedMessage(502593); // Thou art too young to choose this fate.
                 return;
@@ -104,7 +103,7 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-        }        
+        }
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
@@ -207,7 +206,7 @@ namespace Server.Mobiles
             new PageData(1, 1154319),
         };
 
-        public HeplerPaulsonCollectCompleteGump(PlayerMobile pm) 
+        public HeplerPaulsonCollectCompleteGump(PlayerMobile pm)
             : base(pm, 1154327, GumpInfo)
         {
         }

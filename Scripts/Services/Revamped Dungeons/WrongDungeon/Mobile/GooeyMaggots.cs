@@ -137,7 +137,7 @@ namespace Server.Mobiles
 
         public GooeyMaggotSlime(Serial serial)
             : base(serial)
-        {            
+        {
         }
 
         public override void Serialize(GenericWriter writer)

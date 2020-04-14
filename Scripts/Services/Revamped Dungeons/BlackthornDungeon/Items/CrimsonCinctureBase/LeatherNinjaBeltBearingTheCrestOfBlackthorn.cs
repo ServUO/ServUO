@@ -1,12 +1,9 @@
-using Server;
-using System;
-
 namespace Server.Items
 {
     public class LeatherNinjaBeltBearingTheCrestOfBlackthorn2 : LeatherNinjaBelt
     {
         public override bool IsArtifact { get { return true; } }
-        
+
         [Constructable]
         public LeatherNinjaBeltBearingTheCrestOfBlackthorn2()
             : base()
@@ -17,7 +14,7 @@ namespace Server.Items
             Attributes.RegenHits = 2;
             StrRequirement = 10;
             Hue = 1157;
-        }   
+        }
 
         public LeatherNinjaBeltBearingTheCrestOfBlackthorn2(Serial serial)
             : base(serial)

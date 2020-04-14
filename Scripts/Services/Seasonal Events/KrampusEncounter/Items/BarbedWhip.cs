@@ -1,11 +1,8 @@
-using System;
-using Server.Engines.Craft;
-
 namespace Server.Items
 {
     public class BarbedWhip : BaseBashing, Server.Engines.Craft.IRepairable
     {
-		public Server.Engines.Craft.CraftSystem RepairSystem { get { return Server.Engines.Craft.DefTinkering.CraftSystem; } }
+        public Server.Engines.Craft.CraftSystem RepairSystem { get { return Server.Engines.Craft.DefTinkering.CraftSystem; } }
         public override int LabelNumber { get { return 1125641; } } // Barbed Whip		
 
         [Constructable]
@@ -19,8 +16,8 @@ namespace Server.Items
             : base(serial)
         {
         }
-		
-		public override bool CanBeWornByGargoyles { get { return true; } }
+
+        public override bool CanBeWornByGargoyles { get { return true; } }
         public override WeaponAbility PrimaryAbility { get { return WeaponAbility.ConcussionBlow; } }
         public override WeaponAbility SecondaryAbility { get { return WeaponAbility.WhirlwindAttack; } }
         public override int StrengthReq { get { return 20; } }
@@ -31,7 +28,7 @@ namespace Server.Items
         public override int DefMissSound { get { return 0x23A; } }
         public override int InitMinHits { get { return 30; } }
         public override int InitMaxHits { get { return 60; } }
-		
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

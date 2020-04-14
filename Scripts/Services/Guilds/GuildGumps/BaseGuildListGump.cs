@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Guilds
 {
@@ -119,7 +119,7 @@ namespace Server.Guilds
                 this.AddButton(65, 80, 0x15E3, 0x15E7, 6, GumpButtonType.Reply, 0);	// Back
 
             if (this.m_StartNumber + itemsPerPage > this.m_List.Count)
-                this.AddButton(95, 80, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 0);	
+                this.AddButton(95, 80, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 0);
             else
                 this.AddButton(95, 80, 0x15E1, 0x15E5, 7, GumpButtonType.Reply, 0);	// Forward
 
@@ -175,7 +175,7 @@ namespace Server.Guilds
 
             int id = info.ButtonID;
 
-            switch( id )
+            switch (id)
             {
                 case 5:	//Filter
                     {

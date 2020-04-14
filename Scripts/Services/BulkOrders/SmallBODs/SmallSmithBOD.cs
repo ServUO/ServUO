@@ -1,6 +1,6 @@
+using Server.Engines.Craft;
 using System;
 using System.Collections.Generic;
-using Server.Engines.Craft;
 
 namespace Server.Engines.BulkOrders
 {

@@ -1,8 +1,6 @@
-using System;
-using System.Linq;
-using Server;
 using Server.Engines.PartySystem;
 using Server.Gumps;
+using System.Linq;
 
 namespace Server.Items
 {

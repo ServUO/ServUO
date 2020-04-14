@@ -1,12 +1,12 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Server.Engines.Points;
 using Server.Gumps;
 using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Network;
-using Server.Engines.Points;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Misc
 {
@@ -17,7 +17,7 @@ namespace Server.Misc
         ToTTwo,
         ToTThree
     }
-	
+
     public class TreasuresOfTokuno : PointsSystem
     {
         public override PointsType Loyalty { get { return PointsType.TOT; } }
@@ -33,7 +33,7 @@ namespace Server.Misc
         }
 
         public const int ItemsPerReward = 10;
-		
+
         private static readonly Type[] m_LesserArtifactsTotal = new Type[]
         {
             typeof(AncientFarmersKasa), typeof(AncientSamuraiDo), typeof(ArmsOfTacticalExcellence), typeof(BlackLotusHood),
@@ -42,7 +42,7 @@ namespace Server.Misc
             typeof(TomeOfEnlightenment), typeof(AncientUrn), typeof(HonorableSwords), typeof(PigmentsOfTokuno), typeof(FluteOfRenewal),
             typeof(LeurociansMempoOfFortune), typeof(LesserPigmentsOfTokuno), typeof(MetalPigmentsOfTokuno), typeof(ChestOfHeirlooms)
         };
-		
+
         public static Type[] LesserArtifactsTotal
         {
             get
@@ -50,10 +50,10 @@ namespace Server.Misc
                 return m_LesserArtifactsTotal;
             }
         }
-		
+
         private static TreasuresOfTokunoEra _DropEra = TreasuresOfTokunoEra.None;
         private static TreasuresOfTokunoEra _RewardEra = TreasuresOfTokunoEra.ToTOne;
-		
+
         public static TreasuresOfTokunoEra DropEra
         {
             get
@@ -65,7 +65,7 @@ namespace Server.Misc
                 _DropEra = value;
             }
         }
-		
+
         public static TreasuresOfTokunoEra RewardEra
         {
             get
@@ -111,8 +111,8 @@ namespace Server.Misc
             }
         };
 
-        public static Type[] LesserArtifacts 
-        { 
+        public static Type[] LesserArtifacts
+        {
             get
             {
                 return m_LesserArtifacts[(int)RewardEra - 1];
@@ -120,7 +120,7 @@ namespace Server.Misc
         }
 
         private static Type[][] m_GreaterArtifacts = null;
-		
+
         public static Type[] GreaterArtifacts
         {
             get
@@ -128,11 +128,11 @@ namespace Server.Misc
                 if (m_GreaterArtifacts == null)
                 {
                     m_GreaterArtifacts = new Type[ToTRedeemGump.NormalRewards.Length][];
-					
+
                     for (int i = 0; i < m_GreaterArtifacts.Length; i++)
                     {
                         m_GreaterArtifacts[i] = new Type[ToTRedeemGump.NormalRewards[i].Length];
-						
+
                         for (int j = 0; j < m_GreaterArtifacts[i].Length; j++)
                         {
                             m_GreaterArtifacts[i][j] = ToTRedeemGump.NormalRewards[i][j].Type;
@@ -229,7 +229,7 @@ namespace Server.Misc
             if (chance > Utility.RandomDouble())
             {
                 Item i = null;
-				
+
                 try
                 {
                     i = Activator.CreateInstance(m_LesserArtifacts[(int)DropEra - 1][Utility.Random(m_LesserArtifacts[(int)DropEra - 1].Length)]) as Item;
@@ -241,9 +241,9 @@ namespace Server.Misc
 
                 if (i != null)
                 {
-					killer.PlaySound(0x5B4);
+                    killer.PlaySound(0x5B4);
                     pm.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
-					
+
                     if (!pm.PlaceInBackpack(i))
                     {
                         if (pm.BankBox != null && pm.BankBox.TryDropItem(killer, i, false))
@@ -369,7 +369,7 @@ namespace Server.Mobiles
                 return this.m_SBInfos;
             }
         }
-		
+
         public override void InitSBInfo()
         {
         }
@@ -407,7 +407,7 @@ namespace Server.Mobiles
 
             writer.Write((int)0);
         }
-		
+
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
@@ -435,8 +435,8 @@ namespace Server.Mobiles
                     {
                         this.SayTo(pm, 1070980); // Congratulations! You have turned in enough minor treasures to earn a greater reward.
 
-                        pm.CloseGump(typeof(ToTTurnInGump));	//Sanity
-						
+                        pm.CloseGump(typeof(ToTTurnInGump));    //Sanity
+
                         if (!pm.HasGump(typeof(ToTRedeemGump)))
                             pm.SendGump(new ToTRedeemGump(this, false));
                     }
@@ -511,10 +511,10 @@ namespace Server.Gumps
                 Item item = (Item)items[i];
                 if (item is ChestOfHeirlooms && !((ChestOfHeirlooms)item).Locked)
                     continue;
-				
+
                 if (item is ChestOfHeirlooms && ((ChestOfHeirlooms)item).TrapLevel != 10)
                     continue;
-				
+
                 if (item is PigmentsOfTokuno && ((PigmentsOfTokuno)item).Type != PigmentType.None)
                     continue;
 
@@ -698,7 +698,7 @@ namespace Server.Gumps
         #endregion
 
         public static TypeTileButtonInfo[][] NormalRewards
-        { 
+        {
             get
             {
                 return m_NormalRewards;
@@ -753,7 +753,7 @@ namespace Server.Gumps
         #endregion
 
         public static PigmentsTileButtonInfo[][] PigmentRewards
-        { 
+        {
             get
             {
                 return m_PigmentRewards;

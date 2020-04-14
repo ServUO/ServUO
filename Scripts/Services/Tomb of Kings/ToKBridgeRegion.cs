@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Server.Items;
+using System;
 using System.Collections.Generic;
 using System.Xml;
-using Server.Items;
 
 namespace Server.Regions
 {

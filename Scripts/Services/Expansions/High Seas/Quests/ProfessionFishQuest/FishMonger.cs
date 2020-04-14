@@ -1,8 +1,7 @@
-﻿using Server;
-using System;
-using Server.Engines.Quests;
-using Server.Multis;
+﻿using Server.Engines.Quests;
 using Server.Items;
+using Server.Multis;
+using System;
 
 namespace Server.Mobiles
 {
@@ -26,7 +25,7 @@ namespace Server.Mobiles
             Name = NameList.RandomName("male");
             Title = "the fish monger";
 
-            Hue = Race.RandomSkinHue();      
+            Hue = Race.RandomSkinHue();
             Race.RandomHair(this);
             HairHue = Race.RandomHairHue();
         }

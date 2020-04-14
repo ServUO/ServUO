@@ -1,24 +1,21 @@
+using Server.Items;
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
-using Server;
-using Server.Mobiles;
-using Server.Items;
-using Server.Gumps;
-using Server.Engines.PartySystem;
 using System.Linq;
 
-namespace Server.Engines.Shadowguard	
+namespace Server.Engines.Shadowguard
 {
-	public class BarEncounter : ShadowguardEncounter
-	{
+    public class BarEncounter : ShadowguardEncounter
+    {
         public const int LiquorCount = 10;
 
         public override Type AddonType { get { return typeof(BarAddon); } }
 
-		public List<Mobile> Pirates { get; set; }
-		public int Wave { get; set; }
-	
-		public List<ShadowguardBottleOfLiquor> Bottles { get; set; }
+        public List<Mobile> Pirates { get; set; }
+        public int Wave { get; set; }
+
+        public List<ShadowguardBottleOfLiquor> Bottles { get; set; }
 
         public BarEncounter()
             : base(EncounterType.Bar)
@@ -27,12 +24,12 @@ namespace Server.Engines.Shadowguard
 
         public BarEncounter(ShadowguardInstance instance)
             : base(EncounterType.Bar, instance)
-		{
-		}
-		
-		public override void Setup()
-		{
-			Pirates = new List<Mobile>();
+        {
+        }
+
+        public override void Setup()
+        {
+            Pirates = new List<Mobile>();
             Bottles = new List<ShadowguardBottleOfLiquor>();
             Wave = 0;
 
@@ -42,21 +39,21 @@ namespace Server.Engines.Shadowguard
                 SpawnRandomPirate();
 
             for (int i = 0; i < LiquorCount; i++)
-				SpawnRandomLiquor();
-		}
-		
-		public override void CheckEncounter()
-		{
-			if(Completed || Bottles == null)
-				return;
+                SpawnRandomLiquor();
+        }
+
+        public override void CheckEncounter()
+        {
+            if (Completed || Bottles == null)
+                return;
 
             int liquorCount = Bottles.Where(b => b != null && !b.Deleted).Count();
 
-			if(liquorCount < LiquorCount)
-			{
-				SpawnRandomLiquor();
-			}
-		}
+            if (liquorCount < LiquorCount)
+            {
+                SpawnRandomLiquor();
+            }
+        }
 
         private void SpawnRandomLiquor()
         {
@@ -66,15 +63,15 @@ namespace Server.Engines.Shadowguard
             ConvertOffset(ref rec);
 
             int x = Utility.RandomMinMax(rec.X, rec.X + rec.Width);
-			int y = Utility.RandomMinMax(rec.Y, rec.Y + rec.Height);
-			int z = -14;
+            int y = Utility.RandomMinMax(rec.Y, rec.Y + rec.Height);
+            int z = -14;
 
             x = x + (9 * row);
-			
-			ShadowguardBottleOfLiquor bottle = new ShadowguardBottleOfLiquor(this);
-			bottle.MoveToWorld(new Point3D(x, y, z), Map.TerMur);
-			
-			Bottles.Add(bottle);
+
+            ShadowguardBottleOfLiquor bottle = new ShadowguardBottleOfLiquor(this);
+            bottle.MoveToWorld(new Point3D(x, y, z), Map.TerMur);
+
+            Bottles.Add(bottle);
         }
 
         private void SpawnRandomPirate()
@@ -92,47 +89,47 @@ namespace Server.Engines.Shadowguard
             int x = startX + ((row / 2) * 9);
 
             ShadowguardPirate pirate = new ShadowguardPirate();
-			pirate.MoveToWorld(new Point3D(x, ranPnt.Y, ranPnt.Z), Map.TerMur);
-			Pirates.Add(pirate);
+            pirate.MoveToWorld(new Point3D(x, ranPnt.Y, ranPnt.Z), Map.TerMur);
+            Pirates.Add(pirate);
         }
-		
-		public override void OnCreatureKilled(BaseCreature bc)
-		{
+
+        public override void OnCreatureKilled(BaseCreature bc)
+        {
             if (!(bc is ShadowguardPirate) || Pirates == null)
                 return;
 
-			if(Pirates.Contains(bc))
-				Pirates.Remove(bc);
+            if (Pirates.Contains(bc))
+                Pirates.Remove(bc);
 
-			if(Pirates.Count <= 0)
-			{
-				Wave++;
-				Pirates.Clear();
+            if (Pirates.Count <= 0)
+            {
+                Wave++;
+                Pirates.Clear();
 
                 int toSpawn = Math.Max(3, PartySize() * 3);
-				
-				if(Wave < 4)
-				{
+
+                if (Wave < 4)
+                {
                     for (int i = 0; i < toSpawn; i++)
-					{
+                    {
                         SpawnRandomPirate();
-					}
-				}
-				else if (Wave == 4)
-				{
+                    }
+                }
+                else if (Wave == 4)
+                {
                     var pirate = new ShantyThePirate();
                     Point3D p = SpawnPoints[Utility.Random(SpawnPoints.Length)];
                     ConvertOffset(ref p);
                     pirate.MoveToWorld(p, Map.TerMur);
-					Pirates.Add(pirate);
-				}
-				else
-					CompleteEncounter();
-			}
-		}
-		
-		public override void ClearItems()
-		{
+                    Pirates.Add(pirate);
+                }
+                else
+                    CompleteEncounter();
+            }
+        }
+
+        public override void ClearItems()
+        {
             if (Bottles != null)
             {
                 List<ShadowguardBottleOfLiquor> list = new List<ShadowguardBottleOfLiquor>(Bottles.Where(b => b != null && !b.Deleted));
@@ -151,7 +148,7 @@ namespace Server.Engines.Shadowguard
                 ColUtility.Free(Pirates);
                 Pirates = null;
             }
-		}
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -203,11 +200,11 @@ namespace Server.Engines.Shadowguard
                 }
             }
         }
-	}
-	
-	public class OrchardEncounter : ShadowguardEncounter
-	{
-		public List<ShadowguardCypress> Trees { get; set; }
+    }
+
+    public class OrchardEncounter : ShadowguardEncounter
+    {
+        public List<ShadowguardCypress> Trees { get; set; }
         public List<BaseCreature> Spawn { get; set; }
 
         public Item Bones { get; set; }
@@ -222,41 +219,41 @@ namespace Server.Engines.Shadowguard
 
         public OrchardEncounter(ShadowguardInstance instance)
             : base(EncounterType.Orchard, instance)
-		{
-		}
-		
-		public override void Setup()
-		{
-			Trees = new List<ShadowguardCypress>();
+        {
+        }
+
+        public override void Setup()
+        {
+            Trees = new List<ShadowguardCypress>();
             Spawn = new List<BaseCreature>();
-			
-			List<Point3D> points = new List<Point3D>();
-            for(int i = 0; i < SpawnPoints.Length; i++)
+
+            List<Point3D> points = new List<Point3D>();
+            for (int i = 0; i < SpawnPoints.Length; i++)
             {
                 Point3D p = SpawnPoints[i];
                 ConvertOffset(ref p);
                 points.Add(p);
             }
-					
-			foreach(int i in Enum.GetValues(typeof(VirtueType)))
-			{
-				if(i > 7)
-					break;
-					
-				ShadowguardCypress tree = new ShadowguardCypress(this, (VirtueType)i);
-				Point3D p = points[Utility.Random(points.Count)];
 
-				tree.MoveToWorld(p, Map.TerMur);
-				points.Remove(p);
-				Trees.Add(tree);
-				
-				tree = new ShadowguardCypress(this, (VirtueType)i + 8);
-				p = points[Utility.Random(points.Count)];
+            foreach (int i in Enum.GetValues(typeof(VirtueType)))
+            {
+                if (i > 7)
+                    break;
 
-				tree.MoveToWorld(p, Map.TerMur);
-				points.Remove(p);
-				Trees.Add(tree);
-			}
+                ShadowguardCypress tree = new ShadowguardCypress(this, (VirtueType)i);
+                Point3D p = points[Utility.Random(points.Count)];
+
+                tree.MoveToWorld(p, Map.TerMur);
+                points.Remove(p);
+                Trees.Add(tree);
+
+                tree = new ShadowguardCypress(this, (VirtueType)i + 8);
+                p = points[Utility.Random(points.Count)];
+
+                tree.MoveToWorld(p, Map.TerMur);
+                points.Remove(p);
+                Trees.Add(tree);
+            }
 
             Item bones = new WitheringBones();
             Point3D pnt = new Point3D(-15, -11, 0);
@@ -265,24 +262,24 @@ namespace Server.Engines.Shadowguard
             Bones = bones;
 
             ColUtility.Free(points);
-		}
-		
-		public override void CheckEncounter()
-		{
+        }
+
+        public override void CheckEncounter()
+        {
             if (Trees == null)
                 return;
 
-			int treeCount = Trees.Count;
-			
-			foreach(ShadowguardCypress tree in Trees)
-			{
-				if(tree == null || tree.Deleted)
-					treeCount--;
-			}
-			
-			if(treeCount <= 0)
-				CompleteEncounter();
-		}
+            int treeCount = Trees.Count;
+
+            foreach (ShadowguardCypress tree in Trees)
+            {
+                if (tree == null || tree.Deleted)
+                    treeCount--;
+            }
+
+            if (treeCount <= 0)
+                CompleteEncounter();
+        }
 
         public override void CompleteEncounter()
         {
@@ -308,13 +305,13 @@ namespace Server.Engines.Shadowguard
         }
 
         public void AddSpawn(BaseCreature bc)
-		{
-            if(Spawn != null)
-			    Spawn.Add(bc);
-		}
-		
-		public override void ClearItems()
-		{
+        {
+            if (Spawn != null)
+                Spawn.Add(bc);
+        }
+
+        public override void ClearItems()
+        {
             ClearSpawn();
 
             if (Apple != null)
@@ -340,7 +337,7 @@ namespace Server.Engines.Shadowguard
                 Bones.Delete();
                 Bones = null;
             }
-		}
+        }
 
         public void OnApplePicked()
         {
@@ -414,14 +411,14 @@ namespace Server.Engines.Shadowguard
 
             Bones = reader.ReadItem();
         }
-	}
-	
-	public class ArmoryEncounter : ShadowguardEncounter
-	{
-		public List<Item> Armor { get; set; }
-		public List<Item> DestroyedArmor { get; set; }
+    }
+
+    public class ArmoryEncounter : ShadowguardEncounter
+    {
+        public List<Item> Armor { get; set; }
+        public List<Item> DestroyedArmor { get; set; }
         public List<Item> Items { get; set; }
-		public List<BaseCreature> Spawn { get; set; }
+        public List<BaseCreature> Spawn { get; set; }
 
         public override Type AddonType { get { return typeof(ArmoryAddon); } }
 
@@ -432,34 +429,34 @@ namespace Server.Engines.Shadowguard
 
         public ArmoryEncounter(ShadowguardInstance instance)
             : base(EncounterType.Armory, instance)
-		{
-		}
-		
-		public override void Setup()
-		{
+        {
+        }
+
+        public override void Setup()
+        {
             Armor = new List<Item>();
-			DestroyedArmor = new List<Item>();
-			Spawn = new List<BaseCreature>();
+            DestroyedArmor = new List<Item>();
+            Spawn = new List<BaseCreature>();
             Items = new List<Item>();
 
             int toSpawn = 1 + (PartySize() * 2);
 
             ColUtility.For(SpawnPoints, (i, p) =>
-			{
+            {
                 ConvertOffset(ref p);
 
-				var armor = new CursedSuitOfArmor(this);
-				armor.MoveToWorld(p, Map.TerMur);
-				Armor.Add(armor);
+                var armor = new CursedSuitOfArmor(this);
+                armor.MoveToWorld(p, Map.TerMur);
+                Armor.Add(armor);
 
-                if(i > 13)
+                if (i > 13)
                     armor.ItemID = 0x1512;
-			});
-			
-			for(int i = 0; i < toSpawn; i++)
-			{
-				SpawnRandom();
-			}
+            });
+
+            for (int i = 0; i < toSpawn; i++)
+            {
+                SpawnRandom();
+            }
 
             Item item = new Static(3633);
             Point3D pnt = new Point3D(-4, 2, 0);
@@ -496,31 +493,31 @@ namespace Server.Engines.Shadowguard
             ConvertOffset(ref pnt);
             item.MoveToWorld(pnt, Map.TerMur);
             Items.Add(item);
-		}
-		
-		public override void CheckEncounter()
-		{
+        }
+
+        public override void CheckEncounter()
+        {
             if (Completed || Armor == null)
                 return;
 
             if (Armor.Where(a => a != null && !a.Deleted).Count() == 0)
-				CompleteEncounter();
-		}
-		
-		public override void OnCreatureKilled(BaseCreature bc)
-		{
+                CompleteEncounter();
+        }
+
+        public override void OnCreatureKilled(BaseCreature bc)
+        {
             if (Spawn != null && Spawn.Contains(bc))
-			{
-				Spawn.Remove(bc);
-				Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(5, 15)), SpawnRandom);
-			}
-		}
-		
-		public void AddDestroyedArmor(Item item)
-		{
-            if(DestroyedArmor != null)
-			    DestroyedArmor.Add(item);
-		}
+            {
+                Spawn.Remove(bc);
+                Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(5, 15)), SpawnRandom);
+            }
+        }
+
+        public void AddDestroyedArmor(Item item)
+        {
+            if (DestroyedArmor != null)
+                DestroyedArmor.Add(item);
+        }
 
         public override void CompleteEncounter()
         {
@@ -546,7 +543,7 @@ namespace Server.Engines.Shadowguard
         }
 
         public override void ClearItems()
-		{
+        {
             if (Armor != null)
             {
                 List<Item> list = new List<Item>(Armor.Where(i => i != null && !i.Deleted));
@@ -585,31 +582,31 @@ namespace Server.Engines.Shadowguard
                 ColUtility.Free(Items);
                 Items = null;
             }
-		}
-		
-		private void SpawnRandom()
-		{
+        }
+
+        private void SpawnRandom()
+        {
             if (Spawn == null)
                 return;
 
-			Rectangle2D rec = SpawnRecs[Utility.Random(SpawnRecs.Length)];
+            Rectangle2D rec = SpawnRecs[Utility.Random(SpawnRecs.Length)];
             ConvertOffset(ref rec);
 
-			while(true)
-			{
-				int x = Utility.RandomMinMax(rec.X, rec.X + rec.Width);
-				int y = Utility.RandomMinMax(rec.Y, rec.Y + rec.Height);
-				int z = Map.TerMur.GetAverageZ(x, y);
-				
-				if(Map.TerMur.CanSpawnMobile(x, y, z))
-				{
-					var armor = new EnsorcelledArmor(this);
-					armor.MoveToWorld(new Point3D(x, y, z), Map.TerMur);
-					Spawn.Add(armor);
-					break;
-				}
-			}
-		}
+            while (true)
+            {
+                int x = Utility.RandomMinMax(rec.X, rec.X + rec.Width);
+                int y = Utility.RandomMinMax(rec.Y, rec.Y + rec.Height);
+                int z = Map.TerMur.GetAverageZ(x, y);
+
+                if (Map.TerMur.CanSpawnMobile(x, y, z))
+                {
+                    var armor = new EnsorcelledArmor(this);
+                    armor.MoveToWorld(new Point3D(x, y, z), Map.TerMur);
+                    Spawn.Add(armor);
+                    break;
+                }
+            }
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -647,7 +644,7 @@ namespace Server.Engines.Shadowguard
 
                 if (it != null)
                 {
-                    if(it is CursedSuitOfArmor)
+                    if (it is CursedSuitOfArmor)
                         ((CursedSuitOfArmor)it).Encounter = this;
 
                     Armor.Add(it);
@@ -697,23 +694,23 @@ namespace Server.Engines.Shadowguard
                 int toSpawn = Spawn == null ? 4 : 4 - Spawn.Count;
                 for (int i = 0; i < toSpawn; i++)
                 {
-                    if(Spawn == null)
+                    if (Spawn == null)
                         Spawn = new List<BaseCreature>();
 
                     SpawnRandom();
                 }
             }
         }
-	}
-	
-	public class FountainEncounter : ShadowguardEncounter
-	{
+    }
+
+    public class FountainEncounter : ShadowguardEncounter
+    {
         public static readonly int MaxElementals = 30;
 
-		public List<BaseCreature> Elementals { get; set; }
-		public List<Item> ShadowguardCanals { get; set; }
-	
-		public List<FlowChecker> FlowCheckers { get; set; }
+        public List<BaseCreature> Elementals { get; set; }
+        public List<Item> ShadowguardCanals { get; set; }
+
+        public List<FlowChecker> FlowCheckers { get; set; }
 
         public DateTime _NextSpawn;
 
@@ -726,35 +723,35 @@ namespace Server.Engines.Shadowguard
 
         public FountainEncounter(ShadowguardInstance instance)
             : base(EncounterType.Fountain, instance)
-		{
-		}
-		
-		public void UseSpigot(ShadowguardSpigot spigot, Mobile m)
-		{
+        {
+        }
+
+        public void UseSpigot(ShadowguardSpigot spigot, Mobile m)
+        {
             if (FlowCheckers == null)
                 return;
 
-			foreach(FlowChecker checker in FlowCheckers)
-			{
-				if(checker.CheckUse(spigot, m))
-					return;
-			}
-		}
+            foreach (FlowChecker checker in FlowCheckers)
+            {
+                if (checker.CheckUse(spigot, m))
+                    return;
+            }
+        }
 
         public override void CheckEncounter()
         {
             if (FlowCheckers != null && FlowCheckers.Where(c => c.Complete).Count() == 4)
                 CompleteEncounter();
         }
-		
-		public override void OnCreatureKilled(BaseCreature bc)
-		{
+
+        public override void OnCreatureKilled(BaseCreature bc)
+        {
             if (Elementals != null && Elementals.Contains(bc))
-			{
-				Elementals.Remove(bc);
-				Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(1, 5)), SpawnRandomElemental);
-			}
-		}
+            {
+                Elementals.Remove(bc);
+                Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(1, 5)), SpawnRandomElemental);
+            }
+        }
 
         public override void OnTick()
         {
@@ -764,32 +761,32 @@ namespace Server.Engines.Shadowguard
                 _NextSpawn = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 45));
             }
         }
-		
-		public override void Setup()
-		{
-			ShadowguardCanals = new List<Item>();
-			Elementals = new List<BaseCreature>();
-			FlowCheckers = new List<FlowChecker>();
+
+        public override void Setup()
+        {
+            ShadowguardCanals = new List<Item>();
+            Elementals = new List<BaseCreature>();
+            FlowCheckers = new List<FlowChecker>();
 
             int toSpawn = 3 + (PartySize() * 2);
 
-			Timer.DelayCall(ShadowguardController.ReadyDuration + TimeSpan.FromSeconds(30), () =>
-			{
-				for(int i = 0; i < toSpawn; i++)
-					SpawnRandomElemental();
-			});
-			
-			for(int i = 0; i < 4; i++)
-			{
+            Timer.DelayCall(ShadowguardController.ReadyDuration + TimeSpan.FromSeconds(30), () =>
+            {
+                for (int i = 0; i < toSpawn; i++)
+                    SpawnRandomElemental();
+            });
+
+            for (int i = 0; i < 4; i++)
+            {
                 ShadowguardSpigot spigot = new ShadowguardSpigot(i < 2 ? 0x9BF2 : 0x9BE5);
                 Point3D p = SpawnPoints[i];
 
                 ConvertOffset(ref p);
 
-				spigot.MoveToWorld(p, Map.TerMur);
+                spigot.MoveToWorld(p, Map.TerMur);
                 AddShadowguardCanal(spigot);
-				FlowCheckers.Add(new FlowChecker(spigot, this));
-			}
+                FlowCheckers.Add(new FlowChecker(spigot, this));
+            }
 
             Rectangle2D rec1 = SpawnRecs[4];
             Rectangle2D rec2 = SpawnRecs[5];
@@ -799,7 +796,7 @@ namespace Server.Engines.Shadowguard
 
             SpawnDrain(rec1);
             SpawnDrain(rec2);
-		}
+        }
 
         public override void CompleteEncounter()
         {
@@ -825,7 +822,7 @@ namespace Server.Engines.Shadowguard
         }
 
         public override void ClearItems()
-		{
+        {
             if (ShadowguardCanals != null)
             {
                 List<Item> list = new List<Item>(ShadowguardCanals.Where(i => i != null && !i.Deleted));
@@ -845,32 +842,32 @@ namespace Server.Engines.Shadowguard
             {
                 ColUtility.ForEach(FlowCheckers.Where(f => f != null), f => f.EndEncounter());
             }
-		}
-		
-		private void SpawnRandomElemental()
-		{
+        }
+
+        private void SpawnRandomElemental()
+        {
             if (Elementals == null)
                 return;
 
-			Rectangle2D rec = SpawnRecs[Utility.RandomMinMax(0, 3)];
+            Rectangle2D rec = SpawnRecs[Utility.RandomMinMax(0, 3)];
             ConvertOffset(ref rec);
 
-			while(true)
-			{
-				int x = Utility.RandomMinMax(rec.X, rec.X + rec.Width);
-				int y = Utility.RandomMinMax(rec.Y, rec.Y + rec.Height);
-				int z = Map.TerMur.GetAverageZ(x, y);
-				
-				if(Map.TerMur.CanSpawnMobile(x, y, z))
-				{
-					BaseCreature elemental = new VileWaterElemental();
+            while (true)
+            {
+                int x = Utility.RandomMinMax(rec.X, rec.X + rec.Width);
+                int y = Utility.RandomMinMax(rec.Y, rec.Y + rec.Height);
+                int z = Map.TerMur.GetAverageZ(x, y);
 
-					elemental.MoveToWorld(new Point3D(x, y, z), Map.TerMur);
-					Elementals.Add(elemental);
-					break;
-				}
-			}
-		}
+                if (Map.TerMur.CanSpawnMobile(x, y, z))
+                {
+                    BaseCreature elemental = new VileWaterElemental();
+
+                    elemental.MoveToWorld(new Point3D(x, y, z), Map.TerMur);
+                    Elementals.Add(elemental);
+                    break;
+                }
+            }
+        }
 
         private void SpawnDrain(Rectangle2D rec)
         {
@@ -913,64 +910,64 @@ namespace Server.Engines.Shadowguard
 
         public void AddShadowguardCanal(Item canal)
         {
-            if(ShadowguardCanals != null && !ShadowguardCanals.Contains(canal))
+            if (ShadowguardCanals != null && !ShadowguardCanals.Contains(canal))
                 ShadowguardCanals.Add(canal);
         }
-		
-		public class FlowChecker
-		{
-			private FountainEncounter _Encounter;
-			private List<ShadowguardCanal> _Checked;
-			
-			private ShadowguardSpigot _Spigot;
-			private ShadowguardDrain _Drain;
-			
-			public bool Complete { get { return _Spigot != null && _Drain != null; } }
-			
-			public FlowChecker(ShadowguardSpigot start, FountainEncounter encounter)
-			{
-				_Spigot = start;
-				_Encounter = encounter;
-			}
-			
-			public void EndEncounter()
-			{
-				if(_Spigot != null)
-					_Spigot.Delete();
-					
-				if(_Checked != null)
-				{
+
+        public class FlowChecker
+        {
+            private FountainEncounter _Encounter;
+            private List<ShadowguardCanal> _Checked;
+
+            private ShadowguardSpigot _Spigot;
+            private ShadowguardDrain _Drain;
+
+            public bool Complete { get { return _Spigot != null && _Drain != null; } }
+
+            public FlowChecker(ShadowguardSpigot start, FountainEncounter encounter)
+            {
+                _Spigot = start;
+                _Encounter = encounter;
+            }
+
+            public void EndEncounter()
+            {
+                if (_Spigot != null)
+                    _Spigot.Delete();
+
+                if (_Checked != null)
+                {
                     ColUtility.Free(_Checked);
-					_Checked = null;
-				}
-				
-				_Encounter = null;
-			}
-			
-			public bool CheckUse(ShadowguardSpigot spigot, Mobile m)
-			{
+                    _Checked = null;
+                }
+
+                _Encounter = null;
+            }
+
+            public bool CheckUse(ShadowguardSpigot spigot, Mobile m)
+            {
                 if (spigot != _Spigot)
-					return false;
-					
-				Check(m);
-				return true;
-			}
-			
-			public void Check(Mobile m)
-			{
-				Point3D p;
-				Map map = Map.TerMur;
+                    return false;
+
+                Check(m);
+                return true;
+            }
+
+            public void Check(Mobile m)
+            {
+                Point3D p;
+                Map map = Map.TerMur;
                 bool southFacing = _Spigot.ItemID == 39922;
 
-                if(_Checked != null)
+                if (_Checked != null)
                     _Checked.Clear();
 
                 if (southFacing)
                     p = new Point3D(_Spigot.X, _Spigot.Y + 1, -20);
-				else
+                else
                     p = new Point3D(_Spigot.X + 1, _Spigot.Y, -20);
-					
-				Item item = FindItem(p);
+
+                Item item = FindItem(p);
 
                 if (item is ShadowguardCanal)
                 {
@@ -987,34 +984,34 @@ namespace Server.Engines.Shadowguard
                         RecursiveCheck(item, null);
                     }
                 }
-				
-				if(Complete)
-				{
-					Fill();
-					Timer.DelayCall(TimeSpan.FromSeconds(2), () => _Encounter.CheckEncounter());
-				}
-				else
-					_Encounter.SpawnBaddie(m);
-			}
-			
-			public void RecursiveCheck(Item item, Item last)
-			{
-				Item next = null;
-				
-				for(int i = 0; i < _Offsets.Length; i += 2)
-				{
-					Point3D p = new Point3D(item.X + _Offsets[i], item.Y + _Offsets[i+1], item.Z);
-					next = FindItem(p);
-					
-					if(next != null && next != last)
-					{
-						if(Connects(item, next))
-						{
-							if(next is ShadowguardDrain)
-							{
-								_Drain = (ShadowguardDrain)next;
-								return;
-							}
+
+                if (Complete)
+                {
+                    Fill();
+                    Timer.DelayCall(TimeSpan.FromSeconds(2), () => _Encounter.CheckEncounter());
+                }
+                else
+                    _Encounter.SpawnBaddie(m);
+            }
+
+            public void RecursiveCheck(Item item, Item last)
+            {
+                Item next = null;
+
+                for (int i = 0; i < _Offsets.Length; i += 2)
+                {
+                    Point3D p = new Point3D(item.X + _Offsets[i], item.Y + _Offsets[i + 1], item.Z);
+                    next = FindItem(p);
+
+                    if (next != null && next != last)
+                    {
+                        if (Connects(item, next))
+                        {
+                            if (next is ShadowguardDrain)
+                            {
+                                _Drain = (ShadowguardDrain)next;
+                                return;
+                            }
                             else if (next is ShadowguardCanal)
                             {
                                 if (_Checked == null)
@@ -1024,56 +1021,56 @@ namespace Server.Engines.Shadowguard
 
                                 RecursiveCheck(next, item);
                             }
-						}
-					}
-				}
-			}
-			
-			public bool Connects(Item one, Item two)
-			{
-				if(one is ShadowguardCanal && two is ShadowguardDrain)
-				{
-					Flow flow = ((ShadowguardCanal)one).Flow;
-					Direction d = Utility.GetDirection(one, two);
+                        }
+                    }
+                }
+            }
+
+            public bool Connects(Item one, Item two)
+            {
+                if (one is ShadowguardCanal && two is ShadowguardDrain)
+                {
+                    Flow flow = ((ShadowguardCanal)one).Flow;
+                    Direction d = Utility.GetDirection(one, two);
                     bool canConnect = false;
 
-					switch(d)
-					{
+                    switch (d)
+                    {
                         case Direction.North: canConnect = flow == Flow.NorthSouth || flow == Flow.SouthEastCorner || flow == Flow.SouthWestCorner; break;
                         case Direction.East: canConnect = flow == Flow.EastWest || flow == Flow.NorthWestCorner || flow == Flow.SouthWestCorner; break;
                         case Direction.South: canConnect = flow == Flow.NorthSouth || flow == Flow.NorthEastCorner || flow == Flow.NorthWestCorner; break;
                         case Direction.West: canConnect = flow == Flow.EastWest || flow == Flow.NorthEastCorner || flow == Flow.SouthEastCorner; break;
-					}
+                    }
 
                     return canConnect;
-				}
-				else if (two is ShadowguardCanal)
-				{
-					return ((ShadowguardCanal)one).Connects((ShadowguardCanal)two);
-				}
-				
-				return false;
-			}
-			
-			public Item FindItem(Point3D p)
-			{
-				IPooledEnumerable eable = Map.TerMur.GetItemsInRange(p, 0);
-				
-				foreach(Item i in eable)
-				{
-					if(i.Z == p.Z && (i is ShadowguardCanal || i is ShadowguardDrain))
-					{
-						eable.Free();
-						return i;
-					}
-				}
-				
-				eable.Free();
-				return null;
-			}
-			
-			private void Fill()
-			{
+                }
+                else if (two is ShadowguardCanal)
+                {
+                    return ((ShadowguardCanal)one).Connects((ShadowguardCanal)two);
+                }
+
+                return false;
+            }
+
+            public Item FindItem(Point3D p)
+            {
+                IPooledEnumerable eable = Map.TerMur.GetItemsInRange(p, 0);
+
+                foreach (Item i in eable)
+                {
+                    if (i.Z == p.Z && (i is ShadowguardCanal || i is ShadowguardDrain))
+                    {
+                        eable.Free();
+                        return i;
+                    }
+                }
+
+                eable.Free();
+                return null;
+            }
+
+            private void Fill()
+            {
                 int time = 200;
 
                 if (_Spigot.ItemID == 39922)
@@ -1081,13 +1078,13 @@ namespace Server.Engines.Shadowguard
                 else if (_Spigot.ItemID == 39909)
                     _Spigot.ItemID = 17278;
 
-				_Checked.ForEach(i => i.Movable = false);
+                _Checked.ForEach(i => i.Movable = false);
                 ColUtility.For(_Checked, (i, item) =>
-				{
+                {
                     Timer.DelayCall(TimeSpan.FromMilliseconds(time), Fill, item);
                     time += 200;
-				});
-			}
+                });
+            }
 
             private void Fill(object o)
             {
@@ -1099,15 +1096,15 @@ namespace Server.Engines.Shadowguard
                         _Drain.Hue = 0;
                 }
             }
-			
-			private int[] _Offsets = new int[]
-			{
-				0, -1,
-				1, 0,
-				0, 1,
-				-1, 0
-			};
-            
+
+            private int[] _Offsets = new int[]
+            {
+                0, -1,
+                1, 0,
+                0, 1,
+                -1, 0
+            };
+
             public FlowChecker(GenericReader reader, FountainEncounter encounter)
             {
                 int version = reader.ReadInt();
@@ -1139,7 +1136,7 @@ namespace Server.Engines.Shadowguard
                 writer.Write(_Checked == null ? 0 : _Checked.Count);
                 if (_Checked != null) _Checked.ForEach(c => writer.Write(c));
             }
-		}
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -1203,12 +1200,12 @@ namespace Server.Engines.Shadowguard
                 }
             }
         }
-	}
-	
-	public class BelfryEncounter : ShadowguardEncounter
-	{
-		public List<VileDrake> Drakes { get; set; }
-		public ShadowguardGreaterDragon Dragon { get; set; }
+    }
+
+    public class BelfryEncounter : ShadowguardEncounter
+    {
+        public List<VileDrake> Drakes { get; set; }
+        public ShadowguardGreaterDragon Dragon { get; set; }
         public List<Item> Bells { get; set; }
 
         public override Type AddonType { get { return typeof(BelfryAddon); } }
@@ -1220,19 +1217,19 @@ namespace Server.Engines.Shadowguard
 
         public BelfryEncounter(ShadowguardInstance instance)
             : base(EncounterType.Belfry, instance)
-		{
-		}
-				
-		public override void Setup()
-		{
-			Drakes = new List<VileDrake>();
+        {
+        }
+
+        public override void Setup()
+        {
+            Drakes = new List<VileDrake>();
             Bells = new List<Item>();
 
             Point3D p = SpawnPoints[0];
             ConvertOffset(ref p);
 
-			Dragon = new ShadowguardGreaterDragon();
-			Dragon.MoveToWorld(p, Map.TerMur);
+            Dragon = new ShadowguardGreaterDragon();
+            Dragon.MoveToWorld(p, Map.TerMur);
 
             FeedingBell bell = new FeedingBell();
             p = new Point3D(16, 6, 0);
@@ -1257,10 +1254,10 @@ namespace Server.Engines.Shadowguard
             ConvertOffset(ref p);
             bell.MoveToWorld(p, Map.TerMur);
             Bells.Add(bell);
-		}
-		
-		public void SpawnDrake(Point3D p, Mobile from)
-		{
+        }
+
+        public void SpawnDrake(Point3D p, Mobile from)
+        {
             if (Drakes == null)
                 return;
 
@@ -1278,43 +1275,43 @@ namespace Server.Engines.Shadowguard
                     break;
                 }
             }
-			
-			while(true)
-			{
-				int x = Utility.RandomMinMax(rec.X, rec.X + rec.Width);
-				int y = Utility.RandomMinMax(rec.Y, rec.Y + rec.Height);
-				int z = Map.TerMur.GetAverageZ(x, y);
-				
-				if(Map.TerMur.CanSpawnMobile(x, y, z))
-				{
-					var drake = new VileDrake();
-					drake.MoveToWorld(new Point3D(x, y, z), Map.TerMur);
+
+            while (true)
+            {
+                int x = Utility.RandomMinMax(rec.X, rec.X + rec.Width);
+                int y = Utility.RandomMinMax(rec.Y, rec.Y + rec.Height);
+                int z = Map.TerMur.GetAverageZ(x, y);
+
+                if (Map.TerMur.CanSpawnMobile(x, y, z))
+                {
+                    var drake = new VileDrake();
+                    drake.MoveToWorld(new Point3D(x, y, z), Map.TerMur);
 
                     Timer.DelayCall(TimeSpan.FromSeconds(.5), () => drake.Combatant = from);
 
-					Drakes.Add(drake);
-					break;
-				}
-			}
-		}
-		
-		public override void CheckEncounter()
-		{
-		}
-		
-		public override void OnCreatureKilled(BaseCreature bc)
-		{
-			if(bc is VileDrake && Drakes != null && Drakes.Contains((VileDrake)bc))
-				Drakes.Remove((VileDrake)bc);
-				
-			if(bc == Dragon)
-			{
-				CompleteEncounter();
-			}
-		}
-		
-		public override void ClearItems()
-		{
+                    Drakes.Add(drake);
+                    break;
+                }
+            }
+        }
+
+        public override void CheckEncounter()
+        {
+        }
+
+        public override void OnCreatureKilled(BaseCreature bc)
+        {
+            if (bc is VileDrake && Drakes != null && Drakes.Contains((VileDrake)bc))
+                Drakes.Remove((VileDrake)bc);
+
+            if (bc == Dragon)
+            {
+                CompleteEncounter();
+            }
+        }
+
+        public override void ClearItems()
+        {
             if (Drakes != null)
             {
                 List<BaseCreature> list = new List<BaseCreature>(Drakes.Where(d => d != null && !d.Deleted));
@@ -1341,11 +1338,11 @@ namespace Server.Engines.Shadowguard
                 Bells = null;
             }
 
-			if(Dragon != null && Dragon.Alive)
-				Dragon.Delete();
-				
-			Dragon = null;
-		}
+            if (Dragon != null && Dragon.Alive)
+                Dragon.Delete();
+
+            Dragon = null;
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -1370,7 +1367,7 @@ namespace Server.Engines.Shadowguard
             Bells = new List<Item>();
 
             Dragon = reader.ReadMobile() as ShadowguardGreaterDragon;
-            
+
             int count = reader.ReadInt();
 
             for (int i = 0; i < count; i++)
@@ -1394,35 +1391,35 @@ namespace Server.Engines.Shadowguard
             if (Dragon == null || Dragon.Deleted)
                 Expire();
         }
-	}
-	
-	public class RoofEncounter : ShadowguardEncounter
-	{
+    }
+
+    public class RoofEncounter : ShadowguardEncounter
+    {
         [CommandProperty(AccessLevel.GameMaster)]
-		public ShadowguardBoss CurrentBoss { get; set; }
+        public ShadowguardBoss CurrentBoss { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public LadyMinax Minax { get; set; }
-		
-		public List<Type> Bosses { get; set; }
-		
-		private Type[] _Bosses = new Type[] { typeof(Anon), typeof(Virtuebane), typeof(Ozymandias), typeof(Juonar) };
+
+        public List<Type> Bosses { get; set; }
+
+        private Type[] _Bosses = new Type[] { typeof(Anon), typeof(Virtuebane), typeof(Ozymandias), typeof(Juonar) };
 
         public override TimeSpan EncounterDuration { get { return TimeSpan.MaxValue; } }
         public override TimeSpan ResetDuration { get { return TimeSpan.FromMinutes(5); } }
 
         public override Type AddonType { get { return null; } }
 
-		public override void Setup()
-		{
-			Bosses = new List<Type>(_Bosses);
-			
-			for(int i = 0; i < 15; i++)
-			{
-				Type t = Bosses[Utility.Random(Bosses.Count)];
-				Bosses.Remove(t);
-				Bosses.Insert(0, t);
-			}
+        public override void Setup()
+        {
+            Bosses = new List<Type>(_Bosses);
+
+            for (int i = 0; i < 15; i++)
+            {
+                Type t = Bosses[Utility.Random(Bosses.Count)];
+                Bosses.Remove(t);
+                Bosses.Insert(0, t);
+            }
 
             Point3D p = SpawnPoints[0];
             ConvertOffset(ref p);
@@ -1438,7 +1435,7 @@ namespace Server.Engines.Shadowguard
                 });
 
             Timer.DelayCall(TimeSpan.FromSeconds(40), SpawnBoss);
-		}
+        }
 
         public RoofEncounter()
             : base(EncounterType.Roof)
@@ -1447,12 +1444,12 @@ namespace Server.Engines.Shadowguard
 
         public RoofEncounter(ShadowguardInstance instance)
             : base(EncounterType.Roof, instance)
-		{
-		}
-		
-		public override void CheckEncounter()
-		{
-		}
+        {
+        }
+
+        public override void CheckEncounter()
+        {
+        }
 
         public override void CompleteEncounter()
         {
@@ -1464,10 +1461,10 @@ namespace Server.Engines.Shadowguard
             }
         }
 
-		public override void OnCreatureKilled(BaseCreature bc)
-		{
-			if(Bosses != null && bc is ShadowguardBoss && bc == CurrentBoss)
-			{
+        public override void OnCreatureKilled(BaseCreature bc)
+        {
+            if (Bosses != null && bc is ShadowguardBoss && bc == CurrentBoss)
+            {
                 if (Bosses.Count > 0)
                     SpawnBoss();
                 else
@@ -1479,8 +1476,8 @@ namespace Server.Engines.Shadowguard
 
                     CompleteEncounter();
                 }
-			}
-		}
+            }
+        }
 
         private void GiveRewardTitle()
         {
@@ -1494,9 +1491,9 @@ namespace Server.Engines.Shadowguard
                 pm.AddRewardTitle(1156318); // Destroyer of the Time Rift
             }
         }
-		
-		public override void ClearItems()
-		{
+
+        public override void ClearItems()
+        {
             if (Minax != null)
                 Minax.Delete();
 
@@ -1508,28 +1505,28 @@ namespace Server.Engines.Shadowguard
 
             if (CurrentBoss != null)
             {
-                if(!CurrentBoss.Deleted)
+                if (!CurrentBoss.Deleted)
                     CurrentBoss.Delete();
 
                 CurrentBoss = null;
             }
-		}
-		
-		private void SpawnBoss()
-		{
+        }
+
+        private void SpawnBoss()
+        {
             if (Bosses == null)
                 return;
 
             Point3D p = SpawnPoints[0];
             ConvertOffset(ref p);
 
-			CurrentBoss = Activator.CreateInstance(Bosses[0]) as ShadowguardBoss;
-			Bosses.Remove(Bosses[0]);
-			
-			if(CurrentBoss != null)
-			{
-				CurrentBoss.MoveToWorld(p, Map.TerMur);
-			}
+            CurrentBoss = Activator.CreateInstance(Bosses[0]) as ShadowguardBoss;
+            Bosses.Remove(Bosses[0]);
+
+            if (CurrentBoss != null)
+            {
+                CurrentBoss.MoveToWorld(p, Map.TerMur);
+            }
 
             if (Bosses.Count == 0)
                 CurrentBoss.IsLastBoss = true;
@@ -1545,7 +1542,7 @@ namespace Server.Engines.Shadowguard
                 else
                     Minax.Say(1156261); // And now you shall bow to the King of Kings! Suffer at the hands of the Feudal Lord Ozymandias!
             }
-		}
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -1584,5 +1581,5 @@ namespace Server.Engines.Shadowguard
                 Completed = true;
             }
         }
-	}
+    }
 }

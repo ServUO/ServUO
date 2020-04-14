@@ -1,31 +1,29 @@
-using System;
-using Server;
-using Server.Items;
-using System.Collections.Generic;
-using Server.Spells.SkillMasteries;
-using Server.Spells;
-using System.Linq;
 using Server.Engines.MyrmidexInvasion;
+using Server.Items;
+using Server.Spells.SkillMasteries;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Mobiles
 {
-	public enum EodonTribe
-	{
-		Jukari,
-		Kurak,
-		Barrab,
-		Barako,
-		Urali,
-		Sakkhra
-	}
-	
-	public abstract class BaseEodonTribesman : BaseCreature
-	{
+    public enum EodonTribe
+    {
+        Jukari,
+        Kurak,
+        Barrab,
+        Barako,
+        Urali,
+        Sakkhra
+    }
+
+    public abstract class BaseEodonTribesman : BaseCreature
+    {
         protected long _NextMastery;
         private bool _HasYelled;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool HasYelled 
+        public bool HasYelled
         {
             get { return _HasYelled; }
             set
@@ -41,18 +39,18 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-		public EodonTribe TribeType { get; private set; }
+        public EodonTribe TribeType { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public override Poison PoisonImmune 
-        { 
-            get 
+        public override Poison PoisonImmune
+        {
+            get
             {
                 if (TribeType == EodonTribe.Barrab)
                     return Poison.Deadly;
 
                 return null;
-            } 
+            }
         }
 
         public override bool InitialInnocent { get { return true; } }
@@ -85,12 +83,12 @@ namespace Server.Mobiles
             SetWearable(item);
         }
 
-		public BaseEodonTribesman(AIType ai, EodonTribe type) : base(ai, FightMode.Closest, 10, 1, .2, .4)
-		{
-			TribeType = type;
-			
+        public BaseEodonTribesman(AIType ai, EodonTribe type) : base(ai, FightMode.Closest, 10, 1, .2, .4)
+        {
+            TribeType = type;
+
             BuildBody();
-			BuildEquipment();
+            BuildEquipment();
 
             switch (type)
             {
@@ -137,11 +135,11 @@ namespace Server.Mobiles
                     SetResistance(ResistanceType.Energy, 40, 50);
                     break;
             }
-		}
-		
+        }
+
         public abstract void BuildBody();
         public abstract void BuildEquipment();
-		
+
         private static string[] _Names;
 
         public static void Initialize()
@@ -156,7 +154,7 @@ namespace Server.Mobiles
 
             _Names = names.ToArray();
         }
-		
+
         public static string GetRandomName()
         {
             return _Names[Utility.Random(_Names.Length)];
@@ -210,49 +208,49 @@ namespace Server.Mobiles
                 return wep.PrimaryAbility;
 
             return wep.SecondaryAbility;
-        } 
+        }
 
-		public BaseEodonTribesman(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-			writer.Write((int)TribeType);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-			TribeType = (EodonTribe)reader.ReadInt();
-		}
-	}
-	
-	public class TribeWarrior : BaseEodonTribesman
-	{
-		[Constructable]
-		public TribeWarrior(EodonTribe type) : base(AIType.AI_Melee, type)
-		{
-		}
-		
-		public override void BuildBody()
-		{
-			Name = String.Format("{0} the {1} warrior", GetRandomName(), TribeType.ToString());
+        public BaseEodonTribesman(Serial serial) : base(serial)
+        {
+        }
 
-			SetStr(150);
-			SetDex(150);
-			SetInt(75);
-			
-			SetHits(2500);
-			
-			SetDamage(10, 23);
-			
-			SetDamageType(ResistanceType.Physical, 100);
-			
-			SetSkill(SkillName.Wrestling, 100, 120);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+            writer.Write((int)TribeType);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+            TribeType = (EodonTribe)reader.ReadInt();
+        }
+    }
+
+    public class TribeWarrior : BaseEodonTribesman
+    {
+        [Constructable]
+        public TribeWarrior(EodonTribe type) : base(AIType.AI_Melee, type)
+        {
+        }
+
+        public override void BuildBody()
+        {
+            Name = String.Format("{0} the {1} warrior", GetRandomName(), TribeType.ToString());
+
+            SetStr(150);
+            SetDex(150);
+            SetInt(75);
+
+            SetHits(2500);
+
+            SetDamage(10, 23);
+
+            SetDamageType(ResistanceType.Physical, 100);
+
+            SetSkill(SkillName.Wrestling, 100, 120);
             SetSkill(SkillName.Fencing, 100, 120);
             SetSkill(SkillName.Swords, 100, 120);
             SetSkill(SkillName.Macing, 100, 120);
@@ -263,55 +261,55 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 100, 120);
             SetSkill(SkillName.Parry, 120);
 
-            switch(TribeType)
+            switch (TribeType)
             {
                 case EodonTribe.Jukari:
                     Female = Utility.RandomBool();
                     Body = Female ? 0x191 : 0x190;
                     HairItemID = 0;
                     Hue = 34723; break;
-		        case EodonTribe.Kurak:
+                case EodonTribe.Kurak:
                     Female = Utility.RandomBool();
                     Body = Female ? 0x191 : 0x190;
                     HairItemID = 0x2047;
                     Hue = 33960; break;
-		        case EodonTribe.Barrab:
+                case EodonTribe.Barrab:
                     Female = false;
                     Body = 0x190;
                     HairItemID = 0x203B;
                     Hue = 34214; break;
-		        case EodonTribe.Barako:
+                case EodonTribe.Barako:
                     Female = Utility.RandomBool();
                     Body = Female ? 0x191 : 0x190;
                     HairItemID = 0x203C;
                     Hue = 35187; break;
-		        case EodonTribe.Urali:
+                case EodonTribe.Urali:
                     Female = true;
                     Body = 0x25E;
                     Race = Race.Elf;
                     HairItemID = 0x2FC1;
-                    Hue = 35356; 
+                    Hue = 35356;
                     break;
-		        case EodonTribe.Sakkhra:
+                case EodonTribe.Sakkhra:
                     Female = Utility.RandomBool();
                     Body = Female ? 0x191 : 0x190;
                     HairItemID = 0x203C;
-                    Hue = 34894; 
+                    Hue = 34894;
                     RangeFight = 7; break;
             }
 
             Fame = 12000;
             Karma = 8000;
-		}
-		
-		public override void BuildEquipment()
-		{
+        }
+
+        public override void BuildEquipment()
+        {
             Item weapon = null;
 
-			switch(TribeType)
-			{
-				default:
-				case EodonTribe.Jukari:
+            switch (TribeType)
+            {
+                default:
+                case EodonTribe.Jukari:
                     weapon = new Pickaxe();
                     weapon.Hue = 1175;
                     if (Female)
@@ -325,15 +323,15 @@ namespace Server.Mobiles
                         SetWearable(new BodySash(), 1175);
                     }
                     SetWearable(new Torch());
-					break;
-				case EodonTribe.Kurak:
+                    break;
+                case EodonTribe.Kurak:
                     weapon = new Tekagi();
                     SetWearable(new LeatherDo());
                     SetWearable(new PlateMempo(), 1192);
                     SetWearable(new ShortPants(), 1192);
                     SetWearable(new Sandals(), 1192);
-					break;
-				case EodonTribe.Barrab:
+                    break;
+                case EodonTribe.Barrab:
                     weapon = new Spear();
                     SetWearable(new PlateDo(), 1828);
                     SetWearable(new Obi(), 1828);
@@ -341,8 +339,8 @@ namespace Server.Mobiles
                     SetWearable(new DecorativePlateKabuto(), 1834);
                     SetWearable(new SilverEarrings());
                     SetWearable(new Sandals(), 1828);
-					break;
-				case EodonTribe.Barako:
+                    break;
+                case EodonTribe.Barako:
                     if (Female)
                     {
                         weapon = new Maul();
@@ -360,15 +358,15 @@ namespace Server.Mobiles
                     SetWearable(new StuddedGorget(), 2414);
                     SetWearable(new LeatherNinjaMitts(), 2414);
                     SetWearable(new Boots(), 2414);
-					break;
-				case EodonTribe.Urali:
+                    break;
+                case EodonTribe.Urali:
                     SetWearable(new DragonChest(), 2576);
                     SetWearable(new LeatherJingasa(), 2576);
                     SetWearable(new MetalShield(), 2576);
                     SetWearable(new Waraji(), 2576);
                     SetWearable(new ChainLegs(), 2576);
-					break;
-				case EodonTribe.Sakkhra:
+                    break;
+                case EodonTribe.Sakkhra:
                     weapon = new Bow();
                     weapon.Hue = 2125;
                     if (Female)
@@ -383,15 +381,15 @@ namespace Server.Mobiles
                         SetWearable(new Kilt(), 2125);
                     }
                     SetWearable(new ThighBoots(), 2129);
-					break;
-			}
+                    break;
+            }
 
             if (weapon != null)
             {
                 weapon.LootType = LootType.Blessed;
                 SetWearable(weapon);
             }
-		}
+        }
 
         public override bool AlwaysAttackable { get { return this.Region.IsPartOf<BattleRegion>(); } }
         public override bool ShowFameTitle { get { return false; } }
@@ -401,30 +399,30 @@ namespace Server.Mobiles
             AddLoot(LootPack.Rich, 2);
         }
 
-		public TribeWarrior(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-		}
-	}
-	
-	public class TribeShaman : BaseEodonTribesman
-	{
+        public TribeWarrior(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class TribeShaman : BaseEodonTribesman
+    {
         public override bool ShowSpellMantra { get { return true; } }
 
-		[Constructable]
-		public TribeShaman(EodonTribe type) : base(AIType.AI_Mage, type)
-		{
+        [Constructable]
+        public TribeShaman(EodonTribe type) : base(AIType.AI_Mage, type)
+        {
             RangeFight = 7;
 
             PackGold(60, 70);
@@ -433,33 +431,33 @@ namespace Server.Mobiles
             Bandage b = new Bandage();
             b.Amount = Utility.RandomMinMax(3, 5);
             PackItem(b);
-		}
-		
-		public override void BuildBody()
-		{
+        }
+
+        public override void BuildBody()
+        {
             Name = String.Format("{0} the {1} shaman", GetRandomName(), TribeType.ToString());
-			
-			SetStr(125);
-			SetDex(75, 100);
-			SetInt(200, 250);
-			
-			SetHits(2500);
-			
-			SetDamage( 10, 15 );
-			
-			SetDamageType(ResistanceType.Physical, 100);
-			
-			SetSkill(SkillName.Wrestling, 100);
-			SetSkill(SkillName.Fencing, 100);
-			SetSkill(SkillName.Swords, 100);
-			SetSkill(SkillName.Macing, 100);
-			SetSkill(SkillName.Archery, 100);
-			
-			SetSkill(SkillName.Tactics, 100);
-			SetSkill(SkillName.Anatomy, 100);
-			SetSkill(SkillName.MagicResist, 100);
-			SetSkill(SkillName.Magery, 120);
-			SetSkill(SkillName.EvalInt, 120);
+
+            SetStr(125);
+            SetDex(75, 100);
+            SetInt(200, 250);
+
+            SetHits(2500);
+
+            SetDamage(10, 15);
+
+            SetDamageType(ResistanceType.Physical, 100);
+
+            SetSkill(SkillName.Wrestling, 100);
+            SetSkill(SkillName.Fencing, 100);
+            SetSkill(SkillName.Swords, 100);
+            SetSkill(SkillName.Macing, 100);
+            SetSkill(SkillName.Archery, 100);
+
+            SetSkill(SkillName.Tactics, 100);
+            SetSkill(SkillName.Anatomy, 100);
+            SetSkill(SkillName.MagicResist, 100);
+            SetSkill(SkillName.Magery, 120);
+            SetSkill(SkillName.EvalInt, 120);
 
             switch (TribeType)
             {
@@ -488,49 +486,49 @@ namespace Server.Mobiles
                     Body = 0x25D;
                     Race = Race.Elf;
                     HairItemID = 0x2FC1;
-                    Hue = 35356; 
+                    Hue = 35356;
                     break;
                 case EodonTribe.Sakkhra:
                     Female = Utility.RandomBool();
                     Body = Female ? 0x191 : 0x190;
                     HairItemID = 0x203C;
-                    Hue = 34894; 
+                    Hue = 34894;
                     RangeFight = 7; break;
             }
 
             Fame = 12000;
             Karma = 8000;
-		}
-		
-		public override void BuildEquipment()
-		{
-			Item weapon = new WildStaff();
-			
-			switch(TribeType)
-			{
-				default:
-				case EodonTribe.Jukari:
+        }
+
+        public override void BuildEquipment()
+        {
+            Item weapon = new WildStaff();
+
+            switch (TribeType)
+            {
+                default:
+                case EodonTribe.Jukari:
                     SetWearable(new FemaleLeatherChest(), 1933);
                     SetWearable(new LeatherSkirt(), 1933);
                     SetWearable(new Torch());
                     weapon.Hue = 1933;
-					break;
-				case EodonTribe.Kurak:
+                    break;
+                case EodonTribe.Kurak:
                     SetWearable(new LeatherDo(), 1150);
                     SetWearable(new PlateMempo(), 1150);
                     SetWearable(new TattsukeHakama(), 1150);
                     SetWearable(new Sandals(), 1150);
                     weapon.Hue = 1150;
-					break;
-				case EodonTribe.Barrab:
+                    break;
+                case EodonTribe.Barrab:
                     Robe robe = new Robe();
                     robe.ItemID = 9860;
                     SetWearable(robe, 1834);
                     SetWearable(new Obi(), 1834);
                     SetWearable(new Sandals(), 1831);
                     weapon.Hue = 1831;
-					break;
-				case EodonTribe.Barako:
+                    break;
+                case EodonTribe.Barako:
                     SetWearable(new LeatherHiroSode(), 1518);
                     SetWearable(new LeatherGloves(), 1518);
                     SetWearable(new TribalMask(), 1518);
@@ -540,14 +538,14 @@ namespace Server.Mobiles
                     SetWearable(new Boots(), 1518);
                     SetWearable(new Surcoat(), 1518);
                     weapon.Hue = 1518;
-					break;
-				case EodonTribe.Urali:
+                    break;
+                case EodonTribe.Urali:
                     SetWearable(new DragonLegs(), 2576);
                     SetWearable(new GoldEarrings());
                     SetWearable(new NinjaTabi(), 2576);
                     weapon.Hue = 2576;
-					break;
-				case EodonTribe.Sakkhra:
+                    break;
+                case EodonTribe.Sakkhra:
                     SetWearable(new StuddedChest(), 2118);
                     SetWearable(new LeatherArms(), 2106);
                     SetWearable(new LeatherGloves(), 2106);
@@ -555,60 +553,60 @@ namespace Server.Mobiles
                     SetWearable(new RingmailLegs(), 2106);
                     SetWearable(new ThighBoots(), 2106);
                     weapon.Hue = 2118;
-					break;
-			}
+                    break;
+            }
 
             if (weapon != null)
             {
                 weapon.LootType = LootType.Blessed;
                 SetWearable(weapon);
             }
-		}
+        }
 
         public override bool AlwaysAttackable { get { return this.Region.IsPartOf<BattleRegion>(); } }
         public override bool ShowFameTitle { get { return false; } }
 
         public TribeShaman(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-		}
-	}
-	
-	public class TribeChieftan : BaseEodonTribesman
-	{
-		[Constructable]
-		public TribeChieftan(EodonTribe type) : base(AIType.AI_Melee, type)
-		{
-		}
-		
-		public override void BuildBody()
-		{
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class TribeChieftan : BaseEodonTribesman
+    {
+        [Constructable]
+        public TribeChieftan(EodonTribe type) : base(AIType.AI_Melee, type)
+        {
+        }
+
+        public override void BuildBody()
+        {
             Name = String.Format("{0} the {1} {2}", GetRandomName(), TribeType.ToString(), Female ? "chieftess" : "chieftan");
-			
-			SetStr(200);
-			SetDex(2000);
-			SetInt(200, 250);
-			
-			SetHits(4500);
-			
-			SetDamage( 15, 28 );
-			
-			SetDamageType(ResistanceType.Physical, 100);
-			
-			//Set resistances?
-			
-			SetSkill(SkillName.Wrestling, 120);
+
+            SetStr(200);
+            SetDex(2000);
+            SetInt(200, 250);
+
+            SetHits(4500);
+
+            SetDamage(15, 28);
+
+            SetDamageType(ResistanceType.Physical, 100);
+
+            //Set resistances?
+
+            SetSkill(SkillName.Wrestling, 120);
             SetSkill(SkillName.Fencing, 120);
             SetSkill(SkillName.Swords, 120);
             SetSkill(SkillName.Macing, 120);
@@ -658,10 +656,10 @@ namespace Server.Mobiles
 
             Fame = 18000;
             Karma = 8000;
-		}
-		
-		public override void BuildEquipment()
-		{
+        }
+
+        public override void BuildEquipment()
+        {
             Item weapon = null;
 
             switch (TribeType)
@@ -726,27 +724,27 @@ namespace Server.Mobiles
                 weapon.LootType = LootType.Blessed;
                 SetWearable(weapon);
             }
-		}
+        }
 
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 2);
         }
 
-		public TribeChieftan(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-		}
-	}
+        public TribeChieftan(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 }

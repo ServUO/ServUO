@@ -1,6 +1,6 @@
+using Server.Network;
 using System;
 using System.Collections.Generic;
-using Server.Network;
 
 namespace Server.Gumps
 {
@@ -38,7 +38,7 @@ namespace Server.Gumps
 
             AddButton(10, 294, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(45, 296, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
-			
+
             if (title > 0)
                 AddHtmlLocalized(14, 12, 273, 20, title, 0x7FFF, false, false);
             else
@@ -50,7 +50,7 @@ namespace Server.Gumps
             {
                 AddButton(19, 49 + i * 24, 0x845, 0x846, m_Options[i].ID, GumpButtonType.Reply, 0);
 
-                if(m_Options[i].Cliloc.Number > 0)
+                if (m_Options[i].Cliloc.Number > 0)
                     AddHtmlLocalized(44, 47 + i * 24, 213, 20, m_Options[i].Cliloc.Number, 0x7FFF, false, false);
                 else
                     AddHtml(44, 47 + i * 24, 213, 20, String.Format("<basefont color=#FFFFFF>{0}", m_Options[i].Text), false, false);
@@ -60,7 +60,7 @@ namespace Server.Gumps
         public override void OnResponse(NetState sender, RelayInfo info)
         {
             if (m_Option != null && Contains(info.ButtonID))
-                m_Option.OnOptionSelected(sender.Mobile, info.ButtonID);			
+                m_Option.OnOptionSelected(sender.Mobile, info.ButtonID);
         }
 
         private bool Contains(int chosen)

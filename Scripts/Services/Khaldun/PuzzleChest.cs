@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.Gumps;
 using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -52,7 +52,7 @@ namespace Server.Items
             int version = reader.ReadEncodedInt();
 
             int length = reader.ReadEncodedInt();
-            for (int i = 0;; i++)
+            for (int i = 0; ; i++)
             {
                 if (i < length)
                 {
@@ -136,7 +136,7 @@ namespace Server.Items
         }
         public static PuzzleChestCylinder RandomCylinder()
         {
-            switch ( Utility.Random(8) )
+            switch (Utility.Random(8))
             {
                 case 0:
                     return PuzzleChestCylinder.LightBlue;
@@ -371,7 +371,7 @@ namespace Server.Items
 
         public virtual void DoDamage(Mobile to)
         {
-            switch ( Utility.Random(4) )
+            switch (Utility.Random(4))
             {
                 case 0:
                     {
@@ -625,7 +625,7 @@ namespace Server.Items
                 list.Add(Solution.Cylinders[i]);
 
             m_Hints = new PuzzleChestCylinder[HintsCount];
-			
+
             for (int i = 0; i < m_Hints.Length; i++)
             {
                 int pos = Utility.Random(list.Count);
@@ -748,7 +748,7 @@ namespace Server.Items
                         return;
 
                     PuzzleChestCylinder cylinder;
-                    switch ( info.ButtonID )
+                    switch (info.ButtonID)
                     {
                         case 10:
                             cylinder = PuzzleChestCylinder.LightBlue;

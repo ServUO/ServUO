@@ -1,5 +1,3 @@
-using System;
-using Server;
 using Server.Gumps;
 
 namespace Server.Items
@@ -90,7 +88,7 @@ namespace Server.Items
                         Delete();
                         break;
                     }
-                    
+
                 case 3:
                     {
                         item = new CopperShipReliefAddonDeed();

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class GargishClockworkLeggings : GargishPlateLegs
@@ -15,8 +13,8 @@ namespace Server.Items
             Attributes.BonusDex = 5;
             StrRequirement = 90;
         }
-        
-        public GargishClockworkLeggings(Serial serial)  : base(serial)
+
+        public GargishClockworkLeggings(Serial serial) : base(serial)
         {
         }
 

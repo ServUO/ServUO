@@ -1,7 +1,4 @@
-﻿using Server;
-using System;
-
-namespace Server.Mobiles
+﻿namespace Server.Mobiles
 {
     public class BoundSoul : BaseCreature
     {
@@ -51,8 +48,8 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-		
-		public override int TreasureMapLevel { get { return 3; } }
+
+        public override int TreasureMapLevel { get { return 3; } }
 
         public override void Serialize(GenericWriter writer)
         {

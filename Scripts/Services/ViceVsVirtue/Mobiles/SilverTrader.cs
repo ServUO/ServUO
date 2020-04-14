@@ -1,9 +1,6 @@
-using System;
-using Server;
 using Server.Items;
 using Server.Mobiles;
-using Server.Gumps;
-using Server.Guilds;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Engines.VvV
@@ -182,10 +179,10 @@ namespace Server.Engines.VvV
 
                                         if (item is GargishWizardsCrystalGlasses)
                                         {
-                                            ((GargishWizardsCrystalGlasses)item).PhysicalBonus = 5;                                            
-                                            ((GargishWizardsCrystalGlasses)item).FireBonus = 5;                                            
-                                            ((GargishWizardsCrystalGlasses)item).ColdBonus = 5;                                            
-                                            ((GargishWizardsCrystalGlasses)item).PoisonBonus = 5;                                            
+                                            ((GargishWizardsCrystalGlasses)item).PhysicalBonus = 5;
+                                            ((GargishWizardsCrystalGlasses)item).FireBonus = 5;
+                                            ((GargishWizardsCrystalGlasses)item).ColdBonus = 5;
+                                            ((GargishWizardsCrystalGlasses)item).PoisonBonus = 5;
                                             ((GargishWizardsCrystalGlasses)item).EnergyBonus = 5;
                                         }
 

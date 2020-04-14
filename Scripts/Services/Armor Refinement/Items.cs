@@ -1,9 +1,7 @@
-using System;
-using Server;
-using Server.Network;
 using Server.Gumps;
 using Server.Mobiles;
-using System.Collections.Generic;
+using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -53,16 +51,16 @@ namespace Server.Items
         private ModType m_ModType;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public RefinementType RefinementType 
-        { 
-            get { return m_RefinementType; } 
-            set 
-            { 
+        public RefinementType RefinementType
+        {
+            get { return m_RefinementType; }
+            set
+            {
                 m_RefinementType = value;
                 GetItemID();
                 GetHue();
-                InvalidateProperties(); 
-            } 
+                InvalidateProperties();
+            }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -121,21 +119,21 @@ namespace Server.Items
         }
 
         public override void OnDoubleClick(Mobile from)
-		{
-			if(!IsChildOf(from.Backpack) || from.Backpack == null)
-				from.SendLocalizedMessage(1054107); // This item must be in your backpack.
-			else if(!CheckSkill(from))
-				from.SendLocalizedMessage(1153981, m_CraftType.ToString()); // Only a Grandmaster ~1_PROFESSION~ would know what to do with this. 
-			else if(!from.Backpack.ConsumeTotal(GetRawMaterial(), 20))
-				from.SendLocalizedMessage(1153978); // You lack the required quantity of raw materials to craft the Armor Refinement.
-			else
-			{
+        {
+            if (!IsChildOf(from.Backpack) || from.Backpack == null)
+                from.SendLocalizedMessage(1054107); // This item must be in your backpack.
+            else if (!CheckSkill(from))
+                from.SendLocalizedMessage(1153981, m_CraftType.ToString()); // Only a Grandmaster ~1_PROFESSION~ would know what to do with this. 
+            else if (!from.Backpack.ConsumeTotal(GetRawMaterial(), 20))
+                from.SendLocalizedMessage(1153978); // You lack the required quantity of raw materials to craft the Armor Refinement.
+            else
+            {
                 from.Backpack.DropItem(new RefinementItem(m_RefinementType, m_CraftType, m_SubCraftType, m_ModType));
-				from.PrivateOverheadMessage(MessageType.Regular, 0, 1153979, from.NetState); // *You carefully and skillfully craft an Armor Refinement* TODO Hue???
-				
+                from.PrivateOverheadMessage(MessageType.Regular, 0, 1153979, from.NetState); // *You carefully and skillfully craft an Armor Refinement* TODO Hue???
+
                 Consume();
-			}
-		}
+            }
+        }
 
         private void GetHue()
         {
@@ -198,12 +196,12 @@ namespace Server.Items
         }
 
         private int[][] Labels = new int[][]
-		{
+        {
                         //Scour   Thread     Varnish
                         //Polish  Wash       Gloss
 			new int[] { 1153951, 1153948, 1153952 },
             new int[] { 1153950, 1153949, 1153953 }
-		};
+        };
 
         private int GetModLabel()
         {
@@ -219,7 +217,7 @@ namespace Server.Items
         }
 
         private int[][] ItemIDs = new int[][]
-		{
+        {
                      // Smith  Tail  Carp
 			new int[] { 19673, 5163, 11617 }, //Reinforcing
 			new int[] { 19672, 5162, 19674 }  //Deflecting
@@ -244,9 +242,9 @@ namespace Server.Items
         }
 
         public static RefinementComponent GetRandom()
-		{
+        {
             return new RefinementComponent((RefinementType)Utility.Random(2), (RefinementCraftType)Utility.Random(3), GetRandomMod());
-		}
+        }
 
         private static ModType GetRandomMod()
         {
@@ -299,35 +297,35 @@ namespace Server.Items
         private ModEntry m_Entry;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public RefinementType RefinementType 
-        { 
-            get { return m_RefinementType; } 
-            set 
-            { 
-                m_RefinementType = value; 
-                GetItemID(); 
-                GetHue(); 
-                InvalidateProperties(); 
-            } 
+        public RefinementType RefinementType
+        {
+            get { return m_RefinementType; }
+            set
+            {
+                m_RefinementType = value;
+                GetItemID();
+                GetHue();
+                InvalidateProperties();
+            }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public RefinementCraftType CraftType 
+        public RefinementCraftType CraftType
         {
-            get { return m_CraftType; } 
-            set 
+            get { return m_CraftType; }
+            set
             {
                 RefinementCraftType old = m_CraftType;
 
-                m_CraftType = value; 
+                m_CraftType = value;
 
-                if(old != m_CraftType)
+                if (old != m_CraftType)
                     GetSubCraftType();
 
-                GetItemID(); 
-                GetHue(); 
-                InvalidateProperties(); 
-            } 
+                GetItemID();
+                GetHue();
+                InvalidateProperties();
+            }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -342,7 +340,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool CheckBonus { get { return m_CheckBonus; } set { m_CheckBonus = value; } }
 
-        public ModEntry Entry => m_Entry; 
+        public ModEntry Entry => m_Entry;
 
         [Constructable]
         public RefinementItem()
@@ -457,14 +455,14 @@ namespace Server.Items
         }
 
         public int[][] LabelPrefix = new int[][]
-		{             //Scoured  Cured    Varnished
+        {             //Scoured  Cured    Varnished
                       //Polished Washed   Glazed
 		    new int[] { 1153971, 1153968, 1153972 }, // Reinforcing
 			new int[] { 1153970, 1153969, 1153973 }  // Deflecting
 		};
 
         public int[] LabelSuffix = new int[]
-		{
+        {
           //Plating  Thread   Resin
 			1153975, 1153974, 1153976       //Reinforcing and Deflecting
 		};
@@ -483,7 +481,7 @@ namespace Server.Items
         }
 
         private int[][] ItemIDs = new int[][]
-		{            // Smith  Tail   Carp  
+        {            // Smith  Tail   Carp  
 			new int[] { 19676, 19675, 19677 },  //Reinforcing
 			new int[] { 19676, 19675, 19677 }   //Deflecing
 		};

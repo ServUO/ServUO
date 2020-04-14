@@ -1,6 +1,3 @@
-using System;
-using Server.Network;
-
 namespace Server.Items
 {
     public class WrongMazeWall : BaseWall
@@ -50,5 +47,5 @@ namespace Server.Items
 
             int version = reader.ReadInt();
         }
-    }  
+    }
 }
