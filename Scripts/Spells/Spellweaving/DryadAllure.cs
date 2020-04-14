@@ -1,12 +1,12 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
+using System;
 
 namespace Server.Spells.Spellweaving
 {
     public class DryadAllureSpell : ArcanistSpell
-    { 
+    {
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Dryad Allure", "Rathril",
             -1);
@@ -40,12 +40,12 @@ namespace Server.Spells.Spellweaving
         {
             if (bc == null || bc.IsParagon || (bc.Controlled && !bc.Allured) || bc.Summoned || bc.AllureImmune)
                 return false;
-				
+
             SlayerEntry slayer = SlayerGroup.GetEntryByName(SlayerName.Repond);
-			
+
             if (slayer != null && slayer.Slays(bc))
                 return true;
-			
+
             return false;
         }
 
@@ -81,20 +81,20 @@ namespace Server.Spells.Spellweaving
 
                 if (chance > Utility.RandomDouble())
                 {
-                    bc.ControlSlots = 3;				
+                    bc.ControlSlots = 3;
                     bc.Combatant = null;
-						
+
                     if (this.Caster.Combatant == bc)
                     {
                         this.Caster.Combatant = null;
                         this.Caster.Warmode = false;
                     }
-					
+
                     if (bc.SetControlMaster(this.Caster))
                     {
                         bc.PlaySound(0x5C4);
                         bc.Allured = true;
-						
+
                         Container pack = bc.Backpack;
 
                         if (pack != null)
@@ -103,11 +103,11 @@ namespace Server.Spells.Spellweaving
                             {
                                 if (i >= pack.Items.Count)
                                     continue;
-			
+
                                 pack.Items[i].Delete();
                             }
                         }
-						
+
                         this.Caster.SendLocalizedMessage(1074377); // You allure the humanoid to follow and protect you.
                     }
                 }

@@ -49,7 +49,7 @@ namespace Server.Spells.Spellweaving
         }
         public static void Initialize()
         {
-            EventSink.AggressiveAction += new AggressiveActionEventHandler(delegate(AggressiveActionEventArgs e)
+            EventSink.AggressiveAction += new AggressiveActionEventHandler(delegate (AggressiveActionEventArgs e)
             {
                 if (TransformationSpellHelper.UnderTransformation(e.Aggressor, typeof(EtherealVoyageSpell)))
                 {

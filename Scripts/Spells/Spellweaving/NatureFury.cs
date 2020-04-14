@@ -1,7 +1,7 @@
-using System;
 using Server.Mobiles;
 using Server.Regions;
 using Server.Targeting;
+using System;
 
 namespace Server.Spells.Spellweaving
 {

@@ -1,12 +1,7 @@
+using Server.Items;
+using Server.Network;
 using System;
 using System.Linq;
-using System.Collections.Generic;
-
-using Server;
-using Server.Spells;
-using Server.Network;
-using Server.Mobiles;
-using Server.Items;
 
 namespace Server.Spells.SkillMasteries
 {

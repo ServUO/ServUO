@@ -1,15 +1,14 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
+using System.Collections.Generic;
 
-namespace Server.Mobiles 
-{ 
-    public class SBTinker : SBInfo 
-    { 
+namespace Server.Mobiles
+{
+    public class SBTinker : SBInfo
+    {
         private readonly List<GenericBuyInfo> m_BuyInfo;
         private readonly IShopSellInfo m_SellInfo = new InternalSellInfo();
 
-        public SBTinker(BaseVendor owner) 
+        public SBTinker(BaseVendor owner)
         {
             m_BuyInfo = new InternalBuyInfo(owner);
         }
@@ -29,10 +28,10 @@ namespace Server.Mobiles
             }
         }
 
-        public class InternalBuyInfo : List<GenericBuyInfo> 
-        { 
-            public InternalBuyInfo(BaseVendor owner) 
-            { 
+        public class InternalBuyInfo : List<GenericBuyInfo>
+        {
+            public InternalBuyInfo(BaseVendor owner)
+            {
                 Add(new GenericBuyInfo(typeof(Clock), 22, 20, 0x104B, 0));
                 Add(new GenericBuyInfo(typeof(Nails), 3, 20, 0x102E, 0));
                 Add(new GenericBuyInfo(typeof(ClockParts), 3, 20, 0x104F, 0, true));
@@ -96,10 +95,10 @@ namespace Server.Mobiles
             }
         }
 
-        public class InternalSellInfo : GenericSellInfo 
-        { 
-            public InternalSellInfo() 
-            { 
+        public class InternalSellInfo : GenericSellInfo
+        {
+            public InternalSellInfo()
+            {
                 Add(typeof(Drums), 10);
                 Add(typeof(Tambourine), 10);
                 Add(typeof(LapHarp), 10);

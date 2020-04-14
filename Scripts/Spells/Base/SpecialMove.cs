@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-
 using Server.Items;
 using Server.Network;
-using Server.Spells.Bushido;
-using Server.Spells.Ninjitsu;
 using Server.Spells.SkillMasteries;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Spells
 {

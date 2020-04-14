@@ -1,9 +1,7 @@
+using Server.Spells.SkillMasteries;
+using Server.Targeting;
 using System;
 using System.Collections.Generic;
-
-using Server;
-using Server.Targeting;
-using Server.Spells.SkillMasteries;
 
 namespace Server.Spells.Necromancy
 {
@@ -148,7 +146,7 @@ namespace Server.Spells.Necromancy
                         m_Mobile.Hits += m_ToRestore;
 
                     BuffInfo.RemoveBuff(m_Mobile, BuffIcon.PainSpike);
-                    
+
                     Stop();
                 }
             }

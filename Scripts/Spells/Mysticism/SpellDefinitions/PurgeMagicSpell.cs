@@ -1,16 +1,12 @@
-using System;
-using Server;
 using Server.Items;
-using Server.Mobiles;
-using Server.Spells;
-using Server.Targeting;
-using System.Collections.Generic;
+using Server.Spells.Fifth;
 using Server.Spells.First;
+using Server.Spells.Ninjitsu;
 using Server.Spells.Second;
 using Server.Spells.Third;
-using Server.Spells.Fourth;
-using Server.Spells.Fifth;
-using Server.Spells.Ninjitsu;
+using Server.Targeting;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Spells.Mysticism
 {

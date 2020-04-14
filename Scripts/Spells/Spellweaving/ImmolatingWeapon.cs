@@ -1,6 +1,6 @@
+using Server.Items;
 using System;
 using System.Collections.Generic;
-using Server.Items;
 
 namespace Server.Spells.Spellweaving
 {
@@ -10,7 +10,7 @@ namespace Server.Spells.Spellweaving
             "Immolating Weapon", "Thalshara",
             -1);
         private static readonly Dictionary<Mobile, ImmolatingWeaponEntry> m_WeaponDamageTable = new Dictionary<Mobile, ImmolatingWeaponEntry>();
-        
+
         public ImmolatingWeaponSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {

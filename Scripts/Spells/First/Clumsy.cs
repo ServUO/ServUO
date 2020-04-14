@@ -1,5 +1,5 @@
-using System;
 using Server.Targeting;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Spells.First

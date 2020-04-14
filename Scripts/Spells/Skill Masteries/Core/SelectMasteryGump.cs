@@ -1,11 +1,7 @@
-using Server;
-using System;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
 using Server.Spells.SkillMasteries;
-using System.Linq;
-using Server.Network;
+using System;
 
 namespace Server.Gumps
 {
@@ -16,7 +12,7 @@ namespace Server.Gumps
 
         public BookOfMasteries Book { get; private set; }
 
-        public MasterySelectionGump(PlayerMobile user, BookOfMasteries book) 
+        public MasterySelectionGump(PlayerMobile user, BookOfMasteries book)
             : base(user, 75, 25)
         {
             Book = book;

@@ -1,4 +1,3 @@
-using System;
 using Server.Targeting;
 
 namespace Server.Spells.Second
@@ -23,7 +22,7 @@ namespace Server.Spells.Second
                 return SpellCircle.Second;
             }
         }
-        
+
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);

@@ -1,9 +1,9 @@
-using System;
 using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Network;
 using Server.Regions;
+using System;
 
 namespace Server.SkillHandlers
 {
@@ -69,7 +69,7 @@ namespace Server.SkillHandlers
                     {
                         string message = String.Format("You notice {0} peeking into your belongings!", from.Name);
 
-                        root.Send(new AsciiMessage(-1, -1, MessageType.Label, 946, 3, "", message));                        
+                        root.Send(new AsciiMessage(-1, -1, MessageType.Label, 946, 3, "", message));
                     }
                 }
 
@@ -86,7 +86,7 @@ namespace Server.SkillHandlers
                 else
                 {
                     from.SendLocalizedMessage(500210); // You failed to peek into the container.
-					
+
                     if (from.Skills[SkillName.Hiding].Value / 2 < Utility.Random(100))
                         from.RevealingAction();
                 }

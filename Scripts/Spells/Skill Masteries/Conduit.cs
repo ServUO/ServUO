@@ -1,30 +1,25 @@
+using Server.Items;
 using System;
-using Server;
-using Server.Spells;
-using Server.Network;
-using Server.Mobiles;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Server.Items;
 
 namespace Server.Spells.SkillMasteries
 {
-	public class ConduitSpell : SkillMasterySpell
-	{
-		private static SpellInfo m_Info = new SpellInfo(
-				"Conduit", "Uus Corp Grav",
-				204,
-				9061,
+    public class ConduitSpell : SkillMasterySpell
+    {
+        private static SpellInfo m_Info = new SpellInfo(
+                "Conduit", "Uus Corp Grav",
+                204,
+                9061,
                 Reagent.NoxCrystal,
                 Reagent.BatWing,
                 Reagent.GraveDust
-			);
+            );
 
-		public override double RequiredSkill{ get { return 90; } }
-		public override double UpKeep { get { return 0; } }
-		public override int RequiredMana{ get { return 40; } }
-		public override bool PartyEffects { get { return false; } }
+        public override double RequiredSkill { get { return 90; } }
+        public override double UpKeep { get { return 0; } }
+        public override int RequiredMana { get { return 40; } }
+        public override bool PartyEffects { get { return false; } }
 
         public override SkillName CastSkill { get { return SkillName.Necromancy; } }
         public override SkillName DamageSkill { get { return SkillName.SpiritSpeak; } }
@@ -35,8 +30,8 @@ namespace Server.Spells.SkillMasteries
 
         public ConduitSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
-		{
-		}
+        {
+        }
 
         public override void OnBeginCast()
         {
@@ -45,10 +40,10 @@ namespace Server.Spells.SkillMasteries
             Effects.SendLocationParticles(EffectItem.Create(Caster.Location, Caster.Map, EffectItem.DefaultDuration), 0x36CB, 1, 14, 0x55C, 7, 9915, 0);
         }
 
-		public override void OnCast()
-		{
+        public override void OnCast()
+        {
             Caster.Target = new MasteryTarget(this, 10, true, Server.Targeting.TargetFlags.None);
-		}
+        }
 
         protected override void OnTarget(object o)
         {
@@ -167,5 +162,5 @@ namespace Server.Spells.SkillMasteries
                 Delete();
             }
         }
-	}
+    }
 }

@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Spells.Necromancy
 {
@@ -87,12 +87,12 @@ namespace Server.Spells.Necromancy
             BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.PoisonImmunity, 1153785, 1153814));
 
             m.ResetStatTimers();
-		}
+        }
 
-		public override void RemoveEffect(Mobile m)
-		{
-			BuffInfo.RemoveBuff(Caster, BuffIcon.PoisonImmunity);
-			BuffInfo.RemoveBuff(Caster, BuffIcon.VampiricEmbrace);
-		}
+        public override void RemoveEffect(Mobile m)
+        {
+            BuffInfo.RemoveBuff(Caster, BuffIcon.PoisonImmunity);
+            BuffInfo.RemoveBuff(Caster, BuffIcon.VampiricEmbrace);
+        }
     }
 }

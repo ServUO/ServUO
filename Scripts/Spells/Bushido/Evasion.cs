@@ -1,6 +1,6 @@
+using Server.Items;
 using System;
 using System.Collections;
-using Server.Items;
 
 namespace Server.Spells.Bushido
 {
@@ -102,7 +102,7 @@ namespace Server.Spells.Bushido
             {
                 return false;
             }
-			
+
             if (IsEvading(defender) && BaseWeapon.CheckParry(defender))
             {
                 defender.Emote("*evades*"); // Yes.  Eew.  Blame OSI.

@@ -1,15 +1,14 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
+using System.Collections.Generic;
 
-namespace Server.Mobiles 
-{ 
-    public class SBWeaver : SBInfo 
-    { 
+namespace Server.Mobiles
+{
+    public class SBWeaver : SBInfo
+    {
         private readonly List<GenericBuyInfo> m_BuyInfo = new InternalBuyInfo();
         private readonly IShopSellInfo m_SellInfo = new InternalSellInfo();
-        public SBWeaver() 
-        { 
+        public SBWeaver()
+        {
         }
 
         public override IShopSellInfo SellInfo
@@ -27,11 +26,11 @@ namespace Server.Mobiles
             }
         }
 
-        public class InternalBuyInfo : List<GenericBuyInfo> 
-        { 
-            public InternalBuyInfo() 
-            { 
-                Add(new GenericBuyInfo(typeof(Dyes), 8, 20, 0xFA9, 0)); 
+        public class InternalBuyInfo : List<GenericBuyInfo>
+        {
+            public InternalBuyInfo()
+            {
+                Add(new GenericBuyInfo(typeof(Dyes), 8, 20, 0xFA9, 0));
                 Add(new GenericBuyInfo(typeof(DyeTub), 8, 20, 0xFAB, 0));
 
                 Add(new GenericBuyInfo(typeof(UncutCloth), 3, 20, 0x1761, 0, true));
@@ -54,15 +53,15 @@ namespace Server.Mobiles
             }
         }
 
-        public class InternalSellInfo : GenericSellInfo 
-        { 
-            public InternalSellInfo() 
-            { 
-                Add(typeof(Scissors), 6); 
-                Add(typeof(Dyes), 4); 
-                Add(typeof(DyeTub), 4); 
+        public class InternalSellInfo : GenericSellInfo
+        {
+            public InternalSellInfo()
+            {
+                Add(typeof(Scissors), 6);
+                Add(typeof(Dyes), 4);
+                Add(typeof(DyeTub), 4);
                 Add(typeof(UncutCloth), 1);
-                Add(typeof(BoltOfCloth), 50); 
+                Add(typeof(BoltOfCloth), 50);
                 Add(typeof(LightYarnUnraveled), 9);
                 Add(typeof(LightYarn), 9);
                 Add(typeof(DarkYarn), 9);

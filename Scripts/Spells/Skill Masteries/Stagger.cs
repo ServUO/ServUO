@@ -1,8 +1,6 @@
-using System;
-using Server;
-using Server.Spells;
-using Server.Network;
 using Server.Mobiles;
+using Server.Network;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Spells.SkillMasteries
