@@ -1,9 +1,8 @@
 #region References
-using System;
-using System.Linq;
-
 using Server.Items;
 using Server.Targeting;
+using System;
+using System.Linq;
 #endregion
 
 namespace Server.Commands
@@ -175,7 +174,7 @@ namespace Server.Commands
                         done = true;
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine(e.StackTrace);
 

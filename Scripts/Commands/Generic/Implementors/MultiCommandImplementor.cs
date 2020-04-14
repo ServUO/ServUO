@@ -1,4 +1,3 @@
-using System;
 using Server.Targeting;
 
 namespace Server.Commands.Generic
@@ -33,7 +32,7 @@ namespace Server.Commands.Generic
                 return;
             }
 
-            switch ( command.ObjectTypes )
+            switch (command.ObjectTypes)
             {
                 case ObjectTypes.Both:
                     {

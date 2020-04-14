@@ -1,7 +1,7 @@
-using System;
-using System.Collections;
 using Server.Items;
 using Server.Targeting;
+using System;
+using System.Collections;
 
 namespace Server.Commands.Generic
 {

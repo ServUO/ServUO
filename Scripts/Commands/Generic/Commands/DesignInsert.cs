@@ -1,10 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Server.Gumps;
 using Server.Items;
 using Server.Multis;
 using Server.Targeting;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Commands.Generic
 {
@@ -60,7 +60,7 @@ namespace Server.Commands.Generic
                 HouseFoundation house;
                 DesignInsertResult result = ProcessInsert(obj as Item, this.m_StaticsOnly, out house);
 
-                switch ( result )
+                switch (result)
                 {
                     case DesignInsertResult.Valid:
                         {
@@ -118,7 +118,7 @@ namespace Server.Commands.Generic
                     HouseFoundation house;
                     DesignInsertResult result = ProcessInsert(list[i] as Item, staticsOnly, out house);
 
-                    switch ( result )
+                    switch (result)
                     {
                         case DesignInsertResult.Valid:
                             {

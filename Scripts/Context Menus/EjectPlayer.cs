@@ -1,4 +1,3 @@
-using System;
 using Server.Multis;
 
 namespace Server.ContextMenus
@@ -8,7 +7,7 @@ namespace Server.ContextMenus
         private readonly Mobile m_From;
         private readonly Mobile m_Target;
         private readonly BaseHouse m_TargetHouse;
-		
+
         public EjectPlayerEntry(Mobile from, Mobile target)
             : base(6206, 12)
         {
@@ -18,7 +17,7 @@ namespace Server.ContextMenus
         }
 
         public override void OnClick()
-        { 
+        {
             if (!m_From.Alive || m_TargetHouse.Deleted || !m_TargetHouse.IsFriend(m_From))
                 return;
 

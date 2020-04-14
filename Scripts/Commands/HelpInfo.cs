@@ -1,10 +1,10 @@
+using Server.Commands.Generic;
+using Server.Gumps;
+using Server.Network;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using Server.Commands.Generic;
-using Server.Gumps;
-using Server.Network;
 using CommandInfo = Server.Commands.Docs.DocCommandEntry;
 using CommandInfoSorter = Server.Commands.Docs.CommandEntrySorter;
 
@@ -302,7 +302,7 @@ namespace Server.Commands
             public override void OnResponse(NetState sender, RelayInfo info)
             {
                 Mobile m = sender.Mobile;
-                switch( info.ButtonID )
+                switch (info.ButtonID)
                 {
                     case 0:
                         {
