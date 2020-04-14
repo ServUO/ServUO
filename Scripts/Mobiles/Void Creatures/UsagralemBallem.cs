@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -6,8 +5,8 @@ namespace Server.Mobiles
     [CorpseName("an usagralem ballem corpse")]
     public class UsagralemBallem : BaseVoidCreature
     {
-        public override VoidEvolution Evolution => VoidEvolution.Killing; 
-        public override int Stage => 3; 
+        public override VoidEvolution Evolution => VoidEvolution.Killing;
+        public override int Stage => 3;
 
         [Constructable]
         public UsagralemBallem()

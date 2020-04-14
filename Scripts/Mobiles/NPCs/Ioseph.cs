@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class EmbracingHumanityQuest : BaseQuest
-    { 
+    {
         public EmbracingHumanityQuest()
             : base()
-        { 
+        {
             this.AddObjective(new DeliverObjective(typeof(TreatForDrithen), "treat for Drithen", 1, typeof(Drithen), "Drithen (Umbra)"));
-						
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -84,7 +84,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Ioseph()
             : base("Ioseph", "the exporter")
-        { 
+        {
         }
 
         public Ioseph(Serial serial)
@@ -93,10 +93,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(EmbracingHumanityQuest)
                 };
@@ -105,10 +105,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x8404;
         }
 

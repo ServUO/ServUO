@@ -1,14 +1,14 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Evan : MondainQuester
     {
         [Constructable]
         public Evan()
             : base("Evan", "the beggar")
-        { 
+        {
         }
 
         public Evan(Serial serial)
@@ -26,10 +26,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x841B;
             this.HairItemID = 0x204A;
             this.HairHue = 0x451;

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a devourer of souls corpse")]
@@ -65,7 +63,7 @@ namespace Server.Mobiles
                 return 3;
             }
         }
-		public override int TreasureMapLevel
+        public override int TreasureMapLevel
         {
             get
             {

@@ -1,7 +1,7 @@
-using System;
-using System.Collections;
 using Server.Engines.CannedEvil;
 using Server.Items;
+using System;
+using System.Collections;
 
 namespace Server.Mobiles
 {
@@ -171,7 +171,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
 
-            AddLoot(LootPack.SuperBoss, 5);  
+            AddLoot(LootPack.SuperBoss, 5);
         }
 
         public override int GetAngerSound()

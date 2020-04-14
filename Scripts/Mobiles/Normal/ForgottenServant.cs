@@ -1,5 +1,4 @@
-﻿using System;
-using Server.Items;
+﻿using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -54,7 +53,7 @@ namespace Server.Mobiles
             this.AddItem(new FancyShirt());
             this.AddItem(new Bandana());
 
-            switch ( Utility.Random(7))
+            switch (Utility.Random(7))
             {
                 case 0:
                     this.AddItem(new Longsword());

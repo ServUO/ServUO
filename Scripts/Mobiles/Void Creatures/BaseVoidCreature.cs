@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,16 +15,16 @@ namespace Server.Mobiles
 
     public class BaseVoidCreature : BaseCreature
     {
-        public static int MutateCheck => Utility.RandomMinMax(30, 120); 
+        public static int MutateCheck => Utility.RandomMinMax(30, 120);
 
-        public static bool RemoveFromSpawners => true; 
+        public static bool RemoveFromSpawners => true;
 
         private DateTime m_NextMutate;
         private bool m_BuddyMutate;
 
-        public virtual int GroupAmount => 2; 
-        public virtual VoidEvolution Evolution => VoidEvolution.None; 
-        public virtual int Stage => 0; 
+        public virtual int GroupAmount => 2;
+        public virtual VoidEvolution Evolution => VoidEvolution.None;
+        public virtual int Stage => 0;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool BuddyMutate { get { return m_BuddyMutate; } set { m_BuddyMutate = value; } }
@@ -32,8 +32,8 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextMutate { get { return m_NextMutate; } set { m_NextMutate = value; } }
 
-        public override bool PlayerRangeSensitive => Evolution != VoidEvolution.Killing && Stage < 3; 
-        public override bool AlwaysMurderer => true; 
+        public override bool PlayerRangeSensitive => Evolution != VoidEvolution.Killing && Stage < 3;
+        public override bool AlwaysMurderer => true;
 
         public BaseVoidCreature(AIType aiType, FightMode fightMode, int perception, int range, double passive, double active)
             : base(aiType, FightMode.Good, perception, range, passive, active)
@@ -239,7 +239,7 @@ namespace Server.Mobiles
 
                 foreach (XmlSpawner.SpawnObject obj in spawner.SpawnObjects)
                 {
-                    if(obj == null || obj.TypeName == null)
+                    if (obj == null || obj.TypeName == null)
                         continue;
 
                     Type t = ScriptCompiler.FindTypeByName(obj.TypeName, true);

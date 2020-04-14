@@ -1,6 +1,6 @@
-using System;
 using Server.Engines.CannedEvil;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -301,7 +301,7 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {

@@ -1,14 +1,14 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Andros : MondainQuester
     {
         [Constructable]
         public Andros()
             : base("Andros", "the blacksmith")
-        { 
+        {
         }
 
         public Andros(Serial serial)
@@ -26,10 +26,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x8409;
             this.HairItemID = 0x2049;
             this.HairHue = 0x45E;

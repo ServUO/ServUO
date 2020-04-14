@@ -1,14 +1,14 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Vilo : MondainQuester
-    { 
+    {
         [Constructable]
         public Vilo()
             : base("Vilo", "the guard")
-        { 
+        {
             this.SetSkill(SkillName.Meditation, 60.0, 83.0);
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -19,10 +19,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(IndustriousAsAnAntLionQuest),
                     typeof(ChillInTheAirQuest),
@@ -42,10 +42,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x8579;
             this.HairItemID = 0x2FC0;
             this.HairHue = 0x389;
@@ -59,9 +59,9 @@ namespace Server.Engines.Quests
             this.AddItem(new WoodlandGloves());
             this.AddItem(new WoodlandLegs());
             this.AddItem(new WoodlandGorget());
-            this.AddItem(new WoodlandArms());			
+            this.AddItem(new WoodlandArms());
             this.AddItem(new VultureHelm());
-            this.AddItem(new OrnateAxe());			
+            this.AddItem(new OrnateAxe());
         }
 
         public override void Serialize(GenericWriter writer)

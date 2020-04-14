@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class ScaleArmorQuest : BaseQuest
-    { 
+    {
         public ScaleArmorQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(ThrashersTail), "thrasher's tail", 1));
             AddObjective(new ObtainObjective(typeof(HydraScale), "hydra scales", 10));
-			
+
             AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -83,7 +83,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Thallary()
             : base("Thallary", "the cloth weaver")
-        { 
+        {
             SetSkill(SkillName.Meditation, 60.0, 83.0);
             SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -94,10 +94,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(ScaleArmorQuest),
                     typeof(ThePuffyShirtQuest),
@@ -109,10 +109,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = false;
             Race = Race.Elf;
-			
+
             Hue = 0x8389;
             HairItemID = 0x2FCF;
             HairHue = 0x33;

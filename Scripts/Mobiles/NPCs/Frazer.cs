@@ -1,17 +1,17 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class InTheBellyOfTheBeastQuest : BaseQuest
-    { 
+    {
         public InTheBellyOfTheBeastQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(LuckyDagger), "lucky dagger", 1));
-			
+
             this.AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
@@ -74,11 +74,11 @@ namespace Server.Engines.Quests
     }
 
     public class Frazer : MondainQuester
-    { 
+    {
         [Constructable]
         public Frazer()
             : base("Frazer", "the vagabond")
-        { 
+        {
             this.SetSkill(SkillName.ItemID, 64.0, 100.0);
         }
 
@@ -88,10 +88,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(InTheBellyOfTheBeastQuest),
                 };
@@ -113,10 +113,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x840F;
             this.HairItemID = 0x204A;
             this.HairHue = 0x45A;

@@ -1,7 +1,7 @@
 using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Percolem : MondainQuester, ITierQuester
     {
         public TierQuestInfo TierInfo { get { return TierQuestInfo.Percolem; } }
@@ -28,10 +28,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = false;
             Race = Race.Human;
-			
+
             Hue = 0x840C;
             HairItemID = 0x203C;
             HairHue = 0x3B3;
@@ -40,12 +40,12 @@ namespace Server.Engines.Quests
         public override void InitOutfit()
         {
             CantWalk = true;
-            
+
             AddItem(new Server.Items.Boots());
             AddItem(new Server.Items.Shirt(1436));
             AddItem(new Server.Items.ShortPants(1436));
             AddItem(new Server.Items.CompositeBow());
-            
+
             Blessed = true;
         }
 

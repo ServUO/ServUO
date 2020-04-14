@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class OverpopulationQuest : BaseQuest
-    { 
+    {
         public OverpopulationQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Hind), "hinds", 10));
-			
+
             this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
@@ -66,12 +66,12 @@ namespace Server.Engines.Quests
     }
 
     public class WildBoarCullQuest : BaseQuest
-    { 
+    {
         public WildBoarCullQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Boar), "boars", 10));
-			
+
             this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
@@ -126,14 +126,14 @@ namespace Server.Engines.Quests
     }
 
     public class NewLeadershipQuest : BaseQuest
-    { 
+    {
         public NewLeadershipQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(SerpentsFangHighExecutioner), "serpent's fang high executioner", 1, "TheCitadel"));
             this.AddObjective(new SlayObjective(typeof(TigersClawThief), "tiger's claw thief", 1, "TheCitadel"));
             this.AddObjective(new SlayObjective(typeof(DragonsFlameGrandMage), "dragon's flame mage", 1, "TheCitadel"));
-			
+
             this.AddReward(new BaseReward(typeof(RewardBox), 1072584));
         }
 
@@ -195,12 +195,12 @@ namespace Server.Engines.Quests
     }
 
     public class ExAssassinsQuest : BaseQuest
-    { 
+    {
         public ExAssassinsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new InternalObjective());
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -269,19 +269,19 @@ namespace Server.Engines.Quests
             {
                 if (mob.Female)
                     return false;
-					
+
                 return base.IsObjective(mob);
             }
         }
     }
 
     public class ExtinguishingTheFlameQuest : BaseQuest
-    { 
+    {
         public ExtinguishingTheFlameQuest()
             : base()
-        { 
+        {
             this.AddObjective(new InternalObjective());
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -351,19 +351,19 @@ namespace Server.Engines.Quests
             {
                 if (mob.Female)
                     return false;
-					
+
                 return base.IsObjective(mob);
             }
         }
     }
 
     public class DeathToTheNinjaQuest : BaseQuest
-    { 
+    {
         public DeathToTheNinjaQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(EliteNinja), "elite ninjas", 10, "TheCitadel"));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -423,12 +423,12 @@ namespace Server.Engines.Quests
     }
 
     public class CrimeAndPunishmentQuest : BaseQuest
-    { 
+    {
         public CrimeAndPunishmentQuest()
             : base()
-        { 
+        {
             this.AddObjective(new InternalObjective());
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -497,18 +497,18 @@ namespace Server.Engines.Quests
             {
                 if (mob.Female)
                     return false;
-					
+
                 return base.IsObjective(mob);
             }
         }
     }
 
     public class Acob : MondainQuester
-    { 
+    {
         [Constructable]
         public Acob()
             : base("Elder Acob", "the wise")
-        { 
+        {
             this.SetSkill(SkillName.Meditation, 60.0, 83.0);
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -519,10 +519,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(OverpopulationQuest),
                     typeof(WildBoarCullQuest),
@@ -537,10 +537,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x8389;
             this.HairItemID = 0x2FCF;
             this.HairHue = 0x389;

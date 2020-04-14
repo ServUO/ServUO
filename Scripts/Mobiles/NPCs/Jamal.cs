@@ -1,14 +1,14 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Jamal : MondainQuester
     {
         [Constructable]
         public Jamal()
             : base("Jamal", "the fisherman")
-        { 
+        {
         }
 
         public Jamal(Serial serial)
@@ -26,10 +26,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x83FB;
             this.HairItemID = 0x2049;
             this.HairHue = 0x45E;

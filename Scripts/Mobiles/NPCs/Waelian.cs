@@ -1,14 +1,14 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Waelian : MondainQuester
-    { 
+    {
         [Constructable]
         public Waelian()
             : base("Waelian", "the trinket weaver")
-        { 
+        {
             SetSkill(SkillName.Meditation, 60.0, 83.0);
             SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -19,10 +19,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(ArchSupportQuest),
                     typeof(StopHarpingOnMeQuest),
@@ -36,10 +36,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = false;
             Race = Race.Elf;
-			
+
             Hue = 0x8835;
             HairItemID = 0x2FBF;
             HairHue = 0x2C2;
@@ -51,9 +51,9 @@ namespace Server.Engines.Quests
             AddItem(new GemmedCirclet());
             AddItem(new LongPants(0x340));
             AddItem(new SmithHammer());
-			
+
             Item item;
-			
+
             item = new LeafChest();
             item.Hue = 0x344;
             AddItem(item);

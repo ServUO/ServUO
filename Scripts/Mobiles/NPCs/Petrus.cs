@@ -1,14 +1,14 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Petrus : MondainQuester
     {
         [Constructable]
         public Petrus()
             : base("Petrus", "the bee keeper")
-        { 
+        {
         }
 
         public Petrus(Serial serial)
@@ -20,7 +20,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(SomethingToWailAboutQuest),
                     typeof(RunawaysQuest),
@@ -31,10 +31,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x840C;
             this.HairItemID = 0x203C;
             this.HairHue = 0x3B3;

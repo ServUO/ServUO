@@ -1,6 +1,6 @@
+using Server.ContextMenus;
 using System;
 using System.Collections.Generic;
-using Server.ContextMenus;
 
 namespace Server.Mobiles
 {
@@ -24,7 +24,7 @@ namespace Server.Mobiles
             this.Name = "a plague spawn";
             this.Hue = Utility.Random(0x11, 15);
 
-            switch ( Utility.Random(12) )
+            switch (Utility.Random(12))
             {
                 case 0: // earth elemental
                     this.Body = 14;

@@ -1,14 +1,10 @@
-using System;
-using Server.Items;
-using System.Collections.Generic;
-
 namespace Server.Mobiles
 {
     [CorpseName("a korpre corpse")]
     public class Korpre : BaseVoidCreature
     {
-        public override VoidEvolution Evolution => VoidEvolution.None; 
-        public override int Stage => 0; 
+        public override VoidEvolution Evolution => VoidEvolution.None;
+        public override int Stage => 0;
 
         [Constructable]
         public Korpre()

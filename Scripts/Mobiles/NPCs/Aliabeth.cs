@@ -1,9 +1,6 @@
-using System;
 using Server.Items;
-using Server.Targeting;
 using Server.Mobiles;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 
 namespace Server.Engines.Quests
 {
@@ -17,7 +14,7 @@ namespace Server.Engines.Quests
             this.AddObjective(new ObtainObjective(typeof(DarkSapphire), "Dark Sapphire", 1, 0x3192));
 
             this.AddReward(new BaseReward(typeof(AverageImbuingBag), 1113768));//Average Imbuing Bag
-            this.AddReward(new BaseReward("Loyalty Rating")); 
+            this.AddReward(new BaseReward("Loyalty Rating"));
         }
 
         /*The Exchange*/
@@ -95,7 +92,7 @@ namespace Server.Engines.Quests
             this.AddObjective(new ObtainObjective(typeof(ElvenFletching), "Elven Fletching", 1, 0x5737));
 
             this.AddReward(new BaseReward(typeof(ValuableImbuingBag), 1113769));//Valuable Imbuing Bag
-            this.AddReward(new BaseReward("Loyalty Rating")); 
+            this.AddReward(new BaseReward("Loyalty Rating"));
         }
 
         /* A Worthy Proposition */
@@ -191,7 +188,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(AWorthyPropositionQuest),
                     typeof(TheExchangeQuest),

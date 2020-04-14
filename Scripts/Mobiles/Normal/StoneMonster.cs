@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -12,7 +11,7 @@ namespace Server.Mobiles
         {
             Name = "Stone Monster";
 
-            switch ( Utility.Random(6) )
+            switch (Utility.Random(6))
             {
                 default:
                 case 0:
@@ -26,20 +25,20 @@ namespace Server.Mobiles
                     break;
                 case 3:
                     Body = 85;
-                    break; 
+                    break;
                 case 4:
                     Body = 310;
                     break;
                 case 5:
                     Body = 83;
-                    break;						
+                    break;
             }
 
             Hue = 0;
-                   
+
             if (Body == 86)
             {
-                BaseSoundID = 634;  
+                BaseSoundID = 634;
                 SetStr(150, 320);
                 SetDex(94, 190);
                 SetInt(64, 160);
@@ -59,7 +58,7 @@ namespace Server.Mobiles
 
                 SetSkill(SkillName.MagicResist, 70.1, 85.0);
                 SetSkill(SkillName.Swords, 60.1, 85.0);
-                SetSkill(SkillName.Tactics, 75.1, 90.0); 
+                SetSkill(SkillName.Tactics, 75.1, 90.0);
             }
             else if (Body == 722)
             {
@@ -76,7 +75,7 @@ namespace Server.Mobiles
                 SetDamageType(ResistanceType.Physical, 10);
                 SetDamageType(ResistanceType.Cold, 50);
                 SetDamageType(ResistanceType.Energy, 40);
-	 
+
                 SetResistance(ResistanceType.Physical, 45, 55);
                 SetResistance(ResistanceType.Fire, 30, 40);
                 SetResistance(ResistanceType.Cold, 40, 55);
@@ -93,7 +92,7 @@ namespace Server.Mobiles
                     PackItem(new GargoylesPickaxe());
 
                 if (0.2 > Utility.RandomDouble())
-                    PackItem(new UndeadGargHorn()); 
+                    PackItem(new UndeadGargHorn());
 
             }
             else if (Body == 59)
@@ -174,7 +173,7 @@ namespace Server.Mobiles
             }
             else if (Body == 83)
             {
-                BaseSoundID = 427; 
+                BaseSoundID = 427;
                 SetStr(767, 945);
                 SetDex(66, 75);
                 SetInt(46, 70);
@@ -195,7 +194,7 @@ namespace Server.Mobiles
                 SetSkill(SkillName.Tactics, 90.1, 100.0);
                 SetSkill(SkillName.Wrestling, 90.1, 100.0);
             }
-			
+
             Fame = 8000;
             Karma = -8000;
         }

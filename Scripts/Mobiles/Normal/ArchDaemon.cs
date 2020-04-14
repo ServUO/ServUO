@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a arch daemon corpse")]
@@ -40,7 +38,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 90.1, 100.0);
             SetSkill(SkillName.Wrestling, 90.1, 100.0);
 
-			Fame = 24000;
+            Fame = 24000;
             Karma = -24000;
         }
 

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a giant toad corpse")]
@@ -38,23 +36,23 @@ namespace Server.Mobiles
             this.Tamable = true;
             this.ControlSlots = 1;
             this.MinTameSkill = 77.1;
-            
+
             if (Utility.RandomDouble() < 0.2)
-			{
-				switch (Utility.Random(2))
-				{
-					case 0:
-						{
-							Hue = 191;
-							break;
-						}
-					case 1:
-						{
-							Hue = 1166;
-							break;
-						}
-				}
-			}
+            {
+                switch (Utility.Random(2))
+                {
+                    case 0:
+                        {
+                            Hue = 191;
+                            break;
+                        }
+                    case 1:
+                        {
+                            Hue = 1166;
+                            break;
+                        }
+                }
+            }
         }
 
         public GiantToad(Serial serial)

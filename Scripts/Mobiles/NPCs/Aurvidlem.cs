@@ -1,8 +1,8 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Aurvidlem : MondainQuester
     {
         [Constructable]
@@ -22,7 +22,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(KnowledgeoftheSoulforge)
                 };

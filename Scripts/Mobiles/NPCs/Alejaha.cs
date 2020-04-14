@@ -1,18 +1,18 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class ItsElementalQuest : BaseQuest
-    { 
+    {
         public ItsElementalQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(FireElemental), "fire elementals", 4));
             this.AddObjective(new SlayObjective(typeof(WaterElemental), "water elementals", 4));
             this.AddObjective(new SlayObjective(typeof(EarthElemental), "earth elementals", 4));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -70,7 +70,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Alejaha()
             : base("Elder Alejaha", "the wise")
-        { 
+        {
             this.SetSkill(SkillName.Meditation, 60.0, 83.0);
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -81,10 +81,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(ItsElementalQuest)
                 };
@@ -93,10 +93,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x8361;
             this.HairItemID = 0x2FCD;
             this.HairHue = 0x852;

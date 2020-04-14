@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -20,7 +19,7 @@ namespace Server.Mobiles
                 this.AddItem(new FemaleGargishPlateLegs());
                 this.AddItem(new FemaleGargishPlateArms());
                 this.AddItem(new PlateTalons());
-               
+
                 this.AddItem(new GlassSword());
             }
             else
@@ -33,7 +32,7 @@ namespace Server.Mobiles
                 this.AddItem(new GargishPlateLegs());
                 this.AddItem(new GargishPlateArms());
                 this.AddItem(new PlateTalons());
-           
+
                 this.AddItem(new GlassSword());
             }
         }

@@ -1,9 +1,9 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
-    [CorpseName("Fire Elemental [Renowned] corpse")] 
+    [CorpseName("Fire Elemental [Renowned] corpse")]
     public class FireElementalRenowned : BaseRenowned
     {
         [Constructable]
@@ -42,7 +42,7 @@ namespace Server.Mobiles
 
             this.Fame = 4500;
             this.Karma = -4500;
-            
+
             this.PackItem(new SulfurousAsh(3));
 
             this.AddItem(new LightSource());

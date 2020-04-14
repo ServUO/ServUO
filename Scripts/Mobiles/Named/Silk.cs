@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -51,7 +50,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-		public override bool CanBeParagon { get { return false; } }
+        public override bool CanBeParagon { get { return false; } }
         public override bool GivesMLMinorArtifact
         {
             get

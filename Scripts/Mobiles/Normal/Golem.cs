@@ -1,6 +1,5 @@
-using System;
 using Server.Items;
-using Server.Network;
+using System;
 
 namespace Server.Mobiles
 {
@@ -45,7 +44,7 @@ namespace Server.Mobiles
         [Constructable]
         public Golem(bool summoned, double scalar)
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.4, 0.8)
-        {               
+        {
             Name = "a golem";
             Body = 752;
 
@@ -55,7 +54,7 @@ namespace Server.Mobiles
 
             if (summoned)
             {
-                Hue = 2101;               
+                Hue = 2101;
 
                 SetResistance(ResistanceType.Fire, 50, 65);
                 SetResistance(ResistanceType.Poison, 75, 85);

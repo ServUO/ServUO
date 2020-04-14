@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -48,7 +47,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool GivesMLMinorArtifact => true; 
+        public override bool GivesMLMinorArtifact => true;
 
         public override Poison PoisonImmune => Poison.Lethal;
 

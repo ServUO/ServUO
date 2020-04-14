@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class AllThatGlittersIsNotGoodQuest : BaseQuest
-    { 
+    {
         public AllThatGlittersIsNotGoodQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(ShimmeringEffusion), "shimmering effusion", 10));
-			
+
             this.AddReward(new BaseReward(typeof(RewardBox), 1072584));
         }
 
@@ -80,11 +80,11 @@ namespace Server.Engines.Quests
     }
 
     public class Siarra : MondainQuester
-    { 
+    {
         [Constructable]
         public Siarra()
             : base("Lorekeeper Siarra", "the keeper of tradition")
-        { 
+        {
             this.SetSkill(SkillName.Meditation, 60.0, 83.0);
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -95,10 +95,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(AllThatGlittersIsNotGoodQuest)
                 };
@@ -107,10 +107,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x8384;
             this.HairItemID = 0x2FC1;
             this.HairHue = 0x33;

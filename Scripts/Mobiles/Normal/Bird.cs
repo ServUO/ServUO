@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a bird corpse")]
@@ -13,7 +11,7 @@ namespace Server.Mobiles
             {
                 this.Hue = 0x901;
 
-                switch ( Utility.Random(3) )
+                switch (Utility.Random(3))
                 {
                     case 0:
                         this.Name = "a crow";

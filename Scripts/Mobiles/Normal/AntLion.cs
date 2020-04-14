@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -49,7 +49,7 @@ namespace Server.Mobiles
             if (Utility.RandomDouble() < .33)
                 PackItem(Engines.Plants.Seed.RandomPeculiarSeed(3));
 
-            Item orepile = null; 
+            Item orepile = null;
 
             switch (Utility.Random(4))
             {
@@ -72,16 +72,16 @@ namespace Server.Mobiles
             PackItem(orepile);
 
             PackBones();
-			
-			if ( 0.07 >= Utility.RandomDouble() )
-			{
-				switch ( Utility.Random( 3 ) )
-				{
-					case 0: PackItem( new UnknownBardSkeleton() ); break;
-					case 1: PackItem( new UnknownMageSkeleton() ); break;
-					case 2: PackItem( new UnknownRogueSkeleton() ); break;
-				}
-			}
+
+            if (0.07 >= Utility.RandomDouble())
+            {
+                switch (Utility.Random(3))
+                {
+                    case 0: PackItem(new UnknownBardSkeleton()); break;
+                    case 1: PackItem(new UnknownMageSkeleton()); break;
+                    case 2: PackItem(new UnknownRogueSkeleton()); break;
+                }
+            }
 
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
@@ -92,7 +92,7 @@ namespace Server.Mobiles
 
             if (!(Combatant is Mobile))
                 return;
-            
+
             Mobile combatant = Combatant as Mobile;
 
             if (_NextTunnel < DateTime.UtcNow && combatant.InRange(Location, 10))
@@ -176,8 +176,8 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-		
-		public override void OnGotMeleeAttack(Mobile attacker)
+
+        public override void OnGotMeleeAttack(Mobile attacker)
         {
             if (attacker.Weapon is BaseRanged)
                 BeginAcidBreath();
@@ -228,7 +228,7 @@ namespace Server.Mobiles
         public override int GetAttackSound() { return 0x164; }
         public override int GetHurtSound() { return 0x187; }
         public override int GetDeathSound() { return 0x1BA; }
-        
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average, 2);

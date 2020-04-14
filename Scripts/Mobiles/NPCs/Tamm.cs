@@ -1,14 +1,14 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Tamm : MondainQuester
-    { 
+    {
         [Constructable]
         public Tamm()
             : base("Tamm", "the guard")
-        { 
+        {
             this.SetSkill(SkillName.Meditation, 60.0, 83.0);
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -19,10 +19,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(TheyreBreedingLikeRabbitsQuest),
                     typeof(ThinningTheHerdQuest),
@@ -43,10 +43,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x8353;
             this.HairItemID = 0x2FBF;
             this.HairHue = 0x386;

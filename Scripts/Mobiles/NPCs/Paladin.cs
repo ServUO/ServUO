@@ -5,19 +5,17 @@
 #endregion
 
 #region References
-using System.Collections.Generic;
-
 using Server.Items;
 #endregion
 
 namespace Server.Mobiles
 {
-	public class Paladin : BaseCreature
-	{
-		[Constructable]
-		public Paladin()
+    public class Paladin : BaseCreature
+    {
+        [Constructable]
+        public Paladin()
             : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, .2, .4)
-		{
+        {
             SetStr(100);
             SetDex(150);
             SetInt(40);
@@ -51,11 +49,11 @@ namespace Server.Mobiles
                 case 2: SetWearable(new BodySash(), GetRandomHue()); break;
             }
 
-			SetSkill(SkillName.Swords, 120);
-			SetSkill(SkillName.Tactics, 120);
-			SetSkill(SkillName.Anatomy, 120);
-			SetSkill(SkillName.MagicResist, 120);
-		}
+            SetSkill(SkillName.Swords, 120);
+            SetSkill(SkillName.Tactics, 120);
+            SetSkill(SkillName.Anatomy, 120);
+            SetSkill(SkillName.MagicResist, 120);
+        }
 
         public virtual int GetRandomHue()
         {
@@ -75,22 +73,22 @@ namespace Server.Mobiles
             }
         }
 
-		public Paladin(Serial serial)
-			: base(serial)
-		{ }
+        public Paladin(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write(0); // version
-		}
+            writer.Write(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadInt();
-		}
-	}
+            int version = reader.ReadInt();
+        }
+    }
 }

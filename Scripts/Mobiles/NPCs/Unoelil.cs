@@ -1,14 +1,14 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Unoelil : MondainQuester
-    { 
+    {
         [Constructable]
         public Unoelil()
             : base("Unoelil", "the bark weaver")
-        { 
+        {
             SetSkill(SkillName.Meditation, 60.0, 83.0);
             SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -19,10 +19,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(StopHarpingOnMeQuest),
                     typeof(TheFarEyeQuest),
@@ -33,10 +33,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = false;
             Race = Race.Elf;
-			
+
             Hue = 0x8362;
             HairItemID = 0x2FCD;
             HairHue = 0x31D;

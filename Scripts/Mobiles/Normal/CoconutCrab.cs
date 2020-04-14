@@ -1,5 +1,5 @@
-using System;
 using Server.Gumps;
+using System;
 
 namespace Server.Mobiles
 {
@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Type CreatureType { get { return typeof(CoconutCrab); } }
 
         [Constructable]
-        public CoconutCrabStatue() 
+        public CoconutCrabStatue()
             : base(0xA335)
         {
             LootType = LootType.Blessed;

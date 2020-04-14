@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -49,13 +48,13 @@ namespace Server.Mobiles
             ControlSlots = 2;
             MinTameSkill = 95.1;
 
-			switch (Utility.Random(12))
+            switch (Utility.Random(12))
             {
                 case 0: PackItem(new BloodOathScroll()); break;
                 case 1: PackItem(new HorrificBeastScroll()); break;
                 case 2: PackItem(new StrangleScroll()); break;
                 case 3: PackItem(new VengefulSpiritScroll()); break;
-			}
+            }
 
             switch (Utility.Random(4))
             {

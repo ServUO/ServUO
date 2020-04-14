@@ -1,17 +1,17 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class GentleBladeQuest : BaseQuest
-    { 
+    {
         Dagger dagger;
         public GentleBladeQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Aminia), "warewolf", 1, 10800));
-						
+
             this.AddReward(new BaseReward(1075363)); // Misericord
         }
 
@@ -70,10 +70,10 @@ namespace Server.Engines.Quests
         }
         public override void OnAccept()
         {
-            this.dagger = new Dagger();			
+            this.dagger = new Dagger();
             this.dagger.QuestItem = true;
             this.dagger.WeaponAttributes.UseBestSkill = 1;
-			
+
             if (this.Owner.PlaceInBackpack(this.dagger))
                 base.OnAccept();
             else
@@ -86,7 +86,7 @@ namespace Server.Engines.Quests
         public override void GiveRewards()
         {
             base.GiveRewards();
-			
+
             if (this.dagger != null && !this.dagger.Deleted && this.dagger.RootParent == this.Owner)
             {
                 this.dagger.Name = "Misericord";
@@ -116,7 +116,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Fabrizio()
             : base("Fabrizio", "the master weaponsmith")
-        { 
+        {
         }
 
         public Fabrizio(Serial serial)
@@ -125,10 +125,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(GentleBladeQuest)
                 };
@@ -137,10 +137,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x840E;
             this.HairItemID = 0x203D;
             this.HairHue = 0x1;
@@ -150,7 +150,7 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());		
+            this.AddItem(new Backpack());
             this.AddItem(new Shoes(0x753));
             this.AddItem(new LongPants(0x59C));
             this.AddItem(new HalfApron(0x8FD));

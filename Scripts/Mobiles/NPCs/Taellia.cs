@@ -1,6 +1,6 @@
+using Server.Items;
 using System;
 using System.Collections.Generic;
-using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -11,9 +11,9 @@ namespace Server.Mobiles
         [Constructable]
         public Taellia()
             : base("the wise")
-        { 
+        {
             this.Name = "Elder Taellia";
-			
+
             this.m_Spoken = DateTime.UtcNow;
         }
 
@@ -44,19 +44,19 @@ namespace Server.Mobiles
             }
         }
         public override void InitSBInfo()
-        { 
+        {
         }
 
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x8385;
             this.HairItemID = 0x2FCD;
-            this.HairHue = 0x368;			
+            this.HairHue = 0x368;
         }
 
         public override void InitOutfit()
@@ -72,9 +72,9 @@ namespace Server.Mobiles
             if (m.Alive && m is PlayerMobile)
             {
                 PlayerMobile pm = (PlayerMobile)m;
-					
+
                 int range = 5;
-				
+
                 if (range >= 0 && this.InRange(m, range) && !this.InRange(oldLocation, range) && DateTime.UtcNow >= this.m_Spoken + TimeSpan.FromMinutes(1))
                 {
                     /* Welcome Seeker.  Do you wish to embrace your elven heritage, casting 
@@ -82,7 +82,7 @@ namespace Server.Mobiles
                     of our beloved Sosaria.  Then seek out Darius the Wise in Moonglow.  
                     He will place you on the path. */
                     this.Say(1072800);
-					
+
                     this.m_Spoken = DateTime.UtcNow;
                 }
             }
@@ -91,16 +91,16 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-	
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-	
+
             int version = reader.ReadInt();
-			
+
             this.m_Spoken = DateTime.UtcNow;
         }
     }

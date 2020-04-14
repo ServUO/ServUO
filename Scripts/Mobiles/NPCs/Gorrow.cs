@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class PointyEarsQuest : BaseQuest
-    { 
+    {
         public PointyEarsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(SeveredElfEars), "severed elf ears", 20, 0x312D));
-							
+
             this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
@@ -75,7 +75,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Gorrow()
             : base("Gorrow", "the mayor")
-        { 
+        {
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
@@ -88,7 +88,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(CommonBrigandsQuest),
                     typeof(ForkedTongueQuest),
@@ -99,10 +99,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x8412;
             this.HairItemID = 0x2047;
             this.HairHue = 0x465;

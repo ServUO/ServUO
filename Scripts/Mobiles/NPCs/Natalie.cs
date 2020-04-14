@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class GuiltyQuest : BaseQuest
-    { 
+    {
         public GuiltyQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Gregorio), "gregorio", 1));
-						
+
             this.AddReward(new BaseReward(typeof(AmuletOfRighteousness), 1075313)); // Amulet of Righteousness
         }
 
@@ -88,7 +88,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Natalie()
             : base("Natalie", "the lady of Skara Brae")
-        { 
+        {
         }
 
         public Natalie(Serial serial)
@@ -97,10 +97,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(GuiltyQuest)
                 };
@@ -109,22 +109,22 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.CantWalk = true;
             this.Race = Race.Human;
-			
-            this.Hue = 0x8400;			
+
+            this.Hue = 0x8400;
             this.HairItemID = 0x2045;
             this.HairHue = 0x740;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());			
-            this.AddItem(new Shoes(0x727));	
-            this.AddItem(new FancyShirt(0x53C));	
-            this.AddItem(new Skirt(0x534));	
+            this.AddItem(new Backpack());
+            this.AddItem(new Shoes(0x727));
+            this.AddItem(new FancyShirt(0x53C));
+            this.AddItem(new Skirt(0x534));
         }
 
         public override void Serialize(GenericWriter writer)

@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-
+using Server.Accounting;
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Items;
@@ -10,7 +6,10 @@ using Server.Misc;
 using Server.Multis;
 using Server.Prompts;
 using Server.Targeting;
-using Server.Accounting;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Server.Mobiles
@@ -351,7 +350,7 @@ namespace Server.Mobiles
         public int ChargePerDay
         {
             get
-            { 
+            {
                 if (BaseHouse.NewVendorSystem)
                 {
                     return ChargePerRealWorldDay / 12;
@@ -513,7 +512,7 @@ namespace Server.Mobiles
                             }
                         }
 
-                        break;	
+                        break;
                     }
             }
 
@@ -1045,7 +1044,7 @@ namespace Server.Mobiles
                     m_Vendor.SayTo(to, 503210); // I'll take that to fund my services.
                 }
             }
-        }        
+        }
 
         public int GiveGold(Mobile to, int amount)
         {
@@ -1203,14 +1202,14 @@ namespace Server.Mobiles
                     else
                     {
                         IPooledEnumerable mobiles = e.Mobile.GetMobilesInRange(2);
-						
+
                         foreach (Mobile m in mobiles)
                             if (m is PlayerVendor && m.CanSee(e.Mobile) && m.InLOS(e.Mobile))
                                 ((PlayerVendor)m).OpenBackpack(from);
-						
+
                         mobiles.Free();
                     }
-					
+
                     e.Handled = true;
                 }
             }
@@ -1610,7 +1609,7 @@ namespace Server.Mobiles
                     m_VI.Description = description;
                 }
             }
-        }        
+        }
 
         private class CollectGoldPrompt : Prompt
         {

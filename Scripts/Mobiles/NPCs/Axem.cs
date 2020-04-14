@@ -1,6 +1,5 @@
-using System;
 using Server.Items;
-using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
 {
@@ -9,9 +8,9 @@ namespace Server.Engines.Quests
         public ABrokenVaseQuest()
 
         {
-            AddObjective(new ObtainObjective(typeof (AncientPotteryFragments), "Ancient Pottery Fragments", 10, 0x223B, 0, 2108));
+            AddObjective(new ObtainObjective(typeof(AncientPotteryFragments), "Ancient Pottery Fragments", 10, 0x223B, 0, 2108));
 
-            AddReward(new BaseReward(typeof (MeagerMuseumBag), 1112993));
+            AddReward(new BaseReward(typeof(MeagerMuseumBag), 1112993));
             AddReward(new BaseReward("Loyalty Rating"));
         }
 
@@ -63,7 +62,7 @@ namespace Server.Engines.Quests
         {
             AddObjective(new ObtainObjective(typeof(TatteredAncientScroll), "Tattered Ancient Scrolls", 5, 0x1437));
 
-            AddReward(new BaseReward(typeof (DustyMuseumBag), 1112994));
+            AddReward(new BaseReward(typeof(DustyMuseumBag), 1112994));
             AddReward(new BaseReward("Loyalty Rating"));
         }
 
@@ -115,7 +114,7 @@ namespace Server.Engines.Quests
         {
             AddObjective(new ObtainObjective(typeof(UntranslatedAncientTome), "Untranslated Ancient Tome", 1, 0xFF2, 0, 2405));
 
-            AddReward(new BaseReward(typeof (BulgingMuseumBag), 1112995));
+            AddReward(new BaseReward(typeof(BulgingMuseumBag), 1112995));
             AddReward(new BaseReward("Loyalty Rating"));
         }
 

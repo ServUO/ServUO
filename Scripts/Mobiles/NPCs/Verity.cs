@@ -1,14 +1,14 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Verity : MondainQuester
     {
         [Constructable]
         public Verity()
             : base("Verity", "the librarian")
-        { 
+        {
         }
 
         public Verity(Serial serial)
@@ -20,7 +20,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(FriendsOfTheLibraryQuest)
                 };
@@ -29,10 +29,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x83EF;
             this.HairItemID = 0x2047;
             this.HairHue = 0x3B3;

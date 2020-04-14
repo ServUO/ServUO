@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -52,7 +51,7 @@ namespace Server.Mobiles
                 return true;
             }
         }
-		public override int TreasureMapLevel
+        public override int TreasureMapLevel
         {
             get
             {

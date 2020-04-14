@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class WatchYourStepQuest : BaseQuest
-    { 
+    {
         public WatchYourStepQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(Gold), "gold", 5000, 0xEED));
-						
+
             this.AddReward(new BaseReward(typeof(MagicalRope), 1074338)); // Magical Rope
         }
 
@@ -75,7 +75,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Lucius()
             : base("Lucius", "the adventurer")
-        { 
+        {
         }
 
         public Lucius(Serial serial)
@@ -84,10 +84,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(WatchYourStepQuest)
                 };
@@ -96,12 +96,12 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.CantWalk = true;
             this.Race = Race.Human;
-			
-            this.Hue = 0x83F3;			
+
+            this.Hue = 0x83F3;
             this.HairItemID = 0x2047;
             this.HairHue = 0x393;
             this.FacialHairItemID = 0x203F;
@@ -110,10 +110,10 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());			
-            this.AddItem(new Boots(0x717));	
-            this.AddItem(new LongPants(0x1BB));	
-            this.AddItem(new Cloak(0x71));	
+            this.AddItem(new Backpack());
+            this.AddItem(new Boots(0x717));
+            this.AddItem(new LongPants(0x1BB));
+            this.AddItem(new Cloak(0x71));
         }
 
         public override void Serialize(GenericWriter writer)

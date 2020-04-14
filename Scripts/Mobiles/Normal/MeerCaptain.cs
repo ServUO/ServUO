@@ -1,7 +1,7 @@
-using System;
-using System.Collections;
 using Server.Items;
 using Server.Spells;
+using System;
+using System.Collections;
 
 namespace Server.Mobiles
 {
@@ -46,7 +46,7 @@ namespace Server.Mobiles
             pack.DropItem(new Bolt(Utility.RandomMinMax(10, 20)));
             pack.DropItem(new Bolt(Utility.RandomMinMax(10, 20)));
 
-            switch ( Utility.Random(6) )
+            switch (Utility.Random(6))
             {
                 case 0:
                     pack.DropItem(new Broadsword());

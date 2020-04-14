@@ -1,5 +1,4 @@
 using System;
-using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -40,7 +39,7 @@ namespace Server.Mobiles
 
             Fame = 11000;
             Karma = -11000;
-            
+
             Tamable = true;
             ControlSlots = 2;
             MinTameSkill = 102.0;
@@ -54,7 +53,7 @@ namespace Server.Mobiles
         public override int GetDeathSound() { return 0x671; }
 
         public override double WeaponAbilityChance { get { return 0.5; } }
-        
+
         public override int Hides { get { return 11; } }
         public override HideType HideType { get { return HideType.Regular; } }
         public override int Meat { get { return 3; } }

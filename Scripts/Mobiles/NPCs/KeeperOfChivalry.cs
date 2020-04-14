@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -42,7 +41,7 @@ namespace Server.Mobiles
             this.AddItem(new StuddedGorget());
             this.AddItem(new PlateLegs());
 
-            switch ( Utility.Random(4) )
+            switch (Utility.Random(4))
             {
                 case 0:
                     this.AddItem(new PlateHelm());
@@ -58,7 +57,7 @@ namespace Server.Mobiles
                     break;
             }
 
-            switch ( Utility.Random(3) )
+            switch (Utility.Random(3))
             {
                 case 0:
                     this.AddItem(new BodySash(0x482));
@@ -79,7 +78,7 @@ namespace Server.Mobiles
 
             this.AddItem(shield);
 
-            switch ( Utility.Random(2) )
+            switch (Utility.Random(2))
             {
                 case 0:
                     this.AddItem(new Boots());

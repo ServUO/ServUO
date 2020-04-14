@@ -1,17 +1,17 @@
-using System;
 using Server.Gumps;
+using System;
 
-namespace Server.Mobiles 
-{ 
-    [CorpseName("an ethereal warrior corpse")] 
-    public class EtherealWarrior : BaseCreature 
-    { 
+namespace Server.Mobiles
+{
+    [CorpseName("an ethereal warrior corpse")]
+    public class EtherealWarrior : BaseCreature
+    {
         private static readonly TimeSpan ResurrectDelay = TimeSpan.FromSeconds(2.0);
         private DateTime m_NextResurrect;
-        [Constructable] 
+        [Constructable]
         public EtherealWarrior()
             : base(AIType.AI_Mage, FightMode.Evil, 10, 1, 0.2, 0.4)
-        { 
+        {
             this.Name = NameList.RandomName("ethereal warrior");
             this.Body = 123;
 
@@ -45,7 +45,7 @@ namespace Server.Mobiles
 
         public EtherealWarrior(Serial serial)
             : base(serial)
-        { 
+        {
         }
 
         public override bool InitialInnocent
@@ -151,16 +151,16 @@ namespace Server.Mobiles
             }
         }
 
-        public override void Serialize(GenericWriter writer) 
-        { 
-            base.Serialize(writer); 
-            writer.Write((int)0); 
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
         }
 
-        public override void Deserialize(GenericReader reader) 
-        { 
-            base.Deserialize(reader); 
-            int version = reader.ReadInt(); 
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
         }
     }
 }

@@ -1,18 +1,18 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class GuileIrkAndSpiteQuest : BaseQuest
-    { 
+    {
         public GuileIrkAndSpiteQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Guile), "guile", 1));
             this.AddObjective(new SlayObjective(typeof(Irk), "irk", 1));
             this.AddObjective(new SlayObjective(typeof(Spite), "spite", 1));
-			
+
             this.AddReward(new BaseReward(typeof(RewardBox), 1072584));
         }
 
@@ -83,7 +83,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Yorus()
             : base("Yorus", "the tinker")
-        { 
+        {
         }
 
         public Yorus(Serial serial)
@@ -95,7 +95,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(BullfightingSortOfQuest),
                     typeof(ForcedMigrationQuest),
@@ -114,10 +114,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x841D;
         }
 

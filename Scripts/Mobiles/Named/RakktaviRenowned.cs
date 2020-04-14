@@ -1,6 +1,6 @@
-using System;
 using Server.Items;
 using Server.Misc;
+using System;
 
 namespace Server.Mobiles
 {
@@ -21,8 +21,8 @@ namespace Server.Mobiles
             this.SetInt(327);
 
             this.SetHits(50000);
-			this.SetMana(327);
-			this.SetStam(279);
+            this.SetMana(327);
+            this.SetStam(279);
 
             this.SetDamage(8, 10);
 
@@ -42,7 +42,7 @@ namespace Server.Mobiles
 
             this.Fame = 6500;
             this.Karma = -6500;
-			
+
             this.AddItem(new Bow());
             this.PackItem(new Arrow(Utility.RandomMinMax(10, 30)));
         }

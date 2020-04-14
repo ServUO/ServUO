@@ -1,7 +1,6 @@
+using Server.Engines.BulkOrders;
 using System;
 using System.Collections.Generic;
-
-using Server.Engines.BulkOrders;
 
 namespace Server.Mobiles
 {
@@ -38,7 +37,7 @@ namespace Server.Mobiles
         }
         public override void InitSBInfo()
         {
-            switch ( Utility.Random(4))
+            switch (Utility.Random(4))
             {
                 case 0:
                     {
@@ -77,7 +76,7 @@ namespace Server.Mobiles
             }
             if (IsTokunoVendor)
             {
-                m_SBInfos.Add(new SBSELeatherArmor());	
+                m_SBInfos.Add(new SBSELeatherArmor());
                 m_SBInfos.Add(new SBSEArmor());
             }
         }

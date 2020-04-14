@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a maggoty corpse")] // TODO: Corpse name?

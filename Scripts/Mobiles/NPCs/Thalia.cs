@@ -1,14 +1,14 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Thalia : MondainQuester
     {
         [Constructable]
         public Thalia()
             : base("Thaliae", "the bride")
-        { 
+        {
         }
 
         public Thalia(Serial serial)
@@ -26,10 +26,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x8412;
             this.HairItemID = 0x2049;
             this.HairHue = 0x470;

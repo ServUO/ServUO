@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -13,7 +12,7 @@ namespace Server.Mobiles
 
             SpeechHue = Utility.RandomDyedHue();
 
-			SetSkill(SkillName.Begging, 64.0, 100.0);
+            SetSkill(SkillName.Begging, 64.0, 100.0);
             SetSkill(SkillName.Cooking, 65, 88);
             SetSkill(SkillName.Snooping, 65, 88);
             SetSkill(SkillName.Stealing, 65, 88);

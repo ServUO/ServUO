@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
+using Server.ContextMenus;
 using Server.Items;
 using Server.Network;
-using Server.ContextMenus;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -195,10 +195,10 @@ namespace Server.Mobiles
             return base.OnGoldGiven(from, dropped);
         }
 
-		public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
-		{
-			base.AddCustomContextEntries(from, list);
-		}
+        public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.AddCustomContextEntries(from, list);
+        }
 
         public override void Serialize(GenericWriter writer)
         {

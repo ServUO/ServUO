@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("an undead guardian corpse")]
@@ -10,7 +8,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Name = "an undead guardian";
-            this.Body = 722; 
+            this.Body = 722;
 
             this.SetStr(212);
             this.SetDex(76);
@@ -33,7 +31,7 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Tactics, 86.2);
             this.SetSkill(SkillName.Wrestling, 86.9);
 
-            this.PackNecroReg(10, 15); 
+            this.PackNecroReg(10, 15);
         }
 
         public UndeadGuardian(Serial serial)

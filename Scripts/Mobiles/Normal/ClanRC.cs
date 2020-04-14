@@ -1,6 +1,3 @@
-using System;
-using Server.Items;
-
 namespace Server.Mobiles
 {
     [CorpseName("a clan ribbon courtier corpse")]
@@ -70,7 +67,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.Average);
         }
-      
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

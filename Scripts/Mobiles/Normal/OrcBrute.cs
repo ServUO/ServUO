@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -55,7 +54,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-   
+
         public override Poison PoisonImmune
         {
             get

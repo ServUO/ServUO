@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -12,7 +11,7 @@ namespace Server.Mobiles
         {
             ActiveSpeed = 0.1;
             PassiveSpeed = 0.2;
-		
+
             Name = "Coil";
 
             Hue = 0x3F;
@@ -102,13 +101,13 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-            base.OnDeath(c);		
-			
+            base.OnDeath(c);
+
             c.DropItem(new CoilsFang());
-			
+
             if (Utility.RandomDouble() < 0.025)
             {
-                switch( Utility.Random(5) )
+                switch (Utility.Random(5))
                 {
                     case 0:
                         c.DropItem(new AssassinChest());
@@ -132,14 +131,14 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }

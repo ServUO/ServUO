@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class BrokenShaftQuest : BaseQuest
-    { 
+    {
         public BrokenShaftQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(Arrow), "arrows", 10, 0xF3F));
-			
+
             this.AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
@@ -72,12 +72,12 @@ namespace Server.Engines.Quests
     }
 
     public class BendingTheBowQuest : BaseQuest
-    { 
+    {
         public BendingTheBowQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(Bow), "bows", 10, 0x13B2));
-			
+
             this.AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
@@ -139,12 +139,12 @@ namespace Server.Engines.Quests
     }
 
     public class ArmsRaceQuest : BaseQuest
-    { 
+    {
         public ArmsRaceQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(Crossbow), "crossbows", 10, 0xF50));
-			
+
             this.AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
@@ -206,12 +206,12 @@ namespace Server.Engines.Quests
     }
 
     public class ImprovedCrossbowsQuest : BaseQuest
-    { 
+    {
         public ImprovedCrossbowsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(HeavyCrossbow), "heavy crossbows", 10, 0x13FD));
-			
+
             this.AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
@@ -273,12 +273,12 @@ namespace Server.Engines.Quests
     }
 
     public class BuildingTheBetterCrossbowQuest : BaseQuest
-    { 
+    {
         public BuildingTheBetterCrossbowQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(RepeatingCrossbow), "repeating crossbow", 10, 0x26C3));
-			
+
             this.AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
@@ -339,11 +339,11 @@ namespace Server.Engines.Quests
     }
 
     public class Beotham : MondainQuester
-    { 
+    {
         [Constructable]
         public Beotham()
             : base("Beotham", "the bowcrafter")
-        { 
+        {
         }
 
         public Beotham(Serial serial)
@@ -352,10 +352,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(BrokenShaftQuest),
                     typeof(BendingTheBowQuest),
@@ -368,11 +368,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.CantWalk = true;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x876C;
             this.HairItemID = 0x2FC0;
             this.HairHue = 0x238;
@@ -383,9 +383,9 @@ namespace Server.Engines.Quests
             this.AddItem(new Sandals(0x901));
             this.AddItem(new LongPants(0x52C));
             this.AddItem(new FancyShirt(0x546));
-			
+
             Item item;
-			
+
             item = new LeafGloves();
             item.Hue = 0x901;
             this.AddItem(item);

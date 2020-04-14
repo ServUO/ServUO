@@ -1,12 +1,10 @@
-using Server;
-using System;
-using Server.Mobiles;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
-	public class DoneInTheNameOfTinkeringQuest : BaseQuest
-	{
+    public class DoneInTheNameOfTinkeringQuest : BaseQuest
+    {
         public override object Title { get { return 1094983; } }        // Done in the Name of Tinkering
 
         public override object Description { get { return 1094985; } }  /*Travel into the Abyss and find five floor traps using 
@@ -36,32 +34,32 @@ namespace Server.Engines.Quests
                                                                          * I've ever seen!  I've figured out how this thing works...
                                                                          * I think.  Here I've made some notes so you can have these
                                                                          * back.  I've fixed it up so it is easier to deploy.*/
-	
-		public DoneInTheNameOfTinkeringQuest()
-		{
-			AddObjective(new ObtainObjective(typeof(FloorTrapComponent), "Floor Trap Component", 5, 3117));
+
+        public DoneInTheNameOfTinkeringQuest()
+        {
+            AddObjective(new ObtainObjective(typeof(FloorTrapComponent), "Floor Trap Component", 5, 3117));
             AddReward(new BaseReward(typeof(GoblinFloorTrapKit), 1113293));
-		}
-	
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write((int)0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int v = reader.ReadInt();
-		}
-	}
-	
-	public class Tobin : MondainQuester
-	{
-		[Constructable]
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = reader.ReadInt();
+        }
+    }
+
+    public class Tobin : MondainQuester
+    {
+        [Constructable]
         public Tobin()
             : base("Fiddling Tobin", "the Tinkerer")
-        { 
+        {
         }
 
         public override void Advertise()
@@ -78,7 +76,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(DoneInTheNameOfTinkeringQuest)
                 };
@@ -87,10 +85,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x8418;
             this.HairItemID = 0x2046;
             this.HairHue = 0x466;
@@ -100,7 +98,7 @@ namespace Server.Engines.Quests
         {
             this.AddItem(new Backpack());
             this.AddItem(new Shoes(0x743));
-			this.AddItem(new Shirt(0x743));
+            this.AddItem(new Shirt(0x743));
             this.AddItem(new ShortPants(0x485));
         }
 

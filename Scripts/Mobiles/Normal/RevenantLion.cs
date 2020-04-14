@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -99,8 +98,8 @@ namespace Server.Mobiles
         {
             return 0x515;
         }
-		
-		public override int TreasureMapLevel { get { return 3; } }
+
+        public override int TreasureMapLevel { get { return 3; } }
 
         public override void GenerateLoot()
         {

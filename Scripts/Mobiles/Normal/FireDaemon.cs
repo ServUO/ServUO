@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a fire daemon corpse")]
@@ -45,7 +43,7 @@ namespace Server.Mobiles
 
             SetSpecialAbility(SpecialAbility.DragonBreath);
             SetAreaEffect(AreaEffect.AuraDamage);
-        }        
+        }
 
         public FireDaemon(Serial serial)
             : base(serial)

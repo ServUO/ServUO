@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -40,7 +39,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.Poisoning, 120.0);
             SetSkill(SkillName.Magery, 104.2, 119.8);
             SetSkill(SkillName.EvalInt, 102.8, 116.8);
-			
+
             PackItem(new SpidersSilk(8));
 
             Fame = 21000;
@@ -88,11 +87,11 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-            base.OnDeath(c);		
-			
+            base.OnDeath(c);
+
             if (Utility.RandomDouble() < 0.025)
             {
-                switch ( Utility.Random(2) )
+                switch (Utility.Random(2))
                 {
                     case 0:
                         c.DropItem(new HunterLegs());
@@ -102,7 +101,7 @@ namespace Server.Mobiles
                         break;
                 }
             }
-				
+
             if (Utility.RandomDouble() < 0.1)
                 c.DropItem(new ParrotItem());
         }
@@ -110,14 +109,14 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }

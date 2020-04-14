@@ -1,5 +1,3 @@
-using System;
-using Server;
 using Server.Items;
 using System.Collections.Generic;
 
@@ -126,7 +124,7 @@ namespace Server.Mobiles.MannequinProperty
         public override int Hue { get { return 0x5E5D; } }
         public override int SpriteW { get { return 210; } }
         public override int SpriteH { get { return 0; } }
-    }    
+    }
 
     public class SwingSpeedIncreaseProperty : MagicalAttr
     {
@@ -320,7 +318,7 @@ namespace Server.Mobiles.MannequinProperty
         public override int Hue { get { return 0x43FF; } }
         public override int SpriteW { get { return 120; } }
         public override int SpriteH { get { return 60; } }
-    }    
+    }
 
     public class SpellDamageIncreaseProperty : MagicalAttr
     {
@@ -361,7 +359,7 @@ namespace Server.Mobiles.MannequinProperty
         public override int Cap { get { return 4; } }
         public override int SpriteW { get { return 270; } }
         public override int SpriteH { get { return 30; } }
-    }    
+    }
 
     public class LowerReagentCostProperty : MagicalAttr
     {
@@ -375,7 +373,7 @@ namespace Server.Mobiles.MannequinProperty
         public override int Hue { get { return 0x1FF; } }
         public override int SpriteW { get { return 90; } }
         public override int SpriteH { get { return 60; } }
-    }   
+    }
 
     public class SpellChannelingCostProperty : MagicalAttr
     {
@@ -432,5 +430,5 @@ namespace Server.Mobiles.MannequinProperty
         public override int Hue { get { return 0x5E5D; } }
         public override int SpriteW { get { return 180; } }
         public override int SpriteH { get { return 120; } }
-    }    
+    }
 }
