@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Server.ContextMenus;
 using Server.Mobiles;
 using Server.Services.Virtues;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Engines.Quests
 {
@@ -35,14 +35,14 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override bool InitialInnocent { get { return true; } }
-        public override bool IsInvulnerable { get { return false; } }
-        public override bool Commandable { get { return false; } }
+        public override bool InitialInnocent => true;
+        public override bool IsInvulnerable => false;
+        public override bool Commandable => false;
 
-        public override Type[] Quests { get { return null; } }
+        public override Type[] Quests => null;
 
-        public override bool CanAutoStable { get { return false; } }
-        public override bool CanDetectHidden { get { return false; } }
+        public override bool CanAutoStable => false;
+        public override bool CanDetectHidden => false;
 
         public override void OnTalk(PlayerMobile player)
         {
@@ -106,7 +106,6 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
 
             writer.Write(m_DeleteTimer != null);
@@ -118,7 +117,6 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             if (reader.ReadBool())
@@ -170,7 +168,7 @@ namespace Server.Engines.Quests
                 m_EscortTable.Remove(m);
 
             m_DeleteTimer = Timer.DelayCall(TimeSpan.FromSeconds(45.0), new TimerCallback(Delete));
-        }        
+        }
 
         public virtual bool AcceptEscorter(Mobile m)
         {
@@ -411,7 +409,7 @@ namespace Server.Engines.Quests
                     owner.PlaySound(0x5B3);
                     escort.Delete();
                 }));
-            }            
+            }
         }
     }
 }
