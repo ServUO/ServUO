@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -62,7 +61,7 @@ namespace Server.Mobiles
                 Add(typeof(MediumCrate), 6);
                 Add(typeof(LargeCrate), 7);
                 Add(typeof(WoodenChest), 15);
-              
+
                 Add(typeof(LargeTable), 10);
                 Add(typeof(Nightstand), 7);
                 Add(typeof(YewWoodTable), 10);

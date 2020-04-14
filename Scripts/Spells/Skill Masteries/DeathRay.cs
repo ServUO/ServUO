@@ -1,34 +1,30 @@
-using System;
-using Server;
-using Server.Spells;
-using Server.Network;
 using Server.Mobiles;
-using Server.Items;
+using System;
 
 namespace Server.Spells.SkillMasteries
 {
-	public class DeathRaySpell : SkillMasterySpell
-	{
+    public class DeathRaySpell : SkillMasterySpell
+    {
         /*The mage focuses a death ray on their opponent which snares the mage to their 
          * location and does damage based on magery skill, evaluating intelligence skill,
          * and mastery level as long as the mage has mana and the target is in range.*/
 
         // BuffIcon: 1155798 ~1_STR~ Energy Resist.<br>~2_DAM~ energy damage every 3 seconds while death ray remains in effect.<br>
 
-		private static SpellInfo m_Info = new SpellInfo(
-				"Death Ray", "In Grav Corp",
-				204,
-				9061,
+        private static SpellInfo m_Info = new SpellInfo(
+                "Death Ray", "In Grav Corp",
+                204,
+                9061,
                 Reagent.BlackPearl,
                 Reagent.Bloodmoss,
                 Reagent.SpidersSilk
-			);
+            );
 
         private Point3D _Location;
         private ResistanceMod _Mod;
 
-		public override double UpKeep { get { return 35; } }
-		public override int RequiredMana{ get { return 50; } }
+        public override double UpKeep { get { return 35; } }
+        public override int RequiredMana { get { return 50; } }
         public override int DamageThreshold { get { return 1; } }
         public override bool DamageCanDisrupt { get { return true; } }
         public override double TickTime { get { return 3; } }
@@ -43,13 +39,13 @@ namespace Server.Spells.SkillMasteries
 
         public DeathRaySpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
-		{
-		}
-		
-		public override void OnCast()
-		{
+        {
+        }
+
+        public override void OnCast()
+        {
             Caster.Target = new MasteryTarget(this);
-		}
+        }
 
         protected override void OnTarget(object o)
         {
@@ -100,7 +96,7 @@ namespace Server.Spells.SkillMasteries
 
             BuffInfo.RemoveBuff(Caster, BuffIcon.DeathRay);
 
-            if(Target != null)
+            if (Target != null)
                 BuffInfo.RemoveBuff(Target, BuffIcon.DeathRayDebuff);
         }
 
@@ -136,5 +132,5 @@ namespace Server.Spells.SkillMasteries
 
             return true;
         }
-	}
+    }
 }

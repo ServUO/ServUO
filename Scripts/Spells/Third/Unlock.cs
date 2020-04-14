@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 using Server.Network;
 using Server.Targeting;
@@ -99,7 +98,7 @@ namespace Server.Spells.Third
                                 level = (int)(from.Skills[SkillName.Magery].Value * 0.8) - 4;
                                 reqSkill = cont.RequiredSkill;
                             }
-   
+
                             if (level >= reqSkill)
                             {
                                 cont.Locked = false;

@@ -1,5 +1,5 @@
-using System;
 using Server.Targeting;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Spells.Third
@@ -80,7 +80,7 @@ namespace Server.Spells.Third
                 int newDex = SpellHelper.GetOffset(Caster, m, StatType.Dex, false, true);
                 int newInt = SpellHelper.GetOffset(Caster, m, StatType.Int, false, true);
 
-                if ((newStr < oldStr && newDex < oldDex && newInt < oldInt) || 
+                if ((newStr < oldStr && newDex < oldDex && newInt < oldInt) ||
                     (newStr == 0 && newDex == 0 && newInt == 0))
                 {
                     DoHurtFizzle();

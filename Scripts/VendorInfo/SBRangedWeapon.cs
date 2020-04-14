@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -52,11 +51,11 @@ namespace Server.Mobiles
                 Add(typeof(Bolt), 1);
                 Add(typeof(Arrow), 1);
                 Add(typeof(Shaft), 1);
-                Add(typeof(Feather), 1);			
+                Add(typeof(Feather), 1);
 
                 Add(typeof(HeavyCrossbow), 27);
                 Add(typeof(Bow), 17);
-                Add(typeof(Crossbow), 25); 
+                Add(typeof(Crossbow), 25);
 
                 Add(typeof(CompositeBow), 23);
                 Add(typeof(RepeatingCrossbow), 22);

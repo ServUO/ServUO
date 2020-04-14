@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -35,11 +34,11 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(Wool), 62, 20, 0xDF8, 0, true));
                 Add(new GenericBuyInfo(typeof(Flax), 102, 20, 0x1A9C, 0, true));
                 Add(new GenericBuyInfo(typeof(SpoolOfThread), 18, 20, 0xFA0, 0, true));
-                Add(new GenericBuyInfo(typeof(SewingKit), 3, 20, 0xF9D, 0)); 
+                Add(new GenericBuyInfo(typeof(SewingKit), 3, 20, 0xF9D, 0));
                 Add(new GenericBuyInfo(typeof(Scissors), 11, 20, 0xF9F, 0));
-                Add(new GenericBuyInfo(typeof(DyeTub), 8, 20, 0xFAB, 0)); 
-                Add(new GenericBuyInfo(typeof(Dyes), 8, 20, 0xFA9, 0)); 
-                
+                Add(new GenericBuyInfo(typeof(DyeTub), 8, 20, 0xFAB, 0));
+                Add(new GenericBuyInfo(typeof(Dyes), 8, 20, 0xFA9, 0));
+
                 Add(new GenericBuyInfo(typeof(GargishRobe), 32, 20, 0x4000, 0));
                 Add(new GenericBuyInfo(typeof(GargishFancyRobe), 46, 20, 0x4002, 0));
 

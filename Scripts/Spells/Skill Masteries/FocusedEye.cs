@@ -1,9 +1,5 @@
-using System;
-using Server;
-using Server.Spells;
 using Server.Network;
-using Server.Mobiles;
-using Server.Items;
+using System;
 
 namespace Server.Spells.SkillMasteries
 {

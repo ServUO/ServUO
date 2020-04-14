@@ -1,29 +1,25 @@
-using System;
-using Server;
-using Server.Spells;
-using Server.Network;
-using Server.Mobiles;
 using Server.Targeting;
+using System;
 
 /*Target Strength Reduced by up to 32, 20 – 60 Damage (Physical), every 2 seconds, 
 affected by the target's magic resistance. (PvP and specific Mobs only).*/
 
 namespace Server.Spells.SkillMasteries
 {
-	public class DespairSpell : BardSpell
-	{
-		public static readonly string ModName = "Despair";
-	
-		private static SpellInfo m_Info = new SpellInfo(
-				"Despair", "Kal Des Mani Tym",
-				-1,
-				9002
-			);
+    public class DespairSpell : BardSpell
+    {
+        public static readonly string ModName = "Despair";
 
-		public override double RequiredSkill{ get { return 90; } }
-		public override double UpKeep { get { return 12; } }
-		public override int RequiredMana{ get { return 26; } }
-		public override bool PartyEffects { get { return false; } }
+        private static SpellInfo m_Info = new SpellInfo(
+                "Despair", "Kal Des Mani Tym",
+                -1,
+                9002
+            );
+
+        public override double RequiredSkill { get { return 90; } }
+        public override double UpKeep { get { return 12; } }
+        public override int RequiredMana { get { return 26; } }
+        public override bool PartyEffects { get { return false; } }
         public override SkillName CastSkill { get { return SkillName.Discordance; } }
         public override double SlayerBonus { get { return 3.0; } }
 
@@ -31,31 +27,31 @@ namespace Server.Spells.SkillMasteries
         private int m_Damage;
         private int m_Rounds;
 
-		public DespairSpell( Mobile caster, Item scroll ) : base(caster, scroll, m_Info)
-		{
-		}
-		
-		public override void OnCast()
-		{
-			BardSpell spell = SkillMasterySpell.GetSpell(Caster, this.GetType()) as BardSpell;
-			
-			if(spell != null)
-			{
-				spell.Expire();
+        public DespairSpell(Mobile caster, Item scroll) : base(caster, scroll, m_Info)
+        {
+        }
+
+        public override void OnCast()
+        {
+            BardSpell spell = SkillMasterySpell.GetSpell(Caster, this.GetType()) as BardSpell;
+
+            if (spell != null)
+            {
+                spell.Expire();
                 Caster.SendLocalizedMessage(1115774); //You halt your spellsong.
-			}
-			else
-			{
-				Caster.Target = new InternalTarget(this);
-			}
-		}
-		
-		public void OnTarget( Mobile m )
-		{
-			if ( !Caster.CanSee( m ) )
-			{
-				Caster.SendLocalizedMessage( 500237 ); // Target can not be seen.
-			}
+            }
+            else
+            {
+                Caster.Target = new InternalTarget(this);
+            }
+        }
+
+        public void OnTarget(Mobile m)
+        {
+            if (!Caster.CanSee(m))
+            {
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
+            }
             else if (!m.Alive)
             {
                 Caster.SendLocalizedMessage(1115773); // Your target is dead.
@@ -91,9 +87,9 @@ namespace Server.Spells.SkillMasteries
 
                 BeginTimer();
             }
-			
-			FinishSequence();
-		}
+
+            FinishSequence();
+        }
 
         public override void EndEffects()
         {
@@ -101,19 +97,19 @@ namespace Server.Spells.SkillMasteries
             BuffInfo.RemoveBuff(Caster, BuffIcon.DespairCaster);
         }
 
-		public override void AddStatMods()
-		{
-			int offset = m_StatMod;
-			
-			if(Target != null)
-				Target.AddStatMod(new StatMod(StatType.Str, ModName, offset, TimeSpan.Zero));
-		}
-		
-		public override void RemoveStatMods()
-		{
-			if(Target != null)
-				Target.RemoveStatMod(ModName);
-		}
+        public override void AddStatMods()
+        {
+            int offset = m_StatMod;
+
+            if (Target != null)
+                Target.AddStatMod(new StatMod(StatType.Str, ModName, offset, TimeSpan.Zero));
+        }
+
+        public override void RemoveStatMods()
+        {
+            if (Target != null)
+                Target.RemoveStatMod(ModName);
+        }
 
         public override bool OnTick()
         {
@@ -142,26 +138,26 @@ namespace Server.Spells.SkillMasteries
 
             return tick;
         }
-		
-		private class InternalTarget : Target
-		{
-			private DespairSpell m_Owner;
-			
-			public InternalTarget(DespairSpell spell) : base(10, false, TargetFlags.Harmful)
-			{
-				m_Owner = spell;
-			}
-			
-			protected override void OnTarget( Mobile from, object o )
-			{
-				if ( o is Mobile )
-					m_Owner.OnTarget( (Mobile)o );
-			}
 
-			protected override void OnTargetFinish( Mobile from )
-			{
-				m_Owner.FinishSequence();
-			}
-		}
-	}
+        private class InternalTarget : Target
+        {
+            private DespairSpell m_Owner;
+
+            public InternalTarget(DespairSpell spell) : base(10, false, TargetFlags.Harmful)
+            {
+                m_Owner = spell;
+            }
+
+            protected override void OnTarget(Mobile from, object o)
+            {
+                if (o is Mobile)
+                    m_Owner.OnTarget((Mobile)o);
+            }
+
+            protected override void OnTargetFinish(Mobile from)
+            {
+                m_Owner.FinishSequence();
+            }
+        }
+    }
 }

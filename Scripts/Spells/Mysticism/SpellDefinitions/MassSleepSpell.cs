@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Server;
 using Server.Targeting;
+using System;
+using System.Linq;
 
 namespace Server.Spells.Mysticism
 {

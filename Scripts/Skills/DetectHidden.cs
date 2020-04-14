@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
+using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
-using Server.Targeting;
-using Server.Engines.VvV;
-using Server.Items;
-using Server.Spells;
 using Server.Network;
+using Server.Targeting;
+using System;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -88,8 +84,8 @@ namespace Server.SkillHandlers
 
                             if (src.AccessLevel >= trg.AccessLevel && (ss >= ts || houseCheck) && Utility.RandomDouble() > shadow)
                             {
-                               if ((trg is ShadowKnight && (trg.X != p.X || trg.Y != p.Y)) ||
-                                    (!houseCheck && !CanDetect(src, trg)))
+                                if ((trg is ShadowKnight && (trg.X != p.X || trg.Y != p.Y)) ||
+                                     (!houseCheck && !CanDetect(src, trg)))
                                     continue;
 
                                 trg.RevealingAction();

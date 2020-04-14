@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
-using Server.Items;
 using Server.Engines.Quests;
+using Server.Items;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -56,7 +55,7 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(SpidersSilk), 3, 20, 0xF8D, 0));
                 Add(new GenericBuyInfo(typeof(SulfurousAsh), 3, 20, 0xF8C, 0));
 
-                Add(new GenericBuyInfo(typeof(Bottle), 5, 100, 0xF0E, 0, true)); 
+                Add(new GenericBuyInfo(typeof(Bottle), 5, 100, 0xF0E, 0, true));
                 Add(new GenericBuyInfo(typeof(HeatingStand), 2, 100, 0x1849, 0));
                 Add(new GenericBuyInfo(typeof(SkinTingeingTincture), 1255, 20, 0xEFF, 90));
 
@@ -77,14 +76,14 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                Add(typeof(BlackPearl), 3); 
-                Add(typeof(Bloodmoss), 3); 
-                Add(typeof(MandrakeRoot), 2); 
-                Add(typeof(Garlic), 2); 
-                Add(typeof(Ginseng), 2); 
-                Add(typeof(Nightshade), 2); 
-                Add(typeof(SpidersSilk), 2); 
-                Add(typeof(SulfurousAsh), 2); 
+                Add(typeof(BlackPearl), 3);
+                Add(typeof(Bloodmoss), 3);
+                Add(typeof(MandrakeRoot), 2);
+                Add(typeof(Garlic), 2);
+                Add(typeof(Ginseng), 2);
+                Add(typeof(Nightshade), 2);
+                Add(typeof(SpidersSilk), 2);
+                Add(typeof(SulfurousAsh), 2);
                 Add(typeof(Bottle), 3);
                 Add(typeof(MortarPestle), 4);
                 Add(typeof(HairDye), 19);
@@ -94,18 +93,18 @@ namespace Server.Mobiles
                 Add(typeof(StrengthPotion), 7);
                 Add(typeof(RefreshPotion), 7);
                 Add(typeof(LesserCurePotion), 7);
-				Add(typeof(CurePotion), 11);
-				Add(typeof(GreaterCurePotion), 15);
+                Add(typeof(CurePotion), 11);
+                Add(typeof(GreaterCurePotion), 15);
                 Add(typeof(LesserHealPotion), 7);
-				Add(typeof(HealPotion), 11);
-				Add(typeof(GreaterHealPotion), 15);
-				Add(typeof(LesserPoisonPotion), 7);
-				Add(typeof(PoisonPotion), 9);
-				Add(typeof(GreaterPoisonPotion), 13);
-				Add(typeof(DeadlyPoisonPotion), 21);
-				Add(typeof(LesserExplosionPotion), 10);
-				Add(typeof(ExplosionPotion), 15);
-				Add(typeof(GreaterExplosionPotion), 25);
+                Add(typeof(HealPotion), 11);
+                Add(typeof(GreaterHealPotion), 15);
+                Add(typeof(LesserPoisonPotion), 7);
+                Add(typeof(PoisonPotion), 9);
+                Add(typeof(GreaterPoisonPotion), 13);
+                Add(typeof(DeadlyPoisonPotion), 21);
+                Add(typeof(LesserExplosionPotion), 10);
+                Add(typeof(ExplosionPotion), 15);
+                Add(typeof(GreaterExplosionPotion), 25);
             }
         }
     }

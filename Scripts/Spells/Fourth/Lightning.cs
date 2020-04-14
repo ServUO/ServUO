@@ -1,6 +1,5 @@
-using System;
-using Server.Targeting;
 using Server.Mobiles;
+using Server.Targeting;
 
 namespace Server.Spells.Fourth
 {
@@ -52,7 +51,7 @@ namespace Server.Spells.Fourth
                 SpellHelper.CheckReflect((int)Circle, ref source, ref m);
 
                 double damage = GetNewAosDamage(23, 1, 4, m);
-                
+
                 if (m is Mobile)
                 {
                     Effects.SendBoltEffect(m, true, 0, false);

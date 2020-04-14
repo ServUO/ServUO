@@ -1,9 +1,8 @@
-using System;
-using System.Linq;
-using System.Text;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
+using System;
+using System.Text;
 
 namespace Server.SkillHandlers
 {
@@ -139,7 +138,7 @@ namespace Server.SkillHandlers
                     {
                         ((IForensicTarget)item).OnForensicEval(from);
                     }
-                    else  if (skill < 41.0)
+                    else if (skill < 41.0)
                     {
                         from.SendLocalizedMessage(501001);//You cannot determain anything useful.
                         return;

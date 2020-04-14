@@ -1,12 +1,8 @@
+using Server.Items;
+using Server.Mobiles;
+using Server.Spells.Spellweaving;
 using System;
 using System.Linq;
-
-using Server;
-using Server.Spells;
-using Server.Network;
-using Server.Mobiles;
-using Server.Items;
-using Server.Spells.Spellweaving;
 
 namespace Server.Spells.SkillMasteries
 {
@@ -15,7 +11,7 @@ namespace Server.Spells.SkillMasteries
         private static SpellInfo m_Info = new SpellInfo(
                 "Summon Reaper", "Lartarisstree",
                 204,
-				9061
+                9061
             );
 
         public override double RequiredSkill { get { return 90; } }
@@ -170,7 +166,7 @@ namespace Server.Spells.SkillMasteries
             {
                 int damage = Utility.RandomMinMax(10, 20);
 
-                AOS.Damage( m, this, damage, 0, 0, 0, 100, 0, DamageType.SpellAOE);
+                AOS.Damage(m, this, damage, 0, 0, 0, 100, 0, DamageType.SpellAOE);
 
                 m.RevealingAction();
             }

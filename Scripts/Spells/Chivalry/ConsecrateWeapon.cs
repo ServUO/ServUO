@@ -1,6 +1,6 @@
+using Server.Items;
 using System;
 using System.Collections.Generic;
-using Server.Items;
 
 namespace Server.Spells.Chivalry
 {
@@ -77,7 +77,7 @@ namespace Server.Spells.Chivalry
                 */
                 int itemID, soundID;
 
-                switch ( weapon.Skill )
+                switch (weapon.Skill)
                 {
                     case SkillName.Macing:
                         itemID = 0xFB4;

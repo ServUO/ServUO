@@ -1,7 +1,7 @@
-using System;
 using Server.Mobiles;
 using Server.Spells.Chivalry;
 using Server.Targeting;
+using System;
 
 namespace Server.Spells.Fifth
 {
@@ -48,9 +48,9 @@ namespace Server.Spells.Fifth
                 SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref m);
 
                 double duration;
-				
+
                 int secs = (int)((this.GetDamageSkill(this.Caster) / 10) - (this.GetResistSkill(m) / 10));
-					
+
                 if (!m.Player)
                     secs *= 3;
 

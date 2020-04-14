@@ -1,9 +1,9 @@
-using System;
-using System.Collections;
 using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Targeting;
+using System;
+using System.Collections;
 
 namespace Server.Spells.Fourth
 {
@@ -175,7 +175,7 @@ namespace Server.Spells.Fourth
 
                 int version = reader.ReadInt();
 
-                switch ( version )
+                switch (version)
                 {
                     case 2:
                         {
@@ -209,7 +209,7 @@ namespace Server.Spells.Fourth
                 {
                     if (SpellHelper.CanRevealCaster(m))
                         m_Caster.RevealingAction();
-					
+
                     m_Caster.DoHarmful(m);
 
                     int damage = m_Damage;
@@ -271,7 +271,7 @@ namespace Server.Spells.Fourth
                             while (m_Queue.Count > 0)
                             {
                                 Mobile m = (Mobile)m_Queue.Dequeue();
-								
+
                                 if (SpellHelper.CanRevealCaster(m))
                                     caster.RevealingAction();
 

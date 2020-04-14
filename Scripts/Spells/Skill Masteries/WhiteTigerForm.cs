@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
-using Server;
-using Server.Spells;
-using Server.Network;
+using Server.Items;
 using Server.Mobiles;
+using Server.Network;
+using Server.Spells.Fifth;
 using Server.Spells.Ninjitsu;
 using Server.Spells.Seventh;
-using Server.Spells.Sixth;
-using Server.Spells.Fifth;
-using Server.Items;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Spells.SkillMasteries
 {
@@ -75,17 +72,17 @@ namespace Server.Spells.SkillMasteries
         public override void OnCast()
         {
             if (!Caster.CanBeginAction(typeof(PolymorphSpell)))
-			{
-				Caster.SendLocalizedMessage(1061628); // You can't do that while polymorphed.
-			}
-			else if (TransformationSpellHelper.UnderTransformation(Caster))
-			{
-				Caster.SendLocalizedMessage(1063219); // You cannot mimic an animal while in that form.
-			}
-			else if (!Caster.CanBeginAction(typeof(IncognitoSpell)) || (Caster.IsBodyMod && AnimalForm.GetContext(Caster) == null))
-			{
-				DoFizzle();
-			}
+            {
+                Caster.SendLocalizedMessage(1061628); // You can't do that while polymorphed.
+            }
+            else if (TransformationSpellHelper.UnderTransformation(Caster))
+            {
+                Caster.SendLocalizedMessage(1063219); // You cannot mimic an animal while in that form.
+            }
+            else if (!Caster.CanBeginAction(typeof(IncognitoSpell)) || (Caster.IsBodyMod && AnimalForm.GetContext(Caster) == null))
+            {
+                DoFizzle();
+            }
             else if (CheckSequence())
             {
                 AnimalFormContext context = AnimalForm.GetContext(Caster);
@@ -145,7 +142,7 @@ namespace Server.Spells.SkillMasteries
                 Caster.CheckStatTimers();
 
                 int bleedMod = (int)(((Caster.Skills[SkillName.Ninjitsu].Value + Caster.Skills[SkillName.Stealth].Value + (GetMasteryLevel() * 40)) / 3) / 10);
-                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.WhiteTigerForm, 1155911, 1156060, String.Format("{0}\t{1}\t{2}\t{3}", "20", "5", "", bleedMod.ToString()))); 
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.WhiteTigerForm, 1155911, 1156060, String.Format("{0}\t{1}\t{2}\t{3}", "20", "5", "", bleedMod.ToString())));
                 // +~1_ARG~ Defense Chance Increase.<br>+~2_ARG~ Max Defense Chance Increase Cap.<br> Chance to evade attacks.<br>Applies bleed to victim with a max damage of ~4_ARG~.
 
                 Caster.Delta(MobileDelta.WeaponDamage);

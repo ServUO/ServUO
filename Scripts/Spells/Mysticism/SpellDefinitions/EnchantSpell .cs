@@ -1,17 +1,13 @@
-using System;
 using Server.Gumps;
 using Server.Items;
-using System.Collections.Generic;
-using Server;
-using Server.Mobiles;
-using Server.Spells;
-using Server.Network;
 using Server.Spells.Spellweaving;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Spells.Mysticism
 {
-	public class EnchantSpell : MysticSpell
-	{
+    public class EnchantSpell : MysticSpell
+    {
         private static readonly string ModName = "EnchantAttribute";
 
         public override SpellCircle Circle { get { return SpellCircle.Second; } }
@@ -20,20 +16,20 @@ namespace Server.Spells.Mysticism
         public BaseWeapon Weapon { get; set; }
         public AosWeaponAttribute Attribute { get; set; }
 
-		private static SpellInfo m_Info = new SpellInfo(
+        private static SpellInfo m_Info = new SpellInfo(
                 "Enchant", "In Ort Ylem",
-				230,
-				9022,
-				Reagent.SpidersSilk,
-				Reagent.MandrakeRoot,
-				Reagent.SulfurousAsh
-			);
+                230,
+                9022,
+                Reagent.SpidersSilk,
+                Reagent.MandrakeRoot,
+                Reagent.SulfurousAsh
+            );
 
-		public EnchantSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
-		{
-		}
+        public EnchantSpell(Mobile caster, Item scroll) : base(caster, scroll, m_Info)
+        {
+        }
 
-        public EnchantSpell( Mobile caster, Item scroll, BaseWeapon weapon, AosWeaponAttribute attribute ) : base( caster, scroll, m_Info )
+        public EnchantSpell(Mobile caster, Item scroll, BaseWeapon weapon, AosWeaponAttribute attribute) : base(caster, scroll, m_Info)
         {
             Weapon = weapon;
             this.Attribute = attribute;
@@ -206,7 +202,7 @@ namespace Server.Spells.Mysticism
 
         public static void RemoveEnchantment(Mobile caster)
         {
-            if(Table != null && Table.ContainsKey(caster))
+            if (Table != null && Table.ContainsKey(caster))
             {
                 Table[caster].Stop();
                 Table[caster] = null;
@@ -221,13 +217,13 @@ namespace Server.Spells.Mysticism
 
         public static void OnWeaponRemoved(BaseWeapon wep, Mobile from)
         {
-            if(IsUnderSpellEffects(from, wep))
+            if (IsUnderSpellEffects(from, wep))
                 RemoveEnchantment(from);
 
             if (wep.EnchantedWeilder != null)
                 wep.EnchantedWeilder = null;
         }
-	}
+    }
 
     public class EnchantmentTimer : Timer
     {
@@ -250,7 +246,7 @@ namespace Server.Spells.Mysticism
 
         protected override void OnTick()
         {
-            if(Weapon != null)
+            if (Weapon != null)
                 Weapon.EnchantedWeilder = null;
 
             EnchantSpell.RemoveEnchantment(Owner);

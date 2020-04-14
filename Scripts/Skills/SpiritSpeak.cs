@@ -1,26 +1,24 @@
 #region References
+using Server.Items;
+using Server.Mobiles;
+using Server.Network;
 using System;
 using System.Collections.Generic;
-
-using Server.Items;
-using Server.Network;
-using Server.Spells;
-using Server.Mobiles;
 #endregion
 
 namespace Server.SkillHandlers
 {
-	internal class SpiritSpeak
-	{
-		public static void Initialize()
-		{
-			SkillInfo.Table[32].Callback = OnUse;
-		}
+    internal class SpiritSpeak
+    {
+        public static void Initialize()
+        {
+            SkillInfo.Table[32].Callback = OnUse;
+        }
 
         public static Dictionary<Mobile, Timer> _Table;
 
-		public static TimeSpan OnUse(Mobile m)
-		{
+        public static TimeSpan OnUse(Mobile m)
+        {
             if (m.Spell != null && m.Spell.IsCasting)
             {
                 m.SendLocalizedMessage(502642); // You are already casting a spell.
@@ -30,26 +28,26 @@ namespace Server.SkillHandlers
                 return TimeSpan.FromSeconds(5.0);
             }
 
-			return TimeSpan.Zero;
-		}
+            return TimeSpan.Zero;
+        }
 
-		private class SpiritSpeakTimer : Timer
-		{
-			private readonly Mobile m_Owner;
+        private class SpiritSpeakTimer : Timer
+        {
+            private readonly Mobile m_Owner;
 
-			public SpiritSpeakTimer(Mobile m)
-				: base(TimeSpan.FromMinutes(2.0))
-			{
-				m_Owner = m;
-				Priority = TimerPriority.FiveSeconds;
-			}
+            public SpiritSpeakTimer(Mobile m)
+                : base(TimeSpan.FromMinutes(2.0))
+            {
+                m_Owner = m;
+                Priority = TimerPriority.FiveSeconds;
+            }
 
-			protected override void OnTick()
-			{
-				m_Owner.CanHearGhosts = false;
-				m_Owner.SendLocalizedMessage(502445); //You feel your contact with the neitherworld fading.
-			}
-		}
+            protected override void OnTick()
+            {
+                m_Owner.CanHearGhosts = false;
+                m_Owner.SendLocalizedMessage(502445); //You feel your contact with the neitherworld fading.
+            }
+        }
 
         public static bool BeginSpiritSpeak(Mobile m)
         {
@@ -80,7 +78,7 @@ namespace Server.SkillHandlers
         {
             if (_Table != null && _Table.ContainsKey(m))
             {
-                if(_Table[m] != null)
+                if (_Table[m] != null)
                     _Table[m].Stop();
 
                 m.SendSpeedControl(SpeedControlType.Disable);
@@ -202,5 +200,5 @@ namespace Server.SkillHandlers
                 Stop();
             }
         }
-	}
+    }
 }
