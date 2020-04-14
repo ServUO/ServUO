@@ -1,8 +1,7 @@
-using System;
-using System.Collections;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
+using System.Collections;
 
 namespace Server.Commands
 {
@@ -39,7 +38,7 @@ namespace Server.Commands
                     else
                     {
                         m_Mobile = from;
-                        
+
                         if (Config.Get("Staff.Staffbody", true))
                         {
                             m_Mobile.BodyValue = 987;
@@ -48,8 +47,8 @@ namespace Server.Commands
                             {
                                 switch (m_Mobile.AccessLevel)
                                 {
-                                    case AccessLevel.Owner:m_Mobile.Hue = Config.Get("Staff.Owner", 1001); break;
-                                    case AccessLevel.Developer:m_Mobile.Hue = Config.Get("Staff.Developer", 1001); break;
+                                    case AccessLevel.Owner: m_Mobile.Hue = Config.Get("Staff.Owner", 1001); break;
+                                    case AccessLevel.Developer: m_Mobile.Hue = Config.Get("Staff.Developer", 1001); break;
                                     case AccessLevel.Administrator: m_Mobile.Hue = Config.Get("Staff.Administrator", 1001); break;
                                     case AccessLevel.Seer: m_Mobile.Hue = Config.Get("Staff.Seer", 467); break;
                                     case AccessLevel.GameMaster: m_Mobile.Hue = Config.Get("Staff.GameMaster", 39); break;
@@ -113,7 +112,7 @@ namespace Server.Commands
 
                             PackItem(new GMHidingStone());
                             PackItem(new GMEthereal());
-                            PackItem(new StaffOrb());                           
+                            PackItem(new StaffOrb());
 
                             from.RawStr = 100;
                             from.RawDex = 100;

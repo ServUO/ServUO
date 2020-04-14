@@ -1,7 +1,7 @@
+using Server.Diagnostics;
 using System;
 using System.Collections;
 using System.IO;
-using Server.Diagnostics;
 
 namespace Server.Commands
 {

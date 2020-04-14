@@ -182,7 +182,7 @@ namespace Server.Commands.Generic
             bool condIsItem = cond.IsItem;
             bool condIsMobile = cond.IsMobile;
 
-            switch ( command.ObjectTypes )
+            switch (command.ObjectTypes)
             {
                 case ObjectTypes.All:
                 case ObjectTypes.Both:
