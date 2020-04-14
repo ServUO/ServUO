@@ -1,10 +1,10 @@
-using System;
 using Server.Engines.Quests;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Multis
-{ 
+{
     public class RatCamp : BaseCamp
     {
         [Constructable]
@@ -21,15 +21,15 @@ namespace Server.Multis
         public virtual Mobile Ratmen => new Ratman();
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public override TimeSpan DecayDelay => TimeSpan.FromMinutes(5.0); 
+        public override TimeSpan DecayDelay => TimeSpan.FromMinutes(5.0);
 
         public override void AddComponents()
         {
             Visible = false;
             AddItem(new Static(0x10ee), 0, 0, 0);
             AddItem(new Static(0xfac), 0, 6, 0);
-			
-            switch ( Utility.Random(3) )
+
+            switch (Utility.Random(3))
             {
                 case 0:
                     {
@@ -52,13 +52,13 @@ namespace Server.Multis
             AddItem(new Item(0x41F), 5, 5, 0); // Gruesome Standart South
 
             AddCampChests();
-			
-            for (int i = 0; i < 4; i ++)
-            { 
+
+            for (int i = 0; i < 4; i++)
+            {
                 AddMobile(Ratmen, Utility.RandomMinMax(-7, 7), Utility.RandomMinMax(-7, 7), 0);
             }
-			
-            switch ( Utility.Random(2) )
+
+            switch (Utility.Random(2))
             {
                 case 0:
                     Prisoner = new EscortableNoble();
@@ -70,7 +70,7 @@ namespace Server.Multis
 
             Prisoner.IsPrisoner = true;
             Prisoner.CantWalk = true;
-			
+
             Prisoner.YellHue = Utility.RandomList(0x57, 0x67, 0x77, 0x87, 0x117);
             AddMobile(Prisoner, Utility.RandomMinMax(-2, 2), Utility.RandomMinMax(-2, 2), 0);
         }
@@ -82,7 +82,7 @@ namespace Server.Multis
             {
                 int number;
 
-                switch ( Utility.Random(8) )
+                switch (Utility.Random(8))
                 {
                     case 0:
                         number = 502261;
@@ -122,7 +122,7 @@ namespace Server.Multis
         {
             if (item != null)
                 item.Movable = false;
-				
+
             base.AddItem(item, xOffset, yOffset, zOffset);
         }
 
@@ -137,7 +137,7 @@ namespace Server.Multis
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 2: break;
                 case 1:

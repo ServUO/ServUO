@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Multis
 {
@@ -219,7 +219,7 @@ namespace Server.Multis
             int version = reader.ReadEncodedInt();
 
             this.m_House = reader.ReadItem() as BaseHouse;
-			
+
             if (this.m_House != null)
             {
                 this.m_House.MovingCrate = this;

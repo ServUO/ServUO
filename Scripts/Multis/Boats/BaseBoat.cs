@@ -1,14 +1,12 @@
+using Server.ContextMenus;
+using Server.Items;
+using Server.Mobiles;
+using Server.Network;
+using Server.Regions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-
-using Server;
-using Server.Items;
-using Server.Network;
-using Server.Mobiles;
-using Server.Regions;
-using Server.ContextMenus;
+using System.Linq;
 
 namespace Server.Multis
 {
@@ -1145,7 +1143,7 @@ namespace Server.Multis
                 Internalize();
 
                 OnDryDock(from);
-            }            
+            }
         }
 
         public virtual void OnDryDock(Mobile from)
@@ -2695,7 +2693,7 @@ namespace Server.Multis
         public void RemovePilot(Mobile from)
         {
             Pilot.RemoveItem(VirtualMount);
-            VirtualMount.Internalize();            
+            VirtualMount.Internalize();
 
             if (IsMoving)
                 StopMove(false);
@@ -2744,7 +2742,7 @@ namespace Server.Multis
 
         public static void ForceRemovePilot(Mobile m)
         {
-            
+
 
             if (m.FindItemOnLayer(Layer.Mount) is BoatMountItem mountItem)
             {

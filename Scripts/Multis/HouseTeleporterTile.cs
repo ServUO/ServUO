@@ -1,12 +1,11 @@
-using Server;
-using System;
+using Server.ContextMenus;
+using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Spells;
-using Server.Gumps;
-using System.Collections.Generic;
-using Server.ContextMenus;
 using Server.Targeting;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Multis
 {
@@ -19,7 +18,7 @@ namespace Server.Multis
 
         public static int MaxCharges = 1000;
 
-		private int _Charges;
+        private int _Charges;
 
         public override int ItemID
         {
@@ -34,35 +33,35 @@ namespace Server.Multis
 
         [CommandProperty(AccessLevel.GameMaster)]
         public HouseTeleporterTile Link
-		{
-			get
-			{
-				if(Target != null && Target.Deleted)
-					Target = null;
+        {
+            get
+            {
+                if (Target != null && Target.Deleted)
+                    Target = null;
 
                 return Target as HouseTeleporterTile;
-			}
-			set
-			{
-				Target = value;
-			}
-		}
+            }
+            set
+            {
+                Target = value;
+            }
+        }
 
-        private bool IsMoveOver => ItemID == 0x574A || ItemID == 0xA1CB || ItemID == 0xA1CC || ItemID == 0x40BB; 
+        private bool IsMoveOver => ItemID == 0x574A || ItemID == 0xA1CB || ItemID == 0xA1CC || ItemID == 0x40BB;
 
         [CommandProperty(AccessLevel.GameMaster)]
-		public int Charges
-		{
-			get { return _Charges; }
-			set 
+        public int Charges
+        {
+            get { return _Charges; }
+            set
             {
                 _Charges = value;
 
                 HueChange();
 
                 InvalidateProperties();
-            } 
-		}
+            }
+        }
 
         public void HueChange()
         {
@@ -194,7 +193,7 @@ namespace Server.Multis
                 {
                     list.Add(new RechargeEntry(from, this));
                     list.Add(new ChangeTypeEntry(from, this));
-                }                
+                }
             }
 
             base.GetContextMenuEntries(from, list);
@@ -331,9 +330,9 @@ namespace Server.Multis
             return base.CheckAccess(m);
         }
 
-		public override bool CheckAccess(Mobile m)
-		{
-			BaseHouse house = BaseHouse.FindHouseAt(this);
+        public override bool CheckAccess(Mobile m)
+        {
+            BaseHouse house = BaseHouse.FindHouseAt(this);
             BaseHouse linkHouse = Link == null ? null : BaseHouse.FindHouseAt(Link);
 
             if (house == null || Link == null || !IsLockedDown || !Link.IsLockedDown || linkHouse == null) // TODO: Messages for these?
@@ -358,8 +357,8 @@ namespace Server.Multis
                 return CheckTravel(m, Link.Location, Link.Map);
             }
 
-			return false;
-		}
+            return false;
+        }
 
         public bool CheckTravel(Mobile from, Point3D dest, Map destMap)
         {
@@ -401,22 +400,22 @@ namespace Server.Multis
 
             return true;
         }
-		
-		public override void OnDoubleClick(Mobile m)
-		{
-			if(IsChildOf(m.Backpack))
-			{
-				m.SendLocalizedMessage(1114918); // Select a House Teleporter to link to.
-				m.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, (from, targeted) =>
-				{
-					if(targeted is HouseTeleporterTile)
-					{
-						var tile = targeted as HouseTeleporterTile;
-						
-						if(tile.IsChildOf(m.Backpack))
-						{
-							tile.Link = this;
-							Link = tile;
+
+        public override void OnDoubleClick(Mobile m)
+        {
+            if (IsChildOf(m.Backpack))
+            {
+                m.SendLocalizedMessage(1114918); // Select a House Teleporter to link to.
+                m.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, (from, targeted) =>
+                {
+                    if (targeted is HouseTeleporterTile)
+                    {
+                        var tile = targeted as HouseTeleporterTile;
+
+                        if (tile.IsChildOf(m.Backpack))
+                        {
+                            tile.Link = this;
+                            Link = tile;
 
                             if (UsesCharges && tile.UsesCharges) //TODO:  Can you link non-charged with charged?
                             {
@@ -440,14 +439,14 @@ namespace Server.Multis
                             {
                                 from.SendMessage("Those cannot be linked."); // TODO: Message?
                             }
-						}
-						else
-						{
-							from.SendLocalizedMessage(1114917); // This must be in your backpack to link it.
-						}
-					}
-				});
-			}
+                        }
+                        else
+                        {
+                            from.SendLocalizedMessage(1114917); // This must be in your backpack to link it.
+                        }
+                    }
+                });
+            }
             else if (!IsMoveOver)
             {
                 if (Target != null && !Target.Deleted && InRange(m, 1))
@@ -461,11 +460,11 @@ namespace Server.Multis
                     }
                 }
             }
-			else
-			{
-				m.SendLocalizedMessage(1114917); // This must be in your backpack to link it.
-			}
-		}
+            else
+            {
+                m.SendLocalizedMessage(1114917); // This must be in your backpack to link it.
+            }
+        }
 
         private class DelayTimer : Timer
         {
@@ -526,32 +525,32 @@ namespace Server.Multis
                 }
             }
         }
-		
-		public HouseTeleporterTile(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-			
-			writer.Write(_Charges);
+
+        public HouseTeleporterTile(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+
+            writer.Write(_Charges);
             writer.Write(UsesCharges);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-			
-			_Charges = reader.ReadInt();
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+            _Charges = reader.ReadInt();
             UsesCharges = reader.ReadBool();
 
             if (ItemID == 0x40B9)
                 ItemID = 0x574A;
         }
-	}
+    }
 
     public class HouseTeleporterTypeGump : BaseGump
     {
@@ -614,7 +613,7 @@ namespace Server.Multis
 
     public class HouseTeleporterTileBag : Bag
     {
-        public override int LabelNumber => 1113917; 
+        public override int LabelNumber => 1113917;
 
         [Constructable]
         public HouseTeleporterTileBag()
@@ -640,20 +639,20 @@ namespace Server.Multis
 
         public HouseTeleporterTileBag(Serial serial)
             : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-		}
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
     }
 
     public class HouseTeleporterInstructions : Item
@@ -684,21 +683,21 @@ namespace Server.Multis
 
         public HouseTeleporterInstructions(Serial serial)
             : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
             writer.Write(VetReward);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
             VetReward = reader.ReadBool();
-		}
+        }
     }
 }
