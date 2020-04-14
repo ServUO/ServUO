@@ -1,7 +1,7 @@
 ﻿namespace Server.Items
 {
     class ClosedBarrel : TrapableContainer
-    { 
+    {
         [Constructable]
         public ClosedBarrel()
             : base(0x0FAE)

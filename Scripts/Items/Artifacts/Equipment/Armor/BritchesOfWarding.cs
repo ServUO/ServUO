@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class BritchesOfWarding : ChainLegs
-	{
+    {
         public override int LabelNumber { get { return 1157345; } }// britches of warding
         public override bool IsArtifact { get { return true; } }
 
@@ -29,7 +27,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override int BasePhysicalResistance { get { return 20; } }
         public override int BaseFireResistance { get { return 20; } }
         public override int BaseColdResistance { get { return 20; } }

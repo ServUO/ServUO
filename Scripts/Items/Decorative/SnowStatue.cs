@@ -1,4 +1,3 @@
-using System;
 using Server.Gumps;
 using Server.Network;
 
@@ -230,7 +229,7 @@ namespace Server.Items
 
                 Item statue = null;
 
-                switch ( info.ButtonID )
+                switch (info.ButtonID)
                 {
                     case 1:
                         statue = new SnowStatuePegasus();

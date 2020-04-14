@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class MetallicClothDyeTub : DyeTub
@@ -14,7 +12,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override int TargetMessage { get { return 500859; } } // Select the clothing to dye.
         public override int FailMessage { get { return 1153977; } } // You can only dye cloth with this tub.
         public override int LabelNumber { get { return 1152920; } } // Metallic Cloth Dye Tub

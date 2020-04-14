@@ -1,4 +1,3 @@
-using System;
 using Server.HuePickers;
 using Server.Targeting;
 

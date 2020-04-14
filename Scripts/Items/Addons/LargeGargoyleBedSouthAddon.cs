@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class LargeGargoyleBedSouthAddon : BaseAddon
@@ -24,7 +22,7 @@ namespace Server.Items
 
         [Constructable]
         public LargeGargoyleBedSouthAddon()
-        { 
+        {
             //Left Side
             this.AddComponent(new AddonComponent(0x4010), 0, 0, 0);
             this.AddComponent(new AddonComponent(0x4013), 0, 1, 0);

@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.VeteranRewards;
 using Server.Gumps;
 using Server.Multis;
@@ -6,7 +5,7 @@ using Server.Network;
 using Server.Targeting;
 
 namespace Server.Items
-{ 
+{
     public class HangingSkeleton : Item, IAddon, IRewardItem
     {
         private bool m_IsRewardItem;
@@ -32,13 +31,13 @@ namespace Server.Items
         public override bool ForceShowProperties { get { return true; } }
 
         public Item Deed
-        { 
+        {
             get
-            { 
+            {
                 HangingSkeletonDeed deed = new HangingSkeletonDeed();
                 deed.IsRewardItem = this.m_IsRewardItem;
 
-                return deed;	
+                return deed;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -57,10 +56,10 @@ namespace Server.Items
         public bool FacingSouth
         {
             get
-            { 
+            {
                 if (this.ItemID == 0x1A03 || this.ItemID == 0x1A05 || this.ItemID == 0x1A09 ||
                     this.ItemID == 0x1B1E || this.ItemID == 0x1B7F)
-                    return true; 
+                    return true;
 
                 return false;
             }
@@ -68,7 +67,7 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             if (this.m_IsRewardItem)
                 list.Add(1076220); // 4th Year Veteran Reward
         }
@@ -82,8 +81,8 @@ namespace Server.Items
         {
             if (from.InRange(this.Location, 3))
             {
-                BaseHouse house = BaseHouse.FindHouseAt(this);  
-				
+                BaseHouse house = BaseHouse.FindHouseAt(this);
+
                 if (house != null && house.IsOwner(from))
                 {
                     from.CloseGump(typeof(RewardDemolitionGump));
@@ -101,7 +100,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.WriteEncodedInt(0); // version
-			
+
             writer.Write((bool)this.m_IsRewardItem);
         }
 
@@ -110,16 +109,16 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             this.m_IsRewardItem = reader.ReadBool();
         }
 
         public bool CouldFit(IPoint3D p, Map map)
-        { 
+        {
             if (map == null || !map.CanFit(p.X, p.Y, p.Z, this.ItemData.Height))
                 return false;
-				
-            if (this.FacingSouth)	
+
+            if (this.FacingSouth)
                 return BaseAddon.IsWall(p.X, p.Y - 1, p.Z, map); // north wall
             else
                 return BaseAddon.IsWall(p.X - 1, p.Y, p.Z, map); // west wall
@@ -132,7 +131,7 @@ namespace Server.Items
         [Constructable]
         public HangingSkeletonDeed()
             : base(0x14F0)
-        { 
+        {
             this.LootType = LootType.Blessed;
             this.Weight = 1.0;
         }
@@ -164,12 +163,12 @@ namespace Server.Items
         }
         public static int GetWestItemID(int south)
         {
-            switch ( south )
+            switch (south)
             {
                 case 0x1B1E:
                     return 0x1B1D;
                 case 0x1B7F:
-                    return 0x1B7C; 
+                    return 0x1B7C;
                 default:
                     return south + 1;
             }
@@ -178,16 +177,16 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             if (this.m_IsRewardItem)
                 list.Add(1076220); // 4th Year Veteran Reward
         }
 
         public override void OnDoubleClick(Mobile from)
-        { 
+        {
             if (this.m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, null))
                 return;
-		
+
             if (this.IsChildOf(from.Backpack))
             {
                 BaseHouse house = BaseHouse.FindHouseAt(from);
@@ -209,7 +208,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.WriteEncodedInt(0); // version
-			
+
             writer.Write((bool)this.m_IsRewardItem);
         }
 
@@ -218,23 +217,23 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             this.m_IsRewardItem = reader.ReadBool();
         }
 
         private class InternalGump : Gump
-        { 
+        {
             private readonly HangingSkeletonDeed m_Skeleton;
             public InternalGump(HangingSkeletonDeed skeleton)
                 : base(100, 200)
             {
                 this.m_Skeleton = skeleton;
-				
+
                 this.Closable = true;
                 this.Disposable = true;
                 this.Dragable = true;
                 this.Resizable = false;
-				
+
                 this.AddPage(0);
 
                 this.AddBackground(25, 0, 500, 230, 0xA28);
@@ -260,10 +259,10 @@ namespace Server.Items
             public override void OnResponse(NetState sender, RelayInfo info)
             {
                 if (this.m_Skeleton == null || this.m_Skeleton.Deleted)
-                    return;		
-				
-                Mobile m = sender.Mobile;	
-			
+                    return;
+
+                Mobile m = sender.Mobile;
+
                 if (info.ButtonID == 0x1A03 || info.ButtonID == 0x1A05 || info.ButtonID == 0x1A09 ||
                     info.ButtonID == 0x1B1E || info.ButtonID == 0x1B7F)
                 {
@@ -288,7 +287,7 @@ namespace Server.Items
             {
                 if (this.m_Skeleton == null || this.m_Skeleton.Deleted)
                     return;
-					
+
                 if (this.m_Skeleton.IsChildOf(from.Backpack))
                 {
                     BaseHouse house = BaseHouse.FindHouseAt(from);
@@ -297,22 +296,22 @@ namespace Server.Items
                     {
                         IPoint3D p = targeted as IPoint3D;
                         Map map = from.Map;
-						
+
                         if (p == null || map == null)
                             return;
-							
+
                         Point3D p3d = new Point3D(p);
                         ItemData id = TileData.ItemTable[this.m_ItemID & TileData.MaxItemValue];
-						
+
                         if (map.CanFit(p3d, id.Height))
                         {
                             house = BaseHouse.FindHouseAt(p3d, map, id.Height);
-							
+
                             if (house != null && house.IsOwner(from))
                             {
                                 bool north = BaseAddon.IsWall(p3d.X, p3d.Y - 1, p3d.Z, map);
                                 bool west = BaseAddon.IsWall(p3d.X - 1, p3d.Y, p3d.Z, map);
-															
+
                                 if (north && west)
                                 {
                                     from.CloseGump(typeof(FacingGump));
@@ -321,7 +320,7 @@ namespace Server.Items
                                 else if (north || west)
                                 {
                                     HangingSkeleton banner = null;
-									
+
                                     if (north)
                                         banner = new HangingSkeleton(this.m_ItemID);
                                     else if (west)
@@ -363,7 +362,7 @@ namespace Server.Items
                     this.m_ItemID = itemID;
                     this.m_Location = location;
                     this.m_House = house;
-				
+
                     this.Closable = true;
                     this.Disposable = true;
                     this.Dragable = true;
@@ -389,15 +388,15 @@ namespace Server.Items
                 public override void OnResponse(NetState sender, RelayInfo info)
                 {
                     if (this.m_Skeleton == null || this.m_Skeleton.Deleted || this.m_House == null)
-                        return;		
-					
-                    HangingSkeleton banner = null;	
-				
+                        return;
+
+                    HangingSkeleton banner = null;
+
                     if (info.ButtonID == (int)Buttons.East)
                         banner = new HangingSkeleton(GetWestItemID(this.m_ItemID));
                     if (info.ButtonID == (int)Buttons.South)
                         banner = new HangingSkeleton(this.m_ItemID);
-						
+
                     if (banner != null)
                     {
                         m_House.Addons[banner] = sender.Mobile;

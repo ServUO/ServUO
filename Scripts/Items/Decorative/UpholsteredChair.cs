@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [Furniture]
@@ -62,12 +60,12 @@ namespace Server.Items
 
     public class UpholsteredChairAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new UpholsteredChairDeed(); } }        
+        public override BaseAddonDeed Deed { get { return new UpholsteredChairDeed(); } }
         public override bool RetainDeedHue { get { return true; } }
 
         [Constructable]
         public UpholsteredChairAddon()
-        { 
+        {
             AddComponent(new UpholsteredChairComponent(), 0, 0, 0);
         }
 
@@ -87,5 +85,5 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadEncodedInt();
         }
-    }    
+    }
 }

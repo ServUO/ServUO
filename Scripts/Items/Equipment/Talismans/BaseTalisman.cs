@@ -1,5 +1,5 @@
-using System;
 using Server.Commands;
+using Server.Engines.Craft;
 using Server.Mobiles;
 using Server.Spells.Fifth;
 using Server.Spells.First;
@@ -7,7 +7,7 @@ using Server.Spells.Fourth;
 using Server.Spells.Necromancy;
 using Server.Spells.Second;
 using Server.Targeting;
-using Server.Engines.Craft;
+using System;
 
 namespace Server.Items
 {
@@ -752,7 +752,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if(Attributes.Brittle > 0)
+            if (Attributes.Brittle > 0)
                 list.Add(1116209); // Brittle           
 
             if (Parent is Mobile && m_MaxChargeTime > 0)
@@ -767,8 +767,8 @@ namespace Server.Items
             {
                 list.Add(1061078, ArtifactRarity.ToString()); // artifact rarity ~1_val~
             }
-			
-			if (this is ManaPhasingOrb)
+
+            if (this is ManaPhasingOrb)
                 list.Add(1116158); //Mana Phase
 
             if (m_Killer != null && !m_Killer.IsEmpty && m_Killer.Amount > 0)
@@ -789,8 +789,8 @@ namespace Server.Items
             m_AosSkillBonuses.GetProperties(list);
 
             int prop;
-			
-			if (m_Slayer != TalismanSlayerName.None)
+
+            if (m_Slayer != TalismanSlayerName.None)
             {
                 if (m_Slayer == TalismanSlayerName.Goblin)
                     list.Add(1095010);
@@ -810,9 +810,9 @@ namespace Server.Items
                         case TalismanSlayerName.Fey: list.Add(1154652); break;
                     }
                 }
-            }  
+            }
 
-			#region SA
+            #region SA
             if ((prop = m_SAAbsorptionAttributes.CastingFocus) != 0)
                 list.Add(1113696, prop.ToString()); // Casting Focus ~1_val~%
 
@@ -849,7 +849,7 @@ namespace Server.Items
             if ((prop = m_SAAbsorptionAttributes.ResonanceKinetic) != 0)
                 list.Add(1113695, prop.ToString()); // Kinetic Resonance ~1_val~%
             #endregion
-            
+
             if ((prop = m_AosAttributes.BonusDex) != 0)
                 list.Add(1060409, prop.ToString()); // dexterity bonus ~1_val~
 
@@ -861,7 +861,7 @@ namespace Server.Items
 
             if ((prop = m_AosAttributes.CastSpeed) != 0)
                 list.Add(1060413, prop.ToString()); // faster casting ~1_val~
-            
+
             if ((prop = m_AosAttributes.BonusHits) != 0)
                 list.Add(1060431, prop.ToString()); // hit point increase ~1_val~
 
@@ -876,35 +876,35 @@ namespace Server.Items
 
             if ((prop = m_AosAttributes.ReflectPhysical) != 0)
                 list.Add(1060442, prop.ToString()); // reflect physical damage ~1_val~%
-			
-			if ((prop = m_AosAttributes.BonusStr) != 0)
+
+            if ((prop = m_AosAttributes.BonusStr) != 0)
                 list.Add(1060485, prop.ToString()); // strength bonus ~1_val~
-			
-			if ((prop = m_AosAttributes.RegenHits) != 0)
+
+            if ((prop = m_AosAttributes.RegenHits) != 0)
                 list.Add(1060444, prop.ToString()); // hit point regeneration ~1_val~
 
             if ((prop = m_AosAttributes.RegenStam) != 0)
                 list.Add(1060443, prop.ToString()); // stamina regeneration ~1_val~
-			
-			if ((prop = m_AosAttributes.RegenMana) != 0)
+
+            if ((prop = m_AosAttributes.RegenMana) != 0)
                 list.Add(1060440, prop.ToString()); // mana regeneration ~1_val~
 
             if ((prop = m_AosAttributes.Luck) != 0)
                 list.Add(1060436, prop.ToString()); // luck ~1_val~
-			
-			if ((prop = m_AosAttributes.AttackChance) != 0)
+
+            if ((prop = m_AosAttributes.AttackChance) != 0)
                 list.Add(1060415, prop.ToString()); // hit chance increase ~1_val~%
-			
-			if ((prop = m_AosAttributes.LowerManaCost) != 0)
+
+            if ((prop = m_AosAttributes.LowerManaCost) != 0)
                 list.Add(1060433, prop.ToString()); // lower mana cost ~1_val~%
-			
-			if ((prop = m_AosAttributes.SpellDamage) != 0)
+
+            if ((prop = m_AosAttributes.SpellDamage) != 0)
                 list.Add(1060483, prop.ToString()); // spell damage increase ~1_val~%
-			
-			if ((prop = m_AosAttributes.LowerRegCost) != 0)
+
+            if ((prop = m_AosAttributes.LowerRegCost) != 0)
                 list.Add(1060434, prop.ToString()); // lower reagent cost ~1_val~%
-         
-			if ((prop = m_AosAttributes.DefendChance) != 0)
+
+            if ((prop = m_AosAttributes.DefendChance) != 0)
                 list.Add(1060408, prop.ToString()); // defense chance increase ~1_val~%        
 
             if ((prop = m_AosAttributes.BonusStam) != 0)
@@ -912,8 +912,8 @@ namespace Server.Items
 
             if ((prop = m_AosAttributes.WeaponSpeed) != 0)
                 list.Add(1060486, prop.ToString()); // swing speed increase ~1_val~%
-			
-			if ((prop = m_AosAttributes.WeaponDamage) != 0)
+
+            if ((prop = m_AosAttributes.WeaponDamage) != 0)
                 list.Add(1060401, prop.ToString()); // damage increase ~1_val~%
 
             if ((prop = m_AosAttributes.IncreasedKarmaLoss) != 0)
@@ -927,7 +927,7 @@ namespace Server.Items
                     list.Add(1072304, !String.IsNullOrEmpty(BlessedFor.Name) ? BlessedFor.Name : "Unnamed Warrior"); // Owned by ~1_name~
                 else
                     list.Add(1072304, "Nobody"); // Owned by ~1_name~
-            }          
+            }
 
             if (m_MaxHitPoints > 0)
                 list.Add(1060639, "{0}\t{1}", m_HitPoints, m_MaxHitPoints); // durability ~1_val~ / ~2_val~

@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class EarringBoxSet : RedVelvetGiftBox
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public EarringBoxSet()
             : base()
@@ -84,7 +82,7 @@ namespace Server.Items
 
         public static AosElementAttribute GetTypes(int value)
         {
-            switch( value )
+            switch (value)
             {
                 case 0:
                     return AosElementAttribute.Physical;
@@ -101,7 +99,7 @@ namespace Server.Items
 
         public static int GetItemData(AosElementAttribute element, bool label)
         {
-            switch( element )
+            switch (element)
             {
                 case AosElementAttribute.Physical:
                     return (label) ? 1071091 : 0;         // Earring of Protection (Physical)  1071091

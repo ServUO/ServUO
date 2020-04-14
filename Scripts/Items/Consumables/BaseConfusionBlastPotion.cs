@@ -1,10 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Spells;
 using Server.Targeting;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -91,7 +91,7 @@ namespace Server.Items
             this.Consume();
 
             // Check if any other players are using this potion
-            for (int i = 0; i < this.m_Users.Count; i ++)
+            for (int i = 0; i < this.m_Users.Count; i++)
             {
                 ThrowTarget targ = this.m_Users[i].Target as ThrowTarget;
 
@@ -128,11 +128,11 @@ namespace Server.Items
             if (map.CanFit(p, 12, true, false))
                 Effects.SendLocationEffect(p, map, 0x376A, 4, 9);
         }
-		
+
         public void CircleEffect2(object state)
         {
             object[] states = (object[])state;
-				
+
             Geometry.Circle2D((Point3D)states[0], (Map)states[1], this.Radius, new DoEffect_Callback(BlastEffect), 90, 270);
         }
 
@@ -148,7 +148,7 @@ namespace Server.Items
             if (timer != null)
                 timer.Stop();
 
-            m_Delay[m] = Timer.DelayCall(TimeSpan.FromSeconds(60), new TimerStateCallback(EndDelay_Callback), m);	
+            m_Delay[m] = Timer.DelayCall(TimeSpan.FromSeconds(60), new TimerStateCallback(EndDelay_Callback), m);
         }
 
         public static int GetDelay(Mobile m)

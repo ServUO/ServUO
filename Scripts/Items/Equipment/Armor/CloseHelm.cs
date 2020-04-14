@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class CloseHelm : BaseArmor
@@ -79,7 +77,7 @@ namespace Server.Items
                 return ArmorMaterialType.Plate;
             }
         }
-		
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

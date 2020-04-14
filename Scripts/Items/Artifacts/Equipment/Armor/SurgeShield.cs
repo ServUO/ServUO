@@ -1,6 +1,4 @@
-﻿using Server;
-using System;
-using Server.Mobiles;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Server.Items
@@ -13,9 +11,9 @@ namespace Server.Items
         Stam
     }
 
-	public class SurgeShield : BronzeShield
-	{
-		public override bool IsArtifact { get { return true; } }
+    public class SurgeShield : BronzeShield
+    {
+        public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1116232; } }
 
         private int m_Charges;
@@ -39,9 +37,9 @@ namespace Server.Items
             }
         }
 
-		[Constructable]
-		public SurgeShield()
-		{
+        [Constructable]
+        public SurgeShield()
+        {
             if (0.90 > Utility.RandomDouble())
                 Hue = 2125;
             else
@@ -49,32 +47,32 @@ namespace Server.Items
 
             Attributes.Brittle = 1;
 
-			switch(Utility.Random(5))
-			{
-				case 0: PhysicalBonus = 5; break;
-				case 1: FireBonus = 5; break;
-				case 2: ColdBonus = 5; break;
-				case 3: PoisonBonus = 5; break;
-				case 4: EnergyBonus = 5; break;
-			}
+            switch (Utility.Random(5))
+            {
+                case 0: PhysicalBonus = 5; break;
+                case 1: FireBonus = 5; break;
+                case 2: ColdBonus = 5; break;
+                case 3: PoisonBonus = 5; break;
+                case 4: EnergyBonus = 5; break;
+            }
 
-			switch(Utility.Random(3))
-			{
-				case 0: Surge = SurgeType.Hits; break;
-				case 1: Surge = SurgeType.Stam; break;
-				case 2: Surge = SurgeType.Mana; break;
-			}
+            switch (Utility.Random(3))
+            {
+                case 0: Surge = SurgeType.Hits; break;
+                case 1: Surge = SurgeType.Stam; break;
+                case 2: Surge = SurgeType.Mana; break;
+            }
 
-			if(Utility.RandomBool())
-				Attributes.AttackChance = 5;
-			else
-				Attributes.LowerManaCost = 4;
+            if (Utility.RandomBool())
+                Attributes.AttackChance = 5;
+            else
+                Attributes.LowerManaCost = 4;
 
-			if(Utility.RandomBool())
-				Attributes.SpellChanneling = 1;			
-			else
-				Attributes.CastSpeed = 1;
-		}
+            if (Utility.RandomBool())
+                Attributes.SpellChanneling = 1;
+            else
+                Attributes.CastSpeed = 1;
+        }
 
         public static Dictionary<Mobile, SurgeType> Table { get { return m_Table; } }
         private static Dictionary<Mobile, SurgeType> m_Table = new Dictionary<Mobile, SurgeType>();
@@ -122,27 +120,27 @@ namespace Server.Items
         {
             return m_Table.ContainsKey(from) && m_Table[from] == type;
         }
-				
-		public SurgeShield(Serial serial) : base(serial)
-		{
-		}
 
-		public override void Serialize(GenericWriter writer)
-		{	
-			base.Serialize(writer);
-			writer.Write((int)0);
+        public SurgeShield(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
 
             writer.Write(m_Charges);
             writer.Write((int)m_Surge);
-		}
-	
-		public override void Deserialize(GenericReader reader)
-		{
-		 	base.Deserialize(reader);
-			int version = reader.ReadInt();
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
 
             m_Charges = reader.ReadInt();
             m_Surge = (SurgeType)reader.ReadInt();
-		}
-	}
+        }
+    }
 }

@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Multis;
 using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -29,7 +29,7 @@ namespace Server.Items
             {
                 int dead = 0;
 
-                for (int i = 0; i < this.Items.Count; i ++)
+                for (int i = 0; i < this.Items.Count; i++)
                 {
                     if (this.Items[i] is BaseFish)
                     {
@@ -450,7 +450,7 @@ namespace Server.Items
 
             writer.Write((int)this.m_Events.Count);
 
-            for (int i = 0; i < this.m_Events.Count; i ++)
+            for (int i = 0; i < this.m_Events.Count; i++)
                 writer.Write((int)this.m_Events[i]);
 
             writer.Write((bool)this.m_RewardAvailable);
@@ -462,7 +462,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 3:
                 case 2:
@@ -492,7 +492,7 @@ namespace Server.Items
 
                         int count = reader.ReadInt();
 
-                        for (int i = 0; i < count; i ++)
+                        for (int i = 0; i < count; i++)
                             this.m_Events.Add(reader.ReadInt());
 
                         this.m_RewardAvailable = reader.ReadBool();
@@ -552,7 +552,7 @@ namespace Server.Items
         {
             List<BaseFish> toKill = new List<BaseFish>();
 
-            for (int i = 0; i < this.Items.Count; i ++)
+            for (int i = 0; i < this.Items.Count; i++)
             {
                 if (this.Items[i] is BaseFish)
                 {
@@ -629,7 +629,7 @@ namespace Server.Items
                         BaseFish fish = null;
                         int message = 0;
 
-                        switch ( Utility.Random(6) )
+                        switch (Utility.Random(6))
                         {
                             case 0:
                                 {
@@ -919,7 +919,7 @@ namespace Server.Items
 
             Item[] items = from.Backpack.FindItemsByType(typeof(FishBowl));
 
-            for (int i = 0; i < items.Length; i ++)
+            for (int i = 0; i < items.Length; i++)
             {
                 if (items[i] is FishBowl)
                 {
@@ -953,7 +953,7 @@ namespace Server.Items
 
             Type type = item.GetType();
 
-            for (int i = 0; i < m_Decorations.Length; i ++)
+            for (int i = 0; i < m_Decorations.Length; i++)
             {
                 if (type == m_Decorations[i])
                     return true;

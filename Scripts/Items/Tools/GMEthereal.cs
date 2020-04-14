@@ -2,14 +2,13 @@
 snicker7
 Released: 03/26/06
 */
-using System;
 
 namespace Server.Mobiles
 {
     public class GMEthereal : EtherealMount
     {
-		public override int FollowerSlots { get { return 0; } }
-		
+        public override int FollowerSlots { get { return 0; } }
+
         private static readonly EtherealInfo[] EthyItemTypes = new EtherealInfo[]
         {
             new EtherealInfo(0x20DD, 0x3EAA), //Horse
@@ -40,11 +39,11 @@ namespace Server.Mobiles
 
         [Constructable]
         public GMEthereal(EtherealTypes type)
-            : base(0,0,0)
+            : base(0, 0, 0)
         {
             EthyType = type;
             LootType = LootType.Blessed;
-			Name = "Staff Ethereal Steed";
+            Name = "Staff Ethereal Steed";
         }
 
         public GMEthereal(Serial serial)
@@ -73,7 +72,7 @@ namespace Server.Mobiles
             PolarBear,
             Boura
         }
-		
+
         [CommandProperty(AccessLevel.Counselor)]
         public EtherealTypes EthyType
         {
@@ -91,16 +90,16 @@ namespace Server.Mobiles
                 NonTransparentMountedID = TransparentMountedID;
                 StatueID = EthyItemTypes[(int)value].RegularID;
             }
-        }    
-        
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (from.IsStaff())
             {
                 if (from.Mounted)
                     from.SendLocalizedMessage(1005583); // Please dismount first.
-				else if (from.Race == Race.Gargoyle)
-					from.SendLocalizedMessage(1112281); // gargs can't mount
+                else if (from.Race == Race.Gargoyle)
+                    from.SendLocalizedMessage(1112281); // gargs can't mount
                 else if (from.HasTrade)
                     from.SendLocalizedMessage(1042317, "", 0x41); // You may not ride at this time
                 else if (Multis.DesignContext.Check(from))
@@ -115,7 +114,7 @@ namespace Server.Mobiles
             }
             else
             {
-                from.SendMessage("This item is to only be used by staff members."); 
+                from.SendMessage("This item is to only be used by staff members.");
                 Delete();
             }
         }
@@ -131,7 +130,7 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            EthyType = (EtherealTypes)reader.ReadInt();           
+            EthyType = (EtherealTypes)reader.ReadInt();
         }
 
         public struct EtherealInfo

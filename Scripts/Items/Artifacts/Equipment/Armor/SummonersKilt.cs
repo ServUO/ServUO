@@ -1,20 +1,19 @@
-using System;
 
 using Server.Engines.Craft;
 
 namespace Server.Items
 {
     public class SummonersKilt : GargishClothKilt, IRepairable
-	{
-		public Server.Engines.Craft.CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
-		
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113540; } } // Summoner's Kilt
-		
+    {
+        public Server.Engines.Craft.CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
+
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113540; } } // Summoner's Kilt
+
         [Constructable]
         public SummonersKilt()
         {
-            Hue = 1266;			
+            Hue = 1266;
             Attributes.BonusMana = 5;
             Attributes.RegenMana = 2;
             Attributes.SpellDamage = 5;

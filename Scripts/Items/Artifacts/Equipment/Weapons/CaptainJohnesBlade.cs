@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class CaptainJohnesBlade : Scimitar
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1154475; } } // CaptainJohnesBlade
 
         [Constructable]

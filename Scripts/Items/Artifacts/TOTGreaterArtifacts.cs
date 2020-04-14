@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public enum PigmentType
@@ -28,7 +26,7 @@ namespace Server.Items
 
     public class DarkenedSky : Kama
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DarkenedSky()
             : base()
@@ -87,7 +85,7 @@ namespace Server.Items
 
     public class KasaOfTheRajin : Kasa
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public KasaOfTheRajin()
             : base()
@@ -182,7 +180,7 @@ namespace Server.Items
 
     public class RuneBeetleCarapace : PlateDo
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RuneBeetleCarapace()
             : base()
@@ -251,7 +249,7 @@ namespace Server.Items
 
     public class Stormgrip : LeatherNinjaMitts
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public Stormgrip()
             : base()
@@ -325,7 +323,7 @@ namespace Server.Items
 
     public class SwordOfTheStampede : NoDachi
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public SwordOfTheStampede()
             : base()
@@ -384,7 +382,7 @@ namespace Server.Items
 
     public class SwordsOfProsperity : Daisho
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public SwordsOfProsperity()
             : base()
@@ -444,7 +442,7 @@ namespace Server.Items
 
     public class TheHorselord : Yumi
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public TheHorselord()
             : base()
@@ -501,7 +499,7 @@ namespace Server.Items
 
     public class TomeOfLostKnowledge : Spellbook
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public TomeOfLostKnowledge()
             : base()
@@ -513,8 +511,8 @@ namespace Server.Items
             Attributes.BonusInt = 8;
             Attributes.LowerManaCost = 15;
             Attributes.SpellDamage = 15;
-	    
-	    LootType = LootType.Blessed;
+
+            LootType = LootType.Blessed;
         }
 
         public TomeOfLostKnowledge(Serial serial)
@@ -546,7 +544,7 @@ namespace Server.Items
 
     public class WindsEdge : Tessen
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public WindsEdge()
             : base()
@@ -607,7 +605,7 @@ namespace Server.Items
 
     public class PigmentsOfTokuno : BasePigmentsOfTokuno
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
 
         public static int[][] Table { get { return m_Table; } }
         private static readonly int[][] m_Table = new int[][]
@@ -670,7 +668,7 @@ namespace Server.Items
             set
             {
                 m_Type = value;
-				
+
                 int v = (int)m_Type;
 
                 if (v >= 0 && v < m_Table.Length)
@@ -698,7 +696,7 @@ namespace Server.Items
 
             if (v < 0 || v >= m_Table.Length)
                 v = 0;
-			
+
             return m_Table[v];
         }
 
@@ -716,8 +714,8 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BasePigmentsOfTokuno insertion
-			
-            switch ( version )
+
+            switch (version)
             {
                 case 1:
                     Type = (PigmentType)reader.ReadEncodedInt();

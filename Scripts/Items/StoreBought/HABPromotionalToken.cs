@@ -1,6 +1,6 @@
-using System;
 using Server.Gumps;
 using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -238,7 +238,7 @@ namespace Server.Items
                     from.SendGump(new InternalGump(from, Token, entry));
                 }
             }
-        }        
+        }
 
         private class InternalGump : Gump
         {
@@ -300,7 +300,7 @@ namespace Server.Items
                             AddTooltip(_Entries[i].Tooltip);
                             AddImage(10 + (124 * i), 20, _Entries[i].GumpID);
                             AddRadio(30 + (124 * i), 80, 0xD0, 0xD1, false, 41400 + i);
-                        }                        
+                        }
                     }
                 }
             }

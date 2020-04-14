@@ -1,90 +1,87 @@
-using System;
-using Server;
-
 namespace Server.Items
 {
-	public class PresetMap : MapItem
-	{
-		private int m_LabelNumber;
+    public class PresetMap : MapItem
+    {
+        private int m_LabelNumber;
 
-		[Constructable]
-		public PresetMap( PresetMapType type )
-		{
-			int v = (int)type;
+        [Constructable]
+        public PresetMap(PresetMapType type)
+        {
+            int v = (int)type;
 
-			if ( v >= 0 && v < PresetMapEntry.Table.Length )
-				InitEntry( PresetMapEntry.Table[v] );
-		}
+            if (v >= 0 && v < PresetMapEntry.Table.Length)
+                InitEntry(PresetMapEntry.Table[v]);
+        }
 
-		public PresetMap( PresetMapEntry entry )
-		{
-			InitEntry( entry );
-		}
+        public PresetMap(PresetMapEntry entry)
+        {
+            InitEntry(entry);
+        }
 
-		public void InitEntry( PresetMapEntry entry )
-		{
-			m_LabelNumber = entry.Name;
+        public void InitEntry(PresetMapEntry entry)
+        {
+            m_LabelNumber = entry.Name;
 
-			Width = entry.Width;
-			Height = entry.Height;
+            Width = entry.Width;
+            Height = entry.Height;
 
-			Bounds = entry.Bounds;
-		}
+            Bounds = entry.Bounds;
+        }
 
-		public override int LabelNumber{ get{ return (m_LabelNumber == 0 ? base.LabelNumber : m_LabelNumber); } }
+        public override int LabelNumber { get { return (m_LabelNumber == 0 ? base.LabelNumber : m_LabelNumber); } }
 
-		public PresetMap( Serial serial ) : base( serial )
-		{
-		}
+        public PresetMap(Serial serial) : base(serial)
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write( (int) 0 );
+            writer.Write((int)0);
 
-			writer.Write( (int) m_LabelNumber );
-		}
+            writer.Write((int)m_LabelNumber);
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadInt();
+            int version = reader.ReadInt();
 
-			switch ( version )
-			{
-				case 0:
-				{
-					m_LabelNumber = reader.ReadInt();
-					break;
-				}
-			}
-		}
-	}
+            switch (version)
+            {
+                case 0:
+                    {
+                        m_LabelNumber = reader.ReadInt();
+                        break;
+                    }
+            }
+        }
+    }
 
-	public class PresetMapEntry
-	{
-		private int m_Name;
-		private int m_Width, m_Height;
-		private Rectangle2D m_Bounds;
+    public class PresetMapEntry
+    {
+        private int m_Name;
+        private int m_Width, m_Height;
+        private Rectangle2D m_Bounds;
 
-		public int Name{ get{ return m_Name; } }
-		public int Width{ get{ return m_Width; } }
-		public int Height{ get{ return m_Height; } }
-		public Rectangle2D Bounds{ get{ return m_Bounds; } }
+        public int Name { get { return m_Name; } }
+        public int Width { get { return m_Width; } }
+        public int Height { get { return m_Height; } }
+        public Rectangle2D Bounds { get { return m_Bounds; } }
 
-		public PresetMapEntry( int name, int width, int height, int xLeft, int yTop, int xRight, int yBottom )
-		{
-			m_Name = name;
-			m_Width = width;
-			m_Height = height;
-			m_Bounds = new Rectangle2D( xLeft, yTop, xRight - xLeft, yBottom - yTop );
-		}
+        public PresetMapEntry(int name, int width, int height, int xLeft, int yTop, int xRight, int yBottom)
+        {
+            m_Name = name;
+            m_Width = width;
+            m_Height = height;
+            m_Bounds = new Rectangle2D(xLeft, yTop, xRight - xLeft, yBottom - yTop);
+        }
 
-		private static PresetMapEntry[] m_Table = new PresetMapEntry[]
-			{
-				new PresetMapEntry( 1041189, 200, 200, 1092, 1396, 1736, 1924 ), // map of Britain
+        private static PresetMapEntry[] m_Table = new PresetMapEntry[]
+            {
+                new PresetMapEntry( 1041189, 200, 200, 1092, 1396, 1736, 1924 ), // map of Britain
 				new PresetMapEntry( 1041203, 200, 200, 0256, 1792, 1736, 2560 ), // map of Britain to Skara Brae
 				new PresetMapEntry( 1041192, 200, 200, 1024, 1280, 2304, 3072 ), // map of Britain to Trinsic
 				new PresetMapEntry( 1041183, 200, 200, 2500, 1900, 3000, 2400 ), // map of Buccaneer's Den
@@ -120,38 +117,38 @@ namespace Server.Items
                 new PresetMapEntry( 0,       200, 200, 5140, 3900, 5330, 4094 ), // Deliucia
 			};
 
-		public static PresetMapEntry[] Table{ get{ return m_Table; } }
-	}
+        public static PresetMapEntry[] Table { get { return m_Table; } }
+    }
 
-	public enum PresetMapType
-	{
-		Britain,
-		BritainToSkaraBrae,
-		BritainToTrinsic,
-		BucsDen,
-		BucsDenToMagincia,
-		BucsDenToOcllo,
-		Jhelom,
-		Magincia,
-		MaginciaToOcllo,
-		Minoc,
-		MinocToYew,
-		MinocToVesper,
-		Moonglow,
-		MoonglowToNujelm,
-		Nujelm,
-		NujelmToMagincia,
-		Ocllo,
-		SerpentsHold,
-		SerpentsHoldToOcllo,
-		SkaraBrae,
-		TheWorld,
-		Trinsic,
-		TrinsicToBucsDen,
-		TrinsicToJhelom,
-		Vesper,
-		VesperToNujelm,
-		Yew,
-		YewToBritain
-	}
+    public enum PresetMapType
+    {
+        Britain,
+        BritainToSkaraBrae,
+        BritainToTrinsic,
+        BucsDen,
+        BucsDenToMagincia,
+        BucsDenToOcllo,
+        Jhelom,
+        Magincia,
+        MaginciaToOcllo,
+        Minoc,
+        MinocToYew,
+        MinocToVesper,
+        Moonglow,
+        MoonglowToNujelm,
+        Nujelm,
+        NujelmToMagincia,
+        Ocllo,
+        SerpentsHold,
+        SerpentsHoldToOcllo,
+        SkaraBrae,
+        TheWorld,
+        Trinsic,
+        TrinsicToBucsDen,
+        TrinsicToJhelom,
+        Vesper,
+        VesperToNujelm,
+        Yew,
+        YewToBritain
+    }
 }

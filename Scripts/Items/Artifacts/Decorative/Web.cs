@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class Web : Item
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         private static readonly int[] m_itemids = new int[]
         {
             0x10d7, 0x10d8, 0x10dd

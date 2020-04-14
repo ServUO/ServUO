@@ -1,13 +1,11 @@
-using System;
-
 namespace Server.Items
 {
     [TypeAlias("Server.Items.TongueoftheBeast")]
     public class TongueOfTheBeast : WoodenKiteShield
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1112405; } } // Tongue of the Beast [Replica]
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1112405; } } // Tongue of the Beast [Replica]
+
         [Constructable]
         public TongueOfTheBeast()
         {
@@ -49,7 +47,7 @@ namespace Server.Items
                 return 150;
             }
         }
-		public override bool CanFortify
+        public override bool CanFortify
         {
             get
             {

@@ -1,28 +1,26 @@
-using System;
-
 namespace Server.Items
 {
     public class GargishSignOfOrder : GargishOrderShield
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public GargishSignOfOrder()
             : base()
-        {		
+        {
             SkillBonuses.SetValues(0, SkillName.Chivalry, 10.0);
             Attributes.AttackChance = 5;
             Attributes.DefendChance = 10;
             Attributes.CastSpeed = 1;
-			Attributes.CastRecovery = 1;
+            Attributes.CastRecovery = 1;
         }
 
         public GargishSignOfOrder(Serial serial)
             : base(serial)
         {
-        }     
-        
-        public override int LabelNumber { get{return 1113534;} }// Sign of Order
-        
+        }
+
+        public override int LabelNumber { get { return 1113534; } }// Sign of Order
+
         public override int BasePhysicalResistance
         {
             get
@@ -72,7 +70,7 @@ namespace Server.Items
                 return 255;
             }
         }
-		
+
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);

@@ -32,7 +32,7 @@ namespace Server.Items
         public SacrificialAltarAddon(Serial serial)
             : base(serial)
         {
-        }       
+        }
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
@@ -99,7 +99,7 @@ namespace Server.Items
 
         public virtual void Flip(Mobile from, Direction direction)
         {
-            switch ( direction )
+            switch (direction)
             {
                 case Direction.East:
                     ItemID = 0x2A9C;
@@ -259,7 +259,7 @@ namespace Server.Items
         }
 
         public override BaseAddonContainer Addon { get { return new SacrificialAltarAddon(); } }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

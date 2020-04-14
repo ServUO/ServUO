@@ -1,15 +1,13 @@
-using System;
-
 namespace Server.Items
 {
     public class TorcOfTheGuardians : GoldNecklace
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113721; } } // Torc of the Guardians
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113721; } } // Torc of the Guardians
+
         [Constructable]
         public TorcOfTheGuardians()
-        {	
+        {
             Hue = 1837;
             Attributes.BonusInt = 5;
             Attributes.BonusStr = 5;
@@ -50,7 +48,7 @@ namespace Server.Items
                 return Race.Gargoyle;
             }
         }
-		public override bool CanBeWornByGargoyles
+        public override bool CanBeWornByGargoyles
         {
             get
             {

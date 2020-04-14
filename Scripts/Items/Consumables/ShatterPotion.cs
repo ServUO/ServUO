@@ -1,8 +1,8 @@
+using Server.Network;
+using Server.Targeting;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Server.Network;
-using Server.Targeting;
 
 namespace Server.Items
 {
@@ -128,7 +128,7 @@ namespace Server.Items
                 {
                     List<BasePotion> potions = m.Backpack.FindItemsByType<BasePotion>();
                     potions[Utility.Random(potions.Count)].Consume();
-                }                
+                }
             }
         }
 
@@ -204,5 +204,5 @@ namespace Server.Items
                 }
             }
         }
-    }    
+    }
 }

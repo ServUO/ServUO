@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class TheScholarsHalo : Bandana
-	{
+    {
         public override int LabelNumber { get { return 1157354; } } // the scholar's halo
         public override bool IsArtifact { get { return true; } }
 

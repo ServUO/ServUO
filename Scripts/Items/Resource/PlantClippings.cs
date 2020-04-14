@@ -1,7 +1,5 @@
-using System;
-using Server;
-using Server.Mobiles;
 using Server.Engines.Plants;
+using System;
 
 namespace Server.Items
 {
@@ -85,7 +83,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int v = reader.ReadInt();
 
-            if(v > 0)
+            if (v > 0)
                 m_PlantHue = (PlantHue)reader.ReadInt();
         }
     }

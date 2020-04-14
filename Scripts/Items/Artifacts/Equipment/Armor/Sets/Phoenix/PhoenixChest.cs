@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class PhoenixChest : RingmailChest
@@ -8,7 +6,7 @@ namespace Server.Items
         public PhoenixChest()
         {
             Hue = 0x8E;
-			LootType = LootType.Blessed;     
+            LootType = LootType.Blessed;
         }
 
         public PhoenixChest(Serial serial)
@@ -23,7 +21,7 @@ namespace Server.Items
                 return 1041606;
             }
         }// ringmail tunic of the phoenix
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

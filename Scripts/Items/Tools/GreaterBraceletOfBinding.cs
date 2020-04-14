@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Server.ContextMenus;
+using Server.Gumps;
 using Server.Mobiles;
 using Server.Targeting;
-using Server.Gumps;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -32,7 +31,7 @@ namespace Server.Items
         {
         }
 
-    
+
         public override string TranslocationItemName
         {
             get

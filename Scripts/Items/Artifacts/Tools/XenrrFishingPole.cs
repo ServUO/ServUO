@@ -1,7 +1,3 @@
-using System;
-using Server.Mobiles;
-using Server;
-
 namespace Server.Items
 {
     public class XenrrFishingPole : FishingPole

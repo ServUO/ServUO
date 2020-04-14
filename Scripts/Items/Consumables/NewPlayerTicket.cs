@@ -1,4 +1,3 @@
-using System;
 using Server.Gumps;
 using Server.Network;
 using Server.Targeting;
@@ -69,7 +68,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {
@@ -186,7 +185,7 @@ namespace Server.Items
                 Item item = null;
                 Item item2 = null;
 
-                switch ( info.ButtonID )
+                switch (info.ButtonID)
                 {
                     case 1:
                         item = new Sextant();

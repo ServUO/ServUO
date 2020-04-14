@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class TheBeserkersMaul : Maul
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public TheBeserkersMaul()
         {

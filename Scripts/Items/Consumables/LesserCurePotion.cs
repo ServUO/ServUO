@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class LesserCurePotion : BaseCurePotion
@@ -9,8 +7,8 @@ namespace Server.Items
             new CureLevelInfo(Poison.Lesser, 1.00),
             new CureLevelInfo(Poison.Regular, 0.35),
             new CureLevelInfo(Poison.Greater, 0.15),
-			new CureLevelInfo(Poison.Deadly, 0.10),
-			new CureLevelInfo(Poison.Lethal, 0.05)
+            new CureLevelInfo(Poison.Deadly, 0.10),
+            new CureLevelInfo(Poison.Lethal, 0.05)
         };
         [Constructable]
         public LesserCurePotion()

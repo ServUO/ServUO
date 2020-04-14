@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class Cyclone : BaseThrown
@@ -61,7 +59,7 @@ namespace Server.Items
                 return 3.25f;
             }
         }
-       
+
         public override int InitMinHits
         {
             get
@@ -76,7 +74,7 @@ namespace Server.Items
                 return 60;
             }
         }
-        
+
         public override Race RequiredRace { get { return Race.Gargoyle; } }
         public override bool CanBeWornByGargoyles { get { return true; } }
 

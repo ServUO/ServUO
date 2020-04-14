@@ -1,13 +1,12 @@
-using System;
-using Server;
-using System.Collections.Generic;
-using Server.Engines.VeteranRewards;
-using Server.Items;
-using Server.Gumps;
-using System.Linq;
 using Server.ContextMenus;
-using Server.Multis;
+using Server.Engines.VeteranRewards;
+using Server.Gumps;
+using Server.Items;
 using Server.Mobiles;
+using Server.Multis;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Engines.Plants
 {
@@ -35,7 +34,7 @@ namespace Server.Engines.Plants
             {
                 int count = 0;
 
-                if(Entries != null)
+                if (Entries != null)
                     Entries.ForEach(e => count += e == null || e.Seed == null ? 0 : e.Seed.Amount);
 
                 return count;
@@ -305,10 +304,10 @@ namespace Server.Engines.Plants
 
             List<SeedEntry> entries = new List<SeedEntry>(Entries);
 
-            foreach(var entry in entries.Where(e => e != null && (e.Seed == null || e.Seed.Amount == 0 || e.Seed.Deleted)))
+            foreach (var entry in entries.Where(e => e != null && (e.Seed == null || e.Seed.Amount == 0 || e.Seed.Deleted)))
                 Entries.Remove(entry);
 
-            ColUtility.Free(entries); 
+            ColUtility.Free(entries);
             ColUtility.Free(toDelete);
         }
 

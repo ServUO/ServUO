@@ -1,13 +1,11 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0xE87, 0xE88)]
     public class FNPitchfork : BaseSpear
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113498; } }// Farmer Nash's Pitchfork		
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113498; } }// Farmer Nash's Pitchfork		
+
         [Constructable]
         public FNPitchfork()
             : base(0xE87)
@@ -19,7 +17,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override WeaponAbility PrimaryAbility
         {
             get
@@ -62,7 +60,7 @@ namespace Server.Items
                 return 2.50f;
             }
         }
-        
+
         public override int InitMinHits
         {
             get

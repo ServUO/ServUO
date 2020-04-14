@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x2B0A, 0x2B0B)]
     public class CompassionArms : BaseArmor
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public CompassionArms()
             : base(0x2B0A)
@@ -14,9 +12,9 @@ namespace Server.Items
             Weight = 3.0;
             SetHue = 0;
             Hue = 0x226;
-			
+
             SetSelfRepair = 5;
-			
+
             SetPhysicalBonus = 5;
             SetFireBonus = 5;
             SetColdBonus = 5;

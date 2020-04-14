@@ -1,8 +1,8 @@
-using System;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
 using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -151,7 +151,7 @@ namespace Server.Items
             if (this.m_Deed.Deleted)
                 return;
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 1:
                     {

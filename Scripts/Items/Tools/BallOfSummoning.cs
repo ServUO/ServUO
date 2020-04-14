@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Mobiles;
 using Server.Network;
@@ -7,6 +5,8 @@ using Server.Regions;
 using Server.Spells;
 using Server.Spells.Ninjitsu;
 using Server.Targeting;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -295,7 +295,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {

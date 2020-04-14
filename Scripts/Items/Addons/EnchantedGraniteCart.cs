@@ -1,9 +1,9 @@
-using System;
+using Server.ContextMenus;
+using Server.Gumps;
+using Server.Items;
 using Server.Multis;
 using Server.Network;
-using Server.Items;
-using Server.Gumps;
-using Server.ContextMenus;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Engines.VeteranRewards
@@ -112,7 +112,7 @@ namespace Server.Engines.VeteranRewards
 
             switch (type)
             {
-                case DirectionType.South:  
+                case DirectionType.South:
                     AddComponent(new EnchantedGraniteCartComponent(0xA54B), 0, 0, 0);
                     AddComponent(new AddonComponent(0xA54D), 1, 1, 0);
                     break;
@@ -215,7 +215,7 @@ namespace Server.Engines.VeteranRewards
                                     from.AddToBackpack(granite);
                                     RewardCount -= 2;
                                 }
-                            }                            
+                            }
                         }
                         else
                         {
@@ -341,7 +341,7 @@ namespace Server.Engines.VeteranRewards
 
             if (!Deleted)
                 base.OnDoubleClick(from);
-        }        
+        }
 
         public EnchantedGraniteCartAddonDeed(Serial serial)
             : base(serial)

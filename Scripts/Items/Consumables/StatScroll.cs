@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
@@ -33,19 +33,19 @@ namespace Server.Items
         * When used, the effect is not immediately seen without a gain of points with that skill or statistics.
         * You can view your maximum skill values in your skills window.
         * You can view your maximum statistic value in your statistics window. */
-        public override int Title 
+        public override int Title
         {
             get
             {
-                int level = ((int)Value - (m_StatCap+5)) / 5;
+                int level = ((int)Value - (m_StatCap + 5)) / 5;
 
                 if (level >= 0 && level <= 4 && Value % 5 == 0)
-                    return 1049458 + level;	/* Wonderous Scroll (+5 Maximum Stats): OR
+                    return 1049458 + level; /* Wonderous Scroll (+5 Maximum Stats): OR
                 * Exalted Scroll (+10 Maximum Stats): OR
                 * Mythical Scroll (+15 Maximum Stats): OR
                 * Legendary Scroll (+20 Maximum Stats): OR
                 * Ultimate Scroll (+25 Maximum Stats): */
-				
+
                 return 0;
             }
         }
@@ -59,7 +59,7 @@ namespace Server.Items
         public override void AddNameProperty(ObjectPropertyList list)
         {
             int level = ((int)Value - (m_StatCap + 5)) / 5;
-			
+
             if (level >= 0 && level <= 4 && (int)Value % 5 == 0)
                 list.Add(1049463 + level, "#1049476");	/* a wonderous scroll of ~1_type~ (+5 Maximum Stats) OR
             * an exalted scroll of ~1_type~ (+10 Maximum Stats) OR
@@ -74,21 +74,21 @@ namespace Server.Items
         {
             if (!base.CanUse(from))
                 return false;
-			
+
             int newValue = (int)Value;
-			
+
             if (from is PlayerMobile && ((PlayerMobile)from).HasStatReward)
                 newValue += 5;
 
             if (from is PlayerMobile && ((PlayerMobile)from).HasValiantStatReward)
                 newValue += 5;
-			
+
             if (from.StatCap >= newValue)
             {
                 from.SendLocalizedMessage(1049510); // Your stats are too high for this power scroll.
                 return false;
             }
-			
+
             return true;
         }
 

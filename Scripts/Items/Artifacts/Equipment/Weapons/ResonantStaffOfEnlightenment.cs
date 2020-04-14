@@ -1,12 +1,10 @@
-using System;
-
 namespace Server.Items
 {
     public class ResonantStaffofEnlightenment : QuarterStaff
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113757; } } // Resonant Staff of Enlightenment
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113757; } } // Resonant Staff of Enlightenment
+
         [Constructable]
         public ResonantStaffofEnlightenment()
         {
@@ -17,10 +15,10 @@ namespace Server.Items
             Attributes.DefendChance = 10;
             Attributes.WeaponSpeed = 20;
             Attributes.WeaponDamage = -40;
-            Attributes.LowerManaCost = 5;			
-            AbsorptionAttributes.ResonanceCold = 20;	
-            AosElementDamages.Cold = 100;		
-			Attributes.BonusInt = 5;			
+            Attributes.LowerManaCost = 5;
+            AbsorptionAttributes.ResonanceCold = 20;
+            AosElementDamages.Cold = 100;
+            Attributes.BonusInt = 5;
         }
 
         public ResonantStaffofEnlightenment(Serial serial)

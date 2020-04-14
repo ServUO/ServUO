@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class UnicornRibs : Item
@@ -8,7 +6,7 @@ namespace Server.Items
         public UnicornRibs()
             : base(0x9F1)
         {
-            this.LootType = LootType.Blessed;			
+            this.LootType = LootType.Blessed;
             this.Weight = 1;
             this.Hue = 0x14B;
         }

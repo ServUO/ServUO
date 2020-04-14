@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class QuiverOfBlight : ElvenQuiver
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public QuiverOfBlight()
             : base()

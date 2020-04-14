@@ -1,8 +1,8 @@
-using System;
 using Server.Spells.First;
 using Server.Spells.Fourth;
-using Server.Spells.Necromancy;
 using Server.Spells.Mysticism;
+using Server.Spells.Necromancy;
+using System;
 
 namespace Server.Items
 {
@@ -14,7 +14,7 @@ namespace Server.Items
         {
             Weight = 1.0;
             Hue = 0x488;
-	        Stackable = true;
+            Stackable = true;
         }
 
         public EnchantedApple(Serial serial)

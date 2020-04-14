@@ -1,4 +1,3 @@
-using System;
 using Server.Gumps;
 
 namespace Server.Items
@@ -74,7 +73,7 @@ namespace Server.Items
             else
                 box.DropItem(new Poinsettia(1154));
 
-            switch(Gift)
+            switch (Gift)
             {
                 case HolidayGift2018.RecipeBook:
                     {

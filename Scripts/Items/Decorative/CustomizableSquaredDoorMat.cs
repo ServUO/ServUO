@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
-using Server.Multis;
-using Server.Mobiles;
 using Server.Gumps;
+using Server.Mobiles;
+using Server.Multis;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -17,7 +16,7 @@ namespace Server.Items
         public CustomizableSquaredDoorMatAddon(DirectionType type)
         {
             Lines = new string[3];
-            
+
             switch (type)
             {
                 case DirectionType.South:
@@ -176,5 +175,5 @@ namespace Server.Items
             if (!Deleted)
                 base.OnDoubleClick(from);
         }
-    }    
+    }
 }

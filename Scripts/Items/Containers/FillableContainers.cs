@@ -1,8 +1,8 @@
+using Server.Commands;
+using Server.Mobiles;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Server.Mobiles;
-using Server.Commands;
 using System.Linq;
 
 namespace Server.Items
@@ -109,11 +109,11 @@ namespace Server.Items
         public int TotalTraps { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime NextRespawnTime 
+        public DateTime NextRespawnTime
         {
-            get 
+            get
             {
-                return m_NextRespawnTime; 
+                return m_NextRespawnTime;
             }
             set
             {
@@ -485,7 +485,7 @@ namespace Server.Items
             if (version == 0 && m_Content == null)
                 Timer.DelayCall(TimeSpan.Zero, new TimerCallback(AcquireContent));
 
-            if(version == 1)
+            if (version == 1)
                 MaxSpawnCount = 5;
         }
 

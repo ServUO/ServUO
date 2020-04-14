@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class DemonSkull : Item
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DemonSkull()
             : base(0x224e + Utility.Random(4))

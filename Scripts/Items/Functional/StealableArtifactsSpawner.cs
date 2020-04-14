@@ -1,11 +1,11 @@
+using Server.Commands;
 using System;
 using System.Collections;
-using Server.Commands;
 
 namespace Server.Items
 {
     public class StealableArtifactsSpawner : Item
-    { 
+    {
         private static readonly StealableEntry[] m_Entries = new StealableEntry[]
         {            
             // Doom - Artifact rarity 1
@@ -129,27 +129,27 @@ namespace Server.Items
 
             // Abyss - Artifact rarity 5
 	        new StealableEntry(Map.TerMur, new Point3D(717, 416, 50), 1152, 1728, typeof(DyingPlantArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(951, 542, -14), 1152, 1728, typeof(LargePewterBowlArtifact)),
-			new StealableEntry(Map.TerMur, new Point3D(877, 527, -13), 1152, 1728, typeof(CrownOfArcaneTemperament)),
-			new StealableEntry(Map.TerMur, new Point3D(345, 621, 26), 1152, 1728, typeof(LightInTheVoid)),
-			new StealableEntry(Map.TerMur, new Point3D(585, 853, -45), 1152, 1728, typeof(StaffOfResonance)),
-			new StealableEntry(Map.TerMur, new Point3D(843, 665, 27), 1152, 1728, typeof(ValkyriesGlaive)),
+            new StealableEntry(Map.TerMur, new Point3D(951, 542, -14), 1152, 1728, typeof(LargePewterBowlArtifact)),
+            new StealableEntry(Map.TerMur, new Point3D(877, 527, -13), 1152, 1728, typeof(CrownOfArcaneTemperament)),
+            new StealableEntry(Map.TerMur, new Point3D(345, 621, 26), 1152, 1728, typeof(LightInTheVoid)),
+            new StealableEntry(Map.TerMur, new Point3D(585, 853, -45), 1152, 1728, typeof(StaffOfResonance)),
+            new StealableEntry(Map.TerMur, new Point3D(843, 665, 27), 1152, 1728, typeof(ValkyriesGlaive)),
 	        // Abyss - Artifact rarity 6
 	        new StealableEntry(Map.TerMur, new Point3D(785, 442, -15), 2304, 3456, typeof(LargeDyingPlantArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(849, 281, -6), 2304, 3456, typeof(GargishLuckTotemArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(916, 374, -6), 2304, 3456, typeof(BookOfTruthArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(669, 819, -108), 2304, 3456, typeof(GargishTraditionalVaseArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(715, 782, 27), 2304, 3456, typeof(GargishProtectiveTotemArtifact)),
+            new StealableEntry(Map.TerMur, new Point3D(849, 281, -6), 2304, 3456, typeof(GargishLuckTotemArtifact)),
+            new StealableEntry(Map.TerMur, new Point3D(916, 374, -6), 2304, 3456, typeof(BookOfTruthArtifact)),
+            new StealableEntry(Map.TerMur, new Point3D(669, 819, -108), 2304, 3456, typeof(GargishTraditionalVaseArtifact)),
+            new StealableEntry(Map.TerMur, new Point3D(715, 782, 27), 2304, 3456, typeof(GargishProtectiveTotemArtifact)),
 	        // Abyss - Artifact rarity 7
 	        new StealableEntry(Map.TerMur, new Point3D(368, 605, 26), 4608, 6912, typeof(GargishBentasVaseArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(670, 441, 50), 4608, 6912, typeof(GargishPortraitArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(555, 670, 55), 4608, 6912, typeof(GargishKnowledgeTotemArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(948, 393, 88), 4608, 6912, typeof(GargishMemorialStatueArtifact)),
+            new StealableEntry(Map.TerMur, new Point3D(670, 441, 50), 4608, 6912, typeof(GargishPortraitArtifact)),
+            new StealableEntry(Map.TerMur, new Point3D(555, 670, 55), 4608, 6912, typeof(GargishKnowledgeTotemArtifact)),
+            new StealableEntry(Map.TerMur, new Point3D(948, 393, 88), 4608, 6912, typeof(GargishMemorialStatueArtifact)),
 	        // Abyss - Artifact rarity 8
 	        new StealableEntry(Map.TerMur, new Point3D(926, 598, -5), 9216, 13824, typeof(PushmePullyuArtifact)),
 	        // UnderWorld - Artifact rarity 3
 	        new StealableEntry(Map.TerMur, new Point3D(1046, 1106, -63), 288, 432, typeof(MysteriousSupperArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(1239, 1019, -37), 288, 432, typeof(JugsOfGoblinRotgutArtifact)),
+            new StealableEntry(Map.TerMur, new Point3D(1239, 1019, -37), 288, 432, typeof(JugsOfGoblinRotgutArtifact)),
 	        // UnderWorld - Artifact rarity 4
 	        new StealableEntry(Map.TerMur, new Point3D(1015, 1013, -35), 576, 864, typeof(StolenBottlesOfLiquor1Artifact)), // [2a]
 	        new StealableEntry(Map.TerMur, new Point3D(1015, 1029, -35), 576, 864, typeof(StolenBottlesOfLiquor2Artifact)), // [2b]
@@ -160,27 +160,27 @@ namespace Server.Items
 	        new StealableEntry(Map.TerMur, new Point3D(1049, 1109, -65), 1152, 1728, typeof(BloodySpoonArtifact)),
             new StealableEntry(Map.TerMur, new Point3D(1047, 1108, -65), 1152, 1728, typeof(MysticsGuard)),
             new StealableEntry(Map.TerMur, new Point3D(1137, 1134, -38), 1152, 1728, typeof(RemnantsOfMeatLoafArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(1134, 1204, 7), 1152, 1728, typeof(HalfEatenSupperArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(1083, 983, -19), 1152, 1728, typeof(NaverysWeb3Artifact)), // [3]
+            new StealableEntry(Map.TerMur, new Point3D(1134, 1204, 7), 1152, 1728, typeof(HalfEatenSupperArtifact)),
+            new StealableEntry(Map.TerMur, new Point3D(1083, 983, -19), 1152, 1728, typeof(NaverysWeb3Artifact)), // [3]
 	        new StealableEntry(Map.TerMur, new Point3D(1081, 992, -21), 1152, 1728, typeof(NaverysWeb4Artifact)), // [4]
 	        new StealableEntry(Map.TerMur, new Point3D(1146, 1011, -52), 1152, 1728, typeof(NaverysWeb5Artifact)), // [2]
 	        new StealableEntry(Map.TerMur, new Point3D(1119, 974, -41), 1152, 1728, typeof(NaverysWeb6Artifact)), // [1]
 	        // UnderWorld - Artifact rarity 6
 	        new StealableEntry(Map.TerMur, new Point3D(1015, 1018, -35), 2304, 3456, typeof(BatteredPanArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(1007, 975, -22), 2304, 3456, typeof(RustedPanArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(1188, 1015, -35), 2304, 3456, typeof(BottlesOfSpoiledWine2Artifact)),
+            new StealableEntry(Map.TerMur, new Point3D(1007, 975, -22), 2304, 3456, typeof(RustedPanArtifact)),
+            new StealableEntry(Map.TerMur, new Point3D(1188, 1015, -35), 2304, 3456, typeof(BottlesOfSpoiledWine2Artifact)),
 	        // UnderWorld - Artifact rarity 7
 	        new StealableEntry(Map.TerMur, new Point3D(1015, 1026, -35), 4608, 6912, typeof(StolenBottlesOfLiquor3Artifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(1226, 963, -22), 4608, 6912, typeof(BottlesOfSpoiledWine3Artifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(1089, 1126, -36), 4608, 6912, typeof(DriedUpInkWellArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(1227, 964, -29), 4608, 6912, typeof(FakeCopperIngotsArtifact)),
+            new StealableEntry(Map.TerMur, new Point3D(1226, 963, -22), 4608, 6912, typeof(BottlesOfSpoiledWine3Artifact)),
+            new StealableEntry(Map.TerMur, new Point3D(1089, 1126, -36), 4608, 6912, typeof(DriedUpInkWellArtifact)),
+            new StealableEntry(Map.TerMur, new Point3D(1227, 964, -29), 4608, 6912, typeof(FakeCopperIngotsArtifact)),
 	        // UnderWorld - Artifact rarity 8
 	        new StealableEntry(Map.TerMur, new Point3D(1031, 998, -38), 9216, 13824, typeof(StolenBottlesOfLiquor4Artifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(1017, 1150, -64), 9216, 13824, typeof(RottedOarsArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(1226, 966, -29), 9216, 13824, typeof(PricelessTreasureArtifact)),
+            new StealableEntry(Map.TerMur, new Point3D(1017, 1150, -64), 9216, 13824, typeof(RottedOarsArtifact)),
+            new StealableEntry(Map.TerMur, new Point3D(1226, 966, -29), 9216, 13824, typeof(PricelessTreasureArtifact)),
 	        // UnderWorld - Artifact rarity 9
 	        new StealableEntry(Map.TerMur, new Point3D(1066, 1193, -36), 18432, 27648, typeof(TyballsFlaskStandArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(1131, 1128, -42), 18432, 27648, typeof(BlockAndTackleArtifact)),
+            new StealableEntry(Map.TerMur, new Point3D(1131, 1128, -42), 18432, 27648, typeof(BlockAndTackleArtifact)),
 
             //Ararat Stealables (Exploring the Deep) - Artifact rarity 8
             new StealableEntry(Map.Trammel, new Point3D(6303, 1664, 11), 9216, 13824, typeof(SternAnchorOfBmvArarat)),
@@ -295,7 +295,7 @@ namespace Server.Items
 
         private static void StealArtiesForceRespawn_OnCommand(CommandEventArgs e)
         {
-            if(Instance != null &&
+            if (Instance != null &&
                 Instance.m_Artifacts != null)
             {
                 foreach (StealableInstance instance in Instance.m_Artifacts)

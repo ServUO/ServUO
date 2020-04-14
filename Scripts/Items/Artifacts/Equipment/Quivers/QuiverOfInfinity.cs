@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class QuiverOfInfinity : BaseQuiver
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public QuiverOfInfinity()
             : base(0x2B02)
@@ -21,13 +19,13 @@ namespace Server.Items
         {
         }
 
-		public override bool CanAlter
-		{
-			get
-			{
-				return false;
-			}
-		}
+        public override bool CanAlter
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         public override int LabelNumber
         {

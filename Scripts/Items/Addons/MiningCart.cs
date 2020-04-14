@@ -1,8 +1,8 @@
-using System;
 using Server.Engines.VeteranRewards;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -98,7 +98,7 @@ namespace Server.Items
         {
             m_CartType = type;
 
-            switch ( type )
+            switch (type)
             {
                 case MiningCartType.OreSouth:
                     AddComponent(new InternalAddonComponent(0x1A83, 1026786), 0, 0, 0);
@@ -152,7 +152,7 @@ namespace Server.Items
 
         private void GiveResources()
         {
-            switch ( m_CartType )
+            switch (m_CartType)
             {
                 case MiningCartType.OreSouth:
                 case MiningCartType.OreEast:
@@ -214,7 +214,7 @@ namespace Server.Items
             }
             else if (house != null && house.HasSecureAccess(from, SecureLevel.Friends))
             {
-                switch ( m_CartType )
+                switch (m_CartType)
                 {
                     case MiningCartType.OreSouth:
                     case MiningCartType.OreEast:
@@ -222,7 +222,7 @@ namespace Server.Items
                         {
                             Item ingots = null;
 
-                            switch ( Utility.Random(9) )
+                            switch (Utility.Random(9))
                             {
                                 case 0:
                                     ingots = new IronIngot();
@@ -277,7 +277,7 @@ namespace Server.Items
                         {
                             Item gems = null;
 
-                            switch ( Utility.Random(15) )
+                            switch (Utility.Random(15))
                             {
                                 case 0:
                                     gems = new Amber();
@@ -306,7 +306,7 @@ namespace Server.Items
                                 case 8:
                                     gems = new Tourmaline();
                                     break;
-                                    // Mondain's Legacy gems
+                                // Mondain's Legacy gems
                                 case 9:
                                     gems = new PerfectEmerald();
                                     break;
@@ -418,7 +418,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     m_CartType = (MiningCartType)reader.ReadInt();

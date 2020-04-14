@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class AquariumFishNet : SpecialFishingNet
@@ -112,7 +110,7 @@ namespace Server.Items
                 if (max > 20)
                     max = 20;
 
-                switch ( Utility.Random(max) )
+                switch (Utility.Random(max))
                 {
                     case 0:
                         return new MinocBlueFish();

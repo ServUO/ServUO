@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Engines.Harvest;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -25,9 +24,9 @@ namespace Server.Items
         public override WeaponType DefType => WeaponType.Polearm;
 
         public override WeaponAnimation DefAnimation => WeaponAnimation.Slash2H;
-        
+
         public virtual HarvestSystem HarvestSystem => Lumberjacking.System;
-       
+
         public override void OnDoubleClick(Mobile from)
         {
             if (this.HarvestSystem == null)

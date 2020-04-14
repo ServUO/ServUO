@@ -1,7 +1,6 @@
-using System;
-using Server;
-using Server.Targeting;
 using Server.Mobiles;
+using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -90,7 +89,7 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if(m_Collar != null)
+                if (m_Collar != null)
                     m_Collar.OnTarget(from, targeted);
             }
         }

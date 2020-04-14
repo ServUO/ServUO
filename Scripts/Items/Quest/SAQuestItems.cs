@@ -1,6 +1,6 @@
-using System;
 using Server.Mobiles;
 using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -100,7 +100,7 @@ namespace Server.Items
 
                         wall.PublicOverheadMessage(0, 1358, 1111662); // The acid quickly burns through the writhing wallvines, revealing the strange wall.
 
-                        Timer.DelayCall(TimeSpan.FromSeconds(15.0), delegate()
+                        Timer.DelayCall(TimeSpan.FromSeconds(15.0), delegate ()
                         {
                             wallandvine.MoveToWorld(wall.Location, wall.Map);
 
@@ -123,9 +123,9 @@ namespace Server.Items
     {
         [Constructable]
         public AncientPotteryFragments()
-			: base(0x2243)
+            : base(0x2243)
         {
-			Hue = 2108;
+            Hue = 2108;
         }
 
         public AncientPotteryFragments(Serial serial)
@@ -316,7 +316,7 @@ namespace Server.Items
                 return 1031698;
             }
         }// Enchaned Essence
-		TextDefinition ICommodity.Description
+        TextDefinition ICommodity.Description
         {
             get
             {
@@ -551,7 +551,7 @@ namespace Server.Items
                 return 1031697;
             }
         }// Magical Residue
-		TextDefinition ICommodity.Description
+        TextDefinition ICommodity.Description
         {
             get
             {
@@ -647,7 +647,7 @@ namespace Server.Items
                 return 1031699;
             }
         }// Relic Fragment
-		TextDefinition ICommodity.Description
+        TextDefinition ICommodity.Description
         {
             get
             {
@@ -680,18 +680,18 @@ namespace Server.Items
     {
         [Constructable]
         public SearedFireAntGoo()
-			: this(1)
+            : this(1)
         {
         }
 
-		[Constructable]
-		public SearedFireAntGoo(int amount)
+        [Constructable]
+        public SearedFireAntGoo(int amount)
             : base(0x122E)
-		{
-			Stackable = true;
-			Amount = amount;
+        {
+            Stackable = true;
+            Amount = amount;
             Hue = 1359;
-		}
+        }
 
         public SearedFireAntGoo(Serial serial)
             : base(serial)

@@ -1,4 +1,3 @@
-using System;
 using Reward = Server.Engines.Quests.BaseReward;
 
 namespace Server.Items
@@ -9,18 +8,18 @@ namespace Server.Items
             : base()
         {
             Hue = Reward.RewardBagHue();
-			
+
             while (Items.Count < ItemAmount)
-            { 
+            {
                 if (0.05 > Utility.RandomDouble()) // check
                     DropItem(Loot.RandomTalisman());
-                else 
+                else
                 {
-                    switch ( Utility.Random(4) )
+                    switch (Utility.Random(4))
                     {
                         case 0:
                             DropItem(Reward.Armor());
-                            break;	
+                            break;
                         case 1:
                             DropItem(Reward.RangedWeapon());
                             break;
@@ -67,7 +66,7 @@ namespace Server.Items
         [Constructable]
         public SmallTrinketBag()
             : base()
-        { 
+        {
         }
 
         public SmallTrinketBag(Serial serial)
@@ -102,7 +101,7 @@ namespace Server.Items
         [Constructable]
         public TrinketBag()
             : base()
-        { 
+        {
         }
 
         public TrinketBag(Serial serial)
@@ -137,7 +136,7 @@ namespace Server.Items
         [Constructable]
         public TreasureBag()
             : base()
-        { 
+        {
         }
 
         public TreasureBag(Serial serial)
@@ -172,7 +171,7 @@ namespace Server.Items
         [Constructable]
         public LargeTreasureBag()
             : base()
-        { 
+        {
         }
 
         public LargeTreasureBag(Serial serial)

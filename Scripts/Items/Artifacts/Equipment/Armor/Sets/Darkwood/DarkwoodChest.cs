@@ -1,27 +1,27 @@
-using System;
 using Server.Engines.Craft;
+using System;
 
 namespace Server.Items
 {
     [FlipableAttribute(0x2B67, 0x315E)]
     public class DarkwoodChest : WoodlandChest
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DarkwoodChest()
             : base()
         {
-            this.Hue = 0x455;							
+            this.Hue = 0x455;
             this.SetHue = 0x494;
-						
-            this.Attributes.BonusHits = 2;		
+
+            this.Attributes.BonusHits = 2;
             this.Attributes.DefendChance = 5;
-			
+
             this.SetAttributes.ReflectPhysical = 25;
-            this.SetAttributes.BonusStr = 10;		
-            this.SetAttributes.NightSight = 1;		
-			
-            this.SetSelfRepair = 3;			
+            this.SetAttributes.BonusStr = 10;
+            this.SetAttributes.NightSight = 1;
+
+            this.SetSelfRepair = 3;
             this.SetPhysicalBonus = 2;
             this.SetFireBonus = 5;
             this.SetColdBonus = 5;
@@ -31,7 +31,7 @@ namespace Server.Items
 
         public DarkwoodChest(Serial serial)
             : base(serial)
-        { 
+        {
         }
 
         public override int LabelNumber
@@ -93,14 +93,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
 
@@ -108,15 +108,15 @@ namespace Server.Items
         {
             if (resHue > 0)
                 this.Hue = resHue;
-				
+
             Type resourceType = typeRes;
 
             if (resourceType == null)
                 resourceType = craftItem.Resources.GetAt(0).ItemType;
 
             this.Resource = CraftResources.GetFromType(resourceType);
-			
-            switch ( this.Resource )
+
+            switch (this.Resource)
             {
                 case CraftResource.Bloodwood:
                     this.Attributes.RegenHits = 2;
@@ -128,7 +128,7 @@ namespace Server.Items
                     this.Attributes.RegenHits = 1;
                     break;
             }
-			
+
             return 0;
         }
     }

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [Flipable]
@@ -39,7 +37,7 @@ namespace Server.Items
             writer.Write((int)2); // version
 
             if (IsArcane)
-            {                
+            {
                 writer.Write(true);
                 writer.Write(TempHue);
                 writer.Write((int)m_CurArcaneCharges);
@@ -131,7 +129,7 @@ namespace Server.Items
             {
                 TempHue = Hue;
                 Hue = 0;
-            }                
+            }
         }
 
         public override void AddCraftedProperties(ObjectPropertyList list)

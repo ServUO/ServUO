@@ -1,6 +1,6 @@
-using System;
-using Server.Targeting;
 using Server.Engines.Craft;
+using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -9,7 +9,7 @@ namespace Server.Items
         static public int RandomChoice(int itemID1, int itemID2)
         {
             int iRet = 0;
-            switch ( Utility.Random(2) )
+            switch (Utility.Random(2))
             {
                 default:
                 case 0:
@@ -90,7 +90,7 @@ namespace Server.Items
                 _Quality = (ItemQuality)reader.ReadInt();
         }
 
-        #if false
+#if false
 		public override void OnDoubleClick( Mobile from )
 		{
 			if ( !Movable )
@@ -98,7 +98,7 @@ namespace Server.Items
 
 			from.Target = new InternalTarget( this );
 		}
-        #endif
+#endif
 
         private class InternalTarget : Target
         {
@@ -220,7 +220,7 @@ namespace Server.Items
                 Hue = 150;
         }
 
-        #if false
+#if false
 		public override void OnDoubleClick( Mobile from )
 		{
 			if ( !Movable )
@@ -228,7 +228,7 @@ namespace Server.Items
 
 			from.Target = new InternalTarget( this );
 		}
-        #endif
+#endif
 
         private class InternalTarget : Target
         {
@@ -260,12 +260,12 @@ namespace Server.Items
                     t.Start();
                 }
             }
-			
+
             private class InternalTimer : Timer
             {
                 private readonly Mobile m_From;
                 private readonly Campfire m_Campfire;
-			
+
                 public InternalTimer(Mobile from, Campfire campfire)
                     : base(TimeSpan.FromSeconds(5.0))
                 {
@@ -356,7 +356,7 @@ namespace Server.Items
 
                     from.AddToBackpack(new SweetDough());
                 }
-				
+
                 if (targeted is BowlFlour)
                 {
                     m_Item.Consume();
@@ -516,7 +516,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 4:
                     _Quality = (ItemQuality)reader.ReadInt();
@@ -530,35 +530,35 @@ namespace Server.Items
         }
     }
 
-	// ********** SackFlourOpen **********
-	public class SackFlourOpen : Item
-	{
-		public override int LabelNumber{ get{ return 1024166; } } // open sack of flour
+    // ********** SackFlourOpen **********
+    public class SackFlourOpen : Item
+    {
+        public override int LabelNumber { get { return 1024166; } } // open sack of flour
 
-		[Constructable]
-		public SackFlourOpen() : base(0x103A)
-		{
-			Weight = 4.0;
-		}
+        [Constructable]
+        public SackFlourOpen() : base(0x103A)
+        {
+            Weight = 4.0;
+        }
 
-		public SackFlourOpen( Serial serial ) : base( serial )
-		{
-		}
+        public SackFlourOpen(Serial serial) : base(serial)
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write( (int) 0 ); // version
-		}
+            writer.Write((int)0); // version
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadInt();
-		}
-	}
+            int version = reader.ReadInt();
+        }
+    }
 
     // ********** Eggshells **********
     public class Eggshells : Item

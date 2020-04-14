@@ -1,8 +1,8 @@
-using System;
 using Server.Engines.VeteranRewards;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -167,7 +167,7 @@ namespace Server.Items
             /* Goat */              new MonsterStatuetteInfo(1159418, 0x2580, 0x09A),
             /* Ice Fiend */         new MonsterStatuetteInfo(1159419, 0x2587, 0x166),
         };
-        
+
         public MonsterStatuetteInfo(int labelNumber, int itemID, int baseSoundID)
         {
             LabelNumber = labelNumber;
@@ -335,7 +335,7 @@ namespace Server.Items
                 if (sounds.Length > 0)
                 {
                     Effects.PlaySound(Location, Map, sounds[Utility.Random(sounds.Length)]);
-                }                    
+                }
             }
 
             base.OnMovement(m, oldLocation);
@@ -401,7 +401,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     m_EngravedText = reader.ReadString();
@@ -456,5 +456,5 @@ namespace Server.Items
         }
     }
 }
- 
- 
+
+

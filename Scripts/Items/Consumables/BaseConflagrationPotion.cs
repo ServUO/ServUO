@@ -1,8 +1,8 @@
+using Server.Spells;
+using Server.Targeting;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Server.Spells;
-using Server.Targeting;
 
 namespace Server.Items
 {
@@ -88,9 +88,9 @@ namespace Server.Items
                 return;
 
             Consume();
-			
+
             // Check if any other players are using this potion
-            for (int i = 0; i < m_Users.Count; i ++)
+            for (int i = 0; i < m_Users.Count; i++)
             {
                 ThrowTarget targ = m_Users[i].Target as ThrowTarget;
 
@@ -101,9 +101,9 @@ namespace Server.Items
             // Effects
             Effects.PlaySound(loc, map, 0x20C);
 
-            for (int i = -2; i <= 2; i ++)
+            for (int i = -2; i <= 2; i++)
             {
-                for (int j = -2; j <= 2; j ++)
+                for (int j = -2; j <= 2; j++)
                 {
                     Point3D p = new Point3D(loc.X + i, loc.Y + j, map.GetAverageZ(loc.X + i, loc.Y + j));
                     SpellHelper.AdjustField(ref p, map, 16, true);
@@ -124,7 +124,7 @@ namespace Server.Items
             if (timer != null)
                 timer.Stop();
 
-            m_Delay[m] = Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerStateCallback(EndDelay_Callback), m);	
+            m_Delay[m] = Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerStateCallback(EndDelay_Callback), m);
         }
 
         public static int GetDelay(Mobile m)
@@ -178,7 +178,7 @@ namespace Server.Items
             {
                 if (m_Potion.Deleted || m_Potion.Map == Map.Internal)
                     return;
-					
+
                 IPoint3D p = targeted as IPoint3D;
 
                 if (p == null || from.Map == null)
@@ -276,7 +276,7 @@ namespace Server.Items
                     return;
 
                 int alchemySkill = m_From.Skills.Alchemy.Fixed;
-                int alchemyBonus = alchemySkill / 125 + alchemySkill / 250 ;
+                int alchemyBonus = alchemySkill / 125 + alchemySkill / 250;
 
                 m_MinDamage = Scale(m_From, m_MinDamage + alchemyBonus);
                 m_MaxDamage = Scale(m_From, m_MaxDamage + alchemyBonus);
@@ -299,7 +299,7 @@ namespace Server.Items
                 base.Deserialize(reader);
 
                 int version = reader.ReadInt();
-				
+
                 m_From = reader.ReadMobile();
                 m_End = reader.ReadDateTime();
                 m_MinDamage = reader.ReadInt();
@@ -352,7 +352,7 @@ namespace Server.Items
 
                     if (m_Item.Map == null || from == null)
                         return;
-					
+
                     List<Mobile> mobiles = new List<Mobile>();
                     IPooledEnumerable eable = m_Item.GetMobilesInRange(0);
 
@@ -363,12 +363,12 @@ namespace Server.Items
                     for (int i = 0; i < mobiles.Count; i++)
                     {
                         Mobile m = mobiles[i];
-						
+
                         if ((m.Z + 16) > m_Item.Z && (m_Item.Z + 12) > m.Z && m != from && SpellHelper.ValidIndirectTarget(from, m) && from.CanBeHarmful(m, false))
                         {
                             if (from != null)
                                 from.DoHarmful(m);
-							
+
                             AOS.Damage(m, from, m_Item.GetDamage(), 0, 100, 0, 0, 0);
                             m.PlaySound(0x208);
                         }

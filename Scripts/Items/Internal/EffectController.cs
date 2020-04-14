@@ -460,7 +460,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {
@@ -531,14 +531,14 @@ namespace Server.Items
         public void InternalDoEffect(object trigger)
         {
             IEntity from = this.m_Source, to = this.m_Target;
-			
+
             if (from == null)
                 from = (IEntity)trigger;
 
             if (to == null)
                 to = (IEntity)trigger;
 
-            switch ( this.m_EffectType )
+            switch (this.m_EffectType)
             {
                 case ECEffectType.Lightning:
                     {

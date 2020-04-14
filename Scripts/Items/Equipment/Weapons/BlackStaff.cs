@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0xDF1, 0xDF0)]
@@ -59,7 +57,7 @@ namespace Server.Items
                 return 2.75f;
             }
         }
-        
+
         public override int InitMinHits
         {
             get

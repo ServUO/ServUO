@@ -1,15 +1,13 @@
-using System;
-
 namespace Server.Items
 {
     public class GargishSignOfChaos : GargishChaosShield
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public GargishSignOfChaos()
             : base()
         {
-			Hue = 2075;	
+            Hue = 2075;
             ArmorAttributes.SoulCharge = 20;
             Attributes.AttackChance = 5;
             Attributes.DefendChance = 10;
@@ -20,8 +18,8 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
-        public override int LabelNumber { get{return 1113535;} }// Sign of Chaos
+
+        public override int LabelNumber { get { return 1113535; } }// Sign of Chaos
 
         public override int BasePhysicalResistance
         {
@@ -71,7 +69,7 @@ namespace Server.Items
             {
                 return 255;
             }
-        }     	
+        }
 
         public override void Deserialize(GenericReader reader)
         {

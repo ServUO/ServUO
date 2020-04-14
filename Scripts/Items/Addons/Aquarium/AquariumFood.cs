@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class AquariumFood : Item
-    { 
+    {
         [Constructable]
         public AquariumFood()
             : base(0xEFC)

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public abstract class BaseArtifactLight : BaseLight, IArtifact
@@ -29,7 +27,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write((int)0);
-        }        
+        }
 
         public override void Deserialize(GenericReader reader)
         {

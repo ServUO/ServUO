@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAddon(Direction.South, Direction.East)]
@@ -64,7 +62,7 @@ namespace Server.Items
 
         public override BaseAddon Addon { get { return new FireDemonStatueAddon(); } }
 
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

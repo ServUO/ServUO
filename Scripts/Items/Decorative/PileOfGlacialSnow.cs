@@ -1,12 +1,12 @@
-using System;
 using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
     public class PileOfGlacialSnow : Item
     {
-		public override int LabelNumber { get { return 1070874; } }// a Pile of Glacial Snow
-		
+        public override int LabelNumber { get { return 1070874; } }// a Pile of Glacial Snow
+
         [Constructable]
         public PileOfGlacialSnow()
             : base(0x913)
@@ -20,7 +20,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-		
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

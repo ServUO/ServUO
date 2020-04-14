@@ -1,8 +1,4 @@
-using System;
-
-using Server.SkillHandlers;
-
-namespace Server.Items 
+namespace Server.Items
 {
     public class BulgingMuseumBag : BaseRewardBag
     {

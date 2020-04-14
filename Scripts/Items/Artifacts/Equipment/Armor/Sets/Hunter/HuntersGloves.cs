@@ -1,25 +1,23 @@
-using System;
-
 namespace Server.Items
 {
     public class HunterGloves : LeafGloves
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public HunterGloves()
             : base()
         {
             this.SetHue = 0x483;
-			
+
             this.Attributes.RegenHits = 1;
             this.Attributes.Luck = 50;
-			
+
             this.SetAttributes.BonusDex = 10;
-			
+
             this.SetSkillBonuses.SetValues(0, SkillName.Stealth, 40);
-			
+
             this.SetSelfRepair = 3;
-			
+
             this.SetPhysicalBonus = 5;
             this.SetFireBonus = 4;
             this.SetColdBonus = 3;
@@ -91,14 +89,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }

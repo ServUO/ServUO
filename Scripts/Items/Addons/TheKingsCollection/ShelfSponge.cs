@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class ShelfSpongeAddon : BaseAddon, IDyable
@@ -55,7 +53,7 @@ namespace Server.Items
         }
 
         public override BaseAddon Addon { get { return new ShelfSpongeAddon(); } }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

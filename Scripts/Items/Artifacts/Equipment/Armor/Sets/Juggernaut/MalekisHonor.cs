@@ -1,17 +1,15 @@
-using System;
-
 namespace Server.Items
 {
     public class MalekisHonor : MetalKiteShield
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public MalekisHonor()
             : base()
         {
             this.SetHue = 0x76D;
-			
-            this.SetSelfRepair = 3;			
+
+            this.SetSelfRepair = 3;
             this.SetAttributes.DefendChance = 10;
             this.SetAttributes.BonusStr = 10;
             this.SetAttributes.WeaponSpeed = 35;

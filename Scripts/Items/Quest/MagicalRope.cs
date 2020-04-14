@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class MagicalRope : PeerlessKey
-    { 
+    {
         [Constructable]
         public MagicalRope()
             : base(0x20D)
@@ -34,14 +32,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }

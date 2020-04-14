@@ -1,4 +1,3 @@
-using System;
 using Server.Spells.Fourth;
 
 namespace Server.Items

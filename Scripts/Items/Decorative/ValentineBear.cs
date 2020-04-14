@@ -1,6 +1,6 @@
-using System;
 using Server.Gumps;
 using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
@@ -96,7 +96,7 @@ namespace Server.Items
             writer.Write((int)Lines.Length);
 
             for (int i = 0; i < Lines.Length; i++)
-                writer.Write((string)Lines[i]);          
+                writer.Write((string)Lines[i]);
         }
 
         public override void Deserialize(GenericReader reader)

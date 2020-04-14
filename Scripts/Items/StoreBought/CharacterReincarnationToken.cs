@@ -1,8 +1,4 @@
-﻿using System;
-using Server;
-using Server.Mobiles;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class CharacterReincarnationToken : PromotionalToken
     {

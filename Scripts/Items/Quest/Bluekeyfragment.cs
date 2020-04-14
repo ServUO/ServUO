@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class Bluekeyfragment : Item
@@ -27,7 +25,7 @@ namespace Server.Items
         public override void OnDoubleClick(Mobile from)
         {
             from.SendMessage("You make a copy of the key in your pack");
-			
+
             BlueKey1 bluekey = new BlueKey1();
             if (!from.AddToBackpack(bluekey))
                 bluekey.Delete();

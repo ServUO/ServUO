@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class DisintegratingThesisNotes : PeerlessKey
@@ -17,26 +15,26 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get {return 1074440;} } // Disintegrating Thesis Notes
-        
+        public override int LabelNumber { get { return 1074440; } } // Disintegrating Thesis Notes
+
         public override DeathMoveResult OnInventoryDeath(Mobile parent)
         {
             if (!parent.Player && !parent.IsDeadBondedPet)
-               return DeathMoveResult.MoveToCorpse;
+                return DeathMoveResult.MoveToCorpse;
 
             return base.OnInventoryDeath(parent);
         }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }

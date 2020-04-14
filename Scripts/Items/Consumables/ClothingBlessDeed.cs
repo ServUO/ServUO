@@ -1,4 +1,3 @@
-using System;
 using Server.Targeting;
 
 namespace Server.Items
@@ -60,8 +59,8 @@ namespace Server.Items
 
     public class ClothingBlessDeed : Item // Create the item class which is derived from the base item class
     {
-		public override int LabelNumber { get { return 1041008; } } // A clothing bless deed
-		
+        public override int LabelNumber { get { return 1041008; } } // A clothing bless deed
+
         [Constructable]
         public ClothingBlessDeed()
             : base(0x14F0)

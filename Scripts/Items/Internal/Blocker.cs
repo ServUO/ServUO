@@ -1,4 +1,3 @@
-using System;
 using Server.Network;
 
 namespace Server.Items
@@ -76,7 +75,7 @@ namespace Server.Items
                     serial &= 0x7FFFFFFF;
 
                 this.m_Stream.Write((uint)serial);
-				this.m_Stream.Write((short)(itemID & TileData.MaxItemValue));
+                this.m_Stream.Write((short)(itemID & TileData.MaxItemValue));
 
                 if (amount != 0)
                     this.m_Stream.Write((short)amount);

@@ -1,18 +1,16 @@
-using System;
-
 namespace Server.Items
 {
     public class DemonBridleRing : GoldRing
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113651; } } // Demon Bridle Ring
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113651; } } // Demon Bridle Ring
+
         [Constructable]
         public DemonBridleRing()
         {
-            Hue = 39;		
+            Hue = 39;
             Attributes.CastRecovery = 2;
-            Attributes.CastSpeed = 1;	
+            Attributes.CastSpeed = 1;
             Attributes.RegenHits = 1;
             Attributes.RegenMana = 1;
             Attributes.DefendChance = 10;

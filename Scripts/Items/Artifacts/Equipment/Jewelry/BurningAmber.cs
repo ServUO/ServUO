@@ -1,16 +1,14 @@
-using System;
-
 namespace Server.Items
 {
     public class BurningAmber : GoldRing
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1114790; } } // Burning Amber
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1114790; } } // Burning Amber
+
         [Constructable]
         public BurningAmber()
         {
-            Hue = 1174;		
+            Hue = 1174;
             Attributes.CastRecovery = 3;
             Attributes.RegenMana = 2;
             Attributes.BonusDex = 5;

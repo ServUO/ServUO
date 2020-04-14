@@ -1,6 +1,6 @@
-using System;
 using Server.Mobiles;
 using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -126,7 +126,7 @@ namespace Server.Items
         public DeceitBrazier()
             : base(0xE31)
         {
-            Movable = false; 
+            Movable = false;
             Light = LightType.Circle225;
             m_NextSpawn = DateTime.UtcNow;
             m_NextSpawnDelay = TimeSpan.FromMinutes(15.0);
@@ -236,7 +236,7 @@ namespace Server.Items
 
                             DoEffect(spawnLoc, map);
 
-                            Timer.DelayCall(TimeSpan.FromSeconds(1), delegate()
+                            Timer.DelayCall(TimeSpan.FromSeconds(1), delegate ()
                             {
                                 bc.Home = Location;
                                 bc.RangeHome = m_SpawnRange;

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class EssenceDiligence : Item, ICommodity
@@ -16,7 +14,7 @@ namespace Server.Items
         {
             Stackable = true;
             Amount = amount;
-			Hue = 1166;
+            Hue = 1166;
         }
 
         public EssenceDiligence(Serial serial)
@@ -31,7 +29,7 @@ namespace Server.Items
                 return 1113338;
             }
         }// essence of diligence
-		TextDefinition ICommodity.Description
+        TextDefinition ICommodity.Description
         {
             get
             {

@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Engines.Craft;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -69,24 +69,24 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
-		private string m_EngravedText = string.Empty;
+        private string m_EngravedText = string.Empty;
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public string EngravedText
-		{
-			get { return m_EngravedText; }
-			set
-			{
-				if (value != null)
-					m_EngravedText = value;
-				else
-					m_EngravedText = string.Empty;
+        [CommandProperty(AccessLevel.GameMaster)]
+        public string EngravedText
+        {
+            get { return m_EngravedText; }
+            set
+            {
+                if (value != null)
+                    m_EngravedText = value;
+                else
+                    m_EngravedText = string.Empty;
 
-				InvalidateProperties();
-			}
-		}
+                InvalidateProperties();
+            }
+        }
 
-		public Food(int itemID)
+        public Food(int itemID)
             : this(1, itemID)
         {
         }
@@ -166,17 +166,17 @@ namespace Server.Items
             return dropped is Food && ((Food)dropped).PlayerConstructed == PlayerConstructed && base.WillStack(from, dropped);
         }
 
-		public override void AddNameProperty(ObjectPropertyList list)
-		{
-			base.AddNameProperty(list);
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            base.AddNameProperty(list);
 
-			if (!String.IsNullOrEmpty(EngravedText))
-			{
-				list.Add(1072305, Utility.FixHtml(EngravedText)); // Engraved: ~1_INSCRIPTION~
-			}
-		}
+            if (!String.IsNullOrEmpty(EngravedText))
+            {
+                list.Add(1072305, Utility.FixHtml(EngravedText)); // Engraved: ~1_INSCRIPTION~
+            }
+        }
 
-		public virtual bool Eat(Mobile from)
+        public virtual bool Eat(Mobile from)
         {
             // Fill the Mobile with FillFactor
             if (CheckHunger(from))
@@ -250,7 +250,7 @@ namespace Server.Items
 
             writer.Write((int)_Quality);
 
-			writer.Write(m_EngravedText);
+            writer.Write(m_EngravedText);
 
             writer.Write((bool)m_PlayerConstructed);
             writer.Write(m_Poisoner);
@@ -265,11 +265,11 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {
-                        switch ( reader.ReadInt() )
+                        switch (reader.ReadInt())
                         {
                             case 0:
                                 m_Poison = null;
@@ -311,9 +311,9 @@ namespace Server.Items
                         m_PlayerConstructed = reader.ReadBool();
                         goto case 4;
                     }
-				case 6:
-					m_EngravedText = reader.ReadString();
-					goto case 5;
+                case 6:
+                    m_EngravedText = reader.ReadString();
+                    goto case 5;
                 case 7:
                     _Quality = (ItemQuality)reader.ReadInt();
                     goto case 6;
@@ -1038,7 +1038,7 @@ namespace Server.Items
         }
     }
 
-    #if false
+#if false
 	public class Pizza : Food
 	{
 		[Constructable]
@@ -1067,7 +1067,7 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-    #endif
+#endif
 
     public class FruitPie : Food
     {
@@ -1603,16 +1603,16 @@ namespace Server.Items
         public bool PlayerConstructed { get { return true; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Pieces 
-        { 
+        public int Pieces
+        {
             get { return _Pieces; }
-            set 
-            { 
-                _Pieces = value; 
+            set
+            {
+                _Pieces = value;
 
-                if (_Pieces <= 0) 
-                    Delete(); 
-            } 
+                if (_Pieces <= 0)
+                    Delete();
+            }
         }
 
         public override int LabelNumber { get { return 1098235; } } // A Three Tiered Cake 

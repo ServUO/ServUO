@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public abstract class BaseHides : Item, ICommodity
@@ -80,7 +78,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 2: // Reset from Resource System
                     this.m_Resource = this.DefaultResource;
@@ -274,7 +272,7 @@ namespace Server.Items
                 from.SendLocalizedMessage(502437); // Items you wish to cut must be in your backpack
                 return false;
             }
-			
+
             base.ScissorHelper(from, new HornedLeather(), 1);
 
             return true;

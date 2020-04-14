@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace Server.Items
-{   
+﻿namespace Server.Items
+{
     public class PumpkinPizza : CheesePizza
     {
-		public override int LabelNumber {get {return 1153775;} } // Pumpkin Pizza
-		
+        public override int LabelNumber { get { return 1153775; } } // Pumpkin Pizza
+
         [Constructable]
         public PumpkinPizza()
             : base()
@@ -17,7 +15,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-       
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Multis;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Mahjong
 {
@@ -236,7 +236,7 @@ namespace Server.Engines.Mahjong
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {

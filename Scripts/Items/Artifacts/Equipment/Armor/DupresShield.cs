@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class DupresShield : BaseShield
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DupresShield()
             : base(0x2B01)

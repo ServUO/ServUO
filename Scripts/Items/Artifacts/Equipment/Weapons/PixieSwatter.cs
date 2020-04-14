@@ -1,16 +1,14 @@
-using System;
-
 namespace Server.Items
 {
     public class PixieSwatter : Scepter
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public PixieSwatter()
         {
             Hue = 0x8A;
             WeaponAttributes.HitPoisonArea = 75;
-            Attributes.WeaponSpeed = 30;         
+            Attributes.WeaponSpeed = 30;
             WeaponAttributes.UseBestSkill = 1;
             WeaponAttributes.ResistFireBonus = 12;
             WeaponAttributes.ResistEnergyBonus = 12;

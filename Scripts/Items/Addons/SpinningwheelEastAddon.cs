@@ -54,7 +54,7 @@ namespace Server.Items
 
         public override void OnComponentLoaded(AddonComponent c)
         {
-            switch ( c.ItemID )
+            switch (c.ItemID)
             {
                 case 0x1016:
                 case 0x101A:
@@ -72,7 +72,7 @@ namespace Server.Items
 
             foreach (AddonComponent c in Components)
             {
-                switch ( c.ItemID )
+                switch (c.ItemID)
                 {
                     case 0x1015:
                     case 0x1019:
@@ -93,7 +93,7 @@ namespace Server.Items
 
             foreach (AddonComponent c in Components)
             {
-                switch ( c.ItemID )
+                switch (c.ItemID)
                 {
                     case 0x1016:
                     case 0x101A:

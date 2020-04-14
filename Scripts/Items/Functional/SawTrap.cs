@@ -1,5 +1,5 @@
-using System;
 using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -35,7 +35,7 @@ namespace Server.Items
         {
             get
             {
-                switch ( this.ItemID )
+                switch (this.ItemID)
                 {
                     case 0x1103:
                         return SawTrapType.NorthWall;
@@ -84,7 +84,7 @@ namespace Server.Items
         }
         public static int GetBaseID(SawTrapType type)
         {
-            switch ( type )
+            switch (type)
             {
                 case SawTrapType.NorthWall:
                     return 0x1103;

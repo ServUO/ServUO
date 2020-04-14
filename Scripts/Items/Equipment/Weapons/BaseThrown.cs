@@ -1,5 +1,4 @@
 using System;
-using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -20,7 +19,7 @@ namespace Server.Items
         }
 
         public abstract int MinThrowRange { get; }
-		
+
         public virtual int MaxThrowRange => MinThrowRange + 3;
 
         public override int DefMaxRange

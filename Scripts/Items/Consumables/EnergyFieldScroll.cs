@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class EnergyFieldScroll : SpellScroll

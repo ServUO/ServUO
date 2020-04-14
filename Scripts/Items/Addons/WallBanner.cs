@@ -1,10 +1,9 @@
-using System;
 using Server.Engines.VeteranRewards;
 using Server.Gumps;
 using Server.Network;
 
 namespace Server.Items
-{ 
+{
     public class WallBannerComponent : AddonComponent, IDyable
     {
         public WallBannerComponent(int itemID)
@@ -74,141 +73,141 @@ namespace Server.Items
         {
             m_East = ((bannerID % 2) == 1);
 
-            switch ( bannerID )
+            switch (bannerID)
             {
-                case 1: 
+                case 1:
                     AddComponent(new WallBannerComponent(0x161F), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x161E), 0, 1, 0);
                     AddComponent(new WallBannerComponent(0x161D), 0, 2, 0);
                     break;
-                case 2: 
+                case 2:
                     AddComponent(new WallBannerComponent(0x1586), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x1587), 1, 0, 0);
                     AddComponent(new WallBannerComponent(0x1588), 2, 0, 0);
                     break;
-                case 3: 
+                case 3:
                     AddComponent(new WallBannerComponent(0x1622), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x1621), 0, 1, 0);
                     AddComponent(new WallBannerComponent(0x1620), 0, 2, 0);
                     break;
-                case 4: 
+                case 4:
                     AddComponent(new WallBannerComponent(0x1589), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x158A), 1, 0, 0);
                     AddComponent(new WallBannerComponent(0x158B), 2, 0, 0);
                     break;
-                case 5: 
+                case 5:
                     AddComponent(new WallBannerComponent(0x1625), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x1624), 0, 1, 0);
                     AddComponent(new WallBannerComponent(0x1623), 0, 2, 0);
                     break;
-                case 6: 
+                case 6:
                     AddComponent(new WallBannerComponent(0x158C), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x158D), 1, 0, 0);
                     AddComponent(new WallBannerComponent(0x158E), 2, 0, 0);
                     break;
-                case 7: 
+                case 7:
                     AddComponent(new WallBannerComponent(0x1628), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x1627), 0, 1, 0);
                     AddComponent(new WallBannerComponent(0x1626), 0, 2, 0);
                     break;
-                case 8: 
+                case 8:
                     AddComponent(new WallBannerComponent(0x1590), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x1591), 1, 0, 0);
                     AddComponent(new WallBannerComponent(0x158F), 2, 0, 0);
                     break;
-                case 9: 
+                case 9:
                     AddComponent(new WallBannerComponent(0x162A), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x1629), 0, 1, 0);
                     AddComponent(new WallBannerComponent(0x1626), 0, 2, 0);
                     break;
-                case 10: 
+                case 10:
                     AddComponent(new WallBannerComponent(0x1592), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x1593), 1, 0, 0);
                     AddComponent(new WallBannerComponent(0x158F), 2, 0, 0);
                     break;
-                case 11: 
+                case 11:
                     AddComponent(new WallBannerComponent(0x162D), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x162C), 0, 1, 0);
                     AddComponent(new WallBannerComponent(0x162B), 0, 2, 0);
                     break;
-                case 12: 
+                case 12:
                     AddComponent(new WallBannerComponent(0x1594), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x1595), 1, 0, 0);
                     AddComponent(new WallBannerComponent(0x1596), 2, 0, 0);
                     break;
-                case 13: 
+                case 13:
                     AddComponent(new WallBannerComponent(0x1632), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x1631), 0, 1, 0);
                     AddComponent(new WallBannerComponent(0x162E), 0, 2, 0);
                     break;
-                case 14: 
+                case 14:
                     AddComponent(new WallBannerComponent(0x1598), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x159B), 1, 0, 0);
                     AddComponent(new WallBannerComponent(0x159C), 2, 0, 0);
                     break;
-                case 15: 
+                case 15:
                     AddComponent(new WallBannerComponent(0x1633), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x1630), 0, 1, 0);
                     AddComponent(new WallBannerComponent(0x162F), 0, 2, 0);
                     break;
-                case 16: 
+                case 16:
                     AddComponent(new WallBannerComponent(0x1599), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x159A), 1, 0, 0);
                     AddComponent(new WallBannerComponent(0x159D), 2, 0, 0);
                     break;
-                case 17: 
+                case 17:
                     AddComponent(new WallBannerComponent(0x1610), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x160F), 0, 1, 0);
                     break;
-                case 18: 
+                case 18:
                     AddComponent(new WallBannerComponent(0x15A0), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x15A1), 1, 0, 0);
                     break;
-                case 19: 
+                case 19:
                     AddComponent(new WallBannerComponent(0x1612), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x1611), 0, 1, 0);
                     break;
-                case 20: 
+                case 20:
                     AddComponent(new WallBannerComponent(0x15A2), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x15A3), 1, 0, 0);
                     break;
-                case 21: 
+                case 21:
                     AddComponent(new WallBannerComponent(0x1614), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x1613), 0, 1, 0);
                     break;
-                case 22: 
+                case 22:
                     AddComponent(new WallBannerComponent(0x15A4), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x15A5), 1, 0, 0);
                     break;
-                case 23: 
+                case 23:
                     AddComponent(new WallBannerComponent(0x1616), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x1615), 0, 1, 0);
                     break;
-                case 24: 
+                case 24:
                     AddComponent(new WallBannerComponent(0x15A6), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x15A7), 1, 0, 0);
                     break;
-                case 25: 
+                case 25:
                     AddComponent(new WallBannerComponent(0x1618), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x1617), 0, 1, 0);
                     break;
-                case 26: 
+                case 26:
                     AddComponent(new WallBannerComponent(0x15A8), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x15A9), 1, 0, 0);
                     break;
-                case 27: 
+                case 27:
                     AddComponent(new WallBannerComponent(0x161A), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x1619), 0, 1, 0);
                     break;
-                case 28: 
+                case 28:
                     AddComponent(new WallBannerComponent(0x15AA), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x15AB), 1, 0, 0);
                     break;
-                case 29: 
+                case 29:
                     AddComponent(new WallBannerComponent(0x161C), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x161B), 0, 1, 0);
                     break;
-                case 30: 
+                case 30:
                     AddComponent(new WallBannerComponent(0x15AC), 0, 0, 0);
                     AddComponent(new WallBannerComponent(0x15AD), 1, 0, 0);
                     break;
@@ -221,13 +220,13 @@ namespace Server.Items
         }
 
         public override BaseAddonDeed Deed
-        { 
+        {
             get
-            { 
+            {
                 WallBannerDeed deed = new WallBannerDeed();
                 deed.IsRewardItem = m_IsRewardItem;
 
-                return deed;	
+                return deed;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -261,7 +260,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.WriteEncodedInt(0); // version
-			
+
             writer.Write((bool)m_East);
             writer.Write((bool)m_IsRewardItem);
         }
@@ -271,7 +270,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             m_East = reader.ReadBool();
             m_IsRewardItem = reader.ReadBool();
         }
@@ -284,7 +283,7 @@ namespace Server.Items
         [Constructable]
         public WallBannerDeed()
             : base()
-        { 
+        {
             LootType = LootType.Blessed;
         }
 
@@ -326,16 +325,16 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             if (m_IsRewardItem)
                 list.Add(1076225); // 9th Year Veteran Reward
         }
 
         public override void OnDoubleClick(Mobile from)
-        { 
+        {
             if (m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, null))
                 return;
-		
+
             if (IsChildOf(from.Backpack))
             {
                 from.CloseGump(typeof(InternalGump));
@@ -348,7 +347,7 @@ namespace Server.Items
         public void Use(Mobile m, int bannerID)
         {
             m_BannerID = bannerID;
-		
+
             base.OnDoubleClick(m);
         }
 
@@ -357,7 +356,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.WriteEncodedInt(0); // version
-			
+
             writer.Write((bool)m_IsRewardItem);
         }
 
@@ -366,7 +365,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             m_IsRewardItem = reader.ReadBool();
         }
 
@@ -377,12 +376,12 @@ namespace Server.Items
                 : base(150, 50)
             {
                 m_WallBanner = WallBanner;
-				
+
                 Closable = true;
                 Disposable = true;
                 Dragable = true;
                 Resizable = false;
-				
+
                 AddBackground(25, 0, 500, 265, 0xA28);
                 AddLabel(70, 12, 0x3E3, "Choose a Wall Banner:");
 

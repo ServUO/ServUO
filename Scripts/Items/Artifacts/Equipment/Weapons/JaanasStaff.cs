@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class JaanasStaff : GnarledStaff
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public JaanasStaff()
             : base()

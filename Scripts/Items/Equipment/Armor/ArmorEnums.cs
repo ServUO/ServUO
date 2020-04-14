@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public enum ArmorBodyType
@@ -8,7 +6,7 @@ namespace Server.Items
         Gloves,
         Helmet,
         Arms,
-        Legs, 
+        Legs,
         Chest,
         Shield
     }

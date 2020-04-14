@@ -1,8 +1,7 @@
-using System;
 using Server.Engines.VeteranRewards;
 
 namespace Server.Items
-{ 
+{
     [Furniture]
     [Flipable(0x9AA, 0xE7D)]
     public class CommodityDeedBox : BaseContainer, IRewardItem
@@ -61,7 +60,7 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             if (this.m_IsRewardItem)
                 list.Add(1076217); // 1st Year Veteran Reward		
         }

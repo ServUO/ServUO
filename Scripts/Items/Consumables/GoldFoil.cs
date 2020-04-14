@@ -1,7 +1,3 @@
-using System;
-using Server.Items;
-using Server.Mobiles;
-
 namespace Server.Items
 {
     public class GoldFoil : Item

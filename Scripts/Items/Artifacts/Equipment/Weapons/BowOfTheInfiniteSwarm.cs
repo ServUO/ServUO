@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class BowOfTheInfiniteSwarm : CompositeBow
-	{
+    {
         public override int LabelNumber { get { return 1157347; } } // bow of the infinite swarm
         public override bool IsArtifact { get { return true; } }
 

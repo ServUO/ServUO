@@ -1,12 +1,10 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x2FB7, 0x3171)]
     public class ElvenQuiver : BaseQuiver
     {
-		public override int LabelNumber => 1032657; // elven quiver
-		
+        public override int LabelNumber => 1032657; // elven quiver
+
         [Constructable]
         public ElvenQuiver()
             : base()
@@ -18,7 +16,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-     
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

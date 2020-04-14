@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class IslandStatue : Item
-    { 
+    {
         [Constructable]
         public IslandStatue()
             : base(0x3B0F)
@@ -12,7 +10,7 @@ namespace Server.Items
 
         public IslandStatue(Serial serial)
             : base(serial)
-        { 
+        {
         }
 
         public override int LabelNumber
@@ -32,7 +30,7 @@ namespace Server.Items
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);
-			
+
             list.Add(1073634); // An aquarium decoration
         }
 

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class Ruby : Item, IGem

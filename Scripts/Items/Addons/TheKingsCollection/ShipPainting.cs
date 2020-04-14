@@ -1,6 +1,6 @@
-using System;
 using Server.Gumps;
 using Server.Multis;
+using System;
 
 namespace Server.Items
 {
@@ -132,7 +132,7 @@ namespace Server.Items
             m_ResourceCount = reader.ReadInt();
             NextResourceCount = reader.ReadDateTime();
         }
-    }    
+    }
 
     public class ShipPaintingDeed : BaseAddonDeed, IRewardOption
     {
@@ -180,7 +180,7 @@ namespace Server.Items
         }
 
         public override BaseAddon Addon { get { return new ShipPaintingAddon(_Direction); } }
-                
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

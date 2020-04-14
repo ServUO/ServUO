@@ -1,7 +1,4 @@
-﻿using System;
-using Server;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class FrostguardTalisman : BaseTalisman
     {

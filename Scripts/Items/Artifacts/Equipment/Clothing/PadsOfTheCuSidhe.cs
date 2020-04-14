@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class PadsOfTheCuSidhe : FurBoots
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public PadsOfTheCuSidhe()
             : base(0x47E)

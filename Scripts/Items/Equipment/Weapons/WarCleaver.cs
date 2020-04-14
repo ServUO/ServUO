@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.Craft;
 
 namespace Server.Items
@@ -62,7 +61,7 @@ namespace Server.Items
                 return 2.25f;
             }
         }
-        
+
         public override int DefHitSound
         {
             get
@@ -121,7 +120,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();           
+            int version = reader.ReadEncodedInt();
         }
     }
 }

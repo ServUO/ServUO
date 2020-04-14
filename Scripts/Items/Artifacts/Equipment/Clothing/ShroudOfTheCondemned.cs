@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     [Flipable(0x1F03, 0x1F04)]
     public class ShroudOfTheCondemned : BaseOuterTorso
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         public override bool CanBeWornByGargoyles { get { return true; } }
 
         public override int LabelNumber { get { return 1113703; } } // Shroud of the Condemned

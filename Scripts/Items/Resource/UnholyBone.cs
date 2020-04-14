@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
@@ -34,7 +34,7 @@ namespace Server.Items
             Effects.SendLocationEffect(this.GetWorldLocation(), this.Map, 0x3728, 10, 10, 0, 0);
 
             if (0.3 > Utility.RandomDouble())
-            {          
+            {
                 from.SendLocalizedMessage(1114322); // You destroy the bone pile.
 
                 Gold gold = new Gold(25, 100);
@@ -87,7 +87,7 @@ namespace Server.Items
 
                 Mobile spawn;
 
-                switch ( Utility.Random(12) )
+                switch (Utility.Random(12))
                 {
                     default:
                     case 0:

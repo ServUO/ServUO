@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x4204, 0x4208)]
@@ -9,7 +7,7 @@ namespace Server.Items
         public LargePlateShield()
             : base(0x4204)
         {
-			Weight = 8.0;
+            Weight = 8.0;
         }
 
         public LargePlateShield(Serial serial)

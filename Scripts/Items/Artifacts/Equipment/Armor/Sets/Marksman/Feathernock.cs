@@ -1,19 +1,17 @@
-using System;
-
 namespace Server.Items
 {
     public class Feathernock : BaseQuiver
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public Feathernock()
             : base()
         {
             this.SetHue = 0x594;
-			
+
             this.Attributes.WeaponDamage = 10;
             this.WeightReduction = 30;
-						
+
             this.SetAttributes.AttackChance = 15;
             this.SetAttributes.BonusDex = 8;
             this.SetAttributes.WeaponSpeed = 30;

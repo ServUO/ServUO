@@ -1,9 +1,6 @@
-﻿using System;
-using Server;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
-    public class BegWaterPitcher: Pitcher
+    public class BegWaterPitcher : Pitcher
     {
         [Constructable]
         public BegWaterPitcher() : base(BeverageType.Water)

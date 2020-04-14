@@ -1,5 +1,5 @@
-using System;
 using Server.Commands;
+using System;
 
 namespace Server.Items
 {
@@ -139,17 +139,17 @@ namespace Server.Items
         public static void Initialize()
         {
             CommandSystem.Register("SecretLocGen", AccessLevel.Administrator, new CommandEventHandler(SecretLocGen_OnCommand));
-			CommandSystem.Register("SecretLocDelete", AccessLevel.Administrator, new CommandEventHandler(SecretLocDelete_OnCommand));
-		}
+            CommandSystem.Register("SecretLocDelete", AccessLevel.Administrator, new CommandEventHandler(SecretLocDelete_OnCommand));
+        }
 
-		[Usage("SecretLocDelete")]
-		[Description("Deletes mark containers to Malas secret locations.")]
-		public static void SecretLocDelete_OnCommand(CommandEventArgs e)
-		{
-			WeakEntityCollection.Delete("malas");
-		}
+        [Usage("SecretLocDelete")]
+        [Description("Deletes mark containers to Malas secret locations.")]
+        public static void SecretLocDelete_OnCommand(CommandEventArgs e)
+        {
+            WeakEntityCollection.Delete("malas");
+        }
 
-		[Usage("SecretLocGen")]
+        [Usage("SecretLocGen")]
         [Description("Generates mark containers to Malas secret locations.")]
         public static void SecretLocGen_OnCommand(CommandEventArgs e)
         {
@@ -277,7 +277,7 @@ namespace Server.Items
                 return;
 
             MarkContainer cont = new MarkContainer(bone, locked);
-			WeakEntityCollection.Add("malas", cont);
+            WeakEntityCollection.Add("malas", cont);
             cont.TargetMap = Map.Malas;
             cont.Target = new Point3D(xTarget, yTarget, zTarget);
             cont.Description = "strange location";

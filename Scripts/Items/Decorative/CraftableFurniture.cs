@@ -1,6 +1,5 @@
-using System;
 using Server.Engines.Craft;
-using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
@@ -45,7 +44,7 @@ namespace Server.Items
                 {
                     this.m_Resource = value;
                     this.Hue = CraftResources.GetHue(this.m_Resource);
-					
+
                     this.InvalidateProperties();
                 }
             }
@@ -76,13 +75,13 @@ namespace Server.Items
             : base(serial)
         {
         }
-		
+
         public override void AddWeightProperty(ObjectPropertyList list)
         {
             base.AddWeightProperty(list);
 
             if (this.ShowCrafterName && this.m_Crafter != null)
-				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
             if (this.m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
@@ -95,12 +94,12 @@ namespace Server.Items
             if (info != null && info.Number > 0)
                 list.Add(info.Number);
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-			/* The jump to verison 1000 was due to needing to insert a class in the
+            /* The jump to verison 1000 was due to needing to insert a class in the
 			   inheritence chain for some items. We need to be certain that the new
 			   version of CraftableFurniture that handles this data will not
 			   conflict with the version numbers of the child classes.
@@ -116,37 +115,37 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-			int version = reader.PeekInt();
+            int version = reader.PeekInt();
 
-			switch (version)
-			{
-				case 1000:
-					reader.ReadInt();
-					this.m_Crafter = reader.ReadMobile();
-					this.m_Resource = (CraftResource)reader.ReadInt();
-					this.m_Quality = (ItemQuality)reader.ReadInt();
-					break;
-				case 0:
-					// Only these two items had this base class prior to the version change
-					if(this is ElvenPodium ||
-						this is GiantReplicaAcorn)
-					{
-						reader.ReadInt();
-						this.m_Crafter = reader.ReadMobile();
-						this.m_Resource = (CraftResource)reader.ReadInt();
-						this.m_Quality = (ItemQuality)reader.ReadInt();
-					}
-					// If we peeked a zero here any other way we should not consume data
-					else
-					{
-						this.m_Crafter = null;
-						this.m_Resource = CraftResource.None;
-						this.m_Quality = ItemQuality.Normal;
-					}
-					break;
-				default:
-					throw new ArgumentException("Unhandled version number for CraftableFurniture");
-			}
+            switch (version)
+            {
+                case 1000:
+                    reader.ReadInt();
+                    this.m_Crafter = reader.ReadMobile();
+                    this.m_Resource = (CraftResource)reader.ReadInt();
+                    this.m_Quality = (ItemQuality)reader.ReadInt();
+                    break;
+                case 0:
+                    // Only these two items had this base class prior to the version change
+                    if (this is ElvenPodium ||
+                        this is GiantReplicaAcorn)
+                    {
+                        reader.ReadInt();
+                        this.m_Crafter = reader.ReadMobile();
+                        this.m_Resource = (CraftResource)reader.ReadInt();
+                        this.m_Quality = (ItemQuality)reader.ReadInt();
+                    }
+                    // If we peeked a zero here any other way we should not consume data
+                    else
+                    {
+                        this.m_Crafter = null;
+                        this.m_Resource = CraftResource.None;
+                        this.m_Quality = ItemQuality.Normal;
+                    }
+                    break;
+                default:
+                    throw new ArgumentException("Unhandled version number for CraftableFurniture");
+            }
         }
 
         #region ICraftable

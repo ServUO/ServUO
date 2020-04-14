@@ -1,14 +1,12 @@
-using System;
-
 namespace Server.Items
 {
     public class SilverSerpentVenom : Item, ICommodity
     {
-		TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
         public override int LabelNumber { get { return 1112173; } }// silver serpent venom
-		
+
         [Constructable]
         public SilverSerpentVenom()
             : this(1)
@@ -28,8 +26,8 @@ namespace Server.Items
         public SilverSerpentVenom(Serial serial)
             : base(serial)
         {
-        }       
-		
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -1,18 +1,16 @@
-using System;
-
 namespace Server.Items
 {
     public class Windsong : MagicalShortbow
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public Windsong()
             : base()
         {
-            Hue = 172;			
+            Hue = 172;
             Attributes.WeaponDamage = 35;
-            WeaponAttributes.SelfRepair = 3;			
-            Velocity = 25;			
+            WeaponAttributes.SelfRepair = 3;
+            Velocity = 25;
         }
 
         public Windsong(Serial serial)
