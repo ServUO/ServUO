@@ -1,8 +1,7 @@
-using System;
-using Server;
+using Server.ContextMenus;
 using Server.Multis;
 using Server.Network;
-using Server.ContextMenus;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Items
@@ -42,7 +41,7 @@ namespace Server.Items
 
             if (Boat.IsRowBoat)
                 return;
-            
+
             list.Add(Boat.Status);
             list.Add(1116580 + (int)Boat.DamageTaken); //State: Prisine            
         }
