@@ -2344,6 +2344,11 @@ namespace Server.Multis
                 vendor.RenterRenew = false;
                 vendor.LandlordRenew = false;
             }
+
+            foreach (var barkeep in PlayerBarkeepers.OfType<PlayerBarkeeper>())
+            {
+                barkeep.Owner = Owner;
+            }
         }
 
         public void OnCondemned()
