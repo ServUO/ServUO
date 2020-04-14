@@ -56,7 +56,7 @@ namespace Server
 
                     if (match != null && EnhancementList[m].Contains(match))
                     {
-                        if(match.Attributes.BonusStr > 0)
+                        if (match.Attributes.BonusStr > 0)
                             m.RemoveStatMod("MagicalEnhancementStr");
 
                         if (match.Attributes.BonusDex > 0)
@@ -69,7 +69,7 @@ namespace Server
                     }
                 }
 
-                if(EnhancementList[m].Count == 0 || title == null)
+                if (EnhancementList[m].Count == 0 || title == null)
                     EnhancementList.Remove(m);
 
                 m.CheckStatTimers();

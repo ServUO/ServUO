@@ -1,10 +1,9 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-
 using Server.Mobiles;
 using Server.Network;
 using Server.Spells.SkillMasteries;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -16,7 +15,7 @@ namespace Server.Items
         Splintering,
         Searing,
         Bane,
-        BoneBreaker, 
+        BoneBreaker,
         Swarm,
         Sparks
     }
@@ -34,16 +33,16 @@ namespace Server.Items
         private TimeSpan m_TickDuration;
         private Timer m_Timer;
 
-        public Mobile Mobile => m_Mobile; 
-        public Mobile Victim => m_Victim; 
-        public Item Owner => m_Owner; 
-        public EffectsType Effect => m_Effect; 
-        public TimeSpan Duration => m_Duration; 
-        public TimeSpan TickDuration => m_TickDuration; 
-        public Timer Timer => m_Timer; 
+        public Mobile Mobile => m_Mobile;
+        public Mobile Victim => m_Victim;
+        public Item Owner => m_Owner;
+        public EffectsType Effect => m_Effect;
+        public TimeSpan Duration => m_Duration;
+        public TimeSpan TickDuration => m_TickDuration;
+        public Timer Timer => m_Timer;
 
         private static List<PropertyEffect> m_Effects = new List<PropertyEffect>();
-        public static List<PropertyEffect> Effects => m_Effects; 
+        public static List<PropertyEffect> Effects => m_Effects;
 
         public PropertyEffect(Mobile from, Mobile victim, Item owner, EffectsType effect, TimeSpan duration, TimeSpan tickduration)
         {
@@ -64,7 +63,7 @@ namespace Server.Items
         {
             StopTimer();
 
-            if(m_Effects.Contains(this))
+            if (m_Effects.Contains(this))
                 m_Effects.Remove(this);
         }
 
@@ -238,11 +237,11 @@ namespace Server.Items
             if (m_Charges >= 20)
                 return;
 
-            double pd = 0; double fd = 0; 
-            double cd = 0; double pod = 0; 
+            double pd = 0; double fd = 0;
+            double cd = 0; double pod = 0;
             double ed = 0; double dd = 0;
 
-            double k = (double)GetValue(DamageType.Kinetic,  this.Mobile) / 100;
+            double k = (double)GetValue(DamageType.Kinetic, this.Mobile) / 100;
             double f = (double)GetValue(DamageType.Fire, this.Mobile) / 100;
             double c = (double)GetValue(DamageType.Cold, this.Mobile) / 100;
             double p = (double)GetValue(DamageType.Poison, this.Mobile) / 100;
@@ -470,7 +469,7 @@ namespace Server.Items
 
     public class SearingWeaponContext : PropertyEffect
     {
-        public static int Damage => Utility.RandomMinMax(10, 15); 
+        public static int Damage => Utility.RandomMinMax(10, 15);
 
         public SearingWeaponContext(Mobile from, Mobile defender)
             : base(from, defender, null, EffectsType.Searing, TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(4))

@@ -45,7 +45,7 @@ namespace Server.Items
 
             BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.ArmorPierce, 1028860, 1154367, TimeSpan.FromSeconds(3), defender, "10"));
             _Table[defender] = Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(3), RemoveEffects, defender);
-            
+
             defender.PlaySound(0x28E);
             defender.FixedParticles(0x3728, 1, 26, 0x26D6, 0, 0, EffectLayer.Waist);
         }
@@ -61,9 +61,9 @@ namespace Server.Items
 
         public static bool IsUnderEffects(Mobile m)
         {
-            if(m == null)
+            if (m == null)
                 return false;
-                
+
             return _Table.ContainsKey(m);
         }
     }

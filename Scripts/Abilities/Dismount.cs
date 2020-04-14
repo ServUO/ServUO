@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
@@ -24,7 +24,7 @@ namespace Server.Items
             if (!base.Validate(from))
                 return false;
 
-            if ( (from.Mounted || from.Flying) && !(from.Weapon is Lance) && !(from.Weapon is GargishLance) )
+            if ((from.Mounted || from.Flying) && !(from.Weapon is Lance) && !(from.Weapon is GargishLance))
             {
                 from.SendLocalizedMessage(1061283); // You cannot perform that attack while mounted or flying!
                 return false;

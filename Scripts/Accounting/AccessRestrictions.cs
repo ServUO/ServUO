@@ -1,7 +1,7 @@
+using Server.Misc;
 using System;
 using System.IO;
 using System.Net;
-using Server.Misc;
 
 namespace Server
 {
@@ -34,7 +34,7 @@ namespace Server
 
                     using (StreamWriter op = new StreamWriter("ipLimits.log", true))
                         op.WriteLine("{0}\tPast IP limit threshold\t{1}", ip, DateTime.UtcNow);
-	
+
                     e.AllowConnection = false;
                     return;
                 }

@@ -67,7 +67,7 @@ namespace Server.Items
                         String.Format("{0}\t{1}", info.Target == null ? "NONE" : info.Target.Name, info.DamageBonus)));
                 }
 
-                m_Table[from] = new FocusInfo(target, DefaultDamageBonus);                
+                m_Table[from] = new FocusInfo(target, DefaultDamageBonus);
             }
         }
 
@@ -106,7 +106,7 @@ namespace Server.Items
                 else
                 {
                     if (info.DamageBonus >= -50)
-                        info.DamageBonus = DefaultDamageBonus;                    
+                        info.DamageBonus = DefaultDamageBonus;
                 }
 
                 if (info.Target != defender)

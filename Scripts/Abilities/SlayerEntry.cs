@@ -38,7 +38,7 @@ namespace Server.Items
             1156126, // Eodon Slayer
             1156347  // Eodon Tribe Slayer
         };
-       
+
         private readonly SlayerName m_Name;
         private readonly Type[] m_Types;
         private SlayerGroup m_Group;
@@ -59,7 +59,7 @@ namespace Server.Items
                 m_Group = value;
             }
         }
-		
+
         public SlayerName Name => m_Name;
 
         public Type[] Types => m_Types;
@@ -73,7 +73,7 @@ namespace Server.Items
                 return titles[(int)m_Name - 1];
             }
         }
-		
+
         public bool Slays(Mobile m)
         {
 
