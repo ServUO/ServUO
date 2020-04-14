@@ -34,6 +34,7 @@ namespace Server.Items
                         return;
                     }
 
+                    from.CloseGump(typeof(RunicAtlasGump));
                     BaseGump.SendGump(new RunicAtlasGump((PlayerMobile)from, this));
                     Openers.Add(from);
                 }
@@ -386,6 +387,7 @@ namespace Server.Items
             }
             else
             {
+                Atlas.Openers.Remove(User);
                 User.SendLocalizedMessage(502413); // That cannot be done while the book is locked down.
             }
         }
@@ -538,7 +540,9 @@ namespace Server.Items
                 if (Atlas.CheckAccess(from) || from.AccessLevel >= AccessLevel.GameMaster)
                 {
                     Atlas.Description = Utility.FixHtml(text.Trim());
-                    from.SendGump(new RunicAtlasGump((PlayerMobile)from, Atlas));
+
+                    from.CloseGump(typeof(RunicAtlasGump));
+                    BaseGump.SendGump(new RunicAtlasGump((PlayerMobile)from, Atlas));
                     from.SendLocalizedMessage(1041531); // You have changed the title of the rune book.
                 }
                 else
@@ -554,7 +558,8 @@ namespace Server.Items
 
                 if (from is PlayerMobile && !Atlas.Deleted && from.InRange(Atlas.GetWorldLocation(), 3))
                 {
-                    from.SendGump(new RunicAtlasGump((PlayerMobile)from, Atlas));
+                    from.CloseGump(typeof(RunicAtlasGump));
+                    BaseGump.SendGump(new RunicAtlasGump((PlayerMobile)from, Atlas));
                 }
             }
         }
