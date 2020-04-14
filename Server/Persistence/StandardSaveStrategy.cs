@@ -1,6 +1,6 @@
+using Server.Guilds;
 using System;
 using System.Collections.Generic;
-using Server.Guilds;
 
 namespace Server
 {
@@ -204,6 +204,6 @@ namespace Server
 
             idx.Close();
             bin.Close();
-        }        
+        }
     }
 }
