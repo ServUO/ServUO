@@ -1,8 +1,7 @@
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Server.Mobiles;
 
 namespace Server.Gumps
 {
@@ -34,10 +33,10 @@ namespace Server.Gumps
     public class CircuitTrapGump : BaseGump
     {
         public ICircuitTrap Trap { get; set; }
-        public List<int> Path => Trap != null ? Trap.Path : null; 
-        public List<int> Progress => Trap != null ? Trap.Progress : null; 
+        public List<int> Path => Trap != null ? Trap.Path : null;
+        public List<int> Progress => Trap != null ? Trap.Progress : null;
 
-        public CircuitCount Count => Trap != null ? Trap.Count : CircuitCount.Nine; 
+        public CircuitCount Count => Trap != null ? Trap.Count : CircuitCount.Nine;
         public bool ShowNext { get; set; }
 
         public CircuitTrapGump(PlayerMobile from, ICircuitTrap item)
@@ -101,7 +100,7 @@ namespace Server.Gumps
 
                 AddImage(x, y, i == count - 1 ? 0x9A8 : Progress.Contains(i) ? 0x868 : 0x25F8);
 
-                if (line + 1  < sq)
+                if (line + 1 < sq)
                 {
                     AddImage(x + 10, y + 27, 0x13F9);
                 }

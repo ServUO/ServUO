@@ -1,10 +1,10 @@
-using System;
 using Server.Accounting;
 using Server.Commands;
 using Server.Commands.Generic;
 using Server.Mobiles;
 using Server.Network;
 using Server.Targets;
+using System;
 
 namespace Server.Gumps
 {
@@ -150,7 +150,7 @@ namespace Server.Gumps
                 return;
             }
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 1: // Tell
                     {

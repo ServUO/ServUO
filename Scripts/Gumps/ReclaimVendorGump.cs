@@ -1,7 +1,6 @@
-using System;
-using System.Collections;
 using Server.Multis;
 using Server.Network;
+using System.Collections;
 
 namespace Server.Gumps
 {

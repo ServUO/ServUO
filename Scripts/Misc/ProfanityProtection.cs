@@ -1,4 +1,3 @@
-using System;
 using Server.Network;
 
 namespace Server.Misc
@@ -70,21 +69,21 @@ namespace Server.Misc
             "shit",
             "fuck"
         };
-        public static char[]	Exceptions
+        public static char[] Exceptions
         {
             get
             {
                 return m_Exceptions;
             }
         }
-        public static string[]	StartDisallowed
+        public static string[] StartDisallowed
         {
             get
             {
                 return m_StartDisallowed;
             }
         }
-        public static string[]	Disallowed
+        public static string[] Disallowed
         {
             get
             {
@@ -99,7 +98,7 @@ namespace Server.Misc
 
         private static bool OnProfanityDetected(Mobile from, string speech)
         {
-            switch ( Action )
+            switch (Action)
             {
                 case ProfanityAction.None:
                     return true;

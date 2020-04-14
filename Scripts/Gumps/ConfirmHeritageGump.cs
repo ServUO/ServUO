@@ -1,6 +1,6 @@
-﻿using System;
-using Server.Items;
+﻿using Server.Items;
 using Server.Network;
+using System;
 
 namespace Server.Gumps
 {
@@ -8,13 +8,13 @@ namespace Server.Gumps
     {
         private readonly HeritageToken m_Token;
         private readonly Type[] m_Selected;
-		private readonly Mobile m_User;
+        private readonly Mobile m_User;
         public ConfirmHeritageGump(HeritageToken token, Type[] selected, int cliloc, Mobile from)
             : base(60, 36)
         {
             this.m_Token = token;
             this.m_Selected = selected;
-			this.m_User = from;
+            this.m_User = from;
 
             this.AddPage(0);
 
@@ -37,19 +37,19 @@ namespace Server.Gumps
         public override void OnResponse(NetState sender, RelayInfo info)
         {
             if (this.m_Token == null || this.m_Token.Deleted ||
-				this.m_User == null || this.m_User.Deleted)
+                this.m_User == null || this.m_User.Deleted)
                 return;
 
-			if (!this.m_Token.IsChildOf(this.m_User.Backpack))
-			{
-				sender.Mobile.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
-				return;
-			}
+            if (!this.m_Token.IsChildOf(this.m_User.Backpack))
+            {
+                sender.Mobile.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
+                return;
+            }
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case (int)Buttons.Okay:
-					
+
                     Item item = null;
 
                     foreach (Type type in this.m_Selected)

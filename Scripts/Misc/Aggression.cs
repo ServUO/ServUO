@@ -1,9 +1,8 @@
-using System;
-using System.Linq;
-
-using System.Collections.Generic;
-using Server.Network;
 using Server.Mobiles;
+using Server.Network;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Misc
 {
@@ -14,7 +13,7 @@ namespace Server.Misc
         private const string AggressedFormat = "{0} is attacking you!";
         private const int Hue = 0x22;
 
-        public static TimeSpan CombatHeatDelay => Delay; 
+        public static TimeSpan CombatHeatDelay => Delay;
 
         public static void Initialize()
         {
@@ -44,7 +43,7 @@ namespace Server.Misc
         public static void EventSink_PlayerDeath(PlayerDeathEventArgs e)
         {
             var killed = e.Mobile;
-             
+
             foreach (var m in killed.Aggressed.Select(m => m.Defender))
             {
                 CheckCombat(m);

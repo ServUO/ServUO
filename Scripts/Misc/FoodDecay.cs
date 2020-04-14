@@ -1,5 +1,5 @@
-using System;
 using Server.Network;
+using System;
 
 namespace Server.Misc
 {
@@ -39,7 +39,7 @@ namespace Server.Misc
 
         protected override void OnTick()
         {
-            FoodDecay();			
+            FoodDecay();
         }
     }
 }

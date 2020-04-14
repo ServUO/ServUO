@@ -1,6 +1,6 @@
+using Server.Gumps;
 using System;
 using System.Globalization;
-using Server.Gumps;
 
 namespace Server
 {
@@ -60,7 +60,7 @@ namespace Server
         {
             int type = reader.ReadEncodedInt();
 
-            switch ( type )
+            switch (type)
             {
                 case 0:
                     return new TextDefinition();
@@ -169,7 +169,7 @@ namespace Server
 
             return "";
         }
-        
+
         public static implicit operator TextDefinition(int v)
         {
             return new TextDefinition(v);

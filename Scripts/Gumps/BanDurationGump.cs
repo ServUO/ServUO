@@ -1,6 +1,6 @@
+using Server.Accounting;
 using System;
 using System.Collections;
-using Server.Accounting;
 
 namespace Server.Gumps
 {
@@ -90,7 +90,7 @@ namespace Server.Gumps
 
             string fromString = from.ToString();
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 0:
                     {
@@ -222,7 +222,7 @@ namespace Server.Gumps
             if (shouldSet)
             {
                 string comment = null;
-				
+
                 if (c != null)
                 {
                     comment = c.Text.Trim();

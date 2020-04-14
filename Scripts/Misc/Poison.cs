@@ -1,7 +1,4 @@
 #region References
-using System;
-using System.Globalization;
-
 using Server.Items;
 using Server.Mobiles;
 using Server.Network;
@@ -9,39 +6,40 @@ using Server.Services.Virtues;
 using Server.Spells;
 using Server.Spells.Necromancy;
 using Server.Spells.Ninjitsu;
+using System;
 #endregion
 
 namespace Server
 {
-	public class PoisonImpl : Poison
-	{
-		[CallPriority(10)]
-		public static void Configure()
-		{
-			Register(new PoisonImpl("Lesser", 0, 4, 16, 7.5, 3.0, 2.25, 10, 4));
-			Register(new PoisonImpl("Regular", 1, 8, 18, 10.0, 3.0, 3.25, 10, 3));
-			Register(new PoisonImpl("Greater", 2, 12, 20, 15.0, 3.0, 4.25, 10, 2));
-			Register(new PoisonImpl("Deadly", 3, 16, 30, 30.0, 3.0, 5.25, 15, 2));
-			Register(new PoisonImpl("Lethal", 4, 20, 50, 35.0, 3.0, 5.25, 20, 2));
+    public class PoisonImpl : Poison
+    {
+        [CallPriority(10)]
+        public static void Configure()
+        {
+            Register(new PoisonImpl("Lesser", 0, 4, 16, 7.5, 3.0, 2.25, 10, 4));
+            Register(new PoisonImpl("Regular", 1, 8, 18, 10.0, 3.0, 3.25, 10, 3));
+            Register(new PoisonImpl("Greater", 2, 12, 20, 15.0, 3.0, 4.25, 10, 2));
+            Register(new PoisonImpl("Deadly", 3, 16, 30, 30.0, 3.0, 5.25, 15, 2));
+            Register(new PoisonImpl("Lethal", 4, 20, 50, 35.0, 3.0, 5.25, 20, 2));
 
-			Register(new PoisonImpl("LesserDarkglow", 10, 4, 16, 7.5, 3.0, 2.25, 10, 4));
-			Register(new PoisonImpl("RegularDarkglow", 11, 8, 18, 10.0, 3.0, 3.25, 10, 3));
-			Register(new PoisonImpl("GreaterDarkglow", 12, 12, 20, 15.0, 3.0, 4.25, 10, 2));
-			Register(new PoisonImpl("DeadlyDarkglow", 13, 16, 30, 30.0, 3.0, 5.25, 15, 2));
+            Register(new PoisonImpl("LesserDarkglow", 10, 4, 16, 7.5, 3.0, 2.25, 10, 4));
+            Register(new PoisonImpl("RegularDarkglow", 11, 8, 18, 10.0, 3.0, 3.25, 10, 3));
+            Register(new PoisonImpl("GreaterDarkglow", 12, 12, 20, 15.0, 3.0, 4.25, 10, 2));
+            Register(new PoisonImpl("DeadlyDarkglow", 13, 16, 30, 30.0, 3.0, 5.25, 15, 2));
 
-			Register(new PoisonImpl("LesserParasitic", 14, 4, 16, 7.5, 3.0, 2.25, 10, 4));
-			Register(new PoisonImpl("RegularParasitic", 15, 8, 18, 10.0, 3.0, 3.25, 10, 3));
-			Register(new PoisonImpl("GreaterParasitic", 16, 12, 20, 15.0, 3.0, 4.25, 10, 2));
-			Register(new PoisonImpl("DeadlyParasitic", 17, 16, 30, 30.0, 3.0, 5.25, 15, 2));
-			Register(new PoisonImpl("LethalParasitic", 18, 20, 50, 35.0, 3.0, 5.25, 20, 2));
-		}
+            Register(new PoisonImpl("LesserParasitic", 14, 4, 16, 7.5, 3.0, 2.25, 10, 4));
+            Register(new PoisonImpl("RegularParasitic", 15, 8, 18, 10.0, 3.0, 3.25, 10, 3));
+            Register(new PoisonImpl("GreaterParasitic", 16, 12, 20, 15.0, 3.0, 4.25, 10, 2));
+            Register(new PoisonImpl("DeadlyParasitic", 17, 16, 30, 30.0, 3.0, 5.25, 15, 2));
+            Register(new PoisonImpl("LethalParasitic", 18, 20, 50, 35.0, 3.0, 5.25, 20, 2));
+        }
 
-		public static Poison IncreaseLevel(Poison oldPoison)
-		{
-			Poison newPoison = oldPoison == null ? null : GetPoison(oldPoison.Level + 1);
+        public static Poison IncreaseLevel(Poison oldPoison)
+        {
+            Poison newPoison = oldPoison == null ? null : GetPoison(oldPoison.Level + 1);
 
-			return newPoison ?? oldPoison;
-		}
+            return newPoison ?? oldPoison;
+        }
 
         public static Poison DecreaseLevel(Poison oldPoison)
         {
@@ -50,104 +48,104 @@ namespace Server
             return (newPoison == null ? oldPoison : newPoison);
         }
 
-		// Info
-		private readonly string m_Name;
-		private readonly int m_Level;
+        // Info
+        private readonly string m_Name;
+        private readonly int m_Level;
 
-		// Damage
-		private readonly int m_Minimum;
-		private readonly int m_Maximum;
-		private readonly double m_Scalar;
+        // Damage
+        private readonly int m_Minimum;
+        private readonly int m_Maximum;
+        private readonly double m_Scalar;
 
-		// Timers
-		private readonly TimeSpan m_Delay;
-		private readonly TimeSpan m_Interval;
-		private readonly int m_Count;
+        // Timers
+        private readonly TimeSpan m_Delay;
+        private readonly TimeSpan m_Interval;
+        private readonly int m_Count;
 
-		private readonly int m_MessageInterval;
+        private readonly int m_MessageInterval;
 
-		public override string Name => m_Name; 
-		public override int Level => m_Level; 
+        public override string Name => m_Name;
+        public override int Level => m_Level;
 
-		public override int RealLevel
-		{
-			get
-			{
-				if (m_Level >= 14)
-				{
-					return m_Level - 14;
-				}
-				
-				if (m_Level >= 10)
-				{
-					return m_Level - 10;
-				}
+        public override int RealLevel
+        {
+            get
+            {
+                if (m_Level >= 14)
+                {
+                    return m_Level - 14;
+                }
 
-				return m_Level;
-			}
-		}
+                if (m_Level >= 10)
+                {
+                    return m_Level - 10;
+                }
 
-		public override int LabelNumber
-		{
-			get
-			{
-				if (m_Level >= 14)
-				{
-					return 1072852; // parasitic poison charges: ~1_val~
-				}
-				
-				if (m_Level >= 10)
-				{
-					return 1072853; // darkglow poison charges: ~1_val~
-				}
+                return m_Level;
+            }
+        }
 
-				return 1062412 + m_Level; // ~poison~ poison charges: ~1_val~
-			}
-		}
+        public override int LabelNumber
+        {
+            get
+            {
+                if (m_Level >= 14)
+                {
+                    return 1072852; // parasitic poison charges: ~1_val~
+                }
 
-		public PoisonImpl(
-			string name,
-			int level,
-			int min,
-			int max,
-			double percent,
-			double delay,
-			double interval,
-			int count,
-			int messageInterval)
-		{
-			m_Name = name;
-			m_Level = level;
-			m_Minimum = min;
-			m_Maximum = max;
-			m_Scalar = percent * 0.01;
-			m_Delay = TimeSpan.FromSeconds(delay);
-			m_Interval = TimeSpan.FromSeconds(interval);
-			m_Count = count;
-			m_MessageInterval = messageInterval;
-		}
+                if (m_Level >= 10)
+                {
+                    return 1072853; // darkglow poison charges: ~1_val~
+                }
 
-		public override Timer ConstructTimer(Mobile m)
-		{
-			return new PoisonTimer(m, this);
-		}
+                return 1062412 + m_Level; // ~poison~ poison charges: ~1_val~
+            }
+        }
 
-		public class PoisonTimer : Timer
-		{
-			private readonly PoisonImpl m_Poison;
-			private readonly Mobile m_Mobile;
-			private Mobile m_From;
-			private int m_LastDamage;
-			private int m_Index;
+        public PoisonImpl(
+            string name,
+            int level,
+            int min,
+            int max,
+            double percent,
+            double delay,
+            double interval,
+            int count,
+            int messageInterval)
+        {
+            m_Name = name;
+            m_Level = level;
+            m_Minimum = min;
+            m_Maximum = max;
+            m_Scalar = percent * 0.01;
+            m_Delay = TimeSpan.FromSeconds(delay);
+            m_Interval = TimeSpan.FromSeconds(interval);
+            m_Count = count;
+            m_MessageInterval = messageInterval;
+        }
 
-			public Mobile From { get { return m_From; } set { m_From = value; } }
+        public override Timer ConstructTimer(Mobile m)
+        {
+            return new PoisonTimer(m, this);
+        }
 
-			public PoisonTimer(Mobile m, PoisonImpl p)
-				: base(p.m_Delay, p.m_Interval)
-			{
-				m_From = m;
-				m_Mobile = m;
-				m_Poison = p;
+        public class PoisonTimer : Timer
+        {
+            private readonly PoisonImpl m_Poison;
+            private readonly Mobile m_Mobile;
+            private Mobile m_From;
+            private int m_LastDamage;
+            private int m_Index;
+
+            public Mobile From { get { return m_From; } set { m_From = value; } }
+
+            public PoisonTimer(Mobile m, PoisonImpl p)
+                : base(p.m_Delay, p.m_Interval)
+            {
+                m_From = m;
+                m_Mobile = m;
+                m_Poison = p;
 
                 int damage = 1 + (int)(m.Hits * p.m_Scalar);
 
@@ -247,5 +245,5 @@ namespace Server
                     m_Mobile.OnPoisoned(m_From, m_Poison, m_Poison);
             }
         }
-	}
+    }
 }

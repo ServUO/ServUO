@@ -1,9 +1,9 @@
+using Server.Commands;
+using Server.Network;
 using System;
 using System.Collections;
 using System.IO;
 using System.Xml;
-using Server.Commands;
-using Server.Network;
 
 namespace Server.Gumps
 {
@@ -370,7 +370,7 @@ namespace Server.Gumps
         {
             Mobile from = this.m_Owner;
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 0: // Closed
                     {
