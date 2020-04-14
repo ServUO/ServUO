@@ -1,9 +1,7 @@
+using Server.Items;
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
-
-using Server;
-using Server.Mobiles;
-using Server.Items;
 
 namespace Server.Engines.Quests.RitualQuest
 {
@@ -71,7 +69,7 @@ namespace Server.Engines.Quests.RitualQuest
 
         public static void Initialize()
         {
-            if(Instance == null)
+            if (Instance == null)
             {
                 Instance = new Bexil();
                 Instance.MoveToWorld(new Point3D(662, 3819, -43), Map.TerMur);

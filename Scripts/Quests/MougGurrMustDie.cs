@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class MougGuurMustDieQuest : BaseQuest
-    { 
+    {
         public MougGuurMustDieQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(MougGuur), "moug-guur", 1, "Sanctuary"));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -90,12 +90,12 @@ namespace Server.Engines.Quests
     }
 
     public class LeaderOfThePackQuest : BaseQuest
-    { 
+    {
         public LeaderOfThePackQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Chiikkaha), "chiikkaha", 1, "Sanctuary"));
-							
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -178,12 +178,12 @@ namespace Server.Engines.Quests
     }
 
     public class SayonaraSzavetraQuest : BaseQuest
-    { 
+    {
         public SayonaraSzavetraQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Szavetra), "szavetra", 1, "Sanctuary"));
-							
+
             this.AddReward(new BaseReward(typeof(RewardBox), 1072584));
         }
 

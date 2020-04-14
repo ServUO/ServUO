@@ -1,14 +1,10 @@
-using Server;
-using System;
-using Server.Engines.Quests;
-using System.Linq;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Network;
-using Server.Movement;
 using Server.Spells;
 using Server.Spells.SkillMasteries;
-using Server.Misc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -67,7 +63,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.SuperBoss, 5);
-        }	
+        }
 
         public override void OnThink()
         {
@@ -186,7 +182,7 @@ namespace Server.Mobiles
 
                     Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30)), () =>
                     {
-                        ooze1.Delete(); ooze2.Delete(); ooze3.Delete(); ooze4.Delete(); ooze5.Delete(); 
+                        ooze1.Delete(); ooze2.Delete(); ooze3.Delete(); ooze4.Delete(); ooze5.Delete();
                         ooze6.Delete(); ooze7.Delete(); ooze8.Delete(); ooze9.Delete();
                     });
 
@@ -213,8 +209,8 @@ namespace Server.Mobiles
 
             eable.Free();
             Mobile target = null;
-            
-            if(random.Count > 0)
+
+            if (random.Count > 0)
                 target = random[Utility.Random(random.Count)];
 
             if (target != null)
@@ -232,7 +228,7 @@ namespace Server.Mobiles
                         Effects.SendLocationEffect(target.Location, this.Map, 40136, 120);
                         target.PrivateOverheadMessage(MessageType.Regular, 0x21, 1156835, target.NetState); // *Crunch Crunch Crunch* 
                     });
- 
+
                 AOS.Damage(target, this, Utility.RandomMinMax(80, 100), 100, 0, 0, 0, 0);
                 target.SendSpeedControl(SpeedControlType.WalkSpeed);
 
@@ -387,22 +383,22 @@ namespace Server.Mobiles
 
         public MyrmidexQueen(Serial serial)
             : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
 
             writer.Write(_Spawn.Count);
             _Spawn.ForEach(sp => writer.Write(sp));
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int v = reader.ReadInt();
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = reader.ReadInt();
 
             _Spawn = new List<BaseCreature>();
 
@@ -418,7 +414,7 @@ namespace Server.Mobiles
             _NextCombo1 = DateTime.UtcNow;
             _NextCombo2 = DateTime.UtcNow;
             _NextEggThrow = DateTime.UtcNow;
-		}
+        }
     }
 
     public class Zipactriotl : BaseCreature
@@ -554,7 +550,7 @@ namespace Server.Mobiles
             }
             eable.Free();
 
-            for ( int i = 0; i < _Offsets.Length; i += 2 )
+            for (int i = 0; i < _Offsets.Length; i += 2)
             {
                 int tarx = this.X + (int)(_Offsets[i] * dist);
                 int tary = this.Y + (int)(_Offsets[i + 1] * dist);
@@ -626,25 +622,25 @@ namespace Server.Mobiles
         }
 
         private static readonly double[] _Offsets = new double[]
-			{
+            {
                 Math.Cos( 300.0 / 180.0 * Math.PI ), Math.Sin( 300.0 / 180.0 * Math.PI ),
-				Math.Cos( 320.0 / 180.0 * Math.PI ), Math.Sin( 320.0 / 180.0 * Math.PI ),
+                Math.Cos( 320.0 / 180.0 * Math.PI ), Math.Sin( 320.0 / 180.0 * Math.PI ),
                 Math.Cos( 340.0 / 180.0 * Math.PI ), Math.Sin( 340.0 / 180.0 * Math.PI ),
                 Math.Cos( 000.0 / 180.0 * Math.PI ), Math.Sin( 000.0 / 180.0 * Math.PI ),
                 Math.Cos( 020.0 / 180.0 * Math.PI ), Math.Sin( 020.0 / 180.0 * Math.PI ),
-				Math.Cos( 040.0 / 180.0 * Math.PI ), Math.Sin( 040.0 / 180.0 * Math.PI ),
+                Math.Cos( 040.0 / 180.0 * Math.PI ), Math.Sin( 040.0 / 180.0 * Math.PI ),
                 Math.Cos( 060.0 / 180.0 * Math.PI ), Math.Sin( 060.0 / 180.0 * Math.PI ),
-				Math.Cos( 080.0 / 180.0 * Math.PI ), Math.Sin( 080.0 / 180.0 * Math.PI ),
+                Math.Cos( 080.0 / 180.0 * Math.PI ), Math.Sin( 080.0 / 180.0 * Math.PI ),
                 Math.Cos( 100.0 / 180.0 * Math.PI ), Math.Sin( 100.0 / 180.0 * Math.PI ),
-				Math.Cos( 120.0 / 180.0 * Math.PI ), Math.Sin( 120.0 / 180.0 * Math.PI ),
-				Math.Cos( 140.0 / 180.0 * Math.PI ), Math.Sin( 140.0 / 180.0 * Math.PI ),
+                Math.Cos( 120.0 / 180.0 * Math.PI ), Math.Sin( 120.0 / 180.0 * Math.PI ),
+                Math.Cos( 140.0 / 180.0 * Math.PI ), Math.Sin( 140.0 / 180.0 * Math.PI ),
                 Math.Cos( 160.0 / 180.0 * Math.PI ), Math.Sin( 160.0 / 180.0 * Math.PI ),
-				Math.Cos( 180.0 / 180.0 * Math.PI ), Math.Sin( 180.0 / 180.0 * Math.PI ),
+                Math.Cos( 180.0 / 180.0 * Math.PI ), Math.Sin( 180.0 / 180.0 * Math.PI ),
                 Math.Cos( 200.0 / 180.0 * Math.PI ), Math.Sin( 200.0 / 180.0 * Math.PI ),
                 Math.Cos( 220.0 / 180.0 * Math.PI ), Math.Sin( 220.0 / 180.0 * Math.PI ),
-				Math.Cos( 240.0 / 180.0 * Math.PI ), Math.Sin( 240.0 / 180.0 * Math.PI ),
+                Math.Cos( 240.0 / 180.0 * Math.PI ), Math.Sin( 240.0 / 180.0 * Math.PI ),
                 Math.Cos( 260.0 / 180.0 * Math.PI ), Math.Sin( 260.0 / 180.0 * Math.PI ),
-				Math.Cos( 280.0 / 180.0 * Math.PI ), Math.Sin( 280.0 / 180.0 * Math.PI ),
+                Math.Cos( 280.0 / 180.0 * Math.PI ), Math.Sin( 280.0 / 180.0 * Math.PI ),
 
                 Math.Cos( 260.0 / 180.0 * Math.PI ), Math.Sin( 260.0 / 180.0 * Math.PI ),
                 Math.Cos( 240.0 / 180.0 * Math.PI ), Math.Sin( 240.0 / 180.0 * Math.PI ),
@@ -663,12 +659,12 @@ namespace Server.Mobiles
                 Math.Cos( 340.0 / 180.0 * Math.PI ), Math.Sin( 340.0 / 180.0 * Math.PI ),
                 Math.Cos( 320.0 / 180.0 * Math.PI ), Math.Sin( 320.0 / 180.0 * Math.PI ),
                 Math.Cos( 300.0 / 180.0 * Math.PI ), Math.Sin( 300.0 / 180.0 * Math.PI ),
-			};
+            };
 
         public override void GenerateLoot()
         {
             AddLoot(LootPack.SuperBoss, 5);
-        }	
+        }
 
         public override void Delete()
         {

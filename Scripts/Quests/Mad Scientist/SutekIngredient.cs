@@ -1,6 +1,4 @@
-﻿using System;
-using Server;
-using Server.Engines.Quests;
+﻿using Server.Engines.Quests;
 
 namespace Server.Items
 {

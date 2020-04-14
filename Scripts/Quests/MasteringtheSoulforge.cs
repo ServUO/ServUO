@@ -1,15 +1,14 @@
-using System;
 using Server.Items;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class MasteringtheSoulforge : BaseQuest
-    { 
+    {
         public MasteringtheSoulforge()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(RelicFragment), "Relic Fragments", 50, 0x2DB3));
-                       						
+
             this.AddReward(new BaseReward(typeof(ScrollBox2), "Knowledge"));
         }
 

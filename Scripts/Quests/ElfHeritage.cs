@@ -1,16 +1,15 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
 
 namespace Server.Engines.Quests
 {
     public class TheJoysOfLifeQuest : BaseQuest
-    { 
+    {
         public TheJoysOfLifeQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(AriellesBauble), "arielle's baubles", 3, 0x23B));
-						
+
             this.AddReward(new BaseReward(1072809)); // The boon of Arielle.
         }
 
@@ -64,9 +63,9 @@ namespace Server.Engines.Quests
             }
         }
         public override void GiveRewards()
-        { 
+        {
             base.GiveRewards();
-			
+
             this.Owner.SendLocalizedMessage(1074944, null, 0x23); // You have gained the boon of Arielle!  You have been taught the importance of laughter and light spirits.  You are one step closer to claiming your elven heritage.
         }
 
@@ -86,12 +85,12 @@ namespace Server.Engines.Quests
     }
 
     public class DefendingTheHerdQuest : BaseQuest
-    { 
+    {
         public DefendingTheHerdQuest()
             : base()
-        { 
+        {
             this.AddObjective(new EscortObjective("Bravehorn's drinking pool"));
-						
+
             this.AddReward(new BaseReward(1072806)); // The boon of Bravehorn.
         }
 
@@ -136,9 +135,9 @@ namespace Server.Engines.Quests
             }
         }
         public override void GiveRewards()
-        { 
+        {
             base.GiveRewards();
-			
+
             this.Owner.SendLocalizedMessage(1074942, null, 0x23); // You have gained the boon of Bravehorn!  You have glimpsed the nobility of those that sacrifice themselves for their people.  You are one step closer to claiming your elven heritage.
         }
 
@@ -158,12 +157,12 @@ namespace Server.Engines.Quests
     }
 
     public class CaretakerOfTheLandQuest : BaseQuest
-    { 
+    {
         public CaretakerOfTheLandQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(SosariaSap), "sap of sosaria", 1, 0x1848));
-						
+
             this.AddReward(new BaseReward(1072804)); // The boon of Strongroot.
         }
 
@@ -217,9 +216,9 @@ namespace Server.Engines.Quests
             }
         }
         public override void GiveRewards()
-        { 
+        {
             base.GiveRewards();
-			
+
             this.Owner.SendLocalizedMessage(1074941, null, 0x23); // You have gained the boon of Strongroot!  You have been approved by one whose roots touch the bones of Sosaria.  You are one step closer to claiming your elven heritage.
         }
 
@@ -239,12 +238,12 @@ namespace Server.Engines.Quests
     }
 
     public class SeasonsQuest : BaseQuest
-    { 
+    {
         public SeasonsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(RawFishSteak), "raw fish steaks", 20, 0x097A));
-						
+
             this.AddReward(new BaseReward(1072803)); // The boon of Maul.
         }
 
@@ -297,9 +296,9 @@ namespace Server.Engines.Quests
             }
         }
         public override void GiveRewards()
-        { 
+        {
             base.GiveRewards();
-			
+
             this.Owner.SendLocalizedMessage(1074940, null, 0x23); // You have gained the boon of Maul!  Your understanding of the seasons grows.  You are one step closer to claiming your elven heritage.
         }
 
@@ -319,12 +318,12 @@ namespace Server.Engines.Quests
     }
 
     public class TheBalanceOfNatureQuest : BaseQuest
-    { 
+    {
         public TheBalanceOfNatureQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(TimberWolf), "timber wolves", 15, "Huntsman's Forest"));
-						
+
             this.AddReward(new BaseReward(1072807)); // The boon of the Huntsman.
         }
 
@@ -370,9 +369,9 @@ namespace Server.Engines.Quests
             }
         }
         public override void GiveRewards()
-        { 
+        {
             base.GiveRewards();
-			
+
             this.Owner.SendLocalizedMessage(1074943, null, 0x23); // You have gained the boon of the Huntsman!  You have been given a taste of the bittersweet duty of those who guard the balance.  You are one step closer to claiming your elven heritage.
         }
 
@@ -392,12 +391,12 @@ namespace Server.Engines.Quests
     }
 
     public class WisdomOfTheSphynxQuest : BaseQuest
-    { 
+    {
         public WisdomOfTheSphynxQuest()
             : base()
-        { 
+        {
             this.AddObjective(new InternalObjective());
-						
+
             this.AddReward(new BaseReward(1072805)); // The boon of Enigma.
         }
 
@@ -452,9 +451,9 @@ namespace Server.Engines.Quests
             }
         }
         public override void GiveRewards()
-        { 
+        {
             base.GiveRewards();
-			
+
             this.Owner.SendLocalizedMessage(1074945, null, 0x23); // You have gained the boon of Enigma!  You are wise enough to know how little you know.  You are one step closer to claiming your elven heritage.
         }
 
@@ -484,25 +483,25 @@ namespace Server.Engines.Quests
                 if (base.IsObjective(item))
                 {
                     Pitcher pitcher = (Pitcher)item;
-					
+
                     if (pitcher.Content == BeverageType.Water && !pitcher.IsEmpty)
                         return true;
                 }
-				
+
                 return false;
             }
 
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-				
+
                 writer.WriteEncodedInt((int)0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-				
+
                 int version = reader.ReadEncodedInt();
             }
         }

@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class TheAncientWorldQuest : BaseQuest
-    { 
+    {
         public TheAncientWorldQuest()
             : base()
-        { 
-            this.AddObjective(new ObtainObjective(typeof(MapFragment), "fragment of a map", 1));		
-							
+        {
+            this.AddObjective(new ObtainObjective(typeof(MapFragment), "fragment of a map", 1));
+
             this.AddReward(new BaseReward(1074876)); // Knowledge of the legendary minotaur.
         }
 
@@ -102,12 +102,12 @@ namespace Server.Engines.Quests
     }
 
     public class TheGoldenHornQuest : BaseQuest
-    { 
+    {
         public TheGoldenHornQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(MapFragment), "fragment of a map", 1, typeof(Braen), "Braen (The Heartwood)"));		
-							
+        {
+            this.AddObjective(new DeliverObjective(typeof(MapFragment), "fragment of a map", 1, typeof(Braen), "Braen (The Heartwood)"));
+
             this.AddReward(new BaseReward(1074876)); // Knowledge of the legendary minotaur.
         }
 
@@ -191,12 +191,12 @@ namespace Server.Engines.Quests
     }
 
     public class BullishQuest : BaseQuest
-    { 
+    {
         public BullishQuest()
             : base()
-        { 
-            this.AddObjective(new ObtainObjective(typeof(GamanHorns), "gaman horns", 20, 0x1084));		
-							
+        {
+            this.AddObjective(new ObtainObjective(typeof(GamanHorns), "gaman horns", 20, 0x1084));
+
             this.AddReward(new BaseReward(1074876)); // Knowledge of the legendary minotaur.
         }
 
@@ -281,12 +281,12 @@ namespace Server.Engines.Quests
     }
 
     public class LostCivilizationQuest : BaseQuest
-    { 
+    {
         public LostCivilizationQuest()
             : base()
-        { 
-            this.AddObjective(new ObtainObjective(typeof(MinotaurArtifact), "minotaur artifacts", 3));		
-							
+        {
+            this.AddObjective(new ObtainObjective(typeof(MinotaurArtifact), "minotaur artifacts", 3));
+
             this.AddReward(new BaseReward(typeof(RewardBox), 1072584)); // A strongbox.
         }
 

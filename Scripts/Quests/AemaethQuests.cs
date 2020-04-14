@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class AemaethOneQuest : BaseQuest
-    { 
+    {
         public AemaethOneQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(BasinOfCrystalClearWater), "basin of crystal clear water", 1, typeof(Szandor), "Szandor"));		
-							
+        {
+            this.AddObjective(new DeliverObjective(typeof(BasinOfCrystalClearWater), "basin of crystal clear water", 1, typeof(Szandor), "Szandor"));
+
             this.AddReward(new BaseReward(1075323)); // Aurelia's gratitude.
         }
 
@@ -95,12 +95,12 @@ namespace Server.Engines.Quests
     }
 
     public class AemaethTwoQuest : BaseQuest
-    { 
+    {
         public AemaethTwoQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(BasinOfCrystalClearWater), "basin of crystal clear water", 1, typeof(Aurelia), "Aurelia"));		
-							
+        {
+            this.AddObjective(new DeliverObjective(typeof(BasinOfCrystalClearWater), "basin of crystal clear water", 1, typeof(Aurelia), "Aurelia"));
+
             this.AddReward(new BaseReward(typeof(MirrorOfPurification), 1075329)); // Mirror of Purification
         }
 

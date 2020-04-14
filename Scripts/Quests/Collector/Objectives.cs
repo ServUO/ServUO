@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests.Collector
 {
@@ -218,7 +218,7 @@ namespace Server.Engines.Quests.Collector
         }
         public void InitTheater()
         {
-            switch ( Utility.Random(3) )
+            switch (Utility.Random(3))
             {
                 case 1:
                     this.m_Theater = Theater.Britain;
@@ -241,7 +241,7 @@ namespace Server.Engines.Quests.Collector
             if (region == null)
                 return false;
 
-            switch ( this.m_Theater )
+            switch (this.m_Theater)
             {
                 case Theater.Britain:
                     return region.IsPartOf("Britain");

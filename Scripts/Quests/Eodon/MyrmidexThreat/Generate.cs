@@ -1,15 +1,11 @@
-using Server;
-using System;
-using Server.Engines.Quests;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
 
 namespace Server.Engines.MyrmidexInvasion
 {
-	public static class GenerateMyrmidexQuest
-	{
+    public static class GenerateMyrmidexQuest
+    {
         public static void Generate()
         {
             Map map = Map.TerMur;
@@ -253,5 +249,5 @@ namespace Server.Engines.MyrmidexInvasion
             sp.Respawn();
 
         }
-	}
+    }
 }

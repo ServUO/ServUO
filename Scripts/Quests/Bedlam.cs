@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class MistakenIdentityQuest : BaseQuest
-    { 
+    {
         public MistakenIdentityQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(TuitionReimbursementForm), "tuition reimbursement form", 1, typeof(Gorrow), "Gorrow (Luna)"));		
-							
+        {
+            this.AddObjective(new DeliverObjective(typeof(TuitionReimbursementForm), "tuition reimbursement form", 1, typeof(Gorrow), "Gorrow (Luna)"));
+
             this.AddReward(new BaseReward(1074634)); // Tuition Reimbursement
         }
 
@@ -93,14 +93,14 @@ namespace Server.Engines.Quests
     }
 
     public class YouScratchMyBackQuest : BaseQuest
-    { 
+    {
         public YouScratchMyBackQuest()
             : base()
-        { 
-            this.AddObjective(new ObtainObjective(typeof(UnicornRibs), "unicorn ribs", 1));		
+        {
+            this.AddObjective(new ObtainObjective(typeof(UnicornRibs), "unicorn ribs", 1));
             this.AddObjective(new ObtainObjective(typeof(KirinBrains), "ki-rin brains", 2));
             this.AddObjective(new ObtainObjective(typeof(PixieLeg), "pixie legs", 5));
-							
+
             this.AddReward(new BaseReward(1074634)); // Tuition Reimbursement
         }
 
@@ -184,12 +184,12 @@ namespace Server.Engines.Quests
     }
 
     public class FoolingAernyaQuest : BaseQuest
-    { 
+    {
         public FoolingAernyaQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(SignedTuitionReimbursementForm), "signed tuition reimbursement form", 1, typeof(Aernya), "Aernya (Umbra)"));		
-										
+        {
+            this.AddObjective(new DeliverObjective(typeof(SignedTuitionReimbursementForm), "signed tuition reimbursement form", 1, typeof(Aernya), "Aernya (Umbra)"));
+
             this.AddReward(new BaseReward(1074634)); // Tuition Reimbursement
         }
 
@@ -269,12 +269,12 @@ namespace Server.Engines.Quests
     }
 
     public class NotQuiteThatEasyQuest : BaseQuest
-    { 
+    {
         public NotQuiteThatEasyQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(SignedTuitionReimbursementForm), "signed tuition reimbursement form", 1, typeof(Gnosos), "Master Gnosos (Bedlam)"));		
-										
+        {
+            this.AddObjective(new DeliverObjective(typeof(SignedTuitionReimbursementForm), "signed tuition reimbursement form", 1, typeof(Gnosos), "Master Gnosos (Bedlam)"));
+
             this.AddReward(new BaseReward(1074634)); // Tuition Reimbursement
         }
 
@@ -343,7 +343,7 @@ namespace Server.Engines.Quests
         public override void OnAccept()
         {
             base.OnAccept();
-			
+
             this.Owner.Bedlam = true;
         }
 
@@ -363,14 +363,14 @@ namespace Server.Engines.Quests
     }
 
     public class ConvinceMeQuest : BaseQuest
-    { 
+    {
         public ConvinceMeQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(RedDeath), "red death", 1, "Bedlam"));
             this.AddObjective(new SlayObjective(typeof(GoreFiend), "gore fiends", 10, "Bedlam"));
             this.AddObjective(new SlayObjective(typeof(RottingCorpse), "rotting corpses", 8, "Bedlam"));
-										
+
             this.AddReward(new BaseReward(1074634)); // Tuition Reimbursement
         }
 
@@ -450,12 +450,12 @@ namespace Server.Engines.Quests
     }
 
     public class TuitionReimbursementQuest : BaseQuest
-    { 
+    {
         public TuitionReimbursementQuest()
             : base()
-        { 
+        {
             this.AddObjective(new DeliverObjective(typeof(CompletedTuitionReimbursementForm), "completed tuition reimbursement form", 1, typeof(Aernya), "Aernya (Umbra)"));
-										
+
             this.AddReward(new BaseReward(typeof(RewardBox), 1072584));
         }
 

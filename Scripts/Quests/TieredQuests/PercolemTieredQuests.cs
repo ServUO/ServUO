@@ -1,6 +1,6 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
 {
@@ -49,10 +49,10 @@ namespace Server.Engines.Quests
 
     [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierOne2Quest")]
     public class RaptorliciousQuest : BaseQuest, ITierQuest
-    { 
+    {
         public RaptorliciousQuest()
             : base()
-        { 
+        {
             AddObjective(new SlayObjective(typeof(Raptor), "Raptor's", 20));
 
             AddReward(new BaseReward(typeof(DustyAdventurersBackpack), 1113189)); // Dusty Adventurers Backpack
@@ -117,9 +117,9 @@ namespace Server.Engines.Quests
     {
         public TheSlithWarsQuest()
             : base()
-        { 
-            AddObjective(new SlayObjective(typeof(Slith), "Slith's", 20));		
-							
+        {
+            AddObjective(new SlayObjective(typeof(Slith), "Slith's", 20));
+
             AddReward(new BaseReward(typeof(DustyAdventurersBackpack), 1113189)); // Dusty Adventurers Backpack
         }
 

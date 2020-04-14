@@ -1,17 +1,17 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class DabblingontheDarkSide : BaseQuest, ITierQuest
-    { 
+    {
         public DabblingontheDarkSide()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(BouraSkin), "BouraSkin", 5, 0x11f4));
             AddObjective(new ObtainObjective(typeof(FairyDragonWing), "Fairy Dragon Wings", 10, 0x1084));
             AddObjective(new ObtainObjective(typeof(Dough), "Dough", 1, 0x103D));
-						
+
             AddReward(new BaseReward(typeof(DeliciouslyTastyTreat), 2, "Deliciously Tasty Treat"));
         }
 

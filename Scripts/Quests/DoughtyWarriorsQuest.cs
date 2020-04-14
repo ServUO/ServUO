@@ -1,7 +1,6 @@
-using System;
-using Server;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
 {
@@ -150,17 +149,17 @@ namespace Server.Engines.Quests
             int version = reader.ReadInt();
         }
     }
-	
-	public class Kane : MondainQuester
-	{
+
+    public class Kane : MondainQuester
+    {
         public override Type[] Quests
         {
             get
             {
-                return new Type[] 
-		{ 
-			typeof( DoughtyWarriorsQuest )
-		};
+                return new Type[]
+        {
+            typeof( DoughtyWarriorsQuest )
+        };
             }
         }
 
@@ -191,44 +190,44 @@ namespace Server.Engines.Quests
             HairHue = 0x3B3;
         }
 
-        	public override void InitOutfit()
-		{
-			AddItem( new PlateArms() );
-			AddItem( new PlateChest() );
-			AddItem( new PlateGloves() );
-			AddItem( new StuddedGorget() );
-			AddItem( new PlateLegs() );
+        public override void InitOutfit()
+        {
+            AddItem(new PlateArms());
+            AddItem(new PlateChest());
+            AddItem(new PlateGloves());
+            AddItem(new StuddedGorget());
+            AddItem(new PlateLegs());
 
-			switch ( Utility.Random( 4 ) )
-			{
-				case 0: AddItem( new PlateHelm() ); break;
-				case 1: AddItem( new NorseHelm() ); break;
-				case 2: AddItem( new CloseHelm() ); break;
-				case 3: AddItem( new Helmet() ); break;
-			}
+            switch (Utility.Random(4))
+            {
+                case 0: AddItem(new PlateHelm()); break;
+                case 1: AddItem(new NorseHelm()); break;
+                case 2: AddItem(new CloseHelm()); break;
+                case 3: AddItem(new Helmet()); break;
+            }
 
-			switch ( Utility.Random( 3 ) )
-			{
-				case 0: AddItem( new BodySash( 0x482 ) ); break;
-				case 1: AddItem( new Doublet( 0x482 ) ); break;
-				case 2: AddItem( new Tunic( 0x482 ) ); break;
-			}
+            switch (Utility.Random(3))
+            {
+                case 0: AddItem(new BodySash(0x482)); break;
+                case 1: AddItem(new Doublet(0x482)); break;
+                case 2: AddItem(new Tunic(0x482)); break;
+            }
 
-			AddItem( new Broadsword() );
+            AddItem(new Broadsword());
 
-			Item shield = new MetalKiteShield();
+            Item shield = new MetalKiteShield();
 
-			shield.Hue = Utility.RandomNondyedHue();
+            shield.Hue = Utility.RandomNondyedHue();
 
-			AddItem( shield );
+            AddItem(shield);
 
-			switch ( Utility.Random( 2 ) )
-			{
-				case 0: AddItem( new Boots() ); break;
-				case 1: AddItem( new ThighBoots() ); break;
-			}
+            switch (Utility.Random(2))
+            {
+                case 0: AddItem(new Boots()); break;
+                case 1: AddItem(new ThighBoots()); break;
+            }
 
-			PackGold( 100, 200 );
+            PackGold(100, 200);
             Blessed = true;
         }
 

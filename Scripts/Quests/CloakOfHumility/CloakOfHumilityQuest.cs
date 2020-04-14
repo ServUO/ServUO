@@ -1,9 +1,7 @@
-using System;
-using Server.Items;
-using Server.Mobiles;
-using System.Collections.Generic;
 using Server.Gumps;
-using Server.Commands;
+using Server.Items;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Server.Engines.Quests
@@ -385,7 +383,7 @@ namespace Server.Engines.Quests
         {
             foreach (Item item in m_QuestItems)
             {
-                if(item != null && !item.Deleted)
+                if (item != null && !item.Deleted)
                     item.Delete();
             }
 
@@ -445,7 +443,7 @@ namespace Server.Engines.Quests
 
             writer.Write(m_Infos.Count);
 
-            foreach(KeyValuePair<int, HumilityQuestMobileInfo> kvp in m_Infos)
+            foreach (KeyValuePair<int, HumilityQuestMobileInfo> kvp in m_Infos)
             {
                 writer.Write(kvp.Key);
                 kvp.Value.Serialize(writer);

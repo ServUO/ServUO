@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class UntanglingTheWebQuest : BaseQuest
-    { 
+    {
         public UntanglingTheWebQuest()
             : base()
-        { 
+        {
             AddObjective(new AcidCreaturesObjective(typeof(IAcidCreature), "acid creatures", 12));
-			
+
             AddReward(new BaseReward(typeof(AcidPopper), 1095058));
         }
 
@@ -62,7 +62,7 @@ namespace Server.Engines.Quests
             }
         }
         public override void OnCompleted()
-        { 
+        {
             Owner.SendLocalizedMessage(1095056, null, 0x23); // Vernix's Jars are now full.							
             Owner.PlaySound(CompleteSound);
         }
@@ -113,12 +113,12 @@ namespace Server.Engines.Quests
     }
 
     public class GreenWithEnvyQuest : BaseQuest
-    { 
+    {
         public GreenWithEnvyQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(EyeOfNavrey), "eye of Navrey", 1, 0x1F1C));
-			
+
             AddReward(new BaseReward(typeof(RewardBox), 1072584));
         }
 
@@ -191,7 +191,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Vernix()
             : base("Vernix")
-        { 
+        {
         }
 
         public Vernix(Serial serial)
@@ -203,7 +203,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(UntanglingTheWebQuest),
                     typeof(GreenWithEnvyQuest),
@@ -214,7 +214,7 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = false;
             Body = 723;
 

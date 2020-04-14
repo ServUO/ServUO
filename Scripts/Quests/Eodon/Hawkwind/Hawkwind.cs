@@ -1,12 +1,4 @@
-using System;
-using System.Collections.Generic;
-using Server;
-using Server.Network;
-using Server.Items;
 using Server.Mobiles;
-using Server.Engines;
-using Server.Engines.Quests;
-using Server.Gumps;
 using Server.Spells.SkillMasteries;
 
 namespace Server.Engines.Quests.TimeLord
@@ -22,7 +14,7 @@ namespace Server.Engines.Quests.TimeLord
         public Hawkwind(Serial serial) : base(serial) { }
 
         public override bool CanBeDamaged() { return false; }
-        public override bool ChangeRace => false; 
+        public override bool ChangeRace => false;
 
         public override void InitBody()
         {
