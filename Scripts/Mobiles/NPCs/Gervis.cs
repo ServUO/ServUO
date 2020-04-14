@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class BatteredBucklersQuest : BaseQuest
-    { 
+    {
         public BatteredBucklersQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(Buckler), "buckler", 10, 0x1B73));
-						
+
             AddReward(new BaseReward(typeof(SmithsSatchel), 1074282)); // Craftsman's Satchel
         }
 
@@ -77,7 +77,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Gervis()
             : base("Gervis", "the blacksmith trainer")
-        { 
+        {
             SetSkill(SkillName.Blacksmith, 65.0, 88.0);
         }
 
@@ -87,10 +87,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(BatteredBucklersQuest)
                 };
@@ -99,11 +99,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = false;
             CantWalk = true;
             Race = Race.Human;
-			
+
             Hue = 0x83F5;
             HairItemID = 0x203B;
             HairHue = 0x5EC;
@@ -111,15 +111,15 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());			
+            AddItem(new Backpack());
             AddItem(new SmithHammer());
             AddItem(new Boots(0x3B2));
             AddItem(new ShortPants(0x1BB));
             AddItem(new Shirt(0x71F));
             AddItem(new FullApron(0x3B2));
-			
+
             Item item;
-			
+
             item = new LeatherGloves();
             item.Hue = 0x3B2;
             AddItem(item);
@@ -147,7 +147,7 @@ namespace Server.Engines.Quests
             : base()
         {
             Hue = BaseReward.SatchelHue();
-			
+
             DropItem(new IronIngot(10));
             DropItem(new SmithHammer());
         }

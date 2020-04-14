@@ -1,6 +1,4 @@
 /* Based on Gargoyle, still no infos on Undead Gargoyle... Have to get also the correct body ID */
-using System;
-using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -24,7 +22,7 @@ namespace Server.Mobiles
             this.SetDamage(3, 7);
 
             this.SetDamageType(ResistanceType.Physical, 100);
-           
+
             this.SetResistance(ResistanceType.Physical, 20);
             this.SetResistance(ResistanceType.Fire, 5, 10);
             this.SetResistance(ResistanceType.Cold, 25, 30);

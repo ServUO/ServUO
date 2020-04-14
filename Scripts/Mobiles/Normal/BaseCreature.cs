@@ -1,16 +1,9 @@
 #region References
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 using Server.ContextMenus;
 using Server.Engines.PartySystem;
 using Server.Engines.Points;
-using Server.Engines.Quests;
 using Server.Engines.Quests.Doom;
 using Server.Engines.VvV;
-using Server.Engines.XmlSpawner2;
 using Server.Items;
 using Server.Misc;
 using Server.Multis;
@@ -26,6 +19,10 @@ using Server.Spells.Sixth;
 using Server.Spells.SkillMasteries;
 using Server.Spells.Spellweaving;
 using Server.Targeting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 #endregion
 
 namespace Server.Mobiles
@@ -171,7 +168,7 @@ namespace Server.Mobiles
         //future use: Talisman 'Protection/Bonus vs. Specific Creature
         private readonly TextDefinition m_FriendlyName;
 
-        public TextDefinition FriendlyName => m_FriendlyName; 
+        public TextDefinition FriendlyName => m_FriendlyName;
 
         public FriendlyNameAttribute(TextDefinition friendlyName)
         {
@@ -330,13 +327,13 @@ namespace Server.Mobiles
         }
         #endregion
 
-        public virtual InhumanSpeech SpeechType => null; 
+        public virtual InhumanSpeech SpeechType => null;
 
-        public virtual bool ForceStayHome => false; 
+        public virtual bool ForceStayHome => false;
 
         public int FollowRange { get; set; }
 
-        public virtual bool CanBeParagon => true; 
+        public virtual bool CanBeParagon => true;
 
         /* Do not serialize this till the code is finalized */
 
@@ -428,15 +425,15 @@ namespace Server.Mobiles
         #region Bonding
         public const bool BondingEnabled = true;
 
-        public virtual bool IsBondable => (BondingEnabled && !Summoned && !m_Allured && !IsGolem); 
-        public virtual TimeSpan BondingDelay => TimeSpan.FromDays(7.0); 
-        public virtual TimeSpan BondingAbandonDelay => TimeSpan.FromDays(1.0); 
+        public virtual bool IsBondable => (BondingEnabled && !Summoned && !m_Allured && !IsGolem);
+        public virtual TimeSpan BondingDelay => TimeSpan.FromDays(7.0);
+        public virtual TimeSpan BondingAbandonDelay => TimeSpan.FromDays(1.0);
 
-        public override bool CanRegenHits => !m_IsDeadPet && !Summoned && base.CanRegenHits; 
-        public override bool CanRegenStam => !IsParagon && !m_IsDeadPet && base.CanRegenStam; 
-        public override bool CanRegenMana => !m_IsDeadPet && base.CanRegenMana; 
+        public override bool CanRegenHits => !m_IsDeadPet && !Summoned && base.CanRegenHits;
+        public override bool CanRegenStam => !IsParagon && !m_IsDeadPet && base.CanRegenStam;
+        public override bool CanRegenMana => !m_IsDeadPet && base.CanRegenMana;
 
-        public override bool IsDeadBondedPet => m_IsDeadPet; 
+        public override bool IsDeadBondedPet => m_IsDeadPet;
 
         private bool m_IsBonded;
         private bool m_IsDeadPet;
@@ -579,7 +576,7 @@ namespace Server.Mobiles
         public TrainingProfile TrainingProfile { get { return _TrainingProfile; } set { _TrainingProfile = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double BardingDifficulty => BaseInstrument.GetBaseDifficulty(this); 
+        public double BardingDifficulty => BaseInstrument.GetBaseDifficulty(this);
 
         public virtual WeaponAbility TryGetWeaponAbility()
         {
@@ -669,7 +666,7 @@ namespace Server.Mobiles
             return PetTrainingHelper.GetAbilityProfile(this, true).HasAbility(o);
         }
 
-        public virtual double AverageThreshold => 0.33; 
+        public virtual double AverageThreshold => 0.33;
 
         public List<double> _InitAverage;
 
@@ -684,7 +681,7 @@ namespace Server.Mobiles
             }
         }
 
-        public static Type[] SlotLowerables => _SlotLowerables; 
+        public static Type[] SlotLowerables => _SlotLowerables;
         private static Type[] _SlotLowerables =
         {
             typeof(Nightmare), typeof(Najasaurus), typeof(RuneBeetle), typeof(GreaterDragon), typeof(FrostDragon),
@@ -841,7 +838,7 @@ namespace Server.Mobiles
             }
         }
 
-        public static bool IsSoulboundEnemies => PointsSystem.FellowshipData.Enabled; 
+        public static bool IsSoulboundEnemies => PointsSystem.FellowshipData.Enabled;
 
         public static Type[] _SoulboundCreatures =
         {
@@ -849,7 +846,7 @@ namespace Server.Mobiles
         };
         #endregion
 
-        public virtual double WeaponAbilityChance => 0.4; 
+        public virtual double WeaponAbilityChance => 0.4;
 
         public virtual WeaponAbility GetWeaponAbility()
         {
@@ -857,11 +854,11 @@ namespace Server.Mobiles
         }
 
         #region Elemental Resistance/Damage
-        public override int BasePhysicalResistance => m_PhysicalResistance; 
-        public override int BaseFireResistance => m_FireResistance; 
-        public override int BaseColdResistance => m_ColdResistance; 
-        public override int BasePoisonResistance => m_PoisonResistance; 
-        public override int BaseEnergyResistance => m_EnergyResistance; 
+        public override int BasePhysicalResistance => m_PhysicalResistance;
+        public override int BaseFireResistance => m_FireResistance;
+        public override int BaseColdResistance => m_ColdResistance;
+        public override int BasePoisonResistance => m_PoisonResistance;
+        public override int BaseEnergyResistance => m_EnergyResistance;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int PhysicalResistanceSeed
@@ -1042,48 +1039,48 @@ namespace Server.Mobiles
 
         public bool IsAmbusher { get; set; }
 
-        public virtual FoodType FavoriteFood => FoodType.Meat; 
-        public virtual PackInstinct PackInstinct => PackInstinct.None; 
+        public virtual FoodType FavoriteFood => FoodType.Meat;
+        public virtual PackInstinct PackInstinct => PackInstinct.None;
 
-        public List<Mobile> Owners => m_Owners; 
+        public List<Mobile> Owners => m_Owners;
 
-        public virtual bool AllowMaleTamer => true; 
-        public virtual bool AllowFemaleTamer => true; 
-        public virtual bool SubdueBeforeTame => false; 
-        public virtual bool StatLossAfterTame => SubdueBeforeTame; 
-        public virtual bool ReduceSpeedWithDamage => true; 
-        public virtual bool IsSubdued => SubdueBeforeTame && (Hits < ((double)HitsMax / 10)); 
+        public virtual bool AllowMaleTamer => true;
+        public virtual bool AllowFemaleTamer => true;
+        public virtual bool SubdueBeforeTame => false;
+        public virtual bool StatLossAfterTame => SubdueBeforeTame;
+        public virtual bool ReduceSpeedWithDamage => true;
+        public virtual bool IsSubdued => SubdueBeforeTame && (Hits < ((double)HitsMax / 10));
 
-        public virtual bool Commandable => true; 
+        public virtual bool Commandable => true;
 
-        public virtual Poison HitPoison => null; 
-        public virtual double HitPoisonChance => 0.5; 
-        public virtual Poison PoisonImmune => null; 
+        public virtual Poison HitPoison => null;
+        public virtual double HitPoisonChance => 0.5;
+        public virtual Poison PoisonImmune => null;
 
-        public virtual bool BardImmune => false; 
-        public virtual bool Unprovokable => BardImmune || m_IsDeadPet; 
-        public virtual bool Uncalmable => BardImmune || m_IsDeadPet; 
-        public virtual bool AreaPeaceImmune => BardImmune || m_IsDeadPet; 
+        public virtual bool BardImmune => false;
+        public virtual bool Unprovokable => BardImmune || m_IsDeadPet;
+        public virtual bool Uncalmable => BardImmune || m_IsDeadPet;
+        public virtual bool AreaPeaceImmune => BardImmune || m_IsDeadPet;
 
-        public virtual bool BleedImmune => false; 
-        public virtual double BonusPetDamageScalar => 1.0; 
-        public virtual bool AllureImmune => false; 
+        public virtual bool BleedImmune => false;
+        public virtual double BonusPetDamageScalar => 1.0;
+        public virtual bool AllureImmune => false;
 
-        public virtual bool DeathAdderCharmable => false; 
+        public virtual bool DeathAdderCharmable => false;
 
-        public virtual bool GivesFameAndKarmaAward => true; 
+        public virtual bool GivesFameAndKarmaAward => true;
 
         //TODO: Find the pub 31 tweaks to the DispelDifficulty and apply them of course.
         public virtual double DispelDifficulty => 0.0; // at this skill level we dispel 50% chance
         public virtual double DispelFocus => 20.0;
         // at difficulty - focus we have 0%, at difficulty + focus we have 100%
-        public virtual bool DisplayWeight => Backpack is StrongBackpack; 
+        public virtual bool DisplayWeight => Backpack is StrongBackpack;
 
-        public virtual double TeleportChance => 0.05; 
-        public virtual bool AttacksFocus => false; 
-        public virtual bool ShowSpellMantra => false; 
-        public virtual bool FreezeOnCast => ShowSpellMantra; 
-        public virtual bool CanFly => false; 
+        public virtual double TeleportChance => 0.05;
+        public virtual bool AttacksFocus => false;
+        public virtual bool ShowSpellMantra => false;
+        public virtual bool FreezeOnCast => ShowSpellMantra;
+        public virtual bool CanFly => false;
 
         public virtual bool CanAutoStable
         {
@@ -1102,8 +1099,8 @@ namespace Server.Mobiles
             }
         }
 
-        public virtual bool TaintedLifeAura => false; 
-        public virtual bool BreathImmune => false; 
+        public virtual bool TaintedLifeAura => false;
+        public virtual bool BreathImmune => false;
 
         #region Spill Acid
         public void SpillAcid(int Amount)
@@ -1154,7 +1151,7 @@ namespace Server.Mobiles
         }
 
         #region Flee!!!
-        public virtual bool CanFlee => !m_Paragon && !GivesMLMinorArtifact; 
+        public virtual bool CanFlee => !m_Paragon && !GivesMLMinorArtifact;
 
         private DateTime m_EndFlee;
 
@@ -1192,9 +1189,9 @@ namespace Server.Mobiles
         }
         #endregion
 
-        public virtual bool IsInvulnerable => false; 
+        public virtual bool IsInvulnerable => false;
 
-        public BaseAI AIObject => m_AI; 
+        public BaseAI AIObject => m_AI;
 
         public const int MaxOwners = 5;
 
@@ -1226,9 +1223,9 @@ namespace Server.Mobiles
         }
 
         #region Friends
-        public List<Mobile> Friends => m_Friends; 
+        public List<Mobile> Friends => m_Friends;
 
-        public virtual bool AllowNewPetFriend => (m_Friends == null || m_Friends.Count < 5); 
+        public virtual bool AllowNewPetFriend => (m_Friends == null || m_Friends.Count < 5);
 
         public virtual bool IsPetFriend(Mobile m)
         {
@@ -1543,7 +1540,7 @@ namespace Server.Mobiles
             return amount;
         }
 
-        public virtual bool DeleteCorpseOnDeath => false; 
+        public virtual bool DeleteCorpseOnDeath => false;
 
         public override void SetLocation(Point3D newLocation, bool isTeleport)
         {
@@ -1647,7 +1644,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public IPoint2D TargetLocation { get { return m_TargetLocation; } set { m_TargetLocation = value; } }
 
-        public virtual Mobile ConstantFocus => null; 
+        public virtual Mobile ConstantFocus => null;
 
         public virtual bool DisallowAllMoves
         {
@@ -1689,8 +1686,8 @@ namespace Server.Mobiles
             }
         }
 
-        public virtual bool HoldSmartSpawning => IsParagon; 
-        public virtual bool UseSmartAI => false; 
+        public virtual bool HoldSmartSpawning => IsParagon;
+        public virtual bool UseSmartAI => false;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual int DamageMin { get { return m_DamageMin; } set { m_DamageMin = value; } }
@@ -1786,9 +1783,9 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public int ManaMaxSeed { get { return m_ManaMax; } set { m_ManaMax = value; } }
 
-        public virtual bool CanOpenDoors => !Body.IsAnimal && !Body.IsSea; 
+        public virtual bool CanOpenDoors => !Body.IsAnimal && !Body.IsSea;
 
-        public virtual bool CanMoveOverObstacles => Body.IsMonster; 
+        public virtual bool CanMoveOverObstacles => Body.IsMonster;
 
         public virtual bool CanDestroyObstacles
         {
@@ -2659,7 +2656,7 @@ namespace Server.Mobiles
 
             m_dActiveSpeed = activeSpeed;
             m_dPassiveSpeed = passiveSpeed;
-           
+
             if (version >= 14)
             {
                 m_RemoveIfUntamed = reader.ReadBool();
@@ -2846,7 +2843,7 @@ namespace Server.Mobiles
             return false;
         }
 
-        public override bool ShouldCheckStatTimers => false; 
+        public override bool ShouldCheckStatTimers => false;
 
         #region Food
         private static readonly Type[] m_Eggs = new[] { typeof(FriedEggs), typeof(Eggs) };
@@ -3038,7 +3035,7 @@ namespace Server.Mobiles
             return false;
         }
 
-        public virtual bool CanAngerOnTame => false; 
+        public virtual bool CanAngerOnTame => false;
 
         #region OnAction[...]
         public virtual void OnActionWander()
@@ -3074,11 +3071,11 @@ namespace Server.Mobiles
             {
                 return base.OnDragDrop(from, dropped);
             }
-            
-            return false;          
+
+            return false;
         }
 
-        protected virtual BaseAI ForcedAI => null; 
+        protected virtual BaseAI ForcedAI => null;
 
         public void ChangeAIType(AIType NewAI)
         {
@@ -3304,10 +3301,10 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile CharmMaster => m_CharmMaster; 
+        public Mobile CharmMaster => m_CharmMaster;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point2D CharmTarget => m_CharmTarget; 
+        public Point2D CharmTarget => m_CharmTarget;
 
         private class CharmTimer : Timer
         {
@@ -3610,35 +3607,35 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.Administrator)]
         public int ControlSlotsMin { get; set; }
 
-        public virtual bool NoHouseRestrictions => false; 
-        public virtual bool IsHouseSummonable => false; 
+        public virtual bool NoHouseRestrictions => false;
+        public virtual bool IsHouseSummonable => false;
 
         #region Corpse Resources
-        public virtual int Feathers => 0; 
-        public virtual int Wool => 0; 
+        public virtual int Feathers => 0;
+        public virtual int Wool => 0;
 
-        public virtual int Fur => 0; 
-        public virtual FurType FurType => FurType.Green; 
+        public virtual int Fur => 0;
+        public virtual FurType FurType => FurType.Green;
 
-        public virtual MeatType MeatType => MeatType.Ribs; 
-        public virtual int Meat => 0; 
+        public virtual MeatType MeatType => MeatType.Ribs;
+        public virtual int Meat => 0;
 
-        public virtual int Hides => 0; 
-        public virtual HideType HideType => HideType.Regular; 
+        public virtual int Hides => 0;
+        public virtual HideType HideType => HideType.Regular;
 
-        public virtual int Scales => 0; 
-        public virtual ScaleType ScaleType => ScaleType.Red; 
+        public virtual int Scales => 0;
+        public virtual ScaleType ScaleType => ScaleType.Red;
 
-        public virtual int DragonBlood => 0; 
+        public virtual int DragonBlood => 0;
         #endregion
 
-        public virtual bool AutoDispel => false; 
-        public virtual double AutoDispelChance => 0.1; 
+        public virtual bool AutoDispel => false;
+        public virtual double AutoDispelChance => 0.1;
 
-        public virtual bool IsScaryToPets => false; 
-        public virtual bool IsScaredOfScaryThings => true; 
+        public virtual bool IsScaryToPets => false;
+        public virtual bool IsScaredOfScaryThings => true;
 
-        public virtual bool CanRummageCorpses => false; 
+        public virtual bool CanRummageCorpses => false;
 
         public virtual void OnGotMeleeAttack(Mobile attacker)
         {
@@ -3657,7 +3654,7 @@ namespace Server.Mobiles
             m.Delete();
         }
 
-        public virtual bool DeleteOnRelease => m_bSummoned; 
+        public virtual bool DeleteOnRelease => m_bSummoned;
 
         public virtual void OnGaveMeleeAttack(Mobile defender)
         {
@@ -3959,7 +3956,7 @@ namespace Server.Mobiles
         }
 
         #region Teaching
-        public virtual bool CanTeach => false; 
+        public virtual bool CanTeach => false;
 
         public virtual bool CheckTeach(SkillName skill, Mobile from)
         {
@@ -4506,8 +4503,8 @@ namespace Server.Mobiles
             m_NextReacquireTime = Core.TickCount;
         }
 
-        public virtual bool CanStealth => false; 
-        public virtual bool SupportsRunAnimation => true; 
+        public virtual bool CanStealth => false;
+        public virtual bool SupportsRunAnimation => true;
 
         protected override bool OnMove(Direction d)
         {
@@ -5457,10 +5454,10 @@ namespace Server.Mobiles
                 list.Add(1155480); // Ambusher
         }
 
-        public virtual double TreasureMapChance => TreasureMap.LootChance; 
-        public virtual int TreasureMapLevel => -1; 
+        public virtual double TreasureMapChance => TreasureMap.LootChance;
+        public virtual int TreasureMapLevel => -1;
 
-        public virtual bool IgnoreYoungProtection => false; 
+        public virtual bool IgnoreYoungProtection => false;
 
         public override bool OnBeforeDeath()
         {
@@ -5471,20 +5468,20 @@ namespace Server.Mobiles
             {
                 if (treasureLevel >= 0)
                 {
-                if (m_Paragon && Paragon.ChestChance > Utility.RandomDouble())
-                {
-                  PackItem( new ParagonChest( this.Name, treasureLevel ) );
-                }
-                else if (TreasureMapChance >= Utility.RandomDouble())
-                {
-                    Map map = Map;
+                    if (m_Paragon && Paragon.ChestChance > Utility.RandomDouble())
+                    {
+                        PackItem(new ParagonChest(this.Name, treasureLevel));
+                    }
+                    else if (TreasureMapChance >= Utility.RandomDouble())
+                    {
+                        Map map = Map;
 
-                    if (map == Map.Trammel && Siege.SiegeShard)
-                        map = Map.Felucca;
+                        if (map == Map.Trammel && Siege.SiegeShard)
+                            map = Map.Felucca;
 
-                    PackItem(new TreasureMap(treasureLevel, map, SpellHelper.IsEodon(map, Location)));
+                        PackItem(new TreasureMap(treasureLevel, map, SpellHelper.IsEodon(map, Location)));
+                    }
                 }
-            }
 
                 if (m_Paragon && Paragon.ChocolateIngredientChance > Utility.RandomDouble())
                 {
@@ -5776,11 +5773,11 @@ namespace Server.Mobiles
         private bool m_Allured;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Allured 
-        { 
-            get { return m_Allured; } 
-            set 
-            { 
+        public bool Allured
+        {
+            get { return m_Allured; }
+            set
+            {
                 m_Allured = value;
 
                 if (value && Backpack != null)
@@ -5790,7 +5787,7 @@ namespace Server.Mobiles
             }
         }
 
-        public virtual bool GivesMLMinorArtifact => false; 
+        public virtual bool GivesMLMinorArtifact => false;
         #endregion
 
         public virtual void OnRelease(Mobile from)
@@ -6079,11 +6076,11 @@ namespace Server.Mobiles
 
         public long NextReacquireTime { get { return m_NextReacquireTime; } set { m_NextReacquireTime = value; } }
 
-        public virtual TimeSpan ReacquireDelay => TimeSpan.FromSeconds(10.0); 
-        public virtual bool ReacquireOnMovement => false; 
+        public virtual TimeSpan ReacquireDelay => TimeSpan.FromSeconds(10.0);
+        public virtual bool ReacquireOnMovement => false;
 
-        public virtual bool AcquireOnApproach => m_Paragon || ApproachWait; 
-        public virtual int AcquireOnApproachRange => ApproachRange; 
+        public virtual bool AcquireOnApproach => m_Paragon || ApproachWait;
+        public virtual int AcquireOnApproachRange => ApproachRange;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ApproachWait { get; set; }
@@ -6321,7 +6318,7 @@ namespace Server.Mobiles
             creature.Hits = creature.HitsMaxSeed;
 
             return true;
-        }        
+        }
 
         private static bool EnableRummaging = true;
 
@@ -6335,16 +6332,16 @@ namespace Server.Mobiles
 
         private long m_NextRummageTime;
 
-        public virtual bool IsDispellable => Summoned && !IsAnimatedDead; 
+        public virtual bool IsDispellable => Summoned && !IsAnimatedDead;
 
         #region Healing
-        public virtual double HealChance => 0.0; 
+        public virtual double HealChance => 0.0;
 
         private long m_NextHealTime = Core.TickCount;
         private long m_NextHealOwnerTime = Core.TickCount;
         private Timer m_HealTimer;
 
-        public bool IsHealing => (m_HealTimer != null); 
+        public bool IsHealing => (m_HealTimer != null);
 
         public virtual bool CheckHeal()
         {
@@ -6587,23 +6584,23 @@ namespace Server.Mobiles
         private long m_NextPeace;
         private long m_NextProvoke;
 
-        public virtual bool CanDiscord 
-        { 
-            get 
+        public virtual bool CanDiscord
+        {
+            get
             {
                 if (Controlled && AbilityProfile != null)
                 {
                     return AbilityProfile.HasAbility(MagicalAbility.Discordance);
                 }
 
-                return false; 
-            } 
+                return false;
+            }
         }
 
-        public virtual bool CanPeace => false; 
-        public virtual bool CanProvoke => false; 
+        public virtual bool CanPeace => false;
+        public virtual bool CanProvoke => false;
 
-        public virtual bool PlayInstrumentSound => true; 
+        public virtual bool PlayInstrumentSound => true;
 
         public virtual bool DoDiscord()
         {
@@ -6799,24 +6796,24 @@ namespace Server.Mobiles
         #region TeleportTo
         private long m_NextTeleport;
 
-        public virtual bool TeleportsTo => false; 
-        public virtual TimeSpan TeleportDuration => TimeSpan.FromSeconds(5); 
-        public virtual int TeleportRange => 16; 
-        public virtual double TeleportProb => 0.25; 
+        public virtual bool TeleportsTo => false;
+        public virtual TimeSpan TeleportDuration => TimeSpan.FromSeconds(5);
+        public virtual int TeleportRange => 16;
+        public virtual double TeleportProb => 0.25;
 
-        public virtual bool TeleportsPets => false; 
+        public virtual bool TeleportsPets => false;
 
         private static int[] m_Offsets = new int[]
-			{
-				-1, -1,
-				-1,  0,
-				-1,  1,
-				0, -1,
-				0,  1,
-				1, -1,
-				1,  0,
-				1,  1
-			};
+            {
+                -1, -1,
+                -1,  0,
+                -1,  1,
+                0, -1,
+                0,  1,
+                1, -1,
+                1,  0,
+                1,  1
+            };
 
         public void TryTeleport()
         {
@@ -6909,13 +6906,13 @@ namespace Server.Mobiles
         #region Detect Hidden
         private long _NextDetect;
 
-        public virtual bool CanDetectHidden => Controlled && Skills.DetectHidden.Value > 0; 
+        public virtual bool CanDetectHidden => Controlled && Skills.DetectHidden.Value > 0;
 
-        public virtual int FindPlayerDelayBase => (15000 / Int); 
-        public virtual int FindPlayerDelayMax => 60; 
-        public virtual int FindPlayerDelayMin => 5; 
-        public virtual int FindPlayerDelayHigh => 10; 
-        public virtual int FindPlayerDelayLow => 9; 
+        public virtual int FindPlayerDelayBase => (15000 / Int);
+        public virtual int FindPlayerDelayMax => 60;
+        public virtual int FindPlayerDelayMin => 5;
+        public virtual int FindPlayerDelayHigh => 10;
+        public virtual int FindPlayerDelayLow => 9;
 
         public virtual void TryFindPlayer()
         {
@@ -7312,7 +7309,7 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual bool PlayerRangeSensitive => CurrentWayPoint == null && (_NavPoints == null || _NavPoints.Count == 0); 
+        public virtual bool PlayerRangeSensitive => CurrentWayPoint == null && (_NavPoints == null || _NavPoints.Count == 0);
         //If they are following a waypoint, they'll continue to follow it even if players aren't around
 
         /* until we are sure about who should be getting deleted, move them instead */
@@ -7339,7 +7336,7 @@ namespace Server.Mobiles
             return false;
         }
 
-        public virtual bool ReturnsToHome => (m_SeeksHome && (Home != Point3D.Zero) && !m_ReturnQueued && !Controlled && !Summoned); 
+        public virtual bool ReturnsToHome => (m_SeeksHome && (Home != Point3D.Zero) && !m_ReturnQueued && !Controlled && !Summoned);
 
         public override void OnSectorDeactivate()
         {

@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class SplitEndsQuest : BaseQuest
-    { 
+    {
         public SplitEndsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(Arrow), "arrow", 20, 0xF3F));
-						
+
             this.AddReward(new BaseReward(typeof(FletchersSatchel), 1074282)); // Craftsman's Satchel
         }
 
@@ -86,10 +86,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(SplitEndsQuest)
                 };
@@ -98,39 +98,39 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.CantWalk = true;
             this.Race = Race.Human;
-			
-            this.Hue = 0x8407;			
+
+            this.Hue = 0x8407;
             this.HairItemID = 0x2049;
             this.HairHue = 0x6CE;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());			
+            this.AddItem(new Backpack());
             this.AddItem(new Boots(0x1BB));
-						
+
             Item item;
-			
+
             item = new LeatherLegs();
             item.Hue = 0x6C8;
             this.AddItem(item);
-			
+
             item = new LeatherGloves();
             item.Hue = 0x1BB;
             this.AddItem(item);
-			
+
             item = new LeatherChest();
             item.Hue = 0x1BB;
             this.AddItem(item);
-			
+
             item = new LeatherArms();
             item.Hue = 0x4C7;
-            this.AddItem(item);			
-			
+            this.AddItem(item);
+
             item = new CompositeBow();
             item.Hue = 0x5DD;
             this.AddItem(item);
@@ -158,7 +158,7 @@ namespace Server.Engines.Quests
             : base()
         {
             this.Hue = BaseReward.SatchelHue();
-			
+
             this.AddItem(new Feather(10));
             this.AddItem(new FletcherTools());
         }

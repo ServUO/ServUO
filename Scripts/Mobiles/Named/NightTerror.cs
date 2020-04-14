@@ -1,6 +1,3 @@
-using System;
-using Server.Items;
-
 namespace Server.Mobiles
 {
     [CorpseName("a night terror corpse")]
@@ -54,13 +51,13 @@ namespace Server.Mobiles
         {
         }
 
-		public override int TreasureMapLevel => 4; 
-		
-        public override Poison PoisonImmune => Poison.Lethal; 
-		
-        public override Poison HitPoison => Poison.Lethal; 
-		
-        public override double HitPoisonChance => 0.75; 
+        public override int TreasureMapLevel => 4;
+
+        public override Poison PoisonImmune => Poison.Lethal;
+
+        public override Poison HitPoison => Poison.Lethal;
+
+        public override double HitPoisonChance => 0.75;
 
         public override void GenerateLoot()
         {

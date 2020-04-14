@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class ThePenIsMightierQuest : BaseQuest
-    { 
+    {
         public ThePenIsMightierQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(RecallScroll), "recall scroll", 5, 0x1F4C));
-						
+
             this.AddReward(new BaseReward(typeof(RedLeatherBook), 1075545)); // a book bound in red leather
         }
 
@@ -87,7 +87,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Lyle()
             : base("Lyle", "the mage")
-        { 
+        {
         }
 
         public Lyle(Serial serial)
@@ -96,10 +96,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(ThePenIsMightierQuest)
                 };
@@ -108,11 +108,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.CantWalk = true;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x83F7;
             this.HairItemID = 0x204A;
             this.HairHue = 0x459;
@@ -120,7 +120,7 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());		
+            this.AddItem(new Backpack());
             this.AddItem(new ThighBoots());
             this.AddItem(new Robe(0x2FD));
         }

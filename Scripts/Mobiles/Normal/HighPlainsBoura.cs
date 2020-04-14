@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 using Server.Network;
 
@@ -42,7 +41,7 @@ namespace Server.Mobiles
             MinTameSkill = 47.1;
 
             Fame = 5000;
-            Karma = -5000; 
+            Karma = -5000;
 
             SetSpecialAbility(SpecialAbility.TailSwipe);
             SetSpecialAbility(SpecialAbility.ColossalBlow);

@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class ParoxysmusSuccubiQuest : BaseQuest
-    { 
+    {
         public ParoxysmusSuccubiQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Succubus), "succubi", 3, "Palace of Paroxysmus"));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -68,12 +68,12 @@ namespace Server.Engines.Quests
     }
 
     public class ParoxysmusMolochQuest : BaseQuest
-    { 
+    {
         public ParoxysmusMolochQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Moloch), "molochs", 3, "Palace of Paroxysmus"));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -131,12 +131,12 @@ namespace Server.Engines.Quests
     }
 
     public class ParoxysmusDaemonsQuest : BaseQuest
-    { 
+    {
         public ParoxysmusDaemonsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Daemon), "daemons", 10, "Palace of Paroxysmus"));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -194,12 +194,12 @@ namespace Server.Engines.Quests
     }
 
     public class ParoxysmusArcaneDaemonsQuest : BaseQuest
-    { 
+    {
         public ParoxysmusArcaneDaemonsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(ArcaneDaemon), "arcane daemons", 10, "Palace of Paroxysmus"));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -257,13 +257,13 @@ namespace Server.Engines.Quests
     }
 
     public class CausticComboQuest : BaseQuest
-    { 
+    {
         public CausticComboQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(PoisonElemental), "poison elementals", 3, "Palace of Paroxysmus"));
             this.AddObjective(new SlayObjective(typeof(ToxicElemental), "acid elementals", 6, "Palace of Paroxysmus"));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -322,14 +322,14 @@ namespace Server.Engines.Quests
     }
 
     public class PlagueLordQuest : BaseQuest
-    { 
+    {
         public PlagueLordQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(PlagueSpawn), "plague spawns", 10, "Palace of Paroxysmus"));
             this.AddObjective(new SlayObjective(typeof(PlagueBeast), "plague beasts", 3, "Palace of Paroxysmus"));
             //AddObjective( new SlayObjective( typeof( PlagueBeastLord ), "plague beast lord", 1, "Palace of Paroxysmus" ) );
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -388,11 +388,11 @@ namespace Server.Engines.Quests
     }
 
     public class Nillaen : MondainQuester
-    { 
+    {
         [Constructable]
         public Nillaen()
             : base("Lorekeeper Nillaen", "the keeper of tradition")
-        { 
+        {
             this.SetSkill(SkillName.Meditation, 60.0, 83.0);
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -403,10 +403,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(ParoxysmusSuccubiQuest),
                     typeof(ParoxysmusMolochQuest),
@@ -420,10 +420,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x8367;
             this.HairItemID = 0x2FCF;
             this.HairHue = 0x26B;

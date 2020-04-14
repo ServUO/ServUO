@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -10,7 +9,7 @@ namespace Server.Mobiles
         [Constructable]
         public Alelle()
             : base("the aborist")
-        { 
+        {
             this.Name = "Alelle";
         }
 
@@ -41,35 +40,35 @@ namespace Server.Mobiles
             }
         }
         public override void InitSBInfo()
-        { 
+        {
         }
 
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x8374;
             this.HairItemID = 0x2FCC;
-            this.HairHue = 0x238;			
+            this.HairHue = 0x238;
         }
 
         public override void InitOutfit()
         {
             this.AddItem(new ElvenBoots(0x1BB));
-			
+
             Item item;
-			
+
             item = new LeafGloves();
             item.Hue = 0x1BB;
-            this.AddItem(item);			
-			
+            this.AddItem(item);
+
             item = new LeafChest();
             item.Hue = 0x37;
             this.AddItem(item);
-			
+
             item = new LeafLegs();
             item.Hue = 0x746;
             this.AddItem(item);
@@ -78,14 +77,14 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-	
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-	
+
             int version = reader.ReadInt();
         }
     }

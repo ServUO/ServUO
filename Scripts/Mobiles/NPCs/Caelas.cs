@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class WarriorCasteQuest : BaseQuest
-    { 
+    {
         public WarriorCasteQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(TerathanWarrior), "terathan warriors", 10));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -64,12 +64,12 @@ namespace Server.Engines.Quests
     }
 
     public class BigWormsQuest : BaseQuest
-    { 
+    {
         public BigWormsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(IceSerpent), "giant ice serpents", 10));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -123,13 +123,13 @@ namespace Server.Engines.Quests
     }
 
     public class OrcishEliteQuest : BaseQuest
-    { 
+    {
         public OrcishEliteQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(OrcBomber), "orc bombers", 6));
             this.AddObjective(new SlayObjective(typeof(OrcCaptain), "orc captain", 4));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -187,7 +187,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Caelas()
             : base("Elder Caelas", "the wise")
-        { 
+        {
             this.SetSkill(SkillName.Meditation, 60.0, 83.0);
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -198,10 +198,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(WarriorCasteQuest),
                     typeof(BigWormsQuest),
@@ -213,10 +213,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x8381;
             this.HairItemID = 0x2FC0;
             this.HairHue = 0x2C8;

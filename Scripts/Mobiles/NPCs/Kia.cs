@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class MomentoQuest : BaseQuest
-    { 
+    {
         public MomentoQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(ResolvesBridle), "resolve's bridle", 1, 0x1727));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -81,7 +81,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Kia()
             : base("Kia", "the student")
-        { 
+        {
         }
 
         public Kia(Serial serial)
@@ -93,7 +93,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(MomentoQuest)
                 };
@@ -102,10 +102,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x8418;
             this.HairItemID = 0x2046;
             this.HairHue = 0x466;

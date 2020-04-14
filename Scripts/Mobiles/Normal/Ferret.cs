@@ -1,5 +1,5 @@
-using System;
 using Server.Engines.Quests;
+using System;
 
 namespace Server.Mobiles
 {
@@ -66,7 +66,7 @@ namespace Server.Mobiles
                 return FoodType.Fish;
             }
         }
-        public override void OnMovement(Mobile m, Point3D oldLocation) 
+        public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             if (m is Ferret && m.InRange(this, 3) && m.Alive)
                 this.Talk((Ferret)m);
@@ -85,13 +85,13 @@ namespace Server.Mobiles
                     QuestSystem.FocusTo(this, to);
 
                 this.Say(m_Vocabulary[Utility.Random(m_Vocabulary.Length)]);
-			
+
                 if (to != null && Utility.RandomBool())
-                    Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(5, 8)), new TimerCallback(delegate() { to.Talk(); }));
+                    Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(5, 8)), new TimerCallback(delegate () { to.Talk(); }));
 
                 this.m_CanTalk = false;
 
-                Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30)), new TimerCallback(delegate() { this.m_CanTalk = true; }));
+                Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30)), new TimerCallback(delegate () { this.m_CanTalk = true; }));
             }
         }
 

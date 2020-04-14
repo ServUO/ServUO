@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a dragon corpse")]
@@ -57,7 +55,7 @@ namespace Server.Mobiles
         }
 
         public override bool ReacquireOnMovement { get { return !Controlled; } }
-        
+
         public override double BonusPetDamageScalar { get { return Controlled ? 1.0 : 3.0; } }
         public override bool AutoDispel { get { return !Controlled; } }
         public override HideType HideType { get { return HideType.Barbed; } }

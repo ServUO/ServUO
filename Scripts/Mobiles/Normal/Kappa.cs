@@ -1,6 +1,5 @@
-using System;
-using System.Collections;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -42,7 +41,7 @@ namespace Server.Mobiles
             PackItem(new RawFishSteak(3));
             for (int i = 0; i < 2; i++)
             {
-                switch ( Utility.Random(6) )
+                switch (Utility.Random(6))
                 {
                     case 0:
                         PackItem(new Gears());
@@ -66,8 +65,8 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-		
-		public override int TreasureMapLevel
+
+        public override int TreasureMapLevel
         {
             get
             {
@@ -111,13 +110,13 @@ namespace Server.Mobiles
             if (from != null && from.Map != null)
             {
                 int amt = 0;
-                Mobile target = this; 
+                Mobile target = this;
                 int rand = Utility.Random(1, 100);
                 if (willKill)
                 {
                     amt = (((rand % 5) >> 2) + 3);
                 }
-                if ((Hits < 100) && (rand < 21)) 
+                if ((Hits < 100) && (rand < 21))
                 {
                     target = (rand % 2) < 1 ? this : from;
                     amt++;
@@ -125,7 +124,7 @@ namespace Server.Mobiles
                 if (amt > 0)
                 {
                     SpillAcid(target, amt);
-                    from.SendLocalizedMessage(1070820); 
+                    from.SendLocalizedMessage(1070820);
                     if (Mana > 14)
                         Mana -= 15;
                     amt ^= amt;

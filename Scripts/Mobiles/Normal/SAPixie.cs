@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -49,7 +48,7 @@ namespace Server.Mobiles
             this.Karma = -4000;
 
             if (0.02 > Utility.RandomDouble())
-                this.PackStatue();				
+                this.PackStatue();
         }
 
         public override void OnDeath(Container c)

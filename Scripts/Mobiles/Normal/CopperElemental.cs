@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -37,7 +36,7 @@ namespace Server.Mobiles
             Fame = 4800;
             Karma = -4800;
 
-			PackItem(new CopperOre(25));
+            PackItem(new CopperOre(25));
         }
 
         public CopperElemental(Serial serial)
@@ -46,9 +45,9 @@ namespace Server.Mobiles
         }
 
         public override bool AutoDispel { get { return true; } }
-        public override bool BleedImmune { get { return true; } }    
+        public override bool BleedImmune { get { return true; } }
         public override int TreasureMapLevel { get { return 1; } }
-		
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average);

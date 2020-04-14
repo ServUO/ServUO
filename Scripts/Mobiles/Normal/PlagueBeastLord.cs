@@ -1,6 +1,6 @@
-using System;
 using Server.Items;
 using Server.Network;
+using System;
 
 namespace Server.Mobiles
 {
@@ -110,7 +110,7 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
-			
+
             for (int i = c.Items.Count - 1; i >= 0; i--)
                 c.Items[i].Delete();
         }
@@ -210,10 +210,10 @@ namespace Server.Mobiles
             if (this.m_OpenedBy == null && this.IsAccessibleTo(from))
             {
                 this.m_OpenedBy = from;
-				
+
                 if (this.m_Timer == null)
                     this.m_Timer = new DecayTimer(this);
-				
+
                 if (!this.m_Timer.Running)
                     this.m_Timer.Start();
 

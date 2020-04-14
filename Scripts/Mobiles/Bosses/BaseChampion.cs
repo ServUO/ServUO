@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.Engines.CannedEvil;
 using Server.Items;
 using Server.Services.Virtues;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -22,7 +22,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-		public override bool CanBeParagon => false; 
+        public override bool CanBeParagon => false;
         public abstract ChampionSkullType SkullType { get; }
         public abstract Type[] UniqueList { get; }
         public abstract Type[] SharedList { get; }
@@ -36,7 +36,7 @@ namespace Server.Mobiles
             }
         }
 
-        public virtual bool CanGivePowerscrolls => true; 
+        public virtual bool CanGivePowerscrolls => true;
 
         public static void GivePowerScrollTo(Mobile m, Item item, BaseChampion champ)
         {
@@ -66,7 +66,7 @@ namespace Server.Mobiles
 
                     int chance = 0;
 
-                    switch( VirtueHelper.GetLevel(prot, VirtueName.Justice) )
+                    switch (VirtueHelper.GetLevel(prot, VirtueName.Justice))
                     {
                         case VirtueLevel.Seeker:
                             chance = 60;
@@ -81,7 +81,7 @@ namespace Server.Mobiles
 
                     if (chance > Utility.Random(100))
                     {
-						PowerScroll powerScroll = CreateRandomPowerScroll();
+                        PowerScroll powerScroll = CreateRandomPowerScroll();
 
                         prot.SendLocalizedMessage(1049368); // You have been rewarded for your dedication to Justice!
 
@@ -131,7 +131,7 @@ namespace Server.Mobiles
                 return null;
 
             int random = Utility.Random(list.Length);
-			
+
             Type type = list[random];
 
             Item artifact = Loot.Construct(type);
@@ -239,7 +239,7 @@ namespace Server.Mobiles
                 if (this.NoGoodies)
                     return base.OnBeforeDeath();
 
-				GoldShower.DoForChamp(Location, Map);
+                GoldShower.DoForChamp(Location, Map);
             }
 
             return base.OnBeforeDeath();

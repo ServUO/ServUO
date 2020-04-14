@@ -43,7 +43,7 @@ namespace Server.Mobiles
 
         public override int DragonBlood { get { return 8; } }
 
-		public override int TreasureMapLevel
+        public override int TreasureMapLevel
         {
             get
             {

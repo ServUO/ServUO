@@ -1,13 +1,13 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a juka corpse")] 
+    [CorpseName("a juka corpse")]
     public class JukaLord : BaseCreature
     {
-		public override double HealChance { get { return 1.0; } }
-		
+        public override double HealChance { get { return 1.0; } }
+
         [Constructable]
         public JukaLord()
             : base(AIType.AI_Archer, FightMode.Closest, 10, 3, 0.2, 0.4)

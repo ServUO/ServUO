@@ -1,14 +1,14 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Drithen : MondainQuester
     {
         [Constructable]
         public Drithen()
             : base("Drithen", "the fierce")
-        { 
+        {
         }
 
         public Drithen(Serial serial)
@@ -17,10 +17,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(TaleOfTailQuest),
                     typeof(PointyEarsQuest)
@@ -30,15 +30,15 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
-            this.Race = Race.Human;			
-            this.Hue = 0x840F;		
+            this.Race = Race.Human;
+            this.Hue = 0x840F;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());			
+            this.AddItem(new Backpack());
             this.AddItem(new ElvenBoots(0x723));
             this.AddItem(new LongPants(0x549));
             this.AddItem(new Tunic(0x72B));

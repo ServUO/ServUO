@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -46,10 +45,10 @@ namespace Server.Mobiles
 
             this.PackReg(10);
 
-			switch (Utility.Random(6))
+            switch (Utility.Random(6))
             {
                 case 0: PackItem(new PainSpikeScroll()); break;
-			}
+            }
 
         }
 

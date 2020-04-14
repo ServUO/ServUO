@@ -1,17 +1,17 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class ShakingThingsUpQuest : BaseQuest
-    { 
+    {
         public ShakingThingsUpQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(RedSolenWarrior), "red solen warriors", 10));
             this.AddObjective(new SlayObjective(typeof(BlackSolenWarrior), "black solen warriors", 10));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -72,12 +72,12 @@ namespace Server.Engines.Quests
     }
 
     public class ArachnophobiaQuest : BaseQuest
-    { 
+    {
         public ArachnophobiaQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(GiantBlackWidow), "giant black widows", 12));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -131,12 +131,12 @@ namespace Server.Engines.Quests
     }
 
     public class MiniSwampThingQuest : BaseQuest
-    { 
+    {
         public MiniSwampThingQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Bogling), "boglings", 20));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -189,11 +189,11 @@ namespace Server.Engines.Quests
     }
 
     public class Salaenih : MondainQuester
-    { 
+    {
         [Constructable]
         public Salaenih()
             : base("Salaenih", "the expeditionist")
-        { 
+        {
             this.SetSkill(SkillName.Meditation, 60.0, 83.0);
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -204,10 +204,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(WarriorCasteQuest),
                     typeof(ShakingThingsUpQuest),
@@ -225,10 +225,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x851D;
             this.HairItemID = 0x2FCD;
             this.HairHue = 0x324;
@@ -238,28 +238,28 @@ namespace Server.Engines.Quests
         {
             this.AddItem(new ElvenBoots());
             this.AddItem(new WarCleaver());
-			
+
             Item item;
-			
+
             item = new WoodlandLegs();
-            item.Hue = 0x1BB;					
-            this.AddItem(item); 
-			
+            item.Hue = 0x1BB;
+            this.AddItem(item);
+
             item = new WoodlandArms();
-            item.Hue = 0x1BB;					
-            this.AddItem(item); 
-			
+            item.Hue = 0x1BB;
+            this.AddItem(item);
+
             item = new WoodlandChest();
-            item.Hue = 0x1BB;					
+            item.Hue = 0x1BB;
             this.AddItem(item);
-			
+
             item = new WoodlandBelt();
-            item.Hue = 0x597;					
+            item.Hue = 0x597;
             this.AddItem(item);
-			
+
             item = new VultureHelm();
-            item.Hue = 0x1BB;					
-            this.AddItem(item); 
+            item.Hue = 0x1BB;
+            this.AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

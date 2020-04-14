@@ -1,61 +1,65 @@
-using System;
-using Server;
 using Server.Items;
-using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{				
-	public class Curiosities : BaseQuest
-	{							
-	/* Curiosities */
-		public override object Title{ get{ return "Curiosities"; } }
-                
-		
-		public override object Description{ get{ return 1094978; } }
-		public override object Refuse{ get{ return "You are Scared from this Task !! Muahahah"; } }
-		
-		public override object Uncomplete{ get{ return "I am sorry that you have not accepted!"; } }
+{
+    public class Curiosities : BaseQuest
+    {
+        /* Curiosities */
+        public override object Title { get { return "Curiosities"; } }
 
-                public override object Complete{ get{ return 1094981; } }
-	
-		public Curiosities () : base()
-		{			
-			AddObjective( new ObtainObjective( typeof( FertileDirt ), "Fertil Dirt", 3, 0xF81 ) );
-                        AddObjective( new ObtainObjective( typeof( Bone ), "Bone", 3, 0xF7e ) );
 
-                        AddReward( new BaseReward( typeof( ExplodingTarPotion ),"Exploding Tar Potion") );
-		}
-										
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override object Description { get { return 1094978; } }
+        public override object Refuse { get { return "You are Scared from this Task !! Muahahah"; } }
 
-			writer.Write( (int) 0 ); // version
-		}
-		
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override object Uncomplete { get { return "I am sorry that you have not accepted!"; } }
 
-			int version = reader.ReadInt();
-		}		
-	}
-	
-	public class Gretchen : MondainQuester
-	{
-		public override Type[] Quests{ get{ return new Type[] 
-		{ 
-			typeof( Curiosities )
-		}; } }
-		
-		[Constructable]
-		public Gretchen() : base( "Gretchen", "the Alchemist" )
-		{			
-		}
-		
-		public Gretchen( Serial serial ) : base( serial )
-		{
-		}
+        public override object Complete { get { return 1094981; } }
+
+        public Curiosities() : base()
+        {
+            AddObjective(new ObtainObjective(typeof(FertileDirt), "Fertil Dirt", 3, 0xF81));
+            AddObjective(new ObtainObjective(typeof(Bone), "Bone", 3, 0xF7e));
+
+            AddReward(new BaseReward(typeof(ExplodingTarPotion), "Exploding Tar Potion"));
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class Gretchen : MondainQuester
+    {
+        public override Type[] Quests
+        {
+            get
+            {
+                return new Type[]
+{
+            typeof( Curiosities )
+};
+            }
+        }
+
+        [Constructable]
+        public Gretchen() : base("Gretchen", "the Alchemist")
+        {
+        }
+
+        public Gretchen(Serial serial) : base(serial)
+        {
+        }
 
         public override void InitBody()
         {
@@ -71,28 +75,28 @@ namespace Server.Engines.Quests
             CantWalk = true;
             Direction = Direction.East;
         }
-		
-		public override void InitOutfit()
-		{
-			SetWearable( new Backpack() );
+
+        public override void InitOutfit()
+        {
+            SetWearable(new Backpack());
             SetWearable(new Shoes(1886));
             SetWearable(new FemaleElvenRobe(443));
 
             SetWearable(new QuarterStaff());
-		}
-				
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        }
 
-			writer.Write( (int)1 ); // version
-		}
-		
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			int version = reader.ReadInt();
+            writer.Write((int)1); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
 
             if (version == 0)
             {
@@ -121,6 +125,6 @@ namespace Server.Engines.Quests
                 SetWearable(new FemaleElvenRobe(443));
                 SetWearable(new QuarterStaff());
             }
-		}
-	}
+        }
+    }
 }

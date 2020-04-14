@@ -1,9 +1,9 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
-    [CorpseName("Devourer of Souls [Renowned] corpse")]  
+    [CorpseName("Devourer of Souls [Renowned] corpse")]
     public class DevourerRenowned : BaseRenowned
     {
         [Constructable]

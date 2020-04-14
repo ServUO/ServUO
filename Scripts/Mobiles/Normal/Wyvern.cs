@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -38,7 +37,7 @@ namespace Server.Mobiles
 
             this.Fame = 4000;
             this.Karma = -4000;
-			
+
             this.PackItem(new LesserPoisonPotion());
         }
 

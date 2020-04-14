@@ -1,14 +1,14 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Jusae : MondainQuester
-    { 
+    {
         [Constructable]
         public Jusae()
             : base("Jusae", "the bowcrafter")
-        { 
+        {
             SetSkill(SkillName.Meditation, 60.0, 83.0);
             SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -19,10 +19,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(LethalDartsQuest),
                     typeof(SimpleBowQuest),
@@ -36,10 +36,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = false;
             Race = Race.Elf;
-			
+
             Hue = 0x83E5;
             HairItemID = 0x2FD0;
             HairHue = 0x238;
@@ -50,13 +50,13 @@ namespace Server.Engines.Quests
             AddItem(new Sandals(0x901));
             AddItem(new ShortPants(0x651));
             AddItem(new MagicalShortbow());
-			
+
             Item item;
-			
+
             item = new HideChest();
             item.Hue = 0x27B;
             AddItem(item);
-			
+
             item = new HidePauldrons();
             item.Hue = 0x27E;
             AddItem(item);

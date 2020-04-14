@@ -1,7 +1,7 @@
 using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Bravehorn : BaseEscort
     {
         public override Type[] Quests { get { return new Type[] { typeof(DefendingTheHerdQuest) }; } }
@@ -9,19 +9,19 @@ namespace Server.Engines.Quests
         [Constructable]
         public Bravehorn()
             : base()
-        { 
+        {
             Name = "Bravehorn";
         }
 
         public Bravehorn(Serial serial)
             : base(serial)
         {
-        }        
+        }
 
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Blessed = false;
             Female = false;
             Body = 0xEA;
@@ -44,11 +44,11 @@ namespace Server.Engines.Quests
 namespace Server.Mobiles
 {
     public class BravehornsMate : Hind
-    { 
+    {
         [Constructable]
         public BravehornsMate()
             : base()
-        { 
+        {
             Name = "bravehorn's mate";
             Tamable = false;
         }

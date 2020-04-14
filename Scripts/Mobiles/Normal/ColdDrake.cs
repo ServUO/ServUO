@@ -1,5 +1,3 @@
-using System;
-using Server;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -71,7 +69,7 @@ namespace Server.Mobiles
 
         public override bool CanAngerOnTame { get { return true; } }
         public override bool ReacquireOnMovement { get { return !Controlled; } }
-		public override int TreasureMapLevel { get { return 3; } }
+        public override int TreasureMapLevel { get { return 3; } }
         public override int Meat { get { return 10; } }
         public override int Hides { get { return 22; } }
         public override HideType HideType { get { return HideType.Horned; } }

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a sea horse corpse")]
@@ -9,7 +7,7 @@ namespace Server.Mobiles
         public SeaHorse()
             : this("a sea horse")
         {
-			this.CanSwim = true;
+            this.CanSwim = true;
         }
 
         [Constructable]
@@ -40,12 +38,12 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-			switch (version)
-			{
-				case 0:
-					this.CanSwim = true;
-					break;
-			}
+            switch (version)
+            {
+                case 0:
+                    this.CanSwim = true;
+                    break;
+            }
         }
     }
 }

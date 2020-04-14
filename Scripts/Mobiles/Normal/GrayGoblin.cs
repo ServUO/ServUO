@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -50,8 +49,8 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-		
-		public override int GetAngerSound() { return 0x600; }
+
+        public override int GetAngerSound() { return 0x600; }
         public override int GetIdleSound() { return 0x600; }
         public override int GetAttackSound() { return 0x5FD; }
         public override int GetHurtSound() { return 0x5FF; }

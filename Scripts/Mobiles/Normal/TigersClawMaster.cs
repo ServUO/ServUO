@@ -1,9 +1,8 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a black order master corpse")] 
+    [CorpseName("a black order master corpse")]
     public class TigersClawMaster : TigersClawThief
     {
         [Constructable]
@@ -31,7 +30,7 @@ namespace Server.Mobiles
 
         public override bool AlwaysMurderer { get { return true; } }
         public override bool ShowFameTitle { get { return false; } }
-		
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 6);
@@ -39,9 +38,9 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-            base.OnDeath(c);	
-			
-                c.DropItem(new TigerClawKey());
+            base.OnDeath(c);
+
+            c.DropItem(new TigerClawKey());
 
             if (Utility.RandomDouble() < 0.5)
                 c.DropItem(new TigerClawSectBadge());
@@ -49,13 +48,13 @@ namespace Server.Mobiles
 
         public override void Serialize(GenericWriter writer)
         {
-            base.Serialize(writer);			
+            base.Serialize(writer);
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
-            base.Deserialize(reader);			
+            base.Deserialize(reader);
             int version = reader.ReadInt();
         }
     }

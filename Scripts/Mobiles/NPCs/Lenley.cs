@@ -1,12 +1,12 @@
-using System;
 using Server.Items;
 using Server.Regions;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class FreedomQuest : BaseQuest
     {
-        public override bool DoneOnce => true; 
+        public override bool DoneOnce => true;
 
         public FreedomQuest()
             : base()
@@ -17,27 +17,27 @@ namespace Server.Engines.Quests
         }
 
         /* Freedom! */
-        public override object Title => 1072367; 
+        public override object Title => 1072367;
 
         /*
          * Lenley isn't seen.  Why you see me? Lenley is sneaking.  Lenley runs away.
          * You help Lenley to not get dead?  We go out past pig-men orcs?  Yes? Yes? You say yes?
         */
-        public override object Description => 1072552; 
+        public override object Description => 1072552;
 
         /* You no like Lenley? No hurt Lenley!  No see Lenley.  Go 'way. */
-        public override object Refuse => 1072553; 
+        public override object Refuse => 1072553;
 
         /* Lenley not run away yet.  Go, go, Lenley not past pig-men orcs.  You go, Lenley go after you.  Go! */
-        public override object Uncomplete => 1072554; 
+        public override object Uncomplete => 1072554;
 
         /* Lenley so happy!  Lenley not get dead.  You have best Lenley shiny! */
-        public override object Complete => 1072556; 
+        public override object Complete => 1072556;
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); 
+            writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -49,7 +49,7 @@ namespace Server.Engines.Quests
 
     public class Lenley : BaseEscort
     {
-        public override Type[] Quests => new Type[] { typeof(FreedomQuest) }; 
+        public override Type[] Quests => new Type[] { typeof(FreedomQuest) };
 
         public LenleyRegion _Region { get; set; }
 

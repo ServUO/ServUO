@@ -1,9 +1,6 @@
-using System;
 using Server.Items;
-using Server.Targeting;
 using Server.Mobiles;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 
 namespace Server.Engines.Quests
 {
@@ -239,7 +236,7 @@ namespace Server.Engines.Quests
     public class Dermott : MondainQuester
     {
         public override Type[] Quests { get { return null; } }
-        
+
         [Constructable]
         public Dermott() : base("Dermott", "the Weaver")
         {

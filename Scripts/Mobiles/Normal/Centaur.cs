@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -40,7 +39,7 @@ namespace Server.Mobiles
             Karma = 0;
 
             AddItem(new Bow());
-            PackItem(new Arrow(Utility.RandomMinMax(80, 90))); 
+            PackItem(new Arrow(Utility.RandomMinMax(80, 90)));
         }
 
         public Centaur(Serial serial)

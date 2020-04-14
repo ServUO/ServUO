@@ -1,6 +1,3 @@
-using System;
-using Server.Mobiles;
-using Server.Network;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -87,8 +84,8 @@ namespace Server.Mobiles
         public override double WeaponAbilityChance { get { return 0.5; } }
 
         public override int Meat { get { return 2; } }
-        public override FoodType FavoriteFood { get { return FoodType.Meat; } }	
-		public override int TreasureMapLevel { get { return 1; } }
+        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
+        public override int TreasureMapLevel { get { return 1; } }
 
         public override void GenerateLoot()
         {

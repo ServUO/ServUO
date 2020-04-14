@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -37,7 +37,7 @@ namespace Server.Mobiles
             Fame = 3500;
             Karma = -3500;
 
-			PackItem(new DullCopperOre(2));
+            PackItem(new DullCopperOre(2));
         }
 
         public DullCopperElemental(Serial serial)
@@ -46,7 +46,7 @@ namespace Server.Mobiles
         }
 
         public override bool AutoDispel { get { return true; } }
-        public override bool BleedImmune { get { return true; } }    
+        public override bool BleedImmune { get { return true; } }
         public override int TreasureMapLevel { get { return 1; } }
 
         public override bool OnBeforeDeath()
@@ -62,7 +62,7 @@ namespace Server.Mobiles
 
             foreach (Mobile m in eable)
             {
-                if (m != this && m.Alive && m.AccessLevel == AccessLevel.Player && 
+                if (m != this && m.Alive && m.AccessLevel == AccessLevel.Player &&
                     (m is PlayerMobile || (m is BaseCreature && !((BaseCreature)m).IsMonster)))
                 {
                     list.Add(m);

@@ -1,5 +1,4 @@
 /* Based on Gargoyle, still no infos on Undead Gargoyle... Have to get also the correct body ID */
-using System;
 using Server.Items;
 
 namespace Server.Mobiles

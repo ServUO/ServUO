@@ -1,5 +1,3 @@
-using System;
-using Server;
 using Server.Items;
 using System.Collections.Generic;
 
@@ -61,7 +59,7 @@ namespace Server.Mobiles.MannequinProperty
         public override int LabelNumber { get { return 1079709; } } // Self Repair
         public override bool IsSpriteGraph { get { return true; } }
         public override int SpriteW { get { return 0; } }
-        public override int SpriteH { get { return 300; } }        
+        public override int SpriteH { get { return 300; } }
         public override AosArmorAttribute Attribute { get { return AosArmorAttribute.SelfRepair; } }
     }
 

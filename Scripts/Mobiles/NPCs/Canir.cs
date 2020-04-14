@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
@@ -8,7 +8,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Canir()
             : base("Canir", "the thaumaturgist")
-        { 
+        {
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
@@ -18,10 +18,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(TroglodytesQuest),
                     typeof(TrogAndHisDogQuest)
@@ -31,11 +31,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.CantWalk = true;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x876C;
             this.HairItemID = 0x2FD0;
             this.HairHue = 0x33;

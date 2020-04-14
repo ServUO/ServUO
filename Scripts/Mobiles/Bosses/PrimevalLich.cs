@@ -1,10 +1,9 @@
-using System;
-using System.Collections;
 using Server.Engines.CannedEvil;
 using Server.Items;
-using System.Collections.Generic;
 using Server.Network;
-using System.Linq;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -104,7 +103,7 @@ namespace Server.Mobiles
             {
                 return new MonsterStatuetteType[] { };
             }
-        }        
+        }
 
         public override void GenerateLoot()
         {
@@ -124,7 +123,7 @@ namespace Server.Mobiles
         {
             ForceReacquire();
             BeginFlee(TimeSpan.FromSeconds(2.5));
-        }       
+        }
 
         public override void OnThink()
         {
@@ -416,7 +415,7 @@ namespace Server.Mobiles
                         mods.Add(new DefaultSkillMod((SkillName)i, true, target.Skills[i].Value * scalar));
                     }
                 }
-                
+
                 target.PlaySound(0x458);
 
                 ApplyMods(target, mods);

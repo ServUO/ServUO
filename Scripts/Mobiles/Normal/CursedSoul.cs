@@ -1,5 +1,3 @@
-using System;
-using Server.Items;
 using Server.Mobiles;
 
 namespace Server.Engines.Quests.Samurai

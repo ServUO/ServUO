@@ -1,6 +1,5 @@
-using System;
 using Server.Gumps;
-using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -11,7 +10,7 @@ namespace Server.Mobiles
         public Type CreatureType { get { return typeof(HungryCoconutCrab); } }
 
         [Constructable]
-        public HungryCoconutCrabStatue() 
+        public HungryCoconutCrabStatue()
             : base(0xA336)
         {
             Hue = 2713;
@@ -37,7 +36,7 @@ namespace Server.Mobiles
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-            
+
             list.Add(1159222); // *Redeemable for a pet*<br>*Requires High Seas Booster Pack*
         }
 
@@ -56,7 +55,7 @@ namespace Server.Mobiles
 
     [CorpseName("a coconut crab corpse")]
     public class HungryCoconutCrab : BaseCreature
-    {        
+    {
         [Constructable]
         public HungryCoconutCrab()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)

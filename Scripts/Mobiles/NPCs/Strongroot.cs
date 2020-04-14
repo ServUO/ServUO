@@ -1,13 +1,13 @@
 using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Strongroot : MondainQuester
-    { 
+    {
         [Constructable]
         public Strongroot()
             : base("Strongroot")
-        { 
+        {
         }
 
         public Strongroot(Serial serial)
@@ -19,7 +19,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(CaretakerOfTheLandQuest)
                 };
@@ -28,7 +28,7 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Body = 301;
         }

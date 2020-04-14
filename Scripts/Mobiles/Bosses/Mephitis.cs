@@ -1,7 +1,6 @@
-using System;
 using Server.Engines.CannedEvil;
 using Server.Items;
-using System.Collections.Generic;
+using System;
 
 namespace Server.Mobiles
 {

@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class TheSongOfTheWindQuest : BaseQuest
-    { 
+    {
         public TheSongOfTheWindQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(FancyWindChimes), "fancy wind chimes", 10, 0x2833));
-			
+
             AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
@@ -71,12 +71,12 @@ namespace Server.Engines.Quests
     }
 
     public class BeerGogglesQuest : BaseQuest
-    { 
+    {
         public BeerGogglesQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(BarrelTap), "barrel tap", 25, 0x1004));
-			
+
             AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
@@ -138,12 +138,12 @@ namespace Server.Engines.Quests
     }
 
     public class MessageInBottleQuest : BaseQuest
-    { 
+    {
         public MessageInBottleQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(Bottle), "empty bottles", 50, 0xF0E));
-			
+
             AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
@@ -204,11 +204,11 @@ namespace Server.Engines.Quests
     }
 
     public class Tholef : MondainQuester
-    { 
+    {
         [Constructable]
         public Tholef()
             : base("Tholef", "the grape tender")
-        { 
+        {
             SetSkill(SkillName.Meditation, 60.0, 83.0);
             SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -219,10 +219,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(TheSongOfTheWindQuest),
                     typeof(BeerGogglesQuest),
@@ -233,10 +233,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = false;
             Race = Race.Elf;
-			
+
             Hue = 0x876C;
             HairItemID = 0x2FC2;
             HairHue = 0x15A;
@@ -248,12 +248,12 @@ namespace Server.Engines.Quests
             AddItem(new ShortPants(0x28C));
             AddItem(new Shirt(0x28C));
             AddItem(new FullApron(0x72B));
-			
+
             Item item;
-			
+
             item = new LeafArms();
-            item.Hue = 0x28C;					
-            AddItem(item); 
+            item.Hue = 0x28C;
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

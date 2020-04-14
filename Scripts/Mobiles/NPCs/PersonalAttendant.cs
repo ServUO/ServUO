@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Items;
 using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -99,7 +99,7 @@ namespace Server.Mobiles
         }
 
         public virtual void CommandFollow(Mobile by)
-        { 
+        {
             this.ControlOrder = OrderType.Follow;
             this.ControlTarget = by;
 
@@ -111,7 +111,7 @@ namespace Server.Mobiles
         }
 
         public virtual void CommandStop(Mobile by)
-        { 
+        {
             this.ControlOrder = OrderType.Stay;
             this.ControlTarget = null;
 
@@ -130,7 +130,7 @@ namespace Server.Mobiles
                 owner.AddToBackpack(new PersonalAttendantDeed(owner));
             else
                 owner.AddToBackpack(new PersonalAttendantDeed());
-			
+
             this.Delete();
         }
 
@@ -182,7 +182,7 @@ namespace Server.Mobiles
 
             int version = reader.ReadEncodedInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     this.m_BindedToPlayer = reader.ReadBool();
@@ -219,7 +219,7 @@ namespace Server.Mobiles
 
                     if (m != null)
                     {
-                        if ((m.NetState == null || !m.Alive) && !this.m_Attendant.InGreetingMode(m)) 
+                        if ((m.NetState == null || !m.Alive) && !this.m_Attendant.InGreetingMode(m))
                             this.m_Attendant.Dismiss(m);
                         else if (this.m_Attendant.ControlOrder == OrderType.Follow && !m.InRange(this.m_Attendant.Location, 12))
                             Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerStateCallback(CatchUp), m.Location);

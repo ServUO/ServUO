@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a jwilson corpse")]
@@ -29,29 +27,29 @@ namespace Server.Mobiles
         {
         }
 
-        public override int GetAngerSound() 
-        { 
-            return 0x1C8; 
+        public override int GetAngerSound()
+        {
+            return 0x1C8;
         }
 
-        public override int GetIdleSound() 
-        { 
-            return 0x1C9; 
+        public override int GetIdleSound()
+        {
+            return 0x1C9;
         }
 
-        public override int GetAttackSound() 
-        { 
-            return 0x1CA; 
+        public override int GetAttackSound()
+        {
+            return 0x1CA;
         }
 
-        public override int GetHurtSound() 
-        { 
-            return 0x1CB; 
+        public override int GetHurtSound()
+        {
+            return 0x1CB;
         }
 
-        public override int GetDeathSound() 
-        { 
-            return 0x1CC; 
+        public override int GetDeathSound()
+        {
+            return 0x1CC;
         }
 
         public override void Serialize(GenericWriter writer)

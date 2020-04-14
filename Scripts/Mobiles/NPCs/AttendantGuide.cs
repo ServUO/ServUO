@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Server.Commands;
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Items;
 using Server.Network;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using Vertex = Server.Mobiles.GuideHelper.GuideVertex;
 
 namespace Server.Mobiles
@@ -21,10 +21,10 @@ namespace Server.Mobiles
             try
             {
                 using (FileStream stream = new FileStream("Guide.log", FileMode.Append))
-                    using (StreamWriter writer = new StreamWriter(stream))
-                    {
-                        writer.WriteLine(line);
-                    }
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    writer.WriteLine(line);
+                }
             }
             catch (Exception ex)
             {
@@ -59,104 +59,104 @@ namespace Server.Mobiles
             try
             {
                 using (FileStream stream = File.OpenRead(Path.Combine("Data", "Guide", "Definitions.cfg")))
-                    using (StreamReader reader = new StreamReader(stream))
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    while (!reader.EndOfStream)
                     {
-                        while (!reader.EndOfStream)
+                        string line = reader.ReadLine();
+
+                        if (!String.IsNullOrEmpty(line) && !line.StartsWith("#"))
                         {
-                            string line = reader.ReadLine();
+                            string[] split = line.Split(m_Separators, StringSplitOptions.RemoveEmptyEntries);
 
-                            if (!String.IsNullOrEmpty(line) && !line.StartsWith("#"))
-                            {
-                                string[] split = line.Split(m_Separators, StringSplitOptions.RemoveEmptyEntries);
-
-                                if (split != null && split.Length > 1)
-                                    m_ShopDefinitions.Add(Int32.Parse(split[1]));
-                            }
+                            if (split != null && split.Length > 1)
+                                m_ShopDefinitions.Add(Int32.Parse(split[1]));
                         }
                     }
+                }
 
                 foreach (string file in Directory.GetFiles(Path.Combine("Data", "Guide"), "*.graph"))
                 {
                     using (FileStream stream = File.OpenRead(file))
-                        using (StreamReader reader = new StreamReader(stream))
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        List<GuideVertex> list = new List<GuideVertex>();
+                        GuideVertex current = null;
+                        GuideVertex neighbour = null;
+
+                        while (!reader.EndOfStream)
                         {
-                            List<GuideVertex> list = new List<GuideVertex>();
-                            GuideVertex current = null;
-                            GuideVertex neighbour = null;
+                            string line = reader.ReadLine();
 
-                            while (!reader.EndOfStream)
+                            if (!String.IsNullOrEmpty(line))
                             {
-                                string line = reader.ReadLine();
+                                string[] split = line.Split(m_Separators, StringSplitOptions.RemoveEmptyEntries);
+                                int num;
 
-                                if (!String.IsNullOrEmpty(line))
+                                if (line.StartsWith("N:"))
                                 {
-                                    string[] split = line.Split(m_Separators, StringSplitOptions.RemoveEmptyEntries);
-                                    int num;
-
-                                    if (line.StartsWith("N:"))
+                                    if (current != null)
                                     {
-                                        if (current != null)
+                                        for (int i = 1; i < split.Length; i++)
                                         {
-                                            for (int i = 1; i < split.Length; i++)
-                                            {
-                                                num = Int32.Parse(split[i]);
-                                                neighbour = FindVertex(list, num);
-
-                                                if (neighbour == null)
-                                                {
-                                                    neighbour = new GuideVertex(num);
-                                                    list.Add(neighbour);
-                                                }
-
-                                                current.Vertices.Add(neighbour);
-                                            }
-                                        }
-                                    }
-                                    else if (line.StartsWith("S:"))
-                                    {
-                                        if (current != null)
-                                        {
-                                            for (int i = 1; i < split.Length; i++)
-                                            {
-                                                num = Int32.Parse(split[i]);
-
-                                                if (num >= 0 && num < m_ShopDefinitions.Count)
-                                                    current.Shops.Add(num);
-                                                else
-                                                    throw new Exception(String.Format("Invalid shop ID: {0}", num));
-                                            }
-                                        }
-                                    }
-                                    else if (line.StartsWith("V:"))
-                                    {
-                                        if (split.Length > 5)
-                                        {
-                                            num = Int32.Parse(split[1]);
+                                            num = Int32.Parse(split[i]);
                                             neighbour = FindVertex(list, num);
 
-                                            if (neighbour != null)
-                                                current = neighbour;
-                                            else
+                                            if (neighbour == null)
                                             {
-                                                current = new GuideVertex(num);
-                                                list.Add(current);
+                                                neighbour = new GuideVertex(num);
+                                                list.Add(neighbour);
                                             }
 
-                                            Point3D location = new Point3D();
-                                            location.X = Int32.Parse(split[2]);
-                                            location.Y = Int32.Parse(split[3]);
-                                            location.Z = Int32.Parse(split[4]);
-                                            current.Location = location;
-                                            current.Teleporter = Boolean.Parse(split[5]);
+                                            current.Vertices.Add(neighbour);
                                         }
-                                        else
-                                            throw new Exception(String.Format("Incomplete vertex definition!"));
                                     }
                                 }
-                            }
+                                else if (line.StartsWith("S:"))
+                                {
+                                    if (current != null)
+                                    {
+                                        for (int i = 1; i < split.Length; i++)
+                                        {
+                                            num = Int32.Parse(split[i]);
 
-                            m_GraphDefinitions.Add(Path.GetFileNameWithoutExtension(file), list);
+                                            if (num >= 0 && num < m_ShopDefinitions.Count)
+                                                current.Shops.Add(num);
+                                            else
+                                                throw new Exception(String.Format("Invalid shop ID: {0}", num));
+                                        }
+                                    }
+                                }
+                                else if (line.StartsWith("V:"))
+                                {
+                                    if (split.Length > 5)
+                                    {
+                                        num = Int32.Parse(split[1]);
+                                        neighbour = FindVertex(list, num);
+
+                                        if (neighbour != null)
+                                            current = neighbour;
+                                        else
+                                        {
+                                            current = new GuideVertex(num);
+                                            list.Add(current);
+                                        }
+
+                                        Point3D location = new Point3D();
+                                        location.X = Int32.Parse(split[2]);
+                                        location.Y = Int32.Parse(split[3]);
+                                        location.Z = Int32.Parse(split[4]);
+                                        current.Location = location;
+                                        current.Teleporter = Boolean.Parse(split[5]);
+                                    }
+                                    else
+                                        throw new Exception(String.Format("Incomplete vertex definition!"));
+                                }
+                            }
                         }
+
+                        m_GraphDefinitions.Add(Path.GetFileNameWithoutExtension(file), list);
+                    }
                 }
             }
             catch (Exception ex)
@@ -213,7 +213,7 @@ namespace Server.Mobiles
         {
             if (town == null || !m_GraphDefinitions.ContainsKey(town))
                 return null;
-			
+
             List<GuideVertex> vertices = m_GraphDefinitions[town];
             Dictionary<int, GuideVertex> shops = new Dictionary<int, GuideVertex>();
 
@@ -255,9 +255,9 @@ namespace Server.Mobiles
                 v.Visited = false;
                 v.Removed = false;
             }
-			
+
             source.Distance = 0;
-            GuideVertex from ;
+            GuideVertex from;
             int dist = 0;
 
             while (heap.Count > 0)
@@ -371,38 +371,38 @@ namespace Server.Mobiles
                 string path = Core.BaseDirectory + String.Format("\\Data\\Guide\\{0}.graph", town);
 
                 using (FileStream stream = new FileStream(path, FileMode.Create))
-                    using (StreamWriter writer = new StreamWriter(stream))
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    writer.WriteLine("# Graph vertices");
+                    writer.WriteLine("# {V:}VertexID{tab, }X{tab, }Y{tab, }Z{tab, }IsTeleporter");
+                    writer.WriteLine("# {S:}ShopID{tab, }ShopID{tab, }...");
+                    writer.WriteLine("# {N:}VertexID{tab, }VertexID{tab, }...");
+
+                    foreach (GuideVertex v in list)
                     {
-                        writer.WriteLine("# Graph vertices");
-                        writer.WriteLine("# {V:}VertexID{tab, }X{tab, }Y{tab, }Z{tab, }IsTeleporter");
-                        writer.WriteLine("# {S:}ShopID{tab, }ShopID{tab, }...");
-                        writer.WriteLine("# {N:}VertexID{tab, }VertexID{tab, }...");
+                        writer.WriteLine(String.Format("V:\t{0}\t{1}\t{2}\t{3}\t{4}", v.ID, v.Location.X, v.Location.Y, v.Location.Z, v.Teleporter.ToString()));
 
-                        foreach (GuideVertex v in list)
+                        if (v.Shops.Count > 0)
                         {
-                            writer.WriteLine(String.Format("V:\t{0}\t{1}\t{2}\t{3}\t{4}", v.ID, v.Location.X, v.Location.Y, v.Location.Z, v.Teleporter.ToString()));
+                            writer.Write("S:");
 
-                            if (v.Shops.Count > 0)
-                            {
-                                writer.Write("S:");
+                            foreach (int i in v.Shops)
+                                writer.Write(String.Format("\t{0}", i));
 
-                                foreach (int i in v.Shops)
-                                    writer.Write(String.Format("\t{0}", i));
+                            writer.WriteLine();
+                        }
 
-                                writer.WriteLine();
-                            }
+                        if (v.Vertices.Count > 0)
+                        {
+                            writer.Write("N:");
 
-                            if (v.Vertices.Count > 0)
-                            {
-                                writer.Write("N:");
+                            foreach (GuideVertex n in v.Vertices)
+                                writer.Write(String.Format("\t{0}", n.ID));
 
-                                foreach (GuideVertex n in v.Vertices)
-                                    writer.Write(String.Format("\t{0}", n.ID));
-
-                                writer.WriteLine();
-                            }
+                            writer.WriteLine();
                         }
                     }
+                }
             }
         }
 
@@ -604,7 +604,7 @@ namespace Server.Mobiles
             public T Pop()
             {
                 if (this.m_List.Count == 0)
-                    return default( T );
+                    return default(T);
 
                 T top = this.m_List[0];
                 T temp;
@@ -615,7 +615,7 @@ namespace Server.Mobiles
                 int parent = 0;
                 int lchild;
                 int rchild;
-				
+
                 bool ltl, ltr, cltc;
 
                 do
@@ -687,8 +687,8 @@ namespace Server.Mobiles
         {
         }
 
-        public List<Vertex> Path 
-        { 
+        public List<Vertex> Path
+        {
             get
             {
                 return this.m_Path;
@@ -809,12 +809,12 @@ namespace Server.Mobiles
         public void StartGuiding(List<Vertex> path)
         {
             this.m_Path = path;
-			
+
             if (this.ControlMaster != null && this.m_Path != null && this.m_Path.Count > 0)
             {
                 if (this.m_Path.Count > 1)
                     this.m_Path.RemoveAt(this.m_Path.Count - 1);
-				
+
                 if (this.CurrentWayPoint == null)
                     this.CurrentWayPoint = new WayPoint();
 

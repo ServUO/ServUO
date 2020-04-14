@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class FleeAndFatigueQuest : BaseQuest
-    { 
+    {
         public FleeAndFatigueQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(RefreshPotion), "refresh potion", 10, 0xF0B));
-						
+
             this.AddReward(new BaseReward(typeof(AlchemistsSatchel), 1074282)); // Craftsman's Satchel
         }
 
@@ -86,7 +86,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Sadrah()
             : base("Sadrah", "the courier")
-        { 
+        {
         }
 
         public Sadrah(Serial serial)
@@ -95,10 +95,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(FleeAndFatigueQuest)
                 };
@@ -107,11 +107,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.CantWalk = true;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x8406;
             this.HairItemID = 0x203D;
             this.HairHue = 0x901;
@@ -119,7 +119,7 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());			
+            this.AddItem(new Backpack());
             this.AddItem(new Longsword());
             this.AddItem(new Boots(0x901));
             this.AddItem(new Shirt(0x127));
@@ -149,7 +149,7 @@ namespace Server.Engines.Quests
             : base()
         {
             this.Hue = BaseReward.SatchelHue();
-			
+
             this.AddItem(new Bloodmoss(10));
             this.AddItem(new MortarPestle());
         }

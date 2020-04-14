@@ -1,14 +1,14 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Aeluva : MondainQuester
-    { 
+    {
         [Constructable]
         public Aeluva()
             : base("Aeluva", "the arcanist")
-        { 
+        {
             this.SetSkill(SkillName.Meditation, 60.0, 83.0);
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -28,10 +28,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x8835;
             this.HairItemID = 0x2FD0;
             this.HairHue = 0x387;

@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -38,7 +37,7 @@ namespace Server.Mobiles
 
             this.Fame = 2000;
             this.Karma = -2000;
-			
+
             this.PackItem(new SpidersSilk(2));
         }
 

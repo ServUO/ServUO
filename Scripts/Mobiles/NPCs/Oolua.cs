@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class PixieDustToDustQuest : BaseQuest
-    { 
+    {
         public PixieDustToDustQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Pixie), "pixies", 10));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -64,11 +64,11 @@ namespace Server.Engines.Quests
     }
 
     public class Oolua : MondainQuester
-    { 
+    {
         [Constructable]
         public Oolua()
             : base("Lorekeeper Oolua", "the keeper of tradition")
-        { 
+        {
         }
 
         public Oolua(Serial serial)
@@ -77,10 +77,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(ParoxysmusSuccubiQuest),
                     typeof(ParoxysmusMolochQuest),
@@ -97,11 +97,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.CantWalk = true;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x853F;
             this.HairItemID = 0x2FCC;
             this.HairHue = 0x388;

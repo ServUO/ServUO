@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -95,13 +94,13 @@ namespace Server.Mobiles
         {
             this.AddLoot(LootPack.FilthyRich);
         }
-      
-        public override void OnDeath( Container c )
-        {
-			base.OnDeath( c );
 
-			if ( Utility.RandomDouble() < 0.4 )
-			c.DropItem( new ProtectorsEssence() );
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (Utility.RandomDouble() < 0.4)
+                c.DropItem(new ProtectorsEssence());
         }
 
         public override void Serialize(GenericWriter writer)

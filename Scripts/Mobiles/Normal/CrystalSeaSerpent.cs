@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -31,26 +30,26 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Energy, 60, 80);
         }
 
-        public override void OnDeath( Container c )
+        public override void OnDeath(Container c)
         {
-        base.OnDeath( c );
+            base.OnDeath(c);
 
-            if ( Utility.RandomDouble() < 0.05 )
-            c.DropItem( new CrushedCrystals() );
+            if (Utility.RandomDouble() < 0.05)
+                c.DropItem(new CrushedCrystals());
 
-            if ( Utility.RandomDouble() < 0.1 )
-            c.DropItem( new IcyHeart() );
+            if (Utility.RandomDouble() < 0.1)
+                c.DropItem(new IcyHeart());
 
-            if ( Utility.RandomDouble() < 0.1 )
-            c.DropItem( new LuckyDagger() );
+            if (Utility.RandomDouble() < 0.1)
+                c.DropItem(new LuckyDagger());
         }
 
         public override int TreasureMapLevel { get { return 3; } }
-        public override int Meat{ get{ return 10; } }
-        public override int Hides{ get{ return 11; } }
-        public override HideType HideType{ get{ return HideType.Horned; } }
-        public override int Scales{ get{ return 8; } }
-        public override ScaleType ScaleType{ get{ return ScaleType.Blue; } } 
+        public override int Meat { get { return 10; } }
+        public override int Hides { get { return 11; } }
+        public override HideType HideType { get { return HideType.Horned; } }
+        public override int Scales { get { return 8; } }
+        public override ScaleType ScaleType { get { return ScaleType.Blue; } }
 
         public CrystalSeaSerpent(Serial serial)
             : base(serial)

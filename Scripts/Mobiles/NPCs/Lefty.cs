@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class WondersOfTheNaturalWorldQuest : BaseQuest
-    { 
+    {
         public WondersOfTheNaturalWorldQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(Gold), "gold coins", 10000, 0xEED));
-			
+
             this.AddReward(new BaseReward(typeof(PrismOfLightAdmissionTicket), 1074340)); // Prism of Light Admission Ticket
         }
 
@@ -74,11 +74,11 @@ namespace Server.Engines.Quests
     }
 
     public class Lefty : MondainQuester
-    { 
+    {
         [Constructable]
         public Lefty()
             : base("Lefty", "the ticket seller")
-        { 
+        {
         }
 
         public Lefty(Serial serial)
@@ -87,10 +87,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(WondersOfTheNaturalWorldQuest)
                 };
@@ -99,11 +99,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.CantWalk = true;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x83F4;
             this.HairItemID = 0x203B;
             this.HairHue = 0x470;

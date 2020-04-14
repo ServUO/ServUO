@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -50,7 +49,7 @@ namespace Server.Mobiles
         {
         }
 
-		public override int TreasureMapLevel
+        public override int TreasureMapLevel
         {
             get
             {

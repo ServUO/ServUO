@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class ProofOfTheDeedQuest : BaseQuest
-    { 
+    {
         public ProofOfTheDeedQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(SeveredHumanEars), "severed human ears", 20, 0x312F));
-			
+
             this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
@@ -75,7 +75,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Onallan()
             : base("Elder Onallan", "the wise")
-        { 
+        {
         }
 
         public Onallan(Serial serial)
@@ -84,10 +84,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(MaraudersQuest),
                     typeof(ProofOfTheDeedQuest)
@@ -97,11 +97,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Race = Race.Elf;
             this.Female = false;
             this.CantWalk = true;
-						
+
             this.Hue = this.Race.RandomSkinHue();
             this.HairItemID = 0x2FD0;
             this.HairHue = 0x322;

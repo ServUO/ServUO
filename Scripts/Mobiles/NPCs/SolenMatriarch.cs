@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Engines.Plants;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
+using System.Collections.Generic;
 
 namespace Server.Engines.Quests.Matriarch
 {
@@ -28,7 +27,7 @@ namespace Server.Engines.Quests.Matriarch
         }
 
         public override void CheckMorph()
-        {          
+        {
         }
 
         public abstract bool RedSolen { get; }

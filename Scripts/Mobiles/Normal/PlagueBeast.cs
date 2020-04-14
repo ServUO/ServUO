@@ -1,6 +1,6 @@
-using System;
 using Server.Items;
 using Server.Network;
+using System;
 
 namespace Server.Mobiles
 {
@@ -182,7 +182,7 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            switch( version )
+            switch (version)
             {
                 case 1:
                     {
@@ -250,7 +250,7 @@ namespace Server.Mobiles
 
             if (IsParagon)
                 maxhits = (int)(maxhits * Paragon.HitsBuff);
-            
+
             if (HitsMaxSeed >= maxhits)
             {
                 HitsMaxSeed = maxhits;

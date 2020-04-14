@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -167,7 +167,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Potions);
         }
 
-		public override void OnDeath(Container c)
+        public override void OnDeath(Container c)
         {
             base.OnDeath(c);
 
