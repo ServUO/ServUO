@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Server.Items.Holiday
+﻿namespace Server.Items.Holiday
 {
     public class PaintedEvilClownMask : BasePaintedMask
     {

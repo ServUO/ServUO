@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class StrippedFlakeFish : BaseFish
-    { 
+    {
         [Constructable]
         public StrippedFlakeFish()
             : base(0x3B0A)
@@ -12,7 +10,7 @@ namespace Server.Items
 
         public StrippedFlakeFish(Serial serial)
             : base(serial)
-        { 
+        {
         }
 
         public override int LabelNumber

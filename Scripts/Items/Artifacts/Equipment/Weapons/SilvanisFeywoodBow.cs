@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class SilvanisFeywoodBow : ElvenCompositeLongbow
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public SilvanisFeywoodBow()
         {

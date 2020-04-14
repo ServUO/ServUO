@@ -1,6 +1,3 @@
-using System;
-using Server.Gumps;
-
 namespace Server.Items
 {
     public class CrystalBrazierAddon : BaseAddon
@@ -38,7 +35,7 @@ namespace Server.Items
         public override bool ExcludeDeedHue { get { return true; } }
 
         public override BaseAddon Addon { get { return new CrystalBrazierAddon(); } }
-        
+
         [Constructable]
         public CrystalBrazierDeed()
             : base()

@@ -1,4 +1,3 @@
-using System;
 using Server.Mobiles;
 
 namespace Server.Items
@@ -31,21 +30,21 @@ namespace Server.Items
 
             switch (ItemID)
             {
-                case 0x4694: 
-                    ItemID = 0x4691; 
+                case 0x4694:
+                    ItemID = 0x4691;
                     break;
-                case 0x4691: 
-                    ItemID = 0x4694; 
-                    douse = true; 
+                case 0x4691:
+                    ItemID = 0x4694;
+                    douse = true;
                     break;
-                case 0x4698: 
-                    ItemID = 0x4695; 
+                case 0x4698:
+                    ItemID = 0x4695;
                     break;
-                case 0x4695: 
-                    ItemID = 0x4698; 
-                    douse = true; 
+                case 0x4695:
+                    ItemID = 0x4698;
+                    douse = true;
                     break;
-                default: 
+                default:
                     return;
             }
             from.SendLocalizedMessage(douse ? 1113988 : 1113987); // You extinguish/light the Jack-O-Lantern

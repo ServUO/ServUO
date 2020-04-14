@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class NujelmHoneyFish : BaseFish
-    { 
+    {
         [Constructable]
         public NujelmHoneyFish()
             : base(0x3B06)
@@ -12,7 +10,7 @@ namespace Server.Items
 
         public NujelmHoneyFish(Serial serial)
             : base(serial)
-        { 
+        {
         }
 
         public override int LabelNumber

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class GargoyleShortTableAddon : BaseAddon
@@ -24,7 +22,7 @@ namespace Server.Items
 
         [Constructable]
         public GargoyleShortTableAddon()
-        { 
+        {
             this.AddComponent(new AddonComponent(0x4033), 0, 0, 0);
             this.AddComponent(new AddonComponent(0x4035), 0, 1, 0);
             this.AddComponent(new AddonComponent(0x4034), 1, 0, 0);

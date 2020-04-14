@@ -1,4 +1,3 @@
-using System;
 using Server.Gumps;
 using Server.Network;
 
@@ -6,8 +5,8 @@ namespace Server.Items
 {
     public class SpecialHairDye : Item
     {
-		public override int LabelNumber {get {return 1074402;} } // Special Hair Dye
-		
+        public override int LabelNumber { get { return 1074402; } } // Special Hair Dye
+
         [Constructable]
         public SpecialHairDye()
             : base(0xE26)
@@ -20,7 +19,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -101,7 +100,7 @@ namespace Server.Items
             Mobile m = from.Mobile;
             int[] switches = info.Switches;
 
-            if (!this.m_SpecialHairDye.IsChildOf(m.Backpack)) 
+            if (!this.m_SpecialHairDye.IsChildOf(m.Backpack))
             {
                 m.SendLocalizedMessage(1042010); //You must have the objectin your backpack to use it.
                 return;
@@ -130,7 +129,7 @@ namespace Server.Items
                             int hue = e.HueStart + hueOffset;
 
                             m.HairHue = hue;
-							
+
                             m.SendLocalizedMessage(501199);  // You dye your hair
                             m.PlaySound(0x4E);
                         }

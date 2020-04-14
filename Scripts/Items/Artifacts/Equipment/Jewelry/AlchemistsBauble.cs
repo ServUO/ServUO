@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class AlchemistsBauble : GoldBracelet
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public AlchemistsBauble()
         {

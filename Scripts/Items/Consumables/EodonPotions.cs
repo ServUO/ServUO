@@ -1,6 +1,4 @@
-using Server;
 using System;
-using Server.Mobiles;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -137,17 +135,17 @@ namespace Server.Items
             switch (this.PotionEffect)
             {
                 case PotionEffect.Barrab:
-                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.BarrabHemolymphConcentrate, LabelNumber, 1156738,"100\t10\t10\t5")); break;
+                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.BarrabHemolymphConcentrate, LabelNumber, 1156738, "100\t10\t10\t5")); break;
                 case PotionEffect.Jukari:
-                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.JukariBurnPoiltice, LabelNumber, 1156739,"10\t10\t10\t5")); break;
+                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.JukariBurnPoiltice, LabelNumber, 1156739, "10\t10\t10\t5")); break;
                 case PotionEffect.Kurak:
-                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.KurakAmbushersEssence, LabelNumber, 1156740,"200")); break;
+                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.KurakAmbushersEssence, LabelNumber, 1156740, "200")); break;
                 case PotionEffect.Barako:
-                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.BarakoDraftOfMight, LabelNumber, 1156741,"10\t10\t5\t10")); break;
+                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.BarakoDraftOfMight, LabelNumber, 1156741, "10\t10\t5\t10")); break;
                 case PotionEffect.Urali:
-                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.UraliTranceTonic, LabelNumber, 1156742,"10\t10\t10\t5")); break;
+                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.UraliTranceTonic, LabelNumber, 1156742, "10\t10\t10\t5")); break;
                 case PotionEffect.Sakkhra:
-                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.SakkhraProphylaxis, LabelNumber, 1156743,"10\t10\t5\t10")); break;
+                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.SakkhraProphylaxis, LabelNumber, 1156743, "10\t10\t5\t10")); break;
             }
         }
 
@@ -231,13 +229,13 @@ namespace Server.Items
         }
 
         public static void EndTimer()
-		{
-			if(Timer != null)
-			{
+        {
+            if (Timer != null)
+            {
                 Timer.Stop();
-				Timer = null;
-			}
-		}
+                Timer = null;
+            }
+        }
 
         public static void OnTick()
         {
@@ -302,7 +300,7 @@ namespace Server.Items
         public BarrabHemolymphConcentrate(int amount)
             : base(3846, PotionEffect.Barrab)
         {
-			Hue = 1272;
+            Hue = 1272;
             Stackable = true;
             Amount = amount;
         }
@@ -372,20 +370,20 @@ namespace Server.Items
         public JukariBurnPoiltice(int amount)
             : base(3846, PotionEffect.Jukari)
         {
-			Hue = 2727;
+            Hue = 2727;
             Stackable = true;
             Amount = amount;
         }
 
         public override void DoEffects(Mobile m)
-		{
-			base.DoEffects(m);
-			
-			ResistanceMod mod = new ResistanceMod(ResistanceType.Fire, 10);
-			m.AddResistanceMod(mod);
-			
-			Timer.DelayCall(TimeSpan.FromMinutes(10), () => m.RemoveResistanceMod(mod));
-		}
+        {
+            base.DoEffects(m);
+
+            ResistanceMod mod = new ResistanceMod(ResistanceType.Fire, 10);
+            m.AddResistanceMod(mod);
+
+            Timer.DelayCall(TimeSpan.FromMinutes(10), () => m.RemoveResistanceMod(mod));
+        }
 
         public static int GetStamBuff(Mobile m)
         {
@@ -426,7 +424,7 @@ namespace Server.Items
         public KurakAmbushersEssence(int amount)
             : base(3846, PotionEffect.Kurak)
         {
-			Hue = 1260;
+            Hue = 1260;
             Stackable = true;
             Amount = amount;
         }
@@ -458,25 +456,25 @@ namespace Server.Items
         public BarakoDraftOfMight(int amount)
             : base(3846, PotionEffect.Barako)
         {
-			Hue = 1072;
+            Hue = 1072;
             Stackable = true;
             Amount = amount;
         }
 
         public override void DoEffects(Mobile m)
-		{
-			base.DoEffects(m);
+        {
+            base.DoEffects(m);
 
-			ResistanceMod mod1 = new ResistanceMod(ResistanceType.Physical, 10);
-			m.AddResistanceMod(mod1);
-			
-			Timer.DelayCall(TimeSpan.FromMinutes(10), () => m.RemoveResistanceMod(mod1));
-			
-			ResistanceMod mod2 = new ResistanceMod(ResistanceType.Cold, 5);
-			m.AddResistanceMod(mod1);
-			
-			Timer.DelayCall(TimeSpan.FromMinutes(10), () => m.RemoveResistanceMod(mod2));
-		}
+            ResistanceMod mod1 = new ResistanceMod(ResistanceType.Physical, 10);
+            m.AddResistanceMod(mod1);
+
+            Timer.DelayCall(TimeSpan.FromMinutes(10), () => m.RemoveResistanceMod(mod1));
+
+            ResistanceMod mod2 = new ResistanceMod(ResistanceType.Cold, 5);
+            m.AddResistanceMod(mod1);
+
+            Timer.DelayCall(TimeSpan.FromMinutes(10), () => m.RemoveResistanceMod(mod2));
+        }
 
         public BarakoDraftOfMight(Serial serial)
             : base(serial)
@@ -505,7 +503,7 @@ namespace Server.Items
         public UraliTranceTonic(int amount)
             : base(3846, PotionEffect.Urali)
         {
-			Hue = 1098;
+            Hue = 1098;
             Stackable = true;
             Amount = amount;
         }
@@ -565,25 +563,25 @@ namespace Server.Items
         public SakkhraProphylaxisPotion(int amount)
             : base(3846, PotionEffect.Sakkhra)
         {
-			Hue = 2531;
+            Hue = 2531;
             Stackable = true;
             Amount = amount;
         }
 
         public override void DoEffects(Mobile m)
-		{
-			base.DoEffects(m);
-			
-			ResistanceMod mod1 = new ResistanceMod(ResistanceType.Poison, 10);
-			m.AddResistanceMod(mod1);
-			
-			Timer.DelayCall(TimeSpan.FromMinutes(10), () => m.RemoveResistanceMod(mod1));
-			
-			ResistanceMod mod2 = new ResistanceMod(ResistanceType.Energy, 5);
-			m.AddResistanceMod(mod2);
-			
-			Timer.DelayCall(TimeSpan.FromMinutes(10), () => m.RemoveResistanceMod(mod2));
-		}
+        {
+            base.DoEffects(m);
+
+            ResistanceMod mod1 = new ResistanceMod(ResistanceType.Poison, 10);
+            m.AddResistanceMod(mod1);
+
+            Timer.DelayCall(TimeSpan.FromMinutes(10), () => m.RemoveResistanceMod(mod1));
+
+            ResistanceMod mod2 = new ResistanceMod(ResistanceType.Energy, 5);
+            m.AddResistanceMod(mod2);
+
+            Timer.DelayCall(TimeSpan.FromMinutes(10), () => m.RemoveResistanceMod(mod2));
+        }
 
         public SakkhraProphylaxisPotion(Serial serial)
             : base(serial)
@@ -653,10 +651,10 @@ namespace Server.Items
         public LavaBerry(int amount)
             : base(22326)
         {
-			Hue = 1955;
+            Hue = 1955;
             Stackable = true;
-			Weight = 1.0;
-			Amount = amount;
+            Weight = 1.0;
+            Amount = amount;
         }
 
         public LavaBerry(Serial serial)
@@ -686,9 +684,9 @@ namespace Server.Items
         public LavaBerryBush()
             : base(Utility.RandomBool() ? 0xDC4 : 0xDC5)
         {
-			Hue = 2075;
+            Hue = 2075;
             Movable = false;
-			Weight = 0.0;
+            Weight = 0.0;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -734,7 +732,7 @@ namespace Server.Items
         public PerfectBanana(int amount)
             : base(5922)
         {
-			Hue = 1119;
+            Hue = 1119;
             Stackable = true;
             Amount = amount;
         }
@@ -756,8 +754,8 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
-	
-	public class RiverMossDecorate : Item
+
+    public class RiverMossDecorate : Item
     {
         // TODO: Harvested near Urali Village
         public override int LabelNumber { get { return 1156731; } } // River Moss
@@ -766,9 +764,9 @@ namespace Server.Items
         public RiverMossDecorate()
             : base(3378)
         {
-			Hue = 1272;
+            Hue = 1272;
             Movable = false;
-			Weight = 0.0;
+            Weight = 0.0;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -815,7 +813,7 @@ namespace Server.Items
         public RiverMoss(int amount)
             : base(22333)
         {
-			Hue = 1272;
+            Hue = 1272;
             Stackable = true;
             Amount = amount;
         }

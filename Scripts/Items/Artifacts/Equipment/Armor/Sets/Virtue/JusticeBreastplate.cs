@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x2B08, 0x2B09)]
     public class JusticeBreastplate : BaseArmor
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public JusticeBreastplate()
             : base(0x2B08)
@@ -14,9 +12,9 @@ namespace Server.Items
             Weight = 7.0;
             SetHue = 0;
             Hue = 0x226;
-			
+
             SetSelfRepair = 5;
-			
+
             SetPhysicalBonus = 5;
             SetFireBonus = 5;
             SetColdBonus = 5;
@@ -121,7 +119,7 @@ namespace Server.Items
 
         public override void Deserialize(GenericReader reader)
         {
-            base.Deserialize(reader);	
+            base.Deserialize(reader);
             int version = reader.ReadInt();
         }
     }

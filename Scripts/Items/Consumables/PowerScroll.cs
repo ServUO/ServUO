@@ -127,7 +127,7 @@ namespace Server.Items
             {
                 skillName = Skills[Utility.Random(Skills.Count)];
             }
-            while (skillName == SkillName.Blacksmith || skillName == SkillName.Tailoring  || skillName == SkillName.Imbuing);
+            while (skillName == SkillName.Blacksmith || skillName == SkillName.Tailoring || skillName == SkillName.Imbuing);
 
             return new PowerScroll(skillName, 100 + (Utility.RandomMinMax(min, max) * 5));
         }

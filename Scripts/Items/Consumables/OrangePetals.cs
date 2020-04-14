@@ -1,6 +1,6 @@
+using Server.Network;
 using System;
 using System.Collections;
-using Server.Network;
 
 namespace Server.Items
 {
@@ -57,8 +57,8 @@ namespace Server.Items
             return (GetContext(m) != null);
         }
 
-        public override bool CheckItemUse(Mobile from, Item item) 
-        { 
+        public override bool CheckItemUse(Mobile from, Item item)
+        {
             if (item != this)
                 return base.CheckItemUse(from, item);
 
@@ -86,7 +86,7 @@ namespace Server.Items
 
             Timer timer = new OrangePetalsTimer(from);
             timer.Start();
-            
+
             BuffInfo.AddBuff(from, new BuffInfo(BuffIcon.OrangePetals, 1153785, 1153814, TimeSpan.FromMinutes(5.0), from));
 
             AddContext(from, new OrangePetalsContext(timer));

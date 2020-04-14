@@ -1,4 +1,3 @@
-using System;
 using Server.Gumps;
 using Server.Network;
 
@@ -40,7 +39,7 @@ namespace Server.Items
         [Constructable]
         public SilverSaplingReplicaDeed()
             : base(0x14F0)
-        { 
+        {
             LootType = LootType.Blessed;
         }
 
@@ -48,7 +47,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack))

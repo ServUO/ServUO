@@ -1,5 +1,4 @@
-﻿using Server;
-using Server.Mobiles;
+﻿using Server.Mobiles;
 using Server.Targeting;
 
 namespace Server.Items
@@ -13,7 +12,7 @@ namespace Server.Items
         }
 
         public override int LabelNumber { get { return 1112762; } } // elixir of rebirth
-        
+
         public override void OnDoubleClick(Mobile from)
         {
             if (!IsChildOf(from.Backpack))
@@ -24,7 +23,7 @@ namespace Server.Items
                 from.SendLocalizedMessage(1112763); // Which pet do you wish to revive?
             }
         }
-        
+
         private class ResurrectTarget : Target
         {
             private readonly ElixirOfRebirth m_Potion;
@@ -39,7 +38,7 @@ namespace Server.Items
             protected override void OnTarget(Mobile from, object targeted)
             {
                 if (m_Potion.Deleted)
-                    return;                
+                    return;
 
                 if (!m_Potion.IsChildOf(from.Backpack))
                 {

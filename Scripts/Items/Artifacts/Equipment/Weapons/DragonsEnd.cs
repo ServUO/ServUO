@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class DragonsEnd : Longsword
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DragonsEnd()
             : base()

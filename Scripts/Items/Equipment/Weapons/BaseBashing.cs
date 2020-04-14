@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public abstract class BaseBashing : BaseMeleeWeapon
@@ -39,7 +37,7 @@ namespace Server.Items
         {
             base.OnHit(attacker, defender, damageBonus);
 
-            if(defender is Mobile)
+            if (defender is Mobile)
                 ((Mobile)defender).Stam -= Utility.Random(3, 5); // 3-5 points of stamina loss
         }
     }

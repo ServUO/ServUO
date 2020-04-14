@@ -1,6 +1,6 @@
+using Server.Mobiles;
 using System;
 using System.Collections;
-using Server.Mobiles;
 
 namespace Server.Engines.Quests.Collector
 {

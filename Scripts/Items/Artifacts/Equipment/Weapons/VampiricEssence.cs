@@ -1,17 +1,15 @@
-using System;
-
 namespace Server.Items
 {
     public class VampiricEssence : Cutlass
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113873; } } // Vampiric Essence
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113873; } } // Vampiric Essence
+
         [Constructable]
         public VampiricEssence()
         {
             Hue = 39;
-            WeaponAttributes.HitLeechHits = 100;			
+            WeaponAttributes.HitLeechHits = 100;
             WeaponAttributes.HitHarm = 50;
             Attributes.WeaponSpeed = 20;
             Attributes.WeaponDamage = 50;

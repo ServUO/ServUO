@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.VeteranRewards;
 using Server.Gumps;
 using Server.Multis;
@@ -6,7 +5,7 @@ using Server.Network;
 using Server.Targeting;
 
 namespace Server.Items
-{ 
+{
     public class DecorativeShield : Item, IAddon, IRewardItem
     {
         private bool m_IsRewardItem;
@@ -19,7 +18,7 @@ namespace Server.Items
         [Constructable]
         public DecorativeShield(int itemID)
             : base(itemID)
-        { 
+        {
             this.Movable = false;
         }
 
@@ -31,9 +30,9 @@ namespace Server.Items
         public override bool ForceShowProperties { get { return true; } }
 
         public Item Deed
-        { 
+        {
             get
-            { 
+            {
                 DecorativeShieldDeed deed = new DecorativeShieldDeed();
                 deed.IsRewardItem = this.m_IsRewardItem;
 
@@ -59,14 +58,14 @@ namespace Server.Items
             {
                 if (this.ItemID < 0x1582)
                     return (this.ItemID & 0x1) == 0;
-				
-                return this.ItemID <= 0x1585; 
+
+                return this.ItemID <= 0x1585;
             }
         }
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             if (this.m_IsRewardItem)
                 list.Add(1076220); // 4th Year Veteran Reward
         }
@@ -80,8 +79,8 @@ namespace Server.Items
         {
             if (from.InRange(this.Location, 2))
             {
-                BaseHouse house = BaseHouse.FindHouseAt(this);  
-				
+                BaseHouse house = BaseHouse.FindHouseAt(this);
+
                 if (house != null && house.IsOwner(from))
                 {
                     from.CloseGump(typeof(RewardDemolitionGump));
@@ -99,7 +98,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.WriteEncodedInt(0); // version
-			
+
             writer.Write((bool)this.m_IsRewardItem);
         }
 
@@ -108,15 +107,15 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             this.m_IsRewardItem = reader.ReadBool();
         }
 
         public bool CouldFit(IPoint3D p, Map map)
-        { 
+        {
             if (map == null || !map.CanFit(p.X, p.Y, p.Z, this.ItemData.Height))
                 return false;
-				
+
             if (this.FacingSouth)
                 return BaseAddon.IsWall(p.X, p.Y - 1, p.Z, map); // north wall
             else
@@ -130,7 +129,7 @@ namespace Server.Items
         [Constructable]
         public DecorativeShieldDeed()
             : base(0x14F0)
-        { 
+        {
             this.LootType = LootType.Blessed;
             this.Weight = 1.0;
         }
@@ -162,7 +161,7 @@ namespace Server.Items
         }
         public static int GetWestItemID(int east)
         {
-            switch ( east )
+            switch (east)
             {
                 case 0x1582:
                     return 0x1635;
@@ -180,16 +179,16 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             if (this.m_IsRewardItem)
                 list.Add(1076220); // 4th Year Veteran Reward
         }
 
         public override void OnDoubleClick(Mobile from)
-        { 
+        {
             if (this.m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, null))
                 return;
-		
+
             if (this.IsChildOf(from.Backpack))
             {
                 from.CloseGump(typeof(InternalGump));
@@ -204,7 +203,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.WriteEncodedInt(0); // version
-			
+
             writer.Write((bool)this.m_IsRewardItem);
         }
 
@@ -213,7 +212,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             this.m_IsRewardItem = reader.ReadBool();
         }
 
@@ -233,12 +232,12 @@ namespace Server.Items
             {
                 this.m_Shield = shield;
                 this.m_Page = page;
-				
+
                 this.Closable = true;
                 this.Disposable = true;
                 this.Dragable = true;
                 this.Resizable = false;
-				
+
                 this.AddPage(0);
 
                 this.AddBackground(25, 0, 500, 230, 0xA28);
@@ -260,14 +259,14 @@ namespace Server.Items
                             itemID += 1;
                     }
 
-                    switch ( i )
+                    switch (i)
                     {
                         case 1:
                             this.AddButton(455, 198, 0x8B0, 0x8B0, 0, GumpButtonType.Page, 2);
                             break;
                         case 2:
                             this.AddButton(70, 198, 0x8AF, 0x8AF, 0, GumpButtonType.Page, 1);
-                            break;	
+                            break;
                     }
                 }
             }
@@ -275,10 +274,10 @@ namespace Server.Items
             public override void OnResponse(NetState sender, RelayInfo info)
             {
                 if (this.m_Shield == null || this.m_Shield.Deleted)
-                    return;		
-				
-                Mobile m = sender.Mobile;	
-			
+                    return;
+
+                Mobile m = sender.Mobile;
+
                 if (info.ButtonID >= Start && info.ButtonID <= End)
                 {
                     if ((info.ButtonID & 0x1) == 0 && info.ButtonID < 0x1582 || info.ButtonID >= 0x1582 && info.ButtonID <= 0x1585)
@@ -305,7 +304,7 @@ namespace Server.Items
             {
                 if (this.m_Shield == null || this.m_Shield.Deleted)
                     return;
-					
+
                 if (this.m_Shield.IsChildOf(from.Backpack))
                 {
                     BaseHouse house = BaseHouse.FindHouseAt(from);
@@ -314,22 +313,22 @@ namespace Server.Items
                     {
                         IPoint3D p = targeted as IPoint3D;
                         Map map = from.Map;
-						
+
                         if (p == null || map == null)
                             return;
-							
+
                         Point3D p3d = new Point3D(p);
                         ItemData id = TileData.ItemTable[this.m_ItemID & TileData.MaxItemValue];
-						
+
                         if (map.CanFit(p3d, id.Height))
                         {
                             house = BaseHouse.FindHouseAt(p3d, map, id.Height);
-							
+
                             if (house != null && house.IsOwner(from))
                             {
                                 bool north = BaseAddon.IsWall(p3d.X, p3d.Y - 1, p3d.Z, map);
                                 bool west = BaseAddon.IsWall(p3d.X - 1, p3d.Y, p3d.Z, map);
-															
+
                                 if (north && west)
                                 {
                                     from.CloseGump(typeof(FacingGump));
@@ -338,12 +337,12 @@ namespace Server.Items
                                 else if (north || west)
                                 {
                                     DecorativeShield shield = null;
-									
+
                                     if (north)
                                         shield = new DecorativeShield(this.m_ItemID);
                                     else if (west)
                                         shield = new DecorativeShield(GetWestItemID(this.m_ItemID));
-										
+
                                     house.Addons[shield] = from;
 
                                     shield.IsRewardItem = this.m_Shield.IsRewardItem;
@@ -380,7 +379,7 @@ namespace Server.Items
                     this.m_ItemID = itemID;
                     this.m_Location = location;
                     this.m_House = house;
-				
+
                     this.Closable = true;
                     this.Disposable = true;
                     this.Dragable = true;
@@ -388,11 +387,11 @@ namespace Server.Items
 
                     this.AddPage(0);
                     this.AddBackground(0, 0, 300, 150, 0xA28);
-					
+
                     this.AddItem(90, 30, GetWestItemID(itemID));
                     this.AddItem(180, 30, itemID);
 
-                    this.AddButton(50, 35, 0x867, 0x869, (int)Buttons.East, GumpButtonType.Reply, 0);					
+                    this.AddButton(50, 35, 0x867, 0x869, (int)Buttons.East, GumpButtonType.Reply, 0);
                     this.AddButton(145, 35, 0x867, 0x869, (int)Buttons.South, GumpButtonType.Reply, 0);
                 }
 
@@ -405,15 +404,15 @@ namespace Server.Items
                 public override void OnResponse(NetState sender, RelayInfo info)
                 {
                     if (this.m_Shield == null || this.m_Shield.Deleted || this.m_House == null)
-                        return;		
-					
-                    DecorativeShield shield = null;	
-				
+                        return;
+
+                    DecorativeShield shield = null;
+
                     if (info.ButtonID == (int)Buttons.East)
                         shield = new DecorativeShield(GetWestItemID(this.m_ItemID));
                     if (info.ButtonID == (int)Buttons.South)
                         shield = new DecorativeShield(this.m_ItemID);
-						
+
                     if (shield != null)
                     {
                         this.m_House.Addons[shield] = sender.Mobile;

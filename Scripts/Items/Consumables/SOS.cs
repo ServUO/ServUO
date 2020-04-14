@@ -1,5 +1,5 @@
-using System;
 using Server.Gumps;
+using System;
 
 namespace Server.Items
 {
@@ -143,7 +143,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 4:
                 case 3:
@@ -183,7 +183,7 @@ namespace Server.Items
             if (version < 4 && m_TargetMap == Map.Tokuno)
                 m_TargetMap = Map.Trammel;
         }
-		
+
         public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack))
@@ -281,7 +281,7 @@ namespace Server.Items
             return water;
         }
 
-        #if false
+#if false
 		private class MessageGump : Gump
 		{
 			public MessageGump( MessageEntry entry, Map map, Point3D loc ) : base( (640 - entry.Width) / 2, (480 - entry.Height) / 2 )
@@ -301,7 +301,7 @@ namespace Server.Items
 				AddHtml( 38, 38, entry.Width - 83, entry.Height - 86, String.Format( entry.Message, fmt ), false, false );
 			}
 		}
-        #else
+#else
         private class MessageGump : Gump
         {
             public MessageGump(MessageEntry entry, Map map, Point3D loc)
@@ -324,7 +324,7 @@ namespace Server.Items
                 AddHtmlLocalized(30, 50, 190, 420, entry.Message, fmt, 0, false, false);
             }
         }
-        #endif
+#endif
 
         private class MessageEntry
         {

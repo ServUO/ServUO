@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     public class ElixirofMetalConversion : Item
     {
-		public override int LabelNumber { get { return 1113011; } } // Elixir of Metal Conversion
-		
+        public override int LabelNumber { get { return 1113011; } } // Elixir of Metal Conversion
+
         [Constructable]
         public ElixirofMetalConversion()
             : base(0x99B)
@@ -18,24 +16,24 @@ namespace Server.Items
             : base(serial)
         {
         }
-       
+
         public override void OnDoubleClick(Mobile from)
         {
-			
+
             Container backpack = from.Backpack;
-            IronIngot item1 = (IronIngot)backpack.FindItemByType(typeof(IronIngot));   
-               
-            if (item1 != null)                
-            { 
+            IronIngot item1 = (IronIngot)backpack.FindItemByType(typeof(IronIngot));
+
+            if (item1 != null)
+            {
                 BaseIngot m_Ore1 = item1 as BaseIngot;
 
                 int toConsume = m_Ore1.Amount;
 
-                if ((m_Ore1.Amount > 499) && (m_Ore1.Amount < 501)) 
+                if ((m_Ore1.Amount > 499) && (m_Ore1.Amount < 501))
                 {
                     m_Ore1.Delete();
 
-                    switch ( Utility.Random(4) )
+                    switch (Utility.Random(4))
                     {
                         case 0:
                             from.AddToBackpack(new DullCopperIngot(500));

@@ -1,6 +1,6 @@
+using Server.Network;
 using System;
 using System.Collections.Generic;
-using Server.Network;
 
 namespace Server.Items
 {
@@ -111,7 +111,7 @@ namespace Server.Items
             if (board == null || !board.CheckRange(from))
                 return;
 
-            switch ( packetID )
+            switch (packetID)
             {
                 case 3:
                     BBRequestContent(from, board, pvSrc);
@@ -299,7 +299,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {
@@ -505,7 +505,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                 case 0:

@@ -1,9 +1,9 @@
 using System;
 
 namespace Server.Items
-{ 
+{
     public class SecretWall : Item
-    { 
+    {
         private Point3D m_PointDest;
         private Map m_MapDest;
         private bool m_Locked;
@@ -86,21 +86,21 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
-			
+
             writer.Write((Point3D)this.m_PointDest);
             writer.Write((Map)this.m_MapDest);
-            writer.Write((bool)this.m_Locked);	
-            writer.Write((bool)this.m_Active);						
+            writer.Write((bool)this.m_Locked);
+            writer.Write((bool)this.m_Active);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
-			
+
             this.m_PointDest = reader.ReadPoint3D();
             this.m_MapDest = reader.ReadMap();
             this.m_Locked = reader.ReadBool();
@@ -115,19 +115,19 @@ namespace Server.Items
         [Constructable]
         public SecretSwitch()
             : this(0x108F, null)
-        { 
+        {
         }
 
         [Constructable]
         public SecretSwitch(int itemID, SecretWall wall)
             : base(itemID)
-        { 
+        {
             this.m_Wall = wall;
         }
 
         public SecretSwitch(Serial serial)
             : base(serial)
-        { 
+        {
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -163,21 +163,21 @@ namespace Server.Items
                 else
                 {
                     this.ItemID += 1;
-					
+
                     Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(Lock));
                 }
-					
+
                 this.m_TurnedOn = !this.m_TurnedOn;
                 this.m_Wall.Locked = !this.m_Wall.Locked;
-				
+
                 if (Utility.RandomBool())
                 {
                     Effects.SendLocationParticles(EffectItem.Create(from.Location, from.Map, EffectItem.DefaultDuration), 0x36B0, 1, 14, 63, 7, 9915, 0);
                     Effects.PlaySound(from.Location, from.Map, 0x229);
-					
+
                     AOS.Damage(from, Utility.Random(4, 5), 0, 0, 0, 100, 0);
                 }
-				
+
                 from.SendLocalizedMessage(1072739); // You hear a click behind the wall.
                 from.PlaySound(0x3E5);
             }
@@ -189,18 +189,18 @@ namespace Server.Items
             {
                 if (this.m_TurnedOn)
                     this.ItemID -= 1;
-			
+
                 this.m_TurnedOn = false;
-                this.m_Wall.Locked = true;				
+                this.m_Wall.Locked = true;
             }
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
-			
+
             writer.Write((Item)this.m_Wall);
             writer.Write((bool)this.m_TurnedOn);
         }
@@ -208,9 +208,9 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
-			
+
             this.m_Wall = reader.ReadItem() as SecretWall;
             this.m_TurnedOn = reader.ReadBool();
         }

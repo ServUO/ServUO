@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
+using Server.ContextMenus;
 using Server.Gumps;
+using Server.Mobiles;
 using Server.Multis;
 using Server.Prompts;
-using Server.Mobiles;
-using Server.ContextMenus;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using Server.Network;
 
 namespace Server.Items
 {
@@ -51,7 +50,7 @@ namespace Server.Items
 
     public class RecipeBook : Item, ISecurable
     {
-		public override int LabelNumber { get { return 1125598; } } // recipe book
+        public override int LabelNumber { get { return 1125598; } } // recipe book
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string BookName { get; set; }
@@ -230,7 +229,7 @@ namespace Server.Items
             LootType = LootType.Blessed;
             LoadDefinitions();
             Filter = new RecipeScrollFilter();
-            Level = SecureLevel.CoOwners;            
+            Level = SecureLevel.CoOwners;
         }
 
         public void LoadDefinitions()
@@ -240,7 +239,7 @@ namespace Server.Items
             Definitions.ToList().ForEach(x =>
             {
                 Recipes.Add(x);
-            });            
+            });
         }
 
         public void ReLoadDefinitions()
@@ -296,8 +295,8 @@ namespace Server.Items
                 }
             }
         }
-		
-		public override void OnDoubleClickSecureTrade(Mobile from)
+
+        public override void OnDoubleClickSecureTrade(Mobile from)
         {
             if (!from.InRange(GetWorldLocation(), 2))
             {
@@ -425,16 +424,16 @@ namespace Server.Items
 
                     break;
             }
-            
-            if(version == 0)
+
+            if (version == 0)
                 LootType = LootType.Blessed;
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
-			list.Add(1158849, String.Format("{0}", Recipes.Sum(x => x.Amount))); // Recipes in book: ~1_val~
+
+            list.Add(1158849, String.Format("{0}", Recipes.Sum(x => x.Amount))); // Recipes in book: ~1_val~
 
             if (BookName != null && BookName.Length > 0)
                 list.Add(1062481, BookName);

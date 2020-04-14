@@ -1,14 +1,12 @@
-using System;
-
 namespace Server.Items
 {
     public class BasiliskHideBreastplate : DragonChest
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1115444; } } // Basilisk Hide Breastplate
 
         [Constructable]
-        public BasiliskHideBreastplate() 
+        public BasiliskHideBreastplate()
         {
             Resource = CraftResource.None;
             Hue = 1366;

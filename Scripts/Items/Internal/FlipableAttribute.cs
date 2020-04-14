@@ -1,7 +1,7 @@
-using System;
-using System.Reflection;
 using Server.Commands;
 using Server.Targeting;
+using System;
+using System.Reflection;
 
 namespace Server.Items
 {

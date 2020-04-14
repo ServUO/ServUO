@@ -1,6 +1,3 @@
-using System;
-using Server.Gumps;
-
 namespace Server.Items
 {
     public class GreenGoblinStatuette : MonsterStatuette
@@ -131,14 +128,14 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch(version)
+            switch (version)
             {
                 case 1:
                     User = reader.ReadMobile();
                     break;
             }
 
-            if(User != null)
+            if (User != null)
             {
                 TurnOn(User);
             }

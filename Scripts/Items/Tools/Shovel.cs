@@ -1,12 +1,11 @@
-using System;
 using Server.Engines.Harvest;
 
 namespace Server.Items
 {
     public class Shovel : BaseHarvestTool
     {
-		public override HarvestSystem HarvestSystem { get { return Mining.System; } }
-		
+        public override HarvestSystem HarvestSystem { get { return Mining.System; } }
+
         [Constructable]
         public Shovel()
             : this(50)
@@ -24,7 +23,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

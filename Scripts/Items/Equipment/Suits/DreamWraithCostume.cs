@@ -1,19 +1,16 @@
-using System;
-using Server;
-
 namespace Server.Items
 {
-	public class DreamWraithCostume : BaseCostume
-	{
+    public class DreamWraithCostume : BaseCostume
+    {
         public override string CreatureName { get { return "dream wraith"; } }
 
         [Constructable]
-		public DreamWraithCostume() : base( )
-		{
+        public DreamWraithCostume() : base()
+        {
             this.CostumeBody = 740;
-		}
-		
-		public override int LabelNumber
+        }
+
+        public override int LabelNumber
         {
             get
             {
@@ -21,22 +18,22 @@ namespace Server.Items
             }
         }// dream wraith halloween costume
 
-		public DreamWraithCostume( Serial serial ) : base( serial )
-		{
-		}
+        public DreamWraithCostume(Serial serial) : base(serial)
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write( (int) 0 );
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize( reader );
+            writer.Write((int)0);
+        }
 
-			int version = reader.ReadInt();
-		}
-	}
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
 }

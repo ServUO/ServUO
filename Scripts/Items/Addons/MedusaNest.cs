@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class MedusaSNestAddon : BaseAddon
@@ -12,7 +10,7 @@ namespace Server.Items
             ,
             { 7065, 1, -1, 0 }, { 7054, 0, 1, 0 }, { 7054, 0, -1, 0 }// 7	8	9	
         };
-        [ Constructable ]
+        [Constructable]
         public MedusaSNestAddon()
         {
             for (int i = 0; i < m_AddOnSimpleComponents.Length / 4; i++)
@@ -70,7 +68,7 @@ namespace Server.Items
             writer.Write(0); // Version
         }
 
-        public override void	Deserialize(GenericReader reader)
+        public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();

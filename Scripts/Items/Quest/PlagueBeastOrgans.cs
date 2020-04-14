@@ -1,6 +1,6 @@
+using Server.Network;
 using System;
 using System.Collections.Generic;
-using Server.Network;
 
 namespace Server.Items
 {
@@ -174,7 +174,7 @@ namespace Server.Items
 
             if (this.Owner != null)
                 this.Owner.PlaySound(0x187);
-			
+
             this.AddComponent(new PlagueBeastComponent(0x1D0D, 0x0), 22, 3);
             this.AddComponent(new PlagueBeastComponent(0x1D12, 0x0), 15, 18);
             this.AddComponent(new PlagueBeastComponent(0x1DA3, 0x21), 26, 46);
@@ -572,7 +572,7 @@ namespace Server.Items
                         return true;
                     }
                 }
-				
+
                 if (this.m_Brains == 4)
                     this.FinishOpening(from);
 

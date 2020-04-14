@@ -1,8 +1,8 @@
-using System;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Spells;
 using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -121,7 +121,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {
@@ -255,7 +255,7 @@ namespace Server.Items
 
             if (spawn is Kraken && 0.35 < Utility.RandomDouble())
                 spawn.PackItem(new MessageInABottle(map == Map.Felucca ? Map.Felucca : Map.Trammel));
-            
+
         }
 
         protected virtual void FinishEffect(Point3D p, Map map, Mobile from)
@@ -268,7 +268,7 @@ namespace Server.Items
             {
                 BaseCreature spawn;
 
-                switch ( Utility.Random(4) )
+                switch (Utility.Random(4))
                 {
                     default:
                     case 0:
@@ -354,7 +354,7 @@ namespace Server.Items
                     {
                         int x, y;
 
-                        switch ( Utility.Random(8) )
+                        switch (Utility.Random(8))
                         {
                             default:
                             case 0:

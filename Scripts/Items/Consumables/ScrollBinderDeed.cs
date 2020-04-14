@@ -1,8 +1,6 @@
-using Server;
-using System;
-using Server.Targeting;
 using Server.Gumps;
 using Server.Network;
+using Server.Targeting;
 
 namespace Server.Items
 {
@@ -130,7 +128,7 @@ namespace Server.Items
                                 from.SendLocalizedMessage(1113144); // This scroll is already the highest of its type and cannot be bound.
                                 return;
                             }
-                            
+
                             double value = ps.Value;
                             int needed = 0;
 
@@ -188,7 +186,7 @@ namespace Server.Items
                             {
                                 from.SendLocalizedMessage(1113144); //This scroll is already the highest of its type and cannot be bound.
                                 return;
-                            }                                
+                            }
 
                             Skill = sot.Skill;
                             BinderType = BinderType.SOT;

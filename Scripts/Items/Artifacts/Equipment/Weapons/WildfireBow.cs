@@ -1,19 +1,17 @@
-using System;
-
 namespace Server.Items
 {
     public class WildfireBow : ElvenCompositeLongbow
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public WildfireBow()
             : base()
         {
-            Hue = 1161;		
+            Hue = 1161;
             SkillBonuses.SetValues(0, SkillName.Archery, 10);
-            WeaponAttributes.ResistFireBonus = 25;			
-            Velocity = 15;			
+            WeaponAttributes.ResistFireBonus = 25;
+            Velocity = 15;
         }
 
         public WildfireBow(Serial serial)

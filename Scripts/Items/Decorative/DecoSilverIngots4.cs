@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class DecoSilverIngots4 : Item

@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class Glenda : Club
-	{
+    {
         public override int LabelNumber { get { return 1157346; } } // glenda
         public override bool IsArtifact { get { return true; } }
 

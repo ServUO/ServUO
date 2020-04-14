@@ -1,7 +1,7 @@
-using System;
 using Server.Engines.Craft;
 using Server.Multis;
 using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -9,7 +9,7 @@ namespace Server.Items
     public abstract class BaseAddonContainerDeed : Item, ICraftable
     {
         public abstract BaseAddonContainer Addon { get; }
-		
+
         private CraftResource m_Resource;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -25,7 +25,7 @@ namespace Server.Items
                 {
                     m_Resource = value;
                     Hue = CraftResources.GetHue(this.m_Resource);
-					
+
                     InvalidateProperties();
                 }
             }
@@ -58,7 +58,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     m_Resource = (CraftResource)reader.ReadInt();
@@ -149,7 +149,7 @@ namespace Server.Items
                     if (res == AddonFitResult.Valid)
                     {
                         this.m_Deed.Delete();
-                        house.Addons[addon] = from;                        
+                        house.Addons[addon] = from;
 
                         if (addon is GardenShedAddon)
                         {

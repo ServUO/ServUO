@@ -1,13 +1,11 @@
-using System;
-
 namespace Server.Items
 {
     [Flipable(0x4B9D, 0x4B9E)]
     public class AnniversaryRobe : BaseOuterTorso
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1153496; } } // 15th Anniversary Commemorative Robe
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1153496; } } // 15th Anniversary Commemorative Robe
+
         [Constructable]
         public AnniversaryRobe() : this(0x455)
         {

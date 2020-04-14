@@ -1,9 +1,7 @@
-using System;
-using Server;
-using Server.Gumps;
-using Server.Engines;
-using Server.Multis;
 using Server.Commands;
+using Server.Gumps;
+using Server.Multis;
+using System;
 
 namespace Server.Items
 {
@@ -82,7 +80,7 @@ namespace Server.Items
             }
             if (!(item is ChickenLizardEgg))
             {
-                m.SendMessage("This will only accept chicken eggs."); 
+                m.SendMessage("This will only accept chicken eggs.");
                 return false;
             }
 

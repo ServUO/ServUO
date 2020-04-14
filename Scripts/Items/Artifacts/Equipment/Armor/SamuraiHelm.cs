@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x236C, 0x236D)]
     public class SamuraiHelm : BaseArmor
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public SamuraiHelm()
             : base(0x236C)

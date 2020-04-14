@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     public abstract class BaseEarrings : BaseJewel
     {
-		public override int BaseGemTypeNumber { get { return 1044203; } }// star sapphire earrings
-		
+        public override int BaseGemTypeNumber { get { return 1044203; } }// star sapphire earrings
+
         public BaseEarrings(int itemID)
             : base(itemID, Layer.Earrings)
         {
@@ -15,7 +13,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-       
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

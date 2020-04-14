@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class GargishStoneKilt : BaseArmor

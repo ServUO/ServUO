@@ -1,16 +1,14 @@
-﻿using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class RoyalGuardInvestigatorsCloak : Cloak
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalGuardInvestigatorsCloak()
             : base()
-        { 
-            Hue = 1163;       
-            SkillBonuses.SetValues(0, SkillName.Stealth, 20.0);        
+        {
+            Hue = 1163;
+            SkillBonuses.SetValues(0, SkillName.Stealth, 20.0);
         }
 
         public RoyalGuardInvestigatorsCloak(Serial serial)

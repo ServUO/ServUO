@@ -1,22 +1,22 @@
-using System;
 using Server.Mobiles;
 using Server.Network;
+using System;
 
 namespace Server.Items
 {
     public class PlagueBeastMutationCore : Item, IScissorable
     {
         private bool m_Cut;
-		
-		public override int LabelNumber { get { return 1153760; } } // a plague beast mutation core
-		
+
+        public override int LabelNumber { get { return 1153760; } } // a plague beast mutation core
+
         [Constructable]
         public PlagueBeastMutationCore()
             : base(0x1CF0)
-        {                     
+        {
             Weight = 1.0;
             Hue = 0x480;
-			m_Cut = true; 
+            m_Cut = true;
         }
 
         public PlagueBeastMutationCore(Serial serial)

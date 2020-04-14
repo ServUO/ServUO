@@ -1,8 +1,6 @@
-using System;
-
 namespace Server.Items
 {
-    [FlipableAttribute(0x155E, 0x155F, 0x155C, 0x155D)] 
+    [FlipableAttribute(0x155E, 0x155F, 0x155C, 0x155D)]
     public class DecorativeBowWest : Item
     {
         [Constructable]
@@ -32,7 +30,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x155C, 0x155D, 0x155E, 0x155F)] 
+    [FlipableAttribute(0x155C, 0x155D, 0x155E, 0x155F)]
     public class DecorativeBowNorth : Item
     {
         [Constructable]
@@ -62,7 +60,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1560, 0x1561, 0x1562, 0x1563)] 
+    [FlipableAttribute(0x1560, 0x1561, 0x1562, 0x1563)]
     public class DecorativeAxeNorth : Item
     {
         [Constructable]
@@ -92,7 +90,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1562, 0x1563, 0x1560, 0x1561)] 
+    [FlipableAttribute(0x1562, 0x1563, 0x1560, 0x1561)]
     public class DecorativeAxeWest : Item
     {
         [Constructable]
@@ -253,7 +251,7 @@ namespace Server.Items
         public override void OnLocationChange(Point3D oldLocation)
         {
             if (this.m_Item != null)
-                this.m_Item.Location = new Point3D(this.X , this.Y - 1 , this.Z);
+                this.m_Item.Location = new Point3D(this.X, this.Y - 1, this.Z);
         }
 
         public override void OnMapChange()
@@ -307,7 +305,7 @@ namespace Server.Items
             public override void OnLocationChange(Point3D oldLocation)
             {
                 if (this.m_Item != null)
-                    this.m_Item.Location = new Point3D(this.X , this.Y + 1, this.Z);
+                    this.m_Item.Location = new Point3D(this.X, this.Y + 1, this.Z);
             }
 
             public override void OnMapChange()
@@ -475,7 +473,7 @@ namespace Server.Items
         public override void OnLocationChange(Point3D oldLocation)
         {
             if (this.m_Item != null)
-                this.m_Item.Location = new Point3D(this.X , this.Y - 1 , this.Z);
+                this.m_Item.Location = new Point3D(this.X, this.Y - 1, this.Z);
         }
 
         public override void OnMapChange()
@@ -529,7 +527,7 @@ namespace Server.Items
             public override void OnLocationChange(Point3D oldLocation)
             {
                 if (this.m_Item != null)
-                    this.m_Item.Location = new Point3D(this.X , this.Y + 1, this.Z);
+                    this.m_Item.Location = new Point3D(this.X, this.Y + 1, this.Z);
             }
 
             public override void OnMapChange()

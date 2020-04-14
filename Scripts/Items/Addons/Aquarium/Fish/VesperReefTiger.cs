@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class VesperReefTiger : BaseFish
-    { 
+    {
         [Constructable]
         public VesperReefTiger()
             : base(0x3B08)
@@ -12,7 +10,7 @@ namespace Server.Items
 
         public VesperReefTiger(Serial serial)
             : base(serial)
-        { 
+        {
         }
 
         public override int LabelNumber

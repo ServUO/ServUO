@@ -1,4 +1,3 @@
-using System;
 using Server.Gumps;
 using Server.Network;
 
@@ -107,7 +106,7 @@ namespace Server.Items
             Mobile m = from.Mobile;
             int[] switches = info.Switches;
 
-            if (!m_HairDye.IsChildOf(m.Backpack)) 
+            if (!m_HairDye.IsChildOf(m.Backpack))
             {
                 m.SendLocalizedMessage(1042010); //You must have the objectin your backpack to use it.
                 return;

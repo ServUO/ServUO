@@ -1,8 +1,7 @@
-using System;
-using Server.Network;
+using Server.Engines.Craft;
 using Server.Prompts;
 using Server.Targeting;
-using Server.Engines.Craft;
+using System;
 
 namespace Server.Items
 {
@@ -226,7 +225,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 3:
                     {

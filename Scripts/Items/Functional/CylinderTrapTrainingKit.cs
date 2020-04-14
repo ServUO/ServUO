@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-
-using Server;
 using Server.SkillHandlers;
 
 namespace Server.Items

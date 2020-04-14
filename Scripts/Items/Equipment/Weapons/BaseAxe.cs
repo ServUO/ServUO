@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Engines.Harvest;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -62,7 +61,7 @@ namespace Server.Items
             base.GetContextMenuEntries(from, list);
 
             if (HarvestSystem == null)
-            	return;
+                return;
 
             BaseHarvestTool.AddContextMenuEntries(from, this, list, HarvestSystem);
         }

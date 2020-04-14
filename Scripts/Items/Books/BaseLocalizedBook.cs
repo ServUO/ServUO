@@ -1,8 +1,5 @@
-using System;
-using Server.Multis;
 using Server.Gumps;
-using Server.ContextMenus;
-using System.Collections.Generic;
+using System;
 
 namespace Server.Items
 {
@@ -51,7 +48,7 @@ namespace Server.Items
 
                 page++;
                 AddPage(page);
-                
+
                 if (book.Title is int)
                     AddHtmlLocalized(Page1X, 60, Width, 48, (int)book.Title, false, false);
                 else if (book.Title is string)

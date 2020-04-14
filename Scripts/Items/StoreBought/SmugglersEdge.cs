@@ -1,8 +1,6 @@
-using System;
-using Server;
-using Server.Mobiles;
-using Server.Engines.CreatureStealing;
 using Server.Engines.Craft;
+using Server.Engines.CreatureStealing;
+using Server.Mobiles;
 
 namespace Server.Items
 {

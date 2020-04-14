@@ -1,10 +1,10 @@
-using System;
 using Server.Gumps;
-using Server.Prompts;
 using Server.Mobiles;
+using Server.Prompts;
+using Server.Spells.Chivalry;
 using Server.Spells.Fourth;
 using Server.Spells.Seventh;
-using Server.Spells.Chivalry;
+using System;
 
 namespace Server.Items
 {
@@ -300,7 +300,7 @@ namespace Server.Items
                                 Atlas.Openers.Remove(User);
                             }
                             break;
-                        }                        
+                        }
                     case 3:
                         {
                             if (entry != null)
@@ -440,7 +440,7 @@ namespace Server.Items
 
         private void RecallSpell()
         {
-            RunebookEntry e = Atlas.Entries[Selected];            
+            RunebookEntry e = Atlas.Entries[Selected];
 
             if (RunebookGump.HasSpell(User, 31))
             {

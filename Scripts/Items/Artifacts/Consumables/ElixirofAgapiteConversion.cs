@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     public class ElixirofAgapiteConversion : Item
     {
-		public override int LabelNumber { get { return 1113008; } } // Elixir of Agapite Conversion
-		
+        public override int LabelNumber { get { return 1113008; } } // Elixir of Agapite Conversion
+
         [Constructable]
         public ElixirofAgapiteConversion()
             : base(0x99B)
@@ -18,24 +16,24 @@ namespace Server.Items
             : base(serial)
         {
         }
-       
+
         public override void OnDoubleClick(Mobile from)
         {
-			
+
             Container backpack = from.Backpack;
-            ShadowIronIngot item1 = (ShadowIronIngot)backpack.FindItemByType(typeof(ShadowIronIngot));   
-     
-            if (item1 != null)                
-            { 
+            ShadowIronIngot item1 = (ShadowIronIngot)backpack.FindItemByType(typeof(ShadowIronIngot));
+
+            if (item1 != null)
+            {
                 BaseIngot m_Ore1 = item1 as BaseIngot;
 
                 int toConsume = m_Ore1.Amount;
 
-                if ((m_Ore1.Amount > 499) && (m_Ore1.Amount < 501)) 
+                if ((m_Ore1.Amount > 499) && (m_Ore1.Amount < 501))
                 {
                     m_Ore1.Delete();
-					from.SendLocalizedMessage(1113048); // You've successfully converted the metal.                   
-                    from.AddToBackpack(new AgapiteIngot(500)); 
+                    from.SendLocalizedMessage(1113048); // You've successfully converted the metal.                   
+                    from.AddToBackpack(new AgapiteIngot(500));
                     this.Delete();
                 }
                 else if ((m_Ore1.Amount < 500) || (m_Ore1.Amount > 500))
@@ -45,7 +43,7 @@ namespace Server.Items
             }
             else
             {
-				from.SendLocalizedMessage(1078618); // The item must be in your backpack to be exchanged.
+                from.SendLocalizedMessage(1078618); // The item must be in your backpack to be exchanged.
             }
         }
 

@@ -1,5 +1,5 @@
-using System;
 using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -11,7 +11,7 @@ namespace Server.Items
         private int m_Hue = -1;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Duration { get; set; }        
+        public int Duration { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string CostumeCreatureName { get; set; }

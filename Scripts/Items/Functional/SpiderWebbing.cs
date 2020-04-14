@@ -1,6 +1,5 @@
-using System;
-using Server;
 using Server.Mobiles;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Items
@@ -12,7 +11,7 @@ namespace Server.Items
 
         public SpiderWebbing(Mobile m)
             : base(0xEE3 + Utility.Random(4))
-        {            
+        {
             Movable = false;
 
             BeginWebbing(m);
@@ -27,9 +26,9 @@ namespace Server.Items
         }
 
         public void BeginWebbing(Mobile m)
-        {            
+        {
             m.RevealingAction();
-            m.Frozen = true;            
+            m.Frozen = true;
             m.SendLocalizedMessage(1113247); // You are wrapped in spider webbing and cannot move!
             m_WebVictims.Add(m);
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Webbing, 1153789, 1153825));

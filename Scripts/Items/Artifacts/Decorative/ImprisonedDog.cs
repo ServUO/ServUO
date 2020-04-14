@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
@@ -35,23 +35,23 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }
 }
 
 namespace Server.Mobiles
-{ 
+{
     public class TravestyDog : Dog
-    { 
+    {
         private string m_Name;
         private DateTime m_NextAttempt;
         [Constructable]
@@ -59,7 +59,7 @@ namespace Server.Mobiles
             : base()
         {
             this.Hue = 2301;
-		
+
             this.m_Name = null;
             this.m_NextAttempt = DateTime.UtcNow;
         }
@@ -86,26 +86,26 @@ namespace Server.Mobiles
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             list.Add(1049646); // (summoned)
         }
 
         public void DeleteItems()
-        { 
-            for (int i = this.Items.Count - 1; i >= 0; i --)
+        {
+            for (int i = this.Items.Count - 1; i >= 0; i--)
                 if (this.Items[i] is ClonedItem)
                     this.Items[i].Delete();
         }
 
         public void BeginMorph(Mobile to)
-        { 
+        {
             if (to == null || !this.Alive || this.Morphed)
                 return;
-				
+
             this.m_Name = this.Name;
-		
-            this.Body = to.Body; 
-            this.Hue = to.Hue; 
+
+            this.Body = to.Body;
+            this.Hue = to.Hue;
             this.Name = to.Name;
             this.Female = to.Female;
             this.Title = to.Title;
@@ -113,25 +113,25 @@ namespace Server.Mobiles
             this.HairHue = to.HairHue;
             this.FacialHairItemID = to.FacialHairItemID;
             this.FacialHairHue = to.FacialHairHue;
-			  				
-            for (int i = to.Items.Count - 1; i >= 0; i --)
+
+            for (int i = to.Items.Count - 1; i >= 0; i--)
             {
                 Item item = to.Items[i];
-			
+
                 if (item.Layer != Layer.Backpack && item.Layer != Layer.Mount)
                     this.AddItem(new ClonedItem(item));
             }
-			
+
             this.PlaySound(0x511);
             this.FixedParticles(0x376A, 1, 14, 5045, EffectLayer.Waist);
-			
+
             Timer.DelayCall(TimeSpan.FromSeconds(60), new TimerCallback(EndMorph));
         }
 
         public void EndMorph()
-        { 
+        {
             this.DeleteItems();
-			
+
             this.Body = 0xD9;
             this.Hue = 2301;
             this.Name = this.m_Name;
@@ -141,9 +141,9 @@ namespace Server.Mobiles
             this.HairHue = 0;
             this.FacialHairItemID = 0;
             this.FacialHairHue = 0;
-			
+
             this.m_Name = null;
-			
+
             this.PlaySound(0x511);
             this.FixedParticles(0x376A, 1, 14, 5045, EffectLayer.Waist);
         }
@@ -151,23 +151,23 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
-			
+
             writer.Write((string)this.m_Name);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
-			
+
             this.m_Name = reader.ReadString();
             this.m_NextAttempt = DateTime.UtcNow;
-			
+
             if (this.Morphed)
-                this.EndMorph();				
+                this.EndMorph();
         }
 
         protected override bool OnMove(Direction d)
@@ -184,15 +184,15 @@ namespace Server.Mobiles
                     }
                 }
                 eable.Free();
-				
+
                 this.m_NextAttempt = DateTime.UtcNow + TimeSpan.FromSeconds(90);
             }
-		
+
             return base.OnMove(d);
         }
 
         private class ClonedItem : Item
-        { 
+        {
             public ClonedItem(Item item)
                 : base(item.ItemID)
             {
@@ -210,21 +210,21 @@ namespace Server.Mobiles
             public override DeathMoveResult OnParentDeath(Mobile parent)
             {
                 this.Delete();
-				
+
                 return DeathMoveResult.RemainEquiped;
             }
 
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-				
+
                 writer.Write((int)0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-				
+
                 int version = reader.ReadInt();
             }
         }

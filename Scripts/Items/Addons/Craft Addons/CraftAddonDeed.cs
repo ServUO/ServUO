@@ -1,11 +1,3 @@
-using System;
-using Server;
-using Server.Engines.Craft;
-using System.Collections.Generic;
-using Server.Multis;
-using Server.Mobiles;
-using System.Linq;
-
 namespace Server.Items
 {
     public abstract class CraftAddonDeed : BaseAddonDeed

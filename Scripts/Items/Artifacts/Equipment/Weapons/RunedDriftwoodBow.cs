@@ -1,11 +1,8 @@
-﻿using Server;
-using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class RunedDriftwoodBow : Bow
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1149961; } }
 
         public override int InitMinHits { get { return 255; } }

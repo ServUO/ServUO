@@ -1,12 +1,10 @@
-using System;
-
 namespace Server.Items
 {
     public class AbyssalBlade : StoneWarSword
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113520; } } // Abyssal Blade
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113520; } } // Abyssal Blade
+
         [Constructable]
         public AbyssalBlade()
         {
@@ -40,7 +38,7 @@ namespace Server.Items
                 return 255;
             }
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

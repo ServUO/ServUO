@@ -1,6 +1,6 @@
-using System;
 using Server.Gumps;
 using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -24,7 +24,7 @@ namespace Server.Items
             if (this.m_Aquarium.Items.Count == 0)
                 return;
 
-            for (int i = 1; i <= this.m_Aquarium.Items.Count; i ++)
+            for (int i = 1; i <= this.m_Aquarium.Items.Count; i++)
                 this.DisplayPage(i, edit);
         }
 

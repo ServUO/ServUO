@@ -1,5 +1,5 @@
-using System;
 using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -77,7 +77,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     this.m_Picked = reader.ReadBool();

@@ -1,5 +1,5 @@
-using System;
 using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -52,14 +52,14 @@ namespace Server.Items
             else
             {
                 int MessageA = 0;
-				
+
                 if (this.m_LocMessageA == 0)
                     MessageA = 500357 + Utility.Random(5);
                 else
                     MessageA = this.m_LocMessageA;
-				
+
                 int MessageB = 0;
-				
+
                 if (this.m_LocMessageB == 0)
                     MessageB = 500357 + Utility.Random(5);
                 else
@@ -71,13 +71,13 @@ namespace Server.Items
                 500359 - You flip the lever and think you hear something, but realize it was just your imagination.
                 500360 - The lever flips without effort, doing nothing.
                 */
-					
+
                 if (this.ItemID == this.m_TurnOff && this.m_Used == false)
                 {
                     this.ItemID = this.m_TurnOn;
                     this.m_Used = true;
                     Effects.PlaySound(this.Location, this.Map, 0x3E8);
-					
+
                     m.LocalOverheadMessage(MessageType.Regular, 0, MessageA); //Message received when it is turned on by first time.
 
                     //This call to another method to do something special, so you don't need
@@ -86,9 +86,9 @@ namespace Server.Items
                     {
                         this.DoSomethingSpecial(m);
                     }
-					
+
                     //Refresh time of two minutes, equal to RunUO's RaiseSwith
-                    Timer.DelayCall(TimeSpan.FromMinutes(2.0), delegate()
+                    Timer.DelayCall(TimeSpan.FromMinutes(2.0), delegate ()
                     {
                         this.ItemID = this.m_TurnOff;
                         this.m_Used = false;

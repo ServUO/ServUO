@@ -1,18 +1,16 @@
-using System;
-
 namespace Server.Items
 {
     public class DeathsHead : DiscMace
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113526; } } // Death's Head
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113526; } } // Death's Head
+
         [Constructable]
-        public DeathsHead() 
-        {	
-            Hue = 1154;	
+        public DeathsHead()
+        {
+            Hue = 1154;
             WeaponAttributes.HitFatigue = 10;
-            WeaponAttributes.HitLightning = 45;	
+            WeaponAttributes.HitLightning = 45;
             WeaponAttributes.HitLowerDefend = 30;
             Attributes.WeaponSpeed = 20;
             Attributes.WeaponDamage = 45;
@@ -37,7 +35,7 @@ namespace Server.Items
                 return 255;
             }
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -1,11 +1,11 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
     public class StoneWallAndVineAddon : BaseAddon
     {
-        [ Constructable ]
+        [Constructable]
         public StoneWallAndVineAddon()
         {
             this.AddComponent(new MagicVinesComponent(), 1, 0, 0);
@@ -61,7 +61,7 @@ namespace Server.Items
             else
             {
                 this.Z += -22;
-                Timer.DelayCall(TimeSpan.FromSeconds(15.0), delegate()
+                Timer.DelayCall(TimeSpan.FromSeconds(15.0), delegate ()
                 {
                     this.Z += 22;
                 });

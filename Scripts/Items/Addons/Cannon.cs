@@ -1,9 +1,9 @@
-using System;
 using Server.Engines.Quests.Haven;
 using Server.Engines.VeteranRewards;
 using Server.Gumps;
 using Server.Network;
 using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -11,7 +11,7 @@ namespace Server.Items
     {
         public CannonAddonComponent(int itemID)
             : base(itemID)
-        { 
+        {
             this.LootType = LootType.Blessed;
         }
 
@@ -30,12 +30,12 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             if (this.Addon is CannonAddon)
             {
                 if (((CannonAddon)this.Addon).IsRewardItem)
                     list.Add(1076223); // 7th Year Veteran Reward
-					
+
                 list.Add(1076207, ((CannonAddon)this.Addon).Charges.ToString()); // Remaining Charges: ~1_val~
             }
         }
@@ -56,7 +56,7 @@ namespace Server.Items
     }
 
     public class CannonAddon : BaseAddon
-    { 
+    {
         private static readonly int[] m_Effects = new int[]
         {
             0x36B0, 0x3728, 0x3709, 0x36FE
@@ -69,7 +69,7 @@ namespace Server.Items
         {
             this.m_CannonDirection = direction;
 
-            switch ( direction )
+            switch (direction)
             {
                 case CannonDirection.North:
                     {
@@ -119,30 +119,30 @@ namespace Server.Items
                 deed.Charges = this.m_Charges;
                 deed.IsRewardItem = this.m_IsRewardItem;
 
-                return deed; 
+                return deed;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public CannonDirection CannonDirection
-        { 
+        {
             get
             {
                 return this.m_CannonDirection;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Charges 
-        { 
+        public int Charges
+        {
             get
             {
                 return this.m_Charges;
             }
             set
-            { 
-                this.m_Charges = value; 
-				
+            {
+                this.m_Charges = value;
+
                 foreach (AddonComponent c in this.Components)
-                    c.InvalidateProperties(); 
+                    c.InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -153,11 +153,11 @@ namespace Server.Items
                 return this.m_IsRewardItem;
             }
             set
-            { 
-                this.m_IsRewardItem = value; 
-				
+            {
+                this.m_IsRewardItem = value;
+
                 foreach (AddonComponent c in this.Components)
-                    c.InvalidateProperties(); 
+                    c.InvalidateProperties();
             }
         }
         public override void OnComponentUsed(AddonComponent c, Mobile from)
@@ -173,7 +173,7 @@ namespace Server.Items
                     if (from.Backpack != null)
                     {
                         PotionKeg keg = from.Backpack.FindItemByType(typeof(PotionKeg)) as PotionKeg;
-						
+
                         if (this.Validate(keg) > 0)
                             from.SendGump(new InternalGump(this, keg));
                         else
@@ -196,14 +196,14 @@ namespace Server.Items
                 else if (keg.Type == PotionEffect.ExplosionGreater)
                     return 15;
             }
-			
+
             return 0;
         }
 
         public void Fill(Mobile from, PotionKeg keg)
         {
             this.Charges = this.Validate(keg);
-			
+
             if (this.Charges > 0)
             {
                 keg.Delete();
@@ -216,20 +216,20 @@ namespace Server.Items
         public void DoFireEffect(IPoint3D target)
         {
             Map map = this.Map;
-			
+
             if (target == null || map == null)
                 return;
-				
+
             Effects.PlaySound(target, map, Utility.RandomList(0x11B, 0x11C, 0x11D));
             Effects.SendLocationEffect(target, map, Utility.RandomList(m_Effects), 16, 1);
-						
+
             for (int count = Utility.Random(3); count > 0; count--)
-            { 
+            {
                 IPoint3D location = new Point3D(target.X + Utility.RandomMinMax(-1, 1), target.Y + Utility.RandomMinMax(-1, 1), target.Z);
                 int effect = Utility.RandomList(m_Effects);
                 Effects.SendLocationEffect(location, map, effect, 16, 1);
             }
-			
+
             this.Charges -= 1;
         }
 
@@ -268,45 +268,45 @@ namespace Server.Items
             {
                 if (this.m_Cannon == null || this.m_Cannon.Deleted)
                     return;
-					
+
                 IPoint3D p = targeted as IPoint3D;
-			
+
                 if (p == null)
                     return;
-					
+
                 if (from.InLOS(new Point3D(p)))
                 {
                     if (!Utility.InRange(new Point3D(p), this.m_Cannon.Location, 2))
                     {
                         bool allow = false;
-					
+
                         int x = p.X - this.m_Cannon.X;
                         int y = p.Y - this.m_Cannon.Y;
-						
-                        switch ( this.m_Cannon.CannonDirection )
+
+                        switch (this.m_Cannon.CannonDirection)
                         {
                             case CannonDirection.North:
                                 if (y < 0 && Math.Abs(x) <= -y / 3)
                                     allow = true;
-								
+
                                 break;
                             case CannonDirection.East:
                                 if (x > 0 && Math.Abs(y) <= x / 3)
                                     allow = true;
-								
+
                                 break;
                             case CannonDirection.South:
                                 if (y > 0 && Math.Abs(x) <= y / 3)
                                     allow = true;
-									
+
                                 break;
                             case CannonDirection.West:
                                 if (x < 0 && Math.Abs(y) <= -x / 3)
                                     allow = true;
-								
+
                                 break;
                         }
-						
+
                         if (allow && Utility.InRange(new Point3D(p), this.m_Cannon.Location, 14))
                             this.m_Cannon.DoFireEffect(p);
                         else
@@ -334,22 +334,22 @@ namespace Server.Items
             {
                 this.m_Cannon = cannon;
                 this.m_Keg = keg;
-				
+
                 this.Closable = true;
                 this.Disposable = true;
                 this.Dragable = true;
                 this.Resizable = false;
 
                 this.AddPage(0);
-				
+
                 this.AddBackground(0, 0, 291, 133, 0x13BE);
                 this.AddImageTiled(5, 5, 280, 100, 0xA40);
-				
+
                 this.AddHtmlLocalized(9, 9, 272, 100, 1076196, cannon.Validate(keg).ToString(), 0x7FFF, false, false); // You will need a full keg of explosion potions to recharge the cannon.  Your keg will provide ~1_CHARGES~ charges.
-				
+
                 this.AddButton(5, 107, 0xFB1, 0xFB2, (int)Buttons.Cancel, GumpButtonType.Reply, 0);
                 this.AddHtmlLocalized(40, 109, 100, 20, 1060051, 0x7FFF, false, false); // CANCEL
-				
+
                 this.AddButton(160, 107, 0xFB7, 0xFB8, (int)Buttons.Recharge, GumpButtonType.Reply, 0);
                 this.AddHtmlLocalized(195, 109, 120, 20, 1076197, 0x7FFF, false, false); // Recharge
             }
@@ -360,10 +360,10 @@ namespace Server.Items
                 Recharge
             }
             public override void OnResponse(NetState state, RelayInfo info)
-            { 
+            {
                 if (this.m_Cannon == null || this.m_Cannon.Deleted)
                     return;
-					
+
                 if (info.ButtonID == (int)Buttons.Recharge)
                     this.m_Cannon.Fill(state.Mobile, this.m_Keg);
             }
@@ -378,7 +378,7 @@ namespace Server.Items
         [Constructable]
         public CannonDeed()
             : base()
-        { 
+        {
             this.LootType = LootType.Blessed;
         }
 
@@ -395,19 +395,19 @@ namespace Server.Items
             }
         }// A deed for a cannon
         public override BaseAddon Addon
-        { 
+        {
             get
             {
                 CannonAddon addon = new CannonAddon(this.m_Direction);
                 addon.Charges = this.m_Charges;
                 addon.IsRewardItem = this.m_IsRewardItem;
 
-                return addon; 
+                return addon;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Charges 
-        { 
+        public int Charges
+        {
             get
             {
                 return this.m_Charges;
@@ -433,19 +433,19 @@ namespace Server.Items
         }
         public override void GetProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);			
-			
+            base.GetProperties(list);
+
             if (this.m_IsRewardItem)
                 list.Add(1076223); // 7th Year Veteran Reward
-			
+
             list.Add(1076207, this.m_Charges.ToString()); // Remaining Charges: ~1_val~
         }
 
         public override void OnDoubleClick(Mobile from)
-        { 
+        {
             if (this.m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, null))
                 return;
-		
+
             if (this.IsChildOf(from.Backpack))
             {
                 from.CloseGump(typeof(RewardOptionGump));
@@ -460,7 +460,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.WriteEncodedInt(0); // version
-			
+
             writer.Write((int)this.m_Charges);
             writer.Write((bool)this.m_IsRewardItem);
         }
@@ -470,7 +470,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             this.m_Charges = reader.ReadInt();
             this.m_IsRewardItem = reader.ReadBool();
         }

@@ -1,16 +1,14 @@
-using System;
-
 namespace Server.Items
 {
     public class NecklaceofDiligence : SilverNecklace
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public NecklaceofDiligence()
         {
             Hue = 221;
             Attributes.RegenMana = 1;
-            Attributes.BonusInt = 5;	
+            Attributes.BonusInt = 5;
         }
 
         public NecklaceofDiligence(Serial serial)

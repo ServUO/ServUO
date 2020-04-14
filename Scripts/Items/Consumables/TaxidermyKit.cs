@@ -1,80 +1,76 @@
-using System;
-
-using Server;
-using Server.Multis;
 using Server.Mobiles;
-using Server.Targeting;
+using Server.Multis;
 using Server.Network;
-using Server.Items;
-using Server.Engines.HuntsmasterChallenge;
+using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
-	[FlipableAttribute( 0x1EBA, 0x1EBB )]
-	public class TaxidermyKit : Item
-	{
-		public override int LabelNumber{ get{ return 1041279; } } // a taxidermy kit
+    [FlipableAttribute(0x1EBA, 0x1EBB)]
+    public class TaxidermyKit : Item
+    {
+        public override int LabelNumber { get { return 1041279; } } // a taxidermy kit
 
-		[Constructable]
-		public TaxidermyKit() : base( 0x1EBA )
-		{
-			Weight = 1.0;
-		}
+        [Constructable]
+        public TaxidermyKit() : base(0x1EBA)
+        {
+            Weight = 1.0;
+        }
 
-		public TaxidermyKit( Serial serial ) : base( serial )
-		{
-		}
+        public TaxidermyKit(Serial serial) : base(serial)
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write( (int) 0 ); // version
-		}
+            writer.Write((int)0); // version
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadInt();
-		}
+            int version = reader.ReadInt();
+        }
 
-		public override void OnDoubleClick(Mobile from)
-		{
-			if ( !IsChildOf( from.Backpack ) )
-			{
-				from.SendLocalizedMessage( 1042001 ); // That must be in your pack for you to use it.
-			}
-			else if ( from.Skills[SkillName.Carpentry].Base < 90.0 )
-			{
-				from.SendLocalizedMessage( 1042594 ); // You do not understand how to use this.
-			}
-			else
-			{
-				from.SendLocalizedMessage( 1042595 ); // Target the corpse to make a trophy out of.
-				from.Target = new CorpseTarget( this );
-			}
-		}
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (!IsChildOf(from.Backpack))
+            {
+                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+            }
+            else if (from.Skills[SkillName.Carpentry].Base < 90.0)
+            {
+                from.SendLocalizedMessage(1042594); // You do not understand how to use this.
+            }
+            else
+            {
+                from.SendLocalizedMessage(1042595); // Target the corpse to make a trophy out of.
+                from.Target = new CorpseTarget(this);
+            }
+        }
 
         public static TrophyInfo[] TrophyInfos { get { return m_Table; } }
         private static TrophyInfo[] m_Table = new TrophyInfo[]
         {
-            new TrophyInfo( typeof( BrownBear ),	  0x1E60,		1041093, 1041107 ),
-			new TrophyInfo( typeof( GreatHart ),	  0x1E61,		1041095, 1041109 ),
-			new TrophyInfo( typeof( BigFish ),		  0x1E62,		1041096, 1041110 ),
-			new TrophyInfo( typeof( Gorilla ),		  0x1E63,		1041091, 1041105 ),
-			new TrophyInfo( typeof( Orc ),			  0x1E64,		1041090, 1041104 ),
-			new TrophyInfo( typeof( PolarBear ),	  0x1E65,		1041094, 1041108 ),
-			new TrophyInfo( typeof( Troll ),		  0x1E66,		1041092, 1041106 ),
-            new TrophyInfo( typeof( RedHerring ),     0x1E62,		1113567, 1113569 ),
-            new TrophyInfo( typeof( MudPuppy ),		  0x1E62,		1113568, 1113570 ),
+            new TrophyInfo( typeof( BrownBear ),      0x1E60,       1041093, 1041107 ),
+            new TrophyInfo( typeof( GreatHart ),      0x1E61,       1041095, 1041109 ),
+            new TrophyInfo( typeof( BigFish ),        0x1E62,       1041096, 1041110 ),
+            new TrophyInfo( typeof( Gorilla ),        0x1E63,       1041091, 1041105 ),
+            new TrophyInfo( typeof( Orc ),            0x1E64,       1041090, 1041104 ),
+            new TrophyInfo( typeof( PolarBear ),      0x1E65,       1041094, 1041108 ),
+            new TrophyInfo( typeof( Troll ),          0x1E66,       1041092, 1041106 ),
+            new TrophyInfo( typeof( RedHerring ),     0x1E62,       1113567, 1113569 ),
+            new TrophyInfo( typeof( MudPuppy ),       0x1E62,       1113568, 1113570 ),
 
             new TrophyInfo( typeof( AutumnDragonfish),     0,       1116124, 1116185 ),
             new TrophyInfo( typeof( BullFish ),            1,       1116129, 1116190 ),
             new TrophyInfo( typeof( FireFish ),            2,       1116127, 1116188 ),
             new TrophyInfo( typeof( GiantKoi ),            3,       1116122, 1116183 ),
             new TrophyInfo( typeof( LavaFish ),            4,       1116130, 1116191 ),
-            new TrophyInfo( typeof( SummerDragonfish ),    5,       1116124, 1116186 ),  
+            new TrophyInfo( typeof( SummerDragonfish ),    5,       1116124, 1116186 ),
             new TrophyInfo( typeof( UnicornFish ),         6,       1116120, 1116181 ),
             new TrophyInfo( typeof( AbyssalDragonfish ),   7,       1116140, 1116201 ),
             new TrophyInfo( typeof( BlackMarlin ),         8,       1116133, 1116194 ),
@@ -109,7 +105,7 @@ namespace Server.Items
 
         public class TrophyInfo
         {
-            public TrophyInfo( Type type, int id, int deedNum, int addonNum )
+            public TrophyInfo(Type type, int id, int deedNum, int addonNum)
             {
                 m_CreatureType = type;
                 m_NorthID = id;
@@ -129,35 +125,35 @@ namespace Server.Items
         }
 
 
-		private class CorpseTarget : Target
-		{
-			private TaxidermyKit m_Kit;
+        private class CorpseTarget : Target
+        {
+            private TaxidermyKit m_Kit;
 
-			public CorpseTarget( TaxidermyKit kit ) : base( 3, false, TargetFlags.None )
-			{
-				m_Kit = kit;
-			}
+            public CorpseTarget(TaxidermyKit kit) : base(3, false, TargetFlags.None)
+            {
+                m_Kit = kit;
+            }
 
-			protected override void OnTarget( Mobile from, object targeted )
-			{
-				if ( m_Kit.Deleted )
-					return;
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                if (m_Kit.Deleted)
+                    return;
 
-				if ( !(targeted is Corpse) && !(targeted is BigFish) && !(targeted is BaseHighseasFish) && !(targeted is HuntingPermit))
-				{
-					from.SendLocalizedMessage( 1042600 ); // That is not a corpse!
-				}
-				else if ( targeted is Corpse && ((Corpse)targeted).VisitedByTaxidermist )
-				{
-					from.SendLocalizedMessage( 1042596 ); // That corpse seems to have been visited by a taxidermist already.
-				}
-				else if ( !m_Kit.IsChildOf( from.Backpack ) )
-				{
-					from.SendLocalizedMessage( 1042001 ); // That must be in your pack for you to use it.
-				}
-				else if ( from.Skills[SkillName.Carpentry].Base < 90.0 )
-				{
-					from.SendLocalizedMessage( 1042603 ); // You would not understand how to use the kit.
+                if (!(targeted is Corpse) && !(targeted is BigFish) && !(targeted is BaseHighseasFish) && !(targeted is HuntingPermit))
+                {
+                    from.SendLocalizedMessage(1042600); // That is not a corpse!
+                }
+                else if (targeted is Corpse && ((Corpse)targeted).VisitedByTaxidermist)
+                {
+                    from.SendLocalizedMessage(1042596); // That corpse seems to have been visited by a taxidermist already.
+                }
+                else if (!m_Kit.IsChildOf(from.Backpack))
+                {
+                    from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+                }
+                else if (from.Skills[SkillName.Carpentry].Base < 90.0)
+                {
+                    from.SendLocalizedMessage(1042603); // You would not understand how to use the kit.
                 }
                 #region Huntmasters Challenge
                 else if (targeted is HuntingPermit)
@@ -200,30 +196,30 @@ namespace Server.Items
                 }
                 #endregion
                 else
-				{
-					object obj = targeted;
+                {
+                    object obj = targeted;
 
-					if ( obj is Corpse )
-						obj = ((Corpse)obj).Owner;
+                    if (obj is Corpse)
+                        obj = ((Corpse)obj).Owner;
 
-                    if ( obj != null )
+                    if (obj != null)
                     {
-                        for ( int i = 0; i < m_Table.Length; i++ )
+                        for (int i = 0; i < m_Table.Length; i++)
                         {
-                            if ( m_Table[i].CreatureType == obj.GetType() )
+                            if (m_Table[i].CreatureType == obj.GetType())
                             {
                                 Container pack = from.Backpack;
 
-                                if ( pack != null && pack.ConsumeTotal( typeof( Board ), 10 ) )
+                                if (pack != null && pack.ConsumeTotal(typeof(Board), 10))
                                 {
-                                    from.SendLocalizedMessage( 1042278 ); // You review the corpse and find it worthy of a trophy.
-                                    from.SendLocalizedMessage( 1042602 ); // You use your kit up making the trophy.
+                                    from.SendLocalizedMessage(1042278); // You review the corpse and find it worthy of a trophy.
+                                    from.SendLocalizedMessage(1042602); // You use your kit up making the trophy.
 
                                     Mobile hunter = null;
                                     int weight = 0;
                                     DateTime dateCaught = DateTime.MinValue;
 
-                                    if ( targeted is BigFish )
+                                    if (targeted is BigFish)
                                     {
                                         BigFish fish = targeted as BigFish;
 
@@ -271,9 +267,9 @@ namespace Server.Items
                                         deed.DateCaught = dateCaught;
                                     }
 
-                                    from.AddToBackpack( new TrophyDeed( m_Table[i], hunter, weight ) );
+                                    from.AddToBackpack(new TrophyDeed(m_Table[i], hunter, weight));
 
-                                    if ( targeted is Corpse )
+                                    if (targeted is Corpse)
                                         ((Corpse)targeted).VisitedByTaxidermist = true;
 
                                     m_Kit.Delete();
@@ -281,144 +277,144 @@ namespace Server.Items
                                 }
                                 else
                                 {
-                                    from.SendLocalizedMessage( 1042598 ); // You do not have enough boards.
+                                    from.SendLocalizedMessage(1042598); // You do not have enough boards.
                                     return;
                                 }
                             }
                         }
                     }
 
-					from.SendLocalizedMessage( 1042599 ); // That does not look like something you want hanging on a wall.
-				}
-			}
-		}
-	}
+                    from.SendLocalizedMessage(1042599); // That does not look like something you want hanging on a wall.
+                }
+            }
+        }
+    }
 
-	public class TrophyAddon : Item, IAddon
-	{
+    public class TrophyAddon : Item, IAddon
+    {
         public override bool ForceShowProperties { get { return true; } }
 
         private int m_WestID;
-		private int m_NorthID;
-		private int m_DeedNumber;
-		private int m_AddonNumber;
+        private int m_NorthID;
+        private int m_DeedNumber;
+        private int m_AddonNumber;
 
-		private Mobile m_Hunter;
-		private int m_AnimalWeight;
+        private Mobile m_Hunter;
+        private int m_AnimalWeight;
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public int WestID{ get{ return m_WestID; } set{ m_WestID = value; } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int WestID { get { return m_WestID; } set { m_WestID = value; } }
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public int NorthID{ get{ return m_NorthID; } set{ m_NorthID = value; } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int NorthID { get { return m_NorthID; } set { m_NorthID = value; } }
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public int DeedNumber{ get{ return m_DeedNumber; } set{ m_DeedNumber = value; } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int DeedNumber { get { return m_DeedNumber; } set { m_DeedNumber = value; } }
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public int AddonNumber{ get{ return m_AddonNumber; } set{ m_AddonNumber = value; InvalidateProperties(); } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int AddonNumber { get { return m_AddonNumber; } set { m_AddonNumber = value; InvalidateProperties(); } }
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public Mobile Hunter{ get{ return m_Hunter; } set{ m_Hunter = value; InvalidateProperties(); } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Hunter { get { return m_Hunter; } set { m_Hunter = value; InvalidateProperties(); } }
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public int AnimalWeight{ get{ return m_AnimalWeight; } set{ m_AnimalWeight = value; InvalidateProperties(); } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int AnimalWeight { get { return m_AnimalWeight; } set { m_AnimalWeight = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime DateCaught { get; set; }
 
-		public override int LabelNumber{ get{ return m_AddonNumber; } }
+        public override int LabelNumber { get { return m_AddonNumber; } }
 
-		[Constructable]
-		public TrophyAddon( Mobile from, int itemID, int westID, int northID, int deedNumber, int addonNumber ) : this( from, itemID, westID, northID, deedNumber, addonNumber, null, 0, DateTime.MinValue )
-		{
-		}
+        [Constructable]
+        public TrophyAddon(Mobile from, int itemID, int westID, int northID, int deedNumber, int addonNumber) : this(from, itemID, westID, northID, deedNumber, addonNumber, null, 0, DateTime.MinValue)
+        {
+        }
 
-		public TrophyAddon( Mobile from, int itemID, int westID, int northID, int deedNumber, int addonNumber, Mobile hunter, int animalWeight, DateTime dateCaught ) : base( itemID )
-		{
-			m_WestID = westID;
-			m_NorthID = northID;
-			m_DeedNumber = deedNumber;
-			m_AddonNumber = addonNumber;
+        public TrophyAddon(Mobile from, int itemID, int westID, int northID, int deedNumber, int addonNumber, Mobile hunter, int animalWeight, DateTime dateCaught) : base(itemID)
+        {
+            m_WestID = westID;
+            m_NorthID = northID;
+            m_DeedNumber = deedNumber;
+            m_AddonNumber = addonNumber;
 
-			m_Hunter = hunter;
-			m_AnimalWeight = animalWeight;
+            m_Hunter = hunter;
+            m_AnimalWeight = animalWeight;
             DateCaught = dateCaught;
 
-			Movable = false;
+            Movable = false;
 
-			MoveToWorld( from.Location, from.Map );
-		}
+            MoveToWorld(from.Location, from.Map);
+        }
 
-		public override void GetProperties( ObjectPropertyList list )
-		{
-			base.GetProperties( list );
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
 
-			if ( m_AnimalWeight >= 20 )
-			{
-				if ( m_Hunter != null )
-					list.Add( 1070857, m_Hunter.Name ); // Caught by ~1_fisherman~
+            if (m_AnimalWeight >= 20)
+            {
+                if (m_Hunter != null)
+                    list.Add(1070857, m_Hunter.Name); // Caught by ~1_fisherman~
 
-				list.Add( 1070858, m_AnimalWeight.ToString() ); // ~1_weight~ stones
-			}
+                list.Add(1070858, m_AnimalWeight.ToString()); // ~1_weight~ stones
+            }
 
             if (DateCaught != DateTime.MinValue)
             {
                 list.Add(String.Format("[{0}]", DateCaught.ToShortDateString()));
             }
-		}
+        }
 
-		public override void OnAosSingleClick( Mobile from )
-		{
-			ObjectPropertyList opl = this.PropertyList;
+        public override void OnAosSingleClick(Mobile from)
+        {
+            ObjectPropertyList opl = this.PropertyList;
 
-			if(this.AddonNumber==1041110)
+            if (this.AddonNumber == 1041110)
             {
-				from.Send( new UnicodeMessage( this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", "A large fish trophy" ) ); 
+                from.Send(new UnicodeMessage(this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", "A large fish trophy"));
 
-				if(this.Hunter != null)
-					from.Send( new UnicodeMessage( this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", "Caught by "+this.Hunter.Name ) ); 
+                if (this.Hunter != null)
+                    from.Send(new UnicodeMessage(this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", "Caught by " + this.Hunter.Name));
 
-				from.Send( new UnicodeMessage( this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", this.AnimalWeight+" stones" ) );
-			} 
+                from.Send(new UnicodeMessage(this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", this.AnimalWeight + " stones"));
+            }
             else
             {
-				if ( opl.Header > 0 )
-					from.Send( new MessageLocalized( this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, opl.Header, this.Name, opl.HeaderArgs ) );
-			}
-		}
+                if (opl.Header > 0)
+                    from.Send(new MessageLocalized(this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, opl.Header, this.Name, opl.HeaderArgs));
+            }
+        }
 
-		public TrophyAddon( Serial serial ) : base( serial )
-		{
-		}
+        public TrophyAddon(Serial serial) : base(serial)
+        {
+        }
 
-		public bool CouldFit( IPoint3D p, Map map )
-		{
-			if ( !map.CanFit( p.X, p.Y, p.Z, this.ItemData.Height ) )
-				return false;
+        public bool CouldFit(IPoint3D p, Map map)
+        {
+            if (!map.CanFit(p.X, p.Y, p.Z, this.ItemData.Height))
+                return false;
 
-			if ( this.ItemID == m_NorthID )
-				return BaseAddon.IsWall( p.X, p.Y - 1, p.Z, map ); // North wall
-			else
-				return BaseAddon.IsWall( p.X - 1, p.Y, p.Z, map ); // West wall
-		}
+            if (this.ItemID == m_NorthID)
+                return BaseAddon.IsWall(p.X, p.Y - 1, p.Z, map); // North wall
+            else
+                return BaseAddon.IsWall(p.X - 1, p.Y, p.Z, map); // West wall
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write( (int) 2 ); // version
+            writer.Write((int)2); // version
 
             writer.Write(DateCaught);
 
-			writer.Write( (Mobile) m_Hunter );
-			writer.Write( (int) m_AnimalWeight );
+            writer.Write((Mobile)m_Hunter);
+            writer.Write((int)m_AnimalWeight);
 
-			writer.Write( (int) m_WestID );
-			writer.Write( (int) m_NorthID );
-			writer.Write( (int) m_DeedNumber );
-			writer.Write( (int) m_AddonNumber );
-		}
+            writer.Write((int)m_WestID);
+            writer.Write((int)m_NorthID);
+            writer.Write((int)m_DeedNumber);
+            writer.Write((int)m_AddonNumber);
+        }
 
         public override void Deserialize(GenericReader reader)
         {
@@ -452,153 +448,153 @@ namespace Server.Items
             Timer.DelayCall(TimeSpan.Zero, new TimerCallback(FixMovingCrate));
         }
 
-		private void FixMovingCrate()
-		{
-			if ( this.Deleted )
-				return;
+        private void FixMovingCrate()
+        {
+            if (this.Deleted)
+                return;
 
-			if ( this.Movable || this.IsLockedDown )
-			{
-				Item deed = this.Deed;
+            if (this.Movable || this.IsLockedDown)
+            {
+                Item deed = this.Deed;
 
-				if ( this.Parent is Item )
-				{
-					((Item)this.Parent).AddItem( deed );
-					deed.Location = this.Location;
-				}
-				else
-				{
-					deed.MoveToWorld( this.Location, this.Map );
-				}
+                if (this.Parent is Item)
+                {
+                    ((Item)this.Parent).AddItem(deed);
+                    deed.Location = this.Location;
+                }
+                else
+                {
+                    deed.MoveToWorld(this.Location, this.Map);
+                }
 
-				Delete();
-			}
-		}
+                Delete();
+            }
+        }
 
-		public Item Deed
-		{
-			get{ return new TrophyDeed( m_WestID, m_NorthID, m_DeedNumber, m_AddonNumber, m_Hunter, m_AnimalWeight, DateCaught ); }
-		}
+        public Item Deed
+        {
+            get { return new TrophyDeed(m_WestID, m_NorthID, m_DeedNumber, m_AddonNumber, m_Hunter, m_AnimalWeight, DateCaught); }
+        }
 
-		void IChopable.OnChop(Mobile user)
-		{
-			OnDoubleClick(user);
-		}
+        void IChopable.OnChop(Mobile user)
+        {
+            OnDoubleClick(user);
+        }
 
-		public override void OnDoubleClick( Mobile from )
-		{
-			BaseHouse house = BaseHouse.FindHouseAt( this );
+        public override void OnDoubleClick(Mobile from)
+        {
+            BaseHouse house = BaseHouse.FindHouseAt(this);
 
-			if ( house != null && house.IsCoOwner( from ) )
-			{
-				if ( from.InRange( GetWorldLocation(), 1 ) )
-				{
-					from.AddToBackpack( this.Deed );
-					Delete();
-				}
-				else
-				{
-					from.SendLocalizedMessage( 500295 ); // You are too far away to do that.
-				}
-			}
-		}
-	}
+            if (house != null && house.IsCoOwner(from))
+            {
+                if (from.InRange(GetWorldLocation(), 1))
+                {
+                    from.AddToBackpack(this.Deed);
+                    Delete();
+                }
+                else
+                {
+                    from.SendLocalizedMessage(500295); // You are too far away to do that.
+                }
+            }
+        }
+    }
 
-	[Flipable( 0x14F0, 0x14EF )]
-	public class TrophyDeed : Item
-	{
-		private int m_WestID;
-		private int m_NorthID;
-		private int m_DeedNumber;
-		private int m_AddonNumber;
+    [Flipable(0x14F0, 0x14EF)]
+    public class TrophyDeed : Item
+    {
+        private int m_WestID;
+        private int m_NorthID;
+        private int m_DeedNumber;
+        private int m_AddonNumber;
 
-		private Mobile m_Hunter;
-		private int m_AnimalWeight;
+        private Mobile m_Hunter;
+        private int m_AnimalWeight;
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public int WestID{ get{ return m_WestID; } set{ m_WestID = value; } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int WestID { get { return m_WestID; } set { m_WestID = value; } }
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public int NorthID{ get{ return m_NorthID; } set{ m_NorthID = value; } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int NorthID { get { return m_NorthID; } set { m_NorthID = value; } }
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public int DeedNumber{ get{ return m_DeedNumber; } set{ m_DeedNumber = value; InvalidateProperties(); } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int DeedNumber { get { return m_DeedNumber; } set { m_DeedNumber = value; InvalidateProperties(); } }
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public int AddonNumber{ get{ return m_AddonNumber; } set{ m_AddonNumber = value; } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int AddonNumber { get { return m_AddonNumber; } set { m_AddonNumber = value; } }
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public Mobile Hunter{ get{ return m_Hunter; } set{ m_Hunter = value; InvalidateProperties(); } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Hunter { get { return m_Hunter; } set { m_Hunter = value; InvalidateProperties(); } }
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public int AnimalWeight{ get{ return m_AnimalWeight; } set{ m_AnimalWeight = value; InvalidateProperties(); } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int AnimalWeight { get { return m_AnimalWeight; } set { m_AnimalWeight = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime DateCaught { get; set; }
 
-		public override int LabelNumber{ get{ return m_DeedNumber; } }
+        public override int LabelNumber { get { return m_DeedNumber; } }
 
-		[Constructable]
+        [Constructable]
         public TrophyDeed(int westID, int northID, int deedNumber, int addonNumber)
             : this(westID, northID, deedNumber, addonNumber, null, 0, DateTime.MinValue)
-		{
-		}
-
-		public TrophyDeed( int westID, int northID, int deedNumber, int addonNumber, Mobile hunter, int animalWeight, DateTime dateCaught ) : base( 0x14F0 )
-		{
-			m_WestID = westID;
-			m_NorthID = northID;
-			m_DeedNumber = deedNumber;
-			m_AddonNumber = addonNumber;
-			m_Hunter = hunter;
-			m_AnimalWeight = animalWeight;
-            DateCaught = dateCaught;
-		}
-
-        public TrophyDeed( TaxidermyKit.TrophyInfo info, Mobile hunter, int animalWeight )
-            : this( info.NorthID + 7, info.NorthID, info.DeedNumber, info.AddonNumber, hunter, animalWeight, DateTime.MinValue )
         {
         }
 
-		public TrophyDeed( Serial serial ) : base( serial )
-		{
-		}
+        public TrophyDeed(int westID, int northID, int deedNumber, int addonNumber, Mobile hunter, int animalWeight, DateTime dateCaught) : base(0x14F0)
+        {
+            m_WestID = westID;
+            m_NorthID = northID;
+            m_DeedNumber = deedNumber;
+            m_AddonNumber = addonNumber;
+            m_Hunter = hunter;
+            m_AnimalWeight = animalWeight;
+            DateCaught = dateCaught;
+        }
 
-		public override void GetProperties( ObjectPropertyList list )
-		{
-			base.GetProperties( list );
+        public TrophyDeed(TaxidermyKit.TrophyInfo info, Mobile hunter, int animalWeight)
+            : this(info.NorthID + 7, info.NorthID, info.DeedNumber, info.AddonNumber, hunter, animalWeight, DateTime.MinValue)
+        {
+        }
 
-			if ( m_AnimalWeight >= 20 )
-			{
-				if ( m_Hunter != null )
-					list.Add( 1070857, m_Hunter.Name ); // Caught by ~1_fisherman~
+        public TrophyDeed(Serial serial) : base(serial)
+        {
+        }
 
-				list.Add( 1070858, m_AnimalWeight.ToString() ); // ~1_weight~ stones
-			}
-		}
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+            if (m_AnimalWeight >= 20)
+            {
+                if (m_Hunter != null)
+                    list.Add(1070857, m_Hunter.Name); // Caught by ~1_fisherman~
 
-			writer.Write( (int) 2 ); // version
+                list.Add(1070858, m_AnimalWeight.ToString()); // ~1_weight~ stones
+            }
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)2); // version
 
             writer.Write(DateCaught);
 
-			writer.Write( (Mobile) m_Hunter );
-			writer.Write( (int) m_AnimalWeight );
+            writer.Write((Mobile)m_Hunter);
+            writer.Write((int)m_AnimalWeight);
 
-			writer.Write( (int) m_WestID );
-			writer.Write( (int) m_NorthID );
-			writer.Write( (int) m_DeedNumber );
-			writer.Write( (int) m_AddonNumber );
-		}
+            writer.Write((int)m_WestID);
+            writer.Write((int)m_NorthID);
+            writer.Write((int)m_DeedNumber);
+            writer.Write((int)m_AddonNumber);
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadInt();
+            int version = reader.ReadInt();
 
             switch (version)
             {
@@ -622,44 +618,44 @@ namespace Server.Items
                         break;
                     }
             }
-		}
+        }
 
-		public override void OnDoubleClick( Mobile from )
-		{
-			if ( IsChildOf( from.Backpack ) )
-			{
-				BaseHouse house = BaseHouse.FindHouseAt( from );
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (IsChildOf(from.Backpack))
+            {
+                BaseHouse house = BaseHouse.FindHouseAt(from);
 
-				if ( house != null && house.IsCoOwner( from ) )
-				{
-					bool northWall = BaseAddon.IsWall( from.X, from.Y - 1, from.Z, from.Map );
-					bool westWall = BaseAddon.IsWall( from.X - 1, from.Y, from.Z, from.Map );
+                if (house != null && house.IsCoOwner(from))
+                {
+                    bool northWall = BaseAddon.IsWall(from.X, from.Y - 1, from.Z, from.Map);
+                    bool westWall = BaseAddon.IsWall(from.X - 1, from.Y, from.Z, from.Map);
 
-					if ( northWall && westWall )
-					{
-						switch ( from.Direction & Direction.Mask )
-						{
-							case Direction.North:
-							case Direction.South: northWall = true; westWall = false; break;
+                    if (northWall && westWall)
+                    {
+                        switch (from.Direction & Direction.Mask)
+                        {
+                            case Direction.North:
+                            case Direction.South: northWall = true; westWall = false; break;
 
-							case Direction.East:
-							case Direction.West:  northWall = false; westWall = true; break;
+                            case Direction.East:
+                            case Direction.West: northWall = false; westWall = true; break;
 
-							default: from.SendMessage( "Turn to face the wall on which to hang this trophy." ); return;
-						}
-					}
+                            default: from.SendMessage("Turn to face the wall on which to hang this trophy."); return;
+                        }
+                    }
 
-					int itemID = 0;
+                    int itemID = 0;
 
-					if ( northWall )
-						itemID = m_NorthID;
-					else if ( westWall )
-						itemID = m_WestID;
-					else
-						from.SendLocalizedMessage( 1042626 ); // The trophy must be placed next to a wall.
+                    if (northWall)
+                        itemID = m_NorthID;
+                    else if (westWall)
+                        itemID = m_WestID;
+                    else
+                        from.SendLocalizedMessage(1042626); // The trophy must be placed next to a wall.
 
-					if ( itemID > 0 )
-					{
+                    if (itemID > 0)
+                    {
                         Item trophy = new TrophyAddon(from, itemID, m_WestID, m_NorthID, m_DeedNumber, m_AddonNumber, m_Hunter, m_AnimalWeight, DateCaught);
 
                         if (m_DeedNumber == 1113567)
@@ -668,18 +664,18 @@ namespace Server.Items
                             trophy.Hue = 1032;
 
                         house.Addons[trophy] = from;
-						Delete();
-					}
-				}
-				else
-				{
-					from.SendLocalizedMessage( 502092 ); // You must be in your house to do this.
-				}
-			}
-			else
-			{
-				from.SendLocalizedMessage( 1042001 ); // That must be in your pack for you to use it.
-			}
-		}
-	}
+                        Delete();
+                    }
+                }
+                else
+                {
+                    from.SendLocalizedMessage(502092); // You must be in your house to do this.
+                }
+            }
+            else
+            {
+                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+            }
+        }
+    }
 }

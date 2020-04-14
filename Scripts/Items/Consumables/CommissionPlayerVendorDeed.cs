@@ -1,4 +1,3 @@
-using System;
 using Server.Mobiles;
 using Server.Multis;
 
@@ -19,7 +18,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -69,7 +68,7 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1062423); // Only the house owner can directly place vendors.  Please ask the house owner to offer you a vendor contract so that you may place a vendor in this house.
                 }
-                else if (!house.Public || !house.CanPlaceNewVendor()) 
+                else if (!house.Public || !house.CanPlaceNewVendor())
                 {
                     from.SendLocalizedMessage(503241); // You cannot place this vendor or barkeep.  Make sure the house is public and has sufficient storage available.
                 }

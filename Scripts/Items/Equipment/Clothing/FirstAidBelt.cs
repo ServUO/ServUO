@@ -44,7 +44,7 @@ namespace Server.Items
 
         public Item Bandage { get { return Items.Count > 0 ? Items[0] : null; } }
         public int MaxBandage { get { return DefaultMaxWeight * 10; } }
-        
+
         [Constructable]
         public FirstAidBelt()
             : base(0xA1F6)

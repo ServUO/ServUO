@@ -1,6 +1,3 @@
-using System;
-using Server.Gumps;
-
 namespace Server.Items
 {
     public class CommemorativeRobe : BaseOuterTorso

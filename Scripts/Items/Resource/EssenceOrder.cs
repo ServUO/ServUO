@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class EssenceOrder : Item, ICommodity
@@ -16,7 +14,7 @@ namespace Server.Items
         {
             Stackable = true;
             Amount = amount;
-			Hue = 1153;
+            Hue = 1153;
         }
 
         public EssenceOrder(Serial serial)
@@ -31,7 +29,7 @@ namespace Server.Items
                 return 1113342;
             }
         }// essence of order
-		TextDefinition ICommodity.Description
+        TextDefinition ICommodity.Description
         {
             get
             {

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class FurnitureDyeTub : DyeTub, Engines.VeteranRewards.IRewardItem
@@ -94,7 +92,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {

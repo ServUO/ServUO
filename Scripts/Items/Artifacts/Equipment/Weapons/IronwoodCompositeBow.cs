@@ -1,20 +1,18 @@
-using System;
-
 namespace Server.Items
 {
     public class IronwoodCompositeBow : CompositeBow
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113759; } } // Ironwood Composite Bow
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113759; } } // Ironwood Composite Bow
+
         [Constructable]
         public IronwoodCompositeBow()
             : base()
         {
-            Hue = 1410;			
+            Hue = 1410;
             Slayer = SlayerName.Fey;
             WeaponAttributes.HitFireball = 40;
-            WeaponAttributes.HitLowerDefend = 30;	
+            WeaponAttributes.HitLowerDefend = 30;
             Attributes.BonusDex = 5;
             Attributes.WeaponSpeed = 25;
             Attributes.WeaponDamage = 45;
@@ -25,7 +23,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-		
+
         public override int InitMinHits
         {
             get

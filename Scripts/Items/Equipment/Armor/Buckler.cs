@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.Craft;
 
 namespace Server.Items
@@ -6,7 +5,7 @@ namespace Server.Items
     [Alterable(typeof(DefBlacksmithy), typeof(SmallPlateShield))]
     public class Buckler : BaseShield
     {
-		public override int BasePhysicalResistance { get { return 0; } }
+        public override int BasePhysicalResistance { get { return 0; } }
         public override int BaseFireResistance { get { return 0; } }
         public override int BaseColdResistance { get { return 0; } }
         public override int BasePoisonResistance { get { return 1; } }
@@ -14,7 +13,7 @@ namespace Server.Items
         public override int InitMinHits { get { return 40; } }
         public override int InitMaxHits { get { return 50; } }
         public override int StrReq { get { return 20; } }
-		
+
         [Constructable]
         public Buckler()
             : base(0x1B73)

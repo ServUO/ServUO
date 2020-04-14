@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class CuffsOfTheArchmage : BoneArms
-	{
+    {
         public override int LabelNumber { get { return 1157348; } } // cuffs of the archmage
         public override bool IsArtifact { get { return true; } }
 

@@ -1,13 +1,11 @@
 using System;
-using Server;
-using Server.Mobiles;
 
 namespace Server.Items
 {
-	public class HealingStone : Item
-	{
-		private Mobile m_Caster;
-		private int m_LifeForce;
+    public class HealingStone : Item
+    {
+        private Mobile m_Caster;
+        private int m_LifeForce;
         private int m_MaxLifeForce;
         private int m_MaxHeal;
         private int m_MaxHealTotal;
@@ -17,7 +15,7 @@ namespace Server.Items
         public Mobile Caster { get { return m_Caster; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int LifeForce { get { return m_LifeForce; } set { m_LifeForce = value;  InvalidateProperties(); } }
+        public int LifeForce { get { return m_LifeForce; } set { m_LifeForce = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxLifeForce { get { return m_MaxLifeForce; } }
@@ -30,29 +28,29 @@ namespace Server.Items
 
         public override bool Nontransferable { get { return true; } }
 
-		[Constructable]
-		public HealingStone( Mobile caster, int amount, int maxHeal ) : base( 0x4078 )
-		{
-			m_Caster = caster;
-			m_LifeForce = amount;
+        [Constructable]
+        public HealingStone(Mobile caster, int amount, int maxHeal) : base(0x4078)
+        {
+            m_Caster = caster;
+            m_LifeForce = amount;
             m_MaxHeal = maxHeal;
 
             m_MaxLifeForce = amount;
             m_MaxHealTotal = maxHeal;
 
             LootType = LootType.Blessed;
-		}
+        }
 
-		public override void OnDoubleClick( Mobile from )
-		{
-			if ( !from.InRange( this.GetWorldLocation(), 1 ) )
-			{
-				from.SendLocalizedMessage( 502138 ); // That is too far away for you to use
-				return;
-			}
-			else if ( from != m_Caster )
-			{
-			}
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (!from.InRange(this.GetWorldLocation(), 1))
+            {
+                from.SendLocalizedMessage(502138); // That is too far away for you to use
+                return;
+            }
+            else if (from != m_Caster)
+            {
+            }
             else if (!BasePotion.HasFreeHand(from))
             {
                 from.SendLocalizedMessage(1080116); // You must have a free hand to use a Healing Stone.
@@ -123,7 +121,7 @@ namespace Server.Items
             }
             else
                 from.SendLocalizedMessage(1095172); // You must wait a few seconds before using another Healing Stone.
-		}
+        }
 
         public void OnTick()
         {
@@ -142,7 +140,7 @@ namespace Server.Items
             private HealingStone m_Stone;
             private int m_Ticks;
 
-            public InternalTimer ( HealingStone stone ) : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
+            public InternalTimer(HealingStone stone) : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
             {
                 m_Stone = stone;
                 m_Ticks = 0;
@@ -160,21 +158,21 @@ namespace Server.Items
             }
         }
 
-		public override bool DropToWorld( Mobile from, Point3D p )
-		{
-			Delete();
-			return false;
-		}
+        public override bool DropToWorld(Mobile from, Point3D p)
+        {
+            Delete();
+            return false;
+        }
 
-		public override bool AllowSecureTrade( Mobile from, Mobile to, Mobile newOwner, bool accepted )
-		{
-			return false;
-		}
+        public override bool AllowSecureTrade(Mobile from, Mobile to, Mobile newOwner, bool accepted)
+        {
+            return false;
+        }
 
-		private static void ReleaseHealLock( object state )
-		{
-			((Mobile)state).EndAction( typeof( HealingStone ) );
-		}
+        private static void ReleaseHealLock(object state)
+        {
+            ((Mobile)state).EndAction(typeof(HealingStone));
+        }
 
         public override void Delete()
         {
@@ -194,9 +192,9 @@ namespace Server.Items
             list.Add(1115274, m_LifeForce.ToString());
         }
 
-		public HealingStone( Serial serial ) : base( serial )
-		{
-		}
+        public HealingStone(Serial serial) : base(serial)
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -233,5 +231,5 @@ namespace Server.Items
                 Delete();
             }
         }
-	}
+    }
 }

@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.Craft;
 using Server.Mobiles;
 using Server.Targeting;
@@ -42,7 +41,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 2: // Reset from Resource System
                     m_Resource = DefaultResource;
@@ -57,7 +56,7 @@ namespace Server.Items
                     {
                         OreInfo info;
 
-                        switch ( reader.ReadInt() )
+                        switch (reader.ReadInt())
                         {
                             case 0:
                                 info = OreInfo.Iron;
@@ -321,7 +320,7 @@ namespace Server.Items
                         talisman = true;
                     #endregion
 
-                    switch ( m_Ore.Resource )
+                    switch (m_Ore.Resource)
                     {
                         default:
                             difficulty = 50.0;

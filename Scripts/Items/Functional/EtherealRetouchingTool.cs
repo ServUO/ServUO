@@ -1,8 +1,6 @@
-using System;
-using Server;
-using Server.Targeting;
 using Server.Engines.VeteranRewards;
 using Server.Mobiles;
+using Server.Targeting;
 
 namespace Server.Items
 {
@@ -82,7 +80,7 @@ namespace Server.Items
 
                         mount.Transparent = mount.Transparent ? false : true;
                         mount.InvalidateProperties();
-                    }                    
+                    }
                 }
                 else
                 {

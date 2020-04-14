@@ -1,12 +1,11 @@
-using System;
 using Server.Engines.Craft;
 
 namespace Server.Items
 {
     [Alterable(typeof(DefTinkering), typeof(GargishBrightsightLenses))]
     public class BrightsightLenses : ElvenGlasses
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public BrightsightLenses()
         {

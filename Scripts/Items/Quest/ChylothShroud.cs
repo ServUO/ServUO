@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Engines.Quests.Doom
 {
     public class ChylothShroud : Item

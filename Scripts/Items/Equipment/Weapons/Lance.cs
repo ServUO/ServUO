@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.Craft;
 
 namespace Server.Items
@@ -61,7 +60,7 @@ namespace Server.Items
                 return 4.25f;
             }
         }
-        
+
         public override int DefHitSound
         {
             get

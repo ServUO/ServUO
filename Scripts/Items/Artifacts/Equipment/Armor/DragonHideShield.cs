@@ -1,15 +1,13 @@
-using System;
-
 namespace Server.Items
 {
     public class DragonHideShield : GargishKiteShield
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DragonHideShield()
             : base()
-        {		
-			Hue = 44;	
+        {
+            Hue = 44;
             AbsorptionAttributes.EaterFire = 20;
             Attributes.RegenHits = 2;
             Attributes.DefendChance = 10;
@@ -19,8 +17,8 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
-        public override int LabelNumber { get{return 1113532;} }// Dragon Hide Shield
+
+        public override int LabelNumber { get { return 1113532; } }// Dragon Hide Shield
 
         public override int BasePhysicalResistance
         {
@@ -71,7 +69,7 @@ namespace Server.Items
                 return 255;
             }
         }
-		
+
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);

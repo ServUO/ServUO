@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class Abhorrence : Crossbow
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1154472; } } // Abhorrence
 
         [Constructable]
@@ -17,7 +15,7 @@ namespace Server.Items
             Attributes.WeaponSpeed = 35;
             Attributes.WeaponDamage = 50;
             ExtendedWeaponAttributes.Bane = 1;
-            Hue = 1910; 
+            Hue = 1910;
         }
 
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)

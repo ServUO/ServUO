@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class ChurchillsWarMace : WarMace
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public ChurchillsWarMace()
         {

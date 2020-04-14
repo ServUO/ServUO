@@ -1,11 +1,10 @@
-using System;
 using Server.Engines.VeteranRewards;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
 
 namespace Server.Items
-{ 
+{
     public class RewardBrazier : Item, IRewardItem
     {
         private static readonly int[] m_Art = new int[]
@@ -17,7 +16,7 @@ namespace Server.Items
         [Constructable]
         public RewardBrazier()
             : this(Utility.RandomList(m_Art))
-        { 
+        {
         }
 
         [Constructable]
@@ -68,7 +67,7 @@ namespace Server.Items
         {
             if (this.m_Fire == null)
                 this.m_Fire = new Item();
- 
+
             this.m_Fire.ItemID = 0x19AB;
             this.m_Fire.Movable = false;
             this.m_Fire.MoveToWorld(new Point3D(this.X, this.Y, this.Z + this.ItemData.Height + 2), this.Map);
@@ -107,7 +106,7 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             if (this.m_IsRewardItem)
                 list.Add(1076222); // 6th Year Veteran Reward
         }
@@ -117,7 +116,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.WriteEncodedInt(0); // version
-			
+
             writer.Write((bool)this.m_IsRewardItem);
             writer.Write((Item)this.m_Fire);
         }
@@ -127,7 +126,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             this.m_IsRewardItem = reader.ReadBool();
             this.m_Fire = reader.ReadItem();
         }
@@ -205,7 +204,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             this.m_IsRewardItem = reader.ReadBool();
         }
 

@@ -1,12 +1,10 @@
-using System;
-
 namespace Server.Items
 {
     public class AmeliasToolbox : TinkerTools
     {
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1077749; } }// Amelias Toolbox
-		
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1077749; } }// Amelias Toolbox
+
         [Constructable]
         public AmeliasToolbox()
             : base(500)
@@ -19,7 +17,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-		
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

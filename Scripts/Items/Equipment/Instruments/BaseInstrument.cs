@@ -1,9 +1,8 @@
-using System;
-using System.Collections;
 using Server.Engines.Craft;
 using Server.Mobiles;
-using Server.Network;
 using Server.Targeting;
+using System;
+using System.Collections;
 
 namespace Server.Items
 {
@@ -181,12 +180,12 @@ namespace Server.Items
             {
                 return m_ReplenishesCharges;
             }
-            set 
+            set
             {
                 if (value != m_ReplenishesCharges && value)
                     m_LastReplenished = DateTime.UtcNow;
 
-                m_ReplenishesCharges = value; 
+                m_ReplenishesCharges = value;
             }
         }
 
@@ -568,7 +567,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 4:
                     {
@@ -596,7 +595,7 @@ namespace Server.Items
 
                         m_WellSound = reader.ReadEncodedInt();
                         m_BadlySound = reader.ReadEncodedInt();
-					
+
                         break;
                     }
                 case 1:

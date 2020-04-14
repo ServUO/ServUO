@@ -1,13 +1,11 @@
-using System;
-
 namespace Server.Items
 {
     public class BouraTailShield : WoodenKiteShield
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public BouraTailShield()
-        {    
+        {
             Hue = 554;
             Attributes.ReflectPhysical = 10;
             ArmorAttributes.ReactiveParalyze = 1;
@@ -17,8 +15,8 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
-        public override int LabelNumber { get{return 1112361;} }// boura tail shield
+
+        public override int LabelNumber { get { return 1112361; } }// boura tail shield
 
         public override int BasePhysicalResistance
         {

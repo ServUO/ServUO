@@ -1,59 +1,58 @@
-using Server;
-using System;
-using Server.Mobiles;
-using Server.Items;
-using System.Collections.Generic;
 using Server.ContextMenus;
-using Server.Targeting;
+using Server.Items;
+using Server.Mobiles;
 using Server.Network;
+using Server.Targeting;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Server.Engines.Despise
 {
-	public enum LeashLength
-	{
-		//Tight,
-		Short,
-		Long
-	}
-		
-	public enum Aggression
-	{
-		//Following,
-		Defensive, 
-		Aggressive
-	}
-		
-	public class WispOrb : Item
-	{
-		public override int LabelNumber { get { return 1153273; } } // A Wisp Orb
-		
-		private static readonly int MinPowerToConscript = 4;
-		
-		private Mobile m_Owner;
-		private DespiseCreature m_Pet;
-		private LeashLength m_LeashLength;
-		private Aggression m_Aggression;
-		private Alignment m_Alignment;
-		private IEntity m_Anchor;
-		private bool m_Conscripted;
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public Mobile Owner 
-		{ 
-			get { return m_Owner; } 
-		}
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public DespiseCreature Pet 
-		{ 
-			get { return m_Pet; } 
-			set 
-			{ 
-				if(m_Pet != null && value == null)
-				{
-					m_Pet.Unlink(); 
-				}
+    public enum LeashLength
+    {
+        //Tight,
+        Short,
+        Long
+    }
+
+    public enum Aggression
+    {
+        //Following,
+        Defensive,
+        Aggressive
+    }
+
+    public class WispOrb : Item
+    {
+        public override int LabelNumber { get { return 1153273; } } // A Wisp Orb
+
+        private static readonly int MinPowerToConscript = 4;
+
+        private Mobile m_Owner;
+        private DespiseCreature m_Pet;
+        private LeashLength m_LeashLength;
+        private Aggression m_Aggression;
+        private Alignment m_Alignment;
+        private IEntity m_Anchor;
+        private bool m_Conscripted;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Owner
+        {
+            get { return m_Owner; }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DespiseCreature Pet
+        {
+            get { return m_Pet; }
+            set
+            {
+                if (m_Pet != null && value == null)
+                {
+                    m_Pet.Unlink();
+                }
                 else
                 {
                     m_Pet = value;
@@ -64,54 +63,54 @@ namespace Server.Engines.Despise
 
                 InvalidateHue();
                 InvalidateProperties();
-			} 
-		}
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public LeashLength LeashLength 
-		{ 
-			get { return m_LeashLength; } 
-			set 
-			{ 
-				m_LeashLength = value;
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public LeashLength LeashLength
+        {
+            get { return m_LeashLength; }
+            set
+            {
+                m_LeashLength = value;
 
                 //if (m_Pet != null)
                 //    m_Pet.RangeHome = m_Pet.GetLeashLength();
 
-				InvalidateHue();
+                InvalidateHue();
                 InvalidateProperties();
-			} 
-		}
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public Aggression Aggression 
-		{ 
-			get { return m_Aggression; } 
-			set 
-			{
-				if(value != m_Aggression)
-				{
-					m_Aggression = value;
-				}
+            }
+        }
 
-				InvalidateHue();
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Aggression Aggression
+        {
+            get { return m_Aggression; }
+            set
+            {
+                if (value != m_Aggression)
+                {
+                    m_Aggression = value;
+                }
+
+                InvalidateHue();
                 InvalidateProperties();
-			} 
-		}
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public Alignment Alignment
-		{ 
-			get { return m_Alignment; } 
-			set { m_Alignment = value; InvalidateProperties(); } 
-		}
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public IEntity Anchor
-		{ 
-			get { return m_Anchor; } 
-			set 
-            { 
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Alignment Alignment
+        {
+            get { return m_Alignment; }
+            set { m_Alignment = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public IEntity Anchor
+        {
+            get { return m_Anchor; }
+            set
+            {
                 m_Anchor = value;
 
                 if (m_Pet != null && m_Anchor == null)
@@ -120,32 +119,32 @@ namespace Server.Engines.Despise
                     m_Pet.Home = GetAnchorLocation();
                 }
 
-                InvalidateProperties(); 
-            } 
-		}
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool Conscripted
-		{ 
-			get { return m_Conscripted; } 
-			set 
-            { 
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Conscripted
+        {
+            get { return m_Conscripted; }
+            set
+            {
                 m_Conscripted = value;
 
                 if (m_Conscripted && DespiseController.Instance != null && DespiseController.Instance.Sequencing)
                     DespiseController.Instance.TryAddToArmy(this);
-            } 
-		}
-		
-		public WispOrb(Mobile owner, Alignment alignment) : base(8448)
-		{
-			m_Owner = owner;
-			LootType = LootType.Blessed;
-			m_Alignment = alignment;
-			
-			m_Orbs.Add(this);
+            }
+        }
+
+        public WispOrb(Mobile owner, Alignment alignment) : base(8448)
+        {
+            m_Owner = owner;
+            LootType = LootType.Blessed;
+            m_Alignment = alignment;
+
+            m_Orbs.Add(this);
             InvalidateHue();
-		}
+        }
 
         public void OnUnlinkPet()
         {
@@ -154,30 +153,30 @@ namespace Server.Engines.Despise
             m_Aggression = Aggression.Aggressive;
             InvalidateProperties();
         }
-		
-		public bool CheckOwnerAlignment()
-		{
-			if(m_Owner == null || (m_Owner.Karma > 0 && m_Alignment != Alignment.Good) || (m_Owner.Karma < 0 && m_Alignment != Alignment.Evil))
-			{
-				if(m_Owner != null)
-					m_Owner.SendLocalizedMessage(1153313); // You are no longer aligned with your Wisp Orb. It dissolves into aether!
-					
-				Delete();
-				return false;
-			}
-			
-			return true;
-		}
-		
-		public override void OnDoubleClick(Mobile from)
-		{
-			if(CheckOwnerAlignment() && IsChildOf(from.Backpack) && from == m_Owner)
-			{
-				int cliloc = m_Pet == null ? 1153274 : 1153277;
-				from.SendLocalizedMessage(cliloc); // Target a creature to possess. / Target an object or creature to set the anchor. Target the Wisp Orb to change the leash setting. Target the possessed creature to change its aggression.
-				from.Target = new InternalTarget(this);
-			}
-		}
+
+        public bool CheckOwnerAlignment()
+        {
+            if (m_Owner == null || (m_Owner.Karma > 0 && m_Alignment != Alignment.Good) || (m_Owner.Karma < 0 && m_Alignment != Alignment.Evil))
+            {
+                if (m_Owner != null)
+                    m_Owner.SendLocalizedMessage(1153313); // You are no longer aligned with your Wisp Orb. It dissolves into aether!
+
+                Delete();
+                return false;
+            }
+
+            return true;
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (CheckOwnerAlignment() && IsChildOf(from.Backpack) && from == m_Owner)
+            {
+                int cliloc = m_Pet == null ? 1153274 : 1153277;
+                from.SendLocalizedMessage(cliloc); // Target a creature to possess. / Target an object or creature to set the anchor. Target the Wisp Orb to change the leash setting. Target the possessed creature to change its aggression.
+                from.Target = new InternalTarget(this);
+            }
+        }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
@@ -186,31 +185,31 @@ namespace Server.Engines.Despise
             list.Add(new ReleaseEntry(from, this));
             list.Add(new ConscriptEntry(from, this));
         }
-		
-		public override void GetProperties(ObjectPropertyList list)
-		{
-			base.GetProperties(list);
-			
-			list.Add(1153329, String.Format("#{0}", GetAlignment())); // Alignment: ~1_VAL~
-			list.Add(1153306, String.Format("{0}", GetArmyPower())); // Army Power: ~1_VAL~
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1153329, String.Format("#{0}", GetAlignment())); // Alignment: ~1_VAL~
+            list.Add(1153306, String.Format("{0}", GetArmyPower())); // Army Power: ~1_VAL~
             list.Add(1153272, m_Pet != null ? m_Pet.Name : "None"); // Controlling: ~1_VAL~
-		
-			object name = GetAnchorName();
-			
-			if(name != null)					//Anchor: ~1_NAME~
-			{
-				if(name is int)
-					list.Add(1153265, String.Format("#{0}", (int)name));
-				else if(name is string)
-					list.Add(1153265, (string)name);
-			}
-			
-			int leash = 1153262 + (int)m_LeashLength;
-			int aggr = 1153269 + (int)m_Aggression;
-			
-			list.Add(1153260, String.Format("#{0}", leash.ToString())); // Leash: ~1_VAL~
-			list.Add(1153267, String.Format("#{0}", aggr.ToString())); // Aggression: ~1_VAL~
-		}
+
+            object name = GetAnchorName();
+
+            if (name != null)                   //Anchor: ~1_NAME~
+            {
+                if (name is int)
+                    list.Add(1153265, String.Format("#{0}", (int)name));
+                else if (name is string)
+                    list.Add(1153265, (string)name);
+            }
+
+            int leash = 1153262 + (int)m_LeashLength;
+            int aggr = 1153269 + (int)m_Aggression;
+
+            list.Add(1153260, String.Format("#{0}", leash.ToString())); // Leash: ~1_VAL~
+            list.Add(1153267, String.Format("#{0}", aggr.ToString())); // Aggression: ~1_VAL~
+        }
 
         public override bool DropToWorld(Mobile m, Point3D p)
         {
@@ -288,73 +287,73 @@ namespace Server.Engines.Despise
 
             return m_Anchor;
         }
-		
-		private class ConscriptEntry : ContextMenuEntry
-		{
-			private Mobile m_From;
-			private WispOrb m_Orb;
-			
-			public ConscriptEntry(Mobile from, WispOrb orb) : base(1153285, -1) // Conscript
-			{
-				m_From = from;
-				m_Orb = orb;
+
+        private class ConscriptEntry : ContextMenuEntry
+        {
+            private Mobile m_From;
+            private WispOrb m_Orb;
+
+            public ConscriptEntry(Mobile from, WispOrb orb) : base(1153285, -1) // Conscript
+            {
+                m_From = from;
+                m_Orb = orb;
 
                 if (m_Orb.Pet == null || m_Orb.Conscripted || m_Orb.Pet.Alignment != m_Orb.Alignment)
-					Flags |= Server.Network.CMEFlags.Disabled;
-			}
-			
-			public override void OnClick()
-			{
+                    Flags |= Server.Network.CMEFlags.Disabled;
+            }
+
+            public override void OnClick()
+            {
                 if (m_Orb.Pet != null && m_Orb.IsChildOf(m_From.Backpack) && !m_Orb.Conscripted && m_Orb.Pet.Alignment == m_Orb.Alignment)
-				{
-					if(m_Orb.Pet.Power < WispOrb.MinPowerToConscript)
-						m_From.SendLocalizedMessage(1153311); // The creature under control of your Wisp Orb cannot be conscripted at this time.
-					else
-					{
-						m_From.SendLocalizedMessage(1153310); // The creature you are controlling will now fight with you when the Call to Arms sounds. If you do not wish this, then release control of it.
-						m_Orb.Conscripted = true;
-					}
-				}
-			}
-		}
-		
-		private class ReleaseEntry : ContextMenuEntry
-		{
-			private Mobile m_From;
-			private WispOrb m_Orb;
-			
-			public ReleaseEntry(Mobile from, WispOrb orb) : base(1153284, -1) // Release
-			{
-				m_From = from;
-				m_Orb = orb;
-				
-				if(m_Orb.Pet == null/* || !m_Orb.Conscripted*/)
-					Flags |= Server.Network.CMEFlags.Disabled;
-			}
-			
-			public override void OnClick()
-			{
+                {
+                    if (m_Orb.Pet.Power < WispOrb.MinPowerToConscript)
+                        m_From.SendLocalizedMessage(1153311); // The creature under control of your Wisp Orb cannot be conscripted at this time.
+                    else
+                    {
+                        m_From.SendLocalizedMessage(1153310); // The creature you are controlling will now fight with you when the Call to Arms sounds. If you do not wish this, then release control of it.
+                        m_Orb.Conscripted = true;
+                    }
+                }
+            }
+        }
+
+        private class ReleaseEntry : ContextMenuEntry
+        {
+            private Mobile m_From;
+            private WispOrb m_Orb;
+
+            public ReleaseEntry(Mobile from, WispOrb orb) : base(1153284, -1) // Release
+            {
+                m_From = from;
+                m_Orb = orb;
+
+                if (m_Orb.Pet == null/* || !m_Orb.Conscripted*/)
+                    Flags |= Server.Network.CMEFlags.Disabled;
+            }
+
+            public override void OnClick()
+            {
                 if (m_Orb.Pet != null)
                 {
                     m_Orb.Pet.Unlink();
                 }
-			}
-		}
-		
-		private class InternalTarget : Target
-		{
-			private WispOrb m_Orb;
-			
-			public InternalTarget(WispOrb orb) : base(8, true, TargetFlags.None)
-			{
-				m_Orb = orb;
-			}
-			
-			protected override void OnTarget(Mobile from, object targeted)
-			{
-				if(targeted is BaseCreature)
-				{
-					DespiseCreature creature = targeted as DespiseCreature;
+            }
+        }
+
+        private class InternalTarget : Target
+        {
+            private WispOrb m_Orb;
+
+            public InternalTarget(WispOrb orb) : base(8, true, TargetFlags.None)
+            {
+                m_Orb = orb;
+            }
+
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                if (targeted is BaseCreature)
+                {
+                    DespiseCreature creature = targeted as DespiseCreature;
 
                     if (creature == null)
                         from.SendLocalizedMessage(1153286); // That cannot be possessed by a Wisp Orb.
@@ -392,54 +391,54 @@ namespace Server.Engines.Despise
                     {
                         m_Orb.TrySetAnchor(from, (BaseCreature)targeted);
                     }
-				}
-				else if (targeted == m_Orb)
-				{
-					int length = (int)m_Orb.LeashLength + 1;
-					if(length >= 2) length = 0;
+                }
+                else if (targeted == m_Orb)
+                {
+                    int length = (int)m_Orb.LeashLength + 1;
+                    if (length >= 2) length = 0;
 
                     m_Orb.LeashLength = (LeashLength)length;
-					
-					from.SendLocalizedMessage(1153278, m_Orb.LeashLength.ToString()); // Your possessed creature's leash is now: ~1_VAL~
-				}
+
+                    from.SendLocalizedMessage(1153278, m_Orb.LeashLength.ToString()); // Your possessed creature's leash is now: ~1_VAL~
+                }
                 else if (targeted is IPoint3D && m_Orb.Pet != null)
                 {
                     m_Orb.TrySetAnchor(from, (IPoint3D)targeted);
                 }
-			}
-		}
-		
-		private object GetAnchorName()
-		{
-			if(m_Anchor == null)
-				return "None";
-				
-			if(m_Anchor is Mobile)
-				return ((Mobile)m_Anchor).Name;
-			
-			if(m_Anchor is Item)
-			{
-				if(((Item)m_Anchor).Name != null)
-					return ((Item)m_Anchor).Name;
-				
-				return ((Item)m_Anchor).LabelNumber;
-			}
-			
-			if(m_Anchor is StaticTarget)
-				return String.Format("{0} {1}", ((StaticTarget)m_Anchor).Name, ((StaticTarget)m_Anchor).Location.ToString());
-				
-			if(m_Anchor is LandTarget)
-				return String.Format("{0} {1}", ((LandTarget)m_Anchor).Name, ((LandTarget)m_Anchor).Location.ToString());
-				
-			Point3D p = new Point3D(m_Anchor);
-				
-			return p.ToString();
-		}
-		
-		public void TrySetAnchor(Mobile from, IPoint3D p)
-		{
+            }
+        }
+
+        private object GetAnchorName()
+        {
+            if (m_Anchor == null)
+                return "None";
+
+            if (m_Anchor is Mobile)
+                return ((Mobile)m_Anchor).Name;
+
+            if (m_Anchor is Item)
+            {
+                if (((Item)m_Anchor).Name != null)
+                    return ((Item)m_Anchor).Name;
+
+                return ((Item)m_Anchor).LabelNumber;
+            }
+
+            if (m_Anchor is StaticTarget)
+                return String.Format("{0} {1}", ((StaticTarget)m_Anchor).Name, ((StaticTarget)m_Anchor).Location.ToString());
+
+            if (m_Anchor is LandTarget)
+                return String.Format("{0} {1}", ((LandTarget)m_Anchor).Name, ((LandTarget)m_Anchor).Location.ToString());
+
+            Point3D p = new Point3D(m_Anchor);
+
+            return p.ToString();
+        }
+
+        public void TrySetAnchor(Mobile from, IPoint3D p)
+        {
             if (!CheckOwnerAlignment() || from != m_Owner)
-				return;
+                return;
 
             if (p is Mobile)
             {
@@ -468,7 +467,7 @@ namespace Server.Engines.Despise
                 m_Pet.ControlTarget = m_Pet.ControlMaster;
                 m_Pet.ControlOrder = OrderType.Follow;
             }
-		}
+        }
 
         private int GetAlignment()
         {
@@ -505,57 +504,57 @@ namespace Server.Engines.Despise
         {
             return (int)m_Pet.GetDistanceToSqrt(GetAnchorLocation()) > m_Pet.GetLeashLength() + 1 && m_Pet.ControlOrder == OrderType.Follow;
         }
-		
-		public override void Delete()
-		{
-			if(m_Orbs.Contains(this))
-				m_Orbs.Remove(this);
+
+        public override void Delete()
+        {
+            if (m_Orbs.Contains(this))
+                m_Orbs.Remove(this);
 
             if (m_Pet != null && m_Pet.Alive)
-				m_Pet.Unlink(false);
-				
-			base.Delete();
-		}
-		
-		public int GetArmyPower()
-		{
+                m_Pet.Unlink(false);
+
+            base.Delete();
+        }
+
+        public int GetArmyPower()
+        {
             if (m_Pet == null)
                 return 0;
 
-			int power = ((DespiseCreature)m_Pet).Power;
-			return power * power;
-		}
-		
-		public static void TeleportPet(Mobile owner)
-		{
-			if(owner == null || owner.Backpack == null)
-				return;
-				
-			Item item = owner.Backpack.FindItemByType(typeof(WispOrb));
-			
-			if(item != null && item is WispOrb)
-			{
-				Mobile pet = ((WispOrb)item).Pet;
-				
-				if(pet != null)
-					pet.MoveToWorld(owner.Location, owner.Map);
-			}
-		}
-	
-		public WispOrb(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write((int)0);
-			
-			writer.Write(m_Owner);
-			writer.Write(m_Pet);
-			writer.Write((int)m_LeashLength);
-			writer.Write((int)m_Aggression);
-			writer.Write((int)m_Alignment);
+            int power = ((DespiseCreature)m_Pet).Power;
+            return power * power;
+        }
+
+        public static void TeleportPet(Mobile owner)
+        {
+            if (owner == null || owner.Backpack == null)
+                return;
+
+            Item item = owner.Backpack.FindItemByType(typeof(WispOrb));
+
+            if (item != null && item is WispOrb)
+            {
+                Mobile pet = ((WispOrb)item).Pet;
+
+                if (pet != null)
+                    pet.MoveToWorld(owner.Location, owner.Map);
+            }
+        }
+
+        public WispOrb(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+
+            writer.Write(m_Owner);
+            writer.Write(m_Pet);
+            writer.Write((int)m_LeashLength);
+            writer.Write((int)m_Aggression);
+            writer.Write((int)m_Alignment);
             writer.Write(m_Conscripted);
 
             if (m_Anchor is Mobile)
@@ -563,7 +562,7 @@ namespace Server.Engines.Despise
                 writer.Write((int)1);
                 writer.Write((Mobile)m_Anchor);
             }
-            else if(m_Anchor is Item)
+            else if (m_Anchor is Item)
             {
                 writer.Write((int)2);
                 writer.Write((Item)m_Anchor);
@@ -572,18 +571,18 @@ namespace Server.Engines.Despise
             {
                 writer.Write(0);
             }
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int v = reader.ReadInt();
-			
-			m_Owner = reader.ReadMobile();
-			m_Pet = reader.ReadMobile() as DespiseCreature;
-			m_LeashLength = (LeashLength)reader.ReadInt();
-			m_Aggression = (Aggression)reader.ReadInt();
-			m_Alignment = (Alignment)reader.ReadInt();
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = reader.ReadInt();
+
+            m_Owner = reader.ReadMobile();
+            m_Pet = reader.ReadMobile() as DespiseCreature;
+            m_LeashLength = (LeashLength)reader.ReadInt();
+            m_Aggression = (Aggression)reader.ReadInt();
+            m_Alignment = (Alignment)reader.ReadInt();
             m_Conscripted = reader.ReadBool();
 
             switch (reader.ReadInt())
@@ -598,10 +597,10 @@ namespace Server.Engines.Despise
                 Anchor = m_Owner;
             }
 
-			m_Orbs.Add(this);
-		}
-		
-		private static List<WispOrb> m_Orbs = new List<WispOrb>();
-		public static List<WispOrb> Orbs { get { return m_Orbs; } }
-	}
+            m_Orbs.Add(this);
+        }
+
+        private static List<WispOrb> m_Orbs = new List<WispOrb>();
+        public static List<WispOrb> Orbs { get { return m_Orbs; } }
+    }
 }

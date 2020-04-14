@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x2B06, 0x2B07)]
     public class HonorLegs : BaseArmor
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public HonorLegs()
             : base(0x2B06)
@@ -14,8 +12,8 @@ namespace Server.Items
             Weight = 9.0;
             SetHue = 0;
             Hue = 0x226;
-			
-            SetSelfRepair = 5;			
+
+            SetSelfRepair = 5;
             SetPhysicalBonus = 5;
             SetFireBonus = 5;
             SetColdBonus = 5;

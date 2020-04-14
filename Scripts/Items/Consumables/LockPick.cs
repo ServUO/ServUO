@@ -1,7 +1,6 @@
+using Server.Targeting;
 using System;
 using System.Linq;
-
-using Server.Targeting;
 
 namespace Server.Items
 {

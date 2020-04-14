@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Server.ContextMenus;
 using Server.Engines.Craft;
 using Server.Engines.VeteranRewards;
@@ -8,6 +5,9 @@ using Server.Gumps;
 using Server.Multis;
 using Server.Network;
 using Server.Targeting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -133,7 +133,7 @@ namespace Server.Items
 
             return false;
         }
-        
+
         public override BaseAddonDeed Deed
         {
             get
@@ -235,7 +235,7 @@ namespace Server.Items
     public class RepairBenchDeed : BaseAddonDeed, IRewardItem, IRewardOption
     {
         public override int LabelNumber { get { return 1158860; } } // Repair Bench
-        
+
         public override BaseAddon Addon
         {
             get
@@ -349,7 +349,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            m_IsRewardItem = reader.ReadBool();            
+            m_IsRewardItem = reader.ReadBool();
 
             int toolcount = reader.ReadInt();
 
@@ -368,7 +368,7 @@ namespace Server.Items
             }
         }
     }
-    
+
     public class RepairBenchDefinition
     {
         public CraftSystem System { get; set; }
@@ -417,7 +417,7 @@ namespace Server.Items
                 return;
 
             Mobile m = sender.Mobile;
-            int index = info.ButtonID;          
+            int index = info.ButtonID;
 
             switch (index)
             {
@@ -434,7 +434,7 @@ namespace Server.Items
                         m.SendGump(new RepairBenchGump(m, m_Addon));
                         break;
                     }
-            }            
+            }
         }
     }
 
@@ -558,7 +558,7 @@ namespace Server.Items
             {
                 m_Addon = addon;
                 m_Gump = g;
-            }            
+            }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
@@ -577,7 +577,7 @@ namespace Server.Items
                 if (targeted is RepairDeed)
                 {
                     RepairDeed deed = (RepairDeed)targeted;
-                    
+
                     if (m_Addon.Tools.Any(x => x.Skill == deed.RepairSkill && x.Charges >= 500))
                     {
                         from.SendLocalizedMessage(1158778); // This would exceed the maximum charges allowed on this magic item.
@@ -587,7 +587,7 @@ namespace Server.Items
                     {
                         from.SendLocalizedMessage(1158866); // The repair bench contains deeds that do not match the skill of the deed you are trying to add.
                         from.Target = new InternalTarget(from, m_Gump, m_Addon);
-                    }                    
+                    }
                     else
                     {
                         var tool = m_Addon.Tools.Find(x => x.Skill == deed.RepairSkill);
@@ -615,13 +615,13 @@ namespace Server.Items
                                 from.SendLocalizedMessage(1158778); // This would exceed the maximum charges allowed on this magic item.
                             }
                             else if (m_Addon.Tools.Any(x => x.Skill == deed.RepairSkill && x.SkillValue == deed.SkillLevel))
-                            {                                
+                            {
                                 var tool = m_Addon.Tools.Find(x => x.Skill == deed.RepairSkill);
 
                                 tool.SkillValue = deed.SkillLevel;
                                 tool.Charges++;
 
-                                deed.Delete();                                
+                                deed.Delete();
                             }
                         }
                     }
@@ -670,7 +670,7 @@ namespace Server.Items
                 Repair.Do(from, RepairSkillInfo.GetInfo((RepairSkillType)skillindex).System, m_Addon);
             }
             else
-            {                
+            {
                 BaseHouse house = BaseHouse.FindHouseAt(m_Addon);
 
                 if (house != null && house.IsOwner(from))
@@ -684,7 +684,7 @@ namespace Server.Items
                     from.SendLocalizedMessage(1005213); // You can't do that
                     m_Addon.Using = false;
                 }
-            }      
+            }
         }
     }
 }

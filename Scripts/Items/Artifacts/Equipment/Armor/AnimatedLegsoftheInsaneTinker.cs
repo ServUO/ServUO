@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class AnimatedLegsoftheInsaneTinker : PlateLegs
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public AnimatedLegsoftheInsaneTinker()
             : base()
@@ -21,8 +19,8 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
-        public override int LabelNumber { get{return 1113760;} }// Animated Legs of the Insane Tinker
+
+        public override int LabelNumber { get { return 1113760; } }// Animated Legs of the Insane Tinker
 
         public override int BasePhysicalResistance
         {

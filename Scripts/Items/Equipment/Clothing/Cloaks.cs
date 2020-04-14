@@ -1,6 +1,5 @@
-using System;
-using Server.Engines.VeteranRewards;
 using Server.Engines.Craft;
+using Server.Engines.VeteranRewards;
 
 namespace Server.Items
 {
@@ -148,7 +147,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 2:
                     {
@@ -273,7 +272,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {
@@ -335,9 +334,9 @@ namespace Server.Items
             Weight = 2.0;
         }
 
-        public override int StrReq => 10; 
-        public override Race RequiredRace => Race.Gargoyle; 
-        public override bool CanBeWornByGargoyles => true;    
+        public override int StrReq => 10;
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
 
         public GargishClothWingArmor(Serial serial)
             : base(serial)

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x903, 0x406E)]
@@ -58,7 +56,7 @@ namespace Server.Items
                 return 2.75f;
             }
         }
-       
+
         public override int InitMinHits
         {
             get
@@ -73,7 +71,7 @@ namespace Server.Items
                 return 110;
             }
         }
-        
+
         public override Race RequiredRace { get { return Race.Gargoyle; } }
         public override bool CanBeWornByGargoyles { get { return true; } }
 

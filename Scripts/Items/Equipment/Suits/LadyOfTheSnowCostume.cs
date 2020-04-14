@@ -1,19 +1,16 @@
-using System;
-using Server;
-
 namespace Server.Items
 {
-	public class LadyOfTheSnowCostume : BaseCostume
-	{
+    public class LadyOfTheSnowCostume : BaseCostume
+    {
         public override string CreatureName { get { return "lady of the snow"; } }
 
         [Constructable]
-		public LadyOfTheSnowCostume() : base( )
-		{
+        public LadyOfTheSnowCostume() : base()
+        {
             this.CostumeBody = 252;
-		}
-		
-		public override int LabelNumber
+        }
+
+        public override int LabelNumber
         {
             get
             {
@@ -21,22 +18,22 @@ namespace Server.Items
             }
         }// Lady of the Snow costume
 
-		public LadyOfTheSnowCostume( Serial serial ) : base( serial )
-		{
-		}
+        public LadyOfTheSnowCostume(Serial serial) : base(serial)
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write( (int) 0 );
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize( reader );
+            writer.Write((int)0);
+        }
 
-			int version = reader.ReadInt();
-		}
-	}
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
 }

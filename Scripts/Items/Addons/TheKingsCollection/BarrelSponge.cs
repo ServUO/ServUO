@@ -14,7 +14,7 @@ namespace Server.Items
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int ResourceCount { get { return m_ResourceCount; } set { m_ResourceCount = value; UpdateProperties(); } }
-        
+
         [Constructable]
         public BarrelSpongeAddon()
            : this(0, DateTime.UtcNow + TimeSpan.FromDays(7))
@@ -147,7 +147,7 @@ namespace Server.Items
             m_ResourceCount = reader.ReadInt();
             NextResourceCount = reader.ReadDateTime();
         }
-    }    
+    }
 
     public class BarrelSpongeDeed : BaseAddonDeed
     {
@@ -165,7 +165,7 @@ namespace Server.Items
         }
 
         public override BaseAddon Addon { get { return new BarrelSpongeAddon(); } }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -1,6 +1,3 @@
-using System;
-using Server.Multis;
-
 namespace Server.Items
 {
     public class GateTravelScroll : SpellScroll

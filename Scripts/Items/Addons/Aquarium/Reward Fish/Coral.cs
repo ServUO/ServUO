@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class Coral : BaseFish
-    { 
+    {
         [Constructable]
         public Coral()
             : base(Utility.RandomList(0x3AF9, 0x3AFA, 0x3AFB))
@@ -12,7 +10,7 @@ namespace Server.Items
 
         public Coral(Serial serial)
             : base(serial)
-        { 
+        {
         }
 
         public override int LabelNumber

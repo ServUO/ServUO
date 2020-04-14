@@ -1,12 +1,9 @@
-using System;
-using Server;
-
 namespace Server.Items
 {
     public class BagOfJewels : Item
     {
         public override int LabelNumber { get { return 1075307; } } // Bag of Jewels
-        public override bool HiddenQuestItemHue { get { return true; } } 
+        public override bool HiddenQuestItemHue { get { return true; } }
 
         [Constructable]
         public BagOfJewels()

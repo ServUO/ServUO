@@ -1,6 +1,6 @@
-using System;
 using Server.Gumps;
 using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -134,7 +134,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 2:
                 case 1:

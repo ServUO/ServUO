@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class AegisOfGrace : DragonHelm
@@ -28,7 +26,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override int BasePhysicalResistance { get { return 10; } }
         public override int BaseFireResistance { get { return 9; } }
         public override int BaseColdResistance { get { return 7; } }
@@ -52,7 +50,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadEncodedInt();
 
-            if(version == 0 && ItemID == 0x2B6E)
+            if (version == 0 && ItemID == 0x2B6E)
             {
                 MeditationAllowance = ArmorMeditationAllowance.All;
             }

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class EssenceDirection : Item, ICommodity
@@ -16,7 +14,7 @@ namespace Server.Items
         {
             Stackable = true;
             Amount = amount;
-			Hue = 1156;
+            Hue = 1156;
         }
 
         public EssenceDirection(Serial serial)
@@ -31,7 +29,7 @@ namespace Server.Items
                 return 1113328;
             }
         }// essence of direction
-		TextDefinition ICommodity.Description
+        TextDefinition ICommodity.Description
         {
             get
             {

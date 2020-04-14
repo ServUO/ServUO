@@ -1,8 +1,6 @@
-using System;
-using Server;
-using Server.Mobiles;
 using Server.Engines.Craft;
 using Server.Multis;
+using System;
 
 namespace Server.Items
 {
@@ -48,8 +46,8 @@ namespace Server.Items
     public class CraftableHouseItem : Item, IFlipable, ICraftable
     {
         public static int[][] IDs =
-		{
-			new int[] { 1155794, 464, 465, 466, 463 },      // RoughWindowless
+        {
+            new int[] { 1155794, 464, 465, 466, 463 },      // RoughWindowless
 			new int[] { 1155797, 467, 468 },                // RoughWindow
 			new int[] { 1155799, 469, 470, 471, 472, 473 }, // RoughArch
 			new int[] { 1155804, 474, },                    // RoughPillar
@@ -133,7 +131,7 @@ namespace Server.Items
         }
 
         [Constructable]
-        public CraftableHouseItem(CraftableItemType type) 
+        public CraftableHouseItem(CraftableItemType type)
             : base(IDs[(int)type][1])
         {
             _Type = type;
@@ -519,7 +517,7 @@ namespace Server.Items
             else
                 door = new CraftableMetalHouseDoor(this.Type, CraftableMetalHouseDoor.GetDoorFacing(this.Type));
 
-            if(door is IResource)
+            if (door is IResource)
                 ((IResource)door).Resource = _Resource;
 
             if (Parent is Container)

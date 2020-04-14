@@ -1,21 +1,19 @@
-using System;
-
 namespace Server.Items
 {
     public class SwordOfShatteredHopes : GlassSword
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1112770; } } // Sword of Shattered Hopes
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1112770; } } // Sword of Shattered Hopes
+
         [Constructable]
         public SwordOfShatteredHopes()
             : base()
         {
-            Hue = 91;				
+            Hue = 91;
             WeaponAttributes.HitDispel = 25;
             WeaponAttributes.SplinteringWeapon = 20;
-            Attributes.WeaponSpeed = 30;	
-            Attributes.WeaponDamage = 50;			
+            Attributes.WeaponSpeed = 30;
+            Attributes.WeaponDamage = 50;
             WeaponAttributes.ResistFireBonus = 15;
         }
 
@@ -56,8 +54,8 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-			if (version < 1)
-				WeaponAttributes.SplinteringWeapon = 20;
+            if (version < 1)
+                WeaponAttributes.SplinteringWeapon = 20;
         }
     }
 }

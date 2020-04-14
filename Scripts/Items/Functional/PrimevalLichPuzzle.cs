@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.Commands;
 using Server.Items;
+using System;
+using System.Collections.Generic;
 
 //
 // This implements the Primeval Lich Lever Puzzle for SA.  
@@ -93,7 +93,7 @@ namespace Server.Engines.CannedEvil
         private static readonly Point3D controlLoc = new Point3D(6999, 977, -15);
 
         // puzzle lever data
-        private static readonly int[][] leverdata = 
+        private static readonly int[][] leverdata =
         { // 3D coord, hue for levers
             new int[] { 6981, 977, -15, 1204 }, // red
             new int[] { 6984, 977, -15, 1150 }, // white
@@ -121,7 +121,7 @@ namespace Server.Engines.CannedEvil
         public PrimevalLichPuzzle(Mobile m)
             : base(0x1BC3)
         {
-            if(null == m || null != m_Instance)
+            if (null == m || null != m_Instance)
             {
                 Delete();
                 //Probably not needed, OnAfterDelete sets it null anyway
@@ -177,7 +177,7 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return(!Deleted && null != m_Altar && m_Altar.Active);
+                return (!Deleted && null != m_Altar && m_Altar.Active);
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -201,18 +201,18 @@ namespace Server.Engines.CannedEvil
         }
         public static void Initialize()
         {
-			CommandSystem.Register("GenLichPuzzle", AccessLevel.Administrator, new CommandEventHandler(GenLichPuzzle_OnCommand));
-			CommandSystem.Register("DeleteLichPuzzle", AccessLevel.Administrator, new CommandEventHandler(DeleteLichPuzzle_OnCommand));
-		}
+            CommandSystem.Register("GenLichPuzzle", AccessLevel.Administrator, new CommandEventHandler(GenLichPuzzle_OnCommand));
+            CommandSystem.Register("DeleteLichPuzzle", AccessLevel.Administrator, new CommandEventHandler(DeleteLichPuzzle_OnCommand));
+        }
 
-		[Usage("DeleteLichPuzzle")]
+        [Usage("DeleteLichPuzzle")]
         [Description("Deletes the Primeval Lich lever puzzle.")]
-		public static void DeleteLichPuzzle_OnCommand(CommandEventArgs e)
-		{
-			WeakEntityCollection.Delete("primevallich");
-		}
+        public static void DeleteLichPuzzle_OnCommand(CommandEventArgs e)
+        {
+            WeakEntityCollection.Delete("primevallich");
+        }
 
-		[Usage("GenLichPuzzle")]
+        [Usage("GenLichPuzzle")]
         [Description("Generates the Primeval Lich lever puzzle.")]
         public static void GenLichPuzzle_OnCommand(CommandEventArgs e)
         {
@@ -341,7 +341,7 @@ namespace Server.Engines.CannedEvil
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     m_Instance = reader.ReadItem() as PrimevalLichPuzzle;
@@ -495,7 +495,7 @@ namespace Server.Engines.CannedEvil
 
             Item item = null;
 
-            switch ( Utility.Random(1) )
+            switch (Utility.Random(1))
             {
                 case 0:
                     item = ScrollOfTranscendence.CreateRandom(10, 10);

@@ -1,32 +1,29 @@
-using System;
-using Server.Items;
-
 namespace Server.Items
 {
-	public class SorcererChest : LeatherChest
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber{ get{ return 1080468; } } // Sorcerer's Tunic
+    public class SorcererChest : LeatherChest
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1080468; } } // Sorcerer's Tunic
 
-        public override SetItem SetID{ get{ return SetItem.Sorcerer; } }
-		public override int Pieces{ get{ return 6; } }
-	
-		public override int BasePhysicalResistance{ get{ return 7; } }
-		public override int BaseFireResistance{ get{ return 7; } }
-		public override int BaseColdResistance{ get{ return 7; } }
-		public override int BasePoisonResistance{ get{ return 7; } }
-		public override int BaseEnergyResistance{ get{ return 7; } }
-		public override int InitMinHits{ get{ return 255; } }
-		public override int InitMaxHits{ get{ return 255; } }
+        public override SetItem SetID { get { return SetItem.Sorcerer; } }
+        public override int Pieces { get { return 6; } }
 
-		[Constructable]
-		public SorcererChest() : base()
-		{
-            this.Hue = 1165;			
-			this.Weight = 6;	
-			
-			this.Attributes.BonusInt = 1;
-			this.Attributes.LowerRegCost = 10;
+        public override int BasePhysicalResistance { get { return 7; } }
+        public override int BaseFireResistance { get { return 7; } }
+        public override int BaseColdResistance { get { return 7; } }
+        public override int BasePoisonResistance { get { return 7; } }
+        public override int BaseEnergyResistance { get { return 7; } }
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
+
+        [Constructable]
+        public SorcererChest() : base()
+        {
+            this.Hue = 1165;
+            this.Weight = 6;
+
+            this.Attributes.BonusInt = 1;
+            this.Attributes.LowerRegCost = 10;
 
             this.SetAttributes.BonusInt = 6;
             this.SetAttributes.RegenMana = 2;
@@ -41,24 +38,24 @@ namespace Server.Items
             this.SetColdBonus = 28;
             this.SetPoisonBonus = 28;
             this.SetEnergyBonus = 28;
-		}
+        }
 
-		public SorcererChest( Serial serial ) : base( serial )
-		{
-		}
-		
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-			
-			writer.Write( (int) 0 ); // version
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize( reader );
-			
-			int version = reader.ReadInt();
-		}
-	}
+        public SorcererChest(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
 }

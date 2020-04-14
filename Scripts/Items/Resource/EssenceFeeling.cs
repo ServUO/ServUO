@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class EssenceFeeling : Item, ICommodity
@@ -16,7 +14,7 @@ namespace Server.Items
         {
             Stackable = true;
             Amount = amount;
-			Hue = 455;
+            Hue = 455;
         }
 
         public EssenceFeeling(Serial serial)
@@ -31,7 +29,7 @@ namespace Server.Items
                 return 1113339;
             }
         }// essence of feeling
-		TextDefinition ICommodity.Description
+        TextDefinition ICommodity.Description
         {
             get
             {

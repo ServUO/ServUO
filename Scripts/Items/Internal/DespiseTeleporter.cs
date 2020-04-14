@@ -1,7 +1,5 @@
-using Server;
-using System;
-using Server.Mobiles;
 using Server.Engines.Despise;
+using Server.Mobiles;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -85,20 +83,20 @@ namespace Server.Items
 
         public DespiseTeleporter(Serial serial)
             : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write((int)0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int v = reader.ReadInt();
-		}
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = reader.ReadInt();
+        }
     }
 
     public class GateTeleporter : Item
@@ -243,13 +241,13 @@ namespace Server.Items
 
         public GateTeleporter(Serial serial)
             : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write((int)0);
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
 
             writer.Write(_Destination);
             writer.Write(_DestinationMap);
@@ -260,12 +258,12 @@ namespace Server.Items
             {
                 Teleporters.ForEach(t => writer.Write(t));
             }
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int v = reader.ReadInt();
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = reader.ReadInt();
 
             _Destination = reader.ReadPoint3D();
             _DestinationMap = reader.ReadMap();
@@ -284,7 +282,7 @@ namespace Server.Items
                     tele.Master = this;
                 }
             }
-		}
+        }
 
         public class InternalTeleporter : Teleporter
         {
@@ -303,7 +301,7 @@ namespace Server.Items
             }
 
             public override bool HandlesOnMovement { get { return Master != null && Utility.InRange(Master.Location, Location, 1) && this.Map == Master.Map; } }
-            
+
             public override void OnMovement(Mobile m, Point3D oldLocation)
             {
                 if (Master == null || Master.Destination == Point3D.Zero || Master.Map == null || Master.Map == Map.Internal)

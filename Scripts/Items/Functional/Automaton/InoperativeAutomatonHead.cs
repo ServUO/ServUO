@@ -1,6 +1,3 @@
-using System;
-using Server.Mobiles;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x9DB1, 0x9DB2)]

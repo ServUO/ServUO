@@ -1,6 +1,3 @@
-using System;
-using Server.Spells.Spellweaving;
-
 namespace Server.Items
 {
     public abstract class BaseMeleeWeapon : BaseWeapon
@@ -13,7 +10,7 @@ namespace Server.Items
         public BaseMeleeWeapon(Serial serial)
             : base(serial)
         {
-        }        
+        }
 
         public override void Serialize(GenericWriter writer)
         {

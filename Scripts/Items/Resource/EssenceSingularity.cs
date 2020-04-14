@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class EssenceSingularity : Item, ICommodity
@@ -31,7 +29,7 @@ namespace Server.Items
                 return 1113341;
             }
         }// essence of singularity
-		TextDefinition ICommodity.Description
+        TextDefinition ICommodity.Description
         {
             get
             {

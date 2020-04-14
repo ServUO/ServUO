@@ -1,4 +1,3 @@
-using System;
 using Server.Gumps;
 using Server.Mobiles;
 
@@ -29,19 +28,19 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
 
         public virtual void Release(Mobile from, BaseCreature summon)
-        { 
+        {
         }
     }
 }

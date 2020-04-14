@@ -1,9 +1,6 @@
+using Server.Engines.Points;
 using System;
 using System.Collections.Generic;
-using Server.Multis;
-using Server.ContextMenus;
-using Server.Mobiles;
-using Server.Engines.Points;
 using System.Linq;
 
 namespace Server.Items
@@ -24,7 +21,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override int DefaultMaxWeight
         {
             get

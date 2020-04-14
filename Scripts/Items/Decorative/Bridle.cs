@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [TypeAlias("Server.Items.DecoBridle")]

@@ -1,6 +1,3 @@
-using System;
-using Server.Items;
-
 namespace Server.Items
 {
     public class VirtuososEarpieces : GargishEarrings, ISetItem

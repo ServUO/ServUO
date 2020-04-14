@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class AbyssReaver : Cyclone
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1112694; } } // Abyss Reaver
 
         [Constructable]
@@ -19,7 +17,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

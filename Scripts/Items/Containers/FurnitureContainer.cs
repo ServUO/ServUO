@@ -1,5 +1,5 @@
-using System;
 using Server.Engines.Craft;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Items
@@ -567,7 +567,7 @@ namespace Server.Items
 
             if (c is Armoire || c is FancyArmoire)
             {
-                switch ( c.ItemID )
+                switch (c.ItemID)
                 {
                     case 0xA4C:
                         c.ItemID = 0xA4D;
@@ -647,7 +647,7 @@ namespace Server.Items
                 ItemID--;
 
             if (DynamicFurniture.Open(this, m))
-                base.DisplayTo(m);            
+                base.DisplayTo(m);
         }
 
         public ChinaCabinet(Serial serial)

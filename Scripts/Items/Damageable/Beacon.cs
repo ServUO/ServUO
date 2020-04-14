@@ -1,9 +1,7 @@
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Server;
-using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -255,7 +253,7 @@ namespace Server.Items
                 m.BoltEffect(0);
                 AOS.Damage(m, null, Utility.RandomMinMax(80, 90), 0, 0, 0, 0, 100);
 
-                if(m.NetState != null)
+                if (m.NetState != null)
                     m.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1154552, m.NetState); // *The beacon blasts a surge of energy at you!"
             });
 
@@ -264,13 +262,13 @@ namespace Server.Items
 
         public Beacon(Serial serial)
             : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
 
             writer.Write(Component);
 
@@ -278,12 +276,12 @@ namespace Server.Items
 
             if (Rubble != null)
                 Rubble.ForEach(i => writer.Write(i));
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
 
             Component = reader.ReadItem() as BeaconItem;
 
@@ -303,7 +301,7 @@ namespace Server.Items
                     Rubble.Add(item);
                 }
             }
-		}
+        }
     }
 
     public class BeaconItem : Item

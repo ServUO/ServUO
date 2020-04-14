@@ -1,22 +1,19 @@
-using System;
-using System.Collections.Generic;
-
-using Server.Network;
-using Server.Spells;
 using Server.ContextMenus;
+using Server.Gumps;
 using Server.Mobiles;
 using Server.Spells.SkillMasteries;
-using Server.Gumps;
 using Server.Spells.Spellweaving;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
     [Flipable(0x225A, 0x225B)]
-	public class BookOfMasteries : Spellbook
-	{
-		public override SpellbookType SpellbookType => SpellbookType.SkillMasteries;
-		public override int BookOffset => 700;
-		public override int BookCount => 45;
+    public class BookOfMasteries : Spellbook
+    {
+        public override SpellbookType SpellbookType => SpellbookType.SkillMasteries;
+        public override int BookOffset => 700;
+        public override int BookCount => 45;
 
         private ulong _Content;
 
@@ -38,16 +35,16 @@ namespace Server.Items
             }
         }
 
-		[Constructable]
-		public BookOfMasteries() : this( 0x1FFFFFFFFFFF )
-		{
-		}
+        [Constructable]
+        public BookOfMasteries() : this(0x1FFFFFFFFFFF)
+        {
+        }
 
-		[Constructable]
-		public BookOfMasteries( ulong content ) : base( content, 0x225A )
-		{
+        [Constructable]
+        public BookOfMasteries(ulong content) : base(content, 0x225A)
+        {
             _Content = content;
-		}
+        }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
@@ -69,7 +66,7 @@ namespace Server.Items
 
         public static void AddToCooldown(Mobile from)
         {
-            if(m_Cooldown == null)
+            if (m_Cooldown == null)
                 m_Cooldown = new Dictionary<Mobile, DateTime>();
 
             m_Cooldown[from] = DateTime.UtcNow + TimeSpan.FromMinutes(10);
@@ -98,7 +95,7 @@ namespace Server.Items
         {
             base.AddProperty(list);
 
-            if(RootParent is Mobile)
+            if (RootParent is Mobile)
             {
                 SkillName sk = ((Mobile)RootParent).Skills.CurrentMastery;
 
@@ -116,19 +113,19 @@ namespace Server.Items
 
         public BookOfMasteries(Serial serial)
             : base(serial)
-		{
-		}
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-			writer.WriteEncodedInt( 1 ); // version
-		}
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.WriteEncodedInt(1); // version
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
-			int version = reader.ReadEncodedInt();
-		}
-	}
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadEncodedInt();
+        }
+    }
 }

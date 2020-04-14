@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class DaemonBlood : BaseReagent, ICommodity

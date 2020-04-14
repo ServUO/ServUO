@@ -1,4 +1,3 @@
-using System;
 using Server.Spells;
 
 namespace Server.Items
@@ -67,7 +66,7 @@ namespace Server.Items
                 CureLevelInfo li = info[i];
 
                 if (li.Poison.RealLevel == from.Poison.RealLevel &&
-					Scale(from, li.Chance) > Utility.RandomDouble())
+                    Scale(from, li.Chance) > Utility.RandomDouble())
                 {
                     cure = true;
                     break;

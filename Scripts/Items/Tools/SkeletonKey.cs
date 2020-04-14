@@ -1,7 +1,4 @@
-﻿using Server;
-using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class Skeletonkey : Lockpick
     {

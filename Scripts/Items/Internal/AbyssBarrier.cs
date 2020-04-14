@@ -1,15 +1,10 @@
-using System;
-using Server;
-using Server.Items;
 using Server.Mobiles;
-using Server.Network;
-using Server.Regions;
 
 namespace Server.Items
 {
     public class AbyssBarrier : Item
     {
-      
+
         [Constructable]
         public AbyssBarrier() : base(0x49E)
         {
@@ -41,7 +36,7 @@ namespace Server.Items
                 return false;
         }
 
-        public AbyssBarrier(Serial serial): base(serial)
+        public AbyssBarrier(Serial serial) : base(serial)
         {
         }
 
@@ -59,8 +54,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            }
         }
     }
+}
 
-	
+

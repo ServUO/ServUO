@@ -1,8 +1,6 @@
-using System;
-
 namespace Server.Items
 {
-    [FlipableAttribute(0x156C, 0x156D)] 
+    [FlipableAttribute(0x156C, 0x156D)]
     public class DecorativeShield1 : Item
     {
         [Constructable]
@@ -32,7 +30,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x156E, 0x156F)] 
+    [FlipableAttribute(0x156E, 0x156F)]
     public class DecorativeShield2 : Item
     {
         [Constructable]
@@ -62,7 +60,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1570, 0x1571)] 
+    [FlipableAttribute(0x1570, 0x1571)]
     public class DecorativeShield3 : Item
     {
         [Constructable]
@@ -92,7 +90,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1572, 0x1573)] 
+    [FlipableAttribute(0x1572, 0x1573)]
     public class DecorativeShield4 : Item
     {
         [Constructable]
@@ -122,7 +120,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1574, 0x1575)] 
+    [FlipableAttribute(0x1574, 0x1575)]
     public class DecorativeShield5 : Item
     {
         [Constructable]
@@ -152,7 +150,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1576, 0x1577)] 
+    [FlipableAttribute(0x1576, 0x1577)]
     public class DecorativeShield6 : Item
     {
         [Constructable]
@@ -182,7 +180,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1578, 0x1579)] 
+    [FlipableAttribute(0x1578, 0x1579)]
     public class DecorativeShield7 : Item
     {
         [Constructable]
@@ -212,7 +210,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x157A, 0x157B)] 
+    [FlipableAttribute(0x157A, 0x157B)]
     public class DecorativeShield8 : Item
     {
         [Constructable]
@@ -242,7 +240,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x157C, 0x157D)] 
+    [FlipableAttribute(0x157C, 0x157D)]
     public class DecorativeShield9 : Item
     {
         [Constructable]
@@ -272,7 +270,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x157E, 0x157F)] 
+    [FlipableAttribute(0x157E, 0x157F)]
     public class DecorativeShield10 : Item
     {
         [Constructable]
@@ -302,7 +300,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1580, 0x1581)] 
+    [FlipableAttribute(0x1580, 0x1581)]
     public class DecorativeShield11 : Item
     {
         [Constructable]
@@ -332,7 +330,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1582, 0x1583, 0x1634, 0x1635)] 
+    [FlipableAttribute(0x1582, 0x1583, 0x1634, 0x1635)]
     public class DecorativeShieldSword1North : Item
     {
         [Constructable]
@@ -362,7 +360,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1634, 0x1635, 0x1582, 0x1583)] 
+    [FlipableAttribute(0x1634, 0x1635, 0x1582, 0x1583)]
     public class DecorativeShieldSword1West : Item
     {
         [Constructable]
@@ -392,7 +390,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1584, 0x1585, 0x1636, 0x1637)] 
+    [FlipableAttribute(0x1584, 0x1585, 0x1636, 0x1637)]
     public class DecorativeShieldSword2North : Item
     {
         [Constructable]
@@ -422,7 +420,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1636, 0x1637, 0x1584, 0x1585)] 
+    [FlipableAttribute(0x1636, 0x1637, 0x1584, 0x1585)]
     public class DecorativeShieldSword2West : Item
     {
         [Constructable]
