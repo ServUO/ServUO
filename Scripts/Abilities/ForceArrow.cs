@@ -1,6 +1,6 @@
+using Server.Spells;
 using System;
 using System.Collections.Generic;
-using Server.Spells;
 
 namespace Server.Items
 {
@@ -10,7 +10,7 @@ namespace Server.Items
         {
         }
 
-        public override int BaseMana => 20; 
+        public override int BaseMana => 20;
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
@@ -117,8 +117,8 @@ namespace Server.Items
             private ForceArrowTimer m_Timer;
             private int m_DefenseChanceMalus;
 
-            public Mobile Attacker => m_Attacker; 
-            public Mobile Defender => m_Defender; 
+            public Mobile Attacker => m_Attacker;
+            public Mobile Defender => m_Defender;
             public ForceArrowTimer Timer { get { return m_Timer; } set { m_Timer = value; } }
             public int DefenseChanceMalus { get { return m_DefenseChanceMalus; } set { m_DefenseChanceMalus = value; } }
 

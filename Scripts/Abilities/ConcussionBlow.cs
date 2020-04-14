@@ -30,7 +30,7 @@ namespace Server.Items
 
             int damage = 10; // Base damage is 10.
 
-            if (defender.HitsMax > 0) 
+            if (defender.HitsMax > 0)
             {
                 double hitsPercent = ((double)defender.Hits / (double)defender.HitsMax) * 100.0;
 

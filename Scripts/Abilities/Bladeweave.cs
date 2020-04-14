@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Server.Mobiles;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -36,7 +35,7 @@ namespace Server.Items
         {
         }
 
-        public override int BaseMana => 30; 
+        public override int BaseMana => 30;
 
         public override bool OnBeforeSwing(Mobile attacker, Mobile defender)
         {

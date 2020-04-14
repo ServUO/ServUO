@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
@@ -9,7 +9,7 @@ namespace Server.Items
     // The target will be hit with chaos damage regardless of whether they were dismounted or paralyzed.
     public class InfusedThrow : WeaponAbility
     {
-        public override int BaseMana => 25; 
+        public override int BaseMana => 25;
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
