@@ -1,9 +1,7 @@
-using System;
-using Server.Network;
+using Server.Engines.PartySystem;
 using Server.Engines.Quests;
 using Server.Mobiles;
-using System.Collections.Generic;
-using Server.Engines.PartySystem;
+using Server.Network;
 using System.Linq;
 
 namespace Server
@@ -63,7 +61,7 @@ namespace Server
                 RemoveQuesters(m, ns, oldMap);
                 AddQuesters(m);
             }
-            else if(m.Corpse != null)
+            else if (m.Corpse != null)
             {
                 AddCorpse(m);
                 RemoveHealers(m, oldMap);
@@ -192,7 +190,7 @@ namespace Server
 
             m_Stream.Write((ushort)(ignoreObject ? 1 : 0));
 
-            if(type == WaypointType.Corpse)
+            if (type == WaypointType.Corpse)
                 m_Stream.Write((int)1046414);
             else
                 m_Stream.Write((int)1062613);

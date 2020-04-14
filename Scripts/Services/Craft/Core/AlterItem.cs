@@ -279,9 +279,6 @@ namespace Server.Engines.Craft
                 }
                 else if (origItem is BaseQuiver && newitem is BaseArmor)
                 {
-                    /*BaseQuiver oldquiver = (BaseQuiver)origItem;
-                    BaseArmor newarmor = (BaseArmor)newitem;*/
-
                     ((BaseArmor)newitem).Altered = true;
                 }
                 else

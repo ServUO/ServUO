@@ -107,7 +107,7 @@ namespace Server.Commands.Generic
                 size = i;
             }
 
-            parsed.Sort(delegate(BaseExtension a, BaseExtension b)
+            parsed.Sort(delegate (BaseExtension a, BaseExtension b)
             {
                 return (a.Order - b.Order);
             });

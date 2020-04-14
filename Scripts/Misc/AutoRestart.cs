@@ -1,5 +1,5 @@
-using System;
 using Server.Commands;
+using System;
 
 namespace Server.Misc
 {
@@ -7,7 +7,7 @@ namespace Server.Misc
     {
         private static readonly TimeSpan RestartDelay = TimeSpan.FromSeconds(10);  // how long the server should remain active before restart (period of 'server wars')
         private static readonly TimeSpan WarningDelay = TimeSpan.FromMinutes(1.0); // at what interval should the shutdown message be displayed?
-        
+
         public static DateTime RestartTime { get; private set; }
         public static bool Restarting { get; private set; }
         public static Timer Timer { get; private set; }
@@ -17,7 +17,7 @@ namespace Server.Misc
         public static int Hour = Config.Get("AutoRestart.Hour", 12);
         public static int Minutes = Config.Get("AutoRestart.Minute", 0);
         public static int Frequency = Config.Get("AutoRestart.Frequency", 24);
-        
+
         public AutoRestart()
             : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
         {
@@ -25,8 +25,8 @@ namespace Server.Misc
 
         public static void Initialize()
         {
-			CommandSystem.Register("Restart", AccessLevel.Administrator, new CommandEventHandler(Restart_OnCommand));
-			CommandSystem.Register("Shutdown", AccessLevel.Administrator, new CommandEventHandler(Shutdown_OnCommand));
+            CommandSystem.Register("Restart", AccessLevel.Administrator, new CommandEventHandler(Restart_OnCommand));
+            CommandSystem.Register("Shutdown", AccessLevel.Administrator, new CommandEventHandler(Shutdown_OnCommand));
 
             if (Enabled)
             {
@@ -69,15 +69,15 @@ namespace Server.Misc
             }
         }
 
-		public static void Shutdown_OnCommand(CommandEventArgs e)
-		{
-			if (Restarting)
-			{
-				e.Mobile.SendMessage("The server is already shutting down.");
-			}
-			else
-			{
-				e.Mobile.SendMessage("You have initiated server shutdown.");
+        public static void Shutdown_OnCommand(CommandEventArgs e)
+        {
+            if (Restarting)
+            {
+                e.Mobile.SendMessage("The server is already shutting down.");
+            }
+            else
+            {
+                e.Mobile.SendMessage("You have initiated server shutdown.");
 
                 StopTimer();
 
@@ -88,8 +88,8 @@ namespace Server.Misc
 
                     TimedShutdown(false);
                 });
-			}
-		}
+            }
+        }
 
         private static void BeginTimer()
         {
@@ -108,7 +108,7 @@ namespace Server.Misc
             }
         }
 
-		protected override void OnTick()
+        protected override void OnTick()
         {
             if (Restarting || !Enabled)
                 return;

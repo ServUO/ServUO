@@ -37,8 +37,6 @@ namespace Server.Mobiles
             Fame = 3000;
             Karma = -3000;
 
-            VirtualArmor = 40;
-
             Tamable = true;
             ControlSlots = 1;
             MinTameSkill = 80.7;
@@ -53,15 +51,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Hides
-        {
-            get { return 12; }
-        }
-
-        public override HideType HideType
-        {
-            get { return HideType.Spined; }
-        }
+        public override int Hides => 12; 
+		
+        public override HideType HideType => HideType.Spined; 
 
         public override void GenerateLoot()
         {

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Commands.Generic
 {
     public class FacetCommandImplementor : BaseCommandImplementor

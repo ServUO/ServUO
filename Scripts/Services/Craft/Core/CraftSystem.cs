@@ -33,81 +33,27 @@ namespace Server.Engines.Craft
         private readonly CraftSubResCol m_CraftSubRes;
         private readonly CraftSubResCol m_CraftSubRes2;
 
-        public int MinCraftEffect
-        {
-            get
-            {
-                return m_MinCraftEffect;
-            }
-        }
-        public int MaxCraftEffect
-        {
-            get
-            {
-                return m_MaxCraftEffect;
-            }
-        }
-        public double Delay
-        {
-            get
-            {
-                return m_Delay;
-            }
-        }
+        public int MinCraftEffect => m_MinCraftEffect;
 
-        public CraftItemCol CraftItems
-        {
-            get
-            {
-                return m_CraftItems;
-            }
-        }
-        public CraftGroupCol CraftGroups
-        {
-            get
-            {
-                return m_CraftGroups;
-            }
-        }
-        public CraftSubResCol CraftSubRes
-        {
-            get
-            {
-                return m_CraftSubRes;
-            }
-        }
-        public CraftSubResCol CraftSubRes2
-        {
-            get
-            {
-                return m_CraftSubRes2;
-            }
-        }
-		
+        public int MaxCraftEffect => m_MaxCraftEffect;
+
+        public double Delay => m_Delay;
+
+        public CraftItemCol CraftItems => m_CraftItems;
+
+        public CraftGroupCol CraftGroups => m_CraftGroups;
+
+        public CraftSubResCol CraftSubRes => m_CraftSubRes;
+
+        public CraftSubResCol CraftSubRes2 => m_CraftSubRes2;
+
         public abstract SkillName MainSkill { get; }
 
-        public virtual int GumpTitleNumber
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual string GumpTitleString
-        {
-            get
-            {
-                return "";
-            }
-        }
+        public virtual int GumpTitleNumber => 0;
 
-        public virtual CraftECA ECA
-        {
-            get
-            {
-                return CraftECA.ChanceMinusSixty;
-            }
-        }
+        public virtual string GumpTitleString => "";
+
+        public virtual CraftECA ECA => CraftECA.ChanceMinusSixty;
 
         private readonly Dictionary<Mobile, CraftContext> m_ContextTable = new Dictionary<Mobile, CraftContext>();
 

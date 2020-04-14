@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.Commands;
 using Server.Mobiles;
 using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Gumps
 {
@@ -181,7 +181,7 @@ namespace Server.Gumps
         {
             Mobile from = state.Mobile;
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 0: // Closed
                     {
@@ -219,7 +219,7 @@ namespace Server.Gumps
                                 from.SendMessage("That player is no longer online.");
                                 from.SendGump(new WhoGump(from, this.m_Mobiles, this.m_Page));
                             }
-                            else if (m == from || !m.Hidden || from.AccessLevel >= m.AccessLevel || (m is PlayerMobile && ((PlayerMobile)m).VisibilityList.Contains(from))) 
+                            else if (m == from || !m.Hidden || from.AccessLevel >= m.AccessLevel || (m is PlayerMobile && ((PlayerMobile)m).VisibilityList.Contains(from)))
                             {
                                 from.SendGump(new ClientGump(from, m.NetState));
                             }
@@ -245,19 +245,19 @@ namespace Server.Gumps
 
         private int GetHueFor(Mobile m)
         {
-            switch ( m.AccessLevel )
+            switch (m.AccessLevel)
             {
                 case AccessLevel.Owner:
                 case AccessLevel.CoOwner:
                 case AccessLevel.Developer:
-                case AccessLevel.Administrator: 
-					return EC ? 0x51D : 0x516;
-                case AccessLevel.Seer: 
-					return EC ? 0x142 : 0x144;
-                case AccessLevel.GameMaster: 
-					return EC ? 0x11 : 0x21;
-                case AccessLevel.Decorator: 
-					return 0x2;
+                case AccessLevel.Administrator:
+                    return EC ? 0x51D : 0x516;
+                case AccessLevel.Seer:
+                    return EC ? 0x142 : 0x144;
+                case AccessLevel.GameMaster:
+                    return EC ? 0x11 : 0x21;
+                case AccessLevel.Decorator:
+                    return 0x2;
                 case AccessLevel.VIP:
                 case AccessLevel.Player:
                 default:

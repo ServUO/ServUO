@@ -1,7 +1,6 @@
-using System;
 using Server.Commands;
-using Server.Items;
 using Server.Network;
+using System;
 
 namespace Server.Gumps
 {
@@ -160,13 +159,13 @@ namespace Server.Gumps
             for (int i = 0; i < m_Types.Length; ++i)
             {
                 int page = i / 20 + 1;
-                int xpos = (i / 2) % 10 ;
+                int xpos = (i / 2) % 10;
                 int ypos = i % 2;
 
                 if (xpos == 0 && ypos == 0)
                 {
                     AddPage(page);
-                    AddHtmlLocalized(30, 20, 60, 20, 1042971, String.Format("{0}",page), 0x7FFF, false, false); // #
+                    AddHtmlLocalized(30, 20, 60, 20, 1042971, String.Format("{0}", page), 0x7FFF, false, false); // #
 
                     AddHtmlLocalized(30, 45, 60, 20, 1043353, 0x7FFF, false, false); // Next
                     if (page < pages)

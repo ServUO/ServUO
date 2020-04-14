@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
@@ -12,13 +12,8 @@ namespace Server.Items
         {
         }
 
-        public override int BaseMana
-        {
-            get
-            {
-                return 30;
-            }
-        }
+        public override int BaseMana => 30;
+
         public override bool CheckSkills(Mobile from)
         {
             if (this.GetSkill(from, SkillName.Bushido) < 50.0)
@@ -53,7 +48,7 @@ namespace Server.Items
                 doEffects = true;
             }
 
-            if(attacker is BaseCreature)
+            if (attacker is BaseCreature)
                 PetTrainingHelper.OnWeaponAbilityUsed((BaseCreature)attacker, SkillName.Bushido);
 
             if (!immune)

@@ -1,7 +1,7 @@
-using System;
 using Server.Engines.PartySystem;
 using Server.Guilds;
 using Server.Network;
+using System;
 
 namespace Server.Misc
 {

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Misc
 {
     public class RaceDefinitions
@@ -15,10 +13,7 @@ namespace Server.Misc
             */
             RegisterRace(new Human(0, 0));
             RegisterRace(new Elf(1, 1));
-
-            #region Stygian Abyss
             RegisterRace(new Gargoyle(2, 2));
-            #endregion
         }
 
         public static void RegisterRace(Race race)
@@ -53,7 +48,7 @@ namespace Server.Misc
 
             public override int RandomHair(bool female)	//Random hair doesn't include baldness
             {
-                switch( Utility.Random(9) )
+                switch (Utility.Random(9))
                 {
                     case 0:
                         return 0x203B;	//Short
@@ -207,7 +202,7 @@ namespace Server.Misc
 
             public override int RandomHair(bool female)	//Random hair doesn't include baldness
             {
-                switch( Utility.Random(8) )
+                switch (Utility.Random(8))
                 {
                     case 0:
                         return 0x2FC0;	//Long Feather
@@ -294,7 +289,6 @@ namespace Server.Misc
             }
         }
 
-        #region SA
         private class Gargoyle : Race
         {
             public Gargoyle(int raceID, int raceIndex)
@@ -425,6 +419,5 @@ namespace Server.Misc
                 return RandomSkinHue();
             }
         }
-        #endregion
     }
 }

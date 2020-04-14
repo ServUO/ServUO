@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
 using Server.Accounting;
 using Server.Commands;
 using Server.Items;
@@ -10,6 +5,11 @@ using Server.Misc;
 using Server.Multis;
 using Server.Network;
 using Server.Prompts;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Net;
+using System.Text;
 
 namespace Server.Gumps
 {
@@ -141,7 +141,7 @@ namespace Server.Gumps
             if (m == null)
                 return LabelHue;
 
-            switch ( m.AccessLevel )
+            switch (m.AccessLevel)
             {
                 case AccessLevel.Owner:
                     return 0x516;
@@ -223,7 +223,7 @@ namespace Server.Gumps
             if (notice != null)
                 this.AddHtml(12, 392, 396, 36, this.Color(notice, LabelColor32), false, false);
 
-            switch ( pageType )
+            switch (pageType)
             {
                 case AdminGumpPage.Information_General:
                     {
@@ -277,20 +277,6 @@ namespace Server.Gumps
                         os = os.Replace("Service Pack", "SP");
 
                         this.AddLabel(150, 350, LabelHue, os);
-
-                        /*string str;
-
-                        try{ str = FormatTimeSpan( Core.Process.TotalProcessorTime ); }
-                        catch{ str = "(unable to retrieve)"; }
-
-                        AddLabel( 20, 330, LabelHue, "Process Time:" );
-                        AddLabel( 250, 330, LabelHue, str );*/
-
-                        /*try{ str = Core.Process.PriorityClass.ToString(); }
-                        catch{ str = "(unable to retrieve)"; }
-
-                        AddLabel( 20, 350, LabelHue, "Process Priority:" );
-                        AddLabel( 250, 350, LabelHue, str );*/
 
                         this.AddPageButton(200, 20, this.GetButtonID(0, 0), "General", AdminGumpPage.Information_General);
                         this.AddPageButton(200, 40, this.GetButtonID(0, 5), "Performance", AdminGumpPage.Information_Perf);
@@ -396,18 +382,11 @@ namespace Server.Gumps
 
                         this.AddButtonLabeled(20, 150, this.GetButtonID(3, 200), "Save");
 
-                        /*if ( !Core.Service )
-                        {*/
                         this.AddButtonLabeled(20, 180, this.GetButtonID(3, 201), "Shutdown (With Save)");
                         this.AddButtonLabeled(20, 200, this.GetButtonID(3, 202), "Shutdown (Without Save)");
 
                         this.AddButtonLabeled(20, 230, this.GetButtonID(3, 203), "Shutdown & Restart (With Save)");
                         this.AddButtonLabeled(20, 250, this.GetButtonID(3, 204), "Shutdown & Restart (Without Save)");
-                        /*}
-                        else
-                        {
-                        AddLabel( 20, 215, LabelHue, "Shutdown/Restart not available." );
-                        }*/
 
                         this.AddHtml(10, 295, 400, 20, this.Color(this.Center("Broadcast"), LabelColor32), false, false);
 
@@ -681,10 +660,6 @@ namespace Server.Gumps
                         this.AddButtonLabeled(20, y, this.GetButtonID(7, 8), "Squelch");
                         this.AddButtonLabeled(200, y, this.GetButtonID(7, 9), "Unsquelch");
                         y += 20;
-
-                        /*AddButtonLabeled(  20, y, GetButtonID( 7, 10 ), "Hide" );
-                        AddButtonLabeled( 200, y, GetButtonID( 7, 11 ), "Unhide" );
-                        y += 20;*/
 
                         this.AddButtonLabeled(20, y, this.GetButtonID(7, 12), "Kill");
                         this.AddButtonLabeled(200, y, this.GetButtonID(7, 13), "Resurrect");
@@ -1731,13 +1706,13 @@ namespace Server.Gumps
             int type = val % 11;
             int index = val / 11;
 
-            switch ( type )
+            switch (type)
             {
                 case 0:
                     {
                         AdminGumpPage page;
 
-                        switch ( index )
+                        switch (index)
                         {
                             case 0:
                                 page = AdminGumpPage.Information_General;
@@ -1766,7 +1741,7 @@ namespace Server.Gumps
                     }
                 case 1:
                     {
-                        switch ( index )
+                        switch (index)
                         {
                             case 0:
                                 {
@@ -1791,9 +1766,9 @@ namespace Server.Gumps
                         string notice = null;
                         AdminGumpPage page = AdminGumpPage.Administer;
 
-			if (index >= 600)
-			    page = AdminGumpPage.Administer_Maintenance;
-			else if (index >= 500)
+                        if (index >= 600)
+                            page = AdminGumpPage.Administer_Maintenance;
+                        else if (index >= 500)
                             page = AdminGumpPage.Administer_Access_Lockdown;
                         else if (index >= 400)
                             page = AdminGumpPage.Administer_Commands;
@@ -1804,7 +1779,7 @@ namespace Server.Gumps
                         else if (index >= 100)
                             page = AdminGumpPage.Administer_WorldBuilding;
 
-                        switch ( index )
+                        switch (index)
                         {
                             case 0:
                                 page = AdminGumpPage.Administer_WorldBuilding;
@@ -1818,9 +1793,9 @@ namespace Server.Gumps
                             case 3:
                                 page = AdminGumpPage.Administer_Commands;
                                 break;
-			    case 4:
-				page = AdminGumpPage.Administer_Maintenance;
-				break;
+                            case 4:
+                                page = AdminGumpPage.Administer_Maintenance;
+                                break;
                             case 101:
                                 this.InvokeCommand("CreateWorld nogump");
                                 notice = "The world has been created.";
@@ -2087,8 +2062,8 @@ namespace Server.Gumps
                                     }
 
                                     break;
-				}
-			    case 600:
+                                }
+                            case 600:
                                 this.InvokeCommand("RebuildCategorization");
                                 notice = "Categorization menu has been regenerated. The server should be restarted.";
                                 break;
@@ -2096,47 +2071,47 @@ namespace Server.Gumps
                                 this.InvokeCommand("DocGen");
                                 notice = "Documentation has been generated.";
                                 break;
-			    case 602:
+                            case 602:
                                 this.InvokeCommand("GenBounds");
                                 notice = "Bounds.bin rebuild. Restart server to take effect.";
                                 break;
-			    case 603:
+                            case 603:
                                 this.InvokeCommand("GenReports");
                                 notice = "Reports generated.";
                                 break;
-		            case 604:
+                            case 604:
                                 this.InvokeCommand("DumpTimers");
                                 notice = "Timers dumped.";
                                 break;
-			    case 605:
+                            case 605:
                                 this.InvokeCommand("CountObjects");
                                 notice = "Objects counted.";
                                 break;
-			    case 606:
+                            case 606:
                                 this.InvokeCommand("ProfileWorld");
                                 notice = "World profiled.";
                                 break;
-			    case 607:
+                            case 607:
                                 this.InvokeCommand("WriteProfiles");
                                 notice = "Profiles written.";
                                 break;
-			    case 608:
+                            case 608:
                                 this.InvokeCommand("TraceInternal");
                                 notice = "Tracing completed.";
                                 break;
-			    case 609:
+                            case 609:
                                 this.InvokeCommand("TraceExpanded");
                                 notice = "Tracing completed.";
                                 break;
-			    case 610:
+                            case 610:
                                 this.InvokeCommand("SetProfiles");
                                 notice = "Profiles toggled. Use with caution. This increases server load.";
-                                break;	
+                                break;
                         }
 
                         from.SendGump(new AdminGump(from, page, 0, null, notice, null));
 
-                        switch ( index )
+                        switch (index)
                         {
                             case 400:
                                 this.InvokeCommand("Add");
@@ -2159,7 +2134,7 @@ namespace Server.Gumps
                     }
                 case 4:
                     {
-                        switch ( index )
+                        switch (index)
                         {
                             case 0:
                             case 1:
@@ -2256,7 +2231,7 @@ namespace Server.Gumps
                     }
                 case 5:
                     {
-                        switch ( index )
+                        switch (index)
                         {
                             case 0:
                                 from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Information, 0, null, null, this.m_State));
@@ -2551,7 +2526,7 @@ namespace Server.Gumps
 
                                     AccessLevel newLevel;
 
-                                    switch ( index )
+                                    switch (index)
                                     {
                                         default:
                                         case 20:
@@ -2644,7 +2619,7 @@ namespace Server.Gumps
 
                                     break;
                                 }
-                                #region case 30: 3 minute game time account check
+                            #region case 30: 3 minute game time account check
                             case 30: // View all accounts less than 3 minutes of total online time.
                                 {
                                     //Change the "3" in the following line, to adjust deletion time.
@@ -2674,7 +2649,7 @@ namespace Server.Gumps
 
                                     break;
                                 }
-                                #endregion
+                            #endregion
                             case 31: // View all inactive accounts
                                 {
                                     ArrayList results = new ArrayList();
@@ -2709,7 +2684,7 @@ namespace Server.Gumps
 
                                     break;
                                 }
-                                #region original case 30
+                            #region original case 30
                             case 33: // View all empty accounts
                                 {
                                     ArrayList results = new ArrayList();
@@ -2732,7 +2707,7 @@ namespace Server.Gumps
 
                                     break;
                                 }
-                                #endregion
+                            #endregion
                             case 34:
                                 {
                                     goto case 20;
@@ -2813,7 +2788,7 @@ namespace Server.Gumps
                     }
                 case 6:
                     {
-                        switch ( index )
+                        switch (index)
                         {
                             case 0:
                                 {
@@ -2913,7 +2888,7 @@ namespace Server.Gumps
                         string notice = null;
                         bool sendGump = true;
 
-                        switch ( index )
+                        switch (index)
                         {
                             case 0:
                                 {
@@ -3037,7 +3012,7 @@ namespace Server.Gumps
                         if (sendGump)
                             from.SendGump(new AdminGump(from, AdminGumpPage.ClientInfo, 0, null, notice, this.m_State));
 
-                        switch ( index )
+                        switch (index)
                         {
                             case 3:
                                 {

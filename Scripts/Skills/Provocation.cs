@@ -149,8 +149,6 @@ namespace Server.SkillHandlers
                             }
                             else
                             {
-                                //from.DoHarmful( m_Creature );
-                                //from.DoHarmful( creature );
                                 if (!from.CheckTargetSkill(SkillName.Provocation, target, diff - 25.0, diff + 25.0))
                                 {
                                     from.NextSkillTime = Core.TickCount + (10000 - ((masteryBonus / 5) * 1000));

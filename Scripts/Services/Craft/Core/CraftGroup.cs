@@ -14,27 +14,12 @@ namespace Server.Engines.Craft
             this.m_arCraftItem = new CraftItemCol();
         }
 
-        public CraftItemCol CraftItems
-        {
-            get
-            {
-                return this.m_arCraftItem;
-            }
-        }
-        public string NameString
-        {
-            get
-            {
-                return this.m_NameString;
-            }
-        }
-        public int NameNumber
-        {
-            get
-            {
-                return this.m_NameNumber;
-            }
-        }
+        public CraftItemCol CraftItems => this.m_arCraftItem;
+
+        public string NameString => this.m_NameString;
+
+        public int NameNumber => this.m_NameNumber;
+
         public void AddCraftItem(CraftItem craftItem)
         {
             this.m_arCraftItem.Add(craftItem);

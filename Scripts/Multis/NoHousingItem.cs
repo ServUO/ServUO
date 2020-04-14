@@ -1,6 +1,6 @@
-using System;
 using Server.Multis;
 using Server.Regions;
+using System;
 
 namespace Server.Items
 {
@@ -41,7 +41,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
 
             if (this.m_Timer != null)
@@ -58,7 +58,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
 
             DateTime next = reader.ReadDateTime();
@@ -76,7 +76,7 @@ namespace Server.Items
                 this.m_Timer.Start();
             }
             else
-                this.Delete();		
+                this.Delete();
         }
 
         private class SimpleNoHousingRegion : BaseRegion

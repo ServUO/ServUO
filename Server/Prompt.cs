@@ -2,8 +2,8 @@ using System;
 
 namespace Server.Prompts
 {
-	public abstract class Prompt
-	{
+    public abstract class Prompt
+    {
         private IEntity m_Sender;
         private String m_MessageArgs;
 

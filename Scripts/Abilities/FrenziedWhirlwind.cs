@@ -1,12 +1,9 @@
+using Server.Mobiles;
+using Server.Network;
+using Server.Spells;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Server;
-using Server.Spells;
-using Server.Engines.PartySystem;
-using Server.Network;
-using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -24,7 +21,7 @@ namespace Server.Items
             return from.Skills[SkillName.Ninjitsu].Base > from.Skills[SkillName.Bushido].Base ? SkillName.Ninjitsu : SkillName.Bushido;
         }
 
-        public override int BaseMana { get { return 30; } }
+        public override int BaseMana => 30;
 
         private static Dictionary<Mobile, Timer> m_Registry = new Dictionary<Mobile, Timer>();
         public static Dictionary<Mobile, Timer> Registry { get { return m_Registry; } }

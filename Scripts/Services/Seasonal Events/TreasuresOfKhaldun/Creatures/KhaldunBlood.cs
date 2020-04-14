@@ -3,7 +3,7 @@ using System;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a Bloody corpse")]
+    [CorpseName("a bloody corpse")]
     public class KhaldunBlood : BaseCreature
     {
         [Constructable]
@@ -40,8 +40,6 @@ namespace Server.Mobiles
             Fame = 300;
             Karma = -300;
 
-            VirtualArmor = 8;
-
             SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
@@ -60,8 +58,9 @@ namespace Server.Mobiles
             base.OnBeforeDamage(from, ref totalDamage, type);
         }
 
-        public override Poison PoisonImmune { get { return Poison.Lesser; } }
-        public override Poison HitPoison { get { return Poison.Lesser; } }
+        public override Poison PoisonImmune => Poison.Lesser; 
+		
+        public override Poison HitPoison => Poison.Lesser; 
 
         public override void GenerateLoot()
         {

@@ -20,13 +20,9 @@ namespace Server.Items
         }
 
         public abstract int MinThrowRange { get; }
-        public virtual int MaxThrowRange
-        {
-            get
-            {
-                return MinThrowRange + 3;
-            }
-        }
+		
+        public virtual int MaxThrowRange => MinThrowRange + 3;
+
         public override int DefMaxRange
         {
             get
@@ -57,61 +53,18 @@ namespace Server.Items
             }
         }
 
-        public override int EffectID
-        {
-            get
-            {
-                return ItemID;
-            }
-        }
+        public override int EffectID => ItemID;
 
-        public override Type AmmoType
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override Type AmmoType => null;
 
-        public override Item Ammo
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override Item Ammo => null;
 
-        public override int DefHitSound
-        {
-            get
-            {
-                return 0x5D3;
-            }
-        }
+        public override int DefHitSound => 0x5D3;
+        public override int DefMissSound => 0x5D4;
 
-        public override int DefMissSound
-        {
-            get
-            {
-                return 0x5D4;
-            }
-        }
+        public override SkillName DefSkill => SkillName.Throwing;
 
-        public override SkillName DefSkill
-        {
-            get
-            {
-                return SkillName.Throwing;
-            }
-        }
-
-        public override WeaponAnimation DefAnimation
-        {
-            get
-            {
-                return WeaponAnimation.Throwing;
-            }
-        }
+        public override WeaponAnimation DefAnimation => WeaponAnimation.Throwing;
 
         public override bool OnFired(Mobile attacker, IDamageable damageable)
         {
@@ -156,14 +109,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             if (version == 0)

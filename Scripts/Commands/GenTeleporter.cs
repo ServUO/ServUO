@@ -1,7 +1,6 @@
+using Server.Items;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Server.Items;
 using System.IO;
 
 namespace Server.Commands
@@ -86,14 +85,14 @@ namespace Server.Commands
 
             string line;
             int lineNum = 0;
-            while((line = reader.ReadLine()) != null)
+            while ((line = reader.ReadLine()) != null)
             {
                 ++lineNum;
                 line = line.Trim();
                 if (line.StartsWith("#"))
                     continue;
                 string[] parts = line.Split(m_Sep);
-                if(parts.Length != 9)
+                if (parts.Length != 9)
                 {
                     e.Mobile.SendMessage(33, String.Format("Bad teleporter definition on line {0}", lineNum));
                     continue;
@@ -116,7 +115,7 @@ namespace Server.Commands
                 {
                     e.Mobile.SendMessage(33, String.Format("Bad number format on line {0}", lineNum));
                 }
-                catch(ArgumentException ex)
+                catch (ArgumentException ex)
                 {
                     e.Mobile.SendMessage(33, String.Format("Argument Execption {0} on line {1}", ex.Message, lineNum));
                 }
@@ -162,9 +161,9 @@ namespace Server.Commands
                 if (!FindTeleporter(mapLocation, pointLocation))
                 {
                     this.m_Count++;
-				
+
                     Teleporter tel = new Teleporter(pointDestination, mapDestination);
-					WeakEntityCollection.Add("tel", tel);
+                    WeakEntityCollection.Add("tel", tel);
 
                     tel.MoveToWorld(pointLocation, mapLocation);
                 }
@@ -174,7 +173,7 @@ namespace Server.Commands
                     this.m_Count++;
 
                     Teleporter telBack = new Teleporter(pointLocation, mapLocation);
-					WeakEntityCollection.Add("tel", telBack);
+                    WeakEntityCollection.Add("tel", telBack);
 
                     telBack.MoveToWorld(pointDestination, mapDestination);
                 }

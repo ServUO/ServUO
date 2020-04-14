@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
@@ -150,7 +149,7 @@ namespace Server.Gumps
             }
             else
             {
-                switch ( info.ButtonID )
+                switch (info.ButtonID)
                 {
                     case 1: // Price Per Rental
                         SetPricePerRental(from);

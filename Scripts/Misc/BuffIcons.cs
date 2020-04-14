@@ -1,6 +1,6 @@
-using System;
 using Server.Mobiles;
 using Server.Network;
+using System;
 
 namespace Server
 {
@@ -8,10 +8,10 @@ namespace Server
     {
         public static void Initialize()
         {
-            EventSink.ClientVersionReceived += new ClientVersionReceivedHandler(delegate(ClientVersionReceivedArgs args)
+            EventSink.ClientVersionReceived += new ClientVersionReceivedHandler(delegate (ClientVersionReceivedArgs args)
             {
                 PlayerMobile pm = args.State.Mobile as PlayerMobile;
-					
+
                 if (pm != null)
                     Timer.DelayCall(TimeSpan.Zero, pm.ResendBuffs);
             });
@@ -414,7 +414,7 @@ namespace Server
     public sealed class AddBuffPacket : Packet
     {
         public AddBuffPacket(Mobile m, BuffInfo info)
-            : this(m, info.ID, info.TitleCliloc, info.SecondaryCliloc, info.Args, info.NoTimer ? TimeSpan.Zero :(info.TimeStart != DateTime.MinValue) ? ((info.TimeStart + info.TimeLength) - DateTime.UtcNow) : TimeSpan.Zero)
+            : this(m, info.ID, info.TitleCliloc, info.SecondaryCliloc, info.Args, info.NoTimer ? TimeSpan.Zero : (info.TimeStart != DateTime.MinValue) ? ((info.TimeStart + info.TimeLength) - DateTime.UtcNow) : TimeSpan.Zero)
         {
         }
 

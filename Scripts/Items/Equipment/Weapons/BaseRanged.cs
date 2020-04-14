@@ -14,12 +14,12 @@ namespace Server.Items
 		public abstract Type AmmoType { get; }
 		public abstract Item Ammo { get; }
 
-		public override int DefHitSound { get { return 0x234; } }
-		public override int DefMissSound { get { return 0x238; } }
+		public override int DefHitSound => 0x234;
+		public override int DefMissSound => 0x238;
 
-		public override SkillName DefSkill { get { return SkillName.Archery; } }
-		public override WeaponType DefType { get { return WeaponType.Ranged; } }
-		public override WeaponAnimation DefAnimation { get { return WeaponAnimation.ShootXBow; } }
+		public override SkillName DefSkill => SkillName.Archery;
+		public override WeaponType DefType => WeaponType.Ranged;
+		public override WeaponAnimation DefAnimation => WeaponAnimation.ShootXBow;
 
 		private Timer m_RecoveryTimer; // so we don't start too many timers
 		private int m_Velocity;
@@ -204,7 +204,6 @@ namespace Server.Items
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-
 			writer.Write(4); // version
 
 			writer.Write(m_Velocity);
@@ -239,12 +238,6 @@ namespace Server.Items
 						reader.ReadInt();
 						break;
 					}
-			}
-
-			if (version < 2)
-			{
-				WeaponAttributes.MageWeapon = 0;
-				WeaponAttributes.UseBestSkill = 0;
 			}
 		}
 	}

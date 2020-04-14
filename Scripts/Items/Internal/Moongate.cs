@@ -24,9 +24,9 @@ namespace Server.Items
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool Dispellable { get; set; }
 
-		public virtual bool ShowFeluccaWarning { get { return false; } }
+		public virtual bool ShowFeluccaWarning => false; 
 
-		public virtual bool TeleportPets { get { return true; } }
+		public virtual bool TeleportPets => true; 
 
 		[Constructable]
 		public Moongate()
@@ -78,10 +78,8 @@ namespace Server.Items
 
 		public virtual void CheckGate(Mobile m, int range)
 		{
-			#region Mondain's Legacy
 			if (m.Hidden && m.IsPlayer())
 				m.RevealingAction();
-			#endregion
 
 			new DelayTimer(m, this, range).Start();
 		}
@@ -140,27 +138,21 @@ namespace Server.Items
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-
 			writer.Write(1); // version
 
 			writer.Write(Target);
 			writer.Write(TargetMap);
-
-			// Version 1
 			writer.Write(Dispellable);
 		}
 
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
-
 			var version = reader.ReadInt();
 
 			Target = reader.ReadPoint3D();
 			TargetMap = reader.ReadMap();
-
-			if (version >= 1)
-				Dispellable = reader.ReadBool();
+			Dispellable = reader.ReadBool();
 		}
 
 		public virtual bool ValidateUse(Mobile from, bool message)
@@ -318,7 +310,6 @@ namespace Server.Items
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-
 			writer.Write(1); // version
 
 			writer.Write(TitleString);
@@ -338,7 +329,6 @@ namespace Server.Items
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
-
 			var version = reader.ReadInt();
 
 			switch (version)

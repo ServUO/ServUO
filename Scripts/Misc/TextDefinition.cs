@@ -1,6 +1,6 @@
+using Server.Gumps;
 using System;
 using System.Globalization;
-using Server.Gumps;
 
 namespace Server
 {
@@ -30,20 +30,10 @@ namespace Server
             this.m_String = text;
         }
 
-        public int Number
-        {
-            get
-            {
-                return this.m_Number;
-            }
-        }
-        public string String
-        {
-            get
-            {
-                return this.m_String;
-            }
-        }
+        public int Number => this.m_Number;
+
+        public string String => this.m_String;
+
         public static void Serialize(GenericWriter writer, TextDefinition def)
         {
             if (def == null)
@@ -70,7 +60,7 @@ namespace Server
         {
             int type = reader.ReadEncodedInt();
 
-            switch ( type )
+            switch (type)
             {
                 case 0:
                     return new TextDefinition();
@@ -179,7 +169,7 @@ namespace Server
 
             return "";
         }
-        
+
         public static implicit operator TextDefinition(int v)
         {
             return new TextDefinition(v);

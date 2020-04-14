@@ -1,8 +1,7 @@
-using System;
 using Server.Items;
+using Server.Mobiles;
 using Server.Multis;
 using Server.Network;
-using Server.Mobiles;
 
 namespace Server.Gumps
 {
@@ -37,7 +36,7 @@ namespace Server.Gumps
             will not un-condemn any other houses on your account. If you have other, 
             grandfathered houses, this action *WILL* condemn them. Are you sure you wish 
             to continue?*/
-            AddHtmlLocalized(10, 40, 400, 200, 1080196, 0x7F00, false, true); 
+            AddHtmlLocalized(10, 40, 400, 200, 1080196, 0x7F00, false, true);
 
             AddImageTiled(10, 250, 400, 20, 0xA40);
             AddAlphaRegion(10, 250, 400, 20);

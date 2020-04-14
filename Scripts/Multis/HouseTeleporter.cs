@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-
 using Server.ContextMenus;
 using Server.Gumps;
-using Server.Multis;
 using Server.Mobiles;
+using Server.Multis;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -136,7 +135,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {

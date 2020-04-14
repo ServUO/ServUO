@@ -1,13 +1,12 @@
-using System;
+using Server.Network;
 using System.Net;
 using System.Net.Sockets;
-using Server.Network;
 
 namespace Server
 {
     public class SocketOptions
     {
-	    public static readonly int Port = Config.Get("Server.Port", 2593);
+        public static readonly int Port = Config.Get("Server.Port", 2593);
 
         private static readonly IPEndPoint[] m_ListenerEndPoints = new IPEndPoint[]
         {
@@ -19,7 +18,7 @@ namespace Server
         };
 
         public static bool NagleEnabled = false;// Should the Nagle algorithm be enabled? This may reduce performance
-		public static int CoalesceBufferSize = 512;// MSS that the core will use when buffering packets
+        public static int CoalesceBufferSize = 512;// MSS that the core will use when buffering packets
 
         public static void Initialize()
         {

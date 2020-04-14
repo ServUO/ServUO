@@ -9,34 +9,33 @@ namespace Server.Mobiles
         public SummonedDaemon()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = NameList.RandomName("daemon");
-            this.Body = 10;
-            this.BaseSoundID = 357;
+            Name = NameList.RandomName("daemon");
+            Body = 10;
+            BaseSoundID = 357;
 
-            this.SetStr(200);
-            this.SetDex(110);
-            this.SetInt(150);
+            SetStr(200);
+            SetDex(110);
+            SetInt(150);
 
-            this.SetDamage(14, 21);
+            SetDamage(14, 21);
 
-            this.SetDamageType(ResistanceType.Physical, 0);
-            this.SetDamageType(ResistanceType.Poison, 100);
+            SetDamageType(ResistanceType.Physical, 0);
+            SetDamageType(ResistanceType.Poison, 100);
 
-            this.SetResistance(ResistanceType.Physical, 45, 55);
-            this.SetResistance(ResistanceType.Fire, 50, 60);
-            this.SetResistance(ResistanceType.Cold, 20, 30);
-            this.SetResistance(ResistanceType.Poison, 70, 80);
-            this.SetResistance(ResistanceType.Energy, 40, 50);
+            SetResistance(ResistanceType.Physical, 45, 55);
+            SetResistance(ResistanceType.Fire, 50, 60);
+            SetResistance(ResistanceType.Cold, 20, 30);
+            SetResistance(ResistanceType.Poison, 70, 80);
+            SetResistance(ResistanceType.Energy, 40, 50);
 
-            this.SetSkill(SkillName.EvalInt, 90.1, 100.0);
-            this.SetSkill(SkillName.Meditation, 90.1, 100.0);
-            this.SetSkill(SkillName.Magery, 90.1, 100.0);
-            this.SetSkill(SkillName.MagicResist, 90.1, 100.0);
-            this.SetSkill(SkillName.Tactics, 100.0);
-            this.SetSkill(SkillName.Wrestling, 98.1, 99.0);
+            SetSkill(SkillName.EvalInt, 90.1, 100.0);
+            SetSkill(SkillName.Meditation, 90.1, 100.0);
+            SetSkill(SkillName.Magery, 90.1, 100.0);
+            SetSkill(SkillName.MagicResist, 90.1, 100.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.Wrestling, 98.1, 99.0);
 
-            this.VirtualArmor = 58;
-            this.ControlSlots = 4;
+            ControlSlots = 4;
         }
 
         public SummonedDaemon(Serial serial)
@@ -44,34 +43,14 @@ namespace Server.Mobiles
         {
         }
 
-        public override double DispelDifficulty
-        {
-            get
-            {
-                return 125.0;
-            }
-        }
-        public override double DispelFocus
-        {
-            get
-            {
-                return 45.0;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Regular;
-            }
-        }// TODO: Immune to poison?
-        public override bool CanFly
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override double DispelDifficulty => 125.0;
+
+        public override double DispelFocus => 45.0;
+
+        public override Poison PoisonImmune => Poison.Regular;
+
+        public override bool CanFly => true;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

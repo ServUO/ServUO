@@ -1,7 +1,7 @@
-using System;
-using System.Collections;
 using Server.Commands;
 using Server.Network;
+using System;
+using System.Collections;
 
 namespace Server.Gumps
 {
@@ -275,7 +275,7 @@ namespace Server.Gumps
                             int buttonID1, buttonID2;
                             int xOffset, yOffset;
 
-                            switch ( sk.Lock )
+                            switch (sk.Lock)
                             {
                                 default:
                                 case SkillLock.Up:
@@ -330,7 +330,7 @@ namespace Server.Gumps
             int index = buttonID / 3;
             int type = buttonID % 3;
 
-            switch ( type )
+            switch (type)
             {
                 case 0:
                     {
@@ -382,7 +382,7 @@ namespace Server.Gumps
                             {
                                 if (this.m_From.AccessLevel >= AccessLevel.GameMaster)
                                 {
-                                    switch ( sk.Lock )
+                                    switch (sk.Lock)
                                     {
                                         case SkillLock.Up:
                                             sk.SetLockNoRelay(SkillLock.Down);

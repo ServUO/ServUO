@@ -1,9 +1,9 @@
-using System;
-using System.Diagnostics;
-using System.IO;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
+using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace Server.Misc
 {
@@ -154,7 +154,7 @@ namespace Server.Misc
             }
             else if (Required != null && version < Required)
             {
-                switch( m_OldClientResponse )
+                switch (m_OldClientResponse)
                 {
                     case OldClientResponse.Warn:
                         {
@@ -221,7 +221,7 @@ namespace Server.Misc
             if (m.NetState != null && m.NetState.Version < Required)
             {
                 Gump g = new WarningGump(1060637, 30720, String.Format("Your client is out of date. Please update your client.<br>This server recommends that your client version be at least {0}.<br> <br>You are currently using version {1}.<br> <br>To patch, run UOPatch.exe inside your Ultima Online folder.", Required, m.NetState.Version), 0xFFC000, 480, 360,
-                    delegate(Mobile mob, bool selection, object o)
+                    delegate (Mobile mob, bool selection, object o)
                     {
                         m.SendMessage("You will be reminded of this again.");
 

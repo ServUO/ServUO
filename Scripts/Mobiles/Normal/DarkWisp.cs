@@ -11,7 +11,7 @@ namespace Server.Mobiles
         public DarkWisp()
             : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a wisp";
+            Name = "a dark wisp";
             Body = 165;
             BaseSoundID = 466;
 
@@ -50,21 +50,12 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
+		
+		public override bool AlwaysMurderer => true;
 
-        public override InhumanSpeech SpeechType
-        {
-            get
-            {
-                return InhumanSpeech.Wisp;
-            }
-        }
-        public override TimeSpan ReacquireDelay
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(1.0);
-            }
-        }
+        public override InhumanSpeech SpeechType => InhumanSpeech.Wisp;
+
+        public override TimeSpan ReacquireDelay => TimeSpan.FromSeconds(1.0);
 
         public override void GenerateLoot()
         {

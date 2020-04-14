@@ -1,4 +1,3 @@
-using System;
 using Server.Commands;
 using Server.Items;
 
@@ -470,7 +469,7 @@ namespace Server
                 return null;
 
             BaseDoor door = new DarkWoodDoor(facing);
-			WeakEntityCollection.Add("door", door);
+            WeakEntityCollection.Add("door", door);
             door.MoveToWorld(new Point3D(x, y, z), m_Map);
 
             ++m_Count;

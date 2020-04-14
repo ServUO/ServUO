@@ -1,8 +1,8 @@
-using System;
-using System.Collections;
 using Server.Commands;
 using Server.Gumps;
 using Server.Network;
+using System;
+using System.Collections;
 
 namespace Server.Commands
 {
@@ -12,7 +12,7 @@ namespace Server.Commands
         {
         }
 
-        public static void Initialize() 
+        public static void Initialize()
         {
             CommandSystem.Register("UnloadTrammel", AccessLevel.Administrator, new CommandEventHandler(UnloadTrammel_OnCommand));
             CommandSystem.Register("UnloadMalas", AccessLevel.Administrator, new CommandEventHandler(UnloadMalas_OnCommand));
@@ -23,35 +23,35 @@ namespace Server.Commands
         }
 
         [Usage("[Unloadtrammel")]
-        [Description("Unload Trammel maps with a menu.")] 
+        [Description("Unload Trammel maps with a menu.")]
         private static void UnloadTrammel_OnCommand(CommandEventArgs e)
         {
             e.Mobile.SendGump(new UnloadTrammelGump(e));
         }
 
         [Usage("[Unloadfelucca")]
-        [Description("Unload Felucca maps with a menu.")] 
+        [Description("Unload Felucca maps with a menu.")]
         private static void UnloadFelucca_OnCommand(CommandEventArgs e)
         {
             e.Mobile.SendGump(new UnloadFeluccaGump(e));
         }
 
         [Usage("[Unloadmalas")]
-        [Description("Unload Malas maps with a menu.")] 
+        [Description("Unload Malas maps with a menu.")]
         private static void UnloadMalas_OnCommand(CommandEventArgs e)
         {
             e.Mobile.SendGump(new UnloadMalasGump(e));
         }
 
         [Usage("[Unloadilshenar")]
-        [Description("Unload Ilshenar maps with a menu.")] 
+        [Description("Unload Ilshenar maps with a menu.")]
         private static void UnloadIlshenar_OnCommand(CommandEventArgs e)
         {
             e.Mobile.SendGump(new UnloadIlshenarGump(e));
         }
 
         [Usage("[Unloadtokuno")]
-        [Description("Unload Tokuno maps with a menu.")] 
+        [Description("Unload Tokuno maps with a menu.")]
         private static void UnloadTokuno_OnCommand(CommandEventArgs e)
         {
             e.Mobile.SendGump(new UnloadTokunoGump(e));
@@ -72,7 +72,7 @@ namespace Server.Gumps
     {
         private readonly CommandEventArgs m_CommandEventArgs;
         public UnloadTrammelGump(CommandEventArgs e)
-            : base(50,50)
+            : base(50, 50)
         {
             this.m_CommandEventArgs = e;
             this.Closable = true;
@@ -321,7 +321,7 @@ namespace Server.Gumps
         {
             Mobile from = state.Mobile;
 
-            switch( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 0: // Closed or Cancel
                     {
@@ -458,7 +458,7 @@ namespace Server.Gumps
     {
         private readonly CommandEventArgs m_CommandEventArgs;
         public UnloadFeluccaGump(CommandEventArgs e)
-            : base(50,50)
+            : base(50, 50)
         {
             this.m_CommandEventArgs = e;
             this.Closable = true;
@@ -707,7 +707,7 @@ namespace Server.Gumps
         {
             Mobile from = state.Mobile;
 
-            switch( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 0: // Closed or Cancel
                     {
@@ -848,7 +848,7 @@ namespace Server.Gumps
     {
         private readonly CommandEventArgs m_CommandEventArgs;
         public UnloadIlshenarGump(CommandEventArgs e)
-            : base(50,50)
+            : base(50, 50)
         {
             this.m_CommandEventArgs = e;
             this.Closable = true;
@@ -971,7 +971,7 @@ namespace Server.Gumps
         {
             Mobile from = state.Mobile;
 
-            switch( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 0: // Closed or Cancel
                     {
@@ -1057,7 +1057,7 @@ namespace Server.Gumps
     {
         private readonly CommandEventArgs m_CommandEventArgs;
         public UnloadMalasGump(CommandEventArgs e)
-            : base(50,50)
+            : base(50, 50)
         {
             this.m_CommandEventArgs = e;
             this.Closable = true;
@@ -1125,7 +1125,7 @@ namespace Server.Gumps
         {
             Mobile from = state.Mobile;
 
-            switch( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 0: // Closed or Cancel
                     {
@@ -1187,7 +1187,7 @@ namespace Server.Gumps
     {
         private readonly CommandEventArgs m_CommandEventArgs;
         public UnloadTokunoGump(CommandEventArgs e)
-            : base(50,50)
+            : base(50, 50)
         {
             this.m_CommandEventArgs = e;
             this.Closable = true;
@@ -1247,7 +1247,7 @@ namespace Server.Gumps
         {
             Mobile from = state.Mobile;
 
-            switch( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 0: // Closed or Cancel
                     {
@@ -1572,7 +1572,7 @@ namespace Server.Gumps
             this.AddImageTiled(20, 195, 200, 2, 10001);
             //AddImageTiled( 20, 220, 200, 2, 10001 );
             //AddImageTiled( 20, 245, 200, 2, 10001 );
-            
+
             //Map names
             this.AddLabel(35, 51, 200, "Waterfall Point");
             this.AddLabel(35, 76, 246, "Shrine of Singularity");
@@ -1582,14 +1582,14 @@ namespace Server.Gumps
             this.AddLabel(35, 176, 246, "Holy City");
             //AddLabel( 35, 201, 200, "39" );
             //AddLabel( 35, 226, 200, "40" );
-          
+
             //Check boxes
             this.AddCheck(182, 48, 210, 211, false, 133);
             this.AddCheck(182, 73, 210, 211, false, 134);
             this.AddCheck(182, 98, 210, 211, false, 135);
-            this.AddCheck(182, 123, 210, 211, false, 136);            
+            this.AddCheck(182, 123, 210, 211, false, 136);
             this.AddCheck(182, 148, 210, 211, false, 137);
-            this.AddCheck(182, 173, 210, 211, false, 138); 
+            this.AddCheck(182, 173, 210, 211, false, 138);
             //AddCheck( 182, 198, 210, 211, false, 139 );
             //AddCheck( 182, 223, 210, 211, false, 140 ); 
 

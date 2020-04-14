@@ -19,21 +19,9 @@ namespace Server.Items
             return from.Skills[SkillName.Ninjitsu].Base > from.Skills[SkillName.Bushido].Base ? SkillName.Ninjitsu : SkillName.Bushido;
         }
 
-        public override int BaseMana
-        {
-            get
-            {
-                return 30;
-            }
-        }
+        public override int BaseMana => 30;
 
-        public override double DamageScalar
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public override double DamageScalar => 1.0;
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
@@ -57,7 +45,7 @@ namespace Server.Items
 
             BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.ArmorPierce, 1028860, 1154367, TimeSpan.FromSeconds(3), defender, "10"));
             _Table[defender] = Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(3), RemoveEffects, defender);
-            
+
             defender.PlaySound(0x28E);
             defender.FixedParticles(0x3728, 1, 26, 0x26D6, 0, 0, EffectLayer.Waist);
         }
@@ -73,9 +61,9 @@ namespace Server.Items
 
         public static bool IsUnderEffects(Mobile m)
         {
-            if(m == null)
+            if (m == null)
                 return false;
-                
+
             return _Table.ContainsKey(m);
         }
     }

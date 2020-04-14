@@ -9,13 +9,13 @@ namespace Server.Items
             : base(0xA25)
         {
             if (Burnout)
-                this.Duration = TimeSpan.FromMinutes(20);
+                Duration = TimeSpan.FromMinutes(20);
             else
-                this.Duration = TimeSpan.Zero;
+                Duration = TimeSpan.Zero;
 
-            this.Burning = false;
-            this.Light = LightType.Circle300;
-            this.Weight = 2.0;
+            Burning = false;
+            Light = LightType.Circle300;
+            Weight = 2.0;
         }
 
         public Lantern(Serial serial)
@@ -27,8 +27,8 @@ namespace Server.Items
         {
             get
             {
-                if (this.ItemID == 0xA15 || this.ItemID == 0xA17)
-                    return this.ItemID;
+                if (ItemID == 0xA15 || ItemID == 0xA17)
+                    return ItemID;
 
                 return 0xA22;
             }
@@ -37,8 +37,8 @@ namespace Server.Items
         {
             get
             {
-                if (this.ItemID == 0xA18)
-                    return this.ItemID;
+                if (ItemID == 0xA18)
+                    return ItemID;
 
                 return 0xA25;
             }
@@ -58,10 +58,12 @@ namespace Server.Items
 
     public class LanternOfSouls : Lantern
     {
+		public override int LabelNumber => 1061618; // Lantern of Souls
+		
         [Constructable]
         public LanternOfSouls()
         {
-            this.Hue = 0x482;
+            Hue = 0x482;
         }
 
         public LanternOfSouls(Serial serial)
@@ -69,13 +71,6 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1061618;
-            }
-        }// Lantern of Souls
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

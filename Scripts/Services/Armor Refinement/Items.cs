@@ -342,7 +342,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool CheckBonus { get { return m_CheckBonus; } set { m_CheckBonus = value; } }
 
-        public ModEntry Entry { get { return m_Entry; } }
+        public ModEntry Entry => m_Entry; 
 
         [Constructable]
         public RefinementItem()
@@ -555,8 +555,8 @@ namespace Server.Items
         private ResistanceType[] m_Resists = new ResistanceType[5];
         private int[] m_Values = new int[5];
 
-        public ResistanceType[] Resists { get { return m_Resists; } }
-        public int[] Values { get { return m_Values; } }
+        public ResistanceType[] Resists => m_Resists;
+        public int[] Values => m_Values;
 
         public ModEntry(int count)
         {
@@ -596,7 +596,7 @@ namespace Server.Items
 
     public class LeatherBraid : Item
     {
-        public override int LabelNumber { get { return 1154003; } } // Leather braid
+        public override int LabelNumber => 1154003; // Leather braid
 
         [Constructable]
         public LeatherBraid() : this(1)
@@ -631,7 +631,7 @@ namespace Server.Items
 
     public class MalleableAlloy : Item
     {
-        public override int LabelNumber { get { return 1154005; } } // Melleable Alloy
+        public override int LabelNumber => 1154005; // Melleable Alloy
 
         [Constructable]
         public MalleableAlloy()
@@ -668,7 +668,7 @@ namespace Server.Items
 
     public class SolventFlask : Item
     {
-        public override int LabelNumber { get { return 1154004; } } // Solvent Flask
+        public override int LabelNumber => 1154004; // Solvent Flask
 
         [Constructable]
         public SolventFlask()
