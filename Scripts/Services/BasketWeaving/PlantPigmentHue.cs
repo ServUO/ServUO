@@ -153,7 +153,7 @@ namespace Server.Engines.Plants
                 return this.m_PlantPigmentHue;
             }
         }
-        public static PlantPigmentHue HueFromPlantHue(PlantHue hue) 
+        public static PlantPigmentHue HueFromPlantHue(PlantHue hue)
         {
             if (hue == PlantHue.None || hue == PlantHue.Plain)
                 return PlantPigmentHue.Plain;

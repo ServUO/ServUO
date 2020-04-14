@@ -1,9 +1,9 @@
-using System;
-using System.Collections;
 using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Prompts;
+using System;
+using System.Collections;
 
 namespace Server.Engines.BulkOrders
 {
@@ -538,7 +538,7 @@ namespace Server.Engines.BulkOrders
 
         public object GetMaterialName(BulkMaterialType mat, BODType type, Type itemType)
         {
-            switch ( type )
+            switch (type)
             {
                 case BODType.Tinkering:
                 case BODType.Smith:
@@ -576,7 +576,7 @@ namespace Server.Engines.BulkOrders
                     }
                 case BODType.Tailor:
                     {
-                        switch ( mat )
+                        switch (mat)
                         {
                             case BulkMaterialType.None:
                                 {
@@ -621,7 +621,7 @@ namespace Server.Engines.BulkOrders
         {
             int index = info.ButtonID;
 
-            switch ( index )
+            switch (index)
             {
                 case 0: // EXIT
                     {
@@ -706,13 +706,13 @@ namespace Server.Engines.BulkOrders
                                             m_From.SendLocalizedMessage(1045152); // The bulk order deed has been placed in your backpack.
                                             m_Book.Entries.Remove(obj);
                                             m_Book.InvalidateProperties();
-										
+
                                             if (m_Book.Entries.Count / 5 < m_Book.ItemCount)
                                             {
                                                 m_Book.ItemCount--;
                                                 m_Book.InvalidateItems();
                                             }
-										
+
                                             if (m_Book.Entries.Count > 0)
                                             {
                                                 m_Page = GetPageForIndex(index, sizeOfDroppedBod);

@@ -14,13 +14,13 @@ namespace Server.Engines.Chat
             m_Mobile = m;
         }
 
-        public Mobile Mobile => m_Mobile; 
+        public Mobile Mobile => m_Mobile;
 
-        public string Username => String.Format("<{0}>{1}", m_Mobile.Serial.Value, m_Mobile.Name); 
+        public string Username => String.Format("<{0}>{1}", m_Mobile.Serial.Value, m_Mobile.Name);
 
         public Channel CurrentChannel { get { return m_Channel; } set { m_Channel = value; } }
 
-        public bool IsOnline => (m_Mobile.NetState != null); 
+        public bool IsOnline => (m_Mobile.NetState != null);
 
         public const char NormalColorCharacter = '0';
 

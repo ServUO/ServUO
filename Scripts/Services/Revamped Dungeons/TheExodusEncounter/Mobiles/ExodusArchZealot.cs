@@ -1,22 +1,21 @@
 #region Header
 //Exodus Encounter by Redmoon
 #endregion Header
-using System;
-using System.Collections.Generic;
-using Server.Items;
-using Server.Gumps;
-using Server.Network;
-using Server.ContextMenus;
 using Server.Commands;
+using Server.ContextMenus;
+using Server.Gumps;
+using Server.Items;
+using Server.Network;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
-{    
-	public class ExodusArchZealot : Mobile
-	{
+{
+    public class ExodusArchZealot : Mobile
+    {
         public virtual bool IsInvulnerable { get { return true; } }
 
-		[Constructable]
-		public ExodusArchZealot()
+        [Constructable]
+        public ExodusArchZealot()
         {
             Name = "Hunter";
             Title = "the Arch Zealot";
@@ -51,55 +50,55 @@ namespace Server.Mobiles
 
             return base.OnDragDrop(from, dropped);
         }
-        
-        public ExodusArchZealot(Serial serial): base(serial)
-		{		
+
+        public ExodusArchZealot(Serial serial) : base(serial)
+        {
         }
 
-        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list) 
-	   	{ 
-	    	base.GetContextMenuEntries( from, list );
-            list.Add(new ExodusArchZealotGumpEntry(from, this)); 
-	    } 
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+            list.Add(new ExodusArchZealotGumpEntry(from, this));
+        }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize( writer );
-			writer.Write( (int) 0 );
-		}
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize( reader );
-			int version = reader.ReadInt();
-		}
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
 
-		public class ExodusArchZealotGumpEntry : ContextMenuEntry
-		{
-			private Mobile m_Mobile;
-			private Mobile m_Giver;
+        public class ExodusArchZealotGumpEntry : ContextMenuEntry
+        {
+            private Mobile m_Mobile;
+            private Mobile m_Giver;
 
             public ExodusArchZealotGumpEntry(Mobile from, Mobile giver) : base(6146, 3)
-			{
-				m_Mobile = from;
-				m_Giver = giver;
-			}
+            {
+                m_Mobile = from;
+                m_Giver = giver;
+            }
 
-			public override void OnClick()
-			{
-				if( !( m_Mobile is PlayerMobile ) )
-					return;
-				
-				PlayerMobile mobile = (PlayerMobile) m_Mobile;
-				{
+            public override void OnClick()
+            {
+                if (!(m_Mobile is PlayerMobile))
+                    return;
+
+                PlayerMobile mobile = (PlayerMobile)m_Mobile;
+                {
                     if (!mobile.HasGump(typeof(ExodusArchZealotGump)))
-					{
+                    {
                         mobile.SendGump(new ExodusArchZealotGump(mobile));
-					} 
-				}
-			}
-		}
-	}
+                    }
+                }
+            }
+        }
+    }
 
     public class ExodusArchZealotGump : Gump
     {
@@ -314,4 +313,4 @@ namespace Server.Mobiles
             }
         }
     }
-}	
+}

@@ -1,13 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Server;
-using Server.Items;
-using Server.Mobiles;
-using Server.Network;
 using Server.Engines.Points;
-using Server.Engines.TreasuresOfDoom;
+using Server.Items;
+using System;
 
 namespace Server.Engines.TreasuresOfDoom
 {

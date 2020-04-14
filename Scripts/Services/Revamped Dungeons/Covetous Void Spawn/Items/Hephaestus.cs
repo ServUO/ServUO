@@ -1,5 +1,3 @@
-using Server;
-using System;
 using Server.Engines.Craft;
 
 namespace Server.Items
@@ -8,7 +6,7 @@ namespace Server.Items
     public class Hephaestus : HeaterShield
     {
         public override int LabelNumber { get { return 1152909; } } // Hephaestus
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public Hephaestus() : this(true)
@@ -62,7 +60,7 @@ namespace Server.Items
     public class GargishHephaestus : LargePlateShield
     {
         public override int LabelNumber { get { return 1152909; } } // Hephaestus
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public GargishHephaestus() : this(true)

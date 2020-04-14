@@ -1,10 +1,8 @@
-using System;
-using Server;
-using Server.Items;
-using Server.Mobiles;
-using Server.Gumps;
 using Server.Guilds;
+using Server.Gumps;
+using Server.Mobiles;
 using Server.Network;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -89,7 +87,7 @@ namespace Server.Engines.VvV
             {
                 VvVPlayerEntry entry = list[i];
 
-                if(entry.Player == null)
+                if (entry.Player == null)
                     continue;
 
                 Guild g = entry.Player.Guild as Guild;

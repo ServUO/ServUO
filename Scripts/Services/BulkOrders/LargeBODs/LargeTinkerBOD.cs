@@ -1,6 +1,6 @@
+using Server.Items;
 using System;
 using System.Collections.Generic;
-using Server.Items;
 
 namespace Server.Engines.BulkOrders
 {
@@ -45,10 +45,10 @@ namespace Server.Engines.BulkOrders
             LargeBulkEntry[] entries;
             bool useMaterials = true;
             bool jewelry = false;
-			
+
             int rand = Utility.Random(4);
 
-            switch ( rand )
+            switch (rand)
             {
                 default:
                 case 0:

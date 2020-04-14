@@ -1,6 +1,3 @@
-using System;
-using Server;
-using System.Collections.Generic;
 using Server.Items;
 
 namespace Server.Multis
@@ -8,9 +5,9 @@ namespace Server.Multis
     public class OrcishGalleon : BaseGalleon
     {
         public override int NorthID { get { return 0x18 + (DamageValue * 4); } }
-        public override int EastID { get { return  0x19 + (DamageValue * 4); } }
+        public override int EastID { get { return 0x19 + (DamageValue * 4); } }
         public override int SouthID { get { return 0x1A + (DamageValue * 4); } }
-        public override int WestID { get { return  0x1B + (DamageValue * 4); } }
+        public override int WestID { get { return 0x1B + (DamageValue * 4); } }
 
         public override int HoldDistance { get { return 9; } }
         public override int TillerManDistance { get { return 6; } }
@@ -115,7 +112,7 @@ namespace Server.Multis
 
         public override int[][] WheelItemIDs { get { return m_WheelItemIDs; } }
         private int[][] m_WheelItemIDs = new int[][]
-        {            
+        {
             new int[] { 30141 },
             new int[] { 30641 },
             new int[] { 31141 },
@@ -137,8 +134,8 @@ namespace Server.Multis
                     if (x < this.X && y < this.Y)
                         return ShipPosition.BowPort;
                     if (x > this.X && y + 2 == this.Y)
-                        return ShipPosition.AmidShipStarboard; 
-                    else if(x <  this.X && y + 2 == this.Y)
+                        return ShipPosition.AmidShipStarboard;
+                    else if (x < this.X && y + 2 == this.Y)
                         return ShipPosition.AmidShipPort;
                     else if (x > this.X && y > this.Y)
                         return ShipPosition.AftStarboard;
@@ -151,10 +148,10 @@ namespace Server.Multis
                         return ShipPosition.BowStarboard;
                     else if (x < this.X && y > this.Y)
                         return ShipPosition.BowPort;
-                    else if(x + 2 == this.X && y < this.Y)
-                        return ShipPosition.AmidShipStarboard; 
+                    else if (x + 2 == this.X && y < this.Y)
+                        return ShipPosition.AmidShipStarboard;
                     else if (x + 2 == this.X && y > this.Y)
-                        return ShipPosition.AmidShipPort; 
+                        return ShipPosition.AmidShipPort;
                     else if (x > this.X && y < this.Y)
                         return ShipPosition.AftStarboard;
                     else
@@ -181,13 +178,13 @@ namespace Server.Multis
                         return ShipPosition.BowStarboard;
                     else if (x > this.X && y < this.Y)
                         return ShipPosition.BowPort;
-                    else if(x - 2 == this.X && y > this.Y)
+                    else if (x - 2 == this.X && y > this.Y)
                         return ShipPosition.AmidShipStarboard;
                     else if (x - 2 == this.X && y < this.Y)
-                        return ShipPosition.AmidShipPort; 
+                        return ShipPosition.AmidShipPort;
                     else if (x < this.X && y > this.Y)
                         return ShipPosition.AftStarboard;
-                    else 
+                    else
                         return ShipPosition.AftPort;
             }
         }
@@ -237,36 +234,36 @@ namespace Server.Multis
             return contains;
         }
 
-		public override bool ExemptOverheadComponent(Point3D newPnt, int itemID, int x , int y, int height)
-		{
-			//if(height > this.Z + 16) //TODO: Get height of mast
-			//	return false;
-		
-			switch(itemID)
-			{
-				case 0x18: //North/South ID's
-				case 0x1A:
-				case 0x1C:
-				case 0x1E:
-				case 0x20:
-				case 0x22:
-					if(x > newPnt.X + PortAndStarboardOffset || x < newPnt.X - PortAndStarboardOffset)
-						return true;
-					break;
-				case 0x19: //East/West ID's
-				case 0x1B:
-				case 0x1D:
-				case 0x1F:
-				case 0x21:
-				case 0x23:
-					if(y > newPnt.Y + PortAndStarboardOffset || y < newPnt.Y - PortAndStarboardOffset)
-						return true;
-					break;
-			}
+        public override bool ExemptOverheadComponent(Point3D newPnt, int itemID, int x, int y, int height)
+        {
+            //if(height > this.Z + 16) //TODO: Get height of mast
+            //	return false;
+
+            switch (itemID)
+            {
+                case 0x18: //North/South ID's
+                case 0x1A:
+                case 0x1C:
+                case 0x1E:
+                case 0x20:
+                case 0x22:
+                    if (x > newPnt.X + PortAndStarboardOffset || x < newPnt.X - PortAndStarboardOffset)
+                        return true;
+                    break;
+                case 0x19: //East/West ID's
+                case 0x1B:
+                case 0x1D:
+                case 0x1F:
+                case 0x21:
+                case 0x23:
+                    if (y > newPnt.Y + PortAndStarboardOffset || y < newPnt.Y - PortAndStarboardOffset)
+                        return true;
+                    break;
+            }
 
             return base.ExemptOverheadComponent(newPnt, itemID, x, y, height);
-		}     
-        
+        }
+
         public OrcishGalleon(Serial serial) : base(serial)
         {
         }

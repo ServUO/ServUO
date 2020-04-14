@@ -1,11 +1,8 @@
+using Server.Items;
+using Server.Mobiles;
+using Server.SkillHandlers;
 using System;
 using System.Linq;
-
-using Server;
-using Server.Mobiles;
-using Server.Network;
-using Server.Items;
-using Server.SkillHandlers;
 
 namespace Server.Gumps
 {
@@ -295,14 +292,14 @@ namespace Server.Gumps
                     {
                         m_Value = Math.Max(ItemPropertyInfo.GetMinIntensity(m_Item, m_Info.ID), m_Value - 10);
                         Refresh();
-                        
+
                         break;
                     }
                 case 10053:// Minimum Mod Value [<<<]
                     {
                         m_Value = ItemPropertyInfo.GetMinIntensity(m_Item, m_Info.ID);
                         Refresh();
-                        
+
                         break;
                     }
                 case 10054: // Increase Mod Value [>]
@@ -316,14 +313,14 @@ namespace Server.Gumps
                     {
                         m_Value = Math.Min(ItemPropertyInfo.GetMaxIntensity(m_Item, m_Info.ID, true), m_Value + 10);
                         Refresh();
-                        
+
                         break;
                     }
                 case 10056: // Maximum Mod Value [>>>]
                     {
                         m_Value = ItemPropertyInfo.GetMaxIntensity(m_Item, m_Info.ID, true);
                         Refresh();
-                        
+
                         break;
                     }
 

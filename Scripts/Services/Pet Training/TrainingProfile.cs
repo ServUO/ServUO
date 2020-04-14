@@ -1,10 +1,7 @@
-using System;
-using Server;
-using System.Collections.Generic;
-using System.Linq;
-using Server.Items;
-using Server.Network;
 using Server.Gumps;
+using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -133,14 +130,14 @@ namespace Server.Mobiles
         {
             if (ControlSlots != ControlSlotsMin)
             {
-                 return 1501;
+                return 1501;
             }
-            
+
             if (ControlSlotsMin == 1 && ControlSlotsMax == 2)
             {
                 return 2556;
             }
-            
+
             if (ControlSlotsMin == 1 && ControlSlotsMax == 3)
             {
                 return 2381;
@@ -199,7 +196,7 @@ namespace Server.Mobiles
                 // subsequent trains of that level
                 else
                 {
-                    return  22;
+                    return 22;
                 }
             }
             else
@@ -273,7 +270,7 @@ namespace Server.Mobiles
                 return;
 
             var ourDif = Creature.BardingDifficulty;
-            var theirDif =  bc.BardingDifficulty;
+            var theirDif = bc.BardingDifficulty;
             var master = Creature.ControlMaster;
 
             if (Utility.Random(100) < 8 - (1 + (ControlSlots - ControlSlotsMin)))
@@ -285,7 +282,7 @@ namespace Server.Mobiles
                     if (PowerHourBegin + PowerHourDelay < DateTime.UtcNow)
                     {
                         _ProgressTable.Clear();
-                        
+
                         PowerHourBegin = DateTime.UtcNow;
                         InPowerHour = true;
                         master.SendLocalizedMessage(1157569); // [Pet Training Power Hour]:  Your pet is under the effects of enhanced training progress for the next hour!

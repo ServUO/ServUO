@@ -1,6 +1,4 @@
-﻿using System;
-using Server.Mobiles; 
-using Server; 
+﻿using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -12,18 +10,18 @@ namespace Server.Items
             pm.AddResistanceMod(new ResistanceMod(ResistanceType.Cold, -5));
             pm.AddResistanceMod(new ResistanceMod(ResistanceType.Fire, -5));
 
-            pm.AddResistanceMod(new ResistanceMod(ResistanceType.Physical, 30)); 
+            pm.AddResistanceMod(new ResistanceMod(ResistanceType.Physical, 30));
 
             base.ApplyEffect(pm);
         }
 
         public override int LabelNumber { get { return 1094944; } } // Stone Skin Lotion
 
-        [Constructable] 
+        [Constructable]
         public StoneSkinLotion()
             : base(0xEFD)
         {
-            m_EffectType = ThieveConsumableEffect.StoneSkinLotionEffect; 
+            m_EffectType = ThieveConsumableEffect.StoneSkinLotionEffect;
         }
 
         public StoneSkinLotion(Serial serial)

@@ -1,10 +1,7 @@
-using System;
-using Server;
-using Server.Items;
-using Server.Engines.PartySystem;
-using Server.Network;
-using System.Collections.Generic;
 using Server.Engines.ShameRevamped;
+using Server.Items;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -137,8 +134,8 @@ namespace Server.Mobiles
             if (0.15 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
         }
-		
-		public override int TreasureMapLevel
+
+        public override int TreasureMapLevel
         {
             get
             {
@@ -217,7 +214,7 @@ namespace Server.Mobiles
             Fame = 3500;
             Karma = -3500;
             PackGem(1);
-            
+
             PackItem(new Saltpeter(Utility.RandomMinMax(1, 5)));
             PackItem(new Potash(Utility.RandomMinMax(1, 5)));
             PackItem(new Charcoal(Utility.RandomMinMax(1, 5)));
@@ -239,8 +236,8 @@ namespace Server.Mobiles
             if (0.10 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
         }
-		
-		public override int TreasureMapLevel
+
+        public override int TreasureMapLevel
         {
             get
             {
@@ -387,7 +384,7 @@ namespace Server.Mobiles
 
         public GreaterEarthElemental(Serial serial)
             : base(serial)
-        { 
+        {
         }
 
         public override void Serialize(GenericWriter writer)
@@ -594,8 +591,8 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
         }
     }
-	
-	[CorpseName("a flame elemental corpse")]
+
+    [CorpseName("a flame elemental corpse")]
     public class LesserFlameElemental : BaseCreature, IAuraCreature
     {
         [Constructable]
@@ -653,8 +650,8 @@ namespace Server.Mobiles
             if (0.10 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
         }
-		
-		public override int TreasureMapLevel
+
+        public override int TreasureMapLevel
         {
             get
             {
@@ -684,8 +681,8 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
         }
     }
-	
-	[CorpseName("a wind elemental corpse")]
+
+    [CorpseName("a wind elemental corpse")]
     public class LesserWindElemental : BaseCreature
     {
         [Constructable]
@@ -811,8 +808,8 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
-			
-            if(0.15 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
+
+            if (0.15 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
         }
 
@@ -1246,8 +1243,8 @@ namespace Server.Mobiles
             if (0.33 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal(3));
         }
-		
-		public override int TreasureMapLevel
+
+        public override int TreasureMapLevel
         {
             get
             {

@@ -1,7 +1,6 @@
-﻿using System;
-using Server.Gumps;
-using Server.Network;
+﻿using Server.Gumps;
 using Server.Mobiles;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -11,7 +10,7 @@ namespace Server.Items
 
         [Constructable]
         public SorcerersScroll()
-            :base(0x46B2)
+            : base(0x46B2)
         {
             this.Hue = 33;
             this.Movable = false;

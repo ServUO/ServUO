@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Server.Engines.BulkOrders
@@ -12,7 +11,7 @@ namespace Server.Engines.BulkOrders
         {
             LargeBulkEntry[] entries;
 
-            switch ( Utility.Random(5) )
+            switch (Utility.Random(5))
             {
                 default:
                 case 0:

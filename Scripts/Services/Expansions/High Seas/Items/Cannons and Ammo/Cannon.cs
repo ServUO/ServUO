@@ -1,13 +1,10 @@
-using Server;
-using System;
-using Server.Mobiles;
 using Server.ContextMenus;
-using Server.Targeting;
-using System.Collections.Generic;
 using Server.Gumps;
-using Server.Misc;
+using Server.Mobiles;
 using Server.Multis;
-using Server.Engines.Quests;
+using Server.Targeting;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Server.Items
@@ -1425,8 +1422,14 @@ namespace Server.Items
 
         public override ShipCannonDeed GetDeed { get { return new LightShipCannonDeed(); } }
 
-        public override Type[] LoadTypes { get { return new Type[] {    typeof(LightCannonball),        typeof(LightGrapeshot),
-                                                                        typeof(LightFlameCannonball),   typeof(LightFrostCannonball) }; } }
+        public override Type[] LoadTypes
+        {
+            get
+            {
+                return new Type[] {    typeof(LightCannonball),        typeof(LightGrapeshot),
+                                                                        typeof(LightFlameCannonball),   typeof(LightFrostCannonball) };
+            }
+        }
 
         public LightShipCannon(BaseGalleon g) : base(g)
         {
@@ -1459,8 +1462,14 @@ namespace Server.Items
 
         public override int LabelNumber { get { return 0; } }
 
-        public override Type[] LoadTypes { get { return new Type[] {    typeof(HeavyCannonball),        typeof(HeavyGrapeshot), 
-                                                                        typeof(HeavyFrostCannonball),   typeof(HeavyFlameCannonball) }; } }
+        public override Type[] LoadTypes
+        {
+            get
+            {
+                return new Type[] {    typeof(HeavyCannonball),        typeof(HeavyGrapeshot),
+                                                                        typeof(HeavyFrostCannonball),   typeof(HeavyFlameCannonball) };
+            }
+        }
 
         public HeavyShipCannon(BaseGalleon g) : base(g)
         {

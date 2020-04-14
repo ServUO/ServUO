@@ -1,9 +1,5 @@
-using Server;
-using System;
-using System.Collections.Generic;
-using Server.Items;
 using Server.Mobiles;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace Server.Engines.ArenaSystem
 {
@@ -90,7 +86,7 @@ namespace Server.Engines.ArenaSystem
             writer.Write(0);
 
             writer.Write(Players.Count);
-            foreach(var kvp in Players)
+            foreach (var kvp in Players)
             {
                 writer.Write(kvp.Key);
             }

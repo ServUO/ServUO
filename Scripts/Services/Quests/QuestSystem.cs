@@ -1,11 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Network;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Engines.Quests
 {
@@ -140,7 +140,7 @@ namespace Server.Engines.Quests
             }
             else
             {
-                switch ( Utility.Random(3) )
+                switch (Utility.Random(3))
                 {
                     case 0:
                         who.Animate(32, 7, 1, true, false, 0);
@@ -235,7 +235,7 @@ namespace Server.Engines.Quests
 
             int version = reader.ReadEncodedInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {

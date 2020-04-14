@@ -1,6 +1,3 @@
-using System;
-using Server.Mobiles;
-
 namespace Server.Items
 {
     public class MasterChefsApron : FullApron
@@ -17,7 +14,7 @@ namespace Server.Items
         {
             Hue = 1990;
 
-            while(_Bonus == 0)
+            while (_Bonus == 0)
                 _Bonus = BaseTalisman.GetRandomExceptional();
         }
 

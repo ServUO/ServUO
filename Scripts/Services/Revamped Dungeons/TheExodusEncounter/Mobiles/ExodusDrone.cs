@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -63,17 +62,17 @@ namespace Server.Mobiles
         {
         }
 
-        public bool FieldActive => m_FieldActive; 
-		
+        public bool FieldActive => m_FieldActive;
+
         public bool CanUseField => Hits >= HitsMax * 9 / 10; // TODO: an OSI bug prevents to verify this
-		
-        public override bool IsScaredOfScaryThings => false; 
-		
-        public override bool IsScaryToPets => true; 
-		
-        public override bool BardImmune => false; 
-		
-        public override Poison PoisonImmune => Poison.Lethal; 
+
+        public override bool IsScaredOfScaryThings => false;
+
+        public override bool IsScaryToPets => true;
+
+        public override bool BardImmune => false;
+
+        public override Poison PoisonImmune => Poison.Lethal;
 
         public override int GetIdleSound() { return 0x218; }
         public override int GetAngerSound() { return 0x26C; }

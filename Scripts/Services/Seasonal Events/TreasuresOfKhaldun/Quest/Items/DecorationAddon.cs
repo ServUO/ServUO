@@ -1,17 +1,13 @@
-using System;
-using Server;
-using Server.Items;
-
 namespace Server.Items
 {
-	public class KhaldunDecorationAddon : BaseAddon
-	{
+    public class KhaldunDecorationAddon : BaseAddon
+    {
         public static KhaldunDecorationAddon Instance { get; set; }
 
         // Ritual Table needs to be hued 1362
         // 14031 = hue 1
         private static int[,] m_AddOnSimpleComponents = new int[,] {
-			  {27, 74, 9, 1}, {28, 74, 9, 1}, {28, 73, 9, 1}// 1	2	3	
+              {27, 74, 9, 1}, {28, 74, 9, 1}, {28, 73, 9, 1}// 1	2	3	
 			, {28, 72, 9, 1}, {28, 74, -1, 1}, {28, 72, -1, 1}// 4	5	6	
 			, {28, 73, -1, 1}, {27, 74, 6, 1}, {27, 74, 4, 1}// 7	8	9	
 			, {27, 74, 5, 1}, {27, 74, 7, 1}, {27, 74, 8, 1}// 10	11	12	
@@ -225,7 +221,7 @@ namespace Server.Items
         [Constructable]
         public KhaldunDecorationAddon()
         {
-            Instance = this; 
+            Instance = this;
 
             for (int i = 0; i < m_AddOnSimpleComponents.Length / 4; i++)
                 AddComponent(new AddonComponent(m_AddOnSimpleComponents[i, 0]), m_AddOnSimpleComponents[i, 1], m_AddOnSimpleComponents[i, 2], m_AddOnSimpleComponents[i, 3]);
@@ -267,9 +263,9 @@ namespace Server.Items
 
         }
 
-		public KhaldunDecorationAddon( Serial serial ) : base( serial )
-		{
-		}
+        public KhaldunDecorationAddon(Serial serial) : base(serial)
+        {
+        }
 
         private static void AddComplexComponent(BaseAddon addon, int item, int xoffset, int yoffset, int zoffset, int hue, int lightsource)
         {
@@ -290,29 +286,29 @@ namespace Server.Items
                 ac.Amount = amount;
             }
             if (lightsource != -1)
-                ac.Light = (LightType) lightsource;
+                ac.Light = (LightType)lightsource;
             addon.AddComponent(ac, xoffset, yoffset, zoffset);
         }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-			writer.Write( 0 ); // Version
-		}
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0); // Version
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
-			int version = reader.ReadInt();
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
 
             Instance = this;
-		}
-	}
+        }
+    }
 
     public class KhaldunWorkshop : BaseAddon
     {
         private static int[,] m_AddOnSimpleComponents = new int[,] {
-			  {7864, 4, 0, 12} // 7	 8	9	
+              {7864, 4, 0, 12} // 7	 8	9	
 			, {4179, 4, 1, 10}, {4130, -2, -3, 10}, {9932, -2, -2, 10}// 10	11	12	
 			, {7867, -2, 0, 12}, {7129, -2, 1, 10}, {4014, -1, 1, 4}// 13	14	15	
 			, {4015, 1, -3, 4}, {4017, 1, -2, 4}, {4017, 1, 0, 4}// 16	17	18	

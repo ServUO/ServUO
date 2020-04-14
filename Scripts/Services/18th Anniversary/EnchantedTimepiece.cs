@@ -1,15 +1,14 @@
 using System;
-using Server;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Server.Items
 {
-	public class EnchantedTimepiece : Item
-	{
-		public override int LabelNumber 
-        { 
-            get 
+    public class EnchantedTimepiece : Item
+    {
+        public override int LabelNumber
+        {
+            get
             {
                 int hour, min;
 
@@ -20,7 +19,7 @@ namespace Server.Items
 
                 return 1123890; // Sun Dial
                 //return 1077186; 
-            } 
+            }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -41,11 +40,11 @@ namespace Server.Items
             }
         }
 
-		[Constructable]
-		public EnchantedTimepiece() : base(0x9BC6)
-		{
+        [Constructable]
+        public EnchantedTimepiece() : base(0x9BC6)
+        {
             _TimePieces.Add(this);
-		}
+        }
 
         public override void OnDoubleClick(Mobile from)
         {
@@ -113,22 +112,22 @@ namespace Server.Items
                 });
         }
 
-		public EnchantedTimepiece(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-			writer.Write( (int) 0 ); // version
-		}
- 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
-			int version = reader.ReadInt();
+        public EnchantedTimepiece(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
 
             _TimePieces.Add(this);
         }
-	}
+    }
 }

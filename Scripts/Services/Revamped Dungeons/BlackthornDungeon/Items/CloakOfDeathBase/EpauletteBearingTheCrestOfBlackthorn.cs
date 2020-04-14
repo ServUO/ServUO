@@ -1,6 +1,3 @@
-using Server;
-using System;
-
 namespace Server.Items
 {
     public class EpauletteBearingTheCrestOfBlackthorn6 : Cloak
@@ -13,14 +10,14 @@ namespace Server.Items
         public EpauletteBearingTheCrestOfBlackthorn6()
         {
             ReforgedSuffix = ReforgedSuffix.Blackthorn;
-            ItemID = 0x9985;            
+            ItemID = 0x9985;
             Attributes.AttackChance = 3;
             Attributes.DefendChance = 3;
             Attributes.SpellDamage = 3;
             Hue = 2019;
 
-			Layer = Layer.OuterTorso;
-        } 
+            Layer = Layer.OuterTorso;
+        }
 
         public EpauletteBearingTheCrestOfBlackthorn6(Serial serial)
             : base(serial)
@@ -37,8 +34,8 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-			
-			if (version == 0)
+
+            if (version == 0)
             {
                 MaxHitPoints = 0;
                 HitPoints = 0;

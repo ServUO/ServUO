@@ -1,4 +1,3 @@
-using System;
 using Server;
 using Server.Items;
 
@@ -8,7 +7,7 @@ public class PicnicBasket2 : BaseContainer
     public PicnicBasket2()
         : base(0xE7A)
     {
-        this.Weight = 1.0; 
+        this.Weight = 1.0;
     }
 
     public PicnicBasket2(Serial serial)

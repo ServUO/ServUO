@@ -1,13 +1,7 @@
-using System;
-using Server;
-using Server.Items;
-using Server.Mobiles;
-using Server.Gumps;
-using System.Collections.Generic;
-using Server.Network;
 using Server.Guilds;
-using System.Linq;
-using Server.Engines.Points;
+using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.VvV
 {
@@ -107,7 +101,7 @@ namespace Server.Engines.VvV
                 PlayerMobile pm = reader.ReadMobile() as PlayerMobile;
                 VvVPlayerBattleStats stats = new VvVPlayerBattleStats(reader, pm);
 
-                if(pm != null)
+                if (pm != null)
                     PlayerStats.Add(stats);
             }
         }
@@ -130,7 +124,7 @@ namespace Server.Engines.VvV
             writer.Write(Disarmed);
 
             writer.Write(PlayerStats.Count);
-            PlayerStats.ForEach(stats => 
+            PlayerStats.ForEach(stats =>
                 {
                     writer.Write(stats.Player);
                     stats.Serialize(writer);
@@ -182,7 +176,7 @@ namespace Server.Engines.VvV
             Player = pm;
             Points = reader.ReadDouble();
 
-            if(version == 0)
+            if (version == 0)
                 reader.ReadInt();
 
             Kills = reader.ReadInt();

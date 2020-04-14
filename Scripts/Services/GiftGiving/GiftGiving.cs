@@ -1,6 +1,6 @@
+using Server.Accounting;
 using System;
 using System.Collections.Generic;
-using Server.Accounting;
 
 namespace Server.Misc
 {

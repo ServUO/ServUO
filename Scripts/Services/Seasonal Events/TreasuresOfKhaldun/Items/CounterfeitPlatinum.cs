@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class CounterfeitPlatinum : Item
@@ -18,7 +16,7 @@ namespace Server.Items
         {
         }
 
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

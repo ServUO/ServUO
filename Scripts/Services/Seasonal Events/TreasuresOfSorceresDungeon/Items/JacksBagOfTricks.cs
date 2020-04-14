@@ -1,7 +1,5 @@
-using System;
-
-using Server;
 using Server.Events.Halloween;
+using System;
 
 namespace Server.Items
 {

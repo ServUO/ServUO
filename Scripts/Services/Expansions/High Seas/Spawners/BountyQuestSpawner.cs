@@ -1,11 +1,10 @@
-using Server;
-using System;
-using Server.Multis;
-using System.Collections.Generic;
-using Server.Mobiles;
-using Server.Items;
 using Server.Commands;
 using Server.Gumps;
+using Server.Items;
+using Server.Mobiles;
+using Server.Multis;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Quests
 {
@@ -32,11 +31,11 @@ namespace Server.Engines.Quests
 
         private static BountyQuestSpawner m_Instance;
         public static BountyQuestSpawner Instance
-        { 
-            get 
+        {
+            get
             {
                 return m_Instance;
-            } 
+            }
         }
 
         private static Dictionary<Mobile, int> m_Bounties = new Dictionary<Mobile, int>();
@@ -96,10 +95,10 @@ namespace Server.Engines.Quests
         public int MaxTokuno { get { return m_MaxTokuno; } set { m_MaxTokuno = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TimeSpan SpawnTime 
-        { 
-            get { return m_SpawnTime; } 
-            set 
+        public TimeSpan SpawnTime
+        {
+            get { return m_SpawnTime; }
+            set
             {
                 m_SpawnTime = value;
 
@@ -108,25 +107,27 @@ namespace Server.Engines.Quests
 
                 m_Timer = Timer.DelayCall(m_SpawnTime, m_SpawnTime, new TimerCallback(OnTick));
 
-            } 
+            }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int bMerchantCount 
-        { 
-            get 
+        public int bMerchantCount
+        {
+            get
             {
                 int count = 0;
 
-                foreach (List<BaseShipCaptain> list in m_ActiveZones.Values) {
-                    foreach(BaseShipCaptain capt in list) {
+                foreach (List<BaseShipCaptain> list in m_ActiveZones.Values)
+                {
+                    foreach (BaseShipCaptain capt in list)
+                    {
                         if (capt is MerchantCaptain)
                             count++;
                     }
                 }
 
-                return count; 
-            } 
+                return count;
+            }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -136,7 +137,7 @@ namespace Server.Engines.Quests
         public bool Active
         {
             get { return m_Active; }
-            set 
+            set
             {
                 if (m_Active != value)
                 {
@@ -147,7 +148,7 @@ namespace Server.Engines.Quests
                             m_Timer.Stop();
                             m_Timer = null;
                         }
-                        
+
                         m_Timer = Timer.DelayCall(m_SpawnTime, m_SpawnTime, new TimerCallback(OnTick));
                     }
                     else
@@ -161,7 +162,7 @@ namespace Server.Engines.Quests
                     }
                 }
 
-                m_Active = value; 
+                m_Active = value;
             }
         }
 
@@ -313,7 +314,7 @@ namespace Server.Engines.Quests
                 gal.Owner = pirate;
                 Point3D p = Point3D.Zero;
                 bool spawned = false;
-                for(int i = 0; i < 25; i++)
+                for (int i = 0; i < 25; i++)
                 {
                     int x = Utility.Random(rec.X, rec.Width);
                     int y = Utility.Random(rec.Y, rec.Height);
@@ -383,7 +384,7 @@ namespace Server.Engines.Quests
 
                 MerchantCaptain captain = new MerchantCaptain(gal);
 
-                for(int i = 0; i < 25; i++)
+                for (int i = 0; i < 25; i++)
                 {
                     int x = Utility.Random(rec.X, rec.Width);
                     int y = Utility.Random(rec.Y, rec.Height);
@@ -659,7 +660,7 @@ namespace Server.Engines.Quests
 
                 if (0.025 > Utility.RandomDouble())
                 {
-                    if(Utility.RandomBool())
+                    if (Utility.RandomBool())
                         hold.DropItem(new WhiteClothDyeTub());
                     else
                         hold.DropItem(PermanentBoatPaint.DropRandom());
@@ -774,7 +775,7 @@ namespace Server.Engines.Quests
 
         public override void OnDoubleClick(Mobile from)
         {
-            if(from.AccessLevel > AccessLevel.Player)
+            if (from.AccessLevel > AccessLevel.Player)
                 from.SendGump(new PropertiesGump(from, this));
         }
 
@@ -885,7 +886,7 @@ namespace Server.Engines.Quests
         TokunoPirate,
 
         //merchants
-        TramMerch1, 
+        TramMerch1,
         TramMerch2,
         FelMerch1,
         FelMerch2,
@@ -902,7 +903,7 @@ namespace Server.Engines.Quests
         public Rectangle2D SpawnRegion { get { return m_SpawnRegion; } }
         public Point2D[][] Waypoints { get { return m_Waypoints; } }
         public SpawnZone Zone { get { return m_Zone; } }
-        public Map Map { get { return m_Map;}}
+        public Map Map { get { return m_Map; } }
 
         public SpawnDefinition(Rectangle2D spawnreg, Point2D[][] waypoints, SpawnZone type, Map map)
         {
@@ -922,68 +923,68 @@ namespace Server.Engines.Quests
         //Defines teh definitions!
         public static void Configure()
         {
-            new SpawnDefinition(new Rectangle2D(1500, 3600, 180, 400), m_PirateTramFelCoursesJhelom,   SpawnZone.TramJhelom,   Map.Trammel);
-            new SpawnDefinition(new Rectangle2D(1500, 3600, 180, 400), m_PirateTramFelCoursesJhelom,   SpawnZone.FelJhelom,    Map.Felucca);
-            new SpawnDefinition(new Rectangle2D(4570, 630, 400, 100),  m_PirateTramFelCoursesMoonglow, SpawnZone.TramMoonglow, Map.Trammel);
-            new SpawnDefinition(new Rectangle2D(4570, 630, 400, 100),  m_PirateTramFelCoursesMoonglow, SpawnZone.FelMoonglow,  Map.Felucca);
-            new SpawnDefinition(new Rectangle2D(1022, 1182, 350, 200), m_PirateTokunoCourses,          SpawnZone.TokunoPirate, Map.Tokuno);
+            new SpawnDefinition(new Rectangle2D(1500, 3600, 180, 400), m_PirateTramFelCoursesJhelom, SpawnZone.TramJhelom, Map.Trammel);
+            new SpawnDefinition(new Rectangle2D(1500, 3600, 180, 400), m_PirateTramFelCoursesJhelom, SpawnZone.FelJhelom, Map.Felucca);
+            new SpawnDefinition(new Rectangle2D(4570, 630, 400, 100), m_PirateTramFelCoursesMoonglow, SpawnZone.TramMoonglow, Map.Trammel);
+            new SpawnDefinition(new Rectangle2D(4570, 630, 400, 100), m_PirateTramFelCoursesMoonglow, SpawnZone.FelMoonglow, Map.Felucca);
+            new SpawnDefinition(new Rectangle2D(1022, 1182, 350, 200), m_PirateTokunoCourses, SpawnZone.TokunoPirate, Map.Tokuno);
 
             new SpawnDefinition(new Rectangle2D(1780, 1650, 300, 200), m_MerchantTramFelCourses1, SpawnZone.TramMerch1, Map.Trammel);
             new SpawnDefinition(new Rectangle2D(1780, 1650, 300, 200), m_MerchantTramFelCourses1, SpawnZone.FelMerch1, Map.Felucca);
             new SpawnDefinition(new Rectangle2D(3780, 2300, 100, 200), m_MerchantTramFelCourses2, SpawnZone.TramMerch2, Map.Trammel);
             new SpawnDefinition(new Rectangle2D(3780, 2300, 100, 200), m_MerchantTramFelCourses2, SpawnZone.FelMerch2, Map.Felucca);
-            new SpawnDefinition(new Rectangle2D(425, 1335, 160, 80),   m_MerchantTokunoCourses, SpawnZone.TokunoMerch, Map.Tokuno);
+            new SpawnDefinition(new Rectangle2D(425, 1335, 160, 80), m_MerchantTokunoCourses, SpawnZone.TokunoMerch, Map.Tokuno);
         }
 
         public static Point2D[][] PirateTramFelCoursesJhelom { get { return m_PirateTramFelCoursesJhelom; } }
         private static Point2D[][] m_PirateTramFelCoursesJhelom = new Point2D[][]
         {
-	        new Point2D[]{ new Point2D(1598, 3861), new Point2D(1520, 3470), new Point2D(1418, 3314), new Point2D(1159, 3277), new Point2D(1320, 3508), new Point2D(1527, 3584) },
-	        new Point2D[]{ new Point2D(1947, 3536), new Point2D(2023, 4016), new Point2D(1795, 3855), new Point2D(1613, 3887) },
-	        new Point2D[]{ new Point2D(2135, 4070), new Point2D(2802, 4070), new Point2D(2620, 3761), new Point2D(1725, 3794), },
-	        new Point2D[]{ new Point2D(2154, 3775), new Point2D(2378, 3652), new Point2D(2388, 3812), new Point2D(1696, 3797), },
-	        new Point2D[]{ new Point2D(1599, 3933), new Point2D(1299, 3953), new Point2D(971, 3799), new Point2D(813, 3326), new Point2D(1247, 3296), new Point2D(1655, 3890) },
-	        new Point2D[]{ new Point2D(1694, 3735), new Point2D(1960, 3678), new Point2D(1808, 3966), },
-	        new Point2D[]{ new Point2D(1799, 4070), new Point2D(1810, 3727), new Point2D(2150, 3727), new Point2D(1691, 3916), },
+            new Point2D[]{ new Point2D(1598, 3861), new Point2D(1520, 3470), new Point2D(1418, 3314), new Point2D(1159, 3277), new Point2D(1320, 3508), new Point2D(1527, 3584) },
+            new Point2D[]{ new Point2D(1947, 3536), new Point2D(2023, 4016), new Point2D(1795, 3855), new Point2D(1613, 3887) },
+            new Point2D[]{ new Point2D(2135, 4070), new Point2D(2802, 4070), new Point2D(2620, 3761), new Point2D(1725, 3794), },
+            new Point2D[]{ new Point2D(2154, 3775), new Point2D(2378, 3652), new Point2D(2388, 3812), new Point2D(1696, 3797), },
+            new Point2D[]{ new Point2D(1599, 3933), new Point2D(1299, 3953), new Point2D(971, 3799), new Point2D(813, 3326), new Point2D(1247, 3296), new Point2D(1655, 3890) },
+            new Point2D[]{ new Point2D(1694, 3735), new Point2D(1960, 3678), new Point2D(1808, 3966), },
+            new Point2D[]{ new Point2D(1799, 4070), new Point2D(1810, 3727), new Point2D(2150, 3727), new Point2D(1691, 3916), },
         };
 
         public static Point2D[][] PirateTramFelCoursesMoonglow { get { return m_PirateTramFelCoursesMoonglow; } }
         private static Point2D[][] m_PirateTramFelCoursesMoonglow = new Point2D[][]
          {
             new Point2D[]{ new Point2D(4415, 792), new Point2D(3927, 900), new Point2D(4069, 1630), new Point2D(4799, 1670), new Point2D(4861, 1061), new Point2D(4533, 589) },
-	        new Point2D[]{ new Point2D(4265, 145), new Point2D(5015, 153), new Point2D(5001, 669), new Point2D(4950, 720), new Point2D(4573, 663) },
-	        new Point2D[]{ new Point2D(4265, 145), new Point2D(3709, 107), new Point2D(3703, 773), new Point2D(4131, 913), new Point2D(4533, 713) },
-	        new Point2D[]{ new Point2D(5043, 155), new Point2D(4447, 231), new Point2D(4531, 609) },
+            new Point2D[]{ new Point2D(4265, 145), new Point2D(5015, 153), new Point2D(5001, 669), new Point2D(4950, 720), new Point2D(4573, 663) },
+            new Point2D[]{ new Point2D(4265, 145), new Point2D(3709, 107), new Point2D(3703, 773), new Point2D(4131, 913), new Point2D(4533, 713) },
+            new Point2D[]{ new Point2D(5043, 155), new Point2D(4447, 231), new Point2D(4531, 609) },
         };
 
         public static Point2D[][] PirateTokunoCourses { get { return m_PirateTokunoCourses; } }
         private static Point2D[][] m_PirateTokunoCourses = new Point2D[][]
         {
-	        new Point2D[]{ new Point2D(1324, 1178), new Point2D(1358, 1334), new Point2D(1032, 1358), new Point2D(1070, 1240) },
-	        new Point2D[]{ new Point2D(1370, 1074), new Point2D(1422, 962), new Point2D(1416, 620), new Point2D(1422, 1310) },
-	        new Point2D[]{ new Point2D(1032, 1104), new Point2D(982, 1078), new Point2D(942, 914), new Point2D(942, 1086), new Point2D(982, 1078), new Point2D(1134, 1202) },
-	        new Point2D[]{ new Point2D(1320, 1378), new Point2D(1050, 1204), new Point2D(1356, 1088), new Point2D(1244, 1300) },
+            new Point2D[]{ new Point2D(1324, 1178), new Point2D(1358, 1334), new Point2D(1032, 1358), new Point2D(1070, 1240) },
+            new Point2D[]{ new Point2D(1370, 1074), new Point2D(1422, 962), new Point2D(1416, 620), new Point2D(1422, 1310) },
+            new Point2D[]{ new Point2D(1032, 1104), new Point2D(982, 1078), new Point2D(942, 914), new Point2D(942, 1086), new Point2D(982, 1078), new Point2D(1134, 1202) },
+            new Point2D[]{ new Point2D(1320, 1378), new Point2D(1050, 1204), new Point2D(1356, 1088), new Point2D(1244, 1300) },
         };
 
         public static Point2D[][] MerchantTokunoCourses { get { return m_MerchantTokunoCourses; } }
         private static Point2D[][] m_MerchantTokunoCourses = new Point2D[][]
         {
-	        new Point2D[]{ new Point2D(460, 1408), new Point2D(878, 1408), new Point2D(500, 1408) },
-	        new Point2D[]{ new Point2D(460, 1408), new Point2D(460, 768), new Point2D(460, 1350) },
+            new Point2D[]{ new Point2D(460, 1408), new Point2D(878, 1408), new Point2D(500, 1408) },
+            new Point2D[]{ new Point2D(460, 1408), new Point2D(460, 768), new Point2D(460, 1350) },
         };
 
         public static Point2D[][] MerchantTramFelCourses1 { get { return m_MerchantTramFelCourses1; } }
         private static Point2D[][] m_MerchantTramFelCourses1 = new Point2D[][]
         {
-	        new Point2D[]{ new Point2D(2420, 1708), new Point2D(2420, 1400), new Point2D(3516, 1400), new Point2D(3516, 1696), new Point2D(2500, 1696) },
-	        new Point2D[]{ new Point2D(2420, 1708), new Point2D(2420, 2760), new Point2D(3164, 2760), new Point2D(3164, 1696), new Point2D(2500, 1696) },
+            new Point2D[]{ new Point2D(2420, 1708), new Point2D(2420, 1400), new Point2D(3516, 1400), new Point2D(3516, 1696), new Point2D(2500, 1696) },
+            new Point2D[]{ new Point2D(2420, 1708), new Point2D(2420, 2760), new Point2D(3164, 2760), new Point2D(3164, 1696), new Point2D(2500, 1696) },
         };
 
         public static Point2D[][] MerchantTramFelCourses2 { get { return m_MerchantTramFelCourses2; } }
         private static Point2D[][] m_MerchantTramFelCourses2 = new Point2D[][]
         {
-	        new Point2D[]{ new Point2D(4129, 2367), new Point2D(4129, 1891), new Point2D(4773, 1891), new Point2D(4773, 2639), new Point2D(4129, 2639), new Point2D(4129, 2351) },
-	        new Point2D[]{ new Point2D(4000, 2415), new Point2D(4000, 3515), new Point2D(3141, 3515), new Point2D(3141, 3043), new Point2D(4093, 3043), new Point2D(4093, 2371) },
+            new Point2D[]{ new Point2D(4129, 2367), new Point2D(4129, 1891), new Point2D(4773, 1891), new Point2D(4773, 2639), new Point2D(4129, 2639), new Point2D(4129, 2351) },
+            new Point2D[]{ new Point2D(4000, 2415), new Point2D(4000, 3515), new Point2D(3141, 3515), new Point2D(3141, 3043), new Point2D(4093, 3043), new Point2D(4093, 2371) },
         };
     }
 }

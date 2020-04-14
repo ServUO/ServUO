@@ -1,10 +1,6 @@
-﻿using System;
-using Server;
-using Server.Mobiles;
-using Server.Items;
+﻿using Server.Commands;
+using System;
 using System.Collections.Generic;
-using Server.Commands;
-using Server.Multis;
 
 namespace Server.Engines.Quests
 {
@@ -79,7 +75,7 @@ namespace Server.Engines.Quests
 
                 m_Reputation += toAward;
             }
- 
+
             return toAward;
         }
 
@@ -118,7 +114,7 @@ namespace Server.Engines.Quests
                     case 3: line4 += toAdd; goto case 2;
                     case 2: line3 += toAdd; goto case 1;
                     case 1: line2 += toAdd; goto case 0;
-                    case 0: 
+                    case 0:
                     default: break;
                 }
             }
@@ -140,7 +136,7 @@ namespace Server.Engines.Quests
         {
             int eligibleIndex = FishQuestHelper.GetIndexForSkillLevel(m_Player);
 
-            while(true)
+            while (true)
             {
                 index = Utility.Random(eligibleIndex);
 
@@ -232,7 +228,7 @@ namespace Server.Engines.Quests
                     m_TimesFished.Add(index, fished);
             }
 
-            if(m_Player != null)
+            if (m_Player != null)
                 m_FishingEntries.Add(m_Player, this);
         }
 

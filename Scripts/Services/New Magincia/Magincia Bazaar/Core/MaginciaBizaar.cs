@@ -1,51 +1,50 @@
-using Server;
+using Server.Accounting;
+using Server.Items;
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
-using Server.Mobiles;
-using Server.Items;
-using Server.Accounting;
 
 namespace Server.Engines.NewMagincia
 {
-	public class MaginciaBazaar : Item
-	{
-		public static readonly int DefaultComissionFee = 5;
-		public static TimeSpan GetShortAuctionTime { get { return TimeSpan.FromMinutes(Utility.RandomMinMax(690, 750)); } }
-		public static TimeSpan GetLongAuctionTime { get { return TimeSpan.FromHours(Utility.RandomMinMax(168, 180)); } }
+    public class MaginciaBazaar : Item
+    {
+        public static readonly int DefaultComissionFee = 5;
+        public static TimeSpan GetShortAuctionTime { get { return TimeSpan.FromMinutes(Utility.RandomMinMax(690, 750)); } }
+        public static TimeSpan GetLongAuctionTime { get { return TimeSpan.FromHours(Utility.RandomMinMax(168, 180)); } }
 
-		private static MaginciaBazaar m_Instance;
+        private static MaginciaBazaar m_Instance;
         public static MaginciaBazaar Instance { get { return m_Instance; } set { m_Instance = value; } }
-		
-		private Timer m_Timer;
-		
-		private static List<MaginciaBazaarPlot> m_Plots = new List<MaginciaBazaarPlot>();
-		public static List<MaginciaBazaarPlot> Plots { get { return m_Plots; } } 
-		
-		private static Dictionary<Mobile, BidEntry> m_NextAvailable = new Dictionary<Mobile, BidEntry>();
-		public static Dictionary<Mobile, BidEntry> NextAvailable { get { return m_NextAvailable; } }
-		
-		private static Dictionary<Mobile, int> m_Reserve = new Dictionary<Mobile, int>();
-		public static Dictionary<Mobile, int> Reserve { get { return m_Reserve; } }
-		
-		private bool m_Enabled;
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool Enabled
-		{
-			get { return m_Enabled; }
-			set
-			{
-				if(m_Enabled != value)
-				{
-					if(value)
-						StartTimer();
-					else
-						EndTimer();
-				}
-				
-				m_Enabled = value;
-			}
-		}
+
+        private Timer m_Timer;
+
+        private static List<MaginciaBazaarPlot> m_Plots = new List<MaginciaBazaarPlot>();
+        public static List<MaginciaBazaarPlot> Plots { get { return m_Plots; } }
+
+        private static Dictionary<Mobile, BidEntry> m_NextAvailable = new Dictionary<Mobile, BidEntry>();
+        public static Dictionary<Mobile, BidEntry> NextAvailable { get { return m_NextAvailable; } }
+
+        private static Dictionary<Mobile, int> m_Reserve = new Dictionary<Mobile, int>();
+        public static Dictionary<Mobile, int> Reserve { get { return m_Reserve; } }
+
+        private bool m_Enabled;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Enabled
+        {
+            get { return m_Enabled; }
+            set
+            {
+                if (m_Enabled != value)
+                {
+                    if (value)
+                        StartTimer();
+                    else
+                        EndTimer();
+                }
+
+                m_Enabled = value;
+            }
+        }
 
         /*
          * Phase 1 - Stalls A - D (0 - 19)
@@ -62,10 +61,10 @@ namespace Server.Engines.NewMagincia
         private Phase m_Phase;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Phase PlotPhase 
-        { 
-            get { return m_Phase; } 
-            set 
+        public Phase PlotPhase
+        {
+            get { return m_Phase; }
+            set
             {
 
                 if (value > m_Phase)
@@ -73,23 +72,23 @@ namespace Server.Engines.NewMagincia
                     m_Phase = value;
                     ActivatePlots();
                 }
-            } 
+            }
         }
-				
-		public MaginciaBazaar() : base(3240)
-		{
-			Movable = false;
-			m_Enabled = true;
-			
-			WarehouseSuperintendent mob = new WarehouseSuperintendent();
-			mob.MoveToWorld(new Point3D(3795, 2259, 20), Map.Trammel);
-			mob.Home = mob.Location;
-			mob.RangeHome = 12;
-			
-			mob = new WarehouseSuperintendent();
+
+        public MaginciaBazaar() : base(3240)
+        {
+            Movable = false;
+            m_Enabled = true;
+
+            WarehouseSuperintendent mob = new WarehouseSuperintendent();
+            mob.MoveToWorld(new Point3D(3795, 2259, 20), Map.Trammel);
+            mob.Home = mob.Location;
+            mob.RangeHome = 12;
+
+            mob = new WarehouseSuperintendent();
             mob.MoveToWorld(new Point3D(3795, 2259, 20), Map.Felucca);
-			mob.Home = mob.Location;
-			mob.RangeHome = 12;
+            mob.Home = mob.Location;
+            mob.RangeHome = 12;
 
             LoadPlots();
             AddPlotSigns();
@@ -99,7 +98,7 @@ namespace Server.Engines.NewMagincia
 
             m_Phase = Phase.Phase1;
             ActivatePlots();
-		}
+        }
 
         public static bool IsActivePlot(MaginciaBazaarPlot plot)
         {
@@ -153,37 +152,37 @@ namespace Server.Engines.NewMagincia
                     plot.Sign.InvalidateProperties();
             }
         }
-		
-		public void StartTimer()
-		{
+
+        public void StartTimer()
+        {
             if (m_Timer != null)
                 m_Timer.Stop();
 
-			m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), new TimerCallback(OnTick));
-			m_Timer.Priority = TimerPriority.OneMinute;
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), new TimerCallback(OnTick));
+            m_Timer.Priority = TimerPriority.OneMinute;
             m_Timer.Start();
-		}
-		
-		public void EndTimer()
-		{
-			if(m_Timer != null)
-				m_Timer.Stop();
-				
-			m_Timer = null;
-		}
-		
-		public void OnTick()
-		{
-			foreach(MaginciaBazaarPlot plot in m_Plots)
-			{
+        }
+
+        public void EndTimer()
+        {
+            if (m_Timer != null)
+                m_Timer.Stop();
+
+            m_Timer = null;
+        }
+
+        public void OnTick()
+        {
+            foreach (MaginciaBazaarPlot plot in m_Plots)
+            {
                 if (plot.Active)
                     plot.OnTick();
-			}
-			
-			List<Mobile> toRemove = new List<Mobile>();
-			
-			foreach(KeyValuePair<Mobile, StorageEntry> kvp in m_WarehouseStorage)
-			{
+            }
+
+            List<Mobile> toRemove = new List<Mobile>();
+
+            foreach (KeyValuePair<Mobile, StorageEntry> kvp in m_WarehouseStorage)
+            {
                 Mobile m = kvp.Key;
                 StorageEntry entry = kvp.Value;
 
@@ -250,7 +249,7 @@ namespace Server.Engines.NewMagincia
                         MaginciaLottoSystem.SendMessageTo(m, new NewMaginciaMessage(new TextDefinition(1150676), new TextDefinition(1150673), null));
                     }
                 }
-			}
+            }
 
             foreach (Mobile m in toRemove)
             {
@@ -259,7 +258,7 @@ namespace Server.Engines.NewMagincia
             }
 
             ColUtility.Free(toRemove);
-		}
+        }
 
         public void AddPlotSigns()
         {
@@ -281,35 +280,35 @@ namespace Server.Engines.NewMagincia
         {
             // Note: This cannot be deleted.  That could potentially piss alot of people off who have items and gold invested in a plot.
         }
-		
-		public static MaginciaBazaarPlot GetPlot(Mobile from)
-		{
-			foreach(MaginciaBazaarPlot plot in m_Plots)
-			{
-				if(plot.IsOwner(from))
-					return plot;
-			}
-			
-			return null;
-		}
-		
-		public static bool HasPlot(Mobile from)
-		{
-			foreach(MaginciaBazaarPlot plot in m_Plots)
-			{
-				if(plot.IsOwner(from))
-					return true;
-			}
-			
-			return false;
-		}
 
-		public static MaginciaBazaarPlot GetBiddingPlot(Mobile from)
-		{
-			Account acct = from.Account as Account;
-			
-			if(acct == null)
-				return null;
+        public static MaginciaBazaarPlot GetPlot(Mobile from)
+        {
+            foreach (MaginciaBazaarPlot plot in m_Plots)
+            {
+                if (plot.IsOwner(from))
+                    return plot;
+            }
+
+            return null;
+        }
+
+        public static bool HasPlot(Mobile from)
+        {
+            foreach (MaginciaBazaarPlot plot in m_Plots)
+            {
+                if (plot.IsOwner(from))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static MaginciaBazaarPlot GetBiddingPlot(Mobile from)
+        {
+            Account acct = from.Account as Account;
+
+            if (acct == null)
+                return null;
 
             for (int i = 0; i < acct.Length; i++)
             {
@@ -323,39 +322,39 @@ namespace Server.Engines.NewMagincia
                 if (plot != null)
                     return plot;
             }
-			
-			return null;
-		}
-		
-		public static MaginciaBazaarPlot GetBiddingPlotForAccount(Mobile from)
-		{
-			foreach(MaginciaBazaarPlot plot in m_Plots)
-			{
-				if(plot.Auction != null && plot.Auction.Auctioners.ContainsKey(from))
-					return plot;
-			}
-			
-			return null;
-		}
+
+            return null;
+        }
+
+        public static MaginciaBazaarPlot GetBiddingPlotForAccount(Mobile from)
+        {
+            foreach (MaginciaBazaarPlot plot in m_Plots)
+            {
+                if (plot.Auction != null && plot.Auction.Auctioners.ContainsKey(from))
+                    return plot;
+            }
+
+            return null;
+        }
 
         public bool HasActiveBid(Mobile from)
         {
             return GetBiddingPlot(from) != null || m_NextAvailable.ContainsKey(from);
         }
 
-		public static bool TryRetractBid(Mobile from)
-		{
-			MaginciaBazaarPlot plot = GetBiddingPlot(from);
-			
-			if(plot != null)
-				return plot.Auction.RetractBid(from);
-				
-			return RetractBid(from);
-		}
-		
-		public static bool RetractBid(Mobile from)
-		{
-			Account acct = from.Account as Account;
+        public static bool TryRetractBid(Mobile from)
+        {
+            MaginciaBazaarPlot plot = GetBiddingPlot(from);
+
+            if (plot != null)
+                return plot.Auction.RetractBid(from);
+
+            return RetractBid(from);
+        }
+
+        public static bool RetractBid(Mobile from)
+        {
+            Account acct = from.Account as Account;
 
             for (int i = 0; i < acct.Length; i++)
             {
@@ -375,9 +374,9 @@ namespace Server.Engines.NewMagincia
                     }
                 }
             }
-			
-			return false;
-		}
+
+            return false;
+        }
 
         public static bool IsBiddingNextAvailable(Mobile from)
         {
@@ -386,7 +385,7 @@ namespace Server.Engines.NewMagincia
 
         public static int GetNextAvailableBid(Mobile from)
         {
-            if(m_NextAvailable.ContainsKey(from))
+            if (m_NextAvailable.ContainsKey(from))
                 return m_NextAvailable[from].Amount;
             return 0;
         }
@@ -401,13 +400,13 @@ namespace Server.Engines.NewMagincia
             if (m_NextAvailable.ContainsKey(from))
                 m_NextAvailable.Remove(from);
         }
-		
-		public static void AwardPlot(MaginciaPlotAuction auction, Mobile winner, int highest)
-		{
-			MaginciaBazaarPlot plot = auction.Plot;
-			
-			if(m_NextAvailable.ContainsKey(winner))
-				m_NextAvailable.Remove(winner);
+
+        public static void AwardPlot(MaginciaPlotAuction auction, Mobile winner, int highest)
+        {
+            MaginciaBazaarPlot plot = auction.Plot;
+
+            if (m_NextAvailable.ContainsKey(winner))
+                m_NextAvailable.Remove(winner);
 
             if (plot != null && plot.Owner != winner)
             {
@@ -441,14 +440,14 @@ namespace Server.Engines.NewMagincia
                     current.Merchant = null;
                     current.Owner = null;
 
-                    if(current.Auction != null)
+                    if (current.Auction != null)
                         current.Auction.EndAuction();
                 }
 
                 plot.Owner = winner;
                 plot.NewAuction(GetLongAuctionTime);
             }
-            else if(plot != null)
+            else if (plot != null)
             {
                 if (plot.Owner != null)
                     plot.NewAuction(GetLongAuctionTime);
@@ -458,37 +457,37 @@ namespace Server.Engines.NewMagincia
                     plot.NewAuction(GetShortAuctionTime);
                 }
             }
-		}
-		
-		public static void RegisterPlot(PlotDef plotDef)
-		{
-			m_Plots.Add(new MaginciaBazaarPlot(plotDef));
-		}
-		
-		public static bool IsSameAccount(Mobile check, Mobile checkAgainst)
-		{
-			return IsSameAccount(check, checkAgainst, false);
-		}
-		
-		public static bool IsSameAccount(Mobile check, Mobile checkAgainst, bool checkLink)
-		{
-			if(check == null || checkAgainst == null)
-				return false;
-				
-			Account acct1 = checkAgainst.Account as Account;
-			Account acct2 = check.Account as Account;
-			
-			if(acct1 != null && acct1 == acct2)
-				return true;
-			
-			return false;
-		}
-		
-		#region Bizaar Authority Storage
+        }
+
+        public static void RegisterPlot(PlotDef plotDef)
+        {
+            m_Plots.Add(new MaginciaBazaarPlot(plotDef));
+        }
+
+        public static bool IsSameAccount(Mobile check, Mobile checkAgainst)
+        {
+            return IsSameAccount(check, checkAgainst, false);
+        }
+
+        public static bool IsSameAccount(Mobile check, Mobile checkAgainst, bool checkLink)
+        {
+            if (check == null || checkAgainst == null)
+                return false;
+
+            Account acct1 = checkAgainst.Account as Account;
+            Account acct2 = check.Account as Account;
+
+            if (acct1 != null && acct1 == acct2)
+                return true;
+
+            return false;
+        }
+
+        #region Bizaar Authority Storage
         private static Dictionary<Mobile, StorageEntry> m_WarehouseStorage = new Dictionary<Mobile, StorageEntry>();
 
-		public void AddInventoryToWarehouse(Mobile owner, BaseBazaarBroker broker)
-		{
+        public void AddInventoryToWarehouse(Mobile owner, BaseBazaarBroker broker)
+        {
             StorageEntry entry = GetStorageEntry(owner);
 
             if (entry == null)
@@ -519,7 +518,7 @@ namespace Server.Engines.NewMagincia
 
                 MaginciaLottoSystem.SendMessageTo(owner, new NewMaginciaMessage(1150676, new TextDefinition(1150674), null));
             }
-		}
+        }
 
         public static StorageEntry GetStorageEntry(Mobile from)
         {
@@ -536,72 +535,72 @@ namespace Server.Engines.NewMagincia
             }
         }
 
-		public static void AddToReserve(Mobile from, int amount)
-		{
-			foreach(Mobile m in m_Reserve.Keys)
-			{
-				if(from == m || IsSameAccount(from, m))
-				{
-					m_Reserve[m] += amount;	
-					return;
-				}
-			}	
-			
-			m_Reserve[from] = amount;
-		}
-		
-		public static void DeductReserve(Mobile from, int amount)
-		{
-			foreach(Mobile m in m_Reserve.Keys)
-			{
-				if(from == m || IsSameAccount(from, m))
-				{
-					m_Reserve[m] -= amount;	
-					
-					if(m_Reserve[m] <= 0)
-						m_Reserve.Remove(m);
-					
-					return;
-				}
-			}
-		}
-		
-		public static int GetBidMatching(Mobile from)
-		{
-			foreach(Mobile m in m_Reserve.Keys)
-			{
-				if(from == m || IsSameAccount(m, from))
-					return m_Reserve[m];
-			}
-				
-			return 0;
-		}
-		#endregion
-		
-		public MaginciaBazaar(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write((int)0);
+        public static void AddToReserve(Mobile from, int amount)
+        {
+            foreach (Mobile m in m_Reserve.Keys)
+            {
+                if (from == m || IsSameAccount(from, m))
+                {
+                    m_Reserve[m] += amount;
+                    return;
+                }
+            }
+
+            m_Reserve[from] = amount;
+        }
+
+        public static void DeductReserve(Mobile from, int amount)
+        {
+            foreach (Mobile m in m_Reserve.Keys)
+            {
+                if (from == m || IsSameAccount(from, m))
+                {
+                    m_Reserve[m] -= amount;
+
+                    if (m_Reserve[m] <= 0)
+                        m_Reserve.Remove(m);
+
+                    return;
+                }
+            }
+        }
+
+        public static int GetBidMatching(Mobile from)
+        {
+            foreach (Mobile m in m_Reserve.Keys)
+            {
+                if (from == m || IsSameAccount(m, from))
+                    return m_Reserve[m];
+            }
+
+            return 0;
+        }
+        #endregion
+
+        public MaginciaBazaar(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
 
             writer.Write(m_Enabled);
             writer.Write((int)m_Phase);
 
-			writer.Write(m_Plots.Count);
-			for(int i = 0; i < m_Plots.Count; i++)
-			{
-				m_Plots[i].Serialize(writer);
-			}
-			
-			writer.Write(m_NextAvailable.Count);
-			foreach(KeyValuePair<Mobile, BidEntry> kvp in m_NextAvailable)
-			{
-				writer.Write(kvp.Key);
-				kvp.Value.Serialize(writer);
-			}
+            writer.Write(m_Plots.Count);
+            for (int i = 0; i < m_Plots.Count; i++)
+            {
+                m_Plots[i].Serialize(writer);
+            }
+
+            writer.Write(m_NextAvailable.Count);
+            foreach (KeyValuePair<Mobile, BidEntry> kvp in m_NextAvailable)
+            {
+                writer.Write(kvp.Key);
+                kvp.Value.Serialize(writer);
+            }
 
             writer.Write(m_WarehouseStorage.Count);
             foreach (KeyValuePair<Mobile, StorageEntry> kvp in m_WarehouseStorage)
@@ -616,31 +615,31 @@ namespace Server.Engines.NewMagincia
                 writer.Write(kvp.Key);
                 writer.Write(kvp.Value);
             }
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
 
             m_Enabled = reader.ReadBool();
             m_Phase = (Phase)reader.ReadInt();
 
-			int count = reader.ReadInt();
-			for(int i = 0; i < count; i++)
-			{
+            int count = reader.ReadInt();
+            for (int i = 0; i < count; i++)
+            {
                 m_Plots.Add(new MaginciaBazaarPlot(reader));
-			}
-			
-			count = reader.ReadInt();
-			for(int i = 0; i < count; i++)
-			{
-				Mobile m = reader.ReadMobile();
-				BidEntry entry = new BidEntry(reader);
-				
-				if(m != null)
-					m_NextAvailable[m] = entry;
-			}
+            }
+
+            count = reader.ReadInt();
+            for (int i = 0; i < count; i++)
+            {
+                Mobile m = reader.ReadMobile();
+                BidEntry entry = new BidEntry(reader);
+
+                if (m != null)
+                    m_NextAvailable[m] = entry;
+            }
 
             count = reader.ReadInt();
             for (int i = 0; i < count; i++)
@@ -662,166 +661,166 @@ namespace Server.Engines.NewMagincia
                 if (m != null && amt > 0)
                     m_Reserve[m] = amt;
             }
-			
-			m_Instance = this;
+
+            m_Instance = this;
 
             if (m_Enabled)
                 StartTimer();
-		}
-		
-		public static void LoadPlots()
-		{
+        }
+
+        public static void LoadPlots()
+        {
             int idx = 0;
             RegisterPlot(new PlotDef("A-1", m_StallLocs[idx], 0));
-			RegisterPlot(new PlotDef("A-1", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("A-1", m_StallLocs[idx], 1));
             idx++;
-			RegisterPlot(new PlotDef("A-2", m_StallLocs[idx], 0));
-			RegisterPlot(new PlotDef("A-2", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("A-2", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("A-2", m_StallLocs[idx], 1));
             idx++;
-			RegisterPlot(new PlotDef("A-3", m_StallLocs[idx], 0));
-			RegisterPlot(new PlotDef("A-3", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("A-3", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("A-3", m_StallLocs[idx], 1));
             idx++;
-			RegisterPlot(new PlotDef("A-4", m_StallLocs[idx], 0));
-			RegisterPlot(new PlotDef("A-4", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("A-4", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("A-4", m_StallLocs[idx], 1));
             idx++;
-			RegisterPlot(new PlotDef("B-1", m_StallLocs[idx], 0));
-			RegisterPlot(new PlotDef("B-1", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("B-1", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("B-1", m_StallLocs[idx], 1));
             idx++;
-			RegisterPlot(new PlotDef("B-2", m_StallLocs[idx], 0));
-			RegisterPlot(new PlotDef("B-2", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("B-2", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("B-2", m_StallLocs[idx], 1));
             idx++;
-			RegisterPlot(new PlotDef("B-3", m_StallLocs[idx], 0));
-			RegisterPlot(new PlotDef("B-3", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("B-3", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("B-3", m_StallLocs[idx], 1));
             idx++;
-			RegisterPlot(new PlotDef("B-4", m_StallLocs[idx], 0));
-			RegisterPlot(new PlotDef("B-4", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("B-4", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("B-4", m_StallLocs[idx], 1));
             idx++;
-			RegisterPlot(new PlotDef("B-5", m_StallLocs[idx], 0));
-			RegisterPlot(new PlotDef("B-5", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("B-5", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("B-5", m_StallLocs[idx], 1));
             idx++;
-			RegisterPlot(new PlotDef("B-6", m_StallLocs[idx], 1));			
-			RegisterPlot(new PlotDef("B-6", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("B-6", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("B-6", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("C-1", m_StallLocs[idx], 1));			
-			RegisterPlot(new PlotDef("C-1", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("C-1", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("C-1", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("C-2", m_StallLocs[idx], 1));			
-			RegisterPlot(new PlotDef("C-2", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("C-2", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("C-2", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("C-3", m_StallLocs[idx], 1));			
-			RegisterPlot(new PlotDef("C-3", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("C-3", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("C-3", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("C-4", m_StallLocs[idx], 1));			
-			RegisterPlot(new PlotDef("C-4", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("C-4", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("C-4", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("C-5", m_StallLocs[idx], 1));			
-			RegisterPlot(new PlotDef("C-5", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("C-5", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("C-5", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("D-1", m_StallLocs[idx], 1));			
-			RegisterPlot(new PlotDef("D-1", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("D-1", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("D-1", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("D-2", m_StallLocs[idx], 1));			
-			RegisterPlot(new PlotDef("D-2", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("D-2", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("D-2", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("D-3", m_StallLocs[idx], 1));			
-			RegisterPlot(new PlotDef("D-3", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("D-3", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("D-3", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("D-4", m_StallLocs[idx], 1));			
-			RegisterPlot(new PlotDef("D-4", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("D-4", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("D-4", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("D-5", m_StallLocs[idx], 1));			
-			RegisterPlot(new PlotDef("D-5", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("D-5", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("D-5", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("E-1", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("E-1", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("E-1", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("E-1", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("E-2", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("E-2", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("E-2", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("E-2", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("E-3", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("E-3", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("E-3", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("E-3", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("E-4", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("E-4", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("E-4", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("E-4", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("E-5", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("E-5", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("E-5", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("E-5", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("F-1", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("F-1", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("F-1", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("F-1", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("F-2", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("F-2", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("F-2", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("F-2", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("F-3", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("F-3", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("F-3", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("F-3", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("F-4", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("F-4", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("F-4", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("F-4", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("F-5", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("F-5", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("F-5", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("F-5", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("G-1", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("G-1", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("G-1", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("G-1", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("G-2", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("G-2", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("G-2", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("G-2", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("G-3", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("G-3", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("G-3", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("G-3", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("G-4", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("G-4", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("G-4", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("G-4", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("G-5", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("G-5", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("G-5", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("G-5", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("H-1", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("H-1", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("H-1", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("H-1", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("H-2", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("H-2", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("H-2", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("H-2", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("H-3", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("H-3", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("H-3", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("H-3", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("H-4", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("H-4", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("H-4", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("H-4", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("H-5", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("H-5", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("H-5", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("H-5", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("H-6", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("H-6", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("H-6", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("H-6", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("I-1", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("I-1", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("I-1", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("I-1", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("I-2", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("I-2", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("I-2", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("I-2", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("I-3", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("I-3", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("I-3", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("I-3", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("I-4", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("I-4", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("I-4", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("I-4", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("I-5", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("I-5", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("I-5", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("I-5", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("J-1", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("J-1", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("J-1", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("J-1", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("J-2", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("J-2", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("J-2", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("J-2", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("J-3", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("J-3", m_StallLocs[idx], 0));
+            RegisterPlot(new PlotDef("J-3", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("J-3", m_StallLocs[idx], 0));
             idx++;
-			RegisterPlot(new PlotDef("J-4", m_StallLocs[idx], 1));
-			RegisterPlot(new PlotDef("J-4", m_StallLocs[idx], 0));
-		}
+            RegisterPlot(new PlotDef("J-4", m_StallLocs[idx], 1));
+            RegisterPlot(new PlotDef("J-4", m_StallLocs[idx], 0));
+        }
 
         private static Point3D[] m_StallLocs = new Point3D[]
         {
@@ -895,5 +894,5 @@ namespace Server.Engines.NewMagincia
             new Point3D(3730, 2228, 20),
             new Point3D(3737, 2228, 20),
         };
-	}
+    }
 }

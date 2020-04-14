@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Server;
-using Server.Mobiles;
 using Server.Gumps;
-using Server.Misc;
+using Server.Mobiles;
+using System;
 
 namespace Server.Engines.SeasonalEvents
 {
-	public class SeasonalEventGump : BaseGump
-	{
+    public class SeasonalEventGump : BaseGump
+    {
         public SeasonalEventGump(PlayerMobile pm)
             : base(pm, 100, 100)
         {
@@ -30,7 +25,7 @@ namespace Server.Engines.SeasonalEvents
             AddHtml(275, 40, 150, 20, "Season", false, false);
             AddHtml(450, 40, 50, 20, "Edit", false, false);
 
-            for(int i = 0; i < SeasonalEventSystem.Entries.Count; i++)
+            for (int i = 0; i < SeasonalEventSystem.Entries.Count; i++)
             {
                 var entry = SeasonalEventSystem.Entries[i];
 
@@ -90,7 +85,7 @@ namespace Server.Engines.SeasonalEvents
                 Refresh();
             }
         }
-	}
+    }
 
     public class EditEventGump : BaseGump
     {

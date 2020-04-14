@@ -1,7 +1,6 @@
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
-
-using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -35,7 +34,7 @@ namespace Server.Items
         {
         }
 
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -62,7 +61,7 @@ namespace Server.Items
 
             var list = new List<Mobile>(Table.Keys);
 
-            foreach(var m in list)
+            foreach (var m in list)
             {
                 UnderEffects(m);
             }

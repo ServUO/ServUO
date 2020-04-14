@@ -1,15 +1,13 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-
-using Server;
-using Server.Mobiles;
-using Server.Items;
-using Server.Guilds;
 using Server.Accounting;
-using Server.Engines.PartySystem;
 using Server.ContextMenus;
+using Server.Engines.PartySystem;
+using Server.Guilds;
 using Server.Gumps;
+using Server.Items;
+using Server.Mobiles;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Multis
 {
@@ -379,11 +377,11 @@ namespace Server.Multis
 
         public override bool CheckAddon(Item item)
         {
-            if(Addons == null)
+            if (Addons == null)
             {
                 return false;
             }
-        
+
             if (Addons.ContainsKey(item))
             {
                 return true;
@@ -1524,7 +1522,7 @@ namespace Server.Multis
                     if (version < 6)
                     {
                         count = reader.ReadInt();
-                        var list = new List<Item>(); 
+                        var list = new List<Item>();
 
                         for (int i = 0; i < count; i++)
                         {

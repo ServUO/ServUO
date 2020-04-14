@@ -1,15 +1,14 @@
-using Server;
-using System;
-using System.Collections.Generic;
-using Server.Mobiles;
 using Server.Commands;
 using Server.Items;
+using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Server.Engines.VoidPool
 {
-	public static class Generate
-	{
+    public static class Generate
+    {
         public static void Initialize()
         {
             CommandSystem.Register("SetupNewCovetous", AccessLevel.Administrator, Setup);
@@ -118,7 +117,7 @@ namespace Server.Engines.VoidPool
             foreach (var w in one.WaypointsA.Where(w => w != null && !w.Deleted)) w.Delete();
             foreach (var w in one.WaypointsB.Where(w => w != null && !w.Deleted)) w.Delete();
 
-            foreach(var w in two.WaypointsA.Where(w => w != null && !w.Deleted)) w.Delete();
+            foreach (var w in two.WaypointsA.Where(w => w != null && !w.Deleted)) w.Delete();
             foreach (var w in two.WaypointsB.Where(w => w != null && !w.Deleted)) w.Delete();
 
             // patha
@@ -399,5 +398,5 @@ namespace Server.Engines.VoidPool
 
             ColUtility.Free(list);
         }
-	}
+    }
 }

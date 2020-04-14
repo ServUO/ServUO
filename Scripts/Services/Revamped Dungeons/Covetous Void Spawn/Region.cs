@@ -1,37 +1,34 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Server;
-using Server.Mobiles;
 using Server.Items;
-using Server.Spells;
+using Server.Mobiles;
 using Server.Regions;
+using Server.Spells;
+using System;
+using System.Linq;
 
 namespace Server.Engines.VoidPool
 {
     public class VoidPoolRegion : BaseRegion
-	{
-		private static Rectangle2D[] Bounds = new Rectangle2D[]
-		{
+    {
+        private static Rectangle2D[] Bounds = new Rectangle2D[]
+        {
             new Rectangle2D(5383, 1960, 236, 80),
-			new Rectangle2D(5429, 1948, 12, 10),
-		};
-		
-		public VoidPoolController Controller { get; private set; }
-	
-		public VoidPoolRegion(VoidPoolController controller, Map map) : base("Void Pool", map, Region.DefaultPriority, Bounds)
-		{
-			Controller = controller;
-		}
-		
-		public void SendRegionMessage(int localization)
-		{
+            new Rectangle2D(5429, 1948, 12, 10),
+        };
+
+        public VoidPoolController Controller { get; private set; }
+
+        public VoidPoolRegion(VoidPoolController controller, Map map) : base("Void Pool", map, Region.DefaultPriority, Bounds)
+        {
+            Controller = controller;
+        }
+
+        public void SendRegionMessage(int localization)
+        {
             foreach (var m in GetEnumeratedMobiles().Where(m => m.Player))
             {
                 m.SendLocalizedMessage(localization);
             }
-		}
+        }
 
         public void SendRegionMessage(int localization, int hue)
         {
@@ -42,7 +39,7 @@ namespace Server.Engines.VoidPool
         }
 
         public void SendRegionMessage(int localization, string args)
-		{
+        {
             foreach (var m in GetEnumeratedMobiles().Where(m => m.Player))
             {
                 m.SendLocalizedMessage(localization, args);
@@ -56,9 +53,9 @@ namespace Server.Engines.VoidPool
                 m.SendMessage(0x25, message);
             }
         }
-		
-		public override void OnDeath(Mobile m)
-		{
+
+        public override void OnDeath(Mobile m)
+        {
             if (m is BaseCreature && !((BaseCreature)m).Controlled && !((BaseCreature)m).Summoned && Controller != null && Controller.OnGoing)
             {
                 Controller.OnCreatureKilled((BaseCreature)m);
@@ -90,27 +87,27 @@ namespace Server.Engines.VoidPool
                     }
                 }
             }
-				
-			base.OnDeath(m);
-		}
-		
-		public override bool OnDoubleClick(Mobile m, object o)
-		{
-			if(o is Corpse && m.AccessLevel == AccessLevel.Player)
-			{
-				Corpse c = o as Corpse;
-				
-				if(c.Owner == null || (c.Owner is CovetousCreature && ((CovetousCreature)c.Owner).VoidSpawn))
-				{
-					c.LabelTo(m, 1152684); // There is no loot on the corpse.
-					return false;
-				}
-			}
-			
-			return base.OnDoubleClick(m, o);
-		}
-	
-		public override void AlterLightLevel(Mobile m, ref int global, ref int personal)
+
+            base.OnDeath(m);
+        }
+
+        public override bool OnDoubleClick(Mobile m, object o)
+        {
+            if (o is Corpse && m.AccessLevel == AccessLevel.Player)
+            {
+                Corpse c = o as Corpse;
+
+                if (c.Owner == null || (c.Owner is CovetousCreature && ((CovetousCreature)c.Owner).VoidSpawn))
+                {
+                    c.LabelTo(m, 1152684); // There is no loot on the corpse.
+                    return false;
+                }
+            }
+
+            return base.OnDoubleClick(m, o);
+        }
+
+        public override void AlterLightLevel(Mobile m, ref int global, ref int personal)
         {
             global = LightCycle.DungeonLevel;
         }
@@ -128,10 +125,10 @@ namespace Server.Engines.VoidPool
             switch (travelType)
             {
                 default: return true;
-                case TravelCheckType.RecallTo: 
+                case TravelCheckType.RecallTo:
                 case TravelCheckType.GateTo:
                 case TravelCheckType.Mark: return false;
             }
         }
-	}
+    }
 }

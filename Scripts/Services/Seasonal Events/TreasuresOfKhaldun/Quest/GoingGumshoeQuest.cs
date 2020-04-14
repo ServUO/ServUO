@@ -1,18 +1,14 @@
+using Server.Engines.Quests;
+using Server.Items;
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Server;
-using Server.Mobiles;
-using Server.Items;
-using Server.Gumps;
-using Server.Engines.Points;
-using Server.Engines.Quests;
-
 namespace Server.Engines.Khaldun
 {
-	public class GoingGumshoeQuest : BaseQuest
-	{
+    public class GoingGumshoeQuest : BaseQuest
+    {
         public override bool DoneOnce { get { return true; } }
 
         /* Going Gumshoe */
@@ -36,11 +32,11 @@ namespace Server.Engines.Khaldun
         public override int CompleteMessage { get { return 1158616; } } // // You've found Chief Inspector Jasper! Speak to him to learn more!
 
         public GoingGumshoeQuest()
-		{
+        {
             AddReward(new BaseReward(1158615)); // A unique opportunity with the Detective Branch
 
             AddObjective(new InternalObjective());
-		}
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -79,7 +75,7 @@ namespace Server.Engines.Khaldun
                 int version = reader.ReadInt();
             }
         }
-	}
+    }
 
     public class GoingGumshoeQuest2 : BaseQuest
     {
@@ -351,9 +347,9 @@ namespace Server.Engines.Khaldun
 
         public static Rectangle2D[] Bounds =
         {
-            new Rectangle2D(4285, 961, 10, 18), 
-            new Rectangle2D(4325, 961, 10, 18), 
-            new Rectangle2D(4285, 989, 10, 18), 
+            new Rectangle2D(4285, 961, 10, 18),
+            new Rectangle2D(4325, 961, 10, 18),
+            new Rectangle2D(4285, 989, 10, 18),
             new Rectangle2D(4325, 989, 10, 18)
         };
 
@@ -418,9 +414,9 @@ namespace Server.Engines.Khaldun
             }
 
             public QuestRegion()
-                : base("Going Gumshoe Quest Region", 
-                        Map.Trammel, 
-                        Region.DefaultPriority, 
+                : base("Going Gumshoe Quest Region",
+                        Map.Trammel,
+                        Region.DefaultPriority,
                         GoingGumshoeQuest3.Bounds)
             {
                 Register();

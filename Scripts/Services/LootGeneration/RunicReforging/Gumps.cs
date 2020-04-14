@@ -1,25 +1,22 @@
-using System;
-using Server;
 using Server.Items;
-using Server.Mobiles;
 using Server.Network;
-using Server.Engines.Quests;
+using System;
 
 namespace Server.Gumps
 {
     [Flags]
     public enum ReforgingOption
     {
-        None                = 0x00000000,
-        Powerful            = 0x00000001,
-        Structural          = 0x00000002,
-        Fortified           = 0x00000004,
-        Fundamental         = 0x00000008,
-        Integral            = 0x00000010,
-        GrandArtifice       = 0x00000020,
-        InspiredArtifice    = 0x00000040,
-        ExaltedArtifice     = 0x00000080,
-        SublimeArtifice     = 0x00000100,
+        None = 0x00000000,
+        Powerful = 0x00000001,
+        Structural = 0x00000002,
+        Fortified = 0x00000004,
+        Fundamental = 0x00000008,
+        Integral = 0x00000010,
+        GrandArtifice = 0x00000020,
+        InspiredArtifice = 0x00000040,
+        ExaltedArtifice = 0x00000080,
+        SublimeArtifice = 0x00000100,
 
         PowerfulAndStructural = Powerful | Structural,
         PowerfulAndFundamental = Powerful | Fundamental,
@@ -76,7 +73,7 @@ namespace Server.Gumps
             int y = 40;
             int idx = 0;
 
-            for(int i = 0; i < Options.Length; i++)
+            for (int i = 0; i < Options.Length; i++)
             {
                 ReforgingOption option = Options[i];
 
@@ -107,7 +104,7 @@ namespace Server.Gumps
                     }
                 }
 
-                if(HasMetPrerequisite(option) && CanReforge(from, option))
+                if (HasMetPrerequisite(option) && CanReforge(from, option))
                     AddButton(15, y, buttonID, buttonID, i + 100, GumpButtonType.Reply, 0);
 
                 AddHtmlLocalized(55, y, 250, 20, GetCliloc(option), buttonHue, false, false);
@@ -293,7 +290,7 @@ namespace Server.Gumps
                             if (max > 100) max = 100;
 
                             int budget = GetBudget();
-                            
+
                             ReforgedPrefix prefix = ReforgedPrefix.None;
                             ReforgedSuffix suffix = ReforgedSuffix.None;
 
@@ -482,7 +479,7 @@ namespace Server.Gumps
 
             if (attr != null && (m_Options & ReforgingOption.Structural) != 0)
             {
-                if(neg != null)
+                if (neg != null)
                     neg.Brittle = 1;
 
                 if ((m_Options & ReforgingOption.Fortified) != 0)

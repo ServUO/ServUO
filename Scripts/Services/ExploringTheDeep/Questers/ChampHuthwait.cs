@@ -1,9 +1,8 @@
-using System;
-using Server.Items;
-using Server.Network;
 using Server.Commands;
 using Server.Engines.Quests;
 using Server.Gumps;
+using Server.Items;
+using Server.Network;
 
 namespace Server.Mobiles
 {
@@ -29,7 +28,7 @@ namespace Server.Mobiles
             this.AddItem(new Boots(2017));
             this.AddItem(new LongPants(2017));
             this.AddItem(new FancyShirt(1432));
-            this.AddItem(new JinBaori(1408));            
+            this.AddItem(new JinBaori(1408));
         }
 
         public override void OnDoubleClick(Mobile m)
@@ -97,12 +96,12 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-        }        
+        }
     }
 }
 
 namespace Server.Gumps
-{	
+{
     public class ChampHuthwaitGump : Gump
     {
         public static void Initialize()
@@ -115,7 +114,7 @@ namespace Server.Gumps
             e.Mobile.SendGump(new ChampHuthwaitGump(e.Mobile));
         }
 
-        public ChampHuthwaitGump(Mobile owner): base(50, 50)
+        public ChampHuthwaitGump(Mobile owner) : base(50, 50)
         {
             this.Closable = false;
             this.Disposable = true;
@@ -147,8 +146,8 @@ namespace Server.Gumps
 
             AddPage(1);
             AddHtmlLocalized(107, 140, 300, 150, 1154303, 0x7FFF, false, true); // Just tell him I'll have the money by...*pauses*...*with a smile*...Oh, you aren't part of Mercutio's crew?  Oh well then, what's your business then? Loafers? Sandals? A Fine pair of boots then?
-            
-			AddHtmlLocalized(145, 300, 250, 24, 1154304, 0x7FFF, false, false); // I'm looking for the Boots of Ballast...
+
+            AddHtmlLocalized(145, 300, 250, 24, 1154304, 0x7FFF, false, false); // I'm looking for the Boots of Ballast...
             AddButton(115, 300, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 2);
 
             AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
@@ -165,7 +164,7 @@ namespace Server.Gumps
             AddHtmlLocalized(107, 140, 300, 150, 1154307, 0x7FFF, false, true); // Yea, that's right.  Seems Mercutio's Gang is after me for a bit of a...disagreement about a small debt...if you were to...take care of Mercutio's gang I'd be willing to hook you up with those boots.
 
             AddHtmlLocalized(145, 300, 250, 24, 1154308, 0x7FFF, false, false); // Where is Mercutio's Gang?
-			AddButton(115, 300, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 4);
+            AddButton(115, 300, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 4);
 
             AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
@@ -189,8 +188,8 @@ namespace Server.Gumps
             }
         }
     }
-	
-	public class ChampHuthwaitCompleteGump : Gump
+
+    public class ChampHuthwaitCompleteGump : Gump
     {
         public static void Initialize()
         {
@@ -202,7 +201,7 @@ namespace Server.Gumps
             e.Mobile.SendGump(new ChampHuthwaitCompleteGump(e.Mobile));
         }
 
-        public ChampHuthwaitCompleteGump(Mobile owner): base(50, 50)
+        public ChampHuthwaitCompleteGump(Mobile owner) : base(50, 50)
         {
             this.Closable = false;
             this.Disposable = true;
@@ -251,5 +250,5 @@ namespace Server.Gumps
                     }
             }
         }
-    }	
+    }
 }

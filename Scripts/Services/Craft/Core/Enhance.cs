@@ -1,7 +1,7 @@
-using System;
 using Server.Items;
-using Server.Targeting;
 using Server.Mobiles;
+using Server.Targeting;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Engines.Craft
@@ -54,8 +54,8 @@ namespace Server.Engines.Craft
         {
             if (item == null)
                 return EnhanceResult.BadItem;
-			
-			if (item is GargishNecklace || item is GargishEarrings)
+
+            if (item is GargishNecklace || item is GargishEarrings)
                 return EnhanceResult.BadItem;
 
             if (!item.IsChildOf(from.Backpack))
@@ -93,7 +93,7 @@ namespace Server.Engines.Craft
             {
                 craftItem = craftSystem.CraftItems.SearchForSubclass(item.GetType());
             }
-            
+
             if (craftItem == null || craftItem.Resources.Count == 0)
             {
                 return EnhanceResult.BadItem;
@@ -153,7 +153,7 @@ namespace Server.Engines.Craft
             {
                 BaseWeapon weapon = (BaseWeapon)item;
 
-                if(weapon.ExtendedWeaponAttributes.AssassinHoned > 0)
+                if (weapon.ExtendedWeaponAttributes.AssassinHoned > 0)
                     return EnhanceResult.BadItem;
 
                 baseChance = 20;
@@ -421,8 +421,8 @@ namespace Server.Engines.Craft
                         case EnhanceResult.NoSkill:
                             message = 1044153;
                             break; // You don't have the required skills to attempt this item.
-                        case EnhanceResult.Enchanted: 
-                            message = 1080131; 
+                        case EnhanceResult.Enchanted:
+                            message = 1080131;
                             break; // You cannot enhance an item that is currently enchanted.
                     }
 

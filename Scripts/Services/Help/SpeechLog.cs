@@ -1,10 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Server.Commands;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Targeting;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Engines.Help
 {
@@ -155,14 +155,14 @@ namespace Server.Engines.Help
         }
         public DateTime Created
         {
-	        get
+            get
             {
                 return this.m_Created;
             }
-	        set { this.m_Created = value; }
+            set { this.m_Created = value; }
         }
 
-	    public SpeechLogEntry(Mobile from, string speech)
+        public SpeechLogEntry(Mobile from, string speech)
         {
             this.m_From = from;
             this.m_Speech = speech;

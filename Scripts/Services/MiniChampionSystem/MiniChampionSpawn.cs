@@ -1,13 +1,11 @@
-using Server;
-using System;
-using System.Collections.Generic;
+using Server.Commands;
 using Server.Gumps;
 using Server.Mobiles;
-using Server.Commands;
-using System.Linq;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.MiniChamps
-{  
+{
     public class MiniChamp : Item
     {
         public static void Initialize()
@@ -68,7 +66,7 @@ namespace Server.Engines.MiniChamps
             MiniChamp.Type = MiniChampType.FireTemple;
             MiniChamp.MoveToWorld(new Point3D(546, 760, -91), map);
             MiniChamp.Active = true;
-            
+
             MiniChamp = new MiniChamp();
             MiniChamp.Type = MiniChampType.LandsoftheLich;
             MiniChamp.MoveToWorld(new Point3D(530, 658, 9), map);
@@ -113,7 +111,7 @@ namespace Server.Engines.MiniChamps
         private Timer m_Timer, m_RestartTimer;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D BossSpawnPoint { get; set; }        
+        public Point3D BossSpawnPoint { get; set; }
 
         [Constructable]
         public MiniChamp()
@@ -300,7 +298,7 @@ namespace Server.Engines.MiniChamps
                     MinotaurShouts();
                 }
 
-                foreach(var type in levelInfo.Types)
+                foreach (var type in levelInfo.Types)
                 {
                     Spawn.Add(new MiniChampSpawnInfo(this, type));
                 }
@@ -337,7 +335,7 @@ namespace Server.Engines.MiniChamps
 
             IPooledEnumerable eable = GetMobilesInRange(m_SpawnRange);
 
-            foreach(Mobile x in eable)
+            foreach (Mobile x in eable)
             {
                 if (x is PlayerMobile)
                     x.SendLocalizedMessage(cliloc);

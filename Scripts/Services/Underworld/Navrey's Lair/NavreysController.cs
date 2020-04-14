@@ -1,8 +1,7 @@
-﻿using System;
-using Server.Commands;
+﻿using Server.Commands;
 using Server.Mobiles;
 using Server.Network;
-using System.Linq;
+using System;
 
 namespace Server.Items
 {

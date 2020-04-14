@@ -1,7 +1,6 @@
-using Server;
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
-using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -241,12 +240,12 @@ namespace Server.Items
             }
         }
 
-        public static Type[] ImbuingGems = 
+        public static Type[] ImbuingGems =
         {
-            typeof(FireRuby), 
-            typeof(WhitePearl), 
-            typeof(BlueDiamond), 
-			typeof(Turquoise)
+            typeof(FireRuby),
+            typeof(WhitePearl),
+            typeof(BlueDiamond),
+            typeof(Turquoise)
         };
     }
 }

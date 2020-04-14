@@ -1,12 +1,10 @@
-using Server;
-using System;
-using Server.Mobiles;
-using Server.Items;
-using Server.Multis;
-using Server.Gumps;
 using Server.ContextMenus;
-using System.Collections.Generic;
 using Server.Engines.VeteranRewards;
+using Server.Gumps;
+using Server.Items;
+using Server.Mobiles;
+using Server.Multis;
+using System.Collections.Generic;
 
 namespace Server.Engines.Auction
 {

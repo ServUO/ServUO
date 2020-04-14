@@ -1,21 +1,18 @@
-using System;
-using Server;
-using Server.Mobiles;
 using Server.ContextMenus;
-using Server.Engines.Points;
-using Server.Targeting;
 using Server.Gumps;
-using Server.Network;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Misc;
+using Server.Mobiles;
+using Server.Network;
+using Server.Targeting;
+using System.Collections.Generic;
 
 namespace Server.Engines.CityLoyalty
 {
-	public class TradeMinister : BaseCreature
-	{
+    public class TradeMinister : BaseCreature
+    {
         [CommandProperty(AccessLevel.GameMaster)]
-		public City City { get; set; }
+        public City City { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CityLoyaltySystem CitySystem { get { return CityLoyaltySystem.GetCityInstance(City); } set { } }
@@ -28,10 +25,10 @@ namespace Server.Engines.CityLoyalty
 
         public override bool IsInvulnerable { get { return true; } }
 
-		[Constructable]
-		public TradeMinister(City city) : base(AIType.AI_Vendor, FightMode.None, 10, 1, .4, .2)
-		{
-			City = city;
+        [Constructable]
+        public TradeMinister(City city) : base(AIType.AI_Vendor, FightMode.None, 10, 1, .4, .2)
+        {
+            City = city;
             SpeechHue = 0x3B2;
             Female = Utility.RandomDouble() > 0.75;
             Blessed = true;
@@ -62,86 +59,86 @@ namespace Server.Engines.CityLoyalty
 
             EquipItem(new GoldRing());
 
-			Ministers.Add(this);
+            Ministers.Add(this);
 
             CantWalk = true;
-		}
+        }
 
-		public override void OnDoubleClick(Mobile from)
-		{
-			if(from.InRange(this.Location, 4))
-			{
-				from.SendGump(new InternalGump());
-			}
-		}
-		
-		public override void GetContextMenuEntries( Mobile from, List<ContextMenuEntry> list )
-		{
-			base.GetContextMenuEntries( from, list );
-			
-			list.Add(new TradeOrderEntry(from, this));
-			list.Add(new TurnInEntry(from, this));
-		}
-		
-		private class TradeOrderEntry : ContextMenuEntry
-		{
-			public TradeMinister Minister { get; private set; }
-			public Mobile Player { get; private set; }
-			
-			public TradeOrderEntry(Mobile player, TradeMinister minister) : base(1114453, 5) // Get Trade Order
-			{
-				Player = player;
-				Minister = minister;
-				
-				Enabled = !CityTradeSystem.HasTrade(Player);
-			}
-			
-			public override void OnClick()
-			{
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (from.InRange(this.Location, 4))
+            {
+                from.SendGump(new InternalGump());
+            }
+        }
+
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+            list.Add(new TradeOrderEntry(from, this));
+            list.Add(new TurnInEntry(from, this));
+        }
+
+        private class TradeOrderEntry : ContextMenuEntry
+        {
+            public TradeMinister Minister { get; private set; }
+            public Mobile Player { get; private set; }
+
+            public TradeOrderEntry(Mobile player, TradeMinister minister) : base(1114453, 5) // Get Trade Order
+            {
+                Player = player;
+                Minister = minister;
+
+                Enabled = !CityTradeSystem.HasTrade(Player);
+            }
+
+            public override void OnClick()
+            {
                 if (!CityTradeSystem.HasTrade(Player))
                 {
                     Player.SendGump(new InternalTradeOrderGump(Player as PlayerMobile, Minister));
                 }
-			}
-		}
-		
-		private class TurnInEntry : ContextMenuEntry
-		{
-			public TradeMinister Minister { get; private set; }
-			public Mobile Player { get; private set; }
-			
-			public TurnInEntry(Mobile player, TradeMinister minister) : base(1151729, 3) // Turn in a trade order
-			{
-				Player = player;
-				Minister = minister;
+            }
+        }
+
+        private class TurnInEntry : ContextMenuEntry
+        {
+            public TradeMinister Minister { get; private set; }
+            public Mobile Player { get; private set; }
+
+            public TurnInEntry(Mobile player, TradeMinister minister) : base(1151729, 3) // Turn in a trade order
+            {
+                Player = player;
+                Minister = minister;
 
                 Enabled = CityTradeSystem.HasTrade(Player);
-			}
-			
-			public override void OnClick()
-			{
+            }
+
+            public override void OnClick()
+            {
                 if (CityTradeSystem.HasTrade(Player))
                 {
                     Player.Target = new InternalTarget(Minister);
                     Player.SendLocalizedMessage(1151730); // Target the trade order you wish to turn in.
                 }
-			}
-			
-			private class InternalTarget : Target
-			{
-				public TradeMinister Minister { get; private set; }
-				
-				public InternalTarget(TradeMinister minister) : base(-1, false, TargetFlags.None)
-				{
-					Minister = minister;
-				}
-				
-				protected override void OnTarget(Mobile from, object targeted)
-				{
-					TradeOrderCrate order = targeted as TradeOrderCrate;
-					
-					if(order != null)
-					{
+            }
+
+            private class InternalTarget : Target
+            {
+                public TradeMinister Minister { get; private set; }
+
+                public InternalTarget(TradeMinister minister) : base(-1, false, TargetFlags.None)
+                {
+                    Minister = minister;
+                }
+
+                protected override void OnTarget(Mobile from, object targeted)
+                {
+                    TradeOrderCrate order = targeted as TradeOrderCrate;
+
+                    if (order != null)
+                    {
                         if (CityLoyaltySystem.CityTrading.TryTurnIn(from, order, Minister))
                         {
                             if (order.Entry != null && order.Entry.Distance > 0)
@@ -152,15 +149,15 @@ namespace Server.Engines.CityLoyalty
 
                             Titles.AwardKarma(from, 100, true);
                         }
-					}
-					else
-					{
-						from.SendLocalizedMessage(1151731); // That is not a valid trade order. Please try again.
-						from.Target = new InternalTarget(Minister);
-					}
-				}
-			}
-		}
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1151731); // That is not a valid trade order. Please try again.
+                        from.Target = new InternalTarget(Minister);
+                    }
+                }
+            }
+        }
 
         private Item GiveReward(TradeEntry entry)
         {
@@ -240,35 +237,35 @@ namespace Server.Engines.CityLoyalty
             }
             return null;
         }
-		
-		private class InternalGump : Gump
-		{
-			public InternalGump() : base(40, 40)
-			{
+
+        private class InternalGump : Gump
+        {
+            public InternalGump() : base(40, 40)
+            {
                 AddBackground(0, 0, 500, 400, 9380);
 
                 AddHtmlLocalized(30, 50, 400, 16, 1152962, 0x4800, false, false);	// City Trade Minister
                 AddHtmlLocalized(30, 80, 440, 320, 1152963, 0x001F, false, false);
-			}
-		}
-		
-		public class InternalTradeOrderGump : Gump
-		{
-			public TradeMinister Minister { get; private set; }
+            }
+        }
+
+        public class InternalTradeOrderGump : Gump
+        {
+            public TradeMinister Minister { get; private set; }
             public PlayerMobile User { get; set; }
 
             public InternalTradeOrderGump(PlayerMobile user, TradeMinister minister)
                 : base(100, 100)
-			{
-				Minister = minister;
+            {
+                Minister = minister;
                 User = user;
 
                 AddGumpLayout();
-			}
-			
-			public void AddGumpLayout()
-			{
-				AddBackground(0, 0, 370, 420, 9300);
+            }
+
+            public void AddGumpLayout()
+            {
+                AddBackground(0, 0, 370, 420, 9300);
 
                 AddHtmlLocalized(10, 30, 350, 18, 1114513, "#1114454", 0x3442, false, false); // An Offer For a trade Order
 
@@ -285,14 +282,14 @@ namespace Server.Engines.CityLoyalty
                  * <i>Should you accept this trade order your ability to magically teleport to another location will be disabled.
                  * You may cancel the trade order at any time by accessing the context menu on the trade crate by single left clicking</i>
                 */
-				AddHtmlLocalized(10, 225, 350, 90, 1151721, 0x3442, false, false);
+                AddHtmlLocalized(10, 225, 350, 90, 1151721, 0x3442, false, false);
 
                 AddButton(10, 390, 4005, 4007, 1, GumpButtonType.Reply, 0);
-				AddHtmlLocalized(50, 390, 100, 20, 1049011, 0x10, false, false); // I Accept!
-				
-				AddButton(330, 390, 4017, 4019, 0, GumpButtonType.Reply, 0);
-				AddHtmlLocalized(220, 390, 100, 20, 1114514, "#1006045", 0x4000, false, false); // Cancel
-			}
+                AddHtmlLocalized(50, 390, 100, 20, 1049011, 0x10, false, false); // I Accept!
+
+                AddButton(330, 390, 4017, 4019, 0, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(220, 390, 100, 20, 1114514, "#1006045", 0x4000, false, false); // Cancel
+            }
 
             public override void OnResponse(NetState state, RelayInfo info)
             {
@@ -308,36 +305,36 @@ namespace Server.Engines.CityLoyalty
                     }
                 }
             }
-		}
-		
-		public TradeMinister(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-			writer.Write((int)City);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int v = reader.ReadInt();
-			City = (City)reader.ReadInt();
+        }
+
+        public TradeMinister(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+            writer.Write((int)City);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = reader.ReadInt();
+            City = (City)reader.ReadInt();
 
             if (CitySystem != null)
                 CitySystem.Minister = this;
 
-			Ministers.Add(this);
-		}
-		
-		public static void Configure()
-		{
-			Ministers = new List<TradeMinister>();
-		}
-		
-		public static List<TradeMinister> Ministers { get; private set; }
-	}
+            Ministers.Add(this);
+        }
+
+        public static void Configure()
+        {
+            Ministers = new List<TradeMinister>();
+        }
+
+        public static List<TradeMinister> Ministers { get; private set; }
+    }
 }

@@ -1,10 +1,8 @@
-using Server;
-using System;
-using System.Collections.Generic;
-using System.Collections;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Quests
 {
@@ -12,102 +10,102 @@ namespace Server.Engines.Quests
     {
         public static Type[] Fish { get { return m_Fish; } }
         private static Type[] m_Fish = new Type[]
-	    {
+        {
 	        //to level 80.0 (shore fish) index to 11
 	        typeof(BluegillSunfish), typeof(BrookTrout),        typeof(GreenCatfish),
-	        typeof(KokaneeSalmon),   typeof(PikeFish),          typeof(PumpkinSeedSunfish),
-	        typeof(RainbowTrout),    typeof(RedbellyBream),     typeof(SmallmouthBass),
-	        typeof(UncommonShiner),  typeof(Walleye),           typeof(YellowPerch),
+            typeof(KokaneeSalmon),   typeof(PikeFish),          typeof(PumpkinSeedSunfish),
+            typeof(RainbowTrout),    typeof(RedbellyBream),     typeof(SmallmouthBass),
+            typeof(UncommonShiner),  typeof(Walleye),           typeof(YellowPerch),
 
 	        //to level 106 (deepwater and crustaceans) crustaceans index to 23 fish to 41
 
 	        typeof(CrustyLobster),   typeof(FredLobster),       typeof(HummerLobster),
-	        typeof(RockLobster),     typeof(ShovelNoseLobster), typeof(SpineyLobster),
-	        typeof(AppleCrab),       typeof(BlueCrab),          typeof(DungeonessCrab),
-	        typeof(KingCrab),        typeof(RockCrab),          typeof(SnowCrab),
-	    
-	        typeof(Amberjack),	     typeof(BlackSeabass),      typeof(BlueGrouper),
-	        typeof(BlueFish),	     typeof(Bonefish), 	 	    typeof(Bonito),
-	        typeof(CapeCod), 	     typeof(CaptainSnook), 	    typeof(Cobia),
-	        typeof(GraySnapper),     typeof(Haddock),           typeof(MahiMahi),
-	        typeof(RedDrum),         typeof(RedGrouper),	    typeof(RedSnook),
-	        typeof(Shad),	         typeof(Tarpon),		    typeof(YellowfinTuna),
+            typeof(RockLobster),     typeof(ShovelNoseLobster), typeof(SpineyLobster),
+            typeof(AppleCrab),       typeof(BlueCrab),          typeof(DungeonessCrab),
+            typeof(KingCrab),        typeof(RockCrab),          typeof(SnowCrab),
+
+            typeof(Amberjack),         typeof(BlackSeabass),      typeof(BlueGrouper),
+            typeof(BlueFish),        typeof(Bonefish),          typeof(Bonito),
+            typeof(CapeCod),         typeof(CaptainSnook),      typeof(Cobia),
+            typeof(GraySnapper),     typeof(Haddock),           typeof(MahiMahi),
+            typeof(RedDrum),         typeof(RedGrouper),        typeof(RedSnook),
+            typeof(Shad),            typeof(Tarpon),            typeof(YellowfinTuna),
   
 	        //skill elvel to 120.0 for dungeon index to 53
 
 	        typeof(CragSnapper),     typeof(CutThroatTrout),    typeof(DarkFish),
-	        typeof(DemonTrout),      typeof(DrakeFish),		    typeof(DungeonChub),
-	        typeof(GrimCisco),	     typeof(InfernalTuna),	    typeof(LurkerFish),
-	        typeof(OrcBass), 	     typeof(SnaggletoothBass),	typeof(TormentedPike)
-	    
-	    };
+            typeof(DemonTrout),      typeof(DrakeFish),         typeof(DungeonChub),
+            typeof(GrimCisco),       typeof(InfernalTuna),      typeof(LurkerFish),
+            typeof(OrcBass),         typeof(SnaggletoothBass),  typeof(TormentedPike)
+
+        };
 
         public static int[] Labels { get { return m_Labels; } }
         private static int[] m_Labels = new int[]
-	    {
+        {
 	        //to level 80.0 (shore fish) index to 11
 	        1116417,     1116415,      1116421,
-	        1116423,     1116414,      1116412,
-	        1116416,     1116418,      1116419,
-	        1116420,     1116422,      1116413,
+            1116423,     1116414,      1116412,
+            1116416,     1116418,      1116419,
+            1116420,     1116422,      1116413,
 
 	        //to level 106 (deepwater and crustaceans) crustaceans index to 23 fish to 41
 
 	        1116383,     1116382,      1116381,
-	        1116380,     1116384,      1116379,
-	        1116378,     1116374,      1116373,
-	        1116375,     1116376,      1116377,
-	    
-	        1116402,	 1116396,      1116411,
-	        1116406,	 1116409,      1116405,
-	        1116395, 	 1116408, 	   1116400,
-	        1116399,     1116394,      1116401,
-	        1116410,     1116407,	   1116398,
-	        1116403,	 1116397,	   1116404,
+            1116380,     1116384,      1116379,
+            1116378,     1116374,      1116373,
+            1116375,     1116376,      1116377,
+
+            1116402,    1116396,      1116411,
+            1116406,     1116409,      1116405,
+            1116395,     1116408,      1116400,
+            1116399,     1116394,      1116401,
+            1116410,     1116407,      1116398,
+            1116403,     1116397,      1116404,
   
 	        //skill elvel to 120.0 for dungeon index to 53
 
 	        1116432,     1116427,      1116431,
-	        1116425,     1116429,      1116424,
-	        1116428,	 1116433,	   1116435,
-	        1116430, 	 1116426,	   1116434
-	    
-	    };
+            1116425,     1116429,      1116424,
+            1116428,     1116433,      1116435,
+            1116430,     1116426,      1116434
+
+        };
 
         private static Type[][][] m_RewardTable = new Type[][][]
-	    {
-	        new Type[][]
-	        {
-	            new Type[] { typeof(Bait) }, 
-	            new Type[] { typeof(LavaLobsterTrap) },
-	            new Type[] { typeof(FishingGuideBook1), typeof(FishingGuideBook2) },
-	            new Type[] { typeof(PowerScroll), typeof(FishingPole) },
-	        },
+        {
+            new Type[][]
+            {
+                new Type[] { typeof(Bait) },
+                new Type[] { typeof(LavaLobsterTrap) },
+                new Type[] { typeof(FishingGuideBook1), typeof(FishingGuideBook2) },
+                new Type[] { typeof(PowerScroll), typeof(FishingPole) },
+            },
 
-	        new Type[][]
-	        {
-	            new Type[] { typeof(Bait) },
-	            new Type[] { typeof(LavaHook), typeof(LavaLobsterTrap), typeof(JunkProofHook) },
-	            new Type[] { typeof(FishingGuideBook1), typeof(FishingGuideBook2), typeof(FishingGuideBook3), typeof(FishingPole) },
-	            new Type[] { typeof(PowerScroll), typeof(OracleOfTheSea), typeof(DredgingHook) },
-	        },
+            new Type[][]
+            {
+                new Type[] { typeof(Bait) },
+                new Type[] { typeof(LavaHook), typeof(LavaLobsterTrap), typeof(JunkProofHook) },
+                new Type[] { typeof(FishingGuideBook1), typeof(FishingGuideBook2), typeof(FishingGuideBook3), typeof(FishingPole) },
+                new Type[] { typeof(PowerScroll), typeof(OracleOfTheSea), typeof(DredgingHook) },
+            },
 
-	        new Type[][]
-	        {
-	            new Type[] { typeof(Bait) },
-	            new Type[] { typeof(LavaHook), typeof(DredgingHook), typeof(JunkProofHook), typeof(FishingPole) },
-	            new Type[] { typeof(FishingGuideBook3), typeof(FishingGuideBook4), typeof(FishingGuideBook5), },
-	            new Type[] { typeof(PowerScroll), typeof(OracleOfTheSea) },
-	        },
+            new Type[][]
+            {
+                new Type[] { typeof(Bait) },
+                new Type[] { typeof(LavaHook), typeof(DredgingHook), typeof(JunkProofHook), typeof(FishingPole) },
+                new Type[] { typeof(FishingGuideBook3), typeof(FishingGuideBook4), typeof(FishingGuideBook5), },
+                new Type[] { typeof(PowerScroll), typeof(OracleOfTheSea) },
+            },
 
-	        new Type[][]
-	        {
-	            new Type[] { typeof(Bait),  typeof(JunkProofHook) },
-	            new Type[] { typeof(OracleOfTheSea), typeof(LavaHook), typeof(FishingPole) },
-	            new Type[] { typeof(FishingGuideBook4), typeof(FishingGuideBook5), typeof(FishingGuideBook6) },
-	            new Type[] { typeof(PowerScroll), typeof(PermanentBoatPaint) },
-	        }
-	    };
+            new Type[][]
+            {
+                new Type[] { typeof(Bait),  typeof(JunkProofHook) },
+                new Type[] { typeof(OracleOfTheSea), typeof(LavaHook), typeof(FishingPole) },
+                new Type[] { typeof(FishingGuideBook4), typeof(FishingGuideBook5), typeof(FishingGuideBook6) },
+                new Type[] { typeof(PowerScroll), typeof(PermanentBoatPaint) },
+            }
+        };
 
         public static void GiveRewards(Mobile from, PlayerFishingEntry entry, double points)
         {
@@ -189,18 +187,21 @@ namespace Server.Engines.Quests
 
                     switch (tier)
                     {
-                        case 1: bait.Index = Utility.Random(15); 
-                                if(0.001 >= Utility.RandomDouble())
-                                    bait.Enhanced = true;
-                                break;
-                        case 2: bait.Index = Utility.Random(34); 
-                                if(0.005 >= Utility.RandomDouble())
-                                    bait.Enhanced = true;
-                                break;
-                        case 3: bait.Index = Utility.Random(34);
-                                if(0.01 >= Utility.RandomDouble())
-                                    bait.Enhanced = true;
-                                break;
+                        case 1:
+                            bait.Index = Utility.Random(15);
+                            if (0.001 >= Utility.RandomDouble())
+                                bait.Enhanced = true;
+                            break;
+                        case 2:
+                            bait.Index = Utility.Random(34);
+                            if (0.005 >= Utility.RandomDouble())
+                                bait.Enhanced = true;
+                            break;
+                        case 3:
+                            bait.Index = Utility.Random(34);
+                            if (0.01 >= Utility.RandomDouble())
+                                bait.Enhanced = true;
+                            break;
                         case 4:
                             if (Utility.RandomBool())
                                 bait.Index = 35;
@@ -313,7 +314,7 @@ namespace Server.Engines.Quests
         {
             List<BaseBoat> boats = new List<BaseBoat>();
 
-            foreach (BaseBoat boat in BaseBoat.Boats) 
+            foreach (BaseBoat boat in BaseBoat.Boats)
             {
                 if (boat.Owner == from && !boat.IsRowBoat)
                     boats.Add(boat);
@@ -321,7 +322,7 @@ namespace Server.Engines.Quests
 
             BaseBoat closest = null;
             int range = 5000;
- 
+
             foreach (BaseBoat boat in boats)
             {
                 int dist = (int)from.GetDistanceToSqrt(boat.Location);

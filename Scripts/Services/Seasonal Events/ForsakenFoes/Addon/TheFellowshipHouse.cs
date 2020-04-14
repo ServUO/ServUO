@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class TheFellowshipHouse : BlackthornBaseAddon
@@ -233,7 +231,7 @@ namespace Server.Items
         {
             for (int i = 0; i < m_AddOnSimpleComponents.Length / 4; i++)
                 AddComponent(new AddonComponent(m_AddOnSimpleComponents[i, 0]), m_AddOnSimpleComponents[i, 1], m_AddOnSimpleComponents[i, 2], m_AddOnSimpleComponents[i, 3]);
-            
+
             AddComplexComponent((BaseAddon)this, 41185, -7, 6, 30, 22, -1, "", 1);// 78
             AddComplexComponent((BaseAddon)this, 41254, -1, 8, 8, 33, -1, "", 1);// 100
             AddComplexComponent((BaseAddon)this, 41248, 0, 7, 8, 22, -1, "", 1);// 111

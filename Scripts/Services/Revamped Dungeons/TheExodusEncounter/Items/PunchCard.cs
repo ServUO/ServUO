@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     public class PunchCard : BaseDecayingItem
     {
         [Constructable]
-        public PunchCard() 
+        public PunchCard()
             : base(0x0FF4)
         {
             this.LootType = LootType.Regular;

@@ -1,5 +1,4 @@
-﻿using System;
-using Server.Commands;
+﻿using Server.Commands;
 using Server.Gumps;
 using Server.Network;
 
@@ -22,7 +21,7 @@ namespace Server.Items
                 from.SendGump(new MTSchematicsGump(from));
             }
         }
-        
+
 
         public MasterThinkerSchematics(Serial serial) : base(serial)
         {

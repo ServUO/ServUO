@@ -1,7 +1,6 @@
-﻿using System;
-using Server.Gumps;
-using Server.Network;
+﻿using Server.Gumps;
 using Server.Mobiles;
+using Server.Network;
 
 namespace Server.Items
 {

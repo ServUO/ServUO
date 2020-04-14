@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Quests
 {
@@ -15,8 +15,8 @@ namespace Server.Engines.Quests
             : base(itemID)
         {
             this.LootType = LootType.Blessed;
-			
-            if (this.Lifespan > 0)				
+
+            if (this.Lifespan > 0)
                 this.StartTimer();
         }
 
@@ -63,33 +63,33 @@ namespace Server.Engines.Quests
             }
         }
         public override void OnDoubleClick(Mobile from)
-        { 
+        {
             if (!this.IsChildOf(from.Backpack) && this.Movable)
             {
                 from.SendLocalizedMessage(1060640); // The item must be in your backpack to use it.
                 return;
             }
-			
+
             if (!(from is PlayerMobile))
                 return;
-			
+
             PlayerMobile player = (PlayerMobile)from;
-			
+
             if (QuestHelper.InProgress(player, this.Quests))
                 return;
-			
+
             if (QuestHelper.QuestLimitReached(player))
-                return;			
-			
+                return;
+
             // check if this quester can offer quest chain (already started)
             foreach (KeyValuePair<QuestChain, BaseChain> pair in player.Chains)
             {
                 BaseChain chain = pair.Value;
-																			
+
                 if (chain != null && chain.Quester != null && chain.Quester.IsAssignableFrom(this.GetType()))
                 {
                     BaseQuest quest = QuestHelper.RandomQuest(player, new Type[] { chain.CurrentQuest }, this);
-					
+
                     if (quest != null)
                     {
                         player.CloseGump(typeof(MondainQuestGump));
@@ -98,9 +98,9 @@ namespace Server.Engines.Quests
                     }
                 }
             }
-				
+
             BaseQuest questt = QuestHelper.RandomQuest(player, this.Quests, this);
-					
+
             if (questt != null)
             {
                 player.CloseGump(typeof(MondainQuestGump));
@@ -113,10 +113,10 @@ namespace Server.Engines.Quests
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-				
+
             if (this.m_Duration > 0)
                 list.Add(1072517, this.m_Duration.ToString()); // Lifespan: ~1_val~ seconds
-				
+
             if (!this.QuestItem)
                 list.Add(1072351); // Quest Item
         }
@@ -126,7 +126,7 @@ namespace Server.Engines.Quests
             base.Serialize(writer);
 
             writer.Write((int)0); // version
-			
+
             writer.Write((int)this.m_Duration);
             writer.Write((bool)this.m_InDelivery);
         }
@@ -136,10 +136,10 @@ namespace Server.Engines.Quests
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-			
+
             this.m_Duration = reader.ReadInt();
             this.m_InDelivery = reader.ReadBool();
-			
+
             if (this.m_Duration > 0)
                 this.StartTimer();
         }
@@ -165,17 +165,17 @@ namespace Server.Engines.Quests
             if (this.m_Duration + 10 < this.Lifespan)
                 this.m_Duration += 10;
             else
-            { 
+            {
                 this.StopTimer();
-				
+
                 if (this.Parent is Backpack)
                 {
                     Backpack pack = (Backpack)this.Parent;
-					
+
                     if (pack.Parent is PlayerMobile)
-                        QuestHelper.RemoveStatus((PlayerMobile)pack.Parent, this);				
+                        QuestHelper.RemoveStatus((PlayerMobile)pack.Parent, this);
                 }
-				
+
                 this.Delete();
             }
         }

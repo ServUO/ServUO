@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,17 +10,17 @@ namespace Server.Mobiles
     {
         Astaroth,
         Faulinei,
-        Nosfentor        
+        Nosfentor
     };
-    
+
     [CorpseName("a shadowlord corpse")]
     public class Shadowlord : BaseCreature
     {
         private static readonly ArrayList m_Instances = new ArrayList();
-        public static ArrayList Instances => m_Instances; 
+        public static ArrayList Instances => m_Instances;
 
         private ShadowlordType m_Type;
-        public virtual Type[] ArtifactDrops => _ArtifactTypes; 
+        public virtual Type[] ArtifactDrops => _ArtifactTypes;
 
         private Type[] _ArtifactTypes = new Type[]
         {
@@ -54,7 +54,7 @@ namespace Server.Mobiles
 
             Body = 146;
             BaseSoundID = 0x4B0;
-			Hue = 902;
+            Hue = 902;
 
             SetStr(981, 1078);
             SetDex(1003, 1114);
@@ -83,7 +83,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 110.2, 120.0);
             SetSkill(SkillName.Tactics, 110.1, 115.0);
             SetSkill(SkillName.Wrestling, 110.1, 115.0);
-			SetSkill(SkillName.Necromancy, 120.0);
+            SetSkill(SkillName.Necromancy, 120.0);
             SetSkill(SkillName.SpiritSpeak, 120.0);
             SetSkill(SkillName.Anatomy, 10.0, 20.0);
 
@@ -116,12 +116,12 @@ namespace Server.Mobiles
             base.OnAfterDelete();
         }
 
-        public override bool AlwaysMurderer => true; 
+        public override bool AlwaysMurderer => true;
 
         public override int GetAngerSound() { return 1550; }
         public override int GetHurtSound() { return 1552; }
         public override int GetDeathSound() { return 1551; }
-        
+
         public class InternalSelfDeleteTimer : Timer
         {
             private Shadowlord Mare;
@@ -154,7 +154,7 @@ namespace Server.Mobiles
             return creature;
         }
 
-        public override Poison PoisonImmune => Poison.Lethal; 
+        public override Poison PoisonImmune => Poison.Lethal;
 
         public override void GenerateLoot()
         {

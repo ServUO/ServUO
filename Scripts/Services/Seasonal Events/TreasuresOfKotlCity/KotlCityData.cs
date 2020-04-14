@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-
-using Server;
+using Server.Engines.SeasonalEvents;
+using Server.Engines.TreasuresOfKotlCity;
 using Server.Items;
 using Server.Mobiles;
-using Server.Commands;
-using Server.Engines.TreasuresOfKotlCity;
-using Server.Engines.SeasonalEvents;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Points
 {
@@ -38,7 +35,7 @@ namespace Server.Engines.Points
 
             if (!Enabled || bc == null || bc.Controlled || bc.Summoned || !damager.Alive)
                 return;
-                
+
             Region r = bc.Region;
 
             if (damager is PlayerMobile && r.IsPartOf("KotlCity"))

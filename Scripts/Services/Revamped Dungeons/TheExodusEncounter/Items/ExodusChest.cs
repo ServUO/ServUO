@@ -25,10 +25,10 @@ namespace Server.Items
         private Timer m_Timer;
         private ExodusChestRegion m_Region;
 
-        public override bool IsDecoContainer { get { return false; } }        
+        public override bool IsDecoContainer { get { return false; } }
 
         [Constructable]
-        public ExodusChest() 
+        public ExodusChest()
             : base()
         {
             Visible = false;
@@ -42,7 +42,7 @@ namespace Server.Items
 
             TrapType = TrapType.PoisonTrap;
             TrapPower = 100;
-            GenerateTreasure();           
+            GenerateTreasure();
         }
 
         public ExodusChest(Serial serial) : base(serial)
@@ -99,7 +99,7 @@ namespace Server.Items
         public override void OnMapChange()
         {
             if (Deleted)
-                return;           
+                return;
 
             UpdateRegion();
         }
@@ -130,12 +130,12 @@ namespace Server.Items
 
         protected virtual void GenerateTreasure()
         {
-            DropItem(new Gold(1500, 3000));           
+            DropItem(new Gold(1500, 3000));
 
             Item item = null;
 
-            for (int i = 0 ; i < Loot.GemTypes.Length; i++)
-            {               
+            for (int i = 0; i < Loot.GemTypes.Length; i++)
+            {
                 item = Activator.CreateInstance(Loot.GemTypes[i]) as Item;
                 item.Amount = Utility.Random(1, 6);
                 DropItem(item);
@@ -155,7 +155,7 @@ namespace Server.Items
                         item = new ParasiticPotion(Utility.Random(1, 3)); break;
                     case 1:
                         item = new InvisibilityPotion(Utility.Random(1, 3)); break;
-                }                        
+                }
 
                 DropItem(item);
             }
@@ -166,7 +166,7 @@ namespace Server.Items
                 item.Amount = Utility.Random(3, 6);
                 DropItem(item);
             }
-            
+
             if (0.1 > Utility.RandomDouble())
             {
                 switch (Utility.Random(4))
@@ -216,7 +216,7 @@ namespace Server.Items
         public ExodusChest ExodusChest { get { return m_Chest; } }
 
         public ExodusChestRegion(ExodusChest chest)
-            : base(null, chest.Map, Region.Find(chest.Location, chest.Map), new Rectangle2D(chest.Location.X - 2, chest.Location.Y - 2 , 5, 5) )
+            : base(null, chest.Map, Region.Find(chest.Location, chest.Map), new Rectangle2D(chest.Location.X - 2, chest.Location.Y - 2, 5, 5))
         {
             m_Chest = chest;
         }

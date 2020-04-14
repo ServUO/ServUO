@@ -1,5 +1,3 @@
-using System;
-
 namespace Server
 {
     public delegate MoveResult MoveMethod(Direction d);

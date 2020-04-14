@@ -11,6 +11,6 @@ namespace Server.Engines.Craft
             m_ItemID = itemID;
         }
 
-        public int ItemID => m_ItemID;	
+        public int ItemID => m_ItemID;
     }
 }

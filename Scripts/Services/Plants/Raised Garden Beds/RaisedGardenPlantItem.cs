@@ -1,8 +1,7 @@
-using Server;
-using System;
 using Server.Items;
 using Server.Multis;
 using Server.Network;
+using System;
 
 namespace Server.Engines.Plants
 {
@@ -41,9 +40,9 @@ namespace Server.Engines.Plants
         private GardenAddonComponent m_Component;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public GardenAddonComponent Component 
-        { 
-            get 
+        public GardenAddonComponent Component
+        {
+            get
             {
                 if (m_Component != null)
                 {
@@ -53,8 +52,8 @@ namespace Server.Engines.Plants
 
                 return m_Component;
             }
-            set 
-            { 
+            set
+            {
                 m_Component = value;
 
                 if (m_Component != null)
@@ -111,8 +110,8 @@ namespace Server.Engines.Plants
         }
 
         [Constructable]
-        public RaisedGardenPlantItem() : this(false) 
-        { 
+        public RaisedGardenPlantItem() : this(false)
+        {
         }
 
         [Constructable]
@@ -196,9 +195,9 @@ namespace Server.Engines.Plants
             }
         }*/
 
-        public RaisedGardenPlantItem( Serial serial ) : base( serial )
-		{
-		}
+        public RaisedGardenPlantItem(Serial serial) : base(serial)
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {

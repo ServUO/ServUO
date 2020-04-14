@@ -1,7 +1,3 @@
-using System;
-using Server;
-using Server.Mobiles;
-using Server.Engines.CityLoyalty;
 using Server.Gumps;
 
 namespace Server.Items
@@ -19,7 +15,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if(Title > 0)
+            if (Title > 0)
                 list.Add(Title);
 
             list.Add(1154760, "Adamu Edom"); // By: ~1_NAME~

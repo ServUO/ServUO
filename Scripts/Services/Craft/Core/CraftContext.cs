@@ -1,7 +1,6 @@
-using System;
-using System.IO;
-using System.Collections.Generic;
 using Server.Engines.Plants;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Server.Engines.Craft
 {
@@ -17,7 +16,7 @@ namespace Server.Engines.Craft
         QuestItem,
         NonQuestItem
     }
-	
+
     public class CraftContext
     {
         public Mobile Owner { get; private set; }
@@ -102,22 +101,22 @@ namespace Server.Engines.Craft
             }
         }
 
-        public int MakeTotal 
-        { 
+        public int MakeTotal
+        {
             get
             {
                 return m_MakeTotal;
-            } 
-            set 
+            }
+            set
             {
                 m_MakeTotal = value;
-            } 
+            }
         }
 
         public PlantHue RequiredPlantHue
-        { 
-            get { return m_RequiredPlantHue; } 
-            set { m_RequiredPlantHue = value; } 
+        {
+            get { return m_RequiredPlantHue; }
+            set { m_RequiredPlantHue = value; }
         }
 
         public PlantPigmentHue RequiredPigmentHue { get; set; }
@@ -226,7 +225,7 @@ namespace Server.Engines.Craft
 
         private static List<CraftContext> Contexts = new List<CraftContext>();
 
-        public static CraftSystem[] Systems => _Systems; 
+        public static CraftSystem[] Systems => _Systems;
         private static CraftSystem[] _Systems = new CraftSystem[11];
 
         public static void Configure()

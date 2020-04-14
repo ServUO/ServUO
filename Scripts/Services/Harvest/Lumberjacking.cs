@@ -1,6 +1,6 @@
-using System;
 using Server.Items;
 using Server.Network;
+using System;
 using System.Linq;
 
 namespace Server.Engines.Harvest
@@ -191,13 +191,13 @@ namespace Server.Engines.Harvest
             if (!base.CheckHarvest(from, tool, def, toHarvest))
                 return false;
 
-			if (tool.Parent != from && from.Backpack != null && !tool.IsChildOf(from.Backpack))
-			{
-				from.SendLocalizedMessage(1080058); // This must be in your backpack to use it.
-				return false;
-			}
+            if (tool.Parent != from && from.Backpack != null && !tool.IsChildOf(from.Backpack))
+            {
+                from.SendLocalizedMessage(1080058); // This must be in your backpack to use it.
+                return false;
+            }
 
-			return true;
+            return true;
         }
 
         public override Type GetResourceType(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, HarvestResource resource)

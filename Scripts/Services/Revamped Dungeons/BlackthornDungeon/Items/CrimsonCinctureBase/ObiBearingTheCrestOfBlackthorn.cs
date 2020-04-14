@@ -1,12 +1,9 @@
-using Server;
-using System;
-
 namespace Server.Items
 {
     public class ObiBearingTheCrestOfBlackthorn2 : Obi
     {
         public override bool IsArtifact { get { return true; } }
-        
+
         [Constructable]
         public ObiBearingTheCrestOfBlackthorn2()
             : base()
@@ -17,7 +14,7 @@ namespace Server.Items
             Attributes.RegenHits = 2;
             StrRequirement = 10;
             Hue = 1157;
-        }   
+        }
 
         public ObiBearingTheCrestOfBlackthorn2(Serial serial)
             : base(serial)

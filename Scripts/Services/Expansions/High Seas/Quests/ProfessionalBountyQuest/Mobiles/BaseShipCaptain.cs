@@ -1,9 +1,8 @@
-using Server;
-using System;
+using Server.Engines.Quests;
 using Server.Items;
 using Server.Multis;
+using System;
 using System.Collections.Generic;
-using Server.Engines.Quests;
 using System.Linq;
 
 namespace Server.Mobiles
@@ -186,7 +185,7 @@ namespace Server.Mobiles
 
         public override void Delete()
         {
-            if(BountyQuestSpawner.Instance != null)
+            if (BountyQuestSpawner.Instance != null)
                 BountyQuestSpawner.Instance.HandleDeath(this);
 
             if (m_Galleon != null && !m_Galleon.Deleted)
@@ -288,7 +287,7 @@ namespace Server.Mobiles
 
             Mobile focusMob = GetFocusMob();
 
-            if(m_TargetBoat == null || !InRange(m_TargetBoat.Location, 25))
+            if (m_TargetBoat == null || !InRange(m_TargetBoat.Location, 25))
                 m_TargetBoat = GetFocusBoat(focusMob);
 
             if (focusMob == null && m_TargetBoat == null)
@@ -556,7 +555,7 @@ namespace Server.Mobiles
 
             foreach (var crewman in crew)
             {
-                if(!m_Galleon.Contains(crewman))
+                if (!m_Galleon.Contains(crewman))
                 {
                     crewman.MoveToWorld(new Point3D(m_Galleon.X + Utility.RandomList(-1, 1), m_Galleon.Y + Utility.RandomList(-1, 0, 1), m_Galleon.ZSurface), this.Map);
                 }
@@ -648,7 +647,7 @@ namespace Server.Mobiles
 
             writer.Write(m_Crew.Count);
             foreach (Mobile mob in m_Crew)
-                    writer.Write(mob);
+                writer.Write(mob);
         }
 
         public override void Deserialize(GenericReader reader)

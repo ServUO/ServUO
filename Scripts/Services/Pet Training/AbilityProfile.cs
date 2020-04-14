@@ -1,8 +1,7 @@
+using Server.Items;
 using System;
-using Server;
 using System.Collections.Generic;
 using System.Linq;
-using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -38,7 +37,7 @@ namespace Server.Mobiles
 
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseCreature Creature { get; private set; }
-        
+
         public List<object> Advancements { get; private set; }
 
         public AbilityProfile(BaseCreature bc)
@@ -136,7 +135,7 @@ namespace Server.Mobiles
             {
                 WeaponAbilities = new WeaponAbility[] { ability };
             }
-            else if(!WeaponAbilities.Any(a => a == ability))
+            else if (!WeaponAbilities.Any(a => a == ability))
             {
                 var temp = WeaponAbilities;
 
@@ -343,7 +342,7 @@ namespace Server.Mobiles
 
             if (HasSpecialMagicalAbility() &&
                 IsSpecialMagicalAbility(ability) &&
-                SpecialAbilities != null && 
+                SpecialAbilities != null &&
                 SpecialAbilities.Length > 0 &&
                 SpecialAbilities.Any(a => !a.NaturalAbility))
             {
@@ -358,9 +357,9 @@ namespace Server.Mobiles
             if (!Creature.Controlled)
                 return true;
 
-            if (HasSpecialMagicalAbility() && 
-                list.Any(abil => IsRuleBreaker(abil)) && 
-                (AreaEffects == null || AreaEffects.Length == 0) && 
+            if (HasSpecialMagicalAbility() &&
+                list.Any(abil => IsRuleBreaker(abil)) &&
+                (AreaEffects == null || AreaEffects.Length == 0) &&
                 (SpecialAbilities == null || SpecialAbilities.Length == 0 || SpecialAbilities.All(a => a.NaturalAbility)))
                 return true;
 
@@ -432,11 +431,11 @@ namespace Server.Mobiles
                     Creature.Mastery = SkillName.Wrestling;
                     break;
                 case MagicalAbility.Poisoning:
-                    if(Creature.Controlled && Creature.AI != AIType.AI_Melee) 
+                    if (Creature.Controlled && Creature.AI != AIType.AI_Melee)
                         Creature.AI = AIType.AI_Melee;
                     break;
                 case MagicalAbility.Bushido:
-                    if (Creature.Controlled && Creature.AI != AIType.AI_Samurai) 
+                    if (Creature.Controlled && Creature.AI != AIType.AI_Samurai)
                         Creature.AI = AIType.AI_Samurai;
                     if (!HasAbility(WeaponAbility.WhirlwindAttack))
                     {
@@ -444,7 +443,7 @@ namespace Server.Mobiles
                     }
                     break;
                 case MagicalAbility.Ninjitsu:
-                    if (Creature.Controlled && Creature.AI != AIType.AI_Ninja) 
+                    if (Creature.Controlled && Creature.AI != AIType.AI_Ninja)
                         Creature.AI = AIType.AI_Ninja;
                     if (!HasAbility(WeaponAbility.FrenziedWhirlwind))
                     {
@@ -452,20 +451,20 @@ namespace Server.Mobiles
                     }
                     break;
                 case MagicalAbility.Discordance:
-                    if (Creature.Controlled && Creature.AI != AIType.AI_Melee) 
+                    if (Creature.Controlled && Creature.AI != AIType.AI_Melee)
                         Creature.AI = AIType.AI_Melee;
                     break;
                 case MagicalAbility.Magery:
                 case MagicalAbility.MageryMastery:
-                    if (Creature.Controlled && Creature.AI != AIType.AI_Mage) 
+                    if (Creature.Controlled && Creature.AI != AIType.AI_Mage)
                         Creature.AI = AIType.AI_Mage;
                     break;
                 case MagicalAbility.Mysticism:
-                    if (Creature.Controlled && Creature.AI != AIType.AI_Mystic) 
+                    if (Creature.Controlled && Creature.AI != AIType.AI_Mystic)
                         Creature.AI = AIType.AI_Mystic;
                     break;
                 case MagicalAbility.Spellweaving:
-                    if (Creature.Controlled && Creature.AI != AIType.AI_Spellweaving) 
+                    if (Creature.Controlled && Creature.AI != AIType.AI_Spellweaving)
                         Creature.AI = AIType.AI_Spellweaving;
                     break;
                 case MagicalAbility.Chivalry:
@@ -473,11 +472,11 @@ namespace Server.Mobiles
                         Creature.AI = AIType.AI_Paladin;
                     break;
                 case MagicalAbility.Necromage:
-                    if (Creature.Controlled && Creature.AI != AIType.AI_NecroMage) 
+                    if (Creature.Controlled && Creature.AI != AIType.AI_NecroMage)
                         Creature.AI = AIType.AI_NecroMage;
                     break;
                 case MagicalAbility.Necromancy:
-                    if (Creature.Controlled && Creature.AI != AIType.AI_Necro) 
+                    if (Creature.Controlled && Creature.AI != AIType.AI_Necro)
                         Creature.AI = AIType.AI_Necro;
                     break;
             }

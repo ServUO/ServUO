@@ -1,7 +1,7 @@
-using System;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
+using System;
 
 namespace Server.Guilds
 {
@@ -45,12 +45,12 @@ namespace Server.Guilds
 
             RankDefinition playerRank = pm.GuildRank;
 
-            switch( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 1:
                     {
                         AllianceInfo alliance = this.guild.Alliance;
-                        AllianceInfo otherAlliance = this.m_Other.Alliance;	
+                        AllianceInfo otherAlliance = this.m_Other.Alliance;
 
                         if (!playerRank.GetFlag(RankFlags.ControlWarStatus))
                         {

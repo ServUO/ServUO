@@ -1,3 +1,4 @@
+using Server.Misc;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -6,7 +7,6 @@ using System.IO;
 using System.Web.UI;
 using HtmlAttr = System.Web.UI.HtmlTextWriterAttribute;
 using HtmlTag = System.Web.UI.HtmlTextWriterTag;
-using Server.Misc;
 
 namespace Server.Engines.Reports
 {

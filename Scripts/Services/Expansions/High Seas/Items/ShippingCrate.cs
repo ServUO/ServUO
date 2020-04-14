@@ -1,9 +1,8 @@
-﻿using Server;
+﻿using Server.ContextMenus;
+using Server.Gumps;
+using Server.Multis;
 using System;
 using System.Collections.Generic;
-using Server.ContextMenus;
-using Server.Multis;
-using Server.Gumps;
 
 namespace Server.Items
 {
@@ -63,7 +62,7 @@ namespace Server.Items
             base.GetContextMenuEntries(from, list);
             list.Add(new DestroyCrate(from, this));
 
-            if(m_Boat != null && this.Items.Count > 0)
+            if (m_Boat != null && this.Items.Count > 0)
                 list.Add(new LoadShip(from, this));
         }
 
@@ -80,7 +79,7 @@ namespace Server.Items
 
             public override void OnClick()
             {
-                m_From.SendGump(new InternalGump(m_Crate)); 
+                m_From.SendGump(new InternalGump(m_Crate));
             }
         }
 
@@ -103,12 +102,12 @@ namespace Server.Items
 
                 Container hold;
 
-                if(m_Crate.Boat is BaseGalleon)
+                if (m_Crate.Boat is BaseGalleon)
                     hold = ((BaseGalleon)m_Crate.Boat).GalleonHold;
                 else
                     hold = m_Crate.Boat.Hold;
 
-                if(hold == null)
+                if (hold == null)
                     return;
 
                 if (m_From.InRange(m_Crate.Boat.Location, Server.Mobiles.DockMaster.DryDockDistance))
@@ -137,7 +136,7 @@ namespace Server.Items
 
             public override void Confirm(Mobile from)
             {
-                if(m_Crate != null)
+                if (m_Crate != null)
                     m_Crate.Delete();
             }
         }
@@ -151,7 +150,7 @@ namespace Server.Items
             }
 
             base.OnDoubleClick(from);
-        }   
+        }
 
         public override void OnItemRemoved(Item item)
         {

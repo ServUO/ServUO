@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class ClockworkLeggings : PlateLegs
@@ -15,7 +13,7 @@ namespace Server.Items
             Attributes.BonusDex = 5;
         }
 
-        public ClockworkLeggings(Serial serial)  : base(serial)
+        public ClockworkLeggings(Serial serial) : base(serial)
         {
         }
 

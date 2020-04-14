@@ -1,9 +1,7 @@
-using System;
-using Server;
-using Server.Targeting;
-using Server.Network;
 using Server.Multis;
+using Server.Network;
 using Server.Regions;
+using Server.Targeting;
 
 namespace Server.Gumps
 {
@@ -44,7 +42,7 @@ namespace Server.Gumps
             Point3D offset = Point3D.Zero;
             Direction direction;
 
-            if(info.ButtonID == 0)
+            if (info.ButtonID == 0)
                 return;
 
             switch (info.ButtonID)

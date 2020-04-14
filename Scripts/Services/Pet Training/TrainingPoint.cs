@@ -1,7 +1,3 @@
-using System;
-using Server;
-using Server.Gumps;
-
 namespace Server.Mobiles
 {
     public class TrainingPoint

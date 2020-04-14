@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class WireSpool : BaseDecayingItem
     {
@@ -14,8 +12,8 @@ namespace Server.Items
             this.LootType = LootType.Blessed;
             this.Hue = 2315;
         }
-		
-		public override void GetProperties(ObjectPropertyList list)
+
+        public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 

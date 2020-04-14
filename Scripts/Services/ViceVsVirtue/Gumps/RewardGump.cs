@@ -1,12 +1,8 @@
-using System;
-using Server;
+using Server.Engines.Points;
+using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
-using Server.Gumps;
-using Server.Guilds;
-using Server.Network;
-using Server.Engines.Points;
-using System.Collections.Generic;
+using System;
 
 namespace Server.Engines.VvV
 {

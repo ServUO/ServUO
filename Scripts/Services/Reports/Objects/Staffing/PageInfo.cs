@@ -1,5 +1,5 @@
-using System;
 using Server.Engines.Help;
+using System;
 
 namespace Server.Engines.Reports
 {
@@ -210,7 +210,7 @@ namespace Server.Engines.Reports
         {
             string resolvedBy;
             DateTime timeResolved;
-            PageResolution res = this.GetResolution(out resolvedBy, out timeResolved); 
+            PageResolution res = this.GetResolution(out resolvedBy, out timeResolved);
 
             if (this.m_History != null && this.IsStaffResolution(res))
                 this.Resolver = this.m_History.GetStaffInfo(resolvedBy);
@@ -229,7 +229,7 @@ namespace Server.Engines.Reports
 
         public static PageResolution ResFromResp(string resp)
         {
-            switch ( resp )
+            switch (resp)
             {
                 case "[Handled]":
                     return PageResolution.Handled;

@@ -1,6 +1,4 @@
 using System;
-using Server;
-using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -41,8 +39,8 @@ namespace Server.Mobiles
             Fame = 10000;
             Karma = -10000;
         }
-		
-		public override int TreasureMapLevel { get { return 5; } }
+
+        public override int TreasureMapLevel { get { return 5; } }
 
         private DateTime _NextDrop;
 

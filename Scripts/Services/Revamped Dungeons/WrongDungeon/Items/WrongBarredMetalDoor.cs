@@ -93,7 +93,7 @@ namespace Server.Items
                 m_MagicUnlocked = false;
             }
 
-            if (this.Locked && !this.Open)                
+            if (this.Locked && !this.Open)
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 501746); // It appears to be locked.
                 return;
@@ -122,7 +122,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write((int)0); // version
-            
+
             writer.Write((int)m_RequiredSkill);
             writer.Write((int)m_MaxLockLevel);
             writer.Write((int)m_LockLevel);
@@ -132,7 +132,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            
+
             m_RequiredSkill = reader.ReadInt();
             m_MaxLockLevel = reader.ReadInt();
             m_LockLevel = reader.ReadInt();

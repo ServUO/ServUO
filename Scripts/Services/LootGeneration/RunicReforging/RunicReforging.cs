@@ -1,11 +1,9 @@
-using System;
-using Server;
-using Server.Mobiles;
-using Server.Targeting;
 using Server.Engines.Craft;
-using Server.SkillHandlers;
-using Server.Misc;
 using Server.Gumps;
+using Server.Mobiles;
+using Server.SkillHandlers;
+using Server.Targeting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,15 +36,15 @@ namespace Server.Items
         Quality,
         Vampire,
         Restoration,
-        Defense, 
-        Fortune, 
+        Defense,
+        Fortune,
         Alchemy,
         Slaughter,
         Aegis,
         Blackthorn,
         Minax,
         Kotl,
-        Khaldun, 
+        Khaldun,
         Doom,
         EnchantedOrigin
     }
@@ -56,11 +54,11 @@ namespace Server.Items
         None,
         Minor,
         Lesser,
-        Greater, 
+        Greater,
         Major,
         LesserArtifact,
         GreaterArtifact,
-        MajorArtifact, 
+        MajorArtifact,
         LegendaryArtifact,
         ReforgedMinor,
         ReforgedLesser,
@@ -441,7 +439,7 @@ namespace Server.Items
                             return false;
                         if (index >= 8 && index <= 10 && HasOption(options, ReforgingOption.PowerfulAndStructural))
                             return false;
-                        if (index >= 8 && index <= 11 && HasOption(options, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental)) 
+                        if (index >= 8 && index <= 11 && HasOption(options, ReforgingOption.PowerfulAndFundamental, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulStructuralAndFundamental))
                             return false;
                         break;
                     case CraftResource.YewWood:
@@ -1134,10 +1132,10 @@ namespace Server.Items
             m_AllowableTable[typeof(GargishNecklace)] = DefBlacksmithy.CraftSystem;
             m_AllowableTable[typeof(GargishEarrings)] = DefBlacksmithy.CraftSystem;
             m_AllowableTable[typeof(GargishAmulet)] = DefBlacksmithy.CraftSystem;
-            m_AllowableTable[typeof(GargishStoneAmulet)] = DefMasonry.CraftSystem;		
-			m_AllowableTable[typeof(BarbedWhip)] = DefTailoring.CraftSystem;
-			m_AllowableTable[typeof(SpikedWhip)] = DefTailoring.CraftSystem;
-			m_AllowableTable[typeof(BladedWhip)] = DefTailoring.CraftSystem;
+            m_AllowableTable[typeof(GargishStoneAmulet)] = DefMasonry.CraftSystem;
+            m_AllowableTable[typeof(BarbedWhip)] = DefTailoring.CraftSystem;
+            m_AllowableTable[typeof(SpikedWhip)] = DefTailoring.CraftSystem;
+            m_AllowableTable[typeof(BladedWhip)] = DefTailoring.CraftSystem;
         }
 
         public static void Configure()
@@ -2386,7 +2384,7 @@ namespace Server.Items
 
                         if (.75 > chance)
                         {
-                            switch (Utility.Random(item is BaseJewel ? 4: 6))
+                            switch (Utility.Random(item is BaseJewel ? 4 : 6))
                             {
                                 case 0: neg.Prized = 1; break;
                                 case 1: neg.Antique = 1; break;
@@ -2674,7 +2672,7 @@ namespace Server.Items
 
             return overcap[0];
         }
-    
+
         public static AosAttributes GetAosAttributes(Item item)
         {
             if (item is BaseWeapon)
@@ -2698,7 +2696,7 @@ namespace Server.Items
             if (item is Spellbook)
                 return ((Spellbook)item).Attributes;
 
-            if(item is FishingPole)
+            if (item is FishingPole)
                 return ((FishingPole)item).Attributes;
 
             return null;
@@ -2726,7 +2724,7 @@ namespace Server.Items
             if (item is GargishGlasses)
                 return ((GargishGlasses)item).WeaponAttributes;
 
-            if(item is ElvenGlasses)
+            if (item is ElvenGlasses)
                 return ((ElvenGlasses)item).WeaponAttributes;
 
             if (item is BaseArmor)

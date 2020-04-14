@@ -1,11 +1,9 @@
+using Server.Engines.CityLoyalty;
+using Server.Items;
+using Server.Mobiles;
 using System;
-using Server;
 using System.Collections.Generic;
 using System.Linq;
-using Server.Mobiles;
-using Server.Items;
-using Server.Engines.CityLoyalty;
-using Server.Misc;
 
 namespace Server.Engines.Blackthorn
 {
@@ -23,18 +21,18 @@ namespace Server.Engines.Blackthorn
         Nature
     }
 
-	public class InvasionController : Item
-	{
+    public class InvasionController : Item
+    {
         public static bool Enabled = true;
         public static int WaveCountMin = 8;
         public static int WaveCountMax = 10;
         public static int MaxWaves = 2;
 
         [CommandProperty(AccessLevel.Administrator)]
-		public static InvasionController TramInstance { get; set; }
+        public static InvasionController TramInstance { get; set; }
 
         [CommandProperty(AccessLevel.Administrator)]
-		public static InvasionController FelInstance { get; set; }
+        public static InvasionController FelInstance { get; set; }
 
         [CommandProperty(AccessLevel.Administrator)]
         public bool ForceRespawn
@@ -58,13 +56,13 @@ namespace Server.Engines.Blackthorn
         public static Dictionary<City, InvasionDefinition> Defs;
 
         [CommandProperty(AccessLevel.GameMaster)]
-		public City CurrentInvasion { get; set; }
+        public City CurrentInvasion { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-		public InvasionType InvasionType { get; set; }
+        public InvasionType InvasionType { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-		public InvasionBeacon Beacon { get; set; }
+        public InvasionBeacon Beacon { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int SpawnCount
@@ -88,26 +86,26 @@ namespace Server.Engines.Blackthorn
             }
         }
 
-		public Dictionary<BaseCreature, List<BaseCreature>> Spawn { get; set; }
-		
-		public List<Rectangle2D> SpawnZones { get; set; }
+        public Dictionary<BaseCreature, List<BaseCreature>> Spawn { get; set; }
+
+        public List<Rectangle2D> SpawnZones { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-		public int CurrentWave { get; private set; }
-		
-		public bool BeaconVulnerable { get { return Beacon != null && (Spawn == null || Spawn.Count == 0); } }
-		
-		public InvasionController(Map map) : base(3796)
-		{
+        public int CurrentWave { get; private set; }
+
+        public bool BeaconVulnerable { get { return Beacon != null && (Spawn == null || Spawn.Count == 0); } }
+
+        public InvasionController(Map map) : base(3796)
+        {
             Movable = false;
             Visible = false;
 
-			Spawn = new Dictionary<BaseCreature, List<BaseCreature>>();
-			SpawnZones = new List<Rectangle2D>();
+            Spawn = new Dictionary<BaseCreature, List<BaseCreature>>();
+            SpawnZones = new List<Rectangle2D>();
 
             if (Enabled)
                 Timer.DelayCall(TimeSpan.FromSeconds(10), BeginInvasion);
-		}
+        }
 
         public override void OnDoubleClick(Mobile from)
         {
@@ -116,39 +114,39 @@ namespace Server.Engines.Blackthorn
                 from.SendGump(new Server.Gumps.PropertiesGump(from, this));
             }
         }
-		
-		private Type[][] _SpawnTable =
-		{
+
+        private Type[][] _SpawnTable =
+        {
             new Type[] { typeof(Dragon), typeof(Drake), typeof(GiantSerpent), typeof(Reptalon), typeof(Hydra) },
             new Type[] { typeof(Lich), typeof(Wraith), typeof(Mummy), typeof(Zombie), typeof(SkeletalKnight), typeof(BoneKnight) },
-			new Type[] { typeof(MudElemental), typeof(MoltenEarthElemental), typeof(DiseasedBloodElemental), typeof(GreaterAirElemental),
+            new Type[] { typeof(MudElemental), typeof(MoltenEarthElemental), typeof(DiseasedBloodElemental), typeof(GreaterAirElemental),
                          typeof(GreaterBloodElemental), typeof(GreaterEarthElemental), typeof(GreaterWaterElemental), typeof(ShameGreaterPoisonElemental),
                          typeof(StoneElemental) },
-			new Type[] { typeof(Daemon), typeof(Succubus), typeof(Imp), typeof(ChaosDaemon), typeof(BoneDemon) },
-			new Type[] { typeof(Orc), typeof(OrcBomber), typeof(OrcishMage), typeof(OrcishLord) },
+            new Type[] { typeof(Daemon), typeof(Succubus), typeof(Imp), typeof(ChaosDaemon), typeof(BoneDemon) },
+            new Type[] { typeof(Orc), typeof(OrcBomber), typeof(OrcishMage), typeof(OrcishLord) },
             new Type[] { typeof(SwampTentacle), typeof(PlagueBeast), typeof(Bogling), typeof(FeralTreefellow) },
-            new Type[] { typeof(IceElemental), typeof(SnowElemental), typeof(IceFiend), typeof(FrostTroll), typeof(IceSerpent) }, 
+            new Type[] { typeof(IceElemental), typeof(SnowElemental), typeof(IceFiend), typeof(FrostTroll), typeof(IceSerpent) },
             new Type[] { typeof(DreadSpider), typeof(GiantBlackWidow), typeof(Scorpion), typeof(TerathanWarrior), typeof(WolfSpider) },
             new Type[] { typeof(Satyr), typeof(Centaur), typeof(CuSidhe), typeof(Wisp), typeof(MLDryad) },
-            new Type[] { typeof(DireWolf), typeof(GiantRat), typeof(Troglodyte), typeof(RagingGrizzlyBear), typeof(GreaterMongbat) }, 
-		};
-		
-		public void BeginInvasion()
-		{
+            new Type[] { typeof(DireWolf), typeof(GiantRat), typeof(Troglodyte), typeof(RagingGrizzlyBear), typeof(GreaterMongbat) },
+        };
+
+        public void BeginInvasion()
+        {
             if (!Enabled)
                 return;
 
             RemoveSpawn();
 
-			CurrentWave = 1;
-			InvasionType newType;
+            CurrentWave = 1;
+            InvasionType newType;
             City newCity;
-			
-			do
-			{
-				newType = (InvasionType)Utility.Random(10);
-			}
-			while(newType == this.InvasionType);
+
+            do
+            {
+                newType = (InvasionType)Utility.Random(10);
+            }
+            while (newType == this.InvasionType);
 
             do
             {
@@ -157,37 +155,37 @@ namespace Server.Engines.Blackthorn
             while (newCity == this.CurrentInvasion);
 
             this.CurrentInvasion = newCity;
-			this.InvasionType = newType;
-			SpawnZones = Defs[CurrentInvasion].SpawnRecs.ToList();
+            this.InvasionType = newType;
+            SpawnZones = Defs[CurrentInvasion].SpawnRecs.ToList();
 
-			Beacon = new InvasionBeacon(this);
+            Beacon = new InvasionBeacon(this);
             Beacon.MoveToWorld(Defs[CurrentInvasion].BeaconLoc, this.Map);
 
-			// Shuffle zones
-			for(int i = 0; i < 8; i++)
-			{
-				var rec = SpawnZones[Utility.Random(SpawnZones.Count)];
-				SpawnZones.Remove(rec);
-				SpawnZones.Insert(0, rec);
-			}
+            // Shuffle zones
+            for (int i = 0; i < 8; i++)
+            {
+                var rec = SpawnZones[Utility.Random(SpawnZones.Count)];
+                SpawnZones.Remove(rec);
+                SpawnZones.Insert(0, rec);
+            }
 
-			SpawnWave();
-		}
-		
-		public void SpawnWave()
-		{
-			List<Rectangle2D> zones = new List<Rectangle2D>(SpawnZones);
+            SpawnWave();
+        }
 
-			for(int j = 0; j < 2; j++)
-			{
-				Rectangle2D spawnrec = zones[Utility.Random(zones.Count)];
-				zones.Remove(spawnrec);
+        public void SpawnWave()
+        {
+            List<Rectangle2D> zones = new List<Rectangle2D>(SpawnZones);
 
-				int count = Utility.RandomMinMax(WaveCountMin, WaveCountMax);
+            for (int j = 0; j < 2; j++)
+            {
+                Rectangle2D spawnrec = zones[Utility.Random(zones.Count)];
+                zones.Remove(spawnrec);
+
+                int count = Utility.RandomMinMax(WaveCountMin, WaveCountMax);
                 List<BaseCreature> list = new List<BaseCreature>();
 
-				for(int i = 0; i < count; i++)
-				{
+                for (int i = 0; i < count; i++)
+                {
                     BaseCreature bc = Activator.CreateInstance(_SpawnTable[(int)this.InvasionType][Utility.Random(_SpawnTable[(int)this.InvasionType].Length)]) as BaseCreature;
 
                     bc.Kills = 100;
@@ -200,7 +198,7 @@ namespace Server.Engines.Blackthorn
                     {
                         bc.Delete();
                     }
-				}
+                }
 
                 for (int i = 0; i < 3; i++)
                 {
@@ -221,8 +219,8 @@ namespace Server.Engines.Blackthorn
                 {
                     Spawn[capt] = list;
                 }
-			}
-		}
+            }
+        }
 
         private bool SpawnMobile(BaseCreature bc, Rectangle2D spawnrec)
         {
@@ -323,19 +321,19 @@ namespace Server.Engines.Blackthorn
                 }
             }
         }
-		
-		private void CompleteWave()
-		{
-			if(CurrentWave == MaxWaves)
-			{
+
+        private void CompleteWave()
+        {
+            if (CurrentWave == MaxWaves)
+            {
                 DoMessage();
-			}
-			else
-			{
+            }
+            else
+            {
                 DoMessage();
-				CurrentWave++;
-			}
-		}
+                CurrentWave++;
+            }
+        }
 
         private void DoMessage()
         {
@@ -378,7 +376,7 @@ namespace Server.Engines.Blackthorn
                             continue;
 
                         Item i = CreateItem(damager);
-                        
+
                         if (i != null)
                         {
                             damager.PlaySound(0x5B4);
@@ -440,88 +438,88 @@ namespace Server.Engines.Blackthorn
 
             copy.Clear();
         }
-		
-		public InvasionController(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-			
-			writer.Write((int)CurrentInvasion);
-			writer.Write((int)InvasionType);
-			writer.Write(Beacon);
-			writer.Write(CurrentWave);
-			
-			writer.Write(SpawnZones == null ? 0 : SpawnZones.Count);
-			SpawnZones.ForEach(rec => writer.Write(rec));
-			
-			writer.Write(Spawn == null ? 0 : Spawn.Count);
-			foreach(KeyValuePair<BaseCreature, List<BaseCreature>> kvp in Spawn)
-			{
-				writer.Write(kvp.Key);
-				writer.Write(kvp.Value.Count);
-				kvp.Value.ForEach(bc => writer.Write(bc));
-			}
+
+        public InvasionController(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+
+            writer.Write((int)CurrentInvasion);
+            writer.Write((int)InvasionType);
+            writer.Write(Beacon);
+            writer.Write(CurrentWave);
+
+            writer.Write(SpawnZones == null ? 0 : SpawnZones.Count);
+            SpawnZones.ForEach(rec => writer.Write(rec));
+
+            writer.Write(Spawn == null ? 0 : Spawn.Count);
+            foreach (KeyValuePair<BaseCreature, List<BaseCreature>> kvp in Spawn)
+            {
+                writer.Write(kvp.Key);
+                writer.Write(kvp.Value.Count);
+                kvp.Value.ForEach(bc => writer.Write(bc));
+            }
 
             Timer.DelayCall(TimeSpan.FromSeconds(30), CleanupSpawn);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-			
-			Spawn = new Dictionary<BaseCreature, List<BaseCreature>>();
-			SpawnZones = new List<Rectangle2D>();
-			
-			if(Map == Map.Trammel)
-				TramInstance = this;
-			
-			if(Map == Map.Felucca)
-				FelInstance = this;
-			
-			CurrentInvasion = (City)reader.ReadInt();
-			InvasionType = (InvasionType)reader.ReadInt();
-			Beacon = reader.ReadItem() as InvasionBeacon;
-			CurrentWave = reader.ReadInt();
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+            Spawn = new Dictionary<BaseCreature, List<BaseCreature>>();
+            SpawnZones = new List<Rectangle2D>();
+
+            if (Map == Map.Trammel)
+                TramInstance = this;
+
+            if (Map == Map.Felucca)
+                FelInstance = this;
+
+            CurrentInvasion = (City)reader.ReadInt();
+            InvasionType = (InvasionType)reader.ReadInt();
+            Beacon = reader.ReadItem() as InvasionBeacon;
+            CurrentWave = reader.ReadInt();
 
             if (Beacon != null)
                 Beacon.Controller = this;
-			
-			int count = reader.ReadInt();
-			for(int i = 0; i < count; i++)
-			{
-				SpawnZones.Add(reader.ReadRect2D());
-			}
-			
-			count = reader.ReadInt();
-			for(int i = 0; i < count; i++)
-			{
-				BaseCreature captain = reader.ReadMobile() as BaseCreature;
-				int c = reader.ReadInt();
-				
-				List<BaseCreature> list = new List<BaseCreature>();
-				
-				for(int j = 0; j < c; j++)
-				{
-					BaseCreature spawn = reader.ReadMobile() as BaseCreature;
-					
-					if(spawn != null)
-					{
-						list.Add(spawn);
-					}
-				}
-				
-				if(captain != null)
-					Spawn[captain] = list;
-				else
-				{
-					list.Clear();
-				}
-			}
+
+            int count = reader.ReadInt();
+            for (int i = 0; i < count; i++)
+            {
+                SpawnZones.Add(reader.ReadRect2D());
+            }
+
+            count = reader.ReadInt();
+            for (int i = 0; i < count; i++)
+            {
+                BaseCreature captain = reader.ReadMobile() as BaseCreature;
+                int c = reader.ReadInt();
+
+                List<BaseCreature> list = new List<BaseCreature>();
+
+                for (int j = 0; j < c; j++)
+                {
+                    BaseCreature spawn = reader.ReadMobile() as BaseCreature;
+
+                    if (spawn != null)
+                    {
+                        list.Add(spawn);
+                    }
+                }
+
+                if (captain != null)
+                    Spawn[captain] = list;
+                else
+                {
+                    list.Clear();
+                }
+            }
 
             Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
             {
@@ -534,7 +532,7 @@ namespace Server.Engines.Blackthorn
                     });
                 }
             });
-		}
+        }
 
         public static void Initialize()
         {
@@ -554,7 +552,7 @@ namespace Server.Engines.Blackthorn
 
             Defs[City.Moonglow] = new InvasionDefinition(
                 new Rectangle2D[]
-                { 
+                {
                     new Rectangle2D(6314, 2571, 10, 5),
                     new Rectangle2D(6288, 2535, 8, 15),
                     new Rectangle2D(6322, 2527, 8, 8),
@@ -564,26 +562,26 @@ namespace Server.Engines.Blackthorn
 
             Defs[City.Britain] = new InvasionDefinition(
                 new Rectangle2D[]
-                { 
+                {
                     new Rectangle2D(6296, 2464, 7, 7),
                     new Rectangle2D(6332, 2473, 8, 10),
                     new Rectangle2D(6320, 2508, 3, 8),
                     new Rectangle2D(6287, 2494, 8, 8),
-                }, 
+                },
                 new Point3D(6316, 2477, 11));
 
             Defs[City.Jhelom] = new InvasionDefinition(
-                new Rectangle2D[] 
-                { 
+                new Rectangle2D[]
+                {
                     new Rectangle2D(6450, 2465, 10, 8),
                     new Rectangle2D(6418, 2497, 15, 5),
                     new Rectangle2D(6417, 2469, 5, 10),
                     new Rectangle2D(6432, 2507, 10, 5),
-                }, 
+                },
                 new Point3D(6448, 2492, 5));
 
             Defs[City.Yew] = new InvasionDefinition(
-                new Rectangle2D[] 
+                new Rectangle2D[]
                 {
                     new Rectangle2D(6314, 2397, 12, 5),
                     new Rectangle2D(6317, 2440, 10, 10),
@@ -593,39 +591,39 @@ namespace Server.Engines.Blackthorn
                 new Point3D(6305, 2423, 0));
 
             Defs[City.Minoc] = new InvasionDefinition(
-                new Rectangle2D[] 
+                new Rectangle2D[]
                 {
                     new Rectangle2D(6309, 2339, 10, 5),
                     new Rectangle2D(6290, 2367, 5, 10),
                     new Rectangle2D(6304, 2378, 10, 5),
                     new Rectangle2D(6323, 2344, 5, 10)
-                }, 
+                },
                 new Point3D(6307, 2362, 15));
 
             Defs[City.Trinsic] = new InvasionDefinition(
-                new Rectangle2D[] 
+                new Rectangle2D[]
                 {
                     new Rectangle2D(6356, 2371, 10, 10),
                     new Rectangle2D(6354, 2344, 5, 10),
                     new Rectangle2D(6366, 2344, 5, 7),
                     new Rectangle2D(6386, 2355, 8, 8),
-                }, 
+                },
                 new Point3D(6402, 2368, 25));
 
             Defs[City.SkaraBrae] = new InvasionDefinition(
-                new Rectangle2D[] 
-                { 
+                new Rectangle2D[]
+                {
                     new Rectangle2D(6434, 2330, 10, 5),
                     new Rectangle2D(6456, 2342, 5, 10),
                     new Rectangle2D(6458, 2368, 15, 6),
                     new Rectangle2D(6440, 2384, 10, 3),
                     new Rectangle2D(6412, 2360, 12, 12),
-                }, 
+                },
                 new Point3D(6442, 2351, 0));
 
             Defs[City.NewMagincia] = new InvasionDefinition(
                 new Rectangle2D[]
-                { 
+                {
                     new Rectangle2D(6426, 2397, 10, 5),
                     new Rectangle2D(6444, 2446, 10, 5),
                     new Rectangle2D(6436, 2395, 5, 8),
@@ -634,7 +632,7 @@ namespace Server.Engines.Blackthorn
                 new Point3D(6440, 2419, 26));
 
             Defs[City.Vesper] = new InvasionDefinition(
-                new Rectangle2D[] 
+                new Rectangle2D[]
                 {
                     new Rectangle2D(6428, 2534, 10, 5),
                     new Rectangle2D(6458, 2534, 5, 10),
@@ -643,5 +641,5 @@ namespace Server.Engines.Blackthorn
                 },
                 new Point3D(6444, 2553, 0));
         }
-	}
+    }
 }

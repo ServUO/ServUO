@@ -1,9 +1,7 @@
-using Server;
+using Server.Engines.Harvest;
 using System;
 using System.Collections.Generic;
-using Server.Mobiles;
 using System.IO;
-using Server.Engines.Harvest;
 
 namespace Server.Items
 {
@@ -208,7 +206,7 @@ namespace Server.Items
                 {
                     HarvestMap harvestmap = item as HarvestMap;
 
-                    if (harvestmap != null && harvestmap.TargetMap == map && harvestmap.UsesRemaining > 0 
+                    if (harvestmap != null && harvestmap.TargetMap == map && harvestmap.UsesRemaining > 0
                         && def.GetBank(map, p.X, p.Y) == def.GetBank(harvestmap.TargetMap, harvestmap.Target.X, harvestmap.Target.Y))
                     {
                         return harvestmap;

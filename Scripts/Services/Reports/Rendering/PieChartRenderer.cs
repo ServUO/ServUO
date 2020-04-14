@@ -15,7 +15,7 @@ namespace Server.Engines.Reports
     //*********************************************************************
     public class PieChartRenderer : ChartRenderer
     {
-        private const int	_bufferSpace = 125;
+        private const int _bufferSpace = 125;
         private readonly ArrayList _chartItems;
         private readonly Color _backgroundColor;
         private readonly Color _borderColor;
@@ -67,14 +67,14 @@ namespace Server.Engines.Reports
         public void CollectDataPoints(string[] xValues, string[] yValues)
         {
             this._total = 0.0f;
-			
+
             for (int i = 0; i < xValues.Length; i++)
             {
                 float ftemp = Convert.ToSingle(yValues[i]);
                 this._chartItems.Add(new DataItem(xValues[i], xValues.ToString(), ftemp, 0, 0, Color.AliceBlue));
                 this._total += ftemp;
             }
-			
+
             float nextStartPos = 0.0f;
             int counter = 0;
             foreach (DataItem item in this._chartItems)
@@ -103,7 +103,7 @@ namespace Server.Engines.Reports
             Pen pen = null;
             Graphics grp = null;
             StringFormat sf = null, sfp = null;
-			
+
             try
             {
                 grp = Graphics.FromImage(bmp);
@@ -116,8 +116,8 @@ namespace Server.Engines.Reports
                     grp.FillRectangle(brsh, -1, -1, perimeter + this._legendWidth + 1, perimeter + 1);
 
                 //Align text to the right
-                sf.Alignment = StringAlignment.Far; 
-			
+                sf.Alignment = StringAlignment.Far;
+
                 //Draw all wedges and legends
                 for (int i = 0; i < this._chartItems.Count; i++)
                 {
@@ -175,7 +175,7 @@ namespace Server.Engines.Reports
 
                         grp.FillRectangle(brs, perimeter + _bufferSpace, i * this._legendFontHeight + 15, 10, 10);
                         grp.DrawRectangle(pen, perimeter + _bufferSpace, i * this._legendFontHeight + 15, 10, 10);
-					
+
                         grp.DrawString(item.Label, fnt,
                             Brushes.Black, perimeter + _bufferSpace + 20, i * this._legendFontHeight + 13);
 
@@ -195,7 +195,7 @@ namespace Server.Engines.Reports
                     SolidBrush brs = null;
                     try
                     {
-                        grp.DrawPie(new Pen(this._borderColor,0.5f), pieRect, item.StartPos, item.SweepSize);
+                        grp.DrawPie(new Pen(this._borderColor, 0.5f), pieRect, item.StartPos, item.SweepSize);
                     }
                     finally
                     {
@@ -203,10 +203,10 @@ namespace Server.Engines.Reports
                             brs.Dispose();
                     }
                 }
-			
+
                 //draws the border around Pie
                 using (Pen pen2 = new Pen(this._borderColor, 2))
-                    grp.DrawEllipse(pen2, pieRect);  
+                    grp.DrawEllipse(pen2, pieRect);
 
                 //draw border around legend
                 using (Pen pen1 = new Pen(this._borderColor, 1))
@@ -220,7 +220,7 @@ namespace Server.Engines.Reports
                     grp.DrawString(this._total.ToString("#,###.##"), fntb,
                         Brushes.Black, perimeter + _bufferSpace + 200, (this._chartItems.Count + 1) * this._legendFontHeight, sf);
                 }
-			
+
                 grp.SmoothingMode = SmoothingMode.AntiAlias;
             }
             finally

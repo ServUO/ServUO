@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Network
 {
     public class DisplayHelpTopic : Packet

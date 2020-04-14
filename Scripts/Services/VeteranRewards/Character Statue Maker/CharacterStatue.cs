@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Server.Accounting;
 using Server.ContextMenus;
 using Server.Engines.VeteranRewards;
@@ -10,6 +7,8 @@ using Server.Multis;
 using Server.Network;
 using Server.Spells;
 using Server.Targeting;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -321,10 +320,10 @@ namespace Server.Mobiles
 
         public void CloneClothes(Mobile from)
         {
-            for (int i = this.Items.Count - 1; i >= 0; i --)
+            for (int i = this.Items.Count - 1; i >= 0; i--)
                 this.Items[i].Delete();
 
-            for (int i = from.Items.Count - 1; i >= 0; i --)
+            for (int i = from.Items.Count - 1; i >= 0; i--)
             {
                 Item item = from.Items[i];
 
@@ -354,7 +353,7 @@ namespace Server.Mobiles
             if (this.FacialHairItemID > 0)
                 this.FacialHairHue = this.Hue;
 
-            for (int i = this.Items.Count - 1; i >= 0; i --)
+            for (int i = this.Items.Count - 1; i >= 0; i--)
                 this.Items[i].Hue = this.Hue;
 
             if (this.m_Plinth != null)
@@ -363,7 +362,7 @@ namespace Server.Mobiles
 
         public void InvalidatePose()
         {
-            switch ( this.m_Pose )
+            switch (this.m_Pose)
             {
                 case StatuePose.Ready:
                     this.m_Animation = 4;
@@ -486,7 +485,7 @@ namespace Server.Mobiles
                     t = this.m_Statue.StatueType;
                 }
 
-                switch ( t )
+                switch (t)
                 {
                     case StatueType.Marble:
                         return 1076189;
@@ -640,7 +639,7 @@ namespace Server.Mobiles
         {
             List<Item> doors = house.Doors;
 
-            for (int i = 0; i < doors.Count; i ++)
+            for (int i = 0; i < doors.Count; i++)
             {
                 BaseDoor door = doors[i] as BaseDoor;
 

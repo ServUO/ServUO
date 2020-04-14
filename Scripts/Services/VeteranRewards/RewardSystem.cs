@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.Accounting;
 using Server.Items;
 using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.VeteranRewards
 {
@@ -384,13 +384,13 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(etherealSteeds, 1006019, typeof(EtherealHorse)),
 
                     new RewardEntry(houseAddOns,    1062692, typeof(ContestMiniHouseDeed), Expansion.AOS, MiniHouseType.MalasMountainPass),
-                    new RewardEntry(houseAddOns,    1072216, typeof(ContestMiniHouseDeed), Expansion.SE, MiniHouseType.ChurchAtNight),                   
+                    new RewardEntry(houseAddOns,    1072216, typeof(ContestMiniHouseDeed), Expansion.SE, MiniHouseType.ChurchAtNight),
 
                     new RewardEntry(miscellaneous,  1076155, typeof(RedSoulstone),         Expansion.ML),
                     new RewardEntry(miscellaneous,  1080523, typeof(CommodityDeedBox),     Expansion.ML),
                     new RewardEntry(miscellaneous,  1113945,  typeof(CrystalPortal),        Expansion.SA),
                     new RewardEntry(miscellaneous,  1150074,  typeof(CorruptedCrystalPortal), Expansion.SA),
-               
+
                     new RewardEntry(miscellaneous,    1123603,  typeof(CoralTheOwl), Expansion.ML),
                     new RewardEntry(miscellaneous,    1151769,  typeof(GreaterBraceletOfBinding), Expansion.ML),
                     new RewardEntry(miscellaneous,    1156371,  typeof(Auction.AuctionSafeDeed), Expansion.TOL),
@@ -580,14 +580,14 @@ namespace Server.Engines.VeteranRewards
                 new RewardList(RewardInterval, 11, new RewardEntry[]
                 {
                     new RewardEntry(etherealSteeds, 1113908, typeof(EtherealReptalon), Expansion.ML),
-                    
+
                     new RewardEntry(cloaksAndRobes, 1113902, typeof(RewardCloak), GreenForest, 1113902),
                     new RewardEntry(cloaksAndRobes, 1113903, typeof(RewardDress), GreenForest, 1113903),
                     new RewardEntry(cloaksAndRobes, 1113904, typeof(RewardRobe), GreenForest, 1113904),
                     new RewardEntry(cloaksAndRobes, 1113905, typeof(RewardGargishFancyRobe), Expansion.SA, GreenForest, 1113905),
                     new RewardEntry(cloaksAndRobes, 1113906, typeof(RewardGargishRobe), Expansion.SA, GreenForest, 1113906),
 
-                    new RewardEntry(monsterStatues, 1113800, typeof(MonsterStatuette), MonsterStatuetteType.TerathanMatriarch),                    
+                    new RewardEntry(monsterStatues, 1113800, typeof(MonsterStatuette), MonsterStatuetteType.TerathanMatriarch),
                     new RewardEntry(monsterStatues, 1153593, typeof(MonsterStatuette), MonsterStatuetteType.Navrey),
 
                     new RewardEntry(miscellaneous,  1113814, typeof(EtherealRetouchingTool), Expansion.SA),
@@ -595,7 +595,7 @@ namespace Server.Engines.VeteranRewards
                 new RewardList(RewardInterval, 12, new RewardEntry[]
                 {
                     new RewardEntry(etherealSteeds, 1113813, typeof(EtherealHiryu), Expansion.ML),
-                    
+
                     new RewardEntry(cloaksAndRobes, 1113910, typeof(RewardCloak), RoyalBlue, 1113910),
                     new RewardEntry(cloaksAndRobes, 1113911, typeof(RewardDress), RoyalBlue, 1113911),
                     new RewardEntry(cloaksAndRobes, 1113912, typeof(RewardRobe), RoyalBlue, 1113912),

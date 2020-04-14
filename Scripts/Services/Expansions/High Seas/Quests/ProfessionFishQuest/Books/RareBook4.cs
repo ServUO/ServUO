@@ -1,15 +1,12 @@
-﻿using Server;
-using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class FishingGuideBook4 : BaseBook
     {
         [Constructable]
-		public FishingGuideBook4() : base( Utility.Random( 0xFF1, 2 ), false )
-		{
+        public FishingGuideBook4() : base(Utility.Random(0xFF1, 2), false)
+        {
             Name = "Volume 4 - Uncommon Crustaceans";
-		}
+        }
 
         public static readonly BookContent Content = new BookContent
         (
@@ -129,7 +126,7 @@ namespace Server.Items
                 "mostly because ",
                 "they often get ",
                 "st... Wait, I think",
-                "I used that one", 
+                "I used that one",
                 "already."
             ),
 
@@ -157,24 +154,24 @@ namespace Server.Items
             )
         );
 
-        public override BookContent DefaultContent{ get{ return Content; } }
+        public override BookContent DefaultContent { get { return Content; } }
 
-        public FishingGuideBook4( Serial serial ) : base( serial )
-		{
-		}
+        public FishingGuideBook4(Serial serial) : base(serial)
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt( (int)0 ); // version
-		}
+            writer.WriteEncodedInt((int)0); // version
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
+            int version = reader.ReadEncodedInt();
+        }
     }
 }

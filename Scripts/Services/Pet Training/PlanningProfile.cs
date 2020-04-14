@@ -1,8 +1,7 @@
+using Server.Items;
 using System;
-using Server;
 using System.Collections.Generic;
 using System.Linq;
-using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -97,7 +96,7 @@ namespace Server.Mobiles
 
             writer.Write(Entries.Count);
 
-            for(int i = 0; i < Entries.Count; i++)
+            for (int i = 0; i < Entries.Count; i++)
             {
                 var entry = Entries[i];
                 object o = entry.TrainPoint;

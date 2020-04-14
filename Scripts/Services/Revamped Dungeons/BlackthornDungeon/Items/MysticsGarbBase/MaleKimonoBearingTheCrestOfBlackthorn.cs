@@ -1,12 +1,9 @@
-using Server;
-using System;
-
 namespace Server.Items
 {
     public class MaleKimonoBearingTheCrestOfBlackthorn2 : MaleKimono
     {
         public override bool IsArtifact { get { return true; } }
-        
+
         [Constructable]
         public MaleKimonoBearingTheCrestOfBlackthorn2()
             : base()
@@ -32,8 +29,8 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-			
-			if (version == 0)
+
+            if (version == 0)
             {
                 MaxHitPoints = 0;
                 HitPoints = 0;

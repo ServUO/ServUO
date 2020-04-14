@@ -1,4 +1,3 @@
-using System;
 using Server.Targeting;
 
 namespace Server.Engines.PartySystem

@@ -1,8 +1,8 @@
+using Server.Accounting;
+using Server.Network;
 using System;
 using System.Collections;
 using System.Text;
-using Server.Accounting;
-using Server.Network;
 
 namespace Server.RemoteAdmin
 {
@@ -20,8 +20,8 @@ namespace Server.RemoteAdmin
         {
             PacketHandlers.Register(0xF1, 0, false, new OnPacketReceive(OnReceive));
 
-			Core.MultiConsoleOut.Add(new EventTextWriter(new EventTextWriter.OnConsoleChar(OnConsoleChar), new EventTextWriter.OnConsoleLine(OnConsoleLine), new EventTextWriter.OnConsoleStr(OnConsoleString)));
-			Timer.DelayCall(TimeSpan.FromMinutes(2.5), TimeSpan.FromMinutes(2.5), new TimerCallback(CleanUp));
+            Core.MultiConsoleOut.Add(new EventTextWriter(new EventTextWriter.OnConsoleChar(OnConsoleChar), new EventTextWriter.OnConsoleLine(OnConsoleLine), new EventTextWriter.OnConsoleStr(OnConsoleString)));
+            Timer.DelayCall(TimeSpan.FromMinutes(2.5), TimeSpan.FromMinutes(2.5), new TimerCallback(CleanUp));
         }
 
         public static void OnConsoleString(string str)
@@ -144,13 +144,13 @@ namespace Server.RemoteAdmin
         {
             Timer.DelayCall(TimeSpan.FromSeconds(15.0), new TimerStateCallback(Disconnect), state);
         }
-		
+
         private static void Disconnect(object state)
         {
             m_Auth.Remove(state);
             ((NetState)state).Dispose();
         }
-		
+
         public static void Authenticate(NetState state, PacketReader pvSrc)
         {
             string user = pvSrc.ReadString(30);
@@ -178,7 +178,7 @@ namespace Server.RemoteAdmin
             else if (a.AccessLevel < AccessLevel.Administrator || a.Banned)
             {
                 Console.WriteLine("ADMIN: Account '{0}' does not have admin access. Connection Denied.", user);
-                state.Send(new Login(LoginResponse.NoAccess)); 
+                state.Send(new Login(LoginResponse.NoAccess));
                 DelayedDisconnect(state);
             }
             else
@@ -241,7 +241,7 @@ namespace Server.RemoteAdmin
             }
         }
     }
-	
+
     public class EventTextWriter : System.IO.TextWriter
     {
         public delegate void OnConsoleChar(char ch);

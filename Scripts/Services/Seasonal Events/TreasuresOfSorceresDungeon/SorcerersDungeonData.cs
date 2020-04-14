@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-
-using Server;
-using Server.Items;
-using Server.Mobiles;
-using Server.Commands;
 using Server.Engines.Points;
 using Server.Engines.SeasonalEvents;
+using Server.Items;
+using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.SorcerersDungeon
 {
@@ -48,7 +45,7 @@ namespace Server.Engines.SorcerersDungeon
 
             if (!Enabled || bc.Controlled || bc.Summoned || !damager.Alive)
                 return;
-                
+
             Region r = bc.Region;
 
             if (damager is PlayerMobile && r.IsPartOf("Sorcerer's Dungeon"))

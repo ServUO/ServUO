@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Globalization;
-
-using Server;
+using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
-using Server.Gumps;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Server.Engines.VendorSearching
 {
@@ -51,7 +49,7 @@ namespace Server.Engines.VendorSearching
                 AddTooltip(1154694); // Remove Selected Search Criteria
                 AddHtmlLocalized(562, 50 + (yOffset * 22), 206, 20, 1154510, CriteriaColor, false, false);
                 yOffset++;
-            }           
+            }
 
             if (Criteria.EntryPrice)
             {
@@ -59,7 +57,7 @@ namespace Server.Engines.VendorSearching
                 AddTooltip(1154694); // Remove Selected Search Criteria
                 AddHtmlLocalized(562, 50 + (yOffset * 22), 206, 20, 1154512, string.Format("@{0}@{1}", Criteria.MinPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Criteria.MaxPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), CriteriaColor, false, false);
                 yOffset++;
-            }            
+            }
 
             for (int i = 0; i < Criteria.Details.Count; i++)
             {
@@ -94,7 +92,7 @@ namespace Server.Engines.VendorSearching
 
             AddButton(522, 50 + (yOffset * 22), 4017, 4019, 9, GumpButtonType.Reply, 0);
             AddTooltip(1154694); // Remove Selected Search Criteria
-            AddHtmlLocalized(562, 50 + (yOffset * 22), 206, 20, Criteria.Auction ? 1159353 : 1159354, CriteriaColor, false, false);            
+            AddHtmlLocalized(562, 50 + (yOffset * 22), 206, 20, Criteria.Auction ? 1159353 : 1159354, CriteriaColor, false, false);
 
             AddHtmlLocalized(10, 30, 246, 18, 1154510, LabelColor, false, false); // Item Name
             AddBackground(10, 50, 246, 22, 9350);
@@ -116,7 +114,7 @@ namespace Server.Engines.VendorSearching
 
             AddButton(10, 570, 0x7747, 0x7747, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(50, 570, 50, 20, 1150300, LabelColor, false, false); // Cancel
-                        
+
             if (Feedback != -1)
             {
                 AddHtmlLocalized(110, 570, 660, 20, Feedback, AlertColor, false, false);
@@ -127,7 +125,7 @@ namespace Server.Engines.VendorSearching
 
             AddButton(740, 550, 30533, 30533, 2, GumpButtonType.Reply, 0);
             AddHtmlLocalized(630, 550, 100, 20, 1114514, "#1154588", LabelColor, false, false); // Clear Search Criteria
-            
+
             int buttonIdx = 50;
 
             SearchCriteriaCategory.AllCategories.ToList().ForEach(x =>
@@ -190,11 +188,11 @@ namespace Server.Engines.VendorSearching
                         buttonIdx++;
                     });
                 }
-            });       
+            });
         }
 
         public override void OnResponse(RelayInfo info)
-        {            
+        {
             if (info.ButtonID != 0)
             {
                 if (!VendorSearch.CanSearch(User))
@@ -240,7 +238,7 @@ namespace Server.Engines.VendorSearching
                                 else
                                 {
                                     Refresh(true);
-                                    SendGump(new SearchResultsGump(User, results));                                    
+                                    SendGump(new SearchResultsGump(User, results));
                                 }
                             });
 
@@ -259,7 +257,7 @@ namespace Server.Engines.VendorSearching
                     }
                 case 4: // Nothing, resend gump                    
                     Refresh(true);
-                    break;                             
+                    break;
                 case 7: // remove item name
                     Criteria.SearchName = null;
                     Refresh(true);
@@ -355,7 +353,7 @@ namespace Server.Engines.VendorSearching
                 return criteria.Auction ? VendorSearch.DoSearchAuction(m, criteria) : VendorSearch.DoSearch(m, criteria);
             });
         }
-    }    
+    }
 
     public class SearchWaitGump : BaseGump
     {
@@ -372,7 +370,7 @@ namespace Server.Engines.VendorSearching
             AddPage(0);
 
             AddBackground(0, 0, 414, 214, 0x7752);
-            
+
             AddHtmlLocalized(27, 47, 380, 80, 1114513, "#1154678", 0x4E73, false, false); // <DIV ALIGN=CENTER>Please wait for your search to complete.</DIV>
         }
 

@@ -1,8 +1,7 @@
-using Server;
-using System;
 using Server.Items;
 using Server.Mobiles;
 using Server.Services.TownCryer;
+using System;
 
 namespace Server.Engines.Quests
 {
@@ -396,7 +395,7 @@ namespace Server.Engines.Quests
             return false;
         }
 
-        private Type[] _Quests = { typeof(ClearingCovetousQuest), typeof(AForcedSacraficeQuest), typeof(AForcedSacraficeQuest2) }; 
+        private Type[] _Quests = { typeof(ClearingCovetousQuest), typeof(AForcedSacraficeQuest), typeof(AForcedSacraficeQuest2) };
 
         public SheriffOfMinoc(Serial serial)
             : base(serial)
@@ -426,5 +425,5 @@ namespace Server.Engines.Quests
                 FelInstance = this;
             }
         }
-    } 
+    }
 }

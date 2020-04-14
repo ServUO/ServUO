@@ -1,27 +1,26 @@
-using Server;
-using System;
+using Server.Engines.Points;
 using Server.Mobiles;
-using System.Linq;
 using Server.Regions;
-using System.Xml;
 using Server.Spells;
+using Server.Spells.Bushido;
 using Server.Spells.Chivalry;
 using Server.Spells.Ninjitsu;
-using Server.Spells.Bushido;
-using Server.Engines.Points;
+using System;
+using System.Linq;
+using System.Xml;
 
 namespace Server.Engines.Blackthorn
 {
-	public class BlackthornDungeon : DungeonRegion
-	{
+    public class BlackthornDungeon : DungeonRegion
+    {
         private static readonly Point3D[] Random_Locations =
         {
             new Point3D(6459, 2781, 0),
             new Point3D(6451, 2781, 0),
-            new Point3D(6443, 2781, 0), 
+            new Point3D(6443, 2781, 0),
             new Point3D(6409, 2792, 0),
-            new Point3D(6356, 2781, 0), 
-            new Point3D(6272, 2702, 0), 
+            new Point3D(6356, 2781, 0),
+            new Point3D(6272, 2702, 0),
             new Point3D(6272, 2656, 0),
             new Point3D(6456, 2623, 0),
         };
@@ -96,14 +95,14 @@ namespace Server.Engines.Blackthorn
             if (m is BaseCreature && this.Map == Map.Trammel && InvasionController.TramInstance != null)
                 InvasionController.TramInstance.OnDeath(m as BaseCreature);
 
-            if(m is BaseCreature && this.Map == Map.Felucca && InvasionController.FelInstance != null)
+            if (m is BaseCreature && this.Map == Map.Felucca && InvasionController.FelInstance != null)
                 InvasionController.FelInstance.OnDeath(m as BaseCreature);
         }
-	}
+    }
 
     public class BlackthornCastle : GuardedRegion
     {
-        public static readonly Point3D[] StableLocs = new Point3D[] { new Point3D(1510, 1543, 25), 
+        public static readonly Point3D[] StableLocs = new Point3D[] { new Point3D(1510, 1543, 25),
             new Point3D(1516, 1542, 25), new Point3D(1520, 1542, 25), new Point3D(1525, 1542, 25) };
 
         public BlackthornCastle(XmlElement xml, Map map, Region parent)
@@ -151,7 +150,7 @@ namespace Server.Engines.Blackthorn
                 {
                     m.Mount.Rider = null;
                 }
-		
+
                 m.SendLocalizedMessage(1153052); // Mounts and flying are not permitted in this area.
 
                 if (m.Mount is BaseCreature && ((BaseCreature)m.Mount).Controlled)
@@ -212,7 +211,7 @@ namespace Server.Engines.Blackthorn
             Point3D p = StableLocs[Utility.Random(StableLocs.Length)];
             bc.MoveToWorld(p, this.Map);
 
-            if(m != null)
+            if (m != null)
                 m.SendLocalizedMessage(1153053, bc.Name); // Pets are not permitted in this area. Your pet named ~1_NAME~ could not be sent to the stables, so has been teleported outside the event area.
         }
 

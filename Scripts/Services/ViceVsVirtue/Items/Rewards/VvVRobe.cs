@@ -1,13 +1,9 @@
-using System;
-using Server;
-using System.Collections.Generic;
-using Server.Mobiles;
 using Server.Items;
 
 namespace Server.Engines.VvV
 {
     public class VvVRobe : BaseOuterTorso
-	{
+    {
         public override int LabelNumber
         {
             get
@@ -30,8 +26,8 @@ namespace Server.Engines.VvV
 
         public VvVRobe(Serial serial)
             : base(serial)
-		{
-		}
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -47,5 +43,5 @@ namespace Server.Engines.VvV
             if (version == 0)
                 Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
         }
-	}
+    }
 }

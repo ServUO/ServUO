@@ -1,34 +1,30 @@
-using System;
-using System.Collections.Generic;
-
-using Server;
 using Server.Items;
 using Server.Mobiles;
-using Server.Engines.Quests;
+using System;
 
 namespace Server.Engines.Points
 {
-	public class DoomGauntlet : PointsSystem
-	{
+    public class DoomGauntlet : PointsSystem
+    {
         public override PointsType Loyalty { get { return PointsType.GauntletPoints; } }
-		public override TextDefinition Name { get { return m_Name; } }
-		public override bool AutoAdd { get { return true; } }
+        public override TextDefinition Name { get { return m_Name; } }
+        public override bool AutoAdd { get { return true; } }
         public override double MaxPoints { get { return double.MaxValue; } }
         public override bool ShowOnLoyaltyGump { get { return false; } }
 
         private TextDefinition m_Name = new TextDefinition("Gauntlet Points");
-		
-		public DoomGauntlet()
-		{
-		}
-		
-		public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
-		{
-		}
-		
-		public override TextDefinition GetTitle(PlayerMobile from)
-		{
-			return new TextDefinition("Gauntlet Points");
+
+        public DoomGauntlet()
+        {
+        }
+
+        public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
+        {
+        }
+
+        public override TextDefinition GetTitle(PlayerMobile from)
+        {
+            return new TextDefinition("Gauntlet Points");
         }
 
         public override void ProcessKill(Mobile victim, Mobile killer)
@@ -157,5 +153,5 @@ namespace Server.Engines.Points
 
             reader.ReadInt();
         }
-	}
+    }
 }

@@ -1,12 +1,11 @@
-using Server;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using Server.Mobiles;
 using Server.Engines.CityLoyalty;
-using Server.Gumps;
-using Server.Guilds;
 using Server.Engines.Quests;
+using Server.Guilds;
+using Server.Gumps;
+using Server.Mobiles;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Services.TownCryer
 {
@@ -146,10 +145,10 @@ namespace Server.Services.TownCryer
         {
             AddButton(233, 150, City == City.Britain ? 0x5E5 : 0x5E4, City == City.Britain ? 0x5E5 : 0x5E4, 10, GumpButtonType.Reply, 0);
             AddTooltip(CityLoyaltySystem.GetCityLocalization(City.Britain));
-            
+
             AddButton(280, 150, City == City.Jhelom ? 0x5E7 : 0x5E6, City == City.Jhelom ? 0x5E7 : 0x5E6, 11, GumpButtonType.Reply, 0);
             AddTooltip(CityLoyaltySystem.GetCityLocalization(City.Jhelom));
-            
+
             AddButton(327, 150, City == City.Minoc ? 0x5E5 : 0x5E4, City == City.Minoc ? 0x5E5 : 0x5E4, 12, GumpButtonType.Reply, 0);
             AddTooltip(CityLoyaltySystem.GetCityLocalization(City.Minoc));
 

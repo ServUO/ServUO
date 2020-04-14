@@ -1,6 +1,3 @@
-using Server;
-using System;
-
 namespace Server.Items
 {
     public class DragonBreastplateBearingTheCrestOfBlackthorn : DragonChest

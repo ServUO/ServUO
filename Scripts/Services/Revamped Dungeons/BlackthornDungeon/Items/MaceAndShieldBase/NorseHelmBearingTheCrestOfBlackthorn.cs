@@ -1,6 +1,3 @@
-using Server;
-using System;
-
 namespace Server.Items
 {
     public class NorseHelmBearingTheCrestOfBlackthorn2 : NorseHelm
@@ -26,7 +23,7 @@ namespace Server.Items
         public override int BaseEnergyResistance { get { return 10; } }
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
-        
+
         public NorseHelmBearingTheCrestOfBlackthorn2(Serial serial)
             : base(serial)
         {

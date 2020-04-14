@@ -1,12 +1,9 @@
-using System;
-using Server.Items;
-
-namespace Server.Mobiles 
-{ 
-    [CorpseName("brigand cannibal corpse")] 
+namespace Server.Mobiles
+{
+    [CorpseName("brigand cannibal corpse")]
     public class BrigandCannibal : Brigand
-    { 
-        [Constructable] 
+    {
+        [Constructable]
         public BrigandCannibal()
             : base()
         {
@@ -40,7 +37,7 @@ namespace Server.Mobiles
 
         public BrigandCannibal(Serial serial)
             : base(serial)
-        { 
+        {
         }
 
         public override void GenerateLoot()
@@ -49,16 +46,16 @@ namespace Server.Mobiles
             AddLoot(LootPack.Meager);
         }
 
-        public override void Serialize(GenericWriter writer) 
-        { 
-            base.Serialize(writer); 
-            writer.Write((int)0); 
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
         }
 
-        public override void Deserialize(GenericReader reader) 
-        { 
-            base.Deserialize(reader); 
-            int version = reader.ReadInt(); 
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
         }
     }
 }

@@ -1,9 +1,4 @@
-using Server;
-using System;
 using Server.Items;
-using Server.Multis;
-using System.Collections.Generic;
-using Server.Engines.Quests;
 
 namespace Server.Mobiles
 {
@@ -26,7 +21,7 @@ namespace Server.Mobiles
             }
             return null;
         }
-        
+
         [Constructable]
         public MerchantCrew()
             : base(AIType.AI_Paladin, FightMode.Aggressor, 10, 1, .2, .4)

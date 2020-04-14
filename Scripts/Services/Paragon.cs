@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -38,11 +38,11 @@ namespace Server.Mobiles
         public static double FameBuff = 1.40;
         public static double KarmaBuff = 1.40;
         public static int DamageBuff = 5;
-		
+
         public static void Convert(BaseCreature bc)
         {
             if (bc.IsParagon ||
-				!bc.CanBeParagon)
+                !bc.CanBeParagon)
                 return;
 
             bc.Hue = Hue;

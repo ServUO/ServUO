@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class PowerCore : BaseDecayingItem
@@ -14,8 +12,8 @@ namespace Server.Items
             this.LootType = LootType.Blessed;
             this.Hue = 1967;
         }
-		
-		public override void GetProperties(ObjectPropertyList list)
+
+        public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 

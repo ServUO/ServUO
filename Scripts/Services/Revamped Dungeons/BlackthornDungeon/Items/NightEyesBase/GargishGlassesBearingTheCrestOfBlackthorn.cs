@@ -1,6 +1,3 @@
-using Server;
-using System;
-
 namespace Server.Items
 {
     [Flipable(0x4644, 0x4645)]
@@ -35,7 +32,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);         
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

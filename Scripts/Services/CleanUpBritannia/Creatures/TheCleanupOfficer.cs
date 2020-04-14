@@ -1,13 +1,6 @@
-using Server;
-using System;
-using System.Collections.Generic;
-using Server.Mobiles;
 using Server.Items;
-using Server.ContextMenus;
-using Server.Gumps;
-using System.Collections;
-using Server.Network;
-using Server.Engines.Points;
+using Server.Mobiles;
+using System.Collections.Generic;
 
 namespace Server.Engines.CleanUpBritannia
 {
@@ -57,8 +50,8 @@ namespace Server.Engines.CleanUpBritannia
                 Item backpack = new Backpack();
                 backpack.Movable = false;
                 AddItem(backpack);
-            }    
-        }        
+            }
+        }
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -66,7 +59,7 @@ namespace Server.Engines.CleanUpBritannia
 
             list.Add(1151317); // Clean Up Britannia Reward Trader
         }
-        
+
         public override void OnDoubleClick(Mobile from)
         {
             if (from is PlayerMobile && from.InRange(this.Location, 5))
@@ -89,5 +82,5 @@ namespace Server.Engines.CleanUpBritannia
             base.Deserialize(reader);
             int version = reader.ReadInt();
         }
-    }    
+    }
 }

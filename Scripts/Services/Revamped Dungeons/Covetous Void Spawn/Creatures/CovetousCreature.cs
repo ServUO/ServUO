@@ -1,21 +1,20 @@
-using Server;
-using System;
 using Server.Items;
+using System;
 
- namespace Server.Mobiles
- {
-	public class CovetousCreature : BaseCreature
-	{
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool VoidSpawn { get; set; }
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int Level { get; set; }
-	
-		public virtual int Stage { get { return Math.Max(1, Level / 5); } }
-		public virtual int MaxStage { get { return 15; } }
-		
-		public virtual int StatRatio { get { return Utility.RandomMinMax(35, 60); } }
+namespace Server.Mobiles
+{
+    public class CovetousCreature : BaseCreature
+    {
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool VoidSpawn { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Level { get; set; }
+
+        public virtual int Stage { get { return Math.Max(1, Level / 5); } }
+        public virtual int MaxStage { get { return 15; } }
+
+        public virtual int StatRatio { get { return Utility.RandomMinMax(35, 60); } }
 
         public virtual double SkillStart { get { return Utility.RandomMinMax(35, 50); } }
         public virtual double SkillMax { get { return 160.0; } }
@@ -93,7 +92,7 @@ using Server.Items;
             SetResistance(ResistanceType.Fire, ResistStart - 5, ResistStart + 5);
             SetResistance(ResistanceType.Cold, ResistStart - 5, ResistStart + 5);
             SetResistance(ResistanceType.Poison, ResistStart - 5, ResistStart + 5);
-            SetResistance(ResistanceType.Energy, ResistStart - 5, ResistStart + 5); 
+            SetResistance(ResistanceType.Energy, ResistStart - 5, ResistStart + 5);
 
             if (Stage > 1)
                 Timer.DelayCall(TimeSpan.FromSeconds(.5), SetPower);
@@ -163,13 +162,13 @@ using Server.Items;
             return canTeleport;
         }
 
-		public override void GenerateLoot()
+        public override void GenerateLoot()
         {
-			if(!VoidSpawn)
-				AddLoot(LootPack.Rich, Math.Max(1, Stage / 2));
+            if (!VoidSpawn)
+                AddLoot(LootPack.Rich, Math.Max(1, Stage / 2));
         }
-		
-		public virtual void SetPower()
+
+        public virtual void SetPower()
         {
             foreach (Skill skill in Skills)
             {
@@ -225,27 +224,27 @@ using Server.Items;
         {
             base.OnDeath(c);
         }
-		
-		public CovetousCreature(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-			
-			writer.Write(Level);
-			writer.Write(VoidSpawn);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-			
-			Level = reader.ReadInt();
-			VoidSpawn = reader.ReadBool();
-		}
-	}
- }
+
+        public CovetousCreature(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+
+            writer.Write(Level);
+            writer.Write(VoidSpawn);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+            Level = reader.ReadInt();
+            VoidSpawn = reader.ReadBool();
+        }
+    }
+}

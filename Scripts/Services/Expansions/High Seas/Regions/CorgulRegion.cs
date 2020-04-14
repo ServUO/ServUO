@@ -1,8 +1,7 @@
-﻿using Server;
-using System;
-using Server.Multis;
-using Server.Items;
+﻿using Server.Items;
 using Server.Mobiles;
+using Server.Multis;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -85,10 +84,11 @@ namespace Server.Regions
 
         public override bool OnBeginSpellCast(Mobile m, ISpell s)
         {
-            if(m.AccessLevel == AccessLevel.Player) {
+            if (m.AccessLevel == AccessLevel.Player)
+            {
                 if (s is Server.Spells.Sixth.MarkSpell || s is Server.Spells.Fourth.RecallSpell || s is Server.Spells.Seventh.GateTravelSpell
                 || s is Server.Spells.Chivalry.SacredJourneySpell)
-                return false;
+                    return false;
             }
 
             return true;
@@ -102,7 +102,7 @@ namespace Server.Regions
         public void CheckExit(BaseBoat boat)
         {
             if (boat != null)
-                Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerStateCallback(RemoveBoat_Callback), boat );
+                Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerStateCallback(RemoveBoat_Callback), boat);
         }
 
         public void RemovePlayers(bool message)
@@ -126,9 +126,9 @@ namespace Server.Regions
 
             }
 
-            foreach(BaseBoat b in this.GetEnumeratedMultis().OfType<BaseBoat>())
+            foreach (BaseBoat b in this.GetEnumeratedMultis().OfType<BaseBoat>())
             {
-                if(b != null)
+                if (b != null)
                     RemoveBoat(b);
             }
         }

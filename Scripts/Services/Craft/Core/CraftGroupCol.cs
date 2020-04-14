@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Engines.Craft
 {
     public class CraftGroupCol : System.Collections.CollectionBase

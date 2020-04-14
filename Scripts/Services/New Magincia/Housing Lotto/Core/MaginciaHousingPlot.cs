@@ -1,7 +1,6 @@
-using Server;
+using Server.Accounting;
 using System;
 using System.Collections.Generic;
-using Server.Accounting;
 
 namespace Server.Engines.NewMagincia
 {
@@ -46,12 +45,12 @@ namespace Server.Engines.NewMagincia
         public DateTime Expires { get { return m_Expires; } set { m_Expires = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D RecallLoc 
-        { 
+        public Point3D RecallLoc
+        {
             get
             {
                 return new Point3D(m_Bounds.X, m_Bounds.Y, m_Map.GetAverageZ(m_Bounds.X, m_Bounds.Y));
-            } 
+            }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -164,7 +163,7 @@ namespace Server.Engines.NewMagincia
 
             Mobile winner = raffle[Utility.Random(raffle.Count)];
 
-            if(winner != null)
+            if (winner != null)
                 OnLottoComplete(winner);
             else
                 ResetLotto();
@@ -237,7 +236,7 @@ namespace Server.Engines.NewMagincia
             m_Complete = reader.ReadBool();
             m_Winner = reader.ReadMobile();
             m_Expires = reader.ReadDateTime();
-            
+
             int c = reader.ReadInt();
             for (int i = 0; i < c; i++)
             {
