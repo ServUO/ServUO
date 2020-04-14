@@ -1,17 +1,17 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class FirendOfTheFeyQuest : BaseQuest
-    { 
+    {
         public FirendOfTheFeyQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(Beads), "beads", 1, 0x108B));
             this.AddObjective(new ObtainObjective(typeof(JarHoney), "jar of honey", 1, 0x9EC));
-			
+
             this.AddReward(new BaseReward(1074874)); // The opportunity to prove yourself worthy of learning to Summon Fey. (Sufficient spellweaving skill is required to cast the spell)
         }
 
@@ -93,12 +93,12 @@ namespace Server.Engines.Quests
     }
 
     public class TokenOfFriendshipQuest : BaseQuest
-    { 
+    {
         public TokenOfFriendshipQuest()
             : base()
-        { 
+        {
             this.AddObjective(new DeliverObjective(typeof(GiftForArielle), "gift for Arielle", 1, typeof(Arielle), "Arielle"));
-			
+
             this.AddReward(new BaseReward(1074874)); // The opportunity to prove yourself worthy of learning to Summon Fey. (Sufficient spellweaving skill is required to cast the spell)
         }
 
@@ -179,12 +179,12 @@ namespace Server.Engines.Quests
     }
 
     public class AllianceQuest : BaseQuest
-    { 
+    {
         public AllianceQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Reaper), "reapers", 20));
-			
+
             this.AddReward(new BaseReward(typeof(SummonFeyScroll), 1071032)); // Summon Fey
         }
 
@@ -243,11 +243,11 @@ namespace Server.Engines.Quests
         }
 
         public override void GiveRewards()
-        { 
+        {
             /* *giggle* Mean reapers got fixed!  Pixie friend now! *giggle* When mean thingies 
             bother you, a brave pixie will help. */
             this.Owner.SendLocalizedMessage(1074320, null, 0x2A);
-			
+
             base.GiveRewards();
         }
 

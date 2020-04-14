@@ -1,15 +1,14 @@
-using System;
 using Server.Items;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class SecretsoftheSoulforge : BaseQuest
-    { 
+    {
         public SecretsoftheSoulforge()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(MagicalResidue), "Magical Residue", 50, 0x2DB1));
-          						
+
             this.AddReward(new BaseReward(typeof(ScrollBox3), 1, "Knowledge"));
         }
 

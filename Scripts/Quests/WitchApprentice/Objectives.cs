@@ -1,6 +1,6 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests.Hag
 {
@@ -76,7 +76,7 @@ namespace Server.Engines.Quests.Hag
         {
             int version = reader.ReadEncodedInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {
@@ -368,7 +368,7 @@ namespace Server.Engines.Quests.Hag
             {
                 if (!this.m_BlackheartMet)
                 {
-                    switch ( this.Step )
+                    switch (this.Step)
                     {
                         case 1:
                             /* You must gather each ingredient on the Hag's list so that she can cook
@@ -499,7 +499,7 @@ namespace Server.Engines.Quests.Hag
         public void NextStep()
         {
             this.System.From.SendLocalizedMessage(1055046); // You have completed your current task on the Hag's Magic Brew Recipe list.
-			
+
             if (this.Step < 3)
                 this.System.AddObjective(new FindIngredientObjective(this.m_Ingredients));
             else

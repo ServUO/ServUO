@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests.Necro
 {
@@ -7,7 +7,7 @@ namespace Server.Engines.Quests.Necro
     {
         private static readonly Type[] m_TypeReferenceTable = new Type[]
         {
-            
+
         };
         public DarkTidesQuest(PlayerMobile from)
             : base(from)
@@ -29,14 +29,14 @@ namespace Server.Engines.Quests.Necro
         public override object Name
         {
             get
-            {                
+            {
                 return 1060095; // Dark Tides
             }
         }
         public override object OfferMessage
         {
             get
-            {                
+            {
                 return 1060094;
             }
         }
@@ -60,6 +60,6 @@ namespace Server.Engines.Quests.Necro
             {
                 return 0x15B5;
             }
-        }        
+        }
     }
 }

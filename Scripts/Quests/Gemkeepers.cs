@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class WarriorsOfTheGemkeeperQuest : BaseQuest
-    { 
+    {
         public WarriorsOfTheGemkeeperQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(MapFragment), "fragment of a map", 1));
-			
+
             this.AddReward(new BaseReward(1074876)); // Knowledge of the legendary minotaur.
         }
 
@@ -98,12 +98,12 @@ namespace Server.Engines.Quests
     }
 
     public class CloseEnoughQuest : BaseQuest
-    { 
+    {
         public CloseEnoughQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(MapFragment), "fragment of a map", 1, typeof(Canir), "Canir (Sanctuary)"));		
-							
+        {
+            this.AddObjective(new DeliverObjective(typeof(MapFragment), "fragment of a map", 1, typeof(Canir), "Canir (Sanctuary)"));
+
             this.AddReward(new BaseReward(1074876)); // Knowledge of the legendary minotaur.
         }
 
@@ -185,12 +185,12 @@ namespace Server.Engines.Quests
     }
 
     public class TakingTheBullByTheHornsQuest : BaseQuest
-    { 
+    {
         public TakingTheBullByTheHornsQuest()
             : base()
-        { 
-            this.AddObjective(new ObtainObjective(typeof(GamanHorns), "gaman horns", 20, 0x1084));		
-							
+        {
+            this.AddObjective(new ObtainObjective(typeof(GamanHorns), "gaman horns", 20, 0x1084));
+
             this.AddReward(new BaseReward(1074876)); // Knowledge of the legendary minotaur.
         }
 
@@ -273,12 +273,12 @@ namespace Server.Engines.Quests
     }
 
     public class EmissaryToTheMinotaurQuest : BaseQuest
-    { 
+    {
         public EmissaryToTheMinotaurQuest()
             : base()
-        { 
-            this.AddObjective(new ObtainObjective(typeof(MinotaurArtifact), "minotaur artifacts", 3));		
-							
+        {
+            this.AddObjective(new ObtainObjective(typeof(MinotaurArtifact), "minotaur artifacts", 3));
+
             this.AddReward(new BaseReward(typeof(RewardBox), 1072584)); // A strongbox.
         }
 

@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class HonestBeggarQuest : BaseQuest
-    { 
+    {
         public HonestBeggarQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(ReginasRing), "regina's ring", 1, typeof(Regina), "Regina"));		
-							
+        {
+            this.AddObjective(new DeliverObjective(typeof(ReginasRing), "regina's ring", 1, typeof(Regina), "Regina"));
+
             this.AddReward(new BaseReward(1075394)); // Find the ring’s owner.
         }
 
@@ -95,12 +95,12 @@ namespace Server.Engines.Quests
     }
 
     public class ReginasThanksQuest : BaseQuest
-    { 
+    {
         public ReginasThanksQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(ReginasLetter), "regina's letter", 1, typeof(Evan), "Evan"));		
-							
+        {
+            this.AddObjective(new DeliverObjective(typeof(ReginasLetter), "regina's letter", 1, typeof(Evan), "Evan"));
+
             this.AddReward(new BaseReward(typeof(TransparentHeart), 1075400));
         }
 

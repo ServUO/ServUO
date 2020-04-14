@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class MaraudersQuest : BaseQuest
-    { 
+    {
         public MaraudersQuest()
             : base()
-        { 
-            this.AddObjective(new SlayObjective(typeof(Ogre), "ogres", 10, "Sanctuary"));		
-				
+        {
+            this.AddObjective(new SlayObjective(typeof(Ogre), "ogres", 10, "Sanctuary"));
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -85,12 +85,12 @@ namespace Server.Engines.Quests
     }
 
     public class TheBrainsOfTheOperationQuest : BaseQuest
-    { 
+    {
         public TheBrainsOfTheOperationQuest()
             : base()
-        { 
-            this.AddObjective(new SlayObjective(typeof(OgreLord), "ogre lords", 10, "Sanctuary"));		
-				
+        {
+            this.AddObjective(new SlayObjective(typeof(OgreLord), "ogre lords", 10, "Sanctuary"));
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -164,12 +164,12 @@ namespace Server.Engines.Quests
     }
 
     public class TheBrawnQuest : BaseQuest
-    { 
+    {
         public TheBrawnQuest()
             : base()
-        { 
-            this.AddObjective(new SlayObjective(typeof(Cyclops), "cyclops", 6, "Sanctuary"));		
-				
+        {
+            this.AddObjective(new SlayObjective(typeof(Cyclops), "cyclops", 6, "Sanctuary"));
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -242,12 +242,12 @@ namespace Server.Engines.Quests
     }
 
     public class TheBiggerTheyAreQuest : BaseQuest
-    { 
+    {
         public TheBiggerTheyAreQuest()
             : base()
-        { 
-            this.AddObjective(new SlayObjective(typeof(Titan), "titans", 3, "Sanctuary"));		
-							
+        {
+            this.AddObjective(new SlayObjective(typeof(Titan), "titans", 3, "Sanctuary"));
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 

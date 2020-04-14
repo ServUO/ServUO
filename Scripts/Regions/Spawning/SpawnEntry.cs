@@ -1,9 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Server.Commands;
 using Server.ContextMenus;
 using Server.Mobiles;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Regions
 {
@@ -332,7 +332,7 @@ namespace Server.Regions
                         this.m_SpawnTimer.Stop();
 
                     TimeSpan delay = this.m_NextSpawn - DateTime.UtcNow;
-                    this.m_SpawnTimer = Timer.DelayCall(delay > TimeSpan.Zero ? delay : TimeSpan.Zero, new TimerCallback(TimerCallback)); 
+                    this.m_SpawnTimer = Timer.DelayCall(delay > TimeSpan.Zero ? delay : TimeSpan.Zero, new TimerCallback(TimerCallback));
                 }
             }
 

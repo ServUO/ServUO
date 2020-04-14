@@ -1,7 +1,7 @@
-using System.Xml;
 using Server.Network;
 using Server.Spells;
 using Server.Spells.Ninjitsu;
+using System.Xml;
 
 namespace Server.Regions
 {
@@ -9,11 +9,11 @@ namespace Server.Regions
     {
         public TwistedWealdDesert(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)
-        { 
+        {
         }
 
-        public static void Initialize() 
-        { 
+        public static void Initialize()
+        {
             EventSink.Login += new LoginEventHandler(Desert_OnLogin);
         }
 
@@ -33,7 +33,7 @@ namespace Server.Regions
             }
         }
 
-        private static void Desert_OnLogin(LoginEventArgs e) 
+        private static void Desert_OnLogin(LoginEventArgs e)
         {
             Mobile m = e.Mobile;
 

@@ -1,7 +1,6 @@
-using System;
-using Server.Items;
-using System.Collections.Generic;
 using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Quests
 {
@@ -219,7 +218,7 @@ namespace Server.Engines.Quests
         private static Type[] m_ItemTypes = new Type[]
         {
             typeof(BrassRing),
-            typeof(SeasonedSkillet), 
+            typeof(SeasonedSkillet),
             typeof(VillageCauldron),
             typeof(ShortStool),
             typeof(FriendshipMug),
@@ -232,7 +231,7 @@ namespace Server.Engines.Quests
         private static int[] m_ItemLocs = new int[]
         {
             1075778,
-            1075774, 
+            1075774,
             1075775,
             1075776,
             1075777,
@@ -244,7 +243,7 @@ namespace Server.Engines.Quests
         public static Type[] MobileTypes { get { return m_MobileTypes; } }
         private static Type[] m_MobileTypes = new Type[]
         {
-            typeof(Maribel), 
+            typeof(Maribel),
             typeof(Dierdre),
             typeof(Kevin),
             typeof(Jason),

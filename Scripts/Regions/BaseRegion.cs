@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Xml;
 using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
+using System;
+using System.Collections.Generic;
+using System.Xml;
 
 namespace Server.Regions
 {
@@ -419,7 +419,7 @@ namespace Server.Regions
                 }
 
                 int z;
-                switch ( this.m_SpawnZLevel )
+                switch (this.m_SpawnZLevel)
                 {
                     case SpawnZLevel.Lowest:
                         {
