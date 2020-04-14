@@ -1,7 +1,5 @@
-using System;
 
 using Server.Mobiles;
-using Server.Guilds;
 using Server.Multis;
 using Server.Network;
 
@@ -72,7 +70,7 @@ namespace Server.Gumps
         {
             SecureLevel level = m_Info.Level;
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 1:
                     level = SecureLevel.Owner;

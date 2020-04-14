@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using Server.Commands;
 using Server.Network;
 using Server.Targeting;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Server.Gumps
 {
@@ -109,7 +109,7 @@ namespace Server.Gumps
         {
             Mobile from = sender.Mobile;
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 1: // Search
                     {

@@ -1,10 +1,10 @@
+using Server.Gumps;
+using Server.Network;
+using Server.Prompts;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.RegularExpressions;
-using Server.Gumps;
-using Server.Network;
-using Server.Prompts;
 
 namespace Server.Misc
 {
@@ -233,7 +233,7 @@ namespace Server.Misc
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {
@@ -326,7 +326,7 @@ namespace Server.Misc
         {
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {

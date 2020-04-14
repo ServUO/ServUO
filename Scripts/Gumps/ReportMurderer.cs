@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Network;
 using Server.Spells;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Gumps
 {
@@ -111,7 +111,7 @@ namespace Server.Gumps
         {
             Mobile from = state.Mobile;
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 1:
                     {

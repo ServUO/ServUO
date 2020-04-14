@@ -1,12 +1,9 @@
+using Server.Mobiles;
+using Server.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-
-using Server;
-using Server.Network;
-using Server.Mobiles;
 
 namespace Server.Gumps
 {
@@ -22,7 +19,7 @@ namespace Server.Gumps
 
         public virtual bool CloseOnMapChange { get { return false; } }
 
-        public Gump Parent 
+        public Gump Parent
         {
             get { return _Parent; }
             set
@@ -31,7 +28,7 @@ namespace Server.Gumps
 
                 if (_Parent != null)
                 {
-                    if(_Parent is BaseGump && !((BaseGump)_Parent).Children.Contains(this))
+                    if (_Parent is BaseGump && !((BaseGump)_Parent).Children.Contains(this))
                         ((BaseGump)_Parent).Children.Add(this);
                 }
                 else if (_Parent is BaseGump && ((BaseGump)_Parent).Children.Contains(this))
@@ -62,7 +59,7 @@ namespace Server.Gumps
 
         public static BaseGump SendGump(BaseGump gump)
         {
-            if(gump == null)
+            if (gump == null)
                 return null;
 
             BaseGump g = gump.User.FindGump(gump.GetType()) as BaseGump;
@@ -171,7 +168,7 @@ namespace Server.Gumps
 
             if (Parent != null)
             {
-                if(Parent is BaseGump)
+                if (Parent is BaseGump)
                     ((BaseGump)Parent).OnChildClosed(this);
 
                 Parent = null;
@@ -209,7 +206,7 @@ namespace Server.Gumps
             User.Send(new CloseGump(TypeID, 0));
             User.NetState.RemoveGump(this);
         }
-        
+
         public static T GetGump<T>(PlayerMobile pm, Func<T, bool> predicate) where T : Gump
         {
             return EnumerateGumps<T>(pm).FirstOrDefault(x => predicate == null || predicate(x));
@@ -222,7 +219,7 @@ namespace Server.Gumps
             if (ns == null)
                 yield break;
 
-            foreach (BaseGump gump in ns.Gumps.OfType<BaseGump>().Where(g => g.GetType() == typeof(T) && 
+            foreach (BaseGump gump in ns.Gumps.OfType<BaseGump>().Where(g => g.GetType() == typeof(T) &&
                 (predicate == null || predicate(g as T))))
             {
                 yield return gump as T;
@@ -452,7 +449,7 @@ namespace Server.Gumps
             var dictionary = new Dictionary<int, string>();
             int emptyIndex = 0;
 
-            for(int i = 0; i < clilocs.Length; i++)
+            for (int i = 0; i < clilocs.Length; i++)
             {
                 var str = String.Empty;
 
@@ -515,7 +512,7 @@ namespace Server.Gumps
 
             if (!String.IsNullOrWhiteSpace(title))
             {
-                spoof.Text = String.Concat(String.Format("<basefont color=#{0:X}>{1}", titleColor.ToArgb(), title), 
+                spoof.Text = String.Concat(String.Format("<basefont color=#{0:X}>{1}", titleColor.ToArgb(), title),
                             '\n',
                             String.Format("<basefont color=#{0:X}>{1}", textColor.ToArgb(), text));
             }
@@ -657,10 +654,10 @@ namespace Server.Gumps
             }
 
             private Dictionary<int, string> _ClilocTable;
-            public Dictionary<int, string> ClilocTable 
+            public Dictionary<int, string> ClilocTable
             {
                 get { return _ClilocTable; }
-                set 
+                set
                 {
                     if (_ClilocTable != value)
                     {

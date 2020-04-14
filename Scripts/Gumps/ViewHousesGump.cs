@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
 using Server.Accounting;
 using Server.Commands;
 using Server.Items;
 using Server.Multis;
 using Server.Targeting;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Gumps
 {
@@ -187,7 +187,7 @@ namespace Server.Gumps
             }
             else if (!m_Selection.Deleted)
             {
-                switch ( info.ButtonID )
+                switch (info.ButtonID)
                 {
                     case 0:
                         {
