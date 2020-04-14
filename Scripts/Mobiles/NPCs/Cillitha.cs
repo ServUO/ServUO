@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class LethalDartsQuest : BaseQuest
-    { 
+    {
         public LethalDartsQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(Bolt), "crossbow bolts", 10, 0x1BFB));
-			
+
             AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
@@ -79,12 +79,12 @@ namespace Server.Engines.Quests
     }
 
     public class SimpleBowQuest : BaseQuest
-    { 
+    {
         public SimpleBowQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(Bow), "bows", 10, 0x13B2));
-			
+
             AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
@@ -145,12 +145,12 @@ namespace Server.Engines.Quests
     }
 
     public class IngeniousArcheryPartOneQuest : BaseQuest
-    { 
+    {
         public IngeniousArcheryPartOneQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(Crossbow), "crossbows", 10, 0xF50));
-			
+
             AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
@@ -211,12 +211,12 @@ namespace Server.Engines.Quests
     }
 
     public class IngeniousArcheryPartTwoQuest : BaseQuest
-    { 
+    {
         public IngeniousArcheryPartTwoQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(HeavyCrossbow), "heavy crossbows", 8, 0x13FD));
-			
+
             AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
@@ -278,12 +278,12 @@ namespace Server.Engines.Quests
     }
 
     public class IngeniousArcheryPartThreeQuest : BaseQuest
-    { 
+    {
         public IngeniousArcheryPartThreeQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(RepeatingCrossbow), "repeating crossbows", 10, 0x26C3));
-			
+
             AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
@@ -345,11 +345,11 @@ namespace Server.Engines.Quests
     }
 
     public class Cillitha : MondainQuester
-    { 
+    {
         [Constructable]
         public Cillitha()
             : base("Cillitha", "the bowcrafter")
-        { 
+        {
             SetSkill(SkillName.Meditation, 60.0, 83.0);
             SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -360,10 +360,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(LethalDartsQuest),
                     typeof(SimpleBowQuest),
@@ -377,10 +377,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = true;
             Race = Race.Elf;
-			
+
             Hue = 0x83E6;
             HairItemID = 0x2FC2;
             HairHue = 0x8E;

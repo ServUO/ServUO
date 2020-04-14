@@ -1,11 +1,8 @@
-﻿using System;
-using Server;
-
-namespace Server.Items 
+﻿namespace Server.Items
 {
     public class AncientShipModelOfTheHMSCape : Item
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1063476; } }
 
         [Constructable]

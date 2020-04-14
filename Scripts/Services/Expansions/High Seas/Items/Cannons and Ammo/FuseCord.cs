@@ -1,6 +1,3 @@
-using System;
-using Server;
-
 namespace Server.Items
 {
     [TypeAlias("Server.Items.Fusecord")]

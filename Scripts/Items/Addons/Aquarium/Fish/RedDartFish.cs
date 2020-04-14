@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class RedDartFish : BaseFish
-    { 
+    {
         [Constructable]
         public RedDartFish()
             : base(0x3B00)
@@ -12,7 +10,7 @@ namespace Server.Items
 
         public RedDartFish(Serial serial)
             : base(serial)
-        { 
+        {
         }
 
         public override int LabelNumber

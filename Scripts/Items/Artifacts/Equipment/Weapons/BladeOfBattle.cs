@@ -1,16 +1,14 @@
-using System;
-
 namespace Server.Items
 {
     public class BladeOfBattle : Shortblade
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113525; } } // Blade of Battle
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113525; } } // Blade of Battle
+
         [Constructable]
-        public BladeOfBattle() 
+        public BladeOfBattle()
         {
-            Hue = 2045;		
+            Hue = 2045;
             WeaponAttributes.HitLowerDefend = 40;
             WeaponAttributes.BattleLust = 1;
             Attributes.AttackChance = 15;
@@ -37,8 +35,8 @@ namespace Server.Items
             {
                 return 255;
             }
-        }    		
-        
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

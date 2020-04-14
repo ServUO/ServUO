@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a pixie corpse")]
@@ -27,7 +25,7 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Poison, 40, 50);
             this.SetResistance(ResistanceType.Energy, 40, 50);
 
-            this.SetSkill(SkillName.EvalInt, 70.1, 80.0); 
+            this.SetSkill(SkillName.EvalInt, 70.1, 80.0);
             this.SetSkill(SkillName.Magery, 70.1, 80.0);
             this.SetSkill(SkillName.Meditation, 70.1, 80.0);
             this.SetSkill(SkillName.MagicResist, 50.5, 100.0);

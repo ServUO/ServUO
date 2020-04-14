@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     public class SilverEtchedMace : DiamondMace
     {
-		public override int LabelNumber { get { return 1073532; } }// silver-etched mace
-		
+        public override int LabelNumber { get { return 1073532; } }// silver-etched mace
+
         [Constructable]
         public SilverEtchedMace()
         {
@@ -16,7 +14,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

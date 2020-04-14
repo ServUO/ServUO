@@ -1,7 +1,7 @@
+using Server.Gumps;
+using Server.Network;
 using System;
 using System.Collections;
-using Server.Network;
-using Server.Gumps;
 
 namespace Server.Items
 {
@@ -169,7 +169,7 @@ namespace Server.Items
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 500598); // You are too far away from the archery butte to get an accurate shot.
                 return;
             }
-            
+
             if (from.InRange(worldLoc, 4))
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 500599); // You are too close to the target.
@@ -209,7 +209,7 @@ namespace Server.Items
             }
 
             m_LastUse = DateTime.UtcNow;
-            
+
             from.MovingEffect(this, ranged.EffectID, 18, 1, false, false);
             from.Direction = from.GetDirectionTo(GetWorldLocation());
             ranged.PlaySwingAnimation(from);
@@ -273,7 +273,7 @@ namespace Server.Items
             {
                 PublicOverheadMessage(MessageType.Regular, 0x3B2, 1010035 + area, from.Name);
 
-                if(ammoType != null)
+                if (ammoType != null)
                 {
                     if (isArrow)
                         ++m_Arrows;

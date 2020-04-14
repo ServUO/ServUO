@@ -1,9 +1,8 @@
-using System;
+using Server.ContextMenus;
+using Server.Engines.VeteranRewards;
 using Server.Gumps;
 using Server.Network;
-using Server.ContextMenus;
 using System.Collections.Generic;
-using Server.Engines.VeteranRewards;
 
 namespace Server.Items
 {
@@ -73,7 +72,7 @@ namespace Server.Items
 
             if (east) // East
             {
-                AddComponent(new GardenShedComponent(0x4BEA), 0, 1, 0);                
+                AddComponent(new GardenShedComponent(0x4BEA), 0, 1, 0);
                 AddComponent(new GardenShedComponent(0x4BEC), 0, -1, 0);
                 AddComponent(new GardenShedComponent(0x4BF1), -1, 1, 0);
                 AddComponent(new GardenShedComponent(0x4BF0), -1, 0, 0);
@@ -92,7 +91,7 @@ namespace Server.Items
                 AddComponent(new GardenShedComponent(0x4BE1), 2, -2, 0);
                 AddComponent(new GardenShedComponent(0x4BE8), 1, 0, 0);
                 AddComponent(new GardenShedComponent(0x4BE3), 1, -1, 0);
-                AddComponent(new GardenShedComponent(0x4BE6), -1, 0, 0);                
+                AddComponent(new GardenShedComponent(0x4BE6), -1, 0, 0);
                 AddComponent(new GardenShedComponent(0x4BE0), 1, -2, 0);
                 AddComponent(new GardenShedComponent(0x4BE4), 0, -1, 0);
                 Offset = new Point3D(2, 0, 0);
@@ -275,7 +274,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if(IsRewardItem)
+            if (IsRewardItem)
                 list.Add(1113805); // 15th Year Veteran Reward
         }
 

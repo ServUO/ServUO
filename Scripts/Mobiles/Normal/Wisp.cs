@@ -1,6 +1,6 @@
-using System;
 using Server.Items;
 using Server.Misc;
+using System;
 
 namespace Server.Mobiles
 {
@@ -36,7 +36,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.Magery, 80.0);
             SetSkill(SkillName.MagicResist, 80.0);
             SetSkill(SkillName.Tactics, 80.0);
-			SetSkill(SkillName.Wrestling, 80.0);
+            SetSkill(SkillName.Wrestling, 80.0);
 
             Fame = 4000;
             Karma = 0;
@@ -58,7 +58,7 @@ namespace Server.Mobiles
             {
                 return InhumanSpeech.Wisp;
             }
-        }        
+        }
         public override TimeSpan ReacquireDelay
         {
             get

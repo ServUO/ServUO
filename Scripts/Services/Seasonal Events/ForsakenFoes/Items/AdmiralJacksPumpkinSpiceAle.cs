@@ -1,12 +1,10 @@
-using System;
-
 namespace Server.Items
 {
     public class AdmiralJacksPumpkinSpiceAle : BaseShield
     {
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1159230; } } // Admiral Jack's Pumpkin Spice Ale
-        
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1159230; } } // Admiral Jack's Pumpkin Spice Ale
+
         [Constructable]
         public AdmiralJacksPumpkinSpiceAle()
             : base(0xA40B)

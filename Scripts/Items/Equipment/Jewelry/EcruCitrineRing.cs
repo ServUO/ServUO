@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     public class EcruCitrineRing : GoldRing
     {
-		public override int LabelNumber { get { return 1073457; } }// ecru citrine ring
-		
+        public override int LabelNumber { get { return 1073457; } }// ecru citrine ring
+
         [Constructable]
         public EcruCitrineRing()
             : base()
@@ -13,9 +11,9 @@ namespace Server.Items
             Weight = 1.0;
 
             BaseRunicTool.ApplyAttributesTo(this, true, 0, Utility.RandomMinMax(2, 3), 0, 100);
-			
+
             if (Utility.RandomBool())
-                Attributes.EnhancePotions = 50;	
+                Attributes.EnhancePotions = 50;
             else
                 Attributes.BonusStr += 5;
         }
@@ -24,7 +22,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-  
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

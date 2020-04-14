@@ -1,6 +1,3 @@
-using System;
-using Server;
-
 namespace Server.Items
 {
     [Furniture]
@@ -13,7 +10,7 @@ namespace Server.Items
         public FancyCouchEastAddon()
         {
             AddComponent(new AddonComponent(0x4C8C), 0, -1, 0);
-            AddComponent(new AddonComponent(0x4C8A), 0, 0, 0);            
+            AddComponent(new AddonComponent(0x4C8A), 0, 0, 0);
             AddComponent(new AddonComponent(0x4C8B), 0, 1, 0);
         }
 

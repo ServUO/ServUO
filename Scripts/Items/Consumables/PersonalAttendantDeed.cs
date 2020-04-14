@@ -1,5 +1,4 @@
-﻿using System;
-using Server.Gumps;
+﻿using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
 
@@ -147,9 +146,9 @@ namespace Server.Items
                     return;
                 }
 
-                PersonalAttendant attendant = null;								
+                PersonalAttendant attendant = null;
 
-                switch ( info.ButtonID )
+                switch (info.ButtonID)
                 {
                     case 100:
                         attendant = new AttendantMaleGuide();

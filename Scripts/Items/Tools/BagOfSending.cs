@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Network;
 using Server.Targeting;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -120,7 +120,7 @@ namespace Server.Items
             {
                 m_BagOfSendingHue = value;
 
-                switch ( value )
+                switch (value)
                 {
                     case BagOfSendingHue.Yellow:
                         Hue = 0x8A5;
@@ -205,7 +205,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {

@@ -1,10 +1,9 @@
-﻿using Server;
-using System;
-using System.Collections.Generic;
-using Server.Multis;
+﻿using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
-using Server.Gumps;
+using Server.Multis;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Quests
 {
@@ -143,7 +142,7 @@ namespace Server.Engines.Quests
 
                     if (obj != null)
                     {
-                        foreach(KeyValuePair<Type, int[]> kvp in obj.Line)
+                        foreach (KeyValuePair<Type, int[]> kvp in obj.Line)
                             entry.OnQuestResign(kvp.Key);
                     }
                 }
@@ -196,7 +195,7 @@ namespace Server.Engines.Quests
             FishQuestObjective obj = GetObjective();
             if (obj != null)
             {
-                foreach(KeyValuePair<Type, int[]> kvp in obj.Line)
+                foreach (KeyValuePair<Type, int[]> kvp in obj.Line)
                     m_Crate.ConsumeTotal(kvp.Key, kvp.Value[1]);
             }
 

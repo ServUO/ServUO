@@ -1,15 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Server.Commands;
+using Server.ContextMenus;
 using Server.Gumps;
 using Server.Items;
 using Server.Network;
 using Server.Prompts;
-using System.IO;
-using Server.Engines.CityLoyalty;
-using Server.ContextMenus;
 using Server.Services.TownCryer;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace Server.Mobiles
 {
@@ -499,7 +498,7 @@ namespace Server.Mobiles
 
             Item skirt;
 
-            switch ( Utility.Random(2) )
+            switch (Utility.Random(2))
             {
                 case 0:
                     skirt = new Skirt();
@@ -518,7 +517,7 @@ namespace Server.Mobiles
 
             Item boots;
 
-            switch ( Utility.Random(2) )
+            switch (Utility.Random(2))
             {
                 case 0:
                     boots = new Boots();

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0xA1DE, 0xA1DF)]
@@ -76,7 +74,7 @@ namespace Server.Items
 
         public LichPainting(Serial serial)
             : base(serial)
-        {            
+        {
         }
 
         public override void Serialize(GenericWriter writer)

@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.Craft;
 
 namespace Server.Items
@@ -28,7 +27,7 @@ namespace Server.Items
         public override int MaxDamage => 20;
 
         public override float Speed => 3.75f;
-        
+
         public override int InitMinHits => 31;
         public override int InitMaxHits => 100;
 

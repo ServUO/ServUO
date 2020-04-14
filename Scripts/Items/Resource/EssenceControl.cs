@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class EssenceControl : Item, ICommodity
@@ -16,7 +14,7 @@ namespace Server.Items
         {
             Stackable = true;
             Amount = amount;
-			Hue = 1165;
+            Hue = 1165;
         }
 
         public EssenceControl(Serial serial)
@@ -31,7 +29,7 @@ namespace Server.Items
                 return 1113340;
             }
         }// essence of control
-		TextDefinition ICommodity.Description
+        TextDefinition ICommodity.Description
         {
             get
             {

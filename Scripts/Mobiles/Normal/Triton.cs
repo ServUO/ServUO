@@ -1,6 +1,6 @@
-using System;
 using Server.Gumps;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -11,7 +11,7 @@ namespace Server.Mobiles
         public Type CreatureType { get { return typeof(Triton); } }
 
         [Constructable]
-        public TritonStatue() 
+        public TritonStatue()
             : base(0xA2D8)
         {
             Hue = 2713;
@@ -44,7 +44,7 @@ namespace Server.Mobiles
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-            
+
             list.Add(1158954); // *Redeemable for a pet*<br>*Requires Grandmaster Taming to Claim Pet*
         }
 
@@ -63,7 +63,7 @@ namespace Server.Mobiles
 
     [CorpseName("a triton corpse")]
     public class Triton : BaseCreature
-    {        
+    {
         [Constructable]
         public Triton()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)

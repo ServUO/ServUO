@@ -1,11 +1,10 @@
+using Server.Mobiles;
+using Server.Multis;
+using Server.Regions;
+using Server.Targeting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Server.Targeting;
-using Server.Multis;
-using Server.Regions;
-using Server.Mobiles;
 
 namespace Server.Spells.Spellweaving
 {
@@ -59,22 +58,22 @@ namespace Server.Spells.Spellweaving
 
                 int tiles = 5 + level;
                 int damage = 10 + (int)Math.Max(1, (skill / 24)) + level;
-                int duration = (int)Math.Max(1, skill / 24) + level; 
-				
+                int duration = (int)Math.Max(1, skill / 24) + level;
+
                 for (int x = p.X - tiles; x <= p.X + tiles; x += tiles)
                 {
                     for (int y = p.Y - tiles; y <= p.Y + tiles; y += tiles)
-                    { 
+                    {
                         if (p.X == x && p.Y == y)
                             continue;
-							
+
                         Point3D p3d = new Point3D(x, y, Caster.Map.GetAverageZ(x, y));
-					
+
                         if (CanFitFire(p3d, Caster))
                             new FireItem(duration).MoveToWorld(p3d, Caster.Map);
                     }
                 }
-				
+
                 Effects.PlaySound(p, Caster.Map, 0x5CF);
 
                 NegativeAttributes.OnCombatAction(Caster);
@@ -91,7 +90,7 @@ namespace Server.Spells.Spellweaving
                 return false;
             if (BaseHouse.FindHouseAt(p, caster.Map, 20) != null)
                 return false;
-            foreach(RegionRect r in caster.Map.GetSector(p).RegionRects)
+            foreach (RegionRect r in caster.Map.GetSector(p).RegionRects)
             {
                 if (!r.Contains(p))
                     continue;
@@ -164,10 +163,10 @@ namespace Server.Spells.Spellweaving
             }
 
             protected override void OnTick()
-            { 
+            {
                 if (m_Owner == null || m_Map == null || m_Map == Map.Internal)
                     return;
-					
+
                 m_LifeSpan -= 1;
                 var targets = GetTargets().Where(m => BaseHouse.FindHouseAt(m.Location, m.Map, 20) == null).ToList();
                 int count = targets.Count;
@@ -202,11 +201,11 @@ namespace Server.Spells.Spellweaving
                 WildfireSpell.DefragTable();
 
                 return m_Spell.AcquireIndirectTargets(m_Location, m_Range).OfType<Mobile>().Where(m => !m_Table.ContainsKey(m));
-            }			
+            }
         }
 
         public class FireItem : Item
-        { 
+        {
             public FireItem(int duration)
                 : base(Utility.RandomBool() ? 0x398C : 0x3996)
             {

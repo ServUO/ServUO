@@ -1,12 +1,9 @@
-using System;
-using Server.Mobiles;
-
 namespace Server.Items
-{ 
-	public class MasterCraftsmanTalisman : BaseTalisman
+{
+    public class MasterCraftsmanTalisman : BaseTalisman
     {
         public override bool IsArtifact { get { return true; } }
-    
+
         private int _Type;
         public virtual int Type { get { return _Type; } }
 
@@ -21,8 +18,8 @@ namespace Server.Items
             Blessed = GetRandomBlessed();
 
             _Type = charges;
-			Charges = charges;
-		}
+            Charges = charges;
+        }
 
         public override void GetProperties(ObjectPropertyList list)
         {

@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class InstrumentOfWarQuest : BaseQuest
-    { 
+    {
         public InstrumentOfWarQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(Broadsword), "broadswords", 12, 0xF5E));
-			
+
             AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
@@ -71,12 +71,12 @@ namespace Server.Engines.Quests
     }
 
     public class TheShieldQuest : BaseQuest
-    { 
+    {
         public TheShieldQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(HeaterShield), "heater shields", 10, 0x1B76));
-			
+
             AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
@@ -137,12 +137,12 @@ namespace Server.Engines.Quests
     }
 
     public class MusicToMyEarsQuest : BaseQuest
-    { 
+    {
         public MusicToMyEarsQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(LapHarp), "lap harp", 10, 0xEB2));
-			
+
             AddReward(new BaseReward(typeof(CarpentersCraftsmanSatchel), 1074282));
         }
 
@@ -204,12 +204,12 @@ namespace Server.Engines.Quests
     }
 
     public class TheGlassEyeQuest : BaseQuest
-    { 
+    {
         public TheGlassEyeQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(Spyglass), "spyglasses", 10, 0x14F5));
-			
+
             AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
@@ -270,12 +270,12 @@ namespace Server.Engines.Quests
     }
 
     public class LazyHumansQuest : BaseQuest
-    { 
+    {
         public LazyHumansQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(FootStool), "foot stools", 10, 0xB5E));
-			
+
             AddReward(new BaseReward(typeof(CarpentersCraftsmanSatchel), 1074282));
         }
 
@@ -337,12 +337,12 @@ namespace Server.Engines.Quests
     }
 
     public class InventiveToolsQuest : BaseQuest
-    { 
+    {
         public InventiveToolsQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(TinkerTools), "tinker's tools", 10, 0x1EB8));
-			
+
             AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
@@ -404,11 +404,11 @@ namespace Server.Engines.Quests
     }
 
     public class Danoel : MondainQuester
-    { 
+    {
         [Constructable]
         public Danoel()
             : base("Danoel", "the metal weaver")
-        { 
+        {
         }
 
         public Danoel(Serial serial)
@@ -417,10 +417,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(ReptilianDentistQuest),
                     typeof(TickTockQuest),
@@ -441,11 +441,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = true;
             CantWalk = true;
             Race = Race.Elf;
-			
+
             Hue = 0x8579;
             HairItemID = 0x2FC0;
             HairHue = 0x206;

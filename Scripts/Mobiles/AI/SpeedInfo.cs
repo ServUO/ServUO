@@ -1,14 +1,12 @@
 #region References
-using System;
-using System.Collections;
-
 using Server.Mobiles;
+using System;
 #endregion
 
 namespace Server
 {
-	public static class SpeedInfo
-	{
+    public static class SpeedInfo
+    {
         public static readonly double MinDelay = 0.1;
         public static readonly double MaxDelay = 0.5;
         public static readonly double MinDelayWild = 0.4;
@@ -71,5 +69,5 @@ namespace Server
 
             return delay;
         }
-	}
+    }
 }

@@ -1,9 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Server.Regions;
 using Server.Spells;
-using Server.Mobiles;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Multis
 {
@@ -25,7 +23,7 @@ namespace Server.Multis
     public class HousePlacement
     {
         // Any land tile which matches one of these ID numbers is considered a road and cannot be placed over.
-        public static int[] RoadIDs => m_RoadIDs; 
+        public static int[] RoadIDs => m_RoadIDs;
         private static readonly int[] m_RoadIDs = new int[]
         {
             0x0071, 0x0078,
@@ -334,11 +332,11 @@ namespace Server.Multis
             for (int i = 0; i < yard.Count; i++)
             {
                 Sector sector = map.GetSector(yard[i]);
-				
+
                 if (!_sectors.Contains(sector))
                 {
                     _sectors.Add(sector);
-					
+
                     if (sector.Multis != null)
                     {
                         for (int j = 0; j < sector.Multis.Count; j++)

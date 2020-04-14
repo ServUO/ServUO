@@ -1,6 +1,6 @@
+using Server.Targeting;
 using System;
 using System.Collections.Generic;
-using Server.Targeting;
 
 namespace Server.Spells.Fourth
 {

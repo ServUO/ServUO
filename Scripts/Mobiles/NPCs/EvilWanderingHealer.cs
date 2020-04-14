@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -67,15 +66,15 @@ namespace Server.Mobiles
             return true;
         }
 
-		public override void OnDeath(Container c)
-		{
-			base.OnDeath(c);
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
 
-			if (Utility.RandomDouble() <= 0.25)
-				c.AddItem(Loot.Construct(typeof(MapFragment)));
-		}
+            if (Utility.RandomDouble() <= 0.25)
+                c.AddItem(Loot.Construct(typeof(MapFragment)));
+        }
 
-		public override void Serialize(GenericWriter writer)
+        public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 

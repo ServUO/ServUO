@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -55,7 +55,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(BreastplateOfTheBerserker),  typeof(TerathanWarriorCostume)};
+                return new Type[] { typeof(BreastplateOfTheBerserker), typeof(TerathanWarriorCostume) };
             }
         }
         public override Type[] SharedSAList

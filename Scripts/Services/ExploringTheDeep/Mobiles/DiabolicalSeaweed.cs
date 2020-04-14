@@ -1,5 +1,5 @@
-﻿using System;
-using Server.Items;
+﻿using Server.Items;
+using System;
 using System.Collections;
 
 namespace Server.Mobiles
@@ -56,7 +56,7 @@ namespace Server.Mobiles
                 case 6: PackItem(new EcruCitrine()); break;
                 case 7: PackItem(new WhitePearl()); break;
             }
-			
+
             PackItem(new ParasiticPlant());
             PackItem(new LuminescentFungi());
         }
@@ -153,7 +153,7 @@ namespace Server.Mobiles
 
         }
 
-        public override bool CanRummageCorpses => true; 
+        public override bool CanRummageCorpses => true;
 
         public override void GenerateLoot()
         {

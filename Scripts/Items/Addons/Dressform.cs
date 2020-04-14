@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [TypeAlias("Server.Items.Dressform")]
@@ -29,7 +27,7 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
-    
+
     public class DressformSide : Item
     {
         [Constructable]

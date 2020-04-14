@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-
-using Server;
-using Server.SkillHandlers;
 using Server.Gumps;
 using Server.Mobiles;
+using Server.SkillHandlers;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -91,32 +89,32 @@ namespace Server.Items
                     list.Remove(add);
                 }
             }
-			
-			int invCount = 0;
-			for (int i = 0; i < Order.Length - 1; i++)
-			{
-				for (int j = i + 1; j < Order.Length; j++)
-				{
-					if (Order[j] != 0 && Order[i] != 0 && Order[i] > Order[j])
-						invCount++;
-				}
-			}
-			
-			if (invCount % 2 == 1)
-			{
-				if (randomIndex > 2)
-				{
-					var temp = Order[0];
-					Order[0] = Order[1];
-					Order[1] = temp;
-				}
-				else
-				{
-					var temp = Order[Order.Length-1];
-					Order[Order.Length-1] = Order[Order.Length-2];
-					Order[Order.Length-2] = temp;
-				}
-			}
+
+            int invCount = 0;
+            for (int i = 0; i < Order.Length - 1; i++)
+            {
+                for (int j = i + 1; j < Order.Length; j++)
+                {
+                    if (Order[j] != 0 && Order[i] != 0 && Order[i] > Order[j])
+                        invCount++;
+                }
+            }
+
+            if (invCount % 2 == 1)
+            {
+                if (randomIndex > 2)
+                {
+                    var temp = Order[0];
+                    Order[0] = Order[1];
+                    Order[1] = temp;
+                }
+                else
+                {
+                    var temp = Order[Order.Length - 1];
+                    Order[Order.Length - 1] = Order[Order.Length - 2];
+                    Order[Order.Length - 2] = temp;
+                }
+            }
         }
 
         public override void OnDoubleClick(Mobile m)

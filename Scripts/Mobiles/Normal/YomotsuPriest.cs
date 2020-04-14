@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -52,8 +52,8 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-		
-		public override int TreasureMapLevel { get { return 4; } }
+
+        public override int TreasureMapLevel { get { return 4; } }
 
         public override FoodType FavoriteFood
         {

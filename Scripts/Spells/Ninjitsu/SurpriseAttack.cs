@@ -1,6 +1,6 @@
+using Server.SkillHandlers;
 using System;
 using System.Collections;
-using Server.SkillHandlers;
 
 namespace Server.Spells.Ninjitsu
 {

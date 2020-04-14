@@ -1,5 +1,3 @@
-using Server;
-
 namespace Server.Items
 {
     public class BrassOrrery : Item

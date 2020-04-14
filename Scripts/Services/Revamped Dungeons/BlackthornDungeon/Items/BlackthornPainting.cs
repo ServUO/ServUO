@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     [FlipableAttribute(0x4C62, 0x4C63)]
     public class BlackthornPainting1 : Item

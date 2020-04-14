@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Server.Engines.PartySystem;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
-using Server.Engines.PartySystem;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -146,7 +146,7 @@ namespace Server.Items
                     Owner = from;
                     KeyStartTimer(from);
                     from.SendLocalizedMessage(1074575); // You have activated this object!
-                    KeyValidation.Find(s => s.Key == dropped.GetType()).Active = true;                    
+                    KeyValidation.Find(s => s.Key == dropped.GetType()).Active = true;
                 }
 
                 if (KeyValidation.Where(x => x.Active == true).Count() == Keys.Count())
@@ -551,7 +551,7 @@ namespace Server.Items
                         Peerless.Corpse.Delete();
 
                     if (!Peerless.Deleted)
-                        Peerless.Delete();                    
+                        Peerless.Delete();
                 }
 
                 CleanupHelpers();

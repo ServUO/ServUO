@@ -1,8 +1,6 @@
-using System;
-
 namespace Server.Items
 {
-    [FlipableAttribute(0xC10, 0xC11)] 
+    [FlipableAttribute(0xC10, 0xC11)]
     public class RuinedFallenChairA : Item
     {
         [Constructable]
@@ -32,7 +30,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0xC13, 0xC12)] 
+    [FlipableAttribute(0xC13, 0xC12)]
     public class RuinedArmoire : Item
     {
         [Constructable]
@@ -62,7 +60,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0xC14, 0xC15)] 
+    [FlipableAttribute(0xC14, 0xC15)]
     public class RuinedBookcase : Item
     {
         [Constructable]
@@ -121,7 +119,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0xC17, 0xC18)] 
+    [FlipableAttribute(0xC17, 0xC18)]
     public class CoveredChair : Item
     {
         [Constructable]
@@ -151,7 +149,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0xC19, 0xC1A)] 
+    [FlipableAttribute(0xC19, 0xC1A)]
     public class RuinedFallenChairB : Item
     {
         [Constructable]

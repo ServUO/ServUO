@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class ColoredSmallWebs : Item
@@ -8,7 +6,7 @@ namespace Server.Items
         public ColoredSmallWebs()
             : base(Utility.RandomBool() ? 0x10d6 : 0x10d7)
         {
-            this.Hue = Utility.RandomBool() ? 0x455 : 0x4E9;  
+            this.Hue = Utility.RandomBool() ? 0x455 : 0x4E9;
         }
 
         public ColoredSmallWebs(Serial serial)

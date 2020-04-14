@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Misc
 {
@@ -15,9 +15,9 @@ namespace Server.Misc
 
         public override void GiveGift(Mobile mob)
         {
-            HolidayGiftToken2018 gift = new HolidayGiftToken2018();           
+            HolidayGiftToken2018 gift = new HolidayGiftToken2018();
 
-            switch ( this.GiveGift(mob, gift) )
+            switch (this.GiveGift(mob, gift))
             {
                 case GiftResult.Backpack:
                     mob.SendMessage(0x482, "Happy Holidays from the team!  Gift items have been placed in your backpack.");

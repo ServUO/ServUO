@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -171,7 +171,7 @@ namespace Server.Items
         {
             MusicName[] list = null;
 
-            switch ( rarity )
+            switch (rarity)
             {
                 default:
                 case DawnsMusicRarity.Common:
@@ -213,7 +213,7 @@ namespace Server.Items
             {
                 DawnsMusicInfo info = GetInfo(this.m_Tracks[i]);
 
-                switch ( info.Rarity )
+                switch (info.Rarity)
                 {
                     case DawnsMusicRarity.Common:
                         commonSongs++;

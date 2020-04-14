@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     /* 
     first seen halloween 2009.  subsequently in 2010, 

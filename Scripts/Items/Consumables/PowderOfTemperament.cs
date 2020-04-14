@@ -1,4 +1,3 @@
-using System;
 using Server.Network;
 using Server.Targeting;
 
@@ -74,7 +73,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {

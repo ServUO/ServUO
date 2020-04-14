@@ -1,11 +1,7 @@
-using System;
-using Server;
-using Server.Spells;
-using Server.Network;
-using Server.Mobiles;
-using Server.Misc;
-using System.Collections.Generic;
 using Server.Items;
+using Server.Misc;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Server.Spells.SkillMasteries
@@ -15,7 +11,7 @@ namespace Server.Spells.SkillMasteries
         private static SpellInfo m_Info = new SpellInfo(
                 "Nether Blast", "In Vas Por Grav",
                 204,
-				9061,
+                9061,
                 Reagent.DragonBlood,
                 Reagent.DaemonBone
             );
@@ -85,27 +81,27 @@ namespace Server.Spells.SkillMasteries
 
                     for (int i = 0; i < 5; ++i)
                     {
-                        Server.Timer.DelayCall(TimeSpan.FromMilliseconds(i*250), () =>
-                            {
-                                int x = loc.X;
-                                int y = loc.Y;
-                                int z = loc.Z;
+                        Server.Timer.DelayCall(TimeSpan.FromMilliseconds(i * 250), () =>
+                              {
+                                  int x = loc.X;
+                                  int y = loc.Y;
+                                  int z = loc.Z;
 
-                                Movement.Movement.Offset(d, ref x, ref y);
+                                  Movement.Movement.Offset(d, ref x, ref y);
 
-                                loc = new Point3D(x, y, z);
+                                  loc = new Point3D(x, y, z);
 
-                                bool canFit = SpellHelper.AdjustField(ref loc, Caster.Map, 12, false);
+                                  bool canFit = SpellHelper.AdjustField(ref loc, Caster.Map, 12, false);
 
-                                if (canFit)
-                                {
-                                    var item = new InternalItem(Caster, 0x37CC, loc, Caster.Map);
-                                    item.ProcessDelta();
-                                    Effects.SendLocationParticles(EffectItem.Create(loc, Caster.Map, EffectItem.DefaultDuration), 0x376A, 9, 10, 5048);
+                                  if (canFit)
+                                  {
+                                      var item = new InternalItem(Caster, 0x37CC, loc, Caster.Map);
+                                      item.ProcessDelta();
+                                      Effects.SendLocationParticles(EffectItem.Create(loc, Caster.Map, EffectItem.DefaultDuration), 0x376A, 9, 10, 5048);
 
-                                    Items.Add(item);
-                                }
-                            });
+                                      Items.Add(item);
+                                  }
+                              });
                     }
 
                     Expires = DateTime.UtcNow + duration;

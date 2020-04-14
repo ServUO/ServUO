@@ -1,11 +1,9 @@
-using System;
-using Server;
-using Server.Spells;
-using Server.Network;
-using Server.Mobiles;
 using Server.Items;
+using Server.Mobiles;
+using Server.Network;
+using System;
 using System.Collections.Generic;
- 
+
 /*The fencer executes a piercing move on their opponent causing stamina drain on the 
   victim based on the fencer's fencing and tactics skill, and mastery level.*/
 
@@ -55,8 +53,8 @@ namespace Server.Spells.SkillMasteries
             if (!Validate(attacker) || !CheckMana(attacker, true))
                 return;
 
-			ClearCurrentMove(attacker);
-			
+            ClearCurrentMove(attacker);
+
             BaseWeapon weapon = attacker.Weapon as BaseWeapon;
 
             if (weapon != null && (_Table == null || !_Table.ContainsKey(attacker)))

@@ -1,38 +1,35 @@
-using System;
+using Server.Gumps;
+using Server.Items;
+using Server.Mobiles;
+using Server.Network;
+using Server.Regions;
+using Server.Spells;
 using System.Collections.Generic;
 using System.Linq;
 
-using Server;
-using Server.Items;
-using Server.Mobiles;
-using Server.Gumps;
-using Server.Regions;
-using Server.Spells;
-using Server.Network;
-
 namespace Server.Engines.Khaldun
 {
-	public class KhaldunCampRegion : BaseRegion
-	{
+    public class KhaldunCampRegion : BaseRegion
+    {
         public static KhaldunCampRegion InstanceTram { get; set; }
         public static KhaldunCampRegion InstanceFel { get; set; }
 
         public KhaldunCampRegion(Map map)
             : base("Khaldun Camp Region", map, Region.DefaultPriority, new Rectangle2D(5990, 3706, 52, 88))
-		{
+        {
             Register();
-		}
+        }
 
         private Point3D[] _GuardLocs =
         {
-            new Point3D(6024, 3713, 1), new Point3D(6035, 3752, 11), 
+            new Point3D(6024, 3713, 1), new Point3D(6035, 3752, 11),
             new Point3D(5999, 3726, 22), new Point3D(5992, 3752, 9),
             new Point3D(6023, 3777, 20)
         };
 
-        private Point3D[][] _BlockerLocs = 
+        private Point3D[][] _BlockerLocs =
         {
-            new Point3D[] 
+            new Point3D[]
             {
                 new Point3D(5995, 3727, 19), new Point3D(5995, 3726, 18), new Point3D(5996, 3726, 20), new Point3D(5996, 3725, 17), new Point3D(5997, 3725, 19),
                 new Point3D(5997, 3724, 19), new Point3D(5998, 3724, 19), new Point3D(5998, 3723, 20), new Point3D(5999, 3723, 20), new Point3D(5999, 3722, 20),
@@ -40,7 +37,7 @@ namespace Server.Engines.Khaldun
 
             new Point3D[]
             {
-                new Point3D(6023, 3710, 0), new Point3D(6024, 3710, 1), new Point3D(6025, 3710, 2), new Point3D(6026, 3710, 1), new Point3D(6027, 3710, -2), 
+                new Point3D(6023, 3710, 0), new Point3D(6024, 3710, 1), new Point3D(6025, 3710, 2), new Point3D(6026, 3710, 1), new Point3D(6027, 3710, -2),
                 new Point3D(6028, 3710, -2), new Point3D(6029, 3710, -1), new Point3D(6030, 3710, -1), new Point3D(6031, 3710, 0),
             },
             new Point3D[]
@@ -48,14 +45,14 @@ namespace Server.Engines.Khaldun
                 new Point3D(6036, 3748, 2), new Point3D(6037, 3748, 1), new Point3D(6038, 3748, 0), new Point3D(6039, 3748, 0), new Point3D(6040, 3748, 1), new Point3D(6041, 3748, -2),
             },
 
-            new Point3D[] 
+            new Point3D[]
             {
                 new Point3D(6025, 3782, 22), new Point3D(6026, 3782, 22), new Point3D(6026, 3781, 22), new Point3D(6027, 3781, 19), new Point3D(6027, 3780, 22), new Point3D(6027, 3779, 18),
             },
 
             new Point3D[]
             {
-                new Point3D(5991, 3755, 4), new Point3D(5991, 3754, 9), new Point3D(5991, 3753, 8), new Point3D(5991, 3752, 8), new Point3D(5991, 3751, 8), new Point3D(5991, 3750, 7), new Point3D(5991, 3749, 5), 
+                new Point3D(5991, 3755, 4), new Point3D(5991, 3754, 9), new Point3D(5991, 3753, 8), new Point3D(5991, 3752, 8), new Point3D(5991, 3751, 8), new Point3D(5991, 3750, 7), new Point3D(5991, 3749, 5),
             },
 
             new Point3D[]
@@ -128,7 +125,7 @@ namespace Server.Engines.Khaldun
         {
             return false;
         }
-	}
+    }
 
     public class KhaldunCampGuard : BaseVendor
     {

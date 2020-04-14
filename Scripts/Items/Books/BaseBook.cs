@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace Server.Items
 {
@@ -61,7 +61,7 @@ namespace Server.Items
         private BookPageInfo[] m_Pages;
         private bool m_Writable;
         private SecureLevel m_SecureLevel;
-		
+
         [CommandProperty(AccessLevel.GameMaster)]
         public string Title
         {
@@ -75,7 +75,7 @@ namespace Server.Items
                 InvalidateProperties();
             }
         }
-		
+
         [CommandProperty(AccessLevel.GameMaster)]
         public string Author
         {
@@ -89,7 +89,7 @@ namespace Server.Items
                 InvalidateProperties();
             }
         }
-		
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Writable
         {
@@ -309,7 +309,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 4:
                     {
@@ -391,7 +391,7 @@ namespace Server.Items
             else
                 base.AddNameProperty(list);
         }
-		
+
         public override void OnDoubleClick(Mobile from)
         {
             if (m_Title == null && m_Author == null && m_Writable == true)

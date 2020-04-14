@@ -1,15 +1,14 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
+using System.Collections.Generic;
 
-namespace Server.Mobiles 
-{ 
-    public class SBBlacksmith : SBInfo 
-    { 
+namespace Server.Mobiles
+{
+    public class SBBlacksmith : SBInfo
+    {
         private readonly List<GenericBuyInfo> m_BuyInfo = new InternalBuyInfo();
         private readonly IShopSellInfo m_SellInfo = new InternalSellInfo();
-        public SBBlacksmith() 
-        { 
+        public SBBlacksmith()
+        {
         }
 
         public override IShopSellInfo SellInfo
@@ -27,13 +26,13 @@ namespace Server.Mobiles
             }
         }
 
-        public class InternalBuyInfo : List<GenericBuyInfo> 
-        { 
-            public InternalBuyInfo() 
+        public class InternalBuyInfo : List<GenericBuyInfo>
+        {
+            public InternalBuyInfo()
             {
                 Add(new GenericBuyInfo(typeof(IronIngot), 5, 16, 0x1BF2, 0, true));
-                Add(new GenericBuyInfo(typeof(Tongs), 13, 14, 0xFBB, 0)); 
- 
+                Add(new GenericBuyInfo(typeof(Tongs), 13, 14, 0xFBB, 0));
+
                 Add(new GenericBuyInfo(typeof(BronzeShield), 66, 20, 0x1B72, 0));
                 Add(new GenericBuyInfo(typeof(Buckler), 50, 20, 0x1B73, 0));
                 Add(new GenericBuyInfo(typeof(MetalKiteShield), 123, 20, 0x1B74, 0));
@@ -116,17 +115,17 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(WarMace), 31, 20, 0x1407, 0));
                 Add(new GenericBuyInfo(typeof(Scepter), 39, 20, 0x26BC, 0));
                 Add(new GenericBuyInfo(typeof(BladedStaff), 40, 20, 0x26BD, 0));
-				
+
                 Add(new GenericBuyInfo("1154005", typeof(MalleableAlloy), 50, 500, 7139, 2949, true));
             }
         }
 
-        public class InternalSellInfo : GenericSellInfo 
-        { 
-            public InternalSellInfo() 
-            { 
-                Add(typeof(Tongs), 7); 
-                Add(typeof(IronIngot), 4); 
+        public class InternalSellInfo : GenericSellInfo
+        {
+            public InternalSellInfo()
+            {
+                Add(typeof(Tongs), 7);
+                Add(typeof(IronIngot), 4);
                 Add(typeof(Buckler), 25);
                 Add(typeof(BronzeShield), 33);
                 Add(typeof(MetalShield), 60);
@@ -180,7 +179,7 @@ namespace Server.Mobiles
                 Add(typeof(WarMace), 15);
                 Add(typeof(HeavyCrossbow), 27);
                 Add(typeof(Bow), 17);
-                Add(typeof(Crossbow), 23); 
+                Add(typeof(Crossbow), 23);
                 Add(typeof(CompositeBow), 25);
                 Add(typeof(RepeatingCrossbow), 28);
                 Add(typeof(Scepter), 20);

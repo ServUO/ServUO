@@ -1,4 +1,3 @@
-using System;
 using Server.Mobiles;
 using Server.Network;
 
@@ -156,11 +155,11 @@ namespace Server.Gumps
 
         private int GetMaterialNumber(StatueType type, StatueMaterial material)
         {
-            switch ( material )
+            switch (material)
             {
                 case StatueMaterial.Antique:
 
-                    switch ( type )
+                    switch (type)
                     {
                         case StatueType.Bronze:
                             return 1076187;
@@ -188,7 +187,7 @@ namespace Server.Gumps
 
         private int GetDirectionNumber(Direction direction)
         {
-            switch ( direction )
+            switch (direction)
             {
                 case Direction.North:
                     return 1075389;

@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Server.Commands;
 using Server.Items;
-using Server.Commands;
 using Server.Mobiles;
 
 namespace Server.Engines.TombOfKings
@@ -41,7 +40,7 @@ namespace Server.Engines.TombOfKings
             st = new Static(16884);
             st.MoveToWorld(new Point3D(38, 35, 0), Map.TerMur);
             WeakEntityCollection.Add("sa", st);
-            
+
             st = new Static(16878);
             st.MoveToWorld(new Point3D(36, 34, 0), Map.TerMur);
             WeakEntityCollection.Add("sa", st);
@@ -57,27 +56,27 @@ namespace Server.Engines.TombOfKings
             st = new Static(16878);
             st.MoveToWorld(new Point3D(36, 33, 0), Map.TerMur);
             WeakEntityCollection.Add("sa", st);
-            
+
             st = new Static(16884);
             st.MoveToWorld(new Point3D(37, 33, 0), Map.TerMur);
             WeakEntityCollection.Add("sa", st);
-            
+
             st = new Static(16884);
             st.MoveToWorld(new Point3D(38, 33, 0), Map.TerMur);
             WeakEntityCollection.Add("sa", st);
-            
+
             st = new Static(16878);
             st.MoveToWorld(new Point3D(36, 32, 0), Map.TerMur);
             WeakEntityCollection.Add("sa", st);
-            
+
             st = new Static(16884);
             st.MoveToWorld(new Point3D(37, 32, 0), Map.TerMur);
             WeakEntityCollection.Add("sa", st);
-            
+
             st = new Static(16884);
             st.MoveToWorld(new Point3D(38, 32, 0), Map.TerMur);
             WeakEntityCollection.Add("sa", st);
-            
+
             st = new Static(16872);
             st.MoveToWorld(new Point3D(36, 31, 0), Map.TerMur);
             WeakEntityCollection.Add("sa", st);
@@ -85,7 +84,7 @@ namespace Server.Engines.TombOfKings
             st = new Static(16873);
             st.MoveToWorld(new Point3D(37, 31, 0), Map.TerMur);
             WeakEntityCollection.Add("sa", st);
-            
+
             st = new Static(16874);
             st.MoveToWorld(new Point3D(38, 31, 0), Map.TerMur);
             WeakEntityCollection.Add("sa", st);

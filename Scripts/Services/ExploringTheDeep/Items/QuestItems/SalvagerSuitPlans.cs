@@ -1,5 +1,4 @@
-﻿using System;
-using Server.Network;
+﻿using Server.Network;
 
 namespace Server.Items
 {
@@ -21,15 +20,15 @@ namespace Server.Items
             this.Amount = amount;
             this.LootType = LootType.Blessed;
         }
-		
-		public override void OnDoubleClick(Mobile from)
+
+        public override void OnDoubleClick(Mobile from)
         {
-			base.OnDoubleClick(from);			
-			
-			from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154230); // *You examine the document carefully.  It appears to be the detailed schematic of some kind of suit.  It is beyond your understanding.  You decide to take it back to the Master Tinker*
+            base.OnDoubleClick(from);
+
+            from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154230); // *You examine the document carefully.  It appears to be the detailed schematic of some kind of suit.  It is beyond your understanding.  You decide to take it back to the Master Tinker*
         }
-		
-		public override void GetProperties(ObjectPropertyList list)
+
+        public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 

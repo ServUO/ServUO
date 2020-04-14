@@ -1,69 +1,68 @@
-using System;
-using Server;
 using Server.Gumps;
 using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
-	public enum EggStage
-	{
-		New,
-		Stage1,
-		Stage2,
-		Mature,
+    public enum EggStage
+    {
+        New,
+        Stage1,
+        Stage2,
+        Mature,
         Burnt
-	}
-	
-	public enum Dryness
-	{
-		Moist,
-		Dry,
-		Parched,
-		Dehydrated
-	}
-	
+    }
+
+    public enum Dryness
+    {
+        Moist,
+        Dry,
+        Parched,
+        Dehydrated
+    }
+
     public class ChickenLizardEgg : Item
     {
         public virtual bool CanMutate { get { return true; } }
 
-		private DateTime m_IncubationStart;
-		private TimeSpan m_TotalIncubationTime;
-		private bool m_Incubating;
-		private EggStage m_Stage;
-		private int m_WaterLevel;
-		private bool m_IsBattleChicken;
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public DateTime IncubationStart 
-		{ 
-			get 
-			{ 
-				return m_IncubationStart; 
-			} 
-			set
-			{
-				m_IncubationStart = value;
-			}
-		}
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public TimeSpan TotalIncubationTime 
-		{ 
-			get 
-			{ 
-				return m_TotalIncubationTime; 
-			} 
-			set
-			{
-				m_TotalIncubationTime = value;
-				m_IncubationStart = DateTime.UtcNow;
-				InvalidateProperties();
-			}
-		}
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool Incubating 
-        { 
+        private DateTime m_IncubationStart;
+        private TimeSpan m_TotalIncubationTime;
+        private bool m_Incubating;
+        private EggStage m_Stage;
+        private int m_WaterLevel;
+        private bool m_IsBattleChicken;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime IncubationStart
+        {
+            get
+            {
+                return m_IncubationStart;
+            }
+            set
+            {
+                m_IncubationStart = value;
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public TimeSpan TotalIncubationTime
+        {
+            get
+            {
+                return m_TotalIncubationTime;
+            }
+            set
+            {
+                m_TotalIncubationTime = value;
+                m_IncubationStart = DateTime.UtcNow;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Incubating
+        {
             get { return m_Incubating; }
             set
             {
@@ -76,45 +75,45 @@ namespace Server.Items
                 m_Incubating = value;
             }
         }
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public EggStage Stage { get { return m_Stage; } set { m_Stage = value; } }
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public Dryness Dryness 
-		{
-			get
-			{
-				int v = (int)m_Stage - m_WaterLevel;
-				
-				if(v >= 2 && m_WaterLevel == 0)
-					return Dryness.Dehydrated;
-				if(v >= 2)
-					return Dryness.Parched;
-				if(v >= 1)
-					return Dryness.Dry;
-					
-				return Dryness.Moist;
-			}
-		}
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool IsBattleChicken
-		{
-			get { return m_IsBattleChicken; }
-			set { m_IsBattleChicken = value; }
-		}
-		
-		[Constructable]
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public EggStage Stage { get { return m_Stage; } set { m_Stage = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Dryness Dryness
+        {
+            get
+            {
+                int v = (int)m_Stage - m_WaterLevel;
+
+                if (v >= 2 && m_WaterLevel == 0)
+                    return Dryness.Dehydrated;
+                if (v >= 2)
+                    return Dryness.Parched;
+                if (v >= 1)
+                    return Dryness.Dry;
+
+                return Dryness.Moist;
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsBattleChicken
+        {
+            get { return m_IsBattleChicken; }
+            set { m_IsBattleChicken = value; }
+        }
+
+        [Constructable]
         public ChickenLizardEgg() : base(0x41BD)
         {
-			m_Incubating = false;
-			m_TotalIncubationTime = TimeSpan.Zero;
-			m_Stage = EggStage.New;
+            m_Incubating = false;
+            m_TotalIncubationTime = TimeSpan.Zero;
+            m_Stage = EggStage.New;
         }
-		
-		public override int LabelNumber
-		{
+
+        public override int LabelNumber
+        {
             get
             {
                 int c = 1112468;
@@ -136,7 +135,7 @@ namespace Server.Items
 
                 return c;
             }
-		}
+        }
 
         public override bool DropToMobile(Mobile from, Mobile target, Point3D p)
         {
@@ -176,48 +175,48 @@ namespace Server.Items
             base.OnItemLifted(from, item);
         }
 
-		public void CheckStatus()
-		{
+        public void CheckStatus()
+        {
             if (m_Stage == EggStage.Burnt)
                 return;
 
-            if(m_Incubating && m_IncubationStart < DateTime.UtcNow)
-			    TotalIncubationTime += DateTime.UtcNow - m_IncubationStart;
-				
-			if(m_TotalIncubationTime > TimeSpan.FromHours(24) && m_Stage == EggStage.New)           //from new to stage 1
-			{
+            if (m_Incubating && m_IncubationStart < DateTime.UtcNow)
+                TotalIncubationTime += DateTime.UtcNow - m_IncubationStart;
+
+            if (m_TotalIncubationTime > TimeSpan.FromHours(24) && m_Stage == EggStage.New)           //from new to stage 1
+            {
                 IncreaseStage();
                 //Nothing, egg goes to stage 2 regardless if its watered or not
-			}
-			else if (m_TotalIncubationTime >= TimeSpan.FromHours(48) && m_Stage == EggStage.Stage1)  //from stage 1 to stage 2
-			{
-				if(Dryness >= Dryness.Parched)
-				{
-					if(Utility.RandomBool())
-						BurnEgg();
-				}
+            }
+            else if (m_TotalIncubationTime >= TimeSpan.FromHours(48) && m_Stage == EggStage.Stage1)  //from stage 1 to stage 2
+            {
+                if (Dryness >= Dryness.Parched)
+                {
+                    if (Utility.RandomBool())
+                        BurnEgg();
+                }
 
                 IncreaseStage();
-			}
-			else if (m_TotalIncubationTime >= TimeSpan.FromHours(72) && m_Stage == EggStage.Stage2)  //from stage 2 to mature egg 
-			{
-				if(Dryness >= Dryness.Parched)
-				{
-					if(.25 < Utility.RandomDouble())
-						BurnEgg();
-				}
+            }
+            else if (m_TotalIncubationTime >= TimeSpan.FromHours(72) && m_Stage == EggStage.Stage2)  //from stage 2 to mature egg 
+            {
+                if (Dryness >= Dryness.Parched)
+                {
+                    if (.25 < Utility.RandomDouble())
+                        BurnEgg();
+                }
 
                 IncreaseStage();
-			}
+            }
             else if (m_TotalIncubationTime >= TimeSpan.FromHours(120) && m_Stage == EggStage.Mature)
             {
                 BurnEgg();
                 IncreaseStage();
             }
-		}
+        }
 
-		public void Pour(Mobile from, BaseBeverage bev)
-		{
+        public void Pour(Mobile from, BaseBeverage bev)
+        {
             if (!bev.IsEmpty && bev.Pourable && bev.Content == BeverageType.Water && bev.ValidateUse(from, false))
             {
                 if (m_Stage == EggStage.Burnt)
@@ -234,21 +233,21 @@ namespace Server.Items
                 else
                     from.SendMessage("You decide not to water the egg since it doesn't need it.");
             }
-		}
-		
-		public void IncreaseStage()
-		{
+        }
+
+        public void IncreaseStage()
+        {
             if (m_Stage != EggStage.Burnt)
                 m_Stage++;
-			
-			switch(m_Stage)
-			{
-				default:
-				case EggStage.New:
-				case EggStage.Stage1:
-					ItemID = 0x41BE;
-					break;
-				case EggStage.Stage2:
+
+            switch (m_Stage)
+            {
+                default:
+                case EggStage.New:
+                case EggStage.Stage1:
+                    ItemID = 0x41BE;
+                    break;
+                case EggStage.Stage2:
                     ItemID = 0x41BF;
                     break;
                 case EggStage.Mature:
@@ -264,7 +263,7 @@ namespace Server.Items
                             chance = .01;
                         else if (Dryness == Dryness.Dehydrated)
                             chance = 0;
-                       
+
 
                         if (CanMutate && chance >= Utility.RandomDouble())
                         {
@@ -276,14 +275,14 @@ namespace Server.Items
 
                         break;
                     }
-				case EggStage.Burnt:
-					ItemID = 0x41BF;
+                case EggStage.Burnt:
+                    ItemID = 0x41BF;
                     Hue = 2026;
-					break;
-			}
+                    break;
+            }
 
             InvalidateProperties();
-		}
+        }
 
         private int GetRandomHiryuHue()
         {
@@ -310,29 +309,29 @@ namespace Server.Items
         {
             m_Stage = EggStage.Burnt;
         }
-		
-		public override void OnDoubleClick(Mobile from)
-		{
+
+        public override void OnDoubleClick(Mobile from)
+        {
             if (IsChildOf(from.Backpack))
             {
-                if(m_Stage == EggStage.Mature)
+                if (m_Stage == EggStage.Mature)
                     from.SendGump(new ConfirmHatchGump1(from, this));
                 else
                     from.SendGump(new ConfirmHatchGump2(from, this));
             }
-		}
-		
-		public void TryHatchEgg(Mobile from)
-		{
-			if(m_Stage == EggStage.Mature)
-				OnHatch(from);
-			else
-				CrumbleEgg(from);
-		}
-		
-		public virtual void OnHatch(Mobile from)
-		{
-			BaseCreature bc;
+        }
+
+        public void TryHatchEgg(Mobile from)
+        {
+            if (m_Stage == EggStage.Mature)
+                OnHatch(from);
+            else
+                CrumbleEgg(from);
+        }
+
+        public virtual void OnHatch(Mobile from)
+        {
+            BaseCreature bc;
 
             if (m_IsBattleChicken)
             {
@@ -345,37 +344,37 @@ namespace Server.Items
                 from.SendLocalizedMessage(1112477); //You hatch a chicken lizard.
                 bc = new ChickenLizard();
             }
-				
-			bc.MoveToWorld(from.Location, from.Map);
+
+            bc.MoveToWorld(from.Location, from.Map);
             Delete();
-		}
-		
-		public void CrumbleEgg(Mobile from)
-		{
+        }
+
+        public void CrumbleEgg(Mobile from)
+        {
             from.SendLocalizedMessage(1112447); //You hatch the egg but it crumbles in your hands!
             Delete();
-		}
-		
-		private class ConfirmHatchGump1 : BaseConfirmGump
-		{
-			private ChickenLizardEgg m_Egg;
-			private Mobile m_From;
+        }
+
+        private class ConfirmHatchGump1 : BaseConfirmGump
+        {
+            private ChickenLizardEgg m_Egg;
+            private Mobile m_From;
 
             public override int TitleNumber { get { return 1112444; } }
             public override int LabelNumber { get { return 1112446; } }
-			
-			public ConfirmHatchGump1(Mobile from, ChickenLizardEgg egg)
-			{
-				m_Egg = egg;
-				m_From = from;
-			}
-			
-			public override void Confirm( Mobile from )
-			{
-				if(m_Egg != null)
-					m_Egg.TryHatchEgg(from);
-			}
-		}
+
+            public ConfirmHatchGump1(Mobile from, ChickenLizardEgg egg)
+            {
+                m_Egg = egg;
+                m_From = from;
+            }
+
+            public override void Confirm(Mobile from)
+            {
+                if (m_Egg != null)
+                    m_Egg.TryHatchEgg(from);
+            }
+        }
 
         private class ConfirmHatchGump2 : BaseConfirmGump
         {
@@ -397,7 +396,7 @@ namespace Server.Items
                     m_Egg.TryHatchEgg(from);
             }
         }
-		
+
         public ChickenLizardEgg(Serial serial) : base(serial)
         {
         }

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Server.Items;
 
 namespace Server.Engines.VendorSearching
@@ -9,7 +6,7 @@ namespace Server.Engines.VendorSearching
     {
         public Category Category { get; set; }
         public int PageID { get; set; }
-        public int Cliloc { get; set; }        
+        public int Cliloc { get; set; }
         public SearchCriterionEntry[] Criteria { get; set; }
 
         public SearchCriteriaCategory(Category cat, int pid, int cliloc, SearchCriterionEntry[] criteria)
@@ -23,7 +20,7 @@ namespace Server.Engines.VendorSearching
         public static SearchCriteriaCategory[] AllCategories = new SearchCriteriaCategory[]
         {
             new SearchCriteriaCategory(Category.PriceRange, 2, 1154512, new SearchCriterionEntry[] { /* Price Range */
-            }), 
+            }),
             new SearchCriteriaCategory(Category.Equipment, 3, 1154531, new SearchCriterionEntry[] { // Equipment
 				new SearchCriterionEntry(Layer.Shoes, 1154602),
                 new SearchCriterionEntry(Layer.Pants, 1154603),
@@ -263,7 +260,7 @@ namespace Server.Engines.VendorSearching
 
         public SearchCriterionEntry(object obj, int cliloc)
             : this(obj, cliloc, 0)
-        {            
+        {
         }
 
         public SearchCriterionEntry(object obj, int cliloc, int pcliloc)

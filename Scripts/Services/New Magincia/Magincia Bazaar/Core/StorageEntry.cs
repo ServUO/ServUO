@@ -1,13 +1,11 @@
-using System;
-using Server;
-using Server.Items;
 using Server.Mobiles;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Engines.NewMagincia
 {
-	public class StorageEntry 
-	{
+    public class StorageEntry
+    {
         private int m_Funds;
         private DateTime m_Expires;
         private Dictionary<Type, int> m_CommodityTypes = new Dictionary<Type, int>();
@@ -58,7 +56,7 @@ namespace Server.Engines.NewMagincia
             {
                 m_CommodityTypes[type] -= amount;
 
-                if(m_CommodityTypes[type] <= 0)
+                if (m_CommodityTypes[type] <= 0)
                     m_CommodityTypes.Remove(type);
             }
         }
@@ -70,8 +68,8 @@ namespace Server.Engines.NewMagincia
         }
 
         public StorageEntry(GenericReader reader)
-		{
-			int version = reader.ReadInt();
+        {
+            int version = reader.ReadInt();
 
             switch (version)
             {
@@ -136,11 +134,11 @@ namespace Server.Engines.NewMagincia
                     }
                     break;
             }
-		}
-		
-		public void Serialize(GenericWriter writer)
-		{
-			writer.Write((int)1);
+        }
+
+        public void Serialize(GenericWriter writer)
+        {
+            writer.Write((int)1);
 
             writer.Write(m_Funds);
             writer.Write(m_Expires);
@@ -157,6 +155,6 @@ namespace Server.Engines.NewMagincia
             {
                 writer.Write(bc);
             }
-		}
-	}
+        }
+    }
 }

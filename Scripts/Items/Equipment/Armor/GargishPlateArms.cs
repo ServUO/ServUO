@@ -1,6 +1,3 @@
-using Server.Engines.Craft;
-using System;
-
 namespace Server.Items
 {
     public class GargishPlateArms : BaseArmor
@@ -34,7 +31,7 @@ namespace Server.Items
         public override int InitMaxHits { get { return 65; } }
 
         public override int StrReq { get { return 80; } }
-        
+
         public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Plate; } }
 
         public override Race RequiredRace { get { return Race.Gargoyle; } }

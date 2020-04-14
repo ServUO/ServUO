@@ -263,7 +263,7 @@ namespace Server.Commands.Generic
 
             string methodName;
 
-            switch ( this.m_Operator )
+            switch (this.m_Operator)
             {
                 case StringOperator.Equal:
                     methodName = "Equals";
@@ -384,7 +384,7 @@ namespace Server.Commands.Generic
             bool inverse = false;
 
             bool couldCompare =
-                emitter.CompareTo(1, delegate()
+                emitter.CompareTo(1, delegate ()
                 {
                     this.m_Value.Load(emitter);
                 });
@@ -393,7 +393,7 @@ namespace Server.Commands.Generic
             {
                 emitter.Load(0);
 
-                switch ( this.m_Operator )
+                switch (this.m_Operator)
                 {
                     case ComparisonOperator.Equal:
                         emitter.Compare(OpCodes.Ceq);
@@ -426,7 +426,7 @@ namespace Server.Commands.Generic
                 // We can only support == and != operations
                 this.m_Value.Load(emitter);
 
-                switch ( this.m_Operator )
+                switch (this.m_Operator)
                 {
                     case ComparisonOperator.Equal:
                         emitter.Compare(OpCodes.Ceq);

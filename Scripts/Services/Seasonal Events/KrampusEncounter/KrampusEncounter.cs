@@ -1,15 +1,13 @@
-using System;
-using System.IO;
-using System.Collections.Generic;
-
-using Server;
+using Server.Commands;
+using Server.Engines.CityLoyalty;
+using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
-using Server.Engines.CityLoyalty;
-using Server.Spells;
 using Server.Network;
-using Server.Commands;
-using Server.Gumps;
+using Server.Spells;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Server.Engines.SeasonalEvents
 {
@@ -277,8 +275,8 @@ namespace Server.Engines.SeasonalEvents
             new Type[] { typeof(SnowElemental), typeof(IceElemental) },
             new Type[] { typeof(IceSerpent), typeof(FrostTroll) },
             new Type[] { typeof(IceFiend), typeof(WhiteWyrm) },
-			new Type[] { typeof(KrampusMinion) },
-			new Type[] { typeof(Krampus) }
+            new Type[] { typeof(KrampusMinion) },
+            new Type[] { typeof(Krampus) }
         };
 
         public Type[] _WetSpawnTypes =

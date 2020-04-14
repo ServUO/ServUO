@@ -1,6 +1,5 @@
-﻿using System;
-using Server;
-using Server.Mobiles;
+﻿using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
@@ -27,7 +26,7 @@ namespace Server.Items
 
         [Constructable]
         public PetBrandingIron(int charges)
-            : base(0x9E87, charges) 
+            : base(0x9E87, charges)
         {
         }
 

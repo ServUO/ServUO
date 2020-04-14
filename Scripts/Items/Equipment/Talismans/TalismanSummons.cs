@@ -1,16 +1,15 @@
 #region References
-using System;
-using System.Collections.Generic;
-
 using Server.ContextMenus;
 using Server.Items;
 using Server.Regions;
+using System;
+using System.Collections.Generic;
 #endregion
 
 namespace Server.Mobiles
 {
-	public class BaseTalismanSummon : BaseCreature
-	{
+    public class BaseTalismanSummon : BaseCreature
+    {
         private long m_NextMove;
 
         private DateTime m_SeperationStart;
@@ -22,28 +21,28 @@ namespace Server.Mobiles
             set { m_SeperationStart = value; }
         }
 
-		public BaseTalismanSummon()
-			: base(AIType.AI_Melee, FightMode.None, 10, 1, 0.1, 0.2)
-		{
+        public BaseTalismanSummon()
+            : base(AIType.AI_Melee, FightMode.None, 10, 1, 0.1, 0.2)
+        {
             SetHits(100);
             SetInt(100);
             SetDex(100);
         }
 
-		public BaseTalismanSummon(Serial serial)
-			: base(serial)
-		{ }
+        public BaseTalismanSummon(Serial serial)
+            : base(serial)
+        { }
 
-		public override bool Commandable { get { return false; } }
-		public override bool InitialInnocent { get { return true; } }
+        public override bool Commandable { get { return false; } }
+        public override bool InitialInnocent { get { return true; } }
 
-		public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
-		{
-			if (from.Alive && ControlMaster == from)
-			{
-				list.Add(new TalismanReleaseEntry(this));
-			}
-		}
+        public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            if (from.Alive && ControlMaster == from)
+            {
+                list.Add(new TalismanReleaseEntry(this));
+            }
+        }
 
         public virtual bool RangeCheck()
         {
@@ -173,46 +172,46 @@ namespace Server.Mobiles
             }
         }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
+            int version = reader.ReadEncodedInt();
+        }
 
-		private class TalismanReleaseEntry : ContextMenuEntry
-		{
-			private readonly Mobile m_Mobile;
+        private class TalismanReleaseEntry : ContextMenuEntry
+        {
+            private readonly Mobile m_Mobile;
 
-			public TalismanReleaseEntry(Mobile m)
-				: base(6118, 3)
-			{
-				m_Mobile = m;
-			}
+            public TalismanReleaseEntry(Mobile m)
+                : base(6118, 3)
+            {
+                m_Mobile = m;
+            }
 
-			public override void OnClick()
-			{
-				Effects.SendLocationParticles(
-					EffectItem.Create(m_Mobile.Location, m_Mobile.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
-				Effects.PlaySound(m_Mobile, m_Mobile.Map, 0x201);
+            public override void OnClick()
+            {
+                Effects.SendLocationParticles(
+                    EffectItem.Create(m_Mobile.Location, m_Mobile.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
+                Effects.PlaySound(m_Mobile, m_Mobile.Map, 0x201);
 
-				m_Mobile.Delete();
-			}
-		}
-	}
+                m_Mobile.Delete();
+            }
+        }
+    }
 
-	public class SummonedAntLion : BaseTalismanSummon
-	{
-		[Constructable]
-		public SummonedAntLion()
-		{
+    public class SummonedAntLion : BaseTalismanSummon
+    {
+        [Constructable]
+        public SummonedAntLion()
+        {
             Name = "an ant lion";
             Body = 787;
             BaseSoundID = 1006;
@@ -237,32 +236,32 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 70.0);
             SetSkill(SkillName.Tactics, 90.0);
             SetSkill(SkillName.Wrestling, 90.0);
-		}
+        }
 
-		public SummonedAntLion(Serial serial)
-			: base(serial)
-		{ }
+        public SummonedAntLion(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
-	}
+            int version = reader.ReadEncodedInt();
+        }
+    }
 
-	public class SummonedArcticOgreLord : BaseTalismanSummon
-	{
-		[Constructable]
-		public SummonedArcticOgreLord()
-		{
+    public class SummonedArcticOgreLord : BaseTalismanSummon
+    {
+        [Constructable]
+        public SummonedArcticOgreLord()
+        {
             Name = "an arctic ogre lord";
             Body = 135;
             BaseSoundID = 427;
@@ -286,32 +285,32 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 125.1, 140.0);
             SetSkill(SkillName.Tactics, 90.1, 100.0);
             SetSkill(SkillName.Wrestling, 90.1, 100.0);
-		}
+        }
 
-		public SummonedArcticOgreLord(Serial serial)
-			: base(serial)
-		{ }
+        public SummonedArcticOgreLord(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
-	}
+            int version = reader.ReadEncodedInt();
+        }
+    }
 
-	public class SummonedBakeKitsune : BaseTalismanSummon
-	{
-		[Constructable]
-		public SummonedBakeKitsune()
-		{
+    public class SummonedBakeKitsune : BaseTalismanSummon
+    {
+        [Constructable]
+        public SummonedBakeKitsune()
+        {
             Name = "a bake kitsune";
             Body = 246;
 
@@ -337,32 +336,32 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 80.1, 100.0);
             SetSkill(SkillName.Tactics, 70.1, 90.0);
             SetSkill(SkillName.Wrestling, 50.1, 55.0);
-		}
+        }
 
-		public SummonedBakeKitsune(Serial serial)
-			: base(serial)
-		{ }
+        public SummonedBakeKitsune(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
-	}
+            int version = reader.ReadEncodedInt();
+        }
+    }
 
-	public class SummonedBogling : BaseTalismanSummon
-	{
-		[Constructable]
-		public SummonedBogling()
-		{
+    public class SummonedBogling : BaseTalismanSummon
+    {
+        [Constructable]
+        public SummonedBogling()
+        {
             Name = "a bogling";
             Body = 779;
             BaseSoundID = 422;
@@ -386,32 +385,32 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 75.1, 100.0);
             SetSkill(SkillName.Tactics, 55.1, 80.0);
             SetSkill(SkillName.Wrestling, 55.1, 75.0);
-		}
+        }
 
-		public SummonedBogling(Serial serial)
-			: base(serial)
-		{ }
+        public SummonedBogling(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
-	}
+            int version = reader.ReadEncodedInt();
+        }
+    }
 
-	public class SummonedBullFrog : BaseTalismanSummon
-	{
-		[Constructable]
-		public SummonedBullFrog()
-		{
+    public class SummonedBullFrog : BaseTalismanSummon
+    {
+        [Constructable]
+        public SummonedBullFrog()
+        {
             Name = "a bull frog";
             Body = 81;
             Hue = Utility.RandomList(0x5AC, 0x5A3, 0x59A, 0x591, 0x588, 0x57F);
@@ -433,32 +432,32 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 25.1, 40.0);
             SetSkill(SkillName.Tactics, 40.1, 60.0);
             SetSkill(SkillName.Wrestling, 40.1, 60.0);
-		}
+        }
 
-		public SummonedBullFrog(Serial serial)
-			: base(serial)
-		{ }
+        public SummonedBullFrog(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
-	}
+            int version = reader.ReadEncodedInt();
+        }
+    }
 
-	public class SummonedChicken : BaseTalismanSummon
-	{
-		[Constructable]
-		public SummonedChicken()
-		{
+    public class SummonedChicken : BaseTalismanSummon
+    {
+        [Constructable]
+        public SummonedChicken()
+        {
             Name = "a chicken";
             Body = 0xD0;
             BaseSoundID = 0x6E;
@@ -479,32 +478,32 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 4.0);
             SetSkill(SkillName.Tactics, 5.0);
             SetSkill(SkillName.Wrestling, 5.0);
-		}
+        }
 
-		public SummonedChicken(Serial serial)
-			: base(serial)
-		{ }
+        public SummonedChicken(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
-	}
+            int version = reader.ReadEncodedInt();
+        }
+    }
 
-	public class SummonedCow : BaseTalismanSummon
-	{
-		[Constructable]
-		public SummonedCow()
-		{
+    public class SummonedCow : BaseTalismanSummon
+    {
+        [Constructable]
+        public SummonedCow()
+        {
             Name = "a cow";
             Body = Utility.RandomList(0xD8, 0xE7);
             BaseSoundID = 0x78;
@@ -527,32 +526,32 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 5.5);
             SetSkill(SkillName.Tactics, 5.5);
             SetSkill(SkillName.Wrestling, 5.5);
-		}
+        }
 
-		public SummonedCow(Serial serial)
-			: base(serial)
-		{ }
+        public SummonedCow(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
-	}
+            int version = reader.ReadEncodedInt();
+        }
+    }
 
-	public class SummonedDoppleganger : BaseTalismanSummon
-	{
-		[Constructable]
-		public SummonedDoppleganger()
-		{
+    public class SummonedDoppleganger : BaseTalismanSummon
+    {
+        [Constructable]
+        public SummonedDoppleganger()
+        {
             Name = "a doppleganger";
             Body = 0x309;
             BaseSoundID = 0x451;
@@ -574,32 +573,32 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 75.1, 85.0);
             SetSkill(SkillName.Tactics, 70.1, 80.0);
             SetSkill(SkillName.Wrestling, 80.1, 90.0);
-		}
+        }
 
-		public SummonedDoppleganger(Serial serial)
-			: base(serial)
-		{ }
+        public SummonedDoppleganger(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
-	}
+            int version = reader.ReadEncodedInt();
+        }
+    }
 
-	public class SummonedFrostSpider : BaseTalismanSummon
-	{
-		[Constructable]
-		public SummonedFrostSpider()
-		{
+    public class SummonedFrostSpider : BaseTalismanSummon
+    {
+        [Constructable]
+        public SummonedFrostSpider()
+        {
             Name = "a frost spider";
             Body = 20;
             BaseSoundID = 0x388;
@@ -625,32 +624,32 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 25.1, 40.0);
             SetSkill(SkillName.Tactics, 35.1, 50.0);
             SetSkill(SkillName.Wrestling, 50.1, 65.0);
-		}
+        }
 
-		public SummonedFrostSpider(Serial serial)
-			: base(serial)
-		{ }
+        public SummonedFrostSpider(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
-	}
+            int version = reader.ReadEncodedInt();
+        }
+    }
 
-	public class SummonedGreatHart : BaseTalismanSummon
-	{
-		[Constructable]
-		public SummonedGreatHart()
-		{
+    public class SummonedGreatHart : BaseTalismanSummon
+    {
+        [Constructable]
+        public SummonedGreatHart()
+        {
             Name = "a great hart";
             Body = 0xEA;
 
@@ -671,34 +670,34 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 26.8, 44.5);
             SetSkill(SkillName.Tactics, 29.8, 47.5);
             SetSkill(SkillName.Wrestling, 29.8, 47.5);
-		}
+        }
 
-		public SummonedGreatHart(Serial serial)
-			: base(serial)
-		{ }
+        public SummonedGreatHart(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
-	}
+            int version = reader.ReadEncodedInt();
+        }
+    }
 
-	public class SummonedLavaSerpent : BaseTalismanSummon
-	{
-		private DateTime m_NextWave;
+    public class SummonedLavaSerpent : BaseTalismanSummon
+    {
+        private DateTime m_NextWave;
 
-		[Constructable]
-		public SummonedLavaSerpent()
-		{
+        [Constructable]
+        public SummonedLavaSerpent()
+        {
             Name = "a lava serpent";
             Body = 90;
             BaseSoundID = 219;
@@ -723,75 +722,75 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 25.3, 70.0);
             SetSkill(SkillName.Tactics, 65.1, 70.0);
             SetSkill(SkillName.Wrestling, 60.1, 80.0);
-		}
+        }
 
-		public SummonedLavaSerpent(Serial serial)
-			: base(serial)
-		{ }
+        public SummonedLavaSerpent(Serial serial)
+            : base(serial)
+        { }
 
-		public override void OnThink()
-		{
-			if (m_NextWave < DateTime.UtcNow)
-			{
-				AreaHeatDamage();
-			}
-		}
+        public override void OnThink()
+        {
+            if (m_NextWave < DateTime.UtcNow)
+            {
+                AreaHeatDamage();
+            }
+        }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
+            int version = reader.ReadEncodedInt();
+        }
 
-		public void AreaHeatDamage()
-		{
-			Mobile mob = ControlMaster;
+        public void AreaHeatDamage()
+        {
+            Mobile mob = ControlMaster;
 
-			if (mob != null)
-			{
-				if (mob.InRange(Location, 2))
-				{
-					if (mob.IsStaff())
-					{
-						AOS.Damage(mob, Utility.Random(2, 3), 0, 100, 0, 0, 0);
-						mob.SendLocalizedMessage(1008112); // The intense heat is damaging you!
-					}
-				}
+            if (mob != null)
+            {
+                if (mob.InRange(Location, 2))
+                {
+                    if (mob.IsStaff())
+                    {
+                        AOS.Damage(mob, Utility.Random(2, 3), 0, 100, 0, 0, 0);
+                        mob.SendLocalizedMessage(1008112); // The intense heat is damaging you!
+                    }
+                }
 
-				GuardedRegion r = Region as GuardedRegion;
+                GuardedRegion r = Region as GuardedRegion;
 
-				if (r != null && mob.Alive)
-				{
+                if (r != null && mob.Alive)
+                {
                     IPooledEnumerable eable = GetMobilesInRange(2);
-					foreach (Mobile m in eable)
-					{
-						if (!mob.CanBeHarmful(m))
-						{
-							mob.CriminalAction(false);
-						}
-					}
+                    foreach (Mobile m in eable)
+                    {
+                        if (!mob.CanBeHarmful(m))
+                        {
+                            mob.CriminalAction(false);
+                        }
+                    }
 
                     eable.Free();
-				}
-			}
+                }
+            }
 
-			m_NextWave = DateTime.UtcNow + TimeSpan.FromSeconds(3);
-		}
-	}
+            m_NextWave = DateTime.UtcNow + TimeSpan.FromSeconds(3);
+        }
+    }
 
-	public class SummonedOrcBrute : BaseTalismanSummon
-	{
-		[Constructable]
-		public SummonedOrcBrute()
-		{
+    public class SummonedOrcBrute : BaseTalismanSummon
+    {
+        [Constructable]
+        public SummonedOrcBrute()
+        {
             Body = 189;
 
             Name = "an orc brute";
@@ -817,32 +816,32 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 125.1, 140.0);
             SetSkill(SkillName.Tactics, 90.1, 100.0);
             SetSkill(SkillName.Wrestling, 90.1, 100.0);
-		}
+        }
 
-		public SummonedOrcBrute(Serial serial)
-			: base(serial)
-		{ }
+        public SummonedOrcBrute(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
-	}
+            int version = reader.ReadEncodedInt();
+        }
+    }
 
-	public class SummonedPanther : BaseTalismanSummon
-	{
-		[Constructable]
-		public SummonedPanther()
-		{
+    public class SummonedPanther : BaseTalismanSummon
+    {
+        [Constructable]
+        public SummonedPanther()
+        {
             Name = "a panther";
             Body = 0xD6;
             Hue = 0x901;
@@ -867,32 +866,32 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 15.1, 30.0);
             SetSkill(SkillName.Tactics, 50.1, 65.0);
             SetSkill(SkillName.Wrestling, 50.1, 65.0);
-		}
+        }
 
-		public SummonedPanther(Serial serial)
-			: base(serial)
-		{ }
+        public SummonedPanther(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
-	}
+            int version = reader.ReadEncodedInt();
+        }
+    }
 
-	public class SummonedSheep : BaseTalismanSummon
-	{
-		[Constructable]
-		public SummonedSheep()
-		{
+    public class SummonedSheep : BaseTalismanSummon
+    {
+        [Constructable]
+        public SummonedSheep()
+        {
             Name = "a sheep";
             Body = 0xCF;
             BaseSoundID = 0xD6;
@@ -913,32 +912,32 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 5.0);
             SetSkill(SkillName.Tactics, 6.0);
             SetSkill(SkillName.Wrestling, 5.0);
-		}
+        }
 
-		public SummonedSheep(Serial serial)
-			: base(serial)
-		{ }
+        public SummonedSheep(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
-	}
+            int version = reader.ReadEncodedInt();
+        }
+    }
 
-	public class SummonedSkeletalKnight : BaseTalismanSummon
-	{
-		[Constructable]
-		public SummonedSkeletalKnight()
-		{
+    public class SummonedSkeletalKnight : BaseTalismanSummon
+    {
+        [Constructable]
+        public SummonedSkeletalKnight()
+        {
             Name = "a skeletal knight";
             Body = 147;
             BaseSoundID = 451;
@@ -963,32 +962,32 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 65.1, 80.0);
             SetSkill(SkillName.Tactics, 85.1, 100.0);
             SetSkill(SkillName.Wrestling, 85.1, 95.0);
-		}
+        }
 
-		public SummonedSkeletalKnight(Serial serial)
-			: base(serial)
-		{ }
+        public SummonedSkeletalKnight(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
-	}
+            int version = reader.ReadEncodedInt();
+        }
+    }
 
-	public class SummonedVorpalBunny : BaseTalismanSummon
-	{
-		[Constructable]
-		public SummonedVorpalBunny()
-		{
+    public class SummonedVorpalBunny : BaseTalismanSummon
+    {
+        [Constructable]
+        public SummonedVorpalBunny()
+        {
             Name = "a vorpal bunny";
             Body = 205;
             Hue = 0x480;
@@ -1009,49 +1008,49 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 5.0);
             SetSkill(SkillName.Wrestling, 5.0);
 
-			Timer.DelayCall(TimeSpan.FromMinutes(30.0), BeginTunnel);
-		}
+            Timer.DelayCall(TimeSpan.FromMinutes(30.0), BeginTunnel);
+        }
 
-		public SummonedVorpalBunny(Serial serial)
-			: base(serial)
-		{ }
+        public SummonedVorpalBunny(Serial serial)
+            : base(serial)
+        { }
 
-		public virtual void BeginTunnel()
-		{
-			if (Deleted)
-			{
-				return;
-			}
+        public virtual void BeginTunnel()
+        {
+            if (Deleted)
+            {
+                return;
+            }
 
-			new VorpalBunny.BunnyHole().MoveToWorld(Location, Map);
+            new VorpalBunny.BunnyHole().MoveToWorld(Location, Map);
 
-			Frozen = true;
-			Say("* The bunny begins to dig a tunnel back to its underground lair *");
-			PlaySound(0x247);
+            Frozen = true;
+            Say("* The bunny begins to dig a tunnel back to its underground lair *");
+            PlaySound(0x247);
 
-			Timer.DelayCall(TimeSpan.FromSeconds(5.0), Delete);
-		}
+            Timer.DelayCall(TimeSpan.FromSeconds(5.0), Delete);
+        }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
-	}
+            int version = reader.ReadEncodedInt();
+        }
+    }
 
-	public class SummonedWailingBanshee : BaseTalismanSummon
-	{
-		[Constructable]
-		public SummonedWailingBanshee()
-		{
+    public class SummonedWailingBanshee : BaseTalismanSummon
+    {
+        [Constructable]
+        public SummonedWailingBanshee()
+        {
             Name = "a wailing banshee";
             Body = 310;
             BaseSoundID = 0x482;
@@ -1077,24 +1076,24 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 70.1, 95.0);
             SetSkill(SkillName.Tactics, 45.1, 70.0);
             SetSkill(SkillName.Wrestling, 50.1, 70.0);
-		}
+        }
 
-		public SummonedWailingBanshee(Serial serial)
-			: base(serial)
-		{ }
+        public SummonedWailingBanshee(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
-		}
+            writer.WriteEncodedInt(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
-	}
+            int version = reader.ReadEncodedInt();
+        }
+    }
 }

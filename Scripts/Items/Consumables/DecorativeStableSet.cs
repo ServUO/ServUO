@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class DecorativeStableSet : Backpack
@@ -14,7 +12,7 @@ namespace Server.Items
             DropItem(new ChickenStatue());
             DropItem(new MetalTubDeed());
             DropItem(new Feedbag());
-			DropItem(new CowPie());
+            DropItem(new CowPie());
 
             Bag bag = new Bag();
             // Needs fencing added

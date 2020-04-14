@@ -1,6 +1,6 @@
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
-using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -12,7 +12,7 @@ namespace Server.Items
         private readonly DateTime m_Created;
         private readonly Timer m_Timer;
         private bool m_Drying;
-		
+
         [Constructable]
         public PoolOfAcid()
             : this(TimeSpan.FromSeconds(10.0), 2, 5)

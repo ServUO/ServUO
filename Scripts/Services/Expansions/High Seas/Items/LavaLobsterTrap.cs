@@ -1,10 +1,4 @@
-﻿using Server;
-using System;
-using System.Collections.Generic;
-using Server.Mobiles;
-using Server.Targeting;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class LavaLobsterTrap : LobsterTrap
     {

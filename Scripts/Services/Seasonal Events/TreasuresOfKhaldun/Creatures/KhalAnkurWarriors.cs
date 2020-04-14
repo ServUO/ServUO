@@ -1,12 +1,12 @@
-using System;
 using Server.Items;
+using System;
 using System.Linq;
 
 namespace Server.Mobiles
 {
     [CorpseName("a human corpse")]
     public class KhalAnkurWarriors : BaseCreature
-	{
+    {
         public static readonly WarriorType[] Types =
             Enum.GetValues(typeof(WarriorType))
                 .Cast<WarriorType>()
@@ -32,9 +32,9 @@ namespace Server.Mobiles
         }
 
         [Constructable]
-		public KhalAnkurWarriors(WarriorType type)
-			: base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
-		{
+        public KhalAnkurWarriors(WarriorType type)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+        {
             _Type = type;
 
             if (Female = Utility.RandomBool())
@@ -46,9 +46,9 @@ namespace Server.Mobiles
             {
                 Body = 0x190;
                 Name = NameList.RandomName("male");
-            }            
-            
-			BaseSoundID = 0x45A;
+            }
+
+            BaseSoundID = 0x45A;
 
             SetStr(150, 250);
             SetDex(150);
@@ -69,16 +69,16 @@ namespace Server.Mobiles
                 case WarriorType.General: _title = "the General"; SetHits(1000, 1500); break;
             }
 
-            Title = _title;            
+            Title = _title;
 
             SetDamageType(ResistanceType.Physical, 100);
 
-			SetResistance(ResistanceType.Physical, 20, 30);
-			SetResistance(ResistanceType.Fire, 20, 30);
-			SetResistance(ResistanceType.Cold, 20, 30);
-			SetResistance(ResistanceType.Poison, 20, 30);
-			SetResistance(ResistanceType.Energy, 20, 30);
-            
+            SetResistance(ResistanceType.Physical, 20, 30);
+            SetResistance(ResistanceType.Fire, 20, 30);
+            SetResistance(ResistanceType.Cold, 20, 30);
+            SetResistance(ResistanceType.Poison, 20, 30);
+            SetResistance(ResistanceType.Energy, 20, 30);
+
             SetSkill(SkillName.Fencing, 105.0, 130.0);
             SetSkill(SkillName.Macing, 1105.0, 130.0);
             SetSkill(SkillName.MagicResist, 105.0, 130.0);
@@ -89,14 +89,14 @@ namespace Server.Mobiles
             SetSkill(SkillName.Meditation, 105.0, 130.0);
 
             Fame = 5000;
-			Karma = -5000;
+            Karma = -5000;
 
             switch (Utility.Random(4))
             {
                 case 0:
                     {
                         Hue = 2697;
-                        SetWearable(new ChainChest(), Hue);                        
+                        SetWearable(new ChainChest(), Hue);
                         SetWearable(new ChainCoif(), Hue);
                         SetWearable(new Cloak(), Hue);
 
@@ -169,14 +169,14 @@ namespace Server.Mobiles
         public override bool ShowFameTitle { get { return false; } }
 
         public KhalAnkurWarriors(Serial serial)
-			: base(serial)
-		{
+            : base(serial)
+        {
         }
 
-		public override void GenerateLoot()
-		{
-			AddLoot(LootPack.Rich);
-		}
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.Rich);
+        }
 
         public override WeaponAbility GetWeaponAbility()
         {
@@ -194,19 +194,19 @@ namespace Server.Mobiles
         }
 
         public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
+        {
+            base.Serialize(writer);
+            writer.Write(0);
 
             writer.Write((int)_Type);
         }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
 
             _Type = (WarriorType)reader.ReadInt();
         }
-	}
+    }
 }

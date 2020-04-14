@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -76,7 +75,7 @@ namespace Server.Mobiles
                 Add(typeof(Leather), 5);
 
                 Add(typeof(SkinningKnife), 7);
-				
+
                 Add(typeof(LeatherArms), 18);
                 Add(typeof(LeatherChest), 23);
                 Add(typeof(LeatherGloves), 15);

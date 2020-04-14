@@ -1,12 +1,10 @@
-using Server;
+using Server.Commands;
+using Server.Engines.Points;
+using Server.Gumps;
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
-using Server.Items;
-using Server.Mobiles;
-using Server.Engines.Points;
 using System.Linq;
-using Server.Commands;
-using Server.Gumps;
 
 //TODO: Party: 1152064 You cannot invite other players in an arena to your party!
 namespace Server.Engines.ArenaSystem
@@ -381,7 +379,7 @@ namespace Server.Engines.ArenaSystem
         {
             var pm = e.Mobile as PlayerMobile;
 
-            if(pm != null)
+            if (pm != null)
             {
                 BaseGump.SendGump(new PVPArenaSystemSetupGump(pm));
             }
@@ -641,6 +639,6 @@ namespace Server.Mobiles
         BuddingGladiator = 1,
         Gladiator = 3,
         WellKnownGladiator = 4,
-        VeteranGladiator =5
+        VeteranGladiator = 5
     }
 }

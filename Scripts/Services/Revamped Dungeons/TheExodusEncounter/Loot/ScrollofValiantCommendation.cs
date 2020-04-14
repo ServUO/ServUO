@@ -1,8 +1,5 @@
-using System;
-using Server.Network;
-using Server.Items;
-using Server.Gumps;
 using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
@@ -44,7 +41,7 @@ namespace Server.Items
             }
         }
 
-        public override void OnDoubleClick( Mobile from )
+        public override void OnDoubleClick(Mobile from)
         {
             if (!IsChildOf(from.Backpack))
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
@@ -75,18 +72,18 @@ namespace Server.Items
             }
         }
 
-        public override void Serialize( GenericWriter writer )
+        public override void Serialize(GenericWriter writer)
         {
-	        base.Serialize( writer );
-	        writer.Write( (int) 0 ); // version
+            base.Serialize(writer);
+            writer.Write((int)0); // version
 
             writer.Write(Owner);
         }
 
-        public override void Deserialize( GenericReader reader )
+        public override void Deserialize(GenericReader reader)
         {
-	        base.Deserialize( reader );
-	        int version = reader.ReadInt();
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
 
             Owner = reader.ReadString();
         }

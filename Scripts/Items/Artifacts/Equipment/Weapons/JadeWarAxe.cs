@@ -1,21 +1,18 @@
-using System;
-using Server.Engines.Harvest;
-
 namespace Server.Items
 {
     public class JadeWarAxe : WarAxe
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1115445; } } // Jade War Axe
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1115445; } } // Jade War Axe
+
         [Constructable]
         public JadeWarAxe()
-        {	
-            Hue = 1162;			
+        {
+            Hue = 1162;
             AbsorptionAttributes.EaterFire = 10;
             Slayer = SlayerName.ReptilianDeath;
-            WeaponAttributes.HitFireball = 30;	
-            WeaponAttributes.HitLowerDefend = 60;		
+            WeaponAttributes.HitFireball = 30;
+            WeaponAttributes.HitLowerDefend = 60;
             Attributes.WeaponSpeed = 20;
             Attributes.WeaponDamage = 50;
         }

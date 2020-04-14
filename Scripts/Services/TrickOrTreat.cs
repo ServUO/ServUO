@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
 using Server.Events.Halloween;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Events
 {
@@ -186,7 +186,7 @@ namespace Server.Engines.Events
                         {
                             if (Utility.RandomDouble() > .10)
                             {
-                                switch( Utility.Random(3) )
+                                switch (Utility.Random(3))
                                 {
                                     case 0:
                                         m_Begged.Say(1076768);
@@ -276,7 +276,7 @@ namespace Server.Engines.Events
             new Point3D(802, 1204, 25), // Makoto-Jima
             new Point3D(270, 628, 15)// Homare-Jima
         };
-		private static readonly Point3D[] TerMur_Locations =
+        private static readonly Point3D[] TerMur_Locations =
         {
             new Point3D(851, 3525, -38)// Royal City
         };
@@ -348,7 +348,7 @@ namespace Server.Engines.Events
         {
             Map map = target.Map;
 
-            switch( target.Map.MapID )
+            switch (target.Map.MapID)
             {
                 case 2:
                     return Ilshenar_Locations[Utility.Random(Ilshenar_Locations.Length)];
@@ -356,7 +356,7 @@ namespace Server.Engines.Events
                     return Malas_Locations[Utility.Random(Malas_Locations.Length)];
                 case 4:
                     return Tokuno_Locations[Utility.Random(Tokuno_Locations.Length)];
-				case 5:
+                case 5:
                     return TerMur_Locations[Utility.Random(TerMur_Locations.Length)];
                 default:
                     return Felucca_Locations[Utility.Random(Felucca_Locations.Length)];

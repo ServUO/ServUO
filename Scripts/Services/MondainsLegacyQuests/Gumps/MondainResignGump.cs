@@ -1,4 +1,3 @@
-using System;
 using Server.Gumps;
 
 namespace Server.Engines.Quests
@@ -11,16 +10,16 @@ namespace Server.Engines.Quests
         {
             if (quest == null)
                 return;
-		
+
             this.m_Quest = quest;
-		
+
             this.Closable = false;
             this.Disposable = true;
             this.Dragable = true;
             this.Resizable = false;
-			
+
             this.AddPage(0);
-			
+
             this.AddImageTiled(0, 0, 348, 262, 0xA8E);
             this.AddAlphaRegion(0, 0, 348, 262);
             this.AddImage(0, 15, 0x27A8);
@@ -39,17 +38,17 @@ namespace Server.Engines.Quests
             this.AddImage(333, 248, 0x2716);
             this.AddImage(2, 248, 0x216);
             this.AddImage(2, 2, 0x2716);
-			
+
             this.AddHtmlLocalized(25, 22, 200, 20, 1049000, 0x7D00, false, false); // Confirm Quest Cancellation
             this.AddImage(25, 40, 0xBBF);
             this.AddHtmlLocalized(25, 55, 300, 120, 1060836, 0xFFFFFF, false, false); // This quest will give you valuable information, skills and equipment that will help you advance in the game at a quicker pace.<BR><BR>Are you certain you wish to cancel at this time?
-			
+
             if (quest.ChainID != QuestChain.None)
             {
                 this.AddRadio(25, 145, 0x25F8, 0x25FB, false, (int)Radios.Chain);
                 this.AddHtmlLocalized(60, 150, 280, 20, 1075023, 0xFFFFFF, false, false); // Yes, I want to quit this entire chain!
             }
-			
+
             this.AddRadio(25, 180, 0x25F8, 0x25FB, true, (int)Radios.Quest);
             this.AddHtmlLocalized(60, 185, 280, 20, 1049005, 0xFFFFFF, false, false); // Yes, I really want to quit this quest!
             this.AddRadio(25, 215, 0x25F8, 0x25FB, false, (int)Radios.None);
@@ -67,23 +66,23 @@ namespace Server.Engines.Quests
         {
             Chain,
             Quest,
-            None,			
+            None,
         }
         public override void OnResponse(Server.Network.NetState state, RelayInfo info)
         {
             if (info.ButtonID != (int)Buttons.Okay || this.m_Quest == null)
                 return;
-			
+
             if (this.m_Quest.ChainID != QuestChain.None && info.IsSwitched((int)Radios.Chain))
-            { 
+            {
                 this.m_Quest.OnResign(true);
             }
-						
+
             if (info.IsSwitched((int)Radios.Quest))
             {
                 this.m_Quest.OnResign(false);
             }
-						
+
             if (info.IsSwitched((int)Radios.None) && this.m_Quest.Owner != null)
                 this.m_Quest.Owner.SendGump(new MondainQuestGump(this.m_Quest.Owner));
         }

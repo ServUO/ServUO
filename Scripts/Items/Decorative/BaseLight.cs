@@ -1,8 +1,8 @@
-using System;
+using Server.ContextMenus;
 using Server.Engines.Craft;
 using Server.Gumps;
 using Server.Multis;
-using Server.ContextMenus;
+using System;
 
 namespace Server.Items
 {
@@ -176,7 +176,7 @@ namespace Server.Items
         public virtual void Douse()
         {
             this.m_Burning = false;
-			
+
             if (this.m_BurntOut && this.BurntOutItemID != 0)
                 this.ItemID = this.BurntOutItemID;
             else
@@ -301,7 +301,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 3:
                     {
@@ -334,14 +334,14 @@ namespace Server.Items
                     }
             }
 
-            if(version == 2)
+            if (version == 2)
                 Level = SecureLevel.Friends;
         }
 
         private void DoTimer(TimeSpan delay)
         {
             this.m_Duration = delay;
-			
+
             if (this.m_Timer != null)
                 this.m_Timer.Stop();
 

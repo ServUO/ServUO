@@ -1,10 +1,10 @@
-using System;
 using Server.Items;
 using Server.Spells.First;
 using Server.Spells.Fourth;
+using Server.Spells.Mysticism;
 using Server.Spells.Necromancy;
 using Server.Targeting;
-using Server.Spells.Mysticism;
+using System;
 
 namespace Server.Spells.Chivalry
 {
@@ -28,7 +28,7 @@ namespace Server.Spells.Chivalry
         public override int RequiredTithing => 10;
 
         public override int MantraNumber => 1060726; // Extermo Vomica
-        
+
         public override bool CheckDisturb(DisturbType type, bool firstCircle, bool resistable)
         {
             return true;

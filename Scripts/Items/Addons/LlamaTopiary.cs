@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
-    [FlipableAttribute(0x491B, 0x4930)]     
+    [FlipableAttribute(0x491B, 0x4930)]
     public class LlamaTopiary : Item
     {
-        public override int LabelNumber{ get{ return 1070878; } } // a decorative topiary
+        public override int LabelNumber { get { return 1070878; } } // a decorative topiary
 
         [Constructable]
         public LlamaTopiary() : base(0x491B)

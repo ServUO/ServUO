@@ -6,57 +6,57 @@ using System.IO;
 
 namespace Server.Engines.Help
 {
-	public static class HelpPersistence
-	{
-		private static readonly string _FilePath = Path.Combine("Saves", "Help", "Pages.bin");
+    public static class HelpPersistence
+    {
+        private static readonly string _FilePath = Path.Combine("Saves", "Help", "Pages.bin");
 
 
-		[CallPriority(900)]
-		public static void Configure()
-		{
-			EventSink.WorldSave += OnSave;
-			EventSink.WorldLoad += OnLoad;
-		}
+        [CallPriority(900)]
+        public static void Configure()
+        {
+            EventSink.WorldSave += OnSave;
+            EventSink.WorldLoad += OnLoad;
+        }
 
-		private static void OnSave(WorldSaveEventArgs e)
-		{
-			Persistence.Serialize(
-				_FilePath,
-				writer =>
-				{
-					writer.Write(1); // version
+        private static void OnSave(WorldSaveEventArgs e)
+        {
+            Persistence.Serialize(
+                _FilePath,
+                writer =>
+                {
+                    writer.Write(1); // version
 
                     writer.Write(ResponseEntry.Entries.Count);
 
                     foreach (var entry in ResponseEntry.Entries)
                         entry.Serialize(writer);
 
-					writer.Write(PageQueue.List.Count);
+                    writer.Write(PageQueue.List.Count);
 
-					foreach (PageEntry pe in PageQueue.List)
-					{
-						writer.Write(pe.Sender);
-						writer.Write(pe.Message);
-						writer.Write((int)pe.Type);
-						writer.Write(pe.Handler);
-						writer.Write(pe.Sent);
-						writer.Write(pe.PageLocation);
-						writer.Write(pe.PageMap);
+                    foreach (PageEntry pe in PageQueue.List)
+                    {
+                        writer.Write(pe.Sender);
+                        writer.Write(pe.Message);
+                        writer.Write((int)pe.Type);
+                        writer.Write(pe.Handler);
+                        writer.Write(pe.Sent);
+                        writer.Write(pe.PageLocation);
+                        writer.Write(pe.PageMap);
 
-					}
-				});
-		}
+                    }
+                });
+        }
 
-		private static void OnLoad()
-		{
-			Persistence.Deserialize(
-				_FilePath,
-				reader =>
-				{
-					var version = reader.ReadInt();
+        private static void OnLoad()
+        {
+            Persistence.Deserialize(
+                _FilePath,
+                reader =>
+                {
+                    var version = reader.ReadInt();
 
-					switch (version)
-					{
+                    switch (version)
+                    {
                         case 1:
                             {
                                 var c = reader.ReadInt();
@@ -67,30 +67,30 @@ namespace Server.Engines.Help
                                 }
                             }
                             goto case 0;
-						case 0:
-							{
+                        case 0:
+                            {
                                 var count = reader.ReadInt();
 
-								for (var i = 0; i < count; ++i)
-								{
-									var sender = reader.ReadMobile();
-									var message = reader.ReadString();
-									var type = (PageType)reader.ReadInt();
-									PageEntry pe = new PageEntry(sender, message, type)
-									{
-										Handler = reader.ReadMobile(),
-										Sent = reader.ReadDateTime(),
-										PageLocation = reader.ReadPoint3D(),
-										PageMap = reader.ReadMap()
-									};
-									pe.Stop();
+                                for (var i = 0; i < count; ++i)
+                                {
+                                    var sender = reader.ReadMobile();
+                                    var message = reader.ReadString();
+                                    var type = (PageType)reader.ReadInt();
+                                    PageEntry pe = new PageEntry(sender, message, type)
+                                    {
+                                        Handler = reader.ReadMobile(),
+                                        Sent = reader.ReadDateTime(),
+                                        PageLocation = reader.ReadPoint3D(),
+                                        PageMap = reader.ReadMap()
+                                    };
+                                    pe.Stop();
 
-									PageQueue.Enqueue(pe);
-								}
-							}
-							break;
-					}
-				});
-		}
-	}
+                                    PageQueue.Enqueue(pe);
+                                }
+                            }
+                            break;
+                    }
+                });
+        }
+    }
 }

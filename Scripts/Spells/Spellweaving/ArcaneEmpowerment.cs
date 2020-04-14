@@ -48,17 +48,17 @@ namespace Server.Spells.Spellweaving
         public static int GetSpellBonus(Mobile m, bool playerVsPlayer)
         {
             EmpowermentInfo info = m_Table[m] as EmpowermentInfo;
-			
+
             if (info != null)
                 return info.Bonus + (playerVsPlayer ? info.Focus : 0);
-			
+
             return 0;
         }
 
         public static void AddHealBonus(Mobile m, ref int toHeal)
         {
             EmpowermentInfo info = m_Table[m] as EmpowermentInfo;
-			
+
             if (info != null)
                 toHeal = (int)Math.Floor((1 + (10 + info.Bonus) / 100.0) * toHeal);
         }
@@ -66,10 +66,10 @@ namespace Server.Spells.Spellweaving
         public static void RemoveBonus(Mobile m)
         {
             EmpowermentInfo info = m_Table[m] as EmpowermentInfo;
-			
+
             if (info != null && info.Timer != null)
-                info.Timer.Stop();			
-				
+                info.Timer.Stop();
+
             m_Table.Remove(m);
         }
 
@@ -81,16 +81,16 @@ namespace Server.Spells.Spellweaving
         public override void OnCast()
         {
             if (m_Table.ContainsKey(Caster))
-            { 
+            {
                 Caster.SendLocalizedMessage(501775); // This spell is already in effect.
             }
             else if (CheckSequence())
             {
                 Caster.PlaySound(0x5C1);
-				
+
                 int level = GetFocusLevel(Caster);
                 double skill = Caster.Skills[SkillName.Spellweaving].Value;
-				
+
                 TimeSpan duration = TimeSpan.FromSeconds(15 + (int)(skill / 24) + level * 2);
                 int bonus = (int)Math.Floor(skill / 12) + level * 5;
 

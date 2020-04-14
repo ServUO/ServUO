@@ -1,7 +1,6 @@
-using System;
-using Server;
-using Server.Targeting;
 using Server.Mobiles;
+using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -36,7 +35,7 @@ namespace Server.Items
                 {
                     Container pack = from.Backpack;
 
-                    if(pack != null)
+                    if (pack != null)
                     {
                         Matches match = new Matches();
 
@@ -69,7 +68,7 @@ namespace Server.Items
                 }
             }
         }
-            
+
 
         public void BurnOut()
         {
@@ -100,7 +99,7 @@ namespace Server.Items
         {
             private Matches m_Match;
 
-            public InternalTarget(Matches match) : base (3, false, TargetFlags.None)
+            public InternalTarget(Matches match) : base(3, false, TargetFlags.None)
             {
                 m_Match = match;
             }

@@ -1,14 +1,9 @@
-using Server;
-using System;
-using System.Collections.Generic;
-using Server.Mobiles;
-
 namespace Server.Items
 {
     public class BraceletOfProtection : GoldBracelet
     {
         public override int LabelNumber { get { return 1152730; } } // Bracelet of Protection
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public BraceletOfProtection()

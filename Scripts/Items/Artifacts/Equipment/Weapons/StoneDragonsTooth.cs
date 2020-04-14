@@ -1,25 +1,23 @@
-using System;
-
 namespace Server.Items
 {
     public class StoneDragonsTooth : GargishDagger
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113523; } } // Stone Dragon's Tooth
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113523; } } // Stone Dragon's Tooth
+
         [Constructable]
         public StoneDragonsTooth()
             : base()
         {
-            Hue = 2407;		
+            Hue = 2407;
             Attributes.WeaponSpeed = 10;
             Attributes.WeaponDamage = 50;
             Attributes.RegenHits = 3;
             WeaponAttributes.HitMagicArrow = 40;
-            WeaponAttributes.HitLowerDefend = 30;	
-            WeaponAttributes.ResistFireBonus = 10;	
-            AbsorptionAttributes.EaterPoison = 10;		
-            AosElementDamages.Poison = 100;			
+            WeaponAttributes.HitLowerDefend = 30;
+            WeaponAttributes.ResistFireBonus = 10;
+            AbsorptionAttributes.EaterPoison = 10;
+            AosElementDamages.Poison = 100;
         }
 
         public StoneDragonsTooth(Serial serial)

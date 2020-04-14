@@ -1,11 +1,8 @@
-using System;
-using Server.Gumps;
-
 namespace Server.Items
 {
     public class VirtueShield : BaseShield, Server.Engines.Craft.IRepairable
     {
-		public Server.Engines.Craft.CraftSystem RepairSystem { get { return Server.Engines.Craft.DefBlacksmithy.CraftSystem; } }	
+        public Server.Engines.Craft.CraftSystem RepairSystem { get { return Server.Engines.Craft.DefBlacksmithy.CraftSystem; } }
         public override int BasePhysicalResistance { get { return 8; } }
         public override int BaseFireResistance { get { return 8; } }
         public override int BaseColdResistance { get { return 8; } }
@@ -25,7 +22,7 @@ namespace Server.Items
         {
             Attributes.SpellChanneling = 1;
             Attributes.DefendChance = 10;
-            
+
             LootType = LootType.Blessed;
         }
 

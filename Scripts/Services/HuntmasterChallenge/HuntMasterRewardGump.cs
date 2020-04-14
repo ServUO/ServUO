@@ -1,14 +1,12 @@
-using Server;
-using System;
-using Server.Mobiles;
 using Server.Gumps;
-using System.Collections.Generic;
 using Server.Items;
+using Server.Mobiles;
+using System.Collections.Generic;
 
 namespace Server.Engines.HuntsmasterChallenge
 {
-	public class HuntmasterRewardGump : BaseRewardGump
-	{
+    public class HuntmasterRewardGump : BaseRewardGump
+    {
         public HuntmasterRewardGump(Mobile huntmaster, PlayerMobile pm)
             : base(huntmaster, pm, _Collections, 1155726) // Huntmaster's Challenge
         {
@@ -105,5 +103,5 @@ namespace Server.Engines.HuntsmasterChallenge
             new CollectionItem(typeof(LumbjacksSatchel), 0xA274, 1158772, 0, 1.0),
             new CollectionItem(typeof(HarvestersAxe), 0x1443, 1158774, 0, 1.0),
         };
-	}
+    }
 }

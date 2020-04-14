@@ -1,17 +1,17 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class CrystallineFragmentsQuest : BaseQuest
-    { 
+    {
         public CrystallineFragmentsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(CrystallineFragments), "crystalline fragments", 10));
-			
+
             this.AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
@@ -73,12 +73,12 @@ namespace Server.Engines.Quests
     }
 
     public class ProtectorsEssenceQuest : BaseQuest
-    { 
+    {
         public ProtectorsEssenceQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(ProtectorsEssence), "protector's essences", 5, 0x1ED1));
-			
+
             this.AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
@@ -140,12 +140,12 @@ namespace Server.Engines.Quests
     }
 
     public class HeartOfIceQuest : BaseQuest
-    { 
+    {
         public HeartOfIceQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(IcyHeart), "icy hearts", 6, 0x1CED));
-			
+
             this.AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
@@ -207,11 +207,11 @@ namespace Server.Engines.Quests
     }
 
     public class Neil : MondainQuester
-    { 
+    {
         [Constructable]
         public Neil()
             : base("Neil", "the iron worker")
-        { 
+        {
             this.SetSkill(SkillName.Blacksmith, 65.0, 88.0);
             this.SetSkill(SkillName.Fencing, 45.0, 68.0);
             this.SetSkill(SkillName.Macing, 45.0, 68.0);
@@ -226,10 +226,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(CrystallineFragmentsQuest),
                     typeof(ProtectorsEssenceQuest),
@@ -252,11 +252,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.CantWalk = true;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x83F5;
             this.HairItemID = 0x203C;
             this.HairHue = 0x46F;

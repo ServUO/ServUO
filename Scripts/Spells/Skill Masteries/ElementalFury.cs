@@ -1,9 +1,8 @@
-using System;
-using Server;
-using Server.Network;
-using Server.Mobiles;
-using System.Collections.Generic;
 using Server.Items;
+using Server.Mobiles;
+using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Spells.SkillMasteries
 {
@@ -59,34 +58,34 @@ namespace Server.Spells.SkillMasteries
         }
 
         public override void OnCast()
-		{
-			if(CheckSequence())
-			{
+        {
+            if (CheckSequence())
+            {
                 Caster.FixedParticles(0x376A, 9, 32, 5030, EffectLayer.Waist);
                 Caster.PlaySound(0x101);
 
                 Caster.PrivateOverheadMessage(MessageType.Regular, 1150, 1156017, Caster.NetState);  // *Your throw is enhanced by the Elemental Fury!*
 
-				double skill = BaseSkillBonus;
-				
-				TimeSpan duration = TimeSpan.FromSeconds(skill);
-				_MaxAdd = (int)(skill / 10) + Utility.RandomMinMax(-1, 0);
-				
-				Expires = DateTime.UtcNow + duration;
-				BeginTimer();
+                double skill = BaseSkillBonus;
+
+                TimeSpan duration = TimeSpan.FromSeconds(skill);
+                _MaxAdd = (int)(skill / 10) + Utility.RandomMinMax(-1, 0);
+
+                Expires = DateTime.UtcNow + duration;
+                BeginTimer();
 
                 _Type = GetResistanceType(GetWeapon());
 
                 BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.ElementalFury, 1156018, 1156019, duration, Caster, String.Format("{0}\t69\t{1}", _Type.ToString(), _MaxAdd.ToString())));
-				//Each attack the caster deals with ~1_TYPE~ damage will add up to ~3_VAL~ damage to the Fury Pool. Once the Fury Pool 
-				//reaches ~2_VAL~ the throwing weapon will unleash the Elemental Fury.
-			}
-			
-			FinishSequence();
-		}
+                //Each attack the caster deals with ~1_TYPE~ damage will add up to ~3_VAL~ damage to the Fury Pool. Once the Fury Pool 
+                //reaches ~2_VAL~ the throwing weapon will unleash the Elemental Fury.
+            }
+
+            FinishSequence();
+        }
 
         public override void OnHit(Mobile defender, ref int damage)
-		{
+        {
             if (_Table == null)
                 _Table = new Dictionary<Mobile, int>();
 
@@ -98,16 +97,16 @@ namespace Server.Spells.SkillMasteries
             BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.ElementalFuryDebuff, 1155920, BuffInfo.Blank, ""));
 
             if (_Table[defender] >= 69)
-			{
+            {
                 defender.FixedParticles(0x3709, 10, 30, 5052, 2719, 0, EffectLayer.LeftFoot, 0);
                 defender.PlaySound(0x208);
 
                 int d;
 
-				if(defender is PlayerMobile)
-					d = (int)(BaseSkillBonus / 6);
-				else
-					d = (int)(BaseSkillBonus / 3) + Utility.RandomMinMax(40, 60);
+                if (defender is PlayerMobile)
+                    d = (int)(BaseSkillBonus / 6);
+                else
+                    d = (int)(BaseSkillBonus / 3) + Utility.RandomMinMax(40, 60);
 
                 switch (_Type)
                 {
@@ -131,7 +130,7 @@ namespace Server.Spells.SkillMasteries
                 BuffInfo.RemoveBuff(defender, BuffIcon.ElementalFuryDebuff);
                 _Table.Remove(defender);
             }
-		}
+        }
 
         public override void EndEffects()
         {

@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x144e, 0x1453)]
     public class BoneArms : BaseArmor
     {
-		public override int BasePhysicalResistance { get { return 3; } }
+        public override int BasePhysicalResistance { get { return 3; } }
         public override int BaseFireResistance { get { return 3; } }
         public override int BaseColdResistance { get { return 4; } }
         public override int BasePoisonResistance { get { return 2; } }
@@ -14,8 +12,8 @@ namespace Server.Items
         public override int InitMaxHits { get { return 30; } }
         public override int StrReq { get { return 55; } }
         public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Bone; } }
-		public override CraftResource DefaultResource { get { return CraftResource.RegularLeather; } }
-		
+        public override CraftResource DefaultResource { get { return CraftResource.RegularLeather; } }
+
         [Constructable]
         public BoneArms()
             : base(0x144E)
@@ -26,8 +24,8 @@ namespace Server.Items
         public BoneArms(Serial serial)
             : base(serial)
         {
-        }                     
-        
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

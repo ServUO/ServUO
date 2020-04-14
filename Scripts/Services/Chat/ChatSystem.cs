@@ -1,7 +1,5 @@
-using System;
-using System.IO;
-
 using Server.Network;
+using System;
 
 namespace Server.Engines.Chat
 {

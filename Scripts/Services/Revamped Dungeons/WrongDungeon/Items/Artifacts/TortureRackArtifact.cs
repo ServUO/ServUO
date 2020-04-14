@@ -1,6 +1,3 @@
-using Server;
-using System;
-
 namespace Server.Items
 {
     public class TortureRackComponent : AddonComponent, IArtifact
@@ -57,7 +54,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new TortureRackEastDeed(); } }        
+        public override BaseAddonDeed Deed { get { return new TortureRackEastDeed(); } }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -87,7 +84,7 @@ namespace Server.Items
         }
 
         public override BaseAddon Addon { get { return new TortureRackEast(); } }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

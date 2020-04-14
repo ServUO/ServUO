@@ -1,12 +1,10 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x2B04, 0x2B05)]
     public class HumilityCloak : BaseClothing
     {
-		public override bool IsArtifact => true; 
-		
+        public override bool IsArtifact => true;
+
         [Constructable]
         public HumilityCloak()
             : base(0x2B04, Layer.Cloak)
@@ -15,8 +13,8 @@ namespace Server.Items
             Weight = 6.0;
             SetHue = 0;
             Hue = 0x226;
-			
-            SetSelfRepair = 5;			
+
+            SetSelfRepair = 5;
             SetPhysicalBonus = 5;
             SetFireBonus = 5;
             SetColdBonus = 5;
@@ -30,7 +28,7 @@ namespace Server.Items
         }
 
         public override int LabelNumber => 1075195; // Cloak of Humility (Virtue Armor Set)
-		
+
         public override SetItem SetID => SetItem.Virtue;
         public override int Pieces => 8;
 
@@ -47,7 +45,7 @@ namespace Server.Items
 
         public override void Deserialize(GenericReader reader)
         {
-            base.Deserialize(reader);	
+            base.Deserialize(reader);
             int version = reader.ReadInt();
         }
     }

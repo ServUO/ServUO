@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
-
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Guilds
 {
@@ -143,8 +142,8 @@ namespace Server.Guilds
         {
             TextDefinition[] defs = new TextDefinition[aryLength];
 
-            string name = String.Format("{0} {1}{2}", 
-                pm.Name, 
+            string name = String.Format("{0} {1}{2}",
+                pm.Name,
                 Engines.VvV.ViceVsVirtueSystem.IsVvV(pm) ? "VvV" : "",
                 (player.GuildFealty == pm && player.GuildFealty != guild.Leader) ? " *" : "");
 
@@ -155,7 +154,7 @@ namespace Server.Guilds
 
             defs[0] = name;
             defs[1] = pm.GuildRank.Name;
-            defs[2] = (pm.NetState != null) ? new TextDefinition(1063015) : new TextDefinition(pm.LastOnline.ToString("yyyy-MM-dd")); 
+            defs[2] = (pm.NetState != null) ? new TextDefinition(1063015) : new TextDefinition(pm.LastOnline.ToString("yyyy-MM-dd"));
             defs[3] = (pm.GuildTitle == null) ? "" : pm.GuildTitle;
 
             return defs;

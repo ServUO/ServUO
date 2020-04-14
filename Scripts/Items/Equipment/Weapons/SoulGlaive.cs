@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class SoulGlaive : BaseThrown
@@ -8,8 +6,8 @@ namespace Server.Items
         public SoulGlaive()
             : base(0x090A)
         {
-           Weight = 8.0;
-           Layer = Layer.OneHanded;
+            Weight = 8.0;
+            Layer = Layer.OneHanded;
         }
 
         public SoulGlaive(Serial serial)
@@ -61,7 +59,7 @@ namespace Server.Items
                 return 4.00f;
             }
         }
-       
+
         public override int InitMinHits
         {
             get
@@ -76,7 +74,7 @@ namespace Server.Items
                 return 65;
             }
         }
-        
+
         public override Race RequiredRace { get { return Race.Gargoyle; } }
         public override bool CanBeWornByGargoyles { get { return true; } }
 

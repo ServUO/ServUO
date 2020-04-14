@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class BearingAssembly : BaseDecayingItem
     {
         public override int LabelNumber { get { return 1154430; } } // Bearing Assembly
-        
+
         [Constructable]
         public BearingAssembly()
             : base(0xE74)
@@ -13,8 +11,8 @@ namespace Server.Items
             this.Weight = 1.0;
             this.LootType = LootType.Blessed;
         }
-		
-		public override void GetProperties(ObjectPropertyList list)
+
+        public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 

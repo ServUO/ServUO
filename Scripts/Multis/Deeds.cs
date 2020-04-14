@@ -1,7 +1,6 @@
-using System;
-using System.Collections;
 using Server.Regions;
 using Server.Targeting;
+using System.Collections;
 
 namespace Server.Multis.Deeds
 {
@@ -102,7 +101,7 @@ namespace Server.Multis.Deeds
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {
@@ -155,7 +154,7 @@ namespace Server.Multis.Deeds
                 Point3D center = new Point3D(p.X - this.m_Offset.X, p.Y - this.m_Offset.Y, p.Z - this.m_Offset.Z);
                 HousePlacementResult res = HousePlacement.Check(from, this.m_MultiID, center, out toMove);
 
-                switch ( res )
+                switch (res)
                 {
                     case HousePlacementResult.Valid:
                         {
@@ -206,10 +205,10 @@ namespace Server.Multis.Deeds
                             break;
                         }
                     case HousePlacementResult.NoQueenLoyalty:
-                    {
-                        from.SendLocalizedMessage(1113707, "10000"); // You must have at lease ~1_MIN~ loyalty to the Gargoyle Queen to place a house in Ter Mur.
-                        break;
-                    }
+                        {
+                            from.SendLocalizedMessage(1113707, "10000"); // You must have at lease ~1_MIN~ loyalty to the Gargoyle Queen to place a house in Ter Mur.
+                            break;
+                        }
                 }
             }
         }

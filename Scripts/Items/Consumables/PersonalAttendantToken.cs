@@ -1,6 +1,6 @@
-﻿using System;
-using Server.Gumps;
+﻿using Server.Gumps;
 using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -73,7 +73,7 @@ namespace Server.Items
                 this.AddHtmlLocalized(9, 8, 280, 20, 1049004, 0x7FFF, false, false); // Confirm
                 this.AddImageTiled(5, 31, 280, 100, 0xA40);
                 this.AddHtmlLocalized(9, 35, 272, 100, 1076052, 0x7FFF, false, false); // Clicking "OK" will create a Personal Attendant contract bound to you. You will not be able to trade it to another player, and only you will be able to use it.
-				
+
                 this.AddButton(190, 133, 0xFB7, 0xFB8, 1, GumpButtonType.Reply, 0);
                 this.AddHtmlLocalized(225, 135, 90, 20, 1006044, 0x7FFF, false, false); // OK
 

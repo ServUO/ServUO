@@ -1,6 +1,6 @@
+using Server.Multis;
 using System;
 using System.Collections.Generic;
-using Server.Multis;
 
 namespace Server.Items
 {
@@ -90,7 +90,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {

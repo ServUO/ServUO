@@ -1,8 +1,8 @@
-using System;
+using Server.Engines.Quests;
 using Server.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Server.Engines.Quests;
 
 namespace Server.Mobiles
 {
@@ -10,7 +10,7 @@ namespace Server.Mobiles
     public class IceWyrm : WhiteWyrm
     {
         public static List<IceWyrm> Instances { get; set; }
-        
+
         [Constructable]
         public IceWyrm()
             : base()
@@ -18,8 +18,8 @@ namespace Server.Mobiles
             Name = "Ice Wyrm";
             Hue = 2729;
             Body = 180;
-			
-			SetResistance(ResistanceType.Cold, 100);
+
+            SetResistance(ResistanceType.Cold, 100);
 
             Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
             SelfDeleteTimer.Start();
@@ -66,7 +66,7 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-            List<DamageStore> rights = GetLootingRights();            
+            List<DamageStore> rights = GetLootingRights();
 
             foreach (Mobile m in rights.Select(x => x.m_Mobile).Distinct())
             {
@@ -76,8 +76,8 @@ namespace Server.Mobiles
 
                     if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerron)
                     {
-						Item item = new IceWyrmScale();
-						
+                        Item item = new IceWyrmScale();
+
                         if (m.Backpack == null || !m.Backpack.TryDropItem(m, item, false))
                         {
                             m.BankBox.DropItem(item);
@@ -85,7 +85,7 @@ namespace Server.Mobiles
 
                         m.SendLocalizedMessage(1154489); // You received a Quest Item!
                     }
-                }                
+                }
             }
 
             if (Instances != null && Instances.Contains(this))
@@ -130,7 +130,7 @@ namespace Server.Mobiles
             Instances.Add(this);
 
             Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
-            SelfDeleteTimer.Start();     
+            SelfDeleteTimer.Start();
         }
     }
 }

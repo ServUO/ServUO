@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.VeteranRewards;
 using Server.Gumps;
 
@@ -19,7 +18,7 @@ namespace Server.Items
         public MinotaurStatue(MinotaurStatueType type)
             : base()
         {
-            switch ( type )
+            switch (type)
             {
                 case MinotaurStatueType.AttackSouth:
                     this.AddComponent(new AddonComponent(0x306C), 0, 0, 0);
@@ -55,7 +54,7 @@ namespace Server.Items
                 MinotaurStatueDeed deed = new MinotaurStatueDeed();
                 deed.IsRewardItem = this.m_IsRewardItem;
 
-                return deed; 
+                return deed;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -76,7 +75,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.WriteEncodedInt(0); // version
-			
+
             writer.Write((bool)this.m_IsRewardItem);
         }
 
@@ -85,7 +84,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             this.m_IsRewardItem = reader.ReadBool();
         }
     }
@@ -114,13 +113,13 @@ namespace Server.Items
             }
         }// Minotaur Statue Deed
         public override BaseAddon Addon
-        { 
+        {
             get
-            { 
+            {
                 MinotaurStatue addon = new MinotaurStatue(this.m_StatueType);
                 addon.IsRewardItem = this.m_IsRewardItem;
 
-                return addon; 
+                return addon;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -140,7 +139,7 @@ namespace Server.Items
         {
             if (this.m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, null))
                 return;
-			
+
             if (this.IsChildOf(from.Backpack))
             {
                 from.CloseGump(typeof(RewardOptionGump));
@@ -153,7 +152,7 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             if (this.m_IsRewardItem)
                 list.Add(1076218); // 2nd Year Veteran Reward
         }
@@ -172,7 +171,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             this.m_IsRewardItem = reader.ReadBool();
         }
 

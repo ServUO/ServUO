@@ -1,6 +1,6 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
 {
@@ -76,7 +76,7 @@ namespace Server.Engines.Quests
 
         public override void OnCompleted()
         {
-            Owner.SendLocalizedMessage(1112542, null, 0x23); 						
+            Owner.SendLocalizedMessage(1112542, null, 0x23);
             Owner.PlaySound(CompleteSound);
         }
 
@@ -113,7 +113,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(TheArisenQuest)
                 };
@@ -122,7 +122,7 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = false;
             CantWalk = true;
             Body = 666;

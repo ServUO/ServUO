@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class ArtifactVase : Item
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public ArtifactVase()
             : base(0x0B48)

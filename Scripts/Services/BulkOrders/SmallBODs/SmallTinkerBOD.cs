@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.Engines.Craft;
 using Server.Items;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Server.Engines.BulkOrders
@@ -389,7 +389,7 @@ namespace Server.Engines.BulkOrders
                 case 2:
                     GemType = (GemType)reader.ReadInt();
                     break;
-                case 1: 
+                case 1:
                     break;
             }
 

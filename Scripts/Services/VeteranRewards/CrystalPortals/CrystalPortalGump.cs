@@ -1,15 +1,15 @@
 namespace Server.Gumps
 {
-	public class CrystalPortalGump : Gump
-	{
+    public class CrystalPortalGump : Gump
+    {
         public override int GetTypeID()
         {
             return 0x237B;
         }
 
-		public CrystalPortalGump(Mobile from)
-			: base(245, 200)
-		{
+        public CrystalPortalGump(Mobile from)
+            : base(245, 200)
+        {
             from.CloseGump(typeof(CrystalPortalGump));
 
             AddImage(0, 0, 0x1FE);
@@ -54,6 +54,6 @@ namespace Server.Gumps
             AddLabel(250, 200, 0, "5"); // todo: get
 
             AddButton(0, 0, 0x1FF, 0x1FF, 0, GumpButtonType.Page, 2);
-		}
-	}
+        }
+    }
 }

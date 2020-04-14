@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class DecoHay2 : Item

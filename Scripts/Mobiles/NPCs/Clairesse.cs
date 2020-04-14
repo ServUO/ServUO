@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class StitchInTimeQuest : BaseQuest
-    { 
+    {
         public StitchInTimeQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(FancyDress), "fancy dress", 1, 0x1EFF));
-						
+
             this.AddReward(new BaseReward(typeof(OldRing), 1075524)); // an old ring
             this.AddReward(new BaseReward(typeof(OldNecklace), 1075525)); // an old necklace
         }
@@ -86,7 +86,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Clairesse()
             : base("Clairesse", "the servant")
-        { 
+        {
         }
 
         public Clairesse(Serial serial)
@@ -95,10 +95,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(StitchInTimeQuest)
                 };
@@ -107,19 +107,19 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.CantWalk = true;
             this.Race = Race.Human;
-			
-            this.Hue = 0x840B;			
+
+            this.Hue = 0x840B;
             this.HairItemID = 0x203D;
             this.HairHue = 0x458;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());			
+            this.AddItem(new Backpack());
             this.AddItem(new PlainDress(0x3C9));
             this.AddItem(new Shoes(0x740));
         }

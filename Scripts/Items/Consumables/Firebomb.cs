@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 using Server.Network;
 using Server.Spells;
 using Server.Targeting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -92,7 +91,7 @@ namespace Server.Items
             if (Map == Map.Internal && HeldBy == null)
                 return;
 
-            switch ( m_Ticks )
+            switch (m_Ticks)
             {
                 case 0:
                 case 1:

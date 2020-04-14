@@ -1,6 +1,5 @@
-using System;
-using Server;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -14,7 +13,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage, FightMode.Weakest, 10, 1, 0.2, 0.4)
         {
             Name = "a minion of scelestus";
-            Body = 9;	
+            Body = 9;
             BaseSoundID = 357;
             Hue = 1159;
 
@@ -56,7 +55,7 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.UltraRich);
         }
 
-		public override int TreasureMapLevel { get { return 4; } }
+        public override int TreasureMapLevel { get { return 4; } }
         public override Poison PoisonImmune { get { return Poison.Parasitic; } }
         public override Poison HitPoison { get { return Poison.Lethal; } }
         public override bool TaintedLifeAura { get { return true; } }
@@ -124,12 +123,12 @@ namespace Server.Mobiles
         }
 
         private Type[] m_Types = new Type[]
-		{
-			typeof(ChallengeRite), 			typeof(AnthenaeumDecree), 		typeof(LetterFromTheKing),
-			typeof(OnTheVoid),				typeof(ShilaxrinarsMemorial),	typeof(ToTheHighScholar),
-			typeof(ToTheHighBroodmother),	typeof(ReplyToTheHighScholar),	typeof(AccessToTheIsle),
-			typeof(InMemory)
-		};
+        {
+            typeof(ChallengeRite),          typeof(AnthenaeumDecree),       typeof(LetterFromTheKing),
+            typeof(OnTheVoid),              typeof(ShilaxrinarsMemorial),   typeof(ToTheHighScholar),
+            typeof(ToTheHighBroodmother),   typeof(ReplyToTheHighScholar),  typeof(AccessToTheIsle),
+            typeof(InMemory)
+        };
 
         public MinionOfScelestus(Serial serial)
             : base(serial)

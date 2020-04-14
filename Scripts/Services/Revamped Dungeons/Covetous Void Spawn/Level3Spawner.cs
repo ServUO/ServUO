@@ -1,16 +1,14 @@
+using Server.ContextMenus;
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Server;
-using Server.ContextMenus;
-using Server.Mobiles;
-
 namespace Server.Engines.VoidPool
 {
     [PropertyObject]
-	public class Level3Spawner : ISpawner
-	{
+    public class Level3Spawner : ISpawner
+    {
         private bool _Active;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -69,14 +67,14 @@ namespace Server.Engines.VoidPool
         #endregion
 
         public Level3Spawner(VoidPoolController controller)
-		{
+        {
             Controller = controller;
 
             Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
                 {
                     Active = true;
                 });
-		}
+        }
 
         public override string ToString()
         {
@@ -172,7 +170,7 @@ namespace Server.Engines.VoidPool
         {
             foreach (var entry in Spawns)
             {
-                entry.SpawnType = (VoidType)Utility.RandomMinMax(0, 4); 
+                entry.SpawnType = (VoidType)Utility.RandomMinMax(0, 4);
                 entry.DoSpawn();
             }
         }
@@ -221,22 +219,22 @@ namespace Server.Engines.VoidPool
             {
                 case 2:
                 case 1:
-					{
-		                if (version == 1)
-		                    Active = controller.Active;
-		
-		                _Active = reader.ReadBool();
-					}
+                    {
+                        if (version == 1)
+                            Active = controller.Active;
+
+                        _Active = reader.ReadBool();
+                    }
                     goto case 0;
                 case 0:
-					{
-	                    int count = reader.ReadInt();
-	
-	                    for (int i = 0; i < count; i++)
-	                    {
-	                        Spawns[i].Deserialize(reader);
-	                    }
-					}
+                    {
+                        int count = reader.ReadInt();
+
+                        for (int i = 0; i < count; i++)
+                        {
+                            Spawns[i].Deserialize(reader);
+                        }
+                    }
                     break;
             }
         }
@@ -297,7 +295,7 @@ namespace Server.Engines.VoidPool
                         Rectangle2D rec = Bounds[Utility.Random(Bounds.Length)];
                         Point3D p = Point3D.Zero;
 
-                        for(int j = 0; j < 50; j++)
+                        for (int j = 0; j < 50; j++)
                         {
                             p = map.GetRandomSpawnPoint(rec);
 
@@ -312,9 +310,9 @@ namespace Server.Engines.VoidPool
                             bc.Home = p;
                             bc.RangeHome = 20;
 
-							bc.OnBeforeSpawn(p, map);
+                            bc.OnBeforeSpawn(p, map);
                             bc.MoveToWorld(p, map);
-							bc.OnAfterSpawn();
+                            bc.OnAfterSpawn();
 
                             Spawn.Add(bc);
                         }
@@ -356,5 +354,5 @@ namespace Server.Engines.VoidPool
                     Timer.DelayCall(DoSpawn);
             }
         }
-	}
+    }
 }

@@ -1,6 +1,6 @@
-using System;
 using Server.Mobiles;
 using Server.Network;
+using System;
 
 namespace Server.Gumps
 {
@@ -38,8 +38,8 @@ namespace Server.Gumps
                 else
                 {
                     m.SetControlMaster(from);
-                    
-                    m.IsBonded = true;                    
+
+                    m.IsBonded = true;
                     m.MoveToWorld(from.Location, from.Map);
                     m_Item.Delete();
 

@@ -45,7 +45,7 @@ namespace Server.Accounting
         {
             m_Accounts[a.Username] = a;
         }
-		
+
         public static void Remove(string username)
         {
             m_Accounts.Remove(username);

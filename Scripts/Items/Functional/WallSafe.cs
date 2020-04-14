@@ -1,12 +1,11 @@
-using System;
-using Server;
-using Server.Mobiles;
-using Server.Multis;
-using System.Collections.Generic;
-using System.Globalization;
-using Server.Gumps;
 using Server.Accounting;
 using Server.ContextMenus;
+using Server.Gumps;
+using Server.Mobiles;
+using Server.Multis;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace Server.Items
 {
@@ -204,7 +203,7 @@ namespace Server.Items
 
                                 if (northWall)
                                     itemID = 0x8B8F;
-                                else if(westWall)
+                                else if (westWall)
                                     itemID = 0x8B90;
                                 else
                                     m.SendLocalizedMessage(500268); // This object needs to be mounted on something.

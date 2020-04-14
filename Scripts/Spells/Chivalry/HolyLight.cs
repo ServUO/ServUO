@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
+using System;
 
 namespace Server.Spells.Chivalry
 {

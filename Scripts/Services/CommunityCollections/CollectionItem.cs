@@ -1,10 +1,10 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server
 {
-    public class CollectionItem 
+    public class CollectionItem
     {
         private readonly Type m_Type;
         private readonly int m_ItemID;
@@ -96,7 +96,7 @@ namespace Server
     }
 
     public class CollectionTitle : CollectionItem
-    { 
+    {
         private readonly object m_Title;
 
         public CollectionTitle(object title, int tooltip, double points)
@@ -115,8 +115,8 @@ namespace Server
                     to.SendLocalizedMessage(1073625, "#" + (int)m_Title); // The title "~1_TITLE~" has been bestowed upon you. 
                 else if (m_Title is string)
                     to.SendLocalizedMessage(1073625, (string)m_Title); // The title "~1_TITLE~" has been bestowed upon you. 
-					
-                to.AddCollectionPoints(collection.CollectionID, (int)Points * -1);				
+
+                to.AddCollectionPoints(collection.CollectionID, (int)Points * -1);
             }
             else
                 to.SendLocalizedMessage(1073626); // You already have that title!
@@ -138,10 +138,10 @@ namespace Server
         public override bool Validate(PlayerMobile from, Item item)
         {
             TreasureMap map = item as TreasureMap;
-			
+
             if (map != null && map.Level == m_Level)
                 return true;
-			
+
             return false;
         }
     }
@@ -161,10 +161,10 @@ namespace Server
         public override bool Validate(PlayerMobile from, Item item)
         {
             Spellbook spellbook = item as Spellbook;
-			
+
             if (spellbook != null && spellbook.SpellbookType == m_Type && spellbook.Content == 0)
                 return true;
-			
+
             return false;
         }
     }

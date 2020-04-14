@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     public class WarriorGuildmaster : BaseGuildmaster

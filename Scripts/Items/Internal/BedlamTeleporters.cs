@@ -1,6 +1,6 @@
-using System;
 using Server.Engines.Quests;
 using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
@@ -42,7 +42,7 @@ namespace Server.Items
                 from.SendLocalizedMessage(1042753, "Bedlam"); // ~1_SOMETHING~ has been temporarily disabled.
                 return;
             }
-		
+
             if (from is PlayerMobile)
             {
                 PlayerMobile player = (PlayerMobile)from;
@@ -62,14 +62,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }

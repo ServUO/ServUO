@@ -1,6 +1,6 @@
-using System;
-using Server.Items;
 using Server.Engines.Quests;
+using Server.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -63,7 +63,7 @@ namespace Server.Mobiles
 
             return creature;
         }
-        
+
         public class InternalSelfDeleteTimer : Timer
         {
             private OrcEngineer Mare;
@@ -85,7 +85,7 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-            List<DamageStore> rights = GetLootingRights();            
+            List<DamageStore> rights = GetLootingRights();
 
             foreach (Mobile m in rights.Select(x => x.m_Mobile).Distinct())
             {
@@ -95,8 +95,8 @@ namespace Server.Mobiles
 
                     if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
                     {
-						Item item = new OrcishSchematics();
-						
+                        Item item = new OrcishSchematics();
+
                         if (m.Backpack == null || !m.Backpack.TryDropItem(m, item, false))
                         {
                             m.BankBox.DropItem(item);

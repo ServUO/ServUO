@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.Mobiles;
 using Server.Network;
 using Server.Spells;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -27,7 +27,7 @@ namespace Server.Items
                 if (map == Map.Trammel || map == Map.Felucca)
                 {
                     from.MoveToWorld(new Point3D(5922, 2024, 0), map);
-                    this.PublicOverheadMessage(MessageType.Regular, 0x3B2, true, String.Format("* {0} dives into the hole and disappears!*", from.Name)); 
+                    this.PublicOverheadMessage(MessageType.Regular, 0x3B2, true, String.Format("* {0} dives into the hole and disappears!*", from.Name));
                 }
             }
             else
@@ -93,7 +93,7 @@ namespace Server.Items
         {
             if (!m.Player || !m.Alive || m.Hidden || !this.SpawnKilled())
                 return;
-				
+
             if (Utility.InRange(this.Location, m.Location, 3) && !Utility.InRange(this.Location, oldLocation, 3))
             {
                 int count = 1 + Utility.Random(4);

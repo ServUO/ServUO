@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -19,8 +18,8 @@ namespace Server.Mobiles
             SetInt(285, 310);
 
             SetHits(150, 160);
-			SetMana(285, 310);
-			SetStam(145, 165);
+            SetMana(285, 310);
+            SetStam(145, 165);
 
             SetDamage(15, 18);
 
@@ -40,8 +39,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.Wrestling, 80.2, 90.0);
             SetSkill(SkillName.Hiding, 105.0, 110.0);
             SetSkill(SkillName.Stealth, 105.0, 110.0);
-			
-			PackItem(new SpidersSilk(8));
+
+            PackItem(new SpidersSilk(8));
 
             Tamable = true;
             ControlSlots = 2;
@@ -82,7 +81,7 @@ namespace Server.Mobiles
             }
         }
         public override void GenerateLoot()
-        {           
+        {
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.Gems, 2);
         }

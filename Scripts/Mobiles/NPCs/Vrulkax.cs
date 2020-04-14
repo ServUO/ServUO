@@ -1,10 +1,10 @@
-using System;
 using Server.Items;
-using System.Collections.Generic;
 using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Vrulkax : BaseVendor
     {
         protected readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
@@ -24,7 +24,7 @@ namespace Server.Engines.Quests
             Name = "Vrulkax";
         }
 
-        private Type[][] _Table = 
+        private Type[][] _Table =
         {
             new Type[] { typeof(BritchesOfWarding), typeof(GargishBritchesOfWarding) },
             new Type[] { typeof(GlovesOfFeudalGrip), typeof(GargishKiltOfFeudalVise) },

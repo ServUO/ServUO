@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Regions
 {
     public class SpawnPersistence : Item

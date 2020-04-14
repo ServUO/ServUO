@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class LoomSouthAddon : BaseAddon, ILoom
@@ -50,7 +48,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {

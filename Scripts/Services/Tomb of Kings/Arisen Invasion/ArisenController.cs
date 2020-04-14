@@ -1,6 +1,6 @@
-﻿using System;
-using Server.Commands;
+﻿using Server.Commands;
 using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
@@ -189,10 +189,10 @@ namespace Server.Items
                 }
                 else
                 {
-					if (!spawner.Running)
-					{
-						spawner.Respawn();
-					}
+                    if (!spawner.Running)
+                    {
+                        spawner.Respawn();
+                    }
                 }
             }
         }

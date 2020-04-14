@@ -1,6 +1,3 @@
-using System;
-using Reward = Server.Engines.Quests.BaseReward;
-
 namespace Server.Items
 {
     public class JaacarBox : WoodenBox

@@ -1,10 +1,9 @@
-using Server;
-using System;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
-using System.Linq;
 using Server.Regions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Engines.ArenaSystem
 {
@@ -176,7 +175,7 @@ namespace Server.Engines.ArenaSystem
 
         public void RemovePendingDuel(ArenaDuel duel, bool cancel = false)
         {
-            if(PendingDuels.ContainsKey(duel))
+            if (PendingDuels.ContainsKey(duel))
             {
                 PendingDuels.Remove(duel);
 
@@ -266,7 +265,7 @@ namespace Server.Engines.ArenaSystem
                 }
             }
 
-            if(winner)
+            if (winner)
             {
                 for (int i = 0; i < 5; i++)
                 {
@@ -281,7 +280,7 @@ namespace Server.Engines.ArenaSystem
             {
                 IPooledEnumerable eable = map.GetMobilesInRange(m.Location, 5);
 
-                foreach(Mobile mob in eable)
+                foreach (Mobile mob in eable)
                 {
                     if (mob is ArenaManager)
                     {
@@ -459,7 +458,7 @@ namespace Server.Engines.ArenaSystem
 
             if (Stone != null)
                 Stone.Arena = this;
-            
+
             if (Manager != null)
                 Manager.Arena = this;
 
@@ -484,10 +483,10 @@ namespace Server.Engines.ArenaSystem
 
         public int CompareTo(ArenaStats stats)
         {
-            if(Ranking > stats.Ranking)
+            if (Ranking > stats.Ranking)
                 return -1;
 
-            if(Ranking < stats.Ranking)
+            if (Ranking < stats.Ranking)
                 return 1;
 
             return 0;

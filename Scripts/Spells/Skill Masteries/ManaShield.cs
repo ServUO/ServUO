@@ -1,9 +1,6 @@
-using System;
-using Server;
-using Server.Spells;
-using Server.Network;
 using Server.Mobiles;
 using Server.Spells.Spellweaving;
+using System;
 
 namespace Server.Spells.SkillMasteries
 {

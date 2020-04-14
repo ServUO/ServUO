@@ -1,6 +1,3 @@
-using System;
-using Server.Items;
-
 namespace Server.Mobiles
 {
     [CorpseName("a clan scratch henchrat corpse")]
@@ -67,7 +64,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 3);	
+            this.AddLoot(LootPack.Rich, 3);
         }
 
         public override void Serialize(GenericWriter writer)

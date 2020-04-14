@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     [Flipable(0x1F03, 0x1F04)]
     public class RobeOfTheEquinox : BaseOuterTorso, ICanBeElfOrHuman
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
 
         private bool _ElfOnly;
         public override Race RequiredRace { get { return _ElfOnly ? Race.Elf : null; } }

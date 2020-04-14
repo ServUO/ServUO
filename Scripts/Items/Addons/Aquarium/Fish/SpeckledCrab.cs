@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class SpeckledCrab : BaseFish
-    { 
+    {
         [Constructable]
         public SpeckledCrab()
             : base(0x3AFC)
@@ -12,7 +10,7 @@ namespace Server.Items
 
         public SpeckledCrab(Serial serial)
             : base(serial)
-        { 
+        {
         }
 
         public override int LabelNumber

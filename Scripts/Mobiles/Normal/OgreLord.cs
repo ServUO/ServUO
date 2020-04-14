@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("an ogre lords corpse")]
@@ -41,7 +39,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-      
+
         public override bool CanRummageCorpses
         {
             get

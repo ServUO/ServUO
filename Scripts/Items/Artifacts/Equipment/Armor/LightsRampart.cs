@@ -1,14 +1,12 @@
-using System;
-
 namespace Server.Items
 {
     public class LightsRampart : MetalShield
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public LightsRampart()
         {
-            Hue = 1272;			
+            Hue = 1272;
             Attributes.SpellChanneling = 1;
             Attributes.DefendChance = 20;
         }

@@ -1,6 +1,6 @@
+using Server.Engines.Craft;
 using System;
 using System.Collections.Generic;
-using Server.Engines.Craft;
 
 namespace Server.Engines.BulkOrders
 {
@@ -116,7 +116,7 @@ namespace Server.Engines.BulkOrders
                 if (theirSkill >= 70.1)
                     excChance = (theirSkill + 80.0) / 200.0;
 
-                bool reqExceptional = !nonexceptional  && excChance > Utility.RandomDouble();
+                bool reqExceptional = !nonexceptional && excChance > Utility.RandomDouble();
 
                 CraftSystem system = DefCooking.CraftSystem;
 

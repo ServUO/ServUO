@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
-using Server.Multis;
-using Server.Mobiles;
 using Server.Gumps;
+using Server.Mobiles;
+using Server.Multis;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -40,19 +39,19 @@ namespace Server.Items
         {
             if (IsChildOf(from.Backpack))
             {
-                if(from is PlayerMobile)
+                if (from is PlayerMobile)
                     BaseGump.SendGump(new AddCustomizableMessageGump((PlayerMobile)from, this));
             }
             else
             {
                 from.SendLocalizedMessage(1116249); // That must be in your backpack for you to use it.
-            }            
+            }
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);            
-            
+            base.GetProperties(list);
+
             if (Lines != null)
             {
                 for (int i = 0; i < Lines.Length; i++)

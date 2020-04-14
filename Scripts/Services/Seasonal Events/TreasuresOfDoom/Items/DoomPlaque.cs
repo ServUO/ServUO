@@ -1,11 +1,8 @@
+using Server.Engines.Points;
+using Server.Network;
+using Server.Prompts;
 using System;
 using System.Collections.Generic;
-
-using Server;
-using Server.Mobiles;
-using Server.Prompts;
-using Server.Network;
-using Server.Engines.Points;
 
 namespace Server.Items
 {
@@ -20,7 +17,7 @@ namespace Server.Items
 
         [Constructable]
         public DoomPlaque()
-            : base(0x4B20) 
+            : base(0x4B20)
         {
             Movable = false;
             Hue = 2500;

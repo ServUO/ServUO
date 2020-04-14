@@ -1,19 +1,17 @@
-using System;
-
 namespace Server.Items
 {
     public class VoidInfusedKilt : GargishPlateKilt
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113868; } } // Void Infused Kilt
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113868; } } // Void Infused Kilt
+
         [Constructable]
         public VoidInfusedKilt()
             : base()
         {
-            Hue = 2124;		
-            Attributes.AttackChance = 5;			
-            Attributes.BonusStr = 5;	
+            Hue = 2124;
+            Attributes.AttackChance = 5;
+            Attributes.BonusStr = 5;
             Attributes.BonusDex = 5;
             Attributes.RegenMana = 1;
             Attributes.RegenStam = 1;
@@ -73,7 +71,7 @@ namespace Server.Items
             {
                 return 255;
             }
-        }      
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

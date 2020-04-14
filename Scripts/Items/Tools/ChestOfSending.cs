@@ -1,13 +1,11 @@
-using Server;
-using System;
-using Server.Multis;
 using Server.ContextMenus;
-using System.Collections.Generic;
-using Server.Regions;
-using Server.Mobiles;
-using Server.Targeting;
 using Server.Gumps;
+using Server.Multis;
 using Server.Network;
+using Server.Regions;
+using Server.Targeting;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -66,7 +64,7 @@ namespace Server.Items
                 from.SendLocalizedMessage(1112573); // This must be locked down or secured in order to use it.
             else if (m_Charges == 0)
                 from.SendLocalizedMessage(1019073); // This item is out of charges.
-            else if(CheckAccessible(from, this))
+            else if (CheckAccessible(from, this))
                 from.Target = new SendTarget(this);
         }
 
@@ -88,14 +86,14 @@ namespace Server.Items
             if (house == null)
                 return false;
 
-            switch ( m_Level )
-			{
+            switch (m_Level)
+            {
                 case SecureLevel.Owner: return house.IsOwner(from);
                 case SecureLevel.CoOwners: return house.IsCoOwner(from);
                 case SecureLevel.Friends: return house.IsFriend(from);
-				case SecureLevel.Anyone: return true;
+                case SecureLevel.Anyone: return true;
                 case SecureLevel.Guild: return house.IsGuildMember(from);
-			}
+            }
 
             return false;
         }
@@ -226,7 +224,7 @@ namespace Server.Items
             {
                 case 2:
                 case 1:
-                    if(version == 1)
+                    if (version == 1)
                         reader.ReadInt();
                     goto case 0;
                 case 0:

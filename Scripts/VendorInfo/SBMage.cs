@@ -1,6 +1,6 @@
+using Server.Items;
 using System;
 using System.Collections.Generic;
-using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -32,9 +32,9 @@ namespace Server.Mobiles
             public InternalBuyInfo()
             {
                 Add(new GenericBuyInfo(typeof(Spellbook), 18, 10, 0xEFA, 0));
-				
+
                 Add(new GenericBuyInfo(typeof(NecromancerSpellbook), 115, 10, 0x2253, 0));
-				
+
                 Add(new GenericBuyInfo(typeof(ScribesPen), 8, 10, 0xFBF, 0));
 
                 Add(new GenericBuyInfo(typeof(BlankScroll), 5, 20, 0x0E34, 0));
@@ -90,14 +90,14 @@ namespace Server.Mobiles
             public InternalSellInfo()
             {
                 Add(typeof(WizardsHat), 15);
-                Add(typeof(BlackPearl), 3); 
-                Add(typeof(Bloodmoss), 4); 
-                Add(typeof(MandrakeRoot), 2); 
-                Add(typeof(Garlic), 2); 
-                Add(typeof(Ginseng), 2); 
-                Add(typeof(Nightshade), 2); 
-                Add(typeof(SpidersSilk), 2); 
-                Add(typeof(SulfurousAsh), 2); 
+                Add(typeof(BlackPearl), 3);
+                Add(typeof(Bloodmoss), 4);
+                Add(typeof(MandrakeRoot), 2);
+                Add(typeof(Garlic), 2);
+                Add(typeof(Ginseng), 2);
+                Add(typeof(Nightshade), 2);
+                Add(typeof(SpidersSilk), 2);
+                Add(typeof(SulfurousAsh), 2);
 
                 Add(typeof(BatWing), 1);
                 Add(typeof(DaemonBlood), 3);

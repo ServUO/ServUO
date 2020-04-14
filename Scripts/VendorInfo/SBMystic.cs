@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -81,15 +80,15 @@ namespace Server.Mobiles
                 Add(typeof(MysticBook), 9);
                 Add(typeof(RecallRune), 13);
 
-                Add(typeof(BlackPearl), 3); 
-                Add(typeof(Bloodmoss), 4); 
-                Add(typeof(MandrakeRoot), 2); 
-                Add(typeof(Garlic), 2); 
-                Add(typeof(Ginseng), 2); 
-                Add(typeof(Nightshade), 2); 
-                Add(typeof(SpidersSilk), 2); 
-                Add(typeof(SulfurousAsh), 2); 
-                
+                Add(typeof(BlackPearl), 3);
+                Add(typeof(Bloodmoss), 4);
+                Add(typeof(MandrakeRoot), 2);
+                Add(typeof(Garlic), 2);
+                Add(typeof(Ginseng), 2);
+                Add(typeof(Nightshade), 2);
+                Add(typeof(SpidersSilk), 2);
+                Add(typeof(SulfurousAsh), 2);
+
                 Add(typeof(NetherBoltScroll), 4);
                 Add(typeof(HealingStoneScroll), 6);
             }

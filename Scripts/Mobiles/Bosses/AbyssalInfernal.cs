@@ -1,9 +1,9 @@
-using System;
 using Server.Engines.CannedEvil;
 using Server.Items;
+using Server.Network;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Server.Network;
 
 namespace Server.Mobiles
 {
@@ -13,7 +13,7 @@ namespace Server.Mobiles
         private static Dictionary<Mobile, Point3D> m_Table = new Dictionary<Mobile, Point3D>();
 
         private DateTime m_NextAbility;
-        
+
         [Constructable]
         public AbyssalInfernal()
             : base(AIType.AI_Mage)
@@ -55,7 +55,7 @@ namespace Server.Mobiles
         public AbyssalInfernal(Serial serial)
             : base(serial)
         {
-        }        
+        }
 
         public override ChampionSkullType SkullType { get { return ChampionSkullType.None; } }
         public override Type[] UniqueList { get { return new Type[] { typeof(TongueOfTheBeast), typeof(DeathsHead), typeof(WallOfHungryMouths), typeof(AbyssalBlade) }; } }
@@ -215,7 +215,7 @@ namespace Server.Mobiles
             {
                 Misc.Geometry.Circle2D(Location, Map, i, (pnt, map) =>
                 {
-                    Effects.SendLocationParticles(EffectItem.Create(pnt, map, EffectItem.DefaultDuration), 0x3709, 10, 30, 5052);                    
+                    Effects.SendLocationParticles(EffectItem.Create(pnt, map, EffectItem.DefaultDuration), 0x3709, 10, 30, 5052);
                 });
             }
 
@@ -316,7 +316,7 @@ namespace Server.Mobiles
         {
             if (Map == null || TotalSummons() > 0)
                 return;
-            
+
             Type type = SummonTypes[Utility.Random(SummonTypes.Length)];
 
             for (int i = 0; i < 3; i++)

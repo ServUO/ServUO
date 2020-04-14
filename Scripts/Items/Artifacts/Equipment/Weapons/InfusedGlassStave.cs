@@ -1,18 +1,16 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x905, 0x4070)]
     public class InfusedGlassStave : BaseStaff
-	{
-		public override int LabelNumber { get { return 1112909; } } // infused glass stave
-		
+    {
+        public override int LabelNumber { get { return 1112909; } } // infused glass stave
+
         [Constructable]
         public InfusedGlassStave()
             : base(0x905)
         {
             Weight = 4.0;
-            Hue = 23; 
+            Hue = 23;
         }
 
         public InfusedGlassStave(Serial serial)
@@ -62,7 +60,7 @@ namespace Server.Items
                 return 2.25f;
             }
         }
-       
+
         public override int InitMinHits
         {
             get

@@ -1,4 +1,3 @@
-using System;
 using Server.Mobiles;
 using Server.Targeting;
 
@@ -58,8 +57,8 @@ namespace Server.Items
         protected override void OnTarget(Mobile from, object target)
         {
             if (m_Potion == null || m_Potion.Deleted || !m_Potion.IsChildOf(from.Backpack))
-                    return;
-                    
+                return;
+
             if (target is BaseCreature)
             {
                 BaseCreature t = (BaseCreature)target;
@@ -76,7 +75,7 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1152924); // That is not a valid pet.
                 }
-			    else if (target is BaseTalismanSummon)
+                else if (target is BaseTalismanSummon)
                 {
                     from.SendLocalizedMessage(1152924); // That is not a valid pet.
                 }

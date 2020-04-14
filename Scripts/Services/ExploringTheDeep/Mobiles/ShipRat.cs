@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Server.Mobiles
+﻿namespace Server.Mobiles
 {
     [CorpseName("a ship rat corpse")]
     public class ShipRat : BaseCreature

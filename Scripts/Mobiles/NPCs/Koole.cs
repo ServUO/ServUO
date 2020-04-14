@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class TroubleOnTheWingQuest : BaseQuest
-    { 
+    {
         public TroubleOnTheWingQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Gargoyle), "gargoyles", 12, "Sanctuary"));
-			
+
             this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
@@ -68,11 +68,11 @@ namespace Server.Engines.Quests
     }
 
     public class Koole : MondainQuester
-    { 
+    {
         [Constructable]
         public Koole()
             : base("Koole", "the arcanist")
-        { 
+        {
         }
 
         public Koole(Serial serial)
@@ -81,10 +81,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(DishBestServedColdQuest),
                     typeof(TroubleOnTheWingQuest),
@@ -96,10 +96,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x83E5;
             this.HairItemID = 0x2FBF;
             this.HairHue = 0x386;
@@ -110,13 +110,13 @@ namespace Server.Engines.Quests
             this.AddItem(new Boots(0x901));
             this.AddItem(new RoyalCirclet());
             this.AddItem(new LeafTonlet());
-			
+
             Item item;
-			
+
             item = new LeafChest();
             item.Hue = 0x1BB;
             this.AddItem(item);
-			
+
             item = new LeafArms();
             item.Hue = 0x1BB;
             this.AddItem(item);

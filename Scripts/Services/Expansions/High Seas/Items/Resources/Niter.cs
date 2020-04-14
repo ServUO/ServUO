@@ -1,7 +1,6 @@
-﻿using System;
-using Server;
+﻿using Server.Engines.Harvest;
+using System;
 using System.Collections.Generic;
-using Server.Engines.Harvest;
 
 namespace Server.Items
 {
@@ -21,27 +20,27 @@ namespace Server.Items
         private int m_Hits;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Hits 
-        { 
-            get 
-            { 
-                return m_Hits; 
-            } 
+        public int Hits
+        {
+            get
+            {
+                return m_Hits;
+            }
             set
-            { 
-                m_Hits = value; 
+            {
+                m_Hits = value;
                 InvalidateSize();
-            } 
+            }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public NiterSize Size 
-        { 
+        public NiterSize Size
+        {
             get { return m_Size; }
-            set 
-            { 
-                m_Size = value; 
-                InvalidateID(); 
+            set
+            {
+                m_Size = value;
+                InvalidateID();
             }
         }
 

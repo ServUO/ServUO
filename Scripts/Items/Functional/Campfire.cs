@@ -1,7 +1,7 @@
-using System;
-using System.Collections;
 using Server.Mobiles;
 using Server.Network;
+using System;
+using System.Collections;
 
 namespace Server.Items
 {
@@ -49,7 +49,7 @@ namespace Server.Items
         {
             get
             {
-                switch ( this.ItemID )
+                switch (this.ItemID)
                 {
                     case 0xDE3:
                         return CampfireStatus.Burning;
@@ -66,7 +66,7 @@ namespace Server.Items
                 if (this.Status == value)
                     return;
 
-                switch ( value )
+                switch (value)
                 {
                     case CampfireStatus.Burning:
                         this.ItemID = 0xDE3;

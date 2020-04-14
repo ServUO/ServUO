@@ -1,9 +1,7 @@
+using Server.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Server.Mobiles;
-using Server.Network;
 
 namespace Server.Spells.Spellweaving
 {
@@ -73,13 +71,13 @@ namespace Server.Spells.Spellweaving
                 int damage = Math.Max(11, 10 + (int)(skill / 24)) + FocusLevel;
 
                 int sdiBonus = AosAttributes.GetValue(Caster, AosAttribute.SpellDamage);
-						
+
                 int pvmDamage = damage * (100 + sdiBonus);
                 pvmDamage /= 100;
 
                 if (sdiBonus > 15)
                     sdiBonus = 15;
-						
+
                 int pvpDamage = damage * (100 + sdiBonus);
                 pvpDamage /= 100;
 

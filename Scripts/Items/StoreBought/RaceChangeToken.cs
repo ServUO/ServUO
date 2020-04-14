@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Server;
-using Server.Mobiles;
+﻿using Server.Engines.Quests;
 using Server.Gumps;
-using Server.Network;
-using Server.Engines.Quests;
+using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -198,7 +196,7 @@ namespace Server.Items
 
             switch (id)
             {
-                case 0: 
+                case 0:
                     break;
                 case 1:
                     Mode = GumpMode.Select;

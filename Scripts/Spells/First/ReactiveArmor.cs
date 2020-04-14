@@ -96,7 +96,7 @@ namespace Server.Spells.First
             }
 
             this.FinishSequence();
-			
+
         }
 
         public static bool HasArmor(Mobile m)

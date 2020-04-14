@@ -289,7 +289,7 @@ namespace Server
         {
             this.Push(typeof(int));
 
-            switch ( value )
+            switch (value)
             {
                 case -1:
                     this.m_Generator.Emit(OpCodes.Ldc_I4_M1);
@@ -346,7 +346,7 @@ namespace Server
 
             int index = local.LocalIndex;
 
-            switch ( index )
+            switch (index)
             {
                 case 0:
                     this.m_Generator.Emit(OpCodes.Ldloc_0);
@@ -384,7 +384,7 @@ namespace Server
             else
                 this.Push(this.m_TypeBuilder);
 
-            switch ( index )
+            switch (index)
             {
                 case 0:
                     this.m_Generator.Emit(OpCodes.Ldarg_0);
@@ -513,7 +513,7 @@ namespace Server
                 * 
                 * Bleh.
                 */
-                Type[] ifaces = active.FindInterfaces(delegate(Type type, object obj)
+                Type[] ifaces = active.FindInterfaces(delegate (Type type, object obj)
                 {
                     return (type.IsGenericType) &&
                            (type.GetGenericTypeDefinition() == typeof(IComparable<>)) &&
@@ -526,7 +526,7 @@ namespace Server
                 }
                 else
                 {
-                    ifaces = active.FindInterfaces(delegate(Type type, object obj)
+                    ifaces = active.FindInterfaces(delegate (Type type, object obj)
                     {
                         return (type == typeof(IComparable));
                     }, null);

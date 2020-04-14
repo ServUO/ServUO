@@ -1,4 +1,3 @@
-using System;
 using Server.Gumps;
 using Server.Targeting;
 
@@ -25,7 +24,7 @@ namespace Server.Spells.Eighth
                 return SpellCircle.Eighth;
             }
         }
-        
+
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);

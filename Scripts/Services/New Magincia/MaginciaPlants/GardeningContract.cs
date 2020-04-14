@@ -1,13 +1,13 @@
-using System;
-using Server.Targeting;
 using Server.Engines.Plants;
+using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
     public class GardeningContract : Item
     {
         public override int LabelNumber { get { return 1155764; } } // Gardening Contract
-        
+
         [Constructable]
         public GardeningContract()
             : base(0x14F0)

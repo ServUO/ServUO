@@ -1,8 +1,3 @@
-using System;
-using Server;
-using Server.Items;
-using Server.Engines.MyrmidexInvasion;
-
 namespace Server.Mobiles
 {
     [CorpseName("a kotl warrior corpse")]

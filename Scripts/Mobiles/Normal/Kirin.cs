@@ -1,6 +1,6 @@
-using System;
-using Server.Network;
 using Server.Items;
+using Server.Network;
+using System;
 
 namespace Server.Mobiles
 {
@@ -149,7 +149,7 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.Potions);
         }
 
-		public override void OnDeath(Container c)
+        public override void OnDeath(Container c)
         {
             base.OnDeath(c);
 

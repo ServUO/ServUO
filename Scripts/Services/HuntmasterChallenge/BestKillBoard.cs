@@ -1,21 +1,19 @@
-using Server;
-using System;
-using Server.Mobiles;
 using Server.Engines.HuntsmasterChallenge;
-using System.Collections.Generic;
 using Server.Gumps;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
-	public class BestKillBoard : Item
-	{
+    public class BestKillBoard : Item
+    {
         public override string DefaultName { get { return "Top 10 Kill Board"; } }
 
         [Constructable]
-		public BestKillBoard() : base(7775)
-		{
+        public BestKillBoard() : base(7775)
+        {
             Movable = false;
-		}
+        }
 
         public override void OnDoubleClick(Mobile from)
         {
@@ -26,21 +24,21 @@ namespace Server.Items
             }
         }
 
-		public BestKillBoard(Serial serial) : base(serial) 
-		{
-		}
+        public BestKillBoard(Serial serial) : base(serial)
+        {
+        }
 
-		public override void Serialize(GenericWriter writer)
-		{
+        public override void Serialize(GenericWriter writer)
+        {
             base.Serialize(writer);
-			writer.Write((int)0);
-		}
+            writer.Write((int)0);
+        }
 
         public override void Deserialize(GenericReader reader)
-		{
+        {
             base.Deserialize(reader);
-			int v = reader.ReadInt();
-		}
+            int v = reader.ReadInt();
+        }
 
         private class BestKillGump : Gump
         {
@@ -64,11 +62,11 @@ namespace Server.Items
                 {
                     foreach (KeyValuePair<HuntType, List<HuntingKillEntry>> kvp in HuntingSystem.Instance.Top10)
                     {
-                        if(kvp.Value.Count > 0)
+                        if (kvp.Value.Count > 0)
                             useList.AddRange(kvp.Value);
                     }
                 }
-                else if(HuntingSystem.Instance.Top10.ContainsKey((HuntType)m_Filter))
+                else if (HuntingSystem.Instance.Top10.ContainsKey((HuntType)m_Filter))
                 {
                     useList = HuntingSystem.Instance.Top10[(HuntType)m_Filter];
                 }
@@ -141,23 +139,23 @@ namespace Server.Items
                     case HuntType.Alligator: return "Alligator";
                     case HuntType.Eagle: return "Eagle";
                     //Publish 91 added:
-					case HuntType.MyrmidexLarvae: return "Myrmidex Larvae";
-					case HuntType.Najasaurus: return "Najasaurus";
-					case HuntType.Anchisaur: return "Anchisaur";
-					case HuntType.Allosaurus: return "Allosaurus";
-					case HuntType.Dimetrosaur: return "Dimetrosaur";
-					case HuntType.Saurosaurus: return "Saurosaurus";
-					//Publish 95 added:
-					case HuntType.Tiger: return "Tiger";
-					case HuntType.MyrmidexDrone: return "Myrmidex Drone";
+                    case HuntType.MyrmidexLarvae: return "Myrmidex Larvae";
+                    case HuntType.Najasaurus: return "Najasaurus";
+                    case HuntType.Anchisaur: return "Anchisaur";
+                    case HuntType.Allosaurus: return "Allosaurus";
+                    case HuntType.Dimetrosaur: return "Dimetrosaur";
+                    case HuntType.Saurosaurus: return "Saurosaurus";
+                    //Publish 95 added:
+                    case HuntType.Tiger: return "Tiger";
+                    case HuntType.MyrmidexDrone: return "Myrmidex Drone";
                     case HuntType.Triceratops: return "Triceratops";
-					case HuntType.Lion: return "Lion";
-					case HuntType.WhiteTiger: return "White Tiger";
-					case HuntType.BlackTiger: return "Black Tiger";
+                    case HuntType.Lion: return "Lion";
+                    case HuntType.WhiteTiger: return "White Tiger";
+                    case HuntType.BlackTiger: return "Black Tiger";
                     //Publish 102 added:
-					case HuntType.Raptor: return "Raptor";
-					case HuntType.SeaSerpent: return "Sea Serpent";
-					case HuntType.Scorpion: return "Scorpion";
+                    case HuntType.Raptor: return "Raptor";
+                    case HuntType.SeaSerpent: return "Sea Serpent";
+                    case HuntType.Scorpion: return "Scorpion";
                 }
             }
 
@@ -176,25 +174,25 @@ namespace Server.Items
                     case (int)HuntType.Alligator: return "Alligator";
                     case (int)HuntType.Eagle: return "Eagle";
                     //Publish 91 added:
-					case (int)HuntType.MyrmidexLarvae: return "Myrmidex Larvae";
-					case (int)HuntType.Najasaurus: return "Najasaurus";
-					case (int)HuntType.Anchisaur: return "Anchisaur";
-					case (int)HuntType.Allosaurus: return "Allosaurus";
-					case (int)HuntType.Dimetrosaur: return "Dimetrosaur";
-					case (int)HuntType.Saurosaurus: return "Saurosaurus";
-					//Publish 95 added:
-					case (int)HuntType.Tiger: return "Tiger";
-					case (int)HuntType.MyrmidexDrone: return "Myrmidex Drone";
+                    case (int)HuntType.MyrmidexLarvae: return "Myrmidex Larvae";
+                    case (int)HuntType.Najasaurus: return "Najasaurus";
+                    case (int)HuntType.Anchisaur: return "Anchisaur";
+                    case (int)HuntType.Allosaurus: return "Allosaurus";
+                    case (int)HuntType.Dimetrosaur: return "Dimetrosaur";
+                    case (int)HuntType.Saurosaurus: return "Saurosaurus";
+                    //Publish 95 added:
+                    case (int)HuntType.Tiger: return "Tiger";
+                    case (int)HuntType.MyrmidexDrone: return "Myrmidex Drone";
                     case (int)HuntType.Triceratops: return "Triceratops";
-					case (int)HuntType.Lion: return "Lion";
-					case (int)HuntType.WhiteTiger: return "White Tiger";
-					case (int)HuntType.BlackTiger: return "Black Tiger";
+                    case (int)HuntType.Lion: return "Lion";
+                    case (int)HuntType.WhiteTiger: return "White Tiger";
+                    case (int)HuntType.BlackTiger: return "Black Tiger";
                     //Publish 102 added:
-					case (int)HuntType.Raptor: return "Raptor";
-					case (int)HuntType.SeaSerpent: return "Sea Serpent";
-					case (int)HuntType.Scorpion: return "Scorpion";
+                    case (int)HuntType.Raptor: return "Raptor";
+                    case (int)HuntType.SeaSerpent: return "Sea Serpent";
+                    case (int)HuntType.Scorpion: return "Scorpion";
                 }
             }
         }
-	}
+    }
 }

@@ -1,11 +1,9 @@
+using Server.Engines.Craft;
+using Server.Mobiles;
+using Server.Network;
+using Server.Targeting;
 using System;
 using System.Linq;
-
-using Server;
-using Server.Network;
-using Server.Mobiles;
-using Server.Targeting;
-using Server.Engines.Craft;
 
 namespace Server.Items
 {

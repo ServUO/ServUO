@@ -1,5 +1,3 @@
-using System;
-using Server;
 using Server.Items;
 using System.Collections.Generic;
 
@@ -7,7 +5,7 @@ namespace Server.Mobiles.MannequinProperty
 {
     public abstract class ResistAttr : ValuedProperty
     {
-        public override Catalog Catalog { get { return Catalog.Resistances; } }        
+        public override Catalog Catalog { get { return Catalog.Resistances; } }
         public override bool AlwaysVisible { get { return true; } }
         public abstract ResistanceType Resist { get; }
         public override int Hue { get { return 0x42FF; } }

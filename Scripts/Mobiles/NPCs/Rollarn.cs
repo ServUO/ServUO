@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class BrotherlyLoveQuest : BaseQuest
-    { 
+    {
         public BrotherlyLoveQuest()
             : base()
-        { 
+        {
             AddObjective(new DeliverObjective(typeof(PersonalLetterAhie), "letter", 1, typeof(Ahie), "Ahie (The Heartwood)", 1800));
-			
+
             AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
@@ -77,11 +77,11 @@ namespace Server.Engines.Quests
     }
 
     public class Rollarn : MondainQuester
-    { 
+    {
         [Constructable]
         public Rollarn()
             : base("Lorekeeper Rollarn", "the keeper of tradition")
-        { 
+        {
         }
 
         public Rollarn(Serial serial)
@@ -90,10 +90,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(DaemonicPrismQuest),
                     typeof(HowManyHeadsQuest),
@@ -107,11 +107,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = false;
             CantWalk = true;
             Race = Race.Elf;
-			
+
             Hue = 0x84DE;
             HairItemID = 0x2FC1;
             HairHue = 0x320;
@@ -124,9 +124,9 @@ namespace Server.Engines.Quests
             AddItem(new Cloak(0x296));
             AddItem(new LeafChest());
             AddItem(new LeafArms());
-			
+
             Item item;
-			
+
             item = new LeafLegs();
             item.Hue = 0x74E;
             AddItem(item);

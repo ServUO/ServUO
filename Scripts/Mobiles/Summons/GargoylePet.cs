@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a gargoyle corpse")]
@@ -10,7 +8,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Name = "a gargoyle pet";
-            this.Body = 730; 
+            this.Body = 730;
 
             this.SetStr(500, 512);
             this.SetDex(90, 94);

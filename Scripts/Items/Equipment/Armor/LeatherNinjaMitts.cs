@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class LeatherNinjaMitts : BaseArmor
@@ -104,7 +102,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {

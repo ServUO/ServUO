@@ -1,7 +1,7 @@
-using System;
-using System.Collections;
 using Server.Items;
 using Server.Network;
+using System;
+using System.Collections;
 
 namespace Server.Mobiles
 {
@@ -43,10 +43,10 @@ namespace Server.Mobiles
 
             Fame = 9000;
             Karma = -9000;
-			
+
             if (Utility.RandomDouble() < .33)
                 PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
-			
+
             if (0.02 >= Utility.RandomDouble())
                 PackItem(new OrigamiPaper());
 
@@ -57,8 +57,8 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-		
-		public override int TreasureMapLevel { get { return 3; } }
+
+        public override int TreasureMapLevel { get { return 3; } }
 
         public override bool Uncalmable
         {
@@ -137,7 +137,7 @@ namespace Server.Mobiles
                 //AOS.Damage( defender, this, Utility.RandomMinMax( 35, 45 ), 0, 100, 0, 0, 0 );
 
                 defender.AddResistanceMod(mod);
-		
+
                 ExpireTimer timer = new ExpireTimer(defender, mod, TimeSpan.FromSeconds(10.0));
                 timer.Start();
 

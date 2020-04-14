@@ -1,11 +1,9 @@
 using System;
-using Server.Misc;
-using Server.Mobiles;
 
 namespace Server.Items
 {
     public abstract class BasePigmentsOfTokuno : Item, IUsesRemaining
-    {      
+    {
         public override int LabelNumber
         {
             get
@@ -162,7 +160,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {

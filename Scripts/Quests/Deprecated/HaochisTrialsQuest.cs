@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests.Samurai
 {
@@ -7,7 +7,7 @@ namespace Server.Engines.Quests.Samurai
     {
         private static readonly Type[] m_TypeReferenceTable = new Type[]
         {
-            
+
         };
 
         public HaochisTrialsQuest(PlayerMobile from)
@@ -30,14 +30,14 @@ namespace Server.Engines.Quests.Samurai
         public override object Name
         {
             get
-            {               
+            {
                 return 1063022; // Haochi's Trials
             }
         }
         public override object OfferMessage
         {
             get
-            {               
+            {
                 return 1063023;
             }
         }
@@ -61,6 +61,6 @@ namespace Server.Engines.Quests.Samurai
             {
                 return 0x15D7;
             }
-        }               
+        }
     }
 }

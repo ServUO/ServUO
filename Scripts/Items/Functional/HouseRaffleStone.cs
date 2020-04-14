@@ -1,12 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
 using Server.Accounting;
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Network;
 using Server.Regions;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Text;
 
 namespace Server.Items
 {
@@ -43,7 +43,7 @@ namespace Server.Items
 
         public RaffleEntry(GenericReader reader, int version)
         {
-            switch ( version )
+            switch (version)
             {
                 case 3: // HouseRaffleStone version changes
                 case 2:
@@ -313,7 +313,7 @@ namespace Server.Items
 
                 if (stone.IsExpired)
                 {
-                    switch ( stone.ExpireAction )
+                    switch (stone.ExpireAction)
                     {
                         case HouseRaffleExpireAction.HideStone:
                             {
@@ -559,7 +559,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 3:
                     {

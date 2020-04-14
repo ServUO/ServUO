@@ -1,13 +1,11 @@
-﻿using System;
-
-namespace Server.Items
-{   
+﻿namespace Server.Items
+{
     public class MurkyMilk : Pitcher
     {
-		public override int LabelNumber {get {return 1153874;} } // Murky Milk
-		public override int MaxQuantity { get { return 5; } }
+        public override int LabelNumber { get { return 1153874; } } // Murky Milk
+        public override int MaxQuantity { get { return 5; } }
         public override double DefaultWeight { get { return 1; } }
-		
+
         [Constructable]
         public MurkyMilk()
             : base(BeverageType.Milk)
@@ -21,7 +19,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-              
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

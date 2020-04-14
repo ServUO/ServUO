@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x48C6, 0x48C7)]
@@ -88,10 +86,10 @@ namespace Server.Items
                 return 70;
             }
         }
-        
-		public override Race RequiredRace { get { return Race.Gargoyle; } }
+
+        public override Race RequiredRace { get { return Race.Gargoyle; } }
         public override bool CanBeWornByGargoyles { get { return true; } }
-		
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class LegendaryMapmakersGlasses : ElvenGlasses
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1159023; } } //Legendary Mapmaker's Glasses
 
         [Constructable]

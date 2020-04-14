@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class ShotAnArrowIntoTheAirQuest : BaseQuest
-    { 
+    {
         public ShotAnArrowIntoTheAirQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Sheep), "sheep", 10));
-						
+
             this.AddReward(new BaseReward(typeof(TrinketBag), 1072341)); // A bag of trinkets.
         }
 
@@ -69,7 +69,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Kashiel()
             : base("Kashiel", "the archer")
-        { 
+        {
         }
 
         public Kashiel(Serial serial)
@@ -78,10 +78,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(ShotAnArrowIntoTheAirQuest)
                 };
@@ -90,11 +90,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.CantWalk = true;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x83FE;
             this.HairItemID = 0x2045;
             this.HairHue = 0x1;
@@ -102,27 +102,27 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());			
+            this.AddItem(new Backpack());
             this.AddItem(new Boots(0x1BB));
-						
+
             Item item;
-			
+
             item = new LeatherLegs();
             item.Hue = 0x901;
             this.AddItem(item);
-			
+
             item = new LeatherGloves();
             item.Hue = 0x1BB;
             this.AddItem(item);
-			
+
             item = new LeatherChest();
             item.Hue = 0x1BB;
             this.AddItem(item);
-			
+
             item = new LeatherArms();
             item.Hue = 0x901;
-            this.AddItem(item);			
-			
+            this.AddItem(item);
+
             item = new CompositeBow();
             item.Hue = 0x606;
             this.AddItem(item);

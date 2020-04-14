@@ -1,12 +1,9 @@
-using Server;
-using System;
-
 namespace Server.Items
 {
     public class TunicBearingTheCrestOfBlackthorn : Tunic
     {
         public override bool IsArtifact { get { return true; } }
-        
+
         [Constructable]
         public TunicBearingTheCrestOfBlackthorn()
             : base()

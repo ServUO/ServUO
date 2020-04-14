@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.Commands;
 using Server.Network;
 using Server.Targeting;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -357,7 +357,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {
@@ -486,7 +486,7 @@ namespace Server.Items
             {
                 int x = m.X, y = m.Y;
 
-                switch ( m.Direction & Direction.Mask )
+                switch (m.Direction & Direction.Mask)
                 {
                     case Direction.North:
                         --y;

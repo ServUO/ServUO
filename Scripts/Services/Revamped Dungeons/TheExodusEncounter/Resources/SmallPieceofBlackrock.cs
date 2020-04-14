@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     public class SmallPieceofBlackrock : Item, ICommodity
     {
         [Constructable]
-        public SmallPieceofBlackrock(): this(1)
+        public SmallPieceofBlackrock() : this(1)
         {
         }
 

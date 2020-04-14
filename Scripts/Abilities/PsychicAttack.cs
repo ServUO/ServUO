@@ -42,7 +42,7 @@ namespace Server.Items
         }
 
         private static Dictionary<Mobile, PsychicAttackTimer> m_Registry = new Dictionary<Mobile, PsychicAttackTimer>();
-        public static Dictionary<Mobile, PsychicAttackTimer> Registry => m_Registry; 
+        public static Dictionary<Mobile, PsychicAttackTimer> Registry => m_Registry;
 
         public static void RemoveEffects(Mobile defender)
         {
@@ -66,7 +66,7 @@ namespace Server.Items
 
             public int SpellDamageMalus { get { return m_SpellDamageMalus; } set { m_SpellDamageMalus = value; m_DoneIncrease = true; } }
             public int ManaCostMalus { get { return m_ManaCostMalus; } set { m_ManaCostMalus = value; m_DoneIncrease = true; } }
-            public bool DoneIncrease => m_DoneIncrease; 
+            public bool DoneIncrease => m_DoneIncrease;
 
             public PsychicAttackTimer(Mobile defender)
                 : base(TimeSpan.FromSeconds(10))

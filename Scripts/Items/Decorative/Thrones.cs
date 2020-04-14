@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [Furniture]
@@ -51,7 +49,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override int LabelNumber { get { return 1015082; } } // Wooden Throne
 
         public override void Serialize(GenericWriter writer)

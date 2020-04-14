@@ -1,54 +1,52 @@
-using System;
-using Server;
+using Server.Gumps;
 using Server.Mobiles;
 using System.Collections.Generic;
-using Server.Gumps;
 
 namespace Server.Items
 {
-	public class MagicKey : BaseDecayingItem
-	{
-		private int m_Span;
+    public class MagicKey : BaseDecayingItem
+    {
+        private int m_Span;
 
         public override int LabelNumber { get { return 1024114; } } // magic key
-		public override int Lifespan { get { return m_Span; } }
-		
-		[Constructable]
-		public MagicKey() : base(4114)
-		{
-			m_Span = 0;
-			Movable = false;
-		}
-		
-		public override void OnDoubleClick(Mobile from)
-		{
-			if(RootParent != null || !from.InRange(GetWorldLocation(), 3) || Movable || IsLockedDown || IsSecure)
-				return;
-			else if (from.Backpack != null && m_Span == 0)
-			{
-				Item key = from.Backpack.FindItemByType(typeof(MagicKey));
-				
-				if(key == null)
-				{
-					if(from.HasGump(typeof(MagicKey.MagicKeyConfirmGump)))
-						from.CloseGump(typeof(MagicKey.MagicKeyConfirmGump));
+        public override int Lifespan { get { return m_Span; } }
+
+        [Constructable]
+        public MagicKey() : base(4114)
+        {
+            m_Span = 0;
+            Movable = false;
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (RootParent != null || !from.InRange(GetWorldLocation(), 3) || Movable || IsLockedDown || IsSecure)
+                return;
+            else if (from.Backpack != null && m_Span == 0)
+            {
+                Item key = from.Backpack.FindItemByType(typeof(MagicKey));
+
+                if (key == null)
+                {
+                    if (from.HasGump(typeof(MagicKey.MagicKeyConfirmGump)))
+                        from.CloseGump(typeof(MagicKey.MagicKeyConfirmGump));
 
                     from.SendGump(new MagicKeyConfirmGump(this));
-				}
-			}
-		}
-		
+                }
+            }
+        }
+
         public override void StartTimer()
         {
-			TimeLeft = 1800;
+            TimeLeft = 1800;
             m_Span = 1800;
             Movable = true;
             base.StartTimer();
             InvalidateProperties();
         }
-		
-		public override void Decay()
-		{
+
+        public override void Decay()
+        {
             if (RootParent is Mobile)
             {
                 Mobile m = (Mobile)RootParent;
@@ -85,18 +83,18 @@ namespace Server.Items
                 }
             }
 
-			base.Decay();
-		}
-		
-		private Rectangle2D m_PuzzleRoom = new Rectangle2D(1234, 1234, 10, 10);
-		
-		private class MagicKeyConfirmGump : Gump
-		{
-	        private MagicKey m_Key;
-			
-			public MagicKeyConfirmGump(MagicKey key) : base(50, 50)
-			{
-				m_Key = key;
+            base.Decay();
+        }
+
+        private Rectangle2D m_PuzzleRoom = new Rectangle2D(1234, 1234, 10, 10);
+
+        private class MagicKeyConfirmGump : Gump
+        {
+            private MagicKey m_Key;
+
+            public MagicKeyConfirmGump(MagicKey key) : base(50, 50)
+            {
+                m_Key = key;
 
                 AddPage(0);
                 AddBackground(0, 0, 297, 115, 9200);
@@ -112,7 +110,7 @@ namespace Server.Items
 
                 AddButton(215, 85, 4023, 4024, 1, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(250, 87, 80, 25, 1006044, 0x7FFF, false, false);  //OK
-			}
+            }
 
             public override void OnResponse(Server.Network.NetState state, RelayInfo info)
             {
@@ -129,24 +127,24 @@ namespace Server.Items
                     from.SendLocalizedMessage(1113389); // As long as you carry this key, you will be granted access to the Puzzle Room.
                 }
             }
-		}
-		
-		public MagicKey(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write((int)0);
-			writer.Write(m_Span);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-			m_Span = reader.ReadInt();
-		}
-	}
+        }
+
+        public MagicKey(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+            writer.Write(m_Span);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+            m_Span = reader.ReadInt();
+        }
+    }
 }

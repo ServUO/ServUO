@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a rat corpse")]
@@ -43,9 +41,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat => 1; 
-		
-        public override FoodType FavoriteFood => FoodType.Fish; 
+        public override int Meat => 1;
+
+        public override FoodType FavoriteFood => FoodType.Fish;
 
         public override void GenerateLoot()
         {

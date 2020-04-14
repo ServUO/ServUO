@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class WallBlood : Item
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public WallBlood()
             : base(Utility.RandomBool() ? 0x1D95 : 0x1D94)

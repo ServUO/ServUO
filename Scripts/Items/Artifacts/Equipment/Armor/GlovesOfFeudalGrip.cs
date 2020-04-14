@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class GlovesOfFeudalGrip : DragonGloves
@@ -28,7 +26,7 @@ namespace Server.Items
         public override int BaseFireResistance { get { return 15; } }
         public override int BaseColdResistance { get { return 15; } }
         public override int BasePoisonResistance { get { return 15; } }
-        public override int BaseEnergyResistance { get { return 15; } }        
+        public override int BaseEnergyResistance { get { return 15; } }
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
         public override CraftResource DefaultResource { get { return CraftResource.None; } }

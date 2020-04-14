@@ -1,27 +1,24 @@
-using System;
-using Server;
-using Server.Spells;
-using Server.Network;
-using Server.Mobiles;
 using Server.Items;
+using Server.Mobiles;
+using System;
 
 namespace Server.Spells.SkillMasteries
 {
-	public class CommandUndeadSpell : SkillMasterySpell
-	{
-		private static SpellInfo m_Info = new SpellInfo(
-				"Command Undead", "In Corp Xen Por",
-				204,
-				9061,
+    public class CommandUndeadSpell : SkillMasterySpell
+    {
+        private static SpellInfo m_Info = new SpellInfo(
+                "Command Undead", "In Corp Xen Por",
+                204,
+                9061,
                 Reagent.DaemonBlood,
                 Reagent.PigIron,
                 Reagent.BatWing
-			);
+            );
 
-		public override double RequiredSkill{ get { return 90; } }
-		public override double UpKeep { get { return 0; } }
-		public override int RequiredMana{ get { return 40; } }
-		public override bool PartyEffects { get { return false; } }
+        public override double RequiredSkill { get { return 90; } }
+        public override double UpKeep { get { return 0; } }
+        public override int RequiredMana { get { return 40; } }
+        public override bool PartyEffects { get { return false; } }
 
         public override SkillName CastSkill { get { return SkillName.Necromancy; } }
         public override SkillName DamageSkill { get { return SkillName.SpiritSpeak; } }
@@ -30,8 +27,8 @@ namespace Server.Spells.SkillMasteries
 
         public CommandUndeadSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
-		{
-		}
+        {
+        }
 
         public override void OnCast()
         {
@@ -156,5 +153,5 @@ namespace Server.Spells.SkillMasteries
 
             return entry != null && entry.Slays(bc);
         }
-	}
+    }
 }

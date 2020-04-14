@@ -92,7 +92,7 @@ namespace Server.Items
             if (version < 3)
                 m_InheritsItem = true;
 
-            switch ( version )
+            switch (version)
             {
                 case 3: // RedHerring/MudPuppy Conversion
                 case 2:

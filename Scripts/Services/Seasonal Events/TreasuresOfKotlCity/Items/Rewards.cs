@@ -1,8 +1,5 @@
-using System;
-using Server;
-using Server.Mobiles;
 using Server.Gumps;
-using Server.Network;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -14,7 +11,7 @@ namespace Server.Items
         public override BaseAddonDeed Deed { get { return new SkeletalHangmanAddonDeed(); } }
 
         [Constructable]
-        public SkeletalHangmanAddon() 
+        public SkeletalHangmanAddon()
             : this(null)
         {
         }

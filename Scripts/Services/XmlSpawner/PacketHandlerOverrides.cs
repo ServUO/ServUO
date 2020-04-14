@@ -1,13 +1,8 @@
 #define CLIENT6017
 
-using System;
-using System.IO;
-using System.Text;
-using Server;
-using Server.Network;
 using Server.Items;
-using Server.Mobiles;
-using Server.Engines.Quests;
+using Server.Network;
+using System;
 
 namespace Server.Engines.XmlSpawner2
 {

@@ -1,6 +1,6 @@
-using System;
 using Server.Gumps;
 using Server.Multis;
+using System;
 
 namespace Server.Items
 {
@@ -132,7 +132,7 @@ namespace Server.Items
                             Harvest = false;
                             NextHarvest = DateTime.UtcNow + TimeSpan.FromDays(7);
                             StartTimer();
-                        }                            
+                        }
                     }
                     else
                     {
@@ -146,7 +146,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

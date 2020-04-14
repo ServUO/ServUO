@@ -1,6 +1,4 @@
-using System;
 using Server.Items;
-using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -17,7 +15,7 @@ namespace Server.Mobiles
             HairItemID = Race.Human.RandomHair(this);
             HairHue = Race.Human.RandomHairHue();
 
-			Name = NameList.RandomName("male");
+            Name = NameList.RandomName("male");
             Title = "the Exodus Zealot";
 
             SetStr(150, 210);
@@ -40,9 +38,9 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 80.0, 100.0);
             SetSkill(SkillName.MagicResist, 50.0, 70.0);
             SetSkill(SkillName.Anatomy, 70.0, 100.0);
-			SetSkill(SkillName.Magery, 85.0, 100.0);
-			SetSkill(SkillName.EvalInt, 80.0, 100.0);
-			SetSkill(SkillName.Poisoning, 70.0, 100.0);
+            SetSkill(SkillName.Magery, 85.0, 100.0);
+            SetSkill(SkillName.EvalInt, 80.0, 100.0);
+            SetSkill(SkillName.Poisoning, 70.0, 100.0);
 
             Fame = 10000;
             Karma = -10000;
@@ -64,17 +62,17 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-        
-        public override bool AlwaysMurderer => true; 
-		
-        public override bool ShowFameTitle => false; 
-		
-		public override Poison PoisonImmune => Poison.Lethal; 
-		
+
+        public override bool AlwaysMurderer => true;
+
+        public override bool ShowFameTitle => false;
+
+        public override Poison PoisonImmune => Poison.Lethal;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich);
-			AddLoot(LootPack.MedScrolls);
+            AddLoot(LootPack.MedScrolls);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -1,14 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Server;
 using Server.ContextMenus;
 using Server.Gumps;
-using Server.Items;
-using Server.Network;
-using Server.Targeting;
 using Server.Mobiles;
 using Server.Multis;
+using Server.Network;
+using Server.Targeting;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -287,7 +284,7 @@ namespace Server.Items
 
             foreach (List<BaseCreature> bcList in m_Stored.Values)
             {
-                if(bcList != null)
+                if (bcList != null)
                     count += bcList.Count;
             }
 
@@ -464,7 +461,7 @@ namespace Server.Items
                 writer.Write(kvp.Key);
                 writer.Write(kvp.Value.Count);
 
-                foreach(BaseCreature bc in kvp.Value)
+                foreach (BaseCreature bc in kvp.Value)
                     writer.Write(bc);
             }
         }

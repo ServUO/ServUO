@@ -1,8 +1,7 @@
-using System;
 using Server.Engines.PartySystem;
+using Server.Mobiles;
 using Server.Targeting;
 using System.Linq;
-using Server.Mobiles;
 
 namespace Server.Items
 {

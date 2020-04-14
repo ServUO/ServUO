@@ -43,7 +43,7 @@ namespace Server.Engines.Quests
         {
             int encoding = reader.ReadEncodedInt();
 
-            switch ( encoding )
+            switch (encoding)
             {
                 default:
                 case 0x00: // null
@@ -75,7 +75,7 @@ namespace Server.Engines.Quests
         {
             int encoding = reader.ReadEncodedInt();
 
-            switch ( encoding )
+            switch (encoding)
             {
                 default:
                 case 0x00: // null
@@ -116,7 +116,7 @@ namespace Server.Engines.Quests
         {
             int encoding = reader.ReadEncodedInt();
 
-            switch ( encoding )
+            switch (encoding)
             {
                 default:
                 case 0x00: // null
@@ -157,7 +157,7 @@ namespace Server.Engines.Quests
         {
             int encoding = reader.ReadEncodedInt();
 
-            switch ( encoding )
+            switch (encoding)
             {
                 default:
                 case 0x00: // null

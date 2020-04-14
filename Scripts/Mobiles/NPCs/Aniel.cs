@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class CircleOfLifeQuest : BaseQuest
-    { 
+    {
         public CircleOfLifeQuest()
             : base()
-        { 
+        {
             AddObjective(new SlayObjective(typeof(BogThing), "bog things", 8));
-			
+
             AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -64,12 +64,12 @@ namespace Server.Engines.Quests
     }
 
     public class DustToDustQuest : BaseQuest
-    { 
+    {
         public DustToDustQuest()
             : base()
-        { 
+        {
             AddObjective(new SlayObjective(typeof(EarthElemental), "earth elementals", 12));
-			
+
             AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -124,12 +124,12 @@ namespace Server.Engines.Quests
     }
 
     public class ArchSupportQuest : BaseQuest
-    { 
+    {
         public ArchSupportQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(FootStool), "foot stools", 10, 0xB5E));
-			
+
             AddReward(new BaseReward(typeof(CarpentersCraftsmanSatchel), 1074282));
         }
 
@@ -191,11 +191,11 @@ namespace Server.Engines.Quests
     }
 
     public class Aniel : MondainQuester
-    { 
+    {
         [Constructable]
         public Aniel()
             : base("Aniel", "the aborist")
-        { 
+        {
             SetSkill(SkillName.Meditation, 60.0, 83.0);
             SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -206,10 +206,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(GlassyFoeQuest),
                     typeof(CircleOfLifeQuest),
@@ -221,10 +221,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = false;
             Race = Race.Elf;
-			
+
             Hue = 0x8384;
             HairItemID = 0x2FC2;
             HairHue = 0x36;

@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests.Haven
 {
@@ -7,7 +7,7 @@ namespace Server.Engines.Quests.Haven
     {
         private static readonly Type[] m_TypeReferenceTable = new Type[]
         {
-            
+
         };
 
         public UzeraanTurmoilQuest(PlayerMobile from)
@@ -30,14 +30,14 @@ namespace Server.Engines.Quests.Haven
         public override object Name
         {
             get
-            {               
+            {
                 return 1049007; // "Uzeraan's Turmoil"
             }
         }
         public override object OfferMessage
         {
             get
-            {                
+            {
                 return 1049008;
             }
         }

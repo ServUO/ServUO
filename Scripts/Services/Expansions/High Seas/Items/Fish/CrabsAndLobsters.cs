@@ -1,7 +1,4 @@
-﻿using Server;
-using System;
-using Server.Targeting;
-using Server.Misc;
+﻿using System;
 
 namespace Server.Items
 {
@@ -120,7 +117,7 @@ namespace Server.Items
         public override int LabelNumber { get { return 1116378; } }
 
         [Constructable]
-        public AppleCrab() : base (BaseHighseasFish.GetCrabID())
+        public AppleCrab() : base(BaseHighseasFish.GetCrabID())
         {
         }
 

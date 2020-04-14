@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Engines.Chat
 {
     public enum ChatCommand

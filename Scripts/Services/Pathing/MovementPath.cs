@@ -1,9 +1,9 @@
-using System;
 using Server.Commands;
 using Server.PathAlgorithms;
 using Server.PathAlgorithms.FastAStar;
 using Server.PathAlgorithms.SlowAStar;
 using Server.Targeting;
+using System;
 
 namespace Server
 {
@@ -15,7 +15,7 @@ namespace Server
         private readonly Point3D m_Goal;
         private readonly Direction[] m_Directions;
 
-        public MovementPath(Mobile m, Point3D goal) 
+        public MovementPath(Mobile m, Point3D goal)
             : this(m, goal, m.Map)
         {
         }

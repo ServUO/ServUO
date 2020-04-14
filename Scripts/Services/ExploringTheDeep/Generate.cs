@@ -1,7 +1,6 @@
-using Server;
-using Server.Mobiles;
-using Server.Items;
 using Server.Commands;
+using Server.Items;
+using Server.Mobiles;
 
 namespace Server.Engines.ExploringTheDeep
 {
@@ -248,7 +247,7 @@ namespace Server.Engines.ExploringTheDeep
             sp.Respawn();
 
             #endregion
-             
+
             #region Custeau Perron House
             door = new CusteauPerronHouseDoor();
             WeakEntityCollection.Add(EntityName, door);

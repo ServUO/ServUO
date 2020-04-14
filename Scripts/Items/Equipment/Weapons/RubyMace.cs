@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     public class RubyMace : DiamondMace
     {
-		public override int LabelNumber { get { return 1073529; } }// ruby mace
-		
+        public override int LabelNumber { get { return 1073529; } }// ruby mace
+
         [Constructable]
         public RubyMace()
         {
@@ -16,7 +14,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-       
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

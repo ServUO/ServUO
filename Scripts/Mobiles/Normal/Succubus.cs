@@ -1,10 +1,3 @@
-using System;
-using System.Linq;
-using System.Collections;
-
-using Server.Items;
-using Server.Spells;
-
 namespace Server.Mobiles
 {
     [CorpseName("a succubus corpse")]

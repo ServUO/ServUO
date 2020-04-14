@@ -1,4 +1,3 @@
-using System;
 using Server.Targeting;
 
 namespace Server.Items.MusicBox
@@ -47,7 +46,7 @@ namespace Server.Items.MusicBox
         public override void AddNameProperty(ObjectPropertyList list)
         {
             TrackInfo ti = TrackInfo.GetInfo(this.m_Music);
-            switch( ti.Rarity )
+            switch (ti.Rarity)
             {
                 case TrackRarity.Common:
                     list.Add(1075204);
@@ -64,7 +63,7 @@ namespace Server.Items.MusicBox
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             TrackInfo ti = TrackInfo.GetInfo(this.m_Music);
             list.Add(ti.Label);
         }
@@ -108,18 +107,18 @@ namespace Server.Items.MusicBox
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            
+
             writer.Write((int)0); // version
-            
+
             writer.Write((int)this.m_Music);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            
+
             int version = reader.ReadInt();
-            
+
             MusicName m_Music = (MusicName)reader.ReadInt();
         }
     }

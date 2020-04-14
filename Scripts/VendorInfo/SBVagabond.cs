@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
+using System.Collections.Generic;
 
-namespace Server.Mobiles 
-{ 
+namespace Server.Mobiles
+{
     public class SBVagabond : SBInfo
     {
         private readonly List<GenericBuyInfo> m_BuyInfo = new InternalBuyInfo();

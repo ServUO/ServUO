@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     #region A Grammar of Orcish

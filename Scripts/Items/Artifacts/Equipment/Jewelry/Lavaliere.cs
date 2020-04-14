@@ -1,16 +1,14 @@
-using System;
-
 namespace Server.Items
 {
     public class Lavaliere : GoldNecklace
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1114843; } } // Lavaliere
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1114843; } } // Lavaliere
+
         [Constructable]
         public Lavaliere()
         {
-            Hue = 1194;		
+            Hue = 1194;
             AbsorptionAttributes.EaterKinetic = 20;
             Attributes.DefendChance = 10;
             Resistances.Physical = 15;
@@ -21,7 +19,7 @@ namespace Server.Items
         public Lavaliere(Serial serial)
             : base(serial)
         {
-        }       
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

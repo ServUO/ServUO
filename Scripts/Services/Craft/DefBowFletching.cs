@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Craft
 {
@@ -106,7 +106,7 @@ namespace Server.Engines.Craft
                     return 1044156; // You create an exceptional quality item and affix your maker's mark.
                 else if (quality == 2)
                     return 1044155; // You create an exceptional quality item.
-                else 
+                else
                     return 1044154; // You create the item.
             }
         }
@@ -240,7 +240,7 @@ namespace Server.Engines.Craft
 
             MarkOption = true;
             Repair = true;
-			CanEnhance = true;
+            CanEnhance = true;
         }
     }
 }

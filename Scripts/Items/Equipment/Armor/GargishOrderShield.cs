@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x422A, 0x422C)]
@@ -9,7 +7,7 @@ namespace Server.Items
         public GargishOrderShield()
             : base(0x422A)
         {
-			Weight = 7.0;
+            Weight = 7.0;
         }
 
         public GargishOrderShield(Serial serial)
@@ -97,6 +95,6 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write((int)0); //version
-        }      
+        }
     }
 }

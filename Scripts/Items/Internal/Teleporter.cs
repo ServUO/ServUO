@@ -1,11 +1,10 @@
 #region References
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 using Server.Mobiles;
 using Server.Network;
 using Server.Spells;
+using System;
+using System.Collections.Generic;
+using System.Text;
 #endregion
 
 namespace Server.Items
@@ -204,19 +203,19 @@ namespace Server.Items
                 m.SendLocalizedMessage(1071955); // You cannot teleport while dragging an object.
                 return false;
             }
-            
+
             if (m_CriminalCheck && m.Criminal)
             {
                 m.SendLocalizedMessage(1005561, "", 0x22); // Thou'rt a criminal and cannot escape so easily.
                 return false;
             }
-            
+
             if (m_CombatCheck && SpellHelper.CheckCombat(m))
             {
                 m.SendLocalizedMessage(1005564, "", 0x22); // Wouldst thou flee during the heat of battle??
                 return false;
             }
-            
+
             if (!CheckDestination(m) || (Siege.SiegeShard && m_MapDest == Map.Trammel))
             {
                 return false;
@@ -265,7 +264,7 @@ namespace Server.Items
             else
             {
                 // Allow OnMoveOver to return before processing the map/location changes
-                Timer.DelayCall(DoTeleport, m); 
+                Timer.DelayCall(DoTeleport, m);
             }
         }
 
@@ -333,7 +332,7 @@ namespace Server.Items
         public override bool OnMoveOver(Mobile m)
         {
             StartTeleport(m);
-            
+
             return true;
         }
 

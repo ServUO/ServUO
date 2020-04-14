@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -36,12 +35,12 @@ namespace Server.Mobiles
 
             this.Fame = 3500;
             this.Karma = -3500;
-			
+
             this.ControlSlots = 2;
 
             this.PackItem(new FertileDirt(Utility.RandomMinMax(1, 4)));
             this.PackItem(new MandrakeRoot());
-			
+
             Item ore = new IronOre(5);
             ore.ItemID = 0x19B7;
             this.PackItem(ore);

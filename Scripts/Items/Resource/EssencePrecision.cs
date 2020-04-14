@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class EssencePrecision : Item, ICommodity
@@ -16,7 +14,7 @@ namespace Server.Items
         {
             Stackable = true;
             Amount = amount;
-			Hue = 1158;
+            Hue = 1158;
         }
 
         public EssencePrecision(Serial serial)
@@ -31,7 +29,7 @@ namespace Server.Items
                 return 1113327;
             }
         }// essence of precision
-		TextDefinition ICommodity.Description
+        TextDefinition ICommodity.Description
         {
             get
             {

@@ -1,22 +1,20 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x2B10, 0x2B11)]
     public class SpiritualityHelm : BaseArmor
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public SpiritualityHelm()
             : base(0x2B10)
-        { 
+        {
             LootType = LootType.Blessed;
             Weight = 6.0;
             SetHue = 0;
             Hue = 0x226;
-			
+
             SetSelfRepair = 5;
-			
+
             SetPhysicalBonus = 5;
             SetFireBonus = 5;
             SetColdBonus = 5;

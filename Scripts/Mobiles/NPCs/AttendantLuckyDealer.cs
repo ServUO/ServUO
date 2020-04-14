@@ -1,14 +1,14 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Items;
 using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
     public class AttendantLuckyDealer : PersonalAttendant
-    { 
+    {
         private DateTime m_NextUse;
         private int m_Count;
         public AttendantLuckyDealer()
@@ -95,7 +95,7 @@ namespace Server.Mobiles
                 this.AddHtmlLocalized(130, 50, 120, 20, 1076001, 0x7FFF, false, false); // Number of faces
                 this.AddGroup(1);
                 this.AddRadio(130, 70, 0xD2, 0xD3, faces == 4, 4);
-                this.AddLabel(160, 70, 0x481, "4"); 
+                this.AddLabel(160, 70, 0x481, "4");
                 this.AddRadio(130, 100, 0xD2, 0xD3, faces == 6, 6);
                 this.AddLabel(160, 100, 0x481, "6");
                 this.AddRadio(130, 130, 0xD2, 0xD3, faces == 8, 8);
@@ -118,7 +118,7 @@ namespace Server.Mobiles
                 if (info.ButtonID == 1)
                 {
                     int dice = 1;
-                    int faces = 4;		
+                    int faces = 4;
 
                     if (info.Switches.Length == 2)
                     {
@@ -132,7 +132,7 @@ namespace Server.Mobiles
                         {
                             int sum = 0;
                             string text = String.Empty;
-							
+
                             for (int i = 0; i < dice; i++)
                             {
                                 int roll = Utility.Random(faces) + 1;
@@ -162,7 +162,7 @@ namespace Server.Mobiles
     }
 
     public class AttendantMaleLuckyDealer : AttendantLuckyDealer
-    { 
+    {
         [Constructable]
         public AttendantMaleLuckyDealer()
             : base()
@@ -213,7 +213,7 @@ namespace Server.Mobiles
     }
 
     public class AttendantFemaleLuckyDealer : AttendantLuckyDealer
-    { 
+    {
         [Constructable]
         public AttendantFemaleLuckyDealer()
             : base()

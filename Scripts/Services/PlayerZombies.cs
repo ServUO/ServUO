@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Server.Events.Halloween;
+﻿using Server.Events.Halloween;
 using Server.Items;
 using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Events
 {
@@ -157,7 +157,7 @@ namespace Server.Engines.Events
         {
             Name = String.Format("{0}'s bones", name);
 
-            switch( Utility.Random(10) )
+            switch (Utility.Random(10))
             {
                 case 0:
                     Hue = 0xa09;
@@ -236,8 +236,8 @@ namespace Server.Engines.Events
 
             Fame = 1000;
             Karma = -1000;
-			
-			switch( Utility.Random(10) )
+
+            switch (Utility.Random(10))
             {
                 case 0:
                     PackItem(new LeftArm());
@@ -275,7 +275,7 @@ namespace Server.Engines.Events
         public override Poison PoisonImmune => Poison.Regular;
 
         public override void GenerateLoot()
-        {           
+        {
             AddLoot(LootPack.Meager);
         }
 

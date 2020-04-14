@@ -1,5 +1,4 @@
 ﻿using Server.Network;
-using System;
 
 namespace Server.Items
 {
@@ -20,8 +19,8 @@ namespace Server.Items
             this.Amount = amount;
             this.LootType = LootType.Blessed;
         }
-		
-		public override void GetProperties(ObjectPropertyList list)
+
+        public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 

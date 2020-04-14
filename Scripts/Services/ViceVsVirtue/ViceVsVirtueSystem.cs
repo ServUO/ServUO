@@ -1,24 +1,20 @@
+using Server.Accounting;
+using Server.Engines.ArenaSystem;
+using Server.Engines.Points;
+using Server.Guilds;
+using Server.Gumps;
+using Server.Items;
+using Server.Mobiles;
+using Server.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Server;
-using Server.Items;
-using Server.Mobiles;
-using Server.Gumps;
-using Server.Network;
-using Server.Guilds;
-using Server.Engines.Points;
-using Server.Engines.CityLoyalty;
-using Server.Regions;
-using Server.Accounting;
-using Server.Engines.ArenaSystem;
 
 namespace Server.Engines.VvV
 {
     public enum VvVType
     {
-        Virtue, 
+        Virtue,
         Vice
     }
 
@@ -28,7 +24,7 @@ namespace Server.Engines.VvV
         Jhelom,
         Minoc,
         Moonglow,
-        Ocllo, 
+        Ocllo,
         SkaraBrae,
         Trinsic,
         Yew
@@ -94,7 +90,7 @@ namespace Server.Engines.VvV
                 List<Mobile> handled = new List<Mobile>();
                 bool statloss = false;
 
-                for(int i = 0; i < list.Count; i++)
+                for (int i = 0; i < list.Count; i++)
                 {
                     Mobile dam = list[i].Damager;
 
@@ -280,7 +276,7 @@ namespace Server.Engines.VvV
                             }
                         }
 
-                        if(!hasally)
+                        if (!hasally)
                             guilds.Add(g);
                     }
                 }
@@ -377,11 +373,11 @@ namespace Server.Engines.VvV
 
         public void SendVvVMessage(int cliloc, string args = "")
         {
-            foreach(NetState state in NetState.Instances.Where(st => st.Mobile != null && IsVvV(st.Mobile)))
+            foreach (NetState state in NetState.Instances.Where(st => st.Mobile != null && IsVvV(st.Mobile)))
             {
                 Mobile m = state.Mobile;
 
-                if(m != null)
+                if (m != null)
                 {
                     SendVvVMessageTo(m, cliloc, args);
                 }
@@ -423,7 +419,7 @@ namespace Server.Engines.VvV
 
             Server.Commands.CommandSystem.Register("BattleProps", AccessLevel.GameMaster, e =>
                 {
-                    if(Instance.Battle != null)
+                    if (Instance.Battle != null)
                         e.Mobile.SendGump(new PropertiesGump(e.Mobile, Instance.Battle));
                 });
 
@@ -1045,9 +1041,9 @@ namespace Server.Engines.VvV
 
         public bool Active
         {
-            get 
-            { 
-                return _Active; 
+            get
+            {
+                return _Active;
             }
             set
             {
@@ -1112,7 +1108,7 @@ namespace Server.Engines.VvV
 
             if (silver > 0)
             {
-                Player.SendLocalizedMessage(1042736, String.Format("{0:N0} silver\t{1}", silver, victim.Name)); 
+                Player.SendLocalizedMessage(1042736, String.Format("{0:N0} silver\t{1}", silver, victim.Name));
                 // You have earned ~1_SILVER_AMOUNT~ pieces for vanquishing ~2_PLAYER_NAME~!
 
                 Points += silver;
@@ -1165,7 +1161,7 @@ namespace Server.Engines.VvV
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            
+
             switch (version)
             {
                 case 4:
@@ -1177,13 +1173,13 @@ namespace Server.Engines.VvV
                     goto case 2;
                 case 2:
                     Active = reader.ReadBool();
-                    
-                    if(version == 0)
+
+                    if (version == 0)
                         reader.ReadBool();
-                        
-                    if(version < 2)
+
+                    if (version < 2)
                         reader.ReadGuild();
-                    
+
                     Score = reader.ReadInt();
                     Kills = reader.ReadInt();
                     Deaths = reader.ReadInt();

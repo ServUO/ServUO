@@ -1,11 +1,8 @@
-using System;
-using Server.Engines.Craft;
-
 namespace Server.Items
 {
     public class SpikedWhip : BaseSword, Server.Engines.Craft.IRepairable
     {
-		public Server.Engines.Craft.CraftSystem RepairSystem { get { return Server.Engines.Craft.DefTinkering.CraftSystem; } }
+        public Server.Engines.Craft.CraftSystem RepairSystem { get { return Server.Engines.Craft.DefTinkering.CraftSystem; } }
         public override int LabelNumber { get { return 1125634; } } // Spiked Whip
 
         [Constructable]
@@ -20,7 +17,7 @@ namespace Server.Items
         {
         }
 
-		public override bool CanBeWornByGargoyles { get { return true; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
         public override WeaponAbility PrimaryAbility { get { return WeaponAbility.ArmorPierce; } }
         public override WeaponAbility SecondaryAbility { get { return WeaponAbility.WhirlwindAttack; } }
         public override int StrengthReq { get { return 20; } }

@@ -1,10 +1,8 @@
-using System;
-using Server;
+using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
-using Server.Gumps;
-using Server.Guilds;
 using Server.Network;
+using System;
 using System.Linq;
 
 namespace Server.Engines.VvV

@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class BakersDozenQuest : BaseQuest
-    { 
+    {
         public BakersDozenQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(CookieMix), "cookie mix", 5, 0x103F));
-						
+
             this.AddReward(new BaseReward(typeof(ChefsSatchel), 1074282)); // Craftsman's Satchel
         }
 
@@ -78,7 +78,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Asandos()
             : base("Asandos", "the chef")
-        { 
+        {
         }
 
         public Asandos(Serial serial)
@@ -87,10 +87,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(BakersDozenQuest)
                 };
@@ -99,19 +99,19 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.CantWalk = true;
             this.Race = Race.Human;
-			
-            this.Hue = 0x83FF;			
+
+            this.Hue = 0x83FF;
             this.HairItemID = 0x2044;
             this.HairHue = 0x1;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());			
+            this.AddItem(new Backpack());
             this.AddItem(new Boots(0x901));
             this.AddItem(new ShortPants());
             this.AddItem(new Shirt());
@@ -141,7 +141,7 @@ namespace Server.Engines.Quests
             : base()
         {
             this.Hue = BaseReward.SatchelHue();
-			
+
             this.AddItem(new SackFlour());
             this.AddItem(new Skillet());
         }

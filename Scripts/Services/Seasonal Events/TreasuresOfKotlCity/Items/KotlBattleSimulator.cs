@@ -1,10 +1,8 @@
-using System;
-using Server;
-using Server.Mobiles;
-using System.Collections.Generic;
-
 using Server.ContextMenus;
 using Server.Items;
+using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.TreasuresOfKotlCity
 {
@@ -182,7 +180,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
             do
             {
-                loc = Map.TerMur.GetRandomSpawnPoint(SpawnBounds); 
+                loc = Map.TerMur.GetRandomSpawnPoint(SpawnBounds);
             }
             while (!Map.TerMur.CanSpawnMobile(loc));
 
@@ -203,9 +201,9 @@ namespace Server.Engines.TreasuresOfKotlCity
                 bc.Home = HomeLocation;
                 bc.RangeHome = HomeRange;
 
-				bc.OnBeforeSpawn(loc, Map.TerMur);
+                bc.OnBeforeSpawn(loc, Map.TerMur);
                 bc.MoveToWorld(loc, Map.TerMur);
-				bc.OnAfterSpawn();
+                bc.OnAfterSpawn();
 
                 if (Spawn == null)
                     Spawn = new List<ISpawnable>();

@@ -5,7 +5,7 @@ namespace Server.Commands.Generic
 {
     public sealed class LimitExtension : BaseExtension
     {
-        public static ExtensionInfo ExtInfo = new ExtensionInfo(80, "Limit", 1, delegate() { return new LimitExtension(); });
+        public static ExtensionInfo ExtInfo = new ExtensionInfo(80, "Limit", 1, delegate () { return new LimitExtension(); });
         private int m_Limit;
         public LimitExtension()
         {

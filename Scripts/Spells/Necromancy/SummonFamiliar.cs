@@ -1,8 +1,8 @@
-using System;
-using System.Collections;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
+using System;
+using System.Collections;
 
 namespace Server.Spells.Necromancy
 {

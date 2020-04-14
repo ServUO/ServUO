@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class GingerBreadHouseAddon : BaseAddon
@@ -10,7 +8,7 @@ namespace Server.Items
             {
                 LocalizedAddonComponent laoc = new LocalizedAddonComponent(i, 1077395); // Gingerbread House
                 laoc.Light = LightType.SouthSmall;
-                this.AddComponent(laoc, (i == 0x2be5) ? -1 : 0, (i == 0x2be7) ? -1 : 0, 0); 
+                this.AddComponent(laoc, (i == 0x2be5) ? -1 : 0, (i == 0x2be7) ? -1 : 0, 0);
             }
         }
 
@@ -42,7 +40,7 @@ namespace Server.Items
     public class GingerBreadHouseDeed : BaseAddonDeed
     {
         [Constructable]
-        public GingerBreadHouseDeed() 
+        public GingerBreadHouseDeed()
         {
             this.Weight = 1.0;
             this.LootType = LootType.Blessed;

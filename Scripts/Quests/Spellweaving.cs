@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class PatienceQuest : BaseQuest
-    { 
+    {
         public PatienceQuest()
             : base()
-        { 
-            this.AddObjective(new ObtainObjective(typeof(MiniatureMushroom), "miniature mushrooms", 20, 0xD16, 3600));		
-				
+        {
+            this.AddObjective(new ObtainObjective(typeof(MiniatureMushroom), "miniature mushrooms", 20, 0xD16, 3600));
+
             this.AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
         }
 
@@ -96,12 +96,12 @@ namespace Server.Engines.Quests
     }
 
     public class NeedsOfManyHeartwoodQuest : BaseQuest
-    { 
+    {
         public NeedsOfManyHeartwoodQuest()
             : base()
-        { 
-            this.AddObjective(new ObtainObjective(typeof(Cotton), "bale of cotton", 10, 0xDF9));			
-			
+        {
+            this.AddObjective(new ObtainObjective(typeof(Cotton), "bale of cotton", 10, 0xDF9));
+
             this.AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
         }
 
@@ -183,12 +183,12 @@ namespace Server.Engines.Quests
     }
 
     public class NeedsOfManyPartHeartwoodQuest : BaseQuest
-    { 
+    {
         public NeedsOfManyPartHeartwoodQuest()
             : base()
-        { 
-            this.AddObjective(new ObtainObjective(typeof(Board), "boards", 250, 0x1BD7));			
-			
+        {
+            this.AddObjective(new ObtainObjective(typeof(Board), "boards", 250, 0x1BD7));
+
             this.AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
         }
 
@@ -268,14 +268,14 @@ namespace Server.Engines.Quests
     }
 
     public class MakingContributionHeartwoodQuest : BaseQuest
-    { 
+    {
         public MakingContributionHeartwoodQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(SackFlour), "sack of flour", 1, 0x1039));
             this.AddObjective(new ObtainObjective(typeof(JarHoney), "jar of honey", 10, 0x9EC));
-            this.AddObjective(new ObtainObjective(typeof(FishSteak), "fish steak", 20, 0x97B));		
-				
+            this.AddObjective(new ObtainObjective(typeof(FishSteak), "fish steak", 20, 0x97B));
+
             this.AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
         }
 
@@ -358,13 +358,13 @@ namespace Server.Engines.Quests
     }
 
     public class UnnaturalCreationsQuest : BaseQuest
-    { 
+    {
         public UnnaturalCreationsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(ExodusOverseer), "exodus overseers", 5));
             this.AddObjective(new SlayObjective(typeof(ExodusMinion), "exodus minions", 2));
-			
+
             this.AddReward(new BaseReward(typeof(ArcaneCircleScroll), 1071026)); // Arcane Circle			
             this.AddReward(new BaseReward(typeof(GiftOfRenewalScroll), 1071027)); // Gift of Renewal
             this.AddReward(new BaseReward(typeof(SpellweavingBook), 1031600)); // Spellweaving Spellbook
@@ -430,7 +430,7 @@ namespace Server.Engines.Quests
         public override void GiveRewards()
         {
             this.Owner.Spellweaving = true;
-			
+
             base.GiveRewards();
         }
 

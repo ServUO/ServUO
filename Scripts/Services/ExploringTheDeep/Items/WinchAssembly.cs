@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Server.Commands;
 using Server.Mobiles;
-using Server.Commands;
-using System.Collections.Generic;
+using System;
 
 namespace Server.Items
 {
@@ -29,7 +28,7 @@ namespace Server.Items
 
         public static void GenWinchAssembly(Mobile m)
         {
-            DeleteWinchAssembly(m);            
+            DeleteWinchAssembly(m);
 
             // Winch 
             WinchAssembly winch = new WinchAssembly();
@@ -218,7 +217,7 @@ namespace Server.Items
                 Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), 3, new TimerStateCallback(m_hatch.DoDownEffect), new object[] { m_hatch.Location, 0, from });
 
                 Mobile creature = Shadowlord.Spawn(new Point3D(6417, 1649, 0), Map.Trammel);
-              
+
                 m_WinchAssembly.BearingAssembly = false;
                 m_WinchAssembly.FlyWheel = false;
                 m_WinchAssembly.WireSpool = false;
@@ -363,7 +362,7 @@ namespace Server.Items
             object[] states = (object[])state;
 
             Point3D p = (Point3D)states[0];
-                        
+
             for (int i = 0; i < 3; ++i)
             {
                 int x, y;
@@ -407,7 +406,7 @@ namespace Server.Items
 
                 Effects.SendLocationEffect(new Point3D(p.X + x, p.Y + y, p.Z), this.Map, 0x36CB, 16, 4, 1362, 0);
 
-                
+
                 this.Z -= 1;
 
                 if (this.Z == 1)

@@ -1,5 +1,5 @@
-using System;
 using Server.Multis;
+using System;
 
 namespace Server.Items
 {
@@ -9,7 +9,7 @@ namespace Server.Items
         public override int LabelNumber { get { return 1029004; } } // wreath
         public override bool IsArtifact { get { return true; } }
 
-        public int MadeID{ get; set; }
+        public int MadeID { get; set; }
 
         [Constructable]
         public HolidayWreath()
@@ -23,7 +23,7 @@ namespace Server.Items
             base.GetProperties(list);
 
             list.Add(1158828, String.Format("#{0}", MadeID)); // Made From Handpicked Trees Near ~1_WHERE~
-        }        
+        }
 
         public HolidayWreath(Serial serial)
             : base(serial)
@@ -66,7 +66,7 @@ namespace Server.Items
                     return false;
                 }
             }
-            else 
+            else
             {
                 return false;
             }

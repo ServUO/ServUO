@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -39,7 +38,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 100.0, 110.0);
             SetSkill(SkillName.MagicResist, 80.0, 100.0);
             SetSkill(SkillName.Anatomy, 70.0, 80.0);
-			
+
             Fame = 17000;
             Karma = -17000;
 
@@ -50,29 +49,29 @@ namespace Server.Mobiles
 
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
-		
+
         public CrystalHydra(Serial serial)
             : base(serial)
         {
         }
-		
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 2);
             AddLoot(LootPack.HighScrolls);
             AddLoot(LootPack.Parrot);
         }
-		
+
         public override void OnDeath(Container c)
         {
-            base.OnDeath(c);		
-			
+            base.OnDeath(c);
+
             if (Utility.RandomDouble() < 0.25)
                 c.DropItem(new ShatteredCrystals());
-				
+
             c.DropItem(new CrystallineFragments());
         }
-		
+
         public override int Hides
         {
             get
@@ -94,16 +93,16 @@ namespace Server.Mobiles
                 return 5;
             }
         }
-		
+
         public override void Serialize(GenericWriter writer)
         {
-            base.Serialize(writer);		
+            base.Serialize(writer);
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
-            base.Deserialize(reader);		
+            base.Deserialize(reader);
             int version = reader.ReadInt();
         }
     }

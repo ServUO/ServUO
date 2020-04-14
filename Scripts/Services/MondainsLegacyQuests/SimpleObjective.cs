@@ -1,9 +1,4 @@
-﻿using System;
-using Server;
-using Server.Items;
-using Server.Mobiles;
-using System.Collections.Generic;
-using Server.Targeting;
+﻿using System.Collections.Generic;
 
 /*
  * Called in MondainsQuestGump.cs to show simple string for simple quest objectives.

@@ -1,52 +1,50 @@
-using System;
-using Server;
+using Server.ContextMenus;
 using Server.Items;
 using Server.Mobiles;
-using Server.Gumps;
 using Server.Network;
-using System.Collections.Generic;
-using Server.ContextMenus;
 using Server.Prompts;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.NewMagincia
 {
-	public class WarehouseSuperintendent : BaseCreature
-	{
-		public override bool IsInvulnerable { get { return true; } }
+    public class WarehouseSuperintendent : BaseCreature
+    {
+        public override bool IsInvulnerable { get { return true; } }
 
-		[Constructable]
-		public WarehouseSuperintendent() : base(AIType.AI_Vendor, FightMode.None, 2, 1, 0.5, 2)
-		{
-			Race = Race.Human;
+        [Constructable]
+        public WarehouseSuperintendent() : base(AIType.AI_Vendor, FightMode.None, 2, 1, 0.5, 2)
+        {
+            Race = Race.Human;
             Blessed = true;
-			Title = "The Warehouse Superintendent";
+            Title = "The Warehouse Superintendent";
 
-			if(Utility.RandomBool())
-			{
-				Female = true;
-				Body = 0x191;
-				Name = NameList.RandomName( "female" );
-				
-				AddItem(new Skirt(Utility.RandomPinkHue()));
-			}
-			else
-			{
-				Female = false;
-				Body = 0x190;
-				Name = NameList.RandomName( "male" );
-				AddItem(new ShortPants(Utility.RandomBlueHue()));
-			}
-			
-			AddItem(new Tunic(Utility.RandomBlueHue()));
-			AddItem(new Boots());
-			
-			Utility.AssignRandomHair(this, Utility.RandomHairHue());
-			Utility.AssignRandomFacialHair(this, Utility.RandomHairHue());
+            if (Utility.RandomBool())
+            {
+                Female = true;
+                Body = 0x191;
+                Name = NameList.RandomName("female");
+
+                AddItem(new Skirt(Utility.RandomPinkHue()));
+            }
+            else
+            {
+                Female = false;
+                Body = 0x190;
+                Name = NameList.RandomName("male");
+                AddItem(new ShortPants(Utility.RandomBlueHue()));
+            }
+
+            AddItem(new Tunic(Utility.RandomBlueHue()));
+            AddItem(new Boots());
+
+            Utility.AssignRandomHair(this, Utility.RandomHairHue());
+            Utility.AssignRandomFacialHair(this, Utility.RandomHairHue());
 
             Hue = Race.RandomSkinHue();
-		}
-		
-		/*public override void OnDoubleClick(Mobile from)
+        }
+
+        /*public override void OnDoubleClick(Mobile from)
 		{
 			if(from.InRange(this.Location, 3) && from.Backpack != null)
 			{
@@ -213,26 +211,26 @@ namespace Server.Engines.NewMagincia
             }
 
         }
-		
-		private class BackfeePrompt : Prompt
-		{
-			private WarehouseSuperintendent m_Mobile;
-			private StorageEntry m_Entry;
-			
-			public BackfeePrompt(WarehouseSuperintendent mobile, StorageEntry entry)
-			{
-				m_Mobile = mobile;
-                m_Entry = entry; ;
-			}
-			
-			public override void OnResponse( Mobile from, string text )
-			{
-				m_Mobile.TryPayBackfee(from, text, m_Entry);
-			}
 
-		}
-		
-		/*private bool TransferItems(Mobile from, WarehouseContainer c)
+        private class BackfeePrompt : Prompt
+        {
+            private WarehouseSuperintendent m_Mobile;
+            private StorageEntry m_Entry;
+
+            public BackfeePrompt(WarehouseSuperintendent mobile, StorageEntry entry)
+            {
+                m_Mobile = mobile;
+                m_Entry = entry; ;
+            }
+
+            public override void OnResponse(Mobile from, string text)
+            {
+                m_Mobile.TryPayBackfee(from, text, m_Entry);
+            }
+
+        }
+
+        /*private bool TransferItems(Mobile from, WarehouseContainer c)
 		{
 			List<Item> items = new List<Item>(c.Items);
 			
@@ -243,74 +241,74 @@ namespace Server.Engines.NewMagincia
 			
 			return c.Items.Count == 0;
 		}*/
-		
-		public override void GetContextMenuEntries( Mobile from, List<ContextMenuEntry> list )
-		{
-			base.GetContextMenuEntries(from, list);
-			
-			list.Add(new ClaimStorageEntry(from, this));
-			list.Add(new ChangeMatchBidEntry(from));
-		}
-		
-		private class ClaimStorageEntry : ContextMenuEntry
-		{
-			private WarehouseSuperintendent m_Mobile;
+
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+            list.Add(new ClaimStorageEntry(from, this));
+            list.Add(new ChangeMatchBidEntry(from));
+        }
+
+        private class ClaimStorageEntry : ContextMenuEntry
+        {
+            private WarehouseSuperintendent m_Mobile;
             private StorageEntry m_Entry;
-			
-			public ClaimStorageEntry(Mobile from, WarehouseSuperintendent mobile) : base(1150681, 3)
-			{
-				m_Mobile = mobile;
+
+            public ClaimStorageEntry(Mobile from, WarehouseSuperintendent mobile) : base(1150681, 3)
+            {
+                m_Mobile = mobile;
                 m_Entry = MaginciaBazaar.GetStorageEntry(from);
 
-                if(m_Entry == null)
+                if (m_Entry == null)
                     Flags |= CMEFlags.Disabled;
-			}
-			
-			public override void OnClick()
-			{
-				Mobile from = Owner.From;
+            }
+
+            public override void OnClick()
+            {
+                Mobile from = Owner.From;
 
                 if (from == null || m_Entry == null)
                     return;
 
                 m_Mobile.TryTransfer(from, m_Entry);
-			}
-		}
-		
-		private class ChangeMatchBidEntry : ContextMenuEntry
-		{
-			public ChangeMatchBidEntry(Mobile from) : base(1150587, 3)
-			{
-			}
-			
-			public override void OnClick()
-			{
-				Mobile from = Owner.From;
-				
-				if(from != null)
-					from.SendGump(new MatchBidGump(from, null));
-			}
-		}
-		
-		public WarehouseSuperintendent(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write((int)1);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
+            }
+        }
 
-            if(version == 0)
+        private class ChangeMatchBidEntry : ContextMenuEntry
+        {
+            public ChangeMatchBidEntry(Mobile from) : base(1150587, 3)
+            {
+            }
+
+            public override void OnClick()
+            {
+                Mobile from = Owner.From;
+
+                if (from != null)
+                    from.SendGump(new MatchBidGump(from, null));
+            }
+        }
+
+        public WarehouseSuperintendent(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)1);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+            if (version == 0)
             {
                 Hue = Race.RandomSkinHue();
             }
-		}
-	}
+        }
+    }
 }

@@ -1,13 +1,10 @@
-using System;
-using Server.Mobiles;
-
 namespace Server.Items
 {
     public class LuckyCharm : BaseTalisman
     {
-		public override int LabelNumber { get { return 1154725; } }// Lucky Charm
-		public override bool IsArtifact { get { return true; } }
-		
+        public override int LabelNumber { get { return 1154725; } }// Lucky Charm
+        public override bool IsArtifact { get { return true; } }
+
         [Constructable]
         public LuckyCharm()
             : base(0x2F5B)

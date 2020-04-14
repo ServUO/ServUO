@@ -1,10 +1,9 @@
+using Server.Engines.Quests.Haven;
+using Server.Items;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Server.Engines.Quests.Haven;
-using Server.Engines.Quests.Necro;
-using Server.Items;
 
 namespace Server.Commands
 {
@@ -484,7 +483,7 @@ namespace Server.Commands
                         unlit = true;
                     else if (!unprotected && this.m_Params[i] == "Unprotected")
                         unprotected = true;
-					
+
                     if (unlit && unprotected)
                         break;
                 }

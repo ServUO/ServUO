@@ -1,4 +1,3 @@
-using System;
 using Server.Mobiles;
 
 namespace Server.Items
@@ -18,7 +17,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override BaseCreature Summon
         {
             get
@@ -29,13 +28,13 @@ namespace Server.Items
 
         public override void Serialize(GenericWriter writer)
         {
-            base.Serialize(writer);			
+            base.Serialize(writer);
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
-            base.Deserialize(reader);			
+            base.Deserialize(reader);
             int version = reader.ReadInt();
         }
     }
@@ -98,13 +97,13 @@ namespace Server.Mobiles
 
         public override void Serialize(GenericWriter writer)
         {
-            base.Serialize(writer);			
+            base.Serialize(writer);
             writer.Write((int)2); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
-            base.Deserialize(reader);			
+            base.Deserialize(reader);
             int version = reader.ReadInt();
 
             if (version < 2)

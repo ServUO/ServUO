@@ -1,16 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Server;
-using Server.Mobiles;
-using Server.Items;
 using Server.Gumps;
+using Server.Items;
+using Server.Mobiles;
+using System;
+using System.Linq;
 
 namespace Server.Engines.Quests
 {
-	public class JourneyToTheAthenaeumIsleQuest : BaseQuest
-	{
+    public class JourneyToTheAthenaeumIsleQuest : BaseQuest
+    {
         public override object Title { get { return 1150929; } }        // Journey to the Athenaeum Isle
 
         public override object Description { get { return 1150902; } }  /*Greetings, adventurer. <br><br>	As you know, my people have suffered the 
@@ -56,21 +53,21 @@ namespace Server.Engines.Quests
                                                                          * goodwill.<br><br>	Thank you again, on behalf of the Gargoyle people. I may have
                                                                          * need of your assistance at another time, should you be willing to come to my aid 
                                                                          * again.<br><br>	Until then, farewell.*/
-		
-		public JourneyToTheAthenaeumIsleQuest()
-		{
-			AddObjective( new SlayObjective ( typeof( MinionOfScelestus), "Minion of Scelestus", 10 ) );
 
-            for(int i = 0; i < m_Types.Length; i++)
+        public JourneyToTheAthenaeumIsleQuest()
+        {
+            AddObjective(new SlayObjective(typeof(MinionOfScelestus), "Minion of Scelestus", 10));
+
+            for (int i = 0; i < m_Types.Length; i++)
             {
                 ObtainObjective obtain = new ObtainObjective(m_Types[i], m_Names[i], 1);
 
                 AddObjective(obtain);
             }
 
-			//AddObjective( new InternalObjective() );
+            //AddObjective( new InternalObjective() );
             AddReward(new BaseReward(typeof(ChronicleOfTheGargoyleQueen1), 1, "Chronicle of the Gargoyle Queen Vol. I"));
-		}
+        }
 
         public override bool RenderObjective(MondainQuestGump gump, bool offer)
         {
@@ -158,12 +155,12 @@ namespace Server.Engines.Quests
         }
 
         private Type[] m_Types = new Type[]
-			{
-				typeof(ChallengeRite), 			typeof(AnthenaeumDecree), 		typeof(LetterFromTheKing),
-				typeof(OnTheVoid),				typeof(ShilaxrinarsMemorial),	typeof(ToTheHighScholar),
-				typeof(ToTheHighBroodmother),	typeof(ReplyToTheHighScholar),	typeof(AccessToTheIsle),
-				typeof(InMemory)
-			};
+            {
+                typeof(ChallengeRite),          typeof(AnthenaeumDecree),       typeof(LetterFromTheKing),
+                typeof(OnTheVoid),              typeof(ShilaxrinarsMemorial),   typeof(ToTheHighScholar),
+                typeof(ToTheHighBroodmother),   typeof(ReplyToTheHighScholar),  typeof(AccessToTheIsle),
+                typeof(InMemory)
+            };
 
         private string[] m_Names = new string[]
             {
@@ -172,5 +169,5 @@ namespace Server.Engines.Quests
                 "Obtain Gargish Document - To the High Broodmother",    "Obtain Gargish Document - Reply to the High Scholar",  "Obtain Gargish Document - Access to the Isle",
                 "Obtain Gargish Document - In Memory"
             };
-	}
+    }
 }

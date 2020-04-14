@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -61,15 +60,15 @@ namespace Server.Mobiles
         {
         }
         public override bool CanBeParagon { get { return false; } }
-        public override void OnDeath( Container c )
+        public override void OnDeath(Container c)
         {
-            base.OnDeath( c );
+            base.OnDeath(c);
 
-            if ( Utility.RandomDouble() < 0.15 )
-            c.DropItem( new DisintegratingThesisNotes() );
+            if (Utility.RandomDouble() < 0.15)
+                c.DropItem(new DisintegratingThesisNotes());
 
-            if ( Paragon.ChestChance > Utility.RandomDouble() )
-            c.DropItem( new ParagonChest( Name, 5 ) );
+            if (Paragon.ChestChance > Utility.RandomDouble())
+                c.DropItem(new ParagonChest(Name, 5));
         }
 
         /*public override bool GivesMLMinorArtifact
@@ -85,7 +84,7 @@ namespace Server.Mobiles
             {
                 return true;
             }
-        }       
+        }
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 3);

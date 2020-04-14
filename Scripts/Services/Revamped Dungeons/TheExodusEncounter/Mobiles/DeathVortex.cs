@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
@@ -70,7 +70,7 @@ namespace Server.Items
 
             defender.SendLocalizedMessage(1152694, "", 0x22); // Your life force is drained by the death vortex! 
         }
-        
+
 
         private class InternalTimer : Timer
         {

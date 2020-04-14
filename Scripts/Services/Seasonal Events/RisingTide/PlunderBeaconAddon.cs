@@ -1,10 +1,7 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-
-using Server;
-using Server.Items;
 using Server.Mobiles;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -358,9 +355,9 @@ namespace Server.Items
             return p.X >= X - 8 && p.X <= X + 8 && p.Y >= Y - 8 && p.Y <= Y + 8;
         }
 
-        public PlunderBeaconAddon( Serial serial ) : base( serial )
-		{
-		}
+        public PlunderBeaconAddon(Serial serial) : base(serial)
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Server.Mobiles;
+using System;
 using System.Collections.Generic;
-using Server.Mobiles;
 
 namespace Server.Engines.TombOfKings
 {

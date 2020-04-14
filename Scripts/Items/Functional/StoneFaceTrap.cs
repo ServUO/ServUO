@@ -28,7 +28,7 @@ namespace Server.Items
         {
             get
             {
-                switch ( this.ItemID )
+                switch (this.ItemID)
                 {
                     case 0x10F5:
                     case 0x10F6:
@@ -97,7 +97,7 @@ namespace Server.Items
         }
         public static int GetBaseID(StoneFaceTrapType type)
         {
-            switch ( type )
+            switch (type)
             {
                 case StoneFaceTrapType.NorthWestWall:
                     return 0x10F5;
@@ -112,7 +112,7 @@ namespace Server.Items
 
         public static int GetFireID(StoneFaceTrapType type)
         {
-            switch ( type )
+            switch (type)
             {
                 case StoneFaceTrapType.NorthWestWall:
                     return 0x10F7;

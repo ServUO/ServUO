@@ -1,18 +1,15 @@
-using System;
-using Server;
-using Server.Mobiles;
 using Server.ContextMenus;
 using Server.Items;
-using Server.Misc;
-using Server.Prompts;
+using Server.Mobiles;
 using Server.Network;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Engines.CityLoyalty
 {
-	public class CityHerald : BaseCreature
-	{
-		public City City { get; set; }
+    public class CityHerald : BaseCreature
+    {
+        public City City { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CityLoyaltySystem CitySystem { get { return CityLoyaltySystem.GetCityInstance(City); } set { } }
@@ -64,10 +61,10 @@ namespace Server.Engines.CityLoyalty
 
         public Timer Timer { get; set; }
 
-		[Constructable]
-		public CityHerald(City city) : base(AIType.AI_Vendor, FightMode.None, 10, 1, .4, .2)
-		{
-			City = city;
+        [Constructable]
+        public CityHerald(City city) : base(AIType.AI_Vendor, FightMode.None, 10, 1, .4, .2)
+        {
+            City = city;
             SpeechHue = 0x3B2;
             Female = Utility.RandomDouble() > 0.75;
             Blessed = true;
@@ -97,30 +94,30 @@ namespace Server.Engines.CityLoyalty
             EquipItem(new GoldRing());
 
             CantWalk = true;
-		}
+        }
 
-		public override void GetContextMenuEntries( Mobile from, List<ContextMenuEntry> list )
-		{
-			base.GetContextMenuEntries( from, list );
-			
-			list.Add(new DonateGoldEntry(from, this));
-		}
-		
-		private class DonateGoldEntry : ContextMenuEntry
-		{
-			public CityHerald Herald { get; private set; }
-			public Mobile Player { get; private set; }
-			
-			public DonateGoldEntry(Mobile player, CityHerald herald) : base(1156237, 3) // Donate Gold
-			{
-				Player = player;
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+            list.Add(new DonateGoldEntry(from, this));
+        }
+
+        private class DonateGoldEntry : ContextMenuEntry
+        {
+            public CityHerald Herald { get; private set; }
+            public Mobile Player { get; private set; }
+
+            public DonateGoldEntry(Mobile player, CityHerald herald) : base(1156237, 3) // Donate Gold
+            {
+                Player = player;
                 Herald = herald;
 
                 Enabled = player.InRange(herald.Location, 5);
-			}
-			
-			public override void OnClick()
-			{
+            }
+
+            public override void OnClick()
+            {
                 if (Player.Prompt != null)
                 {
                     Player.SendLocalizedMessage(1079166); // You already have a text entry request pending.
@@ -152,8 +149,8 @@ namespace Server.Engines.CityLoyalty
                             from.SendLocalizedMessage(1155867); // The amount entered is invalid. Verify that there are sufficient funds to complete this transaction.
                         });
                 }
-			}
-		}
+            }
+        }
 
         public void DoAnnouncement()
         {
@@ -178,24 +175,24 @@ namespace Server.Engines.CityLoyalty
             }
         }
 
-		public CityHerald(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-			writer.Write((int)City);
+        public CityHerald(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+            writer.Write((int)City);
             writer.Write(_Announcement);
             writer.Write(AnnouncementExpires);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int v = reader.ReadInt();
-			City = (City)reader.ReadInt();
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = reader.ReadInt();
+            City = (City)reader.ReadInt();
             _Announcement = reader.ReadString();
             AnnouncementExpires = reader.ReadDateTime();
 
@@ -208,6 +205,6 @@ namespace Server.Engines.CityLoyalty
                 Timer.Start();
             }
 
-		}
-	}
+        }
+    }
 }

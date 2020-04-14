@@ -1,5 +1,5 @@
-using System;
 using Server.Gumps;
+using System;
 
 namespace Server.Mobiles
 {
@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Type CreatureType { get { return typeof(Windrunner); } }
 
         [Constructable]
-        public WindrunnerStatue() 
+        public WindrunnerStatue()
             : base(0x9ED5)
         {
             LootType = LootType.Blessed;

@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-
-using Server;
-using Server.Prompts;
-using Server.Mobiles;
-using Server.Items;
-using Server.SkillHandlers;
-using Server.Network;
 using Server.Engines.Quests;
+using Server.Items;
+using Server.Mobiles;
+using Server.Network;
+using Server.Prompts;
+using Server.SkillHandlers;
+using System;
 
 namespace Server.Engines.Khaldun
 {
@@ -43,7 +40,7 @@ namespace Server.Engines.Khaldun
 
                 if (!current && _HasBeenExamined)
                 {
-                    HideTimer = Timer.DelayCall(TimeSpan.FromMinutes(20), () => Hide() );
+                    HideTimer = Timer.DelayCall(TimeSpan.FromMinutes(20), () => Hide());
                 }
             }
         }

@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace Server.Items
-{  
+﻿namespace Server.Items
+{
     public class HarvestWine : BeverageBottle
     {
-		public override double DefaultWeight { get { return 1; } }
-		public override int LabelNumber {get {return 1153873;} } // Harvest Wine
-		
+        public override double DefaultWeight { get { return 1; } }
+        public override int LabelNumber { get { return 1153873; } } // Harvest Wine
+
         [Constructable]
         public HarvestWine()
             : base(BeverageType.Wine)
@@ -18,7 +16,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-       
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

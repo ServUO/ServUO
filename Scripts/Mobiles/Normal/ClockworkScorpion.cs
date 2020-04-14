@@ -148,7 +148,7 @@ namespace Server.Mobiles
 
             return base.GetHurtSound();
         }
-  
+
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
             Mobile master = GetMaster();

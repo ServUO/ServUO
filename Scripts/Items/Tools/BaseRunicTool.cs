@@ -288,8 +288,8 @@ namespace Server.Items
             }
             else
             {
-            	m_Props.Set(25, true); // Only bows can be Balanced
-            	m_Props.Set(26, true); // Only bows have Velocity
+                m_Props.Set(25, true); // Only bows can be Balanced
+                m_Props.Set(26, true); // Only bows have Velocity
             }
 
             for (int i = 0; i < attributeCount; ++i)
@@ -299,11 +299,11 @@ namespace Server.Items
                 if (random == -1)
                     break;
 
-                switch ( random )
+                switch (random)
                 {
                     case 0:
                         {
-                            switch ( Utility.Random(5) )
+                            switch (Utility.Random(5))
                             {
                                 case 0:
                                     ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitPhysicalArea, 2, 50, 2);
@@ -326,7 +326,7 @@ namespace Server.Items
                         }
                     case 1:
                         {
-                            switch ( Utility.Random(4) )
+                            switch (Utility.Random(4))
                             {
                                 case 0:
                                     ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitMagicArrow, 2, 50, 2);
@@ -346,7 +346,7 @@ namespace Server.Items
                         }
                     case 2:
                         {
-                            switch ( Utility.Random(2) )
+                            switch (Utility.Random(2))
                             {
                                 case 0:
                                     ApplyAttribute(secondary, min, max, AosWeaponAttribute.UseBestSkill, 1, 1);
@@ -359,9 +359,9 @@ namespace Server.Items
                             break;
                         }
                     case 3:
-						int dmgMin = primary.WeaponDamage;
-						int dmgMax = Math.Max(dmgMin, 50);
-						primary.WeaponDamage = 0;
+                        int dmgMin = primary.WeaponDamage;
+                        int dmgMax = Math.Max(dmgMin, 50);
+                        primary.WeaponDamage = 0;
                         ApplyAttribute(primary, min, max, AosAttribute.WeaponDamage, dmgMin, dmgMax);
                         break;
                     case 4:
@@ -432,7 +432,7 @@ namespace Server.Items
                         break;
                     case 26:
                         ApplyVelocityAttribute((BaseRanged)weapon, min, max, 2, 50, 2);
-                   		break;
+                        break;
                 }
             }
         }
@@ -514,7 +514,7 @@ namespace Server.Items
 
                 random += baseOffset;
 
-                switch ( random )
+                switch (random)
                 {
                     /* Begin Sheilds */
                     case 0:
@@ -529,7 +529,7 @@ namespace Server.Items
                     case 3:
                         ApplyAttribute(primary, min, max, AosAttribute.CastSpeed, 1, 1);
                         break;
-                        /* Begin Armor */
+                    /* Begin Armor */
                     case 4:
                         ApplyAttribute(secondary, min, max, AosArmorAttribute.LowerStatReq, 10, 100, 10);
                         break;
@@ -539,7 +539,7 @@ namespace Server.Items
                     case 6:
                         ApplyAttribute(secondary, min, max, AosArmorAttribute.DurabilityBonus, 10, 100, 10);
                         break;
-                        /* End Shields */
+                    /* End Shields */
                     case 7:
                         ApplyAttribute(secondary, min, max, AosArmorAttribute.MageArmor, 1, 1);
                         break;
@@ -591,7 +591,7 @@ namespace Server.Items
                     case 23:
                         ApplyResistance(armor, min, max, ResistanceType.Energy, 1, 15);
                         break;
-                /* End Armor */
+                        /* End Armor */
                 }
             }
         }
@@ -634,7 +634,7 @@ namespace Server.Items
                 if (random == -1)
                     break;
 
-                switch ( random )
+                switch (random)
                 {
                     case 0:
                         ApplyAttribute(primary, min, max, AosAttribute.ReflectPhysical, 1, 15);
@@ -735,7 +735,7 @@ namespace Server.Items
                 if (random == -1)
                     break;
 
-                switch ( random )
+                switch (random)
                 {
                     case 0:
                         ApplyAttribute(resists, min, max, AosElementAttribute.Physical, 1, 15);
@@ -844,7 +844,7 @@ namespace Server.Items
                 if (random == -1)
                     break;
 
-                switch ( random )
+                switch (random)
                 {
                     case 0:
                     case 1:
@@ -912,7 +912,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {
@@ -1085,7 +1085,7 @@ namespace Server.Items
 
         private static void ApplyResistance(BaseArmor ar, int min, int max, ResistanceType res, int low, int high)
         {
-            switch ( res )
+            switch (res)
             {
                 case ResistanceType.Physical:
                     ar.PhysicalBonus += Scale(min, max, low, high);

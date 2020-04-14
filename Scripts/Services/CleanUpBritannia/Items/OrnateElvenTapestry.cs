@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     [FlipableAttribute(0x2D71, 0x2D72)]
     public class OrnateElvenTapestry : Item

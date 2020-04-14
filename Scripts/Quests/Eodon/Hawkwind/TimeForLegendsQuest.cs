@@ -1,18 +1,17 @@
-using System;
-using Server;
+using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
-using Server.Gumps;
 using Server.Spells.SkillMasteries;
+using System;
 
 namespace Server.Engines.Quests.TimeLord
 {
     public class TimeForLegendsQuest : QuestSystem
     {
         private Type[] _TypeReferenceTable = new Type[]
-		{
-			typeof(TimeForLegendsObjective)
-		};
+        {
+            typeof(TimeForLegendsObjective)
+        };
 
         public override Type[] TypeReferenceTable { get { return _TypeReferenceTable; } }
 
@@ -58,17 +57,17 @@ namespace Server.Engines.Quests.TimeLord
 
             var primer = new SkillMasteryPrimer(Mastery, 1);
 
-            if(primer != null)
+            if (primer != null)
                 From.AddToBackpack(primer);
         }
 
         public static Type[] Targets { get { return _Targets; } }
         private static Type[] _Targets = new Type[]
-		{	
-			typeof(Semidar), typeof(Mephitis), typeof(Rikktor), typeof(LordOaks), typeof(Neira), typeof(Barracoon), typeof(Serado), typeof(Meraktus), typeof(Ilhenir),
-			typeof(Twaulo), typeof(AbyssalInfernal), typeof(PrimevalLich), typeof(CorgulTheSoulBinder), typeof(CorgulTheSoulBinder) /*dragon turtle*/,
+        {
+            typeof(Semidar), typeof(Mephitis), typeof(Rikktor), typeof(LordOaks), typeof(Neira), typeof(Barracoon), typeof(Serado), typeof(Meraktus), typeof(Ilhenir),
+            typeof(Twaulo), typeof(AbyssalInfernal), typeof(PrimevalLich), typeof(CorgulTheSoulBinder), typeof(CorgulTheSoulBinder) /*dragon turtle*/,
             typeof(DreadHorn), typeof(Travesty), typeof(ChiefParoxysmus), typeof(LadyMelisande), typeof(MonstrousInterredGrizzle), typeof(ShimmeringEffusion)
-		};
+        };
 
         public static Type TargetOfTheDay { get; set; }
         public static DateTime NextTarget { get; set; }
@@ -121,11 +120,11 @@ namespace Server.Engines.Quests.TimeLord
             Mastery = (SkillName)reader.ReadInt();
 
             string name = null;
-            
-            if(reader.ReadInt() == 0)
+
+            if (reader.ReadInt() == 0)
                 name = reader.ReadString();
 
-            if(name != null)
+            if (name != null)
                 ToSlay = ScriptCompiler.FindTypeByName(name);
         }
     }

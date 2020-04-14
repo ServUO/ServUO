@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Server.Engines.CityLoyalty;
 using Server.Gumps;
 using Server.Mobiles;
-using System.Linq;
 using Server.Network;
-using Server.Engines.CityLoyalty;
+using System.Linq;
 
 namespace Server.Engines.Points
 {

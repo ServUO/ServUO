@@ -210,7 +210,7 @@ namespace Server.Items
                 case GemType.Sapphire: Hue = 1926; break;
                 case GemType.Ruby: Hue = 1911; break;
                 case GemType.Citrine: Hue = 1955; break;
-                case GemType.Amethyst: Hue = 1919;  break;
+                case GemType.Amethyst: Hue = 1919; break;
                 case GemType.Tourmaline: Hue = 1924; break;
                 case GemType.Amber: Hue = 1923; break;
                 case GemType.Diamond: Hue = 2067; break;

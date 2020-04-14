@@ -1,8 +1,4 @@
-﻿using System;
-using Server;
-using Server.Gumps;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class HumansAndElvesRobe : Robe
     {

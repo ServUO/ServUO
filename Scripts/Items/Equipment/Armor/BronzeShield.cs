@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.Craft;
 
 namespace Server.Items
@@ -6,7 +5,7 @@ namespace Server.Items
     [Alterable(typeof(DefBlacksmithy), typeof(SmallPlateShield))]
     public class BronzeShield : BaseShield
     {
-		public override int BasePhysicalResistance { get { return 0; } }
+        public override int BasePhysicalResistance { get { return 0; } }
         public override int BaseFireResistance { get { return 0; } }
         public override int BaseColdResistance { get { return 1; } }
         public override int BasePoisonResistance { get { return 0; } }
@@ -14,7 +13,7 @@ namespace Server.Items
         public override int InitMinHits { get { return 25; } }
         public override int InitMaxHits { get { return 30; } }
         public override int StrReq { get { return 35; } }
-		
+
         [Constructable]
         public BronzeShield()
             : base(0x1B72)
@@ -26,7 +25,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-              
+
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);

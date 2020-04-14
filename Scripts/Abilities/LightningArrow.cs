@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Server.Spells;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -12,7 +11,7 @@ namespace Server.Items
 
         public override int BaseMana => 20;
 
-		public override bool ConsumeAmmo => false;
+        public override bool ConsumeAmmo => false;
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
@@ -37,7 +36,7 @@ namespace Server.Items
             List<Mobile> targets = new List<Mobile>();
             IPooledEnumerable eable = defender.GetMobilesInRange(5);
 
-            foreach(Mobile m in eable)
+            foreach (Mobile m in eable)
             {
                 if (m != defender && m != attacker && SpellHelper.ValidIndirectTarget(attacker, m))
                 {

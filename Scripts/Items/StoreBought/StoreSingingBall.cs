@@ -16,7 +16,7 @@ namespace Server.Items
         public override int LabelNumber { get { return 1152323 + (int)Type; } }
 
         public SBType Type { get; set; }
-        
+
         [Constructable]
         public StoreSingingBall()
             : base(0x468A)
@@ -24,7 +24,7 @@ namespace Server.Items
             var values = Enum.GetValues(typeof(SBType));
             Type = (SBType)values.GetValue(Utility.Random(values.Length));
 
-            Weight = 1.0;            
+            Weight = 1.0;
             LootType = LootType.Regular;
             SetHue();
         }

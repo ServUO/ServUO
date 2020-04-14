@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class ShardThrasher : DiamondMace
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public ShardThrasher()
         {

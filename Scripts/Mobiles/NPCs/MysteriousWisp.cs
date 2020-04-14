@@ -1,12 +1,10 @@
-using System;
-using Server;
-using System.Collections.Generic;
 using Server.ContextMenus;
-using Server.Engines.Despise;
-using Server.Items;
-using Server.Gumps;
-using Server.Network;
 using Server.Engines.Quests;
+using Server.Gumps;
+using Server.Items;
+using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -560,7 +558,7 @@ namespace Server.Mobiles
                         if (m_Viewers.Contains(m))
                             m_Viewers.Remove(m);
 
-                        if(wisp.InRange(m.Location, 5) && wisp.Backpack != null)
+                        if (wisp.InRange(m.Location, 5) && wisp.Backpack != null)
                             m.SendGump(new InternalGump(wisp, m));
                     }
                 }
@@ -606,7 +604,7 @@ namespace Server.Mobiles
                 string cost = m_Available ? m_Wisp.GetCostFor(item).ToString() : "No Longer Available";
 
                 AddHtml(10, 100, 140, 20, "<BASEFONT COLOR=#FFFFFF>Despise Crystals:</BASEFONT>", false, false);
-                AddHtml(10, 120, 140, 20, "<BASEFONT COLOR=#FFFFFF>"+cost+"</BASEFONT>", false, false);
+                AddHtml(10, 120, 140, 20, "<BASEFONT COLOR=#FFFFFF>" + cost + "</BASEFONT>", false, false);
 
                 Rectangle2D b = ItemBounds.Table[item.ItemID];
                 AddItem(210 - b.Width / 2 - b.X, 70 - b.Height / 2 - b.Y, item.ItemID, item.Hue);

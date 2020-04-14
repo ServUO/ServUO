@@ -1,5 +1,4 @@
 using System;
-using Server.Items;
 
 namespace Server.Engines.Quests
 {
@@ -20,7 +19,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(BadCompany)
                 };

@@ -1,13 +1,12 @@
-﻿using Server;
+﻿using Server.Targeting;
 using System;
-using Server.Targeting;
 
 namespace Server.Items
 {
     [Flipable(7845, 7846)]
     public class LargeFishingNet : Item
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1149955; } }
 
         [Constructable]

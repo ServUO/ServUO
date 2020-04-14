@@ -1,8 +1,8 @@
-using System;
 using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Network;
+using System;
 
 namespace Server.Engines.Craft
 {
@@ -108,7 +108,7 @@ namespace Server.Engines.Craft
 
         private TextDefinition RequiredExpansionMessage(Expansion expansion)
         {
-            switch( expansion )
+            switch (expansion)
             {
                 case Expansion.SE:
                     return 1063363; // * Requires the "Samurai Empire" expansion
@@ -237,7 +237,7 @@ namespace Server.Engines.Craft
                 type = craftResource.ItemType;
                 nameString = craftResource.NameString;
                 nameNumber = craftResource.NameNumber;
-				
+
                 // Resource Mutation
                 if (type == res.ResType && resIndex > -1)
                 {
@@ -295,7 +295,7 @@ namespace Server.Engines.Craft
                             m_CraftItem.TryCraft(m_From, m_CraftItem, m_Tool);
                             return;
                         }
-                        
+
                         int num = m_CraftSystem.CanCraft(m_From, m_Tool, m_CraftItem.ItemType);
 
                         if (num > 0)

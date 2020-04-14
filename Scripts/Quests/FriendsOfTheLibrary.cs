@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class FriendsOfTheLibraryQuest : BaseQuest
-    { 
+    {
         public FriendsOfTheLibraryQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(LibraryApplication), "friends of the library application", 1, typeof(Sarakki), "Sarakki (Britain)"));		
-							
+        {
+            this.AddObjective(new DeliverObjective(typeof(LibraryApplication), "friends of the library application", 1, typeof(Sarakki), "Sarakki (Britain)"));
+
             this.AddReward(new BaseReward(1072749)); // Friends of the Library Membership Token.
         }
 
@@ -91,12 +91,12 @@ namespace Server.Engines.Quests
     }
 
     public class BureaucraticDelayQuest : BaseQuest
-    { 
+    {
         public BureaucraticDelayQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(SealingWaxOrder), "sealing wax order", 1, typeof(Petrus), "Petrus (Ilshenar)"));		
-							
+        {
+            this.AddObjective(new DeliverObjective(typeof(SealingWaxOrder), "sealing wax order", 1, typeof(Petrus), "Petrus (Ilshenar)"));
+
             this.AddReward(new BaseReward(1074871)); // A step closer to having sealing wax.
         }
 
@@ -177,12 +177,12 @@ namespace Server.Engines.Quests
     }
 
     public class TheSecretIngredientQuest : BaseQuest
-    { 
+    {
         public TheSecretIngredientQuest()
             : base()
-        { 
-            this.AddObjective(new ObtainObjective(typeof(SpeckledPoisonSac), "speckled poison sacs", 5, 0x23A, 3600));		
-							
+        {
+            this.AddObjective(new ObtainObjective(typeof(SpeckledPoisonSac), "speckled poison sacs", 5, 0x23A, 3600));
+
             this.AddReward(new BaseReward(1074871)); // A step closer to having sealing wax.
         }
 
@@ -264,12 +264,12 @@ namespace Server.Engines.Quests
     }
 
     public class SpecialDeliveryQuest : BaseQuest
-    { 
+    {
         public SpecialDeliveryQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(OfficialSealingWax), "sealing wax", 1, typeof(Sarakki), "Sarakki (Britain)"));		
-							
+        {
+            this.AddObjective(new DeliverObjective(typeof(OfficialSealingWax), "sealing wax", 1, typeof(Sarakki), "Sarakki (Britain)"));
+
             this.AddReward(new BaseReward(1072749)); // Friends of the Library Membership Token.
         }
 
@@ -348,12 +348,12 @@ namespace Server.Engines.Quests
     }
 
     public class AccessToTheStacksQuest : BaseQuest
-    { 
+    {
         public AccessToTheStacksQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(NotarizedApplication), "notarized application", 1, typeof(Verity), "Verity (Britain)"));		
-							
+        {
+            this.AddObjective(new DeliverObjective(typeof(NotarizedApplication), "notarized application", 1, typeof(Verity), "Verity (Britain)"));
+
             this.AddReward(new BaseReward(typeof(FriendOfTheLibraryToken), 1072749)); // Friends of the Library Membership Token.
         }
 
@@ -415,7 +415,7 @@ namespace Server.Engines.Quests
         public override void GiveRewards()
         {
             base.GiveRewards();
-			
+
             this.Owner.LibraryFriend = true;
         }
 

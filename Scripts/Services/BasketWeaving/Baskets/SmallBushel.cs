@@ -1,4 +1,3 @@
-using System;
 using Server;
 using Server.Items;
 
@@ -8,7 +7,7 @@ public class SmallBushel : BaseContainer
     public SmallBushel()
         : base(0x09B1)
     {
-        this.Weight = 1.0; 
+        this.Weight = 1.0;
     }
 
     public SmallBushel(Serial serial)

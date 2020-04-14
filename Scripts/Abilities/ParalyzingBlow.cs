@@ -59,9 +59,9 @@ namespace Server.Items
 
         public override bool OnBeforeSwing(Mobile attacker, Mobile defender)
         {
-            if(defender == null)
+            if (defender == null)
                 return false;
-                
+
             if (defender.Paralyzed)
             {
                 if (attacker != null)

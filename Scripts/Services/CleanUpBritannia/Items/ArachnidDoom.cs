@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class ArachnidDoom : BaseInstrument
     {
@@ -12,7 +10,7 @@ namespace Server.Items
             this.Slayer = SlayerName.ArachnidDoom;
 
             UsesRemaining = 450;
-        }       
+        }
 
         public ArachnidDoom(Serial serial)
             : base(serial)

@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -10,7 +9,7 @@ namespace Server.Mobiles
         [Constructable]
         public Tyleelor()
             : base("the expeditionist")
-        { 
+        {
             this.Name = "Tyeelor";
         }
 
@@ -41,43 +40,43 @@ namespace Server.Mobiles
             }
         }
         public override void InitSBInfo()
-        { 
+        {
         }
 
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x8367;
             this.HairItemID = 0x2FC1;
-            this.HairHue = 0x38;			
+            this.HairHue = 0x38;
         }
 
         public override void InitOutfit()
         {
             this.AddItem(new ElvenBoots(0x1BB));
-			
+
             Item item;
-			
+
             item = new WoodlandLegs();
             item.Hue = 0x236;
-            this.AddItem(item);			
-			
+            this.AddItem(item);
+
             item = new WoodlandChest();
             item.Hue = 0x236;
             this.AddItem(item);
-			
+
             item = new WoodlandArms();
             item.Hue = 0x236;
             this.AddItem(item);
-			
+
             item = new WoodlandBelt();
             item.Hue = 0x237;
             this.AddItem(item);
-			
+
             item = new VultureHelm();
             item.Hue = 0x236;
             this.AddItem(item);
@@ -86,14 +85,14 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-	
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-	
+
             int version = reader.ReadInt();
         }
     }

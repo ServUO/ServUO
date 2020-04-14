@@ -1,5 +1,5 @@
-using System;
 using Server.Engines.VeteranRewards;
+using System;
 
 namespace Server.Items
 {
@@ -121,7 +121,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-      
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -617,7 +617,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 2:
                     {
@@ -759,7 +759,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {
@@ -888,7 +888,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {

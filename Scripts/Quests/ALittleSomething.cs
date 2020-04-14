@@ -1,15 +1,14 @@
-using System;
 using Server.Items;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class ALittleSomething : BaseQuest
-    { 
+    {
         public ALittleSomething()
             : base()
         {
-			this.AddObjective(new ObtainObjective(typeof(BrilliantAmber), "Brilliant Amber", 1, 0x3199));
-          						
+            this.AddObjective(new ObtainObjective(typeof(BrilliantAmber), "Brilliant Amber", 1, 0x3199));
+
             this.AddReward(new BaseReward(typeof(MeagerImbuingBag), 1, "Meager Imbuing Bag"));
         }
 

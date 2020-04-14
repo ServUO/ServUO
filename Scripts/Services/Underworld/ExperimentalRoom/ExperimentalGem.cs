@@ -1,31 +1,30 @@
-using Server;
-using System;
+using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
-using Server.Gumps;
+using System;
 
 namespace Server.Items
 {
-	public enum Room
-	{
-        RoomZero    = 0,
-		RoomOne     = 1,
-		RoomTwo     = 2, 
-		RoomThree   = 3,
-        RoomFour    = 4
-	}
-		
-	public class ExperimentalGem : BaseDecayingItem
-	{
-        private static readonly int Neutral     = 0x356;  
-        private static readonly int Red         = 0x26;
-        private static readonly int White       = 0x481;
-        private static readonly int Blue        = 0x4;
-        private static readonly int Pink        = 0x4B2;
-        private static readonly int Orange      = 0x30;
-        private static readonly int LightGreen  = 0x3D;
-        private static readonly int DarkGreen   = 0x557;
-        private static readonly int Brown       = 0x747;
+    public enum Room
+    {
+        RoomZero = 0,
+        RoomOne = 1,
+        RoomTwo = 2,
+        RoomThree = 3,
+        RoomFour = 4
+    }
+
+    public class ExperimentalGem : BaseDecayingItem
+    {
+        private static readonly int Neutral = 0x356;
+        private static readonly int Red = 0x26;
+        private static readonly int White = 0x481;
+        private static readonly int Blue = 0x4;
+        private static readonly int Pink = 0x4B2;
+        private static readonly int Orange = 0x30;
+        private static readonly int LightGreen = 0x3D;
+        private static readonly int DarkGreen = 0x557;
+        private static readonly int Brown = 0x747;
 
         private static readonly TimeSpan HueToHueDelay = TimeSpan.FromSeconds(4);
         private static readonly TimeSpan HueToLocDelay = TimeSpan.FromSeconds(4);
@@ -33,42 +32,42 @@ namespace Server.Items
 
         private static readonly Rectangle2D m_Entrance = new Rectangle2D(980, 1117, 17, 3);
 
-		private bool m_Active;
-		private bool m_IsExtremeHue;
-		private bool m_Complete;
-		private Room m_CurrentRoom;
-		private double m_Completed;
-		private double m_ToComplete;
-		private int m_LastIndex;
+        private bool m_Active;
+        private bool m_IsExtremeHue;
+        private bool m_Complete;
+        private Room m_CurrentRoom;
+        private double m_Completed;
+        private double m_ToComplete;
+        private int m_LastIndex;
         private int m_CurrentHue;
         private int m_Span;
-		private Timer m_Timer;
-		private DateTime m_Expire;
+        private Timer m_Timer;
+        private DateTime m_Expire;
         private Mobile m_Owner;
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool Active { get { return m_Active; } }
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool IsExtremeHue { get { return m_IsExtremeHue; } }
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool Complete { get { return m_Complete; } set { m_Complete = value; } }
-		
-		[CommandProperty(AccessLevel.GameMaster)]
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Active { get { return m_Active; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsExtremeHue { get { return m_IsExtremeHue; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Complete { get { return m_Complete; } set { m_Complete = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public Room CurrentRoom { get { return m_CurrentRoom; } set { m_CurrentRoom = value; } }
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public double Completed { get { return m_Completed; } set { m_Completed = value; } }
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public double ToComplete { get { return m_ToComplete; } set { m_ToComplete = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double Completed { get { return m_Completed; } set { m_Completed = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double ToComplete { get { return m_ToComplete; } set { m_ToComplete = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int CurrentHue { get { return m_CurrentHue; } }
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int LastIndex { get { return m_LastIndex; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int LastIndex { get { return m_LastIndex; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Owner { get { return m_Owner; } set { m_Owner = value; } }
@@ -76,33 +75,33 @@ namespace Server.Items
         public override int Lifespan { get { return m_Span; } }
 
         public override int LabelNumber
-        { 
+        {
             get
             {
                 if (m_Active)
                     return 1113409; // An Experimental Gem [Activated]
                 return 1113380; //An Experimental Gem
-            } 
-        } 
-		
-		[Constructable]
-		public ExperimentalGem() : base(6463)
-		{
-			m_LastIndex = -1;
-			m_IsExtremeHue = false;
+            }
+        }
+
+        [Constructable]
+        public ExperimentalGem() : base(6463)
+        {
+            m_LastIndex = -1;
+            m_IsExtremeHue = false;
             m_CurrentHue = Neutral;
-			m_CurrentRoom = Room.RoomZero;
-			m_Active = false;
-			m_Expire = DateTime.MaxValue;
+            m_CurrentRoom = Room.RoomZero;
+            m_Active = false;
+            m_Expire = DateTime.MaxValue;
             m_Span = 0;
-			m_Completed = 0;
-			m_ToComplete = 0;
+            m_Completed = 0;
+            m_ToComplete = 0;
 
             Hue = Neutral;
-		}
-		
-		public override void OnDoubleClick(Mobile from)
-		{
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
             if (!IsChildOf(from.Backpack))
                 from.SendLocalizedMessage(1054107); // This item must be in your backpack.
             else if (ExperimentalRoomController.IsInCooldown(from))
@@ -116,7 +115,7 @@ namespace Server.Items
             }
             else if (m_Active)
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1113408); // The gem is already active. You must clear the rooms before it is destroyed!
-		}
+        }
 
         public override void Decay()
         {
@@ -155,30 +154,30 @@ namespace Server.Items
                 InvalidateProperties();
             }
         }
-		
-		private void SelectNewHue()
-		{
-			int index = -1;
-			int[] list = GetRoomHues();
-			
-			do
-			{
-				index = Utility.Random(list.Length);
-			}
-			while(index == m_LastIndex);
+
+        private void SelectNewHue()
+        {
+            int index = -1;
+            int[] list = GetRoomHues();
+
+            do
+            {
+                index = Utility.Random(list.Length);
+            }
+            while (index == m_LastIndex);
 
             m_Expire = DateTime.UtcNow + HueToLocDelay;
-			m_Holding = false;
-			m_LastIndex = index;
+            m_Holding = false;
+            m_LastIndex = index;
 
             if (IsExtreme(list[index]))
                 m_IsExtremeHue = true;
-			
-			Hue = list[index];
+
+            Hue = list[index];
             m_CurrentHue = Hue;
-		}
-		
-		private bool m_Holding;
+        }
+
+        private bool m_Holding;
 
         public void OnTick()
         {
@@ -294,7 +293,7 @@ namespace Server.Items
                 m_Expire = DateTime.UtcNow + HueToLocDelay;
             }
         }
-        
+
 
         private string GetFloorString(int hue)
         {
@@ -321,23 +320,23 @@ namespace Server.Items
             return "NOT STANDING ON A COLOR";
         }
 
-		private void CompletePuzzle(Mobile m)
-		{
-			if(m_Timer != null)
-			{
-				m_Timer.Stop();
-				m_Timer = null;
-			}
-			
-			m_Complete = true;
+        private void CompletePuzzle(Mobile m)
+        {
+            if (m_Timer != null)
+            {
+                m_Timer.Stop();
+                m_Timer = null;
+            }
+
+            m_Complete = true;
             Hue = Neutral;
             m_CurrentHue = Hue;
 
             m_CurrentRoom = Room.RoomFour;
-		}
-		
-		private void OnPuzzleFailed(Mobile m)
-		{
+        }
+
+        private void OnPuzzleFailed(Mobile m)
+        {
             if (m != null)
             {
                 int x = Utility.RandomMinMax(m_Entrance.X, m_Entrance.X + m_Entrance.Width);
@@ -354,87 +353,87 @@ namespace Server.Items
                 BaseCreature.TeleportPets(m, p, Map.TerMur);
                 m.MoveToWorld(p, Map.TerMur);
             }
-			
-			Reset();
-		}
-		
-		private void Reset()
-		{
-			if(m_Timer != null)
-			{
-				m_Timer.Stop();
-				m_Timer = null;
-			}
-			
-			m_Complete = false;
-			m_Completed = 0;
-			m_ToComplete = 0;
-			m_IsExtremeHue = false;
+
+            Reset();
+        }
+
+        private void Reset()
+        {
+            if (m_Timer != null)
+            {
+                m_Timer.Stop();
+                m_Timer = null;
+            }
+
+            m_Complete = false;
+            m_Completed = 0;
+            m_ToComplete = 0;
+            m_IsExtremeHue = false;
             m_Active = false;
-			m_CurrentRoom = Room.RoomOne;
-			m_LastIndex = -1;
-			m_Expire = DateTime.MaxValue;
+            m_CurrentRoom = Room.RoomOne;
+            m_LastIndex = -1;
+            m_Expire = DateTime.MaxValue;
             m_CurrentHue = Neutral;
             Hue = Neutral;
             InvalidateProperties();
-		}
-		
-		public override void Delete()
-		{
-			if(m_Timer != null)
-				m_Timer.Stop();
+        }
 
-            if(m_Owner != null)
+        public override void Delete()
+        {
+            if (m_Timer != null)
+                m_Timer.Stop();
+
+            if (m_Owner != null)
                 ExperimentalRoomController.AddToTable(m_Owner);
-	
-			base.Delete();
-		}
-		
-		private class InternalTimer : Timer
-		{
-			private ExperimentalGem m_Gem;
-			
-			public InternalTimer(ExperimentalGem gem) : base(TimeSpan.FromSeconds(.5), TimeSpan.FromSeconds(.5))
-			{
-				m_Gem = gem;
-				Start();
-			}
-	
-			protected override void OnTick()
-			{
-				if(m_Gem != null)
-					m_Gem.OnTick();
-				else
-					Stop();
-			}
-		}
-		
-		private int[] GetRoomHues()
-		{
-			switch(m_CurrentRoom)
-			{
-				default:
-				case Room.RoomOne:
-					return m_RoomHues[0];
-				case Room.RoomTwo:
-					return m_RoomHues[1];
-				case Room.RoomThree:
-					return m_RoomHues[2];
-			}
-		}
+
+            base.Delete();
+        }
+
+        private class InternalTimer : Timer
+        {
+            private ExperimentalGem m_Gem;
+
+            public InternalTimer(ExperimentalGem gem) : base(TimeSpan.FromSeconds(.5), TimeSpan.FromSeconds(.5))
+            {
+                m_Gem = gem;
+                Start();
+            }
+
+            protected override void OnTick()
+            {
+                if (m_Gem != null)
+                    m_Gem.OnTick();
+                else
+                    Stop();
+            }
+        }
+
+        private int[] GetRoomHues()
+        {
+            switch (m_CurrentRoom)
+            {
+                default:
+                case Room.RoomOne:
+                    return m_RoomHues[0];
+                case Room.RoomTwo:
+                    return m_RoomHues[1];
+                case Room.RoomThree:
+                    return m_RoomHues[2];
+            }
+        }
 
         private Rectangle2D GetRoomRec()
         {
-			switch(m_CurrentRoom)
-			{
-				default:
-				case Room.RoomOne:
-					return m_RoomRecs[0];
-				case Room.RoomTwo:
+            switch (m_CurrentRoom)
+            {
+                default:
+                case Room.RoomOne:
+                    return m_RoomRecs[0];
+                case Room.RoomTwo:
                     return m_RoomRecs[1];
-				case Room.RoomThree:
+                case Room.RoomThree:
                     return m_RoomRecs[2];
-			}
+            }
         }
 
         public int GetIndexFor(int hue)
@@ -535,7 +534,7 @@ namespace Server.Items
                         return Neutral;
                     break;
                 case 0x747:                         //Brown
-                  if (floorHue == LightGreen)
+                    if (floorHue == LightGreen)
                         return Orange;
                     if (floorHue == DarkGreen)
                         return Neutral;
@@ -581,13 +580,13 @@ namespace Server.Items
         private int[] ExtremeHues = new int[]
         {
             Red,
-            Blue, 
+            Blue,
             Brown,
             DarkGreen
         };
 
-		private static int[][] m_RoomHues = new int[][]
-		{
+        private static int[][] m_RoomHues = new int[][]
+        {
             //Room One
             new int[] { White, Pink, Red, Blue },
 
@@ -596,7 +595,7 @@ namespace Server.Items
 
             //Room Three
             new int[] { Blue, Pink, DarkGreen, Orange, Brown, LightGreen, Red, White },
-		};
+        };
 
         private static Rectangle2D[] m_FloorRecs = new Rectangle2D[]
         {
@@ -642,7 +641,7 @@ namespace Server.Items
             Pink,
 
             //Room Three
-            Red, 
+            Red,
             White,
             Brown,
             LightGreen,
@@ -717,5 +716,5 @@ namespace Server.Items
                     m_Gem.Activate(state.Mobile);
             }
         }
-	}
+    }
 }

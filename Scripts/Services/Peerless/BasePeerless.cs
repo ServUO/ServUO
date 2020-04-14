@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 using Server.Spells;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ namespace Server.Mobiles
     public class BasePeerless : BaseCreature
     {
         private PeerlessAltar m_Altar;
-		
+
         [CommandProperty(AccessLevel.GameMaster)]
         public PeerlessAltar Altar
         {
@@ -22,7 +21,7 @@ namespace Server.Mobiles
             }
         }
 
-		public override bool CanBeParagon { get { return false; } }
+        public override bool CanBeParagon { get { return false; } }
         public virtual bool DropPrimer { get { return true; } }
         public virtual bool GiveMLSpecial { get { return true; } }
 
@@ -40,23 +39,23 @@ namespace Server.Mobiles
                 return 0.3;
             }
         }
-		
+
         public BasePeerless(Serial serial)
             : base(serial)
         {
         }
-		
+
         public override void OnThink()
         {
             base.OnThink();
-			
+
             if (HasFireRing && Combatant != null && Alive && Hits > 0.8 * HitsMax && m_NextFireRing > Core.TickCount && Utility.RandomDouble() < FireRingChance)
                 FireRing();
-				
+
             if (CanSpawnHelpers && Combatant != null && Alive && CanSpawnWave())
                 SpawnHelpers();
         }
-		
+
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
@@ -137,32 +136,32 @@ namespace Server.Mobiles
             if (m_Altar != null)
                 m_Altar.OnPeerlessDeath();
         }
-		
+
         public BasePeerless(AIType aiType, FightMode fightMode, int rangePerception, int rangeFight, double activeSpeed, double passiveSpeed)
             : base(aiType, fightMode, rangePerception, rangeFight, activeSpeed, passiveSpeed)
         {
-            m_NextFireRing = Core.TickCount + 10000;			
+            m_NextFireRing = Core.TickCount + 10000;
             m_CurrentWave = MaxHelpersWaves;
         }
-		
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
             writer.Write((int)0); // version
-			
+
             writer.Write((Item)m_Altar);
         }
-		
+
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-			
+
             m_Altar = reader.ReadItem() as PeerlessAltar;
         }
-		
+
         #region Helpers		
         public virtual bool CanSpawnHelpers
         {
@@ -185,9 +184,9 @@ namespace Server.Mobiles
                 return 0.05;
             }
         }
-		
+
         private int m_CurrentWave;
-		
+
         public int CurrentWave
         {
             get
@@ -210,38 +209,38 @@ namespace Server.Mobiles
                 return true;
             }
         }
-		
+
         public virtual bool CanSpawnWave()
         {
             if (MaxHelpersWaves > 0 && m_CurrentWave > 0)
             {
                 double hits = (Hits / (double)HitsMax);
                 double waves = (m_CurrentWave / (double)(MaxHelpersWaves + 1));
-				
+
                 if (hits < waves && Utility.RandomDouble() < SpawnHelpersChance)
                 {
                     m_CurrentWave -= 1;
                     return true;
                 }
             }
-			
+
             return false;
         }
-		
+
         public virtual void SpawnHelpers()
-        { 
+        {
         }
-		
+
         public void SpawnHelper(BaseCreature helper, int range)
         {
-            SpawnHelper(helper, GetSpawnPosition(range));					
+            SpawnHelper(helper, GetSpawnPosition(range));
         }
-		
+
         public void SpawnHelper(BaseCreature helper, int x, int y, int z)
         {
-            SpawnHelper(helper, new Point3D(x, y, z));					
+            SpawnHelper(helper, new Point3D(x, y, z));
         }
-		
+
         public void SpawnHelper(BaseCreature helper, Point3D location)
         {
             if (helper == null)
@@ -249,19 +248,19 @@ namespace Server.Mobiles
 
             helper.Home = location;
             helper.RangeHome = 4;
-		
+
             if (m_Altar != null)
                 m_Altar.AddHelper(helper);
-				
-            helper.MoveToWorld(location, Map);			
+
+            helper.MoveToWorld(location, Map);
         }
 
         #endregion
-		
+
         public virtual void PackResources(int amount)
         {
-            for (int i = 0; i < amount; i ++)
-                switch ( Utility.Random(6) )
+            for (int i = 0; i < amount; i++)
+                switch (Utility.Random(6))
                 {
                     case 0:
                         PackItem(new Blight());
@@ -283,21 +282,21 @@ namespace Server.Mobiles
                         break;
                 }
         }
-		
+
         public virtual void PackItems(Item item, int amount)
         {
-            for (int i = 0; i < amount; i ++)
+            for (int i = 0; i < amount; i++)
                 PackItem(item);
         }
-		
+
         public virtual void PackTalismans(int amount)
-        { 
+        {
             int count = Utility.Random(amount);
-			
-            for (int i = 0; i < count; i ++)
+
+            for (int i = 0; i < count; i++)
                 PackItem(Loot.RandomTalisman());
         }
-		
+
         #region Fire Ring
         private static readonly int[] m_North = new int[]
         {
@@ -306,13 +305,13 @@ namespace Server.Mobiles
             -1, 2,
             1, 2
         };
-		
+
         private static readonly int[] m_East = new int[]
         {
             -1, 0,
             2, 0
-        };		
-		
+        };
+
         public virtual bool HasFireRing
         {
             get
@@ -327,39 +326,39 @@ namespace Server.Mobiles
                 return 1.0;
             }
         }
-		
+
         private long m_NextFireRing = Core.TickCount;
-		
+
         public virtual void FireRing()
         {
-            for (int i = 0; i < m_North.Length; i += 2) 
+            for (int i = 0; i < m_North.Length; i += 2)
             {
                 Point3D p = Location;
-				
+
                 p.X += m_North[i];
                 p.Y += m_North[i + 1];
-				
+
                 IPoint3D po = p as IPoint3D;
-				
+
                 SpellHelper.GetSurfaceTop(ref po);
-				
+
                 Effects.SendLocationEffect(po, Map, 0x3E27, 50);
             }
-			
-            for (int i = 0; i < m_East.Length; i += 2) 
+
+            for (int i = 0; i < m_East.Length; i += 2)
             {
                 Point3D p = Location;
-				
+
                 p.X += m_East[i];
                 p.Y += m_East[i + 1];
-				
+
                 IPoint3D po = p as IPoint3D;
-				
+
                 SpellHelper.GetSurfaceTop(ref po);
-				
+
                 Effects.SendLocationEffect(po, Map, 0x3E31, 50);
             }
-			
+
             m_NextFireRing = Core.TickCount + 10000;
         }
         #endregion

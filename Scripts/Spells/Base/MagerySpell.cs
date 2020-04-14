@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Spells
 {
@@ -17,7 +17,7 @@ namespace Server.Spells
         {
             get
             {
-                return TimeSpan.FromMilliseconds(((4 + (int)Circle) * CastDelaySecondsPerTick)  * 1000);
+                return TimeSpan.FromMilliseconds(((4 + (int)Circle) * CastDelaySecondsPerTick) * 1000);
             }
         }
         public override bool ConsumeReagents()

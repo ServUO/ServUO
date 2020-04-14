@@ -1,16 +1,15 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
     public class SingingBall : Item, ISecurable
     {
         public override int LabelNumber { get { return 1041245; } } // Singing Ball
-        
+
         private bool m_TurnedOn;
 
         [CommandProperty(AccessLevel.GameMaster)]

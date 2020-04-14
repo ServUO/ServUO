@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -104,7 +104,7 @@ namespace Server.Mobiles
             if (0.2 < Utility.RandomDouble())
                 return;
 
-            switch ( Utility.Random(3) )
+            switch (Utility.Random(3))
             {
                 case 0:
                     {

@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class HatOfTheMagi : WizardsHat
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public HatOfTheMagi()
         {
@@ -74,7 +72,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {

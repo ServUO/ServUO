@@ -1,9 +1,9 @@
-using System;
-using System.Collections;
-using System.Reflection;
 using Server.Commands.Generic;
 using Server.Gumps;
 using Server.Network;
+using System;
+using System.Collections;
+using System.Reflection;
 
 namespace Server.Commands
 {
@@ -377,11 +377,11 @@ namespace Server.Commands
                     this.m_Batch.BatchCommands.RemoveAt(i);
             }
 
-            switch ( type )
+            switch (type)
             {
                 case 0: // main
                     {
-                        switch ( index )
+                        switch (index)
                         {
                             case 0: // run
                                 {
@@ -453,7 +453,7 @@ namespace Server.Commands
 
             if (this.SplitButtonID(info.ButtonID, 1, out type, out index))
             {
-                switch ( type )
+                switch (type)
                 {
                     case 0:
                         {

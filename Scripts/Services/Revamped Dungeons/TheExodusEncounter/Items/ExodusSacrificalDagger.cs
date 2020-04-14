@@ -1,8 +1,8 @@
-using System;
-using Server.Targeting;
+using Server.Engines.Craft;
 using Server.Engines.PartySystem;
 using Server.Mobiles;
-using Server.Engines.Craft;
+using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -78,7 +78,7 @@ namespace Server.Items
                     ExodusTomeAltar altar = (ExodusTomeAltar)targeted;
 
                     if (altar.CheckParty(altar.Owner, from))
-                    {  
+                    {
                         bool SacrificalRitual = altar.Rituals.Find(s => s.RitualMobile == from).Ritual2;
 
                         if (!SacrificalRitual)
@@ -111,7 +111,7 @@ namespace Server.Items
 
         public ExodusSacrificalDagger(Serial serial) : base(serial)
         {
-        }        
+        }
 
         public virtual int Lifespan { get { return 604800; } }
 
@@ -205,7 +205,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
             writer.Write((int)m_Lifespan);
         }
@@ -213,7 +213,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
             m_Lifespan = reader.ReadInt();
 
@@ -251,4 +251,3 @@ namespace Server.Items
         }
     }
 }
- 

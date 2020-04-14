@@ -1,24 +1,28 @@
+using Server.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Server.Items;
-using Server.Targeting;
 
 namespace Server.Mobiles
 {
     [CorpseName("the corpse of niporailem")]
     public class Niporailem : BaseSABoss
     {
-        public override Type[] UniqueSAList { get { return new Type[] { typeof(HelmOfVillainousEpiphany), typeof(GorgetOfVillainousEpiphany), typeof(BreastplateOfVillainousEpiphany),
+        public override Type[] UniqueSAList
+        {
+            get
+            {
+                return new Type[] { typeof(HelmOfVillainousEpiphany), typeof(GorgetOfVillainousEpiphany), typeof(BreastplateOfVillainousEpiphany),
                                                                         typeof(ArmsOfVillainousEpiphany), typeof(GauntletsOfVillainousEpiphany), typeof(LegsOfVillainousEpiphany),
                                                                         typeof(KiltOfVillainousEpiphany), typeof(EarringsOfVillainousEpiphany), typeof(GargishBreastplateOfVillainousEpiphany),
                                                                         typeof(GargishArmsOfVillainousEpiphany), typeof(NecklaceOfVillainousEpiphany), typeof(GargishLegsOfVillainousEpiphany),
                                                                         typeof(HelmOfVirtuousEpiphany), typeof(GorgetOfVirtuousEpiphany), typeof(BreastplateOfVirtuousEpiphany),
                                                                         typeof(ArmsOfVirtuousEpiphany), typeof(GauntletsOfVirtuousEpiphany), typeof(LegsOfVirtuousEpiphany),
                                                                         typeof(KiltOfVirtuousEpiphany), typeof(EarringsOfVirtuousEpiphany), typeof(GargishBreastplateOfVirtuousEpiphany),
-                                                                        typeof(GargishArmsOfVirtuousEpiphany), typeof(NecklaceOfVirtuousEpiphany), typeof(GargishLegsOfVirtuousEpiphany)}; } }
-        
+                                                                        typeof(GargishArmsOfVirtuousEpiphany), typeof(NecklaceOfVirtuousEpiphany), typeof(GargishLegsOfVirtuousEpiphany)};
+            }
+        }
+
         public override Type[] SharedSAList { get { return new Type[] { typeof(BladeOfBattle), typeof(DemonBridleRing), typeof(GiantSteps), typeof(SwordOfShatteredHopes) }; } }
 
         [Constructable]
@@ -58,7 +62,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.SpiritSpeak, 120.0);
             SetSkill(SkillName.Focus, 30.0, 40.0);
 
-            PackNecroReg(12, 24); 
+            PackNecroReg(12, 24);
 
             Fame = 15000;
             Karma = -15000;

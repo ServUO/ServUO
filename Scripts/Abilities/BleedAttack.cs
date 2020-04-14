@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
 using Server.Mobiles;
 using Server.Network;
 using Server.Spells;
 using Server.Spells.Necromancy;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -21,13 +21,13 @@ namespace Server.Items
         }
 
         public override int BaseMana => 30;
-		
-		public static bool IsBleeding(Mobile m)
+
+        public static bool IsBleeding(Mobile m)
         {
             return m_BleedTable.ContainsKey(m);
         }
-		
-		public static void BeginBleed(Mobile m, Mobile from, bool splintering = false)
+
+        public static void BeginBleed(Mobile m, Mobile from, bool splintering = false)
         {
             BleedTimer timer = null;
 
@@ -108,11 +108,11 @@ namespace Server.Items
             if (message)
                 m.SendLocalizedMessage(1060167); // The bleeding wounds have healed, you are no longer bleeding!
         }
-		
-		public static bool CheckBloodDrink(Mobile attacker)
-		{
+
+        public static bool CheckBloodDrink(Mobile attacker)
+        {
             return attacker.Weapon is BaseWeapon && ((BaseWeapon)attacker.Weapon).WeaponAttributes.BloodDrinker > 0;
-		}
+        }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
@@ -131,7 +131,7 @@ namespace Server.Items
                 return;
             }
 
-			BeginBleed(defender, attacker);
+            BeginBleed(defender, attacker);
         }
 
         private class BleedTimer : Timer
@@ -148,10 +148,10 @@ namespace Server.Items
                 m_From = from;
                 m_Mobile = m;
                 Priority = TimerPriority.TwoFiftyMS;
-				m_BloodDrinker = blooddrinker;
+                m_BloodDrinker = blooddrinker;
 
                 m_MaxCount = Spells.SkillMasteries.ResilienceSpell.UnderEffects(m) ? 3 : 5;
-			}
+            }
 
             protected override void OnTick()
             {

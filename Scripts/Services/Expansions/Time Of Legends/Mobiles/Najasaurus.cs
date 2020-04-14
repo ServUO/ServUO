@@ -1,6 +1,3 @@
-using System;
-using Server;
-
 namespace Server.Mobiles
 {
     [CorpseName("a najasaurus corpse")]

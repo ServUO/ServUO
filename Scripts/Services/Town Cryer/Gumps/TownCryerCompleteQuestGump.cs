@@ -1,9 +1,8 @@
-using Server;
+using Server.Engines.Quests;
+using Server.Gumps;
+using Server.Mobiles;
 using System;
 using System.Linq;
-using Server.Mobiles;
-using Server.Gumps;
-using Server.Engines.Quests;
 
 namespace Server.Services.TownCryer
 {

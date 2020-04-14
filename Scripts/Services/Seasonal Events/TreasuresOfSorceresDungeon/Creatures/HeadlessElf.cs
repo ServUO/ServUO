@@ -1,7 +1,5 @@
-using System;
 
 using Server.Mobiles;
-using Server.Items;
 
 namespace Server.Engines.SorcerersDungeon
 {

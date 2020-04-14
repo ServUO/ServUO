@@ -1,12 +1,9 @@
+using Server.Commands;
+using Server.Gumps;
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Server;
-using Server.Mobiles;
-using Server.Items;
-using Server.Commands;
-using Server.Gumps;
 
 namespace Server.Engines.SorcerersDungeon
 {
@@ -196,20 +193,20 @@ namespace Server.Engines.SorcerersDungeon
         }
 
         public void Reset()
-		{
-			ColUtility.Free(Spawn);
+        {
+            ColUtility.Free(Spawn);
             Boss = null;
             Spawning = false;
 
-			KillCount = 0;
-			
-			EndTimer();
-			
-			Timer.DelayCall(TimeSpan.FromMinutes(Utility.RandomMinMax(1, 3)), () =>
-			{
-				BeginTimer();
-			});
-		}
+            KillCount = 0;
+
+            EndTimer();
+
+            Timer.DelayCall(TimeSpan.FromMinutes(Utility.RandomMinMax(1, 3)), () =>
+            {
+                BeginTimer();
+            });
+        }
 
         public void Serialize(GenericWriter writer)
         {
@@ -226,27 +223,27 @@ namespace Server.Engines.SorcerersDungeon
                 writer.Write(bc);
             }
         }
-		
-		public void Deserialize(GenericReader reader)
-		{
-			reader.ReadInt(); // version
-			
-			Boss = reader.ReadMobile() as BaseCreature;
-			KillCount = reader.ReadInt();
-			Index = reader.ReadInt();
-			
-			int count = reader.ReadInt();
-			
-			for(int i = 0; i < count; i++)
-			{
-				var bc = reader.ReadMobile() as BaseCreature;
-				
-				if(bc != null)
-				{
-					AddSpawn(bc);
-				}
-			}
-		}
+
+        public void Deserialize(GenericReader reader)
+        {
+            reader.ReadInt(); // version
+
+            Boss = reader.ReadMobile() as BaseCreature;
+            KillCount = reader.ReadInt();
+            Index = reader.ReadInt();
+
+            int count = reader.ReadInt();
+
+            for (int i = 0; i < count; i++)
+            {
+                var bc = reader.ReadMobile() as BaseCreature;
+
+                if (bc != null)
+                {
+                    AddSpawn(bc);
+                }
+            }
+        }
 
         public void BuildEntries()
         {
@@ -260,26 +257,26 @@ namespace Server.Engines.SorcerersDungeon
             Entries.Add(new TOSDSpawnEntry(typeof(StockingSerpent), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(152, 48, 16, 23), 80, 15));
             Entries.Add(new TOSDSpawnEntry(typeof(JackThePumpkinKing), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(291, 73, 37, 36), 80, 15));
         }
-	}
-	
-	public class TOSDSpawnEntry
-	{
-		public Type Boss { get; set; }
-		public Type[] Spawn { get; set; }
-		public Rectangle2D SpawnArea { get; set; }
-		
-		public int ToKill { get; set; }
-		public int MaxSpawn { get; set; }
-		
-		public TOSDSpawnEntry(Type boss, Type[] spawn, Rectangle2D area, int toKill, int maxSpawn)
-		{
-			Boss = boss;
-			Spawn = spawn;
-			SpawnArea = area;
-			ToKill = toKill;
-			MaxSpawn = maxSpawn;
-		}
-	}
+    }
+
+    public class TOSDSpawnEntry
+    {
+        public Type Boss { get; set; }
+        public Type[] Spawn { get; set; }
+        public Rectangle2D SpawnArea { get; set; }
+
+        public int ToKill { get; set; }
+        public int MaxSpawn { get; set; }
+
+        public TOSDSpawnEntry(Type boss, Type[] spawn, Rectangle2D area, int toKill, int maxSpawn)
+        {
+            Boss = boss;
+            Spawn = spawn;
+            SpawnArea = area;
+            ToKill = toKill;
+            MaxSpawn = maxSpawn;
+        }
+    }
 
     public class TOSDSpawnerGump : BaseGump
     {
@@ -363,4 +360,4 @@ namespace Server.Engines.SorcerersDungeon
         }
     }
 }
-			
+

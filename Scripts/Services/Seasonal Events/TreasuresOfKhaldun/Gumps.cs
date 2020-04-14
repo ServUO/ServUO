@@ -1,17 +1,16 @@
-using Server;
-using System;
-using Server.Mobiles;
-using Server.Gumps;
 using Server.Engines.Points;
+using Server.Gumps;
+using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Khaldun
 {
-	public class KhaldunRewardGump : BaseRewardGump
-	{
+    public class KhaldunRewardGump : BaseRewardGump
+    {
         public KhaldunRewardGump(Mobile owner, PlayerMobile user)
             : base(owner, user, KhaldunRewards.Rewards, 1158744)
-		{
-		}
+        {
+        }
 
         public override double GetPoints(Mobile m)
         {
@@ -22,8 +21,8 @@ namespace Server.Engines.Khaldun
         {
             PointsSystem.Khaldun.DeductPoints(User, points);
         }
-	}
-    
+    }
+
     public class GumshoeItemGump : Gump
     {
         public GumshoeItemGump(Mobile from, int itemID, int itemHue, string itemName, int cliloc, string secondLineText)

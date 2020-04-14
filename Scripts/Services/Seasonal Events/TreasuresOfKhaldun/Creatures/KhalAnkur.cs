@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Server.Commands;
 using Server.Engines.CannedEvil;
 using Server.Items;
 using Server.Network;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -61,23 +60,23 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool Unprovokable => true; 
-		
-        public override bool BleedImmune => true; 
-		
-        public override Poison PoisonImmune => Poison.Lethal; 
-		
-        public override bool ShowFameTitle => false; 
-		
-        public override bool ClickTitle => false; 
-		
-        public override bool AlwaysMurderer => true; 
-		
-        public override bool AutoDispel => true; 
-		
-        public override double AutoDispelChance => 1.0; 
+        public override bool Unprovokable => true;
 
-        public override ChampionSkullType SkullType => ChampionSkullType.None; 
+        public override bool BleedImmune => true;
+
+        public override Poison PoisonImmune => Poison.Lethal;
+
+        public override bool ShowFameTitle => false;
+
+        public override bool ClickTitle => false;
+
+        public override bool AlwaysMurderer => true;
+
+        public override bool AutoDispel => true;
+
+        public override double AutoDispelChance => 1.0;
+
+        public override ChampionSkullType SkullType => ChampionSkullType.None;
 
         public override Type[] UniqueList => new Type[] { };
 
@@ -126,7 +125,7 @@ namespace Server.Mobiles
 
         public override void OnThink()
         {
-            base.OnThink();            
+            base.OnThink();
 
             if (Spawn == null || Map == null)
                 return;

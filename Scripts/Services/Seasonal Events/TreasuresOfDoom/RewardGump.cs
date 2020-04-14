@@ -1,12 +1,7 @@
-using System;
-using Server;
+using Server.Engines.Points;
+using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
-using Server.Network;
-using Server.Engines.Points;
-using System.Collections.Generic;
-using Server.Gumps;
-using Server.Engines.Craft;
 
 namespace Server.Engines.TreasuresOfDoom
 {

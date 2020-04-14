@@ -1,14 +1,12 @@
-using System;
-using Server;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
-using Server.Gumps;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.ResortAndCasino
 {
-	public class CasinoCashier : Banker
-	{
+    public class CasinoCashier : Banker
+    {
         [Constructable]
         public CasinoCashier()
         {
@@ -37,21 +35,21 @@ namespace Server.Engines.ResortAndCasino
 
         public CasinoCashier(Serial serial)
             : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int v = reader.ReadInt();
-		}
-	}
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = reader.ReadInt();
+        }
+    }
 
     public class CasinoDealer : BaseVendor
     {
@@ -142,7 +140,7 @@ namespace Server.Engines.ResortAndCasino
             if (Players == null || !Players.ContainsKey(pm) || Players[pm] == null)
                 return null;
 
-            return Players[pm]; 
+            return Players[pm];
         }
 
         public virtual void SendGump(PlayerMobile pm)
@@ -192,7 +190,7 @@ namespace Server.Engines.ResortAndCasino
 
             ChucklesLuckGump g = pm.FindGump(typeof(ChucklesLuckGump)) as ChucklesLuckGump;
 
-            if(g != null)
+            if (g != null)
                 g.Refresh();
             else
             {
@@ -359,7 +357,7 @@ namespace Server.Engines.ResortAndCasino
 
         public override void OnDoubleClick(Mobile m)
         {
-            if(!m.InRange(this.Location, 3))
+            if (!m.InRange(this.Location, 3))
                 return;
 
             if (_Drinks == null)
@@ -430,7 +428,7 @@ namespace Server.Engines.ResortAndCasino
             base.Serialize(writer);
             writer.Write(0);
 
-            if(_Drinks != null)
+            if (_Drinks != null)
                 _Drinks.Clear();
         }
 

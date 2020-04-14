@@ -1,7 +1,6 @@
 using Server.Items;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -9,7 +8,7 @@ namespace Server.Mobiles
     public class TheMasterInstructor : BaseCreature
     {
         private static readonly ArrayList m_Instances = new ArrayList();
-        public static ArrayList Instances => m_Instances; 
+        public static ArrayList Instances => m_Instances;
         private SorcerersPlateController m_Controller;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -55,7 +54,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.Wrestling, 75.1, 100.0);
             SetSkill(SkillName.Necromancy, 120.0);
             SetSkill(SkillName.SpiritSpeak, 120.0);
-			SetSkill(SkillName.DetectHidden, 100.0);
+            SetSkill(SkillName.DetectHidden, 100.0);
 
             Fame = 23000;
             Karma = -23000;
@@ -65,7 +64,7 @@ namespace Server.Mobiles
             Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
             SelfDeleteTimer.Start();
         }
-        
+
         public class InternalSelfDeleteTimer : Timer
         {
             private TheMasterInstructor Mare;
@@ -91,18 +90,18 @@ namespace Server.Mobiles
         {
             m_Instances.Add(this);
         }
-        
-        public override bool AlwaysMurderer => true; 
-		
-        public override bool Unprovokable => true; 
-		
-        public override bool BleedImmune => true; 
-		
-        public override Poison PoisonImmune => Poison.Lethal; 
-		
-        public override int TreasureMapLevel => 5; 
-		
-		public override bool AutoDispel => true; 
+
+        public override bool AlwaysMurderer => true;
+
+        public override bool Unprovokable => true;
+
+        public override bool BleedImmune => true;
+
+        public override Poison PoisonImmune => Poison.Lethal;
+
+        public override int TreasureMapLevel => 5;
+
+        public override bool AutoDispel => true;
 
         public override int GetIdleSound() { return 0x19D; }
         public override int GetAngerSound() { return 0x175; }
@@ -135,7 +134,7 @@ namespace Server.Mobiles
         {
             if (m_Instances.Count > 0)
                 return null;
-            
+
             TheMasterInstructor creature = new TheMasterInstructor(controller);
             creature.Home = platLoc;
             creature.RangeHome = 4;

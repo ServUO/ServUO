@@ -1,7 +1,6 @@
-using Server;
-using System;
 using Server.Items;
 using Server.Misc;
+using System;
 
 namespace Server.Mobiles
 {
@@ -61,7 +60,7 @@ namespace Server.Mobiles
                 SetSkill(SkillName.MagicResist, 65.0, 75.0);
                 SetSkill(SkillName.Magery, 60.0, 70.0);
                 SetSkill(SkillName.EvalInt, 60.0, 75.0);
-                SetSkill(SkillName.Meditation, 70.0, 90.0);               
+                SetSkill(SkillName.Meditation, 70.0, 90.0);
                 SetSkill(SkillName.Focus, 80.0, 100.0);
             }
             else if (Body == 0xB6) // Bomber
@@ -121,7 +120,7 @@ namespace Server.Mobiles
                 AddItem(bow);
             }
 
-            SetSkill(SkillName.DetectHidden, 40.0, 45.0);            
+            SetSkill(SkillName.DetectHidden, 40.0, 45.0);
 
             Fame = 8000;
             Karma = -8000;

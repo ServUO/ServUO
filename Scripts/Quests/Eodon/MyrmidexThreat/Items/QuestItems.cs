@@ -1,19 +1,15 @@
-using Server;
-using System;
 using Server.Engines.Quests;
-using Server.Mobiles;
-using System.Collections.Generic;
-using Server.Network;
 using Server.Gumps;
+using Server.Mobiles;
 
 namespace Server.Items
 {
-	public class HiddenTreasuresTreasureMap : TreasureMap
-	{
+    public class HiddenTreasuresTreasureMap : TreasureMap
+    {
         [Constructable]
-		public HiddenTreasuresTreasureMap() : this(2, GetMap())
-		{
-		}
+        public HiddenTreasuresTreasureMap() : this(2, GetMap())
+        {
+        }
 
         [Constructable]
         public HiddenTreasuresTreasureMap(int level, Map map)
@@ -28,8 +24,8 @@ namespace Server.Items
             ChestLocation = location;
         }
 
-		private static Map GetMap()
-		{
+        private static Map GetMap()
+        {
             switch (Utility.Random(6))
             {
                 default:
@@ -40,15 +36,15 @@ namespace Server.Items
                 case 4: return Map.Trammel;
                 case 5: return Map.Felucca;
             }
-		}
-		
-		public override void OnMapComplete(Mobile from, TreasureMapChest chest)
-		{
-			base.OnMapComplete(from, chest);
-			
-			if(chest != null)
-				chest.DropItem(new StasisChamberActivator());
-		}
+        }
+
+        public override void OnMapComplete(Mobile from, TreasureMapChest chest)
+        {
+            base.OnMapComplete(from, chest);
+
+            if (chest != null)
+                chest.DropItem(new StasisChamberActivator());
+        }
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -56,57 +52,57 @@ namespace Server.Items
 
             list.Add(1156811); // *A Special Map Thought to Lead to Lost Kotl Technology*
         }
-		
-		public HiddenTreasuresTreasureMap(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int v = reader.ReadInt();
-		}
-	}
-	
-	public class SaltySeaMIB : MessageInABottle
-	{
+
+        public HiddenTreasuresTreasureMap(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = reader.ReadInt();
+        }
+    }
+
+    public class SaltySeaMIB : MessageInABottle
+    {
         [Constructable]
-		public SaltySeaMIB() : this(Utility.RandomBool() ? Map.Trammel : Map.Felucca, 3)
-		{
-		}
+        public SaltySeaMIB() : this(Utility.RandomBool() ? Map.Trammel : Map.Felucca, 3)
+        {
+        }
 
         [Constructable]
         public SaltySeaMIB(Map map, int level)
             : base(map, level)
         {
         }
-		
-		public override void OnDoubleClick(Mobile from)
-		{
-			if ( from.InRange( GetWorldLocation(), 2 ) && from.InLOS( this ) )
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (from.InRange(GetWorldLocation(), 2) && from.InLOS(this))
             {
                 Container cont = Parent as Container;
                 SOS sos = new SaltySeaSOS(TargetMap, Level);
                 Consume();
-               
-                if( cont != null )
+
+                if (cont != null)
                     cont.AddItem(sos);
-				else
-					sos.MoveToWorld(this.Location, this.Map);
- 
-                from.LocalOverheadMessage( Network.MessageType.Regular, 0x3B2, 501891 ); // You extract the message from the bottle.
+                else
+                    sos.MoveToWorld(this.Location, this.Map);
+
+                from.LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 501891); // You extract the message from the bottle.
             }
             else
             {
                 from.SendLocalizedMessage(1019045); // I can't reach that.            
             }
-		}
+        }
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -114,31 +110,31 @@ namespace Server.Items
 
             list.Add(1156806); // *Coordinates to a Shipwreck thought to have Lost Kotl Technology*
         }
-		
-		public SaltySeaMIB(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int v = reader.ReadInt();
-		}
-	}
-	
-	public class SaltySeaSOS : SOS
-	{
+
+        public SaltySeaMIB(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = reader.ReadInt();
+        }
+    }
+
+    public class SaltySeaSOS : SOS
+    {
         [Constructable]
-		public SaltySeaSOS(Map map, int level) : base(map, level)
-		{
-			//AssignLocation();
-		}
+        public SaltySeaSOS(Map map, int level) : base(map, level)
+        {
+            //AssignLocation();
+        }
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -146,80 +142,80 @@ namespace Server.Items
 
             list.Add(1156806); // *Coordinates to a Shipwreck thought to have Lost Kotl Technology*
         }
-		
-		public override void OnSOSComplete(Container chest)
-		{
-			base.OnSOSComplete(chest);
-			
-			if(chest != null)
-				chest.DropItem(new StasisChamberRegulator());
-		}
-		
-		public SaltySeaSOS(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int v = reader.ReadInt();
-		}
-	}
-	
-	public class MyrmidexIdol : Item
-	{
+
+        public override void OnSOSComplete(Container chest)
+        {
+            base.OnSOSComplete(chest);
+
+            if (chest != null)
+                chest.DropItem(new StasisChamberRegulator());
+        }
+
+        public SaltySeaSOS(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = reader.ReadInt();
+        }
+    }
+
+    public class MyrmidexIdol : Item
+    {
         public override int LabelNumber { get { return 1156823; } } // Idol of Zipactriotl
 
         private static Point3D _Destination = new Point3D(896, 2304, 45);
-		
-		public MyrmidexIdol() : base(39453)
-		{
-			Movable = false;
-		}
-		
-		public override void OnDoubleClick(Mobile from)
-		{
-			if(!(from is PlayerMobile))
-				return;
+
+        public MyrmidexIdol() : base(39453)
+        {
+            Movable = false;
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (!(from is PlayerMobile))
+                return;
 
             DestructionOfZipactriotlQuest q = QuestHelper.GetQuest((PlayerMobile)from, typeof(DestructionOfZipactriotlQuest)) as DestructionOfZipactriotlQuest;
-			
-			if(q != null || from.AccessLevel > AccessLevel.Player)
-			{
-				BaseCreature.TeleportPets(from, _Destination, Map.TerMur);
-				from.MoveToWorld(_Destination, Map.TerMur);
-				
-				Effects.SendLocationParticles( EffectItem.Create( from.Location, Map.TerMur, EffectItem.DefaultDuration ), 0x3728, 10, 10, 2023 );
-                Effects.SendLocationParticles( EffectItem.Create(   _Destination, Map.TerMur, EffectItem.DefaultDuration ), 0x3728, 10, 10, 5023 );
-				   
-				from.PlaySound( 0x1FE );
-			}
+
+            if (q != null || from.AccessLevel > AccessLevel.Player)
+            {
+                BaseCreature.TeleportPets(from, _Destination, Map.TerMur);
+                from.MoveToWorld(_Destination, Map.TerMur);
+
+                Effects.SendLocationParticles(EffectItem.Create(from.Location, Map.TerMur, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
+                Effects.SendLocationParticles(EffectItem.Create(_Destination, Map.TerMur, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
+
+                from.PlaySound(0x1FE);
+            }
             else
                 from.SendLocalizedMessage(1156841); // You must be on the "Destruction of Zipactriotl" quest to enter. Visit the Barrabian Tinker in the Barrab village to the Southwest.
-		}
-		
-		public MyrmidexIdol(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int v = reader.ReadInt();
-		}
-	}
+        }
+
+        public MyrmidexIdol(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = reader.ReadInt();
+        }
+    }
 
     public class StasisChamberPowerCore : Item
     {
@@ -232,20 +228,20 @@ namespace Server.Items
         }
 
         public StasisChamberPowerCore(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int v = reader.ReadInt();
-		}
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = reader.ReadInt();
+        }
     }
 
     public class StasisChamberActivator : Item

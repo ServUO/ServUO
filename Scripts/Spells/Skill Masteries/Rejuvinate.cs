@@ -1,14 +1,8 @@
-using System;
-using System.Globalization;
-using Server;
-using Server.Spells;
-using Server.Network;
-using Server.Mobiles;
-using Server.Spells.Necromancy;
-using Server.Spells.First;
-using Server.Spells.Fourth;
 using Server.Items;
-using System.Collections.Generic;
+using Server.Mobiles;
+using Server.Spells.Fourth;
+using Server.Spells.Necromancy;
+using System;
 
 namespace Server.Spells.SkillMasteries
 {
@@ -17,7 +11,7 @@ namespace Server.Spells.SkillMasteries
         private static SpellInfo m_Info = new SpellInfo(
                 "Rejuvinate", "In Vas Ort Grav Mani",
                 204,
-				9061
+                9061
             );
 
         public override double RequiredSkill { get { return 90; } }
@@ -102,7 +96,7 @@ namespace Server.Spells.SkillMasteries
                         toRejuv = (int)Math.Ceiling(hitsNeeds * rejuv);
 
                         if (toRejuv > 0)
-                            SpellHelper.Heal(toRejuv, m, Caster, false); 
+                            SpellHelper.Heal(toRejuv, m, Caster, false);
                     }
 
                     if (stamNeeds > 0)
@@ -181,10 +175,10 @@ namespace Server.Spells.SkillMasteries
 
                     TimeSpan d;
 
-                    if(Caster.AccessLevel == AccessLevel.Player)
+                    if (Caster.AccessLevel == AccessLevel.Player)
                         d = TimeSpan.FromMinutes(duration);
                     else
-                        d =  TimeSpan.FromSeconds(10);
+                        d = TimeSpan.FromSeconds(10);
 
                     AddToCooldown(d);
                 }

@@ -1,5 +1,4 @@
 using System;
-using Server;
 using System.Collections.Generic;
 
 namespace Server.Items
@@ -10,7 +9,7 @@ namespace Server.Items
         {
         }
 
-        public override int BaseMana => 35; 
+        public override int BaseMana => 35;
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {

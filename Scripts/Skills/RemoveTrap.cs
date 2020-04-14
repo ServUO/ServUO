@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
+using Server.Engines.VvV;
+using Server.Guilds;
 using Server.Items;
 using Server.Network;
 using Server.Targeting;
-using Server.Engines.VvV;
-using Server.Guilds;
-using Server.Mobiles;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.SkillHandlers
 {
@@ -59,7 +57,7 @@ namespace Server.SkillHandlers
 
                     from.Direction = from.GetDirectionTo(targ);
 
-                   if (targ.TrapType == Server.Items.TrapType.None)
+                    if (targ.TrapType == Server.Items.TrapType.None)
                     {
                         from.SendLocalizedMessage(502373); // That doesn't appear to be trapped
                     }

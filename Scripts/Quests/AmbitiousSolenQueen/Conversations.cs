@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Engines.Quests.Ambitious
 {
     public class DontOfferConversation : QuestConversation

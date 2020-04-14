@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class EssencePassion : Item, ICommodity
@@ -31,7 +29,7 @@ namespace Server.Items
                 return 1113326;
             }
         }// essence of passion
-		TextDefinition ICommodity.Description
+        TextDefinition ICommodity.Description
         {
             get
             {

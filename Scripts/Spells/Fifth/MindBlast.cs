@@ -1,5 +1,5 @@
-using System;
 using Server.Targeting;
+using System;
 
 namespace Server.Spells.Fifth
 {
@@ -49,7 +49,7 @@ namespace Server.Spells.Fifth
                     int intel = Math.Min(200, Caster.Int);
 
                     int damage = (int)((Caster.Skills[SkillName.Magery].Value + intel) / 5) + Utility.RandomMinMax(2, 6);
-					
+
                     if (damage > 60)
                         damage = 60;
 

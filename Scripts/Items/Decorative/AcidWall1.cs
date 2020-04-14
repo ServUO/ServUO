@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class AcidWall1 : BaseWall

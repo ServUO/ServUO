@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class CulinaryCrisisQuest : BaseQuest
-    { 
+    {
         public CulinaryCrisisQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(Dates), "bunch of dates", 20, 0x1727));
             this.AddObjective(new ObtainObjective(typeof(CheeseWheel), "wheels of cheese", 5, 0x97E));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -83,7 +83,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Emerillo()
             : base("Emerillo", "the cook")
-        { 
+        {
         }
 
         public Emerillo(Serial serial)
@@ -95,7 +95,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(CulinaryCrisisQuest)
                 };
@@ -104,10 +104,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x83F4;
             this.HairItemID = 0x203C;
             this.HairHue = 0x454;

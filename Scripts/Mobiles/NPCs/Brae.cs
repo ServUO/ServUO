@@ -1,14 +1,14 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Brae : MondainQuester
-    { 
+    {
         [Constructable]
         public Brae()
             : base("Elder Brae", "the wise")
-        { 
+        {
         }
 
         public Brae(Serial serial)
@@ -17,10 +17,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(AllThatGlittersIsNotGoodQuest),
                     typeof(FiendishFriendsQuest)
@@ -30,10 +30,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x80BF;
             this.HairItemID = 0x2FC2;
             this.HairHue = 0x8E;

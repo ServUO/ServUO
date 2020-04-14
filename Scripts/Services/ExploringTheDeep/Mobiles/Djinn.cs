@@ -1,7 +1,6 @@
-using System;
-using Server.Items;
-using System.Collections;
 using Server.Engines.Quests;
+using Server.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,7 +17,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Body = 0x311;
-			Hue = 33072;
+            Hue = 33072;
             Name = "Djinn";
 
             SetStr(320, 500);
@@ -44,7 +43,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 60.0, 80.0);
             SetSkill(SkillName.Magery, 100.0, 120.0);
             SetSkill(SkillName.EvalInt, 60.0, 110.0);
-			SetSkill(SkillName.DetectHidden, 55.0);
+            SetSkill(SkillName.DetectHidden, 55.0);
 
             Fame = 15000;
             Karma = -15000;
@@ -60,17 +59,17 @@ namespace Server.Mobiles
             m_Timer = new SummonEfreetTimer(this);
             m_Timer.Start();
         }
-		
-		public override void GenerateLoot()
+
+        public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich);
         }
-		
-		public override int TreasureMapLevel { get { return 4; } }
+
+        public override int TreasureMapLevel { get { return 4; } }
 
         public override void OnDeath(Container c)
         {
-            List<DamageStore> rights = GetLootingRights();            
+            List<DamageStore> rights = GetLootingRights();
 
             foreach (Mobile m in rights.Select(x => x.m_Mobile).Distinct())
             {
@@ -80,8 +79,8 @@ namespace Server.Mobiles
 
                     if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
                     {
-						Item item = new AquaGem();
-						
+                        Item item = new AquaGem();
+
                         if (m.Backpack == null || !m.Backpack.TryDropItem(m, item, false))
                         {
                             m.BankBox.DropItem(item);
@@ -205,7 +204,7 @@ namespace Server.Mobiles
             Instances.Add(this);
 
             Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
-            SelfDeleteTimer.Start();            
+            SelfDeleteTimer.Start();
         }
     }
 }

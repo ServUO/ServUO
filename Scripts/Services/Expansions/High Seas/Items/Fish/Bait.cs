@@ -1,7 +1,6 @@
-﻿using System;
-using Server;
+﻿using Server.Prompts;
 using Server.Targeting;
-using Server.Prompts;
+using System;
 
 namespace Server.Items
 {
@@ -119,7 +118,7 @@ namespace Server.Items
 
             public override void OnResponse(Mobile from, string text)
             {
-                int amount = Utility.ToInt32( text );
+                int amount = Utility.ToInt32(text);
                 m_Bait.TryBeginTarget(from, amount);
             }
 

@@ -1,25 +1,23 @@
-using System;
-
 namespace Server.Items
 {
     public class PetrifiedSnake : SerpentStoneStaff
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113528; } } // Petrified Snake
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113528; } } // Petrified Snake
+
         [Constructable]
         public PetrifiedSnake()
             : base()
-        {		
-            Hue = 460;		
-            AbsorptionAttributes.EaterPoison = 20;	
+        {
+            Hue = 460;
+            AbsorptionAttributes.EaterPoison = 20;
             Slayer = SlayerName.ReptilianDeath;
             WeaponAttributes.HitMagicArrow = 30;
-            WeaponAttributes.HitLowerDefend = 30;		
+            WeaponAttributes.HitLowerDefend = 30;
             Attributes.WeaponSpeed = 30;
-            Attributes.WeaponDamage = 50;	
-            AosElementDamages.Poison = 100;		
-            WeaponAttributes.ResistPoisonBonus = 10;			
+            Attributes.WeaponDamage = 50;
+            AosElementDamages.Poison = 100;
+            WeaponAttributes.ResistPoisonBonus = 10;
         }
 
         public PetrifiedSnake(Serial serial)

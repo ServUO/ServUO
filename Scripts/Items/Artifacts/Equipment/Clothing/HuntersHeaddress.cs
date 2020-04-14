@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class HuntersHeaddress : DeerMask
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public HuntersHeaddress()
         {
@@ -67,7 +65,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {

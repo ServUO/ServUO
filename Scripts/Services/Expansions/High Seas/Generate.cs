@@ -1,8 +1,7 @@
-using Server;
-using System;
 using Server.Commands;
-using Server.Mobiles;
 using Server.Engines.Quests;
+using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
@@ -53,7 +52,7 @@ namespace Server.Items
             WeakEntityCollection.Add(name, altar);
 
             ProfessionalBountyBoard board;
-            
+
             board = new ProfessionalBountyBoard();
             board.MoveToWorld(new Point3D(4544, 2298, -1), Map.Trammel);
             WeakEntityCollection.Add(name, board);

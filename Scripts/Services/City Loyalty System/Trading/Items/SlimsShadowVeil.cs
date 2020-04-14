@@ -1,8 +1,3 @@
-using System;
-using Server;
-using Server.Mobiles;
-using Server.Engines.CityLoyalty;
-
 namespace Server.Items
 {
     public class SlimsShadowVeil : LeatherMempo

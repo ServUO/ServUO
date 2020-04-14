@@ -43,7 +43,7 @@ namespace Server.Engines.Reports
 
         public void SetColor(int index, Color NewColor)
         {
-            if (index < _colorLimit) 
+            if (index < _colorLimit)
             {
                 this._color[index] = NewColor;
             }
@@ -56,7 +56,7 @@ namespace Server.Engines.Reports
         public Color GetColor(int index)
         {
             //return _color[index%_colorLimit];
-            if (index < _colorLimit) 
+            if (index < _colorLimit)
             {
                 return this._color[index];
             }

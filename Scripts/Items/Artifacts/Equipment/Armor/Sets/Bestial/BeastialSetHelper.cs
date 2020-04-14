@@ -144,7 +144,7 @@ namespace Server
 
                         BestialSetHelper.DoHue(this.Mobile, hue);
 
-                        if(level < 5)
+                        if (level < 5)
                             Mobile.SendLocalizedMessage(1151533, "", hue); //Your rage grows!
                     }
                     else if (level > Level && level > 0)

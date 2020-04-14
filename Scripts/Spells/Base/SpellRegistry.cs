@@ -16,7 +16,7 @@ namespace Server.Spells
                 return m_Types;
             }
         }
-		
+
         //What IS this used for anyways.
         public static int Count
         {
@@ -36,7 +36,7 @@ namespace Server.Spells
         }
 
         private static readonly Dictionary<Type, Int32> m_IDsFromTypes = new Dictionary<Type, Int32>(m_Types.Length);
-		
+
         private static readonly Dictionary<Int32, SpecialMove> m_SpecialMoves = new Dictionary<Int32, SpecialMove>();
         public static Dictionary<Int32, SpecialMove> SpecialMoves
         {

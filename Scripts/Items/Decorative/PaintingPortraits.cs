@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class LargePainting : Item
@@ -31,7 +29,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x0E9F, 0x0EC8)] 
+    [FlipableAttribute(0x0E9F, 0x0EC8)]
     public class WomanPortrait1 : Item
     {
         [Constructable]
@@ -61,7 +59,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x0EE7, 0x0EC9)] 
+    [FlipableAttribute(0x0EE7, 0x0EC9)]
     public class WomanPortrait2 : Item
     {
         [Constructable]
@@ -91,7 +89,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x0EA2, 0x0EA1)] 
+    [FlipableAttribute(0x0EA2, 0x0EA1)]
     public class ManPortrait1 : Item
     {
         [Constructable]
@@ -121,7 +119,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x0EA3, 0x0EA4)] 
+    [FlipableAttribute(0x0EA3, 0x0EA4)]
     public class ManPortrait2 : Item
     {
         [Constructable]
@@ -151,7 +149,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x0EA6, 0x0EA5)] 
+    [FlipableAttribute(0x0EA6, 0x0EA5)]
     public class LadyPortrait1 : Item
     {
         [Constructable]
@@ -181,7 +179,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x0EA7, 0x0EA8)] 
+    [FlipableAttribute(0x0EA7, 0x0EA8)]
     public class LadyPortrait2 : Item
     {
         [Constructable]

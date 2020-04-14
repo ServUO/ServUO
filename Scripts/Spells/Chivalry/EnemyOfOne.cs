@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Spells.Chivalry
@@ -166,36 +166,36 @@ namespace Server.Spells.Chivalry
         }
     }
 
-	public class EnemyOfOneContext
-	{
-		private Mobile m_Owner;
-		private Timer m_Timer;
-		private DateTime m_Expire;
-		private Type m_TargetType;
-		private int m_DamageScalar;
+    public class EnemyOfOneContext
+    {
+        private Mobile m_Owner;
+        private Timer m_Timer;
+        private DateTime m_Expire;
+        private Type m_TargetType;
+        private int m_DamageScalar;
         private string m_TypeName;
 
         private Mobile m_PlayerOrPet;
 
-		public Mobile Owner { get { return m_Owner; } }
-		public Timer Timer { get { return m_Timer; } }
-		public Type TargetType { get { return m_TargetType; } }
-		public int DamageScalar { get { return m_DamageScalar; } }
+        public Mobile Owner { get { return m_Owner; } }
+        public Timer Timer { get { return m_Timer; } }
+        public Type TargetType { get { return m_TargetType; } }
+        public int DamageScalar { get { return m_DamageScalar; } }
         public string TypeName { get { return m_TypeName; } }
 
-		public EnemyOfOneContext(Mobile owner, Timer timer, DateTime expire)
-		{
-			m_Owner = owner;
-			m_Timer = timer;
-			m_Expire = expire;
-			m_TargetType = null;
-			m_DamageScalar = 50;
-		}
+        public EnemyOfOneContext(Mobile owner, Timer timer, DateTime expire)
+        {
+            m_Owner = owner;
+            m_Timer = timer;
+            m_Expire = expire;
+            m_TargetType = null;
+            m_DamageScalar = 50;
+        }
 
-		public bool IsWaitingForEnemy { get { return m_TargetType == null; } }
+        public bool IsWaitingForEnemy { get { return m_TargetType == null; } }
 
-		public bool IsEnemy(Mobile m)
-		{
+        public bool IsEnemy(Mobile m)
+        {
             if (m is BaseCreature && ((BaseCreature)m).GetMaster() == Owner)
             {
                 return false;
@@ -214,12 +214,12 @@ namespace Server.Spells.Chivalry
             }
 
             return false;
-		}
+        }
 
-		public void OnCast()
-		{
-			UpdateBuffInfo();
-		}
+        public void OnCast()
+        {
+            UpdateBuffInfo();
+        }
 
         private void UpdateDamage()
         {
@@ -230,8 +230,8 @@ namespace Server.Spells.Chivalry
                 m_DamageScalar /= 2;
         }
 
-		private void UpdateBuffInfo()
-		{
+        private void UpdateBuffInfo()
+        {
             if (m_TypeName == null)
             {
                 BuffInfo.AddBuff(m_Owner, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1075902, m_Expire - DateTime.UtcNow, m_Owner, string.Format("{0}\t{1}", m_DamageScalar, "100"), true));
@@ -240,12 +240,12 @@ namespace Server.Spells.Chivalry
             {
                 BuffInfo.AddBuff(m_Owner, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1075654, m_Expire - DateTime.UtcNow, m_Owner, string.Format("{0}\t{1}\t{2}\t{3}", m_DamageScalar, TypeName, ".", "100"), true));
             }
-		}
+        }
 
-		public void OnHit(Mobile defender)
-		{
-			if (m_TargetType == null)
-			{
+        public void OnHit(Mobile defender)
+        {
+            if (m_TargetType == null)
+            {
                 m_TypeName = EnemyOfOneSpell.GetTypeName(defender);
 
                 if (defender is PlayerMobile || (defender is BaseCreature && ((BaseCreature)defender).GetMaster() is PlayerMobile))
@@ -272,32 +272,32 @@ namespace Server.Spells.Chivalry
                 }
 
                 UpdateDamage();
-				DeltaEnemies();
-				UpdateBuffInfo();
-			}
+                DeltaEnemies();
+                UpdateBuffInfo();
+            }
             else
             {
                 // Odd but OSI recalculates when the target changes...
                 UpdateDamage();
             }
-		}
+        }
 
-		public void OnRemoved()
-		{
-			if (m_Timer != null)
-				m_Timer.Stop();
+        public void OnRemoved()
+        {
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-			DeltaEnemies();
+            DeltaEnemies();
 
-			BuffInfo.RemoveBuff(m_Owner, BuffIcon.EnemyOfOne);
-		}
+            BuffInfo.RemoveBuff(m_Owner, BuffIcon.EnemyOfOne);
+        }
 
-		private void DeltaEnemies()
-		{
+        private void DeltaEnemies()
+        {
             IPooledEnumerable eable = m_Owner.GetMobilesInRange(18);
 
-			foreach (Mobile m in eable)
-			{
+            foreach (Mobile m in eable)
+            {
                 if (m_PlayerOrPet != null)
                 {
                     if (m == m_PlayerOrPet)
@@ -309,9 +309,9 @@ namespace Server.Spells.Chivalry
                 {
                     m.Delta(MobileDelta.Noto);
                 }
-			}
+            }
 
             eable.Free();
-		}
-	}
+        }
+    }
 }

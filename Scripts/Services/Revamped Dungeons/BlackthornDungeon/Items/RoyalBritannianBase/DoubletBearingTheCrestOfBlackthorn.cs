@@ -1,12 +1,9 @@
-using Server;
-using System;
-
 namespace Server.Items
 {
     public class DoubletBearingTheCrestOfBlackthorn : Doublet
     {
         public override bool IsArtifact { get { return true; } }
-        
+
         [Constructable]
         public DoubletBearingTheCrestOfBlackthorn()
             : base()

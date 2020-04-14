@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class VilePoisonQuest : BaseQuest
-    { 
+    {
         public VilePoisonQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(TaintedTreeSample), "tainted tree sample", 1, typeof(Ioseph), "Ioseph (Jhelom)"));		
-							
+        {
+            this.AddObjective(new DeliverObjective(typeof(TaintedTreeSample), "tainted tree sample", 1, typeof(Ioseph), "Ioseph (Jhelom)"));
+
             this.AddReward(new BaseReward(1074962)); // A step closer to entering Blighted Grove.
         }
 
@@ -93,13 +93,13 @@ namespace Server.Engines.Quests
     }
 
     public class RockAndHardPlaceQuest : BaseQuest
-    { 
+    {
         public RockAndHardPlaceQuest()
             : base()
-        { 
-            this.AddObjective(new ObtainObjective(typeof(Granite), "rocks", 4, 0x1779));	
-            this.AddObjective(new ObtainObjective(typeof(BlueDiamond), "blue diamonds", 2, 0x3198));		
-							
+        {
+            this.AddObjective(new ObtainObjective(typeof(Granite), "rocks", 4, 0x1779));
+            this.AddObjective(new ObtainObjective(typeof(BlueDiamond), "blue diamonds", 2, 0x3198));
+
             this.AddReward(new BaseReward(1074962)); // A step closer to entering Blighted Grove.
         }
 
@@ -181,12 +181,12 @@ namespace Server.Engines.Quests
     }
 
     public class SympatheticMagicQuest : BaseQuest
-    { 
+    {
         public SympatheticMagicQuest()
             : base()
-        { 
-            this.AddObjective(new ObtainObjective(typeof(BarkFragment), "bark", 10, 0x318F));		
-							
+        {
+            this.AddObjective(new ObtainObjective(typeof(BarkFragment), "bark", 10, 0x318F));
+
             this.AddReward(new BaseReward(1074962)); // A step closer to entering Blighted Grove.
         }
 
@@ -267,12 +267,12 @@ namespace Server.Engines.Quests
     }
 
     public class AlreadyDeadQuest : BaseQuest
-    { 
+    {
         public AlreadyDeadQuest()
             : base()
-        { 
-            this.AddObjective(new ObtainObjective(typeof(Bone), "workable samples", 10));		
-							
+        {
+            this.AddObjective(new ObtainObjective(typeof(Bone), "workable samples", 10));
+
             this.AddReward(new BaseReward(1074962)); // A step closer to entering Blighted Grove.
         }
 
@@ -353,12 +353,12 @@ namespace Server.Engines.Quests
     }
 
     public class EurekaQuest : BaseQuest
-    { 
+    {
         public EurekaQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(SealedNotesForJamal), "sealed notes for jamal", 1, typeof(Jamal), "Jamal (near Blighted Grove)"));		
-							
+        {
+            this.AddObjective(new DeliverObjective(typeof(SealedNotesForJamal), "sealed notes for jamal", 1, typeof(Jamal), "Jamal (near Blighted Grove)"));
+
             this.AddReward(new BaseReward(1074962)); // A step closer to entering Blighted Grove.
         }
 
@@ -450,12 +450,12 @@ namespace Server.Engines.Quests
     }
 
     public class SubContractingQuest : BaseQuest
-    { 
+    {
         public SubContractingQuest()
             : base()
-        { 
-            this.AddObjective(new ObtainObjective(typeof(SamplesOfCorruptedWater), "samples of corrupted water", 3));		
-							
+        {
+            this.AddObjective(new ObtainObjective(typeof(SamplesOfCorruptedWater), "samples of corrupted water", 3));
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 

@@ -1,6 +1,6 @@
+using Server.Engines.BulkOrders;
 using System;
 using System.Collections.Generic;
-using Server.Engines.BulkOrders;
 
 namespace Server.Mobiles
 {
@@ -30,7 +30,7 @@ namespace Server.Mobiles
         public override void InitSBInfo()
         {
             this.m_SBInfos.Add(new SBWeaponSmith());
-			
+
             if (this.IsTokunoVendor)
                 this.m_SBInfos.Add(new SBSEWeapons());
         }

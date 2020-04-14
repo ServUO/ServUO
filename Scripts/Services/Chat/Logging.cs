@@ -1,6 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Server.Engines.Chat
 {
@@ -109,8 +109,8 @@ namespace Server.Engines.Chat
         {
             WriteLine(channel, "{0} left the channel.", username);
 
-            if ( m_OutputPerChannel.ContainsKey( channel ) )
-            	m_OutputPerChannel[channel].Dispose();
+            if (m_OutputPerChannel.ContainsKey(channel))
+                m_OutputPerChannel[channel].Dispose();
         }
 
         public static void Log(string channel, string message)

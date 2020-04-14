@@ -1,20 +1,20 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Gumps
 {
     public class HeritageTokenGump : Gump
     {
         private readonly HeritageToken m_Token;
-		private readonly Mobile m_User;
+        private readonly Mobile m_User;
 
         public HeritageTokenGump(HeritageToken token, Mobile from)
             : base(60, 36)
         {
             m_Token = token;
-			m_User = from;
+            m_User = from;
 
             AddPage(0);
 
@@ -277,19 +277,19 @@ namespace Server.Gumps
         public override void OnResponse(NetState sender, RelayInfo info)
         {
             if (m_Token == null || m_Token.Deleted || info.ButtonID == 0 ||
-				m_User == null || m_User.Deleted)
+                m_User == null || m_User.Deleted)
                 return;
 
-			if (!m_Token.IsChildOf(m_User.Backpack))
-			{
-				sender.Mobile.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
-				return;
-			}
+            if (!m_Token.IsChildOf(m_User.Backpack))
+            {
+                sender.Mobile.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
+                return;
+            }
 
             List<Type> types = new List<Type>();
             int cliloc = 0;
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 // 7th anniversary
                 case 0x64:
@@ -320,13 +320,14 @@ namespace Server.Gumps
                     types.Add(typeof(SamuraiHelm));
                     cliloc = 1062923;
                     break;
-                case 0x6B: 
-					types.Add( typeof( SpiritualityHelm ) ); 
-					cliloc = 1075188; 
-					break;
-                case 0x6C: types.Add( typeof( ValorGauntlets ) );
-					cliloc = 1075192;
-					break;
+                case 0x6B:
+                    types.Add(typeof(SpiritualityHelm));
+                    cliloc = 1075188;
+                    break;
+                case 0x6C:
+                    types.Add(typeof(ValorGauntlets));
+                    cliloc = 1075192;
+                    break;
                 case 0x6D:
                     types.Add(typeof(DupresShield));
                     cliloc = 1075196;
@@ -363,7 +364,7 @@ namespace Server.Gumps
                     types.Add(typeof(QuiverOfInfinity));
                     cliloc = 1075201;
                     break;
-                    // evil home decor
+                // evil home decor
                 case 0x76:
                     types.Add(typeof(BoneThroneDeed));
                     types.Add(typeof(BoneCouchDeed));
@@ -396,7 +397,7 @@ namespace Server.Gumps
                     types.Add(typeof(SacrificialAltarDeed));
                     cliloc = 1074818;
                     break;
-                    // broken furniture
+                // broken furniture
                 case 0x7C:
                     types.Add(typeof(BrokenCoveredChairDeed));
                     cliloc = 1076257;
@@ -429,7 +430,7 @@ namespace Server.Gumps
                     types.Add(typeof(BrokenFallenChairDeed));
                     cliloc = 1076264;
                     break;
-                    // other
+                // other
                 case 0x84:
                     types.Add(typeof(SuitOfGoldArmorDeed));
                     cliloc = 1076265;

@@ -1,6 +1,5 @@
-using System;
 using Server.Items;
-using Server.Mobiles;
+using System;
 
 namespace Server.SkillHandlers
 {
@@ -21,7 +20,7 @@ namespace Server.SkillHandlers
             /* Plate	*/ { 5, 5, 10, 10, 15, 25, 0 },
             /* Dragon	*/ { 0, 5, 10, 10, 15, 25, 0 }
         };
-		
+
         public static double HidingRequirement => 30;
 
         public static int[,] ArmorTable => m_ArmorTable;

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x48C0, 0x481)]
@@ -60,7 +58,7 @@ namespace Server.Items
                 return 3.75f;
             }
         }
-       
+
         public override int InitMinHits
         {
             get
@@ -82,10 +80,10 @@ namespace Server.Items
                 return WeaponAnimation.Bash2H;
             }
         }
-        
-		public override Race RequiredRace { get { return Race.Gargoyle; } }
+
+        public override Race RequiredRace { get { return Race.Gargoyle; } }
         public override bool CanBeWornByGargoyles { get { return true; } }
-		
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

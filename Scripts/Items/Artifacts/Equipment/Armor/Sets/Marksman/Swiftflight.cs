@@ -1,19 +1,17 @@
-using System;
-
 namespace Server.Items
 {
     public class Swiftflight : Bow
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public Swiftflight()
             : base()
         {
             this.SetHue = 0x594;
-			
+
             this.Attributes.WeaponDamage = 40;
-			
-            this.SetSelfRepair = 3;			
+
+            this.SetSelfRepair = 3;
             this.SetAttributes.AttackChance = 15;
             this.SetAttributes.BonusDex = 8;
             this.SetAttributes.WeaponSpeed = 30;

@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.BulkOrders
 {
@@ -180,7 +180,7 @@ namespace Server.Engines.BulkOrders
 
         public static BulkMaterialType GetMaterial(CraftResource resource)
         {
-            switch ( resource )
+            switch (resource)
             {
                 case CraftResource.DullCopper:
                     return BulkMaterialType.DullCopper;
@@ -240,15 +240,15 @@ namespace Server.Engines.BulkOrders
         public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack) || InSecureTrade || RootParent is PlayerVendor)
-			{
-				EventSink.InvokeBODUsed(new BODUsedEventArgs(from, this));
-				from.SendGump(new SmallBODGump(from, this));
-			}
+            {
+                EventSink.InvokeBODUsed(new BODUsedEventArgs(from, this));
+                from.SendGump(new SmallBODGump(from, this));
+            }
             else
-			{
-				from.SendLocalizedMessage(1045156); // You must have the deed in your backpack to use it.
-			}
-		}
+            {
+                from.SendLocalizedMessage(1045156); // You must have the deed in your backpack to use it.
+            }
+        }
 
         public override void OnDoubleClickNotAccessible(Mobile from)
         {
@@ -462,7 +462,7 @@ namespace Server.Engines.BulkOrders
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {

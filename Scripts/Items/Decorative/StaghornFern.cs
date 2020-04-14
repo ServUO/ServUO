@@ -1,7 +1,7 @@
-using System;
 using Server.Multis;
 using Server.Network;
 using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -23,7 +23,7 @@ namespace Server.Items
         }
 
         public Item Deed { get { return new StaghornFernDeed(); } }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -77,14 +77,14 @@ namespace Server.Items
 
                 Delete();
             }
-        }        
+        }
     }
 
     [Flipable(0x14F0, 0x14EF)]
     public class StaghornFernDeed : Item
     {
         public override int LabelNumber { get { return 1154460; } } // Staghorn Fern
-        
+
         [Constructable]
         public StaghornFernDeed()
             : base(0x14F0)
@@ -132,7 +132,7 @@ namespace Server.Items
 
             Point3D loc = new Point3D(p);
 
-            BaseHouse house = BaseHouse.FindHouseAt(loc, from.Map, 16);            
+            BaseHouse house = BaseHouse.FindHouseAt(loc, from.Map, 16);
 
             if (house != null && house.IsCoOwner(from))
             {

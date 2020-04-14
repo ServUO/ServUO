@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class ShipModelOfTheHMSCape : Item
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public ShipModelOfTheHMSCape()
             : base(0x14F3)

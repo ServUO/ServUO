@@ -1,7 +1,4 @@
-﻿using System;
-using Server;
-
-namespace Server.Mobiles
+﻿namespace Server.Mobiles
 {
     public enum ClockworkCreatureType
     {

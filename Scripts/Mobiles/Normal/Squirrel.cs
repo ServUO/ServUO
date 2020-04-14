@@ -1,8 +1,6 @@
-using System;
-
 namespace Server.Mobiles
 {
-    [CorpseName("a squirrel corpse")]	
+    [CorpseName("a squirrel corpse")]
     public class Squirrel : BaseCreature
     {
         [Constructable]
@@ -32,7 +30,7 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Tactics, 4.0);
             this.SetSkill(SkillName.Wrestling, 4.0);
 
-            this.Tamable = true;	
+            this.Tamable = true;
             this.ControlSlots = 1;
             this.MinTameSkill = -21.3;
         }

@@ -1,9 +1,8 @@
-using System;
-using Server.Items;
-using System.Collections.Generic;
-using Server.Mobiles;
 using Server.Gumps;
+using Server.Items;
+using Server.Mobiles;
 using Server.Network;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -191,7 +190,7 @@ namespace Server.Engines.Quests
                 AddHtmlLocalized(120, 73, 180, 18, 1159190, 0x43FF, false, false); // Ethereal Sand
                 AddHtmlLocalized(120, 100, 180, 18, 1159191, vendor.Price.ToString(), 0x43FF, false, false); // GP: ~1_VALUE~
                 AddItem(20, 140, 0x14F0);
-                AddHtmlLocalized(120, 143, 180, 18, 1159193, string.Format("{0}@{1}", vendor.Quantity, vendor.Quantity*vendor.Price), 0x5FF0, false, false); // x~1_QUANT~ GP: ~2_COST~
+                AddHtmlLocalized(120, 143, 180, 18, 1159193, string.Format("{0}@{1}", vendor.Quantity, vendor.Quantity * vendor.Price), 0x5FF0, false, false); // x~1_QUANT~ GP: ~2_COST~
                 AddHtmlLocalized(25, 203, 275, 18, 1159192, string.Format("{0}@{1}", available, vendor.MaxAmount), 0x7FF0, false, false); // Available For Purchase: ~1_PART~ / ~2_WHOLE~
                 AddHtmlLocalized(20, 243, 160, 72, 1159194, string.Format("{0}@#1159190@{1}", vendor.Quantity, vendor.Quantity * vendor.Price), 0x7FFF, false, false); // Purchase a Commodity Deed filled with ~1_QUANT~ ~2_NAME~ for ~3_COST~ GP?
                 AddButton(220, 260, 0x81C, 0x81B, 1, GumpButtonType.Reply, 0);

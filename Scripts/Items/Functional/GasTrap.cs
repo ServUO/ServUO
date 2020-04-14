@@ -1,5 +1,5 @@
-using System;
 using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -60,7 +60,7 @@ namespace Server.Items
         {
             get
             {
-                switch ( this.ItemID )
+                switch (this.ItemID)
                 {
                     case 0x113C:
                         return GasTrapType.NorthWall;
@@ -107,7 +107,7 @@ namespace Server.Items
         }
         public static int GetBaseID(GasTrapType type)
         {
-            switch ( type )
+            switch (type)
             {
                 case GasTrapType.NorthWall:
                     return 0x113C;
@@ -148,7 +148,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {

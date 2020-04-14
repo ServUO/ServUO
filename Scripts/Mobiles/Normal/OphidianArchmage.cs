@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("an ophidian corpse")]
@@ -60,7 +58,7 @@ namespace Server.Mobiles
                 return 1;
             }
         }
-		public override int TreasureMapLevel
+        public override int TreasureMapLevel
         {
             get
             {

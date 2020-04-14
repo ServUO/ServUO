@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class FeyLeggings : ChainLegs, ICanBeElfOrHuman
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
 
         private bool _ElfOnly;
         public override Race RequiredRace { get { return _ElfOnly ? Race.Elf : null; } }

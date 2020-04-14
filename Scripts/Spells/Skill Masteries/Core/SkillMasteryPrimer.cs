@@ -1,10 +1,7 @@
-using System;
-using Server;
 using Server.Mobiles;
 using Server.Spells.SkillMasteries;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using Server.ContextMenus;
 
 namespace Server.Items
 {
@@ -124,15 +121,15 @@ namespace Server.Items
         {
         }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write( (int) 1 ); // version
+            writer.Write((int)1); // version
 
             writer.Write(Volume);
             writer.Write((int)Skill);
-		}
+        }
 
         public override void Deserialize(GenericReader reader)
         {

@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Targeting;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Spells.Spellweaving
 {

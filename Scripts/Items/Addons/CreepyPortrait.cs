@@ -1,5 +1,5 @@
-using System;
 using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -73,7 +73,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             if (version == 0 && this.ItemID != 0x2A69 && this.ItemID != 0x2A6D)
                 this.ItemID = 0x2A69;
         }

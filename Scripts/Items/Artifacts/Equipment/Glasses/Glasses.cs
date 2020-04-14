@@ -1,18 +1,17 @@
-using System;
 using Server.Engines.Craft;
 
 namespace Server.Items
 {
     [Alterable(typeof(DefTinkering), typeof(GargishGlasses), true)]
     public class Glasses : BaseArmor, IRepairable
-	{
+    {
         public CraftSystem RepairSystem { get { return DefTinkering.CraftSystem; } }
 
         [Constructable]
         public Glasses()
             : base(0x2FB8)
         {
-            Weight = 2.0;			
+            Weight = 2.0;
         }
 
         public Glasses(Serial serial)
@@ -48,7 +47,7 @@ namespace Server.Items
 
         public override void Serialize(GenericWriter writer)
         {
-            base.Serialize(writer);			
+            base.Serialize(writer);
             writer.Write((int)1); // version
         }
 

@@ -1,8 +1,7 @@
-using System;
-using Server;
-using System.Collections.Generic;
-using Server.Mobiles;
 using Server.Items;
+using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Server.Engines.VvV
@@ -98,7 +97,7 @@ namespace Server.Engines.VvV
             foreach (Mobile m in eable)
             {
                 if (Owner == null || (ViceVsVirtueSystem.IsEnemy(Owner, m) && m.InLOS(this.Location)
-                                                                           && m is PlayerMobile 
+                                                                           && m is PlayerMobile
                                                                            && m.AccessLevel == AccessLevel.Player))
                 {
                     list.Add(m);

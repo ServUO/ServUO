@@ -1,4 +1,3 @@
-using System;
 using Server.Mobiles;
 
 namespace Server.ContextMenus
@@ -8,7 +7,7 @@ namespace Server.ContextMenus
         private readonly SkillName m_Skill;
         private readonly BaseCreature m_Mobile;
         private readonly Mobile m_From;
-		
+
         public TeachEntry(SkillName skill, BaseCreature m, Mobile from, bool enabled)
             : base(6000 + (int)skill)
         {

@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.SkillHandlers
 {
@@ -49,7 +49,7 @@ namespace Server.SkillHandlers
 
                 return TimeSpan.FromSeconds(10.0);
             }
-            else 
+            else
             {
                 Item oneHanded = m.FindItemOnLayer(Layer.OneHanded);
                 Item twoHanded = m.FindItemOnLayer(Layer.TwoHanded);
@@ -88,7 +88,7 @@ namespace Server.SkillHandlers
 
                     m.ResetStatTimers();
                 }
-                else 
+                else
                 {
                     m.SendLocalizedMessage(501850); // You cannot focus your concentration.
                 }

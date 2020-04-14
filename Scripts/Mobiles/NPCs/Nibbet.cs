@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class ClockworkPuzzleQuest : BaseQuest
-    { 
+    {
         public ClockworkPuzzleQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(ClockParts), "clock parts", 5, 0x104F));
-						
+
             this.AddReward(new BaseReward(typeof(TinkersSatchel), 1074282)); // Craftsman's Satchel
         }
 
@@ -83,7 +83,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Nibbet()
             : base("Nibbet", "the tinker")
-        { 
+        {
         }
 
         public Nibbet(Serial serial)
@@ -92,10 +92,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(ClockworkPuzzleQuest)
                 };
@@ -104,11 +104,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.CantWalk = true;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x840C;
             this.HairItemID = 0x2044;
             this.HairHue = 0x1;
@@ -116,14 +116,14 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());			
+            this.AddItem(new Backpack());
             this.AddItem(new Boots(0x591));
             this.AddItem(new ShortPants(0xF8));
             this.AddItem(new Shirt(0x2D));
             this.AddItem(new FullApron(0x288));
-			
+
             Item item;
-			
+
             item = new PlateGloves();
             item.Hue = 0x21E;
             this.AddItem(item);
@@ -151,11 +151,11 @@ namespace Server.Engines.Quests
             : base()
         {
             this.Hue = BaseReward.SatchelHue();
-			
+
             this.AddItem(new TinkerTools());
-			
-            switch ( Utility.Random(5) )
-            { 
+
+            switch (Utility.Random(5))
+            {
                 case 0:
                     this.AddItem(new Springs(3));
                     break;

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Engines.Quests.Naturalist
 {
     public class DontOfferConversation : QuestConversation

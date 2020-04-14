@@ -1,6 +1,4 @@
-using System;
-using Server;
-using Server.Mobiles; 
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -9,7 +7,7 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1094942; } } // Balm of Swiftness
 
-        [Constructable] 
+        [Constructable]
         public BalmOfSwiftness()
             : base(0x1848)
         {

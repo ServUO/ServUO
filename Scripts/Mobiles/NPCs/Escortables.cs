@@ -1,17 +1,17 @@
-using System;
 using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class NewHavenAlchemistEscortQuest : BaseQuest
-    { 
+    {
         public NewHavenAlchemistEscortQuest()
             : base()
-        { 
-            AddObjective(new EscortObjective("the New Haven Alchemist"));		  
-            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            AddObjective(new EscortObjective("the New Haven Alchemist"));
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to the New Haven Alchemist in The bottled Imp */
@@ -49,25 +49,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class NewHavenBardEscortQuest : BaseQuest
-    { 
+    {
         public NewHavenBardEscortQuest()
             : base()
-        { 
-            AddObjective(new EscortObjective("the New Haven Bard"));		  
-            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            AddObjective(new EscortObjective("the New Haven Bard"));
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to the New Haven Bard */
@@ -106,25 +106,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class NewHavenWarriorEscortQuest : BaseQuest
-    { 
+    {
         public NewHavenWarriorEscortQuest()
             : base()
-        { 
-            AddObjective(new EscortObjective("the New Haven Warrior"));		  
-            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            AddObjective(new EscortObjective("the New Haven Warrior"));
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to the New Haven Warrior */
@@ -162,25 +162,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class NewHavenTailorEscortQuest : BaseQuest
-    { 
+    {
         public NewHavenTailorEscortQuest()
             : base()
-        { 
-            AddObjective(new EscortObjective("the New Haven Tailor"));		  
-            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            AddObjective(new EscortObjective("the New Haven Tailor"));
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to the New Haven Tailor */
@@ -218,25 +218,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class NewHavenCarpenterEscortQuest : BaseQuest
-    { 
+    {
         public NewHavenCarpenterEscortQuest()
             : base()
-        { 
-            AddObjective(new EscortObjective("the New Haven Carpenter"));		  
-            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            AddObjective(new EscortObjective("the New Haven Carpenter"));
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to the New Haven Carpenter */
@@ -274,25 +274,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class NewHavenMapmakerEscortQuest : BaseQuest
-    { 
+    {
         public NewHavenMapmakerEscortQuest()
             : base()
-        { 
-            AddObjective(new EscortObjective("the New Haven Mapmaker"));		  
-            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            AddObjective(new EscortObjective("the New Haven Mapmaker"));
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to the New Haven Mapmaker */
@@ -331,25 +331,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class NewHavenMageEscortQuest : BaseQuest
-    { 
+    {
         public NewHavenMageEscortQuest()
             : base()
-        { 
-            AddObjective(new EscortObjective("the New Haven Mage"));		  
-            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            AddObjective(new EscortObjective("the New Haven Mage"));
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to the New Haven Mage */
@@ -388,25 +388,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class NewHavenInnEscortQuest : BaseQuest
-    { 
+    {
         public NewHavenInnEscortQuest()
             : base()
-        { 
-            AddObjective(new EscortObjective("the New Haven Inn"));		  
-            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            AddObjective(new EscortObjective("the New Haven Inn"));
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to the New Haven Inn */
@@ -444,25 +444,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class NewHavenFarmEscortQuest : BaseQuest
-    { 
+    {
         public NewHavenFarmEscortQuest()
             : base()
-        { 
-            AddObjective(new EscortObjective("the New Haven Farm"));		  
-            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            AddObjective(new EscortObjective("the New Haven Farm"));
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to the New Haven Farm */
@@ -500,25 +500,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class NewHavenDocksEscortQuest : BaseQuest
-    { 
+    {
         public NewHavenDocksEscortQuest()
             : base()
-        { 
-            AddObjective(new EscortObjective("the New Haven Docks"));		  
-            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            AddObjective(new EscortObjective("the New Haven Docks"));
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to the New Haven Docks */
@@ -556,25 +556,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class NewHavenBowyerEscortQuest : BaseQuest
-    { 
+    {
         public NewHavenBowyerEscortQuest()
             : base()
-        { 
-            AddObjective(new EscortObjective("the New Haven Bowyer"));		  
-            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            AddObjective(new EscortObjective("the New Haven Bowyer"));
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to the New Haven Bowyer */
@@ -612,25 +612,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class NewHavenBankEscortQuest : BaseQuest
-    { 
+    {
         public NewHavenBankEscortQuest()
             : base()
-        { 
-            AddObjective(new EscortObjective("the New Haven Bank"));		  
-            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            AddObjective(new EscortObjective("the New Haven Bank"));
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to the New Haven Bank */
@@ -668,14 +668,14 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
@@ -718,7 +718,7 @@ namespace Server.Engines.Quests
 
         public NewHavenEscortable()
             : this(Utility.Random(12))
-        { 
+        {
         }
 
         public NewHavenEscortable(int quest)
@@ -934,7 +934,7 @@ namespace Server.Engines.Quests
             else
                 AddItem(new Shoes(lowHue));
 
-            switch ( Utility.Random(4) )
+            switch (Utility.Random(4))
             {
                 case 0:
                     AddItem(new ShortHair(Utility.RandomHairHue()));

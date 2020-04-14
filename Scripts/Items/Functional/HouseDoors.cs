@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Multis;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -211,7 +211,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {
@@ -231,13 +231,13 @@ namespace Server.Items
 
         public override bool IsInside(Mobile from)
         {
-            int x,y,w,h;
+            int x, y, w, h;
 
             const int r = 2;
             const int bs = r * 2 + 1;
             const int ss = r + 1;
 
-            switch ( m_Facing )
+            switch (m_Facing)
             {
                 case DoorFacing.WestCW:
                 case DoorFacing.EastCCW:
@@ -246,7 +246,7 @@ namespace Server.Items
                     w = bs;
                     h = ss;
                     break;
-                case DoorFacing.EastCW: 
+                case DoorFacing.EastCW:
                 case DoorFacing.WestCCW:
                     x = -r;
                     y = 0;
@@ -267,7 +267,7 @@ namespace Server.Items
                     w = ss;
                     h = bs;
                     break;
-                    //No way to test the 'insideness' of SE Sliding doors on OSI, so leaving them default to false until furthur information gained
+                //No way to test the 'insideness' of SE Sliding doors on OSI, so leaving them default to false until furthur information gained
 
                 default:
                     return false;

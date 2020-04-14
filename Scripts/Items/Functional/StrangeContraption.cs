@@ -1,17 +1,17 @@
-using System;
 using Server.ContextMenus;
 using Server.Engines.Quests.Collector;
 using Server.Engines.Quests.Hag;
-using Server.Network;
-using System.Collections.Generic;
 using Server.Gumps;
+using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
     public class StrangeContraptionComponent : AddonComponent
     {
         public override bool ForceShowProperties { get { return true; } }
-        
+
         public StrangeContraptionComponent(int id, int hue = 0)
             : base(id)
         {
@@ -95,7 +95,7 @@ namespace Server.Items
                         {
                             m_Mobile.SendLocalizedMessage(1055142, "", 0x59); // You do not have the necessary ingredients. The contraptions rumbles angrily but does nothing.
                         }
-                    }                    
+                    }
                 }
                 else
                 {
@@ -164,7 +164,7 @@ namespace Server.Items
             AddComponent(new StrangeContraptionComponent(2643), 1, 0, 3);
             AddComponent(new StrangeContraptionComponent(6434), 2, 0, 1);
             AddComponent(new StrangeContraptionComponent(4758, 1545), -1, 0, 0);
-            AddComponent(new StrangeContraptionComponent(4272, 1545), - 1, 0, 1);
+            AddComponent(new StrangeContraptionComponent(4272, 1545), -1, 0, 1);
             AddComponent(new StrangeContraptionComponent(6039, 999), 2, 0, 20);
             AddComponent(new StrangeContraptionComponent(6040, 999), 1, 0, 20);
         }

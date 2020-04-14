@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class OddsAndEndsQuest : BaseQuest
-    { 
+    {
         public OddsAndEndsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(PrimitiveFetish), "primitive fetishes", 12));
-						
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -77,7 +77,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Patricus()
             : base("Patricus", "The Trader")
-        { 
+        {
         }
 
         public Patricus(Serial serial)
@@ -86,10 +86,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(HeaveHoQuest),
                     typeof(OddsAndEndsQuest)
@@ -97,33 +97,33 @@ namespace Server.Engines.Quests
             }
         }
         public override void InitBody()
-        { 
+        {
             this.Female = false;
-            this.Race = Race.Human;		
-		
+            this.Race = Race.Human;
+
             base.InitBody();
         }
 
         public override void InitOutfit()
-        { 
-            this.AddItem(new Backpack());		
+        {
+            this.AddItem(new Backpack());
             this.AddItem(new Shoes(0x74B));
             this.AddItem(new LongPants(0x1C));
             this.AddItem(new FancyShirt(0x71B));
-            this.AddItem(new Cloak(0x1BB));		
+            this.AddItem(new Cloak(0x1BB));
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }

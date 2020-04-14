@@ -1,9 +1,7 @@
-using System;
-using Server;
-using Server.Targeting;
-using Server.Engines.Plants;
 using Server.Gumps;
 using Server.Mobiles;
+using Server.Targeting;
+using System;
 
 namespace Server.Engines.Plants
 {
@@ -288,7 +286,7 @@ namespace Server.Engines.Plants
                         Box.Entries.Remove(Entry);
                         Box.Entries.Insert(index - 1, Entry);
                         Box.TrimEntries();
-                        if(Parent is SeedBoxGump)
+                        if (Parent is SeedBoxGump)
                             ((SeedBoxGump)Parent).CheckPage(Entry);
                         RefreshParent(true);
                     }

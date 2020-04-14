@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class SlithEye : Item
@@ -12,7 +10,7 @@ namespace Server.Items
 
         [Constructable]
         public SlithEye(int amount)
-			: base(0x5749)
+            : base(0x5749)
         {
             this.Stackable = true;
             this.Amount = amount;

@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -44,7 +44,7 @@ namespace Server.Mobiles
             this.Karma = 7000;
 
             if (0.02 > Utility.RandomDouble())
-                this.PackStatue();				
+                this.PackStatue();
         }
 
         public PixieRenowned(Serial serial)
@@ -97,7 +97,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-			AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.UltraRich, 2);
         }
 
         public override void Serialize(GenericWriter writer)

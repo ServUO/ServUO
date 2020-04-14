@@ -1,24 +1,22 @@
-using System;
-
 namespace Server.Items
 {
     public class GreymistGloves : LeatherGloves
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public GreymistGloves()
             : base()
         {
-            this.SetHue = 0xCB;			
-			
+            this.SetHue = 0xCB;
+
             this.Attributes.BonusMana = 2;
             this.Attributes.SpellDamage = 2;
-			
+
             this.SetAttributes.Luck = 100;
             this.SetAttributes.NightSight = 1;
-			
+
             this.SetSelfRepair = 3;
-			
+
             this.SetPhysicalBonus = 3;
             this.SetFireBonus = 3;
             this.SetColdBonus = 3;

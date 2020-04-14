@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.Harvest;
 
 namespace Server.Items
@@ -60,7 +59,7 @@ namespace Server.Items
                 return 3.50f;
             }
         }
-       
+
         public override int InitMinHits
         {
             get
@@ -82,10 +81,10 @@ namespace Server.Items
                 return null;
             }
         }
-        
-		public override Race RequiredRace { get { return Race.Gargoyle; } }
+
+        public override Race RequiredRace { get { return Race.Gargoyle; } }
         public override bool CanBeWornByGargoyles { get { return true; } }
-		
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

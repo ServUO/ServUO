@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
+using System.Collections.Generic;
 
 namespace Server.Spells.Bushido
 {
@@ -45,7 +44,7 @@ namespace Server.Spells.Bushido
 
             foreach (Mobile m in eable)
             {
-                if (m != defender && m != attacker && m.CanBeHarmful(attacker, false) && attacker.InLOS(m) && 
+                if (m != defender && m != attacker && m.CanBeHarmful(attacker, false) && attacker.InLOS(m) &&
                     Server.Spells.SpellHelper.ValidIndirectTarget(attacker, m))
                 {
                     targets.Add(m);

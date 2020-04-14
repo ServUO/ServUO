@@ -1,6 +1,3 @@
-using Server.Engines.Craft;
-using System;
-
 namespace Server.Items
 {
     public class GargishLeatherKilt : BaseArmor

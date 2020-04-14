@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.Craft;
 
 namespace Server.Items
@@ -118,7 +117,7 @@ namespace Server.Items
                 return 3.25f;
             }
         }
-       
+
         public override int InitMinHits
         {
             get

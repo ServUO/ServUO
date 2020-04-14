@@ -1,11 +1,6 @@
-using System;
-using System.Collections;
-using Server.Targeting;
-using Server.Network;
+using Server.ContextMenus;
 using Server.Mobiles;
 using System.Collections.Generic;
-using Server.ContextMenus;
-using Server.Spells;
 
 namespace Server.Engines.Despise
 {
@@ -180,7 +175,7 @@ namespace Server.Engines.Despise
                 {
                     DespiseCreature dc = m as DespiseCreature;
 
-                    if(m is DespiseBoss || (dc != null && (dc.Orb == null && !dc.Controlled) || (dc.Alignment != m_Creature.Alignment)))
+                    if (m is DespiseBoss || (dc != null && (dc.Orb == null && !dc.Controlled) || (dc.Alignment != m_Creature.Alignment)))
                     {
                         int distance = (int)m_Creature.GetDistanceToSqrt(m);
 

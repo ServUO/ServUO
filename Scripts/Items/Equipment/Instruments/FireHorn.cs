@@ -1,10 +1,8 @@
-using System;
-using System.Collections;
-using System.Linq;
-
 using Server.Network;
 using Server.Spells;
 using Server.Targeting;
+using System;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -97,7 +95,7 @@ namespace Server.Items
                 if (count > 1)
                     damage = (damage * 2) / count;
 
-                foreach(var m in targets)
+                foreach (var m in targets)
                 {
                     double toDeal = damage;
 

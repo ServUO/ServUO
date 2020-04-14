@@ -1,16 +1,14 @@
-using System;
-
 namespace Server.Items
 {
     public class DefenderOfTheMagus : MetalShield
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
-        public DefenderOfTheMagus() 
+        public DefenderOfTheMagus()
         {
-            Hue = 590;		
+            Hue = 590;
             Attributes.SpellChanneling = 1;
-            Attributes.DefendChance = 10;				
+            Attributes.DefendChance = 10;
             Attributes.CastRecovery = 1;
             //Random Resonance:
             switch (Utility.Random(5))
@@ -57,8 +55,8 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
-        public override int LabelNumber { get{return 1113851;} }// Defender of the Magus
+
+        public override int LabelNumber { get { return 1113851; } }// Defender of the Magus
 
         public override int BasePhysicalResistance
         {

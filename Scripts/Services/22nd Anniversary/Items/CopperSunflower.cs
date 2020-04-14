@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-
-using Server;
-
 namespace Server.Items
 {
     [Flipable(0xA35D, 0xA35E)]

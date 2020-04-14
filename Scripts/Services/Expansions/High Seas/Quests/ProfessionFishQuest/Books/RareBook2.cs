@@ -1,15 +1,12 @@
-﻿using Server;
-using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class FishingGuideBook2 : BaseBook
     {
         [Constructable]
-		public FishingGuideBook2() : base( Utility.Random( 0xFF1, 2 ), false )
-		{
+        public FishingGuideBook2() : base(Utility.Random(0xFF1, 2), false)
+        {
             Name = "Volume 2 - Uncommon Sea Fish";
-		}
+        }
 
         public static readonly BookContent Content = new BookContent
         (
@@ -209,24 +206,24 @@ namespace Server.Items
             )
         );
 
-        public override BookContent DefaultContent{ get{ return Content; } }
+        public override BookContent DefaultContent { get { return Content; } }
 
-        public FishingGuideBook2( Serial serial ) : base( serial )
-		{
-		}
+        public FishingGuideBook2(Serial serial) : base(serial)
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt( (int)0 ); // version
-		}
+            writer.WriteEncodedInt((int)0); // version
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
+            int version = reader.ReadEncodedInt();
+        }
     }
 }

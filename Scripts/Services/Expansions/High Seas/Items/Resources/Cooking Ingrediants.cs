@@ -1,6 +1,4 @@
-﻿using Server;
-using System;
-using Server.Targeting;
+﻿using Server.Targeting;
 
 namespace Server.Items
 {
@@ -129,7 +127,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if(IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
                 from.Target = new InternalTarget(this);
         }
 

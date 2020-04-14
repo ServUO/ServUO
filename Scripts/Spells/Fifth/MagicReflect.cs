@@ -59,7 +59,7 @@ namespace Server.Spells.Fifth
                 if (mods == null)
                 {
                     targ.PlaySound(0x1E9);
-					targ.FixedParticles(0x375A, 10, 15, 5037, EffectLayer.Waist);
+                    targ.FixedParticles(0x375A, 10, 15, 5037, EffectLayer.Waist);
 
                     int physiMod = -25 + (int)(targ.Skills[SkillName.Inscribe].Value / 20);
                     int otherMod = 10;
@@ -69,8 +69,8 @@ namespace Server.Spells.Fifth
                         new ResistanceMod(ResistanceType.Physical, physiMod),
                         new ResistanceMod(ResistanceType.Fire, otherMod),
                         new ResistanceMod(ResistanceType.Cold, otherMod),
-                        new ResistanceMod(ResistanceType.Poison,	otherMod),
-                        new ResistanceMod(ResistanceType.Energy,	otherMod)
+                        new ResistanceMod(ResistanceType.Poison,    otherMod),
+                        new ResistanceMod(ResistanceType.Energy,    otherMod)
                     };
 
                     m_Table[targ] = mods;
@@ -97,7 +97,7 @@ namespace Server.Spells.Fifth
             }
 
             this.FinishSequence();
-            
+
         }
 
         public static bool HasReflect(Mobile m)

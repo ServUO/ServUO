@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class CitadelKey : MasterKey
@@ -47,7 +45,7 @@ namespace Server.Items
         {
             if (from.Region != null && from.Region.IsPartOf("TheCitadel"))
                 return base.CanOfferConfirmation(from);
-				
+
             return false;
         }
     }

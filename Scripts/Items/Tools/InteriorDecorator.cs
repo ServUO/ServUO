@@ -1,9 +1,9 @@
-using System;
-using System.Linq;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
 using Server.Targeting;
+using System;
+using System.Linq;
 
 namespace Server.Items
 {

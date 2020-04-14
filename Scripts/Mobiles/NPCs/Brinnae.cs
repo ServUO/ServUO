@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class EvilEyeQuest : BaseQuest
-    { 
+    {
         public EvilEyeQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Gazer), "gazers", 12));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -65,12 +65,12 @@ namespace Server.Engines.Quests
     }
 
     public class ImpishDelightsQuest : BaseQuest
-    { 
+    {
         public ImpishDelightsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Imp), "imps", 12));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -124,13 +124,13 @@ namespace Server.Engines.Quests
     }
 
     public class StirringTheNestQuest : BaseQuest
-    { 
+    {
         public StirringTheNestQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(RedSolenQueen), "red solen queens", 3));
             this.AddObjective(new SlayObjective(typeof(BlackSolenQueen), "black solen queens", 3));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -191,13 +191,13 @@ namespace Server.Engines.Quests
     }
 
     public class UndeadMagesQuest : BaseQuest
-    { 
+    {
         public UndeadMagesQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(BoneMagi), "bone mages", 10));
             this.AddObjective(new SlayObjective(typeof(SkeletalMage), "skeletal mages", 10));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -258,12 +258,12 @@ namespace Server.Engines.Quests
     }
 
     public class TheAfterlifeQuest : BaseQuest
-    { 
+    {
         public TheAfterlifeQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Mummy), "mummies", 15));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -317,12 +317,12 @@ namespace Server.Engines.Quests
     }
 
     public class FriendlyNeighborhoodSpiderkillerQuest : BaseQuest
-    { 
+    {
         public FriendlyNeighborhoodSpiderkillerQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(DreadSpider), "dread spiders", 8));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -376,12 +376,12 @@ namespace Server.Engines.Quests
     }
 
     public class GargoylesWrathQuest : BaseQuest
-    { 
+    {
         public GargoylesWrathQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(GargoyleEnforcer), "gargoyle enforcers", 6));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -435,12 +435,12 @@ namespace Server.Engines.Quests
     }
 
     public class ThreeWishesQuest : BaseQuest
-    { 
+    {
         public ThreeWishesQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Efreet), "efreets", 8));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -494,13 +494,13 @@ namespace Server.Engines.Quests
     }
 
     public class ForkedTongueQuest : BaseQuest
-    { 
+    {
         public ForkedTongueQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(OphidianKnight), "ophidian knight-errants", 10));
             this.AddObjective(new SlayObjective(typeof(OphidianMage), "ophidian mages", 10));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -561,13 +561,13 @@ namespace Server.Engines.Quests
     }
 
     public class MongbatMenaceQuest : BaseQuest
-    { 
+    {
         public MongbatMenaceQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Mongbat), "mongbats", 10));
             this.AddObjective(new SlayObjective(typeof(GreaterMongbat), "greater mongbats", 4));
-			
+
             this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
@@ -621,11 +621,11 @@ namespace Server.Engines.Quests
     }
 
     public class Brinnae : MondainQuester
-    { 
+    {
         [Constructable]
         public Brinnae()
             : base("Brinnae", "the wise")
-        { 
+        {
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
@@ -635,10 +635,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(EvilEyeQuest),
                     typeof(ImpishDelightsQuest),
@@ -657,10 +657,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x8382;
             this.HairItemID = 0x2FD0;
             this.HairHue = 0x852;

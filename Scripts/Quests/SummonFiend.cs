@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class FiendishFriendsQuest : BaseQuest
-    { 
+    {
         public FiendishFriendsQuest()
             : base()
-        { 
-            this.AddObjective(new SlayObjective(typeof(Imp), "imps", 50));		
-				
+        {
+            this.AddObjective(new SlayObjective(typeof(Imp), "imps", 50));
+
             this.AddReward(new BaseReward(1074873)); // The opportunity to prove yourself worthy of learning to Summon Fiends. (Sufficient spellweaving skill is required to cast the spell)
         }
 
@@ -83,12 +83,12 @@ namespace Server.Engines.Quests
     }
 
     public class CrackingTheWhipQuest : BaseQuest
-    { 
+    {
         public CrackingTheWhipQuest()
             : base()
-        { 
-            this.AddObjective(new ObtainObjective(typeof(StoutWhip), "stout whip", 1, 0x166F));		
-				
+        {
+            this.AddObjective(new ObtainObjective(typeof(StoutWhip), "stout whip", 1, 0x166F));
+
             this.AddReward(new BaseReward(1075028)); // A step closer to learning to summon and control fiends.
         }
 
@@ -168,12 +168,12 @@ namespace Server.Engines.Quests
     }
 
     public class IronWillQuest : BaseQuest
-    { 
+    {
         public IronWillQuest()
             : base()
-        { 
-            this.AddObjective(new SlayObjective(typeof(ArcaneDaemon), "arcane daemon", 1));		
-				
+        {
+            this.AddObjective(new SlayObjective(typeof(ArcaneDaemon), "arcane daemon", 1));
+
             this.AddReward(new BaseReward(typeof(SummonFiendScroll), 1071033));
         }
 
@@ -230,11 +230,11 @@ namespace Server.Engines.Quests
         }
 
         public override void GiveRewards()
-        { 
+        {
             /* You've demonstrated your strength, got a means of control, and taught the imps to fear 
             you.  You're ready now to summon them. */
             this.Owner.SendLocalizedMessage(1074322, null, 0x2A);
-			
+
             base.GiveRewards();
         }
 

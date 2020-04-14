@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Server.Targeting;
-using Server.Mobiles;
 using Server.Items;
+using Server.Mobiles;
+using Server.Targeting;
+using System;
+using System.Linq;
 
 namespace Server.Spells.Seventh
 {

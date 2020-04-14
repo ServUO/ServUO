@@ -1,7 +1,3 @@
-using System;
-using Server;
-using Server.Spells;
-
 namespace Server.Items
 {
     public class Asclepius : GnarledStaff
@@ -10,7 +6,7 @@ namespace Server.Items
 
         [Constructable]
         public Asclepius()
-        { 
+        {
         }
 
         public override bool CanFortify { get { return false; } }

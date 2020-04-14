@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class LastWordsQuest : BaseQuest
-    { 
+    {
         public LastWordsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new DeliverObjective(typeof(DenthesJournal), "lord denthe's journal", 1, typeof(Verity), "Verity (Britain)"));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -87,10 +87,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(LastWordsQuest)
                 };

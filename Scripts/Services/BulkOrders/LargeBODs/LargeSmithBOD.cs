@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Server.Engines.BulkOrders
@@ -25,10 +24,10 @@ namespace Server.Engines.BulkOrders
         {
             LargeBulkEntry[] entries;
             bool useMaterials = true;
-			
+
             int rand = Utility.Random(8);
 
-            switch ( rand )
+            switch (rand)
             {
                 default:
                 case 0:
@@ -56,7 +55,7 @@ namespace Server.Engines.BulkOrders
                     entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargeSwords);
                     break;
             }
-			
+
             if (rand > 2 && rand < 8)
                 useMaterials = false;
 

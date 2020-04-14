@@ -1,6 +1,6 @@
+using Server.Items;
 using System;
 using System.Collections;
-using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -43,11 +43,11 @@ namespace Server.Mobiles
             Fame = 8000;
             Karma = 8000;
 
-			switch (Utility.Random(8))
+            switch (Utility.Random(8))
             {
                 case 0: PackItem(new StrangleScroll()); break;
                 case 1: PackItem(new WitherScroll()); break;
-			}
+            }
 
             m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(2, 5));
         }
@@ -158,7 +158,7 @@ namespace Server.Mobiles
 
                     if (Utility.RandomDouble() < .1)
                     {
-                        int[][] coord = 
+                        int[][] coord =
                         {
                             new int[] { -4, -6 }, new int[] { 4, -6 }, new int[] { 0, -8 }, new int[] { -5, 5 }, new int[] { 5, 5 }
                         };
@@ -175,7 +175,7 @@ namespace Server.Mobiles
                             if (!combatant.Map.CanSpawnMobile(loc))
                                 continue;
 
-                            switch ( i )
+                            switch (i)
                             {
                                 case 0:
                                     rabid = new EnragedRabbit(this);

@@ -1,4 +1,3 @@
-using System;
 using Server.Multis;
 using Server.Network;
 
@@ -14,7 +13,7 @@ namespace Server.Items
         public virtual int SouthEmptyID { get { return 0xA567; } }
         public virtual int EastID { get { return 0xA56A; } }
         public virtual int EastEmptyID { get { return 0xA569; } }
-        
+
         public bool IsEmpty { get { return Items.Count == 0; } }
 
         public bool Dye(Mobile from, DyeTub sender)

@@ -1,8 +1,3 @@
-using Server;
-using System;
-using Server.Multis;
-using Server.Mobiles;
-
 namespace Server.Items
 {
     public class DeckItem : Item

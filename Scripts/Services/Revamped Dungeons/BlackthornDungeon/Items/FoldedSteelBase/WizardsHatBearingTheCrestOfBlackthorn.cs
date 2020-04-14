@@ -1,6 +1,3 @@
-using Server;
-using System;
-
 namespace Server.Items
 {
     public class WizardsHatBearingTheCrestOfBlackthorn3 : WizardsHat
@@ -26,7 +23,7 @@ namespace Server.Items
         public override int BaseEnergyResistance { get { return 10; } }
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
-        
+
         public WizardsHatBearingTheCrestOfBlackthorn3(Serial serial)
             : base(serial)
         {

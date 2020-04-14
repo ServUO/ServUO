@@ -1,16 +1,14 @@
-using System;
-
 namespace Server.Items
 {
     public class MantleOfTheFallen : GargishClothChest
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113819; } }// Mantle of the Fallen
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113819; } }// Mantle of the Fallen
+
         [Constructable]
-        public MantleOfTheFallen() 
+        public MantleOfTheFallen()
         {
-            Hue = 1512;			
+            Hue = 1512;
             Attributes.LowerRegCost = 25;
             Attributes.BonusInt = 8;
             Attributes.BonusMana = 8;
@@ -72,7 +70,7 @@ namespace Server.Items
             {
                 return 255;
             }
-        }      
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

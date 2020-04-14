@@ -1,11 +1,8 @@
-﻿using Server;
-using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class CoffinPiece : Item
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1116783; } }
 
         [Constructable]

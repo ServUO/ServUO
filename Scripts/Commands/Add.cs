@@ -1,9 +1,9 @@
+using Server.Items;
+using Server.Targeting;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using Server.Items;
-using Server.Targeting;
 using CPA = Server.CommandPropertyAttribute;
 
 namespace Server.Commands
@@ -590,7 +590,7 @@ namespace Server.Commands
             TileState ts = (TileState)state;
             bool mapAvg = false;
 
-            switch ( ts.m_ZType )
+            switch (ts.m_ZType)
             {
                 case TileZType.Fixed:
                     {

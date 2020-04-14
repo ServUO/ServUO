@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Engines.VeteranRewards;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items.MusicBox
 {
@@ -22,10 +22,10 @@ namespace Server.Items.MusicBox
             : base(0x2AF9)
         {
             this.Weight = 1.0;
-            
+
             this.m_Tracks = new List<MusicName>();
             this.m_ActualSong = MusicName.Invalid;
-            
+
             while (this.Tracks.Count < 4)
                 this.AddSong(TrackInfo.RandomSong(TrackRarity.Common));
         }
@@ -97,15 +97,15 @@ namespace Server.Items.MusicBox
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             int commonSongs = 0;
             int unCommonSongs = 0;
             int rareSongs = 0;
-			
+
             for (int i = 0; i < this.m_Tracks.Count; i++)
             {
                 TrackInfo ti = TrackInfo.GetInfo(this.m_Tracks[i]);
-                switch( ti.Rarity )
+                switch (ti.Rarity)
                 {
                     case TrackRarity.Common:
                         commonSongs++;
@@ -118,7 +118,7 @@ namespace Server.Items.MusicBox
                         break;
                 }
             }
-			
+
             if (commonSongs > 0)
                 list.Add(1075234, commonSongs.ToString()); // ~1_NUMBER~ Common Tracks
             if (unCommonSongs > 0)
@@ -130,7 +130,7 @@ namespace Server.Items.MusicBox
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
-            
+
             SetSecureLevelEntry.AddTo(from, this, list); // Set secure level
         }
 
@@ -148,7 +148,7 @@ namespace Server.Items.MusicBox
                 {
                     if (from.HasGump(typeof(MusicGump)))
                         from.CloseGump(typeof(MusicGump));
-					
+
                     from.SendGump(new MusicGump(this));
                 }
             }
@@ -173,12 +173,12 @@ namespace Server.Items.MusicBox
 
         public void Animate()
         {
-            switch( this.ItemID )
+            switch (this.ItemID)
             {
                 case 0x2AF9:
                     this.ItemID = 0x2AFB;
                     break;
-                    //            	case 0x2AFA:	ItemID = 0x2AFB; break;
+                //            	case 0x2AFA:	ItemID = 0x2AFB; break;
                 case 0x2AFB:
                     this.ItemID = 0x2AFC;
                     break;
@@ -188,7 +188,7 @@ namespace Server.Items.MusicBox
                 case 0x2AFD:
                     this.ItemID = 0x2AFF;
                     break;
-                    //            	case 0x2AFE:	ItemID = 0x2AFF; break;
+                //            	case 0x2AFE:	ItemID = 0x2AFF; break;
                 case 0x2AFF:
                     this.ItemID = 0x2B00;
                     break;
@@ -202,7 +202,7 @@ namespace Server.Items.MusicBox
         {
             if (mob.AccessLevel >= AccessLevel.GameMaster)
                 return true;
-			
+
             BaseHouse house = BaseHouse.FindHouseAt(this);
 
             return (house != null && house.IsOwner(mob));
@@ -213,7 +213,7 @@ namespace Server.Items.MusicBox
             if (this.m_ActualSong != MusicName.Invalid && m.NetState != null)
             {
                 m.Send(PlayMusic.InvalidInstance); // Stop actual music
-            	
+
                 if (play)
                     m.Send(PlayMusic.GetInstance(this.m_ActualSong));
             }
@@ -222,24 +222,24 @@ namespace Server.Items.MusicBox
         public void TogglePlaying(bool hasToStart)
         {
             this.ToggleTimer(hasToStart);
-        	
+
             string message = hasToStart ? "* The musix box starts playing a song *" : "* The musix box stops *";
-        	
+
             this.PublicOverheadMessage(MessageType.Regular, 0x5D, true, message);
             this.StopBoxesInRange();
             Map boxMap = this.Map;
-	
+
             if (boxMap != Map.Internal)
             {
                 Point3D boxLoc = this.Location;
                 IPooledEnumerable mobsEable = boxMap.GetMobilesInRange(boxLoc, MusicRange);
-	        	
+
                 foreach (Mobile m in mobsEable)
                 {
                     if (m is Mobiles.PlayerMobile)
                         this.ToggleMusic(m, hasToStart);
                 }
-	            
+
                 mobsEable.Free();
             }
         }
@@ -257,7 +257,7 @@ namespace Server.Items.MusicBox
                 TrackInfo ti = TrackInfo.GetInfo(this.m_ActualSong);
 
                 this.m_PlayingTimer = new PlayingTimer((double)ti.Duration, this);	// add a new timer
-                this.m_PlayingTimer.Start();         		
+                this.m_PlayingTimer.Start();
             }
         }
 
@@ -290,14 +290,14 @@ namespace Server.Items.MusicBox
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            
+
             writer.Write((int)0); // version
-            
+
             writer.Write(this.m_Tracks.Count);
-            
+
             for (int i = 0; i < this.m_Tracks.Count; i++)
                 writer.Write((int)this.m_Tracks[i]);
-            	
+
             writer.Write((int)this.m_Level);
             writer.Write(this.m_IsRewardItem);
         }
@@ -305,25 +305,25 @@ namespace Server.Items.MusicBox
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            
+
             int version = reader.ReadInt();
-            
-            switch( version )
+
+            switch (version)
             {
                 case 0:
                     {
                         if (this.m_Tracks == null)
                             this.m_Tracks = new List<MusicName>();
-        			
+
                         int numSongs = reader.ReadInt();
                         for (int i = 0; i < numSongs; i++)
                             this.m_Tracks.Add((MusicName)reader.ReadInt());
-            		
+
                         this.m_Level = (SecureLevel)reader.ReadInt();
                         this.m_IsRewardItem = reader.ReadBool();
-                    
+
                         this.ToggleTimer(false);
-                    
+
                         break;
                     }
             }
@@ -338,7 +338,7 @@ namespace Server.Items.MusicBox
             {
                 this.m_Box = box;
                 this.m_Until = DateTime.UtcNow + TimeSpan.FromSeconds(duration);
-                
+
                 this.Priority = TimerPriority.TwoFiftyMS;
             }
 
@@ -369,7 +369,7 @@ namespace Server.Items.MusicBox
             private int m_Page;
             public MusicGump(DawnsMusicBox box)
                 : this(box, null, 1)
-            { 
+            {
             }
 
             public MusicGump(DawnsMusicBox box, List<int> songs, int page)
@@ -383,9 +383,9 @@ namespace Server.Items.MusicBox
                 this.m_Box = box;
                 this.m_Songs = songs;
                 this.m_Page = page;
-					
+
                 this.m_HasStopSongEntry = this.m_Box.IsPlaying;
-				
+
                 if (this.m_Songs == null)
                     this.m_Songs = BuildList(box, this.m_HasStopSongEntry);
 
@@ -395,27 +395,27 @@ namespace Server.Items.MusicBox
             public void Initialize()
             {
                 this.AddPage(0);
-				
+
                 this.AddBackground(0, 0, 275, 325, 9200);
-	            
-                this.AddImageTiled(10, 10, 255, 25, 2624); 
-                this.AddImageTiled(10, 45, 255, 240, 2624); 
+
+                this.AddImageTiled(10, 10, 255, 25, 2624);
+                this.AddImageTiled(10, 45, 255, 240, 2624);
                 this.AddImageTiled(40, 295, 225, 20, 2624);
-	            
-                this.AddButton(10, 295, 4017, 4018, 0, GumpButtonType.Reply, 0); 
+
+                this.AddButton(10, 295, 4017, 4018, 0, GumpButtonType.Reply, 0);
                 this.AddHtmlLocalized(45, 295, 75, 20, 1011012, m_HueTit, false, false); // CANCEL
-	
+
                 this.AddAlphaRegion(10, 10, 255, 285);
                 this.AddAlphaRegion(40, 295, 225, 20);
-	            
+
                 this.AddHtmlLocalized(14, 12, 255, 25, 1075130, m_HueTit, false, false); // Choose a track to play
-	            
+
                 if (this.m_Page > 1)
                     this.AddButton(225, 297, 5603, 5607, 200, GumpButtonType.Reply, 0); // Previous page
-	
+
                 if (this.m_Page < Math.Ceiling(this.m_Songs.Count / (double)m_Fields))
                     this.AddButton(245, 297, 5601, 5605, 300, GumpButtonType.Reply, 0); // Next Page
-				
+
                 int IndMax = (this.m_Page * m_Fields) - 1;
                 int IndMin = (this.m_Page * m_Fields) - m_Fields;
                 int IndTemp = 0;
@@ -462,16 +462,16 @@ namespace Server.Items.MusicBox
             private static List<int> BuildList(DawnsMusicBox box, bool hasStopSongEntry)
             {
                 List<int> list = new List<int>();
-				
+
                 for (int i = 0; i < box.Tracks.Count; i++)
                 {
                     TrackInfo ti = TrackInfo.GetInfo(box.Tracks[i]);
                     list.Add(ti.Label);
                 }
-				
+
                 if (hasStopSongEntry)
                     list.Add(1075207); // Stop Song
-				
+
                 return list;
             }
         }

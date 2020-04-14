@@ -1,6 +1,3 @@
-using System;
-using Server.Gumps;
-
 namespace Server.Items
 {
     public class CrystalAltarAddon : BaseAddon
@@ -41,7 +38,7 @@ namespace Server.Items
         public override bool ExcludeDeedHue { get { return true; } }
 
         public override BaseAddon Addon { get { return new CrystalAltarAddon(); } }
-        
+
         [Constructable]
         public CrystalAltarDeed()
             : base()

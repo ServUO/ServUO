@@ -1,6 +1,3 @@
-using Server;
-using System;
-
 namespace Server.Items
 {
     public class JesterHatBearingTheCrestOfBlackthorn3 : JesterHat
@@ -25,7 +22,7 @@ namespace Server.Items
         public override int BasePoisonResistance { get { return 10; } }
         public override int BaseEnergyResistance { get { return 10; } }
         public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }       
+        public override int InitMaxHits { get { return 255; } }
 
         public JesterHatBearingTheCrestOfBlackthorn3(Serial serial)
             : base(serial)

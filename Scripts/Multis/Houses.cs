@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 using Server.Multis.Deeds;
 
@@ -6,7 +5,7 @@ namespace Server.Multis
 {
     public class SmallOldHouse : BaseHouse
     {
-        public static Rectangle2D[] AreaArray = new Rectangle2D[] { new Rectangle2D(-3,-3,7,7), new Rectangle2D(-1, 4, 3, 1) };
+        public static Rectangle2D[] AreaArray = new Rectangle2D[] { new Rectangle2D(-3, -3, 7, 7), new Rectangle2D(-1, 4, 3, 1) };
         public SmallOldHouse(Mobile owner, int id)
             : base(id, owner, 425, 3)
         {
@@ -50,9 +49,9 @@ namespace Server.Multis
                 return HousePlacementEntry.TwoStoryFoundations[0];
             }
         }
-        public override HouseDeed GetDeed() 
+        public override HouseDeed GetDeed()
         {
-            switch ( ItemID )
+            switch (ItemID)
             {
                 case 0x64:
                     return new StonePlasterHouseDeed();
@@ -63,8 +62,8 @@ namespace Server.Multis
                 case 0x6A:
                     return new WoodHouseDeed();
                 case 0x6C:
-                    return new WoodPlasterHouseDeed(); 
-                case 0x6E: 
+                    return new WoodPlasterHouseDeed();
+                case 0x6E:
                 default:
                     return new ThatchedRoofCottageDeed();
             }
@@ -206,9 +205,9 @@ namespace Server.Multis
                 return 192400;
             }
         }
-        public override HouseDeed GetDeed() 
-        { 
-            switch( ItemID )
+        public override HouseDeed GetDeed()
+        {
+            switch (ItemID)
             {
                 case 0x76:
                     return new TwoStoryWoodPlasterHouseDeed();
@@ -315,7 +314,7 @@ namespace Server.Multis
             uint keyValue = CreateKeys(owner);
 
             AddSouthDoors(false, 0, 10, 6, keyValue);
-			
+
             SetSign(5, 12, 16);
         }
 
@@ -439,7 +438,7 @@ namespace Server.Multis
             uint keyValue = CreateKeys(owner);
 
             AddSouthDoors(-4, 6, 7, keyValue);
-			
+
             SetSign(1, 8, 16);
 
             AddEastDoor(1, 4, 7);
@@ -649,7 +648,7 @@ namespace Server.Multis
             uint keyValue = CreateKeys(owner);
 
             AddSouthDoor(1, 4, 8, keyValue);
-			
+
             SetSign(5, 8, 20);
 
             AddSouthDoor(1, 0, 29);
@@ -715,7 +714,7 @@ namespace Server.Multis
             uint keyValue = CreateKeys(owner);
 
             AddSouthDoor(-1, 3, 6, keyValue);
-			
+
             SetSign(4, 6, 24);
         }
 
@@ -786,7 +785,7 @@ namespace Server.Multis
             uint keyValue = CreateKeys(owner);
 
             AddSouthDoors(3, 1, 5, keyValue);
-			
+
             SetSign(3, 8, 24);
 
             AddEastDoor(1, 0, 25);
@@ -846,8 +845,8 @@ namespace Server.Multis
 
     public class SmallShop : BaseHouse
     {
-        public static Rectangle2D[] AreaArray1 = new Rectangle2D[] { new Rectangle2D(-3,-3,7,7), new Rectangle2D(-1, 4, 4, 1) };
-        public static Rectangle2D[] AreaArray2 = new Rectangle2D[] { new Rectangle2D(-3,-3,7,7), new Rectangle2D(-2, 4, 3, 1) };
+        public static Rectangle2D[] AreaArray1 = new Rectangle2D[] { new Rectangle2D(-3, -3, 7, 7), new Rectangle2D(-1, 4, 4, 1) };
+        public static Rectangle2D[] AreaArray2 = new Rectangle2D[] { new Rectangle2D(-3, -3, 7, 7), new Rectangle2D(-2, 4, 3, 1) };
         public SmallShop(Mobile owner, int id)
             : base(id, owner, 425, 3)
         {
@@ -863,7 +862,7 @@ namespace Server.Multis
             AddDoor(door, -2, 0, id == 0xA2 ? 24 : 27);
 
             //AddSouthDoor( false, -2, 0, 27 - (id == 0xA2 ? 3 : 0), keyValue );
-			
+
             SetSign(3, 4, 7 - (id == 0xA2 ? 2 : 0));
         }
 
@@ -900,12 +899,12 @@ namespace Server.Multis
                 return HousePlacementEntry.TwoStoryFoundations[0];
             }
         }
-        public override HouseDeed GetDeed() 
-        { 
-            switch ( ItemID )
+        public override HouseDeed GetDeed()
+        {
+            switch (ItemID)
             {
                 case 0xA0:
-                    return new StoneWorkshopDeed(); 
+                    return new StoneWorkshopDeed();
                 case 0xA2:
                 default:
                     return new MarbleWorkshopDeed();

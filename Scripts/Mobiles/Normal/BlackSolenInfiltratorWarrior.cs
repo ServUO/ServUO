@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -41,7 +40,7 @@ namespace Server.Mobiles
 
             SolenHelper.PackPicnicBasket(this);
 
-            this.PackItem(new ZoogiFungus((0.05 > Utility.RandomDouble()) ? 13 : 3));		
+            this.PackItem(new ZoogiFungus((0.05 > Utility.RandomDouble()) ? 13 : 3));
         }
 
         public BlackSolenInfiltratorWarrior(Serial serial)

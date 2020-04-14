@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -6,8 +5,8 @@ namespace Server.Mobiles
     [CorpseName("a relanord corpse")]
     public class Relanord : BaseVoidCreature
     {
-        public override VoidEvolution Evolution => VoidEvolution.Survival; 
-        public override int Stage => 2; 
+        public override VoidEvolution Evolution => VoidEvolution.Survival;
+        public override int Stage => 2;
 
         [Constructable]
         public Relanord()

@@ -1,22 +1,21 @@
-using System;
-using Server;
 using Server.Items;
 using Server.Mobiles;
- 
+using System;
+
 namespace Server.Engines.Quests.TimeLord
 {
-	public class TimeForLegendsObjective : QuestObjective
-	{
-		public override object Message { get { return 1156341; } } // Prove yourself to Hawkwind, defeat thy foe in order to begin your journey among the Legendary.
+    public class TimeForLegendsObjective : QuestObjective
+    {
+        public override object Message { get { return 1156341; } } // Prove yourself to Hawkwind, defeat thy foe in order to begin your journey among the Legendary.
 
         public override int MaxProgress { get { return 1; } }
 
-		public TimeForLegendsObjective()
-		{
-		}
-		
-		public override void RenderProgress( BaseQuestGump gump )
-		{
+        public TimeForLegendsObjective()
+        {
+        }
+
+        public override void RenderProgress(BaseQuestGump gump)
+        {
             if (System is TimeForLegendsQuest)
             {
                 TimeForLegendsQuest q = System as TimeForLegendsQuest;
@@ -32,20 +31,20 @@ namespace Server.Engines.Quests.TimeLord
                     gump.AddHtmlObject(235, 260, 150, 100, this.Completed ? 1046033 : 1046034, BaseQuestGump.Blue, false, false);
                 }
             }
-		}
-		
-		public override void OnKill(BaseCreature creature, Container corpse)
-		{
-			if(System is TimeForLegendsQuest && creature.GetType() == ((TimeForLegendsQuest)System).ToSlay)
-			{
-				Complete();
-			}
-		}
-		
-		public override void Complete()
-		{
-			base.Complete();
-			System.Complete();
-		}
-	}
+        }
+
+        public override void OnKill(BaseCreature creature, Container corpse)
+        {
+            if (System is TimeForLegendsQuest && creature.GetType() == ((TimeForLegendsQuest)System).ToSlay)
+            {
+                Complete();
+            }
+        }
+
+        public override void Complete()
+        {
+            base.Complete();
+            System.Complete();
+        }
+    }
 }

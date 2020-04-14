@@ -1,5 +1,5 @@
-using System;
 using Server.Targeting;
+using System;
 
 namespace Server.Spells.First
 {
@@ -70,7 +70,7 @@ namespace Server.Spells.First
                     });
                 }
 
-                double damage  = GetNewAosDamage(10, 1, 4, d);
+                double damage = GetNewAosDamage(10, 1, 4, d);
 
                 if (damage > 0)
                 {

@@ -1,7 +1,5 @@
-﻿using System;
+﻿using Server.Items;
 using System.Collections.Generic;
-using Server.Items;
-using Server.Targeting;
 
 namespace Server.Mobiles
 {

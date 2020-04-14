@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -42,13 +41,13 @@ namespace Server.Mobiles
             Fame = 4500;
             Karma = -4500;
 
-			switch (Utility.Random(24))
+            switch (Utility.Random(24))
             {
                 case 0: PackItem(new PainSpikeScroll()); break;
                 case 1: PackItem(new PoisonStrikeScroll()); break;
                 case 2: PackItem(new StrangleScroll()); break;
                 case 3: PackItem(new VengefulSpiritScroll()); break;
-			}
+            }
 
             ControlSlots = 2;
         }

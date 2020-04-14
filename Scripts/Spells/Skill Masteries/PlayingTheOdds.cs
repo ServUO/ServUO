@@ -1,8 +1,5 @@
-using System;
-using Server;
-using Server.Mobiles;
 using Server.Items;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 
 namespace Server.Spells.SkillMasteries
@@ -123,7 +120,7 @@ namespace Server.Spells.SkillMasteries
         {
             if (PartyList != null)
             {
-                foreach(var m in PartyList)
+                foreach (var m in PartyList)
                 {
                     RemovePartyEffects(m);
                 }
@@ -177,7 +174,7 @@ namespace Server.Spells.SkillMasteries
                     {
                         return weapon.DefMaxRange / 2;
                     }
-                       
+
                 }
             }
 

@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Server.Targeting;
 using Server.Spells.Fourth;
+using Server.Targeting;
+using System.Linq;
 
 namespace Server.Spells.Sixth
 {

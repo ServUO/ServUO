@@ -1,10 +1,10 @@
-using System;
+using Server.Engines.Quests;
 using Server.Mobiles;
 using Server.Multis;
+using Server.Network;
 using Server.Spells;
 using Server.Targeting;
-using Server.Network;
-using Server.Engines.Quests;
+using System;
 
 namespace Server.Items
 {
@@ -114,7 +114,7 @@ namespace Server.Items
             {
                 from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154274); // *You aren't quite sure what to do with this. If you spoke to the Salvage Master at the Sons of the Sea in Trinsic you might have a better understanding of its use...*
             }
-            
+
         }
 
         public void OnTarget(Mobile from, object obj)
@@ -323,7 +323,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    Effects.SendLocationEffect(p, this.Map, 0x352D, 16, 4);                    
+                    Effects.SendLocationEffect(p, this.Map, 0x352D, 16, 4);
                 }
 
                 if (Utility.RandomBool())

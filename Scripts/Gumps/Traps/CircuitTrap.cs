@@ -1,8 +1,7 @@
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Server.Mobiles;
 
 namespace Server.Gumps
 {
@@ -101,7 +100,7 @@ namespace Server.Gumps
 
                 AddImage(x, y, i == count - 1 ? 0x9A8 : Progress.Contains(i) ? 0x868 : 0x25F8);
 
-                if (line + 1  < sq)
+                if (line + 1 < sq)
                 {
                     AddImage(x + 10, y + 27, 0x13F9);
                 }

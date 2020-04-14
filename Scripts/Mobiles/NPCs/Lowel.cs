@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class ComfortableSeatingQuest : BaseQuest
-    { 
+    {
         public ComfortableSeatingQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(BambooChair), "straw chair", 1, 0xB5B));
-						
+
             this.AddReward(new BaseReward(typeof(CarpentersSatchel), 1074282)); // Craftsman's Satchel
         }
 
@@ -76,7 +76,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Lowel()
             : base("Lowel", "the carpenter")
-        { 
+        {
         }
 
         public Lowel(Serial serial)
@@ -85,10 +85,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(ComfortableSeatingQuest)
                 };
@@ -97,19 +97,19 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.CantWalk = true;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x83F6;
             this.HairItemID = 0x203C;
-            this.HairHue = 0x6B1;			
+            this.HairHue = 0x6B1;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());		
+            this.AddItem(new Backpack());
             this.AddItem(new Boots(0x543));
             this.AddItem(new ShortPants(0x758));
             this.AddItem(new FancyShirt(0x53A));
@@ -138,7 +138,7 @@ namespace Server.Engines.Quests
             : base()
         {
             this.Hue = BaseReward.SatchelHue();
-			
+
             this.AddItem(new Board(10));
             this.AddItem(new DovetailSaw());
         }

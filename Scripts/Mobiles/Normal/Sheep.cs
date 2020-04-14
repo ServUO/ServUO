@@ -1,7 +1,7 @@
-using System;
+using Server.Engines.Quests;
 using Server.Items;
 using Server.Network;
-using Server.Engines.Quests;
+using System;
 
 namespace Server.Mobiles
 {
@@ -103,11 +103,11 @@ namespace Server.Mobiles
             if (from is PlayerMobile)
             {
                 PlayerMobile player = (PlayerMobile)from;
-                foreach(BaseQuest quest in player.Quests)
+                foreach (BaseQuest quest in player.Quests)
                 {
-                    if(quest is ShearingKnowledgeQuest)
+                    if (quest is ShearingKnowledgeQuest)
                     {
-                        if(!quest.Completed && 
+                        if (!quest.Completed &&
                             (from.Map == Map.Trammel || from.Map == Map.Felucca))
                         {
                             from.AddToBackpack(new BritannianWool(1));
@@ -143,7 +143,7 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {

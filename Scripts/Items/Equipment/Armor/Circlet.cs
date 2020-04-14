@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x2B6E, 0x3165)]
@@ -94,7 +92,7 @@ namespace Server.Items
                 return Race.Elf;
             }
         }
-		
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

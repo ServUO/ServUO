@@ -57,18 +57,18 @@ namespace Server.Items
             }
         }
         public static bool IsUnderInfluence(Mobile mob, MagicalFood id)
-        { 
+        {
             if (m_Table != null && m_Table[mob] != null && ((int)m_Table[mob] & (int)id) > 0)
                 return true;
-				
+
             return false;
         }
 
         public static bool CoolingDown(Mobile mob, MagicalFood id)
-        { 
+        {
             if (m_Cooldown != null && m_Cooldown[mob] != null && ((int)m_Cooldown[mob] & (int)id) > 0)
                 return true;
-				
+
             return false;
         }
 
@@ -76,41 +76,41 @@ namespace Server.Items
         {
             if (m_Table == null)
                 m_Table = new Hashtable();
-			
+
             if (m_Table[mob] == null)
                 m_Table[mob] = 0;
-				
-            m_Table[mob] = (int)m_Table[mob] | (int)id; 
-			
+
+            m_Table[mob] = (int)m_Table[mob] | (int)id;
+
             Timer.DelayCall(duration, new TimerStateCallback(EndInfluence), new object[] { mob, id, cooldown });
         }
 
         public static void EndInfluence(object obj)
-        { 
+        {
             if (obj is object[] && (((object[])obj).Length == 3))
             {
                 object[] args = (object[])obj;
-				
+
                 if (args[0] is Mobile && args[1] is MagicalFood && args[2] is TimeSpan)
                     EndInfluence((Mobile)args[0], (MagicalFood)args[1], (TimeSpan)args[2]);
             }
         }
 
         public static void EndInfluence(Mobile mob, MagicalFood id, TimeSpan cooldown)
-        { 
+        {
             m_Table[mob] = (int)m_Table[mob] & ~((int)id);
-			
+
             if (cooldown != TimeSpan.Zero)
-            { 
+            {
                 if (m_Cooldown == null)
-                    m_Cooldown = new Hashtable();					
-				
+                    m_Cooldown = new Hashtable();
+
                 if (m_Cooldown[mob] == null)
                     m_Cooldown[mob] = 0;
-					
+
                 m_Cooldown[mob] = (int)m_Cooldown[mob] | (int)id;
-				
-                Timer.DelayCall(cooldown, new TimerStateCallback(EndCooldown), new object[] { mob, id });		
+
+                Timer.DelayCall(cooldown, new TimerStateCallback(EndCooldown), new object[] { mob, id });
             }
         }
 
@@ -119,14 +119,14 @@ namespace Server.Items
             if (obj is object[] && (((object[])obj).Length == 2))
             {
                 object[] args = (object[])obj;
-				
+
                 if (args[0] is Mobile && args[1] is MagicalFood)
                     EndCooldown((Mobile)args[0], (MagicalFood)args[1]);
             }
         }
 
         public static void EndCooldown(Mobile mob, MagicalFood id)
-        { 
+        {
             m_Cooldown[mob] = (int)m_Cooldown[mob] & ~((int)id);
         }
 
@@ -137,16 +137,16 @@ namespace Server.Items
                 if (!CoolingDown(from, FoodID))
                 {
                     from.SendLocalizedMessage(EatMessage);
-					
-                    StartInfluence(from, FoodID, Duration, Cooldown);				
-                    Consume();		
-				
+
+                    StartInfluence(from, FoodID, Duration, Cooldown);
+                    Consume();
+
                     return true;
                 }
                 else
                     from.SendLocalizedMessage(1070772); // You must wait a few seconds before you can use that item.
             }
-				
+
             return false;
         }
 

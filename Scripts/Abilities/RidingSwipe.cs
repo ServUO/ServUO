@@ -1,6 +1,5 @@
-using System;
 using Server.Mobiles;
-using System.Collections.Generic;
+using System;
 
 namespace Server.Items
 {
@@ -48,7 +47,7 @@ namespace Server.Items
             {
                 BlockMountType type = BlockMountType.RidingSwipe;
                 IMount mount = defender.Mount;
-                
+
                 if (defender.Flying)
                 {
                     type = BlockMountType.RidingSwipeFlying;
@@ -60,7 +59,7 @@ namespace Server.Items
 
                 Server.Items.Dismount.DoDismount(attacker, defender, mount, 10, type);
 
-                if(mount is Mobile)
+                if (mount is Mobile)
                     AOS.Damage((Mobile)mount, attacker, amount, 100, 0, 0, 0, 0);
 
                 defender.PlaySound(0x140);

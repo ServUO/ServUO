@@ -1,12 +1,11 @@
-using System;
 using Server.Items;
 
-namespace Server.Mobiles 
-{ 
-    [CorpseName("an archmage corpse")] 
-    public class Archmage : BaseCreature 
-    { 
-        [Constructable] 
+namespace Server.Mobiles
+{
+    [CorpseName("an archmage corpse")]
+    public class Archmage : BaseCreature
+    {
+        [Constructable]
         public Archmage()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
@@ -41,14 +40,14 @@ namespace Server.Mobiles
             Fame = 14500;
             Karma = -14500;
 
-			switch (Utility.Random(16))
+            switch (Utility.Random(16))
             {
                 case 0: PackItem(new BloodOathScroll()); break;
                 case 1: PackItem(new CurseWeaponScroll()); break;
                 case 2: PackItem(new StrangleScroll()); break;
                 case 3: PackItem(new LichFormScroll()); break;
-			}
-			
+            }
+
             PackReg(23);
 
             if (Utility.RandomDouble() < 0.75)
@@ -59,14 +58,14 @@ namespace Server.Mobiles
 
         public Archmage(Serial serial)
             : base(serial)
-        { 
+        {
         }
 
-        public override bool CanRummageCorpses => true; 
-		
-        public override bool AlwaysMurderer => true; 
+        public override bool CanRummageCorpses => true;
 
-        public override int TreasureMapLevel => 2; 
+        public override bool AlwaysMurderer => true;
+
+        public override int TreasureMapLevel => 2;
 
         public override void GenerateLoot()
         {
@@ -75,16 +74,16 @@ namespace Server.Mobiles
             AddLoot(LootPack.MedScrolls, 2);
         }
 
-        public override void Serialize(GenericWriter writer) 
-        { 
-            base.Serialize(writer); 
-            writer.Write((int)0); 
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
         }
 
-        public override void Deserialize(GenericReader reader) 
-        { 
-            base.Deserialize(reader); 
-            int version = reader.ReadInt(); 
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
         }
     }
 }

@@ -1,8 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.Mobiles;
 using Server.Network;
 using Server.Targeting;
+using System.Collections.Generic;
 
 namespace Server.Commands
 {
@@ -69,7 +68,7 @@ namespace Server.Commands
             {
                 PlayerMobile pm = (PlayerMobile)e.Mobile;
                 List<Mobile> list = new List<Mobile>(pm.VisibilityList);
-				
+
                 pm.VisibilityList.Clear();
                 pm.SendMessage("Your visibility list has been cleared.");
 

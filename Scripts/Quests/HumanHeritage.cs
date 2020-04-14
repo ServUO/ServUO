@@ -1,16 +1,15 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
 
 namespace Server.Engines.Quests
 {
     public class IngenuityQuest : BaseQuest
-    { 
+    {
         public IngenuityQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(PowerCrystal), "power crystals", 10, 0x1F1C));
-						
+
             this.AddReward(new BaseReward(1074875)); // Another step closer to becoming human.
         }
 
@@ -65,9 +64,9 @@ namespace Server.Engines.Quests
             }
         }
         public override void GiveRewards()
-        { 
+        {
             base.GiveRewards();
-			
+
             this.Owner.SendLocalizedMessage(1074946, null, 0x23); // You have demonstrated your ingenuity!  Humans are jacks of all trades and know a little about a lot of things.  You are one step closer to achieving humanity.
         }
 
@@ -87,12 +86,12 @@ namespace Server.Engines.Quests
     }
 
     public class HeaveHoQuest : BaseQuest
-    { 
+    {
         public HeaveHoQuest()
             : base()
-        { 
+        {
             this.AddObjective(new DeliverObjective(typeof(CrateForSledge), "crates for Sledge", 5, typeof(Sledge), "Sledge (Buc's Den)", 3600));
-						
+
             this.AddReward(new BaseReward(1074875)); // Another step closer to becoming human.
         }
 
@@ -147,9 +146,9 @@ namespace Server.Engines.Quests
             }
         }
         public override void GiveRewards()
-        { 
+        {
             base.GiveRewards();
-			
+
             this.Owner.SendLocalizedMessage(1074948, null, 0x23); // You have demonstrated your physical strength!  Humans can carry vast loads without complaint.  You are one step closer to achieving humanity.
         }
 
@@ -169,12 +168,12 @@ namespace Server.Engines.Quests
     }
 
     public class ResponsibilityQuest : BaseQuest
-    { 
+    {
         public ResponsibilityQuest()
             : base()
-        { 
+        {
             this.AddObjective(new EscortObjective("Sheep Farm"));
-						
+
             this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
@@ -221,9 +220,9 @@ namespace Server.Engines.Quests
             }
         }
         public override void GiveRewards()
-        { 
+        {
             base.GiveRewards();
-			
+
             this.Owner.SendLocalizedMessage(1074949, null, 0x23); // You have demonstrated your compassion!  Your kind actions have been noted.
         }
 
@@ -243,13 +242,13 @@ namespace Server.Engines.Quests
     }
 
     public class AllSeasonAdventurerQuest : BaseQuest
-    { 
+    {
         public AllSeasonAdventurerQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Efreet), "efreets", 5, "Fire"));
             this.AddObjective(new SlayObjective(typeof(IceFiend), "ice fiends", 5, "Ice"));
-						
+
             this.AddReward(new BaseReward(1074875)); // Another step closer to becoming human.
         }
 
@@ -303,9 +302,9 @@ namespace Server.Engines.Quests
             }
         }
         public override void GiveRewards()
-        { 
+        {
             base.GiveRewards();
-			
+
             this.Owner.SendLocalizedMessage(1074947, null, 0x23); // You have demonstrated your toughness!  Humans are able to endure unimaginable hardships in pursuit of their goals.  You are one step closer to achieving humanity.
         }
 

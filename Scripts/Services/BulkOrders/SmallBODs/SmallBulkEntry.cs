@@ -238,7 +238,7 @@ namespace Server.Engines.BulkOrders
                                 }
                             }
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
                             Console.WriteLine(e);
                         }

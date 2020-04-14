@@ -1,7 +1,5 @@
-using System;
 using Server.Gumps;
 using Server.Mobiles;
-using Server.Network;
 
 namespace Server.Items
 {
@@ -49,14 +47,14 @@ namespace Server.Items
         }
 
         public static SkillName[] Skills =
-		{
-			SkillName.Archery,
-			SkillName.Fencing,
-			SkillName.Macing,
-			SkillName.Swords,
-			SkillName.Throwing,
-			SkillName.Wrestling
-		};
+        {
+            SkillName.Archery,
+            SkillName.Fencing,
+            SkillName.Macing,
+            SkillName.Swords,
+            SkillName.Throwing,
+            SkillName.Wrestling
+        };
 
         public SterlingSilverRing(Serial serial)
             : base(serial)

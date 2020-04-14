@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class SongWovenMantle : LeafArms
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public SongWovenMantle()
         {

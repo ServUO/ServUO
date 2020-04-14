@@ -69,7 +69,7 @@ namespace Server.Items
                 if (this.m_PlayerName == null)
                     return base.DefaultName;
 
-                switch ( this.m_HeadType )
+                switch (this.m_HeadType)
                 {
                     default:
                         return String.Format("the head of {0}", this.m_PlayerName);
@@ -98,7 +98,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     this.m_PlayerName = reader.ReadString();

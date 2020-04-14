@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -60,7 +59,7 @@ namespace Server.Mobiles
                 this.AddItem(this.ApplyHue(new PlateGorget(), 0x47E));
             }
 
-            switch ( Utility.Random(this.Female ? 2 : 1) )
+            switch (Utility.Random(this.Female ? 2 : 1))
             {
                 case 0:
                     this.HairItemID = 0x203C;

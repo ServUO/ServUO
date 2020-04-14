@@ -1,8 +1,8 @@
-﻿using System;
-using Server.Network;
-using Server.Mobiles;
-using Server.Engines.Quests;
+﻿using Server.Engines.Quests;
 using Server.Gumps;
+using Server.Mobiles;
+using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -49,7 +49,7 @@ namespace Server.Items
         public override bool DropToItem(Mobile from, Item target, Point3D p)
         {
             if (from.Backpack == target)
-            {                
+            {
                 base.DropToItem(from, target, p);
                 return true;
             }
@@ -75,7 +75,7 @@ namespace Server.Items
                 MadScientistQuest.BarkIngredient(from);
             }
             else
-            { 
+            {
                 if (!from.HasGump(typeof(BeginQuestGump)))
                 {
                     from.SendGump(new BeginQuestGump(this));
@@ -106,7 +106,7 @@ namespace Server.Items
                     Effects.SendLocationEffect(loc, from.Map, 0x1A9F, 10, 16, 0x481, 4);
                     Effects.SendLocationEffect(loc, from.Map, 0x1A8, 25, 16, 0x47E, 4);
                 }
-                    
+
                 from.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1112987, from.NetState); // The training clockwork fails and the creature vanishes.
 
                 Timer.DelayCall(TimeSpan.FromSeconds(1.0), new TimerCallback(

@@ -1,6 +1,5 @@
-using System;
-using Server.Engines.Harvest;
 using Server.Engines.Craft;
+using Server.Engines.Harvest;
 
 namespace Server.Items
 {
@@ -62,7 +61,7 @@ namespace Server.Items
                 return 3.50f;
             }
         }
-      
+
         public override int InitMinHits
         {
             get

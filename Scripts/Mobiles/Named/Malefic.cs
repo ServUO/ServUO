@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -40,7 +39,7 @@ namespace Server.Mobiles
 
             Fame = 21000;
             Karma = -21000;
-            
+
             Tamable = false;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
@@ -55,7 +54,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-		public override bool CanBeParagon { get { return false; } }
+        public override bool CanBeParagon { get { return false; } }
         public override bool GivesMLMinorArtifact
         {
             get

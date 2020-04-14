@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -52,7 +51,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-		
+
         public override bool IgnoreYoungProtection { get { return true; } }
         public override bool Unprovokable { get { return true; } }
         public override bool AreaPeaceImmune { get { return true; } }

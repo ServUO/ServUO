@@ -1,4 +1,3 @@
-using Server;
 using System;
 
 namespace Server.Items
@@ -13,7 +12,7 @@ namespace Server.Items
 
         public override double DefaultWeight { get { return 10.0; } }
 
-        public BaseHighseasFish(int itemID) : base(itemID) 
+        public BaseHighseasFish(int itemID) : base(itemID)
         {
             Stackable = true;
         }
@@ -54,11 +53,11 @@ namespace Server.Items
         public static Type[] DeepWaterFish { get { return m_DeepWaterFish; } }
         private static Type[] m_DeepWaterFish = new Type[]
         {
-            typeof(Haddock),            typeof(CapeCod),      		typeof(BlackSeabass), 
-            typeof(Tarpon),         	typeof(RedSnook),          	typeof(GraySnapper),
-            typeof(Cobia),         	    typeof(MahiMahi),      		typeof(Amberjack),
-            typeof(Shad),     		    typeof(YellowfinTuna),      typeof(Bonito),
-            typeof(BlueFish),           typeof(RedGrouper),        	typeof(CaptainSnook),
+            typeof(Haddock),            typeof(CapeCod),            typeof(BlackSeabass),
+            typeof(Tarpon),             typeof(RedSnook),           typeof(GraySnapper),
+            typeof(Cobia),              typeof(MahiMahi),           typeof(Amberjack),
+            typeof(Shad),               typeof(YellowfinTuna),      typeof(Bonito),
+            typeof(BlueFish),           typeof(RedGrouper),         typeof(CaptainSnook),
             typeof(Bonefish),           typeof(RedDrum),            typeof(BlueGrouper),
         };
 
@@ -66,28 +65,28 @@ namespace Server.Items
         public static Type[] ShoreFish { get { return m_ShoreFish; } }
         private static Type[] m_ShoreFish = new Type[]
         {
-            typeof(PumpkinSeedSunfish), 	typeof(YellowPerch),        typeof(PikeFish), 
-            typeof(BrookTrout),   		    typeof(RainbowTrout),		typeof(BluegillSunfish),
-            typeof(RedbellyBream),    	    typeof(SmallmouthBass),     typeof(UncommonShiner),
-            typeof(GreenCatfish),  		    typeof(Walleye),           	typeof(KokaneeSalmon),
+            typeof(PumpkinSeedSunfish),     typeof(YellowPerch),        typeof(PikeFish),
+            typeof(BrookTrout),             typeof(RainbowTrout),       typeof(BluegillSunfish),
+            typeof(RedbellyBream),          typeof(SmallmouthBass),     typeof(UncommonShiner),
+            typeof(GreenCatfish),           typeof(Walleye),            typeof(KokaneeSalmon),
         };
 
         public static Type[] DungeonFish { get { return m_DungeonFish; } }
         private static Type[] m_DungeonFish = new Type[]
         {
-            typeof(DungeonChub),		typeof(DemonTrout),    		typeof(SnaggletoothBass), 
-            typeof(CutThroatTrout),     typeof(GrimCisco),         	typeof(DrakeFish),
-            typeof(OrcBass),       	    typeof(DarkFish),      		typeof(CragSnapper),
-            typeof(InfernalTuna),       typeof(TormentedPike),  	typeof(LurkerFish),  
+            typeof(DungeonChub),        typeof(DemonTrout),         typeof(SnaggletoothBass),
+            typeof(CutThroatTrout),     typeof(GrimCisco),          typeof(DrakeFish),
+            typeof(OrcBass),            typeof(DarkFish),           typeof(CragSnapper),
+            typeof(InfernalTuna),       typeof(TormentedPike),      typeof(LurkerFish),
         };
 
         public static Type[] LobstersAndCrabs { get { return m_LobstersAndCrabs; } }
         private static Type[] m_LobstersAndCrabs = new Type[]
         {
-            typeof(DungeonessCrab),     typeof(BlueCrab),          	typeof(KingCrab),
-            typeof(RockCrab),        	typeof(SnowCrab),          	typeof(AppleCrab),
-            typeof(SpineyLobster),   	typeof(RockLobster),       	typeof(HummerLobster),
-            typeof(FredLobster),     	typeof(CrustyLobster), 		typeof(ShovelNoseLobster),
+            typeof(DungeonessCrab),     typeof(BlueCrab),           typeof(KingCrab),
+            typeof(RockCrab),           typeof(SnowCrab),           typeof(AppleCrab),
+            typeof(SpineyLobster),      typeof(RockLobster),        typeof(HummerLobster),
+            typeof(FredLobster),        typeof(CrustyLobster),      typeof(ShovelNoseLobster),
         };
 
         public static Type[] Lobsters { get { return m_Lobsters; } }

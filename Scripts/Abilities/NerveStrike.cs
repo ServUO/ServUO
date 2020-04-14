@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
@@ -48,7 +48,7 @@ namespace Server.Items
                 doEffects = true;
             }
 
-            if(attacker is BaseCreature)
+            if (attacker is BaseCreature)
                 PetTrainingHelper.OnWeaponAbilityUsed((BaseCreature)attacker, SkillName.Bushido);
 
             if (!immune)
