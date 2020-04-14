@@ -1,22 +1,21 @@
+using Server.Commands;
 using System;
 using System.IO;
-
-using Server.Commands;
 
 namespace Server.Misc
 {
     public static class AutoSave
     {
-		private static readonly string[] m_Backups = new string[]
+        private static readonly string[] m_Backups = new string[]
         {
             "Third Backup",
             "Second Backup",
             "Most Recent"
         };
 
-		private static readonly TimeSpan m_Delay;
+        private static readonly TimeSpan m_Delay;
         private static readonly TimeSpan m_Warning;
-		
+
         private static readonly Timer m_Timer;
 
         public static bool SavesEnabled { get; set; }
@@ -116,7 +115,7 @@ namespace Server.Misc
 
             if (Directory.Exists(tempRoot))
                 Directory.Delete(tempRoot, true);
-            
+
             string[] existing = Directory.GetDirectories(root);
 
             bool anySuccess = existing.Length == 0;

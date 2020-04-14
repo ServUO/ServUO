@@ -1,7 +1,7 @@
+using Server.Network;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Server.Network;
 
 namespace Server.Commands.Generic
 {

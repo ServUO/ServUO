@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Gumps;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Multis
 {
@@ -75,7 +75,7 @@ namespace Server.Multis
             list.Add(1061638); // A House Sign
         }
 
-        public override bool ForceShowProperties => true; 
+        public override bool ForceShowProperties => true;
 
         private bool m_GettingProperties;
 
@@ -267,7 +267,7 @@ namespace Server.Multis
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {

@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Multis
 {
@@ -100,7 +100,7 @@ namespace Server.Multis
                     SetDecayTime();
                 }
             }
-            else if(TimeOfDecay < DateTime.UtcNow)
+            else if (TimeOfDecay < DateTime.UtcNow)
             {
                 Delete();
             }
@@ -143,7 +143,7 @@ namespace Server.Multis
             if (Map == null)
                 return;
 
-            if(!m_Mobiles.Contains(m))
+            if (!m_Mobiles.Contains(m))
                 m_Mobiles.Add(m);
 
             int zavg = Map.GetAverageZ(X + xOffset, Y + yOffset);
@@ -253,17 +253,17 @@ namespace Server.Multis
             _Camps.Remove(this);
         }
 
-		protected virtual void AddCampChests()
-		{
-			Treasure1 = new TreasureLevel1();
+        protected virtual void AddCampChests()
+        {
+            Treasure1 = new TreasureLevel1();
             ((TreasureLevel1)Treasure1).Locked = false;
             AddItem(Treasure1, 2, 2, 0);
 
             Treasure2 = new TreasureLevel3();
             AddItem(Treasure2, -2, -2, 0);
-		}
+        }
 
-		public override void Serialize(GenericWriter writer)
+        public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
@@ -284,7 +284,7 @@ namespace Server.Multis
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 2:
                     {

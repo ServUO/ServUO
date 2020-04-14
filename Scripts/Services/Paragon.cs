@@ -5,8 +5,8 @@ namespace Server.Mobiles
 {
     public class Paragon
     {
-        public static double ChestChance = .10;// Chance that a paragon will carry a paragon chest
-        public static double ChocolateIngredientChance = .20;// Chance that a paragon will drop a chocolatiering ingredient
+        public static double ChestChance = 0.10;// Chance that a paragon will carry a paragon chest
+        public static double ChocolateIngredientChance = 0.20;// Chance that a paragon will drop a chocolatiering ingredient
         public static Map[] Maps = new Map[]                   // Maps that paragons will spawn on
         {
             Map.Ilshenar
@@ -38,6 +38,7 @@ namespace Server.Mobiles
         public static double FameBuff = 1.40;
         public static double KarmaBuff = 1.40;
         public static int DamageBuff = 5;
+		
         public static void Convert(BaseCreature bc)
         {
             if (bc.IsParagon ||
@@ -138,7 +139,7 @@ namespace Server.Mobiles
             if (Array.IndexOf(Maps, m) == -1)
                 return false;
 
-            if (bc is BaseChampion || bc is Harrower || bc is BaseVendor || bc is BaseEscortable || bc is Clone || bc.IsParagon)
+            if (bc is BaseChampion || bc is Harrower || bc is BaseVendor || bc is Clone || bc.IsParagon)
                 return false;
 
             int fame = bc.Fame;

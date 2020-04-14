@@ -17,13 +17,7 @@ namespace Server.Regions
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool SmartChecking
-        {
-            get
-            {
-                return this.m_SmartChecking;
-            }
-        }
+        public bool SmartChecking => this.m_SmartChecking;
 
         public override bool AllowHousing(Mobile from, Point3D p)
         {

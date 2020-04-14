@@ -1,11 +1,11 @@
+using Server.Guilds;
+using Server.Network;
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Threading;
-using System.Diagnostics;
-using Server.Network;
-using Server.Guilds;
 
 namespace Server
 {
@@ -136,9 +136,9 @@ namespace Server
         {
             public BaseGuild Guild { get; }
 
-            public Serial Serial => Guild == null ? 0 : Guild.Id; 
+            public Serial Serial => Guild == null ? 0 : Guild.Id;
 
-            public int TypeID => 0; 
+            public int TypeID => 0;
 
             public long Position { get; }
 
@@ -156,7 +156,7 @@ namespace Server
         {
             public Item Item { get; }
 
-            public Serial Serial => Item == null ? Serial.MinusOne : Item.Serial; 
+            public Serial Serial => Item == null ? Serial.MinusOne : Item.Serial;
 
             public int TypeID { get; }
 
@@ -180,7 +180,7 @@ namespace Server
         {
             public Mobile Mobile { get; }
 
-            public Serial Serial => Mobile == null ? Serial.MinusOne : Mobile.Serial; 
+            public Serial Serial => Mobile == null ? Serial.MinusOne : Mobile.Serial;
 
             public int TypeID { get; }
 

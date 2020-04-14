@@ -1,10 +1,9 @@
+using Server.Engines.Quests.Haven;
+using Server.Items;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Server.Engines.Quests.Haven;
-using Server.Engines.Quests.Necro;
-using Server.Items;
 
 namespace Server.Commands
 {
@@ -24,7 +23,7 @@ namespace Server.Commands
 
             m_Mobile.SendMessage("Deleting world decoration, please wait.");
 
-			// We still do all this for backward-compatibility
+            // We still do all this for backward-compatibility
             Generate("Data/Decoration/Britannia", Map.Trammel, Map.Felucca);
             Generate("Data/Decoration/Trammel", Map.Trammel);
             Generate("Data/Decoration/Felucca", Map.Felucca);
@@ -32,7 +31,7 @@ namespace Server.Commands
             Generate("Data/Decoration/Malas", Map.Malas);
             Generate("Data/Decoration/Tokuno", Map.Tokuno);
 
-			WeakEntityCollection.Delete("deco");
+            WeakEntityCollection.Delete("deco");
 
             m_Mobile.SendMessage("Deleting complete.");
         }
@@ -515,7 +514,7 @@ namespace Server.Commands
                         unlit = true;
                     else if (!unprotected && this.m_Params[i] == "Unprotected")
                         unprotected = true;
-					
+
                     if (unlit && unprotected)
                         break;
                 }

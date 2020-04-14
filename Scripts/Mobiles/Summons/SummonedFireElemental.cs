@@ -10,35 +10,34 @@ namespace Server.Mobiles
         public SummonedFireElemental()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a fire elemental";
-            this.Body = 15;
-            this.BaseSoundID = 838;
+            Name = "a fire elemental";
+            Body = 15;
+            BaseSoundID = 838;
 
-            this.SetStr(200);
-            this.SetDex(200);
-            this.SetInt(100);
+            SetStr(200);
+            SetDex(200);
+            SetInt(100);
 
-            this.SetDamage(9, 14);
+            SetDamage(9, 14);
 
-            this.SetDamageType(ResistanceType.Physical, 0);
-            this.SetDamageType(ResistanceType.Fire, 100);
+            SetDamageType(ResistanceType.Physical, 0);
+            SetDamageType(ResistanceType.Fire, 100);
 
-            this.SetResistance(ResistanceType.Physical, 50, 60);
-            this.SetResistance(ResistanceType.Fire, 70, 80);
-            this.SetResistance(ResistanceType.Cold, 0, 10);
-            this.SetResistance(ResistanceType.Poison, 50, 60);
-            this.SetResistance(ResistanceType.Energy, 50, 60);
+            SetResistance(ResistanceType.Physical, 50, 60);
+            SetResistance(ResistanceType.Fire, 70, 80);
+            SetResistance(ResistanceType.Cold, 0, 10);
+            SetResistance(ResistanceType.Poison, 50, 60);
+            SetResistance(ResistanceType.Energy, 50, 60);
 
-            this.SetSkill(SkillName.EvalInt, 90.0);
-            this.SetSkill(SkillName.Magery, 90.0);
-            this.SetSkill(SkillName.MagicResist, 85.0);
-            this.SetSkill(SkillName.Tactics, 100.0);
-            this.SetSkill(SkillName.Wrestling, 92.0);
+            SetSkill(SkillName.EvalInt, 90.0);
+            SetSkill(SkillName.Magery, 90.0);
+            SetSkill(SkillName.MagicResist, 85.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.Wrestling, 92.0);
 
-            this.VirtualArmor = 40;
-            this.ControlSlots = 4;
+            ControlSlots = 4;
 
-            this.AddItem(new LightSource());
+            AddItem(new LightSource());
         }
 
         public SummonedFireElemental(Serial serial)
@@ -46,20 +45,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override double DispelDifficulty
-        {
-            get
-            {
-                return 117.5;
-            }
-        }
-        public override double DispelFocus
-        {
-            get
-            {
-                return 45.0;
-            }
-        }
+        public override double DispelDifficulty => 117.5;
+
+        public override double DispelFocus => 45.0;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

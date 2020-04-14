@@ -34,7 +34,6 @@ namespace Server.Mobiles
 
             Fame = 18000;
             Karma = -18000;
-            VirtualArmor = 65;
 
             PackItem(new PowerCrystal());
             PackItem(new ArcaneGem());
@@ -74,55 +73,19 @@ namespace Server.Mobiles
         {
         }
 
-        public bool FieldActive
-        {
-            get
-            {
-                return m_FieldActive;
-            }
-        }
-        public bool CanUseField
-        {
-            get
-            {
-                return Hits >= HitsMax * 9 / 10;
-            }
-        }// TODO: an OSI bug prevents to verify this
-        public override bool IsScaredOfScaryThings
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsScaryToPets
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AutoDispel
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
+        public bool FieldActive => m_FieldActive;
+
+        public bool CanUseField => Hits >= HitsMax * 9 / 10; // TODO: an OSI bug prevents to verify this
+		
+        public override bool IsScaredOfScaryThings => false;
+
+        public override bool IsScaryToPets => true;
+
+        public override bool AutoDispel => true;
+
+        public override bool BardImmune => false;
+
+        public override Poison PoisonImmune => Poison.Lethal;
 
         public override int GetIdleSound()
         {
@@ -240,9 +203,6 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
 
             m_FieldActive = CanUseField;
-
-            if (Name == "Exodus Minion Lord")
-                Name = "exodus minion lord";
         }
     }
 }

@@ -21,20 +21,11 @@ namespace Server.SkillHandlers
             /* Plate	*/ { 5, 5, 10, 10, 15, 25, 0 },
             /* Dragon	*/ { 0, 5, 10, 10, 15, 25, 0 }
         };
-        public static double HidingRequirement
-        {
-            get
-            {
-                return 30;
-            }
-        }
-        public static int[,] ArmorTable
-        {
-            get
-            {
-                return m_ArmorTable;
-            }
-        }
+		
+        public static double HidingRequirement => 30;
+
+        public static int[,] ArmorTable => m_ArmorTable;
+
         public static void Initialize()
         {
             SkillInfo.Table[(int)SkillName.Stealth].Callback = new SkillUseCallback(OnUse);

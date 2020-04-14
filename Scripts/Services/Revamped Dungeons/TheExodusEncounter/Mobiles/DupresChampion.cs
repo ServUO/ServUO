@@ -3,14 +3,14 @@ using Server.Items;
 
 namespace Server.Mobiles 
 {
-	[CorpseName( "a human corpse" )]
+	[CorpseName("a human corpse")]
 	public class DupresChampion : BaseCreature
 	{			
 		[Constructable]
 		public DupresChampion() : base( AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4 )
 		{
 			Name = NameList.RandomName("male");
-            Title = "The Champion";
+            Title = "the Champion";
             Body = 0x190;
 			Hue = Utility.RandomSkinHue();
             Female = false;
@@ -35,8 +35,6 @@ namespace Server.Mobiles
 			SetSkill( SkillName.MagicResist, 100.0, 120.0 );
 			SetSkill( SkillName.Tactics, 195.0, 220.0 );
 			SetSkill( SkillName.Wrestling, 195.0, 220.0 );
-
-			VirtualArmor = 70;
 
             Item cutlass = new Cutlass();
             cutlass.LootType = LootType.Blessed;
@@ -85,7 +83,7 @@ namespace Server.Mobiles
             cloak.LootType = LootType.Blessed;
             SetWearable(cloak);
 
-            PackGold( 400, 600 );            
+            PackGold(400, 600);            
 		}
 
         public override void OnKilledBy(Mobile m)
@@ -120,9 +118,11 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool CanBeParagon { get { return false; } }
-        public override Poison PoisonImmune{ get{ return Poison.Lethal; } }
-		public override int TreasureMapLevel{ get{ return 5; } }
+        public override bool CanBeParagon => false; 
+		
+        public override Poison PoisonImmune => Poison.Lethal; 
+		
+		public override int TreasureMapLevel => 5; 
 
         public DupresChampion(Serial serial)
             : base(serial)

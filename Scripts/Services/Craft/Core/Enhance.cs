@@ -99,10 +99,8 @@ namespace Server.Engines.Craft
                 return EnhanceResult.BadItem;
             }
 
-            #region Mondain's Legacy
             if (craftItem.ForceNonExceptional)
                 return EnhanceResult.BadItem;
-            #endregion
 
             bool allRequiredSkills = false;
             if (craftItem.GetSuccessChance(from, resType, craftSystem, false, ref allRequiredSkills) <= 0.0)

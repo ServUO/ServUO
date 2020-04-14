@@ -1,12 +1,10 @@
-using Server;
-using System;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Network;
+using Server.Prompts;
+using Server.Spells.Chivalry;
 using Server.Spells.Fourth;
 using Server.Spells.Seventh;
-using Server.Spells.Chivalry;
-using Server.Prompts;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Server.Gumps

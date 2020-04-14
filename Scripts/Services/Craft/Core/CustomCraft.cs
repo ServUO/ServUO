@@ -13,56 +13,26 @@ namespace Server.Engines.Craft
         private readonly int m_Quality;
         public CustomCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, ITool tool, int quality)
         {
-            this.m_From = from;
-            this.m_CraftItem = craftItem;
-            this.m_CraftSystem = craftSystem;
-            this.m_TypeRes = typeRes;
-            this.m_Tool = tool;
-            this.m_Quality = quality;
+            m_From = from;
+            m_CraftItem = craftItem;
+            m_CraftSystem = craftSystem;
+            m_TypeRes = typeRes;
+            m_Tool = tool;
+            m_Quality = quality;
         }
 
-        public Mobile From
-        {
-            get
-            {
-                return this.m_From;
-            }
-        }
-        public CraftItem CraftItem
-        {
-            get
-            {
-                return this.m_CraftItem;
-            }
-        }
-        public CraftSystem CraftSystem
-        {
-            get
-            {
-                return this.m_CraftSystem;
-            }
-        }
-        public Type TypeRes
-        {
-            get
-            {
-                return this.m_TypeRes;
-            }
-        }
-        public ITool Tool
-        {
-            get
-            {
-                return this.m_Tool;
-            }
-        }
-        public int Quality
-        {
-            get
-            {
-                return this.m_Quality;
-            }
-        }
+        public Mobile From => m_From;
+
+        public CraftItem CraftItem => m_CraftItem;
+
+        public CraftSystem CraftSystem => m_CraftSystem;
+
+        public Type TypeRes => m_TypeRes;
+
+        public ITool Tool => m_Tool;
+
+        public int Quality => m_Quality;
+
         public abstract void EndCraftAction();
 
         public abstract Item CompleteCraft(out int message);

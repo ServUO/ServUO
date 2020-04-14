@@ -46,70 +46,21 @@ namespace Server.Items
         {
         }
 
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.Dismount;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.Disarm;
-            }
-        }
-        public override int StrengthReq
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int MinDamage
-        {
-            get
-            {
-                return 9;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override float Speed
-        {
-            get
-            {
-                return 2.75f;
-            }
-        }
-       
-        public override int InitMinHits
-        {
-            get
-            {
-                return 31;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 110;
-            }
-        }
-        public virtual TimeSpan GetUseDelay
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(4.0);
-            }
-        }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.Dismount;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.Disarm;
+
+        public override int StrengthReq => 5;
+
+        public override int MinDamage => 9;
+        public override int MaxDamage => 11;
+
+        public override float Speed => 2.75f;
+
+        public override int InitMinHits => 31;
+        public override int InitMaxHits => 110;
+
+        public virtual TimeSpan GetUseDelay => TimeSpan.FromSeconds(4.0);
+
         [CommandProperty(AccessLevel.GameMaster)]
         public WandEffect Effect
         {
@@ -181,7 +132,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
 
             writer.Write((int)this.m_WandEffect);
@@ -191,19 +141,10 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
-            switch ( version )
-            {
-                case 0:
-                    {
-                        this.m_WandEffect = (WandEffect)reader.ReadInt();
-                        this.m_Charges = (int)reader.ReadInt();
-
-                        break;
-                    }
-            }
+            this.m_WandEffect = (WandEffect)reader.ReadInt();
+            this.m_Charges = (int)reader.ReadInt();
         }
 
         public override void GetProperties(ObjectPropertyList list)

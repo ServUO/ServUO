@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Mobiles 
 { 
-    [CorpseName("Brigand Cannibal corpse")] 
+    [CorpseName("brigand cannibal corpse")] 
     public class BrigandCannibal : Brigand
     { 
         [Constructable] 
@@ -36,8 +36,6 @@ namespace Server.Mobiles
 
             Fame = 14500;
             Karma = -14500;
-
-            VirtualArmor = 16;
         }
 
         public BrigandCannibal(Serial serial)

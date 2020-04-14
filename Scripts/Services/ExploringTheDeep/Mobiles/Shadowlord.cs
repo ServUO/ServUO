@@ -17,10 +17,10 @@ namespace Server.Mobiles
     public class Shadowlord : BaseCreature
     {
         private static readonly ArrayList m_Instances = new ArrayList();
-        public static ArrayList Instances { get { return m_Instances; } }
+        public static ArrayList Instances => m_Instances; 
 
         private ShadowlordType m_Type;
-        public virtual Type[] ArtifactDrops { get { return _ArtifactTypes; } }
+        public virtual Type[] ArtifactDrops => _ArtifactTypes; 
 
         private Type[] _ArtifactTypes = new Type[]
         {
@@ -54,6 +54,7 @@ namespace Server.Mobiles
 
             Body = 146;
             BaseSoundID = 0x4B0;
+			Hue = 902;
 
             SetStr(981, 1078);
             SetDex(1003, 1114);
@@ -89,8 +90,6 @@ namespace Server.Mobiles
             Fame = 24000;
             Karma = -24000;
 
-            VirtualArmor = 20;
-            Hue = 902;
             Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
             SelfDeleteTimer.Start();
 
@@ -117,7 +116,7 @@ namespace Server.Mobiles
             base.OnAfterDelete();
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool AlwaysMurderer => true; 
 
         public override int GetAngerSound() { return 1550; }
         public override int GetHurtSound() { return 1552; }
@@ -155,7 +154,7 @@ namespace Server.Mobiles
             return creature;
         }
 
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override Poison PoisonImmune => Poison.Lethal; 
 
         public override void GenerateLoot()
         {

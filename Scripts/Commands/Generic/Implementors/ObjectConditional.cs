@@ -177,7 +177,7 @@ namespace Server.Commands.Generic
 
                 ICondition condition = null;
 
-                switch ( oper )
+                switch (oper)
                 {
                     #region Equality
                     case "=":
@@ -188,9 +188,9 @@ namespace Server.Commands.Generic
                     case "!=":
                         condition = new ComparisonCondition(prop, inverse, ComparisonOperator.NotEqual, val);
                         break;
-                        #endregion
+                    #endregion
 
-                        #region Relational
+                    #region Relational
                     case ">":
                         condition = new ComparisonCondition(prop, inverse, ComparisonOperator.Greater, val);
                         break;
@@ -203,9 +203,9 @@ namespace Server.Commands.Generic
                     case "<=":
                         condition = new ComparisonCondition(prop, inverse, ComparisonOperator.LesserEqual, val);
                         break;
-                        #endregion
+                    #endregion
 
-                        #region Strings
+                    #region Strings
                     case "==~":
                     case "~==":
                     case "=~":
@@ -239,7 +239,7 @@ namespace Server.Commands.Generic
                     case "~contains":
                         condition = new StringCondition(prop, inverse, StringOperator.Contains, val, true);
                         break;
-                #endregion
+                        #endregion
                 }
 
                 if (condition == null)

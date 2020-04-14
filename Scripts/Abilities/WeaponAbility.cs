@@ -1,47 +1,23 @@
-using System;
-using System.Collections;
-
 using Server.Network;
 using Server.Spells;
 using Server.Spells.SkillMasteries;
+using System;
+using System.Collections;
 
 namespace Server.Items
 {
     public abstract class WeaponAbility
     {
-        public virtual int BaseMana
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int BaseMana => 0;
 
-        public virtual int AccuracyBonus
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual double DamageScalar
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public virtual int AccuracyBonus => 0;
 
-		/// <summary>
-		///		Return false to make this special ability consume no ammo from ranged weapons
-		/// </summary>
-		public virtual bool ConsumeAmmo
-		{
-			get
-			{
-				return true;
-			}
-		}
+        public virtual double DamageScalar => 1.0;
+
+        /// <summary>
+        ///		Return false to make this special ability consume no ammo from ranged weapons
+        /// </summary>
+        public virtual bool ConsumeAmmo => true;
 
         public virtual void OnHit(Mobile attacker, Mobile defender, int damage)
         {
@@ -184,11 +160,11 @@ namespace Server.Items
             switch (skill)
             {
                 default: return 1157351;
-                    // You need ~1_SKILL_REQUIREMENT~ weapon and tactics skill to perform that attack                                                             
-                    // You need ~1_SKILL_REQUIREMENT~ tactics skill to perform that attack
+                // You need ~1_SKILL_REQUIREMENT~ weapon and tactics skill to perform that attack                                                             
+                // You need ~1_SKILL_REQUIREMENT~ tactics skill to perform that attack
                 case SkillName.Bushido:
                 case SkillName.Ninjitsu: return 1063347;
-                    // You need ~1_SKILL_REQUIREMENT~ Bushido or Ninjitsu skill to perform that attack!
+                // You need ~1_SKILL_REQUIREMENT~ Bushido or Ninjitsu skill to perform that attack!
                 case SkillName.Poisoning: return 1060184;
                     // You lack the required poisoning to perform that attack
             }
@@ -309,23 +285,11 @@ namespace Server.Items
             new ColdWind()
         };
 
-        public static WeaponAbility[] Abilities
-        {
-            get
-            {
-                return m_Abilities;
-            }
-        }
+        public static WeaponAbility[] Abilities => m_Abilities;
 
         private static readonly Hashtable m_Table = new Hashtable();
 
-        public static Hashtable Table
-        {
-            get
-            {
-                return m_Table;
-            }
-        }
+        public static Hashtable Table => m_Table;
 
         public static readonly WeaponAbility ArmorIgnore = m_Abilities[1];
         public static readonly WeaponAbility BleedAttack = m_Abilities[2];
@@ -378,13 +342,7 @@ namespace Server.Items
             return (weapon != null && (weapon.PrimaryAbility == a || weapon.SecondaryAbility == a));
         }
 
-        public virtual bool ValidatesDuringHit
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool ValidatesDuringHit => true;
 
         public static WeaponAbility GetCurrentAbility(Mobile m)
         {
@@ -511,13 +469,7 @@ namespace Server.Items
         {
             private readonly Timer m_Timer;
 
-            public Timer Timer
-            {
-                get
-                {
-                    return m_Timer;
-                }
-            }
+            public Timer Timer => m_Timer;
 
             public WeaponAbilityContext(Timer timer)
             {

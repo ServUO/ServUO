@@ -1,10 +1,10 @@
+using Server.Gumps;
+using Server.Network;
+using Server.Targets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Server.Gumps;
-using Server.Network;
-using Server.Targets;
 
 namespace Server.Commands.Generic
 {
@@ -194,7 +194,7 @@ namespace Server.Commands.Generic
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 1:
                     {
@@ -306,7 +306,7 @@ namespace Server.Commands.Generic
                 return;
             }
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 0:
                 case 1:
@@ -463,7 +463,7 @@ namespace Server.Commands.Generic
                 return;
             }
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 0:
                 case 1:

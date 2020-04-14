@@ -1,16 +1,14 @@
-using System;
+using Server.Commands;
+using Server.Engines.Quests;
+using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
+using Server.Multis;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using Server.Engines.Quests;
-using System.Xml;
-using System.Data;
-using Server.Commands;
-using Server.Gumps;
-using Server.Multis;
 
 /* This script has a purpose, and please adhere to the advice before adding versions.
  * This is used for modifying, removing, adding existing spawners, etc for existing shards,
@@ -28,18 +26,18 @@ namespace Server
         [Flags]
         public enum SpawnerVersion
         {
-            None            = 0x00000000,
-            Initial         = 0x00000001,
-            Sphinx          = 0x00000002,
+            None = 0x00000000,
+            Initial = 0x00000001,
+            Sphinx = 0x00000002,
             IceHoundRemoval = 0x00000004,
-            PaladinAndKrakin= 0x00000008,
+            PaladinAndKrakin = 0x00000008,
             TrinsicPaladins = 0x00000010,
-            HonestyItems    = 0x00000020,
-            TramKhaldun     = 0x00000040,
-            FixAddonDeco    = 0x00000080,
-            LifeStealers    = 0x00000100,
-            LootNerf2       = 0x00000200,
-            RemoveUnused    = 0x00000400
+            HonestyItems = 0x00000020,
+            TramKhaldun = 0x00000040,
+            FixAddonDeco = 0x00000080,
+            LifeStealers = 0x00000100,
+            LootNerf2 = 0x00000200,
+            RemoveUnused = 0x00000400
         }
 
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
@@ -226,7 +224,7 @@ namespace Server
                     }
                     goto case 10;
                 case 10:
-                    if((VersionFlag & SpawnerVersion.Initial) == 0)
+                    if ((VersionFlag & SpawnerVersion.Initial) == 0)
                         VersionFlag |= SpawnerVersion.Initial;
                     break;
                 case 9:
@@ -744,7 +742,7 @@ namespace Server
             {
                 Spawner spawner = (Spawner)spwner;
 
-                for(int i = 0; i < spawner.SpawnObjects.Count; i++)
+                for (int i = 0; i < spawner.SpawnObjects.Count; i++)
                 {
                     var so = spawner.SpawnObjects[i];
 
@@ -905,8 +903,8 @@ namespace Server
 
             if (action != null)
             {
-                List<ISpawner> list = World.Items.Values.OfType<ISpawner>().Where(s => 
-                    nameCheck == null ||  (s is Item && ((Item)s).Name != null && ((Item)s).Name.ToLower().IndexOf(nameCheck.ToLower()) >= 0)).ToList();
+                List<ISpawner> list = World.Items.Values.OfType<ISpawner>().Where(s =>
+                    nameCheck == null || (s is Item && ((Item)s).Name != null && ((Item)s).Name.ToLower().IndexOf(nameCheck.ToLower()) >= 0)).ToList();
 
                 foreach (ISpawner spawner in list)
                 {
@@ -917,7 +915,7 @@ namespace Server
                 ColUtility.Free(list);
             }
 
-            ToConsole(String.Format("Spawner Action: Performed action to {0} spawners{1}", 
+            ToConsole(String.Format("Spawner Action: Performed action to {0} spawners{1}",
                 count.ToString(), lineCheck != null ? " containing " + lineCheck + "." : typeCheck != null ? " containing " + typeCheck.Name + "." : "."));
         }
 
@@ -1046,7 +1044,7 @@ namespace Server
 
             foreach (Item item in eable)
             {
-                if(item is XmlSpawner || item is Spawner)
+                if (item is XmlSpawner || item is Spawner)
                 {
                     list.Add(item);
                 }
@@ -1172,7 +1170,7 @@ namespace Server
                                             loc = new Point3D(int.Parse((string)dr["CentreX"]), int.Parse((string)dr["CentreY"]), int.Parse((string)dr["CentreZ"]));
                                             spawnMap = Map.Parse((string)dr["Map"]);
                                         }
-                                        catch{}
+                                        catch { }
 
                                         if (loc != Point3D.Zero && spawnMap != null && spawnMap != Map.Internal)
                                         {

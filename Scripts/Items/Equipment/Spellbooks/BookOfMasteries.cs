@@ -14,9 +14,9 @@ namespace Server.Items
     [Flipable(0x225A, 0x225B)]
 	public class BookOfMasteries : Spellbook
 	{
-		public override SpellbookType SpellbookType{ get{ return SpellbookType.SkillMasteries; } }
-		public override int BookOffset{ get{ return 700; } }
-		public override int BookCount{ get{ return 45; } }
+		public override SpellbookType SpellbookType => SpellbookType.SkillMasteries;
+		public override int BookOffset => 700;
+		public override int BookCount => 45;
 
         private ulong _Content;
 
@@ -46,8 +46,6 @@ namespace Server.Items
 		[Constructable]
 		public BookOfMasteries( ulong content ) : base( content, 0x225A )
 		{
-			Layer = Layer.OneHanded;
-
             _Content = content;
 		}
 
@@ -124,14 +122,12 @@ namespace Server.Items
 		public override void Serialize( GenericWriter writer )
 		{
 			base.Serialize( writer );
-
 			writer.WriteEncodedInt( 1 ); // version
 		}
 
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
-
 			int version = reader.ReadEncodedInt();
 		}
 	}

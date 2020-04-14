@@ -80,7 +80,7 @@ namespace Server.Commands.Generic
                     emitter.Chain(prop);
 
                     bool couldCompare =
-                        emitter.CompareTo(1, delegate()
+                        emitter.CompareTo(1, delegate ()
                         {
                             emitter.LoadLocal(b);
                             emitter.Chain(prop);

@@ -1,10 +1,9 @@
-using System;
-using System.Text;
-using Server.Engines.CannedEvil;
+using Server.Accounting;
 using Server.Items;
 using Server.Mobiles;
+using System;
 using System.Collections.Generic;
-using Server.Accounting;
+using System.Text;
 
 namespace Server.Misc
 {
@@ -316,7 +315,7 @@ namespace Server.Misc
 
         private static int GetTableType(Skill skill)
         {
-            switch ( skill.SkillName )
+            switch (skill.SkillName)
             {
                 default:
                     return 0;

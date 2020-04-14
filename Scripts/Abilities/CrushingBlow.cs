@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     /// <summary>
@@ -11,20 +9,10 @@ namespace Server.Items
         {
         }
 
-        public override int BaseMana
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override double DamageScalar
-        {
-            get
-            {
-                return 1.5;
-            }
-        }
+        public override int BaseMana => 20;
+
+        public override double DamageScalar => 1.5;
+
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
             if (!this.Validate(attacker) || !this.CheckMana(attacker, true))

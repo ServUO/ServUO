@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Commands.Generic
 {
     public class SerialCommandImplementor : BaseCommandImplementor
@@ -45,7 +43,7 @@ namespace Server.Commands.Generic
                     }
                     else
                     {
-                        switch ( command.ObjectTypes )
+                        switch (command.ObjectTypes)
                         {
                             case ObjectTypes.Both:
                                 {

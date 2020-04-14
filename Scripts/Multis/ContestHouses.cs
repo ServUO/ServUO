@@ -1,8 +1,7 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-
 using Server.Items;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Multis
 {
@@ -18,14 +17,14 @@ namespace Server.Multis
         public ContestHouseType HouseType { get; set; }
         public List<Item> Fixtures { get; private set; }
 
-        public virtual int SignPostID => 9; 
+        public virtual int SignPostID => 9;
 
         public override Point3D BaseBanLocation
-        { 
+        {
             get
-            { 
-                return new Point3D(Components.Min.X, Components.Height - 1 - Components.Center.Y, 0); 
-            } 
+            {
+                return new Point3D(Components.Min.X, Components.Height - 1 - Components.Center.Y, 0);
+            }
         }
 
         public override Rectangle2D[] Area
@@ -247,7 +246,7 @@ namespace Server.Multis
 
             int count = reader.ReadInt();
 
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 var item = reader.ReadItem();
 
@@ -261,12 +260,12 @@ namespace Server.Multis
 
     public class TrinsicKeep : BaseContestHouse
     {
-        public static Rectangle2D[] AreaArray = new Rectangle2D[] 
-        { 
+        public static Rectangle2D[] AreaArray = new Rectangle2D[]
+        {
             new Rectangle2D(-11, -11, 23, 23), new Rectangle2D(-10, 13, 6, 1),
-            new Rectangle2D(-2, 13, 6, 1), new Rectangle2D(6, 13, 7, 1) 
+            new Rectangle2D(-2, 13, 6, 1), new Rectangle2D(6, 13, 7, 1)
         };
-        
+
         public TrinsicKeep(Mobile owner)
             : base(ContestHouseType.Keep, 0x147E, owner, 2113, 18)
         {
@@ -302,11 +301,11 @@ namespace Server.Multis
     public class GothicRoseCastle : BaseContestHouse
     {
         public static Rectangle2D[] AreaArray = new Rectangle2D[]
-        { 
+        {
             new Rectangle2D(-15, -15, 31, 31),
-            new Rectangle2D(-14, 16, 11, 1), 
+            new Rectangle2D(-14, 16, 11, 1),
             new Rectangle2D(-2, 16, 6, 1),
-            new Rectangle2D(5, 16, 11, 1) 
+            new Rectangle2D(5, 16, 11, 1)
         };
 
         public GothicRoseCastle(Mobile owner)
@@ -413,12 +412,12 @@ namespace Server.Multis
 
     public class FeudalCastle : BaseContestHouse
     {
-        public static Rectangle2D[] AreaArray = new Rectangle2D[] 
+        public static Rectangle2D[] AreaArray = new Rectangle2D[]
         {
-            new Rectangle2D(-15, -15, 31, 31), 
+            new Rectangle2D(-15, -15, 31, 31),
             new Rectangle2D(5, 16, 1, 1),
             new Rectangle2D(7, 16, 4, 1),
-            new Rectangle2D(12, 16, 1, 1) 
+            new Rectangle2D(12, 16, 1, 1)
         };
 
         public FeudalCastle(Mobile owner)
@@ -486,8 +485,8 @@ namespace Server.Multis
 
     public class TraditionalKeep : BaseContestHouse
     {
-        public static Rectangle2D[] AreaArray = new Rectangle2D[] 
-        { 
+        public static Rectangle2D[] AreaArray = new Rectangle2D[]
+        {
             new Rectangle2D(-11, -11, 23, 23),
             new Rectangle2D(-10, 13, 6, 1),
             new Rectangle2D(-2, 13, 6, 1),
@@ -580,7 +579,7 @@ namespace Server.Multis
 
     public class SandalwoodKeep : BaseContestHouse
     {
-        public override int SignPostID => 353; 
+        public override int SignPostID => 353;
 
         public SandalwoodKeep(Mobile owner)
             : base(ContestHouseType.Keep, 0x1488, owner, 2113, 18)
@@ -619,7 +618,7 @@ namespace Server.Multis
         {
             SetSign(-11, 13, 7, false);
         }
-        
+
         public CasaMoga(Serial serial)
             : base(serial)
         {
@@ -726,7 +725,7 @@ namespace Server.Multis
             new Rectangle2D(10, 16, 5, 1)
         };
 
-        public override Rectangle2D[] Area => AreaArray; 
+        public override Rectangle2D[] Area => AreaArray;
 
         public OkinawaSweetDreamCastle(Mobile owner)
             : base(ContestHouseType.Castle, 0x148D, owner, 3281, 28)
@@ -788,7 +787,7 @@ namespace Server.Multis
             new Rectangle2D(7, 16, 9, 1)
         };
 
-        public override Rectangle2D[] Area => AreaArray; 
+        public override Rectangle2D[] Area => AreaArray;
 
         public GrimswindSisters(Mobile owner)
             : base(ContestHouseType.Castle, 0x148F, owner, 3281, 28)
