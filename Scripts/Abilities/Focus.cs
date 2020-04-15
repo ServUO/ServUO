@@ -6,8 +6,8 @@ namespace Server.Items
 {
     public class Focus
     {
-        private static Dictionary<Mobile, FocusInfo> m_Table = new Dictionary<Mobile, FocusInfo>();
-        private static int DefaultDamageBonus = -40;
+        private static readonly Dictionary<Mobile, FocusInfo> m_Table = new Dictionary<Mobile, FocusInfo>();
+        private static readonly int DefaultDamageBonus = -40;
 
         public static void Initialize()
         {

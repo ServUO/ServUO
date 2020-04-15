@@ -56,7 +56,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private BindingRope m_Rope;
+            private readonly BindingRope m_Rope;
 
             public InternalTarget(BindingRope rope) : base(2, false, TargetFlags.None)
             {

@@ -18,7 +18,7 @@ namespace Server.Engines.Points
         public override double MaxPoints { get { return double.MaxValue; } }
         public override bool ShowOnLoyaltyGump { get { return false; } }
 
-        private TextDefinition m_Name = null;
+        private readonly TextDefinition m_Name = null;
 
         public static bool Enabled { get; set; }
 
@@ -914,7 +914,7 @@ namespace Server.Engines.Points
 
     public class AppraiseforCleanupTarget : Target
     {
-        private Mobile m_Mobile;
+        private readonly Mobile m_Mobile;
 
         public AppraiseforCleanupTarget(Mobile from) : base(-1, true, TargetFlags.None)
         {

@@ -14,9 +14,9 @@ namespace Server.Gumps
         private const int Yellow = 0x36;
         private const int DarkYellow = 0x2E;
         private const int Red = 0x26;
-
-        private int m_ID, m_Value;
-        private Item m_Item;
+        private readonly int m_ID;
+        private int m_Value;
+        private readonly Item m_Item;
         private int m_TotalItemWeight;
         private int m_TotalProps;
         private int m_MaxWeight;

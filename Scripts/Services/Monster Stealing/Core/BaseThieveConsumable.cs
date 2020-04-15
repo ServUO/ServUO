@@ -113,7 +113,7 @@ namespace Server.Items
             }
         }
 
-        private static Dictionary<PlayerMobile, ThieveConsumableInfo> EffectTable = new Dictionary<PlayerMobile, ThieveConsumableInfo>();
+        private static readonly Dictionary<PlayerMobile, ThieveConsumableInfo> EffectTable = new Dictionary<PlayerMobile, ThieveConsumableInfo>();
 
         public static bool CanUse(PlayerMobile pm, BaseThieveConsumable consum)
         {

@@ -9,8 +9,8 @@ namespace Server
 
     public sealed class FileQueue : IDisposable
     {
-        private static int bufferSize;
-        private static BufferPool bufferPool;
+        private static readonly int bufferSize;
+        private static readonly BufferPool bufferPool;
         private readonly object syncRoot;
         private readonly Chunk[] active;
         private readonly Queue<Page> pending;

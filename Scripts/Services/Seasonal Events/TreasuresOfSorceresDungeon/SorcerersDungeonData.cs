@@ -17,7 +17,7 @@ namespace Server.Engines.SorcerersDungeon
 
         public bool Enabled { get; set; }
 
-        private TextDefinition m_Name = null;
+        private readonly TextDefinition m_Name = null;
 
         public bool InSeason { get { return SeasonalEventSystem.IsActive(EventType.SorcerersDungeon); } }
 

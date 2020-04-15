@@ -94,7 +94,7 @@ namespace Server.Items
     {
         private string m_Title;
         private string m_Author;
-        private BookPageInfo[] m_Pages;
+        private readonly BookPageInfo[] m_Pages;
         private bool m_Writable;
 
         [CommandProperty(AccessLevel.GameMaster)]

@@ -30,7 +30,7 @@ namespace Server.Engines.Exodus
         {
             private static TimeSpan m_Delay = TimeSpan.FromMinutes(2);
             private static TimeSpan m_Warning = TimeSpan.FromMinutes(8);
-            VerLorRegCity m_region;
+            readonly VerLorRegCity m_region;
 
             public ExitTimer(VerLorRegCity region) : base(m_Warning)
             {

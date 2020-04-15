@@ -67,7 +67,7 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
 
-        private List<Mobile> m_Users = new List<Mobile>();
+        private readonly List<Mobile> m_Users = new List<Mobile>();
 
         public void Explode_Callback(object state)
         {
@@ -139,7 +139,7 @@ namespace Server.Items
         #endregion
 
         #region Delay
-        private static Hashtable m_Delay = new Hashtable();
+        private static readonly Hashtable m_Delay = new Hashtable();
 
         public static void AddDelay(Mobile m)
         {
@@ -181,7 +181,7 @@ namespace Server.Items
 
         private class ThrowTarget : Target
         {
-            private BaseExplodingTarPotion m_Potion;
+            private readonly BaseExplodingTarPotion m_Potion;
 
             public BaseExplodingTarPotion Potion
             {

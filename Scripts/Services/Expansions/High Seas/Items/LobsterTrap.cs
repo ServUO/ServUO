@@ -414,7 +414,7 @@ namespace Server.Items
         }
 
         public virtual int[] UseableTiles { get { return m_WaterTiles; } }
-        private int[] m_WaterTiles = new int[]
+        private readonly int[] m_WaterTiles = new int[]
         {
             //Deep Water
             0x00AA, 0x00A9,

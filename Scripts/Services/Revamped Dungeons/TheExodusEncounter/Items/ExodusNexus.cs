@@ -19,7 +19,7 @@ namespace Server.Items
         }
 
         private static readonly TimeSpan m_UseTimeout = TimeSpan.FromMinutes(2.0);
-        private Dictionary<Mobile, DamageTimer> DamageTable = new Dictionary<Mobile, DamageTimer>();
+        private readonly Dictionary<Mobile, DamageTimer> DamageTable = new Dictionary<Mobile, DamageTimer>();
         private int m_SideLength;
         private Node[] m_Path;
         private Mobile User { get; set; }

@@ -9,7 +9,7 @@ namespace Server.Engines.Despise
 {
     public class DespiseRegion : BaseRegion
     {
-        private bool m_LowerLevel;
+        private readonly bool m_LowerLevel;
 
         public DespiseRegion(string name, Rectangle2D[] bounds) : this(name, bounds, false)
         {

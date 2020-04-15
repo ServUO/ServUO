@@ -694,7 +694,7 @@ namespace Server
         }
 
         #region Standard fields
-        private Serial m_Serial;
+        private readonly Serial m_Serial;
         private Point3D m_Location;
         private int m_ItemID;
         private int m_Hue;

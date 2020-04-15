@@ -12,9 +12,9 @@ namespace Server.Items
 
     public class AddCustomizableMessageGump : BaseGump
     {
-        private ICustomizableMessageItem _MessageItem;
-        private int TitleCliloc;
-        private int SubjectCliloc;
+        private readonly ICustomizableMessageItem _MessageItem;
+        private readonly int TitleCliloc;
+        private readonly int SubjectCliloc;
 
         public AddCustomizableMessageGump(PlayerMobile pm, ICustomizableMessageItem item, int title = 0, int subject = 0)
             : base(pm, 100, 100)
@@ -112,8 +112,8 @@ namespace Server.Items
 
     public class EditSign : ContextMenuEntry
     {
-        private ICustomizableMessageItem _MessageItem;
-        private PlayerMobile _From;
+        private readonly ICustomizableMessageItem _MessageItem;
+        private readonly PlayerMobile _From;
 
         public EditSign(ICustomizableMessageItem messageItem, PlayerMobile from)
             : base(1151817) // Edit Sign

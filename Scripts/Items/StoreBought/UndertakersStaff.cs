@@ -8,7 +8,7 @@ namespace Server.Items
 {
     public class UndertakersStaff : GnarledStaff
     {
-        private static Dictionary<Mobile, CorpseRetrieveTimer> _Timers = new Dictionary<Mobile, CorpseRetrieveTimer>();
+        private static readonly Dictionary<Mobile, CorpseRetrieveTimer> _Timers = new Dictionary<Mobile, CorpseRetrieveTimer>();
 
         private int _Charges;
         private bool _SummonAll;

@@ -61,7 +61,7 @@ namespace Server.Engines.Craft
     {
         private readonly CraftSystem m_System;
         private readonly ITool m_Tool;
-        private Item m_Contract;
+        private readonly Item m_Contract;
 
         public AlterItemTarget(CraftSystem system, Item contract)
                 : base(2, false, TargetFlags.None)

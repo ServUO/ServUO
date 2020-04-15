@@ -66,7 +66,7 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
 
-        private List<Mobile> m_Users = new List<Mobile>();
+        private readonly List<Mobile> m_Users = new List<Mobile>();
 
         public void Explode_Callback(object state)
         {
@@ -133,7 +133,7 @@ namespace Server.Items
         }
 
         #region Delay
-        private static Hashtable m_Delay = new Hashtable();
+        private static readonly Hashtable m_Delay = new Hashtable();
 
         public static void AddDelay(Mobile m)
         {

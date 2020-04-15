@@ -99,7 +99,7 @@ namespace Server.Items
                 _TimePieces.Remove(this);
         }
 
-        private static List<EnchantedTimepiece> _TimePieces = new List<EnchantedTimepiece>();
+        private static readonly List<EnchantedTimepiece> _TimePieces = new List<EnchantedTimepiece>();
 
         public static void Initialize()
         {

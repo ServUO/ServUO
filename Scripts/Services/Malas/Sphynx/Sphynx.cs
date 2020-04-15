@@ -81,8 +81,8 @@ namespace Server.Mobiles
 
         public class AskAboutFutureEntry : ContextMenuEntry
         {
-            private Sphynx m_Sphynx;
-            private Mobile m;
+            private readonly Sphynx m_Sphynx;
+            private readonly Mobile m;
 
             public AskAboutFutureEntry(Mobile from, Sphynx Sphynx)
                 : base(6199, 8)
@@ -102,7 +102,7 @@ namespace Server.Mobiles
 
         public class SphynxGump : Gump
         {
-            private Sphynx Sphynx;
+            private readonly Sphynx Sphynx;
 
             public SphynxGump(Sphynx s)
                 : base(150, 50)

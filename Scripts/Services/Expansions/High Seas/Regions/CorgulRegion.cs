@@ -30,7 +30,7 @@ namespace Server.Regions
         }
 
         private List<Item> m_Markers;
-        private CorgulAltar m_Altar;
+        private readonly CorgulAltar m_Altar;
         private Rectangle2D m_Bounds;
 
         public CorgulAltar Altar { get { return m_Altar; } }

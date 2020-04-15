@@ -361,14 +361,14 @@ namespace Server.Multis
             return (int)(hpe.Lockdowns * BonusStorageScalar);
         }
 
-        private Type[] _NoItemCountTable = new Type[]
+        private readonly Type[] _NoItemCountTable = new Type[]
         {
             typeof(Engines.Plants.SeedBox), typeof(GardenShedAddon),
             typeof(GardenShedBarrel),       typeof(BaseSpecialScrollBook),
             typeof(JewelryBox)
         };
 
-        private Type[] _NoDecayItems = new Type[]
+        private readonly Type[] _NoDecayItems = new Type[]
         {
             typeof(BaseBoard),              typeof(Aquarium),
             typeof(FishBowl),               typeof(BaseSpecialScrollBook),
@@ -1244,14 +1244,14 @@ namespace Server.Multis
             return false;
         }
 
-        private Type[] _AccessibleToAll =
+        private readonly Type[] _AccessibleToAll =
         {
             typeof(TenthAnniversarySculpture), typeof(RewardBrazier), typeof(VendorRentalContract), typeof(Dyes), typeof(DyeTub),
             typeof(BaseInstrument), typeof(Clock), typeof(TreasureMap), typeof(RecallRune), typeof(Dices), typeof(BaseBoard),
             typeof(Runebook)
         };
 
-        private Type[] _AccessibleToFriends =
+        private readonly Type[] _AccessibleToFriends =
         {
             typeof(PotionKeg)
         };

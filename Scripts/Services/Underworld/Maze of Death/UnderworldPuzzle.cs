@@ -8,7 +8,7 @@ namespace Server.Items
     {
         public static readonly int MaxAttempts = 8;
 
-        private UnderworldPuzzleSolution m_Solution;
+        private readonly UnderworldPuzzleSolution m_Solution;
         private UnderworldPuzzleSolution m_CurrentSolution;
         private int m_Attempts;
 
@@ -90,7 +90,7 @@ namespace Server.Items
             return false;
         }
 
-        private Type[] m_Rewards = new Type[]
+        private readonly Type[] m_Rewards = new Type[]
         {
             typeof(VoidEssence),        typeof(SilverSerpentVenom), typeof(ScouringToxin),
             typeof(ToxicVenomSac),      typeof(MouldingBoard),      typeof(DoughBowl),
@@ -157,7 +157,7 @@ namespace Server.Items
     {
         public const int Length = 4;
 
-        private PuzzlePiece[] m_Rows = new PuzzlePiece[Length];
+        private readonly PuzzlePiece[] m_Rows = new PuzzlePiece[Length];
         public PuzzlePiece[] Rows { get { return m_Rows; } }
 
         private int m_Index;
@@ -435,10 +435,10 @@ namespace Server.Items
 
     public class UnderworldPuzzleGump : Gump
     {
-        private Mobile m_From;
-        private UnderworldPuzzleItem m_Item;
-        private UnderworldPuzzleSolution m_Solution;
-        private UnderworldPuzzleSolution m_CurrentSolution;
+        private readonly Mobile m_From;
+        private readonly UnderworldPuzzleItem m_Item;
+        private readonly UnderworldPuzzleSolution m_Solution;
+        private readonly UnderworldPuzzleSolution m_CurrentSolution;
         private int m_Row;
 
         public UnderworldPuzzleGump(Mobile from, UnderworldPuzzleItem item)

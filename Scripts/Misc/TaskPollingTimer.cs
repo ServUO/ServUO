@@ -5,8 +5,8 @@ namespace Server
 {
     public class TaskPollingTimer<T> : Timer
     {
-        private Task<T> m_Task;
-        private Action<T> m_Callback;
+        private readonly Task<T> m_Task;
+        private readonly Action<T> m_Callback;
 
         public TaskPollingTimer(Task<T> task, Action<T> callback)
             : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))

@@ -98,7 +98,7 @@ namespace Server.Mobiles
             return m_Conversation.ContainsKey(from);
         }
 
-        private Dictionary<Mobile, int> m_Conversation = new Dictionary<Mobile, int>();
+        private readonly Dictionary<Mobile, int> m_Conversation = new Dictionary<Mobile, int>();
 
         public override void OnDoubleClick(Mobile from)
         {
@@ -180,7 +180,7 @@ namespace Server.Mobiles
             }
         }
 
-        private string[][] m_Keywords = new string[][]
+        private readonly string[][] m_Keywords = new string[][]
         {
             new string[] { },
             new string[] { "corporeal" },
@@ -197,7 +197,7 @@ namespace Server.Mobiles
             new string[] { "trade" },
         };
 
-        private int[] m_Responses = new int[]
+        private readonly int[] m_Responses = new int[]
         {
             1153441,
             1153443,
@@ -221,7 +221,7 @@ namespace Server.Mobiles
             list.Add(new InternalEntry(this, from));
         }
 
-        private Dictionary<Item, int> m_ItemTable = new Dictionary<Item, int>();
+        private readonly Dictionary<Item, int> m_ItemTable = new Dictionary<Item, int>();
 
         public void CheckRestock()
         {
@@ -335,8 +335,8 @@ namespace Server.Mobiles
 
         private class InternalEntry : ContextMenuEntry
         {
-            private Mobile m_Clicker;
-            private MysteriousWisp m_Wisp;
+            private readonly Mobile m_Clicker;
+            private readonly MysteriousWisp m_Wisp;
 
             public InternalEntry(MysteriousWisp wisp, Mobile clicker)
                 : base(1150143, 3)
@@ -452,10 +452,10 @@ namespace Server.Mobiles
 
         private class InternalGump : Gump
         {
-            private static List<Mobile> m_Viewers = new List<Mobile>();
+            private static readonly List<Mobile> m_Viewers = new List<Mobile>();
 
-            private MysteriousWisp m_Wisp;
-            private List<Item> m_Items;
+            private readonly MysteriousWisp m_Wisp;
+            private readonly List<Item> m_Items;
 
             public InternalGump(MysteriousWisp wisp, Mobile viewer) : base(40, 40)
             {
@@ -584,9 +584,9 @@ namespace Server.Mobiles
 
         private class InternalGump2 : Gump
         {
-            private MysteriousWisp m_Wisp;
-            private Item m_Item;
-            private bool m_Available;
+            private readonly MysteriousWisp m_Wisp;
+            private readonly Item m_Item;
+            private readonly bool m_Available;
 
             public InternalGump2(MysteriousWisp wisp, Item item) : base(40, 40)
             {

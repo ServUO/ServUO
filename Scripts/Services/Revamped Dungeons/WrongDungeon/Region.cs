@@ -9,7 +9,7 @@ namespace Server.Engines.Blackthorn
 {
     public class WrongLevel3 : DungeonRegion
     {
-        private List<Mobile> DeathList = new List<Mobile>();
+        private readonly List<Mobile> DeathList = new List<Mobile>();
 
         public WrongLevel3(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)

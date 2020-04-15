@@ -697,7 +697,7 @@ namespace Server.Engines.CityLoyalty
             }
         }
 
-        private TradeDeal[] _Deals =
+        private readonly TradeDeal[] _Deals =
         {
             TradeDeal.GuildOfArcaneArts,
             TradeDeal.SocietyOfClothiers,
@@ -1052,7 +1052,7 @@ namespace Server.Engines.CityLoyalty
 
     public class CityMessageBoardGump : BaseGump
     {
-        private int _Red = 0x8B0000;
+        private readonly int _Red = 0x8B0000;
 
         public CityMessageBoardGump(PlayerMobile pm)
             : base(pm, 100, 100)

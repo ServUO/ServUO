@@ -743,7 +743,7 @@ namespace Server
             return _NotChoppables.Any(t => t == item.GetType());
         }
 
-        private static Type[] _NotChoppables = new Type[]
+        private static readonly Type[] _NotChoppables = new Type[]
         {
             typeof(CommodityDeedBox), typeof(ChinaCabinet), typeof(PieSafe), typeof(AcademicBookCase), typeof(JewelryBox),
             typeof(WoodenBookcase), typeof(Countertop), typeof(Mailbox)

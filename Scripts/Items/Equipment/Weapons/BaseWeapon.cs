@@ -1600,7 +1600,7 @@ namespace Server.Items
             return items[Utility.Random(items.Length)];
         }
 
-        private List<Layer> _DamageLayers = new List<Layer>()
+        private readonly List<Layer> _DamageLayers = new List<Layer>()
         {
             Layer.FirstValid,
             Layer.OneHanded,
@@ -2879,7 +2879,7 @@ namespace Server.Items
             return CheckSlayerResult.None;
         }
 
-        private List<SlayerName> _SuperSlayers = new List<SlayerName>()
+        private readonly List<SlayerName> _SuperSlayers = new List<SlayerName>()
         {
             SlayerName.Repond, SlayerName.Silver, SlayerName.Fey,
             SlayerName.ElementalBan, SlayerName.Exorcism, SlayerName.ArachnidDoom,

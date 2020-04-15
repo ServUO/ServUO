@@ -203,7 +203,7 @@ namespace Server.Mobiles
 
     public class CollectorOfOddities : BaseVendor
     {
-        private List<SBInfo> m_SBInfos = new List<SBInfo>();
+        private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
 
         public override void InitSBInfo()
@@ -227,8 +227,8 @@ namespace Server.Mobiles
 
         private class InternalSB : SBInfo
         {
-            private List<GenericBuyInfo> m_BuyInfo;
-            private IShopSellInfo m_SellInfo = new InternalSellInfo();
+            private readonly List<GenericBuyInfo> m_BuyInfo;
+            private readonly IShopSellInfo m_SellInfo = new InternalSellInfo();
 
             public InternalSB() : this(null)
             {
@@ -286,7 +286,7 @@ namespace Server.Mobiles
         public override bool ChangeRace { get { return false; } }
         public override bool IsActiveVendor { get { return true; } }
 
-        private List<SBInfo> _SBInfos = new List<SBInfo>();
+        private readonly List<SBInfo> _SBInfos = new List<SBInfo>();
         protected override List<SBInfo> SBInfos { get { return _SBInfos; } }
 
         public override void InitSBInfo()
@@ -323,8 +323,8 @@ namespace Server.Mobiles
 
         private class InternalSB : SBInfo
         {
-            private List<GenericBuyInfo> m_BuyInfo;
-            private IShopSellInfo m_SellInfo = new InternalSellInfo();
+            private readonly List<GenericBuyInfo> m_BuyInfo;
+            private readonly IShopSellInfo m_SellInfo = new InternalSellInfo();
 
             public InternalSB()
                 : this(null)

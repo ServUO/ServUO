@@ -23,7 +23,7 @@ namespace Server.Engines.Shadowguard
 
         public virtual bool CanSummon { get { return Hits <= HitsMax - (HitsMax / 4); } }
 
-        private Type[] _ArtifactTypes = new Type[]
+        private readonly Type[] _ArtifactTypes = new Type[]
         {
             typeof(AnonsBoots),                 typeof(AnonsSpellbook),         typeof(BalakaisShamanStaff),
             typeof(EnchantressCameo),           typeof(GrugorsShield),          typeof(WamapsBoneEarrings),
@@ -150,8 +150,8 @@ namespace Server.Engines.Shadowguard
 
         private class GoodiesTimer : Timer
         {
-            private Map m_Map;
-            private int m_X, m_Y;
+            private readonly Map m_Map;
+            private readonly int m_X, m_Y;
 
             public GoodiesTimer(Map map, int x, int y)
                 : base(TimeSpan.FromSeconds(Utility.RandomDouble() * 10.0))
@@ -344,7 +344,7 @@ namespace Server.Engines.Shadowguard
     public class Anon : ShadowguardBoss
     {
         public override Type[] SummonTypes { get { return _SummonTypes; } }
-        private Type[] _SummonTypes = new Type[] { typeof(ElderGazer), typeof(EvilMage), typeof(Wisp) };
+        private readonly Type[] _SummonTypes = new Type[] { typeof(ElderGazer), typeof(EvilMage), typeof(Wisp) };
 
         private DateTime _LastChange;
         private Form _Form;
@@ -603,7 +603,7 @@ namespace Server.Engines.Shadowguard
     public class Juonar : ShadowguardBoss
     {
         public override Type[] SummonTypes { get { return _SummonTypes; } }
-        private Type[] _SummonTypes = new Type[] { typeof(SkeletalDragon), typeof(LichLord), typeof(WailingBanshee), typeof(FleshGolem) };
+        private readonly Type[] _SummonTypes = new Type[] { typeof(SkeletalDragon), typeof(LichLord), typeof(WailingBanshee), typeof(FleshGolem) };
 
         public override bool CanDiscord { get { return true; } }
         public override bool PlayInstrumentSound { get { return false; } }
@@ -701,7 +701,7 @@ namespace Server.Engines.Shadowguard
     public class Virtuebane : ShadowguardBoss
     {
         public override Type[] SummonTypes { get { return _SummonTypes; } }
-        private Type[] _SummonTypes = new Type[] { typeof(MinotaurCaptain), typeof(Daemon), typeof(Titan) };
+        private readonly Type[] _SummonTypes = new Type[] { typeof(MinotaurCaptain), typeof(Daemon), typeof(Titan) };
 
         public override bool BardImmune { get { return true; } }
 
@@ -921,7 +921,7 @@ namespace Server.Engines.Shadowguard
     public class Ozymandias : ShadowguardBoss
     {
         public override Type[] SummonTypes { get { return _SummonTypes; } }
-        private Type[] _SummonTypes = new Type[] { typeof(LesserHiryu), typeof(EliteNinja), typeof(TsukiWolf) };
+        private readonly Type[] _SummonTypes = new Type[] { typeof(LesserHiryu), typeof(EliteNinja), typeof(TsukiWolf) };
 
         public override double WeaponAbilityChance { get { return 0.4; } }
 

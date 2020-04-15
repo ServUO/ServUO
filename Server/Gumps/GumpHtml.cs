@@ -142,7 +142,7 @@ namespace Server.Gumps
             return String.Format("{{ htmlgump {0} {1} {2} {3} {4} {5} {6} }}", m_X, m_Y, m_Width, m_Height, m_Text == null ? m_TextID : Parent.Intern(m_Text), m_Background ? 1 : 0, m_Scrollbar ? 1 : 0);
         }
 
-        private static byte[] m_LayoutName = Gump.StringToBuffer("htmlgump");
+        private static readonly byte[] m_LayoutName = Gump.StringToBuffer("htmlgump");
 
         public override void AppendTo(IGumpWriter disp)
         {

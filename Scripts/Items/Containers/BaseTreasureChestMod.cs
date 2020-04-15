@@ -101,7 +101,7 @@ namespace Server.Items
 
         private class ChestTimer : Timer
         {
-            private BaseTreasureChestMod m_Chest;
+            private readonly BaseTreasureChestMod m_Chest;
 
             public ChestTimer(BaseTreasureChestMod chest) : base(TimeSpan.FromMinutes(Utility.Random(2, 5)))
             {

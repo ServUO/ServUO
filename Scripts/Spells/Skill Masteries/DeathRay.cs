@@ -11,7 +11,7 @@ namespace Server.Spells.SkillMasteries
 
         // BuffIcon: 1155798 ~1_STR~ Energy Resist.<br>~2_DAM~ energy damage every 3 seconds while death ray remains in effect.<br>
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Death Ray", "In Grav Corp",
                 204,
                 9061,

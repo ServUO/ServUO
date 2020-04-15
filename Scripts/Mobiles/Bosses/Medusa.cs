@@ -9,7 +9,7 @@ namespace Server.Mobiles
     [CorpseName("a medusa corpse")]
     public class Medusa : BaseSABoss, ICarvable
     {
-        private List<Mobile> m_TurnedToStone = new List<Mobile>();
+        private readonly List<Mobile> m_TurnedToStone = new List<Mobile>();
         public List<Mobile> AffectedMobiles { get { return m_TurnedToStone; } }
 
         public List<Mobile> m_Helpers = new List<Mobile>();
@@ -586,9 +586,9 @@ namespace Server.Mobiles
 
         public class GazeTimer : Timer
         {
-            private Mobile target;
-            private Mobile clone;
-            private Medusa m_Medusa;
+            private readonly Mobile target;
+            private readonly Mobile clone;
+            private readonly Medusa m_Medusa;
             private int m_Count;
 
             public GazeTimer(Mobile m, Mobile mc, Medusa medusa, int duration)

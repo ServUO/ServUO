@@ -1055,7 +1055,7 @@ namespace Server.Items
             weapon.Hue = weapon.GetElementalDamageHue();
         }
 
-        private static AosElementAttribute[] _DamageTypes =
+        private static readonly AosElementAttribute[] _DamageTypes =
         {
             AosElementAttribute.Cold,
             AosElementAttribute.Energy,

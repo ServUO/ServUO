@@ -49,7 +49,7 @@ namespace Server.Gumps
             return String.Format("{{ itemproperty {0} }}", m_Serial);
         }
 
-        private static byte[] m_LayoutName = Gump.StringToBuffer("itemproperty");
+        private static readonly byte[] m_LayoutName = Gump.StringToBuffer("itemproperty");
 
         public override void AppendTo(IGumpWriter disp)
         {

@@ -137,7 +137,7 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private HealingStone m_Stone;
+            private readonly HealingStone m_Stone;
             private int m_Ticks;
 
             public InternalTimer(HealingStone stone) : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))

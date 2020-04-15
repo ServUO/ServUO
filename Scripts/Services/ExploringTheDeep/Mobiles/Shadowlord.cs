@@ -22,7 +22,7 @@ namespace Server.Mobiles
         private ShadowlordType m_Type;
         public virtual Type[] ArtifactDrops => _ArtifactTypes;
 
-        private Type[] _ArtifactTypes = new Type[]
+        private readonly Type[] _ArtifactTypes = new Type[]
         {
             typeof(Abhorrence),         typeof(CaptainJohnesBlade),             typeof(Craven),
             typeof(Equivocation),       typeof(GargishCaptainJohnesBlade),      typeof(GargishEquivocation),
@@ -124,7 +124,7 @@ namespace Server.Mobiles
 
         public class InternalSelfDeleteTimer : Timer
         {
-            private Shadowlord Mare;
+            private readonly Shadowlord Mare;
 
             public InternalSelfDeleteTimer(Mobile p) : base(TimeSpan.FromMinutes(180))
             {

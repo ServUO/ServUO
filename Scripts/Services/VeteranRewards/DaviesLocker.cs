@@ -502,9 +502,9 @@ namespace Server.Engines.VeteranRewards
         private readonly int AquaGreen = 0x43F8;
         private readonly int Yellow = 0x7FF0;
 
-        private List<DaviesLockerEntry> m_List = new List<DaviesLockerEntry>();
+        private readonly List<DaviesLockerEntry> m_List = new List<DaviesLockerEntry>();
         private int m_Page;
-        private DaviesLockerAddon m_Addon;
+        private readonly DaviesLockerAddon m_Addon;
 
         public DaviesLockerGump(Mobile from, DaviesLockerAddon addon)
             : this(from, addon, 0)
@@ -845,7 +845,7 @@ namespace Server.Engines.VeteranRewards
 
         private class InternalTarget : Target
         {
-            private DaviesLockerAddon m_Addon;
+            private readonly DaviesLockerAddon m_Addon;
             private readonly int m_Page;
 
             public InternalTarget(Mobile from, DaviesLockerAddon addon, int page)

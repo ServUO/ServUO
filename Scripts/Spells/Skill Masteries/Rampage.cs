@@ -14,7 +14,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class RampageSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Rampage", "",
                 -1,
                 9002

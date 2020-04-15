@@ -682,7 +682,7 @@ namespace Server.Mobiles
         }
 
         public static Type[] SlotLowerables => _SlotLowerables;
-        private static Type[] _SlotLowerables =
+        private static readonly Type[] _SlotLowerables =
         {
             typeof(Nightmare), typeof(Najasaurus), typeof(RuneBeetle), typeof(GreaterDragon), typeof(FrostDragon),
             typeof(WhiteWyrm), typeof(Reptalon), typeof(DragonTurtleHatchling), typeof(Phoenix), typeof(FrostMite),
@@ -2868,7 +2868,7 @@ namespace Server.Mobiles
             typeof(Squash), typeof(Cantaloupe), typeof(Carrot), typeof(Cabbage), typeof(Onion), typeof(Lettuce), typeof(Pumpkin)
         };
 
-        private static Type[] m_Gold = new[]
+        private static readonly Type[] m_Gold = new[]
         {
 			// white wyrms eat gold..
 			typeof(Gold)
@@ -3308,7 +3308,7 @@ namespace Server.Mobiles
 
         private class CharmTimer : Timer
         {
-            private BaseCreature m_Owner;
+            private readonly BaseCreature m_Owner;
             private int m_Count;
 
             public CharmTimer(BaseCreature owner)
@@ -3904,8 +3904,8 @@ namespace Server.Mobiles
 
         private class RenameEntry : ContextMenuEntry
         {
-            private Mobile m_From;
-            private BaseCreature m_Creature;
+            private readonly Mobile m_From;
+            private readonly BaseCreature m_Creature;
 
             public RenameEntry(Mobile from, BaseCreature creature)
                 : base(1111680, 6)
@@ -3925,7 +3925,7 @@ namespace Server.Mobiles
         {
             public override int MessageCliloc => 1115558; // Enter a new name for your pet.
 
-            private BaseCreature m_Creature;
+            private readonly BaseCreature m_Creature;
 
             public PetRenamePrompt(BaseCreature creature)
                 : base(creature)
@@ -6320,7 +6320,7 @@ namespace Server.Mobiles
             return true;
         }
 
-        private static bool EnableRummaging = true;
+        private static readonly bool EnableRummaging = true;
 
         private const double ChanceToRummage = 0.5; // 50%
 
@@ -6803,7 +6803,7 @@ namespace Server.Mobiles
 
         public virtual bool TeleportsPets => false;
 
-        private static int[] m_Offsets = new int[]
+        private static readonly int[] m_Offsets = new int[]
             {
                 -1, -1,
                 -1,  0,

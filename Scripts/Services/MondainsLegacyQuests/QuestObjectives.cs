@@ -845,8 +845,8 @@ namespace Server.Engines.Quests
     {
         private int _CurrentIndex;
 
-        private List<int> m_Done = new List<int>();
-        private QuestionAndAnswerEntry[] m_EntryTable;
+        private readonly List<int> m_Done = new List<int>();
+        private readonly QuestionAndAnswerEntry[] m_EntryTable;
 
         public virtual QuestionAndAnswerEntry[] EntryTable { get { return m_EntryTable; } }
 

@@ -83,7 +83,7 @@ namespace Server.Engines.Quests
     {
         private static readonly Type m_Type = typeof(Mongbat);
 
-        private List<string> m_Descr = new List<string>();
+        private readonly List<string> m_Descr = new List<string>();
         public override List<string> Descriptions { get { return m_Descr; } }
 
         public PeacemakingObjective()

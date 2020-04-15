@@ -14,7 +14,7 @@ namespace Server.Mobiles
         public override bool IsActiveVendor { get { return false; } }
         public override bool IsInvulnerable { get { return true; } }
 
-        private List<SBInfo> m_SBInfos = new List<SBInfo>();
+        private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
 
         public override void InitSBInfo()
@@ -36,8 +36,8 @@ namespace Server.Mobiles
 
         private class DryDockEntry : ContextMenuEntry
         {
-            private Mobile m_From;
-            private DockMaster m_DockMaster;
+            private readonly Mobile m_From;
+            private readonly DockMaster m_DockMaster;
 
             public DryDockEntry(Mobile from, DockMaster dockmaster) : base(1149575, 5)
             {
@@ -58,8 +58,8 @@ namespace Server.Mobiles
 
         private class RetrieveHoldEntry : ContextMenuEntry
         {
-            private Mobile m_From;
-            private DockMaster m_DockMaster;
+            private readonly Mobile m_From;
+            private readonly DockMaster m_DockMaster;
 
             public RetrieveHoldEntry(Mobile from, DockMaster dockmaster)
                 : base(1116504, 5)
@@ -151,7 +151,7 @@ namespace Server.Mobiles
         }
 
         private Rectangle2D m_Bounds = new Rectangle2D(4561, 2298, 8, 5);
-        private static List<ShipCrate> m_Crates = new List<ShipCrate>();
+        private static readonly List<ShipCrate> m_Crates = new List<ShipCrate>();
 
         public static void RemoveCrate(ShipCrate crate)
         {

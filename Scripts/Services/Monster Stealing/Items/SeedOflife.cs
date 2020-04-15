@@ -7,7 +7,7 @@ namespace Server.Items
     [TypeAlias("drNO.ThieveItems.SeedOflife")]
     public class SeedOfLife : Item
     {
-        private static Dictionary<PlayerMobile, DateTime> SeedUsageList = new Dictionary<PlayerMobile, DateTime>();
+        private static readonly Dictionary<PlayerMobile, DateTime> SeedUsageList = new Dictionary<PlayerMobile, DateTime>();
         private static TimeSpan Cooldown = TimeSpan.FromMinutes(10);
 
         public static void Initialize()

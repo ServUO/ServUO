@@ -11,7 +11,7 @@ namespace Server.Spells.Mysticism
     {
         public override SpellCircle Circle { get { return SpellCircle.Fifth; } }
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Spell Trigger", "In Vas Ort Ex ",
                 230,
                 9022,
@@ -49,8 +49,8 @@ namespace Server.Spells.Mysticism
 
         private class SpellTriggerGump : Gump
         {
-            private Spell m_Spell;
-            private int m_Skill;
+            private readonly Spell m_Spell;
+            private readonly int m_Skill;
 
             public SpellTriggerGump(Spell spell, Mobile m)
                 : base(60, 36)
@@ -143,7 +143,7 @@ namespace Server.Spells.Mysticism
             }
         }
 
-        private static SpellTriggerDef[] m_Definitions = new SpellTriggerDef[]
+        private static readonly SpellTriggerDef[] m_Definitions = new SpellTriggerDef[]
             {
                 new SpellTriggerDef( 677, "Nether Bolt",        1, 1031678, 1095193, 0x2D9E ),
                 new SpellTriggerDef( 678, "Healing Stone",      1, 1031679, 1095194, 0x2D9F ),
@@ -163,12 +163,12 @@ namespace Server.Spells.Mysticism
 
     public class SpellTriggerDef
     {
-        private int m_SpellId;
-        private string m_Name;
-        private int m_Rank;
-        private int m_Cliloc;
-        private int m_Tooltip;
-        private int m_ItemId;
+        private readonly int m_SpellId;
+        private readonly string m_Name;
+        private readonly int m_Rank;
+        private readonly int m_Cliloc;
+        private readonly int m_Tooltip;
+        private readonly int m_ItemId;
 
         public int SpellId { get { return m_SpellId; } }
         public string Name { get { return m_Name; } }
@@ -217,7 +217,7 @@ namespace Server.Spells.Mysticism
         {
         }
 
-        private static Dictionary<Mobile, DateTime> m_CooldownTable = new Dictionary<Mobile, DateTime>();
+        private static readonly Dictionary<Mobile, DateTime> m_CooldownTable = new Dictionary<Mobile, DateTime>();
 
         public override void OnDoubleClick(Mobile from)
         {

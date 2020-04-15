@@ -77,8 +77,8 @@ namespace Server.Engines.Fellowship
 
         private class BrowseShopEntry : ContextMenuEntry
         {
-            private Mobile m_From;
-            private BaseVendor m_Vendor;
+            private readonly Mobile m_From;
+            private readonly BaseVendor m_Vendor;
 
             public BrowseShopEntry(Mobile from, BaseVendor vendor)
                 : base(1159181, 2) // Browse the Fellowship Shop

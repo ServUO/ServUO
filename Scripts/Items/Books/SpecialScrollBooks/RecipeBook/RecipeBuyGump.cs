@@ -6,10 +6,10 @@ namespace Server.Items
 {
     public class RecipeScrollBuyGump : Gump
     {
-        private Mobile m_From;
-        private RecipeBook m_Book;
-        private RecipeScrollDefinition m_Recipe;
-        private int m_Price;
+        private readonly Mobile m_From;
+        private readonly RecipeBook m_Book;
+        private readonly RecipeScrollDefinition m_Recipe;
+        private readonly int m_Price;
 
         public RecipeScrollBuyGump(Mobile from, RecipeBook book, RecipeScrollDefinition recipe, int price)
             : base(100, 200)

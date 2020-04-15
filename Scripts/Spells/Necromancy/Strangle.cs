@@ -160,13 +160,13 @@ namespace Server.Spells.Necromancy
 
         private class InternalTimer : Timer
         {
-            private Mobile m_Target, m_From;
-            private double m_MinBaseDamage, m_MaxBaseDamage;
+            private readonly Mobile m_Target, m_From;
+            private readonly double m_MinBaseDamage, m_MaxBaseDamage;
 
             private DateTime m_NextHit;
             private int m_HitDelay;
-
-            private int m_Count, m_MaxCount;
+            private int m_Count;
+            private readonly int m_MaxCount;
 
             public InternalTimer(Mobile target, Mobile from, double strength)
                 : base(TimeSpan.FromSeconds(0.1), TimeSpan.FromSeconds(0.1))

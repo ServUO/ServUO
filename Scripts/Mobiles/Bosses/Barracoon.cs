@@ -324,7 +324,7 @@ namespace Server.Mobiles
 
         private class ExpirePolymorphTimer : Timer
         {
-            private Mobile m_Owner;
+            private readonly Mobile m_Owner;
             public ExpirePolymorphTimer(Mobile owner)
                 : base(TimeSpan.FromMinutes(3.0)) //3.0
             {

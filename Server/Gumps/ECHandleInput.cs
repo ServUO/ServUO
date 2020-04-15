@@ -14,7 +14,7 @@ namespace Server.Gumps
             return String.Format("{{ echandleinput }}");
         }
 
-        private static byte[] m_LayoutName = Gump.StringToBuffer("echandleinput");
+        private static readonly byte[] m_LayoutName = Gump.StringToBuffer("echandleinput");
 
         public override void AppendTo(IGumpWriter disp)
         {

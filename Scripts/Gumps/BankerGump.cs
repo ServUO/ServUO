@@ -8,7 +8,7 @@ namespace Server.Gumps
 {
     public class BankerGump : Gump
     {
-        private int TextColor = 0x000F;
+        private readonly int TextColor = 0x000F;
 
         public PlayerMobile User { get; set; }
 

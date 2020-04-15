@@ -39,7 +39,7 @@ namespace Server.Engines.Plants
 
     public class PlantHueInfo
     {
-        private static Dictionary<PlantHue, PlantHueInfo> m_Table;
+        private static readonly Dictionary<PlantHue, PlantHueInfo> m_Table;
 
         static PlantHueInfo()
         {
@@ -154,10 +154,10 @@ namespace Server.Engines.Plants
             return notBrightFirst & notBrightSecond;
         }
 
-        private int m_Hue;
-        private int m_Name;
-        private PlantHue m_PlantHue;
-        private int m_GumpHue;
+        private readonly int m_Hue;
+        private readonly int m_Name;
+        private readonly PlantHue m_PlantHue;
+        private readonly int m_GumpHue;
 
         public int Hue { get { return m_Hue; } }
         public int Name { get { return m_Name; } }

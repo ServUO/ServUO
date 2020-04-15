@@ -26,15 +26,15 @@ namespace Server.Gumps
 
     public class RunicReforgingGump : Gump
     {
-        private BaseRunicTool m_Tool;
-        private Item m_ToReforge;
+        private readonly BaseRunicTool m_Tool;
+        private readonly Item m_ToReforge;
         private ReforgingOption m_Options;
         private ReforgedPrefix m_Prefix;
         private ReforgedSuffix m_Suffix;
 
-        private ReforgingContext m_Context;
+        private readonly ReforgingContext m_Context;
 
-        private ReforgingOption[] Options =
+        private readonly ReforgingOption[] Options =
         {
             ReforgingOption.Powerful,
             ReforgingOption.Structural,
@@ -511,16 +511,16 @@ namespace Server.Gumps
 
         public class ItemNameGump : Gump
         {
-            private BaseRunicTool m_Tool;
-            private Item m_ToReforge;
-            private ReforgingOption m_Options;
+            private readonly BaseRunicTool m_Tool;
+            private readonly Item m_ToReforge;
+            private readonly ReforgingOption m_Options;
             private ReforgedPrefix m_Prefix;
             private ReforgedSuffix m_Suffix;
-            private bool m_IsPrefix;
+            private readonly bool m_IsPrefix;
 
-            private static int White = 0x6F7B;
-            private static int Green = 0x4BB2;
-            private static int Yellow = 0x6B55;
+            private static readonly int White = 0x6F7B;
+            private static readonly int Green = 0x4BB2;
+            private static readonly int Yellow = 0x6B55;
 
             public ItemNameGump(Item toreforge, BaseRunicTool tool, ReforgingOption options, ReforgedPrefix prefix, ReforgedSuffix suffix, bool isprefix)
                 : base(100, 100)

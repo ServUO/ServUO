@@ -59,7 +59,7 @@ namespace Server.Items
             public bool Tunic { get; set; }
         }
 
-        private MasterThinkerDecor m_Book, m_Pant, m_Tunic;
+        private readonly MasterThinkerDecor m_Book, m_Pant, m_Tunic;
 
         public static List<MasterThinkerArray> m_Array;
 

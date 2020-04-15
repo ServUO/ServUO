@@ -68,8 +68,8 @@ namespace Server.Items
 
         private class DestroyCrate : ContextMenuEntry
         {
-            private Mobile m_From;
-            private ShipCrate m_Crate;
+            private readonly Mobile m_From;
+            private readonly ShipCrate m_Crate;
 
             public DestroyCrate(Mobile from, ShipCrate crate) : base(1116522, 3)
             {
@@ -85,8 +85,8 @@ namespace Server.Items
 
         private class LoadShip : ContextMenuEntry
         {
-            private Mobile m_From;
-            private ShipCrate m_Crate;
+            private readonly Mobile m_From;
+            private readonly ShipCrate m_Crate;
 
             public LoadShip(Mobile from, ShipCrate crate)
                 : base(1116521, 3) //Load Ship from Crate
@@ -125,7 +125,7 @@ namespace Server.Items
 
         private class InternalGump : BaseConfirmGump
         {
-            private ShipCrate m_Crate;
+            private readonly ShipCrate m_Crate;
 
             public override int LabelNumber { get { return 1116523; } } // Are you sure you want to destroy your shipping crate and its contents?
 

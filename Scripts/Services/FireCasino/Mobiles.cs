@@ -58,7 +58,7 @@ namespace Server.Engines.ResortAndCasino
         public override bool IsInvulnerable { get { return true; } }
         public override bool IsActiveVendor { get { return false; } }
 
-        private List<SBInfo> m_SBInfos = new List<SBInfo>();
+        private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
 
         public override void InitSBInfo()
@@ -313,7 +313,7 @@ namespace Server.Engines.ResortAndCasino
         public override bool IsActiveVendor { get { return false; } }
         public override double GetMoveDelay { get { return (double)Utility.RandomMinMax(2, 6); } }
 
-        private List<SBInfo> m_SBInfos = new List<SBInfo>();
+        private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
 
         public Dictionary<Mobile, int> _Drinks { get; set; }

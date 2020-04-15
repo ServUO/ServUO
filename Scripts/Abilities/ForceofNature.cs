@@ -34,7 +34,7 @@ namespace Server.Items
             m_Table[attacker] = t;
         }
 
-        private static Dictionary<Mobile, ForceOfNatureTimer> m_Table = new Dictionary<Mobile, ForceOfNatureTimer>();
+        private static readonly Dictionary<Mobile, ForceOfNatureTimer> m_Table = new Dictionary<Mobile, ForceOfNatureTimer>();
 
         public static bool Remove(Mobile m)
         {
@@ -90,7 +90,7 @@ namespace Server.Items
 
         private class ForceOfNatureTimer : Timer
         {
-            private Mobile m_Target, m_From;
+            private readonly Mobile m_Target, m_From;
 
             private DateTime m_LastHit;
             private int m_Tick, m_Hits;

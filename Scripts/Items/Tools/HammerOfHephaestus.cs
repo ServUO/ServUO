@@ -7,7 +7,7 @@ namespace Server.Items
 {
     public class HammerOfHephaestus : AncientSmithyHammer
     {
-        private static List<HammerOfHephaestus> _Instances = new List<HammerOfHephaestus>();
+        private static readonly List<HammerOfHephaestus> _Instances = new List<HammerOfHephaestus>();
 
         public static void Initialize()
         {

@@ -13,7 +13,7 @@ namespace Server.Spells.SkillMasteries
     {
         private DateTime m_NextDamage;
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Tribulation", "In Jux Hur Rel",
                 -1,
                 9002
@@ -141,7 +141,7 @@ namespace Server.Spells.SkillMasteries
 
         private class InternalTarget : Target
         {
-            private TribulationSpell m_Owner;
+            private readonly TribulationSpell m_Owner;
 
             public InternalTarget(TribulationSpell spell) : base(10, false, TargetFlags.Harmful)
             {

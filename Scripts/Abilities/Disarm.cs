@@ -84,7 +84,7 @@ namespace Server.Items
             }
         }
 
-        private Type[] _AutoRearms =
+        private readonly Type[] _AutoRearms =
         {
             typeof(BritannianInfantry)
         };

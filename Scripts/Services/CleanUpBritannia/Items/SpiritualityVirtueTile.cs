@@ -12,9 +12,9 @@ namespace Server.Items
     {
         public override BaseAddonDeed Deed { get { return new SpiritualityVirtueTileDeed(); } }
 
-        private SpiritualityTileType m_SpiritualityTileType;
+        private readonly SpiritualityTileType m_SpiritualityTileType;
 
-        private int offset;
+        private readonly int offset;
 
         [Constructable]
         public SpiritualityVirtueTileAddon(SpiritualityTileType type)

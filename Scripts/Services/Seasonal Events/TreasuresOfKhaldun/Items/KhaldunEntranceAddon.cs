@@ -9,7 +9,7 @@ namespace Server.Items
 {
     public class KhaldunEntranceAddon : BaseAddon
     {
-        private static int[,] m_AddOnSimpleComponents = new int[,] {
+        private static readonly int[,] m_AddOnSimpleComponents = new int[,] {
               {476, 3, 5, 28}// 6	
 			, {465, 3, 2, 8}, {465, 3, 1, 10}, {465, 3, 0, 14}// 7	8	9	
 			, {466, 3, -1, 14}, {478, 2, 6, 28}, {476, 1, 5, 30}// 10	11	12	

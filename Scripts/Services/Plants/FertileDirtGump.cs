@@ -7,8 +7,8 @@ namespace Server.Engines.Plants
 {
     public class FertileDirtGump : Gump
     {
-        private Seed m_Seed;
-        private object m_AttachTo;
+        private readonly Seed m_Seed;
+        private readonly object m_AttachTo;
 
         private const int LabelColor = 0x7FFF;
         private const int FontColor = 0xFFFFFF;

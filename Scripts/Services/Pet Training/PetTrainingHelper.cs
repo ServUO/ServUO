@@ -1078,7 +1078,7 @@ namespace Server.Mobiles
             return false;
         }
 
-        private static int[][] _DamageTable =
+        private static readonly int[][] _DamageTable =
         {
             // slot 1 => 2
             new int[] { 0, 1 },
@@ -1447,7 +1447,7 @@ namespace Server.Mobiles
         /// </summary>
 
         public static TextDefinition[][] MagicalAbilityLocalizations { get { return _MagicalAbilityLocalizations; } }
-        private static TextDefinition[][] _MagicalAbilityLocalizations =
+        private static readonly TextDefinition[][] _MagicalAbilityLocalizations =
         {
             new TextDefinition[] { 1157559, 1157392 }, // piercing
             new TextDefinition[] { 1157560, 1157471 }, // bashing
@@ -1468,7 +1468,7 @@ namespace Server.Mobiles
         };
 
         public static TextDefinition[][] SpecialAbilityLocalizations { get { return _SpecialAbilityLocalizations; } }
-        private static TextDefinition[][] _SpecialAbilityLocalizations =
+        private static readonly TextDefinition[][] _SpecialAbilityLocalizations =
         {
             new TextDefinition[] { 1157412, 1157413 }, // Angry Fire
             new TextDefinition[] { 1157406, 1157407 }, // Conductive Blast
@@ -1497,7 +1497,7 @@ namespace Server.Mobiles
         };
 
         public static TextDefinition[][] AreaEffectLocalizations { get { return _AreaEffectLocalizations; } }
-        private static TextDefinition[][] _AreaEffectLocalizations =
+        private static readonly TextDefinition[][] _AreaEffectLocalizations =
         {
             new TextDefinition[] { 1157459, 1157460 }, // Aura of Energy
             new TextDefinition[] { 1157467, 1157468 }, // Aura of Nausea
@@ -1509,7 +1509,7 @@ namespace Server.Mobiles
         };
 
         public static TextDefinition[][] WeaponAbilityLocalizations { get { return _WeaponAbilityLocalizations; } }
-        private static TextDefinition[][] _WeaponAbilityLocalizations =
+        private static readonly TextDefinition[][] _WeaponAbilityLocalizations =
         {
             new TextDefinition[] { 1028855, 1157436 }, // Nerve Strike
             new TextDefinition[] { 1028850, 1157437 }, // Whirlwind Attack

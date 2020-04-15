@@ -4,7 +4,7 @@ namespace Server.Engines.Shadowguard
 {
     public class ExitEntry : ContextMenuEntry
     {
-        private Mobile _From;
+        private readonly Mobile _From;
 
         public ExitEntry(Mobile from)
             : base(1156287, -1) // Exit Shadowguard

@@ -5,7 +5,7 @@ namespace Server.Multis
     public class RenameBoatPrompt : Prompt
     {
         public override int MessageCliloc { get { return 502580; } }
-        private BaseBoat m_Boat;
+        private readonly BaseBoat m_Boat;
 
         public RenameBoatPrompt(BaseBoat boat)
         {

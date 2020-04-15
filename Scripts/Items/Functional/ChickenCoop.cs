@@ -17,7 +17,7 @@ namespace Server.Items
         public override int LabelNumber { get { return 1112570; } } // a chicken coop
 
         private SecureLevel m_Level;
-        private Dictionary<Mobile, List<BaseCreature>> m_Stored = new Dictionary<Mobile, List<BaseCreature>>();
+        private readonly Dictionary<Mobile, List<BaseCreature>> m_Stored = new Dictionary<Mobile, List<BaseCreature>>();
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level
@@ -85,8 +85,8 @@ namespace Server.Items
 
         private class StableEntry : ContextMenuEntry
         {
-            private ChickenCoop m_Coop;
-            private Mobile m_From;
+            private readonly ChickenCoop m_Coop;
+            private readonly Mobile m_From;
 
             public StableEntry(ChickenCoop coop, Mobile from)
                 : base(6126, 12)
@@ -103,8 +103,8 @@ namespace Server.Items
 
         private class ClaimAllEntry : ContextMenuEntry
         {
-            private ChickenCoop m_Coop;
-            private Mobile m_From;
+            private readonly ChickenCoop m_Coop;
+            private readonly Mobile m_From;
 
             public ClaimAllEntry(ChickenCoop coop, Mobile from)
                 : base(6127, 12)
@@ -133,9 +133,9 @@ namespace Server.Items
 
         private class ClaimListGump : Gump
         {
-            private ChickenCoop m_Post;
-            private Mobile m_From;
-            private List<BaseCreature> m_List;
+            private readonly ChickenCoop m_Post;
+            private readonly Mobile m_From;
+            private readonly List<BaseCreature> m_List;
 
             public ClaimListGump(ChickenCoop post, Mobile from, List<BaseCreature> list)
                 : base(50, 50)
@@ -182,7 +182,7 @@ namespace Server.Items
 
         private class StableTarget : Target
         {
-            private ChickenCoop m_Post;
+            private readonly ChickenCoop m_Post;
 
             public StableTarget(ChickenCoop post)
                 : base(12, false, TargetFlags.None)

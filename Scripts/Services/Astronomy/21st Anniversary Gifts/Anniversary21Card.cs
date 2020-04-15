@@ -8,7 +8,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public string Args { get; set; }
 
-        private string[] _Staff = new string[] { Server.Misc.ServerList.ServerName };
+        private readonly string[] _Staff = new string[] { Server.Misc.ServerList.ServerName };
 
         [Constructable]
         public Anniversary21Card()

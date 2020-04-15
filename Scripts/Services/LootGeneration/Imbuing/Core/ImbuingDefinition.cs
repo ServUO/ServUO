@@ -6,18 +6,18 @@ namespace Server.SkillHandlers
 {
     public class ImbuingDefinition
     {
-        private object m_Attribute;
-        private int m_AttributeName;
-        private int m_Weight;
-        private Type m_PrimaryRes;
-        private Type m_GemRes;
-        private Type m_SpecialRes;
-        private int m_PrimaryName;
-        private int m_GemName;
-        private int m_SpecialName;
-        private int m_MaxIntensity;
-        private int m_IncAmount;
-        private int m_Description;
+        private readonly object m_Attribute;
+        private readonly int m_AttributeName;
+        private readonly int m_Weight;
+        private readonly Type m_PrimaryRes;
+        private readonly Type m_GemRes;
+        private readonly Type m_SpecialRes;
+        private readonly int m_PrimaryName;
+        private readonly int m_GemName;
+        private readonly int m_SpecialName;
+        private readonly int m_MaxIntensity;
+        private readonly int m_IncAmount;
+        private readonly int m_Description;
 
         public object Attribute { get { return m_Attribute; } }
         public int AttributeName { get { return m_AttributeName; } }

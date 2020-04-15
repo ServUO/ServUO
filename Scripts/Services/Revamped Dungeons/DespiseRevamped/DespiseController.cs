@@ -89,13 +89,13 @@ namespace Server.Engines.Despise
             get { return m_SequenceAlignment; }
         }
 
-        private List<DespiseCreature> m_EvilArmy = new List<DespiseCreature>();
-        private List<DespiseCreature> m_GoodArmy = new List<DespiseCreature>();
+        private readonly List<DespiseCreature> m_EvilArmy = new List<DespiseCreature>();
+        private readonly List<DespiseCreature> m_GoodArmy = new List<DespiseCreature>();
 
         public List<DespiseCreature> EvilArmy { get { return m_EvilArmy; } }
         public List<DespiseCreature> GoodArmy { get { return m_GoodArmy; } }
 
-        private List<Mobile> m_ToTransport = new List<Mobile>();
+        private readonly List<Mobile> m_ToTransport = new List<Mobile>();
 
         private readonly TimeSpan EncounterCheckDuration = TimeSpan.FromMinutes(5);
         private readonly TimeSpan DeadLineDuration = TimeSpan.FromMinutes(90);
@@ -619,19 +619,19 @@ namespace Server.Engines.Despise
         #region Location Defs
 
         public static Rectangle2D[] EvilBounds { get { return m_EvilBounds; } }
-        private static Rectangle2D[] m_EvilBounds = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_EvilBounds = new Rectangle2D[]
         {
             new Rectangle2D(5381, 644, 149, 120)
         };
 
         public static Rectangle2D[] GoodBounds { get { return m_GoodBounds; } }
-        private static Rectangle2D[] m_GoodBounds = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_GoodBounds = new Rectangle2D[]
         {
             new Rectangle2D(5380, 515, 134, 121)
         };
 
         public static Rectangle2D[] LowerLevelBounds { get { return m_LowerLevelBounds; } }
-        private static Rectangle2D[] m_LowerLevelBounds = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_LowerLevelBounds = new Rectangle2D[]
         {
             new Rectangle2D(5379, 771, 247, 250)
         };

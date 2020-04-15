@@ -44,7 +44,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextResourceCount { get; set; }
 
-        private static int[,] _EastLarge = new int[,]
+        private static readonly int[,] _EastLarge = new int[,]
         {
               {14495, -1, -3, 0}, {14494, 0, -3, 0}, {14493, 1, -3, 0}// 1	2	3	
 			, {14496, 2, -3, 0}, {14486, 0, -1, 0}, {14487, -1, -1, 0}// 4	5	6	
@@ -58,7 +58,7 @@ namespace Server.Items
 			, {14482, 0, 0, 0}// 28	
 		};
 
-        private static int[,] _SouthLarge =
+        private static readonly int[,] _SouthLarge =
         {
               {14456, 0, 2, 0}, {14455, 0, -1, 0}, {14441, -3, 2, 0}// 1	2	3	
 			, {14451, -1, -1, 0}, {14466, 3, 0, 0}, {14442, -3, 1, 0}// 4	5	6	
@@ -72,7 +72,7 @@ namespace Server.Items
 			, {14443, -3, 0, 0}// 28	
 		};
 
-        private static int[,] _EastSmall =
+        private static readonly int[,] _EastSmall =
         {
               {18198, 1, 2, 0},   {18199, 0, 2, 0},  {18200, -1, 2, 0}  // 1	2	3	
 			, {18209, 1, 1, 0},   {18210, 0, 1, 0},  {18211, -1, 1, 0}  // 4	5	6	
@@ -81,7 +81,7 @@ namespace Server.Items
 			, {18238, -1, 0, 0},  {18236, 1, 0, 0},  {18237, 0, 0, 0}   // 13	14	15	
 		};
 
-        private static int[,] _SouthSmall =
+        private static readonly int[,] _SouthSmall =
         {
               {18197, 1, 1, 0},   {18196, -2, 1, 0}, {18195, -1, 1, 0}  // 1	2	3	
 			, {18194, 2, 1, 0},   {18193, 0, 1, 0},  {18192, 1, 0, 0}   // 4	5	6	

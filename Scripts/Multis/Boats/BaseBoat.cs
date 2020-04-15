@@ -28,10 +28,10 @@ namespace Server.Multis
 
     public abstract class BaseBoat : BaseMulti, IMount
     {
-        private static Rectangle2D[] m_BritWrap = new Rectangle2D[]{ new Rectangle2D( 16, 16, 5120 - 32, 4096 - 32 ), new Rectangle2D( 5136, 2320, 992, 1760 ),
+        private static readonly Rectangle2D[] m_BritWrap = new Rectangle2D[]{ new Rectangle2D( 16, 16, 5120 - 32, 4096 - 32 ), new Rectangle2D( 5136, 2320, 992, 1760 ),
                                                                      new Rectangle2D(6272, 1088, 319, 319)};
-        private static Rectangle2D[] m_IlshWrap = new Rectangle2D[] { new Rectangle2D(16, 16, 2304 - 32, 1600 - 32) };
-        private static Rectangle2D[] m_TokunoWrap = new Rectangle2D[] { new Rectangle2D(16, 16, 1448 - 32, 1448 - 32) };
+        private static readonly Rectangle2D[] m_IlshWrap = new Rectangle2D[] { new Rectangle2D(16, 16, 2304 - 32, 1600 - 32) };
+        private static readonly Rectangle2D[] m_TokunoWrap = new Rectangle2D[] { new Rectangle2D(16, 16, 1448 - 32, 1448 - 32) };
 
         public static BaseBoat FindBoatAt(IEntity entity)
         {
@@ -301,7 +301,7 @@ namespace Server.Multis
 
         public virtual BaseDockedBoat DockedBoat { get { return null; } }
 
-        private static List<BaseBoat> m_Instances = new List<BaseBoat>();
+        private static readonly List<BaseBoat> m_Instances = new List<BaseBoat>();
 
         public static List<BaseBoat> Boats { get { return m_Instances; } }
 
@@ -1275,10 +1275,10 @@ namespace Server.Multis
         private static readonly double WoodPer = 17;
         private static readonly double ClothPer = 17;
 
-        private Type[] WoodTypes = new Type[] { typeof(Board),  typeof(OakBoard), typeof(AshBoard), typeof(YewBoard), typeof(HeartwoodBoard), typeof(BloodwoodBoard), typeof(FrostwoodBoard),
+        private readonly Type[] WoodTypes = new Type[] { typeof(Board),  typeof(OakBoard), typeof(AshBoard), typeof(YewBoard), typeof(HeartwoodBoard), typeof(BloodwoodBoard), typeof(FrostwoodBoard),
                                                 typeof(Log), typeof(OakLog), typeof(AshLog), typeof(YewLog), typeof(HeartwoodLog), typeof(BloodwoodLog), typeof(FrostwoodLog), };
 
-        private Type[] ClothTypes = new Type[] { typeof(Cloth), typeof(UncutCloth) };
+        private readonly Type[] ClothTypes = new Type[] { typeof(Cloth), typeof(UncutCloth) };
 
         public void TryRepairs(Mobile from)
         {
@@ -1447,7 +1447,7 @@ namespace Server.Multis
 
         private class EmergencyRepairDamageTimer : Timer
         {
-            private BaseBoat m_Boat;
+            private readonly BaseBoat m_Boat;
 
             public DateTime EndRepairs { get; }
 
@@ -1870,7 +1870,7 @@ namespace Server.Multis
 
         private class TurnTimer : Timer
         {
-            private BaseBoat m_Boat;
+            private readonly BaseBoat m_Boat;
             private readonly int m_Offset;
 
             private readonly bool m_Resume;
@@ -2588,7 +2588,7 @@ namespace Server.Multis
 
         private class MoveTimer : Timer
         {
-            private BaseBoat m_Boat;
+            private readonly BaseBoat m_Boat;
             private readonly bool m_SingleMove;
 
             public MoveTimer(BaseBoat boat, TimeSpan interval, bool single)
@@ -2908,7 +2908,7 @@ namespace Server.Multis
 
         private class DecayTimer : Timer
         {
-            private BaseBoat m_Boat;
+            private readonly BaseBoat m_Boat;
             private int m_Count;
 
             public DecayTimer(BaseBoat boat)
@@ -3219,7 +3219,7 @@ namespace Server.Multis
     [PropertyObject]
     public class BoatCourse
     {
-        private List<Point2D> m_Waypoints = new List<Point2D>();
+        private readonly List<Point2D> m_Waypoints = new List<Point2D>();
         public List<Point2D> Waypoints { get { return m_Waypoints; } }
 
         [CommandProperty(AccessLevel.GameMaster)]

@@ -149,7 +149,7 @@ namespace Server.Mobiles
             BaseGump.SendGump(new HeplerPaulsonGump(e.Mobile as PlayerMobile));
         }
 
-        private static PageData[] GumpInfo =
+        private static readonly PageData[] GumpInfo =
         {
                 new PageData(1, 1154279, new SelectionEntry(1154280, 2), new SelectionEntry(1154282, 3)),
                 new PageData(2, 1154281, new SelectionEntry(1154282, 4)),
@@ -172,7 +172,7 @@ namespace Server.Mobiles
             CommandSystem.Register("HeplerPaulsonComplete", AccessLevel.GameMaster, new CommandEventHandler(HeplerPaulsonCompleteGump_OnCommand));
         }
 
-        private static PageData[] GumpInfo =
+        private static readonly PageData[] GumpInfo =
         {
             new PageData(1, 1154284,  new SelectionEntry(1154285, 2)),
             new PageData(2, 1154286)
@@ -201,7 +201,7 @@ namespace Server.Mobiles
             BaseGump.SendGump(new HeplerPaulsonCollectCompleteGump(e.Mobile as PlayerMobile));
         }
 
-        private static PageData[] GumpInfo =
+        private static readonly PageData[] GumpInfo =
         {
             new PageData(1, 1154319),
         };

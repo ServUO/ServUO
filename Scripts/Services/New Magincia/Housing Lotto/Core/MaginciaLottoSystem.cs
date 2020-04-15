@@ -18,13 +18,13 @@ namespace Server.Engines.NewMagincia
         private static MaginciaLottoSystem m_Instance;
         public static MaginciaLottoSystem Instance { get { return m_Instance; } set { m_Instance = value; } }
 
-        private static List<MaginciaHousingPlot> m_Plots = new List<MaginciaHousingPlot>();
+        private static readonly List<MaginciaHousingPlot> m_Plots = new List<MaginciaHousingPlot>();
         public static List<MaginciaHousingPlot> Plots { get { return m_Plots; } }
 
         private static Dictionary<Map, List<Rectangle2D>> m_FreeHousingZones;
         public static Dictionary<Map, List<Rectangle2D>> FreeHousingZones { get { return m_FreeHousingZones; } }
 
-        private static Dictionary<Mobile, List<NewMaginciaMessage>> m_MessageQueue = new Dictionary<Mobile, List<NewMaginciaMessage>>();
+        private static readonly Dictionary<Mobile, List<NewMaginciaMessage>> m_MessageQueue = new Dictionary<Mobile, List<NewMaginciaMessage>>();
         public static Dictionary<Mobile, List<NewMaginciaMessage>> MessageQueue { get { return m_MessageQueue; } }
 
         private Timer m_Timer;
@@ -250,7 +250,7 @@ namespace Server.Engines.NewMagincia
         }
 
         public static Rectangle2D[] MagHousingZones { get { return m_MagHousingZones; } }
-        private static Rectangle2D[] m_MagHousingZones = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_MagHousingZones = new Rectangle2D[]
         {
             new Rectangle2D(3686, 2125, 18, 18), // C1
             new Rectangle2D(3686, 2086, 18, 18), // C2 / Prime
@@ -280,7 +280,7 @@ namespace Server.Engines.NewMagincia
             new Rectangle2D(3715, 2090, 18, 18), // E7 / Prime            
         };
 
-        private static Point3D[] m_StoneLocs = new Point3D[]
+        private static readonly Point3D[] m_StoneLocs = new Point3D[]
         {
             new Point3D(3683, 2134, 20),
             new Point3D(3704, 2092, 5),
@@ -310,7 +310,7 @@ namespace Server.Engines.NewMagincia
             new Point3D(3711, 2087, 5)
         };
 
-        private static string[] m_Identifiers = new string[]
+        private static readonly string[] m_Identifiers = new string[]
         {
             "C-1",
             "C-2",

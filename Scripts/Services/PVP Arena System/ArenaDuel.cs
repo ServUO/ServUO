@@ -594,7 +594,7 @@ namespace Server.Engines.ArenaSystem
             }
         }
 
-        private int[] _EffectZs = new int[] { 10, 20, 30, 40, 50 };
+        private readonly int[] _EffectZs = new int[] { 10, 20, 30, 40, 50 };
 
         public void DoGateEffect()
         {

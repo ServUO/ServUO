@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class JacobsPickaxe : Pickaxe
     {
-        private static List<JacobsPickaxe> _Instances = new List<JacobsPickaxe>();
+        private static readonly List<JacobsPickaxe> _Instances = new List<JacobsPickaxe>();
 
         public static void Initialize()
         {

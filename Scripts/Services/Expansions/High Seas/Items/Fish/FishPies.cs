@@ -162,8 +162,8 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private Mobile m_From;
-            private FishPieEffect m_EffectType;
+            private readonly Mobile m_From;
+            private readonly FishPieEffect m_EffectType;
 
             public InternalTimer(TimeSpan duration, Mobile from, FishPieEffect type) : base(duration)
             {

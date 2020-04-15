@@ -7,8 +7,8 @@ namespace Server.Gumps
 {
     public class BoatPlacementGump : Gump
     {
-        private Item m_Item;
-        private Mobile m_From;
+        private readonly Item m_Item;
+        private readonly Mobile m_From;
 
         public BoatPlacementGump(Item item, Mobile from)
             : base(0, 0)
@@ -74,9 +74,9 @@ namespace Server.Gumps
 
         private class InternalTarget : MultiTarget
         {
-            private Item m_Item;
-            private Direction m_Facing;
-            private int m_ItemID;
+            private readonly Item m_Item;
+            private readonly Direction m_Facing;
+            private readonly int m_ItemID;
 
             public InternalTarget(int itemID, Point3D offset, Item item, Direction facing)
                 : base(itemID, offset)

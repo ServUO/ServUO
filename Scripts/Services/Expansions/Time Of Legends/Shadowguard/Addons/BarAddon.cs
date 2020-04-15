@@ -9,7 +9,7 @@ namespace Server.Items
 {
     public class BarAddon : BaseAddon
     {
-        private static int[,] m_AddOnSimpleComponents = new int[,] {
+        private static readonly int[,] m_AddOnSimpleComponents = new int[,] {
               {1222, 20, 20, 0}, {1222, 20, 19, 0}, {1222, 20, 18, 0}// 1	2	3	
 			, {1222, 20, 17, 0}, {1222, 19, 20, 0}, {1222, 19, 19, 0}// 4	5	6	
 			, {1222, 19, 18, 0}, {1222, 19, 17, 0}, {1222, 18, 20, 0}// 7	8	9	

@@ -13,8 +13,8 @@ namespace Server.Engines.Distillation
         private const int LabelColor = 0x7FFF;
         private const int FontColor = 0xFFFFFF;
 
-        private DistillationContext m_Context;
-        private CraftDefinition m_Def;
+        private readonly DistillationContext m_Context;
+        private readonly CraftDefinition m_Def;
 
         public DistillationGump(Mobile from) : base(35, 35)
         {
@@ -198,7 +198,7 @@ namespace Server.Engines.Distillation
 
         private class LabelPrompt : Prompt
         {
-            private DistillationContext m_Context;
+            private readonly DistillationContext m_Context;
 
             public LabelPrompt(DistillationContext context)
             {
@@ -231,8 +231,8 @@ namespace Server.Engines.Distillation
 
         public class DistillationTarget : Target
         {
-            private DistillationContext m_Context;
-            private CraftDefinition m_Def;
+            private readonly DistillationContext m_Context;
+            private readonly CraftDefinition m_Def;
 
             public DistillationTarget(Mobile from, DistillationContext context, CraftDefinition def)
                 : base(-1, false, TargetFlags.None)
@@ -444,8 +444,8 @@ namespace Server.Engines.Distillation
 
         private class YeastSelectionTarget : Target
         {
-            private int m_Index;
-            private DistillationContext m_Context;
+            private readonly int m_Index;
+            private readonly DistillationContext m_Context;
 
             public YeastSelectionTarget(DistillationContext context, int index)
                 : base(-1, false, TargetFlags.None)

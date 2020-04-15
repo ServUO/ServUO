@@ -14,12 +14,12 @@ namespace Server.Gumps
 {
     public class XmlPartialCategorizedAddGump : Gump
     {
-        private string m_SearchString;
-        private ArrayList m_SearchResults;
-        private int m_Page;
-        private Gump m_Gump;
-        private int m_EntryIndex = -1;
-        private XmlSpawner m_Spawner;
+        private readonly string m_SearchString;
+        private readonly ArrayList m_SearchResults;
+        private readonly int m_Page;
+        private readonly Gump m_Gump;
+        private readonly int m_EntryIndex = -1;
+        private readonly XmlSpawner m_Spawner;
 
         public XmlPartialCategorizedAddGump(Mobile from, string searchString, int page, ArrayList searchResults, bool explicitSearch, int entryindex, Gump gump) : base(50, 50)
         {
@@ -105,7 +105,7 @@ namespace Server.Gumps
             AddHtmlLocalized(244, 250, 170, 20, 1061027, ((m_Page + 1) * 10) < searchResults.Count ? 0x7FFF : 0x5EF7, false, false); // Next page
         }
 
-        private static Type typeofItem = typeof(Item), typeofMobile = typeof(Mobile);
+        private static readonly Type typeofItem = typeof(Item), typeofMobile = typeof(Mobile);
 
         private class SearchEntry
         {

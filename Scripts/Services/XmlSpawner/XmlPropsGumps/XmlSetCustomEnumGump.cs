@@ -9,7 +9,7 @@ namespace Server.Gumps
 {
     public class XmlSetCustomEnumGump : XmlSetListOptionGump
     {
-        private string[] m_Names;
+        private readonly string[] m_Names;
 #if (NEWTIMERS)
         public XmlSetCustomEnumGump(PropertyInfo prop, Mobile mobile, object o, Stack<PropertiesGump.StackEntry> stack, int propspage, ArrayList list, string[] names) : base(prop, mobile, o, stack, propspage, list, names, null)
 #else

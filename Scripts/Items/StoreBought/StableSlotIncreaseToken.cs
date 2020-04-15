@@ -86,7 +86,7 @@ namespace Server.Items
 
         private class InternalGump : Gump
         {
-            private StableSlotIncreaseToken m_Token;
+            private readonly StableSlotIncreaseToken m_Token;
 
             public InternalGump(StableSlotIncreaseToken token)
                 : base(10, 10)

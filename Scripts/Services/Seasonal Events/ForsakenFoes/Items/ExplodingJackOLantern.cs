@@ -31,7 +31,7 @@ namespace Server.Items
 
         private class ThrowTarget : Target
         {
-            private Mobile m_From;
+            private readonly Mobile m_From;
 
             public ThrowTarget(Mobile from)
                 : base(12, true, TargetFlags.None)

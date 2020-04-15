@@ -177,7 +177,7 @@ namespace Server.Engines.Plants
 
         private class InternalTarget : Target
         {
-            private Seed m_Seed;
+            private readonly Seed m_Seed;
 
             public InternalTarget(Seed seed) : base(-1, false, TargetFlags.None)
             {

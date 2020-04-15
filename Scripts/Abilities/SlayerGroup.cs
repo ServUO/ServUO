@@ -6,8 +6,8 @@ namespace Server.Items
 {
     public class SlayerGroup
     {
-        private static SlayerEntry[] m_TotalEntries;
-        private static SlayerGroup[] m_Groups;
+        private static readonly SlayerEntry[] m_TotalEntries;
+        private static readonly SlayerGroup[] m_Groups;
         private SlayerGroup[] m_Opposition;
         private SlayerEntry m_Super;
         private SlayerEntry[] m_Entries;

@@ -79,8 +79,8 @@ namespace Server.Items
 
         private class GetFlagTarget : Target
         {
-            private CommandEventArgs m_e;
-            private int m_flag;
+            private readonly CommandEventArgs m_e;
+            private readonly int m_flag;
 
             public GetFlagTarget(CommandEventArgs e, int flag) : base(30, false, TargetFlags.None)
             {
@@ -123,9 +123,9 @@ namespace Server.Items
 
         private class SetStealableTarget : Target
         {
-            private CommandEventArgs m_e;
-            private bool m_state;
-            private bool set = false;
+            private readonly CommandEventArgs m_e;
+            private readonly bool m_state;
+            private readonly bool set = false;
 
             public SetStealableTarget(CommandEventArgs e, bool state) : base(30, false, TargetFlags.None)
             {

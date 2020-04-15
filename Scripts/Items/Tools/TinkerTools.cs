@@ -55,8 +55,8 @@ namespace Server.Items
 
         public class ToggleRepairContextMenuEntry : ContextMenuEntry
         {
-            private Mobile _From;
-            private BaseTool _Tool;
+            private readonly Mobile _From;
+            private readonly BaseTool _Tool;
 
             public ToggleRepairContextMenuEntry(Mobile from, BaseTool tool)
                 : base(1157040) // Toggle Repair Mode
@@ -132,8 +132,8 @@ namespace Server.Items
 
         public class ToggleRepairContextMenuEntry : ContextMenuEntry
         {
-            private Mobile _From;
-            private BaseTool _Tool;
+            private readonly Mobile _From;
+            private readonly BaseTool _Tool;
 
             public ToggleRepairContextMenuEntry(Mobile from, BaseTool tool)
                 : base(1157040) // Toggle Repair Mode

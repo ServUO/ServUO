@@ -100,7 +100,7 @@ namespace Server.Items
 
         private class SendTarget : Target
         {
-            private ChestOfSending m_Chest;
+            private readonly ChestOfSending m_Chest;
 
             public SendTarget(ChestOfSending chest) : base(-1, false, TargetFlags.None)
             {
@@ -172,7 +172,7 @@ namespace Server.Items
 
         private class UseChestEntry : ContextMenuEntry
         {
-            private ChestOfSending m_Chest;
+            private readonly ChestOfSending m_Chest;
 
             public UseChestEntry(ChestOfSending chest, bool enabled) : base(1150419, 2)
             {

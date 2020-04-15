@@ -55,7 +55,7 @@ namespace Server.Items
         private int _LavaStage;
         private Rectangle2D _CurrentLava;
         private Rectangle2D _SafeZone;
-        private Region _Region;
+        private readonly Region _Region;
 
         public static void Initialize()
         {

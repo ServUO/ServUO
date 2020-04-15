@@ -4,8 +4,8 @@ namespace Server.Engines.Chat
 
     public class ChatActionHandler
     {
-        private bool m_RequireConference;
-        private OnChatAction m_Callback;
+        private readonly bool m_RequireConference;
+        private readonly OnChatAction m_Callback;
 
         public bool RequireConference => m_RequireConference;
         public OnChatAction Callback => m_Callback;

@@ -814,7 +814,7 @@ namespace Server.Engines.Shadowguard
             }
         }
 
-        private EncounterType[] _Encounters =
+        private readonly EncounterType[] _Encounters =
         {
             EncounterType.Bar,
             EncounterType.Orchard,

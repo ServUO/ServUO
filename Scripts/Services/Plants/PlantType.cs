@@ -62,7 +62,7 @@ namespace Server.Engines.Plants
 
     public class PlantTypeInfo
     {
-        private static PlantTypeInfo[] m_Table = new PlantTypeInfo[]
+        private static readonly PlantTypeInfo[] m_Table = new PlantTypeInfo[]
         {
             new PlantTypeInfo( 0xC83, 0, 0,         PlantType.CampionFlowers,       false, true, true, true,        PlantCategory.Default ),
             new PlantTypeInfo( 0xC86, 0, 0,         PlantType.Poppies,              false, true, true, true,        PlantCategory.Default ),
@@ -304,23 +304,23 @@ namespace Server.Engines.Plants
             return hueInfo.IsBright() ? 1113493 : 1113492; // ~1_amount~ [bright] ~2_color~ ~3_type~ seeds
         }
 
-        private int m_ItemID;
-        private int m_OffsetX;
-        private int m_OffsetY;
-        private PlantType m_PlantType;
-        private bool m_ContainsPlant;
-        private bool m_Flowery;
-        private bool m_Crossable;
-        private bool m_Reproduces;
-        private PlantCategory m_PlantCategory;
+        private readonly int m_ItemID;
+        private readonly int m_OffsetX;
+        private readonly int m_OffsetY;
+        private readonly PlantType m_PlantType;
+        private readonly bool m_ContainsPlant;
+        private readonly bool m_Flowery;
+        private readonly bool m_Crossable;
+        private readonly bool m_Reproduces;
+        private readonly PlantCategory m_PlantCategory;
 
         // Cliloc overrides
-        private int m_PlantLabelSeed;
-        private int m_PlantLabelPlant;
-        private int m_PlantLabelFullGrown;
-        private int m_PlantLabelDecorative;
-        private int m_SeedLabel;
-        private int m_SeedLabelPlural;
+        private readonly int m_PlantLabelSeed;
+        private readonly int m_PlantLabelPlant;
+        private readonly int m_PlantLabelFullGrown;
+        private readonly int m_PlantLabelDecorative;
+        private readonly int m_SeedLabel;
+        private readonly int m_SeedLabelPlural;
 
         public int ItemID { get { return m_ItemID; } }
         public int OffsetX { get { return m_OffsetX; } }

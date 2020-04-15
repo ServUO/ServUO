@@ -49,7 +49,7 @@ namespace Server.Gumps
             return String.Format("{{ page {0} }}", m_Page);
         }
 
-        private static byte[] m_LayoutName = Gump.StringToBuffer("page");
+        private static readonly byte[] m_LayoutName = Gump.StringToBuffer("page");
 
         public override void AppendTo(IGumpWriter disp)
         {

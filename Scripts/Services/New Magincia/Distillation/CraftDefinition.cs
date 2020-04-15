@@ -5,11 +5,11 @@ namespace Server.Engines.Distillation
 {
     public class CraftDefinition
     {
-        private Group m_Group;
-        private Liquor m_Liquor;
-        private Type[] m_Ingredients;
-        private int[] m_Amounts;
-        private int[] m_Labels;
+        private readonly Group m_Group;
+        private readonly Liquor m_Liquor;
+        private readonly Type[] m_Ingredients;
+        private readonly int[] m_Amounts;
+        private readonly int[] m_Labels;
         private TimeSpan m_MaturationDuration;
 
         public Group Group { get { return m_Group; } }

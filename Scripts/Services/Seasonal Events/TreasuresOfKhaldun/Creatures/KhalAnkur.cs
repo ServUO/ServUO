@@ -183,7 +183,7 @@ namespace Server.Mobiles
 
         private class InternalTimer : Timer
         {
-            private KhalAnkur m_Mobile;
+            private readonly KhalAnkur m_Mobile;
             private int m_Tick;
 
             public InternalTimer(KhalAnkur mob)

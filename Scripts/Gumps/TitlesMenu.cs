@@ -13,7 +13,7 @@ namespace Server.Gumps
 {
     public class TitlesMenuEntry : ContextMenuEntry
     {
-        private PlayerMobile _From;
+        private readonly PlayerMobile _From;
 
         public TitlesMenuEntry(PlayerMobile from)
             : base(1115022, -1) // Open Titles Menu

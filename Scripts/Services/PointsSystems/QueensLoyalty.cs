@@ -20,7 +20,7 @@ namespace Server.Engines.Points
         public override bool AutoAdd { get { return true; } }
         public override double MaxPoints { get { return 15000; } }
 
-        private TextDefinition m_Name = new TextDefinition(1095163);
+        private readonly TextDefinition m_Name = new TextDefinition(1095163);
 
         public QueensLoyalty()
         {

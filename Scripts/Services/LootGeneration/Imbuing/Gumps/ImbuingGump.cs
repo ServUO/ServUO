@@ -196,7 +196,7 @@ namespace Server.Gumps
 
             private class UnravelGump : BaseGump
             {
-                private Item m_Item;
+                private readonly Item m_Item;
 
                 public UnravelGump(PlayerMobile pm, Item item)
                     : base(pm, 60, 36)
@@ -301,8 +301,8 @@ namespace Server.Gumps
 
             private class UnravelContainerGump : BaseGump
             {
-                private Container m_Container;
-                private List<Item> m_List;
+                private readonly Container m_Container;
+                private readonly List<Item> m_List;
 
                 public UnravelContainerGump(PlayerMobile pm, Container c)
                     : base(pm, 25, 50)

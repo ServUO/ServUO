@@ -389,7 +389,7 @@ namespace Server.Engines.VvV
             m.SendLocalizedMessage(cliloc, false, "[Guild][VvV] ", args, m is PlayerMobile ? ((PlayerMobile)m).GuildMessageHue : 0x34);
         }
 
-        private List<Item> VvVItems = new List<Item>();
+        private readonly List<Item> VvVItems = new List<Item>();
 
         public void AddVvVItem(Item item, bool initial = false)
         {
@@ -996,7 +996,7 @@ namespace Server.Engines.VvV
                 });
         }
 
-        private static string _EnhancedRulesNotice = String.Format("Notice: The Vice Vs Virtue system has recently enabled enhanced rules. To avoid any issues and " +
+        private static readonly string _EnhancedRulesNotice = String.Format("Notice: The Vice Vs Virtue system has recently enabled enhanced rules. To avoid any issues and " +
              "unexpected deaths due to the new game mechanics, it is important that you read this message. " +
              "<br><br>New VvV Mechanics:<br><br>" +
              "- VvV combatants are attackable on all facets.<br>" +

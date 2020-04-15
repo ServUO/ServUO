@@ -11,7 +11,7 @@ namespace Server.Mobiles
 
         private const int MaxFellows = 3;
 
-        private List<Mobile> m_Fellows = new List<Mobile>();
+        private readonly List<Mobile> m_Fellows = new List<Mobile>();
         private Timer m_FellowsTimer;
 
         [Constructable]
@@ -118,7 +118,7 @@ namespace Server.Mobiles
 
         private class InternalTimer : Timer
         {
-            private LeatherWolf m_Owner;
+            private readonly LeatherWolf m_Owner;
 
             public InternalTimer(LeatherWolf owner)
                 : base(TimeSpan.Zero, TimeSpan.FromSeconds(30.0))
