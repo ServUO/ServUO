@@ -551,10 +551,10 @@ namespace Server.Network
 
             Serial senderSerial = prompt.Sender != null ? prompt.Sender.Serial : to.Serial;
 
-            m_Stream.Write((int)senderSerial);
-            m_Stream.Write((int)prompt.TypeId); //0x2C
-            m_Stream.Write((int)0); // type
-            m_Stream.Write((int)0); // language
+            m_Stream.Write(senderSerial);
+            m_Stream.Write(prompt.TypeId); //0x2C
+            m_Stream.Write(0); // type
+            m_Stream.Write(0); // language
             m_Stream.Write((short)0); // text
         }
     }
@@ -1313,8 +1313,8 @@ namespace Server.Network
             : base(0x70, 28)
         {
             m_Stream.Write((byte)type);
-            m_Stream.Write((int)from);
-            m_Stream.Write((int)to);
+            m_Stream.Write(from);
+            m_Stream.Write(to);
             m_Stream.Write((short)itemID);
             m_Stream.Write((short)fromPoint.X);
             m_Stream.Write((short)fromPoint.Y);
@@ -1326,7 +1326,7 @@ namespace Server.Network
             m_Stream.Write((byte)duration);
             m_Stream.Write((byte)0);
             m_Stream.Write((byte)0);
-            m_Stream.Write((bool)fixedDirection);
+            m_Stream.Write(fixedDirection);
             m_Stream.Write((byte)explode);
         }
     }
@@ -1748,7 +1748,7 @@ namespace Server.Network
             m_Stream.Write((ushort)item.Amount);
             m_Stream.Write((short)item.X);
             m_Stream.Write((short)item.Y);
-            m_Stream.Write((byte)item.GridLocation);
+            m_Stream.Write(item.GridLocation);
             m_Stream.Write(parentSerial);
             m_Stream.Write((ushort)(item.QuestItem ? item.QuestItemHue : item.Hue));
         }
@@ -1789,7 +1789,7 @@ namespace Server.Network
                     m_Stream.Write((ushort)child.Amount);
                     m_Stream.Write((short)loc.m_X);
                     m_Stream.Write((short)loc.m_Y);
-                    m_Stream.Write((byte)child.GridLocation);
+                    m_Stream.Write(child.GridLocation);
                     m_Stream.Write(beheld.Serial);
                     m_Stream.Write((ushort)(child.QuestItem ? child.QuestItemHue : child.Hue));
 
@@ -2260,7 +2260,7 @@ namespace Server.Network
             m_Layout.Write((byte)0);
             WritePacked(m_Layout);
 
-            m_Stream.Write((int)m_StringCount);
+            m_Stream.Write(m_StringCount);
 
             WritePacked(m_Strings);
 
