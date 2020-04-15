@@ -1364,9 +1364,9 @@ namespace Server
 
     public class TargetedSpellEventArgs : EventArgs
     {
-        private Mobile m_Mobile;
-        private IEntity m_Target;
-        private short m_SpellID;
+        private readonly Mobile m_Mobile;
+        private readonly IEntity m_Target;
+        private readonly short m_SpellID;
 
         public Mobile Mobile => m_Mobile;
         public IEntity Target => m_Target;
@@ -1382,9 +1382,9 @@ namespace Server
 
     public class TargetedSkillEventArgs : EventArgs
     {
-        private Mobile m_Mobile;
-        private IEntity m_Target;
-        private short m_SkillID;
+        private readonly Mobile m_Mobile;
+        private readonly IEntity m_Target;
+        private readonly short m_SkillID;
 
         public Mobile Mobile => m_Mobile;
         public IEntity Target => m_Target;
@@ -1400,9 +1400,9 @@ namespace Server
 
     public class TargetedItemUseEventArgs : EventArgs
     {
-        private Mobile m_Mobile;
-        private IEntity m_Source;
-        private IEntity m_Target;
+        private readonly Mobile m_Mobile;
+        private readonly IEntity m_Source;
+        private readonly IEntity m_Target;
 
         public Mobile Mobile => m_Mobile;
         public IEntity Source => m_Source;
@@ -1418,9 +1418,9 @@ namespace Server
 
     public class TargetByResourceMacroEventArgs : EventArgs
     {
-        private Mobile m_Mobile;
-        private Item m_Tool;
-        private int m_ResourceType;
+        private readonly Mobile m_Mobile;
+        private readonly Item m_Tool;
+        private readonly int m_ResourceType;
 
         public Mobile Mobile => m_Mobile;
         public Item Tool => m_Tool;
@@ -1436,8 +1436,8 @@ namespace Server
 
     public class EquipMacroEventArgs : EventArgs
     {
-        private Mobile m_Mobile;
-        private List<int> m_List;
+        private readonly Mobile m_Mobile;
+        private readonly List<int> m_List;
 
         public Mobile Mobile => m_Mobile;
         public List<int> List => m_List;
@@ -1451,8 +1451,8 @@ namespace Server
 
     public class UnequipMacroEventArgs : EventArgs
     {
-        private Mobile m_Mobile;
-        private List<int> m_List;
+        private readonly Mobile m_Mobile;
+        private readonly List<int> m_List;
 
         public Mobile Mobile => m_Mobile;
         public List<int> List => m_List;

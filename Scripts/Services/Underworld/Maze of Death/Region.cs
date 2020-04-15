@@ -190,7 +190,7 @@ namespace Server.Regions
             }
         }
 
-        private static Rectangle2D[] m_Bounds = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_Bounds = new Rectangle2D[]
         {
             new Rectangle2D(1057, 1028, 16, 40),
             new Rectangle2D(1057, 990, 16, 38)

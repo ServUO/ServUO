@@ -550,7 +550,7 @@ namespace Server.Spells.SkillMasteries
         #region Mastery Skills
         public static SkillName[] Skills { get { return _Skills; } }
 
-        private static SkillName[] _Skills =
+        private static readonly SkillName[] _Skills =
         {
             SkillName.Peacemaking,
             SkillName.Provocation,
@@ -573,7 +573,7 @@ namespace Server.Spells.SkillMasteries
             SkillName.Archery
         };
 
-        private static int[] _Descriptions =
+        private static readonly int[] _Descriptions =
         {
             1115707,
             1115706,
@@ -596,7 +596,7 @@ namespace Server.Spells.SkillMasteries
             1156305
         };
 
-        private static string[] _Titles =
+        private static readonly string[] _Titles =
         {
             "the Galvanizer",
             "the Exhilarator",

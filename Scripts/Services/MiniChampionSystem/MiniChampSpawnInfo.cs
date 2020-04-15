@@ -6,7 +6,7 @@ namespace Server.Engines.MiniChamps
 {
     public class MiniChampSpawnInfo
     {
-        private MiniChamp Owner;
+        private readonly MiniChamp Owner;
         public List<Mobile> Creatures;
 
         public Type MonsterType { get; set; }

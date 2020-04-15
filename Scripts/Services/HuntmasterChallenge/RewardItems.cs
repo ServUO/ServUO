@@ -189,7 +189,7 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private Mobile m_From;
+            private readonly Mobile m_From;
             private int m_Ticks;
 
             public InternalTimer(Mobile from)

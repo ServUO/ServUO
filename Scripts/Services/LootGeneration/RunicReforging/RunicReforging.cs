@@ -811,7 +811,7 @@ namespace Server.Items
             return start != budget;
         }
 
-        private static Dictionary<Item, int[]> _Elements = new Dictionary<Item, int[]>();
+        private static readonly Dictionary<Item, int[]> _Elements = new Dictionary<Item, int[]>();
 
         public static bool ApplyResistance(Item item, int value, AosElementAttribute attribute)
         {
@@ -1113,8 +1113,8 @@ namespace Server.Items
             return perclow + (int)((double)(perchi - perclow) * ((double)(GetPrerequisiteIndex(option) * 5.0) / 100.0));
         }
 
-        private static Dictionary<Type, CraftSystem> m_AllowableTable = new Dictionary<Type, CraftSystem>();
-        private static Dictionary<int, NamedInfoCol[][]> m_PrefixSuffixInfo = new Dictionary<int, NamedInfoCol[][]>();
+        private static readonly Dictionary<Type, CraftSystem> m_AllowableTable = new Dictionary<Type, CraftSystem>();
+        private static readonly Dictionary<int, NamedInfoCol[][]> m_PrefixSuffixInfo = new Dictionary<int, NamedInfoCol[][]>();
 
         public static Dictionary<int, NamedInfoCol[][]> PrefixSuffixInfo { get { return m_PrefixSuffixInfo; } }
 
@@ -1703,7 +1703,7 @@ namespace Server.Items
         }
 
         public static int[][] NameTable { get { return _NameTable; } }
-        private static int[][] _NameTable = new int[][]
+        private static readonly int[][] _NameTable = new int[][]
         {
             new int[] { 1151682, 1151683 }, // Might
             new int[] { 1151684, 1151685 }, // Mystic
@@ -2184,7 +2184,7 @@ namespace Server.Items
             return 0;
         }
 
-        private static Dictionary<int, int> _Standard = new Dictionary<int, int>()
+        private static readonly Dictionary<int, int> _Standard = new Dictionary<int, int>()
         {
             { 1,  10 },
             { 2,  10 },
@@ -2199,7 +2199,7 @@ namespace Server.Items
             { 12, 5 },
         };
 
-        private static Dictionary<int, int> _StandardPowerful = new Dictionary<int, int>()
+        private static readonly Dictionary<int, int> _StandardPowerful = new Dictionary<int, int>()
         {
             { 1,  10 },
             { 2,  10 },
@@ -2214,7 +2214,7 @@ namespace Server.Items
             { 12, 2 },
         };
 
-        private static Dictionary<int, int> _Weapon = new Dictionary<int, int>()
+        private static readonly Dictionary<int, int> _Weapon = new Dictionary<int, int>()
         {
             { 1,  10 },
             { 2,  10 },
@@ -2230,7 +2230,7 @@ namespace Server.Items
             { 12, 5 },
         };
 
-        private static Dictionary<int, int> _WeaponPowerful = new Dictionary<int, int>()
+        private static readonly Dictionary<int, int> _WeaponPowerful = new Dictionary<int, int>()
         {
             { 1,  10 },
             { 2,  10 },
@@ -3334,7 +3334,7 @@ namespace Server.Items
 
     public class RunicReforgingTarget : Target
     {
-        private BaseRunicTool m_Tool;
+        private readonly BaseRunicTool m_Tool;
 
         public RunicReforgingTarget(BaseRunicTool tool)
             : base(-1, false, TargetFlags.None)

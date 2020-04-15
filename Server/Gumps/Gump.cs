@@ -8,8 +8,8 @@ namespace Server.Gumps
 {
     public class Gump
     {
-        private List<GumpEntry> m_Entries;
-        private List<string> m_Strings;
+        private readonly List<GumpEntry> m_Entries;
+        private readonly List<string> m_Strings;
 
         internal int m_TextEntries, m_Switches;
 

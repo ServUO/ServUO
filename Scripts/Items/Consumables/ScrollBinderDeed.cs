@@ -407,7 +407,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private ScrollBinderDeed m_Binder;
+            private readonly ScrollBinderDeed m_Binder;
 
             public InternalTarget(ScrollBinderDeed binder) : base(-1, false, TargetFlags.None)
             {
@@ -425,8 +425,8 @@ namespace Server.Items
         {
             private readonly double m_Value;
             private readonly int m_Needed;
-            private ScrollOfTranscendence m_Scroll;
-            private ScrollBinderDeed m_Binder;
+            private readonly ScrollOfTranscendence m_Scroll;
+            private readonly ScrollBinderDeed m_Binder;
 
             public BinderWarningGump(double value, ScrollBinderDeed binder, ScrollOfTranscendence scroll, int needed)
                 : base(340, 340)

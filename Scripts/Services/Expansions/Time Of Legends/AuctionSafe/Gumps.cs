@@ -284,8 +284,8 @@ namespace Server.Engines.Auction
 
         private class InternalTarget : Target
         {
-            private Auction Auction;
-            private BaseAuctionGump Gump;
+            private readonly Auction Auction;
+            private readonly BaseAuctionGump Gump;
 
             public InternalTarget(Auction auction, BaseAuctionGump g)
                 : base(-1, false, TargetFlags.None)

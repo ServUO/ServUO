@@ -224,8 +224,8 @@ namespace Server.Mobiles
 
         private class RenameEntry : ContextMenuEntry
         {
-            private Mobile _From;
-            private Mobile _Mannequin;
+            private readonly Mobile _From;
+            private readonly Mobile _Mannequin;
 
             public RenameEntry(Mobile from, Mobile m)
                 : base(1155203, 2)
@@ -267,8 +267,8 @@ namespace Server.Mobiles
 
         private class SetKeywordEntry : ContextMenuEntry
         {
-            private Mobile _From;
-            private Mobile _Mannequin;
+            private readonly Mobile _From;
+            private readonly Mobile _Mannequin;
 
             public SetKeywordEntry(Mobile from, Mobile m)
                 : base(1153254, 4)
@@ -322,8 +322,8 @@ namespace Server.Mobiles
 
         private class OpenBackpackEntry : ContextMenuEntry
         {
-            private Mobile _From;
-            private Mobile _Mannequin;
+            private readonly Mobile _From;
+            private readonly Mobile _Mannequin;
 
             public OpenBackpackEntry(Mobile from, Mobile m)
                 : base(3006145, 4)
@@ -341,8 +341,8 @@ namespace Server.Mobiles
 
         private class CustomizeBodyEntry : ContextMenuEntry
         {
-            private Mobile _From;
-            private Mobile _Mannequin;
+            private readonly Mobile _From;
+            private readonly Mobile _Mannequin;
 
             public CustomizeBodyEntry(Mobile from, Mobile m)
                 : base(1151585, 4)
@@ -359,8 +359,8 @@ namespace Server.Mobiles
 
         private class SwitchClothesEntry : ContextMenuEntry
         {
-            private Mobile _From;
-            private Steward _Mannequin;
+            private readonly Mobile _From;
+            private readonly Steward _Mannequin;
 
             public SwitchClothesEntry(Mobile from, Steward m)
                 : base(1151606, 2)
@@ -427,8 +427,8 @@ namespace Server.Mobiles
 
         private class RotateEntry : ContextMenuEntry
         {
-            private Mobile _From;
-            private Mobile _Mannequin;
+            private readonly Mobile _From;
+            private readonly Mobile _Mannequin;
 
             public RotateEntry(Mobile from, Mobile m)
                 : base(1151586, 2)
@@ -453,8 +453,8 @@ namespace Server.Mobiles
 
         private class RedeedEntry : ContextMenuEntry
         {
-            private Mobile _From;
-            private Mobile _Mannequin;
+            private readonly Mobile _From;
+            private readonly Mobile _Mannequin;
 
             public RedeedEntry(Mobile from, Mobile m)
                 : base(1151601, 2)
@@ -605,8 +605,8 @@ namespace Server.Mobiles
 
     public class MannequinGump : Gump
     {
-        private Mobile _From;
-        private Mobile _Mannequin;
+        private readonly Mobile _From;
+        private readonly Mobile _Mannequin;
 
         public MannequinGump(Mobile from, Mobile m)
             : base(50, 50)
@@ -838,7 +838,7 @@ namespace Server.Mobiles
 
     public class PlaceTarget : Target
     {
-        private Item _Deed;
+        private readonly Item _Deed;
 
         public PlaceTarget(Item deed)
             : base(-1, true, TargetFlags.None)

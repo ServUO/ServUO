@@ -656,7 +656,7 @@ namespace Server.Items
             return GetMaxIntensity(item, GetID(attribute), false);
         }
 
-        private static int[] _ForceUseNewTable = { 12 };
+        private static readonly int[] _ForceUseNewTable = { 12 };
 
         /// <summary>
         /// Maximum intensity in regards to imbuing weight calculation. Some items may be over this 'cap'

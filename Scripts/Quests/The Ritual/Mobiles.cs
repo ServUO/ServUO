@@ -126,7 +126,7 @@ namespace Server.Engines.Quests.RitualQuest
     {
         public override bool InitialInnocent { get { return true; } }
 
-        private Dictionary<Mobile, int> _Table = new Dictionary<Mobile, int>();
+        private readonly Dictionary<Mobile, int> _Table = new Dictionary<Mobile, int>();
         private DateTime _NextTeleport;
 
         public BexilPunchingBag()

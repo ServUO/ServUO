@@ -11,8 +11,8 @@ namespace Server
 {
     public static class World
     {
-        private static bool m_Metrics = Config.Get("General.Metrics", false);
-        private static ManualResetEvent m_DiskWriteHandle = new ManualResetEvent(true);
+        private static readonly bool m_Metrics = Config.Get("General.Metrics", false);
+        private static readonly ManualResetEvent m_DiskWriteHandle = new ManualResetEvent(true);
 
         private static Queue<IEntity> _addQueue, _deleteQueue;
 

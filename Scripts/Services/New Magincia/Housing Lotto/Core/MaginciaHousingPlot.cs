@@ -7,14 +7,14 @@ namespace Server.Engines.NewMagincia
     [PropertyObject]
     public class MaginciaHousingPlot
     {
-        private string m_Identifier;
+        private readonly string m_Identifier;
         private WritOfLease m_Writ;
         private Rectangle2D m_Bounds;
         private MaginciaPlotStone m_Stone;
-        private bool m_IsPrimeSpot;
+        private readonly bool m_IsPrimeSpot;
         private bool m_Complete;
         private Mobile m_Winner;
-        private Map m_Map;
+        private readonly Map m_Map;
         private DateTime m_Expires;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -58,7 +58,7 @@ namespace Server.Engines.NewMagincia
 
         #region Lotto Info
         private DateTime m_LottoEnds;
-        private Dictionary<Mobile, int> m_Participants = new Dictionary<Mobile, int>();
+        private readonly Dictionary<Mobile, int> m_Participants = new Dictionary<Mobile, int>();
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime LottoEnds { get { return m_LottoEnds; } set { m_LottoEnds = value; } }

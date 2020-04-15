@@ -45,7 +45,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private EtherealRetouchingTool m_Tool;
+            private readonly EtherealRetouchingTool m_Tool;
 
             public InternalTarget(EtherealRetouchingTool tool)
                 : base(-1, false, TargetFlags.None)

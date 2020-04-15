@@ -1505,7 +1505,7 @@ namespace Server.Multis
         }
 
         #region TOL Stair Components cannot be found in MultiData
-        private static int[][] _StairsSouth =
+        private static readonly int[][] _StairsSouth =
         {
             new int[] { 0x9B4F, 0,  -3, 0,  },
             new int[] { 0x9B4F, 0,  -3, 5,  },
@@ -1520,7 +1520,7 @@ namespace Server.Multis
             new int[] { 0x9B50, 0 , 0, 0,  },
         };
 
-        private static int[][] _StairsWest =
+        private static readonly int[][] _StairsWest =
         {
             new int[] { 0x0001, 0,  0, 0,  },
             new int[] { 0x9B53, 0,  0, 0,  },
@@ -1535,7 +1535,7 @@ namespace Server.Multis
             new int[] { 0x9B53, 3 , 0, 15, },
         };
 
-        private static int[][] _StairsNorth =
+        private static readonly int[][] _StairsNorth =
         {
             new int[] { 0x0001, 0,  0, 0,  },
             new int[] { 0x9B52, 0,  0, 0,  },
@@ -1550,7 +1550,7 @@ namespace Server.Multis
             new int[] { 0x9B52, 0,  3, 15,  },
         };
 
-        private static int[][] _StairsEast =
+        private static readonly int[][] _StairsEast =
         {
             new int[] { 0x9B4F, -3, 0, 0  },
             new int[] { 0x9B4F, -3, 0, 5  },
@@ -2276,15 +2276,15 @@ namespace Server.Multis
     {
         public const int MaxItemsPerStairBuffer = 750;
 
-        private static BufferPool m_PlaneBufferPool = new BufferPool("Housing Plane Buffers", 9, 0x2000);
-        private static BufferPool m_StairBufferPool = new BufferPool("Housing Stair Buffers", 6, MaxItemsPerStairBuffer * 5);
-        private static BufferPool m_DeflatedBufferPool = new BufferPool("Housing Deflated Buffers", 1, 0x2000);
+        private static readonly BufferPool m_PlaneBufferPool = new BufferPool("Housing Plane Buffers", 9, 0x2000);
+        private static readonly BufferPool m_StairBufferPool = new BufferPool("Housing Stair Buffers", 6, MaxItemsPerStairBuffer * 5);
+        private static readonly BufferPool m_DeflatedBufferPool = new BufferPool("Housing Deflated Buffers", 1, 0x2000);
 
-        private byte[][] m_PlaneBuffers;
-        private byte[][] m_StairBuffers;
+        private readonly byte[][] m_PlaneBuffers;
+        private readonly byte[][] m_StairBuffers;
 
-        private bool[] m_PlaneUsed = new bool[9];
-        private byte[] m_PrimBuffer = new byte[4];
+        private readonly bool[] m_PlaneUsed = new bool[9];
+        private readonly byte[] m_PrimBuffer = new byte[4];
 
         public void Write(int value)
         {
@@ -2561,10 +2561,10 @@ namespace Server.Multis
             }
         }
 
-        private static Queue<SendQueueEntry> m_SendQueue;
-        private static object m_SendQueueSyncRoot;
-        private static AutoResetEvent m_Sync;
-        private static Thread m_Thread;
+        private static readonly Queue<SendQueueEntry> m_SendQueue;
+        private static readonly object m_SendQueueSyncRoot;
+        private static readonly AutoResetEvent m_Sync;
+        private static readonly Thread m_Thread;
 
         static DesignStateDetailed()
         {

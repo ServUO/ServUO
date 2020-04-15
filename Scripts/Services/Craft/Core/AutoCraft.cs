@@ -7,10 +7,10 @@ namespace Server.Engines.Craft
 {
     public class MakeNumberCraftPrompt : Prompt
     {
-        private Mobile m_From;
-        private CraftSystem m_CraftSystem;
-        private CraftItem m_CraftItem;
-        private ITool m_Tool;
+        private readonly Mobile m_From;
+        private readonly CraftSystem m_CraftSystem;
+        private readonly CraftItem m_CraftItem;
+        private readonly ITool m_Tool;
 
         public MakeNumberCraftPrompt(Mobile from, CraftSystem system, CraftItem item, ITool tool)
         {
@@ -55,17 +55,17 @@ namespace Server.Engines.Craft
 
     public class AutoCraftTimer : Timer
     {
-        private static Dictionary<Mobile, AutoCraftTimer> m_AutoCraftTable = new Dictionary<Mobile, AutoCraftTimer>();
+        private static readonly Dictionary<Mobile, AutoCraftTimer> m_AutoCraftTable = new Dictionary<Mobile, AutoCraftTimer>();
         public static Dictionary<Mobile, AutoCraftTimer> AutoCraftTable => m_AutoCraftTable;
 
-        private Mobile m_From;
-        private CraftSystem m_CraftSystem;
-        private CraftItem m_CraftItem;
-        private ITool m_Tool;
-        private int m_Amount;
+        private readonly Mobile m_From;
+        private readonly CraftSystem m_CraftSystem;
+        private readonly CraftItem m_CraftItem;
+        private readonly ITool m_Tool;
+        private readonly int m_Amount;
         private int m_Attempts;
         private int m_Ticks;
-        private Type m_TypeRes;
+        private readonly Type m_TypeRes;
 
         public int Amount => m_Amount;
         public int Attempts => m_Attempts;

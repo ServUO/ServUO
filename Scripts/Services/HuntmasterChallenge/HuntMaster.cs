@@ -9,7 +9,7 @@ namespace Server.Engines.HuntsmasterChallenge
 {
     public class HuntMaster : BaseVendor
     {
-        private List<SBInfo> m_SBInfos = new List<SBInfo>();
+        private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
         public override bool IsActiveVendor { get { return false; } }
 
@@ -81,7 +81,7 @@ namespace Server.Engines.HuntsmasterChallenge
 
         private class BuyPermitEntry : ContextMenuEntry
         {
-            private HuntMaster m_HuntMaster;
+            private readonly HuntMaster m_HuntMaster;
 
             public BuyPermitEntry(HuntMaster master) : base(1155701, 3) // Get Hunting Permit
             {
@@ -112,8 +112,8 @@ namespace Server.Engines.HuntsmasterChallenge
 
         private class ClaimEntry : ContextMenuEntry
         {
-            private PlayerMobile m_Mobile;
-            private Mobile m_Vendor;
+            private readonly PlayerMobile m_Mobile;
+            private readonly Mobile m_Vendor;
 
             public ClaimEntry(PlayerMobile mobile, Mobile vendor)
                 : base(1155593, 2)

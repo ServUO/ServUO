@@ -2,7 +2,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class PassiveMasterySpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Passive", "",
                 -1,
                 9002

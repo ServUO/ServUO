@@ -5,7 +5,7 @@ namespace Server.Engines.Quests
 {
     public class AVisitToCastleBlackthornQuest : BaseQuest
     {
-        private object _Title = 1158197;
+        private readonly object _Title = 1158197;
 
         /* A Visit to Castle Blackthorn */
         public override object Title { get { return _Title; } }

@@ -12,7 +12,7 @@ namespace Server.Mobiles
         public static readonly TimeSpan TeleportRate = TimeSpan.FromSeconds(60);
         public static readonly int SpawnMax = 25;
 
-        private List<Mobile> m_Tentacles = new List<Mobile>();
+        private readonly List<Mobile> m_Tentacles = new List<Mobile>();
         private DateTime m_NextSpawn;
         private DateTime m_NextTeleport;
 
@@ -431,10 +431,11 @@ namespace Server.Mobiles
 
         private class EffectsTimer : Timer
         {
-            private Direction m_Dir;
-            private int m_I, m_IMax;
-            private Point3DList m_Path;
-            private Charydbis m_Mobile;
+            private readonly Direction m_Dir;
+            private int m_I;
+            private readonly int m_IMax;
+            private readonly Point3DList m_Path;
+            private readonly Charydbis m_Mobile;
 
             public EffectsTimer(Charydbis mobile, Point3DList path, Direction dir, int imax)
                 : base(TimeSpan.FromSeconds(0.25), TimeSpan.FromSeconds(0.25))
@@ -604,7 +605,7 @@ namespace Server.Mobiles
             base.Delete();
         }
 
-        private Type[] m_Pies = new Type[]
+        private readonly Type[] m_Pies = new Type[]
         {
             typeof(AutumnDragonfishPie),
             typeof(BlueLobsterPie),
@@ -624,7 +625,7 @@ namespace Server.Mobiles
             typeof(YellowtailBarracudaPie),
         };
 
-        private Type[] m_Steaks = new Type[]
+        private readonly Type[] m_Steaks = new Type[]
         {
             typeof(AutumnDragonfishSteak),
             typeof(BlueLobsterMeat),

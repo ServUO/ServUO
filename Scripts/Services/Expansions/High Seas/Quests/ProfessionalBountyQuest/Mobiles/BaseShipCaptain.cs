@@ -21,7 +21,7 @@ namespace Server.Mobiles
         private DateTime m_NextCrewCheck;
         private SpawnZone m_Zone;
         private bool m_Blockade;
-        private List<Mobile> m_Crew = new List<Mobile>();
+        private readonly List<Mobile> m_Crew = new List<Mobile>();
 
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseGalleon Galleon { get { return m_Galleon; } }
@@ -385,7 +385,7 @@ namespace Server.Mobiles
             m_Galleon.StartMove(dir, true);
         }
 
-        private Dictionary<IShipCannon, DateTime> m_ShootTable = new Dictionary<IShipCannon, DateTime>();
+        private readonly Dictionary<IShipCannon, DateTime> m_ShootTable = new Dictionary<IShipCannon, DateTime>();
 
         public void ShootCannons(Mobile focus, bool shootAtBoat)
         {

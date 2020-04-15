@@ -334,7 +334,7 @@ namespace Server.Engines.CityLoyalty
             AutoPickGovernor = DateTime.MinValue;
         }
 
-        private static int[] _Periods = { 3, 6, 9, 12 };
+        private static readonly int[] _Periods = { 3, 6, 9, 12 };
 
         public void GetDefaultStartTimes()
         {

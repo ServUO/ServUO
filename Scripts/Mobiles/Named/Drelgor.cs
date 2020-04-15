@@ -9,7 +9,7 @@ namespace Server.Mobiles
     public class Drelgor : BaseCreature
     {
         private bool init = false; //Don't change this.
-        private double msgevery = 1.0; //Recurring message. Change to 0 to disable.
+        private readonly double msgevery = 1.0; //Recurring message. Change to 0 to disable.
         private DateTime m_NextMsgTime;
 
         [Constructable]

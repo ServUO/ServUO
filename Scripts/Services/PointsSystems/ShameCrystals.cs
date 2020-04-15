@@ -10,7 +10,7 @@ namespace Server.Engines.Points
         public override bool AutoAdd { get { return true; } }
         public override double MaxPoints { get { return double.MaxValue; } }
 
-        private TextDefinition m_Name = new TextDefinition(1151673);
+        private readonly TextDefinition m_Name = new TextDefinition(1151673);
 
         public ShameCrystals()
         {

@@ -108,8 +108,8 @@ namespace Server.Items
 
         public class InternalGump : Gump
         {
-            private PlayerMobile m_Mobile;
-            private ForgedMetalOfArtifacts m_Tool;
+            private readonly PlayerMobile m_Mobile;
+            private readonly ForgedMetalOfArtifacts m_Tool;
 
             public InternalGump(PlayerMobile from, ForgedMetalOfArtifacts tool)
                 : base(50, 50)
@@ -162,8 +162,8 @@ namespace Server.Items
 
         public class CancelGump : Gump
         {
-            private PlayerMobile m_Mobile;
-            private ForgedMetalOfArtifacts m_Tool;
+            private readonly PlayerMobile m_Mobile;
+            private readonly ForgedMetalOfArtifacts m_Tool;
 
             public CancelGump(PlayerMobile from, ForgedMetalOfArtifacts tool)
                 : base(50, 50)

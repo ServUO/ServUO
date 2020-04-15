@@ -8,7 +8,7 @@ namespace Server.Items
 {
     public class HuntingPermit : Item
     {
-        private static List<HuntingPermit> m_Permits = new List<HuntingPermit>();
+        private static readonly List<HuntingPermit> m_Permits = new List<HuntingPermit>();
         public static List<HuntingPermit> Permits { get { return m_Permits; } }
 
         private Mobile m_Owner;
@@ -98,7 +98,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private HuntingPermit m_Permit;
+            private readonly HuntingPermit m_Permit;
 
             public InternalTarget(HuntingPermit Permit)
                 : base(-1, false, TargetFlags.None)

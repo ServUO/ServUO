@@ -8,7 +8,7 @@ namespace Server.Engines.NewMagincia
 {
     public class PetBrokerGump : BaseBazaarGump
     {
-        private PetBroker m_Broker;
+        private readonly PetBroker m_Broker;
 
         public PetBrokerGump(PetBroker broker, Mobile from)
         {
@@ -164,9 +164,9 @@ namespace Server.Engines.NewMagincia
 
     public class SelectPetsGump : BaseBazaarGump
     {
-        private PetBroker m_Broker;
-        private int m_Index;
-        private List<BaseCreature> m_List;
+        private readonly PetBroker m_Broker;
+        private readonly int m_Index;
+        private readonly List<BaseCreature> m_List;
 
         public SelectPetsGump(PetBroker broker, Mobile from) : this(broker, from, -1)
         {
@@ -286,8 +286,8 @@ namespace Server.Engines.NewMagincia
 
     public class RemovePetsGump : BaseBazaarGump
     {
-        private PetBroker m_Broker;
-        private int m_Index;
+        private readonly PetBroker m_Broker;
+        private readonly int m_Index;
 
         public RemovePetsGump(PetBroker broker, Mobile from) : this(broker, from, -1)
         {
@@ -366,7 +366,7 @@ namespace Server.Engines.NewMagincia
 
     public class SetPetPricesGump : BaseBazaarGump
     {
-        private PetBroker m_Broker;
+        private readonly PetBroker m_Broker;
         private int m_Index;
 
         public SetPetPricesGump(PetBroker broker) : this(broker, -1)
@@ -458,8 +458,8 @@ namespace Server.Engines.NewMagincia
 
     public class PetInventoryGump : BaseBazaarGump
     {
-        private PetBroker m_Broker;
-        private List<PetBrokerEntry> m_Entries;
+        private readonly PetBroker m_Broker;
+        private readonly List<PetBrokerEntry> m_Entries;
 
         public PetInventoryGump(PetBroker broker, Mobile from)
         {
@@ -601,8 +601,8 @@ namespace Server.Engines.NewMagincia
 
     public class ConfirmBuyPetGump : BaseBazaarGump
     {
-        private PetBroker m_Broker;
-        private PetBrokerEntry m_Entry;
+        private readonly PetBroker m_Broker;
+        private readonly PetBrokerEntry m_Entry;
 
         public ConfirmBuyPetGump(PetBroker broker, PetBrokerEntry entry)
         {
@@ -673,7 +673,7 @@ namespace Server.Engines.NewMagincia
 
     public class PurchasePetGump : BaseBazaarGump
     {
-        private PetBroker m_Broker;
+        private readonly PetBroker m_Broker;
 
         public PurchasePetGump(PetBroker broker, int cliloc)
         {

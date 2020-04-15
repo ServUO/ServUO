@@ -7,7 +7,7 @@ namespace Server.Items
     [TypeAlias("drNO.ThieveItems.ManaDraught")]
     public class ManaDraught : Item
     {
-        private static Dictionary<PlayerMobile, DateTime> DaughtUsageList = new Dictionary<PlayerMobile, DateTime>();
+        private static readonly Dictionary<PlayerMobile, DateTime> DaughtUsageList = new Dictionary<PlayerMobile, DateTime>();
         private static TimeSpan Cooldown = TimeSpan.FromMinutes(10);
 
         public override int LabelNumber { get { return 1094938; } } // Mana Draught

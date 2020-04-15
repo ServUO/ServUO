@@ -11,17 +11,17 @@ namespace Server.Gumps
 {
     public class XmlSetObjectGump : Gump
     {
-        private PropertyInfo m_Property;
-        private Mobile m_Mobile;
-        private object m_Object;
+        private readonly PropertyInfo m_Property;
+        private readonly Mobile m_Mobile;
+        private readonly object m_Object;
 #if (NEWTIMERS)
-        private Stack<PropertiesGump.StackEntry> m_Stack;
+        private readonly Stack<PropertiesGump.StackEntry> m_Stack;
 #else
 		private Stack m_Stack;
 #endif
-        private Type m_Type;
-        private int m_Page;
-        private ArrayList m_List;
+        private readonly Type m_Type;
+        private readonly int m_Page;
+        private readonly ArrayList m_List;
 
         public static readonly bool OldStyle = PropsConfig.OldStyle;
 
@@ -147,17 +147,17 @@ namespace Server.Gumps
 
         private class InternalPrompt : Prompt
         {
-            private PropertyInfo m_Property;
-            private Mobile m_Mobile;
-            private object m_Object;
+            private readonly PropertyInfo m_Property;
+            private readonly Mobile m_Mobile;
+            private readonly object m_Object;
 #if (NEWTIMERS)
-            private Stack<PropertiesGump.StackEntry> m_Stack;
+            private readonly Stack<PropertiesGump.StackEntry> m_Stack;
 #else
 			private Stack m_Stack;
 #endif
-            private Type m_Type;
-            private int m_Page;
-            private ArrayList m_List;
+            private readonly Type m_Type;
+            private readonly int m_Page;
+            private readonly ArrayList m_List;
 
 #if (NEWTIMERS)
             public InternalPrompt(PropertyInfo prop, Mobile mobile, object o, Stack<PropertiesGump.StackEntry> stack, Type type, int page, ArrayList list)

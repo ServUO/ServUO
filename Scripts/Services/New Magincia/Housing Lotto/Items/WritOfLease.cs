@@ -124,7 +124,7 @@ namespace Server.Engines.NewMagincia
 
         private class WritNoteGump : Gump
         {
-            private WritOfLease m_Lease;
+            private readonly WritOfLease m_Lease;
 
             public WritNoteGump(WritOfLease lease)
                 : base(100, 100)

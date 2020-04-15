@@ -5,7 +5,7 @@ namespace Server.Engines.BulkOrders
 {
     public class BOBFilterGump : Gump
     {
-        private static int[,] m_MaterialFilters = new int[,]
+        private static readonly int[,] m_MaterialFilters = new int[,]
             {
                 { 1044067,  1 }, // Blacksmithy
 				{ 1062226,  3 }, // Iron

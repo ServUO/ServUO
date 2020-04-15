@@ -9,7 +9,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class ShieldBashSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Shield Bash", "",
                 -1,
                 9002

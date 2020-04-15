@@ -224,7 +224,7 @@ namespace Server.Items
         }
 
         public static Rectangle2D[] ShrineLocs { get { return m_ShrineLocs; } }
-        private static Rectangle2D[] m_ShrineLocs = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_ShrineLocs = new Rectangle2D[]
         {
             new Rectangle2D(4208, 563, 2, 2), //Honesty
 			new Rectangle2D(1857, 874, 2, 2), //Compassion
@@ -287,18 +287,18 @@ namespace Server.Items
             m_Cooldown[from] = DateTime.UtcNow + TimeSpan.FromHours(24);
         }
 
-        private static Dictionary<Mobile, AnkhPendantBonusContext> m_Table = new Dictionary<Mobile, AnkhPendantBonusContext>();
-        private static Dictionary<Mobile, DateTime> m_Cooldown = new Dictionary<Mobile, DateTime>();
+        private static readonly Dictionary<Mobile, AnkhPendantBonusContext> m_Table = new Dictionary<Mobile, AnkhPendantBonusContext>();
+        private static readonly Dictionary<Mobile, DateTime> m_Cooldown = new Dictionary<Mobile, DateTime>();
 
         private class AnkhPendantBonusContext
         {
-            private Mobile m_Mobile;
-            private VirtueType m_Type;
-            private int m_Random;
-            private bool m_DoBump;
-            private bool m_DoBump2;
-            private bool m_DoBump3;
-            private DateTime m_Expires;
+            private readonly Mobile m_Mobile;
+            private readonly VirtueType m_Type;
+            private readonly int m_Random;
+            private readonly bool m_DoBump;
+            private readonly bool m_DoBump2;
+            private readonly bool m_DoBump3;
+            private readonly DateTime m_Expires;
 
             public VirtueType VType { get { return m_Type; } }
             public bool DoBump { get { return m_DoBump; } }

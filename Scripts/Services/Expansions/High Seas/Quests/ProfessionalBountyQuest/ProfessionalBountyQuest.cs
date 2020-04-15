@@ -20,7 +20,7 @@ namespace Server.Engines.Quests
         private BindingPole m_Pole;
         private BindingRope m_Rope;
         private Mobile m_Captain;
-        private List<Mobile> m_Helpers = new List<Mobile>();
+        private readonly List<Mobile> m_Helpers = new List<Mobile>();
 
         public BaseGalleon Galleon { get { return m_Galleon; } }
         public BindingPole Pole { get { return m_Pole; } }
@@ -287,7 +287,7 @@ namespace Server.Engines.Quests
             return true;
         }
 
-        private Type[] m_CapturedRewards = new Type[]
+        private readonly Type[] m_CapturedRewards = new Type[]
        {
            typeof(RuinedShipPlans),      typeof(RuinedShipPlans),
            typeof(LightFlameCannonball), typeof(HeavyFlameCannonball),

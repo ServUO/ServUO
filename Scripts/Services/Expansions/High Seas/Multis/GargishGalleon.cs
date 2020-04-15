@@ -34,7 +34,7 @@ namespace Server.Multis
         }
 
         public override int[][] CannonTileIDs { get { return m_CannonTileIDs; } }
-        private int[][] m_CannonTileIDs = new int[][]
+        private readonly int[][] m_CannonTileIDs = new int[][]
         {
             new int[] { 33463, 33440, 33438, 33327, 33322, 33357, 33355 }, //SOUTH
             new int[] { 33768, 33745, 33743, 33632, 33627, 33662, 33660 }, //WEST
@@ -53,7 +53,7 @@ namespace Server.Multis
         };
 
         public override int[][] FillerIDs { get { return m_FillerIDs; } }
-        private int[][] m_FillerIDs = new int[][]
+        private readonly int[][] m_FillerIDs = new int[][]
         {
             //          110    103    96     89     87     88     93     91     98     105    112
 
@@ -79,7 +79,7 @@ namespace Server.Multis
         };
 
         public override int[][] HoldIDs { get { return m_HoldIDs; } }
-        private int[][] m_HoldIDs = new int[][]
+        private readonly int[][] m_HoldIDs = new int[][]
         {
             //          108    109    114    94     95     100    101    102
             //          BL     BM     BR     MR     MM     ML     FL     FR
@@ -113,7 +113,7 @@ namespace Server.Multis
         };
 
         public override int[][] HoldItemIDs { get { return m_HoldItemIDs; } }
-        private int[][] m_HoldItemIDs = new int[][]
+        private readonly int[][] m_HoldItemIDs = new int[][]
         {
             new int[] { 33387 },
             new int[] { 33692 },
@@ -132,7 +132,7 @@ namespace Server.Multis
         };
 
         public override int[][] WheelItemIDs { get { return m_WheelItemIDs; } }
-        private int[][] m_WheelItemIDs = new int[][]
+        private readonly int[][] m_WheelItemIDs = new int[][]
         {
 
             new int[] { 33604 },

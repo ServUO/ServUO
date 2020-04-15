@@ -141,7 +141,7 @@ namespace Server.Items
 
         public class BeginQuestGump : Gump
         {
-            private ClockworkMechanism m_Mechanism;
+            private readonly ClockworkMechanism m_Mechanism;
 
             public BeginQuestGump(ClockworkMechanism mechanism)
                 : base(340, 340)

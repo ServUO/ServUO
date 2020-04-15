@@ -8,7 +8,7 @@ namespace Server.Engines.CreatureStealing
 {
     class StealingHandler
     {
-        private static Type[] SpecialItemList =
+        private static readonly Type[] SpecialItemList =
         {
             typeof(SeedOfLife),
             typeof(BalmOfStrength),

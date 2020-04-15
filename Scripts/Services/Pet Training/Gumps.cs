@@ -9,7 +9,7 @@ namespace Server.Mobiles
 {
     public class NewAnimalLoreGump : BaseGump
     {
-        private int _Label = 0xF424E5;
+        private readonly int _Label = 0xF424E5;
 
         public BaseCreature Creature { get; private set; }
 
@@ -691,8 +691,8 @@ namespace Server.Mobiles
 
     public class PetTrainingConfirmGump : BaseGump
     {
-        private int _Title;
-        private int _Body;
+        private readonly int _Title;
+        private readonly int _Body;
 
         private Action ConfirmCallback { get; set; }
         private Action CancelCallback { get; set; }

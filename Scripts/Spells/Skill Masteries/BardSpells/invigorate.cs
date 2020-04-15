@@ -11,9 +11,9 @@ namespace Server.Spells.SkillMasteries
         public static readonly string StatModName = "Invigorate";
 
         private DateTime m_NextHeal;
-        private List<Mobile> m_Mods = new List<Mobile>();
+        private readonly List<Mobile> m_Mods = new List<Mobile>();
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Invigorate", "An Zu",
                 -1,
                 9002

@@ -290,7 +290,7 @@ namespace Server.Engines.Craft
         }
 
         #region Tables
-        private static int[] m_HeatSources =
+        private static readonly int[] m_HeatSources =
         {
             0x461, 0x48E, // Sandstone oven/fireplace
 			0x92B, 0x96C, // Stone oven/fireplace
@@ -307,14 +307,14 @@ namespace Server.Engines.Craft
             0xA2A4, 0xA2A5, 0xA2A8, 0xA2A9 // Wood Stove
         };
 
-        private static int[] m_Ovens =
+        private static readonly int[] m_Ovens =
         {
             0x461, 0x46F, // Sandstone oven
 			0x92B, 0x93F, // Stone oven
 			0x2DDB, 0x2DDC, //Elven stove
 		};
 
-        private static int[] m_Makers =
+        private static readonly int[] m_Makers =
         {
             0x9A96, 0x9A96 // steam powered beverage maker
         };
@@ -325,7 +325,7 @@ namespace Server.Engines.Craft
             0x1932, 0x1934
         };
 
-        private static int[] m_WaterSources =
+        private static readonly int[] m_WaterSources =
         {
             0xB41, 0xB44,
             0xE7B, 0xE7B,
@@ -427,7 +427,7 @@ namespace Server.Engines.Craft
             { typeof(BarbedLeather), typeof(BarbedHides) },
         };
 
-        private static Type[] m_NeverColorTable = new[] { typeof(OrcHelm) };
+        private static readonly Type[] m_NeverColorTable = new[] { typeof(OrcHelm) };
         #endregion
 
         public bool IsMarkable(Type type)
@@ -1987,7 +1987,7 @@ namespace Server.Engines.Craft
             private readonly CraftSystem m_CraftSystem;
             private readonly Type ItemTypeRes;
             private readonly ITool m_Tool;
-            private bool m_AutoCraft;
+            private readonly bool m_AutoCraft;
 
             public InternalTimer(
                 Mobile from, CraftSystem craftSystem, CraftItem craftItem, Type typeRes, ITool tool, int iCountMax)
@@ -2110,7 +2110,7 @@ namespace Server.Engines.Craft
             return m_HasTarget.Contains(from);
         }
 
-        private static List<Mobile> m_HasTarget = new List<Mobile>();
+        private static readonly List<Mobile> m_HasTarget = new List<Mobile>();
 
         public bool NeedsResTarget(Mobile from, CraftSystem craftSystem)
         {
@@ -2159,10 +2159,10 @@ namespace Server.Engines.Craft
 
         public class ChooseResTarget : Server.Targeting.Target
         {
-            private CraftItem m_CraftItem;
-            private CraftSystem m_CraftSystem;
-            private Type ItemTypeRes;
-            private ITool m_Tool;
+            private readonly CraftItem m_CraftItem;
+            private readonly CraftSystem m_CraftSystem;
+            private readonly Type ItemTypeRes;
+            private readonly ITool m_Tool;
 
             public ChooseResTarget(Mobile from, CraftItem craftitem, CraftSystem craftSystem, Type typeRes, ITool tool)
                 : base(-1, false, Server.Targeting.TargetFlags.None)

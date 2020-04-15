@@ -11,7 +11,7 @@ namespace Server.Spells.Chivalry
             -1,
             9002);
 
-        private static Dictionary<Mobile, ConsecratedWeaponContext> m_Table = new Dictionary<Mobile, ConsecratedWeaponContext>();
+        private static readonly Dictionary<Mobile, ConsecratedWeaponContext> m_Table = new Dictionary<Mobile, ConsecratedWeaponContext>();
 
         public ConsecrateWeaponSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)

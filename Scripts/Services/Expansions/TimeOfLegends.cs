@@ -133,14 +133,14 @@ namespace Server
         }
 
         public static Type[] ArmorDropTypes { get { return _ArmorDropTypes; } }
-        private static Type[] _ArmorDropTypes =
+        private static readonly Type[] _ArmorDropTypes =
         {
             typeof(AloronsBustier), typeof(AloronsGorget), typeof(AloronsHelm), typeof(AloronsLegs), typeof(AloronsLongSkirt), typeof(AloronsSkirt), typeof(AloronsTunic),
             typeof(DardensBustier), typeof(DardensHelm), typeof(DardensLegs), typeof(DardensSleeves), typeof(DardensTunic)
         };
 
         public static int[] RecipeTypes { get { return _RecipeTypes; } }
-        private static int[] _RecipeTypes =
+        private static readonly int[] _RecipeTypes =
         {
             560, 561, 562, 563, 564, 565, 566,
             570, 571, 572, 573, 574, 575, 576, 577,

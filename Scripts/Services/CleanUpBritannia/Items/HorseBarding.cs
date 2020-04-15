@@ -12,7 +12,7 @@ namespace Server.Items
     {
         public override BaseAddonDeed Deed { get { return new HorseBardingDeed(); } }
 
-        private HorseBardingType m_HorseBardingType;
+        private readonly HorseBardingType m_HorseBardingType;
 
         [Constructable]
         public HorseBardingAddon(HorseBardingType type)

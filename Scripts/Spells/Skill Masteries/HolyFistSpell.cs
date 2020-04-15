@@ -12,7 +12,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class HolyFistSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Holy Fist", "Kal Vas Grav",
                 -1,
                 9002

@@ -6,7 +6,7 @@ namespace Server.Engines.NewMagincia
 {
     public class PetBroker : BaseBazaarBroker
     {
-        private List<PetBrokerEntry> m_BrokerEntries = new List<PetBrokerEntry>();
+        private readonly List<PetBrokerEntry> m_BrokerEntries = new List<PetBrokerEntry>();
         public List<PetBrokerEntry> BrokerEntries { get { return m_BrokerEntries; } }
 
         public static readonly int MaxEntries = 10;
@@ -195,7 +195,7 @@ namespace Server.Engines.NewMagincia
             EndViewTimer(pet);
         }
 
-        private static Dictionary<BaseCreature, Timer> m_ViewTimer = new Dictionary<BaseCreature, Timer>();
+        private static readonly Dictionary<BaseCreature, Timer> m_ViewTimer = new Dictionary<BaseCreature, Timer>();
 
         public static void AddToViewTimer(BaseCreature bc)
         {
@@ -222,7 +222,7 @@ namespace Server.Engines.NewMagincia
 
         private class InternalTimer : Timer
         {
-            BaseCreature m_Creature;
+            readonly BaseCreature m_Creature;
 
             public InternalTimer(BaseCreature bc) : base(TimeSpan.FromMinutes(2), TimeSpan.FromMinutes(2))
             {

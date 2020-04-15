@@ -21,7 +21,7 @@ namespace Server.Engines.ArenaSystem
         public override double MaxPoints { get { return double.MaxValue; } }
 
         public override bool ShowOnLoyaltyGump { get { return false; } }
-        private TextDefinition m_Name = new TextDefinition("Arena Stats");
+        private readonly TextDefinition m_Name = new TextDefinition("Arena Stats");
 
         public static List<PVPArena> Arenas { get; set; }
         public static List<string> BlockedArenas { get; set; }

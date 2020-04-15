@@ -57,8 +57,8 @@ namespace Server.Mobiles
         public override Poison PoisonImmune { get { return Poison.Lesser; } }
         public override bool DisallowAllMoves { get { return true; } }
 
-        private static List<Mobile> m_TangleCooldown = new List<Mobile>();
-        private Dictionary<Mobile, Timer> m_DamageTable = new Dictionary<Mobile, Timer>();
+        private static readonly List<Mobile> m_TangleCooldown = new List<Mobile>();
+        private readonly Dictionary<Mobile, Timer> m_DamageTable = new Dictionary<Mobile, Timer>();
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {

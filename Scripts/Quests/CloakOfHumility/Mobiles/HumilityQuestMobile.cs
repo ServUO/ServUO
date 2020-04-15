@@ -13,7 +13,7 @@ namespace Server.Engines.Quests
         public override bool CanTeach { get { return false; } }
         public override bool PlayerRangeSensitive { get { return false; } }
 
-        private List<SBInfo> m_SBInfos = new List<SBInfo>();
+        private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
 
         public override void InitSBInfo()
@@ -33,7 +33,7 @@ namespace Server.Engines.Quests
         }
 
         public static List<HumilityQuestMobile> Instance { get { return m_Instances; } }
-        private static List<HumilityQuestMobile> m_Instances = new List<HumilityQuestMobile>();
+        private static readonly List<HumilityQuestMobile> m_Instances = new List<HumilityQuestMobile>();
 
         public HumilityQuestMobile(Serial serial) : base(serial)
         {
@@ -142,10 +142,10 @@ namespace Server.Engines.Quests
     {
         // Greeting(say), Greeting2(gump), Desire(say), Gift(say), OnExchange(say)
 
-        private Type m_Needs;
-        private Type m_Gives;
-        private int m_NeedsLoc;
-        private int m_GivesLoc;
+        private readonly Type m_Needs;
+        private readonly Type m_Gives;
+        private readonly int m_NeedsLoc;
+        private readonly int m_GivesLoc;
 
         public Type Needs { get { return m_Needs; } }
         public Type Gives { get { return m_Gives; } }
@@ -215,7 +215,7 @@ namespace Server.Engines.Quests
         }
 
         public static Type[] ItemTypes { get { return m_ItemTypes; } }
-        private static Type[] m_ItemTypes = new Type[]
+        private static readonly Type[] m_ItemTypes = new Type[]
         {
             typeof(BrassRing),
             typeof(SeasonedSkillet),
@@ -228,7 +228,7 @@ namespace Server.Engines.Quests
         };
 
         public static int[] ItemLocs { get { return m_ItemLocs; } }
-        private static int[] m_ItemLocs = new int[]
+        private static readonly int[] m_ItemLocs = new int[]
         {
             1075778,
             1075774,
@@ -241,7 +241,7 @@ namespace Server.Engines.Quests
         };
 
         public static Type[] MobileTypes { get { return m_MobileTypes; } }
-        private static Type[] m_MobileTypes = new Type[]
+        private static readonly Type[] m_MobileTypes = new Type[]
         {
             typeof(Maribel),
             typeof(Dierdre),

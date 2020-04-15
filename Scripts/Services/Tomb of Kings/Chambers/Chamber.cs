@@ -6,7 +6,7 @@ namespace Server.Engines.TombOfKings
     public class ChamberInfo
     {
         private Point3D m_BarrierLocation, m_SwitchLocation;
-        private int m_SwitchId;
+        private readonly int m_SwitchId;
 
         public Point3D BarrierLocation { get { return m_BarrierLocation; } }
         public Point3D SwitchLocation { get { return m_SwitchLocation; } }
@@ -49,14 +49,14 @@ namespace Server.Engines.TombOfKings
             }
         }
 
-        private static List<Chamber> m_Chambers = new List<Chamber>();
+        private static readonly List<Chamber> m_Chambers = new List<Chamber>();
 
         public static List<Chamber> Chambers
         {
             get { return m_Chambers; }
         }
 
-        private static ChamberInfo[] m_ChamberInfos = new ChamberInfo[]
+        private static readonly ChamberInfo[] m_ChamberInfos = new ChamberInfo[]
         {
 			// left side
 			new ChamberInfo( new Point3D( 15, 200, -5 ), new Point3D( 13, 195, 7 ), 0x1091 ),

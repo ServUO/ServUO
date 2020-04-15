@@ -136,7 +136,7 @@ namespace Server.Engines.ArenaSystem
             }
         }
 
-        private List<ArenaDuel> _Remove = new List<ArenaDuel>();
+        private readonly List<ArenaDuel> _Remove = new List<ArenaDuel>();
 
         public void OnTick()
         {

@@ -86,8 +86,8 @@ namespace Server.Engines.NewMagincia
 
         private class RecallRuneEntry : ContextMenuEntry
         {
-            private PlotSign m_Sign;
-            private Mobile m_From;
+            private readonly PlotSign m_Sign;
+            private readonly Mobile m_From;
 
             public RecallRuneEntry(Mobile from, PlotSign sign)
                 : base(1151508, -1)

@@ -4,7 +4,7 @@ namespace Server.Gumps
 {
     public class CompassDirectionGump : Gump
     {
-        private Mobile m_From;
+        private readonly Mobile m_From;
 
         public CompassDirectionGump(Mobile from) : base(120, 50)
         {

@@ -249,7 +249,7 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private Item m_Item;
+            private readonly Item m_Item;
             public InternalTimer(Item item) : base(TimeSpan.FromMinutes(30))
             {
                 m_Item = item;
@@ -359,11 +359,11 @@ namespace Server.Items
 
     public class BarrelExplodeWrathTimer : Timer
     {
-        private Map n_Map;
-        private int n_X, n_Y;
-        private int n_MinDamage;
-        private int n_MaxDamage;
-        private Item n_SourceItem;
+        private readonly Map n_Map;
+        private readonly int n_X, n_Y;
+        private readonly int n_MinDamage;
+        private readonly int n_MaxDamage;
+        private readonly Item n_SourceItem;
 
         public BarrelExplodeWrathTimer(Map map, int x, int y, int mindamage, int maxdamage, Item sourceitem) : base(TimeSpan.FromSeconds(0))
         {
@@ -464,11 +464,11 @@ namespace Server.Items
 
     public class BarrelPoisonWrathTimer : Timer
     {
-        private Map n_Map;
-        private int n_X, n_Y;
-        private int n_MinDamage;
-        private int n_MaxDamage;
-        private Item n_SourceItem;
+        private readonly Map n_Map;
+        private readonly int n_X, n_Y;
+        private readonly int n_MinDamage;
+        private readonly int n_MaxDamage;
+        private readonly Item n_SourceItem;
 
         public BarrelPoisonWrathTimer(Map map, int x, int y, int mindamage, int maxdamage, Item sourceitem) : base(TimeSpan.FromSeconds(0))
         {

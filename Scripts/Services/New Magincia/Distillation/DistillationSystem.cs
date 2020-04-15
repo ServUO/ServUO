@@ -30,10 +30,10 @@ namespace Server.Engines.Distillation
     {
         public static readonly TimeSpan MaturationPeriod = TimeSpan.FromHours(48);
 
-        private static List<CraftDefinition> m_CraftDefs = new List<CraftDefinition>();
+        private static readonly List<CraftDefinition> m_CraftDefs = new List<CraftDefinition>();
         public static List<CraftDefinition> CraftDefs { get { return m_CraftDefs; } }
 
-        private static Dictionary<Mobile, DistillationContext> m_Contexts = new Dictionary<Mobile, DistillationContext>();
+        private static readonly Dictionary<Mobile, DistillationContext> m_Contexts = new Dictionary<Mobile, DistillationContext>();
         public static Dictionary<Mobile, DistillationContext> Contexts { get { return m_Contexts; } }
 
         public static void Initialize()

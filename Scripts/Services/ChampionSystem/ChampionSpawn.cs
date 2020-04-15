@@ -1447,7 +1447,7 @@ namespace Server.Engines.CannedEvil
                 }
             }
 
-            private ChampionSpawn m_Spawn;
+            private readonly ChampionSpawn m_Spawn;
 
             public ChampionSpawnInfoGump(ChampionSpawn spawn)
                 : base(40, 40)

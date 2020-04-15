@@ -30,7 +30,7 @@ namespace Server.Services.TownCryer
         public static AccessLevel EMAccess = AccessLevel.Counselor;
         public static readonly string EMEventsPage = "https://uo.com/live-events/";
 
-        private static string PreLoadedPath = "Data/PreLoadedTC.xml";
+        private static readonly string PreLoadedPath = "Data/PreLoadedTC.xml";
 
         public static List<TownCryerGreetingEntry> GreetingsEntries { get; private set; }
         //public static List<TextDefinition> GreetingsEntries { get; private set; }

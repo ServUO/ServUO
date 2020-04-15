@@ -74,7 +74,7 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private DeathVortexTrap m_Item;
+            private readonly DeathVortexTrap m_Item;
 
             public InternalTimer(DeathVortexTrap item) : base(TimeSpan.FromSeconds(15.0))
             {

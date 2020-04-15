@@ -210,7 +210,7 @@ namespace Server.Engines.Craft
             Systems.Add(system);
         }
 
-        private Type[] _GlobalNoConsume =
+        private readonly Type[] _GlobalNoConsume =
         {
             typeof(CapturedEssence), typeof(EyeOfTheTravesty), typeof(DiseasedBark),  typeof(LardOfParoxysmus), typeof(GrizzledBones), typeof(DreadHornMane),
 

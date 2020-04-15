@@ -158,7 +158,7 @@ namespace Server.Items
             }
         }
 
-        private static Point3D[] _SpawnLocs =
+        private static readonly Point3D[] _SpawnLocs =
         {
             new Point3D(491, 1863, 95),
             new Point3D(496, 1865, 85),

@@ -6,7 +6,7 @@ namespace Server.Engines.NewMagincia
     [PropertyObject]
     public class MaginciaBazaarPlot
     {
-        private PlotDef m_Definition;
+        private readonly PlotDef m_Definition;
         private Mobile m_Owner;
         private string m_ShopName;
         private BaseBazaarMulti m_PlotMulti;
@@ -270,7 +270,7 @@ namespace Server.Engines.NewMagincia
 
         private class InternalTimer : Timer
         {
-            private MaginciaBazaarPlot m_Plot;
+            private readonly MaginciaBazaarPlot m_Plot;
 
             public InternalTimer(MaginciaBazaarPlot plot) : base(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1))
             {
@@ -388,7 +388,7 @@ namespace Server.Engines.NewMagincia
     {
         private string m_ID;
         private Point3D m_Location;
-        private Map m_Map;
+        private readonly Map m_Map;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string ID { get { return m_ID; } set { m_ID = value; } }

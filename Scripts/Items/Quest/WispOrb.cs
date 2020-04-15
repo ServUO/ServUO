@@ -290,8 +290,8 @@ namespace Server.Engines.Despise
 
         private class ConscriptEntry : ContextMenuEntry
         {
-            private Mobile m_From;
-            private WispOrb m_Orb;
+            private readonly Mobile m_From;
+            private readonly WispOrb m_Orb;
 
             public ConscriptEntry(Mobile from, WispOrb orb) : base(1153285, -1) // Conscript
             {
@@ -319,8 +319,8 @@ namespace Server.Engines.Despise
 
         private class ReleaseEntry : ContextMenuEntry
         {
-            private Mobile m_From;
-            private WispOrb m_Orb;
+            private readonly Mobile m_From;
+            private readonly WispOrb m_Orb;
 
             public ReleaseEntry(Mobile from, WispOrb orb) : base(1153284, -1) // Release
             {
@@ -342,7 +342,7 @@ namespace Server.Engines.Despise
 
         private class InternalTarget : Target
         {
-            private WispOrb m_Orb;
+            private readonly WispOrb m_Orb;
 
             public InternalTarget(WispOrb orb) : base(8, true, TargetFlags.None)
             {
@@ -600,7 +600,7 @@ namespace Server.Engines.Despise
             m_Orbs.Add(this);
         }
 
-        private static List<WispOrb> m_Orbs = new List<WispOrb>();
+        private static readonly List<WispOrb> m_Orbs = new List<WispOrb>();
         public static List<WispOrb> Orbs { get { return m_Orbs; } }
     }
 }

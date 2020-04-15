@@ -133,7 +133,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private FishOilFlask m_Flask;
+            private readonly FishOilFlask m_Flask;
 
             public InternalTarget(FishOilFlask flask) : base(-1, false, TargetFlags.None)
             {

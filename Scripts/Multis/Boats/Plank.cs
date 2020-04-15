@@ -248,8 +248,8 @@ namespace Server.Items
 
         public class PlanksContext : ContextMenuEntry
         {
-            private Plank m_Plank;
-            private Mobile m_From;
+            private readonly Plank m_Plank;
+            private readonly Mobile m_From;
 
             public PlanksContext(Mobile from, Plank plank) : base(6132, 10)
             {
@@ -334,7 +334,7 @@ namespace Server.Items
 
         private class CloseTimer : Timer
         {
-            private Plank m_Plank;
+            private readonly Plank m_Plank;
 
             public CloseTimer(Plank plank)
                 : base(TimeSpan.FromSeconds(5.0), TimeSpan.FromSeconds(5.0))

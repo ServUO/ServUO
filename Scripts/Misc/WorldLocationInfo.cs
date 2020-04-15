@@ -10,8 +10,8 @@ namespace Server
             CommandSystem.Register("GetLocation", AccessLevel.Administrator, new CommandEventHandler(GetLocation_OnCommand));
         }
 
-        private string m_RegionName;
-        private Rectangle2D[] m_Bounds;
+        private readonly string m_RegionName;
+        private readonly Rectangle2D[] m_Bounds;
 
         public string RegionName => m_RegionName;
         public Rectangle2D[] Bounds => m_Bounds;
@@ -23,7 +23,7 @@ namespace Server
         }
 
         public static WorldLocationInfo[][] Locations { get { return m_Locations; } }
-        private static WorldLocationInfo[][] m_Locations = new WorldLocationInfo[][]
+        private static readonly WorldLocationInfo[][] m_Locations = new WorldLocationInfo[][]
         {
             new WorldLocationInfo[] // Felucca
 			{

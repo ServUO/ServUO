@@ -7,9 +7,9 @@ namespace Server.Gumps
 {
     public class EnchantSpellGump : Gump
     {
-        private Mobile m_Caster;
-        private Item m_Scroll;
-        private BaseWeapon m_Weapon;
+        private readonly Mobile m_Caster;
+        private readonly Item m_Scroll;
+        private readonly BaseWeapon m_Weapon;
 
         public EnchantSpellGump(Mobile caster, Item scroll, BaseWeapon weapon)
             : base(20, 20)

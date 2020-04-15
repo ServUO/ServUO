@@ -282,7 +282,7 @@ namespace Server.Mobiles
 
         private class SpawnTimer : Timer
         {
-            private Item m_Item;
+            private readonly Item m_Item;
 
             public SpawnTimer(Item item)
                 : base(TimeSpan.FromSeconds(Utility.RandomMinMax(5, 10)))

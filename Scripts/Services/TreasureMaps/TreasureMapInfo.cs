@@ -449,7 +449,7 @@ namespace Server.Items
             }
         }
 
-        private static Type[][][] _WeaponTable = new Type[][][]
+        private static readonly Type[][][] _WeaponTable = new Type[][][]
         {
             new Type[][] // Artisan
                 {
@@ -498,7 +498,7 @@ namespace Server.Items
                 },
         };
 
-        private static Type[][][] _ArmorTable = new Type[][][]
+        private static readonly Type[][][] _ArmorTable = new Type[][][]
         {
             new Type[][] // Artisan
                 {

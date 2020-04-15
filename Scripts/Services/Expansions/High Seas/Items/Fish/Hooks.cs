@@ -84,7 +84,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private BaseFishingHook m_Hook;
+            private readonly BaseFishingHook m_Hook;
 
             public InternalTarget(BaseFishingHook hook)
                 : base(-1, false, TargetFlags.None)

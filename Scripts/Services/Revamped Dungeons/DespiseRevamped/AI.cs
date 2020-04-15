@@ -8,7 +8,7 @@ namespace Server.Engines.Despise
     {
         private long _NextAggressorCheck;
 
-        private DespiseCreature m_Creature;
+        private readonly DespiseCreature m_Creature;
 
         public DespiseMeleeAI(DespiseCreature m) : base(m)
         {
@@ -231,7 +231,7 @@ namespace Server.Engines.Despise
     {
         private long _NextAggressorCheck;
 
-        private DespiseCreature m_Creature;
+        private readonly DespiseCreature m_Creature;
 
         public DespiseMageAI(DespiseCreature m)
             : base(m)

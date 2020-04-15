@@ -144,7 +144,7 @@ namespace Server.Engines.VeteranRewards
 
         private class InternalTimer : Timer
         {
-            private EnchantedGraniteCartAddon i_item;
+            private readonly EnchantedGraniteCartAddon i_item;
 
             public InternalTimer(EnchantedGraniteCartAddon item)
                 : base(TimeSpan.FromMinutes(10.0), TimeSpan.FromMinutes(10.0))

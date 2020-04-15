@@ -8,8 +8,8 @@ namespace Server.Engines.NewMagincia
     {
         private int m_Funds;
         private DateTime m_Expires;
-        private Dictionary<Type, int> m_CommodityTypes = new Dictionary<Type, int>();
-        private List<BaseCreature> m_Creatures = new List<BaseCreature>();
+        private readonly Dictionary<Type, int> m_CommodityTypes = new Dictionary<Type, int>();
+        private readonly List<BaseCreature> m_Creatures = new List<BaseCreature>();
 
         public int Funds { get { return m_Funds; } set { m_Funds = value; } }
         public DateTime Expires { get { return m_Expires; } }

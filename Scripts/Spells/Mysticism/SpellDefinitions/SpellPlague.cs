@@ -7,7 +7,7 @@ namespace Server.Spells.Mysticism
 {
     public class SpellPlagueSpell : MysticSpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Spell Plague", "Vas Rel Jux Ort",
                 230,
                 9022,
@@ -69,7 +69,7 @@ namespace Server.Spells.Mysticism
             FinishSequence();
         }
 
-        private static Dictionary<Mobile, List<SpellPlagueTimer>> m_Table = new Dictionary<Mobile, List<SpellPlagueTimer>>();
+        private static readonly Dictionary<Mobile, List<SpellPlagueTimer>> m_Table = new Dictionary<Mobile, List<SpellPlagueTimer>>();
 
         public static bool HasSpellPlague(Mobile from)
         {
@@ -209,8 +209,8 @@ namespace Server.Spells.Mysticism
 
     public class SpellPlagueTimer : Timer
     {
-        private Mobile m_Caster;
-        private Mobile m_Owner;
+        private readonly Mobile m_Caster;
+        private readonly Mobile m_Owner;
         private int m_Amount;
         private DateTime m_NextUse;
 

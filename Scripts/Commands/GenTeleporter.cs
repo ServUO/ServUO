@@ -55,8 +55,8 @@ namespace Server.Commands
     }
     public class GenTeleporter
     {
-        private static string m_Path = Path.Combine("Data", "teleporters.csv");
-        private static char[] m_Sep = { ',' };
+        private static readonly string m_Path = Path.Combine("Data", "teleporters.csv");
+        private static readonly char[] m_Sep = { ',' };
 
         public GenTeleporter()
         {

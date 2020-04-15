@@ -572,9 +572,9 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private BandageContext m_Context;
-            private long m_Begin;
-            private long m_Expires;
+            private readonly BandageContext m_Context;
+            private readonly long m_Begin;
+            private readonly long m_Expires;
             private bool m_CheckedHealAndBleed;
 
             public bool CanCheckAtHalf

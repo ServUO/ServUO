@@ -158,7 +158,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private GoblinFloorTrapKit m_Kit;
+            private readonly GoblinFloorTrapKit m_Kit;
 
             public InternalTarget(GoblinFloorTrapKit kit) : base(-1, false, TargetFlags.None)
             {

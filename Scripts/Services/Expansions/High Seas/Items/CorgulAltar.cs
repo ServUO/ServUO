@@ -15,7 +15,7 @@ namespace Server.Items
 
         private static readonly int m_RegionSize = 186;
 
-        private static Rectangle2D[] m_WarpLocations = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_WarpLocations = new Rectangle2D[]
         {
                 new Rectangle2D(2885, 1373, 500, 800),
                 new Rectangle2D(330,  2940, 400, 400),
@@ -45,7 +45,7 @@ namespace Server.Items
         private DateTime m_DeadLine;
         private Mobile m_Boss;
         private int m_KeyStage;
-        private List<Item> m_IslandMaps = new List<Item>();
+        private readonly List<Item> m_IslandMaps = new List<Item>();
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Activated { get { return m_Activated; } }
@@ -64,7 +64,7 @@ namespace Server.Items
         public CorgulWarpRegion WarpRegion { get { return m_WarpRegion; } }
         public CorgulRegion BossRegion { get { return m_BossRegion; } }
 
-        private Type[] m_Keys = new Type[] { typeof(TreasureMap), typeof(WorldMap) };
+        private readonly Type[] m_Keys = new Type[] { typeof(TreasureMap), typeof(WorldMap) };
 
         public static Point3D SpawnLoc = new Point3D(6431, 1236, 10);
 
@@ -168,7 +168,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private CorgulAltar m_Altar;
+            private readonly CorgulAltar m_Altar;
 
             public InternalTarget(CorgulAltar altar) : base(-1, false, TargetFlags.None)
             {

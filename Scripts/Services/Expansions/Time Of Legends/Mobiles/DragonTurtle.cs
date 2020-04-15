@@ -117,8 +117,8 @@ namespace Server.Mobiles
         public List<Tuple<Point3D, int>> _BubbleLocs { get; set; }
         public Dictionary<Mobile, int> _Affected { get; set; }
 
-        private Direction[] _Directions = { Direction.North, Direction.Right, Direction.East, Direction.Down, Direction.South, Direction.Left, Direction.West, Direction.Up };
-        private int[] _Hues = { 0, 33, 44, 9, 63, 53, 117 };
+        private readonly Direction[] _Directions = { Direction.North, Direction.Right, Direction.East, Direction.Down, Direction.South, Direction.Left, Direction.West, Direction.Up };
+        private readonly int[] _Hues = { 0, 33, 44, 9, 63, 53, 117 };
 
         public override void OnThink()
         {

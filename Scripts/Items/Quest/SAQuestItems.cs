@@ -486,7 +486,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private LuckyCoin m_Coin;
+            private readonly LuckyCoin m_Coin;
 
             public InternalTarget(LuckyCoin coin)
                 : base(3, false, TargetFlags.None)

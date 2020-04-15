@@ -396,8 +396,8 @@ namespace Server.Gumps
         #endregion
 
         #region Tooltips
-        private Dictionary<string, Spoof> _TextTooltips = new Dictionary<string, Spoof>();
-        private Dictionary<Dictionary<int, string>, Spoof> _ClilocTooltips = new Dictionary<Dictionary<int, string>, Spoof>();
+        private readonly Dictionary<string, Spoof> _TextTooltips = new Dictionary<string, Spoof>();
+        private readonly Dictionary<Dictionary<int, string>, Spoof> _ClilocTooltips = new Dictionary<Dictionary<int, string>, Spoof>();
 
         public void AddTooltip(string text)
         {

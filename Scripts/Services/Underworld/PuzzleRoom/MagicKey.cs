@@ -90,7 +90,7 @@ namespace Server.Items
 
         private class MagicKeyConfirmGump : Gump
         {
-            private MagicKey m_Key;
+            private readonly MagicKey m_Key;
 
             public MagicKeyConfirmGump(MagicKey key) : base(50, 50)
             {

@@ -15,7 +15,7 @@ namespace Server.Items
     {
         public override bool IsArtifact { get { return true; } }
         public static Dictionary<Mobile, WardingEffect> Table { get { return m_Table; } }
-        private static Dictionary<Mobile, WardingEffect> m_Table = new Dictionary<Mobile, WardingEffect>();
+        private static readonly Dictionary<Mobile, WardingEffect> m_Table = new Dictionary<Mobile, WardingEffect>();
 
         public override int LabelNumber { get { return 1116231; } }
 

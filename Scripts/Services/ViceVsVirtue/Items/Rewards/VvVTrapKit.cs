@@ -16,7 +16,7 @@ namespace Server.Engines.VvV
 
         public override int LabelNumber { get { return 1154944; } } // Trap Kit
 
-        private static Dictionary<Mobile, DateTime> _Cooldown = new Dictionary<Mobile, DateTime>();
+        private static readonly Dictionary<Mobile, DateTime> _Cooldown = new Dictionary<Mobile, DateTime>();
 
         [Constructable]
         public VvVTrapKit(VvVTrapType type) : base(7866)

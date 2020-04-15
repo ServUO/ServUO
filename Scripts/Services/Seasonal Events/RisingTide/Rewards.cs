@@ -358,7 +358,7 @@ namespace Server.Items
             ColUtility.Free(list);
         }
 
-        private static string[] _ShipNames =
+        private static readonly string[] _ShipNames =
         {
             "Adventure Galley",
             "Queen Anne's Revenge",

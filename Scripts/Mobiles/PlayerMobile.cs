@@ -2650,10 +2650,10 @@ namespace Server.Mobiles
 
         private class ItemInsuranceMenuGump : Gump
         {
-            private PlayerMobile m_From;
-            private Item[] m_Items;
-            private bool[] m_Insure;
-            private int m_Page;
+            private readonly PlayerMobile m_From;
+            private readonly Item[] m_Items;
+            private readonly bool[] m_Insure;
+            private readonly int m_Page;
 
             public ItemInsuranceMenuGump(PlayerMobile from, Item[] items)
                 : this(from, items, null, 0)
@@ -2821,10 +2821,10 @@ namespace Server.Mobiles
 
         private class ItemInsuranceMenuConfirmGump : Gump
         {
-            private PlayerMobile m_From;
-            private Item[] m_Items;
-            private bool[] m_Insure;
-            private int m_Page;
+            private readonly PlayerMobile m_From;
+            private readonly Item[] m_Items;
+            private readonly bool[] m_Insure;
+            private readonly int m_Page;
 
             public ItemInsuranceMenuConfirmGump(PlayerMobile from, Item[] items, bool[] insure, int page)
                 : base(250, 200)
@@ -5534,9 +5534,9 @@ namespace Server.Mobiles
         }
 
         #region Fastwalk Prevention
-        private static bool FastwalkPrevention = true; // Is fastwalk prevention enabled?
+        private static readonly bool FastwalkPrevention = true; // Is fastwalk prevention enabled?
 
-        private static int FastwalkThreshold = 400; // Fastwalk prevention will become active after 0.4 seconds
+        private static readonly int FastwalkThreshold = 400; // Fastwalk prevention will become active after 0.4 seconds
 
         private long m_NextMovementTime;
         private bool m_HasMoved;

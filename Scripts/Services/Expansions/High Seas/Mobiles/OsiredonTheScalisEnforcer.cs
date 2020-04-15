@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public static readonly TimeSpan SpawnRate = TimeSpan.FromSeconds(30);
         public static readonly int SpawnMax = 25;
 
-        private List<Mobile> m_Eels = new List<Mobile>();
+        private readonly List<Mobile> m_Eels = new List<Mobile>();
         private DateTime m_NextSpawn;
         private DateTime m_NextSpecial;
         private DateTime m_NextWaterBall;

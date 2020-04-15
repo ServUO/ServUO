@@ -102,7 +102,7 @@ namespace Server.Items
             this.Collapse(from);
         }
 
-        private static Type[] m_SnakeTypes = new Type[]
+        private static readonly Type[] m_SnakeTypes = new Type[]
             {
                 typeof( LavaSnake ),    typeof( Snake ),
                 typeof( CoralSnake ),   typeof( GiantSerpent )

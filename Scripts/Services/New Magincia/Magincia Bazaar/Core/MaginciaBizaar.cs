@@ -17,13 +17,13 @@ namespace Server.Engines.NewMagincia
 
         private Timer m_Timer;
 
-        private static List<MaginciaBazaarPlot> m_Plots = new List<MaginciaBazaarPlot>();
+        private static readonly List<MaginciaBazaarPlot> m_Plots = new List<MaginciaBazaarPlot>();
         public static List<MaginciaBazaarPlot> Plots { get { return m_Plots; } }
 
-        private static Dictionary<Mobile, BidEntry> m_NextAvailable = new Dictionary<Mobile, BidEntry>();
+        private static readonly Dictionary<Mobile, BidEntry> m_NextAvailable = new Dictionary<Mobile, BidEntry>();
         public static Dictionary<Mobile, BidEntry> NextAvailable { get { return m_NextAvailable; } }
 
-        private static Dictionary<Mobile, int> m_Reserve = new Dictionary<Mobile, int>();
+        private static readonly Dictionary<Mobile, int> m_Reserve = new Dictionary<Mobile, int>();
         public static Dictionary<Mobile, int> Reserve { get { return m_Reserve; } }
 
         private bool m_Enabled;
@@ -484,7 +484,7 @@ namespace Server.Engines.NewMagincia
         }
 
         #region Bizaar Authority Storage
-        private static Dictionary<Mobile, StorageEntry> m_WarehouseStorage = new Dictionary<Mobile, StorageEntry>();
+        private static readonly Dictionary<Mobile, StorageEntry> m_WarehouseStorage = new Dictionary<Mobile, StorageEntry>();
 
         public void AddInventoryToWarehouse(Mobile owner, BaseBazaarBroker broker)
         {
@@ -822,7 +822,7 @@ namespace Server.Engines.NewMagincia
             RegisterPlot(new PlotDef("J-4", m_StallLocs[idx], 0));
         }
 
-        private static Point3D[] m_StallLocs = new Point3D[]
+        private static readonly Point3D[] m_StallLocs = new Point3D[]
         {
             //A
             new Point3D(3716, 2198, 20),

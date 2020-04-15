@@ -110,7 +110,7 @@ namespace Server.Items
                 typeof(LesserHiryu), typeof(Hiryu)
             };
 
-            private ShepherdsCrook m_Crook;
+            private readonly ShepherdsCrook m_Crook;
 
             public HerdingTarget(ShepherdsCrook crook)
                 : base(10, false, TargetFlags.None)
@@ -178,8 +178,8 @@ namespace Server.Items
 
             private class InternalTarget : Target
             {
-                private BaseCreature m_Creature;
-                private ShepherdsCrook m_Crook;
+                private readonly BaseCreature m_Creature;
+                private readonly ShepherdsCrook m_Crook;
 
                 public InternalTarget(BaseCreature c, ShepherdsCrook crook)
                     : base(10, true, TargetFlags.None)

@@ -10,7 +10,7 @@ namespace Server.Misc
     {
         public static bool Enabled { get { return SeasonalEventSystem.IsActive(EventType.VirtueArtifacts); } }
 
-        private static Type[] m_VirtueArtifacts = new Type[]
+        private static readonly Type[] m_VirtueArtifacts = new Type[]
             {
                 typeof( KatrinasCrook ), typeof( JaanasStaff ), typeof( DragonsEnd ), typeof( AnkhPendant ),
                 typeof( SentinelsGuard ), typeof( LordBlackthornsExemplar ), typeof( MapOfTheKnownWorld ), typeof( TenthAnniversarySculpture ),
@@ -26,7 +26,7 @@ namespace Server.Misc
         public override double MaxPoints { get { return double.MaxValue; } }
         public override bool ShowOnLoyaltyGump { get { return false; } }
 
-        private TextDefinition m_Name = new TextDefinition("Virtue Artifact System");
+        private readonly TextDefinition m_Name = new TextDefinition("Virtue Artifact System");
 
         public VirtueArtifactsSystem()
         {

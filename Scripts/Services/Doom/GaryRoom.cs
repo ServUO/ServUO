@@ -48,18 +48,18 @@ namespace Server.Engines.Doom
         private static Point3D _SpawnLoc = new Point3D(396, 8, 4);
         private static Point3D _DoorOneLoc = new Point3D(395, 15, -1);
         private static Point3D _DoorTwoLoc = new Point3D(396, 15, -1);
-        private static Point3D[] _StatueLocs = new Point3D[]
+        private static readonly Point3D[] _StatueLocs = new Point3D[]
         {
             new Point3D(393, 4, 5),
             new Point3D(395, 4 ,5),
             new Point3D(397, 4, 5)
         };
-        private static Rectangle2D[] _Bounds =
+        private static readonly Rectangle2D[] _Bounds =
         {
             new Rectangle2D(388, 3, 16, 12)
         };
 
-        private Type[] _MonsterList =
+        private readonly Type[] _MonsterList =
         {
             typeof(BoneDemon), typeof(SkeletalKnight), typeof(SkeletalMage), typeof(DarkGuardian), typeof(Devourer),
             typeof(FleshGolem), typeof(Gibberling), typeof(AncientLich), typeof(Lich), typeof(LichLord),

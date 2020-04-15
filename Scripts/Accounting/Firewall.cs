@@ -157,7 +157,7 @@ namespace Server
         }
         #endregion
 
-        private static List<IFirewallEntry> m_Blocked;
+        private static readonly List<IFirewallEntry> m_Blocked;
 
         static Firewall()
         {

@@ -81,7 +81,7 @@ namespace Server.Engines.Quests
             AddItem(new FemaleGargishClothArms(0x738));
         }
 
-        private static Type[][] m_PileTypes = new Type[][]
+        private static readonly Type[][] m_PileTypes = new Type[][]
             {
                 new Type[] {typeof(DullCopperIngot),  typeof(PileofInspectedDullCopperIngots) },
                 new Type[] {typeof(ShadowIronIngot),  typeof(PileofInspectedShadowIronIngots) },

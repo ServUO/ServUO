@@ -17,7 +17,7 @@ namespace Server.Items
             _DisplayName = _Names[Utility.Random(_Names.Length)];
         }
 
-        private static string[] _Names =
+        private static readonly string[] _Names =
         {
             "White-Winged", "Jobi", "Golden Heart", "White-Tipped", "Collared", "Common Ground", "Ruddy Quail", "Thick-Billed Ground", "Celebes Quail", "Dragon Turtle",
             "Crested Quail", "HeartWood", "Grey-Fronted", "Bronzewing", "Grey-Headed", "Brown Cuckoo", "Red Dragon Turtle", "Rock", "Namaqua", "Laughing", "Bar Shoulder",

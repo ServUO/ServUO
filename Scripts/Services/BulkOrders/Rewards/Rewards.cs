@@ -1246,7 +1246,7 @@ namespace Server.Engines.BulkOrders
             return points;
         }
 
-        private RewardType[] m_Types =
+        private readonly RewardType[] m_Types =
         {
             new RewardType(250, typeof(TallCabinet), typeof(ShortCabinet)),
             new RewardType(250, typeof(RedArmoire), typeof(ElegantArmoire), typeof(MapleArmoire), typeof(CherryArmoire)),
@@ -1398,7 +1398,7 @@ namespace Server.Engines.BulkOrders
             return points;
         }
 
-        private RewardType[] m_Types =
+        private readonly RewardType[] m_Types =
         {
             new RewardType(200, typeof(ClumsyScroll), typeof(FeeblemindScroll), typeof(WeakenScroll)),
             new RewardType(300, typeof(CurseScroll), typeof(GreaterHealScroll), typeof(RecallScroll)),
@@ -1531,7 +1531,7 @@ namespace Server.Engines.BulkOrders
             return points;
         }
 
-        private RewardType[] m_Types =
+        private readonly RewardType[] m_Types =
         {
             new RewardType(200, typeof(SweetCocoaButter), typeof(SackFlour), typeof(Dough)),
             new RewardType(250, typeof(UnbakedFruitPie), typeof(UnbakedPeachCobbler), typeof(UnbakedApplePie), typeof(UnbakedPumpkinPie)),
@@ -1680,7 +1680,7 @@ namespace Server.Engines.BulkOrders
             return points;
         }
 
-        private RewardType[] m_Types =
+        private readonly RewardType[] m_Types =
         {
             new RewardType(200, typeof(Arrow), typeof(Bolt)),
             new RewardType(300, typeof(Bow), typeof(CompositeBow), typeof(Yumi)),

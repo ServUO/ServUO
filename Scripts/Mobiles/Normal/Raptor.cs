@@ -9,7 +9,7 @@ namespace Server.Mobiles
         private const int MaxFriends = 2;
 
         private bool m_IsFriend;
-        private List<Mobile> m_Friends = new List<Mobile>();
+        private readonly List<Mobile> m_Friends = new List<Mobile>();
         private InternalTimer m_FriendsTimer;
 
         [Constructable]
@@ -217,7 +217,7 @@ namespace Server.Mobiles
 
         private class InternalTimer : Timer
         {
-            private Raptor m_Owner;
+            private readonly Raptor m_Owner;
 
             public InternalTimer(Raptor owner)
                 : base(TimeSpan.Zero, TimeSpan.FromSeconds(30.0))

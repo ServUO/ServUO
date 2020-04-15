@@ -109,7 +109,7 @@ namespace Server.Items
 
         private class InternalPrompt : Prompt
         {
-            private Bait m_Bait;
+            private readonly Bait m_Bait;
 
             public InternalPrompt(Bait bait)
             {
@@ -130,8 +130,8 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private Bait m_Bait;
-            private int m_Amount;
+            private readonly Bait m_Bait;
+            private readonly int m_Amount;
 
             public InternalTarget(Bait bait, int amount)
                 : base(0, false, TargetFlags.None)

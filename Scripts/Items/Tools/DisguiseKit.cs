@@ -285,7 +285,7 @@ namespace Server.Items
 
     public class DisguiseTimers
     {
-        private static Dictionary<Mobile, InternalTimer> m_Timers = new Dictionary<Mobile, InternalTimer>();
+        private static readonly Dictionary<Mobile, InternalTimer> m_Timers = new Dictionary<Mobile, InternalTimer>();
 
         public static Dictionary<Mobile, InternalTimer> Timers { get { return m_Timers; } }
 
