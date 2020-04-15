@@ -2362,7 +2362,7 @@ namespace Server.Network
             {
                 bool authOK = false;
 
-                ulong razorFeatures = (((ulong)pvSrc.ReadUInt32()) << 32) | ((ulong)pvSrc.ReadUInt32());
+                ulong razorFeatures = (((ulong)pvSrc.ReadUInt32()) << 32) | pvSrc.ReadUInt32();
 
                 if (razorFeatures == (ulong)FeatureProtection.DisabledFeatures)
                 {

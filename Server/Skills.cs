@@ -243,7 +243,7 @@ namespace Server
 
                 if (VolumeLearned != 0)
                 {
-                    writer.Write((int)VolumeLearned);
+                    writer.Write(VolumeLearned);
                 }
 
                 if (NextGGSGain != DateTime.MinValue)
