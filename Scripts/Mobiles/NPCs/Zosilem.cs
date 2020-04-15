@@ -78,7 +78,7 @@ namespace Server.Engines.Quests
             AddItem(new FemaleGargishClothArms(0x711));
         }
 
-        private static Type[][] m_PileTypes = new Type[][]
+        private static readonly Type[][] m_PileTypes = new Type[][]
             {
                 new Type[] {typeof(DullCopperIngot),  typeof(PileofInspectedDullCopperIngots) },
                 new Type[] {typeof(ShadowIronIngot),  typeof(PileofInspectedShadowIronIngots) },
@@ -89,7 +89,7 @@ namespace Server.Engines.Quests
                 new Type[] {typeof(ValoriteIngot),    typeof(PileofInspectedValoriteIngots) }
             };
 
-        private static object[][] m_KegTypes = new object[][]
+        private static readonly object[][] m_KegTypes = new object[][]
             {
                 new object[] {PotionEffect.RefreshTotal,  typeof(InspectedKegofTotalRefreshment) },
                 new object[] {PotionEffect.PoisonGreater, typeof(InspectedKegofGreaterPoison) }

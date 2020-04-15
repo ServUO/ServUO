@@ -17,7 +17,7 @@ namespace Server.Mobiles
     public class BaseXmlSpawner
     {
         #region Initialization
-        private static List<BaseXmlSpawner.ProtectedProperty> ProtectedPropertiesList = new List<BaseXmlSpawner.ProtectedProperty>();
+        private static readonly List<BaseXmlSpawner.ProtectedProperty> ProtectedPropertiesList = new List<BaseXmlSpawner.ProtectedProperty>();
 
         private class ProtectedProperty
         {
@@ -71,17 +71,17 @@ namespace Server.Mobiles
             public Type t;
         }
 
-        private static Type typeofTimeSpan = typeof(TimeSpan);
-        private static Type typeofParsable = typeof(ParsableAttribute);
-        private static Type typeofCustomEnum = typeof(CustomEnumAttribute);
+        private static readonly Type typeofTimeSpan = typeof(TimeSpan);
+        private static readonly Type typeofParsable = typeof(ParsableAttribute);
+        private static readonly Type typeofCustomEnum = typeof(CustomEnumAttribute);
 
         private static bool IsParsable(Type t)
         {
             return (t == typeofTimeSpan || t.IsDefined(typeofParsable, false));
         }
 
-        private static Type[] m_ParseTypes = new Type[] { typeof(string) };
-        private static object[] m_ParseParams = new object[1];
+        private static readonly Type[] m_ParseTypes = new Type[] { typeof(string) };
+        private static readonly object[] m_ParseParams = new object[1];
 
         private static object Parse(object o, Type t, string value)
         {
@@ -92,7 +92,7 @@ namespace Server.Mobiles
             return method.Invoke(o, m_ParseParams);
         }
 
-        private static Type[] m_NumericTypes = new Type[]
+        private static readonly Type[] m_NumericTypes = new Type[]
         {
             typeof( Byte ), typeof( SByte ),
             typeof( Int16 ), typeof( UInt16 ),
@@ -105,21 +105,21 @@ namespace Server.Mobiles
             return (Array.IndexOf(m_NumericTypes, t) >= 0);
         }
 
-        private static Type typeofType = typeof(Type);
+        private static readonly Type typeofType = typeof(Type);
 
         private static bool IsType(Type t)
         {
             return (t == typeofType);
         }
 
-        private static Type typeofChar = typeof(Char);
+        private static readonly Type typeofChar = typeof(Char);
 
         private static bool IsChar(Type t)
         {
             return (t == typeofChar);
         }
 
-        private static Type typeofString = typeof(String);
+        private static readonly Type typeofString = typeof(String);
 
         private static bool IsString(Type t)
         {
@@ -301,18 +301,18 @@ namespace Server.Mobiles
         // name of mobile used to issue commands via the COMMAND keyword.  The accesslevel of the mobile will determine
         // the accesslevel of commands that can be issued.
         // if this is null, then COMMANDS can only be issued when triggered by players of the appropriate accesslevel
-        private static string CommandMobileName = null;
+        private static readonly string CommandMobileName = null;
 
-        private static Dictionary<string, BaseXmlSpawner.typeKeyword> typeKeywordHash = new Dictionary<string, BaseXmlSpawner.typeKeyword>();
-        private static Dictionary<string, BaseXmlSpawner.typemodKeyword> typemodKeywordHash = new Dictionary<string, BaseXmlSpawner.typemodKeyword>();
-        private static Dictionary<string, BaseXmlSpawner.valueKeyword> valueKeywordHash = new Dictionary<string, BaseXmlSpawner.valueKeyword>();
-        private static Dictionary<string, BaseXmlSpawner.valuemodKeyword> valuemodKeywordHash = new Dictionary<string, BaseXmlSpawner.valuemodKeyword>();
+        private static readonly Dictionary<string, BaseXmlSpawner.typeKeyword> typeKeywordHash = new Dictionary<string, BaseXmlSpawner.typeKeyword>();
+        private static readonly Dictionary<string, BaseXmlSpawner.typemodKeyword> typemodKeywordHash = new Dictionary<string, BaseXmlSpawner.typemodKeyword>();
+        private static readonly Dictionary<string, BaseXmlSpawner.valueKeyword> valueKeywordHash = new Dictionary<string, BaseXmlSpawner.valueKeyword>();
+        private static readonly Dictionary<string, BaseXmlSpawner.valuemodKeyword> valuemodKeywordHash = new Dictionary<string, BaseXmlSpawner.valuemodKeyword>();
 
-        private static char[] slashdelim = new char[1] { '/' };
-        private static char[] commadelim = new char[1] { ',' };
-        private static char[] spacedelim = new char[1] { ' ' };
-        private static char[] semicolondelim = new char[1] { ';' };
-        private static char[] literalend = new char[1] { '§' };
+        private static readonly char[] slashdelim = new char[1] { '/' };
+        private static readonly char[] commadelim = new char[1] { ',' };
+        private static readonly char[] spacedelim = new char[1] { ' ' };
+        private static readonly char[] semicolondelim = new char[1] { ';' };
+        private static readonly char[] literalend = new char[1] { '§' };
         #endregion
 
         #region Keywords
@@ -680,10 +680,10 @@ namespace Server.Mobiles
             // added the timer that begins on spawning tmp keywords
             private class KeywordTimer : Timer
             {
-                private KeywordTag m_Tag;
-                private XmlSpawner m_Spawner;
-                private string m_Condition;
-                private int m_Goto;
+                private readonly KeywordTag m_Tag;
+                private readonly XmlSpawner m_Spawner;
+                private readonly string m_Condition;
+                private readonly int m_Goto;
                 private TimeSpan m_Repeatdelay;
 
                 public KeywordTimer(XmlSpawner spawner, KeywordTag tag, TimeSpan delay, TimeSpan repeatdelay, string condition, int gotogroup)

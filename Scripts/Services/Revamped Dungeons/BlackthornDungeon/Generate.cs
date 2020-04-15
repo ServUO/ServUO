@@ -88,7 +88,7 @@ namespace Server.Engines.Blackthorn
             }
         }
 
-        private static Point3D[] _BlockerList =
+        private static readonly Point3D[] _BlockerList =
         {
             new Point3D(6435, 2425, -5),
             new Point3D(6435, 2424, -5),

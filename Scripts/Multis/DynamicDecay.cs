@@ -5,7 +5,7 @@ namespace Server.Multis
 {
     public class DynamicDecay
     {
-        private static Dictionary<DecayLevel, DecayStageInfo> m_Stages;
+        private static readonly Dictionary<DecayLevel, DecayStageInfo> m_Stages;
         static DynamicDecay()
         {
             m_Stages = new Dictionary<DecayLevel, DecayStageInfo>();

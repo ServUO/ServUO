@@ -72,7 +72,7 @@ namespace Server.Engines.Quests
 
     public class Sutek : MondainQuester
     {
-        private static Type[] m_Quests = new Type[] { typeof(PerfectTimingQuest) };
+        private static readonly Type[] m_Quests = new Type[] { typeof(PerfectTimingQuest) };
         public override Type[] Quests { get { return m_Quests; } }
 
         [Constructable]

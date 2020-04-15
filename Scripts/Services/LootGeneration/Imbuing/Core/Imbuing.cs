@@ -27,7 +27,7 @@ namespace Server.SkillHandlers
                 e.Mobile.EndAction(typeof(Imbuing));
         }
 
-        private static Dictionary<Mobile, ImbuingContext> m_ContextTable = new Dictionary<Mobile, ImbuingContext>();
+        private static readonly Dictionary<Mobile, ImbuingContext> m_ContextTable = new Dictionary<Mobile, ImbuingContext>();
         public static Dictionary<Mobile, ImbuingContext> ContextTable { get { return m_ContextTable; } }
 
         public static TimeSpan OnUse(Mobile from)
@@ -216,7 +216,7 @@ namespace Server.SkillHandlers
             return false;
         }
 
-        private static Type[] _SpecialImbuable =
+        private static readonly Type[] _SpecialImbuable =
        {
             typeof(ClockworkLeggings), typeof(GargishClockworkLeggings), typeof(OrcishKinMask), typeof(SavageMask), typeof(VirtuososArmbands),
             typeof(VirtuososCap), typeof(VirtuososCollar), typeof(VirtuososEarpieces), typeof(VirtuososKidGloves), typeof(VirtuososKilt),
@@ -225,7 +225,7 @@ namespace Server.SkillHandlers
             typeof(SpikedWhip), typeof(SkullGnarledStaff), typeof(GargishSkullGnarledStaff), typeof(SkullLongsword), typeof(GargishSkullLongsword), typeof(JukaBow)
         };
 
-        private static Type[] _NonCraftables =
+        private static readonly Type[] _NonCraftables =
         {
             typeof(SilverRing), typeof(SilverBracelet)
         };
@@ -1582,7 +1582,7 @@ namespace Server.SkillHandlers
         }
 
         public static SkillName[] PossibleSkills { get { return m_PossibleSkills; } }
-        private static SkillName[] m_PossibleSkills = new SkillName[]
+        private static readonly SkillName[] m_PossibleSkills = new SkillName[]
             {
                 SkillName.Swords,
                 SkillName.Fencing,
@@ -1616,7 +1616,7 @@ namespace Server.SkillHandlers
                 SkillName.Mysticism
             };
 
-        private static SkillName[][] m_SkillGroups = new SkillName[][]
+        private static readonly SkillName[][] m_SkillGroups = new SkillName[][]
         {
             new SkillName[] { SkillName.Fencing, SkillName.Macing, SkillName.Swords, SkillName.Musicianship, SkillName.Magery },
             new SkillName[] { SkillName.Wrestling, SkillName.AnimalTaming, SkillName.SpiritSpeak, SkillName.Tactics, SkillName.Provocation },
@@ -1727,7 +1727,7 @@ namespace Server.SkillHandlers
         }
 
         public static Type[] IngredTypes { get { return m_IngredTypes; } }
-        private static Type[] m_IngredTypes = new Type[]
+        private static readonly Type[] m_IngredTypes = new Type[]
         {
             typeof(MagicalResidue),     typeof(EnchantedEssence),       typeof(RelicFragment),
 
@@ -1762,7 +1762,7 @@ namespace Server.SkillHandlers
             return false;
         }
 
-        private static Type[] m_CannotImbue = new Type[]
+        private static readonly Type[] m_CannotImbue = new Type[]
         {
             typeof(GargishLeatherWingArmor), typeof(GargishClothWingArmor)
         };

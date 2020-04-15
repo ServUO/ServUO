@@ -25,10 +25,10 @@ namespace Server.Items
     /// </summary>
     public class PropertyEffect
     {
-        private Mobile m_Mobile;
-        private Mobile m_Victim;
-        private Item m_Owner;
-        private EffectsType m_Effect;
+        private readonly Mobile m_Mobile;
+        private readonly Mobile m_Victim;
+        private readonly Item m_Owner;
+        private readonly EffectsType m_Effect;
         private TimeSpan m_Duration;
         private TimeSpan m_TickDuration;
         private Timer m_Timer;
@@ -41,7 +41,7 @@ namespace Server.Items
         public TimeSpan TickDuration => m_TickDuration;
         public Timer Timer => m_Timer;
 
-        private static List<PropertyEffect> m_Effects = new List<PropertyEffect>();
+        private static readonly List<PropertyEffect> m_Effects = new List<PropertyEffect>();
         public static List<PropertyEffect> Effects => m_Effects;
 
         public PropertyEffect(Mobile from, Mobile victim, Item owner, EffectsType effect, TimeSpan duration, TimeSpan tickduration)
@@ -107,8 +107,8 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private PropertyEffect m_Effect;
-            private DateTime m_Expires;
+            private readonly PropertyEffect m_Effect;
+            private readonly DateTime m_Expires;
 
             public InternalTimer(PropertyEffect effect)
                 : base(effect.TickDuration, effect.TickDuration)
@@ -586,7 +586,7 @@ namespace Server.Items
     {
         public static Dictionary<Mobile, DateTime> _Immunity;
 
-        private int _ID;
+        private readonly int _ID;
 
         public SwarmContext(Mobile attacker, Mobile defender, Item weapon)
             : base(attacker, defender, weapon, EffectsType.Swarm, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(5))

@@ -284,7 +284,7 @@ namespace Server.Mobiles
 
         private class InternalTimer : Timer
         {
-            private CharydbisSpawner m_Info;
+            private readonly CharydbisSpawner m_Info;
 
             public InternalTimer(CharydbisSpawner info, TimeSpan ts)
                 : base(ts)

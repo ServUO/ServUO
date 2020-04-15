@@ -15,7 +15,7 @@ namespace Server.Engines.TombOfKings
             }
         }
 
-        private static Point3D[] m_LeverLocations = new Point3D[]
+        private static readonly Point3D[] m_LeverLocations = new Point3D[]
         {
             new Point3D( 25, 229, 2 ),
             new Point3D( 25, 227, 2 ),
@@ -34,7 +34,7 @@ namespace Server.Engines.TombOfKings
             new Point3D( 45, 217, 2 ),
         };
 
-        private static List<ChamberLever> m_Levers = new List<ChamberLever>();
+        private static readonly List<ChamberLever> m_Levers = new List<ChamberLever>();
 
         public static List<ChamberLever> Levers
         {

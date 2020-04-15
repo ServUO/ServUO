@@ -129,7 +129,7 @@ namespace Server.Engines.Harvest
             }
         }
 
-        private static MutateEntry[] m_MutateTable = new MutateEntry[]
+        private static readonly MutateEntry[] m_MutateTable = new MutateEntry[]
         {
             new MutateEntry( 80.0,  80.0,  1865.0,  true, typeof( SpecialFishingNet ) ),
             new MutateEntry( 90.0,  80.0,  1875.0,  true, typeof( TreasureMap ) ),
@@ -141,7 +141,7 @@ namespace Server.Engines.Harvest
             new MutateEntry( 0.0, 200.0,  -200.0, false, new Type[1]{ null } )
         };
 
-        private static MutateEntry[] m_SiegeMutateTable = new MutateEntry[]
+        private static readonly MutateEntry[] m_SiegeMutateTable = new MutateEntry[]
         {
             new MutateEntry( 80.0,  80.0,  1865.0,  true, typeof( SpecialFishingNet ) ),
             new MutateEntry( 0.0, 200.0,  -200.0, false, new Type[1]{ null } ),
@@ -153,7 +153,7 @@ namespace Server.Engines.Harvest
             new MutateEntry( 0.0, 200.0,  -200.0, false, new Type[1]{ null } )
         };
 
-        private static MutateEntry[] m_LavaMutateTable = new MutateEntry[]
+        private static readonly MutateEntry[] m_LavaMutateTable = new MutateEntry[]
         {
             new MutateEntry( 0.0,  80.0, 333, false, typeof(StoneFootwear)),
             new MutateEntry( 80.0, 80.0, 333, false, typeof(CrackedLavaRockEast), typeof(CrackedLavaRockSouth)),
@@ -777,7 +777,7 @@ namespace Server.Engines.Harvest
 
         #region HighSeas
         public static int[] LavaTiles { get { return m_LavaTiles; } }
-        private static int[] m_LavaTiles = new int[]
+        private static readonly int[] m_LavaTiles = new int[]
         {
             0x1F4, 0x1F5,
             0x1F6, 0x1F7,

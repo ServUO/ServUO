@@ -128,8 +128,8 @@ namespace Server
     {
         private readonly RNGCryptoServiceProvider _CSP = new RNGCryptoServiceProvider();
 
-        private static int BUFFER_SIZE = 0x4000;
-        private static int LARGE_REQUEST = 0x40;
+        private static readonly int BUFFER_SIZE = 0x4000;
+        private static readonly int LARGE_REQUEST = 0x40;
 
         private byte[] _Working = new byte[BUFFER_SIZE];
         private byte[] _Buffer = new byte[BUFFER_SIZE];
@@ -268,8 +268,8 @@ namespace Server
             internal static extern RDRandError rdrand_get_bytes(int n, byte[] buffer);
         }
 
-        private static int BUFFER_SIZE = 0x10000;
-        private static int LARGE_REQUEST = 0x40;
+        private static readonly int BUFFER_SIZE = 0x10000;
+        private static readonly int LARGE_REQUEST = 0x40;
 
         private byte[] _Working = new byte[BUFFER_SIZE];
         private byte[] _Buffer = new byte[BUFFER_SIZE];
@@ -412,8 +412,8 @@ namespace Server
             internal static extern RDRandError rdrand_get_bytes(int n, byte[] buffer);
         }
 
-        private static int BUFFER_SIZE = 0x10000;
-        private static int LARGE_REQUEST = 0x40;
+        private static readonly int BUFFER_SIZE = 0x10000;
+        private static readonly int LARGE_REQUEST = 0x40;
 
         private byte[] _Working = new byte[BUFFER_SIZE];
         private byte[] _Buffer = new byte[BUFFER_SIZE];

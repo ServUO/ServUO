@@ -212,8 +212,8 @@ namespace Server.Mobiles
         private const string DefsTablePointName = "Values";
         private const string DefsDir = "SpawnerDefs";
 
-        private static int StartingXoffset = 440;
-        private Mobile m_From;
+        private static readonly int StartingXoffset = 440;
+        private readonly Mobile m_From;
 
         public XmlSpawnerDefaults.DefaultEntry defs;
 
@@ -1056,8 +1056,8 @@ namespace Server.Mobiles
 
         private class PlaceSpawnerTarget : Target
         {
-            XmlSpawnerDefaults.DefaultEntry defs;
-            NetState m_state;
+            readonly XmlSpawnerDefaults.DefaultEntry defs;
+            readonly NetState m_state;
 
             public PlaceSpawnerTarget(NetState state) : base(30, true, TargetFlags.None)
             {
@@ -1556,8 +1556,8 @@ namespace Server.Mobiles
 
         private class XmlAddOptionsGump : Gump
         {
-            private Mobile From;
-            private XmlSpawner LastSpawner;
+            private readonly Mobile From;
+            private readonly XmlSpawner LastSpawner;
 
             public XmlAddOptionsGump(Mobile from, XmlSpawner lastSpawner) : base(0, 0)
             {
@@ -1662,8 +1662,8 @@ namespace Server.Mobiles
 
         private class XmlAddConfirmDeleteGump : Gump
         {
-            private Mobile From;
-            private XmlSpawner LastSpawner;
+            private readonly Mobile From;
+            private readonly XmlSpawner LastSpawner;
 
             public XmlAddConfirmDeleteGump(Mobile from, XmlSpawner lastSpawner) : base(0, 0)
             {

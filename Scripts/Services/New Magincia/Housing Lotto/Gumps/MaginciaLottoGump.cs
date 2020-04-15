@@ -7,8 +7,8 @@ namespace Server.Engines.NewMagincia
 {
     public class MaginciaLottoGump : Gump
     {
-        private MaginciaHousingPlot m_Plot;
-        private Mobile m_From;
+        private readonly MaginciaHousingPlot m_Plot;
+        private readonly Mobile m_From;
 
         private readonly int BlueColor = 0x00BFFF;
         private readonly int LabelColor = 0xFFFFFF;

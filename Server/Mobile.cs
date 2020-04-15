@@ -677,7 +677,7 @@ namespace Server
         }
 
         #region Var declarations
-        private Serial m_Serial;
+        private readonly Serial m_Serial;
         private Map m_Map;
         private Point3D m_Location;
         private Direction m_Direction;

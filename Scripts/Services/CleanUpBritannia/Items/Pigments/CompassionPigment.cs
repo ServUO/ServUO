@@ -58,7 +58,7 @@ namespace Server.Items
             return m_Table[v];
         }
 
-        private static CompassionPigmentInfo[] m_Table = new CompassionPigmentInfo[]
+        private static readonly CompassionPigmentInfo[] m_Table = new CompassionPigmentInfo[]
         {
             new CompassionPigmentInfo( CompassionPigmentType.PhoenixRed, 1964, 1151651 ), // Phoenix Red Pigment
 			new CompassionPigmentInfo( CompassionPigmentType.AuraOfAmber, 1967, 1152308 ), // Aura of Amber Pigment
@@ -208,7 +208,7 @@ namespace Server.Items
 
         private class DyeTarget : Target
         {
-            private CompassionPigment m_Pigment;
+            private readonly CompassionPigment m_Pigment;
 
             public DyeTarget(CompassionPigment pigment)
                 : base(8, false, TargetFlags.None)

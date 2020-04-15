@@ -6,7 +6,7 @@ namespace Server.Engines.InstancedPeerless
 {
     public class InstanceRegion : Region
     {
-        private PeerlessInstance m_Owner;
+        private readonly PeerlessInstance m_Owner;
 
         public PeerlessInstance Owner => m_Owner;
 

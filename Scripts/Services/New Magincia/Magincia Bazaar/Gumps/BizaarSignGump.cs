@@ -9,7 +9,7 @@ namespace Server.Engines.NewMagincia
 {
     public class StallLeasingGump : BaseBazaarGump
     {
-        private MaginciaBazaarPlot m_Plot;
+        private readonly MaginciaBazaarPlot m_Plot;
 
         public StallLeasingGump(Mobile from, MaginciaBazaarPlot plot)
             : base(520, 520)
@@ -104,7 +104,7 @@ namespace Server.Engines.NewMagincia
 
     public class MyStallLeaseGump : BaseBazaarGump
     {
-        private MaginciaBazaarPlot m_Plot;
+        private readonly MaginciaBazaarPlot m_Plot;
 
         public MyStallLeaseGump(Mobile from, MaginciaBazaarPlot plot)
             : base(520, 520)
@@ -182,7 +182,7 @@ namespace Server.Engines.NewMagincia
 
     public class ConfirmAbandonLeaseGump : BaseBazaarGump
     {
-        private MaginciaBazaarPlot m_Plot;
+        private readonly MaginciaBazaarPlot m_Plot;
 
         public ConfirmAbandonLeaseGump(Mobile from, MaginciaBazaarPlot plot)
             : base(520, 520)
@@ -225,8 +225,8 @@ namespace Server.Engines.NewMagincia
 
     public class ConfirmFireBrokerGump : BaseBazaarGump
     {
-        private MaginciaBazaarPlot m_Plot;
-        private bool m_HasInventory;
+        private readonly MaginciaBazaarPlot m_Plot;
+        private readonly bool m_HasInventory;
 
         public ConfirmFireBrokerGump(Mobile from, MaginciaBazaarPlot plot)
             : base(520, 520)
@@ -283,8 +283,8 @@ namespace Server.Engines.NewMagincia
 
     public class HireBrokerGump : BaseBazaarGump
     {
-        private MaginciaBazaarPlot m_Plot;
-        private bool m_Commodity;
+        private readonly MaginciaBazaarPlot m_Plot;
+        private readonly bool m_Commodity;
 
         public HireBrokerGump(Mobile from, MaginciaBazaarPlot plot, bool commodity)
             : base(520, 520)
@@ -340,8 +340,8 @@ namespace Server.Engines.NewMagincia
 
     public class ConfirmAddMultiGump : BaseBazaarGump
     {
-        private MaginciaBazaarPlot m_Plot;
-        private bool m_Commodity;
+        private readonly MaginciaBazaarPlot m_Plot;
+        private readonly bool m_Commodity;
 
         public ConfirmAddMultiGump(Mobile from, MaginciaBazaarPlot plot, bool commodity)
             : base(520, 520)
@@ -398,7 +398,7 @@ namespace Server.Engines.NewMagincia
 
     public class StallBidGump : BaseBazaarGump
     {
-        private MaginciaBazaarPlot m_Plot;
+        private readonly MaginciaBazaarPlot m_Plot;
 
         public StallBidGump(Mobile from, MaginciaBazaarPlot plot)
             : base(520, 520)
@@ -534,7 +534,7 @@ namespace Server.Engines.NewMagincia
 
     public class TopBidsGump : BaseBazaarGump
     {
-        private MaginciaBazaarPlot m_Plot;
+        private readonly MaginciaBazaarPlot m_Plot;
 
         public TopBidsGump(Mobile from, MaginciaBazaarPlot plot)
             : base(520, 520)
@@ -585,7 +585,7 @@ namespace Server.Engines.NewMagincia
 
     public class ConfirmBidGump : BaseBazaarGump
     {
-        private MaginciaBazaarPlot m_Plot;
+        private readonly MaginciaBazaarPlot m_Plot;
 
         public ConfirmBidGump(Mobile from, MaginciaBazaarPlot actualPlot, MaginciaBazaarPlot newPlot, int newBid, bool retract)
             : base(520, 520)
@@ -1074,7 +1074,7 @@ namespace Server.Engines.NewMagincia
 
     public class MatchBidGump : BaseBazaarGump
     {
-        private MaginciaBazaarPlot m_Plot;
+        private readonly MaginciaBazaarPlot m_Plot;
 
         public MatchBidGump(Mobile from, MaginciaBazaarPlot plot)
             : base(520, 520)
@@ -1146,7 +1146,7 @@ namespace Server.Engines.NewMagincia
 
     public class ConfirmMatchBidGump : BaseBazaarGump
     {
-        private MaginciaBazaarPlot m_Plot;
+        private readonly MaginciaBazaarPlot m_Plot;
 
         public ConfirmMatchBidGump(Mobile from, int amount, MaginciaBazaarPlot plot)
             : base(520, 520)
@@ -1242,7 +1242,7 @@ namespace Server.Engines.NewMagincia
 
     public class BazaarInformationGump : BaseBazaarGump
     {
-        private Gump _Gump;
+        private readonly Gump _Gump;
 
         public BazaarInformationGump(int title, int message) : this(title, message, -1, null)
         {
@@ -1282,7 +1282,7 @@ namespace Server.Engines.NewMagincia
 
     public class ShopRecallRuneGump : BaseBazaarGump
     {
-        private PlotSign m_Sign;
+        private readonly PlotSign m_Sign;
 
         public ShopRecallRuneGump(Mobile from, PlotSign sign)
             : base(520, 520)

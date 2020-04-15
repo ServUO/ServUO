@@ -9,7 +9,7 @@ namespace Server.Engines.Quests
     public static class FishQuestHelper
     {
         public static Type[] Fish { get { return m_Fish; } }
-        private static Type[] m_Fish = new Type[]
+        private static readonly Type[] m_Fish = new Type[]
         {
 	        //to level 80.0 (shore fish) index to 11
 	        typeof(BluegillSunfish), typeof(BrookTrout),        typeof(GreenCatfish),
@@ -41,7 +41,7 @@ namespace Server.Engines.Quests
         };
 
         public static int[] Labels { get { return m_Labels; } }
-        private static int[] m_Labels = new int[]
+        private static readonly int[] m_Labels = new int[]
         {
 	        //to level 80.0 (shore fish) index to 11
 	        1116417,     1116415,      1116421,
@@ -72,7 +72,7 @@ namespace Server.Engines.Quests
 
         };
 
-        private static Type[][][] m_RewardTable = new Type[][][]
+        private static readonly Type[][][] m_RewardTable = new Type[][][]
         {
             new Type[][]
             {
@@ -252,7 +252,7 @@ namespace Server.Engines.Quests
         }
 
         public static List<FishMonger> Mongers { get { return m_Mongers; } }
-        private static List<FishMonger> m_Mongers = new List<FishMonger>();
+        private static readonly List<FishMonger> m_Mongers = new List<FishMonger>();
 
         public static void AddMonger(Mobile mob)
         {

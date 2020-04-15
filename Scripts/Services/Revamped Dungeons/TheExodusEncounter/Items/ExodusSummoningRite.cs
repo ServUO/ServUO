@@ -50,7 +50,7 @@ namespace Server.Items
 
         public class RiteTarget : Target
         {
-            private Item m_Deed;
+            private readonly Item m_Deed;
 
             public RiteTarget(Item deed) : base(2, true, TargetFlags.None)
             {

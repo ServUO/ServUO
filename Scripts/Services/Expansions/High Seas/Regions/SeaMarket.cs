@@ -23,7 +23,7 @@ namespace Server.Regions
         private static Timer m_BlabTimer;
         private static bool m_RestrictBoats;
 
-        private Dictionary<BaseBoat, DateTime> m_BoatTable = new Dictionary<BaseBoat, DateTime>();
+        private readonly Dictionary<BaseBoat, DateTime> m_BoatTable = new Dictionary<BaseBoat, DateTime>();
         public Dictionary<BaseBoat, DateTime> BoatTable { get { return m_BoatTable; } }
 
         public static bool RestrictBoats
@@ -53,7 +53,7 @@ namespace Server.Regions
         }
 
         public static Rectangle2D[] Bounds { get { return m_Bounds; } }
-        private static Rectangle2D[] m_Bounds = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_Bounds = new Rectangle2D[]
         {
             new Rectangle2D(4529, 2296, 45, 112),
         };
@@ -267,7 +267,7 @@ namespace Server.Regions
                 boat.Owner.SendMessage("You can only dock your boat here for {0} minutes.", (int)KickDuration.TotalMinutes);
         }
 
-        private Rectangle2D[] m_KickLocs = new Rectangle2D[]
+        private readonly Rectangle2D[] m_KickLocs = new Rectangle2D[]
         {
             new Rectangle2D(m_Bounds[0].X - 100, m_Bounds[0].X - 100, 200 + m_Bounds[0].Width, 100),
             new Rectangle2D(m_Bounds[0].X - 100, m_Bounds[0].Y, 100, m_Bounds[0].Height + 100),
@@ -304,7 +304,7 @@ namespace Server.Regions
 
         private class InternalTimer : Timer
         {
-            private SeaMarketRegion m_Region;
+            private readonly SeaMarketRegion m_Region;
 
             public InternalTimer(SeaMarketRegion reg)
                 : base(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1))

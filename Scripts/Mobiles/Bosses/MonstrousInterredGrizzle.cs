@@ -204,11 +204,11 @@ namespace Server.Mobiles
     public class InfernalOoze : Item
     {
         private bool m_Corrosive;
-        private int m_Damage;
-        private Mobile m_Owner;
+        private readonly int m_Damage;
+        private readonly Mobile m_Owner;
         private Timer m_Timer;
 
-        private DateTime m_StartTime;
+        private readonly DateTime m_StartTime;
 
         public InfernalOoze(Mobile owner)
             : this(owner, false)

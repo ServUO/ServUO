@@ -101,7 +101,7 @@ namespace Server.Network
             return true;
         }
 
-        private static string[] _NoDisplay =
+        private static readonly string[] _NoDisplay =
         {
             "192.99.10.155",
             "192.99.69.21",

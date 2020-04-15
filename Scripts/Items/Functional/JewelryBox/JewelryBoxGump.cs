@@ -8,11 +8,11 @@ namespace Server.Items
 {
     public class JewelryBoxGump : Gump
     {
-        private Mobile m_From;
-        private JewelryBox m_Box;
-        private List<Item> m_List;
+        private readonly Mobile m_From;
+        private readonly JewelryBox m_Box;
+        private readonly List<Item> m_List;
 
-        private int m_Page;
+        private readonly int m_Page;
 
         private const int LabelColor = 0x7FFF;
 
@@ -195,8 +195,8 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private JewelryBox m_Box;
-            private int m_Page;
+            private readonly JewelryBox m_Box;
+            private readonly int m_Page;
 
             public InternalTarget(Mobile from, JewelryBox box, int page)
                 : base(-1, false, TargetFlags.None)

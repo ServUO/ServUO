@@ -258,7 +258,7 @@ namespace Server.Engines.VeteranRewards
             return false;
         }
 
-        private static Type[] _AnyoneTypes =
+        private static readonly Type[] _AnyoneTypes =
         {
             typeof(DyeTub), typeof(MonsterStatuette)
         };

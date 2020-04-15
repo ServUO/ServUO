@@ -84,7 +84,7 @@ namespace Server.Items
         #endregion
 
         #region Spawn Types
-        private static Type[][] m_SpawnTypes = new Type[][]
+        private static readonly Type[][] m_SpawnTypes = new Type[][]
         {
             new Type[]{ typeof( HeadlessOne ), typeof( Skeleton ) },
             new Type[]{ typeof( Mongbat ), typeof( Ratman ), typeof( HeadlessOne ), typeof( Skeleton ), typeof( Zombie ) },
@@ -96,7 +96,7 @@ namespace Server.Items
             new Type[]{ typeof( BloodElemental), typeof(ColdDrake), typeof(FrostDragon), typeof(FrostDrake), typeof(GreaterDragon), typeof(PoisonElemental)}
         };
 
-        private static Type[][] m_TokunoSpawnTypes = new Type[][]
+        private static readonly Type[][] m_TokunoSpawnTypes = new Type[][]
         {
             new Type[]{ typeof( HeadlessOne ), typeof( Skeleton ) },
             new Type[]{ typeof( HeadlessOne ), typeof( Mongbat ), typeof( Ratman ), typeof( Skeleton), typeof( Zombie ),  },
@@ -108,7 +108,7 @@ namespace Server.Items
             new Type[]{ typeof( Yamandon ), typeof( LadyOfTheSnow ), typeof( RuneBeetle ), typeof( YomotsuPriest ) }
         };
 
-        private static Type[][] m_MalasSpawnTypes = new Type[][]
+        private static readonly Type[][] m_MalasSpawnTypes = new Type[][]
         {
             new Type[]{ typeof( HeadlessOne ), typeof( Skeleton ) },
             new Type[]{ typeof( Mongbat ), typeof( Ratman ), typeof( HeadlessOne ), typeof( Skeleton ), typeof( Zombie ) },
@@ -121,7 +121,7 @@ namespace Server.Items
 
         };
 
-        private static Type[][] m_IlshenarSpawnTypes = new Type[][]
+        private static readonly Type[][] m_IlshenarSpawnTypes = new Type[][]
         {
             new Type[]{ typeof( HeadlessOne ), typeof( Skeleton ) },
             new Type[]{ typeof( Mongbat ), typeof( Ratman ), typeof( HeadlessOne ), typeof( Skeleton ), typeof( Zombie ) },
@@ -133,7 +133,7 @@ namespace Server.Items
             new Type[]{ typeof( RenegadeChangeling ), typeof( ExodusMinion ), typeof( GargoyleEnforcer ), typeof( GargoyleDestroyer ), typeof( Titan ) }
         };
 
-        private static Type[][] m_TerMurSpawnTypes = new Type[][]
+        private static readonly Type[][] m_TerMurSpawnTypes = new Type[][]
         {
             new Type[]{ typeof( HeadlessOne ), typeof( Skeleton ) },
             new Type[]{ typeof( ClockworkScorpion ), typeof( CorrosiveSlime ), typeof( GreaterMongbat ) },
@@ -145,7 +145,7 @@ namespace Server.Items
             new Type[]{ typeof( EnragedColossus ), typeof( EnragedEarthElemental ), typeof( FireDaemon ), typeof( GreaterPoisonElemental ), typeof( LavaElemental ) }
         };
 
-        private static Type[][] m_EodonSpawnTypes = new Type[][]
+        private static readonly Type[][] m_EodonSpawnTypes = new Type[][]
         {
             new Type[] { typeof(MyrmidexLarvae), typeof(SilverbackGorilla), typeof(Panther), typeof(WildTiger) },
             new Type[] { typeof(AcidElemental), typeof(SandVortex), typeof(Lion), typeof(SabertoothedTiger) },
@@ -158,12 +158,12 @@ namespace Server.Items
         #endregion
 
         #region Spawn Locations
-        private static Rectangle2D[] m_FelTramWrap = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_FelTramWrap = new Rectangle2D[]
         {
             new Rectangle2D(0, 0, 5119, 4095)
         };
 
-        private static Rectangle2D[] m_TokunoWrap = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_TokunoWrap = new Rectangle2D[]
         {
             new Rectangle2D(155, 207, 30, 40),
             new Rectangle2D(280, 230, 157, 45),
@@ -202,7 +202,7 @@ namespace Server.Items
             new Rectangle2D(848, 473, 557, 655),
         };
 
-        private static Rectangle2D[] m_MalasWrap = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_MalasWrap = new Rectangle2D[]
         {
             new Rectangle2D(611, 67, 1862, 705),
             new Rectangle2D(1540, 852, 286, 182),
@@ -210,7 +210,7 @@ namespace Server.Items
             new Rectangle2D(1160, 1035, 1299, 871)
         };
 
-        private static Rectangle2D[] m_IlshenarWrap = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_IlshenarWrap = new Rectangle2D[]
         {
             new Rectangle2D(221, 314, 657, 286),
             new Rectangle2D(530, 600, 212, 205),
@@ -222,7 +222,7 @@ namespace Server.Items
             new Rectangle2D(1551, 516, 200, 130),
         };
 
-        private static Rectangle2D[] m_TerMurWrap = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_TerMurWrap = new Rectangle2D[]
         {
             new Rectangle2D(535, 2895, 85, 117),
             new Rectangle2D(525, 3085, 115, 70),
@@ -234,7 +234,7 @@ namespace Server.Items
             new Rectangle2D(750, 3830, 80, 80),
         };
 
-        private static Rectangle2D[] m_EodonWrap = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_EodonWrap = new Rectangle2D[]
         {
             new Rectangle2D(259, 1400, 354, 510),
             new Rectangle2D(259, 1400, 354, 510),

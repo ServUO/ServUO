@@ -6,7 +6,7 @@ namespace Server.Items
     public class ForgedPardon : Item
     {
         public static Dictionary<Mobile, DateTime> Table { get { return m_Table; } }
-        private static Dictionary<Mobile, DateTime> m_Table = new Dictionary<Mobile, DateTime>();
+        private static readonly Dictionary<Mobile, DateTime> m_Table = new Dictionary<Mobile, DateTime>();
 
         public override int LabelNumber { get { return 1116234; } }
 

@@ -17,14 +17,14 @@ namespace Server.Engines.InstancedPeerless
         private const int BusyHue = 1;
         private const int EmptyHue = 60;
 
-        private PeerlessPlatform m_Owner;
+        private readonly PeerlessPlatform m_Owner;
         private InstanceRegion m_Region;
         private List<Mobile> m_Fighters;
         private Mobile m_Boss;
-        private Item m_Light;
+        private readonly Item m_Light;
         private InstanceState m_State;
 
-        private Map m_Map;
+        private readonly Map m_Map;
         private Point3D m_EntranceLocation;
         private Point3D m_BossSpawnLocation;
         private Rectangle2D m_RegionBounds;
@@ -229,7 +229,7 @@ namespace Server.Engines.InstancedPeerless
 
     public class SliceTimer : Timer
     {
-        private PeerlessInstance m_Instance;
+        private readonly PeerlessInstance m_Instance;
 
         public SliceTimer(PeerlessInstance instance)
             : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))

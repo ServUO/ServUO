@@ -11,7 +11,7 @@ namespace Server.Spells.Mysticism
         public override bool DelayedDamage { get { return true; } }
         public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Hail Storm", "Kal Des Ylem",
                 230,
                 9022,
@@ -94,7 +94,7 @@ namespace Server.Spells.Mysticism
 
         public class InternalTarget : Target
         {
-            private HailStormSpell m_Owner;
+            private readonly HailStormSpell m_Owner;
 
             public InternalTarget(HailStormSpell owner)
                 : base(10, true, TargetFlags.None)

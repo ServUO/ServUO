@@ -11,10 +11,10 @@ namespace Server.Items
 {
     public class RecipeBookGump : Gump
     {
-        private RecipeBook m_Book;
-        private List<RecipeScrollDefinition> m_List;
+        private readonly RecipeBook m_Book;
+        private readonly List<RecipeScrollDefinition> m_List;
 
-        private int m_Page;
+        private readonly int m_Page;
 
         private const int LabelColor = 0xFFFFFF;
 
@@ -130,10 +130,10 @@ namespace Server.Items
 
         private class SetPricePrompt : Prompt
         {
-            private RecipeBook m_Book;
-            private RecipeScrollDefinition m_Recipe;
-            private int m_Page;
-            private List<RecipeScrollDefinition> m_List;
+            private readonly RecipeBook m_Book;
+            private readonly RecipeScrollDefinition m_Recipe;
+            private readonly int m_Page;
+            private readonly List<RecipeScrollDefinition> m_List;
 
             public SetPricePrompt(RecipeBook book, RecipeScrollDefinition recipe, int page, List<RecipeScrollDefinition> list)
             {

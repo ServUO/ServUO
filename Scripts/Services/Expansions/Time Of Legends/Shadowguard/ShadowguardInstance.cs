@@ -133,7 +133,7 @@ namespace Server.Engines.Shadowguard
             return false;
         }
 
-        private Type[] DeleteList =
+        private readonly Type[] DeleteList =
         {
             typeof(ShadowguardCanal)
         };

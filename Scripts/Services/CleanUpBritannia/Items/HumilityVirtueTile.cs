@@ -12,9 +12,9 @@ namespace Server.Items
     {
         public override BaseAddonDeed Deed { get { return new HumilityVirtueTileDeed(); } }
 
-        private HumilityTileType m_HumilityTileType;
+        private readonly HumilityTileType m_HumilityTileType;
 
-        private int offset;
+        private readonly int offset;
 
         [Constructable]
         public HumilityVirtueTileAddon(HumilityTileType type)

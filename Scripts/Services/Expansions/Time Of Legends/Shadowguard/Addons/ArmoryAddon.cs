@@ -9,7 +9,7 @@ namespace Server.Items
 {
     public class ArmoryAddon : BaseAddon
     {
-        private static int[,] m_AddOnSimpleComponents = new int[,] {
+        private static readonly int[,] m_AddOnSimpleComponents = new int[,] {
               {39737, 17, 19, 0}, {39737, 17, 18, 0}, {39737, 17, 17, 0}// 1	2	3	
 			, {39737, 17, 21, 0}, {39737, 17, 20, 0}, {39737, 20, 12, 0}// 4	5	6	
 			, {39737, 25, 8, 0}, {39737, 21, 13, 0}, {39737, 24, 5, 0}// 7	8	9	

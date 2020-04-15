@@ -57,15 +57,15 @@ namespace Server.Items
         }
 
         public static List<FishInfo> FishInfos { get { return m_FishInfos; } }
-        private static List<FishInfo> m_FishInfos = new List<FishInfo>();
+        private static readonly List<FishInfo> m_FishInfos = new List<FishInfo>();
 
-        private int m_Hue;
-        private Type m_Type;
-        private object m_Label;
+        private readonly int m_Hue;
+        private readonly Type m_Type;
+        private readonly object m_Label;
         private object m_Location;
-        private bool m_RequiresDeepWater;
-        private double m_BaseChance;
-        private double m_MinSkill;
+        private readonly bool m_RequiresDeepWater;
+        private readonly double m_BaseChance;
+        private readonly double m_MinSkill;
 
         public int Hue { get { return m_Hue; } }
         public Type Type { get { return m_Type; } }
@@ -434,7 +434,7 @@ namespace Server.Items
         }
 
         public static Type[] SOSArtifacts { get { return m_SOSArtifacts; } }
-        private static Type[] m_SOSArtifacts = new Type[]
+        private static readonly Type[] m_SOSArtifacts = new Type[]
         {
             typeof(AntiqueWeddingDress), typeof(GrapeVine),
             typeof(KelpWovenLeggings),   typeof(LargeFishingNet),

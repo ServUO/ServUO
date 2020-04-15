@@ -29,7 +29,7 @@ namespace Server.Spells.Mysticism
     {
         public override SpellCircle Circle { get { return SpellCircle.Second; } }
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Purge", "An Ort Sanct ",
                 230,
                 9022,
@@ -213,8 +213,8 @@ namespace Server.Spells.Mysticism
             return type;
         }
 
-        private static Dictionary<Mobile, ImmuneTimer> m_ImmuneTable = new Dictionary<Mobile, ImmuneTimer>();
-        private static Dictionary<Mobile, CurseTimer> m_CurseTable = new Dictionary<Mobile, CurseTimer>();
+        private static readonly Dictionary<Mobile, ImmuneTimer> m_ImmuneTable = new Dictionary<Mobile, ImmuneTimer>();
+        private static readonly Dictionary<Mobile, CurseTimer> m_CurseTable = new Dictionary<Mobile, CurseTimer>();
 
         public static void RemoveImmunity(Mobile from)
         {
@@ -262,7 +262,7 @@ namespace Server.Spells.Mysticism
 
         private class ImmuneTimer : Timer
         {
-            private Mobile m_Mobile;
+            private readonly Mobile m_Mobile;
 
             public ImmuneTimer(Mobile mob, TimeSpan duration) : base(duration)
             {
@@ -278,9 +278,9 @@ namespace Server.Spells.Mysticism
 
         private class CurseTimer : Timer
         {
-            private Mobile m_Mobile;
-            private Mobile m_Caster;
-            private DateTime m_StartTime;
+            private readonly Mobile m_Mobile;
+            private readonly Mobile m_Caster;
+            private readonly DateTime m_StartTime;
 
             public DateTime StartTime { get { return m_StartTime; } }
             public Mobile Caster { get { return m_Caster; } }

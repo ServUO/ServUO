@@ -41,7 +41,7 @@ namespace Server.Items
             BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.PsychicAttack, 1151296, 1151297, args));
         }
 
-        private static Dictionary<Mobile, PsychicAttackTimer> m_Registry = new Dictionary<Mobile, PsychicAttackTimer>();
+        private static readonly Dictionary<Mobile, PsychicAttackTimer> m_Registry = new Dictionary<Mobile, PsychicAttackTimer>();
         public static Dictionary<Mobile, PsychicAttackTimer> Registry => m_Registry;
 
         public static void RemoveEffects(Mobile defender)
@@ -59,7 +59,7 @@ namespace Server.Items
 
         public class PsychicAttackTimer : Timer
         {
-            private Mobile m_Defender;
+            private readonly Mobile m_Defender;
             private int m_SpellDamageMalus;
             private int m_ManaCostMalus;
             private bool m_DoneIncrease;

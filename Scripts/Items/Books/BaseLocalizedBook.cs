@@ -34,7 +34,7 @@ namespace Server.Items
             public readonly int Width = 140;
             public readonly int Height = 175;
 
-            private BaseLocalizedBook m_Book;
+            private readonly BaseLocalizedBook m_Book;
 
             public InternalGump(BaseLocalizedBook book)
                 : base(50, 50)

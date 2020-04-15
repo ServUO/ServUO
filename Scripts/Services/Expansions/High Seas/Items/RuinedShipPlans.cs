@@ -22,7 +22,7 @@ namespace Server.Items
         private PlanType m_PlanType;
         public PlanType Type { get { return m_PlanType; } set { m_PlanType = value; } }
 
-        private List<PlanType> m_Joined = new List<PlanType>();
+        private readonly List<PlanType> m_Joined = new List<PlanType>();
         public List<PlanType> Joined { get { return m_Joined; } }
 
         public override int LabelNumber { get { return 1116784; } }
@@ -104,7 +104,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private RuinedShipPlans m_Plans;
+            private readonly RuinedShipPlans m_Plans;
 
             public InternalTarget(RuinedShipPlans plans) : base(-1, false, TargetFlags.None)
             {

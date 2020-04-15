@@ -14,9 +14,9 @@ namespace Server.Engines.InstancedPeerless
         public virtual int OfferGumpTitle => 1113737; // Monster's Lair
         public virtual int OfferGumpDesc => 1113738; // Your party has gained entrance to a monster's lair. You may choose to join the fight or stay away.
 
-        private List<PeerlessKeyBrazier> m_Braziers = new List<PeerlessKeyBrazier>();
-        private List<PeerlessInstance> m_Instances = new List<PeerlessInstance>();
-        private Queue<List<Mobile>> m_PartyQueue = new Queue<List<Mobile>>();
+        private readonly List<PeerlessKeyBrazier> m_Braziers = new List<PeerlessKeyBrazier>();
+        private readonly List<PeerlessInstance> m_Instances = new List<PeerlessInstance>();
+        private readonly Queue<List<Mobile>> m_PartyQueue = new Queue<List<Mobile>>();
 
         private Point3D m_ExitLocation;
         private Mobile m_Summoner;

@@ -28,7 +28,7 @@ namespace Server.Mobiles
     public class HelpGump : Gump
     {
         public XmlSpawner m_Spawner;
-        private XmlSpawnerGump m_SpawnerGump;
+        private readonly XmlSpawnerGump m_SpawnerGump;
 
         public HelpGump(XmlSpawner spawner, XmlSpawnerGump spawnergump, int X, int Y)
             : base(X, Y)
@@ -268,9 +268,9 @@ namespace Server.Mobiles
     }
     public class TextEntryGump : Gump
     {
-        private XmlSpawner m_Spawner;
-        private int m_index;
-        private XmlSpawnerGump m_SpawnerGump;
+        private readonly XmlSpawner m_Spawner;
+        private readonly int m_index;
+        private readonly XmlSpawnerGump m_SpawnerGump;
 
         public TextEntryGump(XmlSpawner spawner, XmlSpawnerGump spawnergump, int index, int X, int Y)
             : base(X, Y)

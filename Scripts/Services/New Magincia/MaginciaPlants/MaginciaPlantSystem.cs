@@ -194,7 +194,7 @@ namespace Server.Engines.Plants
             new Rectangle2D(3731, 2199, 7, 7),
         };
 
-        private static Rectangle2D[] m_NoGrowZones = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_NoGrowZones = new Rectangle2D[]
         {
             new Rectangle2D(3683, 2144, 21, 40),
             new Rectangle2D(3682, 2189, 39, 44),

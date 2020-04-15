@@ -9,7 +9,7 @@ namespace Server.Mobiles
     {
         private static readonly ArrayList m_Instances = new ArrayList();
         public static ArrayList Instances => m_Instances;
-        private SorcerersPlateController m_Controller;
+        private readonly SorcerersPlateController m_Controller;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SorcerersPlateController Controller => m_Controller;
@@ -67,7 +67,7 @@ namespace Server.Mobiles
 
         public class InternalSelfDeleteTimer : Timer
         {
-            private TheMasterInstructor Mare;
+            private readonly TheMasterInstructor Mare;
 
             public InternalSelfDeleteTimer(Mobile p) : base(TimeSpan.FromMinutes(60))
             {

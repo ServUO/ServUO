@@ -9,10 +9,10 @@ namespace Server.Gumps
     {
         private const int FontColor = 0x000008;
 
-        private Mobile m_From;
-        private QuestionAndAnswerObjective m_Objective;
-        private BaseQuest m_Quest;
-        private int m_Index;
+        private readonly Mobile m_From;
+        private readonly QuestionAndAnswerObjective m_Objective;
+        private readonly BaseQuest m_Quest;
+        private readonly int m_Index;
 
         public QAndAGump(Mobile owner, BaseQuest quest) : base(0, 0)
         {

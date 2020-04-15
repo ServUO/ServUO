@@ -21,7 +21,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private BoatPaintRemover m_PaintRemover;
+            private readonly BoatPaintRemover m_PaintRemover;
 
             public InternalTarget(BoatPaintRemover paintremover)
                 : base(5, false, TargetFlags.None)

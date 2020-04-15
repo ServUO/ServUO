@@ -154,7 +154,7 @@ namespace Server.Engines.Quests
             gump.AddHtmlObject(133, offset, 280, 100, reward.Name, BaseQuestGump.LightGreen, false, false);
         }
 
-        private Type[] m_Types = new Type[]
+        private readonly Type[] m_Types = new Type[]
             {
                 typeof(ChallengeRite),          typeof(AnthenaeumDecree),       typeof(LetterFromTheKing),
                 typeof(OnTheVoid),              typeof(ShilaxrinarsMemorial),   typeof(ToTheHighScholar),
@@ -162,7 +162,7 @@ namespace Server.Engines.Quests
                 typeof(InMemory)
             };
 
-        private string[] m_Names = new string[]
+        private readonly string[] m_Names = new string[]
             {
                 "Obtain Gargish Document - Challenge Rite",             "Obtain Gargish Document - Athenaeum Decree",           "Obtain Gargish Document - Letter from the King",
                 "Obtain Gargish Document - On the Void",                "Obtain Gargish Document - Shilaxrinar's Memorial",     "Obtain Gargish Document - To the High Scholar",

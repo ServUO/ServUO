@@ -16,7 +16,7 @@ namespace Server.Engines.CannedEvil
         private static readonly string m_ConfigPath = Path.Combine("Config", "ChampionSpawns.xml");
         private static DateTime m_LastRotate;
         private static TimeSpan m_RotateDelay;
-        private static List<ChampionSpawn> m_AllSpawns = new List<ChampionSpawn>();
+        private static readonly List<ChampionSpawn> m_AllSpawns = new List<ChampionSpawn>();
         private static InternalTimer m_Timer;
         private static int m_GoldShowerPiles;
         private static int m_GoldShowerMinAmount;
@@ -26,11 +26,11 @@ namespace Server.Engines.CannedEvil
         private static int m_HarrowerGoldMaxAmount;
         private static int m_PowerScrollAmount;
         private static int m_StatScrollAmount;
-        private static int[] m_Rank = new int[16];
-        private static int[] m_MaxKill = new int[4];
+        private static readonly int[] m_Rank = new int[16];
+        private static readonly int[] m_MaxKill = new int[4];
         private static double m_TranscendenceChance;
         private static double m_ScrollChance;
-        private static bool m_ForceGenerate = false;
+        private static readonly bool m_ForceGenerate = false;
 
         public static int GoldShowerPiles => m_GoldShowerPiles;
         public static int GoldShowerMinAmount => m_GoldShowerMinAmount;

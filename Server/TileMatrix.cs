@@ -27,7 +27,7 @@ namespace Server
         private readonly int m_FileIndex;
         private readonly int m_BlockWidth;
         private readonly int m_BlockHeight;
-        private int m_Width, m_Height;
+        private readonly int m_Width, m_Height;
 
         private readonly Map m_Owner;
 

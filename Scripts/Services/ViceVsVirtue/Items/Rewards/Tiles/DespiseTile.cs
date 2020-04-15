@@ -9,7 +9,7 @@ namespace Server.Engines.VvV
 
         public TileType TileType { get; set; }
 
-        private int offset;
+        private readonly int offset;
 
         [Constructable]
         public DespiseTileAddon(TileType type)

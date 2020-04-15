@@ -96,7 +96,7 @@ namespace Server.Items
 
         private class SpawnTimer : Timer
         {
-            private Beehive m_Beehive;
+            private readonly Beehive m_Beehive;
 
             public SpawnTimer(Beehive beehive, TimeSpan delay)
                 : base(delay)

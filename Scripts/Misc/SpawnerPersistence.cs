@@ -1298,7 +1298,7 @@ namespace Server
             return false;
         }
 
-        private static string[] _SpawnerSymbols =
+        private static readonly string[] _SpawnerSymbols =
         {
             "/", "<", ">", ",", "{", "}"
         };

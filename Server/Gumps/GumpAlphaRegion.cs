@@ -89,7 +89,7 @@ namespace Server.Gumps
             return String.Format("{{ checkertrans {0} {1} {2} {3} }}", m_X, m_Y, m_Width, m_Height);
         }
 
-        private static byte[] m_LayoutName = Gump.StringToBuffer("checkertrans");
+        private static readonly byte[] m_LayoutName = Gump.StringToBuffer("checkertrans");
 
         public override void AppendTo(IGumpWriter disp)
         {

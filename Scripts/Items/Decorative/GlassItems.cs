@@ -1345,7 +1345,7 @@ namespace Server.Items
         }
         public class VenomTarget : Target
         {
-            private EmptyVenomVial m_EmptyVenomVial;
+            private readonly EmptyVenomVial m_EmptyVenomVial;
             public VenomTarget(Mobile from)
                 : base(2, false, TargetFlags.None)
             {

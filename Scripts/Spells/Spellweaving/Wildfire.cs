@@ -101,7 +101,7 @@ namespace Server.Spells.Spellweaving
             return true;
         }
 
-        private static Dictionary<Mobile, long> m_Table = new Dictionary<Mobile, long>();
+        private static readonly Dictionary<Mobile, long> m_Table = new Dictionary<Mobile, long>();
         public static Dictionary<Mobile, long> Table { get { return m_Table; } }
 
         public static void DefragTable()
@@ -148,7 +148,7 @@ namespace Server.Spells.Spellweaving
             private readonly int m_Damage;
             private readonly int m_Range;
             private int m_LifeSpan;
-            private Map m_Map;
+            private readonly Map m_Map;
 
             public InternalTimer(Spell spell, Mobile owner, Point3D location, int damage, int range, int duration)
                 : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), duration)

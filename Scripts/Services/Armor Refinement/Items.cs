@@ -195,7 +195,7 @@ namespace Server.Items
             }
         }
 
-        private int[][] Labels = new int[][]
+        private readonly int[][] Labels = new int[][]
         {
                         //Scour   Thread     Varnish
                         //Polish  Wash       Gloss
@@ -216,7 +216,7 @@ namespace Server.Items
             }
         }
 
-        private int[][] ItemIDs = new int[][]
+        private readonly int[][] ItemIDs = new int[][]
         {
                      // Smith  Tail  Carp
 			new int[] { 19673, 5163, 11617 }, //Reinforcing
@@ -480,7 +480,7 @@ namespace Server.Items
             }
         }
 
-        private int[][] ItemIDs = new int[][]
+        private readonly int[][] ItemIDs = new int[][]
         {            // Smith  Tail   Carp  
 			new int[] { 19676, 19675, 19677 },  //Reinforcing
 			new int[] { 19676, 19675, 19677 }   //Deflecing
@@ -550,8 +550,8 @@ namespace Server.Items
 
     public class ModEntry
     {
-        private ResistanceType[] m_Resists = new ResistanceType[5];
-        private int[] m_Values = new int[5];
+        private readonly ResistanceType[] m_Resists = new ResistanceType[5];
+        private readonly int[] m_Values = new int[5];
 
         public ResistanceType[] Resists => m_Resists;
         public int[] Values => m_Values;

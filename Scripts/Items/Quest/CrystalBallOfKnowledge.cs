@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class CrystalBallOfKnowledge : Item
     {
-        private static SkillName[] _ExcludedSkills =
+        private static readonly SkillName[] _ExcludedSkills =
         {
             SkillName.Meditation, SkillName.Focus
         };
@@ -160,7 +160,7 @@ namespace Server.Items
 
         public class ToggleActivationGump : Gump
         {
-            private CrystalBallOfKnowledge m_Ball;
+            private readonly CrystalBallOfKnowledge m_Ball;
 
             public ToggleActivationGump(CrystalBallOfKnowledge ball)
                 : base(150, 200)

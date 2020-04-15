@@ -11,11 +11,11 @@ namespace Server.Engines.Quests
             CommandSystem.Register("FishMongerStatus", AccessLevel.Player, new CommandEventHandler(FishMongerStatus_OnCommand));
         }
 
-        private Mobile m_Player;
+        private readonly Mobile m_Player;
         private double m_Reputation;
         private bool m_HasRecievedBritGal;
-        private Dictionary<int, int> m_HaveFished = new Dictionary<int, int>();
-        private Dictionary<int, int> m_TimesFished = new Dictionary<int, int>();
+        private readonly Dictionary<int, int> m_HaveFished = new Dictionary<int, int>();
+        private readonly Dictionary<int, int> m_TimesFished = new Dictionary<int, int>();
 
         public Mobile Player { get { return m_Player; } }
         public double Reputation { get { return m_Reputation; } set { m_Reputation = value; } }
@@ -23,7 +23,7 @@ namespace Server.Engines.Quests
         public Dictionary<int, int> HaveFished { get { return m_HaveFished; } }
         public Dictionary<int, int> TimesFished { get { return m_TimesFished; } }
 
-        private static Dictionary<Mobile, PlayerFishingEntry> m_FishingEntries = new Dictionary<Mobile, PlayerFishingEntry>();
+        private static readonly Dictionary<Mobile, PlayerFishingEntry> m_FishingEntries = new Dictionary<Mobile, PlayerFishingEntry>();
         public static Dictionary<Mobile, PlayerFishingEntry> FishingEntries { get { return m_FishingEntries; } }
 
         public static readonly double RewardAmount = 15000;
@@ -281,7 +281,7 @@ namespace Server.Engines.Quests
             return m_Status[5];
         }
 
-        private string[] m_Status = new string[]
+        private readonly string[] m_Status = new string[]
         {
             "a small",
             "a fair",

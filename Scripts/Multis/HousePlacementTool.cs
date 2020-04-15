@@ -296,8 +296,8 @@ namespace Server.Items
         private readonly HousePlacementEntry[] m_Entries;
 
         private bool m_Placed;
-        private bool m_Classic;
-        private HousePlacementTool m_Tool;
+        private readonly bool m_Classic;
+        private readonly HousePlacementTool m_Tool;
 
         public NewHousePlacementTarget(HousePlacementTool tool, HousePlacementEntry[] entries, HousePlacementEntry entry, bool classic)
             : base(entry.MultiID, entry.Offset)
@@ -535,7 +535,7 @@ namespace Server.Items
             new HousePlacementEntry(typeof(HouseFoundation), 1060384,   2119,   1059,   2437,   1218,   42, 187000, 0,  10, 0,  0x147B)// 18x18 3-Story Customizable House
         };
 
-        private static Hashtable m_Table;
+        private static readonly Hashtable m_Table;
         private readonly Type m_Type;
         private readonly int m_Description;
         private readonly int m_Storage;

@@ -32,7 +32,7 @@ namespace Server.Engines.Plants
 
         private class InternalTarget : Target
         {
-            private PlantBowl m_PlantBowl;
+            private readonly PlantBowl m_PlantBowl;
 
             public InternalTarget(PlantBowl plantBowl) : base(3, true, TargetFlags.None)
             {
@@ -147,7 +147,7 @@ namespace Server.Engines.Plants
             return contains;
         }
 
-        private static int[] m_DirtPatchTiles = new int[]
+        private static readonly int[] m_DirtPatchTiles = new int[]
             {
                 0x9, 0x15,
                 0x71, 0x7C,

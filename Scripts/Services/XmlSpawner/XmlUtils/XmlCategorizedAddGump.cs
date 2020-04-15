@@ -21,10 +21,10 @@ namespace Server.Gumps
 
     public class XmlAddCAGObject : XmlAddCAGNode
     {
-        private Type m_Type;
-        private int m_ItemID;
-        private int m_Hue;
-        private XmlAddCAGCategory m_Parent;
+        private readonly Type m_Type;
+        private readonly int m_ItemID;
+        private readonly int m_Hue;
+        private readonly XmlAddCAGCategory m_Parent;
 
         public Type Type { get { return m_Type; } }
         public int ItemID { get { return m_ItemID; } }
@@ -98,9 +98,9 @@ namespace Server.Gumps
 
     public class XmlAddCAGCategory : XmlAddCAGNode
     {
-        private string m_Title;
-        private XmlAddCAGNode[] m_Nodes;
-        private XmlAddCAGCategory m_Parent;
+        private readonly string m_Title;
+        private readonly XmlAddCAGNode[] m_Nodes;
+        private readonly XmlAddCAGCategory m_Parent;
 
         public string Title { get { return m_Title; } }
         public XmlAddCAGNode[] Nodes { get { return m_Nodes; } }
@@ -252,7 +252,7 @@ namespace Server.Gumps
         public static readonly int EntryHeight = 24;//PropsConfig.EntryHeight;
         public static readonly int BorderSize = PropsConfig.BorderSize;
 
-        private static bool PrevLabel = false, NextLabel = false;
+        private static readonly bool PrevLabel = false, NextLabel = false;
 
         private static readonly int PrevLabelOffsetX = PrevWidth + 1;
         private static readonly int PrevLabelOffsetY = 0;
@@ -268,13 +268,13 @@ namespace Server.Gumps
 
         private static readonly int BackWidth = BorderSize + TotalWidth + BorderSize;
         private static readonly int BackHeight = BorderSize + TotalHeight + BorderSize;
-        private Mobile m_Owner;
-        private XmlAddCAGCategory m_Category;
+        private readonly Mobile m_Owner;
+        private readonly XmlAddCAGCategory m_Category;
         private int m_Page;
 
-        private int m_Index = -1;
-        private Gump m_Gump;
-        private XmlSpawner m_Spawner;
+        private readonly int m_Index = -1;
+        private readonly Gump m_Gump;
+        private readonly XmlSpawner m_Spawner;
 
         public XmlCategorizedAddGump(Mobile owner, int index, Gump gump) : this(owner, XmlAddCAGCategory.Root, 0, index, gump)
         {

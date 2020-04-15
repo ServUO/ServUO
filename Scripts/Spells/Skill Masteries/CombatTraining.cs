@@ -18,7 +18,7 @@ namespace Server.Spells.SkillMasteries
 
     public class CombatTrainingSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Combat Training", "",
                 -1,
                 9002

@@ -79,7 +79,7 @@ namespace Server.Mobiles
             public Infernus Mobile { get; private set; }
             public Timer Timer { get; private set; }
 
-            private DateTime _EndTime;
+            private readonly DateTime _EndTime;
 
             public FireItem(Infernus mobile)
                 : base(0x19AB)

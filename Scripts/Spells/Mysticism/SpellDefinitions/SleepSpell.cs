@@ -9,7 +9,7 @@ namespace Server.Spells.Mysticism
     {
         public override SpellCircle Circle { get { return SpellCircle.Third; } }
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Sleep", "In Zu",
                 230,
                 9022,
@@ -62,8 +62,8 @@ namespace Server.Spells.Mysticism
             FinishSequence();
         }
 
-        private static Dictionary<Mobile, SleepTimer> m_Table = new Dictionary<Mobile, SleepTimer>();
-        private static List<Mobile> m_ImmunityList = new List<Mobile>();
+        private static readonly Dictionary<Mobile, SleepTimer> m_Table = new Dictionary<Mobile, SleepTimer>();
+        private static readonly List<Mobile> m_ImmunityList = new List<Mobile>();
 
         public static void DoSleep(Mobile caster, Mobile target, TimeSpan duration)
         {
@@ -98,8 +98,8 @@ namespace Server.Spells.Mysticism
 
         public class SleepTimer : Timer
         {
-            private Mobile m_Target;
-            private DateTime m_EndTime;
+            private readonly Mobile m_Target;
+            private readonly DateTime m_EndTime;
 
             public SleepTimer(Mobile target, TimeSpan duration)
                 : base(TimeSpan.Zero, TimeSpan.FromSeconds(0.5))

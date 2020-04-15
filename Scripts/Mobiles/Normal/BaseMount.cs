@@ -19,7 +19,7 @@ namespace Server.Mobiles
 
     public abstract class BaseMount : BaseCreature, IMount
     {
-        private static Dictionary<Mobile, BlockEntry> m_Table = new Dictionary<Mobile, BlockEntry>();
+        private static readonly Dictionary<Mobile, BlockEntry> m_Table = new Dictionary<Mobile, BlockEntry>();
         private Mobile m_Rider;
 
         public BaseMount(string name, int bodyID, int itemID, AIType aiType, FightMode fightMode, int rangePerception, int rangeFight, double activeSpeed, double passiveSpeed)

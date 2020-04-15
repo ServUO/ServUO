@@ -100,7 +100,7 @@ namespace Server.Engines.ShameRevamped
             }
         }
 
-        private static Point3D[][] _TeleportLocs =
+        private static readonly Point3D[][] _TeleportLocs =
         {
             new Point3D[] { new Point3D(5402, 82, 10), new Point3D(5402, 81, 10), new Point3D(5402, 83, 10) },
             new Point3D[] { new Point3D(5403, 82, 10), new Point3D(5403, 81, 10), new Point3D(5403, 83, 10) },

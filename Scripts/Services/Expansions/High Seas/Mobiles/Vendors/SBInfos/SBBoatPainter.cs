@@ -5,8 +5,8 @@ namespace Server.Mobiles
 {
     public class SBBoatPainter : SBInfo
     {
-        private List<GenericBuyInfo> m_BuyInfo = new InternalBuyInfo();
-        private IShopSellInfo m_SellInfo = new InternalSellInfo();
+        private readonly List<GenericBuyInfo> m_BuyInfo = new InternalBuyInfo();
+        private readonly IShopSellInfo m_SellInfo = new InternalSellInfo();
 
         public SBBoatPainter()
         {

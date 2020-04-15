@@ -43,7 +43,7 @@ namespace Server.Engines.HuntsmasterChallenge
     [PropertyObject]
     public class HuntingTrophyInfo
     {
-        private static List<HuntingTrophyInfo> m_Infos = new List<HuntingTrophyInfo>();
+        private static readonly List<HuntingTrophyInfo> m_Infos = new List<HuntingTrophyInfo>();
         public static List<HuntingTrophyInfo> Infos { get { return m_Infos; } }
 
         public static void Configure()
@@ -80,12 +80,12 @@ namespace Server.Engines.HuntsmasterChallenge
             m_Infos.Add(new HuntingTrophyInfo(HuntType.Scorpion, typeof(Scorpion), 0xA210, 0xA20F, 1029657, 1125508, 250, 500, MeasuredBy.Weight, false));
         }
 
-        private HuntType m_HuntType;
-        private Type m_CreatureType;
-        private MeasuredBy m_MeasuredBy;
-        private int m_SouthID, m_EastID, m_MinMeasurement, m_MaxMeasurement;
-        private TextDefinition m_Species, m_TrophyName;
-        private bool m_Complex;
+        private readonly HuntType m_HuntType;
+        private readonly Type m_CreatureType;
+        private readonly MeasuredBy m_MeasuredBy;
+        private readonly int m_SouthID, m_EastID, m_MinMeasurement, m_MaxMeasurement;
+        private readonly TextDefinition m_Species, m_TrophyName;
+        private readonly bool m_Complex;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public HuntType HuntType { get { return m_HuntType; } }

@@ -207,7 +207,7 @@ namespace Server.Items
             }
         }
 
-        private int[] m_Possibles = new int[]
+        private readonly int[] m_Possibles = new int[]
             {
                 0,   1,   2,   3,
                 4,   5,   6,   7,
@@ -215,7 +215,7 @@ namespace Server.Items
                 12, 13,  14,  15
             };
 
-        private int[][] _Paths = new int[][]
+        private readonly int[][] _Paths = new int[][]
         {
             new int[] { 0, 1, 2, 3, 7, 11, 15 },
             new int[] { 0, 4, 8, 12, 13, 9, 5, 1, 2, 6, 10, 14, 15 },

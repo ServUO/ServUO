@@ -578,14 +578,14 @@ namespace Server.Engines.MyrmidexInvasion
             }
         }
 
-        private Type[][] _MyrmidexTypes =
+        private readonly Type[][] _MyrmidexTypes =
         {
             new Type[] { typeof(MyrmidexDrone) },
             new Type[] { typeof(MyrmidexWarrior), typeof(TribeWarrior) },
             new Type[] { typeof(MyrmidexWarrior), typeof(TribeWarrior), typeof(TribeShaman) }
         };
 
-        private Type[][] _TribeTypes =
+        private readonly Type[][] _TribeTypes =
         {
             new Type[] { typeof(BritannianInfantry) },
             new Type[] { typeof(BritannianInfantry), typeof(TribeWarrior) },
@@ -780,7 +780,7 @@ namespace Server.Engines.MyrmidexInvasion
             }
         }
 
-        private static Point2D[][][] _NavPoints1 =
+        private static readonly Point2D[][][] _NavPoints1 =
         {       
             //Lane 1                                                                                                                                               
             new Point2D[][] { new Point2D[] { new Point2D(853, 1785), new Point2D(853, 1800), new Point2D(853, 1815), new Point2D(855, 1830), new Point2D(855, 1845), new Point2D(855, 1860), new Point2D(855, 1875), /*shares with next*/ new Point2D(860, 1883), new Point2D(872, 1887), new Point2D(891, 1887) },
@@ -799,7 +799,7 @@ namespace Server.Engines.MyrmidexInvasion
                               new Point2D[] { new Point2D(921, 1875), new Point2D(921, 1860), new Point2D(921, 1845), new Point2D(921, 1830), new Point2D(921, 1815), /*shares with prev*/ new Point2D(921, 1807), new Point2D(921, 1797), new Point2D(921, 1787) } }
         };
 
-        private static Point2D[][][] _NavPoints2 =
+        private static readonly Point2D[][][] _NavPoints2 =
         {       
             //Lane 1                                                                                                                                               
             new Point2D[][] {

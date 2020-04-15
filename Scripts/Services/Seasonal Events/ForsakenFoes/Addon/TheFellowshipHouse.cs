@@ -5,7 +5,7 @@ namespace Server.Items
         public static TheFellowshipHouse InstanceTram { get; set; }
         public static TheFellowshipHouse InstanceFel { get; set; }
 
-        private static int[,] m_AddOnSimpleComponents = new int[,]
+        private static readonly int[,] m_AddOnSimpleComponents = new int[,]
         {
               {3314, 8, -8, 19}, {3314, 8, -4, 18}, {2147, -2, 6, 11}// 1	2	3	
 			, {2147, -2, 6, 17}, {2147, -2, 6, 23}, {2147, -1, 6, 11}// 4	5	6	

@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class UnderworldPuzzleBox : MetalChest
     {
-        private static Dictionary<Mobile, DateTime> m_Table = new Dictionary<Mobile, DateTime>();
+        private static readonly Dictionary<Mobile, DateTime> m_Table = new Dictionary<Mobile, DateTime>();
 
         [Constructable]
         public UnderworldPuzzleBox()

@@ -75,7 +75,7 @@ namespace Server.Items
         }
 
         public static Dictionary<Mobile, SurgeType> Table { get { return m_Table; } }
-        private static Dictionary<Mobile, SurgeType> m_Table = new Dictionary<Mobile, SurgeType>();
+        private static readonly Dictionary<Mobile, SurgeType> m_Table = new Dictionary<Mobile, SurgeType>();
 
         public override void OnDoubleClick(Mobile from)
         {

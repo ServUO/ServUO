@@ -6,8 +6,8 @@ namespace Server.Engines.InstancedPeerless
 {
     public class InstanceEnterGate : Item
     {
-        private PeerlessInstance m_Instance;
-        private List<Mobile> m_AllowedPlayers;
+        private readonly PeerlessInstance m_Instance;
+        private readonly List<Mobile> m_AllowedPlayers;
 
         public override int LabelNumber => 1113494;  // (Entrance)
 

@@ -79,7 +79,7 @@ namespace Server.Regions
             return IsStairArea(item) || m_ItemTypes.Any(t => t == item.GetType() || item.GetType().IsSubclassOf(t));
         }
 
-        private static Type[] m_ItemTypes = new Type[]
+        private static readonly Type[] m_ItemTypes = new Type[]
         {
             typeof(BaseHouse),  typeof(HouseTeleporter),
             typeof(BaseDoor),   typeof(Static),

@@ -11,10 +11,10 @@ namespace Server.Items
         public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1079532; } } // 10th Anniversary Sculpture
 
-        private static Dictionary<Mobile, DateTime> m_LuckTable = new Dictionary<Mobile, DateTime>();
+        private static readonly Dictionary<Mobile, DateTime> m_LuckTable = new Dictionary<Mobile, DateTime>();
         private Dictionary<Mobile, DateTime> m_RewardCooldown;
         public Dictionary<Mobile, DateTime> RewardCooldown { get { return m_RewardCooldown; } }
-        private static List<TenthAnniversarySculpture> m_sculptures = new List<TenthAnniversarySculpture>();
+        private static readonly List<TenthAnniversarySculpture> m_sculptures = new List<TenthAnniversarySculpture>();
 
         private static Timer m_Timer;
 

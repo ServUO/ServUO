@@ -214,8 +214,8 @@ namespace Server.Engines.NewMagincia
 
         private class BackfeePrompt : Prompt
         {
-            private WarehouseSuperintendent m_Mobile;
-            private StorageEntry m_Entry;
+            private readonly WarehouseSuperintendent m_Mobile;
+            private readonly StorageEntry m_Entry;
 
             public BackfeePrompt(WarehouseSuperintendent mobile, StorageEntry entry)
             {
@@ -252,8 +252,8 @@ namespace Server.Engines.NewMagincia
 
         private class ClaimStorageEntry : ContextMenuEntry
         {
-            private WarehouseSuperintendent m_Mobile;
-            private StorageEntry m_Entry;
+            private readonly WarehouseSuperintendent m_Mobile;
+            private readonly StorageEntry m_Entry;
 
             public ClaimStorageEntry(Mobile from, WarehouseSuperintendent mobile) : base(1150681, 3)
             {

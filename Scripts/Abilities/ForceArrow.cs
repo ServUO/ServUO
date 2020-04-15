@@ -49,7 +49,7 @@ namespace Server.Items
                 spell.Disturb(DisturbType.Hurt, false, true);
         }
 
-        private static Dictionary<Mobile, List<ForceArrowInfo>> m_Table = new Dictionary<Mobile, List<ForceArrowInfo>>();
+        private static readonly Dictionary<Mobile, List<ForceArrowInfo>> m_Table = new Dictionary<Mobile, List<ForceArrowInfo>>();
 
         public static void BeginForceArrow(Mobile attacker, Mobile defender)
         {
@@ -112,8 +112,8 @@ namespace Server.Items
 
         public class ForceArrowInfo
         {
-            private Mobile m_Attacker;
-            private Mobile m_Defender;
+            private readonly Mobile m_Attacker;
+            private readonly Mobile m_Defender;
             private ForceArrowTimer m_Timer;
             private int m_DefenseChanceMalus;
 
@@ -132,7 +132,7 @@ namespace Server.Items
 
         public class ForceArrowTimer : Timer
         {
-            private ForceArrowInfo m_Info;
+            private readonly ForceArrowInfo m_Info;
             private DateTime m_Expires;
 
             public ForceArrowTimer(ForceArrowInfo info)

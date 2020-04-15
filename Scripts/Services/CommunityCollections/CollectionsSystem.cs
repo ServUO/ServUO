@@ -8,9 +8,9 @@ namespace Server.Services.Community_Collections
 {
     public class CollectionsSystem
     {
-        private static Dictionary<Collection, CollectionData> m_Collections = new Dictionary<Collection, CollectionData>();
+        private static readonly Dictionary<Collection, CollectionData> m_Collections = new Dictionary<Collection, CollectionData>();
         private static List<BaseCollectionMobile> m_Mobiles = new List<BaseCollectionMobile>();
-        private static string m_Path = Path.Combine("Saves", "CommunityCollections.bin");
+        private static readonly string m_Path = Path.Combine("Saves", "CommunityCollections.bin");
 
         public static void Configure()
         {

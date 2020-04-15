@@ -9,10 +9,10 @@ namespace Server.Engines.NewMagincia
     [PropertyObject]
     public class MaginciaPlotAuction
     {
-        private Dictionary<Mobile, BidEntry> m_Auctioners = new Dictionary<Mobile, BidEntry>();
+        private readonly Dictionary<Mobile, BidEntry> m_Auctioners = new Dictionary<Mobile, BidEntry>();
         public Dictionary<Mobile, BidEntry> Auctioners { get { return m_Auctioners; } }
 
-        private MaginciaBazaarPlot m_Plot;
+        private readonly MaginciaBazaarPlot m_Plot;
         private DateTime m_AuctionEnd;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -302,10 +302,10 @@ namespace Server.Engines.NewMagincia
 
     public class BidEntry : IComparable
     {
-        private Mobile m_Bidder;
-        private int m_Amount;
-        private BidType m_BidType;
-        private DateTime m_DatePlaced;
+        private readonly Mobile m_Bidder;
+        private readonly int m_Amount;
+        private readonly BidType m_BidType;
+        private readonly DateTime m_DatePlaced;
 
         public Mobile Bidder { get { return m_Bidder; } }
         public int Amount { get { return m_Amount; } }

@@ -211,8 +211,8 @@ namespace Server.Mobiles
 
         private class BribeEntry : ContextMenuEntry
         {
-            private Mobile m_From;
-            private BaseVendor m_Vendor;
+            private readonly Mobile m_From;
+            private readonly BaseVendor m_Vendor;
 
             public BribeEntry(Mobile from, BaseVendor vendor)
                 : base(1152294, 2)
@@ -2461,7 +2461,7 @@ namespace Server.Mobiles
         #region Mage Armor Conversion
         public virtual bool ConvertsMageArmor => false;
 
-        private List<PendingConvert> _PendingConvertEntries = new List<PendingConvert>();
+        private readonly List<PendingConvert> _PendingConvertEntries = new List<PendingConvert>();
 
         private bool CheckConvertArmor(Mobile from, BaseArmor armor)
         {

@@ -261,7 +261,7 @@ namespace Server.Engines.Craft
             return null;
         }
 
-        private Type[][] m_TypesTable = new Type[][]
+        private readonly Type[][] m_TypesTable = new Type[][]
         {
             new Type[]{ typeof( Log ), typeof( Board ) },
             new Type[]{ typeof( HeartwoodLog ), typeof( HeartwoodBoard ) },

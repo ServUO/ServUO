@@ -47,7 +47,7 @@ namespace Server.Items
 
     public class BondingTarget : Target
     {
-        private PetBondingPotion m_Potion;
+        private readonly PetBondingPotion m_Potion;
 
         public BondingTarget(PetBondingPotion potion) : base(1, false, TargetFlags.None)
         {

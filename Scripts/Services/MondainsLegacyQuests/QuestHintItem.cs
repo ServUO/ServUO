@@ -48,7 +48,7 @@ namespace Server.Items
             m_Range = DefaultRange;
         }
 
-        private Dictionary<Mobile, DateTime> m_Table = new Dictionary<Mobile, DateTime>();
+        private readonly Dictionary<Mobile, DateTime> m_Table = new Dictionary<Mobile, DateTime>();
 
         public override bool HandlesOnMovement { get { return true; } }
 

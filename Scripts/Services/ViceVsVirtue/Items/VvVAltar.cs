@@ -335,7 +335,7 @@ namespace Server.Engines.VvV
                 }
             }
 
-            private Point3D[] _Locs =
+            private readonly Point3D[] _Locs =
             {
                 new Point3D(-1, -2, 7), new Point3D(0, -2, 7), new Point3D(1, -2, 7), new Point3D(2, -2, 7),
                 new Point3D(2, -1, 7), new Point3D(2, 0, 7), new Point3D(2, 1, 7), new Point3D(2, 2, 7),
@@ -403,7 +403,7 @@ namespace Server.Engines.VvV
             }
         }
 
-        private int[][] _Tiles =
+        private readonly int[][] _Tiles =
         {
             new int[] { 5283,  5291,  5299,  5307,  5315,  5323,  5331,  5390 },
             new int[] { 39372, 39380, 39388, 39396, 39404, 39412, 39420, 39428 }

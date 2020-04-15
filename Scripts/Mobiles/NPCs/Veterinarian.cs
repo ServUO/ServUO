@@ -8,7 +8,7 @@ namespace Server.Mobiles
 {
     public class Veterinarian : BaseVendor
     {
-        private List<SBInfo> m_SBInfos = new List<SBInfo>();
+        private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
 
         [Constructable]
@@ -24,7 +24,7 @@ namespace Server.Mobiles
             m_SBInfos.Add(new SBVeterinarian());
         }
 
-        private static Dictionary<Mobile, Timer> m_ExpireTable = new Dictionary<Mobile, Timer>();
+        private static readonly Dictionary<Mobile, Timer> m_ExpireTable = new Dictionary<Mobile, Timer>();
 
         public static BaseCreature[] GetDeadPets(Mobile from)
         {
@@ -126,8 +126,8 @@ namespace Server.Mobiles
         //public override int TypeID { get { return 0xF3E96; } }
 
 
-        private Veterinarian m_Vet;
-        private BaseCreature[] m_Pets;
+        private readonly Veterinarian m_Vet;
+        private readonly BaseCreature[] m_Pets;
 
         public VetResurrectGump(Veterinarian vet, BaseCreature[] pets)
             : base(150, 50)

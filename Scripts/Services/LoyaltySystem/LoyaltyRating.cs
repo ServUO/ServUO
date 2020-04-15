@@ -5,7 +5,7 @@ namespace Server.Engines.Points
 {
     public class LoyaltyRating : ContextMenuEntry
     {
-        private PlayerMobile m_From;
+        private readonly PlayerMobile m_From;
 
         public LoyaltyRating(PlayerMobile from)
             : base(1049594)

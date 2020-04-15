@@ -66,7 +66,7 @@ namespace Server.Mobiles
 
         public class InternalSelfDeleteTimer : Timer
         {
-            private OrcEngineer Mare;
+            private readonly OrcEngineer Mare;
 
             public InternalSelfDeleteTimer(Mobile p) : base(TimeSpan.FromMinutes(10))
             {

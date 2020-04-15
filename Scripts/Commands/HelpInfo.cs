@@ -350,7 +350,7 @@ namespace Server.Commands
 
         public class CommandInfoGump : Gump
         {
-            private CommandInfo m_Info;
+            private readonly CommandInfo m_Info;
 
             public CommandInfoGump(CommandInfo info)
                 : this(info, 320, 210)

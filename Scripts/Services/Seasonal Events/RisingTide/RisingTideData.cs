@@ -15,7 +15,7 @@ namespace Server.Engines.Points
         public override bool ShowOnLoyaltyGump { get { return false; } }
 
         public bool InSeason { get { return SeasonalEventSystem.IsActive(EventType.RisingTide); } }
-        private TextDefinition m_Name = null;
+        private readonly TextDefinition m_Name = null;
 
         public static readonly double CargoChance = 0.1;
 
@@ -65,7 +65,7 @@ namespace Server.Engines.Points
             }
         }
 
-        private Type[] CargoDropsTypes =
+        private readonly Type[] CargoDropsTypes =
         {
             typeof(PirateCaptain), typeof(MerchantCaptain), typeof(PirateCrew), typeof(MerchantCrew)
         };

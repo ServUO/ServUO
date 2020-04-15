@@ -60,7 +60,7 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private AncientWall wall;
+            private readonly AncientWall wall;
 
             public InternalTimer(AncientWall m_wall)
                 : base(TimeSpan.FromMinutes(1.0))

@@ -453,8 +453,8 @@ namespace Server.Items
 
         private class NameBookEntry : ContextMenuEntry
         {
-            private Mobile m_From;
-            private RecipeBook m_Book;
+            private readonly Mobile m_From;
+            private readonly RecipeBook m_Book;
 
             public NameBookEntry(Mobile from, RecipeBook book)
                 : base(6216)
@@ -476,7 +476,7 @@ namespace Server.Items
         private class NameBookPrompt : Prompt
         {
             public override int MessageCliloc { get { return 1062479; } }
-            private RecipeBook m_Book;
+            private readonly RecipeBook m_Book;
 
             public NameBookPrompt(RecipeBook book)
             {

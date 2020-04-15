@@ -92,7 +92,7 @@ namespace Server.Engines.ArenaSystem
         public static ArenaDefinition HavenFelucca { get; set; }
 
         public static ArenaDefinition[] Definitions { get { return _Definitions; } }
-        private static ArenaDefinition[] _Definitions = new ArenaDefinition[4];
+        private static readonly ArenaDefinition[] _Definitions = new ArenaDefinition[4];
 
         static ArenaDefinition()
         {

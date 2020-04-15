@@ -4,7 +4,7 @@ namespace Server.Engines.Quests
 {
     public class QuestInfoGump : BaseQuestGump
     {
-        private int m_Cliloc;
+        private readonly int m_Cliloc;
 
         public QuestInfoGump(int cliloc) : base(0, 0)
         {

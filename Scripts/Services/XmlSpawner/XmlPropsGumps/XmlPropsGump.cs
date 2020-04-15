@@ -13,12 +13,12 @@ namespace Server.Gumps
 {
     public class XmlPropertiesGump : Gump
     {
-        private ArrayList m_List;
+        private readonly ArrayList m_List;
         private int m_Page;
-        private Mobile m_Mobile;
-        private object m_Object;
+        private readonly Mobile m_Mobile;
+        private readonly object m_Object;
 #if (NEWTIMERS)
-        private Stack<PropertiesGump.StackEntry> m_Stack;
+        private readonly Stack<PropertiesGump.StackEntry> m_Stack;
 #else
 		private Stack m_Stack;
 #endif
@@ -57,7 +57,7 @@ namespace Server.Gumps
         public static readonly int EntryHeight = PropsConfig.EntryHeight;
         public static readonly int BorderSize = PropsConfig.BorderSize;
 
-        private static bool PrevLabel = OldStyle, NextLabel = OldStyle;
+        private static readonly bool PrevLabel = OldStyle, NextLabel = OldStyle;
 
         private static readonly int PrevLabelOffsetX = PrevWidth + 1;
 
@@ -394,29 +394,29 @@ namespace Server.Gumps
             return false;
         }
 
-        private static Type typeofMobile = typeof(Mobile);
-        private static Type typeofItem = typeof(Item);
-        private static Type typeofType = typeof(Type);
-        private static Type typeofPoint3D = typeof(Point3D);
-        private static Type typeofPoint2D = typeof(Point2D);
-        private static Type typeofTimeSpan = typeof(TimeSpan);
-        private static Type typeofCustomEnum = typeof(CustomEnumAttribute);
-        private static Type typeofEnum = typeof(Enum);
-        private static Type typeofBool = typeof(Boolean);
-        private static Type typeofString = typeof(String);
-        private static Type typeofPoison = typeof(Poison);
-        private static Type typeofMap = typeof(Map);
-        private static Type typeofSkills = typeof(Skills);
-        private static Type typeofPropertyObject = typeof(PropertyObjectAttribute);
-        private static Type typeofNoSort = typeof(NoSortAttribute);
+        private static readonly Type typeofMobile = typeof(Mobile);
+        private static readonly Type typeofItem = typeof(Item);
+        private static readonly Type typeofType = typeof(Type);
+        private static readonly Type typeofPoint3D = typeof(Point3D);
+        private static readonly Type typeofPoint2D = typeof(Point2D);
+        private static readonly Type typeofTimeSpan = typeof(TimeSpan);
+        private static readonly Type typeofCustomEnum = typeof(CustomEnumAttribute);
+        private static readonly Type typeofEnum = typeof(Enum);
+        private static readonly Type typeofBool = typeof(Boolean);
+        private static readonly Type typeofString = typeof(String);
+        private static readonly Type typeofPoison = typeof(Poison);
+        private static readonly Type typeofMap = typeof(Map);
+        private static readonly Type typeofSkills = typeof(Skills);
+        private static readonly Type typeofPropertyObject = typeof(PropertyObjectAttribute);
+        private static readonly Type typeofNoSort = typeof(NoSortAttribute);
 
-        private static Type[] typeofReal = new Type[]
+        private static readonly Type[] typeofReal = new Type[]
             {
                 typeof( Single ),
                 typeof( Double )
             };
 
-        private static Type[] typeofNumeric = new Type[]
+        private static readonly Type[] typeofNumeric = new Type[]
             {
                 typeof( Byte ),
                 typeof( Int16 ),
@@ -534,8 +534,8 @@ namespace Server.Gumps
             return list;
         }
 
-        private static Type typeofCPA = typeof(CPA);
-        private static Type typeofObject = typeof(object);
+        private static readonly Type typeofCPA = typeof(CPA);
+        private static readonly Type typeofObject = typeof(object);
 
         private static CPA GetCPA(PropertyInfo prop)
         {
@@ -718,14 +718,14 @@ namespace Server.Gumps
 
         private class GroupComparer : IComparer
         {
-            private Type m_Start;
+            private readonly Type m_Start;
 
             public GroupComparer(Type start)
             {
                 m_Start = start;
             }
 
-            private static Type typeofObject = typeof(Object);
+            private static readonly Type typeofObject = typeof(Object);
 
             private int GetDistance(Type type)
             {

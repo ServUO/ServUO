@@ -357,7 +357,7 @@ namespace Server.Engines.VendorSearching
 
     public class SearchWaitGump : BaseGump
     {
-        private Timer m_PollingTimer;
+        private readonly Timer m_PollingTimer;
 
         public SearchWaitGump(PlayerMobile pm, Timer waitTimer)
             : base(pm, 10, 10)

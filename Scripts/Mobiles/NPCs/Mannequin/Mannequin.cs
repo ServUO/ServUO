@@ -135,7 +135,7 @@ namespace Server.Mobiles
             }
         }
 
-        private List<Layer> SameLayers = new List<Layer>()
+        private readonly List<Layer> SameLayers = new List<Layer>()
         {
             Layer.FirstValid,
             Layer.OneHanded,
@@ -274,7 +274,7 @@ namespace Server.Mobiles
 
         private class ViewSuitsEntry : ContextMenuEntry
         {
-            private Mobile _From;
+            private readonly Mobile _From;
             private readonly Mannequin _Mannequin;
 
             public ViewSuitsEntry(Mobile from, Mannequin m)
@@ -292,7 +292,7 @@ namespace Server.Mobiles
 
         private class CompareWithItemInSlotEntry : ContextMenuEntry
         {
-            private Mobile _From;
+            private readonly Mobile _From;
             private readonly Mannequin _Mannequin;
 
             public CompareWithItemInSlotEntry(Mobile from, Mannequin m)
@@ -327,7 +327,7 @@ namespace Server.Mobiles
 
         private class ViewSuitsSelectItemEntry : ContextMenuEntry
         {
-            private Mobile _From;
+            private readonly Mobile _From;
             private readonly Mannequin _Mannequin;
 
             public ViewSuitsSelectItemEntry(Mobile from, Mannequin m)
@@ -363,7 +363,7 @@ namespace Server.Mobiles
 
         private class AddDescriptionEntry : ContextMenuEntry
         {
-            private Mobile _From;
+            private readonly Mobile _From;
             private readonly Mannequin _Mannequin;
 
             public AddDescriptionEntry(Mobile from, Mannequin m)
@@ -380,7 +380,7 @@ namespace Server.Mobiles
 
             private class DescriptionGump : Gump
             {
-                private Mannequin _Mannequin;
+                private readonly Mannequin _Mannequin;
 
                 public DescriptionGump(Mannequin mann)
                     : base(0, 0)
@@ -427,7 +427,7 @@ namespace Server.Mobiles
 
         private class CustomizeBodyEntry : ContextMenuEntry
         {
-            private Mobile _From;
+            private readonly Mobile _From;
             private readonly Mobile _Mannequin;
 
             public CustomizeBodyEntry(Mobile from, Mobile m)
@@ -446,7 +446,7 @@ namespace Server.Mobiles
         private class SwitchClothesEntry : ContextMenuEntry
         {
             private readonly Mobile _From;
-            private Mannequin _Mannequin;
+            private readonly Mannequin _Mannequin;
 
             public SwitchClothesEntry(Mobile from, Mannequin m)
                 : base(1151606, 2)
@@ -513,8 +513,8 @@ namespace Server.Mobiles
 
         private class RotateEntry : ContextMenuEntry
         {
-            private Mobile _From;
-            private Mobile _Mannequin;
+            private readonly Mobile _From;
+            private readonly Mobile _Mannequin;
 
             public RotateEntry(Mobile from, Mobile m)
                 : base(1151586, 2)
@@ -539,8 +539,8 @@ namespace Server.Mobiles
 
         private class RedeedEntry : ContextMenuEntry
         {
-            private Mobile _From;
-            private Mobile _Mannequin;
+            private readonly Mobile _From;
+            private readonly Mobile _Mannequin;
 
             public RedeedEntry(Mobile from, Mobile m)
                 : base(1151601, 2)

@@ -89,7 +89,7 @@ namespace Server.Engines.HuntsmasterChallenge
             }
         }
 
-        private static List<CollectionItem> _Collections = new List<CollectionItem>
+        private static readonly List<CollectionItem> _Collections = new List<CollectionItem>
         {
             new CollectionItem(typeof(HarvestersBlade), 0x2D20, 1114096, 0, 1.0),
             new CollectionItem(typeof(HornOfPlenty), 18080, 1153503, 0, 1.0),

@@ -56,8 +56,8 @@ namespace Server.Items
 
         public class SummoningTarget : Target
         {
-            private Mobile m_Mobile;
-            private Item m_Deed;
+            private readonly Mobile m_Mobile;
+            private readonly Item m_Deed;
 
             public SummoningTarget(Mobile from, Item deed) : base(2, true, TargetFlags.None)
             {

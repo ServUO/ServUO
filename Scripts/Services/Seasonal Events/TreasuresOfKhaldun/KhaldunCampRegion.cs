@@ -20,14 +20,14 @@ namespace Server.Engines.Khaldun
             Register();
         }
 
-        private Point3D[] _GuardLocs =
+        private readonly Point3D[] _GuardLocs =
         {
             new Point3D(6024, 3713, 1), new Point3D(6035, 3752, 11),
             new Point3D(5999, 3726, 22), new Point3D(5992, 3752, 9),
             new Point3D(6023, 3777, 20)
         };
 
-        private Point3D[][] _BlockerLocs =
+        private readonly Point3D[][] _BlockerLocs =
         {
             new Point3D[]
             {

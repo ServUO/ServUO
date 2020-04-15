@@ -294,7 +294,7 @@ namespace Server.Gumps
     public class CreateWorldGump : Gump
     {
         private readonly CommandEventArgs m_CommandEventArgs;
-        private CreateWorld.GumpType m_Type;
+        private readonly CreateWorld.GumpType m_Type;
 
         public CreateWorldGump(CommandEventArgs e, CreateWorld.GumpType type)
             : base(50, 50)

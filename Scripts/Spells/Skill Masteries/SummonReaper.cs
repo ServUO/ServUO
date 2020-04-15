@@ -8,7 +8,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class SummonReaperSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Summon Reaper", "Lartarisstree",
                 204,
                 9061
@@ -80,7 +80,7 @@ namespace Server.Spells.SkillMasteries
     [CorpseName("a reapers corpse")]
     public class SummonedReaper : BaseCreature
     {
-        private int m_DispelDifficulty;
+        private readonly int m_DispelDifficulty;
 
         public override double DispelDifficulty { get { return m_DispelDifficulty; } }
         public override double DispelFocus { get { return 45.0; } }

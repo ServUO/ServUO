@@ -7,7 +7,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class InjectedStrikeSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Injected Strike", "",
                 -1,
                 9002

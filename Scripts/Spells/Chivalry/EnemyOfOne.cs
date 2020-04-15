@@ -168,7 +168,7 @@ namespace Server.Spells.Chivalry
 
     public class EnemyOfOneContext
     {
-        private Mobile m_Owner;
+        private readonly Mobile m_Owner;
         private Timer m_Timer;
         private DateTime m_Expire;
         private Type m_TargetType;

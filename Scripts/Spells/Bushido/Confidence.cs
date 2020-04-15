@@ -10,8 +10,8 @@ namespace Server.Spells.Bushido
             -1,
             9002);
 
-        private static Dictionary<Mobile, Timer> m_Table = new Dictionary<Mobile, Timer>();
-        private static Dictionary<Mobile, Timer> m_RegenTable = new Dictionary<Mobile, Timer>();
+        private static readonly Dictionary<Mobile, Timer> m_Table = new Dictionary<Mobile, Timer>();
+        private static readonly Dictionary<Mobile, Timer> m_RegenTable = new Dictionary<Mobile, Timer>();
 
         public Confidence(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
@@ -168,7 +168,7 @@ namespace Server.Spells.Bushido
 
         private class RegenTimer : Timer
         {
-            private Mobile m_Mobile;
+            private readonly Mobile m_Mobile;
             private int m_Ticks;
             private int m_Hits;
 

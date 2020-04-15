@@ -19,7 +19,7 @@ namespace Server.Engines.Points
         public bool Enabled { get; set; }
         public bool QuestContentGenerated { get; set; }
 
-        private TextDefinition m_Name = null;
+        private readonly TextDefinition m_Name = null;
 
         public KhaldunData()
         {

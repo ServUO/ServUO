@@ -5,11 +5,11 @@ namespace Server.Engines.HuntsmasterChallenge
     [PropertyObject]
     public class HuntingKillEntry : IComparable
     {
-        private Mobile m_Owner;
-        private int m_Measurement;
-        private int m_KillIndex;
-        private DateTime m_DateKilled;
-        private string m_Location;
+        private readonly Mobile m_Owner;
+        private readonly int m_Measurement;
+        private readonly int m_KillIndex;
+        private readonly DateTime m_DateKilled;
+        private readonly string m_Location;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Owner { get { return m_Owner; } }

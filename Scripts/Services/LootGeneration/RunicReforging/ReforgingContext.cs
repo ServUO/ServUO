@@ -54,7 +54,7 @@ namespace Server.Items
         }
 
         #region Serialize/Deserialize Persistence
-        private static string FilePath = Path.Combine("Saves", "CraftContext", "ReforgingContexts.bin");
+        private static readonly string FilePath = Path.Combine("Saves", "CraftContext", "ReforgingContexts.bin");
 
         public static Dictionary<Mobile, ReforgingContext> ReforgingContexts { get; set; }
 

@@ -12,9 +12,9 @@ namespace Server.Items
     {
         public override BaseAddonDeed Deed { get { return new CompassionVirtueTileDeed(); } }
 
-        private CompassionTileType m_CompassionTileType;
+        private readonly CompassionTileType m_CompassionTileType;
 
-        private int offset;
+        private readonly int offset;
 
         [Constructable]
         public CompassionVirtueTileAddon(CompassionTileType type)

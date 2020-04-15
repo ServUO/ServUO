@@ -919,7 +919,7 @@ namespace Server.Engines.Shadowguard
             private FountainEncounter _Encounter;
             private List<ShadowguardCanal> _Checked;
 
-            private ShadowguardSpigot _Spigot;
+            private readonly ShadowguardSpigot _Spigot;
             private ShadowguardDrain _Drain;
 
             public bool Complete { get { return _Spigot != null && _Drain != null; } }
@@ -1097,7 +1097,7 @@ namespace Server.Engines.Shadowguard
                 }
             }
 
-            private int[] _Offsets = new int[]
+            private readonly int[] _Offsets = new int[]
             {
                 0, -1,
                 1, 0,
@@ -1403,7 +1403,7 @@ namespace Server.Engines.Shadowguard
 
         public List<Type> Bosses { get; set; }
 
-        private Type[] _Bosses = new Type[] { typeof(Anon), typeof(Virtuebane), typeof(Ozymandias), typeof(Juonar) };
+        private readonly Type[] _Bosses = new Type[] { typeof(Anon), typeof(Virtuebane), typeof(Ozymandias), typeof(Juonar) };
 
         public override TimeSpan EncounterDuration { get { return TimeSpan.MaxValue; } }
         public override TimeSpan ResetDuration { get { return TimeSpan.FromMinutes(5); } }

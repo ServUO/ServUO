@@ -115,7 +115,7 @@ namespace Server.Engines.Blackthorn
             }
         }
 
-        private Type[][] _SpawnTable =
+        private readonly Type[][] _SpawnTable =
         {
             new Type[] { typeof(Dragon), typeof(Drake), typeof(GiantSerpent), typeof(Reptalon), typeof(Hydra) },
             new Type[] { typeof(Lich), typeof(Wraith), typeof(Mummy), typeof(Zombie), typeof(SkeletalKnight), typeof(BoneKnight) },

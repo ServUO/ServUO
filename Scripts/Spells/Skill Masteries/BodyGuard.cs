@@ -8,7 +8,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class BodyGuardSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Body Guard", "",
                 -1,
                 9002
@@ -257,9 +257,9 @@ namespace Server.Spells.SkillMasteries
 
     public class AcceptBodyguardGump : Gump
     {
-        private Mobile m_Protector;
-        private Mobile m_Protectee;
-        private BodyGuardSpell m_Spell;
+        private readonly Mobile m_Protector;
+        private readonly Mobile m_Protectee;
+        private readonly BodyGuardSpell m_Spell;
 
         public AcceptBodyguardGump(Mobile protector, Mobile protectee, BodyGuardSpell spell) : base(150, 50)
         {

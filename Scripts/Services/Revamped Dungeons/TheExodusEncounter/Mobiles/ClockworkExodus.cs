@@ -241,8 +241,8 @@ namespace Server.Mobiles
 
         private class GoldTimer : Timer
         {
-            private Map m_Map;
-            private int m_X, m_Y;
+            private readonly Map m_Map;
+            private readonly int m_X, m_Y;
 
             public GoldTimer(Map map, int x, int y) : base(TimeSpan.FromSeconds(Utility.RandomDouble() * 10.0))
             {

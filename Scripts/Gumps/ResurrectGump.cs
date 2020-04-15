@@ -25,7 +25,7 @@ namespace Server.Gumps
         private readonly double m_HitsScalar;
         private readonly ResurrectMessage m_Msg;
 
-        private Action<Mobile> m_Callback;
+        private readonly Action<Mobile> m_Callback;
 
         public ResurrectGump(Mobile owner)
             : this(owner, owner, ResurrectMessage.Generic, false)

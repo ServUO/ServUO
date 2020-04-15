@@ -7,7 +7,7 @@ namespace Server.Engines.Reports
 
     public sealed class PersistableTypeRegistry
     {
-        private static Hashtable m_Table;
+        private static readonly Hashtable m_Table;
         static PersistableTypeRegistry()
         {
             m_Table = new Hashtable(StringComparer.OrdinalIgnoreCase);

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class KhaldunCampAddon : BaseAddon
     {
-        private static int[,] m_AddOnSimpleComponents = new int[,] {
+        private static readonly int[,] m_AddOnSimpleComponents = new int[,] {
               {2879, -2, 6, 4}, {2883, 1, 10, 4}, {2879, -2, 7, 4}// 1	2	3	
 			, {2880, 0, 6, 4}, {2880, -1, 6, 4}, {875, 5, 5, 4}// 4	5	6	
 			, {875, -3, 5, 5}, {3014, 6, 6, 12}, {2421, 5, 8, 3}// 7	8	20	

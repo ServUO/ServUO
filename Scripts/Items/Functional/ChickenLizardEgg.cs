@@ -357,8 +357,8 @@ namespace Server.Items
 
         private class ConfirmHatchGump1 : BaseConfirmGump
         {
-            private ChickenLizardEgg m_Egg;
-            private Mobile m_From;
+            private readonly ChickenLizardEgg m_Egg;
+            private readonly Mobile m_From;
 
             public override int TitleNumber { get { return 1112444; } }
             public override int LabelNumber { get { return 1112446; } }
@@ -378,8 +378,8 @@ namespace Server.Items
 
         private class ConfirmHatchGump2 : BaseConfirmGump
         {
-            private ChickenLizardEgg m_Egg;
-            private Mobile m_From;
+            private readonly ChickenLizardEgg m_Egg;
+            private readonly Mobile m_From;
 
             public override int TitleNumber { get { return 1112444; } }
             public override int LabelNumber { get { return 1112445; } }

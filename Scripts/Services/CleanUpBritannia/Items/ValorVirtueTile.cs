@@ -12,9 +12,9 @@ namespace Server.Items
     {
         public override BaseAddonDeed Deed { get { return new ValorVirtueTileDeed(); } }
 
-        private ValorTileType m_ValorTileType;
+        private readonly ValorTileType m_ValorTileType;
 
-        private int offset;
+        private readonly int offset;
 
         [Constructable]
         public ValorVirtueTileAddon(ValorTileType type)

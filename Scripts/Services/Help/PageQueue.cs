@@ -40,7 +40,7 @@ namespace Server.Engines.Help
         private PageType m_Type;
         private Point3D m_PageLocation;
         private Map m_PageMap;
-        private List<SpeechLogEntry> m_SpeechLog;
+        private readonly List<SpeechLogEntry> m_SpeechLog;
 
         public static readonly string SupportEmail = Config.Get("General.SupportEmail", default(string));
         public static readonly string SupportWebsite = Config.Get("General.SupportWebsite", default(string));

@@ -32,7 +32,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextHarvest { get; set; }
 
-        private static Type[] DecorativePlants = new Type[]
+        private static readonly Type[] DecorativePlants = new Type[]
         {
             typeof(DecorativePlant),    typeof(DecorativePlantWhiteFlowers),     typeof(DecorativePlantVines),
             typeof(DecorativePlantFlax),     typeof(DecorativePlantPoppies),          typeof(DecorativePlantLilypad)

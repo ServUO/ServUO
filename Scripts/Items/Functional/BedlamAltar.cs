@@ -34,7 +34,7 @@ namespace Server.Items
             get { return m_Bounds; }
         }
 
-        private Rectangle2D[] m_Bounds = new Rectangle2D[]
+        private readonly Rectangle2D[] m_Bounds = new Rectangle2D[]
         {
             new Rectangle2D(99, 1609, 14, 18),
         };

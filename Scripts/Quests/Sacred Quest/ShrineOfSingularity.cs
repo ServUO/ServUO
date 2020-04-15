@@ -66,7 +66,7 @@ namespace Server.Items
             return QuestHelper.GetQuest(pm, typeof(QuestOfSingularity)) as QuestOfSingularity;
         }
 
-        private static Dictionary<Mobile, DateTime> m_RestartTable = new Dictionary<Mobile, DateTime>();
+        private static readonly Dictionary<Mobile, DateTime> m_RestartTable = new Dictionary<Mobile, DateTime>();
 
         public static void AddToTable(Mobile from)
         {

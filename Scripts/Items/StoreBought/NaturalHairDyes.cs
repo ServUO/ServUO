@@ -120,7 +120,7 @@ namespace Server.Items
         }
 
         public static HairDyeInfo[] Table { get { return m_Table; } }
-        private static HairDyeInfo[] m_Table =
+        private static readonly HairDyeInfo[] m_Table =
         {
             // Hue, Label
             new HairDyeInfo( HairDyeType.None, 0, -1 ),

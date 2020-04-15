@@ -19,7 +19,7 @@ namespace Server.Items
         private Point3D m_TeleportDest = new Point3D(764, 640, 0);
         public override int Lifespan { get { return 420; } }
         public override bool UseSeconds { get { return false; } }
-        private List<RitualArray> m_Rituals;
+        private readonly List<RitualArray> m_Rituals;
         private Mobile m_Owner;
         private Item m_ExodusAlterAddon;
 
@@ -50,8 +50,8 @@ namespace Server.Items
 
         private class BeginTheRitual : ContextMenuEntry
         {
-            private Mobile m_Mobile;
-            private ExodusTomeAltar m_altar;
+            private readonly Mobile m_Mobile;
+            private readonly ExodusTomeAltar m_altar;
 
             public BeginTheRitual(ExodusTomeAltar altar, Mobile from) : base(1153608, 2) // Begin the Ritual
             {

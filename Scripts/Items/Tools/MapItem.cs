@@ -16,7 +16,7 @@ namespace Server.Items
         private bool m_Protected;
         private bool m_Editable;
 
-        private List<Point2D> m_Pins = new List<Point2D>();
+        private readonly List<Point2D> m_Pins = new List<Point2D>();
 
         private const int MaxUserPins = 50;
 

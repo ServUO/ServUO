@@ -165,7 +165,7 @@ namespace Server.Items
             return m_BankTable.ContainsKey(bank);
         }
 
-        private static Dictionary<HarvestBank, DateTime> m_BankTable = new Dictionary<HarvestBank, DateTime>();
+        private static readonly Dictionary<HarvestBank, DateTime> m_BankTable = new Dictionary<HarvestBank, DateTime>();
 
         public static void AddBank(HarvestBank bank)
         {

@@ -27,7 +27,7 @@ namespace Server.Engines.Doom
 
         public bool CanActivate { get { return NextActivate < DateTime.UtcNow; } }
 
-        private static Rectangle2D[] RegionBounds = new Rectangle2D[] { new Rectangle2D(355, 5, 20, 20) };
+        private static readonly Rectangle2D[] RegionBounds = new Rectangle2D[] { new Rectangle2D(355, 5, 20, 20) };
         private static Rectangle2D PentagramBounds = new Rectangle2D(364, 14, 2, 2);
         private static Point3D DoorOneLoc = new Point3D(355, 14, -1);
         private static Point3D DoorTwoLoc = new Point3D(355, 15, -1);

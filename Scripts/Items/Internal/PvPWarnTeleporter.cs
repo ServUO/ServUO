@@ -48,7 +48,7 @@ namespace Server.Items
 
     public class PvpWarningGump : Gump
     {
-        private Teleporter m_Owner;
+        private readonly Teleporter m_Owner;
 
         public PvpWarningGump(Teleporter teleporter)
             : base(150, 50)

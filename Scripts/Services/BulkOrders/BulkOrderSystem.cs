@@ -537,7 +537,7 @@ namespace Server.Engines.BulkOrders
             }
         }
 
-        private static Type[] _ExceptionalExcluded =
+        private static readonly Type[] _ExceptionalExcluded =
         {
             typeof(Arrow), typeof(Bolt), typeof(Kindling), typeof(Shaft),
 
