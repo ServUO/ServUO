@@ -218,7 +218,7 @@ namespace Server.Misc
 
         private static double GetGainChance(Mobile from, Skill skill, double gains, double chance)
         {
-            var gc = (double)(from.Skills.Cap - (from.Skills.Total + (gains * 10))) / from.Skills.Cap;
+            var gc = (from.Skills.Cap - (from.Skills.Total + (gains * 10))) / from.Skills.Cap;
 
             gc += (skill.Cap - (skill.Base + (gains * 10))) / skill.Cap;
             gc /= 4;

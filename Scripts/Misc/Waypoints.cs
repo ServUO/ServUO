@@ -179,7 +179,7 @@ namespace Server
         {
             EnsureCapacity(21 + (name.Length * 2));
 
-            m_Stream.Write((int)serial);
+            m_Stream.Write(serial);
 
             m_Stream.Write((ushort)x);
             m_Stream.Write((ushort)y);
@@ -191,9 +191,9 @@ namespace Server
             m_Stream.Write((ushort)(ignoreObject ? 1 : 0));
 
             if (type == WaypointType.Corpse)
-                m_Stream.Write((int)1046414);
+                m_Stream.Write(1046414);
             else
-                m_Stream.Write((int)1062613);
+                m_Stream.Write(1062613);
 
             m_Stream.WriteLittleUniNull(name);
 
@@ -206,7 +206,7 @@ namespace Server
         public RemoveWaypoint(Serial serial)
             : base(0xE6, 5)
         {
-            m_Stream.Write((int)serial);
+            m_Stream.Write(serial);
         }
     }
 }

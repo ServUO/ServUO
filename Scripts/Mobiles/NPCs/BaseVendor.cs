@@ -69,7 +69,7 @@ namespace Server.Mobiles
         public override bool IsInvulnerable => true;
 
         public virtual DateTime NextTrickOrTreat { get; set; }
-        public virtual double GetMoveDelay => (double)Utility.RandomMinMax(30, 120);
+        public virtual double GetMoveDelay => Utility.RandomMinMax(30, 120);
 
         public override bool ShowFameTitle => false;
 
@@ -268,7 +268,7 @@ namespace Server.Mobiles
                 {
                     if (context.PointsMode == PointsMode.Enabled)
                     {
-                        m_From.SendGump(new ConfirmBankPointsGump((PlayerMobile)m_From, m_Vendor, m_Vendor.BODType, pending, (double)pending * 0.02));
+                        m_From.SendGump(new ConfirmBankPointsGump((PlayerMobile)m_From, m_Vendor, m_Vendor.BODType, pending, pending * 0.02));
                     }
                     else
                     {
