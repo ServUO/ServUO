@@ -11,8 +11,8 @@ namespace Server.Items
     [FlipableAttribute(39958, 39959)]
     public class RunicAtlas : Runebook
     {
-        public override int MaxEntries { get { return 48; } }
-        public override int LabelNumber { get { return 1156443; } } // a runic atlas
+        public override int MaxEntries => 48;
+        public override int LabelNumber => 1156443;  // a runic atlas
 
         public int Selected { get; set; }
 
@@ -34,6 +34,7 @@ namespace Server.Items
                         return;
                     }
 
+                    from.CloseGump(typeof(RunicAtlasGump));
                     BaseGump.SendGump(new RunicAtlasGump((PlayerMobile)from, this));
                     Openers.Add(from);
                 }
@@ -115,20 +116,17 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
+
             writer.Write(Selected);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
+            
             Selected = reader.ReadInt();
-
-            if (MaxCharges != 100)
-                MaxCharges = 100;
         }
     }
 
@@ -386,6 +384,7 @@ namespace Server.Items
             }
             else
             {
+                Atlas.Openers.Remove(User);
                 User.SendLocalizedMessage(502413); // That cannot be done while the book is locked down.
             }
         }
@@ -538,7 +537,9 @@ namespace Server.Items
                 if (Atlas.CheckAccess(from) || from.AccessLevel >= AccessLevel.GameMaster)
                 {
                     Atlas.Description = Utility.FixHtml(text.Trim());
-                    from.SendGump(new RunicAtlasGump((PlayerMobile)from, Atlas));
+
+                    from.CloseGump(typeof(RunicAtlasGump));
+                    BaseGump.SendGump(new RunicAtlasGump((PlayerMobile)from, Atlas));
                     from.SendLocalizedMessage(1041531); // You have changed the title of the rune book.
                 }
                 else
@@ -554,7 +555,8 @@ namespace Server.Items
 
                 if (from is PlayerMobile && !Atlas.Deleted && from.InRange(Atlas.GetWorldLocation(), 3))
                 {
-                    from.SendGump(new RunicAtlasGump((PlayerMobile)from, Atlas));
+                    from.CloseGump(typeof(RunicAtlasGump));
+                    BaseGump.SendGump(new RunicAtlasGump((PlayerMobile)from, Atlas));
                 }
             }
         }

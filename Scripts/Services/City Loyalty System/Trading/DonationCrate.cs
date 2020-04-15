@@ -18,7 +18,7 @@ namespace Server.Engines.CityLoyalty
 
         public Dictionary<Type, int> Table { get; protected set; }
 
-        public virtual bool Animals { get { return false; } }
+        public virtual bool Animals => false;
 
         public CityDonationItem(City city, TradeMinister minister, int itemid) : base(itemid)
         {
@@ -127,7 +127,7 @@ namespace Server.Engines.CityLoyalty
                 }
                 else
                 {
-                    system.AddToTreasury(null, 100);
+                    system.AddToTreasury(null, cargo.GetAwardAmount() * 500);
                 }
             }
         }
@@ -259,7 +259,7 @@ namespace Server.Engines.CityLoyalty
 
     public class CityPetDonation : CityDonationItem
     {
-        public override bool Animals { get { return true; } }
+        public override bool Animals => true;
 
         [Constructable]
         public CityPetDonation(City city, TradeMinister minister) : base(city, minister, 0x14E7)
