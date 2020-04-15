@@ -268,7 +268,7 @@ namespace Server.Gumps
 
                         if (from.AccessLevel > focus.AccessLevel)
                         {
-                            from.SendGump(new SkillsGump(from, (Mobile)focus));
+                            from.SendGump(new SkillsGump(from, focus));
                             CommandLogging.WriteLine(from, "{0} {1} Opening Skills gump of {2} ", from.AccessLevel, CommandLogging.Format(from), CommandLogging.Format(focus));
                         }
 

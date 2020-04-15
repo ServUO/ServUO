@@ -102,7 +102,7 @@ namespace Server.Items
             }
 
 
-            return ((BladeWeaveRedirect)m_NewAttack[attacker]).NewAbility.OnBeforeSwing(attacker, defender);
+            return m_NewAttack[attacker].NewAbility.OnBeforeSwing(attacker, defender);
         }
 
         public override bool OnBeforeDamage(Mobile attacker, Mobile defender)

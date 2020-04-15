@@ -687,7 +687,7 @@ namespace Server.Mobiles
         {
             get
             {
-                if (TriggerMob != null && (int)m_skill_that_triggered >= 0)
+                if (TriggerMob != null && m_skill_that_triggered >= 0)
                 {
                     return TriggerMob.Skills[m_skill_that_triggered];
                 }
@@ -2136,7 +2136,7 @@ namespace Server.Mobiles
 
                 for (int i = 0; i < states.Count; ++i)
                 {
-                    Mobile m = ((NetState)states[i]).Mobile;
+                    Mobile m = states[i].Mobile;
 
                     if (m != null && m.HasGump(typeof(XmlSpawnerGump)))
                     {
@@ -6236,7 +6236,7 @@ namespace Server.Mobiles
                             TODModeType SpawnTODMode = TODModeType.Realtime;
                             try { todmode = int.Parse((string)dr["TODMode"]); }
                             catch { }
-                            switch ((int)todmode)
+                            switch (todmode)
                             {
                                 case (int)TODModeType.Gametime:
                                     SpawnTODMode = TODModeType.Gametime;
@@ -7268,13 +7268,13 @@ namespace Server.Mobiles
                 DataRow dr = ds.Tables[SpawnTablePointName].NewRow();
 
                 // Populate the data
-                dr["Name"] = (string)sp.Name;
+                dr["Name"] = sp.Name;
 
                 // Set the unqiue id
-                dr["UniqueId"] = (string)sp.m_UniqueId;
+                dr["UniqueId"] = sp.m_UniqueId;
 
                 // Get the map name
-                dr["Map"] = (string)sp.Map.Name;
+                dr["Map"] = sp.Map.Name;
 
                 // Convert the xml map value to a real map object
                 if (string.Compare(sp.Map.Name, Map.Trammel.Name, true) == 0)
@@ -7290,34 +7290,34 @@ namespace Server.Mobiles
                 else
                     OtherCount++;
 
-                dr["X"] = (int)sp.m_X;
-                dr["Y"] = (int)sp.m_Y;
-                dr["Width"] = (int)sp.m_Width;
-                dr["Height"] = (int)sp.m_Height;
+                dr["X"] = sp.m_X;
+                dr["Y"] = sp.m_Y;
+                dr["Width"] = sp.m_Width;
+                dr["Height"] = sp.m_Height;
 
                 // check to see if this is in a container
                 if (sp.RootParent is Container)
                 {
-                    dr["CentreX"] = (int)(((Container)(sp.RootParent)).Location.X);
-                    dr["CentreY"] = (int)(((Container)(sp.RootParent)).Location.Y);
-                    dr["CentreZ"] = (int)(((Container)(sp.RootParent)).Location.Z);
-                    dr["ContainerX"] = (int)(sp.Location.X);
-                    dr["ContainerY"] = (int)(sp.Location.Y);
-                    dr["ContainerZ"] = (int)(sp.Location.Z);
+                    dr["CentreX"] = ((Container)(sp.RootParent)).Location.X;
+                    dr["CentreY"] = ((Container)(sp.RootParent)).Location.Y;
+                    dr["CentreZ"] = ((Container)(sp.RootParent)).Location.Z;
+                    dr["ContainerX"] = sp.Location.X;
+                    dr["ContainerY"] = sp.Location.Y;
+                    dr["ContainerZ"] = sp.Location.Z;
                     dr["InContainer"] = true;
                 }
                 else
                 {
-                    dr["CentreX"] = (int)sp.Location.X;
-                    dr["CentreY"] = (int)sp.Location.Y;
-                    dr["CentreZ"] = (int)sp.Location.Z;
+                    dr["CentreX"] = sp.Location.X;
+                    dr["CentreY"] = sp.Location.Y;
+                    dr["CentreZ"] = sp.Location.Z;
                     //dr["ContainerX"] = 0;
                     //dr["ContainerY"] = 0;
                     //dr["ContainerZ"] = 0;
                     dr["InContainer"] = false;
                 }
-                dr["Range"] = (int)sp.m_HomeRange;
-                dr["MaxCount"] = (int)sp.m_Count;
+                dr["Range"] = sp.m_HomeRange;
+                dr["MaxCount"] = sp.m_Count;
 
                 // need to deal with the fact that the old xmlspawner xml format only saved delays in minutes as ints, so shorter spawn times
                 // are lost
@@ -7338,18 +7338,18 @@ namespace Server.Mobiles
                 }
 
                 // additional parameters
-                dr["TODStart"] = (double)sp.m_TODStart.TotalMinutes;
-                dr["TODEnd"] = (double)sp.m_TODEnd.TotalMinutes;
+                dr["TODStart"] = sp.m_TODStart.TotalMinutes;
+                dr["TODEnd"] = sp.m_TODEnd.TotalMinutes;
                 dr["TODMode"] = (int)sp.m_TODMode;
-                dr["KillReset"] = (int)sp.m_KillReset;
-                dr["MinRefractory"] = (double)sp.m_MinRefractory.TotalMinutes;
-                dr["MaxRefractory"] = (double)sp.m_MaxRefractory.TotalMinutes;
-                dr["Duration"] = (double)sp.m_Duration.TotalMinutes;
-                dr["DespawnTime"] = (double)sp.m_DespawnTime.TotalHours;
-                dr["ExternalTriggering"] = (bool)sp.m_ExternalTriggering;
+                dr["KillReset"] = sp.m_KillReset;
+                dr["MinRefractory"] = sp.m_MinRefractory.TotalMinutes;
+                dr["MaxRefractory"] = sp.m_MaxRefractory.TotalMinutes;
+                dr["Duration"] = sp.m_Duration.TotalMinutes;
+                dr["DespawnTime"] = sp.m_DespawnTime.TotalHours;
+                dr["ExternalTriggering"] = sp.m_ExternalTriggering;
 
-                dr["ProximityRange"] = (int)sp.m_ProximityRange;
-                dr["ProximityTriggerSound"] = (int)sp.m_ProximityTriggerSound;
+                dr["ProximityRange"] = sp.m_ProximityRange;
+                dr["ProximityTriggerSound"] = sp.m_ProximityTriggerSound;
                 dr["ProximityTriggerMessage"] = sp.m_ProximityTriggerMessage;
                 if (sp.m_ObjectPropertyItem != null && !sp.m_ObjectPropertyItem.Deleted)
                     dr["ObjectPropertyItemName"] = String.Format("{0},{1}", sp.m_ObjectPropertyItem.Name,
@@ -7379,8 +7379,8 @@ namespace Server.Mobiles
 
                 dr["SpeechTrigger"] = sp.m_SpeechTrigger;
                 dr["SkillTrigger"] = sp.m_SkillTrigger;
-                dr["Amount"] = (int)sp.m_StackAmount;
-                dr["Team"] = (int)sp.m_Team;
+                dr["Amount"] = sp.m_StackAmount;
+                dr["Team"] = sp.m_Team;
 
                 // assign the waypoint based on the waypoint name if it deviates from the default waypoint name, otherwise do it by serial
                 string waystr = null;
@@ -7397,16 +7397,16 @@ namespace Server.Mobiles
                 }
                 dr["WayPoint"] = waystr;
 
-                dr["IsGroup"] = (bool)sp.m_Group;
-                dr["IsRunning"] = (bool)sp.m_Running;
-                dr["IsHomeRangeRelative"] = (bool)sp.m_HomeRangeIsRelative;
+                dr["IsGroup"] = sp.m_Group;
+                dr["IsRunning"] = sp.m_Running;
+                dr["IsHomeRangeRelative"] = sp.m_HomeRangeIsRelative;
                 if (oldformat)
                 {
-                    dr["Objects"] = (string)sp.GetSerializedObjectList();
+                    dr["Objects"] = sp.GetSerializedObjectList();
                 }
                 else
                 {
-                    dr["Objects2"] = (string)sp.GetSerializedObjectList2();
+                    dr["Objects2"] = sp.GetSerializedObjectList2();
                 }
 
                 // Add the row the the table
@@ -7644,10 +7644,10 @@ namespace Server.Mobiles
                     double load = 0;
                     if (processtime > 0)
                     {
-                        load = ((double)XmlSpawner._traceTotal[i].TotalMilliseconds) / processtime;
+                        load = _traceTotal[i].TotalMilliseconds / processtime;
                     }
                     Console.WriteLine("{0} ({4}) {1,21} / {2} calls = {3:####.####} ms/call, {5:p3}",
-                   i, XmlSpawner._traceTotal[i], XmlSpawner._traceCount[i], ((double)XmlSpawner._traceTotal[i].TotalMilliseconds) / XmlSpawner._traceCount[i],
+                   i, XmlSpawner._traceTotal[i], XmlSpawner._traceCount[i], _traceTotal[i].TotalMilliseconds / XmlSpawner._traceCount[i],
                    XmlSpawner._traceName[i], load);
                 }
             }
@@ -11448,8 +11448,8 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)31); // version
-                                   // version 31
+            writer.Write(31); // version
+                              // version 31
             writer.Write(m_DisableGlobalAutoReset);
             // Version 30
             writer.Write(m_AllowNPCTriggering);
@@ -11467,7 +11467,7 @@ namespace Server.Mobiles
             else
             {
                 // empty spawner
-                writer.Write((int)0);
+                writer.Write(0);
             }
 
             // Version 28
@@ -11686,8 +11686,8 @@ namespace Server.Mobiles
                 SpawnObject so = m_SpawnObjects[i];
 
                 // Write the type and maximum count
-                writer.Write((string)so.TypeName);
-                writer.Write((int)so.ActualMaxCount);
+                writer.Write(so.TypeName);
+                writer.Write(so.ActualMaxCount);
 
                 // Write the spawned object information
                 writer.Write(so.SpawnedObjects.Count);

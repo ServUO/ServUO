@@ -2039,7 +2039,7 @@ namespace Server.Mobiles
             if (Race != Race.Gargoyle || Hits > HitsMax / 2)
                 return 0;
 
-            double perc = ((double)Hits / (double)HitsMax) * 100;
+            double perc = (Hits / (double)HitsMax) * 100;
             int value = 0;
 
             perc = (100 - perc) / 20;
@@ -3723,10 +3723,10 @@ namespace Server.Mobiles
             if (killer != null && Murderer && DateTime.UtcNow >= killer.m_NextJustAward)
             {
                 // This scales 700.0 skill points to 1000 valor points
-                int pointsToGain = (int)(SkillsTotal / 7);
+                int pointsToGain = SkillsTotal / 7;
 
                 // This scales 700.0 skill points to 7 minutes wait
-                int minutesToWait = Math.Max(1, (int)(SkillsTotal / 1000));
+                int minutesToWait = Math.Max(1, SkillsTotal / 1000);
 
                 bool gainedPath = false;
 
@@ -4724,7 +4724,7 @@ namespace Server.Mobiles
 
             writer.Write(40); // version
 
-            writer.Write((DateTime)NextGemOfSalvationUse);
+            writer.Write(NextGemOfSalvationUse);
 
             writer.Write((int)m_ExtendedFlags);
 

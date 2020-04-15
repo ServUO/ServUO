@@ -542,7 +542,7 @@ namespace Server.Gumps
             y = 35;
             for (int i = 0; i < Categories.Length; i++)
             {
-                CustomCategory cat = (CustomCategory)Categories[i];
+                CustomCategory cat = Categories[i];
                 AddHtmlLocalized(5, y, 150, 25, cat.LocNumber, true, false);
                 AddButton(155, y, 4005, 4007, 0, GumpButtonType.Page, i + 1);
                 y += 25;
@@ -550,12 +550,12 @@ namespace Server.Gumps
 
             for (int i = 0; i < Categories.Length; i++)
             {
-                CustomCategory cat = (CustomCategory)Categories[i];
+                CustomCategory cat = Categories[i];
                 AddPage(i + 1);
 
                 for (int c = 0; c < cat.Entries.Length; c++)
                 {
-                    CustomItem entry = (CustomItem)cat.Entries[c];
+                    CustomItem entry = cat.Entries[c];
                     x = 198 + (c % 3) * 129;
                     y = 38 + (c / 3) * 67;
 

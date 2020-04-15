@@ -1093,7 +1093,7 @@ namespace Server.Gumps
 
                                         for (int i = 0; i < list.Count; ++i)
                                         {
-                                            Mobile m = (Mobile)list[i];
+                                            Mobile m = list[i];
 
                                             if (!m_House.HasAccess(m) && m_House.IsInside(m))
                                                 m.Location = m_House.BanLocation;
@@ -1126,7 +1126,7 @@ namespace Server.Gumps
 
                                         for (int i = 0; i < list.Count; ++i)
                                         {
-                                            Mobile m = (Mobile)list[i];
+                                            Mobile m = list[i];
 
                                             if (m_House.IsBanned(m) && m_House.IsInside(m))
                                                 m.Location = m_House.BanLocation;
@@ -1476,7 +1476,7 @@ namespace Server.Gumps
                     {
                         if (isOwner && m_List != null && index >= 0 && index < m_List.Count)
                         {
-                            m_House.RemoveCoOwner(from, (Mobile)m_List[index]);
+                            m_House.RemoveCoOwner(from, m_List[index]);
 
                             if (m_House.CoOwners.Count > 0)
                                 from.SendGump(new HouseGump(HouseGumpPage.RemoveCoOwner, from, m_House));
@@ -1490,7 +1490,7 @@ namespace Server.Gumps
                     {
                         if (isCoOwner && m_List != null && index >= 0 && index < m_List.Count)
                         {
-                            m_House.RemoveFriend(from, (Mobile)m_List[index]);
+                            m_House.RemoveFriend(from, m_List[index]);
 
                             if (m_House.Friends.Count > 0)
                                 from.SendGump(new HouseGump(HouseGumpPage.RemoveFriend, from, m_House));
@@ -1504,7 +1504,7 @@ namespace Server.Gumps
                     {
                         if (m_List != null && index >= 0 && index < m_List.Count)
                         {
-                            m_House.RemoveBan(from, (Mobile)m_List[index]);
+                            m_House.RemoveBan(from, m_List[index]);
 
                             if (m_House.Bans.Count > 0)
                                 from.SendGump(new HouseGump(HouseGumpPage.RemoveBan, from, m_House));
@@ -1518,7 +1518,7 @@ namespace Server.Gumps
                     {
                         if (m_List != null && index >= 0 && index < m_List.Count)
                         {
-                            m_House.RemoveAccess(from, (Mobile)m_List[index]);
+                            m_House.RemoveAccess(from, m_List[index]);
 
                             if (m_House.Access.Count > 0)
                                 from.SendGump(new HouseGump(HouseGumpPage.RemoveAccess, from, m_House));

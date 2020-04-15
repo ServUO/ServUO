@@ -133,7 +133,7 @@ namespace Server.Items
                         int skill = m_Attacker is BaseCreature ? (int)m_Attacker.Skills[SkillName.Ninjitsu].Value :
                                                               (int)Math.Max(m_Attacker.Skills[SkillName.Bushido].Value, m_Attacker.Skills[SkillName.Ninjitsu].Value);
 
-                        var baseMin = (int)Math.Max(5, (skill / 50) * 5);
+                        var baseMin = Math.Max(5, (skill / 50) * 5);
                         AOS.Damage(m, m_Attacker, Utility.RandomMinMax(baseMin, (baseMin * 3) + 2), 100, 0, 0, 0, 0);
                     }
                 }

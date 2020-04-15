@@ -335,48 +335,48 @@ namespace Server.Mobiles
             // Populate the data
             //dr["AccountName"] = (string)defs.AccountName;
             //dr["PlayerName"] = (string)defs.PlayerName;
-            dr["SpawnerName"] = (string)defs.SpawnerName;
-            dr["MinDelay"] = (double)defs.MinDelay.TotalMinutes;
-            dr["MaxDelay"] = (double)defs.MaxDelay.TotalMinutes;
-            dr["SpawnRange"] = (int)defs.SpawnRange;
-            dr["HomeRange"] = (int)defs.HomeRange;
-            dr["RelativeHome"] = (bool)defs.HomeRangeIsRelative;
-            dr["IsGroup"] = (bool)defs.Group;
-            dr["Team"] = (int)defs.Team;
-            dr["MinRefractory"] = (double)defs.RefractMin.TotalMinutes;
-            dr["MaxRefractory"] = (double)defs.RefractMax.TotalMinutes;
-            dr["TODStart"] = (double)defs.TODStart.TotalMinutes;
-            dr["TODEnd"] = (double)defs.TODEnd.TotalMinutes;
-            dr["TODMode"] = (XmlSpawner.TODModeType)defs.TODMode;
-            dr["Duration"] = (double)defs.Duration.TotalMinutes;
-            dr["DespawnTime"] = (double)defs.Duration.TotalHours;
-            dr["ProximityRange"] = (int)defs.ProximityRange;
-            dr["ProximityTriggerSound"] = (int)defs.ProximitySound;
-            dr["ProximityMessage"] = (string)defs.ProximityMsg;
-            dr["SpeechTrigger"] = (string)defs.SpeechTrigger;
-            dr["SkillTrigger"] = (string)defs.SkillTrigger;
-            dr["SequentialSpawn"] = (int)defs.SequentialSpawn;
-            dr["KillReset"] = (int)defs.KillReset;
-            dr["TrigProb"] = (double)defs.TriggerProbability;
-            dr["AllowGhost"] = (bool)defs.AllowGhostTrig;
-            dr["AllowNPC"] = (bool)defs.AllowNPCTrig;
-            dr["SpawnOnTrigger"] = (bool)defs.SpawnOnTrigger;
-            dr["SmartSpawn"] = (bool)defs.SmartSpawning;
-            dr["ExtTrig"] = (bool)defs.ExternalTriggering;
-            dr["TrigOnCarried"] = (string)defs.TriggerOnCarried;
-            dr["NoTrigOnCarried"] = (string)defs.NoTriggerOnCarried;
-            dr["PlayerTrigProp"] = (string)defs.PlayerTriggerProp;
-            dr["TrigObjectProp"] = (string)defs.TriggerObjectProp;
+            dr["SpawnerName"] = defs.SpawnerName;
+            dr["MinDelay"] = defs.MinDelay.TotalMinutes;
+            dr["MaxDelay"] = defs.MaxDelay.TotalMinutes;
+            dr["SpawnRange"] = defs.SpawnRange;
+            dr["HomeRange"] = defs.HomeRange;
+            dr["RelativeHome"] = defs.HomeRangeIsRelative;
+            dr["IsGroup"] = defs.Group;
+            dr["Team"] = defs.Team;
+            dr["MinRefractory"] = defs.RefractMin.TotalMinutes;
+            dr["MaxRefractory"] = defs.RefractMax.TotalMinutes;
+            dr["TODStart"] = defs.TODStart.TotalMinutes;
+            dr["TODEnd"] = defs.TODEnd.TotalMinutes;
+            dr["TODMode"] = defs.TODMode;
+            dr["Duration"] = defs.Duration.TotalMinutes;
+            dr["DespawnTime"] = defs.Duration.TotalHours;
+            dr["ProximityRange"] = defs.ProximityRange;
+            dr["ProximityTriggerSound"] = defs.ProximitySound;
+            dr["ProximityMessage"] = defs.ProximityMsg;
+            dr["SpeechTrigger"] = defs.SpeechTrigger;
+            dr["SkillTrigger"] = defs.SkillTrigger;
+            dr["SequentialSpawn"] = defs.SequentialSpawn;
+            dr["KillReset"] = defs.KillReset;
+            dr["TrigProb"] = defs.TriggerProbability;
+            dr["AllowGhost"] = defs.AllowGhostTrig;
+            dr["AllowNPC"] = defs.AllowNPCTrig;
+            dr["SpawnOnTrigger"] = defs.SpawnOnTrigger;
+            dr["SmartSpawn"] = defs.SmartSpawning;
+            dr["ExtTrig"] = defs.ExternalTriggering;
+            dr["TrigOnCarried"] = defs.TriggerOnCarried;
+            dr["NoTrigOnCarried"] = defs.NoTriggerOnCarried;
+            dr["PlayerTrigProp"] = defs.PlayerTriggerProp;
+            dr["TrigObjectProp"] = defs.TriggerObjectProp;
             dr["NameList"] = NameListToString();
             dr["SelectionList"] = SelectionListToString();
-            dr["AddGumpX"] = (int)defs.AddGumpX;
-            dr["AddGumpY"] = (int)defs.AddGumpY;
-            dr["SpawnerGumpX"] = (int)defs.SpawnerGumpX;
-            dr["SpawnerGumpY"] = (int)defs.SpawnerGumpY;
-            dr["FindGumpX"] = (int)defs.FindGumpX;
-            dr["FindGumpY"] = (int)defs.FindGumpY;
-            dr["AutoNumber"] = (bool)defs.AutoNumber;
-            dr["AutoNumberValue"] = (int)defs.AutoNumberValue;
+            dr["AddGumpX"] = defs.AddGumpX;
+            dr["AddGumpY"] = defs.AddGumpY;
+            dr["SpawnerGumpX"] = defs.SpawnerGumpX;
+            dr["SpawnerGumpY"] = defs.SpawnerGumpY;
+            dr["FindGumpX"] = defs.FindGumpX;
+            dr["FindGumpY"] = defs.FindGumpY;
+            dr["AutoNumber"] = defs.AutoNumber;
+            dr["AutoNumberValue"] = defs.AutoNumberValue;
 
             // Add the row the the table
             ds.Tables[DefsTablePointName].Rows.Add(dr);
@@ -942,7 +942,7 @@ namespace Server.Mobiles
                 // display the selection entries
                 for (int i = 0; i < MaxEntries; i++)
                 {
-                    int xpos = (int)(i / MaxEntriesPerColumn) * 155;
+                    int xpos = i / MaxEntriesPerColumn * 155;
                     int ypos = (i % MaxEntriesPerColumn) * 22 + 30;
 
 

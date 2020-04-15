@@ -113,7 +113,7 @@ namespace Server.Mobiles
                     return null;
 
                 // is it one of the standard 52 skills
-                if ((int)index >= 0 && (int)index < MaxSkills)
+                if (index >= 0 && (int)index < MaxSkills)
                 {
                     if (maplist[(int)index] == null)
                         maplist[(int)index] = new ArrayList();

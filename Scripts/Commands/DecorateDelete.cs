@@ -497,7 +497,7 @@ namespace Server.Commands
 
                     for (int i = 0; i < comps.Count; ++i)
                     {
-                        AddonComponent comp = (AddonComponent)comps[i];
+                        AddonComponent comp = comps[i];
 
                         if (comp.Offset == Point3D.Zero)
                             comp.ItemID = this.m_ItemID;
