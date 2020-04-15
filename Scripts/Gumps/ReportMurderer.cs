@@ -189,7 +189,7 @@ namespace Server.Gumps
 
             AddPage(1);
 
-            AddHtml(260, 234, 300, 140, ((Mobile)m_Killers[m_Idx]).Name, false, false); // Player's Name
+            AddHtml(260, 234, 300, 140, m_Killers[m_Idx].Name, false, false); // Player's Name
             AddHtmlLocalized(260, 254, 300, 140, 1049066, false, false); // Would you like to report...
 
             AddButton(260, 300, 0xFA5, 0xFA7, 1, GumpButtonType.Reply, 0);

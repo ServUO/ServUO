@@ -47,7 +47,7 @@ namespace Server.Items
             DefenseMasteryInfo info = m_Table[attacker] as DefenseMasteryInfo;
 
             if (info != null)
-                EndDefense((object)info);
+                EndDefense(info);
 
             ResistanceMod mod = new ResistanceMod(ResistanceType.Physical, 50 + modifier);
             attacker.AddResistanceMod(mod);

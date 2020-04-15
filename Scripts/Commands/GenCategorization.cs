@@ -104,7 +104,7 @@ namespace Server.Commands
                     int itemID = item.ItemID;
 
                     if (item is BaseAddon && ((BaseAddon)item).Components.Count == 1)
-                        itemID = ((AddonComponent)(((BaseAddon)item).Components[0])).ItemID;
+                        itemID = ((BaseAddon)item).Components[0].ItemID;
 
                     if (itemID > TileData.MaxItemValue)
                         itemID = 1;
