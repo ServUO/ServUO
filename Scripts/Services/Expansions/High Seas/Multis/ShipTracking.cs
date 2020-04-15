@@ -6,12 +6,12 @@ namespace Server.Multis
 {
     public class ShipTrackingContext
     {
-        private static Dictionary<Mobile, ShipTrackingContext> m_Table = new Dictionary<Mobile, ShipTrackingContext>();
+        private static readonly Dictionary<Mobile, ShipTrackingContext> m_Table = new Dictionary<Mobile, ShipTrackingContext>();
 
-        private Mobile m_Mobile;
+        private readonly Mobile m_Mobile;
 
         public List<BoatTrackingArrow> Arrows { get { return m_Arrows; } }
-        private List<BoatTrackingArrow> m_Arrows = new List<BoatTrackingArrow>();
+        private readonly List<BoatTrackingArrow> m_Arrows = new List<BoatTrackingArrow>();
 
         public ShipTrackingContext(Mobile mobile, List<BoatTrackingArrow> arrows)
         {
@@ -96,8 +96,8 @@ namespace Server.Multis
         public static readonly int MaxBoats = 5;
 
         private Mobile m_From;
-        private Timer m_Timer;
-        private Item m_Boat;
+        private readonly Timer m_Timer;
+        private readonly Item m_Boat;
 
         public Mobile From { get { return m_From; } }
         public Timer Timer { get { return m_Timer; } }
@@ -207,11 +207,11 @@ namespace Server.Multis
 
     public class BoatTrackingTimer : Timer
     {
-        private Mobile m_From;
-        private Item m_Target;
-        private int m_Range;
+        private readonly Mobile m_From;
+        private readonly Item m_Target;
+        private readonly int m_Range;
         private int m_LastX, m_LastY;
-        private QuestArrow m_Arrow;
+        private readonly QuestArrow m_Arrow;
 
         public BoatTrackingTimer(Mobile from, Item target, int range, QuestArrow arrow) : base(TimeSpan.FromSeconds(0.25), TimeSpan.FromSeconds(2.5))
         {

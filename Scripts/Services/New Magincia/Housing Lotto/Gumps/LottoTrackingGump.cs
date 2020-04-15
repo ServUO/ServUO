@@ -8,7 +8,7 @@ namespace Server.Engines.NewMagincia
     public class LottoTrackingGump : Gump
     {
         private readonly int LabelColor = 0xFFFFFF;
-        private List<MaginciaHousingPlot> m_List;
+        private readonly List<MaginciaHousingPlot> m_List;
 
         public LottoTrackingGump() : base(50, 50)
         {

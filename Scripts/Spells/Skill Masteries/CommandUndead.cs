@@ -6,7 +6,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class CommandUndeadSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Command Undead", "In Corp Xen Por",
                 204,
                 9061,
@@ -113,12 +113,12 @@ namespace Server.Spells.SkillMasteries
         public static Type[] CommandTypes { get { return _CommandTypes; } }
         public static Type[] NoCommandTypes { get { return _NoCommandTypes; } }
 
-        private static Type[] _CommandTypes =
+        private static readonly Type[] _CommandTypes =
         {
             typeof(SkeletalDragon)
         };
 
-        private static Type[] _NoCommandTypes =
+        private static readonly Type[] _NoCommandTypes =
         {
 
             typeof(UnfrozenMummy),

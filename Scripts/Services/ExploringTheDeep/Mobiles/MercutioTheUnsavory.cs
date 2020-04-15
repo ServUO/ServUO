@@ -126,7 +126,7 @@ namespace Server.Mobiles
 
         public class InternalSelfDeleteTimer : Timer
         {
-            private MercutioTheUnsavory Mare;
+            private readonly MercutioTheUnsavory Mare;
 
             public InternalSelfDeleteTimer(Mobile p) : base(TimeSpan.FromMinutes(60))
             {

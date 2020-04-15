@@ -10,8 +10,8 @@ namespace Server.Gumps
         public static readonly int GreenHue = 5057;
         public static readonly int RedHue = 28776;
 
-        private BaseCannon m_Cannon;
-        private Mobile m_From;
+        private readonly BaseCannon m_Cannon;
+        private readonly Mobile m_From;
 
         public BaseCannon Cannon { get { return m_Cannon; } }
 

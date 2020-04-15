@@ -14,7 +14,7 @@ namespace Server.Mobiles
         private DateTime m_NextReturn;
         private bool m_HasDone2ndSpawn;
         private CorgulAltar m_Altar;
-        private List<BaseCreature> m_Helpers = new List<BaseCreature>();
+        private readonly List<BaseCreature> m_Helpers = new List<BaseCreature>();
 
         public override bool CanDamageBoats { get { return false; } }
         public override bool TaintedLifeAura { get { return true; } }
@@ -37,7 +37,7 @@ namespace Server.Mobiles
 
         private readonly int _SpawnPerLoc = 15;
 
-        private Point3D[] _SpawnLocs =
+        private readonly Point3D[] _SpawnLocs =
         {
             new Point3D(6447, 1262, 10),
             new Point3D(6424, 1279, 10),
@@ -327,7 +327,7 @@ namespace Server.Mobiles
 
         private class InternalTimer : Timer
         {
-            private CorgulTheSoulBinder m_Mobile;
+            private readonly CorgulTheSoulBinder m_Mobile;
             private int m_Tick;
 
             public InternalTimer(CorgulTheSoulBinder mob, int range)

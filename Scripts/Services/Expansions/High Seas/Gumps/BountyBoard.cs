@@ -40,8 +40,8 @@ namespace Server.Items
     {
         public int Index { get; set; }
 
-        private int darkHue = 19686;
-        private int lightHue = 19884;
+        private readonly int darkHue = 19686;
+        private readonly int lightHue = 19884;
 
         public BountyBoardGump(Mobile from, int index = 0)
             : base(from as PlayerMobile, 20, 20)

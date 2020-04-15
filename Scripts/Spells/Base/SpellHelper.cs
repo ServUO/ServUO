@@ -62,7 +62,7 @@ namespace Server.Spells
     public class SpellHelper
     {
         #region Spell Focus and SDI Calculations
-        private static SkillName[] _Schools =
+        private static readonly SkillName[] _Schools =
         {
             SkillName.Magery,
             SkillName.AnimalTaming,
@@ -75,7 +75,7 @@ namespace Server.Spells
             SkillName.Ninjitsu
         };
 
-        private static SkillName[] _TOLSchools =
+        private static readonly SkillName[] _TOLSchools =
         {
             SkillName.Magery,
             SkillName.AnimalTaming,
@@ -1486,18 +1486,18 @@ namespace Server.Spells
 
         public class SpellDamageTimerAOS : Timer
         {
-            private IDamageable m_Target;
+            private readonly IDamageable m_Target;
             private readonly Mobile m_From;
             private int m_Damage;
-            private int m_Phys;
-            private int m_Fire;
-            private int m_Cold;
-            private int m_Pois;
-            private int m_Nrgy;
-            private int m_Chaos;
-            private int m_Direct;
-            private DFAlgorithm m_DFA;
-            private Spell m_Spell;
+            private readonly int m_Phys;
+            private readonly int m_Fire;
+            private readonly int m_Cold;
+            private readonly int m_Pois;
+            private readonly int m_Nrgy;
+            private readonly int m_Chaos;
+            private readonly int m_Direct;
+            private readonly DFAlgorithm m_DFA;
+            private readonly Spell m_Spell;
 
             public Spell Spell => m_Spell;
 

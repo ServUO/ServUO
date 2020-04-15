@@ -272,9 +272,9 @@ namespace Server.Mobiles
         #region Teleport
         private class TeleportTimer : Timer
         {
-            private Mobile m_Owner;
+            private readonly Mobile m_Owner;
 
-            private static int[] m_Offsets = new int[]
+            private static readonly int[] m_Offsets = new int[]
             {
                 -1, -1,
                 -1,  0,
@@ -373,7 +373,7 @@ namespace Server.Mobiles
         #endregion
 
         #region Unholy Touch
-        private static Dictionary<Mobile, Timer> m_UnholyTouched = new Dictionary<Mobile, Timer>();
+        private static readonly Dictionary<Mobile, Timer> m_UnholyTouched = new Dictionary<Mobile, Timer>();
 
         public void Discord(Mobile target)
         {

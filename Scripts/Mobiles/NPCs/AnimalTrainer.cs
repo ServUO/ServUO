@@ -89,7 +89,7 @@ namespace Server.Mobiles
             }
         }
 
-        private Type[] _Quests = { typeof(TamingPetQuest), typeof(UsingAnimalLoreQuest), typeof(LeadingIntoBattleQuest), typeof(TeachingSomethingNewQuest) };
+        private readonly Type[] _Quests = { typeof(TamingPetQuest), typeof(UsingAnimalLoreQuest), typeof(LeadingIntoBattleQuest), typeof(TeachingSomethingNewQuest) };
 
         public override void OnDoubleClick(Mobile m)
         {

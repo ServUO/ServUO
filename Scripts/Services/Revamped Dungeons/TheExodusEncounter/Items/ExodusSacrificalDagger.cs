@@ -64,7 +64,7 @@ namespace Server.Items
 
         public class SacrificalTarget : Target
         {
-            private Item m_Dagger;
+            private readonly Item m_Dagger;
 
             public SacrificalTarget(Item dagger) : base(2, true, TargetFlags.None)
             {

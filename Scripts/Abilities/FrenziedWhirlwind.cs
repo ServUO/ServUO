@@ -23,7 +23,7 @@ namespace Server.Items
 
         public override int BaseMana => 30;
 
-        private static Dictionary<Mobile, Timer> m_Registry = new Dictionary<Mobile, Timer>();
+        private static readonly Dictionary<Mobile, Timer> m_Registry = new Dictionary<Mobile, Timer>();
         public static Dictionary<Mobile, Timer> Registry { get { return m_Registry; } }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
@@ -88,9 +88,9 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private Mobile m_Attacker;
-            private List<Mobile> m_List;
-            private long m_Start;
+            private readonly Mobile m_Attacker;
+            private readonly List<Mobile> m_List;
+            private readonly long m_Start;
 
             public InternalTimer(Mobile attacker, List<Mobile> list)
                 : base(TimeSpan.FromMilliseconds(500), TimeSpan.FromMilliseconds(500))

@@ -182,7 +182,7 @@ namespace Server.Engines.Plants
             get { return PlantHueInfo.CanReproduce(this.PlantHue) && PlantTypeInfo.CanReproduce(this.PlantType); }
         }
 
-        private static ArrayList m_Instances = new ArrayList();
+        private static readonly ArrayList m_Instances = new ArrayList();
 
         public static ArrayList Plants { get { return m_Instances; } }
 

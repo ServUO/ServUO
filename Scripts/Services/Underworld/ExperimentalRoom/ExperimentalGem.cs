@@ -391,7 +391,7 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private ExperimentalGem m_Gem;
+            private readonly ExperimentalGem m_Gem;
 
             public InternalTimer(ExperimentalGem gem) : base(TimeSpan.FromSeconds(.5), TimeSpan.FromSeconds(.5))
             {
@@ -577,7 +577,7 @@ namespace Server.Items
             Orange,
         };
 
-        private int[] ExtremeHues = new int[]
+        private readonly int[] ExtremeHues = new int[]
         {
             Red,
             Blue,
@@ -585,7 +585,7 @@ namespace Server.Items
             DarkGreen
         };
 
-        private static int[][] m_RoomHues = new int[][]
+        private static readonly int[][] m_RoomHues = new int[][]
         {
             //Room One
             new int[] { White, Pink, Red, Blue },
@@ -597,7 +597,7 @@ namespace Server.Items
             new int[] { Blue, Pink, DarkGreen, Orange, Brown, LightGreen, Red, White },
         };
 
-        private static Rectangle2D[] m_FloorRecs = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_FloorRecs = new Rectangle2D[]
         {
             //Room One
             new Rectangle2D(977, 1104, 5, 5),   // White, opposite of pink
@@ -624,7 +624,7 @@ namespace Server.Items
             new Rectangle2D(989, 1079, 3, 5),   //Pink, opposite of White
         };
 
-        private static int[] m_FloorHues = new int[]
+        private static readonly int[] m_FloorHues = new int[]
         {
             //Room One
             White,
@@ -651,7 +651,7 @@ namespace Server.Items
             Pink
         };
 
-        private static Rectangle2D[] m_RoomRecs = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_RoomRecs = new Rectangle2D[]
         {
             new Rectangle2D(977, 1104, 15, 10), //RoomOne
             new Rectangle2D(977, 1092, 15, 9), //RoomTwo
@@ -688,7 +688,7 @@ namespace Server.Items
 
         private class InternalGump : Gump
         {
-            private ExperimentalGem m_Gem;
+            private readonly ExperimentalGem m_Gem;
 
             public InternalGump(ExperimentalGem gem) : base(50, 50)
             {

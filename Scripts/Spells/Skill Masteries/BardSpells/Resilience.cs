@@ -7,7 +7,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class ResilienceSpell : BardSpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Resilience", "Kal Mani Tym",
                 -1,
                 9002

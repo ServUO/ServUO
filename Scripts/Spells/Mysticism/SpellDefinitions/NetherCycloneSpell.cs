@@ -9,7 +9,7 @@ namespace Server.Spells.Mysticism
         public override SpellCircle Circle { get { return SpellCircle.Eighth; } }
         public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Nether Cyclone", "Grav Hur",
                 230,
                 9022,

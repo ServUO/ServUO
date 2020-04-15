@@ -7,7 +7,7 @@ namespace Server.Gumps
 {
     public class RejoinInstanceGump : Gump
     {
-        private PeerlessInstance m_Instance;
+        private readonly PeerlessInstance m_Instance;
 
         public RejoinInstanceGump(PeerlessInstance instance, int titleCliloc, int msgCliloc)
             : base(340, 340)

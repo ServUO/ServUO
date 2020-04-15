@@ -103,7 +103,7 @@ namespace Server.Gumps
             return String.Format("{{ resizepic {0} {1} {2} {3} {4} }}", m_X, m_Y, m_GumpID, m_Width, m_Height);
         }
 
-        private static byte[] m_LayoutName = Gump.StringToBuffer("resizepic");
+        private static readonly byte[] m_LayoutName = Gump.StringToBuffer("resizepic");
 
         public override void AppendTo(IGumpWriter disp)
         {

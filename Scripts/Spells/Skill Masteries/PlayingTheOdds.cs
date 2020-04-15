@@ -6,7 +6,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class PlayingTheOddsSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Playing the Odds", "",
                 -1,
                 9002

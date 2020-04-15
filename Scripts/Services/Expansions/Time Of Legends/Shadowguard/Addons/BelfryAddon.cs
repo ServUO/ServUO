@@ -9,7 +9,7 @@ namespace Server.Items
 {
     public class BelfryAddon : BaseAddon
     {
-        private static int[,] m_AddOnSimpleComponents = new int[,] {
+        private static readonly int[,] m_AddOnSimpleComponents = new int[,] {
               {1309, -21, -8, 0}, {1194, -16, -1, 0}, {1206, -18, -4, 0}// 1	2	3	
 			, {1309, -18, -8, 0}, {1194, -17, -4, 0}, {1309, -19, -8, 0}// 4	5	6	
 			, {1194, -18, -7, 0}, {1194, -17, -2, 0}, {1309, -20, -8, 0}// 7	8	9	

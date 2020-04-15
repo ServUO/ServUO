@@ -8,7 +8,7 @@ namespace Server.Engines.Distillation
     {
         private Group m_LastGroup;
         private Liquor m_LastLiquor;
-        private Yeast[] m_SelectedYeast = new Yeast[4];
+        private readonly Yeast[] m_SelectedYeast = new Yeast[4];
         private bool m_MakeStrong;
         private bool m_Mark;
         private string m_Label;
@@ -71,7 +71,7 @@ namespace Server.Engines.Distillation
         }
 
         #region Serialize/Deserialize Persistence
-        private static string FilePath = Path.Combine("Saves", "CraftContext", "DistillationContexts.bin");
+        private static readonly string FilePath = Path.Combine("Saves", "CraftContext", "DistillationContexts.bin");
 
         public static void Configure()
         {

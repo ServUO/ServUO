@@ -15,7 +15,7 @@ namespace Server.Engines.Blackthorn
             return _Specialties[Utility.Random(_Specialties.Length)];
         }
 
-        private static SkillName[] _Specialties =
+        private static readonly SkillName[] _Specialties =
         {
             SkillName.Swords,
             SkillName.Fencing,

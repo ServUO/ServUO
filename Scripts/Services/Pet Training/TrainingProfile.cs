@@ -117,7 +117,7 @@ namespace Server.Mobiles
 
         private static readonly int MaxTrainingProgress = 100;
 
-        private Dictionary<BaseCreature, int> _ProgressTable;
+        private readonly Dictionary<BaseCreature, int> _ProgressTable;
 
         public TrainingProfile(BaseCreature bc)
         {

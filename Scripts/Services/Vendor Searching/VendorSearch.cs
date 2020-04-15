@@ -829,7 +829,7 @@ namespace Server.Engines.VendorSearching
             return _SearchableContainers.Any(t => t == type || type.IsSubclassOf(t));
         }
 
-        private static Type[] _SearchableContainers =
+        private static readonly Type[] _SearchableContainers =
         {
             typeof(BaseQuiver),         typeof(BaseResourceSatchel),
             typeof(FishBowl),           typeof(FirstAidBelt),

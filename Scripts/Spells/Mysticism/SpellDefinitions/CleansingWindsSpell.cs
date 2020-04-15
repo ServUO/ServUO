@@ -13,7 +13,7 @@ namespace Server.Spells.Mysticism
     {
         public override SpellCircle Circle { get { return SpellCircle.Sixth; } }
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
             "Cleansing Winds", "In Vas Mani Hur",
             230,
             9022,

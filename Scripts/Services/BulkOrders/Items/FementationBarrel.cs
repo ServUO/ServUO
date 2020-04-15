@@ -317,7 +317,7 @@ namespace Server.Items
             return FruitType.None;
         }
 
-        private Type[][] _FruitTypes =
+        private readonly Type[][] _FruitTypes =
         {
             new Type[] { typeof(GrapeBunch), typeof(Grapes) },
             new Type[] { typeof(Apple) },

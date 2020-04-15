@@ -7,7 +7,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class FlamingShotSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Flameing Shot", "",
                 -1,
                 9002

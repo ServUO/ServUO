@@ -69,7 +69,7 @@ namespace Server.Items
             Spawner = null;
         }
 
-        private Rectangle2D[] _Zones =
+        private readonly Rectangle2D[] _Zones =
         {
             new Rectangle2D(1574, 3620, 766, 465),
             new Rectangle2D(1574, 3620, 766, 465),
@@ -79,7 +79,7 @@ namespace Server.Items
             new Rectangle2D(1274, 977, 141, 221)
         };
 
-        private int[] _SpawnCount =
+        private readonly int[] _SpawnCount =
         {
             5, 5, 3, 3, 3, 3
         };

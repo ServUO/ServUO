@@ -7,10 +7,10 @@ namespace Server.Engines.NewMagincia
 {
     public class CommodityBrokerEntry
     {
-        private Type m_CommodityType;
-        private CommodityBroker m_Broker;
-        private int m_ItemID;
-        private int m_Label;
+        private readonly Type m_CommodityType;
+        private readonly CommodityBroker m_Broker;
+        private readonly int m_ItemID;
+        private readonly int m_Label;
         private int m_SellPricePer;
         private int m_BuyPricePer;
         private int m_BuyLimit;
@@ -130,7 +130,7 @@ namespace Server.Engines.NewMagincia
 
     public class PetBrokerEntry
     {
-        private BaseCreature m_Pet;
+        private readonly BaseCreature m_Pet;
         private int m_SalePrice;
         private string m_TypeName;
 
@@ -138,7 +138,7 @@ namespace Server.Engines.NewMagincia
         public int SalePrice { get { return m_SalePrice; } set { m_SalePrice = value; } }
         public string TypeName { get { return m_TypeName; } set { m_TypeName = value; } }
 
-        private static Dictionary<Type, string> m_NameBuffer = new Dictionary<Type, string>();
+        private static readonly Dictionary<Type, string> m_NameBuffer = new Dictionary<Type, string>();
         public static Dictionary<Type, string> NameBuffer { get { return m_NameBuffer; } }
 
         public static readonly int DefaultPrice = 1000;

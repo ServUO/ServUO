@@ -85,7 +85,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private PoppiesDust m_Dust;
+            private readonly PoppiesDust m_Dust;
 
             public InternalTarget(PoppiesDust dust)
                 : base(3, false, TargetFlags.None)

@@ -16,7 +16,7 @@ namespace Server.Engines.Points
 
         public bool InSeason { get { return SeasonalEventSystem.IsActive(EventType.TreasuresOfDoom); } }
 
-        private TextDefinition m_Name = null;
+        private readonly TextDefinition m_Name = null;
 
         public DoomData()
         {

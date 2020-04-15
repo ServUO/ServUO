@@ -127,7 +127,7 @@ namespace Server.Engines.VvV
             }
         }
 
-        private Type[][] _Table =
+        private readonly Type[][] _Table =
         {
             new Type[] { typeof(CrimsonCincture), typeof(GargishCrimsonCincture) },
             new Type[] { typeof(MaceAndShieldGlasses), typeof(GargishMaceAndShieldGlasses) },

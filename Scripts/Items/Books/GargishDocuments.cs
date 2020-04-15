@@ -216,7 +216,7 @@ namespace Server.Items
             }
         }
 
-        private static int[] m_Contents = new int[34];
+        private static readonly int[] m_Contents = new int[34];
 
         public override object Title { get { return 1150914; } } // Chronicle of the Gargoyle Queen Vol. 1
         public override object Author { get { return "Queen Zhah"; } }
@@ -291,7 +291,7 @@ namespace Server.Items
     {
         public override int Title { get { return 1150906; } } // A Letter from the King
 
-        private string m_Content = "To Her Honor the High Broodmother, Lady Zhah from his majesty, King Trajalem:<br><br>	High Broodmother, I have received your latest petition regarding your desires and I once again must remind you that I have absolutely no interest in altering tradition or granting you the freedom from the slavery you have deluded yourself into believing makes up your life.<br><br>Please remember that your office may be stripped by me if you are deemed unfit to lead the other Broodmothers. Be happy with your place and do not forget it; this is the last time I will lower myself to respond to these ridiculous accusations and requests.";
+        private readonly string m_Content = "To Her Honor the High Broodmother, Lady Zhah from his majesty, King Trajalem:<br><br>	High Broodmother, I have received your latest petition regarding your desires and I once again must remind you that I have absolutely no interest in altering tradition or granting you the freedom from the slavery you have deluded yourself into believing makes up your life.<br><br>Please remember that your office may be stripped by me if you are deemed unfit to lead the other Broodmothers. Be happy with your place and do not forget it; this is the last time I will lower myself to respond to these ridiculous accusations and requests.";
 
         [Constructable]
         public LetterFromTheKing() : base()

@@ -80,7 +80,7 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private Matches m_Match;
+            private readonly Matches m_Match;
 
             public InternalTimer(Matches match) : base(Matches.LightDuration)
             {
@@ -97,7 +97,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private Matches m_Match;
+            private readonly Matches m_Match;
 
             public InternalTarget(Matches match) : base(3, false, TargetFlags.None)
             {

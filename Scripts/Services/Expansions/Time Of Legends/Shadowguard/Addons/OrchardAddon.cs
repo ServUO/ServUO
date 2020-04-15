@@ -9,7 +9,7 @@ namespace Server.Items
 {
     public class OrchardAddon : BaseAddon
     {
-        private static int[,] m_AddOnSimpleComponents = new int[,] {
+        private static readonly int[,] m_AddOnSimpleComponents = new int[,] {
               {6013, 17, 17, 0}, {6013, 17, 19, 0}, {6013, 18, 18, 0}// 1	2	3	
 			, {6013, 18, 17, 0}, {6013, 17, 18, 0}, {6013, 18, 19, 0}// 4	5	6	
 			, {6013, 21, 10, 0}, {6013, 19, 13, 0}, {6013, 20, 10, 0}// 7	8	9	

@@ -8,7 +8,7 @@ namespace Server.Spells.Mysticism
     {
         public override SpellCircle Circle { get { return SpellCircle.Fourth; } }
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Animated Weapon", "In Jux Por Ylem",
                 230,
                 9022,
@@ -62,7 +62,7 @@ namespace Server.Spells.Mysticism
 
         public class InternalTarget : Target
         {
-            private AnimatedWeaponSpell m_Owner;
+            private readonly AnimatedWeaponSpell m_Owner;
 
             public InternalTarget(AnimatedWeaponSpell owner)
                 : base(12, true, TargetFlags.None)

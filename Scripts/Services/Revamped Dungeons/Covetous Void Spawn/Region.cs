@@ -9,7 +9,7 @@ namespace Server.Engines.VoidPool
 {
     public class VoidPoolRegion : BaseRegion
     {
-        private static Rectangle2D[] Bounds = new Rectangle2D[]
+        private static readonly Rectangle2D[] Bounds = new Rectangle2D[]
         {
             new Rectangle2D(5383, 1960, 236, 80),
             new Rectangle2D(5429, 1948, 12, 10),

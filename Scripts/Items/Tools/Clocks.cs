@@ -212,7 +212,7 @@ namespace Server.Items
 
     public class ClockTime : Clock
     {
-        private static List<ClockTime> _Instances = new List<ClockTime>();
+        private static readonly List<ClockTime> _Instances = new List<ClockTime>();
 
         [Constructable]
         public ClockTime()

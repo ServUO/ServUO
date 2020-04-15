@@ -229,7 +229,7 @@ namespace Server.Items
 
         private class RockRainTimer : Timer
         {
-            private Navrey m_Navrey;
+            private readonly Navrey m_Navrey;
             private int m_Ticks;
 
             public RockRainTimer(Navrey navrey)

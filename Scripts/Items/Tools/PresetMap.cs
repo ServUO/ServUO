@@ -62,8 +62,8 @@ namespace Server.Items
 
     public class PresetMapEntry
     {
-        private int m_Name;
-        private int m_Width, m_Height;
+        private readonly int m_Name;
+        private readonly int m_Width, m_Height;
         private Rectangle2D m_Bounds;
 
         public int Name { get { return m_Name; } }
@@ -79,7 +79,7 @@ namespace Server.Items
             m_Bounds = new Rectangle2D(xLeft, yTop, xRight - xLeft, yBottom - yTop);
         }
 
-        private static PresetMapEntry[] m_Table = new PresetMapEntry[]
+        private static readonly PresetMapEntry[] m_Table = new PresetMapEntry[]
             {
                 new PresetMapEntry( 1041189, 200, 200, 1092, 1396, 1736, 1924 ), // map of Britain
 				new PresetMapEntry( 1041203, 200, 200, 0256, 1792, 1736, 2560 ), // map of Britain to Skara Brae

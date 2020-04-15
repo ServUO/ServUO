@@ -7,7 +7,7 @@ namespace Server.Spells.SkillMasteries
     {
         public static string ModName = "MysticWeapon";
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Mystic Weapon", "Vas Ylem Wis",
                 -1,
                 9002,

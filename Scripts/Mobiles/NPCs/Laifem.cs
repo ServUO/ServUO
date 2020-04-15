@@ -193,7 +193,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        private static Type[] m_Quests = new Type[] { typeof(ShearingKnowledgeQuest) };
+        private static readonly Type[] m_Quests = new Type[] { typeof(ShearingKnowledgeQuest) };
         public override Type[] Quests { get { return m_Quests; } }
 
         public override void InitBody()

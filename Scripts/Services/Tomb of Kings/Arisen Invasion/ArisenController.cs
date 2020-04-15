@@ -11,12 +11,12 @@ namespace Server.Items
 
         public class ArisenEntry
         {
-            private Map m_Map;
+            private readonly Map m_Map;
             private Point3D m_Location;
-            private string m_Creature;
-            private int m_Amount;
-            private int m_HomeRange;
-            private int m_SpawnRange;
+            private readonly string m_Creature;
+            private readonly int m_Amount;
+            private readonly int m_HomeRange;
+            private readonly int m_SpawnRange;
             private TimeSpan m_MinDelay;
             private TimeSpan m_MaxDelay;
 
@@ -51,7 +51,7 @@ namespace Server.Items
             }
         }
 
-        private static ArisenEntry[] m_Entries = new ArisenEntry[]
+        private static readonly ArisenEntry[] m_Entries = new ArisenEntry[]
             {
                 new ArisenEntry( Map.TerMur, new Point3D( 996, 3862, -42 ), "EffeteUndeadGargoyle", 5, 20, 15, TimeSpan.FromSeconds( 15.0 ), TimeSpan.FromSeconds( 30.0 ) ),
                 new ArisenEntry( Map.TerMur, new Point3D( 996, 3863, -42 ), "EffetePutridGargoyle", 5, 20, 15, TimeSpan.FromSeconds( 30.0 ), TimeSpan.FromSeconds( 60.0 ) ),
@@ -199,7 +199,7 @@ namespace Server.Items
 
         public class InternalTimer : Timer
         {
-            private ArisenController m_Controller;
+            private readonly ArisenController m_Controller;
 
             public InternalTimer(ArisenController controller)
                 : base(TimeSpan.Zero, TimeSpan.FromSeconds(5.0))

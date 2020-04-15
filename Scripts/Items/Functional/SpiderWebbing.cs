@@ -7,7 +7,7 @@ namespace Server.Items
     public class SpiderWebbing : Item
     {
         private Timer m_Timer;
-        private static List<Mobile> m_WebVictims = new List<Mobile>();
+        private static readonly List<Mobile> m_WebVictims = new List<Mobile>();
 
         public SpiderWebbing(Mobile m)
             : base(0xEE3 + Utility.Random(4))
@@ -101,8 +101,8 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private Mobile m_Target;
-            private Item m_Item;
+            private readonly Mobile m_Target;
+            private readonly Item m_Item;
             private int m_Ticks;
 
             public InternalTimer(Item item, Mobile target)

@@ -74,8 +74,8 @@ namespace Server.Items
 
     public class GemResurrectGump : ResurrectGump
     {
-        private GemOfSalvation m_Gem;
-        private PlayerMobile m_Mobile;
+        private readonly GemOfSalvation m_Gem;
+        private readonly PlayerMobile m_Mobile;
 
         public GemResurrectGump(PlayerMobile pm, GemOfSalvation gem)
             : base(pm, ResurrectMessage.GemOfSalvation)

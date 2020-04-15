@@ -550,11 +550,11 @@ namespace Server.Mobiles
             new ChangeHairstyleEntry( 0, 0, 0, 0 )
         };
 
-        private int m_ItemID_Male;
-        private int m_ItemID_Female;
-        private int m_GumpID_Male;
-        private int m_GumpID_Female;
-        private int m_X, m_Y;
+        private readonly int m_ItemID_Male;
+        private readonly int m_ItemID_Female;
+        private readonly int m_GumpID_Male;
+        private readonly int m_GumpID_Female;
+        private readonly int m_X, m_Y;
 
         public int ItemID_Male { get { return m_ItemID_Male; } }
         public int ItemID_Female { get { return m_ItemID_Female; } }

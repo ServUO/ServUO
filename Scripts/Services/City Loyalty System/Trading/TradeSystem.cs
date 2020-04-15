@@ -560,12 +560,12 @@ namespace Server.Engines.CityLoyalty
             }
         }
 
-        private static Type[] _SeaTypes =
+        private static readonly Type[] _SeaTypes =
         {
             typeof(SeaSerpent), typeof(DeepSeaSerpent), typeof(Kraken), typeof(WaterElemental)
         };
 
-        private static Type[] _LandTypes =
+        private static readonly Type[] _LandTypes =
         {
             typeof(Troll), typeof(Ettin), typeof(GiantSpider), typeof(Brigand)
         };

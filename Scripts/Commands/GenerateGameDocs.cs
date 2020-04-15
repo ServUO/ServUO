@@ -140,10 +140,10 @@ namespace Server.Commands
 
         private class CsvFile
         {
-            private List<Dictionary<String, String>> rows = new List<Dictionary<string, string>>();
+            private readonly List<Dictionary<String, String>> rows = new List<Dictionary<string, string>>();
             private Dictionary<String, String> currentRow = null;
-            private HashSet<String> headerSet = new HashSet<string>();
-            private List<String> allHeaders = new List<string>();
+            private readonly HashSet<String> headerSet = new HashSet<string>();
+            private readonly List<String> allHeaders = new List<string>();
 
             public CsvFile()
             {

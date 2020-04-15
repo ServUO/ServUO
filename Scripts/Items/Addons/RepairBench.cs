@@ -389,8 +389,8 @@ namespace Server.Items
 
     public class ConfirmRemoveGump : Gump
     {
-        private RepairBenchAddon m_Addon;
-        private RepairSkillType m_Skill;
+        private readonly RepairBenchAddon m_Addon;
+        private readonly RepairSkillType m_Skill;
 
         public ConfirmRemoveGump(RepairBenchAddon addon, RepairSkillType skill)
             : base(340, 340)
@@ -440,7 +440,7 @@ namespace Server.Items
 
     public class RepairBenchGump : Gump
     {
-        private RepairBenchAddon m_Addon;
+        private readonly RepairBenchAddon m_Addon;
         private Timer m_Timer;
 
         public RepairBenchGump(Mobile from, RepairBenchAddon addon)
@@ -550,8 +550,8 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private RepairBenchAddon m_Addon;
-            private RepairBenchGump m_Gump;
+            private readonly RepairBenchAddon m_Addon;
+            private readonly RepairBenchGump m_Gump;
 
             public InternalTarget(Mobile from, RepairBenchGump g, RepairBenchAddon addon)
                 : base(-1, false, TargetFlags.None)

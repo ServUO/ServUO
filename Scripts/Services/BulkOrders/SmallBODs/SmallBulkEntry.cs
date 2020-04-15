@@ -8,10 +8,10 @@ namespace Server.Engines.BulkOrders
     public class SmallBulkEntry
     {
         private static Hashtable m_Cache;
-        private Type m_Type;
+        private readonly Type m_Type;
         private int m_Number;
-        private int m_Graphic;
-        private int m_Hue;
+        private readonly int m_Graphic;
+        private readonly int m_Hue;
 
         public SmallBulkEntry(Type type, int number, int graphic, int hue)
         {

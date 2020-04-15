@@ -140,10 +140,10 @@ namespace Server.Engines.Quests
             m_EntryTable[6] = new QuestionAndAnswerEntry(1075703, new object[] { 1075705 }, new object[] { 1075704, 1075706, 1075707 });  //<center>By name, which den of evil challenges one’s humility?</center>
         }
 
-        private static QuestionAndAnswerEntry[] m_EntryTable = new QuestionAndAnswerEntry[7];
+        private static readonly QuestionAndAnswerEntry[] m_EntryTable = new QuestionAndAnswerEntry[7];
         public static QuestionAndAnswerEntry[] EntryTable { get { return m_EntryTable; } }
 
-        private static Dictionary<Mobile, DateTime> m_CooldownTable = new Dictionary<Mobile, DateTime>();
+        private static readonly Dictionary<Mobile, DateTime> m_CooldownTable = new Dictionary<Mobile, DateTime>();
         public static Dictionary<Mobile, DateTime> CooldownTable { get { return m_CooldownTable; } }
     }
 
@@ -278,10 +278,10 @@ namespace Server.Engines.Quests
 
     public class WhosMostHumbleQuest : BaseQuest
     {
-        private List<Item> m_QuestItems = new List<Item>();
-        private List<Mobile> m_GivenTo = new List<Mobile>();
+        private readonly List<Item> m_QuestItems = new List<Item>();
+        private readonly List<Mobile> m_GivenTo = new List<Mobile>();
 
-        private Dictionary<int, HumilityQuestMobileInfo> m_Infos = new Dictionary<int, HumilityQuestMobileInfo>();
+        private readonly Dictionary<int, HumilityQuestMobileInfo> m_Infos = new Dictionary<int, HumilityQuestMobileInfo>();
         public Dictionary<int, HumilityQuestMobileInfo> Infos { get { return m_Infos; } }
 
         public override bool CanRefuseReward { get { return true; } }

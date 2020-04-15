@@ -8,7 +8,7 @@ namespace Server.Spells.Mysticism
     {
         public override SpellCircle Circle { get { return SpellCircle.Eighth; } }
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Rising Colossus", "Kal Vas Xen Corp Ylem",
                 230,
                 9022,
@@ -63,7 +63,7 @@ namespace Server.Spells.Mysticism
 
         public class InternalTarget : Target
         {
-            private RisingColossusSpell m_Owner;
+            private readonly RisingColossusSpell m_Owner;
 
             public InternalTarget(RisingColossusSpell owner)
                 : base(12, true, TargetFlags.None)

@@ -99,7 +99,7 @@ namespace Server.Mobiles
         private static int defHomeRange = 5;
         private static double defTriggerProbability = 1;
         private static int defProximityRange = -1;
-        private static int defKillReset = 1;
+        private static readonly int defKillReset = 1;
         private static TODModeType defTODMode = TODModeType.Realtime;
 
         private static Timer m_GlobalSectorTimer;
@@ -113,7 +113,7 @@ namespace Server.Mobiles
         public static int seccount;
 
         // sector hashtable for each map
-        private static Dictionary<Sector, List<XmlSpawner>>[] GlobalSectorTable = new Dictionary<Sector, List<XmlSpawner>>[6];
+        private static readonly Dictionary<Sector, List<XmlSpawner>>[] GlobalSectorTable = new Dictionary<Sector, List<XmlSpawner>>[6];
 
         #endregion
 
@@ -349,7 +349,7 @@ namespace Server.Mobiles
             }
         }
 
-        private bool sectorIsActive = false;
+        private readonly bool sectorIsActive = false;
         private bool UseSectorActivate = false;
 
         public bool SingleSector => UseSectorActivate;
@@ -2735,28 +2735,24 @@ namespace Server.Mobiles
 
 #if (TRACE)
 
-        string setname1 = _traceName[1] = "XmlFind";
-        string setname2 = _traceName[2] = "HasSector";
-
-        string setname4 = _traceName[4] = "AttachSpeech";
-        string setname5 = _traceName[5] = "HasHold";
-
-
-        string setname8 = _traceName[8] = "OnTick";
-        string setname9 = _traceName[9] = "Defrag";
-        string setname10 = _traceName[10] = "Respawn";
-        string setname11 = _traceName[11] = "SetProp";
-        string setname12 = _traceName[12] = "AttachMovement";
-        string setname13 = _traceName[13] = "ActiveSector";
-
-        string setname15 = _traceName[15] = "DistroTick";
-        string setname16 = _traceName[16] = "GetScaledFaction";
-        string setname17 = _traceName[17] = "FactionOnKill";
-        string setname18 = _traceName[18] = "CheckAcquire";
+        readonly string setname1 = _traceName[1] = "XmlFind";
+        readonly string setname2 = _traceName[2] = "HasSector";
+        readonly string setname4 = _traceName[4] = "AttachSpeech";
+        readonly string setname5 = _traceName[5] = "HasHold";
+        readonly string setname8 = _traceName[8] = "OnTick";
+        readonly string setname9 = _traceName[9] = "Defrag";
+        readonly string setname10 = _traceName[10] = "Respawn";
+        readonly string setname11 = _traceName[11] = "SetProp";
+        readonly string setname12 = _traceName[12] = "AttachMovement";
+        readonly string setname13 = _traceName[13] = "ActiveSector";
+        readonly string setname15 = _traceName[15] = "DistroTick";
+        readonly string setname16 = _traceName[16] = "GetScaledFaction";
+        readonly string setname17 = _traceName[17] = "FactionOnKill";
+        readonly string setname18 = _traceName[18] = "CheckAcquire";
 
 
         private const int MaxTraces = 20;
-        private static DateTime[] _traceStart = new DateTime[MaxTraces];
+        private static readonly DateTime[] _traceStart = new DateTime[MaxTraces];
         public static TimeSpan[] _traceTotal = new TimeSpan[MaxTraces];
         public static string[] _traceName = new string[MaxTraces];
         public static int[] _traceCount = new int[MaxTraces];
@@ -3133,7 +3129,7 @@ namespace Server.Mobiles
 
         private class MovementTimer : Timer
         {
-            private XmlSpawner m_Spawner;
+            private readonly XmlSpawner m_Spawner;
 
             public MovementTimer(XmlSpawner spawner, TimeSpan delay)
                 : base(delay)
@@ -3598,7 +3594,7 @@ namespace Server.Mobiles
         }
         private class GetValueTarget : Target
         {
-            private CommandEventArgs m_e;
+            private readonly CommandEventArgs m_e;
             public GetValueTarget(CommandEventArgs e)
                 : base(30, false, TargetFlags.None)
             {
@@ -3659,7 +3655,7 @@ namespace Server.Mobiles
 
         private class TagListTarget : Target
         {
-            private CommandEventArgs m_e;
+            private readonly CommandEventArgs m_e;
 
             public TagListTarget(CommandEventArgs e)
                 : base(30, false, TargetFlags.None)
@@ -3689,7 +3685,7 @@ namespace Server.Mobiles
         // added in targeting for the [xmlhome command
         private class XmlHomeTarget : Target
         {
-            private CommandEventArgs m_e;
+            private readonly CommandEventArgs m_e;
             public XmlHomeTarget(CommandEventArgs e)
                 : base(30, false, TargetFlags.None)
             {
@@ -11226,7 +11222,7 @@ namespace Server.Mobiles
 
         private class SectorTimer : Timer
         {
-            private XmlSpawner m_Spawner;
+            private readonly XmlSpawner m_Spawner;
 
             public SectorTimer(XmlSpawner spawner, TimeSpan delay)
                 : base(delay, delay)
@@ -11266,7 +11262,7 @@ namespace Server.Mobiles
 
         private class WarnTimer2 : Timer
         {
-            private List<XmlSpawner.WarnTimer2.WarnEntry2> m_List;
+            private readonly List<XmlSpawner.WarnTimer2.WarnEntry2> m_List;
 
             private class WarnEntry2
             {
@@ -11372,7 +11368,7 @@ namespace Server.Mobiles
         // added the duration timer that begins on spawning
         private class InternalTimer : Timer
         {
-            private XmlSpawner m_spawner;
+            private readonly XmlSpawner m_spawner;
 
             public InternalTimer(XmlSpawner spawner, TimeSpan delay)
                 : base(delay)
@@ -11394,7 +11390,7 @@ namespace Server.Mobiles
 
         private class SpawnerTimer : Timer
         {
-            private XmlSpawner m_Spawner;
+            private readonly XmlSpawner m_Spawner;
 
             public SpawnerTimer(XmlSpawner spawner, TimeSpan delay)
                 : base(delay)
@@ -11426,7 +11422,7 @@ namespace Server.Mobiles
         // added the refractory timer that begins on proximity triggering
         private class InternalTimer3 : Timer
         {
-            private XmlSpawner m_spawner;
+            private readonly XmlSpawner m_spawner;
 
             public InternalTimer3(XmlSpawner spawner, TimeSpan delay)
                 : base(delay)

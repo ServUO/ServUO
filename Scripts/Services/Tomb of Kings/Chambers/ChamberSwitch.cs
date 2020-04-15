@@ -2,7 +2,7 @@
 {
     public class ChamberSwitch : Item
     {
-        private Chamber m_Chamber;
+        private readonly Chamber m_Chamber;
 
         public ChamberSwitch(Chamber chamber, Point3D loc, int itemId)
             : base(itemId)

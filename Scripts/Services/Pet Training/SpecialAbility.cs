@@ -228,7 +228,7 @@ namespace Server.Mobiles
         }
 
         public static SpecialAbility[] Abilities { get { return _Abilities; } }
-        private static SpecialAbility[] _Abilities;
+        private static readonly SpecialAbility[] _Abilities;
 
         static SpecialAbility()
         {
@@ -1971,8 +1971,8 @@ namespace Server.Mobiles
 
         public class InternalTimer : Timer
         {
-            private Mobile m_From;
-            private Mobile m_Mobile;
+            private readonly Mobile m_From;
+            private readonly Mobile m_Mobile;
             private int m_Count;
 
             public InternalTimer(Mobile from, Mobile m)
@@ -2098,8 +2098,8 @@ namespace Server.Mobiles
 
         private class ExpireTimer : Timer
         {
-            private DateTime _Expires;
-            private Mobile m_Victim;
+            private readonly DateTime _Expires;
+            private readonly Mobile m_Victim;
 
             public ExpireTimer(Mobile m)
                 : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
@@ -2169,8 +2169,8 @@ namespace Server.Mobiles
             private const int MaxCount = 8;
 
             private int m_Count;
-            private Mobile m_Victim;
-            private Mobile m_Attacker;
+            private readonly Mobile m_Victim;
+            private readonly Mobile m_Attacker;
 
             public ExpireTimer(Mobile victim, Mobile attacker)
                 : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
@@ -2314,8 +2314,8 @@ namespace Server.Mobiles
 
         private class ExpireTimer : Timer
         {
-            private Mobile m_Mobile;
-            private Mobile m_From;
+            private readonly Mobile m_Mobile;
+            private readonly Mobile m_From;
             private int m_Count;
 
             public ExpireTimer(Mobile m, Mobile from)

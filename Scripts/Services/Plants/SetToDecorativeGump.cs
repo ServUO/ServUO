@@ -6,7 +6,7 @@ namespace Server.Engines.Plants
 {
     public class SetToDecorativeGump : Gump
     {
-        private PlantItem m_Plant;
+        private readonly PlantItem m_Plant;
 
         public SetToDecorativeGump(PlantItem plant) : base(20, 20)
         {

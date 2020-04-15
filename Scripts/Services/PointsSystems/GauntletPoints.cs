@@ -12,7 +12,7 @@ namespace Server.Engines.Points
         public override double MaxPoints { get { return double.MaxValue; } }
         public override bool ShowOnLoyaltyGump { get { return false; } }
 
-        private TextDefinition m_Name = new TextDefinition("Gauntlet Points");
+        private readonly TextDefinition m_Name = new TextDefinition("Gauntlet Points");
 
         public DoomGauntlet()
         {
@@ -99,7 +99,7 @@ namespace Server.Engines.Points
         }
 
         public static Type[] DoomArtifact { get { return m_DoomArtifact; } }
-        private static Type[] m_DoomArtifact = new Type[]
+        private static readonly Type[] m_DoomArtifact = new Type[]
         {
             typeof(LegacyOfTheDreadLord),       typeof(TheTaskmaster),              typeof(TheDragonSlayer),
             typeof(ArmorOfFortune),             typeof(GauntletsOfNobility),        typeof(HelmOfInsight),
@@ -115,7 +115,7 @@ namespace Server.Engines.Points
         };
 
         public static Type[][] RewardTable { get { return m_RewardTable; } }
-        private static Type[][] m_RewardTable = new Type[][]
+        private static readonly Type[][] m_RewardTable = new Type[][]
         {
             new Type[] { typeof(HatOfTheMagi) },            new Type[] { typeof(StaffOfTheMagi) },      new Type[] { typeof(OrnamentOfTheMagician) },
             new Type[] { typeof(ShadowDancerLeggings) },    new Type[] {typeof(RingOfTheElements) },    new Type[] { typeof(GauntletsOfNobility) },

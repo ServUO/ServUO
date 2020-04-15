@@ -12,7 +12,7 @@ namespace Server.Engines.Points
 
         public static readonly int ChipCost = 100;
 
-        private TextDefinition m_Name = new TextDefinition(1153485); // Fortune's Fire Resort & Casino
+        private readonly TextDefinition m_Name = new TextDefinition(1153485); // Fortune's Fire Resort & Casino
 
         public CasinoData()
         {

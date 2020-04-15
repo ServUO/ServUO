@@ -4,7 +4,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class ShadowSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Shadow", "",
                 -1,
                 9002

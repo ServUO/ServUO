@@ -12,9 +12,9 @@ namespace Server.Items
     {
         public override BaseAddonDeed Deed { get { return new HonorVirtueTileDeed(); } }
 
-        private HonorTileType m_HonorTileType;
+        private readonly HonorTileType m_HonorTileType;
 
-        private int offset;
+        private readonly int offset;
 
         [Constructable]
         public HonorVirtueTileAddon(HonorTileType type)

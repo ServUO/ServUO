@@ -6,13 +6,13 @@ namespace Server.Spells.Mysticism
 {
     public class StoneFormSpell : MysticTransformationSpell
     {
-        private static HashSet<Mobile> m_Effected = new HashSet<Mobile>();
+        private static readonly HashSet<Mobile> m_Effected = new HashSet<Mobile>();
         public static bool IsEffected(Mobile m)
         {
             return m_Effected.Contains(m);
         }
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Stone Form", "In Rel Ylem",
                 230,
                 9022,

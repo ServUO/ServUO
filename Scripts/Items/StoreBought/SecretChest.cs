@@ -106,7 +106,7 @@ namespace Server.Items
         private class SetEditKeyNumber : ContextMenuEntry
         {
             private readonly SecretChest Chest;
-            private Mobile Mobile;
+            private readonly Mobile Mobile;
 
             public SetEditKeyNumber(Mobile m, SecretChest c)
                 : base(1151608, -1) // Set/Edit Key Number
@@ -135,7 +135,7 @@ namespace Server.Items
         private class ResetKeyNumber : ContextMenuEntry
         {
             private readonly SecretChest Chest;
-            private Mobile Mobile;
+            private readonly Mobile Mobile;
 
             public ResetKeyNumber(Mobile m, SecretChest c)
                 : base(1151609, -1) // Reset Key Number

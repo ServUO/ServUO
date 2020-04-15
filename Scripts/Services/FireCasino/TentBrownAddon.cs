@@ -9,7 +9,7 @@ namespace Server.Items
 {
     public class tent_brownAddon : BaseAddon
     {
-        private static int[,] m_AddOnSimpleComponents = new int[,] {
+        private static readonly int[,] m_AddOnSimpleComponents = new int[,] {
               {2967, 5, 2, 0}, {2881, 5, 1, 0}, {2882, 5, 2, 0}// 8	9	11	
 			, {3221, 4, 5, 0}, {3221, -3, 4, 0}, {3206, 5, 1, 4}// 14	15	34	
 			, {3083, 5, 2, 0}, {3208, 5, 2, 4}, {3209, 5, 2, 4}// 40	41	44	

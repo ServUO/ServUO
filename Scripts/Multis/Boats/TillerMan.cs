@@ -184,8 +184,8 @@ namespace Server.Items
 
         private class EmergencyRepairEntry : ContextMenuEntry
         {
-            private TillerMan m_TillerMan;
-            private Mobile m_From;
+            private readonly TillerMan m_TillerMan;
+            private readonly Mobile m_From;
 
             public EmergencyRepairEntry(TillerMan tillerman, Mobile from)
                 : base(1116589, 5)
@@ -215,8 +215,8 @@ namespace Server.Items
 
         private class ShipRepairEntry : ContextMenuEntry
         {
-            private TillerMan m_TillerMan;
-            private Mobile m_From;
+            private readonly TillerMan m_TillerMan;
+            private readonly Mobile m_From;
 
             public ShipRepairEntry(TillerMan tillerman, Mobile from)
                 : base(1116590, 5)
@@ -241,7 +241,7 @@ namespace Server.Items
 
         private class RenameShipEntry : ContextMenuEntry
         {
-            private TillerMan m_TillerMan;
+            private readonly TillerMan m_TillerMan;
             private readonly Mobile m_From;
 
             public RenameShipEntry(TillerMan tillerman, Mobile from)

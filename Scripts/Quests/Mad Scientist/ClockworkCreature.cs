@@ -13,9 +13,9 @@
 
     public class ClockworkCreatureDef
     {
-        private ClockworkCreatureType m_CreatureType;
-        private string m_Name;
-        private int m_BodyId;
+        private readonly ClockworkCreatureType m_CreatureType;
+        private readonly string m_Name;
+        private readonly int m_BodyId;
 
         public ClockworkCreatureType CreatureType { get { return m_CreatureType; } }
         public string Name { get { return m_Name; } }

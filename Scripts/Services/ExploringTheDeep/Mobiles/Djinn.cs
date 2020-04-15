@@ -112,7 +112,7 @@ namespace Server.Mobiles
 
         public class InternalSelfDeleteTimer : Timer
         {
-            private Djinn Mare;
+            private readonly Djinn Mare;
 
             public InternalSelfDeleteTimer(Mobile p) : base(TimeSpan.FromMinutes(60))
             {

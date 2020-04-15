@@ -117,7 +117,7 @@ namespace Server.Items
             private readonly Mobile m_Mobile;
             private readonly SpikedEggNog m_Item;
             private int m_Count;
-            private int m_MaxCount;
+            private readonly int m_MaxCount;
 
             public BleedTimer(Mobile m, SpikedEggNog item)
                 : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))

@@ -60,7 +60,7 @@ namespace Server.Gumps
 
         private static readonly int BackWidth = BorderSize + TotalWidth + BorderSize;
 
-        private static bool PrevLabel = OldStyle, NextLabel = OldStyle;
+        private static readonly bool PrevLabel = OldStyle, NextLabel = OldStyle;
 
         private static readonly int PrevLabelOffsetX = PrevWidth + 1;
         private static readonly int PrevLabelOffsetY = 0;

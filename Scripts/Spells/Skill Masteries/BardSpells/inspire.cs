@@ -7,7 +7,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class InspireSpell : BardSpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Inspire", "Unus Por",
                 -1,
                 9002

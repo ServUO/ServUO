@@ -2,7 +2,7 @@ namespace Server.Engines.Chat
 {
     public class ChatActionHandlers
     {
-        private static ChatActionHandler[] m_Handlers;
+        private static readonly ChatActionHandler[] m_Handlers;
 
         static ChatActionHandlers()
         {

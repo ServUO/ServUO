@@ -14,11 +14,11 @@ namespace Server.Items
 
         private static readonly int LuckBonus = 400;
 
-        private static List<FountainOfFortune> m_Fountains = new List<FountainOfFortune>();
-        private static Dictionary<Mobile, DateTime> m_LuckTable = new Dictionary<Mobile, DateTime>();
+        private static readonly List<FountainOfFortune> m_Fountains = new List<FountainOfFortune>();
+        private static readonly Dictionary<Mobile, DateTime> m_LuckTable = new Dictionary<Mobile, DateTime>();
 
-        private static Dictionary<Mobile, DateTime> m_SpecialProtection = new Dictionary<Mobile, DateTime>();
-        private static Dictionary<Mobile, DateTime> m_BalmBoost = new Dictionary<Mobile, DateTime>();
+        private static readonly Dictionary<Mobile, DateTime> m_SpecialProtection = new Dictionary<Mobile, DateTime>();
+        private static readonly Dictionary<Mobile, DateTime> m_BalmBoost = new Dictionary<Mobile, DateTime>();
 
         public static Dictionary<Mobile, DateTime> SpecialProtection { get { return m_SpecialProtection; } }
         public static Dictionary<Mobile, DateTime> BalmBoost { get { return m_BalmBoost; } }

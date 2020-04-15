@@ -80,11 +80,11 @@ namespace Server.Mobiles
             public SkillName sid;
 
             // note the extra skill MaxSkills +1 is used for any unknown skill that falls outside of the known 52
-            private static ArrayList[] m_FeluccaSkillList = new ArrayList[MaxSkills + 1];
-            private static ArrayList[] m_TrammelSkillList = new ArrayList[MaxSkills + 1];
-            private static ArrayList[] m_MalasSkillList = new ArrayList[MaxSkills + 1];
-            private static ArrayList[] m_IlshenarSkillList = new ArrayList[MaxSkills + 1];
-            private static ArrayList[] m_TokunoSkillList = new ArrayList[MaxSkills + 1];
+            private static readonly ArrayList[] m_FeluccaSkillList = new ArrayList[MaxSkills + 1];
+            private static readonly ArrayList[] m_TrammelSkillList = new ArrayList[MaxSkills + 1];
+            private static readonly ArrayList[] m_MalasSkillList = new ArrayList[MaxSkills + 1];
+            private static readonly ArrayList[] m_IlshenarSkillList = new ArrayList[MaxSkills + 1];
+            private static readonly ArrayList[] m_TokunoSkillList = new ArrayList[MaxSkills + 1];
 
             // primary function that returns the list of objects (spawners) that are associated with a given skillname by map
             public static ArrayList TriggerList(SkillName index, Map map)

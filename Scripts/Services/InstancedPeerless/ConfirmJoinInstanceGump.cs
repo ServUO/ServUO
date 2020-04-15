@@ -7,7 +7,7 @@ namespace Server.Gumps
 {
     public class ConfirmJoinInstanceGump : Gump
     {
-        private PeerlessInstance m_Instance;
+        private readonly PeerlessInstance m_Instance;
 
         public ConfirmJoinInstanceGump(PeerlessInstance instance)
             : base(50, 50)

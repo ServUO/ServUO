@@ -34,8 +34,8 @@ namespace Server.Items
 
         private class RelocateContainerEntry : ContextMenuEntry
         {
-            private GalleonContainer m_Container;
-            private BaseGalleon m_Galleon;
+            private readonly GalleonContainer m_Container;
+            private readonly BaseGalleon m_Galleon;
 
             public RelocateContainerEntry(GalleonContainer container, BaseGalleon galleon)
                 : base(1061829, 3)
@@ -53,8 +53,8 @@ namespace Server.Items
 
         private class RelocateTarget : Target
         {
-            private GalleonContainer m_Container;
-            private BaseGalleon m_Galleon;
+            private readonly GalleonContainer m_Container;
+            private readonly BaseGalleon m_Galleon;
 
             public RelocateTarget(GalleonContainer container, BaseGalleon galleon)
                 : base(12, false, TargetFlags.None)

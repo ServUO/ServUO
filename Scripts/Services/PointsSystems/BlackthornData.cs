@@ -13,7 +13,7 @@ namespace Server.Engines.Points
         public override double MaxPoints { get { return double.MaxValue; } }
         public override bool ShowOnLoyaltyGump { get { return false; } }
 
-        private TextDefinition m_Name = null;
+        private readonly TextDefinition m_Name = null;
 
         public BlackthornData()
         {

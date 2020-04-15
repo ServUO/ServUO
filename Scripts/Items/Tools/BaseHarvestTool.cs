@@ -180,7 +180,7 @@ namespace Server.Items
         public class ToggleMiningStoneEntry : ContextMenuEntry
         {
             private readonly PlayerMobile m_Mobile;
-            private MiningType MiningType;
+            private readonly MiningType MiningType;
             //private bool m_Valuestone;
             //private bool m_Valuegem;
 

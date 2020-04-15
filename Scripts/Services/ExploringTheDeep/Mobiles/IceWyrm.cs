@@ -47,7 +47,7 @@ namespace Server.Mobiles
 
         public class InternalSelfDeleteTimer : Timer
         {
-            private IceWyrm Mare;
+            private readonly IceWyrm Mare;
 
             public InternalSelfDeleteTimer(Mobile p) : base(TimeSpan.FromMinutes(60))
             {

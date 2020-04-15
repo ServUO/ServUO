@@ -122,7 +122,7 @@ namespace Server.Mobiles
             }
         }
 
-        private Type[] m_Types = new Type[]
+        private readonly Type[] m_Types = new Type[]
         {
             typeof(ChallengeRite),          typeof(AnthenaeumDecree),       typeof(LetterFromTheKing),
             typeof(OnTheVoid),              typeof(ShilaxrinarsMemorial),   typeof(ToTheHighScholar),

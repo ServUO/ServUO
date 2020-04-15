@@ -119,8 +119,8 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private MazePuzzleItem m_Item;
-            private Mobile m_From;
+            private readonly MazePuzzleItem m_Item;
+            private readonly Mobile m_From;
             private DateTime m_NextDamage;
             private int m_Tick;
 

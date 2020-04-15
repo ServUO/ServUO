@@ -304,7 +304,7 @@ namespace Server.Engines.HuntsmasterChallenge
         private Dictionary<HuntType, List<HuntingKillEntry>> m_Leaders;
         public Dictionary<HuntType, List<HuntingKillEntry>> Leaders { get { return m_Leaders; } }
 
-        private Dictionary<Mobile, int> m_UnclaimedWinners = new Dictionary<Mobile, int>();
+        private readonly Dictionary<Mobile, int> m_UnclaimedWinners = new Dictionary<Mobile, int>();
         public Dictionary<Mobile, int> UnclaimedWinners { get { return m_UnclaimedWinners; } }
 
         private Dictionary<HuntType, List<HuntingKillEntry>> m_Top10;

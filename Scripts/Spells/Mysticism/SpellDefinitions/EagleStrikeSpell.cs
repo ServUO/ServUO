@@ -9,7 +9,7 @@ namespace Server.Spells.Mysticism
         public override bool DelayedDamage { get { return true; } }
         public override bool DelayedDamageStacking { get { return false; } }
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Eagle Strike", "Kal Por Xen",
                 230,
                 9022,

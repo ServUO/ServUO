@@ -11,9 +11,9 @@ namespace Server.Gumps
         public const int WhiteLabel = 0xFFFFFF;
         public const int Yellow = 0xFFE0;
 
-        private RefinementItem m_Item;
-        private ModEntry m_Entry;
-        private bool m_CanRefine;
+        private readonly RefinementItem m_Item;
+        private readonly ModEntry m_Entry;
+        private readonly bool m_CanRefine;
 
         public RefinementGump(RefinementItem item) : base(50, 50)
         {
@@ -122,8 +122,8 @@ namespace Server.Gumps
 
         private class InternalTarget : Target
         {
-            private RefinementItem m_Item;
-            private ModEntry m_Entry;
+            private readonly RefinementItem m_Item;
+            private readonly ModEntry m_Entry;
 
             public InternalTarget(RefinementItem item) : base(-1, false, TargetFlags.None)
             {

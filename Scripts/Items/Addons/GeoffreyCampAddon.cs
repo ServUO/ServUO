@@ -9,7 +9,7 @@ namespace Server.Items
 {
     public class GeoffreyCampAddon : BaseAddon
     {
-        private static int[,] m_AddOnSimpleComponents = new int[,] {
+        private static readonly int[,] m_AddOnSimpleComponents = new int[,] {
               {7864, 8, 9, 12}, {7135, 12, 3, 0}, {2960, 8, 9, 0}// 1	2	3	
 			, {7135, 11, 2, 0}, {7135, 10, 3, 0}, {4148, 9, 9, 9}// 4	5	6	
 			, {7135, 11, 4, 0}, {17100, 8, 3, 5}, {3728, -8, 14, 0}// 7	8	9	

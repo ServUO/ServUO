@@ -70,9 +70,9 @@ namespace Server.Mobiles
 
         private class TurnInEntry : ContextMenuEntry
         {
-            private Mobile m_Mobile;
-            private BaseTurnInMobile m_Vendor;
-            private IEnumerable<ItemTileButtonInfo> m_Buttons;
+            private readonly Mobile m_Mobile;
+            private readonly BaseTurnInMobile m_Vendor;
+            private readonly IEnumerable<ItemTileButtonInfo> m_Buttons;
 
             public TurnInEntry(Mobile mobile, BaseTurnInMobile vendor)
                 : base(vendor.TurnInLocalization, 2)
@@ -104,8 +104,8 @@ namespace Server.Mobiles
 
         private class ClaimEntry : ContextMenuEntry
         {
-            private Mobile m_Mobile;
-            private BaseTurnInMobile m_Vendor;
+            private readonly Mobile m_Mobile;
+            private readonly BaseTurnInMobile m_Vendor;
 
             public ClaimEntry(Mobile mobile, BaseTurnInMobile vendor)
                 : base(vendor.ClaimLocalization, 2)
@@ -147,7 +147,7 @@ namespace Server.Mobiles
 
     public class TurnInGump : BaseImageTileButtonsGump
     {
-        private BaseTurnInMobile m_Collector;
+        private readonly BaseTurnInMobile m_Collector;
         public BaseTurnInMobile Collector { get { return m_Collector; } }
 
         public TurnInGump(BaseTurnInMobile collector, IEnumerable<ItemTileButtonInfo> buttons)

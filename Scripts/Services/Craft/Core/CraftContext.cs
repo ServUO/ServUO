@@ -221,12 +221,12 @@ namespace Server.Engines.Craft
         }
 
         #region Serialize/Deserialize Persistence
-        private static string FilePath = Path.Combine("Saves", "CraftContext", "Contexts.bin");
+        private static readonly string FilePath = Path.Combine("Saves", "CraftContext", "Contexts.bin");
 
-        private static List<CraftContext> Contexts = new List<CraftContext>();
+        private static readonly List<CraftContext> Contexts = new List<CraftContext>();
 
         public static CraftSystem[] Systems => _Systems;
-        private static CraftSystem[] _Systems = new CraftSystem[11];
+        private static readonly CraftSystem[] _Systems = new CraftSystem[11];
 
         public static void Configure()
         {

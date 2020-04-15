@@ -20,7 +20,7 @@ namespace Server.Engines.Quests
 
         public static List<Neville> Instances { get; set; }
 
-        string[] NevilleSay = new string[]
+        readonly string[] NevilleSay = new string[]
         {
             "Save Us",
             "Murder is being done!",

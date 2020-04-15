@@ -500,7 +500,7 @@ namespace Server.Spells.SkillMasteries
             }
         }
 
-        private static Dictionary<Mobile, List<SkillMasterySpell>> m_Table = new Dictionary<Mobile, List<SkillMasterySpell>>();
+        private static readonly Dictionary<Mobile, List<SkillMasterySpell>> m_Table = new Dictionary<Mobile, List<SkillMasterySpell>>();
 
         public static SkillMasterySpell GetHarmfulSpell(Mobile target, Type type)
         {
@@ -674,7 +674,7 @@ namespace Server.Spells.SkillMasteries
             return null;
         }
 
-        private static object _Lock = new object();
+        private static readonly object _Lock = new object();
 
         public static void CheckTable(Mobile m)
         {
@@ -1224,7 +1224,7 @@ namespace Server.Spells.SkillMasteries
 
         public class UpkeepTimer : Timer
         {
-            private SkillMasterySpell m_Spell;
+            private readonly SkillMasterySpell m_Spell;
 
             public SkillMasterySpell Spell { get { return m_Spell; } }
 

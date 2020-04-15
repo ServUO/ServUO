@@ -26,7 +26,7 @@ namespace Server.Misc
         public override double MaxPoints { get { return double.MaxValue; } }
         public override bool ShowOnLoyaltyGump { get { return false; } }
 
-        private TextDefinition m_Name = new TextDefinition("Treasures of Tokuno");
+        private readonly TextDefinition m_Name = new TextDefinition("Treasures of Tokuno");
 
         public TreasuresOfTokuno()
         {

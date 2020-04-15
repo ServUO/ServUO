@@ -9,7 +9,7 @@ namespace Server.Mobiles
 {
     public class Harrower : BaseCreature
     {
-        private int m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225);
+        private readonly int m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225);
         private static readonly SpawnEntry[] m_Entries = new SpawnEntry[]
         {
             new SpawnEntry(new Point3D(5242, 945, -40), new Point3D(1176, 2638, 0)), // Destard

@@ -6,7 +6,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class ManaShieldSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Mana Shield", "Faerkulggen",
                 -1,
                 9061

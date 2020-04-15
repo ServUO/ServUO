@@ -8,7 +8,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class ElementalFurySpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Anticipate Hit", "",
                 -1,
                 9002

@@ -24,7 +24,7 @@ namespace Server.Engines.Quests
             Name = "Vrulkax";
         }
 
-        private Type[][] _Table =
+        private readonly Type[][] _Table =
         {
             new Type[] { typeof(BritchesOfWarding), typeof(GargishBritchesOfWarding) },
             new Type[] { typeof(GlovesOfFeudalGrip), typeof(GargishKiltOfFeudalVise) },

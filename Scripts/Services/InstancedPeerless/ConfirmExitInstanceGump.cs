@@ -6,7 +6,7 @@ namespace Server.Gumps
 {
     public class ConfirmExitInstanceGump : Gump
     {
-        private InstanceExitGate m_Gate;
+        private readonly InstanceExitGate m_Gate;
 
         public ConfirmExitInstanceGump(InstanceExitGate gate)
             : base(150, 50)

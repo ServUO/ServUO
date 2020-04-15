@@ -28,9 +28,9 @@ namespace Server.Engines.Chat
             AddChannel(name).AlwaysAvailable = true;
         }
 
-        private string m_Name;
+        private readonly string m_Name;
         private bool m_AlwaysAvailable;
-        private List<ChatUser> m_Users;
+        private readonly List<ChatUser> m_Users;
 
         public Channel(string name)
         {
@@ -126,7 +126,7 @@ namespace Server.Engines.Chat
             }
         }
 
-        private static List<Channel> m_Channels = new List<Channel>();
+        private static readonly List<Channel> m_Channels = new List<Channel>();
 
         public static List<Channel> Channels => m_Channels;
 

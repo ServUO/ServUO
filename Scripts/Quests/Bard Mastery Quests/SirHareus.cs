@@ -81,7 +81,7 @@ namespace Server.Engines.Quests
 
     public class ProvocationObjective : SimpleObjective
     {
-        private List<string> m_Descr = new List<string>();
+        private readonly List<string> m_Descr = new List<string>();
         public override List<string> Descriptions { get { return m_Descr; } }
 
         public ProvocationObjective()

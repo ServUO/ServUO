@@ -11,7 +11,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public RefinementCraftType RefineType { get { return m_RefineType; } set { m_RefineType = value; } }
 
-        private List<SBInfo> m_SBInfos = new List<SBInfo>();
+        private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public override void InitSBInfo()

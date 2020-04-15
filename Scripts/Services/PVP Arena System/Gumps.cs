@@ -111,8 +111,8 @@ namespace Server.Engines.ArenaSystem
             }
         }
 
-        private string _DisableBody = "By disabling this arena, the arena stone, regions and any stats associated with the arena will be lost forever. Do you wish to proceed?";
-        private string _EnableBody = "By enabling this region, an arena stone and regions will be placed. Be sure to clear any custom content you have at or near the arena.";
+        private readonly string _DisableBody = "By disabling this arena, the arena stone, regions and any stats associated with the arena will be lost forever. Do you wish to proceed?";
+        private readonly string _EnableBody = "By enabling this region, an arena stone and regions will be placed. Be sure to clear any custom content you have at or near the arena.";
     }
 
     public class BaseArenaGump : BaseGump

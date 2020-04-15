@@ -1013,7 +1013,7 @@ namespace Server.Multis
         }
 
         public static int[][] CannonIDs { get { return m_CannonIDs; } }
-        private static int[][] m_CannonIDs = new int[][]
+        private static readonly int[][] m_CannonIDs = new int[][]
         { 
                       //Light  Heavy, Blunder, Pumpkin
             new int[] { 16918, 16922, 41664, 41979 }, //South
@@ -1617,7 +1617,7 @@ namespace Server.Multis
     public class SecurityEntry
     {
         private readonly SecurityLevel DefaultImpliedAccessLevel = SecurityLevel.Passenger;
-        private Dictionary<Mobile, SecurityLevel> m_Manifest;
+        private readonly Dictionary<Mobile, SecurityLevel> m_Manifest;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseGalleon Galleon { get; set; }
@@ -1824,9 +1824,9 @@ namespace Server.Multis
 
     public class ShipAccessEntry : ContextMenuEntry
     {
-        private Mobile m_From;
-        private Mobile m_Clicker;
-        private BaseGalleon m_Galleon;
+        private readonly Mobile m_From;
+        private readonly Mobile m_Clicker;
+        private readonly BaseGalleon m_Galleon;
 
         public ShipAccessEntry(Mobile from, Mobile clicker, BaseGalleon galleon)
             : base(1116566, 15)

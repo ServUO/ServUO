@@ -317,7 +317,7 @@ namespace Server.Commands
 
         private class BritGump : Gump
         {
-            private SignSaveTarget m_Target;
+            private readonly SignSaveTarget m_Target;
 
             public BritGump(SignSaveTarget target)
                 : base(30, 20)

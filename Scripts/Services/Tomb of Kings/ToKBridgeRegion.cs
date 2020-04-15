@@ -47,7 +47,7 @@ namespace Server.Regions
             m_FadingTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(0.33), new TimerCallback(OnTick));
         }
 
-        private static int[] m_Hues = new int[]
+        private static readonly int[] m_Hues = new int[]
         {
             0,
             0x807, 0x806, 0x805, 0x804, 0x803,

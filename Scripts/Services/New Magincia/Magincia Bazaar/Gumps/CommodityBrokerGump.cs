@@ -10,7 +10,7 @@ namespace Server.Engines.NewMagincia
 {
     public class CommodityBrokerGump : BaseBazaarGump
     {
-        private CommodityBroker m_Broker;
+        private readonly CommodityBroker m_Broker;
 
         public CommodityBrokerGump(CommodityBroker broker, Mobile from)
             : base(520, 520)
@@ -160,7 +160,7 @@ namespace Server.Engines.NewMagincia
 
         public class InternalTarget : Target
         {
-            private CommodityBroker m_Broker;
+            private readonly CommodityBroker m_Broker;
             private bool m_HasPickedCommodity;
 
             public InternalTarget(CommodityBroker broker) : this(broker, false)
@@ -228,7 +228,7 @@ namespace Server.Engines.NewMagincia
 
     public class CommodityTargetGump : BaseBazaarGump
     {
-        private CommodityBroker m_Broker;
+        private readonly CommodityBroker m_Broker;
 
         public CommodityTargetGump(CommodityBroker broker)
             : base(520, 520)
@@ -271,9 +271,9 @@ namespace Server.Engines.NewMagincia
 
     public class SetPricesAndLimitsGump : BaseBazaarGump
     {
-        private CommodityBroker m_Broker;
+        private readonly CommodityBroker m_Broker;
         private int m_Index;
-        private int m_Page;
+        private readonly int m_Page;
 
         public SetPricesAndLimitsGump(CommodityBroker broker) : this(broker, -1, 0) { }
 
@@ -441,9 +441,9 @@ namespace Server.Engines.NewMagincia
 
     public class ViewInventoryGump : BaseBazaarGump
     {
-        private CommodityBroker m_Broker;
-        private int m_Index;
-        private int m_Page;
+        private readonly CommodityBroker m_Broker;
+        private readonly int m_Index;
+        private readonly int m_Page;
 
         public ViewInventoryGump(CommodityBroker broker) : this(broker, -1)
         {
@@ -623,10 +623,10 @@ namespace Server.Engines.NewMagincia
 
     public class CommodityInventoryGump : BaseBazaarGump
     {
-        private CommodityBroker m_Broker;
-        private List<CommodityBrokerEntry> m_Entries;
+        private readonly CommodityBroker m_Broker;
+        private readonly List<CommodityBrokerEntry> m_Entries;
         private bool m_Buy;
-        private int m_Page;
+        private readonly int m_Page;
         private int m_Index;
 
         public CommodityInventoryGump(CommodityBroker broker) : this(broker, -1, true, 0, 0)
@@ -900,9 +900,9 @@ namespace Server.Engines.NewMagincia
 
     public class ConfirmRemoveEntryGump : BaseConfirmGump
     {
-        private CommodityBroker m_Broker;
-        private CommodityBrokerEntry m_Entry;
-        private int m_Index;
+        private readonly CommodityBroker m_Broker;
+        private readonly CommodityBrokerEntry m_Entry;
+        private readonly int m_Index;
 
         public override string TitleString { get { return "Remove Commodity Confirmation"; } }
         public override string LabelString { get { return "Are you sure you want to remove this entry from your commodity broker? Any unused stock will be placed in your bankbox."; } }
@@ -932,10 +932,10 @@ namespace Server.Engines.NewMagincia
 
     public class ConfirmBuyCommodityGump : BaseBazaarGump
     {
-        private Gump _Gump;
-        private CommodityBroker m_Broker;
-        private int m_Amount;
-        private CommodityBrokerEntry m_Entry;
+        private readonly Gump _Gump;
+        private readonly CommodityBroker m_Broker;
+        private readonly int m_Amount;
+        private readonly CommodityBrokerEntry m_Entry;
 
         public ConfirmBuyCommodityGump(CommodityBroker broker, int amount, CommodityBrokerEntry entry, bool buy, Gump g)
             : base(660, 520)

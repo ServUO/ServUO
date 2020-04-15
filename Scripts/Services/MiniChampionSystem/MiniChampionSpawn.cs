@@ -13,7 +13,7 @@ namespace Server.Engines.MiniChamps
             CommandSystem.Register("GenMiniChamp", AccessLevel.Administrator, new CommandEventHandler(GenStoneRuins_OnCommand));
         }
 
-        private static List<MiniChamp> Controllers = new List<MiniChamp>();
+        private static readonly List<MiniChamp> Controllers = new List<MiniChamp>();
 
         [Usage("GenMiniChamp")]
         [Description("MiniChampion Generator")]
@@ -458,7 +458,7 @@ namespace Server.Engines.MiniChamps
 
     public class SliceTimer : Timer
     {
-        private MiniChamp m_Controller;
+        private readonly MiniChamp m_Controller;
 
         public SliceTimer(MiniChamp controller)
             : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))

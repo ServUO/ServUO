@@ -9,7 +9,7 @@ namespace Server.Spells.Mysticism
 
         public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(5); } }
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Healing Stone", "Kal In Mani",
                 230,
                 9022,

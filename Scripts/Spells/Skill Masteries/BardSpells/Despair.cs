@@ -10,7 +10,7 @@ namespace Server.Spells.SkillMasteries
     {
         public static readonly string ModName = "Despair";
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Despair", "Kal Des Mani Tym",
                 -1,
                 9002
@@ -141,7 +141,7 @@ namespace Server.Spells.SkillMasteries
 
         private class InternalTarget : Target
         {
-            private DespairSpell m_Owner;
+            private readonly DespairSpell m_Owner;
 
             public InternalTarget(DespairSpell spell) : base(10, false, TargetFlags.Harmful)
             {

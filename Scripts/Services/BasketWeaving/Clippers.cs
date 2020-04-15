@@ -258,8 +258,8 @@ namespace Server.Items
 
     public class TopiaryGump : Gump
     {
-        PlantItem m_plant;
-        Clippers m_clippers;
+        readonly PlantItem m_plant;
+        readonly Clippers m_clippers;
 
         public TopiaryGump(PlantItem plant, Clippers clippers) : base(0, 0)
         {

@@ -51,7 +51,7 @@ namespace Server.Items
             _DisplayName = reader.ReadString();
         }
 
-        private static string[] _Names =
+        private static readonly string[] _Names =
         {
             "Trinsic", "Jhelom", "Vesper", "Ocllo", "Yew", "Britain", "Minoc", "Moonglow", "Skara Brae", "Delucia"
         };

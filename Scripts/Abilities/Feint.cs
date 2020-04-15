@@ -9,7 +9,7 @@ namespace Server.Items
     /// </summary>
     public class Feint : WeaponAbility
     {
-        private static Dictionary<Mobile, FeintTimer> m_Registry = new Dictionary<Mobile, FeintTimer>();
+        private static readonly Dictionary<Mobile, FeintTimer> m_Registry = new Dictionary<Mobile, FeintTimer>();
         public static Dictionary<Mobile, FeintTimer> Registry => m_Registry;
 
         public Feint()
@@ -64,9 +64,9 @@ namespace Server.Items
 
         public class FeintTimer : Timer
         {
-            private Mobile m_Owner;
-            private Mobile m_Enemy;
-            private int m_DamageReduction;
+            private readonly Mobile m_Owner;
+            private readonly Mobile m_Enemy;
+            private readonly int m_DamageReduction;
 
             public Mobile Owner => m_Owner;
             public Mobile Enemy => m_Enemy;

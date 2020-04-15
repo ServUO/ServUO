@@ -75,8 +75,8 @@ namespace Server.Mobiles
 
         public class ExodusArchZealotGumpEntry : ContextMenuEntry
         {
-            private Mobile m_Mobile;
-            private Mobile m_Giver;
+            private readonly Mobile m_Mobile;
+            private readonly Mobile m_Giver;
 
             public ExodusArchZealotGumpEntry(Mobile from, Mobile giver) : base(6146, 3)
             {

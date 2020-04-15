@@ -8,7 +8,7 @@ namespace Server.Engines.Quests.TimeLord
 {
     public class TimeForLegendsQuest : QuestSystem
     {
-        private Type[] _TypeReferenceTable = new Type[]
+        private readonly Type[] _TypeReferenceTable = new Type[]
         {
             typeof(TimeForLegendsObjective)
         };
@@ -62,7 +62,7 @@ namespace Server.Engines.Quests.TimeLord
         }
 
         public static Type[] Targets { get { return _Targets; } }
-        private static Type[] _Targets = new Type[]
+        private static readonly Type[] _Targets = new Type[]
         {
             typeof(Semidar), typeof(Mephitis), typeof(Rikktor), typeof(LordOaks), typeof(Neira), typeof(Barracoon), typeof(Serado), typeof(Meraktus), typeof(Ilhenir),
             typeof(Twaulo), typeof(AbyssalInfernal), typeof(PrimevalLich), typeof(CorgulTheSoulBinder), typeof(CorgulTheSoulBinder) /*dragon turtle*/,

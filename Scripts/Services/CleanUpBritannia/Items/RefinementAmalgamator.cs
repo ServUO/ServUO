@@ -130,8 +130,8 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private Mobile m_Mobile;
-            private RefinementAmalgamator m_Amalgamator;
+            private readonly Mobile m_Mobile;
+            private readonly RefinementAmalgamator m_Amalgamator;
 
             public InternalTarget(Mobile m, RefinementAmalgamator amalgamator)
                 : base(-1, true, TargetFlags.None)

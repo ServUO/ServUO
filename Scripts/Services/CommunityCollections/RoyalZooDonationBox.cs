@@ -148,7 +148,7 @@ namespace Server.Items
             return false;
         }
 
-        private static Type[][] _PetGroups =
+        private static readonly Type[][] _PetGroups =
         {
             new Type[] { typeof(Dragon), typeof(Drake) },
             new Type[] { typeof(Kirin), typeof(Nightmare), typeof(Unicorn) },

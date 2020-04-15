@@ -6,10 +6,10 @@ namespace Server.Engines.NewMagincia
     {
         public static readonly TimeSpan DefaultExpirePeriod = TimeSpan.FromDays(7);
 
-        private TextDefinition m_Title;
-        private TextDefinition m_Body;
-        private string m_Args;
-        private DateTime m_Expires;
+        private readonly TextDefinition m_Title;
+        private readonly TextDefinition m_Body;
+        private readonly string m_Args;
+        private readonly DateTime m_Expires;
 
         public TextDefinition Title { get { return m_Title; } }
         public TextDefinition Body { get { return m_Body; } }

@@ -51,7 +51,7 @@ namespace Server.Items
         }
 
         public static Type[] DeepWaterFish { get { return m_DeepWaterFish; } }
-        private static Type[] m_DeepWaterFish = new Type[]
+        private static readonly Type[] m_DeepWaterFish = new Type[]
         {
             typeof(Haddock),            typeof(CapeCod),            typeof(BlackSeabass),
             typeof(Tarpon),             typeof(RedSnook),           typeof(GraySnapper),
@@ -63,7 +63,7 @@ namespace Server.Items
 
 
         public static Type[] ShoreFish { get { return m_ShoreFish; } }
-        private static Type[] m_ShoreFish = new Type[]
+        private static readonly Type[] m_ShoreFish = new Type[]
         {
             typeof(PumpkinSeedSunfish),     typeof(YellowPerch),        typeof(PikeFish),
             typeof(BrookTrout),             typeof(RainbowTrout),       typeof(BluegillSunfish),
@@ -72,7 +72,7 @@ namespace Server.Items
         };
 
         public static Type[] DungeonFish { get { return m_DungeonFish; } }
-        private static Type[] m_DungeonFish = new Type[]
+        private static readonly Type[] m_DungeonFish = new Type[]
         {
             typeof(DungeonChub),        typeof(DemonTrout),         typeof(SnaggletoothBass),
             typeof(CutThroatTrout),     typeof(GrimCisco),          typeof(DrakeFish),
@@ -81,7 +81,7 @@ namespace Server.Items
         };
 
         public static Type[] LobstersAndCrabs { get { return m_LobstersAndCrabs; } }
-        private static Type[] m_LobstersAndCrabs = new Type[]
+        private static readonly Type[] m_LobstersAndCrabs = new Type[]
         {
             typeof(DungeonessCrab),     typeof(BlueCrab),           typeof(KingCrab),
             typeof(RockCrab),           typeof(SnowCrab),           typeof(AppleCrab),
@@ -90,7 +90,7 @@ namespace Server.Items
         };
 
         public static Type[] Lobsters { get { return m_Lobsters; } }
-        private static Type[] m_Lobsters = new Type[]
+        private static readonly Type[] m_Lobsters = new Type[]
         {
             typeof(Lobster),
             typeof(SpineyLobster),      typeof(RockLobster),        typeof(HummerLobster),
@@ -100,7 +100,7 @@ namespace Server.Items
         };
 
         public static Type[] Crabs { get { return m_Crabs; } }
-        private static Type[] m_Crabs = new Type[]
+        private static readonly Type[] m_Crabs = new Type[]
         {
             typeof(Crab),
             typeof(DungeonessCrab),     typeof(BlueCrab),           typeof(KingCrab),

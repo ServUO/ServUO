@@ -7,7 +7,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class ConduitSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Conduit", "Uus Corp Grav",
                 204,
                 9061,

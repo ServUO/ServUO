@@ -98,7 +98,7 @@ namespace Server.Items
         }
 
 
-        private Type[] _AcceptList =
+        private readonly Type[] _AcceptList =
         {
             typeof(BaseRing), typeof(BaseBracelet), typeof(BaseNecklace), typeof(BaseEarrings), typeof(BaseTalisman)
         };

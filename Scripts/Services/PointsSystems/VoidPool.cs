@@ -12,7 +12,7 @@ namespace Server.Engines.Points
         public override bool AutoAdd { get { return true; } }
         public override double MaxPoints { get { return double.MaxValue; } }
 
-        private TextDefinition m_Name = new TextDefinition(1152733);
+        private readonly TextDefinition m_Name = new TextDefinition(1152733);
 
         public VoidPool()
         {
@@ -51,8 +51,8 @@ namespace Server.Engines.Points
 
     public class VoidPoolInfo : ContextMenuEntry
     {
-        private Mobile m_From;
-        private VoidPoolController m_Controller;
+        private readonly Mobile m_From;
+        private readonly VoidPoolController m_Controller;
 
         public VoidPoolInfo(Mobile from, VoidPoolController controller)
             : base(1152531, -1) // The Void Pool

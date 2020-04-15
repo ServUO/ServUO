@@ -72,7 +72,7 @@ namespace Server.Engines.Plants
 
     public class PlantPigmentHueInfo
     {
-        private static Dictionary<PlantPigmentHue, PlantPigmentHueInfo> m_Table;
+        private static readonly Dictionary<PlantPigmentHue, PlantPigmentHueInfo> m_Table;
         private readonly PlantHue m_PlantHue;
         private readonly int m_Hue;
         private readonly int m_Name;

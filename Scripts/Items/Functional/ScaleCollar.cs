@@ -80,7 +80,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private ScaleCollar m_Collar;
+            private readonly ScaleCollar m_Collar;
 
             public InternalTarget(ScaleCollar collar) : base(-1, false, TargetFlags.None)
             {
@@ -96,10 +96,10 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private ScaleCollar m_Collar;
-            private BattleChickenLizard m_Lizard;
-            private DateTime m_EndTime;
-            private Mobile m_Owner;
+            private readonly ScaleCollar m_Collar;
+            private readonly BattleChickenLizard m_Lizard;
+            private readonly DateTime m_EndTime;
+            private readonly Mobile m_Owner;
 
             public InternalTimer(ScaleCollar collar, BattleChickenLizard lizard, Mobile owner) : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
             {

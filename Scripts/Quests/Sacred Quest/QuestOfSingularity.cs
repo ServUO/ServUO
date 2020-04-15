@@ -98,7 +98,7 @@ namespace Server.Engines.Quests
             m_EntryTable[19] = new QuestionAndAnswerEntry(1112620, new object[] { 1112656 /*Control*/ }, new object[] { 1112665 /*Chaos*/, 1112666 /*Order*/, 1112664 /*Precision*/ }); //Which of these is one of the Virtues?
         }
 
-        private static QuestionAndAnswerEntry[] m_EntryTable = new QuestionAndAnswerEntry[20];
+        private static readonly QuestionAndAnswerEntry[] m_EntryTable = new QuestionAndAnswerEntry[20];
         public static QuestionAndAnswerEntry[] EntryTable { get { return m_EntryTable; } }
     }
 }
