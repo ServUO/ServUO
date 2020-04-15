@@ -716,7 +716,7 @@ namespace Server.Mobiles
 
             double total = _InitAverage.Sum(d => d);
 
-            if (total / (double)_InitAverage.Count <= AverageThreshold)
+            if (total / _InitAverage.Count <= AverageThreshold)
             {
                 ControlSlotsMin = Math.Max(1, ControlSlotsMin - 1);
             }
@@ -1531,7 +1531,7 @@ namespace Server.Mobiles
 
             if (SubdueBeforeTame && !Controlled)
             {
-                if ((oldHits > ((double)HitsMax / 10)) && ((double)Hits <= ((double)HitsMax / 10)))
+                if ((oldHits > ((double)HitsMax / 10)) && (Hits <= ((double)HitsMax / 10)))
                 {
                     PublicOverheadMessage(MessageType.Regular, 0x3B2, false, "* The creature has been beaten into subjugation! *");
                 }
@@ -1974,11 +1974,11 @@ namespace Server.Mobiles
 
                 if (special)
                 {
-                    feathers = (int)Math.Ceiling((double)feathers * 1.1);
-                    wool = (int)Math.Ceiling((double)wool * 1.1);
-                    hides = (int)Math.Ceiling((double)hides * 1.1);
-                    meat = (int)Math.Ceiling((double)meat * 1.1);
-                    scales = (int)Math.Ceiling((double)scales * 1.1);
+                    feathers = (int)Math.Ceiling(feathers * 1.1);
+                    wool = (int)Math.Ceiling(wool * 1.1);
+                    hides = (int)Math.Ceiling(hides * 1.1);
+                    meat = (int)Math.Ceiling(meat * 1.1);
+                    scales = (int)Math.Ceiling(scales * 1.1);
                 }
 
                 new Blood(0x122D).MoveToWorld(corpse.Location, corpse.Map);
@@ -5755,7 +5755,7 @@ namespace Server.Mobiles
                 int topDamage = rights[0].m_Damage;
                 int minDamage;
 
-                minDamage = (int)((double)topDamage * 0.06);
+                minDamage = (int)(topDamage * 0.06);
 
                 for (int i = 0; i < rights.Count; ++i)
                 {

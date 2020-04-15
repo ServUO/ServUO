@@ -747,7 +747,7 @@ namespace Server.Items
             if (start == CraftResource.None)
                 return 0;
 
-            return (int)(resource - start);
+            return resource - start;
         }
 
         /// <summary>

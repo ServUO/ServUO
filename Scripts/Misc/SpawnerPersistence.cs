@@ -125,7 +125,7 @@ namespace Server
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)12);
+                    writer.Write(12);
 
                     writer.Write((int)VersionFlag);
 

@@ -45,7 +45,7 @@ namespace Server.Misc
                 // On EA, if follows this special rule to reduce the chances of your stamina being dropped to 0
                 if (m.Stam - fatigue <= 10)
                 {
-                    m.Stam -= (int)(fatigue * ((double)m.Hits / (double)m.HitsMax));
+                    m.Stam -= (int)(fatigue * (m.Hits / (double)m.HitsMax));
                 }
                 else
                 {
