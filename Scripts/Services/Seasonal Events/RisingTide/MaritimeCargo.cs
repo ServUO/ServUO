@@ -138,7 +138,7 @@ namespace Server.Items
                 case CargoQuality.Grandmaster: amount = Utility.RandomMinMax(100, 200); break;
                 case CargoQuality.Exalted: amount = Utility.RandomMinMax(500, 600); break;
                 case CargoQuality.Legendary: amount = Utility.RandomMinMax(1000, 1100); break;
-                case CargoQuality.Mythical: amount = Utility.RandomMinMax(10000, 15000); break;
+                case CargoQuality.Mythical: amount = Utility.RandomMinMax(10000, 10100); break;
             }
 
             return amount;
