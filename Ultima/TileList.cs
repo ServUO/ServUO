@@ -22,7 +22,7 @@ namespace Ultima
 
         public HuedTile[] ToArray()
         {
-            var tiles = new HuedTile[Count];
+            HuedTile[] tiles = new HuedTile[Count];
 
             if (m_Tiles.Count > 0)
             {
@@ -57,7 +57,7 @@ namespace Ultima
 
         public Tile[] ToArray()
         {
-            var tiles = new Tile[Count];
+            Tile[] tiles = new Tile[Count];
             if (m_Tiles.Count > 0)
             {
                 m_Tiles.CopyTo(tiles);
@@ -96,7 +96,7 @@ namespace Ultima
 
         public MTile[] ToArray()
         {
-            var tiles = new MTile[Count];
+            MTile[] tiles = new MTile[Count];
 
             if (m_Tiles.Count > 0)
             {

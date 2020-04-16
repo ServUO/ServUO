@@ -161,9 +161,9 @@ namespace Ultima
                 FileStream fsData = new FileStream(dataPath, FileMode.Open, FileAccess.Read, FileShare.Read),
                            fsIndex = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                using (var indexReader = new BinaryReader(fsIndex))
+                using (BinaryReader indexReader = new BinaryReader(fsIndex))
                 {
-                    var count = (int)(indexReader.BaseStream.Length / 4);
+                    int count = (int)(indexReader.BaseStream.Length / 4);
 
                     for (int i = 0; i < count; ++i)
                     {
@@ -173,7 +173,7 @@ namespace Ultima
 
                         fsData.Seek(4, SeekOrigin.Current);
 
-                        var tiles = new Tile[64];
+                        Tile[] tiles = new Tile[64];
 
                         GCHandle gc = GCHandle.Alloc(tiles, GCHandleType.Pinned);
                         try
@@ -213,7 +213,7 @@ namespace Ultima
                 {
                     int count = Math.Min((int)(indexReader.BaseStream.Length / 4), (int)(lookupReader.BaseStream.Length / 12));
 
-                    var lists = new HuedTileList[8][];
+                    HuedTileList[][] lists = new HuedTileList[8][];
 
                     for (int x = 0; x < 8; ++x)
                     {
@@ -275,7 +275,7 @@ namespace Ultima
                                 lists[cur.m_X & 0x7][cur.m_Y & 0x7].Add(Art.GetLegalItemID(cur.m_ID), cur.m_Hue, cur.m_Z);
                             }
 
-                            var tiles = new HuedTile[8][][];
+                            HuedTile[][][] tiles = new HuedTile[8][][];
 
                             for (int x = 0; x < 8; ++x)
                             {

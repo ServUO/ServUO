@@ -43,7 +43,7 @@ namespace Ultima
             List<int> list1 = new List<int>(), list2 = new List<int>(), list3 = new List<int>(), list4 = new List<int>();
             int max1 = 0, max2 = 0, max3 = 0, max4 = 0;
 
-            using (var ip = new StreamReader(path))
+            using (StreamReader ip = new StreamReader(path))
             {
                 string line;
 
@@ -452,19 +452,19 @@ namespace Ultima
 
             bool flip = direction > 4;
             Frame[] frames;
-            using (var bin = new BinaryReader(m_MemoryStream))
+            using (BinaryReader bin = new BinaryReader(m_MemoryStream))
             {
-                var palette = new ushort[0x100];
+                ushort[] palette = new ushort[0x100];
 
                 for (int i = 0; i < 0x100; ++i)
                 {
                     palette[i] = (ushort)(bin.ReadUInt16() ^ 0x8000);
                 }
 
-                var start = (int)bin.BaseStream.Position;
+                int start = (int)bin.BaseStream.Position;
                 int frameCount = bin.ReadInt32();
 
-                var lookups = new int[frameCount];
+                int[] lookups = new int[frameCount];
 
                 for (int i = 0; i < frameCount; ++i)
                 {
@@ -532,26 +532,26 @@ namespace Ultima
 
             bool flip = direction > 4;
 
-            using (var bin = new BinaryReader(stream))
+            using (BinaryReader bin = new BinaryReader(stream))
             {
-                var palette = new ushort[0x100];
+                ushort[] palette = new ushort[0x100];
 
                 for (int i = 0; i < 0x100; ++i)
                 {
                     palette[i] = (ushort)(bin.ReadUInt16() ^ 0x8000);
                 }
 
-                var start = (int)bin.BaseStream.Position;
+                int start = (int)bin.BaseStream.Position;
                 int frameCount = bin.ReadInt32();
 
-                var lookups = new int[frameCount];
+                int[] lookups = new int[frameCount];
 
                 for (int i = 0; i < frameCount; ++i)
                 {
                     lookups[i] = start + bin.ReadInt32();
                 }
 
-                var frames = new Frame[frameCount];
+                Frame[] frames = new Frame[frameCount];
 
                 for (int i = 0; i < frameCount; ++i)
                 {
@@ -632,7 +632,7 @@ namespace Ultima
                 }
                 else
                 {
-                    var bte = (BodyTableEntry)o;
+                    BodyTableEntry bte = (BodyTableEntry)o;
 
                     m_Table[i] = bte.OldID | (1 << 31) | ((bte.NewHue & 0xFFFF) << 15);
                 }
@@ -957,10 +957,10 @@ namespace Ultima
             {
                 return;
             }
-            var bmp = new Bitmap(width, height, Settings.PixelFormat);
+            Bitmap bmp = new Bitmap(width, height, Settings.PixelFormat);
             BitmapData bd = bmp.LockBits(
                 new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, Settings.PixelFormat);
-            var line = (ushort*)bd.Scan0;
+            ushort* line = (ushort*)bd.Scan0;
             int delta = bd.Stride >> 1;
 
             int header;
@@ -1047,7 +1047,7 @@ namespace Ultima
                 return;
             }
 
-            using (var def = new StreamReader(filePath))
+            using (StreamReader def = new StreamReader(filePath))
             {
                 string line;
 

@@ -72,7 +72,7 @@ namespace Ultima
                 return null;
             }
 
-            using (var bin = new BinaryReader(stream))
+            using (BinaryReader bin = new BinaryReader(stream))
             {
                 bool action = bin.ReadBoolean();
                 string name = ReadNameString(bin, length - 1);
@@ -116,7 +116,7 @@ namespace Ultima
                         else
                         {
                             binidx.Write((int)fsmul.Position); //lookup
-                            var length = (int)fsmul.Position;
+                            int length = (int)fsmul.Position;
                             binmul.Write(skill.IsAction);
 
                             byte[] namebytes = Encoding.Default.GetBytes(skill.Name);

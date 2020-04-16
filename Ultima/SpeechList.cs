@@ -33,9 +33,9 @@ namespace Ultima
                 return;
             }
             Entries = new List<SpeechEntry>();
-            using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                var buffer = new byte[fs.Length];
+                byte[] buffer = new byte[fs.Length];
                 unsafe
                 {
                     int order = 0;
@@ -47,8 +47,8 @@ namespace Ultima
 
                         while (bindat != bindatend)
                         {
-                            var id = (short)((*bindat++ >> 8) | (*bindat++)); //Swapped Endian
-                            var length = (short)((*bindat++ >> 8) | (*bindat++));
+                            short id = (short)((*bindat++ >> 8) | (*bindat++)); //Swapped Endian
+                            short length = (short)((*bindat++ >> 8) | (*bindat++));
                             if (length > 128)
                             {
                                 length = 128;
@@ -73,15 +73,15 @@ namespace Ultima
         public static void SaveSpeechList(string FileName)
         {
             Entries.Sort(new OrderComparer());
-            using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
+            using (FileStream fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
             {
-                using (var bin = new BinaryWriter(fs))
+                using (BinaryWriter bin = new BinaryWriter(fs))
                 {
                     foreach (SpeechEntry entry in Entries)
                     {
                         bin.Write(NativeMethods.SwapEndian(entry.ID));
                         byte[] utf8String = Encoding.UTF8.GetBytes(entry.KeyWord);
-                        var length = (short)utf8String.Length;
+                        short length = (short)utf8String.Length;
                         bin.Write(NativeMethods.SwapEndian(length));
                         bin.Write(utf8String);
                     }
@@ -91,7 +91,7 @@ namespace Ultima
 
         public static void ExportToCSV(string FileName)
         {
-            using (var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), Encoding.Unicode))
+            using (StreamWriter Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), Encoding.Unicode))
             {
                 Tex.WriteLine("Order;ID;KeyWord");
                 foreach (SpeechEntry entry in Entries)
@@ -108,7 +108,7 @@ namespace Ultima
             {
                 return;
             }
-            using (var sr = new StreamReader(FileName))
+            using (StreamReader sr = new StreamReader(FileName))
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)
