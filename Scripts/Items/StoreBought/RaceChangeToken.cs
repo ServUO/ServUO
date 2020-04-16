@@ -97,7 +97,7 @@ namespace Server.Items
         {
             if (Pending != null && Pending.ContainsKey(m))
             {
-                var tuple = Pending[m];
+                Tuple<RaceChangeToken, Race> tuple = Pending[m];
 
                 if (!tuple.Item1.IsChildOf(m.Backpack))
                 {
@@ -116,7 +116,7 @@ namespace Server.Items
         {
             if (Pending != null && Pending.ContainsKey(m))
             {
-                var tuple = Pending[m];
+                Tuple<RaceChangeToken, Race> tuple = Pending[m];
 
                 if (tuple.Item1 != null && !tuple.Item1.Deleted)
                 {

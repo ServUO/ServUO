@@ -20,7 +20,7 @@ namespace Server.Mobiles
 
         public virtual SpecialMove GetSpecialMove()
         {
-            var skill = (int)m_Mobile.Skills[SkillName.Bushido].Value;
+            int skill = (int)m_Mobile.Skills[SkillName.Bushido].Value;
 
             if (skill <= 50)
                 return null;
@@ -34,7 +34,7 @@ namespace Server.Mobiles
 
         private bool CheckForMomentumStrike()
         {
-            var count = 0;
+            int count = 0;
             IPooledEnumerable eable = m_Mobile.GetMobilesInRange(1);
 
             foreach (Mobile m in eable)
@@ -53,12 +53,12 @@ namespace Server.Mobiles
             // 25 - Confidence
             // 40 - Counter Attack
             // 60 - Evasion
-            var skill = (int)m_Mobile.Skills[SkillName.Bushido].Value;
+            int skill = (int)m_Mobile.Skills[SkillName.Bushido].Value;
 
             if (skill < 25)
                 return null;
 
-            var avail = 1;
+            int avail = 1;
 
             if (skill >= 60)
                 avail = 3;
@@ -82,11 +82,11 @@ namespace Server.Mobiles
         {
             base.DoActionCombat();
 
-            var c = m_Mobile.Combatant as Mobile;
+            Mobile c = m_Mobile.Combatant as Mobile;
 
             if (c != null)
             {
-                var move = SpecialMove.GetCurrentMove(m_Mobile);
+                SpecialMove move = SpecialMove.GetCurrentMove(m_Mobile);
 
                 if (move == null && m_NextSpecial < DateTime.UtcNow && 0.05 > Utility.RandomDouble())
                 {
@@ -100,7 +100,7 @@ namespace Server.Mobiles
                 }
                 else if (m_Mobile.Spell == null && m_NextCastTime < DateTime.UtcNow && 0.05 > Utility.RandomDouble())
                 {
-                    var spell = GetRandomSpell();
+                    Spell spell = GetRandomSpell();
 
                     if (spell != null)
                     {
@@ -115,7 +115,7 @@ namespace Server.Mobiles
 
         public TimeSpan GetCastDelay()
         {
-            var skill = (int)m_Mobile.Skills[SkillName.Bushido].Value;
+            int skill = (int)m_Mobile.Skills[SkillName.Bushido].Value;
 
             if (skill >= 60)
                 return TimeSpan.FromSeconds(15);

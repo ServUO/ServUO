@@ -657,7 +657,7 @@ namespace Server.Engines.CityLoyalty
             CommandSystem.Register("ElectionStartTime", AccessLevel.Administrator, e => Server.Gumps.BaseGump.SendGump(new ElectionStartTimeGump(e.Mobile as PlayerMobile)));
             CommandSystem.Register("RemoveWait", AccessLevel.Administrator, e =>
                 {
-                    foreach (var city in Cities)
+                    foreach (CityLoyaltySystem city in Cities)
                     {
                         city.RemoveWaitTime(e.Mobile);
                     }
@@ -785,7 +785,7 @@ namespace Server.Engines.CityLoyalty
             if (from.AccessLevel > AccessLevel.Player)
                 return true;
 
-            foreach (var city in Cities)
+            foreach (CityLoyaltySystem city in Cities)
             {
                 if (!city.CanAdd(from))
                     return false;
@@ -795,7 +795,7 @@ namespace Server.Engines.CityLoyalty
 
         public static int NextJoinCity(Mobile from)
         {
-            foreach (var city in Cities)
+            foreach (CityLoyaltySystem city in Cities)
             {
                 if (!city.CanAdd(from))
                 {
@@ -808,11 +808,11 @@ namespace Server.Engines.CityLoyalty
 
         public static void OnTick()
         {
-            foreach (var sys in Cities)
+            foreach (CityLoyaltySystem sys in Cities)
             {
                 List<Mobile> list = new List<Mobile>(sys.CitizenWait.Keys);
 
-                foreach (var m in list)
+                foreach (Mobile m in list)
                 {
                     if (sys.CitizenWait[m] < DateTime.UtcNow)
                     {
@@ -1140,8 +1140,8 @@ namespace Server.Engines.CityLoyalty
 
         public static void OnTradeComplete(Mobile from, TradeEntry entry)
         {
-            var dest = GetCityInstance(entry.Destination);
-            var origin = GetCityInstance(entry.Origin);
+            CityLoyaltySystem dest = GetCityInstance(entry.Destination);
+            CityLoyaltySystem origin = GetCityInstance(entry.Origin);
             int gold = entry.CalculateGold();
 
             if (gold > 0)
@@ -1166,8 +1166,8 @@ namespace Server.Engines.CityLoyalty
 
         public static void OnSlimTradeComplete(Mobile from, TradeEntry entry)
         {
-            var dest = GetCityInstance(entry.Destination);
-            var origin = GetCityInstance(entry.Origin);
+            CityLoyaltySystem dest = GetCityInstance(entry.Destination);
+            CityLoyaltySystem origin = GetCityInstance(entry.Origin);
 
             if (entry.Distance > 0)
             {
@@ -1211,7 +1211,7 @@ namespace Server.Engines.CityLoyalty
             writer.Write(2);
 
             writer.Write(CitizenWait.Count);
-            foreach (var kvp in CitizenWait)
+            foreach (KeyValuePair<Mobile, DateTime> kvp in CitizenWait)
             {
                 writer.Write(kvp.Key);
                 writer.Write(kvp.Value);

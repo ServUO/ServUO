@@ -267,7 +267,7 @@ namespace Server.Items
 
         public virtual void UpdateDelta()
         {
-            var eable = Map.GetClientsInRange(Location);
+            IPooledEnumerable<NetState> eable = Map.GetClientsInRange(Location);
             Mobile beholder = null;
 
             Packet status = Packet.Acquire(new MobileHitsN(this));
@@ -425,7 +425,7 @@ namespace Server.Items
             {
                 Packet p = Packet.Acquire(new PlaySound(soundID, this));
 
-                var eable = Map.GetClientsInRange(Location);
+                IPooledEnumerable<NetState> eable = Map.GetClientsInRange(Location);
 
                 foreach (NetState state in eable)
                 {

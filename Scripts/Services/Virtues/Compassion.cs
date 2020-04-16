@@ -23,7 +23,7 @@ namespace Server.Services.Virtues
 
         public static void CheckAtrophy(Mobile from)
         {
-            var pm = from as PlayerMobile;
+            PlayerMobile pm = from as PlayerMobile;
 
             if (pm == null)
                 return;

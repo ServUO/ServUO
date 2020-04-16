@@ -34,7 +34,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -49,9 +49,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -104,7 +104,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -119,9 +119,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -176,7 +176,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -191,9 +191,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -248,7 +248,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -263,9 +263,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -320,7 +320,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -335,9 +335,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -392,7 +392,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -407,9 +407,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -462,7 +462,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -477,9 +477,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -532,7 +532,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -547,9 +547,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -602,7 +602,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -617,9 +617,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -672,7 +672,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -687,9 +687,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -742,7 +742,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -757,9 +757,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -812,7 +812,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -827,9 +827,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }

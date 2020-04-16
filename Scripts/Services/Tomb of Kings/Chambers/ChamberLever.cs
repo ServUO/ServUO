@@ -8,7 +8,7 @@ namespace Server.Engines.TombOfKings
         {
             foreach (Point3D loc in m_LeverLocations)
             {
-                var item = new ChamberLever(loc);
+                ChamberLever item = new ChamberLever(loc);
                 WeakEntityCollection.Add("sa", item);
 
                 m_Levers.Add(item);

@@ -64,7 +64,7 @@ namespace Server.Engines.Quests
         {
             base.Deserialize(reader);
 
-            var version = reader.ReadInt();
+            int version = reader.ReadInt();
         }
     }
 }

@@ -179,7 +179,7 @@ namespace Server.Engines.Craft
 
                 if (itemId == 0)
                 {
-                    var attrs = type.GetCustomAttributes(typeof(CraftItemIDAttribute), false);
+                    object[] attrs = type.GetCustomAttributes(typeof(CraftItemIDAttribute), false);
 
                     if (attrs.Length > 0)
                     {
@@ -486,7 +486,7 @@ namespace Server.Engines.Craft
         {
             Type t = item.GetType();
 
-            foreach (var type in m_ClothColoredItemTable)
+            foreach (Type type in m_ClothColoredItemTable)
             {
                 if (type == t)
                     return true;
@@ -524,7 +524,7 @@ namespace Server.Engines.Craft
                     int vx = from.X + x;
                     int vy = from.Y + y;
 
-                    var tiles = map.Tiles.GetStaticTiles(vx, vy, true);
+                    StaticTile[] tiles = map.Tiles.GetStaticTiles(vx, vy, true);
 
                     for (int i = 0; i < tiles.Length; ++i)
                     {
@@ -567,7 +567,7 @@ namespace Server.Engines.Craft
             {
                 if (item is AddonComponent)
                 {
-                    var addon = ((AddonComponent)item).Addon;
+                    BaseAddon addon = ((AddonComponent)item).Addon;
 
                     if (addon is KoiPondAddon || addon is DragonTurtleFountainAddon || addon is WaterWheelAddon)
                     {
@@ -585,7 +585,7 @@ namespace Server.Engines.Craft
         {
             for (int i = 0; i < types.Length; ++i)
             {
-                var check = types[i];
+                Type[] check = types[i];
 
                 for (int j = 0; j < check.Length; ++j)
                 {
@@ -695,8 +695,8 @@ namespace Server.Engines.Craft
                 throw new ArgumentException();
             }
 
-            var items = new Item[types.Length][];
-            var totals = new int[types.Length];
+            Item[][] items = new Item[types.Length][];
+            int[] totals = new int[types.Length];
 
             for (int i = 0; i < types.Length; ++i)
             {
@@ -779,7 +779,7 @@ namespace Server.Engines.Craft
 
         public int GetQuantity(Container cont, Type[] types)
         {
-            var items = cont.FindItemsByType(types, true);
+            Item[] items = cont.FindItemsByType(types, true);
 
             int amount = 0;
 
@@ -904,8 +904,8 @@ namespace Server.Engines.Craft
                 return false;
             }
 
-            var types = new Type[Resources.Count][];
-            var amounts = new int[Resources.Count];
+            Type[][] types = new Type[Resources.Count][];
+            int[] amounts = new int[Resources.Count];
 
             maxAmount = int.MaxValue;
 
@@ -1016,7 +1016,7 @@ namespace Server.Engines.Craft
             if (NameNumber == 1041267)
             {
                 // Runebooks are a special case, they need a blank recall rune
-                var runes = ourPack.FindItemsByType<RecallRune>();
+                List<RecallRune> runes = ourPack.FindItemsByType<RecallRune>();
 
                 for (int i = 0; i < runes.Count; ++i)
                 {

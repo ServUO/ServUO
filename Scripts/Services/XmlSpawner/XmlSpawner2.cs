@@ -10783,7 +10783,7 @@ namespace Server.Mobiles
         {
             if (listi != null)
             {
-                var i = listi.Count;
+                int i = listi.Count;
 
                 while (--i >= 0)
                 {
@@ -10803,7 +10803,7 @@ namespace Server.Mobiles
 
             if (listm != null)
             {
-                var i = listm.Count;
+                int i = listm.Count;
 
                 while (--i >= 0)
                 {

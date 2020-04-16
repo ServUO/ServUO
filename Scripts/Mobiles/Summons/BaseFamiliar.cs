@@ -221,7 +221,7 @@ namespace Server.Mobiles
 
             if (map != null && map != Map.Internal && pack != null)
             {
-                var list = new List<Item>(pack.Items);
+                List<Item> list = new List<Item>(pack.Items);
 
                 for (int i = 0; i < list.Count; ++i)
                 {
@@ -241,7 +241,7 @@ namespace Server.Mobiles
 
             if (attacker is PlayerMobile)
             {
-                foreach (var ts in ((PlayerMobile)attacker).AllFollowers.Where(m => m is BaseTalismanSummon && m.InRange(defender.Location, m.Weapon.MaxRange)))
+                foreach (Mobile ts in ((PlayerMobile)attacker).AllFollowers.Where(m => m is BaseTalismanSummon && m.InRange(defender.Location, m.Weapon.MaxRange)))
                 {
                     ts.Weapon.OnSwing(ts, defender);
                 }

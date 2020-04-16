@@ -57,7 +57,7 @@ namespace Server.Gumps
             m_Page = page;
             m_List = list;
 
-            var ts = (TimeSpan)prop.GetValue(o, null);
+            TimeSpan ts = (TimeSpan)prop.GetValue(o, null);
 
             AddPage(0);
 
@@ -83,9 +83,9 @@ namespace Server.Gumps
             TimeSpan toSet;
             bool shouldSet, shouldSend;
 
-            var h = info.GetTextEntry(0);
-            var m = info.GetTextEntry(1);
-            var s = info.GetTextEntry(2);
+            TextRelay h = info.GetTextEntry(0);
+            TextRelay m = info.GetTextEntry(1);
+            TextRelay s = info.GetTextEntry(2);
 
             switch (info.ButtonID)
             {
@@ -99,7 +99,7 @@ namespace Server.Gumps
                     }
                 case 2: // From H:M:S
                     {
-                        var successfulParse = false;
+                        bool successfulParse = false;
                         if (h != null && m != null && s != null)
                         {
                             successfulParse = TimeSpan.TryParse(h.Text + ":" + m.Text + ":" + s.Text, out toSet);
@@ -209,8 +209,8 @@ namespace Server.Gumps
 
         private void AddRect(int index, string str, int button, int text)
         {
-            var x = BorderSize + OffsetSize;
-            var y = BorderSize + OffsetSize + (index * (EntryHeight + OffsetSize));
+            int x = BorderSize + OffsetSize;
+            int y = BorderSize + OffsetSize + (index * (EntryHeight + OffsetSize));
 
             AddImageTiled(x, y, EntryWidth, EntryHeight, EntryGumpID);
             AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, TextHue, str);

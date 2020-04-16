@@ -197,7 +197,7 @@ namespace Server.Engines.BulkOrders
                         material = BulkMaterialType.None;
                     }
 
-                    var bod = new SmallTinkerBOD(entry, material, amountMax, reqExceptional);
+                    SmallTinkerBOD bod = new SmallTinkerBOD(entry, material, amountMax, reqExceptional);
 
                     if (entry.Type.IsSubclassOf(typeof(BaseJewel)))
                     {

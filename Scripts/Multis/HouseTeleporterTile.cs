@@ -410,7 +410,7 @@ namespace Server.Multis
                 {
                     if (targeted is HouseTeleporterTile)
                     {
-                        var tile = targeted as HouseTeleporterTile;
+                        HouseTeleporterTile tile = targeted as HouseTeleporterTile;
 
                         if (tile.IsChildOf(m.Backpack))
                         {
@@ -626,8 +626,8 @@ namespace Server.Multis
         {
             Hue = 1336;
 
-            var tele1 = new HouseTeleporterTile(reward);
-            var tele2 = new HouseTeleporterTile(reward);
+            HouseTeleporterTile tele1 = new HouseTeleporterTile(reward);
+            HouseTeleporterTile tele2 = new HouseTeleporterTile(reward);
 
             tele1.Link = tele2;
             tele2.Link = tele1;

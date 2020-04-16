@@ -606,7 +606,7 @@ namespace Server.Engines.Harvest
 
                     if (tiles.Length > 0)
                     {
-                        foreach (var tile in tiles)
+                        foreach (StaticTile tile in tiles)
                         {
                             int id = (tile.ID & 0x3FFF) | 0x4000;
 
@@ -644,7 +644,7 @@ namespace Server.Engines.Harvest
                 {
                     StaticTile[] tiles = map.Tiles.GetStaticTiles(x, y, false);
 
-                    foreach (var tile in tiles)
+                    foreach (StaticTile tile in tiles)
                     {
                         int itemID = tile.ID;
 
@@ -686,7 +686,7 @@ namespace Server.Engines.Harvest
                 {
                     StaticTile[] tiles = map.Tiles.GetStaticTiles(x, y, false);
 
-                    foreach (var tile in tiles)
+                    foreach (StaticTile tile in tiles)
                     {
                         int itemID = tile.ID;
 

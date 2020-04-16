@@ -96,8 +96,8 @@ namespace Server
         public static void CheckRecipeDrop(CreatureDeathEventArgs e)
         {
             BaseCreature bc = e.Creature as BaseCreature;
-            var c = e.Corpse;
-            var killer = e.Killer;
+            Container c = e.Corpse;
+            Mobile killer = e.Killer;
 
             if (SpellHelper.IsEodon(c.Map, c.Location))
             {

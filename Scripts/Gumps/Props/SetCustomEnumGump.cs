@@ -29,15 +29,15 @@ namespace Server.Gumps
 
         public override void OnResponse(NetState sender, RelayInfo relayInfo)
         {
-            var index = relayInfo.ButtonID - 1;
+            int index = relayInfo.ButtonID - 1;
 
             if (index >= 0 && index < _Names.Length)
             {
                 try
                 {
-                    var info = m_Property.PropertyType.GetMethod("Parse", new[] { typeof(string) });
+                    MethodInfo info = m_Property.PropertyType.GetMethod("Parse", new[] { typeof(string) });
 
-                    var result = "";
+                    string result = "";
 
                     if (info != null)
                     {
@@ -63,7 +63,7 @@ namespace Server.Gumps
                     }
                     else if (typeofIDynamicEnum.IsAssignableFrom(m_Property.PropertyType))
                     {
-                        var ienum = (IDynamicEnum)m_Property.GetValue(m_Object, null);
+                        IDynamicEnum ienum = (IDynamicEnum)m_Property.GetValue(m_Object, null);
 
                         if (ienum != null)
                         {

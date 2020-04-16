@@ -673,7 +673,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    var barrel = new WaterBarrel();
+                    WaterBarrel barrel = new WaterBarrel();
                     barrel.Movable = false;
                     barrel.MoveToWorld(Location, Map);
 
@@ -847,8 +847,8 @@ namespace Server.Items
             if (!Locked && TrapType == TrapType.DartTrap && from.InRange(GetWorldLocation(), 2))
             {
                 int damage;
-                var p = GetWorldLocation();
-                var map = Map;
+                Point3D p = GetWorldLocation();
+                Map map = Map;
 
                 if (TrapLevel > 0)
                     damage = Utility.RandomMinMax(5, 15) * TrapLevel;

@@ -145,13 +145,13 @@ namespace Server.Mobiles
                     // spawn new friends
 
                     BaseCreature friend = new Raptor(true);
-                    var loc = Location;
-                    var validLocation = false;
-                    for (var j = 0; !validLocation && j < 10; ++j)
+                    Point3D loc = Location;
+                    bool validLocation = false;
+                    for (int j = 0; !validLocation && j < 10; ++j)
                     {
-                        var x = X + Utility.Random(3) - 1;
-                        var y = Y + Utility.Random(3) - 1;
-                        var z = Map.GetAverageZ(x, y);
+                        int x = X + Utility.Random(3) - 1;
+                        int y = Y + Utility.Random(3) - 1;
+                        int z = Map.GetAverageZ(x, y);
 
                         if (validLocation = Map.CanFit(x, y, Z, 16, false, false))
                             loc = new Point3D(x, y, Z);

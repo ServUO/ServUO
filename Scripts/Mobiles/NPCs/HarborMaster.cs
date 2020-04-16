@@ -99,7 +99,7 @@ namespace Server.Mobiles
                 if (m_Vendor == null || m_Vendor.Deleted)
                     return;
 
-                var boat = BaseBoat.GetBoat(m_From);
+                BaseBoat boat = BaseBoat.GetBoat(m_From);
 
                 if (boat != null)
                 {
@@ -187,7 +187,7 @@ namespace Server.Mobiles
                         }
                     case 1:
                         {
-                            var boat = BaseBoat.GetBoat(from);
+                            BaseBoat boat = BaseBoat.GetBoat(from);
 
                             if (boat != null && !_Table.ContainsKey(from))
                             {

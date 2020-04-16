@@ -35,7 +35,7 @@ namespace Server.Spells.Mysticism
 
         public void OnTarget(object o)
         {
-            var targeted = o as Mobile;
+            Mobile targeted = o as Mobile;
 
             if (targeted == null)
                 return;
@@ -49,16 +49,16 @@ namespace Server.Spells.Mysticism
 
                 Caster.PlaySound(0x64C);
 
-                var targets = new List<Mobile> { targeted };
+                List<Mobile> targets = new List<Mobile> { targeted };
                 targets.AddRange(FindAdditionalTargets(targeted).Take(3)); // This effect can hit up to 3 additional players beyond the primary target.
 
                 double primarySkill = Caster.Skills[CastSkill].Value;
                 double secondarySkill = Caster.Skills[DamageSkill].Value;
 
-                var toHeal = (int)((primarySkill + secondarySkill) / 4.0) + Utility.RandomMinMax(-3, 3);
+                int toHeal = (int)((primarySkill + secondarySkill) / 4.0) + Utility.RandomMinMax(-3, 3);
                 toHeal /= targets.Count; // The effectiveness of the spell is reduced by the number of targets affected.
 
-                foreach (var target in targets)
+                foreach (Mobile target in targets)
                 {
                     // WARNING: This spell will flag the caster as a criminal if a criminal or murderer party member is close enough
                     // to the target to receive the benefits from the area of effect.
@@ -91,7 +91,7 @@ namespace Server.Spells.Mysticism
                         toHealMod = 0;
                     }
 
-                    var curseLevel = RemoveCurses(target);
+                    int curseLevel = RemoveCurses(target);
 
                     if (toHealMod > 0 && curseLevel > 0)
                     {
@@ -112,14 +112,14 @@ namespace Server.Spells.Mysticism
         {
             m.FixedParticles(0x3709, 1, 30, 9963, 13, 3, EffectLayer.Head);
 
-            var from = new Entity(Serial.Zero, new Point3D(m.X, m.Y, m.Z - 10), m.Map);
-            var to = new Entity(Serial.Zero, new Point3D(m.X, m.Y, m.Z + 50), m.Map);
+            Entity from = new Entity(Serial.Zero, new Point3D(m.X, m.Y, m.Z - 10), m.Map);
+            Entity to = new Entity(Serial.Zero, new Point3D(m.X, m.Y, m.Z + 50), m.Map);
             Effects.SendMovingParticles(from, to, 0x2255, 1, 0, false, false, 13, 3, 9501, 1, 0, EffectLayer.Head, 0x100);
         }
 
         private IEnumerable<Mobile> FindAdditionalTargets(Mobile targeted)
         {
-            var casterParty = Party.Get(Caster);
+            Party casterParty = Party.Get(Caster);
 
             if (casterParty == null)
                 yield break;

@@ -47,13 +47,13 @@ namespace Server.Items
 
             if (IsChildOf(from.Backpack))
             {
-                var entry1 = new SimpleContextMenuEntry(from, 1071507, m =>
+                SimpleContextMenuEntry entry1 = new SimpleContextMenuEntry(from, 1071507, m =>
                     {
                         SummonAll = false;
                         InvalidateProperties();
                     }); // Summon Most Recent Corpse Only
 
-                var entry2 = new SimpleContextMenuEntry(from, 1071508, m =>
+                SimpleContextMenuEntry entry2 = new SimpleContextMenuEntry(from, 1071508, m =>
                     {
                         _SummonAll = true;
                         InvalidateProperties();
@@ -88,7 +88,7 @@ namespace Server.Items
 
                 if (_SummonAll)
                 {
-                    var corpses = GetCorpses(m);
+                    List<Corpse> corpses = GetCorpses(m);
 
                     if (corpses != null)
                     {
@@ -103,7 +103,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    var corpse = GetCorpse(m);
+                    Corpse corpse = GetCorpse(m);
 
                     if (corpse != null)
                     {
@@ -155,7 +155,7 @@ namespace Server.Items
             {
                 List<Corpse> copy = new List<Corpse>(corpses);
 
-                foreach (var c in copy)
+                foreach (Corpse c in copy)
                 {
                     bool remove = false;
 
@@ -214,7 +214,7 @@ namespace Server.Items
             {
                 m.PlaySound(0xFA);
 
-                foreach (var c in corpses)
+                foreach (Corpse c in corpses)
                 {
                     c.MoveToWorld(m.Location, m.Map);
 
@@ -255,7 +255,7 @@ namespace Server.Items
 
             int count = 0;
 
-            foreach (var kvp in Corpse.PlayerCorpses)
+            foreach (KeyValuePair<Corpse, int> kvp in Corpse.PlayerCorpses)
             {
                 if (kvp.Key.Owner == m && kvp.Value < 3)
                     count++;
@@ -271,7 +271,7 @@ namespace Server.Items
 
             List<Corpse> list = null;
 
-            foreach (var kvp in Corpse.PlayerCorpses)
+            foreach (KeyValuePair<Corpse, int> kvp in Corpse.PlayerCorpses)
             {
                 if (kvp.Key.Owner == m && kvp.Value < 3)
                 {
@@ -291,7 +291,7 @@ namespace Server.Items
 
         private Corpse GetCorpse(Mobile m)
         {
-            var corpse = m.Corpse as Corpse;
+            Corpse corpse = m.Corpse as Corpse;
 
             if (corpse == null || Corpse.PlayerCorpses == null || !Corpse.PlayerCorpses.ContainsKey(corpse))
                 return null;
@@ -318,7 +318,7 @@ namespace Server.Items
 
         public bool IsSummoning()
         {
-            foreach (var timer in _Timers.Values)
+            foreach (CorpseRetrieveTimer timer in _Timers.Values)
             {
                 if (timer.Staff == this)
                     return true;

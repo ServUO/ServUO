@@ -33,7 +33,7 @@ namespace Server.Engines.RisingTide
 
         public static void CheckEnabled(bool timed = false)
         {
-            var risingTide = PointsSystem.RisingTide;
+            Points.RisingTide risingTide = PointsSystem.RisingTide;
 
             if (risingTide.Enabled && !risingTide.InSeason)
             {

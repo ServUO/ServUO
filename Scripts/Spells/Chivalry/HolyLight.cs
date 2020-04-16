@@ -70,7 +70,7 @@ namespace Server.Spells.Chivalry
         {
             if (CheckSequence())
             {
-                foreach (var id in AcquireIndirectTargets(Caster.Location, 3))
+                foreach (IDamageable id in AcquireIndirectTargets(Caster.Location, 3))
                 {
                     Mobile m = id as Mobile;
 

@@ -162,7 +162,7 @@ namespace Server.Spells.Chivalry
         {
             if (m_Table.ContainsKey(m))
             {
-                var context = m_Table[m];
+                ConsecratedWeaponContext context = m_Table[m];
 
                 context.Expire();
 

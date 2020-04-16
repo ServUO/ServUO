@@ -54,7 +54,7 @@ namespace Server.Engines.Chat
 
         public static ChatUser AddChatUser(Mobile from)
         {
-            var user = GetChatUser(from);
+            ChatUser user = GetChatUser(from);
 
             if (user == null)
             {
@@ -88,7 +88,7 @@ namespace Server.Engines.Chat
 
         public static void RemoveChatUser(Mobile from)
         {
-            var user = GetChatUser(from);
+            ChatUser user = GetChatUser(from);
 
             RemoveChatUser(user);
         }
@@ -112,7 +112,7 @@ namespace Server.Engines.Chat
 
         public static void GlobalSendCommand(ChatCommand command, ChatUser initiator, string param1 = null, string param2 = null)
         {
-            foreach (var user in m_Users.ToArray())
+            foreach (ChatUser user in m_Users.ToArray())
             {
                 if (user == initiator)
                     continue;

@@ -16,8 +16,8 @@ namespace Server.Mobiles
 
         public override Spell GetRandomDamageSpell()
         {
-            var mana = m_Mobile.Mana;
-            var select = 1;
+            int mana = m_Mobile.Mana;
+            int select = 1;
 
             if (mana >= 29)
                 select = 4;
@@ -53,8 +53,8 @@ namespace Server.Mobiles
 
         public override Spell GetRandomCurseSpell()
         {
-            var mana = m_Mobile.Mana;
-            var select = 1;
+            int mana = m_Mobile.Mana;
+            int select = 1;
 
             if (mana >= 17)
                 select = 5;

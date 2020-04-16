@@ -111,7 +111,7 @@ namespace Server.Items
             if (AmmoType != null && attacker.Player && damageable is Mobile && !((Mobile)damageable).Player && (((Mobile)damageable).Body.IsAnimal || ((Mobile)damageable).Body.IsMonster) &&
                 0.4 >= Utility.RandomDouble())
             {
-                var ammo = Ammo;
+                Item ammo = Ammo;
 
                 if (ammo != null)
                 {

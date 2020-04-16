@@ -339,9 +339,9 @@ namespace Server.SkillHandlers
             {
                 if (m_PVP)
                 {
-                    foreach (var item in m_Target.Items)
+                    foreach (Item item in m_Target.Items)
                     {
-                        var bonuses = RunicReforging.GetAosSkillBonuses(item);
+                        AosSkillBonuses bonuses = RunicReforging.GetAosSkillBonuses(item);
 
                         if (bonuses != null)
                         {
@@ -377,9 +377,9 @@ namespace Server.SkillHandlers
                 {
                     Timer.DelayCall(() =>
                     {
-                        foreach (var item in m_Target.Items)
+                        foreach (Item item in m_Target.Items)
                         {
-                            var bonuses = RunicReforging.GetAosSkillBonuses(item);
+                            AosSkillBonuses bonuses = RunicReforging.GetAosSkillBonuses(item);
 
                             if (bonuses != null)
                             {
@@ -417,7 +417,7 @@ namespace Server.SkillHandlers
                     info.m_Timer.Stop();
                 }
 
-                var targ = info.m_Target;
+                Mobile targ = info.m_Target;
                 info.Clear();
 
                 Discordance.RemoveEffects(targ);

@@ -23,7 +23,7 @@ namespace Server.Items
 
             if (m.Player && m.InRange(this.Location, 5) && m.AccessLevel == AccessLevel.Player && 0.5 > Utility.RandomDouble())
             {
-                var automaton = new KotlAutomaton();
+                KotlAutomaton automaton = new KotlAutomaton();
                 automaton.MoveToWorld(Location, Map);
 
                 OnBirth(automaton, this);

@@ -63,7 +63,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            var house = BaseHouse.FindHouseAt(this);
+            BaseHouse house = BaseHouse.FindHouseAt(this);
 
             if (house == null || !house.IsLockedDown(this))
             {

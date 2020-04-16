@@ -137,7 +137,7 @@ namespace Server.Items
 
         public static bool HasGroup(Type type, Type colType)
         {
-            foreach (var typeList in _PetGroups)
+            foreach (Type[] typeList in _PetGroups)
             {
                 if (typeList.Any(x => type == x) && typeList.Any(x => colType == x))
                 {

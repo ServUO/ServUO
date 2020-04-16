@@ -88,7 +88,7 @@ namespace Server.Items
                     if (Selected == null)
                         return false;
 
-                    foreach (var sk in Selected)
+                    foreach (Skill sk in Selected)
                     {
                         if (sk == null)
                             return false;
@@ -244,7 +244,7 @@ namespace Server.Items
 
                             Effects.SendTargetParticles(User, 0x375A, 35, 90, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
 
-                            foreach (var sk in Selected)
+                            foreach (Skill sk in Selected)
                             {
                                 sk.Base = 90;
                             }
@@ -285,9 +285,9 @@ namespace Server.Items
 
             private void SetStats(RelayInfo info)
             {
-                var entry1 = info.GetTextEntry(1);
-                var entry2 = info.GetTextEntry(2);
-                var entry3 = info.GetTextEntry(3);
+                TextRelay entry1 = info.GetTextEntry(1);
+                TextRelay entry2 = info.GetTextEntry(2);
+                TextRelay entry3 = info.GetTextEntry(3);
 
                 if (entry1 != null)
                     Str = Math.Min(125, Math.Max(10, Utility.ToInt32(entry1.Text)));
@@ -301,7 +301,7 @@ namespace Server.Items
 
             private bool CanSelect(SkillName skill)
             {
-                foreach (var sk in Selected)
+                foreach (Skill sk in Selected)
                 {
                     if (User.Skills[skill] == sk)
                         return false;

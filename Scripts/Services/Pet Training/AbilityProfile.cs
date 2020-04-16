@@ -63,7 +63,7 @@ namespace Server.Mobiles
         {
             if (Creature.Controlled)
             {
-                var oldAbility = MagicalAbility;
+                MagicalAbility oldAbility = MagicalAbility;
 
                 if (IsSpecialMagicalAbility(oldAbility))
                 {
@@ -91,7 +91,7 @@ namespace Server.Mobiles
             }
             else if (!SpecialAbilities.Any(a => a == ability))
             {
-                var temp = SpecialAbilities;
+                SpecialAbility[] temp = SpecialAbilities;
 
                 SpecialAbilities = new SpecialAbility[temp.Length + 1];
 
@@ -114,7 +114,7 @@ namespace Server.Mobiles
             }
             else if (!AreaEffects.Any(a => a == ability))
             {
-                var temp = AreaEffects;
+                AreaEffect[] temp = AreaEffects;
 
                 AreaEffects = new AreaEffect[temp.Length + 1];
 
@@ -137,7 +137,7 @@ namespace Server.Mobiles
             }
             else if (!WeaponAbilities.Any(a => a == ability))
             {
-                var temp = WeaponAbilities;
+                WeaponAbility[] temp = WeaponAbilities;
 
                 WeaponAbilities = new WeaponAbility[temp.Length + 1];
 
@@ -166,7 +166,7 @@ namespace Server.Mobiles
             if (SpecialAbilities == null || !SpecialAbilities.Any(a => a == ability))
                 return;
 
-            var list = SpecialAbilities.ToList();
+            List<SpecialAbility> list = SpecialAbilities.ToList();
 
             list.Remove(ability);
             RemovePetAdvancement(ability);
@@ -181,7 +181,7 @@ namespace Server.Mobiles
             if (WeaponAbilities == null || !WeaponAbilities.Any(a => a == ability))
                 return;
 
-            var list = WeaponAbilities.ToList();
+            List<WeaponAbility> list = WeaponAbilities.ToList();
 
             list.Remove(ability);
             RemovePetAdvancement(ability);
@@ -196,7 +196,7 @@ namespace Server.Mobiles
             if (AreaEffects == null || !AreaEffects.Any(a => a == ability))
                 return;
 
-            var list = AreaEffects.ToList();
+            List<AreaEffect> list = AreaEffects.ToList();
 
             list.Remove(ability);
             RemovePetAdvancement(ability);
@@ -244,11 +244,11 @@ namespace Server.Mobiles
                 AddMagicalAbility((MagicalAbility)newAbility);
             }
 
-            var trainPoint = PetTrainingHelper.GetTrainingPoint(newAbility);
+            TrainingPoint trainPoint = PetTrainingHelper.GetTrainingPoint(newAbility);
 
             if (trainPoint != null && trainPoint.Requirements != null)
             {
-                foreach (var req in trainPoint.Requirements.Where(r => r != null))
+                foreach (TrainingPointRequirement req in trainPoint.Requirements.Where(r => r != null))
                 {
                     if (req.Requirement is SkillName)
                     {
@@ -536,7 +536,7 @@ namespace Server.Mobiles
         {
             if (MagicalAbility != MagicalAbility.None)
             {
-                foreach (var abil in PetTrainingHelper.MagicalAbilities)
+                foreach (MagicalAbility abil in PetTrainingHelper.MagicalAbilities)
                 {
                     if ((MagicalAbility & abil) != 0)
                         yield return abil;
@@ -545,7 +545,7 @@ namespace Server.Mobiles
 
             if (SpecialAbilities != null)
             {
-                foreach (var abil in SpecialAbilities)
+                foreach (SpecialAbility abil in SpecialAbilities)
                 {
                     yield return abil;
                 }
@@ -553,7 +553,7 @@ namespace Server.Mobiles
 
             if (AreaEffects != null)
             {
-                foreach (var effect in AreaEffects)
+                foreach (AreaEffect effect in AreaEffects)
                 {
                     yield return effect;
                 }
@@ -561,7 +561,7 @@ namespace Server.Mobiles
 
             if (WeaponAbilities != null)
             {
-                foreach (var abil in WeaponAbilities)
+                foreach (WeaponAbility abil in WeaponAbilities)
                 {
                     yield return abil;
                 }
@@ -575,7 +575,7 @@ namespace Server.Mobiles
                 yield break;
             }
 
-            foreach (var ability in SpecialAbilities)
+            foreach (SpecialAbility ability in SpecialAbilities)
             {
                 yield return ability;
             }
@@ -593,7 +593,7 @@ namespace Server.Mobiles
                 yield break;
             }
 
-            foreach (var ability in AreaEffects)
+            foreach (AreaEffect ability in AreaEffects)
             {
                 yield return ability;
             }
@@ -690,7 +690,7 @@ namespace Server.Mobiles
 
             if (SpecialAbilities != null)
             {
-                foreach (var abil in SpecialAbilities)
+                foreach (SpecialAbility abil in SpecialAbilities)
                 {
                     writer.Write(Array.IndexOf(SpecialAbility.Abilities, abil));
                 }
@@ -700,7 +700,7 @@ namespace Server.Mobiles
 
             if (AreaEffects != null)
             {
-                foreach (var abil in AreaEffects)
+                foreach (AreaEffect abil in AreaEffects)
                 {
                     writer.Write(Array.IndexOf(AreaEffect.Effects, abil));
                 }
@@ -710,7 +710,7 @@ namespace Server.Mobiles
 
             if (WeaponAbilities != null)
             {
-                foreach (var abil in WeaponAbilities)
+                foreach (WeaponAbility abil in WeaponAbilities)
                 {
                     writer.Write(Array.IndexOf(WeaponAbility.Abilities, abil));
                 }
@@ -720,7 +720,7 @@ namespace Server.Mobiles
 
             if (Advancements != null)
             {
-                foreach (var o in Advancements)
+                foreach (object o in Advancements)
                 {
                     if (o is MagicalAbility)
                     {

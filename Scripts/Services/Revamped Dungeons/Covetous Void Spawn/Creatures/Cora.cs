@@ -196,7 +196,7 @@ namespace Server.Mobiles
             IPoint3D p = objs[0] as IPoint3D;
             Map map = objs[1] as Map;
 
-            var item = new ManaDrainItem(Utility.RandomList(6913, 6915, 6917, 6919), this);
+            ManaDrainItem item = new ManaDrainItem(Utility.RandomList(6913, 6915, 6917, 6919), this);
             Spells.SpellHelper.GetSurfaceTop(ref p);
 
             item.MoveToWorld(new Point3D(p), this.Map);

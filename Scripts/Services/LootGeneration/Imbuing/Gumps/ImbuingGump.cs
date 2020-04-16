@@ -386,7 +386,7 @@ namespace Server.Gumps
                 }
 
                 ImbuingContext context = Imbuing.GetContext(m);
-                var itemType = ItemPropertyInfo.GetItemType(item);
+                ItemType itemType = ItemPropertyInfo.GetItemType(item);
 
                 if (itemType == ItemType.Invalid)
                 {

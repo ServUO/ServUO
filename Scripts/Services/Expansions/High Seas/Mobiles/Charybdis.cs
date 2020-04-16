@@ -108,7 +108,7 @@ namespace Server.Mobiles
 
         public void DoTeleport()
         {
-            var combatant = Combatant as Mobile;
+            Mobile combatant = Combatant as Mobile;
 
             if (combatant == null)
             {
@@ -197,7 +197,7 @@ namespace Server.Mobiles
 
             if (boat != null)
             {
-                foreach (var mob in boat.GetMobilesOnBoard().Where(m => CanBeHarmful(m, false) && m.Alive))
+                foreach (Mobile mob in boat.GetMobilesOnBoard().Where(m => CanBeHarmful(m, false) && m.Alive))
                 {
                     double damage = Math.Max(40, Utility.RandomMinMax(50, 100) * (Hits / (double)HitsMax));
 

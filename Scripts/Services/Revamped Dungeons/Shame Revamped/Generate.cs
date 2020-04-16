@@ -32,14 +32,14 @@ namespace Server.Engines.ShameRevamped
 
             if (!CheckForAltar(altarLoc, Map.Trammel))
             {
-                var altar = new ShameAltar(typeof(QuartzElemental), new Point3D(5490, 19, -25), new Point3D(5514, 10, 5), new Point3D(5387, 11, 30), 10);
+                ShameAltar altar = new ShameAltar(typeof(QuartzElemental), new Point3D(5490, 19, -25), new Point3D(5514, 10, 5), new Point3D(5387, 11, 30), 10);
                 WeakEntityCollection.Add("newshame", altar);
                 altar.MoveToWorld(altarLoc, Map.Trammel);
             }
 
             if (!CheckForAltar(altarLoc, Map.Felucca))
             {
-                var altar = new ShameAltar(typeof(QuartzElemental), new Point3D(5490, 19, -25), new Point3D(5514, 10, 5), new Point3D(5387, 11, 30), 10);
+                ShameAltar altar = new ShameAltar(typeof(QuartzElemental), new Point3D(5490, 19, -25), new Point3D(5514, 10, 5), new Point3D(5387, 11, 30), 10);
                 WeakEntityCollection.Add("newshame", altar);
                 altar.MoveToWorld(altarLoc, Map.Felucca);
             }
@@ -49,14 +49,14 @@ namespace Server.Engines.ShameRevamped
 
             if (!CheckForAltar(altarLoc, Map.Trammel))
             {
-                var altar = new ShameAltar(typeof(FlameElemental), new Point3D(5604, 102, 5), new Point3D(5514, 147, 25), new Point3D(5571, 115, 3), 20);
+                ShameAltar altar = new ShameAltar(typeof(FlameElemental), new Point3D(5604, 102, 5), new Point3D(5514, 147, 25), new Point3D(5571, 115, 3), 20);
                 WeakEntityCollection.Add("newshame", altar);
                 altar.MoveToWorld(altarLoc, Map.Trammel);
             }
 
             if (!CheckForAltar(altarLoc, Map.Felucca))
             {
-                var altar = new ShameAltar(typeof(FlameElemental), new Point3D(5604, 102, 5), new Point3D(5514, 147, 25), new Point3D(5571, 115, 3), 20);
+                ShameAltar altar = new ShameAltar(typeof(FlameElemental), new Point3D(5604, 102, 5), new Point3D(5514, 147, 25), new Point3D(5571, 115, 3), 20);
                 WeakEntityCollection.Add("newshame", altar);
                 altar.MoveToWorld(altarLoc, Map.Felucca);
             }
@@ -66,14 +66,14 @@ namespace Server.Engines.ShameRevamped
 
             if (!CheckForAltar(altarLoc, Map.Trammel))
             {
-                var altar = new ShameAltar(typeof(WindElemental), new Point3D(5538, 170, 5), new Point3D(5513, 176, 5), new Point3D(5618, 223, 0), 30);
+                ShameAltar altar = new ShameAltar(typeof(WindElemental), new Point3D(5538, 170, 5), new Point3D(5513, 176, 5), new Point3D(5618, 223, 0), 30);
                 WeakEntityCollection.Add("newshame", altar);
                 altar.MoveToWorld(altarLoc, Map.Trammel);
             }
 
             if (!CheckForAltar(altarLoc, Map.Felucca))
             {
-                var altar = new ShameAltar(typeof(WindElemental), new Point3D(5538, 170, 5), new Point3D(5513, 176, 5), new Point3D(5618, 223, 0), 30);
+                ShameAltar altar = new ShameAltar(typeof(WindElemental), new Point3D(5538, 170, 5), new Point3D(5513, 176, 5), new Point3D(5618, 223, 0), 30);
                 WeakEntityCollection.Add("newshame", altar);
                 altar.MoveToWorld(altarLoc, Map.Felucca);
             }
@@ -90,7 +90,7 @@ namespace Server.Engines.ShameRevamped
                 dictionary[new Point3D(2, 0, 0)] = 2272;
                 dictionary[new Point3D(1, 0, 0)] = 2272;
 
-                var wall = new ShameWall(dictionary, altarLoc, new Point3D(5405, 90, 10), Map.Trammel);
+                ShameWall wall = new ShameWall(dictionary, altarLoc, new Point3D(5405, 90, 10), Map.Trammel);
                 WeakEntityCollection.Add("newshame", wall);
                 wall.MoveToWorld(altarLoc, Map.Trammel);
                 ShameWall.AddTeleporters(wall);
@@ -104,7 +104,7 @@ namespace Server.Engines.ShameRevamped
                 dictionary[new Point3D(2, 0, 0)] = 2272;
                 dictionary[new Point3D(1, 0, 0)] = 2272;
 
-                var wall = new ShameWall(dictionary, altarLoc, new Point3D(5405, 90, 10), Map.Felucca);
+                ShameWall wall = new ShameWall(dictionary, altarLoc, new Point3D(5405, 90, 10), Map.Felucca);
                 WeakEntityCollection.Add("newshame", wall);
                 wall.MoveToWorld(altarLoc, Map.Felucca);
                 ShameWall.AddTeleporters(wall);
@@ -121,7 +121,7 @@ namespace Server.Engines.ShameRevamped
                 dictionary[new Point3D(0, 1, 0)] = 2272;
                 dictionary[new Point3D(0, 2, 0)] = 2272;
 
-                var wall = new ShameWall(dictionary, altarLoc, new Point3D(5472, 26, -30), Map.Trammel);
+                ShameWall wall = new ShameWall(dictionary, altarLoc, new Point3D(5472, 26, -30), Map.Trammel);
                 WeakEntityCollection.Add("newshame", wall);
                 wall.MoveToWorld(altarLoc, Map.Trammel);
                 ShameWall.AddTeleporters(wall);
@@ -135,7 +135,7 @@ namespace Server.Engines.ShameRevamped
                 dictionary[new Point3D(0, 1, 0)] = 2272;
                 dictionary[new Point3D(0, 2, 0)] = 2272;
 
-                var wall = new ShameWall(dictionary, altarLoc, new Point3D(5472, 26, -30), Map.Felucca);
+                ShameWall wall = new ShameWall(dictionary, altarLoc, new Point3D(5472, 26, -30), Map.Felucca);
                 WeakEntityCollection.Add("newshame", wall);
                 wall.MoveToWorld(altarLoc, Map.Felucca);
                 ShameWall.AddTeleporters(wall);
@@ -151,7 +151,7 @@ namespace Server.Engines.ShameRevamped
                 dictionary[new Point3D(0, 0, 0)] = 1059;
                 dictionary[new Point3D(1, 0, 0)] = 1059;
 
-                var wall = new ShameWall(dictionary, altarLoc, new Point3D(5621, 43, 0), Map.Trammel);
+                ShameWall wall = new ShameWall(dictionary, altarLoc, new Point3D(5621, 43, 0), Map.Trammel);
                 WeakEntityCollection.Add("newshame", wall);
                 wall.MoveToWorld(altarLoc, Map.Trammel);
                 ShameWall.AddTeleporters(wall);
@@ -164,7 +164,7 @@ namespace Server.Engines.ShameRevamped
                 dictionary[new Point3D(0, 0, 0)] = 1059;
                 dictionary[new Point3D(1, 0, 0)] = 1059;
 
-                var wall = new ShameWall(dictionary, altarLoc, new Point3D(5621, 43, 0), Map.Felucca);
+                ShameWall wall = new ShameWall(dictionary, altarLoc, new Point3D(5621, 43, 0), Map.Felucca);
                 WeakEntityCollection.Add("newshame", wall);
                 wall.MoveToWorld(altarLoc, Map.Felucca);
                 ShameWall.AddTeleporters(wall);
@@ -190,7 +190,7 @@ namespace Server.Engines.ShameRevamped
         public static void ResetOldSpawners(bool reset = true)
         {
             Region r = Region.Find(new Point3D(5538, 170, 5), Map.Trammel);
-            foreach (var spawner in r.GetEnumeratedItems().OfType<XmlSpawner>())
+            foreach (XmlSpawner spawner in r.GetEnumeratedItems().OfType<XmlSpawner>())
             {
                 if (spawner.Name.ToLower() != "shame_revamped" && spawner.Name.ToLower() != "shame_chest")
                 {
@@ -202,7 +202,7 @@ namespace Server.Engines.ShameRevamped
             }
 
             r = Region.Find(new Point3D(5538, 170, 5), Map.Felucca);
-            foreach (var spawner in r.GetEnumeratedItems().OfType<XmlSpawner>())
+            foreach (XmlSpawner spawner in r.GetEnumeratedItems().OfType<XmlSpawner>())
             {
                 if (spawner.Name.ToLower() != "shame_revamped" && spawner.Name.ToLower() != "shame_chest")
                 {

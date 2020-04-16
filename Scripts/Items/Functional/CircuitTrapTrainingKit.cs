@@ -40,7 +40,7 @@ namespace Server.Items
             {
                 if (Path == null || Path.Count == 0)
                 {
-                    var skill = m.Skills[SkillName.RemoveTrap].Base;
+                    double skill = m.Skills[SkillName.RemoveTrap].Base;
 
                     if (skill < 80.0)
                     {
@@ -128,7 +128,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            var count = reader.ReadInt();
+            int count = reader.ReadInt();
 
             for (int i = 0; i < count; i++)
             {

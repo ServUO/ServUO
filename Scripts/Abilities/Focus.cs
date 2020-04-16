@@ -32,7 +32,7 @@ namespace Server.Items
 
         public static void OnLogin(LoginEventArgs e)
         {
-            var pm = e.Mobile as PlayerMobile;
+            PlayerMobile pm = e.Mobile as PlayerMobile;
 
             if (pm != null)
             {
@@ -42,7 +42,7 @@ namespace Server.Items
 
         public static void UpdateBuff(Mobile from, Mobile target = null)
         {
-            var item = from.FindItemOnLayer(Layer.TwoHanded);
+            Item item = from.FindItemOnLayer(Layer.TwoHanded);
 
             if (item == null)
             {

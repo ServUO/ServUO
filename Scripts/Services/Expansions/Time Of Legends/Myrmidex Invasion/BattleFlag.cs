@@ -55,7 +55,7 @@ namespace Server.Engines.MyrmidexInvasion
         public static void DisplayWaveInfo(BattleSpawner spawner, Mobile m)
         {
             int delay = 0;
-            foreach (var kvp in spawner.MyrmidexTeam)
+            foreach (System.Collections.Generic.KeyValuePair<int, System.Collections.Generic.List<BaseCreature>> kvp in spawner.MyrmidexTeam)
             {
                 if (kvp.Value.Count > 0)
                 {
@@ -72,7 +72,7 @@ namespace Server.Engines.MyrmidexInvasion
             }
 
             delay = 0;
-            foreach (var kvp in spawner.TribeTeam)
+            foreach (System.Collections.Generic.KeyValuePair<int, System.Collections.Generic.List<BaseCreature>> kvp in spawner.TribeTeam)
             {
                 if (kvp.Value.Count > 0)
                 {

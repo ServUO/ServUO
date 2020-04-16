@@ -1778,7 +1778,7 @@ namespace Server.Guilds
 
         public void CalculateGuildmaster()
         {
-            var votes = new Dictionary<Mobile, int>();
+            Dictionary<Mobile, int> votes = new Dictionary<Mobile, int>();
 
             int votingMembers = 0;
 
@@ -1827,7 +1827,7 @@ namespace Server.Guilds
             Mobile winner = null;
             int highVotes = 0;
 
-            foreach (var kvp in votes)
+            foreach (KeyValuePair<Mobile, int> kvp in votes)
             {
                 Mobile m = kvp.Key;
                 int val = kvp.Value;

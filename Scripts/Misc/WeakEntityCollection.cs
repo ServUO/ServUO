@@ -54,7 +54,7 @@ namespace Server
 
                     writer.Write(_Collections.Count);
 
-                    foreach (var kv in _Collections)
+                    foreach (KeyValuePair<string, EntityCollection> kv in _Collections)
                     {
                         writer.Write(kv.Key);
 
@@ -62,7 +62,7 @@ namespace Server
 
                         writer.Write(kv.Value.Count);
 
-                        foreach (var ent in kv.Value)
+                        foreach (IEntity ent in kv.Value)
                         {
                             writer.Write(ent.Serial);
                         }
@@ -76,21 +76,21 @@ namespace Server
                 _FilePath,
                 reader =>
                 {
-                    var version = reader.ReadInt();
+                    int version = reader.ReadInt();
 
                     switch (version)
                     {
                         case 1:
                             {
-                                var entries = reader.ReadInt();
+                                int entries = reader.ReadInt();
 
                                 while (--entries >= 0)
                                 {
-                                    var key = reader.ReadString();
+                                    string key = reader.ReadString();
 
-                                    var ents = reader.ReadInt();
+                                    int ents = reader.ReadInt();
 
-                                    var col = new EntityCollection(ents);
+                                    EntityCollection col = new EntityCollection(ents);
 
                                     IEntity ent;
 
@@ -110,16 +110,16 @@ namespace Server
                             break;
                         case 0:
                             {
-                                var entries = reader.ReadInt();
+                                int entries = reader.ReadInt();
 
                                 while (--entries >= 0)
                                 {
-                                    var key = reader.ReadString();
+                                    string key = reader.ReadString();
 
-                                    var items = reader.ReadStrongItemList();
-                                    var mobiles = reader.ReadStrongMobileList();
+                                    List<Item> items = reader.ReadStrongItemList();
+                                    List<Mobile> mobiles = reader.ReadStrongMobileList();
 
-                                    var col = new EntityCollection(items.Count + mobiles.Count);
+                                    EntityCollection col = new EntityCollection(items.Count + mobiles.Count);
 
                                     col.AddRange(items);
                                     col.AddRange(mobiles);
@@ -156,7 +156,7 @@ namespace Server
                 return;
             }
 
-            var col = GetCollection(key);
+            EntityCollection col = GetCollection(key);
 
             if (col != null && !col.Contains(entity))
             {
@@ -171,7 +171,7 @@ namespace Server
                 return false;
             }
 
-            var col = GetCollection(key);
+            EntityCollection col = GetCollection(key);
 
             if (col != null)
             {
@@ -183,13 +183,13 @@ namespace Server
 
         public static int Clean(string key)
         {
-            var removed = 0;
+            int removed = 0;
 
-            var col = GetCollection(key);
+            EntityCollection col = GetCollection(key);
 
             if (col != null)
             {
-                var ents = col.Count;
+                int ents = col.Count;
 
                 while (--ents >= 0)
                 {
@@ -207,13 +207,13 @@ namespace Server
 
         public static int Delete(string key)
         {
-            var deleted = 0;
+            int deleted = 0;
 
-            var col = GetCollection(key);
+            EntityCollection col = GetCollection(key);
 
             if (col != null)
             {
-                var ents = col.Count;
+                int ents = col.Count;
 
                 while (--ents >= 0)
                 {

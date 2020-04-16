@@ -38,7 +38,7 @@ namespace Server.Items
 
         public void OnOptionSelected(Mobile from, int choice)
         {
-            var bag = new Bag();
+            Bag bag = new Bag();
             bag.Hue = 1286;
 
             bool chance = Utility.RandomDouble() < .1;

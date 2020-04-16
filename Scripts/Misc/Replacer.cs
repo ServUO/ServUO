@@ -9,7 +9,7 @@ namespace Server
         {
             Timer.DelayCall<Item, Item>(TimeSpan.FromSeconds(1), (oldItem, newItem) =>
             {
-                var parent = oldItem.Parent;
+                object parent = oldItem.Parent;
 
                 if (parent == null)
                 {

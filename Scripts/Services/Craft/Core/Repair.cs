@@ -174,7 +174,7 @@ namespace Server.Engines.Craft
                 }
                 else if (m_Addon != null)
                 {
-                    var tool = m_Addon.Tools.Find(x => x.System == m_CraftSystem);
+                    RepairBenchDefinition tool = m_Addon.Tools.Find(x => x.System == m_CraftSystem);
 
                     if (tool.Charges == 0)
                     {
@@ -539,7 +539,7 @@ namespace Server.Engines.Craft
                 {
                     if (m_Addon != null && !m_Addon.Deleted)
                     {
-                        var tool = m_Addon.Tools.Find(x => x.System == m_CraftSystem);
+                        RepairBenchDefinition tool = m_Addon.Tools.Find(x => x.System == m_CraftSystem);
 
                         tool.Charges--;
 

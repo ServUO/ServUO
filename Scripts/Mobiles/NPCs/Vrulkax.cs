@@ -43,7 +43,7 @@ namespace Server.Engines.Quests
 
                     if (dur != null && dur.MaxHitPoints == 255 && dur.HitPoints == 255)
                     {
-                        var item = Loot.Construct(t[1]);
+                        Item item = Loot.Construct(t[1]);
 
                         if (item != null)
                         {

@@ -172,7 +172,7 @@ namespace Server.Mobiles
                 {
                     m_Table[toCondemn] = toCondemn.Location;
 
-                    var loc = _Locs[Utility.Random(_Locs.Length)];
+                    Point3D loc = _Locs[Utility.Random(_Locs.Length)];
                     toCondemn.MoveToWorld(loc, map);
 
                     toCondemn.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);

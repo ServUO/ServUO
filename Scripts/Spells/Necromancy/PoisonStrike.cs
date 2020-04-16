@@ -90,7 +90,7 @@ namespace Server.Spells.Necromancy
 
             if (map != null)
             {
-                foreach (var id in AcquireIndirectTargets(m.Location, 2))
+                foreach (IDamageable id in AcquireIndirectTargets(m.Location, 2))
                 {
                     int num;
 

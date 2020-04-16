@@ -195,13 +195,13 @@ namespace Server.Engines.Shadowguard
                                     }
                                     else if (Encounter != null)
                                     {
-                                        foreach (var pm in Encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                                        foreach (PlayerMobile pm in Encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
                                         {
                                             if (!pm.Alive)
                                                 continue;
 
                                             p = pm.Location;
-                                            var creature = new VileTreefellow();
+                                            VileTreefellow creature = new VileTreefellow();
 
                                             for (int i = 0; i < 10; i++)
                                             {
@@ -238,14 +238,14 @@ namespace Server.Engines.Shadowguard
 
             if (!_Thrown && Encounter != null)
             {
-                foreach (var pm in Encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                foreach (PlayerMobile pm in Encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
                 {
                     if (!pm.Alive)
                         continue;
 
-                    var p = pm.Location;
-                    var map = pm.Map;
-                    var creature = new VileTreefellow();
+                    Point3D p = pm.Location;
+                    Map map = pm.Map;
+                    VileTreefellow creature = new VileTreefellow();
 
                     for (int i = 0; i < 10; i++)
                     {
@@ -481,7 +481,7 @@ namespace Server.Engines.Shadowguard
                 {
                     if (targeted is PurifyingFlames)
                     {
-                        var flames = targeted as PurifyingFlames;
+                        PurifyingFlames flames = targeted as PurifyingFlames;
 
                         if (!from.InLOS(flames))
                             from.SendLocalizedMessage(500237); // Target cannot be seen.
@@ -498,7 +498,7 @@ namespace Server.Engines.Shadowguard
                     }
                     else if (targeted is CursedSuitOfArmor)
                     {
-                        var armor = targeted as CursedSuitOfArmor;
+                        CursedSuitOfArmor armor = targeted as CursedSuitOfArmor;
 
                         if (!from.InLOS(armor))
                             from.SendLocalizedMessage(500237); // Target cannot be seen.

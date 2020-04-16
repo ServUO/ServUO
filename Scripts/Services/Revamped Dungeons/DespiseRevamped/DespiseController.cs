@@ -499,7 +499,7 @@ namespace Server.Engines.Despise
 
         private Point3D GetRandomLoc(Rectangle2D rec)
         {
-            var map = Map.Trammel;
+            Map map = Map.Trammel;
             Point3D p = new Point3D(rec.X, rec.Y, map.GetAverageZ(rec.X, rec.Y));
 
             for (int i = 0; i < 50; i++)
@@ -751,9 +751,9 @@ namespace Server.Engines.Despise
 
         public void CheckSpawnersVersion3()
         {
-            foreach (var spawner in World.Items.Values.OfType<XmlSpawner>().Where(s => s.Name != null && s.Name.ToLower().IndexOf("despiserevamped") >= 0))
+            foreach (XmlSpawner spawner in World.Items.Values.OfType<XmlSpawner>().Where(s => s.Name != null && s.Name.ToLower().IndexOf("despiserevamped") >= 0))
             {
-                foreach (var obj in spawner.SpawnObjects)
+                foreach (XmlSpawner.SpawnObject obj in spawner.SpawnObjects)
                 {
                     if (obj.TypeName != null)
                     {
@@ -780,9 +780,9 @@ namespace Server.Engines.Despise
                 }
             }
 
-            foreach (var r in new Region[] { m_GoodRegion, m_EvilRegion, m_LowerRegion, m_StartRegion })
+            foreach (Region r in new Region[] { m_GoodRegion, m_EvilRegion, m_LowerRegion, m_StartRegion })
             {
-                foreach (var item in r.GetEnumeratedItems().Where(i => i is Moongate || i is GateTeleporter))
+                foreach (Item item in r.GetEnumeratedItems().Where(i => i is Moongate || i is GateTeleporter))
                 {
                     item.Delete();
                     WeakEntityCollection.Remove("despise", item);

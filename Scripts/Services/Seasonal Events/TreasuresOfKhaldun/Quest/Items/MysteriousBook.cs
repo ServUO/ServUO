@@ -26,7 +26,7 @@ namespace Server.Engines.Khaldun
             if (!m.Player)
                 return;
 
-            var quest = QuestHelper.GetQuest<GoingGumshoeQuest2>((PlayerMobile)m);
+            GoingGumshoeQuest2 quest = QuestHelper.GetQuest<GoingGumshoeQuest2>((PlayerMobile)m);
 
             if (quest != null)
             {
@@ -52,7 +52,7 @@ namespace Server.Engines.Khaldun
 
         public void OnInscribeTarget(Mobile m)
         {
-            var quest = QuestHelper.GetQuest<GoingGumshoeQuest2>((PlayerMobile)m);
+            GoingGumshoeQuest2 quest = QuestHelper.GetQuest<GoingGumshoeQuest2>((PlayerMobile)m);
 
             if (quest != null)
             {

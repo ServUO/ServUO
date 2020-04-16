@@ -164,7 +164,7 @@ namespace Server.Items
 
             if (house != null && IsSecure)
             {
-                var secure = house.GetSecureInfoFor(this);
+                SecureInfo secure = house.GetSecureInfoFor(this);
 
                 return secure != null && house.HasSecureAccess(from, secure);
             }
@@ -174,7 +174,7 @@ namespace Server.Items
 
         public virtual void OnItemDropped(Mobile from, Item item, BaseHouse house)
         {
-            var secure = house.GetSecureInfoFor(this);
+            SecureInfo secure = house.GetSecureInfoFor(this);
 
             if (secure != null && !house.HasSecureAccess(from, secure))
             {

@@ -30,8 +30,8 @@ namespace Server.Misc
 
             if (Enabled)
             {
-                var now = DateTime.Now;
-                var force = new DateTime(now.Year, now.Month, now.Day, Hour, Minutes, 0);
+                DateTime now = DateTime.Now;
+                DateTime force = new DateTime(now.Year, now.Month, now.Day, Hour, Minutes, 0);
 
                 if (now > force)
                 {

@@ -1096,7 +1096,7 @@ namespace Server.Items
 
             if (index >= 0 && index < m_Entries.Length)
             {
-                var e = m_Entries[index];
+                HousePlacementEntry e = m_Entries[index];
 
                 if (e != null)
                 {

@@ -42,7 +42,7 @@ namespace Server.Mobiles
 
         public override bool DoActionInteract()
         {
-            var customer = m_Mobile.FocusMob as Mobile;
+            Mobile customer = m_Mobile.FocusMob as Mobile;
 
             if (m_Mobile.Combatant != null)
             {
@@ -107,7 +107,7 @@ namespace Server.Mobiles
         {
             base.OnSpeech(e);
 
-            var from = e.Mobile;
+            Mobile from = e.Mobile;
 
             if (m_Mobile is BaseVendor && from.InRange(m_Mobile, 1) && !e.Handled)
             {

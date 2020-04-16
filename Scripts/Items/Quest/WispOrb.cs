@@ -222,7 +222,7 @@ namespace Server.Engines.Despise
         {
             List<WispOrb> list = new List<WispOrb>(c.Items.OfType<WispOrb>());
 
-            foreach (var orb in list)
+            foreach (WispOrb orb in list)
             {
                 m.SendLocalizedMessage(1153233); // The Wisp Orb vanishes to whence it came...
                 orb.Delete();

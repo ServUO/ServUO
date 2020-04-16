@@ -61,7 +61,7 @@ namespace Server.Items
                 {
                     Point3D pnt = new Point3D((IPoint3D)targeted);
 
-                    var galleon = BaseGalleon.FindGalleonAt(new Point2D(pnt.X, pnt.Y), map);
+                    BaseGalleon galleon = BaseGalleon.FindGalleonAt(new Point2D(pnt.X, pnt.Y), map);
 
                     if (galleon != null && Galleon == galleon)
                     {

@@ -13,7 +13,7 @@ namespace Server.Engines.SorcerersDungeon
 
         public static void CheckEnabled(bool timed = false)
         {
-            var sd = PointsSystem.SorcerersDungeon;
+            SorcerersDungeonData sd = PointsSystem.SorcerersDungeon;
 
             if (sd.Enabled && !sd.InSeason)
             {
@@ -81,31 +81,31 @@ namespace Server.Engines.SorcerersDungeon
 
             if (map.FindItem<Static>(new Point3D(545, 462, -53)) == null)
             {
-                var st = new Static(0x9F34);
+                Static st = new Static(0x9F34);
                 st.MoveToWorld(new Point3D(545, 462, -53), map);
             }
 
             if (map.FindItem<Static>(new Point3D(550, 462, -53)) == null)
             {
-                var st = new Static(0x9F34);
+                Static st = new Static(0x9F34);
                 st.MoveToWorld(new Point3D(550, 462, -53), map);
             }
 
             if (map.FindItem<Static>(new Point3D(545, 463, -55)) == null)
             {
-                var st = new Static(0x9F28);
+                Static st = new Static(0x9F28);
                 st.MoveToWorld(new Point3D(545, 463, -55), map);
             }
 
             if (map.FindItem<Static>(new Point3D(550, 463, -55)) == null)
             {
-                var st = new Static(0x9F24);
+                Static st = new Static(0x9F24);
                 st.MoveToWorld(new Point3D(550, 463, -55), map);
             }
 
             if (TOSDSpawner.Instance == null)
             {
-                var spawner = new TOSDSpawner();
+                TOSDSpawner spawner = new TOSDSpawner();
                 spawner.BeginTimer();
             }
         }

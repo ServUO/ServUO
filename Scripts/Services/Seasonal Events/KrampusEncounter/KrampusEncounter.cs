@@ -134,7 +134,7 @@ namespace Server.Engines.SeasonalEvents
             // 0 distance indicates they used a moongate
             if (m is PlayerMobile && distCheck)
             {
-                var pm = (PlayerMobile)m;
+                PlayerMobile pm = (PlayerMobile)m;
 
                 if (!CompleteTable.ContainsKey(pm))
                 {
@@ -165,7 +165,7 @@ namespace Server.Engines.SeasonalEvents
             }
             else
             {
-                var wave = Math.Max(1, (int)Math.Min(6, TotalTradesComplete / 4.1)); // TODO: Is this right?
+                int wave = Math.Max(1, (int)Math.Min(6, TotalTradesComplete / 4.1)); // TODO: Is this right?
 
                 if (wave == 6)
                 {
@@ -186,7 +186,7 @@ namespace Server.Engines.SeasonalEvents
         private void SpawnKrampus(Mobile m)
         {
             SpawnMap = m.Map;
-            var p = m.Location;
+            Point3D p = m.Location;
 
             for (int i = 0; i < 25; i++)
             {
@@ -203,9 +203,9 @@ namespace Server.Engines.SeasonalEvents
 
             SpawnLocation = p;
 
-            foreach (var ns in NetState.Instances)
+            foreach (NetState ns in NetState.Instances)
             {
-                var mob = ns.Mobile;
+                Mobile mob = ns.Mobile;
 
                 if (mob != null && CityTradeSystem.HasTrade(mob))
                 {
@@ -229,11 +229,11 @@ namespace Server.Engines.SeasonalEvents
             Krampus.MoveToWorld(SpawnLocation, SpawnMap);
             Krampus.Summon(Krampus, true);
 
-            var rec = new Rectangle2D(SpawnLocation.X - 10, SpawnLocation.Y - 10, 20, 20);
+            Rectangle2D rec = new Rectangle2D(SpawnLocation.X - 10, SpawnLocation.Y - 10, 20, 20);
 
-            for (var i = 0; i < 2; i++)
+            for (int i = 0; i < 2; i++)
             {
-                var drake = new FrostDrake();
+                FrostDrake drake = new FrostDrake();
 
                 Point3D p = new Point3D(SpawnLocation);
 
@@ -296,7 +296,7 @@ namespace Server.Engines.SeasonalEvents
 
             writer.Write(CompleteTable.Count);
 
-            foreach (var kvp in CompleteTable)
+            foreach (KeyValuePair<PlayerMobile, int> kvp in CompleteTable)
             {
                 writer.Write(kvp.Key);
                 writer.Write(kvp.Value);
@@ -317,8 +317,8 @@ namespace Server.Engines.SeasonalEvents
 
             for (int i = 0; i < count; i++)
             {
-                var m = reader.ReadMobile() as PlayerMobile;
-                var c = reader.ReadInt();
+                PlayerMobile m = reader.ReadMobile() as PlayerMobile;
+                int c = reader.ReadInt();
 
                 if (m != null)
                 {

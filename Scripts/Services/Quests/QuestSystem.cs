@@ -196,7 +196,7 @@ namespace Server.Engines.Quests
         {
             if (e.KilledBy is PlayerMobile && e.Killed is BaseCreature)
             {
-                var qs = ((PlayerMobile)e.KilledBy).Quest;
+                QuestSystem qs = ((PlayerMobile)e.KilledBy).Quest;
 
                 if (qs != null)
                 {

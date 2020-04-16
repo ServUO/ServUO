@@ -959,7 +959,7 @@ namespace Server.Items
             writer.Write(m_TimeoutDelay);
             writer.Write(m_Teleporting.Count);
 
-            foreach (var kvp in m_Teleporting)
+            foreach (KeyValuePair<Mobile, Timer> kvp in m_Teleporting)
             {
                 writer.Write(kvp.Key);
                 writer.Write(kvp.Value.Next);

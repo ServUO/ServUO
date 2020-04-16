@@ -130,7 +130,7 @@ namespace Server.Mobiles
             else
                 gal = new GargishGalleon(Direction.North);
 
-            var p = Location;
+            Point3D p = Location;
             Map map = Map;
 
             // Move this sucka out of the way!
@@ -391,7 +391,7 @@ namespace Server.Mobiles
         {
             List<Item> cannons = new List<Item>(m_Galleon.Cannons.Where(i => !i.Deleted));
 
-            foreach (var cannon in cannons.OfType<IShipCannon>())
+            foreach (IShipCannon cannon in cannons.OfType<IShipCannon>())
             {
                 if (cannon != null)
                 {
@@ -553,7 +553,7 @@ namespace Server.Mobiles
 
             crew.Add(this);
 
-            foreach (var crewman in crew)
+            foreach (Mobile crewman in crew)
             {
                 if (!m_Galleon.Contains(crewman))
                 {

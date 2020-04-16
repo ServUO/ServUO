@@ -37,14 +37,14 @@ namespace Server.Mobiles
 
             if (attacker is BaseCreature && !((BaseCreature)attacker).Summoned)
             {
-                var bc = attacker as BaseCreature;
-                var profile = PetTrainingHelper.GetAbilityProfile(bc);
+                BaseCreature bc = attacker as BaseCreature;
+                AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(bc);
 
                 if (profile != null)
                 {
                     SpecialAbility ability = null;
 
-                    var abilties = profile.EnumerateSpecialAbilities().Where(m =>
+                    SpecialAbility[] abilties = profile.EnumerateSpecialAbilities().Where(m =>
                         (type == DamageType.Melee && m.TriggerOnDoMeleeDamage) || (type >= DamageType.Spell && m.TriggerOnDoSpellDamage) &&
                         !m.IsInCooldown(attacker)).ToArray();
 
@@ -62,14 +62,14 @@ namespace Server.Mobiles
 
             if (defender is BaseCreature && !((BaseCreature)defender).Summoned)
             {
-                var bc = defender as BaseCreature;
-                var profile = PetTrainingHelper.GetAbilityProfile(bc);
+                BaseCreature bc = defender as BaseCreature;
+                AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(bc);
 
                 if (profile != null)
                 {
                     SpecialAbility ability = null;
 
-                    var abilties = profile.EnumerateSpecialAbilities().Where(m =>
+                    SpecialAbility[] abilties = profile.EnumerateSpecialAbilities().Where(m =>
                         (type == DamageType.Melee && m.TriggerOnGotMeleeDamage) || (type >= DamageType.Spell && m.TriggerOnGotSpellDamage) &&
                         !m.IsInCooldown(defender)).ToArray();
 
@@ -88,8 +88,8 @@ namespace Server.Mobiles
 
         public static bool CheckThinkTrigger(BaseCreature bc)
         {
-            var combatant = bc.Combatant;
-            var profile = PetTrainingHelper.GetAbilityProfile(bc);
+            IDamageable combatant = bc.Combatant;
+            AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(bc);
 
             if (combatant is Mobile)
             {
@@ -97,7 +97,7 @@ namespace Server.Mobiles
                 {
                     SpecialAbility ability = null;
 
-                    var abilties = profile.EnumerateSpecialAbilities().Where(m => m.TriggerOnThink && !m.IsInCooldown(bc)).ToArray();
+                    SpecialAbility[] abilties = profile.EnumerateSpecialAbilities().Where(m => m.TriggerOnThink && !m.IsInCooldown(bc)).ToArray();
 
                     if (abilties != null && abilties.Length > 0)
                     {
@@ -115,7 +115,7 @@ namespace Server.Mobiles
             {
                 SpecialAbility ability = null;
 
-                var abilties =
+                SpecialAbility[] abilties =
                     profile.EnumerateSpecialAbilities().Where(
                         m =>
                         m.TriggerOnThink &&
@@ -139,13 +139,13 @@ namespace Server.Mobiles
 
         public static bool CheckApproachTrigger(BaseCreature bc, Mobile mobile, Point3D oldLocation)
         {
-            var profile = PetTrainingHelper.GetAbilityProfile(bc);
+            AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(bc);
 
             if (profile != null)
             {
                 SpecialAbility ability = null;
 
-                var abilties = profile.EnumerateSpecialAbilities().Where(m =>
+                SpecialAbility[] abilties = profile.EnumerateSpecialAbilities().Where(m =>
                     m.TriggerOnApproach &&
                     bc.InRange(mobile.Location, m.MaxRange) &&
                     !bc.InRange(oldLocation, m.MaxRange) &&
@@ -185,7 +185,7 @@ namespace Server.Mobiles
         {
             if (RequiredSchool != MagicalAbility.None)
             {
-                var profile = PetTrainingHelper.GetAbilityProfile(attacker);
+                AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(attacker);
 
                 if (profile == null || !profile.HasAbility(RequiredSchool))
                 {
@@ -707,7 +707,7 @@ namespace Server.Mobiles
                 if (_Cooldown == null)
                     _Cooldown = new List<Mobile>();
 
-                var def = DragonBreathDefinition.GetDefinition(m);
+                DragonBreathDefinition def = DragonBreathDefinition.GetDefinition(m);
 
                 _Cooldown.Add(m);
                 Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(Utility.RandomMinMax(def.MinDelay, def.MaxDelay)), RemoveFromCooldown, m);
@@ -716,7 +716,7 @@ namespace Server.Mobiles
 
         public virtual void DoBreath(BaseCreature creature, Mobile target)
         {
-            var def = DragonBreathDefinition.GetDefinition(creature);
+            DragonBreathDefinition def = DragonBreathDefinition.GetDefinition(creature);
 
             creature.RevealingAction();
 
@@ -732,14 +732,14 @@ namespace Server.Mobiles
 
             if (def.AttacksMultipleTargets)
             {
-                var list = Server.Spells.SpellHelper.AcquireIndirectTargets(creature, target, creature.Map, 5).OfType<Mobile>().Where(m => m.InRange(creature.Location, MaxRange)).ToList();
+                List<Mobile> list = Server.Spells.SpellHelper.AcquireIndirectTargets(creature, target, creature.Map, 5).OfType<Mobile>().Where(m => m.InRange(creature.Location, MaxRange)).ToList();
 
                 for (int i = 0; i < 5; i++)
                 {
                     if (list.Count == 0)
                         break;
 
-                    var m = i == 0 ? target : list[Utility.Random(list.Count)];
+                    Mobile m = i == 0 ? target : list[Utility.Random(list.Count)];
 
                     list.Remove(m);
                     Timer.DelayCall(TimeSpan.FromSeconds(def.EffectDelay), new TimerStateCallback<BaseCreature, Mobile, DragonBreathDefinition>(BreathEffect_Callback), creature, m, def);
@@ -1055,7 +1055,7 @@ namespace Server.Mobiles
 
             public static DragonBreathDefinition GetDefinition(BaseCreature bc)
             {
-                var def = Definitions.FirstOrDefault(d => d.Uses != null && d.Uses.Any(type => type == bc.GetType()));
+                DragonBreathDefinition def = Definitions.FirstOrDefault(d => d.Uses != null && d.Uses.Any(type => type == bc.GetType()));
 
                 if (def == null)
                 {
@@ -1717,7 +1717,7 @@ namespace Server.Mobiles
             if (p == null)
                 return;
 
-            foreach (var m in list)
+            foreach (Mobile m in list)
             {
                 defender.PlaySound(0xDD);
                 defender.FixedParticles(0x3728, 244, 25, 9941, 1266, 0, EffectLayer.Waist);
@@ -1729,7 +1729,7 @@ namespace Server.Mobiles
 
             if (creature.Controlled && list.Count > 0)
             {
-                var profile = PetTrainingHelper.GetAbilityProfile(creature);
+                AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(creature);
 
                 if ((profile != null && profile.HasAbility(MagicalAbility.Poisoning)) || 0.2 > Utility.RandomDouble())
                     creature.CheckSkill(SkillName.Poisoning, 0, creature.Skills[SkillName.Poisoning].Cap);

@@ -83,7 +83,7 @@ namespace Server.Spells.Spellweaving
 
                 TimeSpan duration = TimeSpan.FromSeconds(5 + FocusLevel);
 
-                foreach (var m in AcquireIndirectTargets(Caster.Location, 3 + FocusLevel).OfType<Mobile>())
+                foreach (Mobile m in AcquireIndirectTargets(Caster.Location, 3 + FocusLevel).OfType<Mobile>())
                 {
                     Caster.DoHarmful(m);
 

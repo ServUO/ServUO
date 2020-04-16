@@ -1696,7 +1696,7 @@ namespace Server.Multis
 
         public static void QueryDesignDetails(NetState state, PacketReader pvSrc)
         {
-            var multi = World.FindItem(pvSrc.ReadInt32()) as BaseMulti;
+            BaseMulti multi = World.FindItem(pvSrc.ReadInt32()) as BaseMulti;
 
             if (multi != null)
             {
@@ -1718,7 +1718,7 @@ namespace Server.Multis
 
             if (foundation != null && from.Map == foundation.Map)
             {
-                var range = foundation.GetUpdateRange(from);
+                int range = foundation.GetUpdateRange(from);
 
                 if (Utility.InRange(from.Location, foundation.GetWorldLocation(), range) && from.CanSee(foundation))
                 {

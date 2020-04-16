@@ -166,7 +166,7 @@ namespace Server.Items
                 return false;
             }
 
-            var num = 0;
+            int num = 0;
 
             bool res;
 

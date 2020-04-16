@@ -27,8 +27,8 @@ namespace Server.Items
         {
             if (m is BaseCreature)
             {
-                var bc = m as BaseCreature;
-                var profile = PetTrainingHelper.GetTrainingProfile(bc);
+                BaseCreature bc = m as BaseCreature;
+                TrainingProfile profile = PetTrainingHelper.GetTrainingProfile(bc);
 
                 if (bc.Controlled && bc.ControlMaster != null && bc.ControlMaster.InRange(bc.Location, 25)
                     && profile != null && profile.HasBegunTraining && profile.TrainingProgress < profile.TrainingProgressMax)
@@ -38,7 +38,7 @@ namespace Server.Items
 
                     if (bc.ControlMaster is PlayerMobile)
                     {
-                        var gump = bc.ControlMaster.FindGump<NewAnimalLoreGump>();
+                        NewAnimalLoreGump gump = bc.ControlMaster.FindGump<NewAnimalLoreGump>();
 
                         if (gump != null)
                             gump.Refresh();
@@ -93,8 +93,8 @@ namespace Server.Items
         {
             if (m is BaseCreature)
             {
-                var bc = m as BaseCreature;
-                var profile = PetTrainingHelper.GetTrainingProfile(bc);
+                BaseCreature bc = m as BaseCreature;
+                TrainingProfile profile = PetTrainingHelper.GetTrainingProfile(bc);
 
                 if (bc.Controlled && bc.ControlMaster != null && bc.ControlMaster.InRange(bc.Location, 25)
                     && !bc.IsBonded)
@@ -149,13 +149,13 @@ namespace Server.Items
         {
             if (m.InRange(Location, 3))
             {
-                var bag = new Bag();
-                foreach (var sk in PetTrainingHelper.MagicSkills)
+                Bag bag = new Bag();
+                foreach (SkillName sk in PetTrainingHelper.MagicSkills)
                 {
                     bag.DropItem(new PowerScroll(sk, 120));
                 }
 
-                foreach (var sk in PetTrainingHelper.CombatSkills)
+                foreach (SkillName sk in PetTrainingHelper.CombatSkills)
                 {
                     bag.DropItem(new PowerScroll(sk, 120));
                 }

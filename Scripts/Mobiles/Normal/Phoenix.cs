@@ -65,7 +65,7 @@ namespace Server.Mobiles
         {
             base.OnAfterTame(tamer);
 
-            var profile = PetTrainingHelper.GetAbilityProfile(this);
+            AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(this);
 
             if (profile != null)
             {

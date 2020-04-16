@@ -30,7 +30,7 @@ namespace Server.Engines.Khaldun
             if (!m.Player)
                 return;
 
-            var quest = QuestHelper.GetQuest<GoingGumshoeQuest2>((PlayerMobile)m);
+            GoingGumshoeQuest2 quest = QuestHelper.GetQuest<GoingGumshoeQuest2>((PlayerMobile)m);
 
             if (quest != null)
             {
@@ -39,7 +39,7 @@ namespace Server.Engines.Khaldun
 
                 m.SendSound(quest.UpdateSound);
 
-                var gump = new Gump(50, 50);
+                Gump gump = new Gump(50, 50);
 
                 gump.AddImage(0, 0, 0x66);
                 gump.AddHtmlLocalized(47, 60, 146, 160, GumpLocalization, false, false);

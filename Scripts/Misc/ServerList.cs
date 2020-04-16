@@ -70,13 +70,13 @@ namespace Server.Misc
         {
             try
             {
-                var ns = e.State;
-                var s = ns.Socket;
+                Network.NetState ns = e.State;
+                Socket s = ns.Socket;
 
-                var ipep = (IPEndPoint)s.LocalEndPoint;
+                IPEndPoint ipep = (IPEndPoint)s.LocalEndPoint;
 
-                var localAddress = ipep.Address;
-                var localPort = ipep.Port;
+                IPAddress localAddress = ipep.Address;
+                int localPort = ipep.Port;
 
                 if (IsPrivateNetwork(localAddress))
                 {
@@ -135,7 +135,7 @@ namespace Server.Misc
 
             try
             {
-                var iphe = Dns.GetHostEntry(addr);
+                IPHostEntry iphe = Dns.GetHostEntry(addr);
 
                 if (iphe.AddressList.Length > 0)
                 {
@@ -148,8 +148,8 @@ namespace Server.Misc
 
         private static bool HasPublicIPAddress()
         {
-            var adapters = NetworkInterface.GetAllNetworkInterfaces();
-            var uips = adapters.Select(a => a.GetIPProperties())
+            NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
+            System.Collections.Generic.IEnumerable<IPAddress> uips = adapters.Select(a => a.GetIPProperties())
                                .SelectMany(p => p.UnicastAddresses.Cast<IPAddressInformation>(), (p, u) => u.Address);
 
             return
@@ -216,7 +216,7 @@ namespace Server.Misc
             string data;
             Match match;
 
-            foreach (var service in services.Where(s => !String.IsNullOrWhiteSpace(s)))
+            foreach (string service in services.Where(s => !String.IsNullOrWhiteSpace(s)))
             {
                 try
                 {
@@ -224,7 +224,7 @@ namespace Server.Misc
 
                     Console.WriteLine("ServerList: >>> {0}", uri.Host);
 
-                    using (var client = new WebClient())
+                    using (WebClient client = new WebClient())
                     {
                         data = client.DownloadString(uri);
                     }

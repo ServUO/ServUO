@@ -494,7 +494,7 @@ namespace Server.Items
 
                     if (chicken != null && chicken is BaseCreature)
                     {
-                        var bc = chicken as BaseCreature;
+                        BaseCreature bc = chicken as BaseCreature;
                         bc.IsStabled = true;
                         list.Add(bc);
                     }

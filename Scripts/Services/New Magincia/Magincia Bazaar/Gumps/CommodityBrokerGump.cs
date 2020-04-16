@@ -806,7 +806,7 @@ namespace Server.Engines.NewMagincia
                     return;
                 case 500: // TRADE
                     {
-                        for (var i = 0; i < m_Entries.Count; i++)
+                        for (int i = 0; i < m_Entries.Count; i++)
                         {
                             int buyid = 2 + i;
                             int sellid = 102 + i;

@@ -32,7 +32,7 @@ namespace Server.Mobiles
             if (m == null || m.Backpack == null)
                 yield break;
 
-            foreach (var item in m.Backpack.Items)
+            foreach (Item item in m.Backpack.Items)
             {
                 if (IsRedeemableItem(item))
                     yield return new ItemTileButtonInfo(item);

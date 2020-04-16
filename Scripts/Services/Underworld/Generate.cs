@@ -248,14 +248,14 @@ namespace Server.Items
                 {
                     if (map != null && map.CanSpawnMobile(x, y, -42))
                     {
-                        var t = new RevealTile();
+                        RevealTile t = new RevealTile();
                         t.MoveToWorld(new Point3D(x, y, -42), map);
                         WeakEntityCollection.Add("sa", t);
                     }
                 }
             }
 
-            var tile = new RevealTile();
+            RevealTile tile = new RevealTile();
             tile.MoveToWorld(new Point3D(1180, 883, 0), map);
             WeakEntityCollection.Add("sa", tile);
 

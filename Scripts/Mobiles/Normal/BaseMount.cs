@@ -398,11 +398,11 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            var owner = GetMaster();
+            Mobile owner = GetMaster();
 
             if (owner != null && m_Table.ContainsKey(owner))
             {
-                var entry = m_Table[owner];
+                BlockEntry entry = m_Table[owner];
 
                 if (entry.m_Type >= BlockMountType.RidingSwipe && entry.m_Mount == this)
                 {

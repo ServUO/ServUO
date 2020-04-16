@@ -71,12 +71,12 @@ namespace Server.Items
 
         public bool Scan(bool shoot)
         {
-            var targets = AcquireTarget();
+            Target[] targets = AcquireTarget();
             bool acquiredTarget = false;
 
             if (targets != null && targets.Length > 0)
             {
-                foreach (var t in targets)
+                foreach (Target t in targets)
                 {
                     if (t.Entity is BaseGalleon && AmmoType != AmmunitionType.Grapeshot)
                     {
@@ -92,7 +92,7 @@ namespace Server.Items
                     }
                     else if (t.Entity is Mobile && AmmoType == AmmunitionType.Grapeshot)
                     {
-                        var m = t.Entity as Mobile;
+                        Mobile m = t.Entity as Mobile;
 
                         if (shoot)
                         {
@@ -166,7 +166,7 @@ namespace Server.Items
 
                                 if (g != null && g.DamageTaken < DamageLevel.Severely && g.Owner is PlayerMobile)
                                 {
-                                    var target = new Target();
+                                    Target target = new Target();
                                     target.Entity = g;
                                     target.Location = newPoint;
                                     target.Range = currentRange;
@@ -190,7 +190,7 @@ namespace Server.Items
 
                                 foreach (Mobile m in GetTargets(newPoint, map))
                                 {
-                                    var target = new Target();
+                                    Target target = new Target();
                                     target.Entity = m;
                                     target.Location = newPoint;
                                     target.Range = currentRange;
@@ -200,7 +200,7 @@ namespace Server.Items
 
                                 if (mobiles.Count > 0 && ammo.SingleTarget)
                                 {
-                                    var toHit = mobiles[Utility.Random(mobiles.Count)];
+                                    Target toHit = mobiles[Utility.Random(mobiles.Count)];
                                     ColUtility.Free(mobiles);
                                     return new Target[] { toHit };
                                 }
@@ -294,7 +294,7 @@ namespace Server.Items
             BaseBoat target = list[0] as BaseBoat;
             Point3D pnt = (Point3D)list[1];
 
-            var ammoInfo = AmmoInfo.GetAmmoInfo((AmmunitionType)list[2]);
+            AmmoInfo ammoInfo = AmmoInfo.GetAmmoInfo((AmmunitionType)list[2]);
 
             if (ammoInfo != null && target != null)
             {
@@ -358,7 +358,7 @@ namespace Server.Items
                         List<Mobile> candidates = new List<Mobile>();
                         SecurityLevel highest = SecurityLevel.Passenger;
 
-                        foreach (var mob in target.GetMobilesOnBoard().OfType<PlayerMobile>().Where(pm => Operator.CanBeHarmful(pm, false)))
+                        foreach (PlayerMobile mob in target.GetMobilesOnBoard().OfType<PlayerMobile>().Where(pm => Operator.CanBeHarmful(pm, false)))
                         {
                             if (target is BaseGalleon && ((BaseGalleon)target).GetSecurityLevel(mob) > highest)
                             {

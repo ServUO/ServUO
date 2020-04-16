@@ -260,7 +260,7 @@ namespace Server.Items
                                         return;
                                     }
                                     #endregion
-                                    var deed = new TrophyDeed(m_Table[i], hunter, weight);
+                                    TrophyDeed deed = new TrophyDeed(m_Table[i], hunter, weight);
 
                                     if (dateCaught != DateTime.MinValue)
                                     {

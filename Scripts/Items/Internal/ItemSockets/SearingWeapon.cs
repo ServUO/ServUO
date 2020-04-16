@@ -30,7 +30,7 @@ namespace Server.Items
 
         public static void OnWeaponRemoved(BaseWeapon wep)
         {
-            var socket = wep.GetSocket<SearingWeapon>();
+            SearingWeapon socket = wep.GetSocket<SearingWeapon>();
 
             if (socket != null && !socket.Extinguished)
             {
@@ -67,7 +67,7 @@ namespace Server.Items
 
         public static bool CanSear(BaseWeapon weapon)
         {
-            var socket = weapon.GetSocket<SearingWeapon>();
+            SearingWeapon socket = weapon.GetSocket<SearingWeapon>();
 
             return socket != null && !socket.Extinguished;
         }
@@ -96,7 +96,7 @@ namespace Server.Items
             {
                 if (Weapon.Parent == From)
                 {
-                    var socket = Weapon.GetSocket<SearingWeapon>();
+                    SearingWeapon socket = Weapon.GetSocket<SearingWeapon>();
 
                     if (socket != null)
                     {

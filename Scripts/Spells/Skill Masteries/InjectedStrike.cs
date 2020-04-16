@@ -46,7 +46,7 @@ namespace Server.Spells.SkillMasteries
             {
                 if (weapon.Poison == null || weapon.PoisonCharges == 0)
                 {
-                    var poison = GetLastPotion(Caster);
+                    BasePoisonPotion poison = GetLastPotion(Caster);
 
                     Caster.SendLocalizedMessage(502137); // Select the poison you wish to use.
                     Caster.Target = new MasteryTarget(this, autoEnd: false);

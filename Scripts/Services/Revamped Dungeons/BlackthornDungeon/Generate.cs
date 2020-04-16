@@ -81,9 +81,9 @@ namespace Server.Engines.Blackthorn
                 tele.MoveToWorld(new Point3D(1517, 1420, 12), map);
             }
 
-            foreach (var p in _BlockerList)
+            foreach (Point3D p in _BlockerList)
             {
-                var blocker = new Blocker();
+                Blocker blocker = new Blocker();
                 blocker.MoveToWorld(p, map);
             }
         }

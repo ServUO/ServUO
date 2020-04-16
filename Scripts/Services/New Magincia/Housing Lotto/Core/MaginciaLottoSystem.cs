@@ -621,11 +621,11 @@ namespace Server.Engines.NewMagincia
         {
             for (int i = 0; i < m_Identifiers.Length; i++)
             {
-                var rec = m_MagHousingZones[i];
-                var id = m_Identifiers[i];
+                Rectangle2D rec = m_MagHousingZones[i];
+                string id = m_Identifiers[i];
 
-                var plotTram = m_Plots.FirstOrDefault(p => p.Identifier == id && p.Map == Map.Trammel);
-                var plotFel = m_Plots.FirstOrDefault(p => p.Identifier == id && p.Map == Map.Felucca);
+                MaginciaHousingPlot plotTram = m_Plots.FirstOrDefault(p => p.Identifier == id && p.Map == Map.Trammel);
+                MaginciaHousingPlot plotFel = m_Plots.FirstOrDefault(p => p.Identifier == id && p.Map == Map.Felucca);
 
                 if (plotTram == null && !m_FreeHousingZones[Map.Trammel].Contains(rec))
                 {

@@ -91,7 +91,7 @@ namespace Server.Engines.NewMagincia
                 if (page > 1)
                     AddButton(Widescreen ? 446 : 246, 7, 0x1458, 0x1458, 0, GumpButtonType.Page, page - 1);
 
-                var message = Messages[i];
+                NewMaginciaMessage message = Messages[i];
 
                 if (message == null)
                     continue;

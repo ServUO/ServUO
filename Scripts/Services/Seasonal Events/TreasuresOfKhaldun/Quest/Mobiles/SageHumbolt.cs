@@ -50,18 +50,18 @@ namespace Server.Engines.Khaldun
         {
             AddItem(new Backpack());
 
-            var robe = new DeathRobe();
+            DeathRobe robe = new DeathRobe();
             robe.ItemID = 9863;
             SetWearable(robe);
         }
 
         public bool OnSpiritSpeak(Mobile m)
         {
-            var pm = m as PlayerMobile;
+            PlayerMobile pm = m as PlayerMobile;
 
             if (pm != null)
             {
-                var quest = QuestHelper.GetQuest<GoingGumshoeQuest4>(pm);
+                GoingGumshoeQuest4 quest = QuestHelper.GetQuest<GoingGumshoeQuest4>(pm);
 
                 if (quest != null && !quest.IsComplete)
                 {

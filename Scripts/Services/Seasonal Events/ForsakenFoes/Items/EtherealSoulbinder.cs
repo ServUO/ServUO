@@ -114,8 +114,8 @@ namespace Server.Items
 
         public static void CreatureDeath(CreatureDeathEventArgs e)
         {
-            var bc = e.Creature as BaseCreature;
-            var killer = e.Killer;
+            BaseCreature bc = e.Creature as BaseCreature;
+            Mobile killer = e.Killer;
 
             if (bc != null && bc.IsSoulBound && killer is PlayerMobile && killer.Backpack != null)
             {

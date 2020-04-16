@@ -201,14 +201,14 @@ namespace Server.Engines.Quests
 
             if (QuestHelper.TryReceiveQuestItem(Owner, typeof(TreasureHuntingBook), TimeSpan.FromDays(7)))
             {
-                var chest = new WoodenChest();
+                WoodenChest chest = new WoodenChest();
                 chest.DropItem(new TreasureHuntingBook());
 
-                var heals = new GreaterHealPotion();
+                GreaterHealPotion heals = new GreaterHealPotion();
                 heals.Amount = 10;
                 chest.DropItem(heals);
 
-                var scrolls = new TelekinisisScroll();
+                TelekinisisScroll scrolls = new TelekinisisScroll();
                 scrolls.Amount = 20;
                 chest.DropItem(scrolls);
 

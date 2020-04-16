@@ -29,7 +29,7 @@ namespace Server.Items
         {
             if (dropped is PowderOfTemperament)
             {
-                var powder = dropped as PowderOfTemperament;
+                PowderOfTemperament powder = dropped as PowderOfTemperament;
 
                 if (_Charges < 250)
                 {

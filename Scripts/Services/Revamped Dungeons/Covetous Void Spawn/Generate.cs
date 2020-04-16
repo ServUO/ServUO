@@ -28,11 +28,11 @@ namespace Server.Engines.VoidPool
                 e.Mobile.SendMessage("This has already been setup!");
             else
             {
-                var one = new VoidPoolController(Map.Trammel);
+                VoidPoolController one = new VoidPoolController(Map.Trammel);
                 WeakEntityCollection.Add("newcovetous", one);
                 one.MoveToWorld(new Point3D(5605, 1998, 10), Map.Trammel);
 
-                var two = new VoidPoolController(Map.Felucca);
+                VoidPoolController two = new VoidPoolController(Map.Felucca);
                 WeakEntityCollection.Add("newcovetous", two);
                 two.MoveToWorld(new Point3D(5605, 1998, 10), Map.Felucca);
 
@@ -59,7 +59,7 @@ namespace Server.Engines.VoidPool
 
                         hue = id >= 8511 ? 0 : 1954;
 
-                        var item = new Static(id);
+                        Static item = new Static(id);
                         item.Name = "Void Pool";
                         item.Hue = hue;
                         WeakEntityCollection.Add("newcovetous", item);
@@ -108,20 +108,20 @@ namespace Server.Engines.VoidPool
 
         public static void AddWaypoints()
         {
-            var one = VoidPoolController.InstanceTram;
-            var two = VoidPoolController.InstanceFel;
+            VoidPoolController one = VoidPoolController.InstanceTram;
+            VoidPoolController two = VoidPoolController.InstanceFel;
 
             if (one == null || two == null)
                 return;
 
-            foreach (var w in one.WaypointsA.Where(w => w != null && !w.Deleted)) w.Delete();
-            foreach (var w in one.WaypointsB.Where(w => w != null && !w.Deleted)) w.Delete();
+            foreach (WayPoint w in one.WaypointsA.Where(w => w != null && !w.Deleted)) w.Delete();
+            foreach (WayPoint w in one.WaypointsB.Where(w => w != null && !w.Deleted)) w.Delete();
 
-            foreach (var w in two.WaypointsA.Where(w => w != null && !w.Deleted)) w.Delete();
-            foreach (var w in two.WaypointsB.Where(w => w != null && !w.Deleted)) w.Delete();
+            foreach (WayPoint w in two.WaypointsA.Where(w => w != null && !w.Deleted)) w.Delete();
+            foreach (WayPoint w in two.WaypointsB.Where(w => w != null && !w.Deleted)) w.Delete();
 
             // patha
-            var wp = new WayPoint();
+            WayPoint wp = new WayPoint();
             wp.MoveToWorld(new Point3D(5590, 2024, 0), Map.Trammel);
             one.WaypointsA.Add(wp);
 

@@ -77,7 +77,7 @@ namespace Server.Engines.Quests.RitualQuest
             }
             else if (m is PlayerMobile)
             {
-                var quest = QuestHelper.GetQuest<CatchMeIfYouCanQuest>((PlayerMobile)m);
+                CatchMeIfYouCanQuest quest = QuestHelper.GetQuest<CatchMeIfYouCanQuest>((PlayerMobile)m);
 
                 if (quest != null && SpellHelper.CheckCanTravel(m) && _Timer == null && WarpBounds.Contains(m.Location))
                 {
@@ -121,7 +121,7 @@ namespace Server.Engines.Quests.RitualQuest
 
             if (!completeQuest && m is PlayerMobile)
             {
-                var quest = QuestHelper.GetQuest<CatchMeIfYouCanQuest>((PlayerMobile)m);
+                CatchMeIfYouCanQuest quest = QuestHelper.GetQuest<CatchMeIfYouCanQuest>((PlayerMobile)m);
 
                 quest.Objectives[0].CurProgress = 0;
             }

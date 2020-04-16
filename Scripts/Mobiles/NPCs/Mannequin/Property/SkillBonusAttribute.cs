@@ -48,7 +48,7 @@ namespace Server.Mobiles.MannequinProperty
         {
             double total = 0;
 
-            foreach (var item in items)
+            foreach (Item item in items)
             {
                 total += GetPropertyValue(item);
             }

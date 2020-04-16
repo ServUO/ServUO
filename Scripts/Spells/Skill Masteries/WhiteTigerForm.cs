@@ -38,7 +38,7 @@ namespace Server.Spells.SkillMasteries
 
         public static void AutoCast(Mobile m)
         {
-            var spell = new WhiteTigerFormSpell(m, null);
+            WhiteTigerFormSpell spell = new WhiteTigerFormSpell(m, null);
             spell.Cast();
         }
 

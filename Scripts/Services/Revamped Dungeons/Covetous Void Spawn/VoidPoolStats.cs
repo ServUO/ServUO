@@ -30,7 +30,7 @@ namespace Server.Engines.VoidPool
 
         public static VoidPoolStats GetStats(VoidPoolController controller)
         {
-            var stats = Stats.FirstOrDefault(s => s.Controller == controller);
+            VoidPoolStats stats = Stats.FirstOrDefault(s => s.Controller == controller);
 
             if (stats == null)
                 stats = new VoidPoolStats(controller);
@@ -154,7 +154,7 @@ namespace Server.Engines.VoidPool
                     writer.Write(1);
 
                     writer.Write(Stats.Count);
-                    foreach (var stats in Stats)
+                    foreach (VoidPoolStats stats in Stats)
                     {
                         stats.Serialize(writer);
                     }
@@ -180,7 +180,7 @@ namespace Server.Engines.VoidPool
                         int count = reader.ReadInt();
                         for (int i = 0; i < count; i++)
                         {
-                            var stats = new VoidPoolStats(reader, false);
+                            VoidPoolStats stats = new VoidPoolStats(reader, false);
 
                             if (stats.Controller != null)
                             {
@@ -194,7 +194,7 @@ namespace Server.Engines.VoidPool
 
         public static bool CheckBestSingle(VoidPoolController controller)
         {
-            var stats = GetStats(controller);
+            VoidPoolStats stats = GetStats(controller);
 
             foreach (KeyValuePair<Mobile, long> kvp in controller.CurrentScore)
             {
@@ -210,7 +210,7 @@ namespace Server.Engines.VoidPool
 
         public static void AddToOverallTotal(VoidPoolController controller)
         {
-            var stats = GetStats(controller);
+            VoidPoolStats stats = GetStats(controller);
 
             foreach (KeyValuePair<Mobile, long> kvp in controller.CurrentScore)
             {
@@ -224,7 +224,7 @@ namespace Server.Engines.VoidPool
         public static bool CheckAddTop20(VoidPoolController controller)
         {
             long total = GetCollectiveScore(controller.CurrentScore);
-            var stats = GetStats(controller);
+            VoidPoolStats stats = GetStats(controller);
 
             List<Dictionary<Mobile, long>> copy = new List<Dictionary<Mobile, long>>(stats.Top20);
 
@@ -258,7 +258,7 @@ namespace Server.Engines.VoidPool
 
         public static void CheckBestWave(VoidPoolController controller)
         {
-            var stats = GetStats(controller);
+            VoidPoolStats stats = GetStats(controller);
             int wave = controller.Wave;
 
             if (stats.BestWave == null || wave > stats.BestWave.Waves)

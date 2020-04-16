@@ -135,7 +135,7 @@ namespace Server.Engines.TreasuresOfKotlCity
                 }
             }
 
-            foreach (var comp in Components)
+            foreach (AddonComponent comp in Components)
             {
                 if (comp.ItemID == 40146)
                     comp.ItemID = 40147;
@@ -150,7 +150,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
         public void Deactivate()
         {
-            foreach (var comp in Components)
+            foreach (AddonComponent comp in Components)
             {
                 if (comp.ItemID == 40147)
                     comp.ItemID = 40146;

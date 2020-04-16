@@ -218,7 +218,7 @@ namespace Server.Items
         {
             get
             {
-                var list = new int[5];
+                int[] list = new int[5];
 
                 list[0] = BasePhysicalResistance;
                 list[1] = BaseFireResistance;

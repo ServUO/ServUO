@@ -120,17 +120,17 @@ namespace Server.Items
         {
             base.OnLocationChange(old);
 
-            foreach (var c in Cannons)
+            foreach (MannedCannon c in Cannons)
             {
                 c.Location = new Point3D(X + (c.X - old.X), Y + (c.Y - old.Y), Z + (c.Z - old.Z));
             }
 
-            foreach (var c in Crew)
+            foreach (BaseCreature c in Crew)
             {
                 c.Location = new Point3D(X + (c.X - old.X), Y + (c.Y - old.Y), Z + (c.Z - old.Z));
             }
 
-            foreach (var c in Spawn.Keys.Where(c => c != null && !c.Deleted))
+            foreach (BaseCreature c in Spawn.Keys.Where(c => c != null && !c.Deleted))
             {
                 c.Location = new Point3D(X + (c.X - old.X), Y + (c.Y - old.Y), Z + (c.Z - old.Z));
             }
@@ -145,17 +145,17 @@ namespace Server.Items
         {
             base.OnMapChange();
 
-            foreach (var c in Cannons)
+            foreach (MannedCannon c in Cannons)
             {
                 c.Map = Map;
             }
 
-            foreach (var c in Crew.Where(c => c != null && !c.Deleted))
+            foreach (BaseCreature c in Crew.Where(c => c != null && !c.Deleted))
             {
                 c.Map = Map;
             }
 
-            foreach (var c in Spawn.Keys.Where(c => c != null && !c.Deleted))
+            foreach (BaseCreature c in Spawn.Keys.Where(c => c != null && !c.Deleted))
             {
                 c.Map = Map;
             }
@@ -210,7 +210,7 @@ namespace Server.Items
             {
                 if (BaseCreature.IsSoulboundEnemies && Spawn != null)
                 {
-                    foreach (var bc in Spawn.Keys)
+                    foreach (BaseCreature bc in Spawn.Keys)
                     {
                         if (!bc.Deleted)
                         {
@@ -223,7 +223,7 @@ namespace Server.Items
                 _CheckSpawn = false;
             }
 
-            var map = Map;
+            Map map = Map;
 
             if (map == null)
             {
@@ -239,7 +239,7 @@ namespace Server.Items
             }
             else if (CannonsOperational && NextShoot < DateTime.UtcNow)
             {
-                foreach (var cannon in Cannons.Where(c => c != null && !c.Deleted && (c.CanFireUnmanned || (c.Operator != null && !c.Operator.Deleted && c.Operator.Alive))))
+                foreach (MannedCannon cannon in Cannons.Where(c => c != null && !c.Deleted && (c.CanFireUnmanned || (c.Operator != null && !c.Operator.Deleted && c.Operator.Alive))))
                 {
                     cannon.Scan(true);
                 }
@@ -265,8 +265,8 @@ namespace Server.Items
                 return;
 
             Point3D p = Location;
-            var map = Map;
-            var range = 15;
+            Map map = Map;
+            int range = 15;
 
             if (Beacon.LastDamager != null && Beacon.LastDamager.InRange(Location, 20))
             {
@@ -278,7 +278,7 @@ namespace Server.Items
 
             for (int i = 0; i < 50; i++)
             {
-                var spawnLoc = new Point3D(Utility.RandomMinMax(p.X - range, p.X + range), Utility.RandomMinMax(p.Y - range, p.Y + range), -5);
+                Point3D spawnLoc = new Point3D(Utility.RandomMinMax(p.X - range, p.X + range), Utility.RandomMinMax(p.Y - range, p.Y + range), -5);
 
                 if (map.CanFit(spawnLoc.X, spawnLoc.Y, spawnLoc.Z, 16, true, true, false, creature))
                 {
@@ -329,17 +329,17 @@ namespace Server.Items
                 Timer = null;
             }
 
-            foreach (var bc in Crew.Where(c => c != null && !c.Deleted))
+            foreach (BaseCreature bc in Crew.Where(c => c != null && !c.Deleted))
             {
                 bc.Kill();
             }
 
-            foreach (var bc in Spawn.Keys.Where(sp => sp != null && !sp.Deleted))
+            foreach (BaseCreature bc in Spawn.Keys.Where(sp => sp != null && !sp.Deleted))
             {
                 bc.Kill();
             }
 
-            foreach (var cannon in Cannons)
+            foreach (MannedCannon cannon in Cannons)
             {
                 cannon.Delete();
             }
@@ -374,7 +374,7 @@ namespace Server.Items
 
             writer.Write(Spawn.Count);
 
-            foreach (var kvp in Spawn)
+            foreach (KeyValuePair<BaseCreature, bool> kvp in Spawn)
             {
                 writer.WriteMobile(kvp.Key);
                 writer.Write(kvp.Value);
@@ -403,7 +403,7 @@ namespace Server.Items
                         //Spawn = reader.ReadStrongMobileList<BaseCreature>();
                         List<BaseCreature> list = reader.ReadStrongMobileList<BaseCreature>();
 
-                        foreach (var bc in list)
+                        foreach (BaseCreature bc in list)
                         {
                             Spawn[bc] = true;
                         }
@@ -414,8 +414,8 @@ namespace Server.Items
 
                         for (int i = 0; i < count; i++)
                         {
-                            var bc = reader.ReadMobile<BaseCreature>();
-                            var initial = reader.ReadBool();
+                            BaseCreature bc = reader.ReadMobile<BaseCreature>();
+                            bool initial = reader.ReadBool();
 
                             if (bc != null)
                             {

@@ -33,7 +33,7 @@ namespace Server.Engines.SorcerersDungeon
 
         public override void ProcessKill(Mobile victim, Mobile damager)
         {
-            var bc = victim as BaseCreature;
+            BaseCreature bc = victim as BaseCreature;
 
             if (bc == null)
                 return;
@@ -130,7 +130,7 @@ namespace Server.Engines.SorcerersDungeon
 
             if (reader.ReadInt() == 0)
             {
-                var spawner = new TOSDSpawner();
+                TOSDSpawner spawner = new TOSDSpawner();
                 spawner.Deserialize(reader);
             }
 

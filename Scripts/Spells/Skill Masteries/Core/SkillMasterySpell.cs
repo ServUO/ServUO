@@ -374,7 +374,7 @@ namespace Server.Spells.SkillMasteries
 
         public void UpdateParty(bool playersOnly)
         {
-            var p = Party.Get(Caster);
+            Party p = Party.Get(Caster);
 
             if (PartyList == null)
             {
@@ -383,7 +383,7 @@ namespace Server.Spells.SkillMasteries
 
             if (p != null)
             {
-                foreach (var m in p.Members.Select(x => x.Mobile))
+                foreach (Mobile m in p.Members.Select(x => x.Mobile))
                 {
                     if (!PartyList.Contains(m) && (!playersOnly || m is PlayerMobile) && ValidPartyMember(m))
                     {
@@ -439,7 +439,7 @@ namespace Server.Spells.SkillMasteries
 
             if (m is PlayerMobile)
             {
-                foreach (var pet in ((PlayerMobile)m).AllFollowers.Where(p => !PartyList.Contains(p) && ValidPartyMember(p)))
+                foreach (Mobile pet in ((PlayerMobile)m).AllFollowers.Where(p => !PartyList.Contains(p) && ValidPartyMember(p)))
                 {
                     AddPartyMember(pet);
                 }
@@ -453,7 +453,7 @@ namespace Server.Spells.SkillMasteries
 
             if (m is PlayerMobile)
             {
-                foreach (var pet in ((PlayerMobile)m).AllFollowers.Where(p => PartyList.Contains(p)))
+                foreach (Mobile pet in ((PlayerMobile)m).AllFollowers.Where(p => PartyList.Contains(p)))
                 {
                     RemovePartyMember(pet);
                 }
@@ -464,7 +464,7 @@ namespace Server.Spells.SkillMasteries
         {
             if (m is PlayerMobile)
             {
-                foreach (var pet in ((PlayerMobile)m).AllFollowers.Where(p => !PartyList.Contains(p) && ValidPartyMember(p)))
+                foreach (Mobile pet in ((PlayerMobile)m).AllFollowers.Where(p => !PartyList.Contains(p) && ValidPartyMember(p)))
                 {
                     AddPartyMember(pet);
                 }
@@ -481,7 +481,7 @@ namespace Server.Spells.SkillMasteries
 
         public static void OnPartyRemoved(Mobile m, bool disband)
         {
-            foreach (var spell in GetSpells(s => s.PartyEffects && s.PartyList != null && (s.Caster == m || s.PartyList.Contains(m))))
+            foreach (SkillMasterySpell spell in GetSpells(s => s.PartyEffects && s.PartyList != null && (s.Caster == m || s.PartyList.Contains(m))))
             {
                 if (disband)
                 {

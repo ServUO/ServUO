@@ -289,7 +289,7 @@ namespace Server
 
                 if (from is BaseCreature && m is BaseCreature)
                 {
-                    var profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)from);
+                    TrainingProfile profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)from);
 
                     if (profile != null)
                     {
@@ -3068,9 +3068,9 @@ namespace Server
             if (m == null || !m.Alive)
                 return;
 
-            var list = new List<Item>();
+            List<Item> list = new List<Item>();
 
-            foreach (var item in m.Items.Where(i => i is IDurability))
+            foreach (Item item in m.Items.Where(i => i is IDurability))
             {
                 NegativeAttributes attrs = RunicReforging.GetNegativeAttributes(item);
 
@@ -3080,7 +3080,7 @@ namespace Server
                 }
             }
 
-            foreach (var item in list)
+            foreach (Item item in list)
             {
                 IDurability dur = item as IDurability;
 

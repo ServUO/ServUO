@@ -149,7 +149,7 @@ namespace Server.Engines.Craft
             {
                 for (int y = -range; (!anvil || !forge) && y <= range; ++y)
                 {
-                    var tiles = map.Tiles.GetStaticTiles(from.X + x, from.Y + y, true);
+                    StaticTile[] tiles = map.Tiles.GetStaticTiles(from.X + x, from.Y + y, true);
 
                     for (int i = 0; (!anvil || !forge) && i < tiles.Length; ++i)
                     {

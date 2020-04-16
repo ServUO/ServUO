@@ -47,7 +47,7 @@ namespace Server.Mobiles
 
             public override void OnClick()
             {
-                var boat = BaseBoat.GetBoat(m_From);
+                BaseBoat boat = BaseBoat.GetBoat(m_From);
 
                 if (boat != null && m_DockMaster.InRange(boat.Location, 100))
                     boat.BeginDryDock(m_From, m_DockMaster);
@@ -81,7 +81,7 @@ namespace Server.Mobiles
                     return;
                 }
 
-                var boat = BaseBoat.GetBoat(m_From);
+                BaseBoat boat = BaseBoat.GetBoat(m_From);
 
                 if (boat != null && m_DockMaster.InRange(boat.Location, 50))
                     m_DockMaster.TryRetrieveHold(m_From, boat);

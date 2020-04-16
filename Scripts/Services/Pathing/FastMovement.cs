@@ -30,15 +30,15 @@ namespace Server.Movement
 
         private static bool IsOk(StaticTile tile, int ourZ, int ourTop)
         {
-            var itemData = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
+            ItemData itemData = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
 
             return tile.Z + itemData.CalcHeight <= ourZ || ourTop <= tile.Z || (itemData.Flags & ImpassableSurface) == 0;
         }
 
         private static bool IsOk(Mobile m, Item item, int ourZ, int ourTop, bool ignoreDoors, bool ignoreSpellFields)
         {
-            var itemID = item.ItemID & TileData.MaxItemValue;
-            var itemData = TileData.ItemTable[itemID];
+            int itemID = item.ItemID & TileData.MaxItemValue;
+            ItemData itemData = TileData.ItemTable[itemID];
 
             if ((itemData.Flags & ImpassableSurface) == 0)
             {
@@ -91,11 +91,11 @@ namespace Server.Movement
         {
             newZ = 0;
 
-            var tiles = map.Tiles.GetStaticTiles(x, y, true);
-            var landTile = map.Tiles.GetLandTile(x, y);
-            var landData = TileData.LandTable[landTile.ID & TileData.MaxLandValue];
-            var landBlocks = (landData.Flags & TileFlag.Impassable) != 0;
-            var considerLand = !landTile.Ignored;
+            StaticTile[] tiles = map.Tiles.GetStaticTiles(x, y, true);
+            LandTile landTile = map.Tiles.GetLandTile(x, y);
+            LandData landData = TileData.LandTable[landTile.ID & TileData.MaxLandValue];
+            bool landBlocks = (landData.Flags & TileFlag.Impassable) != 0;
+            bool considerLand = !landTile.Ignored;
 
             if (landBlocks && canSwim && (landData.Flags & TileFlag.Wet) != 0)
             {
@@ -112,23 +112,23 @@ namespace Server.Movement
 
             map.GetAverageZ(x, y, ref landZ, ref landCenter, ref landTop);
 
-            var moveIsOk = false;
+            bool moveIsOk = false;
 
-            var stepTop = startTop + StepHeight;
-            var checkTop = startZ + PersonHeight;
+            int stepTop = startTop + StepHeight;
+            int checkTop = startZ + PersonHeight;
 
             Mobile m = p as Mobile;
 
-            var ignoreDoors = MovementImpl.AlwaysIgnoreDoors || m == null || !m.Alive || m.IsDeadBondedPet || m.Body.IsGhost ||
+            bool ignoreDoors = MovementImpl.AlwaysIgnoreDoors || m == null || !m.Alive || m.IsDeadBondedPet || m.Body.IsGhost ||
                               m.Body.BodyID == 987;
-            var ignoreSpellFields = m is PlayerMobile && map.MapID != 0;
+            bool ignoreSpellFields = m is PlayerMobile && map.MapID != 0;
 
             int itemZ, itemTop, ourZ, ourTop, testTop;
             ItemData itemData;
             TileFlag flags;
 
             #region Tiles
-            foreach (var tile in tiles)
+            foreach (StaticTile tile in tiles)
             {
                 itemData = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
                 flags = itemData.Flags;
@@ -185,7 +185,7 @@ namespace Server.Movement
 
                 if (moveIsOk)
                 {
-                    var cmp = Math.Abs(ourZ - p.Z) - Math.Abs(newZ - p.Z);
+                    int cmp = Math.Abs(ourZ - p.Z) - Math.Abs(newZ - p.Z);
 
                     if (cmp > 0 || (cmp == 0 && ourZ > newZ))
                     {
@@ -208,7 +208,7 @@ namespace Server.Movement
                     continue;
                 }
 
-                var landCheck = itemZ;
+                int landCheck = itemZ;
 
                 if (itemData.Height >= StepHeight)
                 {
@@ -235,7 +235,7 @@ namespace Server.Movement
             #endregion
 
             #region Items
-            foreach (var item in items)
+            foreach (Item item in items)
             {
                 itemData = item.ItemData;
                 flags = itemData.Flags;
@@ -271,7 +271,7 @@ namespace Server.Movement
 
                 if (moveIsOk)
                 {
-                    var cmp = Math.Abs(ourZ - p.Z) - Math.Abs(newZ - p.Z);
+                    int cmp = Math.Abs(ourZ - p.Z) - Math.Abs(newZ - p.Z);
 
                     if (cmp > 0 || (cmp == 0 && ourZ > newZ))
                     {
@@ -294,7 +294,7 @@ namespace Server.Movement
                     continue;
                 }
 
-                var landCheck = itemZ;
+                int landCheck = itemZ;
 
                 if (itemData.Height >= StepHeight)
                 {
@@ -334,11 +334,11 @@ namespace Server.Movement
                 testTop = ourTop;
             }
 
-            var shouldCheck = true;
+            bool shouldCheck = true;
 
             if (moveIsOk)
             {
-                var cmp = Math.Abs(ourZ - p.Z) - Math.Abs(newZ - p.Z);
+                int cmp = Math.Abs(ourZ - p.Z) - Math.Abs(newZ - p.Z);
 
                 if (cmp > 0 || (cmp == 0 && ourZ > newZ))
                 {
@@ -370,14 +370,14 @@ namespace Server.Movement
                 return false;
             }
 
-            var xStart = loc.X;
-            var yStart = loc.Y;
+            int xStart = loc.X;
+            int yStart = loc.Y;
 
             int xForward = xStart, yForward = yStart;
             int xRight = xStart, yRight = yStart;
             int xLeft = xStart, yLeft = yStart;
 
-            var checkDiagonals = ((int)d & 0x1) == 0x1;
+            bool checkDiagonals = ((int)d & 0x1) == 0x1;
 
             Offset(d, ref xForward, ref yForward);
             Offset((Direction)(((int)d - 1) & 0x7), ref xLeft, ref yLeft);
@@ -393,8 +393,8 @@ namespace Server.Movement
 
             IEnumerable<Item> itemsStart, itemsForward, itemsLeft, itemsRight;
 
-            var ignoreMovableImpassables = MovementImpl.IgnoreMovableImpassables;
-            var reqFlags = ImpassableSurface;
+            bool ignoreMovableImpassables = MovementImpl.IgnoreMovableImpassables;
+            TileFlag reqFlags = ImpassableSurface;
 
             if (p is Mobile && ((Mobile)p).CanSwim)
             {
@@ -403,10 +403,10 @@ namespace Server.Movement
 
             if (checkDiagonals)
             {
-                var sStart = map.GetSector(xStart, yStart);
-                var sForward = map.GetSector(xForward, yForward);
-                var sLeft = map.GetSector(xLeft, yLeft);
-                var sRight = map.GetSector(xRight, yRight);
+                Sector sStart = map.GetSector(xStart, yStart);
+                Sector sForward = map.GetSector(xForward, yForward);
+                Sector sLeft = map.GetSector(xLeft, yLeft);
+                Sector sRight = map.GetSector(xRight, yRight);
 
                 itemsStart = sStart.Items.Where(i => Verify(i, reqFlags, ignoreMovableImpassables, xStart, yStart));
                 itemsForward = sForward.Items.Where(i => Verify(i, reqFlags, ignoreMovableImpassables, xForward, yForward));
@@ -415,8 +415,8 @@ namespace Server.Movement
             }
             else
             {
-                var sStart = map.GetSector(xStart, yStart);
-                var sForward = map.GetSector(xForward, yForward);
+                Sector sStart = map.GetSector(xStart, yStart);
+                Sector sForward = map.GetSector(xForward, yForward);
 
                 itemsStart = sStart.Items.Where(i => Verify(i, reqFlags, ignoreMovableImpassables, xStart, yStart));
                 itemsForward = sForward.Items.Where(i => Verify(i, reqFlags, ignoreMovableImpassables, xForward, yForward));
@@ -431,7 +431,7 @@ namespace Server.Movement
             MovementPool.AcquireMoveCache(ref list, itemsForward);
             Mobile m = p as Mobile;
 
-            var moveIsOk = Check(map, p, list, xForward, yForward, startTop, startZ, m != null && m.CanSwim, m != null && m.CantWalk, out newZ);
+            bool moveIsOk = Check(map, p, list, xForward, yForward, startTop, startZ, m != null && m.CanSwim, m != null && m.CantWalk, out newZ);
 
             if (m != null && moveIsOk && checkDiagonals)
             {
@@ -520,9 +520,9 @@ namespace Server.Movement
         {
             int xCheck = loc.X, yCheck = loc.Y;
 
-            var landTile = map.Tiles.GetLandTile(xCheck, yCheck);
-            var landData = TileData.LandTable[landTile.ID & TileData.MaxLandValue];
-            var landBlocks = (landData.Flags & TileFlag.Impassable) != 0;
+            LandTile landTile = map.Tiles.GetLandTile(xCheck, yCheck);
+            LandData landData = TileData.LandTable[landTile.ID & TileData.MaxLandValue];
+            bool landBlocks = (landData.Flags & TileFlag.Impassable) != 0;
 
             Mobile m = p as Mobile;
 
@@ -542,10 +542,10 @@ namespace Server.Movement
 
             map.GetAverageZ(xCheck, yCheck, ref landZ, ref landCenter, ref landTop);
 
-            var considerLand = !landTile.Ignored;
+            bool considerLand = !landTile.Ignored;
 
-            var zCenter = zLow = zTop = 0;
-            var isSet = false;
+            int zCenter = zLow = zTop = 0;
+            bool isSet = false;
 
             if (considerLand && !landBlocks && loc.Z >= landCenter)
             {
@@ -555,12 +555,12 @@ namespace Server.Movement
                 isSet = true;
             }
 
-            var staticTiles = map.Tiles.GetStaticTiles(xCheck, yCheck, true);
+            StaticTile[] staticTiles = map.Tiles.GetStaticTiles(xCheck, yCheck, true);
 
-            foreach (var tile in staticTiles)
+            foreach (StaticTile tile in staticTiles)
             {
-                var tileData = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
-                var calcTop = (tile.Z + tileData.CalcHeight);
+                ItemData tileData = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
+                int calcTop = (tile.Z + tileData.CalcHeight);
 
                 if (isSet && calcTop < zCenter)
                 {
@@ -585,7 +585,7 @@ namespace Server.Movement
                 zLow = tile.Z;
                 zCenter = calcTop;
 
-                var top = tile.Z + tileData.Height;
+                int top = tile.Z + tileData.Height;
 
                 if (!isSet || top > zTop)
                 {
@@ -597,11 +597,11 @@ namespace Server.Movement
 
             ItemData itemData;
 
-            foreach (var item in itemList)
+            foreach (Item item in itemList)
             {
                 itemData = item.ItemData;
 
-                var calcTop = item.Z + itemData.CalcHeight;
+                int calcTop = item.Z + itemData.CalcHeight;
 
                 if (isSet && calcTop < zCenter)
                 {
@@ -626,7 +626,7 @@ namespace Server.Movement
                 zLow = item.Z;
                 zCenter = calcTop;
 
-                var top = item.Z + itemData.Height;
+                int top = item.Z + itemData.Height;
 
                 if (!isSet || top > zTop)
                 {

@@ -74,23 +74,23 @@ namespace Server.Gumps
 
             m_Values = values;
 
-            var pages = (names.Length + EntryCount - 1) / EntryCount;
-            var index = 0;
+            int pages = (names.Length + EntryCount - 1) / EntryCount;
+            int index = 0;
 
-            for (var page = 1; page <= pages; ++page)
+            for (int page = 1; page <= pages; ++page)
             {
                 AddPage(page);
 
-                var start = (page - 1) * EntryCount;
-                var count = names.Length - start;
+                int start = (page - 1) * EntryCount;
+                int count = names.Length - start;
 
                 if (count > EntryCount)
                 {
                     count = EntryCount;
                 }
 
-                var totalHeight = OffsetSize + ((count + 2) * (EntryHeight + OffsetSize));
-                var backHeight = BorderSize + totalHeight + BorderSize;
+                int totalHeight = OffsetSize + ((count + 2) * (EntryHeight + OffsetSize));
+                int backHeight = BorderSize + totalHeight + BorderSize;
 
                 AddBackground(0, 0, BackWidth, backHeight, BackGumpID);
                 AddImageTiled(
@@ -100,10 +100,10 @@ namespace Server.Gumps
                     totalHeight,
                     OffsetGumpID);
 
-                var x = BorderSize + OffsetSize;
-                var y = BorderSize + OffsetSize;
+                int x = BorderSize + OffsetSize;
+                int y = BorderSize + OffsetSize;
 
-                var emptyWidth = TotalWidth - PrevWidth - NextWidth - (OffsetSize * 4) - (OldStyle ? SetWidth + OffsetSize : 0);
+                int emptyWidth = TotalWidth - PrevWidth - NextWidth - (OffsetSize * 4) - (OldStyle ? SetWidth + OffsetSize : 0);
 
                 AddImageTiled(x, y, PrevWidth, EntryHeight, HeaderGumpID);
 
@@ -148,7 +148,7 @@ namespace Server.Gumps
 
                 AddRect(0, prop.Name, 0);
 
-                for (var i = 0; i < count; ++i)
+                for (int i = 0; i < count; ++i)
                 {
                     AddRect(i + 1, names[index], ++index);
                 }
@@ -157,15 +157,15 @@ namespace Server.Gumps
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
-            var index = info.ButtonID - 1;
+            int index = info.ButtonID - 1;
 
             if (index >= 0 && index < m_Values.Length)
             {
                 try
                 {
-                    var toSet = m_Values[index];
+                    object toSet = m_Values[index];
 
-                    var result = Properties.SetDirect(m_Mobile, m_Object, m_Object, m_Property, m_Property.Name, toSet, true);
+                    string result = Properties.SetDirect(m_Mobile, m_Object, m_Object, m_Property, m_Property.Name, toSet, true);
 
                     m_Mobile.SendMessage(result);
 
@@ -185,8 +185,8 @@ namespace Server.Gumps
 
         private void AddRect(int index, string str, int button)
         {
-            var x = BorderSize + OffsetSize;
-            var y = BorderSize + OffsetSize + ((index + 1) * (EntryHeight + OffsetSize));
+            int x = BorderSize + OffsetSize;
+            int y = BorderSize + OffsetSize + ((index + 1) * (EntryHeight + OffsetSize));
 
             AddImageTiled(x, y, EntryWidth, EntryHeight, EntryGumpID);
             AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, TextHue, str);

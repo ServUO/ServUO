@@ -27,7 +27,7 @@ namespace Server.Gumps
             ImbuingContext context = Imbuing.GetContext(User);
             context.LastImbued = m_Item;
 
-            var itemType = ItemPropertyInfo.GetItemType(m_Item);
+            ItemType itemType = ItemPropertyInfo.GetItemType(m_Item);
             bool twoHanded = m_Item.Layer == Layer.TwoHanded;
 
             AddPage(0);

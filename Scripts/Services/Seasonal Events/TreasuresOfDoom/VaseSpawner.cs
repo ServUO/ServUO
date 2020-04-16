@@ -94,7 +94,7 @@ namespace Server.Engines.TreasuresOfDoom
         {
             for (int i = 0; i < count; i++)
             {
-                var vase = new AncientClayVase(true);
+                AncientClayVase vase = new AncientClayVase(true);
                 ItemFlags.SetStealable(vase, true);
                 vase.Movable = false;
 

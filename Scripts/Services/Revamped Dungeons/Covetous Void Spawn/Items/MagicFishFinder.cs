@@ -183,7 +183,7 @@ namespace Server.Items
             Schools[Map.Ilshenar] = new List<SchoolEntry>();
             Schools[Map.Tokuno] = new List<SchoolEntry>();
 
-            foreach (var kvp in Schools)
+            foreach (KeyValuePair<Map, List<SchoolEntry>> kvp in Schools)
             {
                 int amount = 150;
 

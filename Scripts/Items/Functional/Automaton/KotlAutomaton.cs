@@ -13,7 +13,7 @@ namespace Server.Items
             get { return _Resource; }
             set
             {
-                var old = _Resource;
+                CraftResource old = _Resource;
                 _Resource = value;
 
                 if (old != _Resource)

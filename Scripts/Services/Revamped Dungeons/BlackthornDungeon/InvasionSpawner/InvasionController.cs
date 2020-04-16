@@ -164,7 +164,7 @@ namespace Server.Engines.Blackthorn
             // Shuffle zones
             for (int i = 0; i < 8; i++)
             {
-                var rec = SpawnZones[Utility.Random(SpawnZones.Count)];
+                Rectangle2D rec = SpawnZones[Utility.Random(SpawnZones.Count)];
                 SpawnZones.Remove(rec);
                 SpawnZones.Insert(0, rec);
             }

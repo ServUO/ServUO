@@ -57,11 +57,11 @@ namespace Server.Gumps
             m_Page = page;
             m_List = list;
 
-            var canNull = !prop.PropertyType.IsValueType;
-            var canDye = prop.IsDefined(typeof(HueAttribute), false);
-            var isBody = prop.IsDefined(typeof(BodyAttribute), false);
+            bool canNull = !prop.PropertyType.IsValueType;
+            bool canDye = prop.IsDefined(typeof(HueAttribute), false);
+            bool isBody = prop.IsDefined(typeof(BodyAttribute), false);
 
-            var val = prop.GetValue(m_Object, null);
+            object val = prop.GetValue(m_Object, null);
             string initialText;
 
             if (val == null)
@@ -88,8 +88,8 @@ namespace Server.Gumps
                 (isBody ? (EntryHeight + OffsetSize) : 0),
                 OffsetGumpID);
 
-            var x = BorderSize + OffsetSize;
-            var y = BorderSize + OffsetSize;
+            int x = BorderSize + OffsetSize;
+            int y = BorderSize + OffsetSize;
 
             AddImageTiled(x, y, EntryWidth, EntryHeight, EntryGumpID);
             AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, TextHue, prop.Name);
@@ -165,7 +165,7 @@ namespace Server.Gumps
             {
                 case 1:
                     {
-                        var text = info.GetTextEntry(0);
+                        TextRelay text = info.GetTextEntry(0);
 
                         if (text != null)
                         {

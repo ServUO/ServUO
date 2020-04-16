@@ -15,9 +15,9 @@ namespace Server.Items
                 {
                     double currency = 0.0;
 
-                    var table = new Dictionary<string, long>();
+                    Dictionary<string, long> table = new Dictionary<string, long>();
 
-                    foreach (var account in Accounts.GetAccounts().OfType<Account>())
+                    foreach (Account account in Accounts.GetAccounts().OfType<Account>())
                     {
                         table[account.Username] = (long)(account.TotalCurrency * Account.CurrencyThreshold);
                         currency += account.TotalCurrency;
@@ -25,7 +25,7 @@ namespace Server.Items
 
                     using (StreamWriter op = new StreamWriter("TotalAccountGold.txt", true))
                     {
-                        foreach (var kvp in table.OrderBy(k => -k.Value))
+                        foreach (KeyValuePair<string, long> kvp in table.OrderBy(k => -k.Value))
                         {
                             op.WriteLine(
                                 String.Format("{0} currency: {1}", kvp.Key, kvp.Value.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US"))));

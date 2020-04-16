@@ -31,7 +31,7 @@ namespace Server.Engines.Points
 
         public override void ProcessKill(Mobile victim, Mobile damager)
         {
-            var bc = victim as BaseCreature;
+            BaseCreature bc = victim as BaseCreature;
 
             if (!Enabled || bc == null || bc.Controlled || bc.Summoned || !damager.Alive)
                 return;

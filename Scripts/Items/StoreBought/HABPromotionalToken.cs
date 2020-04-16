@@ -317,7 +317,7 @@ namespace Server.Items
 
                 if (info.ButtonID == 1)
                 {
-                    var switches = info.Switches;
+                    int[] switches = info.Switches;
 
                     if (switches.Length > 0)
                     {

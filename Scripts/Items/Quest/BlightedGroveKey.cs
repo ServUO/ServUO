@@ -54,7 +54,7 @@ namespace Server.Items
 
             Map map = Altar.Map;
 
-            foreach (var rect in _EntryLocs)
+            foreach (Rectangle2D rect in _EntryLocs)
             {
                 if (rect.Contains(from.Location))
                 {

@@ -104,7 +104,7 @@ namespace Server.Engines.VoidPool
 
             if (bc != null)
             {
-                var entry = FindEntryFor(bc);
+                SpawnEntry entry = FindEntryFor(bc);
 
                 if (entry != null)
                 {
@@ -121,7 +121,7 @@ namespace Server.Engines.VoidPool
 
                     List<DamageStore> list = bc.GetLootingRights();
 
-                    foreach (var ds in list)
+                    foreach (DamageStore ds in list)
                     {
                         if (ds.m_HasRight)
                         {
@@ -139,7 +139,7 @@ namespace Server.Engines.VoidPool
 
         public void AddToOverallTotal(Mobile m, int points)
         {
-            var stats = VoidPoolStats.GetStats(Controller);
+            VoidPoolStats stats = VoidPoolStats.GetStats(Controller);
 
             if (stats != null)
             {
@@ -155,7 +155,7 @@ namespace Server.Engines.VoidPool
             if (!Active)
                 return;
 
-            var type = entry.SpawnType;
+            VoidType type = entry.SpawnType;
 
             do
             {
@@ -168,7 +168,7 @@ namespace Server.Engines.VoidPool
 
         public void StartSpawn()
         {
-            foreach (var entry in Spawns)
+            foreach (SpawnEntry entry in Spawns)
             {
                 entry.SpawnType = (VoidType)Utility.RandomMinMax(0, 4);
                 entry.DoSpawn();
@@ -189,16 +189,16 @@ namespace Server.Engines.VoidPool
 
             if (Spawns != null)
             {
-                foreach (var entry in Spawns)
+                foreach (SpawnEntry entry in Spawns)
                 {
-                    var list = new List<BaseCreature>();
+                    List<BaseCreature> list = new List<BaseCreature>();
 
-                    foreach (var bc in entry.Spawn)
+                    foreach (BaseCreature bc in entry.Spawn)
                     {
                         list.Add(bc);
                     }
 
-                    foreach (var creature in list)
+                    foreach (BaseCreature creature in list)
                         creature.Delete();
 
                     ColUtility.Free(list);

@@ -22,7 +22,7 @@ namespace Server.Items
 
         public override bool CanPostGreeting(Server.Multis.BaseHouse house, Mobile m)
         {
-            var sys = CitySystem;
+            CityLoyaltySystem sys = CitySystem;
 
             return sys != null && (m.AccessLevel >= AccessLevel.GameMaster || sys.Governor == m);
         }

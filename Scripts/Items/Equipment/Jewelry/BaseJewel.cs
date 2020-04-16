@@ -255,7 +255,7 @@ namespace Server.Items
             }
             set
             {
-                var old = m_GemType;
+                GemType old = m_GemType;
                 m_GemType = value;
                 OnGemTypeChange(old);
                 InvalidateProperties();

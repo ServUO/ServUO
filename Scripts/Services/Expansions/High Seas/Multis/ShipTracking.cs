@@ -156,7 +156,7 @@ namespace Server.Multis
                 return;
             }
 
-            var targets = new List<Item>();
+            List<Item> targets = new List<Item>();
             Map map = from.Map;
 
             if (map == null || map == Map.Internal)

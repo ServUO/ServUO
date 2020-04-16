@@ -252,7 +252,7 @@ namespace Server.Items
 
         public virtual bool HasGump(Mobile toCheck)
         {
-            var bookGump = toCheck.FindGump<RunebookGump>();
+            RunebookGump bookGump = toCheck.FindGump<RunebookGump>();
 
             if (bookGump != null && bookGump.Book == this)
             {

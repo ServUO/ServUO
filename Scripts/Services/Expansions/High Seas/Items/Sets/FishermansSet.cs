@@ -33,7 +33,7 @@ namespace Server.Items
         {
             get
             {
-                var list = new int[5];
+                int[] list = new int[5];
 
                 list[0] = base.BasePhysicalResistance;
                 list[1] = base.BaseFireResistance;
@@ -96,7 +96,7 @@ namespace Server.Items
         {
             get
             {
-                var list = new int[5];
+                int[] list = new int[5];
 
                 list[0] = base.BasePhysicalResistance;
                 list[1] = base.BaseFireResistance;
@@ -162,7 +162,7 @@ namespace Server.Items
         {
             get
             {
-                var list = new int[5];
+                int[] list = new int[5];
 
                 list[0] = base.BasePhysicalResistance;
                 list[1] = base.BaseFireResistance;
@@ -226,7 +226,7 @@ namespace Server.Items
         {
             get
             {
-                var list = new int[5];
+                int[] list = new int[5];
 
                 list[0] = base.BasePhysicalResistance;
                 list[1] = base.BaseFireResistance;
@@ -290,7 +290,7 @@ namespace Server.Items
         {
             get
             {
-                var list = new int[5];
+                int[] list = new int[5];
 
                 list[0] = base.BasePhysicalResistance;
                 list[1] = base.BaseFireResistance;
@@ -355,7 +355,7 @@ namespace Server.Items
         {
             get
             {
-                var list = new int[5];
+                int[] list = new int[5];
 
                 list[0] = base.BasePhysicalResistance;
                 list[1] = base.BaseFireResistance;
@@ -419,7 +419,7 @@ namespace Server.Items
         {
             get
             {
-                var list = new int[5];
+                int[] list = new int[5];
 
                 list[0] = base.BasePhysicalResistance;
                 list[1] = base.BaseFireResistance;
@@ -483,7 +483,7 @@ namespace Server.Items
         {
             get
             {
-                var list = new int[5];
+                int[] list = new int[5];
 
                 list[0] = base.BasePhysicalResistance;
                 list[1] = base.BaseFireResistance;

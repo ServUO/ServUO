@@ -200,7 +200,7 @@ namespace Server.Engines.Auction
                     else
                         name = String.Format("#{0}", AuctionItem.LabelNumber.ToString());
 
-                    var message = new NewMaginciaMessage(null, new TextDefinition(1156427), String.Format("{0}\t{1}\t{2}",
+                    NewMaginciaMessage message = new NewMaginciaMessage(null, new TextDefinition(1156427), String.Format("{0}\t{1}\t{2}",
                                                             name,
                                                             CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
                                                             CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
@@ -360,7 +360,7 @@ namespace Server.Engines.Auction
                     else
                         name = String.Format("#{0}", item.LabelNumber.ToString());
 
-                    var mes = new NewMaginciaMessage(null, new TextDefinition(1156454), String.Format("{0}\t{1}\t{2}",
+                    NewMaginciaMessage mes = new NewMaginciaMessage(null, new TextDefinition(1156454), String.Format("{0}\t{1}\t{2}",
                                                                 CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
                                                                 CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
                                                                 name));

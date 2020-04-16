@@ -51,7 +51,7 @@ namespace Server.Items
                     {
                         AddButton(23, 68 + (i * 20), 1209, 1210, i + 1, GumpButtonType.Reply, 0);
 
-                        var textdef = tuple.Item1;
+                        TextDefinition textdef = tuple.Item1;
 
                         if (textdef.Number > 0)
                             AddHtmlLocalized(50, 65 + (i * 20), 240, 20, textdef.Number, 0xFFFF, false, false);
@@ -70,7 +70,7 @@ namespace Server.Items
 
                     if (id >= 0 && id < Token.Titles.Count)
                     {
-                        var tuple = Token.Titles[id];
+                        Tuple<TextDefinition, Type> tuple = Token.Titles[id];
 
                         Item item = Loot.Construct(tuple.Item2);
 

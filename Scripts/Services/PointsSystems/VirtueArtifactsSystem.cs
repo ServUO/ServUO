@@ -69,7 +69,7 @@ namespace Server.Misc
             int luck = Math.Max(0, pm.RealLuck);
             AwardPoints(pm, (int)Math.Max(0, (bc.Fame * (1 + Math.Sqrt(luck) / 100))));
 
-            var vapoints = GetPoints(pm);
+            double vapoints = GetPoints(pm);
             const double A = 0.000863316841;
             const double B = 0.00000425531915;
 

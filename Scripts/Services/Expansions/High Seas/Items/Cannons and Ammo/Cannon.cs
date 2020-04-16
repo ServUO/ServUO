@@ -595,7 +595,7 @@ namespace Server.Items
                     List<Mobile> candidates = new List<Mobile>();
                     SecurityLevel highest = SecurityLevel.Passenger;
 
-                    foreach (var mob in target.GetMobilesOnBoard().OfType<PlayerMobile>().Where(pm => shooter.CanBeHarmful(pm, false)))
+                    foreach (PlayerMobile mob in target.GetMobilesOnBoard().OfType<PlayerMobile>().Where(pm => shooter.CanBeHarmful(pm, false)))
                     {
                         if (m_Galleon.GetSecurityLevel(mob) > highest)
                             candidates.Insert(0, mob);
@@ -1382,7 +1382,7 @@ namespace Server.Items
             if (m_Galleon != null && !m_Galleon.Deleted)
             {
                 BaseShipCannon newCannon = null;
-                var loc = Location;
+                Point3D loc = Location;
                 Delete();
 
                 if (this is HeavyShipCannon)
@@ -1398,7 +1398,7 @@ namespace Server.Items
                 {
                     if (!m_Galleon.TryAddCannon(null, loc, newCannon, null))
                     {
-                        var deed = GetDeed;
+                        ShipCannonDeed deed = GetDeed;
 
                         if (deed != null)
                         {

@@ -35,7 +35,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
             List<Item> contains = new List<Item>(this.Items);
 
-            foreach (var item in contains)
+            foreach (Item item in contains)
             {
                 item.Delete();
             }

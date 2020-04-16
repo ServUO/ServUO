@@ -150,8 +150,8 @@ namespace Server.Items
 
         public static void Fill(Mobile from, LockableContainer cont, int level, bool isSos)
         {
-            var map = from.Map;
-            var luck = from is PlayerMobile ? ((PlayerMobile)from).RealLuck : from.Luck;
+            Map map = from.Map;
+            int luck = from is PlayerMobile ? ((PlayerMobile)from).RealLuck : from.Luck;
 
             cont.Movable = false;
             cont.Locked = true;
@@ -562,7 +562,7 @@ namespace Server.Items
 
                 if (0.1 >= Utility.RandomDouble()) // 10% chance to spawn a new monster
                 {
-                    var spawn = TreasureMap.Spawn(Level, GetWorldLocation(), Map, from, false);
+                    BaseCreature spawn = TreasureMap.Spawn(Level, GetWorldLocation(), Map, from, false);
 
                     spawn.Hue = 2725;
                 }
@@ -577,7 +577,7 @@ namespace Server.Items
 
             if (!AncientGuardians.Any(g => g.Alive))
             {
-                var spawn = TreasureMap.Spawn(Level, GetWorldLocation(), Map, from, false);
+                BaseCreature spawn = TreasureMap.Spawn(Level, GetWorldLocation(), Map, from, false);
                 spawn.NoLootOnDeath = true;
 
                 spawn.Name = "Ancient Chest Guardian";
@@ -723,7 +723,7 @@ namespace Server.Items
 
             if (Map != null && ((TreasureMapInfo.NewSystem && FailedLockpick) || 0.05 >= Utility.RandomDouble()))
             {
-                var grubber = new Grubber();
+                Grubber grubber = new Grubber();
                 grubber.MoveToWorld(Map.GetSpawnPosition(Location, 1), Map);
 
                 Item item = null;

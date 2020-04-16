@@ -80,7 +80,7 @@ namespace Server.Engines.Quests
             if (pm.AccessLevel > AccessLevel.Player)
                 return true;
 
-            var quest = QuestHelper.GetQuest<RightingWrongQuest4>(pm);
+            RightingWrongQuest4 quest = QuestHelper.GetQuest<RightingWrongQuest4>(pm);
 
             return quest != null && !quest.Completed;
         }
@@ -89,7 +89,7 @@ namespace Server.Engines.Quests
         {
             if (from is PlayerMobile && from.InRange(Location, 2))
             {
-                var quest = QuestHelper.GetQuest<RightingWrongQuest4>((PlayerMobile)from);
+                RightingWrongQuest4 quest = QuestHelper.GetQuest<RightingWrongQuest4>((PlayerMobile)from);
 
                 if (from is PlayerMobile && quest != null && !quest.Completed)
                 {
@@ -234,7 +234,7 @@ namespace Server.Engines.Quests
         {
             if (from is PlayerMobile)
             {
-                var quest = QuestHelper.GetQuest<TheTreasureChaseQuest>((PlayerMobile)from);
+                TheTreasureChaseQuest quest = QuestHelper.GetQuest<TheTreasureChaseQuest>((PlayerMobile)from);
 
                 if (quest != null)
                 {
@@ -374,7 +374,7 @@ namespace Server.Engines.Quests
                 item is TreasureMapChest &&
                 ((TreasureMapChest)item).TreasureMap is BuriedRichesTreasureMap)
             {
-                var chest = (TreasureMapChest)item;
+                TreasureMapChest chest = (TreasureMapChest)item;
 
                 from.PlaySound(0x241);
 
@@ -429,7 +429,7 @@ namespace Server.Engines.Quests
         {
             if (m is PlayerMobile)
             {
-                var pm = m as PlayerMobile;
+                PlayerMobile pm = m as PlayerMobile;
 
                 if (QuestHelper.HasQuest<AForcedSacraficeQuest2>(pm))
                 {

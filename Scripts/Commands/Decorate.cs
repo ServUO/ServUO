@@ -51,7 +51,7 @@ namespace Server.Commands
 
             for (int i = 0; i < files.Length; ++i)
             {
-                var list = DecorationList.ReadAll(files[i]);
+                List<DecorationList> list = DecorationList.ReadAll(files[i]);
 
                 m_List = list;
 
@@ -71,7 +71,7 @@ namespace Server.Commands
             if (!File.Exists(path))
                 return;
 
-            var list = DecorationList.ReadAll(path);
+            List<DecorationList> list = DecorationList.ReadAll(path);
             int count = 0;
 
             m_List = list;
@@ -97,7 +97,7 @@ namespace Server.Commands
 
             for (int i = 0; i < files.Length; ++i)
             {
-                var list = DecorationList.ReadRestricted(files[i], restrictType, derivesFrom);
+                List<DecorationList> list = DecorationList.ReadRestricted(files[i], restrictType, derivesFrom);
 
                 m_List = list;
 
@@ -1273,7 +1273,7 @@ namespace Server.Commands
         {
             using (StreamReader ip = new StreamReader(path))
             {
-                var list = new List<DecorationList>();
+                List<DecorationList> list = new List<DecorationList>();
 
                 for (DecorationList v = Read(ip); v != null; v = Read(ip))
                     list.Add(v);

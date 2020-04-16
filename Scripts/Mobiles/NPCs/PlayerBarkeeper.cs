@@ -612,7 +612,7 @@ namespace Server.Mobiles
 
         private void ShoutNews_Callback(object state)
         {
-            var states = (object[])state;
+            object[] states = (object[])state;
             TownCrierEntry tce = (TownCrierEntry)states[0];
             int index = (int)states[1];
 
@@ -669,7 +669,7 @@ namespace Server.Mobiles
             from.CloseGump(typeof(BarkeeperGump));
             from.CloseGump(typeof(BarkeeperTitleGump));
 
-            var entries = m_Entries;
+            Entry[] entries = m_Entries;
 
             RenderBackground();
 
@@ -942,7 +942,7 @@ namespace Server.Mobiles
 
             AddHtml(250, 60, 500, 25, "Add or change a message", false, false);
 
-            var rumors = m_Barkeeper.Rumors;
+            BarkeeperRumor[] rumors = m_Barkeeper.Rumors;
 
             for (int i = 0; i < rumors.Length; ++i)
             {
@@ -968,7 +968,7 @@ namespace Server.Mobiles
 
             AddHtml(190, 60, 500, 25, "Choose the message you would like to remove", false, false);
 
-            var rumors = m_Barkeeper.Rumors;
+            BarkeeperRumor[] rumors = m_Barkeeper.Rumors;
 
             for (int i = 0; i < rumors.Length; ++i)
             {

@@ -285,11 +285,11 @@ namespace Server.Engines.Doom
         {
             value = default(T);
 
-            var any = false;
+            bool any = false;
 
-            var e = map.GetObjectsInRange(p, range);
+            IPooledEnumerable<IEntity> e = map.GetObjectsInRange(p, range);
 
-            foreach (var o in (predicate != null ? e.OfType<T>().Where(predicate) : e.OfType<T>()).Where(o => o != null))
+            foreach (T o in (predicate != null ? e.OfType<T>().Where(predicate) : e.OfType<T>()).Where(o => o != null))
             {
                 value = o;
                 any = true;
@@ -318,7 +318,7 @@ namespace Server.Engines.Doom
 
         public static void CreateTeleporter(int xFrom, int yFrom, int xTo, int yTo)
         {
-            var p = new Point3D(xFrom, yFrom, -1);
+            Point3D p = new Point3D(xFrom, yFrom, -1);
 
             Static telePad;
 
@@ -351,8 +351,8 @@ namespace Server.Engines.Doom
 
         public static BaseDoor CreateDoorSet(int xDoor, int yDoor, bool doorEastToWest, int hue)
         {
-            var ph = new Point3D(xDoor, yDoor, -1);
-            var pl = new Point3D(xDoor + (doorEastToWest ? 0 : 1), yDoor + (doorEastToWest ? 1 : 0), -1);
+            Point3D ph = new Point3D(xDoor, yDoor, -1);
+            Point3D pl = new Point3D(xDoor + (doorEastToWest ? 0 : 1), yDoor + (doorEastToWest ? 1 : 0), -1);
 
             BaseDoor hiDoor, loDoor;
 
@@ -398,7 +398,7 @@ namespace Server.Engines.Doom
                 int xWidth,
                 int yHeight)
         {
-            var sp = new Point3D(xSpawner, ySpawner, -1);
+            Point3D sp = new Point3D(xSpawner, ySpawner, -1);
 
             GauntletSpawner spawner;
 
@@ -430,7 +430,7 @@ namespace Server.Engines.Doom
 
             if (xPentagram > 0 && yPentagram > 0)
             {
-                var pp = new Point3D(xPentagram, yPentagram, -1);
+                Point3D pp = new Point3D(xPentagram, yPentagram, -1);
 
                 PentagramAddon pentagram;
 
@@ -454,7 +454,7 @@ namespace Server.Engines.Doom
 
         public static void CreatePricedHealer(int price, int x, int y)
         {
-            var p = new Point3D(x, y, -1);
+            Point3D p = new Point3D(x, y, -1);
 
             PricedHealer healer;
 
@@ -473,7 +473,7 @@ namespace Server.Engines.Doom
 
         public static void CreateMorphItem(int x, int y, int inactiveItemID, int activeItemID, int range, int hue)
         {
-            var p = new Point3D(x, y, -1);
+            Point3D p = new Point3D(x, y, -1);
 
             MorphItem item;
 
@@ -491,7 +491,7 @@ namespace Server.Engines.Doom
 
         public static void CreateVarietyDealer(int x, int y)
         {
-            var p = new Point3D(x, y, -1);
+            Point3D p = new Point3D(x, y, -1);
 
             VarietyDealer dealer;
 
@@ -513,7 +513,7 @@ namespace Server.Engines.Doom
 
             /* Begin outfit */
 
-            var ic = dealer.Items.Count;
+            int ic = dealer.Items.Count;
 
             while (--ic >= 0)
             {
@@ -522,7 +522,7 @@ namespace Server.Engines.Doom
                     continue;
                 }
 
-                var item = dealer.Items[ic];
+                Item item = dealer.Items[ic];
 
                 if (item.Layer != Layer.ShopBuy && item.Layer != Layer.ShopResale && item.Layer != Layer.ShopSell)
                     item.Delete();
@@ -579,7 +579,7 @@ namespace Server.Engines.Doom
 
             CreateVarietyDealer(492, 369);
 
-            foreach (var s in Map.Malas.GetItemsInBounds(new Rectangle2D(434, 371, 44, 1)))
+            foreach (Item s in Map.Malas.GetItemsInBounds(new Rectangle2D(434, 371, 44, 1)))
             {
                 s.Delete();
             }
@@ -588,7 +588,7 @@ namespace Server.Engines.Doom
             {
                 for (int y = 371; y <= 372; ++y)
                 {
-                    var item = new Static(0x524)
+                    Static item = new Static(0x524)
                     {
                         Hue = 1
                     };
@@ -625,7 +625,7 @@ namespace Server.Engines.Doom
             /* End gauntlet cycle */
 
             /* Begin exit gate */
-            var p = new Point3D(433, 326, 4);
+            Point3D p = new Point3D(433, 326, 4);
 
             ConfirmationMoongate gate;
 

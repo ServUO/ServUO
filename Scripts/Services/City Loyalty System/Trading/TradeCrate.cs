@@ -26,7 +26,7 @@ namespace Server.Engines.CityLoyalty
                 if (Entry == null)
                     return false;
 
-                foreach (var details in Entry.Details)
+                foreach (TradeEntry.TradeDetails details in Entry.Details)
                 {
                     if (GetAmount(details.ItemType) < details.Amount)
                         return false;
@@ -144,7 +144,7 @@ namespace Server.Engines.CityLoyalty
         {
             bool canAdd = false;
 
-            foreach (var details in Entry.Details)
+            foreach (TradeEntry.TradeDetails details in Entry.Details)
             {
                 if (item.GetType() == details.ItemType)
                 {

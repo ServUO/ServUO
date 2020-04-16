@@ -76,7 +76,7 @@ namespace Server.Regions
             List<PlayerMobile> pms = new List<PlayerMobile>();
             bool hasMap = false;
 
-            foreach (var i in boat.GetEntitiesOnBoard().OfType<PlayerMobile>().Where(pm => pm.NetState != null))
+            foreach (PlayerMobile i in boat.GetEntitiesOnBoard().OfType<PlayerMobile>().Where(pm => pm.NetState != null))
             {
                 pms.Add(i);
                 PlayerMobile pm = i;

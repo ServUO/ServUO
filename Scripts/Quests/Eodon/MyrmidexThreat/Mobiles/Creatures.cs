@@ -153,31 +153,31 @@ namespace Server.Mobiles
                 {
                     List<OozeItem> list = new List<OozeItem>();
 
-                    var ooze1 = new OozeItem(this, 40222);
+                    OozeItem ooze1 = new OozeItem(this, 40222);
                     ooze1.MoveToWorld(m.Location, m.Map);
 
-                    var ooze2 = new OozeItem(this, Utility.Random(40214, 2));
+                    OozeItem ooze2 = new OozeItem(this, Utility.Random(40214, 2));
                     ooze2.MoveToWorld(new Point3D(m.X - 1, m.Y, m.Z), m.Map);
 
-                    var ooze3 = new OozeItem(this, Utility.Random(40216, 2));
+                    OozeItem ooze3 = new OozeItem(this, Utility.Random(40216, 2));
                     ooze3.MoveToWorld(new Point3D(m.X, m.Y + 1, m.Z), m.Map);
 
-                    var ooze4 = new OozeItem(this, Utility.Random(40218, 2));
+                    OozeItem ooze4 = new OozeItem(this, Utility.Random(40218, 2));
                     ooze4.MoveToWorld(new Point3D(m.X, m.Y - 1, m.Z), m.Map);
 
-                    var ooze5 = new OozeItem(this, Utility.Random(40220, 2));
+                    OozeItem ooze5 = new OozeItem(this, Utility.Random(40220, 2));
                     ooze5.MoveToWorld(new Point3D(m.X + 1, m.Y, m.Z), m.Map);
 
-                    var ooze6 = new OozeItem(this, 40210);
+                    OozeItem ooze6 = new OozeItem(this, 40210);
                     ooze6.MoveToWorld(new Point3D(m.X - 1, m.Y + 1, m.Z), m.Map);
 
-                    var ooze7 = new OozeItem(this, 40211);
+                    OozeItem ooze7 = new OozeItem(this, 40211);
                     ooze7.MoveToWorld(new Point3D(m.X + 1, m.Y + 1, m.Z), m.Map);
 
-                    var ooze8 = new OozeItem(this, 40212);
+                    OozeItem ooze8 = new OozeItem(this, 40212);
                     ooze8.MoveToWorld(new Point3D(m.X - 1, m.Y - 1, m.Z), m.Map);
 
-                    var ooze9 = new OozeItem(this, 40213);
+                    OozeItem ooze9 = new OozeItem(this, 40213);
                     ooze9.MoveToWorld(new Point3D(m.X + 1, m.Y - 1, m.Z), m.Map);
 
                     Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30)), () =>

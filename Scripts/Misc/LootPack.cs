@@ -39,7 +39,7 @@ namespace Server
             if (dead == null)
                 return 240;
 
-            var list = dead.GetLootingRights();
+            System.Collections.Generic.List<DamageStore> list = dead.GetLootingRights();
 
             DamageStore highest = null;
 

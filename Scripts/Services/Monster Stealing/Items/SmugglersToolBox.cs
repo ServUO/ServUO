@@ -27,7 +27,7 @@ namespace Server.Items
         {
             if (IsChildOf(m.Backpack) && _UsesRemaining > 0)
             {
-                var lockpick = new Lockpick(Utility.RandomMinMax(5, 12));
+                Lockpick lockpick = new Lockpick(Utility.RandomMinMax(5, 12));
 
                 if (m.Backpack == null || !m.Backpack.TryDropItem(m, lockpick, false))
                 {

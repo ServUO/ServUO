@@ -144,7 +144,7 @@ namespace Server.SkillHandlers
                         return;
                     }
 
-                    var honestySocket = item.GetSocket<HonestyItemSocket>();
+                    HonestyItemSocket honestySocket = item.GetSocket<HonestyItemSocket>();
 
                     if (honestySocket != null)
                     {

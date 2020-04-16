@@ -171,7 +171,7 @@ namespace Server.Engines.Shadowguard
 
                 if (p != null)
                 {
-                    foreach (var pm in p.Members.Select(x => x.Mobile))
+                    foreach (Mobile pm in p.Members.Select(x => x.Mobile))
                     {
                         AddPlayer(pm);
                     }
@@ -185,7 +185,7 @@ namespace Server.Engines.Shadowguard
         {
             if (HasBegun)
             {
-                foreach (var pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
                 {
                     pm.SendLocalizedMessage(cliloc, null, hue);
                 }
@@ -208,7 +208,7 @@ namespace Server.Engines.Shadowguard
         {
             if (HasBegun)
             {
-                foreach (var pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
                 {
                     pm.SendMessage(hue, message);
                 }
@@ -359,7 +359,7 @@ namespace Server.Engines.Shadowguard
         {
             if (m is PlayerMobile)
             {
-                foreach (var pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
                 {
                     if (pm.Alive && pm.NetState != null)
                     {

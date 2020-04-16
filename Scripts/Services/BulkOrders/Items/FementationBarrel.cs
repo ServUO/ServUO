@@ -307,7 +307,7 @@ namespace Server.Items
         {
             for (int i = 0; i < _FruitTypes.Length; i++)
             {
-                foreach (var type in _FruitTypes[i])
+                foreach (Type type in _FruitTypes[i])
                 {
                     if (type == t)
                         return (FruitType)i + 1;

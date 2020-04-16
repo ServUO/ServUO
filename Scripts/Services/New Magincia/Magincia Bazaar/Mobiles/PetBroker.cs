@@ -62,7 +62,7 @@ namespace Server.Engines.NewMagincia
 
         public override bool HasValidEntry(Mobile m)
         {
-            var hasValid = false;
+            bool hasValid = false;
 
             foreach (PetBrokerEntry entry in m_BrokerEntries)
             {
@@ -261,7 +261,7 @@ namespace Server.Engines.NewMagincia
 
             Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
                 {
-                    foreach (var entry in m_BrokerEntries)
+                    foreach (PetBrokerEntry entry in m_BrokerEntries)
                     {
                         if (entry.Pet != null && !entry.Pet.IsStabled)
                         {

@@ -70,7 +70,7 @@ namespace Server.Spells.Spellweaving
 
             if (m_Table.ContainsKey(m))
             {
-                var timer = m_Table[m];
+                ExpireTimer timer = m_Table[m];
 
                 if (timer.EndTime > DateTime.UtcNow)
                 {

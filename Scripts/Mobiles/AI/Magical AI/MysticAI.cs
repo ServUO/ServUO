@@ -25,8 +25,8 @@ namespace Server.Mobiles
                 return base.GetRandomDamageSpell();
             }
 
-            var mana = m_Mobile.Mana;
-            var select = 1;
+            int mana = m_Mobile.Mana;
+            int select = 1;
 
             if (mana >= 50)
                 select = 5;
@@ -59,8 +59,8 @@ namespace Server.Mobiles
                 return base.GetRandomCurseSpell();
             }
 
-            var mana = m_Mobile.Mana;
-            var select = 1;
+            int mana = m_Mobile.Mana;
+            int select = 1;
 
             if (mana >= 40)
                 select = 4;
@@ -119,7 +119,7 @@ namespace Server.Mobiles
 
         public override Spell RandomCombatSpell()
         {
-            var spell = CheckCastHealingSpell();
+            Spell spell = CheckCastHealingSpell();
 
             if (spell != null)
                 return spell;
@@ -149,7 +149,7 @@ namespace Server.Mobiles
 
         protected override bool ProcessTarget()
         {
-            var t = m_Mobile.Target;
+            Targeting.Target t = m_Mobile.Target;
 
             if (t == null)
                 return false;

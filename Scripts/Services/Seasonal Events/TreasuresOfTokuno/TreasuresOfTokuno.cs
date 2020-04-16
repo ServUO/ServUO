@@ -193,7 +193,7 @@ namespace Server.Misc
 
         public void RemoveTurnIns(PlayerMobile pm, int amount)
         {
-            var entry = GetPlayerEntry<TOTEntry>(pm);
+            TOTEntry entry = GetPlayerEntry<TOTEntry>(pm);
 
             entry.TurnIns = Math.Max(0, entry.TurnIns - amount);
         }
@@ -217,7 +217,7 @@ namespace Server.Misc
             //This is the Exponentional regression with only 2 datapoints.
             //A log. func would also work, but it didn't make as much sense.
             //This function isn't OSI exact beign that I don't know OSI's func they used ;p
-            var x = GetPoints(pm);
+            double x = GetPoints(pm);
 
             //const double A = 8.63316841 * Math.Pow( 10, -4 );
             const double A = 0.000863316841;
@@ -269,7 +269,7 @@ namespace Server.Misc
         /// <param name="points"></param>
         public void Convert(PlayerMobile pm, int turnIns, int points)
         {
-            var entry = GetPlayerEntry<TOTEntry>(pm);
+            TOTEntry entry = GetPlayerEntry<TOTEntry>(pm);
 
             entry.TurnIns = turnIns;
             entry.Points = points;
@@ -427,7 +427,7 @@ namespace Server.Mobiles
                 PlayerMobile pm = (PlayerMobile)m;
 
                 int range = 3;
-                var turnIns = PointsSystem.TreasuresOfTokuno.GetTurnIns(pm);
+                int turnIns = PointsSystem.TreasuresOfTokuno.GetTurnIns(pm);
 
                 if (m.Alive && Math.Abs(this.Z - m.Z) < 16 && this.InRange(m, range) && !this.InRange(oldLocation, range))
                 {
@@ -550,7 +550,7 @@ namespace Server.Gumps
             item.Delete();
 
             PointsSystem.TreasuresOfTokuno.TurnIn(pm);
-            var turnIns = PointsSystem.TreasuresOfTokuno.GetTurnIns(pm);
+            int turnIns = PointsSystem.TreasuresOfTokuno.GetTurnIns(pm);
 
             if (turnIns >= TreasuresOfTokuno.ItemsPerReward)
             {
@@ -581,7 +581,7 @@ namespace Server.Gumps
             if (pm == null || !pm.InRange(this.m_Collector.Location, 7))
                 return;
 
-            var turnIns = PointsSystem.TreasuresOfTokuno.GetTurnIns(pm);
+            int turnIns = PointsSystem.TreasuresOfTokuno.GetTurnIns(pm);
 
             if (turnIns == 0)
                 this.m_Collector.SayTo(pm, 1071013); // Bring me 10 of the lost treasures of Tokuno and I will reward you with a valuable item.
@@ -771,7 +771,7 @@ namespace Server.Gumps
         public override void HandleButtonResponse(NetState sender, int adjustedButton, ImageTileButtonInfo buttonInfo)
         {
             PlayerMobile pm = sender.Mobile as PlayerMobile;
-            var turnIns = PointsSystem.TreasuresOfTokuno.GetTurnIns(pm);
+            int turnIns = PointsSystem.TreasuresOfTokuno.GetTurnIns(pm);
 
             if (pm == null || !pm.InRange(this.m_Collector.Location, 7) || !(turnIns >= TreasuresOfTokuno.ItemsPerReward))
                 return;
@@ -832,7 +832,7 @@ namespace Server.Gumps
             if (pm == null || !pm.InRange(this.m_Collector.Location, 7))
                 return;
 
-            var turnIns = PointsSystem.TreasuresOfTokuno.GetTurnIns(pm);
+            int turnIns = PointsSystem.TreasuresOfTokuno.GetTurnIns(pm);
 
             if (turnIns == 0)
                 this.m_Collector.SayTo(pm, 1071013); // Bring me 10 of the lost treasures of Tokuno and I will reward you with a valuable item.

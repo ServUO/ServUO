@@ -86,7 +86,7 @@ namespace Server.Mobiles
             if (target == null || (!initial && InitialSpawn != null && InitialSpawn.Count > 0))
                 return;
 
-            var map = Map;
+            Map map = Map;
 
             if (map == null || TotalSummons() > MaxSummons)
                 return;
@@ -265,7 +265,7 @@ namespace Server.Mobiles
             {
                 if (Utility.RandomBool())
                 {
-                    var target = GetTeleportTarget();
+                    Mobile target = GetTeleportTarget();
 
                     if (target != null)
                     {
@@ -279,9 +279,9 @@ namespace Server.Mobiles
 
                     PlaySound(0x20D);
 
-                    foreach (var m in SpellHelper.AcquireIndirectTargets(this, Location, Map, 10).OfType<Mobile>())
+                    foreach (Mobile m in SpellHelper.AcquireIndirectTargets(this, Location, Map, 10).OfType<Mobile>())
                     {
-                        var range = (int)GetDistanceToSqrt(m);
+                        int range = (int)GetDistanceToSqrt(m);
 
                         if (range < 1) range = 1;
                         if (range > 4) range = 4;
@@ -310,11 +310,11 @@ namespace Server.Mobiles
         {
             if (IsKrampusEncounter)
             {
-                var rights = GetLootingRights();
+                List<DamageStore> rights = GetLootingRights();
 
-                foreach (var ds in rights.Where(s => s.m_Mobile is PlayerMobile && s.m_HasRight))
+                foreach (DamageStore ds in rights.Where(s => s.m_Mobile is PlayerMobile && s.m_HasRight))
                 {
-                    var m = ds.m_Mobile as PlayerMobile;
+                    PlayerMobile m = ds.m_Mobile as PlayerMobile;
                     int ordersComplete = 0;
 
                     if (KrampusEncounter.Encounter.CompleteTable.ContainsKey(m))

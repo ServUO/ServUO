@@ -43,7 +43,7 @@ namespace Server.Engines.ArenaSystem
             }
             else if (Arena != null)
             {
-                var duel = Arena.CurrentDuel;
+                ArenaDuel duel = Arena.CurrentDuel;
 
                 if (duel != null && duel.InPreFight)
                 {

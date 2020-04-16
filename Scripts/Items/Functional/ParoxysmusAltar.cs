@@ -84,7 +84,7 @@ namespace Server.Items
 
             writer.Write(ProtectionTable.Count);
 
-            foreach (var kvp in ProtectionTable)
+            foreach (KeyValuePair<Mobile, Timer> kvp in ProtectionTable)
             {
                 writer.Write(kvp.Key);
                 writer.Write(kvp.Value.Next);

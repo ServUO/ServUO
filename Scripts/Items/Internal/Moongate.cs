@@ -99,7 +99,7 @@ namespace Server.Items
 
         public virtual void UseGate(Mobile m)
         {
-            var flags = m.NetState == null ? ClientFlags.None : m.NetState.Flags;
+            ClientFlags flags = m.NetState == null ? ClientFlags.None : m.NetState.Flags;
 
             if (Server.Engines.VvV.VvVSigil.ExistsOn(m))
             {
@@ -147,7 +147,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            var version = reader.ReadInt();
+            int version = reader.ReadInt();
 
             Target = reader.ReadPoint3D();
             TargetMap = reader.ReadMap();
@@ -210,7 +210,7 @@ namespace Server.Items
             if (map == null)
                 return false;
 
-            var reg = (GuardedRegion)Region.Find(p, map).GetRegion(typeof(GuardedRegion));
+            GuardedRegion reg = (GuardedRegion)Region.Find(p, map).GetRegion(typeof(GuardedRegion));
 
             return (reg != null && !reg.IsDisabled());
         }
@@ -328,7 +328,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            var version = reader.ReadInt();
+            int version = reader.ReadInt();
 
             switch (version)
             {

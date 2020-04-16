@@ -69,7 +69,7 @@ namespace Server.Engines.UOStore
                 }
                 else if (item.LabelNumber > 0 || item.Name != null)
                 {
-                    var name = item.LabelNumber > 0 ? ("#" + item.LabelNumber) : item.Name;
+                    string name = item.LabelNumber > 0 ? ("#" + item.LabelNumber) : item.Name;
 
                     // Your purchase of ~1_ITEM~ has been placed in your backpack.
                     m.SendLocalizedMessage(1156844, name);

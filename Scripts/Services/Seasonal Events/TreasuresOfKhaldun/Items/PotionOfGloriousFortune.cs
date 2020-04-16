@@ -59,9 +59,9 @@ namespace Server.Items
                 return;
             }
 
-            var list = new List<Mobile>(Table.Keys);
+            List<Mobile> list = new List<Mobile>(Table.Keys);
 
-            foreach (var m in list)
+            foreach (Mobile m in list)
             {
                 UnderEffects(m);
             }
@@ -154,7 +154,7 @@ namespace Server.Items
 
             if (Table != null)
             {
-                foreach (var kpv in Table)
+                foreach (KeyValuePair<Mobile, DateTime> kpv in Table)
                 {
                     writer.Write(kpv.Key);
                     writer.Write(kpv.Value);
@@ -170,8 +170,8 @@ namespace Server.Items
 
             for (int i = 0; i < count; i++)
             {
-                var bc = reader.ReadMobile();
-                var dt = reader.ReadDateTime();
+                Mobile bc = reader.ReadMobile();
+                DateTime dt = reader.ReadDateTime();
 
                 if (bc != null && dt > DateTime.UtcNow)
                 {
@@ -196,7 +196,7 @@ namespace Server.Items
 
         public static void OnLogin(LoginEventArgs e)
         {
-            var pm = e.Mobile as PlayerMobile;
+            PlayerMobile pm = e.Mobile as PlayerMobile;
 
             if (pm != null)
             {

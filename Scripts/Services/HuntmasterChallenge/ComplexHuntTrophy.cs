@@ -134,7 +134,7 @@ namespace Server.Items
             {
                 get
                 {
-                    var addon = Addon as HuntTrophyAddon;
+                    HuntTrophyAddon addon = Addon as HuntTrophyAddon;
 
                     if (addon != null)
                     {
@@ -233,7 +233,7 @@ namespace Server.Items
                     m_Measurement = reader.ReadInt();
                     m_DateKilled = reader.ReadString();
                     m_Location = reader.ReadString();
-                    var td = TextDefinition.Deserialize(reader);
+                    TextDefinition td = TextDefinition.Deserialize(reader);
                     reader.ReadInt();
                     reader.ReadInt();
 
@@ -375,7 +375,7 @@ namespace Server.Items
                     m_Measurement = reader.ReadInt();
                     m_DateKilled = reader.ReadString();
                     m_Location = reader.ReadString();
-                    var td = TextDefinition.Deserialize(reader);
+                    TextDefinition td = TextDefinition.Deserialize(reader);
                     reader.ReadInt();
                     reader.ReadInt();
 

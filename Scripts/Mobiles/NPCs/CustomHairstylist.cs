@@ -272,8 +272,8 @@ namespace Server.Mobiles
                 {
                     try
                     {
-                        var origArgs = buyInfo.GumpArgs;
-                        var args = new object[origArgs.Length];
+                        object[] origArgs = buyInfo.GumpArgs;
+                        object[] args = new object[origArgs.Length];
 
                         for (int i = 0; i < args.Length; ++i)
                         {
@@ -401,7 +401,7 @@ namespace Server.Mobiles
             for (int i = 0; i < entries.Length; ++i)
             {
                 ChangeHairHueEntry entry = entries[i];
-                var hues = entry.Hues;
+                int[] hues = entry.Hues;
                 string name = entry.Name;
 
                 AddPage(1 + i);
@@ -418,7 +418,7 @@ namespace Server.Mobiles
         {
             if (info.ButtonID == 1)
             {
-                var switches = info.Switches;
+                int[] switches = info.Switches;
 
                 if (switches.Length > 0)
                 {
@@ -686,7 +686,7 @@ namespace Server.Mobiles
             {
                 if (info.ButtonID == 1)
                 {
-                    var switches = info.Switches;
+                    int[] switches = info.Switches;
 
                     if (switches.Length > 0)
                     {

@@ -137,13 +137,13 @@ namespace Server.Spells.SkillMasteries
             if (bc is BaseRenowned || bc is BaseChampion || bc is Server.Engines.Shadowguard.ShadowguardBoss)
                 return false;
 
-            foreach (var t in _CommandTypes)
+            foreach (Type t in _CommandTypes)
             {
                 if (t == bc.GetType())
                     return true;
             }
 
-            foreach (var t in _NoCommandTypes)
+            foreach (Type t in _NoCommandTypes)
             {
                 if (t == bc.GetType())
                     return false;

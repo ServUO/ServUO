@@ -41,7 +41,7 @@ namespace Server.Engines.Quests
 
         public static void CheckLocation(PlayerMobile pm, Point3D oldLocation)
         {
-            var quest = QuestHelper.GetQuest<AVisitToCastleBlackthornQuest>(pm);
+            AVisitToCastleBlackthornQuest quest = QuestHelper.GetQuest<AVisitToCastleBlackthornQuest>(pm);
 
             if (quest != null)
             {

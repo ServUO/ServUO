@@ -61,7 +61,7 @@ namespace Server.Gumps
             m_Page = page;
             m_List = list;
 
-            var initialText = PropertiesGump.ValueToString(o, prop);
+            string initialText = PropertiesGump.ValueToString(o, prop);
 
             AddPage(0);
 
@@ -73,8 +73,8 @@ namespace Server.Gumps
                 TotalHeight,
                 OffsetGumpID);
 
-            var x = BorderSize + OffsetSize;
-            var y = BorderSize + OffsetSize;
+            int x = BorderSize + OffsetSize;
+            int y = BorderSize + OffsetSize;
 
             AddImageTiled(x, y, EntryWidth, EntryHeight, EntryGumpID);
             AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, TextHue, prop.Name);
@@ -181,7 +181,7 @@ namespace Server.Gumps
                         toSet = null;
                         shouldSet = false;
 
-                        var obj = m_Property.GetValue(m_Object, null);
+                        object obj = m_Property.GetValue(m_Object, null);
 
                         if (obj == null)
                             m_Mobile.SendMessage("The property is null and so you cannot view its properties.");
@@ -255,7 +255,7 @@ namespace Server.Gumps
 
                 try
                 {
-                    var serial = Utility.ToInt32(text);
+                    int serial = Utility.ToInt32(text);
 
                     toSet = World.FindEntity(serial);
 

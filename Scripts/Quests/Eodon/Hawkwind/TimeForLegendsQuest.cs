@@ -55,7 +55,7 @@ namespace Server.Engines.Quests.TimeLord
 
             From.AddToBackpack(new BookOfMasteries());
 
-            var primer = new SkillMasteryPrimer(Mastery, 1);
+            SkillMasteryPrimer primer = new SkillMasteryPrimer(Mastery, 1);
 
             if (primer != null)
                 From.AddToBackpack(primer);

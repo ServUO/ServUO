@@ -413,7 +413,7 @@ namespace Server.Gumps
 
             for (int i = 0; i < commands.Count; i++)
             {
-                var entry = commands[i];
+                CreateWorld.CommandEntry entry = commands[i];
                 bool created = CreateWorldData.CreateTable[entry.CheckID];
                 bool meetsExpansion = entry.RequiredExpansion <= Core.Expansion;
 
@@ -602,7 +602,7 @@ namespace Server.Gumps
                     writer.Write(true);
 
                     writer.Write(CreateTable.Count);
-                    foreach (var kvp in CreateTable)
+                    foreach (KeyValuePair<int, bool> kvp in CreateTable)
                     {
                         writer.Write(kvp.Key);
                         writer.Write(kvp.Value);

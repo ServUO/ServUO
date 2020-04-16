@@ -64,7 +64,7 @@ namespace Server.Items
 
             if (m.InRange(Location, 2))
             {
-                var house = BaseHouse.FindHouseAt(this);
+                BaseHouse house = BaseHouse.FindHouseAt(this);
 
                 if (house != null && house.HasSecureAccess(m, Level))
                 {
@@ -238,7 +238,7 @@ namespace Server.Items
 
         private void RenderConstellation()
         {
-            foreach (var pos in Constellation.StarPositions)
+            foreach (ConstellationInfo.StarPosition pos in Constellation.StarPositions)
             {
                 AddImage(pos.X, pos.Y, pos.ImageID);
             }
@@ -352,7 +352,7 @@ namespace Server.Items
                         Constellation = null;
                         ImageID = AstronomySystem.RandomSkyImage(User);
 
-                        var timeCoord = Tele.TimeCoordinate;
+                        TimeCoordinate timeCoord = Tele.TimeCoordinate;
 
                         if (timeCoord == TimeCoordinate.Day)
                         {
@@ -360,7 +360,7 @@ namespace Server.Items
                         }
                         else
                         {
-                            var constellation = AstronomySystem.GetConstellation(timeCoord, Tele.RA, Tele.DEC);
+                            ConstellationInfo constellation = AstronomySystem.GetConstellation(timeCoord, Tele.RA, Tele.DEC);
 
                             if (constellation != null)
                             {

@@ -58,10 +58,10 @@ namespace Server.Spells.SkillMasteries
 
                 if (p != null && SpellHelper.CheckTown(p, Caster) && CheckSequence())
                 {
-                    var targets = AcquireIndirectTargets(p, 5).OfType<Mobile>().ToList();
+                    System.Collections.Generic.List<Mobile> targets = AcquireIndirectTargets(p, 5).OfType<Mobile>().ToList();
                     int count = targets.Count;
 
-                    foreach (var mob in targets)
+                    foreach (Mobile mob in targets)
                     {
                         Caster.MovingEffect(mob, ((BaseRanged)weapon).EffectID, 18, 1, false, false);
 

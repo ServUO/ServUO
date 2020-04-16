@@ -61,7 +61,7 @@ namespace Server.Engines.VoidPool
             AddButton(140, 110, 4005, 4006, 3, GumpButtonType.Reply, 0);
             AddHtmlLocalized(180, 110, 200, 16, 1152537, Orange, false, false); 		//Overall Total Scores
 
-            var stats = VoidPoolStats.GetStats(Controller);
+            VoidPoolStats stats = VoidPoolStats.GetStats(Controller);
 
             if (stats.BestWave != null)
             {
@@ -78,7 +78,7 @@ namespace Server.Engines.VoidPool
 
         public override void OnResponse(Server.Network.NetState state, RelayInfo info)
         {
-            var stats = VoidPoolStats.GetStats(Controller);
+            VoidPoolStats stats = VoidPoolStats.GetStats(Controller);
 
             switch (info.ButtonID)
             {
@@ -127,7 +127,7 @@ namespace Server.Engines.VoidPool
             AddBackground(0, 0, 500, 620, 9350);
             AddPage(page);
 
-            var stats = VoidPoolStats.GetStats(Controller);
+            VoidPoolStats stats = VoidPoolStats.GetStats(Controller);
 
             if (this.ScoreType == ScoreType.BestWave && stats.BestWave == null)
                 return;

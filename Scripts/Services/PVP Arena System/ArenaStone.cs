@@ -56,11 +56,11 @@ namespace Server.Engines.ArenaSystem
                     }
                     else
                     {
-                        var duel = Arena.GetPendingDuel(from);
+                        ArenaDuel duel = Arena.GetPendingDuel(from);
 
                         if (duel == null)
                         {
-                            var booked = PVPArenaSystem.Instance.GetBookedDuel(pm);
+                            ArenaDuel booked = PVPArenaSystem.Instance.GetBookedDuel(pm);
 
                             if (booked != null)
                             {
@@ -93,13 +93,13 @@ namespace Server.Engines.ArenaSystem
 
             _Items = new List<Item>();
 
-            foreach (var rec in Arena.Definition.EffectAreas)
+            foreach (Rectangle2D rec in Arena.Definition.EffectAreas)
             {
                 for (int x = rec.X; x < rec.X + rec.Width; x++)
                 {
                     for (int y = rec.Y; y < rec.Y + rec.Height; y++)
                     {
-                        var st = new Static(0x3709);
+                        Static st = new Static(0x3709);
                         st.MoveToWorld(new Point3D(x, y, Arena.Definition.Map.GetAverageZ(x, y)), Map);
                         _Items.Add(st);
                     }

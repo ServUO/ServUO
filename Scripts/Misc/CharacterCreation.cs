@@ -50,7 +50,7 @@ namespace Server.Misc
 
         private static void AddBackpack(Mobile m)
         {
-            var pack = m.Backpack;
+            Container pack = m.Backpack;
 
             if (pack == null)
             {
@@ -65,7 +65,7 @@ namespace Server.Misc
 
         private static void AddShirt(Mobile m, int shirtHue)
         {
-            var hue = Utility.ClipDyedHue(shirtHue & 0x3FFF);
+            int hue = Utility.ClipDyedHue(shirtHue & 0x3FFF);
 
             if (m.Race == Race.Elf)
             {
@@ -94,7 +94,7 @@ namespace Server.Misc
 
         private static void AddPants(Mobile m, int pantsHue)
         {
-            var hue = Utility.ClipDyedHue(pantsHue & 0x3FFF);
+            int hue = Utility.ClipDyedHue(pantsHue & 0x3FFF);
 
             if (m.Race == Race.Elf)
             {
@@ -146,7 +146,7 @@ namespace Server.Misc
             if (a.Count >= a.Limit)
                 return null;
 
-            for (var i = 0; i < a.Length; ++i)
+            for (int i = 0; i < a.Length; ++i)
             {
                 if (a[i] == null)
                     return (a[i] = new PlayerMobile());
@@ -160,12 +160,12 @@ namespace Server.Misc
             if (!VerifyProfession(args.Profession))
                 args.Profession = 0;
 
-            var state = args.State;
+            NetState state = args.State;
 
             if (state == null)
                 return;
 
-            var newChar = CreateMobile(args.Account as Account);
+            Mobile newChar = CreateMobile(args.Account as Account);
 
             if (newChar == null)
             {
@@ -188,19 +188,19 @@ namespace Server.Misc
 
             newChar.Hunger = 20;
 
-            var young = false;
+            bool young = false;
 
             if (newChar is PlayerMobile)
             {
-                var pm = (PlayerMobile)newChar;
+                PlayerMobile pm = (PlayerMobile)newChar;
 
                 pm.AutoRenewInsurance = true;
 
-                var skillcap = Config.Get("PlayerCaps.SkillCap", 1000.0d) / 10;
+                double skillcap = Config.Get("PlayerCaps.SkillCap", 1000.0d) / 10;
 
                 if (skillcap != 100.0)
                 {
-                    for (var i = 0; i < Enum.GetNames(typeof(SkillName)).Length; ++i)
+                    for (int i = 0; i < Enum.GetNames(typeof(SkillName)).Length; ++i)
                         pm.Skills[i].Cap = skillcap;
                 }
 
@@ -217,7 +217,7 @@ namespace Server.Misc
             SetStats(newChar, state, args.Profession, args.Str, args.Dex, args.Int);
             SetSkills(newChar, args.Skills, args.Profession);
 
-            var race = newChar.Race;
+            Race race = newChar.Race;
 
             if (race.ValidateHair(newChar, args.HairID))
             {
@@ -231,7 +231,7 @@ namespace Server.Misc
                 newChar.FacialHairHue = args.BeardHue;
             }
 
-            var faceID = args.FaceID;
+            int faceID = args.FaceID;
 
             if (faceID > 0 && race.ValidateFace(newChar.Female, faceID))
             {
@@ -256,7 +256,7 @@ namespace Server.Misc
 
             if (young)
             {
-                var ticket = new NewPlayerTicket
+                NewPlayerTicket ticket = new NewPlayerTicket
                 {
                     Owner = newChar
                 };
@@ -264,8 +264,8 @@ namespace Server.Misc
                 newChar.BankBox.DropItem(ticket);
             }
 
-            var city = args.City;
-            var map = Siege.SiegeShard && city.Map == Map.Trammel ? Map.Felucca : city.Map;
+            CityInfo city = args.City;
+            Map map = Siege.SiegeShard && city.Map == Map.Trammel ? Map.Felucca : city.Map;
 
             newChar.MoveToWorld(city.Location, map);
 
@@ -282,11 +282,11 @@ namespace Server.Misc
 
         private static void FixStats(ref int str, ref int dex, ref int intel, int max)
         {
-            var vMax = max - 30;
+            int vMax = max - 30;
 
-            var vStr = str - 10;
-            var vDex = dex - 10;
-            var vInt = intel - 10;
+            int vStr = str - 10;
+            int vDex = dex - 10;
+            int vInt = intel - 10;
 
             if (vStr < 0)
                 vStr = 0;
@@ -297,12 +297,12 @@ namespace Server.Misc
             if (vInt < 0)
                 vInt = 0;
 
-            var total = vStr + vDex + vInt;
+            int total = vStr + vDex + vInt;
 
             if (total == 0 || total == vMax)
                 return;
 
-            var scalar = vMax / (double)total;
+            double scalar = vMax / (double)total;
 
             vStr = (int)(vStr * scalar);
             vDex = (int)(vDex * scalar);
@@ -329,7 +329,7 @@ namespace Server.Misc
 
         private static void SetStats(Mobile m, NetState state, int str, int dex, int intel)
         {
-            var max = state.NewCharacterCreation ? 90 : 80;
+            int max = state.NewCharacterCreation ? 90 : 80;
 
             FixStats(ref str, ref dex, ref intel, max);
 
@@ -355,16 +355,16 @@ namespace Server.Misc
 
         private static bool ValidSkills(SkillNameValue[] skills)
         {
-            var total = 0;
+            int total = 0;
 
-            for (var i = 0; i < skills.Length; ++i)
+            for (int i = 0; i < skills.Length; ++i)
             {
                 if (skills[i].Value < 0 || skills[i].Value > 50)
                     return false;
 
                 total += skills[i].Value;
 
-                for (var j = i + 1; j < skills.Length; ++j)
+                for (int j = i + 1; j < skills.Length; ++j)
                 {
                     if (skills[j].Value > 0 && skills[j].Name == skills[i].Name)
                         return false;
@@ -520,10 +520,10 @@ namespace Server.Misc
                     }
             }
 
-            var addSkillItems = true;
-            var elf = (m.Race == Race.Elf);
-            var human = (m.Race == Race.Human);
-            var gargoyle = (m.Race == Race.Gargoyle);
+            bool addSkillItems = true;
+            bool elf = (m.Race == Race.Elf);
+            bool human = (m.Race == Race.Human);
+            bool gargoyle = (m.Race == Race.Gargoyle);
 
             switch (prof)
             {
@@ -666,7 +666,7 @@ namespace Server.Misc
                     }
                 case 7: // Ninja
                     {
-                        var hues = new[] { 0x1A8, 0xEC, 0x99, 0x90, 0xB5, 0x336, 0x89 };
+                        int[] hues = new[] { 0x1A8, 0xEC, 0x99, 0x90, 0xB5, 0x336, 0x89 };
                         //TODO: Verify that's ALL the hues for that above.
 
                         if (elf || human)
@@ -685,7 +685,7 @@ namespace Server.Misc
                         {
                             EquipItem(new GargishDagger());
 
-                            var hue = hues[Utility.Random(hues.Length)];
+                            int hue = hues[Utility.Random(hues.Length)];
 
                             EquipItem(new GargishClothChestArmor(hue));
                             EquipItem(new GargishClothArmsArmor(hue));
@@ -703,14 +703,14 @@ namespace Server.Misc
                     }
             }
 
-            for (var i = 0; i < skills.Length; ++i)
+            for (int i = 0; i < skills.Length; ++i)
             {
-                var snv = skills[i];
+                SkillNameValue snv = skills[i];
 
                 if (snv.Value > 0 && (snv.Name != SkillName.Stealth || prof == 7) && snv.Name != SkillName.RemoveTrap &&
                     snv.Name != SkillName.Spellweaving)
                 {
-                    var skill = m.Skills[snv.Name];
+                    Skill skill = m.Skills[snv.Name];
 
                     if (skill != null)
                     {
@@ -733,7 +733,7 @@ namespace Server.Misc
             if (m_Mobile != null && m_Mobile.EquipItem(item))
                 return;
 
-            var pack = m_Mobile.Backpack;
+            Container pack = m_Mobile.Backpack;
 
             if (!mustEquip && pack != null)
                 pack.DropItem(item);
@@ -743,7 +743,7 @@ namespace Server.Misc
 
         private static void PackItem(Item item)
         {
-            var pack = m_Mobile.Backpack;
+            Container pack = m_Mobile.Backpack;
 
             if (pack != null)
                 pack.DropItem(item);
@@ -864,9 +864,9 @@ namespace Server.Misc
 
         private static void AddSkillItems(SkillName skill, Mobile m)
         {
-            var elf = (m.Race == Race.Elf);
-            var human = (m.Race == Race.Human);
-            var gargoyle = (m.Race == Race.Gargoyle);
+            bool elf = (m.Race == Race.Elf);
+            bool human = (m.Race == Race.Human);
+            bool gargoyle = (m.Race == Race.Gargoyle);
 
             switch (skill)
             {
@@ -875,7 +875,7 @@ namespace Server.Misc
                         PackItem(new Bottle(4));
                         PackItem(new MortarPestle());
 
-                        var hue = Utility.RandomPinkHue();
+                        int hue = Utility.RandomPinkHue();
 
                         if (elf)
                         {
@@ -894,7 +894,7 @@ namespace Server.Misc
                     {
                         PackItem(new Bandage(3));
 
-                        var hue = Utility.RandomYellowHue();
+                        int hue = Utility.RandomYellowHue();
 
                         if (elf)
                         {
@@ -911,7 +911,7 @@ namespace Server.Misc
                     }
                 case SkillName.AnimalLore:
                     {
-                        var hue = Utility.RandomBlueHue();
+                        int hue = Utility.RandomBlueHue();
 
                         if (elf)
                         {
@@ -1103,7 +1103,7 @@ namespace Server.Misc
                     {
                         EquipItem(new FishingPole());
 
-                        var hue = Utility.RandomYellowHue();
+                        int hue = Utility.RandomYellowHue();
 
                         if (elf)
                         {
@@ -1184,14 +1184,14 @@ namespace Server.Misc
                     }
                 case SkillName.Magery:
                     {
-                        var regs = new BagOfReagents(50);
+                        BagOfReagents regs = new BagOfReagents(50);
                         PackItem(regs);
 
                         PackScroll(0);
                         PackScroll(1);
                         PackScroll(2);
 
-                        var book = new Spellbook((ulong)0x382A8C38);
+                        Spellbook book = new Spellbook((ulong)0x382A8C38);
                         book.LootType = LootType.Blessed;
                         EquipItem(book);
 
@@ -1340,13 +1340,13 @@ namespace Server.Misc
                         {
                             if (m_Mobile != null)
                             {
-                                var shoes = m_Mobile.FindItemOnLayer(Layer.Shoes);
+                                Item shoes = m_Mobile.FindItemOnLayer(Layer.Shoes);
 
                                 if (shoes != null)
                                     shoes.Delete();
                             }
 
-                            var hue = Utility.RandomYellowHue();
+                            int hue = Utility.RandomYellowHue();
 
                             if (elf)
                                 EquipItem(new ElvenBoots(hue));

@@ -324,7 +324,7 @@ namespace Server.Engines.Quests
                     escort.StartFollow();
                     escort.AddHash(Owner);
 
-                    var region = escort.GetDestination();
+                    string region = escort.GetDestination();
 
                     if (!string.IsNullOrEmpty(region))
                         escort.Say(1042806, region); // Lead on! Payment will be made when we arrive at ~1_DESTINATION~!

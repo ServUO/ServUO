@@ -277,7 +277,7 @@ namespace Server.Engines.Quests.RitualQuest
 
             private void SetupRegion()
             {
-                var map = Map.TerMur;
+                Map map = Map.TerMur;
 
                 for (int x = 390; x < 408; x++)
                 {
@@ -285,14 +285,14 @@ namespace Server.Engines.Quests.RitualQuest
 
                     if (map.FindItem<Blocker>(new Point3D(x, 3360, z)) == null)
                     {
-                        var blocker = new Blocker();
+                        Blocker blocker = new Blocker();
                         blocker.MoveToWorld(new Point3D(x, 3360, z), map);
                     }
                 }
 
                 if (!GetEnumeratedMobiles().Any(m => m is BexilPunchingBag && !m.Deleted))
                 {
-                    var bex = new BexilPunchingBag();
+                    BexilPunchingBag bex = new BexilPunchingBag();
                     bex.MoveToWorld(new Point3D(403, 3391, 38), Map.TerMur);
                 }
             }

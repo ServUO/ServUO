@@ -82,7 +82,7 @@ namespace Server.Engines.Quests.Doom
             if (Instances == null)
                 return;
 
-            var bell = Instances.FirstOrDefault(x => x.Dragon == dragon);
+            BellOfTheDead bell = Instances.FirstOrDefault(x => x.Dragon == dragon);
 
             if (bell != null)
             {

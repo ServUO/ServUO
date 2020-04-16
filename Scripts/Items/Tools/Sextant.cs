@@ -153,7 +153,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            var coords = GetCoords(from);
+            string coords = GetCoords(from);
 
             if (!String.IsNullOrEmpty(coords))
             {

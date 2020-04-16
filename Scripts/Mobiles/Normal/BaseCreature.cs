@@ -179,7 +179,7 @@ namespace Server.Mobiles
         {
             if (t.IsDefined(typeof(FriendlyNameAttribute), false))
             {
-                var objs = t.GetCustomAttributes(typeof(FriendlyNameAttribute), false);
+                object[] objs = t.GetCustomAttributes(typeof(FriendlyNameAttribute), false);
 
                 if (objs != null && objs.Length > 0)
                 {
@@ -697,7 +697,7 @@ namespace Server.Mobiles
 
         public void CalculateSlots(int slots)
         {
-            var def = PetTrainingHelper.GetTrainingDefinition(this);
+            TrainingDefinition def = PetTrainingHelper.GetTrainingDefinition(this);
 
             if (def == null)
             {
@@ -752,7 +752,7 @@ namespace Server.Mobiles
             get { return _Mastery; }
             set
             {
-                var old = _Mastery;
+                SkillName old = _Mastery;
                 _Mastery = value;
 
                 if (old != _Mastery)
@@ -773,7 +773,7 @@ namespace Server.Mobiles
             }
             else
             {
-                var masteries = MasteryInfo.Infos.Where(i => i.MasterySkill == _Mastery && !i.Passive && (i.SpellType != typeof(BodyGuardSpell) || Controlled)).ToArray();
+                MasteryInfo[] masteries = MasteryInfo.Infos.Where(i => i.MasterySkill == _Mastery && !i.Passive && (i.SpellType != typeof(BodyGuardSpell) || Controlled)).ToArray();
 
                 if (masteries != null && masteries.Length > 0)
                 {
@@ -786,13 +786,13 @@ namespace Server.Mobiles
         {
             if (Spell == null && Masteries != null && Masteries.Length > 0 && NextMastery < DateTime.UtcNow)
             {
-                var info = Masteries[Utility.Random(Masteries.Length)];
+                MasteryInfo info = Masteries[Utility.Random(Masteries.Length)];
 
                 if (info != null)
                 {
                     if (info.SpellType.IsSubclassOf(typeof(SkillMasteryMove)))
                     {
-                        var move = SpellRegistry.GetSpecialMove(info.SpellID);
+                        SpecialMove move = SpellRegistry.GetSpecialMove(info.SpellID);
 
                         if (move != null)
                         {
@@ -802,7 +802,7 @@ namespace Server.Mobiles
                     }
                     else
                     {
-                        var spell = SpellRegistry.NewSpell(info.SpellID, this, null);
+                        Spell spell = SpellRegistry.NewSpell(info.SpellID, this, null);
 
                         if (spell != null)
                         {
@@ -1336,7 +1336,7 @@ namespace Server.Mobiles
             }
             else
             {
-                var master = c.GetMaster();
+                Mobile master = c.GetMaster();
 
                 if (master != null && !(master is BaseCreature))
                 {
@@ -2040,7 +2040,7 @@ namespace Server.Mobiles
                 if (hides != 0)
                 {
                     Item leather = null;
-                    var cutHides = (with is SkinningKnife && from.FindItemOnLayer(Layer.OneHanded) == with) || special || with is ButchersWarCleaver;
+                    bool cutHides = (with is SkinningKnife && from.FindItemOnLayer(Layer.OneHanded) == with) || special || with is ButchersWarCleaver;
 
                     switch (HideType)
                     {
@@ -3533,7 +3533,7 @@ namespace Server.Mobiles
                 if (skill != value)
                 {
                     m_dMinTameSkill = value;
-                    var adjusted = CurrentTameSkill - skill;
+                    double adjusted = CurrentTameSkill - skill;
 
                     if (adjusted > 0)
                     {
@@ -3704,7 +3704,7 @@ namespace Server.Mobiles
             if (HitPoison != null)
                 current = HitPoison.Level;
 
-            var profile = AbilityProfile;
+            AbilityProfile profile = AbilityProfile;
 
             if (profile == null || !profile.HasAbility(MagicalAbility.Poisoning) || current >= 4)
                 return HitPoison;
@@ -3730,7 +3730,7 @@ namespace Server.Mobiles
             if (!Controlled)
                 return HitPoisonChance >= Utility.RandomDouble();
 
-            var profile = AbilityProfile;
+            AbilityProfile profile = AbilityProfile;
 
             if (profile == null || !profile.HasAbility(MagicalAbility.Poisoning))
                 return false;
@@ -4971,7 +4971,7 @@ namespace Server.Mobiles
                 {
                     Backpack b = new CreatureBackpack(Name);
 
-                    var list = new List<Item>(Backpack.Items);
+                    List<Item> list = new List<Item>(Backpack.Items);
                     foreach (Item item in list)
                     {
                         b.DropItem(item);
@@ -5596,7 +5596,7 @@ namespace Server.Mobiles
                 if (!Controlled)
                     return true;
 
-                var master = GetMaster();
+                Mobile master = GetMaster();
 
                 return master == null || (master is BaseCreature && !((BaseCreature)master).Controlled);
             }
@@ -5675,7 +5675,7 @@ namespace Server.Mobiles
 
                 int damage = de.DamageGiven;
 
-                var respList = de.Responsible;
+                List<DamageEntry> respList = de.Responsible;
 
                 if (respList != null)
                 {
@@ -5845,7 +5845,7 @@ namespace Server.Mobiles
                 SendIncomingPacket();
                 SendIncomingPacket();
 
-                var aggressors = Aggressors;
+                List<AggressorInfo> aggressors = Aggressors;
 
                 for (int i = 0; i < aggressors.Count; ++i)
                 {
@@ -5857,7 +5857,7 @@ namespace Server.Mobiles
                     }
                 }
 
-                var aggressed = Aggressed;
+                List<AggressorInfo> aggressed = Aggressed;
 
                 for (int i = 0; i < aggressed.Count; ++i)
                 {
@@ -5903,10 +5903,10 @@ namespace Server.Mobiles
                         totalKarma += ((totalKarma / 10) * 3);
                     }
 
-                    var list = GetLootingRights();
-                    var titles = new List<Mobile>();
-                    var fame = new List<int>();
-                    var karma = new List<int>();
+                    List<DamageStore> list = GetLootingRights();
+                    List<Mobile> titles = new List<Mobile>();
+                    List<int> fame = new List<int>();
+                    List<int> karma = new List<int>();
 
                     for (int i = 0; i < list.Count; ++i)
                     {
@@ -5952,7 +5952,7 @@ namespace Server.Mobiles
                             {
                                 if (ds.m_Mobile is PlayerMobile)
                                 {
-                                    foreach (var pet in ((PlayerMobile)ds.m_Mobile).AllFollowers.Where(p => DamageEntries.Any(de => de.Damager == p)))
+                                    foreach (Mobile pet in ((PlayerMobile)ds.m_Mobile).AllFollowers.Where(p => DamageEntries.Any(de => de.Damager == p)))
                                     {
                                         titles.Add(pet);
                                         fame.Add(totalFame);
@@ -5979,7 +5979,7 @@ namespace Server.Mobiles
                     }
                 }
 
-                var e = new CreatureDeathEventArgs(this, LastKiller, c);
+                CreatureDeathEventArgs e = new CreatureDeathEventArgs(this, LastKiller, c);
 
                 EventSink.InvokeCreatureDeath(e);
 
@@ -5998,7 +5998,7 @@ namespace Server.Mobiles
                                 continue;
                             }
 
-                            var o = c.Items[i];
+                            Item o = c.Items[i];
 
                             if (o != null && !o.Deleted)
                             {
@@ -6016,7 +6016,7 @@ namespace Server.Mobiles
                             continue;
                         }
 
-                        var o = e.ForcedLoot[i];
+                        Item o = e.ForcedLoot[i];
 
                         if (o != null && !o.Deleted)
                         {
@@ -6028,7 +6028,7 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    var i = e.ForcedLoot.Count;
+                    int i = e.ForcedLoot.Count;
 
                     while (--i >= 0)
                     {
@@ -6037,7 +6037,7 @@ namespace Server.Mobiles
                             continue;
                         }
 
-                        var o = e.ForcedLoot[i];
+                        Item o = e.ForcedLoot[i];
 
                         if (o != null && !o.Deleted)
                         {
@@ -6505,7 +6505,7 @@ namespace Server.Mobiles
             {
                 for (int i = Aggressed.Count - 1; i >= 0; i--)
                 {
-                    var info = Aggressed[i];
+                    AggressorInfo info = Aggressed[i];
 
                     if (info.Defender.InRange(Location, Core.GlobalMaxUpdateRange) && info.Defender.DamageEntries.Any(de => de.Damager == this))
                     {
@@ -6520,7 +6520,7 @@ namespace Server.Mobiles
 
                 for (int i = Aggressors.Count - 1; i >= 0; i--)
                 {
-                    var info = Aggressors[i];
+                    AggressorInfo info = Aggressors[i];
 
                     if (info.Attacker.InRange(Location, Core.GlobalMaxUpdateRange) && info.Attacker.DamageEntries.Any(de => de.Damager == this))
                     {
@@ -6572,7 +6572,7 @@ namespace Server.Mobiles
         {
             if (defender != null && defender.Alive)
             {
-                var damage = 0;
+                int damage = 0;
 
                 SpecialAbility.ColossalBlow.DoEffects(this, defender, ref damage);
             }
@@ -7078,7 +7078,7 @@ namespace Server.Mobiles
                 return false;
             }
 
-            var items = toRummage.Items;
+            List<Item> items = toRummage.Items;
 
             bool rejected;
             LRReason reason;
@@ -7180,8 +7180,8 @@ namespace Server.Mobiles
                 return false;
             }
 
-            var wordsString = str.Split(' ');
-            var wordsName = name.Split(' ');
+            string[] wordsString = str.Split(' ');
+            string[] wordsName = name.Split(' ');
 
             for (j = 0; j < wordsName.Length; j++)
             {
@@ -7219,7 +7219,7 @@ namespace Server.Mobiles
 
         public static void TeleportPets(Mobile master, Point3D loc, Map map, bool onlyBonded)
         {
-            var move = new List<Mobile>();
+            List<Mobile> move = new List<Mobile>();
 
             IPooledEnumerable eable = master.GetMobilesInRange(3);
 
@@ -7429,10 +7429,10 @@ namespace Server.Mobiles
                 return;
             }
 
-            var toRelease = new List<BaseCreature>();
+            List<BaseCreature> toRelease = new List<BaseCreature>();
 
             // added array for wild creatures in house regions to be removed
-            var toRemove = new List<BaseCreature>();
+            List<BaseCreature> toRemove = new List<BaseCreature>();
 
             Parallel.ForEach(
                 World.Mobiles.Values,

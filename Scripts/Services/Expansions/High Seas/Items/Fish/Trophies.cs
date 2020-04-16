@@ -303,7 +303,7 @@ namespace Server.Items
         {
             get
             {
-                var info = TaxidermyKit.TrophyInfos.FirstOrDefault(i => i.CreatureType == m_TypeName);
+                TaxidermyKit.TrophyInfo info = TaxidermyKit.TrophyInfos.FirstOrDefault(i => i.CreatureType == m_TypeName);
 
                 if (info != null)
                 {
@@ -327,7 +327,7 @@ namespace Server.Items
             if (m_TypeName == null)
                 return;
 
-            var info = TaxidermyKit.TrophyInfos.FirstOrDefault(i => i.CreatureType == m_TypeName);
+            TaxidermyKit.TrophyInfo info = TaxidermyKit.TrophyInfos.FirstOrDefault(i => i.CreatureType == m_TypeName);
 
             if (info != null)
             {

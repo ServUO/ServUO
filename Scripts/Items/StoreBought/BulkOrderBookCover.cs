@@ -95,7 +95,7 @@ namespace Server.Items
             get { return _CoverType; }
             set
             {
-                var current = _CoverType;
+                CoverType current = _CoverType;
 
                 if (current != value)
                 {
@@ -132,7 +132,7 @@ namespace Server.Items
 
         public void InvalidateHue()
         {
-            var info = CoverInfo.Infos.FirstOrDefault(x => x.Type == _CoverType);
+            CoverInfo info = CoverInfo.Infos.FirstOrDefault(x => x.Type == _CoverType);
 
             if (info != null)
             {
@@ -142,7 +142,7 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            var info = CoverInfo.Infos.FirstOrDefault(x => x.Type == _CoverType);
+            CoverInfo info = CoverInfo.Infos.FirstOrDefault(x => x.Type == _CoverType);
 
             if (info != null)
             {
@@ -181,7 +181,7 @@ namespace Server.Items
                     {
                         if (targeted is BulkOrderBook)
                         {
-                            var bob = (BulkOrderBook)targeted;
+                            BulkOrderBook bob = (BulkOrderBook)targeted;
 
                             if (bob.IsChildOf(m.Backpack))
                             {

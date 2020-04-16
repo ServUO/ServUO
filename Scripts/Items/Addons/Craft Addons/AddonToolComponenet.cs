@@ -187,7 +187,7 @@ namespace Server.Items
             {
                 if (dropped is ITool && !(dropped is BaseRunicTool))
                 {
-                    var tool = dropped as ITool;
+                    ITool tool = dropped as ITool;
 
                     if (tool.CraftSystem == _CraftSystem)
                     {

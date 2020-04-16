@@ -201,7 +201,7 @@ namespace Server.Mobiles
 
                 if (0.33 > Utility.RandomDouble())
                 {
-                    var field = new FireField(m_From, 25, Utility.RandomBool());
+                    FireField field = new FireField(m_From, 25, Utility.RandomBool());
                     field.MoveToWorld(m_LastTarget, m_Map);
                 }
 
@@ -259,7 +259,7 @@ namespace Server.Mobiles
         #region Fire Column
         public void DoFireColumn()
         {
-            var map = Map;
+            Map map = Map;
 
             if (map == null)
                 return;
@@ -285,7 +285,7 @@ namespace Server.Mobiles
             Point3D p = new Point3D(x, y, Z);
             SpellHelper.AdjustField(ref p, map, 16, false);
 
-            var fire = new FireField(this, Utility.RandomMinMax(25, 32), south);
+            FireField fire = new FireField(this, Utility.RandomMinMax(25, 32), south);
             fire.MoveToWorld(p, map);
 
             for (int i = 0; i < 7; i++)
@@ -359,7 +359,7 @@ namespace Server.Mobiles
 
                     eable.Free();
 
-                    foreach (var mob in list)
+                    foreach (Mobile mob in list)
                     {
                         DealDamage(mob);
                     }

@@ -30,7 +30,7 @@ namespace Server.Services.TownCryer
             get { return _City; }
             set
             {
-                var city = _City;
+                City city = _City;
 
                 if (city != value)
                 {
@@ -88,7 +88,7 @@ namespace Server.Services.TownCryer
 
             for (int i = start; i < TownCryerSystem.NewsEntries.Count && i < perPage; i++)
             {
-                var entry = TownCryerSystem.NewsEntries[i];
+                TownCryerNewsEntry entry = TownCryerSystem.NewsEntries[i];
 
                 AddButton(50, y, 0x5FB, 0x5FC, 100 + i, GumpButtonType.Reply, 0);
                 bool doneQuest = entry.QuestType != null && QuestHelper.CheckDoneOnce(User, entry.QuestType, Cryer, false);
@@ -124,7 +124,7 @@ namespace Server.Services.TownCryer
 
             for (int i = 0; i < TownCryerSystem.ModeratorEntries.Count && i < perPage; i++)
             {
-                var entry = TownCryerSystem.ModeratorEntries[i];
+                TownCryerModeratorEntry entry = TownCryerSystem.ModeratorEntries[i];
 
                 AddButton(50, y, 0x5FB, 0x5FC, 200 + i, GumpButtonType.Reply, 0);
                 AddLabelCropped(87, y, 631, 20, 0, entry.Title);
@@ -176,7 +176,7 @@ namespace Server.Services.TownCryer
 
             for (int i = 0; i < TownCryerSystem.CityEntries.Count && i < TownCryerSystem.MaxPerCityGoverrnorEntries; i++)
             {
-                var entry = TownCryerSystem.CityEntries[i];
+                TownCryerCityEntry entry = TownCryerSystem.CityEntries[i];
 
                 if (entry.City != this.City)
                     continue;
@@ -184,7 +184,7 @@ namespace Server.Services.TownCryer
                 AddButton(50, y, 0x5FB, 0x5FC, 300 + i, GumpButtonType.Reply, 0);
                 AddLabelCropped(87, y, 700, 20, 0, entry.Title);
 
-                var city = CityLoyaltySystem.GetCitizenship(User, false);
+                CityLoyaltySystem city = CityLoyaltySystem.GetCitizenship(User, false);
 
                 if ((city != null && city.Governor == User) || User.AccessLevel >= AccessLevel.GameMaster) // Only Governors
                 {
@@ -200,19 +200,19 @@ namespace Server.Services.TownCryer
 
         private void BuildGuildPage()
         {
-            var list = TownCryerSystem.GuildEntries.OrderBy(e => e.EventTime).ToList();
+            List<TownCryerGuildEntry> list = TownCryerSystem.GuildEntries.OrderBy(e => e.EventTime).ToList();
 
             int perPage = 20;
             int y = 170;
 
             int start = Page * perPage;
-            var guild = User.Guild as Guild;
+            Guild guild = User.Guild as Guild;
 
             Pages = (int)Math.Ceiling(list.Count / (double)perPage);
 
             for (int i = start; i < list.Count && i < perPage; i++)
             {
-                var entry = TownCryerSystem.GuildEntries[i];
+                TownCryerGuildEntry entry = TownCryerSystem.GuildEntries[i];
 
                 AddButton(50, y, 0x5FB, 0x5FC, 400 + TownCryerSystem.GuildEntries.IndexOf(entry), GumpButtonType.Reply, 0);
 
@@ -242,7 +242,7 @@ namespace Server.Services.TownCryer
             {
                 LastCity = new Dictionary<PlayerMobile, City>();
 
-                var system = CityLoyaltySystem.GetCitizenship(User, false);
+                CityLoyaltySystem system = CityLoyaltySystem.GetCitizenship(User, false);
 
                 if (system != null)
                 {
@@ -418,7 +418,7 @@ namespace Server.Services.TownCryer
                         }
                         else if (id < 4000)
                         {
-                            var city = CityLoyaltySystem.GetCitizenship(User, false);
+                            CityLoyaltySystem city = CityLoyaltySystem.GetCitizenship(User, false);
 
                             if ((city != null && city.Governor == User) || User.AccessLevel >= AccessLevel.GameMaster) // Only Governors
                             {

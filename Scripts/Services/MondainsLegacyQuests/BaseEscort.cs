@@ -363,7 +363,7 @@ namespace Server.Engines.Quests
             }
             else if (!m_Checked)
             {
-                var region = GetDestination();
+                string region = GetDestination();
 
                 if (region != null && Region.IsPartOf(region))
                 {
@@ -397,7 +397,7 @@ namespace Server.Engines.Quests
         {
             PlayerMobile pm = owner as PlayerMobile;
 
-            foreach (var escortquest in pm.Quests.Where(x => x.Quester is BaseEscort))
+            foreach (BaseQuest escortquest in pm.Quests.Where(x => x.Quester is BaseEscort))
             {
                 BaseEscort escort = (BaseEscort)escortquest.Quester;
 

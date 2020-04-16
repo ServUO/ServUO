@@ -56,7 +56,7 @@ namespace Server.Items
 
         public override void OnAfterDuped(Item newItem)
         {
-            var belt = newItem as FirstAidBelt;
+            FirstAidBelt belt = newItem as FirstAidBelt;
 
             if (belt != null)
             {

@@ -371,7 +371,7 @@ namespace Server.Mobiles
 
             if (Map != null && Map != Map.Internal && Region.IsPartOf("TheCitadel"))
             {
-                var loc = _WarpLocs[Utility.Random(_WarpLocs.Length)];
+                Point3D loc = _WarpLocs[Utility.Random(_WarpLocs.Length)];
                 MoveToWorld(loc, Map);
             }
         }

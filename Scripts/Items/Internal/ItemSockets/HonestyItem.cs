@@ -66,7 +66,7 @@ namespace Server.Items
         {
             if (oldSocket is HonestyItemSocket)
             {
-                var honesty = oldSocket as HonestyItemSocket;
+                HonestyItemSocket honesty = oldSocket as HonestyItemSocket;
 
                 HonestyRegion = honesty.HonestyRegion;
                 HonestyOwner = honesty.HonestyOwner;
@@ -119,12 +119,12 @@ namespace Server.Items
 
         public static void OnDropped(ContainerDroppedToEventArgs e)
         {
-            var dropped = e.Dropped;
-            var from = e.Mobile;
+            Item dropped = e.Dropped;
+            Mobile from = e.Mobile;
 
             if (dropped != null)
             {
-                var honestySocket = dropped.GetSocket<HonestyItemSocket>();
+                HonestyItemSocket honestySocket = dropped.GetSocket<HonestyItemSocket>();
 
                 if (honestySocket != null && honestySocket.HonestyPickup == DateTime.MinValue)
                 {

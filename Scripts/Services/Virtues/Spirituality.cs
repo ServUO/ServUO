@@ -37,7 +37,7 @@ namespace Server.Services.Virtues
                     {
                         if (targeted is Mobile)
                         {
-                            var m = (Mobile)targeted;
+                            Mobile m = (Mobile)targeted;
 
                             if (VirtueHelper.GetLevel(from, VirtueName.Spirituality) < VirtueLevel.Seeker)
                             {
@@ -62,7 +62,7 @@ namespace Server.Services.Virtues
                             }
                             else if (m is BaseCreature || m is PlayerMobile)
                             {
-                                var context = new SpiritualityContext(from, m);
+                                SpiritualityContext context = new SpiritualityContext(from, m);
 
                                 ActiveTable[from] = context;
 
@@ -124,7 +124,7 @@ namespace Server.Services.Virtues
             if (ActiveTable == null)
                 return null;
 
-            foreach (var context in ActiveTable.Values)
+            foreach (SpiritualityContext context in ActiveTable.Values)
             {
                 if (context.Mobile == m)
                     return context;
@@ -138,11 +138,11 @@ namespace Server.Services.Virtues
             if (ActiveTable == null)
                 return;
 
-            var context = GetContext(victim);
+            SpiritualityContext context = GetContext(victim);
 
             if (context != null)
             {
-                var reduction = context.Reduction / 100.0;
+                double reduction = context.Reduction / 100.0;
 
                 damage = (int)(damage - (damage * reduction));
                 context.Pool -= damage;
@@ -176,8 +176,8 @@ namespace Server.Services.Virtues
 
         public static void OnHeal(Mobile mobile, int amount)
         {
-            var points = Math.Min(50, amount);
-            var gainedPath = false;
+            int points = Math.Min(50, amount);
+            bool gainedPath = false;
 
             if (VirtueHelper.Award(mobile, VirtueName.Spirituality, points, ref gainedPath))
             {

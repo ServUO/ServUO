@@ -91,7 +91,7 @@ namespace Server.Items
 
         public static void GetTime(Map map, int x, int y, out int hours, out int minutes, out int totalMinutes)
         {
-            var timeSpan = DateTime.UtcNow - WorldStart;
+            TimeSpan timeSpan = DateTime.UtcNow - WorldStart;
 
             totalMinutes = (int)(timeSpan.TotalSeconds / SecondsPerUOMinute);
 
@@ -243,7 +243,7 @@ namespace Server.Items
 
         public static void Tick_Callback()
         {
-            foreach (var clock in _Instances.Where(p => p != null && !p.Deleted && p.IsLockedDown))
+            foreach (ClockTime clock in _Instances.Where(p => p != null && !p.Deleted && p.IsLockedDown))
             {
                 IPooledEnumerable ie = clock.GetMobilesInRange(10);
 

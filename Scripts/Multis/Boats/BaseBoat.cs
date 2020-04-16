@@ -1033,7 +1033,7 @@ namespace Server.Multis
 
             DryDockResult res = DryDockResult.Valid;
 
-            foreach (var o in GetEntitiesOnBoard())
+            foreach (IEntity o in GetEntitiesOnBoard())
             {
                 if (o == this || IsComponentItem(o) || o is EffectItem || o == TillerMan)
                     continue;
@@ -1148,7 +1148,7 @@ namespace Server.Multis
 
         public virtual void OnDryDock(Mobile from)
         {
-            var addon = LighthouseAddon.GetLighthouse(Owner);
+            LighthouseAddon addon = LighthouseAddon.GetLighthouse(Owner);
 
             if (addon != null && Owner != null && Owner.NetState != null)
             {
@@ -1803,7 +1803,7 @@ namespace Server.Multis
 
             bool resume = false;
             bool fast = false;
-            var resumeDir = Direction.North;
+            Direction resumeDir = Direction.North;
 
             if (m_MoveTimer != null)
             {
@@ -2422,7 +2422,7 @@ namespace Server.Multis
                 // entities/boat block move packet
                 NoMoveHS = true;
 
-                foreach (var e in toMove)
+                foreach (IEntity e in toMove)
                 {
                     e.NoMoveHS = true;
                 }
@@ -2446,7 +2446,7 @@ namespace Server.Multis
                 }
 
                 // entities move/restores packet
-                foreach (var ent in toMove.Where(e => !IsComponentItem(e) && !CanMoveOver(e)))
+                foreach (IEntity ent in toMove.Where(e => !IsComponentItem(e) && !CanMoveOver(e)))
                 {
                     ent.Location = new Point3D(ent.X + xOffset, ent.Y + yOffset, ent.Z);
                 }
@@ -2455,7 +2455,7 @@ namespace Server.Multis
 
                 NoMoveHS = false;
 
-                foreach (var e in toMove)
+                foreach (IEntity e in toMove)
                     e.NoMoveHS = false;
 
                 SendContainerPacket();
@@ -2469,7 +2469,7 @@ namespace Server.Multis
 
         public void Teleport(int xOffset, int yOffset, int zOffset)
         {
-            foreach (var ent in GetEntitiesOnBoard().Where(e => !IsComponentItem(e) && !CanMoveOver(e) && e != TillerMan))
+            foreach (IEntity ent in GetEntitiesOnBoard().Where(e => !IsComponentItem(e) && !CanMoveOver(e) && e != TillerMan))
             {
                 ent.Location = new Point3D(ent.X + xOffset, ent.Y + yOffset, ent.Z + zOffset);
             }
@@ -2543,7 +2543,7 @@ namespace Server.Multis
                 }
             }
 
-            foreach (var comp in GetComponents().Where(comp => !toMove.Contains(comp)))
+            foreach (IEntity comp in GetComponents().Where(comp => !toMove.Contains(comp)))
             {
                 toMove.Add(comp);
             }
@@ -2968,7 +2968,7 @@ namespace Server.Multis
 
             if (CanLinkToLighthouse)
             {
-                var addon = LighthouseAddon.GetLighthouse(Owner);
+                LighthouseAddon addon = LighthouseAddon.GetLighthouse(Owner);
 
                 if (addon != null)
                 {
@@ -3037,7 +3037,7 @@ namespace Server.Multis
 
                 state.Send(RemovePacket);
 
-                foreach (var item in GetItemsOnBoard())
+                foreach (Item item in GetItemsOnBoard())
                 {
                     state.Send(item.RemovePacket);
                 }
@@ -3063,12 +3063,12 @@ namespace Server.Multis
                 m_Stream.Write((short)(boat.Y + yOffset));
                 m_Stream.Write((short)boat.Z);
 
-                var cp = m_Stream.Seek(0, SeekOrigin.Current);
+                long cp = m_Stream.Seek(0, SeekOrigin.Current);
                 short length = 0;
 
                 m_Stream.Write(length);
 
-                foreach (var ent in boat.GetEntitiesOnBoard().Where(e => e != boat))
+                foreach (IEntity ent in boat.GetEntitiesOnBoard().Where(e => e != boat))
                 {
                     m_Stream.Write(ent.Serial);
                     m_Stream.Write((short)(ent.X + xOffset));
@@ -3097,16 +3097,16 @@ namespace Server.Multis
                 short c = 0;
                 m_Stream.Write(c);
 
-                foreach (var entity in entities)
+                foreach (IEntity entity in entities)
                 {
-                    var itemID = 0;
+                    int itemID = 0;
                     short amount = 0x01;
                     short hue = 0x00;
                     byte cmd = 0x0, light = 0x0, flags = 0x0;
 
                     if (entity is BaseMulti)
                     {
-                        var multi = entity as BaseMulti;
+                        BaseMulti multi = entity as BaseMulti;
 
                         cmd = 0x02;
                         itemID = multi.ItemID;
@@ -3116,7 +3116,7 @@ namespace Server.Multis
                     }
                     else if (entity is Item)
                     {
-                        var item = entity as Item;
+                        Item item = entity as Item;
 
                         cmd = (byte)(!item.Movable && item is IDamageable ? 0x03 : 0x00);
                         itemID = item.ItemID;
@@ -3128,7 +3128,7 @@ namespace Server.Multis
                     }
                     else if (entity is Mobile)
                     {
-                        var mobile = entity as Mobile;
+                        Mobile mobile = entity as Mobile;
 
                         cmd = 0x01;
                         itemID = mobile.BodyValue;

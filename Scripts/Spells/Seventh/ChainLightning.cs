@@ -55,13 +55,13 @@ namespace Server.Spells.Seventh
                 if (p is Item)
                     p = ((Item)p).GetWorldLocation();
 
-                var targets = AcquireIndirectTargets(p, 2).ToList();
-                var count = Math.Max(1, targets.Count);
+                System.Collections.Generic.List<IDamageable> targets = AcquireIndirectTargets(p, 2).ToList();
+                int count = Math.Max(1, targets.Count);
 
-                foreach (var dam in targets)
+                foreach (IDamageable dam in targets)
                 {
-                    var id = dam;
-                    var m = id as Mobile;
+                    IDamageable id = dam;
+                    Mobile m = id as Mobile;
                     double damage = GetNewAosDamage(51, 1, 5, id is PlayerMobile, id);
 
                     if (count > 2)

@@ -146,7 +146,7 @@ namespace Server.Items
 
             Timer.DelayCall(ActionTime, () =>
             {
-                var charge = FindItemByType<PowderCharge>();
+                PowderCharge charge = FindItemByType<PowderCharge>();
 
                 if (charge != null)
                 {
@@ -197,8 +197,8 @@ namespace Server.Items
             {
                 ICannonAmmo ammo = null;
 
-                var cannon = FindItemByType<Cannonball>();
-                var grapeshot = FindItemByType<Grapeshot>();
+                Cannonball cannon = FindItemByType<Cannonball>();
+                Grapeshot grapeshot = FindItemByType<Grapeshot>();
 
                 if (cannon != null)
                 {
@@ -269,7 +269,7 @@ namespace Server.Items
 
             Timer.DelayCall(ActionTime, () =>
             {
-                var fuse = FindItemByType<FuseCord>();
+                FuseCord fuse = FindItemByType<FuseCord>();
 
                 if (fuse != null)
                 {
@@ -592,7 +592,7 @@ namespace Server.Items
                                 damageables.AddRange(FindDamageables(shooter, newPoint, map, false, false, false, true, true));
                             }
 
-                            foreach (var m in damageables)
+                            foreach (IDamageable m in damageables)
                             {
                                 list.Add(m);
                             }
@@ -640,7 +640,7 @@ namespace Server.Items
                                 damageables.AddRange(FindDamageables(shooter, newPoint, map, true, true, false, true, true));
                             }
 
-                            foreach (var m in damageables)
+                            foreach (IDamageable m in damageables)
                             {
                                 list.Add(m);
                             }
@@ -898,10 +898,10 @@ namespace Server.Items
         public virtual void OnMobileHit(object obj)
         {
             object[] objects = (object[])obj;
-            var toHit = objects[0] as Mobile;
-            var pnt = (Point3D)objects[1];
-            var info = objects[2] as AmmoInfo;
-            var shooter = objects[3] as Mobile;
+            Mobile toHit = objects[0] as Mobile;
+            Point3D pnt = (Point3D)objects[1];
+            AmmoInfo info = objects[2] as AmmoInfo;
+            Mobile shooter = objects[3] as Mobile;
 
             int damage = (int)(Utility.RandomMinMax(info.MinDamage, info.MaxDamage) * Galleon.CannonDamageMod);
 
@@ -919,10 +919,10 @@ namespace Server.Items
         public virtual void OnDamageableItemHit(object obj)
         {
             object[] objects = (object[])obj;
-            var toHit = objects[0] as DamageableItem;
-            var pnt = (Point3D)objects[1];
-            var info = objects[2] as AmmoInfo;
-            var shooter = objects[3] as Mobile;
+            DamageableItem toHit = objects[0] as DamageableItem;
+            Point3D pnt = (Point3D)objects[1];
+            AmmoInfo info = objects[2] as AmmoInfo;
+            Mobile shooter = objects[3] as Mobile;
 
             if (info == null || toHit == null || toHit.Map == null)
                 return;
@@ -1052,9 +1052,9 @@ namespace Server.Items
                 Viewing.Add(from);
             }
 
-            foreach (var pm in Viewing.OfType<PlayerMobile>())
+            foreach (PlayerMobile pm in Viewing.OfType<PlayerMobile>())
             {
-                var gump = BaseGump.GetGump<ShipCannonGump>(pm, g => g.Cannon == this);
+                ShipCannonGump gump = BaseGump.GetGump<ShipCannonGump>(pm, g => g.Cannon == this);
 
                 if (gump != null)
                 {
@@ -1098,7 +1098,7 @@ namespace Server.Items
             if (!m_Actions.ContainsKey(from))
                 m_Actions[from] = new List<int>();
 
-            var list = m_Actions[from];
+            List<int> list = m_Actions[from];
 
             list.Insert(0, action);
 
@@ -1230,11 +1230,11 @@ namespace Server.Items
                 Galleon.RemoveCannon(this);
             }
 
-            var list = new List<PlayerMobile>(Viewing.OfType<PlayerMobile>());
+            List<PlayerMobile> list = new List<PlayerMobile>(Viewing.OfType<PlayerMobile>());
 
-            foreach (var pm in list)
+            foreach (PlayerMobile pm in list)
             {
-                var gump = BaseGump.GetGump<ShipCannonGump>(pm, g => g.Cannon == this);
+                ShipCannonGump gump = BaseGump.GetGump<ShipCannonGump>(pm, g => g.Cannon == this);
 
                 if (gump != null)
                 {
@@ -1346,8 +1346,8 @@ namespace Server.Items
 
                 if (Cannon.Actions.ContainsKey(User))
                 {
-                    var actual = 0;
-                    var list = Cannon.Actions[User];
+                    int actual = 0;
+                    List<int> list = Cannon.Actions[User];
 
                     for (int i = list.Count - 1; i >= 0; i--)
                     {

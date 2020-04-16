@@ -103,7 +103,7 @@ namespace Server.Spells.SkillMasteries
             Caster.SendLocalizedMessage(1156027); // You bash you target with your shield!
             bool pvp = Caster is PlayerMobile && defender is PlayerMobile;
 
-            var multiplier = Multiplier;
+            double multiplier = Multiplier;
 
             damage = pvp ? (int)(damage * (multiplier * 3)) : (int)(damage * (multiplier * 7));
 

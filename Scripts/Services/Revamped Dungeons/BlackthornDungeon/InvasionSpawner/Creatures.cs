@@ -557,7 +557,7 @@ namespace Server.Engines.Blackthorn
         {
             base.OnDeath(c);
 
-            var rights = GetLootingRights();
+            List<DamageStore> rights = GetLootingRights();
             rights.Sort();
 
             List<Mobile> list = rights.Select(x => x.m_Mobile).Where(m => m.InRange(c.Location, 20)).ToList();

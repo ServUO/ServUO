@@ -31,7 +31,7 @@ namespace Server.Mobiles
 
         public override bool DoActionCombat()
         {
-            var c = m_Mobile.Combatant;
+            IDamageable c = m_Mobile.Combatant;
 
             if (c == null || c.Deleted || c.Map != m_Mobile.Map || !c.Alive || (c is Mobile && ((Mobile)c).IsDeadBondedPet))
             {
@@ -128,7 +128,7 @@ namespace Server.Mobiles
 
         public override bool DoActionFlee()
         {
-            var c = m_Mobile.Combatant as Mobile;
+            Mobile c = m_Mobile.Combatant as Mobile;
 
             if (m_Mobile.Hits > (m_Mobile.HitsMax / 2))
             {

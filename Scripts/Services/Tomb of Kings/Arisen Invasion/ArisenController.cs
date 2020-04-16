@@ -257,7 +257,7 @@ namespace Server.Items
 
                         for (int i = 0; i < length; i++)
                         {
-                            var spawner = reader.ReadItem<XmlSpawner>();
+                            XmlSpawner spawner = reader.ReadItem<XmlSpawner>();
 
                             if (spawner == null)
                             {

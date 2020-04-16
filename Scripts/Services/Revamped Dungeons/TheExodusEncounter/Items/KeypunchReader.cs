@@ -60,8 +60,8 @@ namespace Server.Items
         {
             List<Item> items = this.Items;
 
-            var punch = items.Where(x => x is PunchCard);
-            var kit = items.Where(x => x is ExoticToolkit);
+            IEnumerable<Item> punch = items.Where(x => x is PunchCard);
+            IEnumerable<Item> kit = items.Where(x => x is ExoticToolkit);
 
             if (punch.Count() >= 50 && kit.Count() >= 1)
             {

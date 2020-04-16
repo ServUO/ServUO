@@ -126,7 +126,7 @@ namespace Server.Engines.Doom
                 Guardians = new List<DarkGuardian>();
 
             int count = 0;
-            foreach (var mob in this.GetEnumeratedMobiles().Where(mob => mob is PlayerMobile || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() != null && !mob.IsDeadBondedPet)))
+            foreach (Mobile mob in this.GetEnumeratedMobiles().Where(mob => mob is PlayerMobile || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() != null && !mob.IsDeadBondedPet)))
             {
                 if (mob.NetState != null)
                     mob.SendLocalizedMessage(1050000, "", 365); // The locks on the door click loudly and you begin to hear a faint hissing near the walls.
@@ -248,7 +248,7 @@ namespace Server.Engines.Doom
 
             eable.Free();
 
-            var addon = new PentagramAddon();
+            PentagramAddon addon = new PentagramAddon();
             addon.MoveToWorld(PentagramLoc, Map.Malas);
         }
 
@@ -278,7 +278,7 @@ namespace Server.Engines.Doom
                         Effects.SendLocationEffect(p, Map.Malas, Utility.RandomList(0x113C, 0x1147, 0x11A8) - 2, 16, 3, 0, 0);
                     }
 
-                    foreach (var m in Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile && m.Alive && m.AccessLevel == AccessLevel.Player && m.Poison == null))
+                    foreach (Mobile m in Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile && m.Alive && m.AccessLevel == AccessLevel.Player && m.Poison == null))
                     {
                         m.ApplyPoison(m, Poison.Deadly);
                         m.SendSound(0x231);
