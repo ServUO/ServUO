@@ -37,9 +37,9 @@ namespace Server.Mobiles
         public virtual int MinDamStart { get { return 5; } }
         public virtual int MaxDamStart { get { return 15; } }
 
-        public virtual int HitsStart { get { return StrStart + (int)((double)StrStart * ((double)StatRatio / 100.0)); } }
-        public virtual int StamStart { get { return DexStart + (int)((double)DexStart * ((double)StatRatio / 100.0)); } }
-        public virtual int ManaStart { get { return IntStart + (int)((double)IntStart * ((double)StatRatio / 100.0)); } }
+        public virtual int HitsStart { get { return StrStart + (int)(StrStart * (StatRatio / 100.0)); } }
+        public virtual int StamStart { get { return DexStart + (int)(DexStart * (StatRatio / 100.0)); } }
+        public virtual int ManaStart { get { return IntStart + (int)(IntStart * (StatRatio / 100.0)); } }
 
         public virtual bool RaiseDamage { get { return true; } }
         public virtual double RaiseDamageFactor { get { return 0.33; } }

@@ -31,7 +31,7 @@ namespace Server.Engines.VvV
             List<BattleTeam> teams = new List<BattleTeam>(Battle.Teams);
             teams.Sort();
 
-            double offset = 216 / (double)VvVBattle.ScoreToWin;
+            double offset = 216 / VvVBattle.ScoreToWin;
 
             for (int i = 0; i < teams.Count; i++)
             {

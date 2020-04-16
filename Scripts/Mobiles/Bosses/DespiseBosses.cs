@@ -42,7 +42,7 @@ namespace Server.Engines.Despise
         {
             if (mob is PlayerMobile)
             {
-                int chance = ArtifactChance + (int)Math.Min(10, ((PlayerMobile)mob).Luck / 180);
+                int chance = ArtifactChance + Math.Min(10, ((PlayerMobile)mob).Luck / 180);
 
                 if (chance >= Utility.Random(100))
                 {
@@ -74,7 +74,7 @@ namespace Server.Engines.Despise
             base.AlterMeleeDamageTo(to, ref damage);
 
             if (m_Wisp != null && !m_Wisp.Deleted && m_Wisp.Alive)
-                damage += (int)((double)damage * WispScalar);
+                damage += (int)(damage * WispScalar);
         }
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)
@@ -82,7 +82,7 @@ namespace Server.Engines.Despise
             base.AlterMeleeDamageFrom(from, ref damage);
 
             if (m_Wisp != null && !m_Wisp.Deleted && m_Wisp.Alive)
-                damage -= (int)((double)damage * WispScalar);
+                damage -= (int)(damage * WispScalar);
         }
 
         public override void AlterSpellDamageTo(Mobile to, ref int damage)
@@ -90,7 +90,7 @@ namespace Server.Engines.Despise
             base.AlterSpellDamageTo(to, ref damage);
 
             if (m_Wisp != null && !m_Wisp.Deleted && m_Wisp.Alive)
-                damage += (int)((double)damage * WispScalar);
+                damage += (int)(damage * WispScalar);
         }
 
         public override void AlterSpellDamageFrom(Mobile from, ref int damage)
@@ -98,7 +98,7 @@ namespace Server.Engines.Despise
             base.AlterSpellDamageFrom(from, ref damage);
 
             if (m_Wisp != null && !m_Wisp.Deleted && m_Wisp.Alive)
-                damage -= (int)((double)damage * WispScalar);
+                damage -= (int)(damage * WispScalar);
         }
 
         public override void OnThink()
@@ -147,7 +147,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
             writer.Write(m_Wisp);
         }
 
@@ -234,7 +234,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -318,7 +318,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -397,7 +397,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -476,7 +476,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

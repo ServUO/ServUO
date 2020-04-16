@@ -1332,7 +1332,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)16); // version
+            writer.Write(16); // version
 
             // Version 16 - Removed Pre-AOS Armor Properties
             // Version 14 - removed VvV Item (handled in VvV System) and BlockRepair (Handled as negative attribute)
@@ -1348,7 +1348,7 @@ namespace Server.Items
             writer.Write(m_RefinedEnergy);
 
             //Version 10
-            writer.Write((bool)m_IsImbued);
+            writer.Write(m_IsImbued);
 
             // Version 9
             #region Runic Reforging
@@ -1368,11 +1368,11 @@ namespace Server.Items
             writer.Write(m_EnergyNonImbuing);
 
             // Version 8
-            writer.Write((int)m_TimesImbued);
+            writer.Write(m_TimesImbued);
 
             #endregion
 
-            writer.Write((Mobile)m_BlessedBy);
+            writer.Write(m_BlessedBy);
 
             SetFlag sflags = SetFlag.None;
 
@@ -1397,31 +1397,31 @@ namespace Server.Items
                 m_SetSkillBonuses.Serialize(writer);
 
             if (GetSaveFlag(sflags, SetFlag.PhysicalBonus))
-                writer.WriteEncodedInt((int)m_SetPhysicalBonus);
+                writer.WriteEncodedInt(m_SetPhysicalBonus);
 
             if (GetSaveFlag(sflags, SetFlag.FireBonus))
-                writer.WriteEncodedInt((int)m_SetFireBonus);
+                writer.WriteEncodedInt(m_SetFireBonus);
 
             if (GetSaveFlag(sflags, SetFlag.ColdBonus))
-                writer.WriteEncodedInt((int)m_SetColdBonus);
+                writer.WriteEncodedInt(m_SetColdBonus);
 
             if (GetSaveFlag(sflags, SetFlag.PoisonBonus))
-                writer.WriteEncodedInt((int)m_SetPoisonBonus);
+                writer.WriteEncodedInt(m_SetPoisonBonus);
 
             if (GetSaveFlag(sflags, SetFlag.EnergyBonus))
-                writer.WriteEncodedInt((int)m_SetEnergyBonus);
+                writer.WriteEncodedInt(m_SetEnergyBonus);
 
             if (GetSaveFlag(sflags, SetFlag.Hue))
-                writer.WriteEncodedInt((int)m_SetHue);
+                writer.WriteEncodedInt(m_SetHue);
 
             if (GetSaveFlag(sflags, SetFlag.LastEquipped))
-                writer.Write((bool)m_LastEquipped);
+                writer.Write(m_LastEquipped);
 
             if (GetSaveFlag(sflags, SetFlag.SetEquipped))
-                writer.Write((bool)m_SetEquipped);
+                writer.Write(m_SetEquipped);
 
             if (GetSaveFlag(sflags, SetFlag.SetSelfRepair))
-                writer.WriteEncodedInt((int)m_SetSelfRepair);
+                writer.WriteEncodedInt(m_SetSelfRepair);
 
             // Version 7
             SaveFlag flags = SaveFlag.None;
@@ -1477,28 +1477,28 @@ namespace Server.Items
                 m_AosArmorAttributes.Serialize(writer);
 
             if (GetSaveFlag(flags, SaveFlag.PhysicalBonus))
-                writer.WriteEncodedInt((int)m_PhysicalBonus);
+                writer.WriteEncodedInt(m_PhysicalBonus);
 
             if (GetSaveFlag(flags, SaveFlag.FireBonus))
-                writer.WriteEncodedInt((int)m_FireBonus);
+                writer.WriteEncodedInt(m_FireBonus);
 
             if (GetSaveFlag(flags, SaveFlag.ColdBonus))
-                writer.WriteEncodedInt((int)m_ColdBonus);
+                writer.WriteEncodedInt(m_ColdBonus);
 
             if (GetSaveFlag(flags, SaveFlag.PoisonBonus))
-                writer.WriteEncodedInt((int)m_PoisonBonus);
+                writer.WriteEncodedInt(m_PoisonBonus);
 
             if (GetSaveFlag(flags, SaveFlag.EnergyBonus))
-                writer.WriteEncodedInt((int)m_EnergyBonus);
+                writer.WriteEncodedInt(m_EnergyBonus);
 
             if (GetSaveFlag(flags, SaveFlag.MaxHitPoints))
-                writer.WriteEncodedInt((int)m_MaxHitPoints);
+                writer.WriteEncodedInt(m_MaxHitPoints);
 
             if (GetSaveFlag(flags, SaveFlag.HitPoints))
-                writer.WriteEncodedInt((int)m_HitPoints);
+                writer.WriteEncodedInt(m_HitPoints);
 
             if (GetSaveFlag(flags, SaveFlag.Crafter))
-                writer.Write((Mobile)m_Crafter);
+                writer.Write(m_Crafter);
 
             if (GetSaveFlag(flags, SaveFlag.Quality))
                 writer.WriteEncodedInt((int)m_Quality);
@@ -1507,25 +1507,25 @@ namespace Server.Items
                 writer.WriteEncodedInt((int)m_Resource);
 
             if (GetSaveFlag(flags, SaveFlag.BaseArmor))
-                writer.WriteEncodedInt((int)m_ArmorBase);
+                writer.WriteEncodedInt(m_ArmorBase);
 
             if (GetSaveFlag(flags, SaveFlag.StrBonus))
-                writer.WriteEncodedInt((int)m_StrBonus);
+                writer.WriteEncodedInt(m_StrBonus);
 
             if (GetSaveFlag(flags, SaveFlag.DexBonus))
-                writer.WriteEncodedInt((int)m_DexBonus);
+                writer.WriteEncodedInt(m_DexBonus);
 
             if (GetSaveFlag(flags, SaveFlag.IntBonus))
-                writer.WriteEncodedInt((int)m_IntBonus);
+                writer.WriteEncodedInt(m_IntBonus);
 
             if (GetSaveFlag(flags, SaveFlag.StrReq))
-                writer.WriteEncodedInt((int)m_StrReq);
+                writer.WriteEncodedInt(m_StrReq);
 
             if (GetSaveFlag(flags, SaveFlag.DexReq))
-                writer.WriteEncodedInt((int)m_DexReq);
+                writer.WriteEncodedInt(m_DexReq);
 
             if (GetSaveFlag(flags, SaveFlag.IntReq))
-                writer.WriteEncodedInt((int)m_IntReq);
+                writer.WriteEncodedInt(m_IntReq);
 
             if (GetSaveFlag(flags, SaveFlag.MedAllowance))
                 writer.WriteEncodedInt((int)m_Meditate);

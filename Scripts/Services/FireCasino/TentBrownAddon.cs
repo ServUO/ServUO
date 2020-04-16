@@ -40,77 +40,77 @@ namespace Server.Items
                 AddComponent(new AddonComponent(m_AddOnSimpleComponents[i, 0]), m_AddOnSimpleComponents[i, 1], m_AddOnSimpleComponents[i, 2], m_AddOnSimpleComponents[i, 3]);
 
 
-            AddComplexComponent((BaseAddon)this, 496, 4, 3, 0, 1118, -1, "", 1);// 1
-            AddComplexComponent((BaseAddon)this, 2778, 0, 1, 0, 0, -1, "decorative golden rug", 1);// 2
-            AddComplexComponent((BaseAddon)this, 2786, 0, 2, 0, 0, -1, "decorative golden rug", 1);// 3
-            AddComplexComponent((BaseAddon)this, 2778, 0, 0, 0, 0, -1, "decorative golden rug", 1);// 4
-            AddComplexComponent((BaseAddon)this, 500, -4, 3, 0, 1118, -1, "", 1);// 5
-            AddComplexComponent((BaseAddon)this, 2786, 1, 2, 0, 0, -1, "decorative golden rug", 1);// 6
-            AddComplexComponent((BaseAddon)this, 2778, -1, 1, 0, 0, -1, "decorative golden rug", 1);// 7
-            AddComplexComponent((BaseAddon)this, 2785, 3, -1, 0, 0, -1, "decorative golden rug", 1);// 10
-            AddComplexComponent((BaseAddon)this, 503, -4, 2, 0, 1118, -1, "", 1);// 12
-            AddComplexComponent((BaseAddon)this, 2783, -3, -1, 0, 0, -1, "decorative golden rug", 1);// 13
-            AddComplexComponent((BaseAddon)this, 2783, -3, 0, 0, 0, -1, "decorative golden rug", 1);// 16
-            AddComplexComponent((BaseAddon)this, 2778, 1, 0, 0, 0, -1, "decorative golden rug", 1);// 17
-            AddComplexComponent((BaseAddon)this, 2783, -3, 1, 0, 0, -1, "decorative golden rug", 1);// 18
-            AddComplexComponent((BaseAddon)this, 2778, 1, -1, 0, 0, -1, "decorative golden rug", 1);// 19
-            AddComplexComponent((BaseAddon)this, 2781, -3, 2, 0, 0, -1, "decorative golden rug", 1);// 20
-            AddComplexComponent((BaseAddon)this, 2785, 3, 1, 0, 0, -1, "decorative golden rug", 1);// 21
-            AddComplexComponent((BaseAddon)this, 503, -4, -1, 0, 1118, -1, "", 1);// 22
-            AddComplexComponent((BaseAddon)this, 497, -1, 3, 0, 1118, -1, "", 1);// 23
-            AddComplexComponent((BaseAddon)this, 2778, 1, 1, 0, 0, -1, "decorative golden rug", 1);// 24
-            AddComplexComponent((BaseAddon)this, 2786, 2, 2, 0, 0, -1, "decorative golden rug", 1);// 25
-            AddComplexComponent((BaseAddon)this, 497, 0, 3, 0, 1118, -1, "", 1);// 26
-            AddComplexComponent((BaseAddon)this, 2778, -2, -1, 0, 0, -1, "decorative golden rug", 1);// 27
-            AddComplexComponent((BaseAddon)this, 497, 2, 3, 0, 1118, -1, "", 1);// 28
-            AddComplexComponent((BaseAddon)this, 2778, -2, 0, 0, 0, -1, "decorative golden rug", 1);// 29
-            AddComplexComponent((BaseAddon)this, 497, 1, 3, 0, 1118, -1, "", 1);// 30
-            AddComplexComponent((BaseAddon)this, 2786, -2, 2, 0, 0, -1, "decorative golden rug", 1);// 31
-            AddComplexComponent((BaseAddon)this, 2778, -1, 0, 0, 0, -1, "decorative golden rug", 1);// 32
-            AddComplexComponent((BaseAddon)this, 497, -2, 3, 0, 1118, -1, "", 1);// 33
-            AddComplexComponent((BaseAddon)this, 2778, -2, 1, 0, 0, -1, "decorative golden rug", 1);// 35
-            AddComplexComponent((BaseAddon)this, 2779, 3, 2, 0, 0, -1, "decorative golden rug", 1);// 36
-            AddComplexComponent((BaseAddon)this, 2778, 0, -1, 0, 0, -1, "decorative golden rug", 1);// 37
-            AddComplexComponent((BaseAddon)this, 2786, -1, 2, 0, 0, -1, "decorative golden rug", 1);// 38
-            AddComplexComponent((BaseAddon)this, 2778, 2, -1, 0, 0, -1, "decorative golden rug", 1);// 39
-            AddComplexComponent((BaseAddon)this, 497, 3, 3, 0, 1118, -1, "", 1);// 42
-            AddComplexComponent((BaseAddon)this, 498, 4, 2, 0, 1118, -1, "", 1);// 43
-            AddComplexComponent((BaseAddon)this, 2785, 3, 0, 0, 0, -1, "decorative golden rug", 1);// 45
-            AddComplexComponent((BaseAddon)this, 498, 4, 1, 0, 1118, -1, "", 1);// 46
-            AddComplexComponent((BaseAddon)this, 503, -4, 0, 0, 1118, -1, "", 1);// 47
-            AddComplexComponent((BaseAddon)this, 2778, 2, 0, 0, 0, -1, "decorative golden rug", 1);// 49
-            AddComplexComponent((BaseAddon)this, 2778, 2, 1, 0, 0, -1, "decorative golden rug", 1);// 50
-            AddComplexComponent((BaseAddon)this, 497, -3, 3, 0, 1118, -1, "", 1);// 51
-            AddComplexComponent((BaseAddon)this, 2778, -1, -1, 0, 0, -1, "decorative golden rug", 1);// 52
-            AddComplexComponent((BaseAddon)this, 503, -4, 1, 0, 1118, -1, "", 1);// 53
-            AddComplexComponent((BaseAddon)this, 2784, 2, -4, 0, 0, -1, "decorative golden rug", 1);// 55
-            AddComplexComponent((BaseAddon)this, 2784, 1, -4, 0, 0, -1, "decorative golden rug", 1);// 56
-            AddComplexComponent((BaseAddon)this, 2778, 1, -2, 0, 0, -1, "decorative golden rug", 1);// 59
-            AddComplexComponent((BaseAddon)this, 2778, -1, -3, 0, 0, -1, "decorative golden rug", 1);// 65
-            AddComplexComponent((BaseAddon)this, 2778, -1, -2, 0, 0, -1, "decorative golden rug", 1);// 66
-            AddComplexComponent((BaseAddon)this, 2778, -2, -2, 0, 0, -1, "decorative golden rug", 1);// 67
-            AddComplexComponent((BaseAddon)this, 501, 4, -5, 0, 1118, -1, "", 1);// 71
-            AddComplexComponent((BaseAddon)this, 498, 4, -4, 0, 1118, -1, "", 1);// 72
-            AddComplexComponent((BaseAddon)this, 503, -4, -4, 0, 1118, -1, "", 1);// 73
-            AddComplexComponent((BaseAddon)this, 2784, -1, -4, 0, 0, -1, "decorative golden rug", 1);// 74
-            AddComplexComponent((BaseAddon)this, 498, 4, -3, 0, 1118, -1, "", 1);// 75
-            AddComplexComponent((BaseAddon)this, 2785, 3, -2, 0, 0, -1, "decorative golden rug", 1);// 76
-            AddComplexComponent((BaseAddon)this, 2778, 2, -3, 0, 0, -1, "decorative golden rug", 1);// 78
-            AddComplexComponent((BaseAddon)this, 2778, 1, -3, 0, 0, -1, "decorative golden rug", 1);// 79
-            AddComplexComponent((BaseAddon)this, 2778, 2, -2, 0, 0, -1, "decorative golden rug", 1);// 81
-            AddComplexComponent((BaseAddon)this, 2784, -2, -4, 0, 0, -1, "decorative golden rug", 1);// 83
-            AddComplexComponent((BaseAddon)this, 499, -4, -5, 0, 1118, -1, "", 1);// 84
-            AddComplexComponent((BaseAddon)this, 2780, -3, -4, 0, 0, -1, "decorative golden rug", 1);// 85
-            AddComplexComponent((BaseAddon)this, 2778, 0, -2, 0, 0, -1, "decorative golden rug", 1);// 86
-            AddComplexComponent((BaseAddon)this, 2783, -3, -2, 0, 0, -1, "decorative golden rug", 1);// 87
-            AddComplexComponent((BaseAddon)this, 2784, 0, -4, 0, 0, -1, "decorative golden rug", 1);// 88
-            AddComplexComponent((BaseAddon)this, 503, -4, -3, 0, 1118, -1, "", 1);// 90
-            AddComplexComponent((BaseAddon)this, 2785, 3, -3, 0, 0, -1, "decorative golden rug", 1);// 91
-            AddComplexComponent((BaseAddon)this, 2778, -2, -3, 0, 0, -1, "decorative golden rug", 1);// 92
-            AddComplexComponent((BaseAddon)this, 503, -4, -2, 0, 1118, -1, "", 1);// 96
-            AddComplexComponent((BaseAddon)this, 2783, -3, -3, 0, 0, -1, "decorative golden rug", 1);// 97
-            AddComplexComponent((BaseAddon)this, 2782, 3, -4, 0, 0, -1, "decorative golden rug", 1);// 98
-            AddComplexComponent((BaseAddon)this, 2778, 0, -3, 0, 0, -1, "decorative golden rug", 1);// 101
+            AddComplexComponent(this, 496, 4, 3, 0, 1118, -1, "", 1);// 1
+            AddComplexComponent(this, 2778, 0, 1, 0, 0, -1, "decorative golden rug", 1);// 2
+            AddComplexComponent(this, 2786, 0, 2, 0, 0, -1, "decorative golden rug", 1);// 3
+            AddComplexComponent(this, 2778, 0, 0, 0, 0, -1, "decorative golden rug", 1);// 4
+            AddComplexComponent(this, 500, -4, 3, 0, 1118, -1, "", 1);// 5
+            AddComplexComponent(this, 2786, 1, 2, 0, 0, -1, "decorative golden rug", 1);// 6
+            AddComplexComponent(this, 2778, -1, 1, 0, 0, -1, "decorative golden rug", 1);// 7
+            AddComplexComponent(this, 2785, 3, -1, 0, 0, -1, "decorative golden rug", 1);// 10
+            AddComplexComponent(this, 503, -4, 2, 0, 1118, -1, "", 1);// 12
+            AddComplexComponent(this, 2783, -3, -1, 0, 0, -1, "decorative golden rug", 1);// 13
+            AddComplexComponent(this, 2783, -3, 0, 0, 0, -1, "decorative golden rug", 1);// 16
+            AddComplexComponent(this, 2778, 1, 0, 0, 0, -1, "decorative golden rug", 1);// 17
+            AddComplexComponent(this, 2783, -3, 1, 0, 0, -1, "decorative golden rug", 1);// 18
+            AddComplexComponent(this, 2778, 1, -1, 0, 0, -1, "decorative golden rug", 1);// 19
+            AddComplexComponent(this, 2781, -3, 2, 0, 0, -1, "decorative golden rug", 1);// 20
+            AddComplexComponent(this, 2785, 3, 1, 0, 0, -1, "decorative golden rug", 1);// 21
+            AddComplexComponent(this, 503, -4, -1, 0, 1118, -1, "", 1);// 22
+            AddComplexComponent(this, 497, -1, 3, 0, 1118, -1, "", 1);// 23
+            AddComplexComponent(this, 2778, 1, 1, 0, 0, -1, "decorative golden rug", 1);// 24
+            AddComplexComponent(this, 2786, 2, 2, 0, 0, -1, "decorative golden rug", 1);// 25
+            AddComplexComponent(this, 497, 0, 3, 0, 1118, -1, "", 1);// 26
+            AddComplexComponent(this, 2778, -2, -1, 0, 0, -1, "decorative golden rug", 1);// 27
+            AddComplexComponent(this, 497, 2, 3, 0, 1118, -1, "", 1);// 28
+            AddComplexComponent(this, 2778, -2, 0, 0, 0, -1, "decorative golden rug", 1);// 29
+            AddComplexComponent(this, 497, 1, 3, 0, 1118, -1, "", 1);// 30
+            AddComplexComponent(this, 2786, -2, 2, 0, 0, -1, "decorative golden rug", 1);// 31
+            AddComplexComponent(this, 2778, -1, 0, 0, 0, -1, "decorative golden rug", 1);// 32
+            AddComplexComponent(this, 497, -2, 3, 0, 1118, -1, "", 1);// 33
+            AddComplexComponent(this, 2778, -2, 1, 0, 0, -1, "decorative golden rug", 1);// 35
+            AddComplexComponent(this, 2779, 3, 2, 0, 0, -1, "decorative golden rug", 1);// 36
+            AddComplexComponent(this, 2778, 0, -1, 0, 0, -1, "decorative golden rug", 1);// 37
+            AddComplexComponent(this, 2786, -1, 2, 0, 0, -1, "decorative golden rug", 1);// 38
+            AddComplexComponent(this, 2778, 2, -1, 0, 0, -1, "decorative golden rug", 1);// 39
+            AddComplexComponent(this, 497, 3, 3, 0, 1118, -1, "", 1);// 42
+            AddComplexComponent(this, 498, 4, 2, 0, 1118, -1, "", 1);// 43
+            AddComplexComponent(this, 2785, 3, 0, 0, 0, -1, "decorative golden rug", 1);// 45
+            AddComplexComponent(this, 498, 4, 1, 0, 1118, -1, "", 1);// 46
+            AddComplexComponent(this, 503, -4, 0, 0, 1118, -1, "", 1);// 47
+            AddComplexComponent(this, 2778, 2, 0, 0, 0, -1, "decorative golden rug", 1);// 49
+            AddComplexComponent(this, 2778, 2, 1, 0, 0, -1, "decorative golden rug", 1);// 50
+            AddComplexComponent(this, 497, -3, 3, 0, 1118, -1, "", 1);// 51
+            AddComplexComponent(this, 2778, -1, -1, 0, 0, -1, "decorative golden rug", 1);// 52
+            AddComplexComponent(this, 503, -4, 1, 0, 1118, -1, "", 1);// 53
+            AddComplexComponent(this, 2784, 2, -4, 0, 0, -1, "decorative golden rug", 1);// 55
+            AddComplexComponent(this, 2784, 1, -4, 0, 0, -1, "decorative golden rug", 1);// 56
+            AddComplexComponent(this, 2778, 1, -2, 0, 0, -1, "decorative golden rug", 1);// 59
+            AddComplexComponent(this, 2778, -1, -3, 0, 0, -1, "decorative golden rug", 1);// 65
+            AddComplexComponent(this, 2778, -1, -2, 0, 0, -1, "decorative golden rug", 1);// 66
+            AddComplexComponent(this, 2778, -2, -2, 0, 0, -1, "decorative golden rug", 1);// 67
+            AddComplexComponent(this, 501, 4, -5, 0, 1118, -1, "", 1);// 71
+            AddComplexComponent(this, 498, 4, -4, 0, 1118, -1, "", 1);// 72
+            AddComplexComponent(this, 503, -4, -4, 0, 1118, -1, "", 1);// 73
+            AddComplexComponent(this, 2784, -1, -4, 0, 0, -1, "decorative golden rug", 1);// 74
+            AddComplexComponent(this, 498, 4, -3, 0, 1118, -1, "", 1);// 75
+            AddComplexComponent(this, 2785, 3, -2, 0, 0, -1, "decorative golden rug", 1);// 76
+            AddComplexComponent(this, 2778, 2, -3, 0, 0, -1, "decorative golden rug", 1);// 78
+            AddComplexComponent(this, 2778, 1, -3, 0, 0, -1, "decorative golden rug", 1);// 79
+            AddComplexComponent(this, 2778, 2, -2, 0, 0, -1, "decorative golden rug", 1);// 81
+            AddComplexComponent(this, 2784, -2, -4, 0, 0, -1, "decorative golden rug", 1);// 83
+            AddComplexComponent(this, 499, -4, -5, 0, 1118, -1, "", 1);// 84
+            AddComplexComponent(this, 2780, -3, -4, 0, 0, -1, "decorative golden rug", 1);// 85
+            AddComplexComponent(this, 2778, 0, -2, 0, 0, -1, "decorative golden rug", 1);// 86
+            AddComplexComponent(this, 2783, -3, -2, 0, 0, -1, "decorative golden rug", 1);// 87
+            AddComplexComponent(this, 2784, 0, -4, 0, 0, -1, "decorative golden rug", 1);// 88
+            AddComplexComponent(this, 503, -4, -3, 0, 1118, -1, "", 1);// 90
+            AddComplexComponent(this, 2785, 3, -3, 0, 0, -1, "decorative golden rug", 1);// 91
+            AddComplexComponent(this, 2778, -2, -3, 0, 0, -1, "decorative golden rug", 1);// 92
+            AddComplexComponent(this, 503, -4, -2, 0, 1118, -1, "", 1);// 96
+            AddComplexComponent(this, 2783, -3, -3, 0, 0, -1, "decorative golden rug", 1);// 97
+            AddComplexComponent(this, 2782, 3, -4, 0, 0, -1, "decorative golden rug", 1);// 98
+            AddComplexComponent(this, 2778, 0, -3, 0, 0, -1, "decorative golden rug", 1);// 101
 
         }
 

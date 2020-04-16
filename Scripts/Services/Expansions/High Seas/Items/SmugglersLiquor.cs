@@ -218,7 +218,7 @@
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2);
+            writer.Write(2);
 
             writer.Write(m_Label);
             writer.Write((int)m_Type);

@@ -37,10 +37,10 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);// version
+            writer.Write(0);// version
 
-            writer.Write((bool)m_IsHired);
-            writer.Write((int)m_HoldGold);
+            writer.Write(m_IsHired);
+            writer.Write(m_HoldGold);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -199,7 +199,7 @@ namespace Server.Mobiles
                             // Try to add the hireling as a follower
                             if (AddHire(from) == true)
                             {
-                                this.SayTo(from, 1043258, string.Format("{0}", (int)item.Amount / m_Pay), 0x3B2);//"I thank thee for paying me. I will work for thee for ~1_NUMBER~ days.", (int)item.Amount / m_Pay );
+                                this.SayTo(from, 1043258, string.Format("{0}", item.Amount / m_Pay), 0x3B2);//"I thank thee for paying me. I will work for thee for ~1_NUMBER~ days.", (int)item.Amount / m_Pay );
                                 m_HoldGold += item.Amount;
                                 m_PayTimer = new PayTimer(this);
                                 m_PayTimer.Start();

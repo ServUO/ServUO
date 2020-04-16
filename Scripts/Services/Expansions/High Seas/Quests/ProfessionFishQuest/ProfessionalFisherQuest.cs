@@ -267,7 +267,7 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_TurnIn);
             writer.Write(m_Boat);
@@ -275,12 +275,12 @@ namespace Server.Engines.Quests
 
             if (m_Title is string)
             {
-                writer.Write((int)0);
+                writer.Write(0);
                 writer.Write((string)m_Title);
             }
             else
             {
-                writer.Write((int)1);
+                writer.Write(1);
                 writer.Write((int)m_Title);
             }
 

@@ -24,9 +24,9 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((Item)m_Mount);
+            writer.Write(m_Mount);
         }
 
         public override void Deserialize(GenericReader reader)

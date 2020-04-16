@@ -138,7 +138,7 @@ namespace Server.Items
                 BaseCreature bc = new Trapper();
                 bc.MoveToWorld(p, m.Map);
 
-                Timer.DelayCall(TimeSpan.FromSeconds(.25), (mob) => ((Mobile)mob).Combatant = m, bc);
+                Timer.DelayCall(TimeSpan.FromSeconds(.25), (mob) => mob.Combatant = m, bc);
             }
         }
 

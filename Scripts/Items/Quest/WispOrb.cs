@@ -521,7 +521,7 @@ namespace Server.Engines.Despise
             if (m_Pet == null)
                 return 0;
 
-            int power = ((DespiseCreature)m_Pet).Power;
+            int power = m_Pet.Power;
             return power * power;
         }
 
@@ -548,7 +548,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_Owner);
             writer.Write(m_Pet);
@@ -559,12 +559,12 @@ namespace Server.Engines.Despise
 
             if (m_Anchor is Mobile)
             {
-                writer.Write((int)1);
+                writer.Write(1);
                 writer.Write((Mobile)m_Anchor);
             }
             else if (m_Anchor is Item)
             {
-                writer.Write((int)2);
+                writer.Write(2);
                 writer.Write((Item)m_Anchor);
             }
             else
@@ -588,8 +588,8 @@ namespace Server.Engines.Despise
             switch (reader.ReadInt())
             {
                 case 0: break;
-                case 1: m_Anchor = (IEntity)reader.ReadMobile(); break;
-                case 2: m_Anchor = (IEntity)reader.ReadItem(); break;
+                case 1: m_Anchor = reader.ReadMobile(); break;
+                case 2: m_Anchor = reader.ReadItem(); break;
             }
 
             if (m_Anchor == null && m_Pet != null)

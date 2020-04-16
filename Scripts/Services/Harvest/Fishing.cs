@@ -1000,7 +1000,7 @@ namespace Server.Engines.Harvest
                 {
                     def.SendMessageTo(from, def.FailMessage);
 
-                    double skill = (double)from.Skills[SkillName.Fishing].Value / 50;
+                    double skill = from.Skills[SkillName.Fishing].Value / 50;
 
                     if (0.5 / skill > Utility.RandomDouble())
                         OnToolUsed(from, tool, false);

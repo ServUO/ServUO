@@ -194,7 +194,7 @@ namespace Server.Spells.SkillMasteries
             if (!HasBleedMod(attacker, out damage) || (_Table != null && _Table.ContainsKey(attacker)))
                 return;
 
-            double bleedchance = (double)((attacker.Skills.Ninjitsu.Value + attacker.Skills.Stealth.Value + (MasteryInfo.GetMasteryLevel(attacker, SkillName.Ninjitsu) * 40)) / 3.0) / 15.0;
+            double bleedchance = (attacker.Skills.Ninjitsu.Value + attacker.Skills.Stealth.Value + (MasteryInfo.GetMasteryLevel(attacker, SkillName.Ninjitsu) * 40)) / 3.0 / 15.0;
 
             if (bleedchance > Utility.RandomDouble())
             {

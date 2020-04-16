@@ -112,7 +112,7 @@ namespace Server.Spells.SkillMasteries
             HeightenedSensesSpell spell = GetSpell(m, typeof(HeightenedSensesSpell)) as HeightenedSensesSpell;
 
             if (spell != null)
-                return (double)spell.PropertyBonus() / 100.0;
+                return spell.PropertyBonus() / 100.0;
 
             return 0;
         }

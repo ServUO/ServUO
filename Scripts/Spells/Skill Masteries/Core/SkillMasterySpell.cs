@@ -364,7 +364,7 @@ namespace Server.Spells.SkillMasteries
 
         public int GetMasteryLevel()
         {
-            return (int)MasteryInfo.GetMasteryLevel(Caster, CastSkill);
+            return MasteryInfo.GetMasteryLevel(Caster, CastSkill);
         }
 
         public void UpdateParty()

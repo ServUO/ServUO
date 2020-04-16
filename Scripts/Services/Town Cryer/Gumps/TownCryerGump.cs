@@ -84,7 +84,7 @@ namespace Server.Services.TownCryer
             int y = 170;
             int start = Page * perPage;
 
-            Pages = (int)Math.Ceiling((double)TownCryerSystem.NewsEntries.Count / (double)perPage);
+            Pages = (int)Math.Ceiling(TownCryerSystem.NewsEntries.Count / (double)perPage);
 
             for (int i = start; i < TownCryerSystem.NewsEntries.Count && i < perPage; i++)
             {
@@ -208,7 +208,7 @@ namespace Server.Services.TownCryer
             int start = Page * perPage;
             var guild = User.Guild as Guild;
 
-            Pages = (int)Math.Ceiling((double)list.Count / (double)perPage);
+            Pages = (int)Math.Ceiling(list.Count / (double)perPage);
 
             for (int i = start; i < list.Count && i < perPage; i++)
             {

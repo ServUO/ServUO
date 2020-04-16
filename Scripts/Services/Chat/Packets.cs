@@ -21,7 +21,7 @@ namespace Server.Engines.Chat
             if (who != null)
                 m_Stream.WriteAsciiFixed(who.Language, 4);
             else
-                m_Stream.Write((int)0);
+                m_Stream.Write(0);
 
             m_Stream.WriteBigUniNull(param1);
             m_Stream.WriteBigUniNull(param2);

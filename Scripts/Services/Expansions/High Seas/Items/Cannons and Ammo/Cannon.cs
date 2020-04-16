@@ -95,7 +95,7 @@ namespace Server.Items
         public bool CanLight { get { return m_Cleaned && m_Charged && m_Primed && m_AmmoType != AmmunitionType.Empty && m_LoadedAmmo != null; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double Durability { get { return ((double)m_Hits / (double)MaxHits) * 100.0; } }
+        public double Durability { get { return (m_Hits / (double)MaxHits) * 100.0; } }
 
         public override bool ForceShowProperties { get { return true; } }
 
@@ -328,7 +328,7 @@ namespace Server.Items
                 if (currentRange % latDist == 0)
                     lateralOffset++;
 
-                TimeSpan delay = TimeSpan.FromSeconds((double)currentRange / 10.0);
+                TimeSpan delay = TimeSpan.FromSeconds(currentRange / 10.0);
                 Type ammoType = m_LoadedAmmo;
 
                 switch (m_AmmoType)
@@ -716,7 +716,7 @@ namespace Server.Items
 
             double ingotsNeeded = 36 * (100 - Durability);
 
-            ingotsNeeded -= ((double)from.Skills[SkillName.Blacksmith].Value / 200.0) * ingotsNeeded;
+            ingotsNeeded -= (from.Skills[SkillName.Blacksmith].Value / 200.0) * ingotsNeeded;
 
             double min = ingotsNeeded / 10;
             double ingots1 = pack.GetAmount(typeof(IronIngot));
@@ -1324,7 +1324,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2);
+            writer.Write(2);
 
             writer.Write(m_Cleansliness);
             writer.Write(m_LoadedAmmo != null);
@@ -1445,7 +1445,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1485,7 +1485,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

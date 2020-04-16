@@ -973,7 +973,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)4); // version
+            writer.Write(4); // version
 
             writer.Write(m_Creature);
 
@@ -992,7 +992,7 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.Killer, m_Killer != null && !m_Killer.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.Summoner, m_Summoner != null && !m_Summoner.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.Removal, m_Removal != TalismanRemoval.None);
-            SetSaveFlag(ref flags, SaveFlag.Skill, (int)m_Skill != 0);
+            SetSaveFlag(ref flags, SaveFlag.Skill, m_Skill != 0);
             SetSaveFlag(ref flags, SaveFlag.SuccessBonus, m_SuccessBonus != 0);
             SetSaveFlag(ref flags, SaveFlag.ExceptionalBonus, m_ExceptionalBonus != 0);
             SetSaveFlag(ref flags, SaveFlag.MaxCharges, m_MaxCharges != 0);

@@ -271,7 +271,7 @@ namespace Server.Multis
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -308,7 +308,7 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
     }
 
@@ -338,7 +338,7 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
     }
 }

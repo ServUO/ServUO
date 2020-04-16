@@ -104,9 +104,9 @@ namespace Server.Items
 			   version of CraftableFurniture that handles this data will not
 			   conflict with the version numbers of the child classes.
 			 */
-            writer.Write((int)1000); // version
+            writer.Write(1000); // version
 
-            writer.Write((Mobile)this.m_Crafter);
+            writer.Write(m_Crafter);
             writer.Write((int)this.m_Resource);
             writer.Write((int)this.m_Quality);
         }

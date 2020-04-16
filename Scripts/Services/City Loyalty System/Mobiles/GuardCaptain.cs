@@ -160,7 +160,7 @@ namespace Server.Engines.CityLoyalty
         {
             if (_BannerCooldown != null && m is PlayerMobile)
             {
-                if (_BannerCooldown.ContainsKey((PlayerMobile)m))
+                if (_BannerCooldown.ContainsKey(m))
                     return _BannerCooldown[m] > DateTime.UtcNow;
             }
 

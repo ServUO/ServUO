@@ -78,7 +78,7 @@ namespace Server.Gumps
             if (maxInt <= 1)
                 currentIntensity = 100;
 
-            var propWeight = (int)Math.Floor(((double)weight / (double)maxInt) * m_Value);
+            var propWeight = (int)Math.Floor((weight / (double)maxInt) * m_Value);
 
             // Maximum allowed Property Weight & Item Mod Count
             m_MaxWeight = Imbuing.GetMaxWeight(m_Item);
@@ -123,7 +123,7 @@ namespace Server.Gumps
 
             // Weight Modifier
             AddHtmlLocalized(25, 120, 80, 20, 1114272, 0xFFFFFF, false, false); // Weight:
-            AddLabel(95, 120, IceHue, String.Format("{0}x", ((double)m_Info.Weight / 100.0).ToString("0.0")));
+            AddLabel(95, 120, IceHue, String.Format("{0}x", (m_Info.Weight / 100.0).ToString("0.0")));
 
             AddHtmlLocalized(25, 140, 80, 20, 1114273, LabelColor, false, false); // Intensity:
             AddLabel(95, 140, IceHue, String.Format("{0}%", currentIntensity));
@@ -159,7 +159,7 @@ namespace Server.Gumps
             AddLabel(430, 260, GetColor(timesImbued, 20), String.Format("{0}/20", timesImbued));
 
             // ===== CALCULATE DIFFICULTY =====
-            var truePropWeight = (int)(((double)propWeight / (double)weight) * 100);
+            var truePropWeight = (int)((propWeight / (double)weight) * 100);
             var trueTotalWeight = Imbuing.GetTotalWeight(m_Item, -1, true, true);
 
             double suc = Imbuing.GetSuccessChance(User, m_Item, trueTotalWeight, truePropWeight, bonus);

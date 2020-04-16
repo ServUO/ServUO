@@ -33,7 +33,7 @@ namespace Server.Spells.SkillMasteries
                 Caster.Mana = Caster.ManaMax;
 
                 int duration = 120;
-                double skill = ((double)(Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 2.1) + GetMasteryLevel() * 2;
+                double skill = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 2.1) + GetMasteryLevel() * 2;
 
                 if (skill >= 120)
                     duration = 30;

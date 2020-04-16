@@ -26,26 +26,26 @@ namespace Server.Items
             for (int i = 0; i < m_AddOnSimpleComponents.Length / 4; i++)
                 AddComponent(new AddonComponent(m_AddOnSimpleComponents[i, 0]), m_AddOnSimpleComponents[i, 1], m_AddOnSimpleComponents[i, 2], m_AddOnSimpleComponents[i, 3]);
 
-            AddComplexComponent((BaseAddon)this, 3309, 9, -6, 0, 63, -1, "", 1);// 1
-            AddComplexComponent((BaseAddon)this, 8445, -6, -4, 17, 2500, -1, "", 1);// 11
-            AddComplexComponent((BaseAddon)this, 8424, 4, -1, 0, 2548, -1, "", 1);// 22
-            AddComplexComponent((BaseAddon)this, 3308, 3, -6, 5, 63, -1, "", 1);// 31
-            AddComplexComponent((BaseAddon)this, 3308, -4, -6, 5, 63, -1, "", 1);// 32
-            AddComplexComponent((BaseAddon)this, 3310, -5, -6, 5, 63, -1, "", 1);// 33
-            AddComplexComponent((BaseAddon)this, 3310, 2, -6, 10, 63, -1, "", 1);// 34
-            AddComplexComponent((BaseAddon)this, 3309, -7, -6, 0, 63, -1, "", 1);// 35
-            AddComplexComponent((BaseAddon)this, 3309, -6, -6, 0, 63, -1, "", 1);// 36
-            AddComplexComponent((BaseAddon)this, 3309, -2, -6, 0, 63, -1, "", 1);// 37
-            AddComplexComponent((BaseAddon)this, 3309, 0, -6, 0, 63, -1, "", 1);// 38
-            AddComplexComponent((BaseAddon)this, 3309, 5, -6, 0, 63, -1, "", 1);// 39
-            AddComplexComponent((BaseAddon)this, 3309, 6, -6, 0, 63, -1, "", 1);// 40
-            AddComplexComponent((BaseAddon)this, 8424, -8, -4, 0, 2548, -1, "", 1);// 45
-            AddComplexComponent((BaseAddon)this, 3314, -9, -5, 0, 63, -1, "", 1);// 46
-            AddComplexComponent((BaseAddon)this, 3314, -9, -2, 5, 63, -1, "", 1);// 47
-            AddComplexComponent((BaseAddon)this, 3314, -9, 2, 5, 63, -1, "", 1);// 48
-            AddComplexComponent((BaseAddon)this, 3313, -9, 0, 5, 63, -1, "", 1);// 49
-            AddComplexComponent((BaseAddon)this, 3313, -9, 5, 0, 63, -1, "", 1);// 50
-            AddComplexComponent((BaseAddon)this, 3313, -9, 4, 0, 63, -1, "", 1);// 51
+            AddComplexComponent(this, 3309, 9, -6, 0, 63, -1, "", 1);// 1
+            AddComplexComponent(this, 8445, -6, -4, 17, 2500, -1, "", 1);// 11
+            AddComplexComponent(this, 8424, 4, -1, 0, 2548, -1, "", 1);// 22
+            AddComplexComponent(this, 3308, 3, -6, 5, 63, -1, "", 1);// 31
+            AddComplexComponent(this, 3308, -4, -6, 5, 63, -1, "", 1);// 32
+            AddComplexComponent(this, 3310, -5, -6, 5, 63, -1, "", 1);// 33
+            AddComplexComponent(this, 3310, 2, -6, 10, 63, -1, "", 1);// 34
+            AddComplexComponent(this, 3309, -7, -6, 0, 63, -1, "", 1);// 35
+            AddComplexComponent(this, 3309, -6, -6, 0, 63, -1, "", 1);// 36
+            AddComplexComponent(this, 3309, -2, -6, 0, 63, -1, "", 1);// 37
+            AddComplexComponent(this, 3309, 0, -6, 0, 63, -1, "", 1);// 38
+            AddComplexComponent(this, 3309, 5, -6, 0, 63, -1, "", 1);// 39
+            AddComplexComponent(this, 3309, 6, -6, 0, 63, -1, "", 1);// 40
+            AddComplexComponent(this, 8424, -8, -4, 0, 2548, -1, "", 1);// 45
+            AddComplexComponent(this, 3314, -9, -5, 0, 63, -1, "", 1);// 46
+            AddComplexComponent(this, 3314, -9, -2, 5, 63, -1, "", 1);// 47
+            AddComplexComponent(this, 3314, -9, 2, 5, 63, -1, "", 1);// 48
+            AddComplexComponent(this, 3313, -9, 0, 5, 63, -1, "", 1);// 49
+            AddComplexComponent(this, 3313, -9, 5, 0, 63, -1, "", 1);// 50
+            AddComplexComponent(this, 3313, -9, 4, 0, 63, -1, "", 1);// 51
         }
 
         public BlackthornStep5(Serial serial)

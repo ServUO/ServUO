@@ -73,7 +73,7 @@ namespace Server.Spells.SkillMasteries
                 attacker.PrivateOverheadMessage(MessageType.Regular, 1150, 1155993, attacker.NetState); // You deliver a piercing blow!
                 defender.FixedEffect(0x36BD, 20, 10, 2725, 5);
 
-                int drain = (int)((double)defender.StamMax * ((double)toDrain / 100.0));
+                int drain = (int)(defender.StamMax * (toDrain / 100.0));
 
                 BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.Pierce, 1155994, 1155995, TimeSpan.FromSeconds(10), defender, (drain / 7).ToString()));
                 //-~1_VAL~ Stamina Regeneration.

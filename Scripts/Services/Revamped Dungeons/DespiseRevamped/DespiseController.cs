@@ -661,7 +661,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)5);
+            writer.Write(5);
 
             writer.Write(m_Enabled);
             writer.Write(m_NextBossEncounter);

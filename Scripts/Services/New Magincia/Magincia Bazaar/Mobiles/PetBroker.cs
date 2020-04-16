@@ -114,7 +114,7 @@ namespace Server.Engines.NewMagincia
                     total += entry.SalePrice;
             }
 
-            double perc = (double)total * .05;
+            double perc = total * .05;
             return (int)perc;
         }
 
@@ -126,7 +126,7 @@ namespace Server.Engines.NewMagincia
             }
 
             int cost = entry.SalePrice;
-            int toAdd = cost - (int)((double)cost * ((double)ComissionFee / 100.0));
+            int toAdd = cost - (int)(cost * (ComissionFee / 100.0));
             BaseCreature pet = entry.Pet;
 
             if (!m_BrokerEntries.Contains(entry) || entry.Pet == null || entry.Pet.Deleted)
@@ -243,7 +243,7 @@ namespace Server.Engines.NewMagincia
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_BrokerEntries.Count);
             foreach (PetBrokerEntry entry in m_BrokerEntries)

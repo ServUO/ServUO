@@ -61,11 +61,11 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write(Pedestals, true);
 
-            writer.Write((int)m_ID);
+            writer.Write(m_ID);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -174,12 +174,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
-            writer.Write((int)m_OrgHue);
+            writer.Write(m_OrgHue);
 
-            writer.Write((int)ID);
-            writer.Write((Item)m_Altar);
+            writer.Write(ID);
+            writer.Write(m_Altar);
         }
 
         public override void Deserialize(GenericReader reader)

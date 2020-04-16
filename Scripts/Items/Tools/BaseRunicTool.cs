@@ -902,7 +902,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
             writer.Write((int)Resource);
         }
 
@@ -1110,7 +1110,7 @@ namespace Server.Items
             if (totalDamage <= 0)
                 return 0;
 
-            int random = Utility.Random((int)(totalDamage / 10) + 1) * 10;
+            int random = Utility.Random(totalDamage / 10 + 1) * 10;
             weapon.AosElementDamages[attr] = random;
 
             return (totalDamage - random);

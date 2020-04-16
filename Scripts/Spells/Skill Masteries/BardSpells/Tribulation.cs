@@ -88,7 +88,7 @@ namespace Server.Spells.SkillMasteries
                 BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.TribulationTarget, 1115740, 1115742, String.Format("{0}\t{1}\t{2}", m_PropertyBonus, m_PropertyBonus, (int)m_DamageChance)));
 
                 // Target: ~1_val~ <br> Damage Factor: ~2_val~% <br> Damage Chance: ~3_val~%
-                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.TribulationCaster, 1115740, 1151388, String.Format("{0}\t{1}\t{2}", m.Name, (int)m_DamageFactor, (int)m_DamageChance)));
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.TribulationCaster, 1115740, 1151388, String.Format("{0}\t{1}\t{2}", m.Name, m_DamageFactor, (int)m_DamageChance)));
 
                 BeginTimer();
             }
@@ -126,8 +126,8 @@ namespace Server.Spells.SkillMasteries
                 m_NextDamage = DateTime.UtcNow + TimeSpan.FromSeconds(1);
 
                 int damage = AOS.Scale(damageTaken, m_DamageFactor);
-                damage = (int)((double)damage * GetSlayerBonus()); // 1.5 slayer bonus
-                damage -= (int)((double)damage * DamageModifier(Target)); // resist modifier
+                damage = (int)(damage * GetSlayerBonus()); // 1.5 slayer bonus
+                damage -= (int)(damage * DamageModifier(Target)); // resist modifier
 
                 AOS.Damage(victim, Caster, damage, 0, 0, 0, 0, 0, 0, 100);
                 victim.FixedParticles(0x374A, 10, 15, 5038, 1181, 0, EffectLayer.Head);

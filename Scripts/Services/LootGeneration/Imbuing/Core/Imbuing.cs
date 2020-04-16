@@ -349,8 +349,8 @@ namespace Server.SkillHandlers
                 var totalItemMods = GetTotalMods(i, id);
                 var maxint = ItemPropertyInfo.GetMaxIntensity(i, id, true);
 
-                var propImbuingweight = (int)(((double)def.Weight / (double)maxint) * value);
-                var propTrueWeight = (int)(((double)propImbuingweight / (double)def.Weight) * 100);
+                var propImbuingweight = (int)((def.Weight / (double)maxint) * value);
+                var propTrueWeight = (int)((propImbuingweight / (double)def.Weight) * 100);
 
                 if ((imbuingWeight + propImbuingweight) > maxWeight)
                 {
@@ -923,7 +923,7 @@ namespace Server.SkillHandlers
             if (max == 1 && inc == 0)
                 return 5;
 
-            double v = Math.Floor(value / ((double)max / 5.0));
+            double v = Math.Floor(value / (max / 5.0));
 
             if (v > 5) v = 5;
             if (v < 1) v = 1;
@@ -935,7 +935,7 @@ namespace Server.SkillHandlers
         {
             int max = ItemPropertyInfo.GetMaxIntensity(item, id, true);
 
-            int intensity = (int)(((double)value / (double)max) * 100);
+            int intensity = (int)((value / (double)max) * 100);
 
             if (intensity >= 100)
             {
@@ -1358,11 +1358,11 @@ namespace Server.SkillHandlers
             {
                 var arm = (BaseArmor)item;
 
-                if (arm.PhysicalBonus > arm.PhysNonImbuing) { if (id != 51) { weight += ((double)(100.0 / 15) * (double)(arm.PhysicalBonus - arm.PhysNonImbuing)); } }
-                if (arm.FireBonus > arm.FireNonImbuing) { if (id != 52) { weight += ((double)(100.0 / 15) * (double)(arm.FireBonus - arm.FireNonImbuing)); } }
-                if (arm.ColdBonus > arm.ColdNonImbuing) { if (id != 53) { weight += ((double)(100.0 / 15) * (double)(arm.ColdBonus - arm.ColdNonImbuing)); } }
-                if (arm.PoisonBonus > arm.PoisonNonImbuing) { if (id != 54) { weight += ((double)(100.0 / 15) * (double)(arm.PoisonBonus - arm.PoisonNonImbuing)); } }
-                if (arm.EnergyBonus > arm.EnergyNonImbuing) { if (id != 55) { weight += ((double)(100.0 / 15) * (double)(arm.EnergyBonus - arm.EnergyNonImbuing)); } }
+                if (arm.PhysicalBonus > arm.PhysNonImbuing) { if (id != 51) { weight += (100.0 / 15 * (arm.PhysicalBonus - arm.PhysNonImbuing)); } }
+                if (arm.FireBonus > arm.FireNonImbuing) { if (id != 52) { weight += (100.0 / 15 * (arm.FireBonus - arm.FireNonImbuing)); } }
+                if (arm.ColdBonus > arm.ColdNonImbuing) { if (id != 53) { weight += (100.0 / 15 * (arm.ColdBonus - arm.ColdNonImbuing)); } }
+                if (arm.PoisonBonus > arm.PoisonNonImbuing) { if (id != 54) { weight += (100.0 / 15 * (arm.PoisonBonus - arm.PoisonNonImbuing)); } }
+                if (arm.EnergyBonus > arm.EnergyNonImbuing) { if (id != 55) { weight += (100.0 / 15 * (arm.EnergyBonus - arm.EnergyNonImbuing)); } }
             }
 
             var type = item.GetType();
@@ -1408,7 +1408,7 @@ namespace Server.SkillHandlers
                     {
                         if (id != 51 + i && resists[i] > 0)
                         {
-                            weight += ((double)(100.0 / 15) * (double)resists[i]);
+                            weight += (100.0 / 15 * resists[i]);
                         }
                     }
                 }
@@ -1571,11 +1571,11 @@ namespace Server.SkillHandlers
 
             if (skills != null)
             {
-                if (skills.GetBonus(0) > 0) { if (id < 151 || id > 155) { weight += ((double)(totalWeight / maxInt) * (double)skills.GetBonus(0)); } }
-                if (skills.GetBonus(1) > 0) { if (id < 156 || id > 160) { weight += ((double)(totalWeight / maxInt) * (double)skills.GetBonus(1)); } }
-                if (skills.GetBonus(2) > 0) { if (id < 161 || id > 166) { weight += ((double)(totalWeight / maxInt) * (double)skills.GetBonus(2)); } }
-                if (skills.GetBonus(3) > 0) { if (id < 167 || id > 173) { weight += ((double)(totalWeight / maxInt) * (double)skills.GetBonus(3)); } }
-                if (skills.GetBonus(4) > 0) { if (id < 174 || id > 180) { weight += ((double)(totalWeight / maxInt) * (double)skills.GetBonus(4)); } }
+                if (skills.GetBonus(0) > 0) { if (id < 151 || id > 155) { weight += (totalWeight / maxInt * skills.GetBonus(0)); } }
+                if (skills.GetBonus(1) > 0) { if (id < 156 || id > 160) { weight += (totalWeight / maxInt * skills.GetBonus(1)); } }
+                if (skills.GetBonus(2) > 0) { if (id < 161 || id > 166) { weight += (totalWeight / maxInt * skills.GetBonus(2)); } }
+                if (skills.GetBonus(3) > 0) { if (id < 167 || id > 173) { weight += (totalWeight / maxInt * skills.GetBonus(3)); } }
+                if (skills.GetBonus(4) > 0) { if (id < 174 || id > 180) { weight += (totalWeight / maxInt * skills.GetBonus(4)); } }
             }
 
             return (int)weight;
@@ -2007,7 +2007,7 @@ namespace Server.SkillHandlers
 
                 int max = ItemPropertyInfo.GetMaxIntensity(item, id, imbuing);
 
-                return (int)(((double)weight / max) * (double)value);
+                return (int)(((double)weight / max) * value);
             }
 
             return 0;

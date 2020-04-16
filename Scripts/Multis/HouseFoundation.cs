@@ -694,16 +694,16 @@ namespace Server.Multis
 
         public override void Serialize(GenericWriter writer)
         {
-            writer.Write((int)5); // version
+            writer.Write(5); // version
 
             writer.Write(Signpost);
-            writer.Write((int)SignpostGraphic);
+            writer.Write(SignpostGraphic);
 
             writer.Write((int)Type);
 
             writer.Write(SignHanger);
 
-            writer.Write((int)LastRevision);
+            writer.Write(LastRevision);
             writer.Write(Fixtures, true);
 
             CurrentState.Serialize(writer);
@@ -1898,25 +1898,25 @@ namespace Server.Multis
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             Components.Serialize(writer);
 
-            writer.Write((int)Fixtures.Length);
+            writer.Write(Fixtures.Length);
 
             for (int i = 0; i < Fixtures.Length; ++i)
             {
                 MultiTileEntry ent = Fixtures[i];
 
-                writer.Write((ushort)ent.m_ItemID);
-                writer.Write((short)ent.m_OffsetX);
-                writer.Write((short)ent.m_OffsetY);
-                writer.Write((short)ent.m_OffsetZ);
+                writer.Write(ent.m_ItemID);
+                writer.Write(ent.m_OffsetX);
+                writer.Write(ent.m_OffsetY);
+                writer.Write(ent.m_OffsetZ);
 
                 writer.Write((ulong)ent.m_Flags);
             }
 
-            writer.Write((int)Revision);
+            writer.Write(Revision);
         }
 
         public void OnRevised()
@@ -2233,7 +2233,7 @@ namespace Server.Multis
             EnsureCapacity(17);
 
             m_Stream.Write((short)0x20);
-            m_Stream.Write((int)house.Serial);
+            m_Stream.Write(house.Serial);
             m_Stream.Write((byte)0x04);
             m_Stream.Write((ushort)0x0000);
             m_Stream.Write((ushort)0xFFFF);
@@ -2250,7 +2250,7 @@ namespace Server.Multis
             EnsureCapacity(17);
 
             m_Stream.Write((short)0x20);
-            m_Stream.Write((int)house.Serial);
+            m_Stream.Write(house.Serial);
             m_Stream.Write((byte)0x05);
             m_Stream.Write((ushort)0x0000);
             m_Stream.Write((ushort)0xFFFF);
@@ -2267,8 +2267,8 @@ namespace Server.Multis
             EnsureCapacity(13);
 
             m_Stream.Write((short)0x1D);
-            m_Stream.Write((int)multi.Serial);
-            m_Stream.Write((int)state.Revision);
+            m_Stream.Write(multi.Serial);
+            m_Stream.Write(state.Revision);
         }
     }
 
@@ -2327,8 +2327,8 @@ namespace Server.Multis
 
             Write((byte)0x03); // Compression Type
             Write((byte)(response ? 0x01 : 0x00)); // Enable Response (0x00 or 0x01)
-            Write((int)serial); // Serial
-            Write((int)revision); // Revision Number
+            Write(serial); // Serial
+            Write(revision); // Revision Number
             Write((short)tiles.Length); // Tile Length
             Write((short)0); // Buffer length : reserved
             Write((byte)0); // Plane count : reserved

@@ -99,10 +99,10 @@ namespace Server.Engines.Quests.Hag
             if (this.m_Corpse != null && this.m_Corpse.Deleted)
                 this.m_Corpse = null;
 
-            writer.WriteEncodedInt((int)1); // version
+            writer.WriteEncodedInt(1); // version
 
-            writer.Write((Point3D)this.m_CorpseLocation);
-            writer.Write((Item)this.m_Corpse);
+            writer.Write(m_CorpseLocation);
+            writer.Write(m_Corpse);
         }
 
         private static Point3D RandomCorpseLocation()
@@ -221,9 +221,9 @@ namespace Server.Engines.Quests.Hag
 
         public override void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.Write((int)this.m_MaxProgress);
+            writer.Write(m_MaxProgress);
         }
     }
 
@@ -282,9 +282,9 @@ namespace Server.Engines.Quests.Hag
 
         public override void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.Write((Point3D)this.m_ImpLocation);
+            writer.Write(m_ImpLocation);
         }
 
         private void DeleteImp(object imp)
@@ -519,13 +519,13 @@ namespace Server.Engines.Quests.Hag
 
         public override void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.WriteEncodedInt((int)this.m_Ingredients.Length);
+            writer.WriteEncodedInt(m_Ingredients.Length);
             for (int i = 0; i < this.m_Ingredients.Length; i++)
                 writer.WriteEncodedInt((int)this.m_Ingredients[i]);
 
-            writer.Write((bool)this.m_BlackheartMet);
+            writer.Write(m_BlackheartMet);
         }
     }
 

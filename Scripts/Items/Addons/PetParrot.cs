@@ -117,7 +117,7 @@ namespace Server.Mobiles
 
         public override bool CanBeRenamedBy(Mobile from)
         {
-            if ((int)from.AccessLevel > (int)AccessLevel.Player)
+            if (from.AccessLevel > (int)AccessLevel.Player)
                 return true;
 
             BaseHouse house = BaseHouse.FindHouseAt(this);
@@ -180,9 +180,9 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((DateTime)m_Birth);
+            writer.Write(m_Birth);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -541,7 +541,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)4); // version
+            writer.Write(4); // version
 
             writer.Write((int)m_Resource);
 
@@ -555,10 +555,10 @@ namespace Server.Items
             writer.WriteEncodedInt((int)m_Slayer);
             writer.WriteEncodedInt((int)m_Slayer2);
 
-            writer.WriteEncodedInt((int)UsesRemaining);
+            writer.WriteEncodedInt(UsesRemaining);
 
-            writer.WriteEncodedInt((int)m_WellSound);
-            writer.WriteEncodedInt((int)m_BadlySound);
+            writer.WriteEncodedInt(m_WellSound);
+            writer.WriteEncodedInt(m_BadlySound);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -143,7 +143,7 @@ namespace Server.Engines.MyrmidexInvasion
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)0);
+                    writer.Write(0);
 
                     writer.Write(AllianceEntries.Count);
                     AllianceEntries.ForEach(entry => entry.Serialize(writer));

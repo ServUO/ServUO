@@ -31,7 +31,7 @@ namespace Server.Spells.SkillMasteries
                 int skill = (int)(Caster.Skills[CastSkill].Value + GetWeaponSkill() + (GetMasteryLevel() * 40)) / 3;
 
                 _Radius = skill / 40;
-                _DamageMalus = (int)((double)skill / 2.4);
+                _DamageMalus = (int)(skill / 2.4);
 
                 Caster.PublicOverheadMessage(MessageType.Regular, Caster.SpeechHue, false, "Prepare Yourself!");
 
@@ -68,7 +68,7 @@ namespace Server.Spells.SkillMasteries
         {
             if (attacker.InRange(Caster, _Radius))
             {
-                damage -= (int)((double)damage * ((double)_DamageMalus / 100.00));
+                damage -= (int)(damage * (_DamageMalus / 100.00));
 
                 if (Caster.Player)
                 {

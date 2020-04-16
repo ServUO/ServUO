@@ -199,10 +199,10 @@ namespace Server.Mobiles
             {
                 foreach (var mob in boat.GetMobilesOnBoard().Where(m => CanBeHarmful(m, false) && m.Alive))
                 {
-                    double damage = Math.Max(40, Utility.RandomMinMax(50, 100) * ((double)Hits / (double)HitsMax));
+                    double damage = Math.Max(40, Utility.RandomMinMax(50, 100) * (Hits / (double)HitsMax));
 
                     mob.BoltEffect(0);
-                    AOS.Damage((Mobile)mob, this, (int)damage, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
+                    AOS.Damage(mob, this, (int)damage, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
                     mob.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
                 }
             }
@@ -419,7 +419,7 @@ namespace Server.Mobiles
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-                writer.Write((int)0);
+                writer.Write(0);
             }
 
             public override void Deserialize(GenericReader reader)
@@ -658,7 +658,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_Tentacles.Count);
             foreach (Mobile tent in m_Tentacles)
@@ -750,7 +750,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_Master);
         }

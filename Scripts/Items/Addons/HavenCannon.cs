@@ -158,10 +158,10 @@ namespace Server.Engines.Quests.Haven
 
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.WriteEncodedInt((int)m_CannonDirection);
-            writer.Write((Mobile)m_Canoneer);
+            writer.Write(m_Canoneer);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -204,7 +204,7 @@ namespace Server.Engines.Quests.Haven
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

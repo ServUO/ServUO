@@ -72,7 +72,7 @@ namespace Server.Spells.SkillMasteries
                         m.FixedParticles(0x374A, 1, 15, 5054, 0x7A2, 7, EffectLayer.Head);
                         Caster.FixedParticles(0x0000, 10, 5, 2054, EffectLayer.Head);
 
-                        double damage = (Caster.Skills[CastSkill].Base + Caster.Skills[DamageSkill].Base) * ((double)GetMasteryLevel() * .8);
+                        double damage = (Caster.Skills[CastSkill].Base + Caster.Skills[DamageSkill].Base) * (GetMasteryLevel() * .8);
                         damage /= Target is PlayerMobile ? 5.15 : 2.5;
 
                         int mod = (int)Caster.Skills[DamageSkill].Value / 12;
@@ -117,7 +117,7 @@ namespace Server.Spells.SkillMasteries
             }
             else
             {
-                double damage = (Caster.Skills[CastSkill].Base + Caster.Skills[DamageSkill].Base) * ((double)GetMasteryLevel() * .8);
+                double damage = (Caster.Skills[CastSkill].Base + Caster.Skills[DamageSkill].Base) * (GetMasteryLevel() * .8);
                 damage /= Target is PlayerMobile ? 5.15 : 2.5;
 
                 damage *= GetDamageScalar(Target);

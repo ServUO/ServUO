@@ -95,7 +95,7 @@ namespace Server.Spells.SkillMasteries
             Body = 47;
             BaseSoundID = 442;
 
-            double scale = 1.0 + ((caster.Skills[spell.CastSkill].Value + (double)(spell.GetMasteryLevel() * 40) + (double)(ArcanistSpell.GetFocusLevel(caster) * 20))) / 1000.0;
+            double scale = 1.0 + ((caster.Skills[spell.CastSkill].Value + spell.GetMasteryLevel() * 40 + ArcanistSpell.GetFocusLevel(caster) * 20)) / 1000.0;
 
             SetStr((int)(450 * scale), (int)(500 * scale));
             SetDex((int)(130 * scale));
@@ -193,7 +193,7 @@ namespace Server.Spells.SkillMasteries
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -10,7 +10,7 @@ namespace Server.Engines.Plants
         public SeedBox Box { get; set; }
         public int Page { get; set; }
 
-        public int Pages { get { return (int)Math.Ceiling((double)Box.Entries.Count / 20.0); } }
+        public int Pages { get { return (int)Math.Ceiling(Box.Entries.Count / 20.0); } }
 
         public SeedBoxGump(PlayerMobile user, SeedBox box, int page = 1) : base(user, 100, 100)
         {

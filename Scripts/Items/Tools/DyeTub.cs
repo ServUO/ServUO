@@ -72,11 +72,11 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write((int)m_SecureLevel);
-            writer.Write((bool)m_Redyable);
-            writer.Write((int)m_DyedHue);
+            writer.Write(m_Redyable);
+            writer.Write(m_DyedHue);
         }
 
         public override void Deserialize(GenericReader reader)

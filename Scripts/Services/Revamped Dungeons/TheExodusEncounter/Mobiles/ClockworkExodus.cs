@@ -222,8 +222,8 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
-            writer.Write((int)m_MinHits);
+            writer.Write(0);
+            writer.Write(m_MinHits);
         }
 
         public override void Deserialize(GenericReader reader)

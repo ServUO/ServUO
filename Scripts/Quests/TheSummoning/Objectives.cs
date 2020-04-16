@@ -186,10 +186,10 @@ namespace Server.Engines.Quests.Doom
 
         public override void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.Write((Mobile)this.m_Daemon);
-            writer.Write((Item)this.m_CorpseWithSkull);
+            writer.Write(m_Daemon);
+            writer.Write(m_CorpseWithSkull);
         }
     }
 }

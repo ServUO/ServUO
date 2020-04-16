@@ -134,8 +134,8 @@ namespace Server.Items
             writer.WriteEncodedInt(0); // version
 
             writer.WriteItemList<PlagueBeastComponent>(this.m_Components);
-            writer.Write((int)this.m_BrainHue);
-            writer.Write((bool)this.m_Opened);
+            writer.Write(m_BrainHue);
+            writer.Write(m_Opened);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -353,7 +353,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((int)this.m_Veins);
+            writer.Write(m_Veins);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -487,7 +487,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((Item)this.m_Gland);
+            writer.Write(m_Gland);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -609,7 +609,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((int)this.m_Brains);
+            writer.Write(m_Brains);
         }
 
         public override void Deserialize(GenericReader reader)

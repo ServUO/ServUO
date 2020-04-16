@@ -81,7 +81,7 @@ namespace Server.Spells.SkillMasteries
                 }
                 else if (CheckBSequence(m))
                 {
-                    double rejuv = ((double)GetMasteryLevel() * 33.3) / 100;
+                    double rejuv = (GetMasteryLevel() * 33.3) / 100;
 
                     if (rejuv > 1.0) rejuv = 1.0;
 

@@ -148,7 +148,7 @@ namespace Server.Items
                                     v = 100 - v;
                                 }
 
-                                int measurement = info.MinMeasurement + (int)((double)(info.MaxMeasurement - info.MinMeasurement) * (double)((double)v / 100.0));
+                                int measurement = info.MinMeasurement + (int)((info.MaxMeasurement - info.MinMeasurement) * (v / 100.0));
                                 m_Permit.KillEntry = new HuntingKillEntry(m_Permit.Owner, measurement, DateTime.Now, i, WorldLocationInfo.GetLocationString(c.Location, c.Map));
                                 c.VisitedByTaxidermist = true;
 
@@ -206,7 +206,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_Owner);
             writer.Write(m_ProducedTrophy);
@@ -214,11 +214,11 @@ namespace Server.Items
 
             if (m_KillEntry != null)
             {
-                writer.Write((int)1);
+                writer.Write(1);
                 m_KillEntry.Serialize(writer);
             }
             else
-                writer.Write((int)0);
+                writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

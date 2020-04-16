@@ -59,7 +59,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return TimeSpan.FromSeconds(Math.Min(20, 20.0 - ((double)m_Crew.Count * 2.5)));
+                return TimeSpan.FromSeconds(Math.Min(20, 20.0 - (m_Crew.Count * 2.5)));
             }
         }
 
@@ -636,7 +636,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_Blockade);
 

@@ -232,7 +232,7 @@ namespace Server.Spells.SkillMasteries
         {
             if (GetMasteryLevel(m, skill) < volume)
             {
-                m.Skills[skill].LearnMastery((int)volume);
+                m.Skills[skill].LearnMastery(volume);
                 return true;
             }
 
@@ -386,7 +386,7 @@ namespace Server.Spells.SkillMasteries
         {
             Mobile m = e.Mobile;
 
-            if ((int)m.Skills.CurrentMastery > 0)
+            if (m.Skills.CurrentMastery > 0)
                 OnMasteryChanged(m, m.Skills.CurrentMastery);
         }
 
@@ -480,7 +480,7 @@ namespace Server.Spells.SkillMasteries
             {
                 SkillName sk = m.Skills.CurrentMastery;
 
-                return (int)((GetMasteryLevel(m, sk) * 40) / 8);
+                return (GetMasteryLevel(m, sk) * 40) / 8;
             }
 
             return 0;

@@ -281,7 +281,7 @@ namespace Server.Engines.VoidPool
                 if (bc != null)
                 {
                     bc.NoLootOnDeath = true;
-                    Timer.DelayCall(TimeSpan.FromSeconds((double)i * .75), () =>
+                    Timer.DelayCall(TimeSpan.FromSeconds(i * .75), () =>
                     {
                         if (OnGoing)
                         {
@@ -638,7 +638,7 @@ namespace Server.Engines.VoidPool
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2);
+            writer.Write(2);
 
             if (Level3Spawner != null)
             {

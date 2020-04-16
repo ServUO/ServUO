@@ -140,11 +140,11 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write(this.m_Placer);
 
-            writer.Write((int)this.m_Components.Count);
+            writer.Write(m_Components.Count);
 
             for (int i = 0; i < this.m_Components.Count; ++i)
                 writer.Write((Item)this.m_Components[i]);
@@ -268,7 +268,7 @@ namespace Server.Items
             {
                 base.Serialize(writer);
 
-                writer.Write((int)0); // version
+                writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
@@ -313,7 +313,7 @@ namespace Server.Items
             {
                 base.Serialize(writer);
 
-                writer.Write((int)0); // version
+                writer.Write(0); // version
 
                 writer.Write(this.m_Tree);
             }

@@ -268,12 +268,12 @@ namespace Server.Mobiles
 
             if (this.m_Timer != null)
             {
-                writer.Write((bool)true);
-                writer.Write((int)this.m_Timer.Count);
-                writer.Write((int)this.m_Timer.Deadline);
+                writer.Write(true);
+                writer.Write(m_Timer.Count);
+                writer.Write(m_Timer.Deadline);
             }
             else
-                writer.Write((bool)false);
+                writer.Write(false);
         }
 
         public override void Deserialize(GenericReader reader)

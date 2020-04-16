@@ -778,35 +778,35 @@ namespace Server.Items
             //    writer.Write((int)m_LowerAmmoCost);
 
             if (GetSaveFlag(flags, SaveFlag.WeightReduction))
-                writer.Write((int)m_WeightReduction);
+                writer.Write(m_WeightReduction);
 
             if (GetSaveFlag(flags, SaveFlag.DamageIncrease))
-                writer.Write((int)m_DamageIncrease);
+                writer.Write(m_DamageIncrease);
 
             if (GetSaveFlag(flags, SaveFlag.Crafter))
-                writer.Write((Mobile)m_Crafter);
+                writer.Write(m_Crafter);
 
             if (GetSaveFlag(flags, SaveFlag.Quality))
                 writer.Write((int)m_Quality);
 
             if (GetSaveFlag(flags, SaveFlag.Capacity))
-                writer.Write((int)m_Capacity);
+                writer.Write(m_Capacity);
 
             #region Mondain's Legacy Sets
             if (GetSaveFlag(flags, SaveFlag.SetPhysical))
-                writer.WriteEncodedInt((int)m_SetPhysicalBonus);
+                writer.WriteEncodedInt(m_SetPhysicalBonus);
 
             if (GetSaveFlag(flags, SaveFlag.SetFire))
-                writer.WriteEncodedInt((int)m_SetFireBonus);
+                writer.WriteEncodedInt(m_SetFireBonus);
 
             if (GetSaveFlag(flags, SaveFlag.SetCold))
-                writer.WriteEncodedInt((int)m_SetColdBonus);
+                writer.WriteEncodedInt(m_SetColdBonus);
 
             if (GetSaveFlag(flags, SaveFlag.SetPoison))
-                writer.WriteEncodedInt((int)m_SetPoisonBonus);
+                writer.WriteEncodedInt(m_SetPoisonBonus);
 
             if (GetSaveFlag(flags, SaveFlag.SetEnergy))
-                writer.WriteEncodedInt((int)m_SetEnergyBonus);
+                writer.WriteEncodedInt(m_SetEnergyBonus);
 
             if (GetSaveFlag(flags, SaveFlag.SetAttributes))
                 m_SetAttributes.Serialize(writer);
@@ -815,13 +815,13 @@ namespace Server.Items
                 m_SetSkillBonuses.Serialize(writer);
 
             if (GetSaveFlag(flags, SaveFlag.SetHue))
-                writer.Write((int)m_SetHue);
+                writer.Write(m_SetHue);
 
             if (GetSaveFlag(flags, SaveFlag.LastEquipped))
-                writer.Write((bool)m_LastEquipped);
+                writer.Write(m_LastEquipped);
 
             if (GetSaveFlag(flags, SaveFlag.SetEquipped))
-                writer.Write((bool)m_SetEquipped);
+                writer.Write(m_SetEquipped);
             #endregion
         }
 

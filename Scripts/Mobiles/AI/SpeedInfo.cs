@@ -54,7 +54,7 @@ namespace Server
 
             if (!bc.IsDeadPet && (bc.ReduceSpeedWithDamage || bc.IsSubdued))
             {
-                var offset = (double)bc.Stam / (double)bc.StamMax;
+                var offset = bc.Stam / (double)bc.StamMax;
 
                 if (offset < 1.0)
                 {

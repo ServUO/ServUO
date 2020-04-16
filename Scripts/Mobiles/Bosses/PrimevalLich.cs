@@ -385,27 +385,27 @@ namespace Server.Mobiles
 
                 if (target.PhysicalResistance > 0)
                 {
-                    mods.Add(new ResistanceMod(ResistanceType.Physical, (int)((double)target.PhysicalResistance * scalar)));
+                    mods.Add(new ResistanceMod(ResistanceType.Physical, (int)(target.PhysicalResistance * scalar)));
                 }
 
                 if (target.FireResistance > 0)
                 {
-                    mods.Add(new ResistanceMod(ResistanceType.Fire, (int)((double)target.FireResistance * scalar)));
+                    mods.Add(new ResistanceMod(ResistanceType.Fire, (int)(target.FireResistance * scalar)));
                 }
 
                 if (target.ColdResistance > 0)
                 {
-                    mods.Add(new ResistanceMod(ResistanceType.Cold, (int)((double)target.ColdResistance * scalar)));
+                    mods.Add(new ResistanceMod(ResistanceType.Cold, (int)(target.ColdResistance * scalar)));
                 }
 
                 if (target.PoisonResistance > 0)
                 {
-                    mods.Add(new ResistanceMod(ResistanceType.Poison, (int)((double)target.PoisonResistance * scalar)));
+                    mods.Add(new ResistanceMod(ResistanceType.Poison, (int)(target.PoisonResistance * scalar)));
                 }
 
                 if (target.EnergyResistance > 0)
                 {
-                    mods.Add(new ResistanceMod(ResistanceType.Energy, (int)((double)target.EnergyResistance * scalar)));
+                    mods.Add(new ResistanceMod(ResistanceType.Energy, (int)(target.EnergyResistance * scalar)));
                 }
 
                 for (int i = 0; i < target.Skills.Length; ++i)
@@ -502,7 +502,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

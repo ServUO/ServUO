@@ -78,8 +78,8 @@ namespace Server.Regions
 
             foreach (var i in boat.GetEntitiesOnBoard().OfType<PlayerMobile>().Where(pm => pm.NetState != null))
             {
-                pms.Add((PlayerMobile)i);
-                PlayerMobile pm = (PlayerMobile)i;
+                pms.Add(i);
+                PlayerMobile pm = i;
 
                 if (pm.Backpack == null)
                     continue;
@@ -140,7 +140,7 @@ namespace Server.Regions
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

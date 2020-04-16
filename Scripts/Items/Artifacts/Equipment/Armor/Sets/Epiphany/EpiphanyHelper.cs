@@ -63,7 +63,7 @@ namespace Server.Items
 
         public static void CheckHit(Mobile m, int damage, SurgeType type)
         {
-            var item = m.Items.OfType<IEpiphanyArmor>().FirstOrDefault(i => ((IEpiphanyArmor)i).Type == type);
+            var item = m.Items.OfType<IEpiphanyArmor>().FirstOrDefault(i => i.Type == type);
 
             if (item == null)
                 return;

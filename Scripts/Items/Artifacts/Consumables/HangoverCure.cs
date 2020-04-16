@@ -70,7 +70,7 @@ namespace Server.Engines.Quests.Hag
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.WriteEncodedInt(this.m_Uses);
         }

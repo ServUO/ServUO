@@ -160,11 +160,11 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)1); // version
+            writer.WriteEncodedInt(1); // version
 
-            writer.Write((Item)m_Bees);
-            writer.WriteEncodedInt((int)m_Honeypots);
-            writer.WriteDeltaTime((DateTime)m_NextSpawnTime);
+            writer.Write(m_Bees);
+            writer.WriteEncodedInt(m_Honeypots);
+            writer.WriteDeltaTime(m_NextSpawnTime);
             writer.WriteEncodedInt((int)m_Level);
         }
 

@@ -59,7 +59,7 @@ namespace Server.Spells.Mysticism
                 Caster.MovingEffect(d, 0x1363, 12, 1, false, true, 0, 0);
                 Caster.PlaySound(0x64B);
 
-                SpellHelper.Damage(this, target, (int)GetNewAosDamage(40, 1, 5, target), 100, 0, 0, 0, 0);
+                SpellHelper.Damage(this, target, GetNewAosDamage(40, 1, 5, target), 100, 0, 0, 0, 0);
 
                 if (target is Mobile)
                 {

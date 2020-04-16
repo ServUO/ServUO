@@ -83,7 +83,7 @@ namespace Server.Items
                         if (shoot)
                         {
                             DoShootEffects();
-                            TimeSpan delay = TimeSpan.FromSeconds((double)t.Range / 10.0);
+                            TimeSpan delay = TimeSpan.FromSeconds(t.Range / 10.0);
 
                             Timer.DelayCall(delay, new TimerStateCallback(OnShipHit), new object[] { (BaseGalleon)t.Entity, t.Location, AmmoType });
                         }
@@ -97,7 +97,7 @@ namespace Server.Items
                         if (shoot)
                         {
                             DoShootEffects();
-                            TimeSpan delay = TimeSpan.FromSeconds((double)t.Range / 10.0);
+                            TimeSpan delay = TimeSpan.FromSeconds(t.Range / 10.0);
 
                             Timer.DelayCall(delay, new TimerStateCallback(OnMobileHit), new object[] { m, t.Location, AmmoType });
                         }
@@ -143,7 +143,7 @@ namespace Server.Items
                 if (LateralOffset > 1 && currentRange % LateralOffset == 0)
                     lateralOffset++;
 
-                TimeSpan delay = TimeSpan.FromSeconds((double)currentRange / 10.0);
+                TimeSpan delay = TimeSpan.FromSeconds(currentRange / 10.0);
 
                 switch (AmmoType)
                 {
@@ -395,7 +395,7 @@ namespace Server.Items
 
             if (ammoInfo != null)
             {
-                int damage = (int)(Utility.RandomMinMax(ammoInfo.MinDamage, ammoInfo.MaxDamage));
+                int damage = Utility.RandomMinMax(ammoInfo.MinDamage, ammoInfo.MaxDamage);
 
                 if (Operator != null)
                 {
@@ -432,7 +432,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write(Operator);
             writer.Write(CanFireUnmanned);
@@ -468,7 +468,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -493,7 +493,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -520,7 +520,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -459,7 +459,7 @@ namespace Server.Engines.Blackthorn
             {
                 Timer.DelayCall(TimeSpan.FromMilliseconds(i * 50), o =>
                 {
-                    Server.Misc.Geometry.Circle2D(this.Location, m, (int)o, (pnt, map) =>
+                    Server.Misc.Geometry.Circle2D(this.Location, m, o, (pnt, map) =>
                     {
                         Effects.SendLocationEffect(pnt, map, Utility.RandomBool() ? 14000 : 14013, 14, 20, 2018, 0);
                     });

@@ -100,7 +100,7 @@ namespace Server.Engines.Quests.TimeLord
 
         public override void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
             writer.Write((int)Mastery);
 

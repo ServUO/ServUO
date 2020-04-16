@@ -235,8 +235,8 @@ namespace Server.Items
 
             writer.WriteEncodedInt(this.m_Duration.ID);
 
-            writer.Write((int)this.m_Price);
-            writer.Write((bool)this.m_LandlordRenew);
+            writer.Write(m_Price);
+            writer.Write(m_LandlordRenew);
         }
 
         public override void Deserialize(GenericReader reader)

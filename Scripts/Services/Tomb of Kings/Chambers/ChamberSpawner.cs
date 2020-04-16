@@ -119,12 +119,12 @@ namespace Server.Engines.TombOfKings
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((int)m_Creatures.Count);
+            writer.Write(m_Creatures.Count);
 
             for (int i = 0; i < m_Creatures.Count; i++)
-                writer.Write((Mobile)m_Creatures[i]);
+                writer.Write(m_Creatures[i]);
         }
 
         public override void Deserialize(GenericReader reader)

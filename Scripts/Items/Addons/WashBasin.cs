@@ -69,10 +69,10 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write(0);
 
-            writer.Write((int)m_Quantity);
-            writer.Write((int)Item_ID);
-            writer.Write((int)FullItem_ID);
-            writer.Write((int)MaxQuantity);
+            writer.Write(m_Quantity);
+            writer.Write(Item_ID);
+            writer.Write(FullItem_ID);
+            writer.Write(MaxQuantity);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -117,7 +117,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -185,7 +185,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

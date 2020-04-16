@@ -23,7 +23,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -47,7 +47,7 @@
         public EarringsOfProtection(AosElementAttribute element)
             : base(0x1087, Layer.Earrings)
         {
-            Resistances[((AosElementAttribute)element)] = 2;
+            Resistances[element] = 2;
 
             m_Attribute = element;
             LootType = LootType.Blessed;
@@ -121,7 +121,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
             writer.Write((int)m_Attribute);
         }
 

@@ -254,7 +254,7 @@ namespace Server.Engines.Auction
                 else
                 {
                     HighestBid = GetBidEntry(m, true);
-                    HighestBid.CurrentBid = Buyout - (int)((double)Buyout * .05);
+                    HighestBid.CurrentBid = Buyout - (int)(Buyout * .05);
                     CurrentBid = Buyout;
 
                     EndAuction();

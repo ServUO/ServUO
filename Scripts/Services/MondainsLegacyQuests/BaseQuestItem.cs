@@ -125,10 +125,10 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((int)this.m_Duration);
-            writer.Write((bool)this.m_InDelivery);
+            writer.Write(m_Duration);
+            writer.Write(m_InDelivery);
         }
 
         public override void Deserialize(GenericReader reader)

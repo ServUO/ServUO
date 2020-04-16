@@ -74,9 +74,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)3); // version
+            writer.Write(3); // version
 
-            writer.Write((int)m_Level);
+            writer.Write(m_Level);
 
             writer.Write(m_TargetMap);
         }

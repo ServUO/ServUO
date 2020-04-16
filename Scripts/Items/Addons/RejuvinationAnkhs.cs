@@ -66,7 +66,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -105,7 +105,7 @@ namespace Server.Items
                 if (DateTime.UtcNow >= this.m_NextMessage)
                 {
                     if (this.Components.Count > 0)
-                        ((AddonComponent)this.Components[0]).SendLocalizedMessageTo(m, 1010061); // An overwhelming sense of peace fills you.
+                        this.Components[0].SendLocalizedMessageTo(m, 1010061); // An overwhelming sense of peace fills you.
 
                     this.m_NextMessage = DateTime.UtcNow + TimeSpan.FromSeconds(25.0);
                 }
@@ -116,7 +116,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -145,7 +145,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -174,7 +174,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

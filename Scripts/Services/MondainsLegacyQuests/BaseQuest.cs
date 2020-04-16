@@ -552,20 +552,20 @@ namespace Server.Engines.Quests
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)1); // version	
+            writer.WriteEncodedInt(1); // version	
 
             writer.Write(m_QuesterType == null ? null : m_QuesterType.Name);
 
             if (m_Quester == null)
-                writer.Write((int)0x0);
+                writer.Write(0x0);
             else if (m_Quester is Mobile)
             {
-                writer.Write((int)0x1);
+                writer.Write(0x1);
                 writer.Write((Mobile)m_Quester);
             }
             else if (m_Quester is Item)
             {
-                writer.Write((int)0x2);
+                writer.Write(0x2);
                 writer.Write((Item)m_Quester);
             }
 

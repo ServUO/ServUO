@@ -128,9 +128,9 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((bool)this.m_Active);
-            writer.Write((string)this.m_Word);
-            writer.Write((Rectangle2D)this.m_Destination);
+            writer.Write(m_Active);
+            writer.Write(m_Word);
+            writer.Write(m_Destination);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -280,13 +280,13 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)1); // version
+            writer.WriteEncodedInt(1); // version
 
-            writer.WriteEncodedInt((int)this.m_Recharges);
+            writer.WriteEncodedInt(m_Recharges);
 
-            writer.WriteEncodedInt((int)this.m_Charges);
-            writer.Write((Mobile)this.Pet);
-            writer.Write((string)this.m_PetName);
+            writer.WriteEncodedInt(m_Charges);
+            writer.Write(Pet);
+            writer.Write(m_PetName);
         }
 
         public override void Deserialize(GenericReader reader)

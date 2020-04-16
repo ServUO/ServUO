@@ -205,9 +205,9 @@ namespace Server.Engines.BulkOrders
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
-            writer.Write((int)this.m_ItemCount);
+            writer.Write(m_ItemCount);
 
             writer.Write((int)this.m_Level);
 
@@ -215,7 +215,7 @@ namespace Server.Engines.BulkOrders
 
             this.m_Filter.Serialize(writer);
 
-            writer.WriteEncodedInt((int)this.m_Entries.Count);
+            writer.WriteEncodedInt(m_Entries.Count);
 
             for (int i = 0; i < this.m_Entries.Count; ++i)
             {

@@ -387,13 +387,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write(m_EngravedText);
 
             writer.WriteEncodedInt((int)m_Type);
-            writer.Write((bool)m_TurnedOn);
-            writer.Write((bool)IsRewardItem);
+            writer.Write(m_TurnedOn);
+            writer.Write(IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)

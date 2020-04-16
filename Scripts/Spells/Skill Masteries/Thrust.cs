@@ -120,7 +120,7 @@ namespace Server.Spells.SkillMasteries
                 Phase++;
             }
 
-            damage = (int)((double)damage + ((double)damage * ((double)currentMod / 100.0)));
+            damage = (int)(damage + (damage * (currentMod / 100.0)));
             defender.FixedEffect(0x36BD, 0x1, 0xE, 0x776, 0);
 
             BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.ThrustDebuff, 1155989, 1156234, TimeSpan.FromSeconds(8), defender, DefenseModifier.ToString()));
@@ -139,7 +139,7 @@ namespace Server.Spells.SkillMasteries
         public override void OnGotHit(Mobile attacker, ref int damage)
         {
             if (Target == attacker && DefenseModifier > 0)
-                damage = (int)((double)damage - ((double)damage * ((double)DefenseModifier / 100.0)));
+                damage = (int)(damage - (damage * (DefenseModifier / 100.0)));
         }
 
         private bool CheckMana()

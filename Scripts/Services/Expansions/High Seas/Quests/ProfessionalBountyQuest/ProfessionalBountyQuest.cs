@@ -302,7 +302,7 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
             writer.Write(m_Pole);
             writer.Write(m_Rope);

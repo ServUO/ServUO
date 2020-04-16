@@ -266,7 +266,7 @@ namespace Server.Engines.Auction
             base.Serialize(writer);
             writer.Write(1);
 
-            writer.Write((bool)IsRewardItem);
+            writer.Write(IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)

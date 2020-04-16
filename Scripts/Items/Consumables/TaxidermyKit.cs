@@ -25,7 +25,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -403,17 +403,17 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
             writer.Write(DateCaught);
 
-            writer.Write((Mobile)m_Hunter);
-            writer.Write((int)m_AnimalWeight);
+            writer.Write(m_Hunter);
+            writer.Write(m_AnimalWeight);
 
-            writer.Write((int)m_WestID);
-            writer.Write((int)m_NorthID);
-            writer.Write((int)m_DeedNumber);
-            writer.Write((int)m_AddonNumber);
+            writer.Write(m_WestID);
+            writer.Write(m_NorthID);
+            writer.Write(m_DeedNumber);
+            writer.Write(m_AddonNumber);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -577,17 +577,17 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
             writer.Write(DateCaught);
 
-            writer.Write((Mobile)m_Hunter);
-            writer.Write((int)m_AnimalWeight);
+            writer.Write(m_Hunter);
+            writer.Write(m_AnimalWeight);
 
-            writer.Write((int)m_WestID);
-            writer.Write((int)m_NorthID);
-            writer.Write((int)m_DeedNumber);
-            writer.Write((int)m_AddonNumber);
+            writer.Write(m_WestID);
+            writer.Write(m_NorthID);
+            writer.Write(m_DeedNumber);
+            writer.Write(m_AddonNumber);
         }
 
         public override void Deserialize(GenericReader reader)

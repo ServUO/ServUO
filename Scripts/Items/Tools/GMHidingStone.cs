@@ -360,7 +360,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2); // version 
+            writer.Write(2); // version 
             writer.Write((int)mAppearEffect);
             writer.Write((int)mHideEffect);
             writer.Write(mAppearEffectHue);

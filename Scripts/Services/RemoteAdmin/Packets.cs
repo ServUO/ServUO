@@ -76,15 +76,15 @@ namespace Server.RemoteAdmin
                     ++active;
             }
 
-            this.m_Stream.Write((int)active);
-            this.m_Stream.Write((int)banned);
-            this.m_Stream.Write((int)Firewall.List.Count);
-            this.m_Stream.Write((int)NetState.Instances.Count);
+            this.m_Stream.Write(active);
+            this.m_Stream.Write(banned);
+            this.m_Stream.Write(Firewall.List.Count);
+            this.m_Stream.Write(NetState.Instances.Count);
 
-            this.m_Stream.Write((int)World.Mobiles.Count);
-            this.m_Stream.Write((int)Core.ScriptMobiles);
-            this.m_Stream.Write((int)World.Items.Count);
-            this.m_Stream.Write((int)Core.ScriptItems);
+            this.m_Stream.Write(World.Mobiles.Count);
+            this.m_Stream.Write(Core.ScriptMobiles);
+            this.m_Stream.Write(World.Items.Count);
+            this.m_Stream.Write(Core.ScriptItems);
 
             this.m_Stream.Write((uint)(DateTime.UtcNow - Clock.ServerStart).TotalSeconds);
             this.m_Stream.Write((uint)GC.GetTotalMemory(false));                        // TODO: uint not sufficient for TotalMemory (long). Fix protocol.
@@ -137,9 +137,9 @@ namespace Server.RemoteAdmin
         {
             this.EnsureCapacity(1 + 2 + (4 * 4) + 8);
 
-            this.m_Stream.Write((int)NetState.Instances.Count - 1);                      // Clients
-            this.m_Stream.Write((int)World.Items.Count);                                 // Items
-            this.m_Stream.Write((int)World.Mobiles.Count);                               // Mobiles
+            this.m_Stream.Write(NetState.Instances.Count - 1);                      // Clients
+            this.m_Stream.Write(World.Items.Count);                                 // Items
+            this.m_Stream.Write(World.Mobiles.Count);                               // Mobiles
             this.m_Stream.Write((uint)(DateTime.UtcNow - Clock.ServerStart).TotalSeconds);  // Age (seconds)
 
             long memory = GC.GetTotalMemory(false);

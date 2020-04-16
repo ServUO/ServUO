@@ -323,7 +323,7 @@ namespace Server.Mobiles
 
             if (Siege.SiegeShard && mob is PlayerMobile)
             {
-                int chance = Server.Engines.Despise.DespiseBoss.ArtifactChance + (int)Math.Min(10, ((PlayerMobile)mob).Luck / 180);
+                int chance = Server.Engines.Despise.DespiseBoss.ArtifactChance + Math.Min(10, ((PlayerMobile)mob).Luck / 180);
 
                 if (chance >= Utility.Random(100))
                 {

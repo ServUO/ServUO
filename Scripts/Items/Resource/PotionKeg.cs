@@ -85,10 +85,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write((int)m_Type);
-            writer.Write((int)m_Held);
+            writer.Write(m_Held);
         }
 
         public override void Deserialize(GenericReader reader)

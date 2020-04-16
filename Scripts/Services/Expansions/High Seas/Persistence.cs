@@ -41,7 +41,7 @@ namespace Server.Items
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)1);
+                    writer.Write(1);
 
                     Server.Regions.SeaMarketRegion.Save(writer);
 

@@ -187,15 +187,15 @@ namespace Server.Engines.BulkOrders
 
             writer.Write(m_ItemType == null ? null : m_ItemType.FullName);
 
-            writer.Write((bool)m_RequireExceptional);
+            writer.Write(m_RequireExceptional);
 
             writer.WriteEncodedInt((int)m_DeedType);
             writer.WriteEncodedInt((int)m_Material);
-            writer.WriteEncodedInt((int)m_AmountCur);
-            writer.WriteEncodedInt((int)m_AmountMax);
-            writer.WriteEncodedInt((int)m_Number);
-            writer.WriteEncodedInt((int)m_Graphic);
-            writer.WriteEncodedInt((int)m_Price);
+            writer.WriteEncodedInt(m_AmountCur);
+            writer.WriteEncodedInt(m_AmountMax);
+            writer.WriteEncodedInt(m_Number);
+            writer.WriteEncodedInt(m_Graphic);
+            writer.WriteEncodedInt(m_Price);
         }
     }
 }

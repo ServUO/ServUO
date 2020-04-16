@@ -80,7 +80,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write(ProtectionTable.Count);
 
@@ -183,9 +183,9 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((Item)Altar);
+            writer.Write(Altar);
         }
 
         public override void Deserialize(GenericReader reader)

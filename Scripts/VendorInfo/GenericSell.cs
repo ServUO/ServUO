@@ -49,7 +49,7 @@ namespace Server.Mobiles
                 if (buyInfo != null)
                 {
                     int sold = buyInfo.TotalSold;
-                    price = (int)((double)buyInfo.Price * .75);
+                    price = (int)(buyInfo.Price * .75);
 
                     return Math.Max(1, price);
                 }

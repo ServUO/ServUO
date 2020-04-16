@@ -171,15 +171,15 @@ namespace Server.Engines.Quests.Naturalist
 
         public override void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.WriteEncodedInt((int)this.m_StudiedNests.Count);
+            writer.WriteEncodedInt(m_StudiedNests.Count);
             foreach (NestArea nest in this.m_StudiedNests)
             {
-                writer.WriteEncodedInt((int)nest.ID);
+                writer.WriteEncodedInt(nest.ID);
             }
 
-            writer.Write((bool)this.m_StudiedSpecialNest);
+            writer.Write(m_StudiedSpecialNest);
         }
     }
 

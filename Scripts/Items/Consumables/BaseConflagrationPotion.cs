@@ -63,7 +63,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -286,12 +286,12 @@ namespace Server.Items
             {
                 base.Serialize(writer);
 
-                writer.Write((int)0); // version
+                writer.Write(0); // version
 
-                writer.Write((Mobile)m_From);
-                writer.Write((DateTime)m_End);
-                writer.Write((int)m_MinDamage);
-                writer.Write((int)m_MaxDamage);
+                writer.Write(m_From);
+                writer.Write(m_End);
+                writer.Write(m_MinDamage);
+                writer.Write(m_MaxDamage);
             }
 
             public override void Deserialize(GenericReader reader)

@@ -1040,8 +1040,8 @@ namespace Server.Engines.VendorSearching
         {
             writer.Write(2);
 
-            writer.Write((bool)Auction);
-            writer.Write((bool)EntryPrice);
+            writer.Write(Auction);
+            writer.Write(EntryPrice);
             writer.Write((int)SearchType);
             writer.Write(SearchName);
             writer.Write((int)SortBy);

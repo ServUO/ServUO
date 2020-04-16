@@ -33,7 +33,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -288,9 +288,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((string)this.m_BoardName);
+            writer.Write(m_BoardName);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -473,30 +473,30 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
-            writer.Write((Mobile)this.m_Poster);
-            writer.Write((string)this.m_Subject);
-            writer.Write((DateTime)this.m_Time);
-            writer.Write((DateTime)this.m_LastPostTime);
-            writer.Write((bool)(this.m_Thread != null));
-            writer.Write((Item)this.m_Thread);
-            writer.Write((string)this.m_PostedName);
-            writer.Write((int)this.m_PostedBody);
-            writer.Write((int)this.m_PostedHue);
+            writer.Write(m_Poster);
+            writer.Write(m_Subject);
+            writer.Write(m_Time);
+            writer.Write(m_LastPostTime);
+            writer.Write(this.m_Thread != null);
+            writer.Write(m_Thread);
+            writer.Write(m_PostedName);
+            writer.Write(m_PostedBody);
+            writer.Write(m_PostedHue);
 
-            writer.Write((int)this.m_PostedEquip.Length);
+            writer.Write(m_PostedEquip.Length);
 
             for (int i = 0; i < this.m_PostedEquip.Length; ++i)
             {
-                writer.Write((int)this.m_PostedEquip[i].itemID);
-                writer.Write((int)this.m_PostedEquip[i].hue);
+                writer.Write(m_PostedEquip[i].itemID);
+                writer.Write(m_PostedEquip[i].hue);
             }
 
-            writer.Write((int)this.m_Lines.Length);
+            writer.Write(m_Lines.Length);
 
             for (int i = 0; i < this.m_Lines.Length; ++i)
-                writer.Write((string)this.m_Lines[i]);
+                writer.Write(this.m_Lines[i]);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -566,7 +566,7 @@ namespace Server.Items
             byte[] buffer = Utility.UTF8.GetBytes(name);
 
             this.m_Stream.Write((byte)0x00); // PacketID
-            this.m_Stream.Write((int)board.Serial); // Bulletin board serial
+            this.m_Stream.Write(board.Serial); // Bulletin board serial
 
             // Bulletin board name
             if (buffer.Length >= 29)
@@ -594,15 +594,15 @@ namespace Server.Items
             this.EnsureCapacity(22 + poster.Length + subject.Length + time.Length);
 
             this.m_Stream.Write((byte)0x01); // PacketID
-            this.m_Stream.Write((int)board.Serial); // Bulletin board serial
-            this.m_Stream.Write((int)msg.Serial); // Message serial
+            this.m_Stream.Write(board.Serial); // Bulletin board serial
+            this.m_Stream.Write(msg.Serial); // Message serial
 
             BulletinMessage thread = msg.Thread;
 
             if (thread == null)
-                this.m_Stream.Write((int)0); // Thread serial--root
+                this.m_Stream.Write(0); // Thread serial--root
             else
-                this.m_Stream.Write((int)thread.Serial); // Thread serial--parent
+                this.m_Stream.Write(thread.Serial); // Thread serial--parent
 
             this.WriteString(poster);
             this.WriteString(subject);
@@ -643,8 +643,8 @@ namespace Server.Items
             this.EnsureCapacity(22 + poster.Length + subject.Length + time.Length);
 
             this.m_Stream.Write((byte)0x02); // PacketID
-            this.m_Stream.Write((int)board.Serial); // Bulletin board serial
-            this.m_Stream.Write((int)msg.Serial); // Message serial
+            this.m_Stream.Write(board.Serial); // Bulletin board serial
+            this.m_Stream.Write(msg.Serial); // Message serial
 
             this.WriteString(poster);
             this.WriteString(subject);

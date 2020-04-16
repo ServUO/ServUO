@@ -40,9 +40,9 @@ namespace Server.Items
             for (int i = 0; i < m_AddOnSimpleComponents.Length / 4; i++)
                 AddComponent(new AddonComponent(m_AddOnSimpleComponents[i, 0]), m_AddOnSimpleComponents[i, 1], m_AddOnSimpleComponents[i, 2], m_AddOnSimpleComponents[i, 3]);
 
-            AddComplexComponent((BaseAddon)this, 17099, -1, 9, 6, 0, -1, "banner", 1);// 17
-            AddComplexComponent((BaseAddon)this, 6571, 0, 2, 10, 0, 0, "", 1);// 18
-            AddComplexComponent((BaseAddon)this, 9407, 0, 2, 0, 0, 0, "", 1);// 28
+            AddComplexComponent(this, 17099, -1, 9, 6, 0, -1, "banner", 1);// 17
+            AddComplexComponent(this, 6571, 0, 2, 10, 0, 0, "", 1);// 18
+            AddComplexComponent(this, 9407, 0, 2, 0, 0, 0, "", 1);// 28
 
         }
 

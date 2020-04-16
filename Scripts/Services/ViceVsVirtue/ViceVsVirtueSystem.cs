@@ -1104,7 +1104,7 @@ namespace Server.Engines.VvV
                 Player.SendMessage("You cannot earn any more silver from killing {0}.", victim.Name);
             }
 
-            int silver = (int)((double)EnemyKilledEntry.KillSilver / (double)entry.TimesKilled);
+            int silver = (int)(EnemyKilledEntry.KillSilver / (double)entry.TimesKilled);
 
             if (silver > 0)
             {

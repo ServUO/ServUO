@@ -50,11 +50,11 @@ namespace Server.Items
                 AddComponent(new AddonComponent(m_AddOnSimpleComponents[i, 0]), m_AddOnSimpleComponents[i, 1], m_AddOnSimpleComponents[i, 2], m_AddOnSimpleComponents[i, 3]);
 
 
-            AddComplexComponent((BaseAddon)this, 1313, 0, 1, 2, 1, -1, "", 1);// 25
-            AddComplexComponent((BaseAddon)this, 1313, -1, 1, 3, 1, -1, "", 1);// 26
-            AddComplexComponent((BaseAddon)this, 1313, -1, 2, 3, 1, -1, "", 1);// 27
-            AddComplexComponent((BaseAddon)this, 1313, -2, 2, 5, 1, -1, "", 1);// 28
-            AddComplexComponent((BaseAddon)this, 1313, 0, 2, 3, 1, -1, "", 1);// 29
+            AddComplexComponent(this, 1313, 0, 1, 2, 1, -1, "", 1);// 25
+            AddComplexComponent(this, 1313, -1, 1, 3, 1, -1, "", 1);// 26
+            AddComplexComponent(this, 1313, -1, 2, 3, 1, -1, "", 1);// 27
+            AddComplexComponent(this, 1313, -2, 2, 5, 1, -1, "", 1);// 28
+            AddComplexComponent(this, 1313, 0, 2, 3, 1, -1, "", 1);// 29
 
         }
 

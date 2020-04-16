@@ -43,7 +43,7 @@ namespace Server.Engines.NewMagincia
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write((int)0);
+            writer.Write(0);
 
             TextDefinition.Serialize(writer, m_Title);
             TextDefinition.Serialize(writer, m_Body);

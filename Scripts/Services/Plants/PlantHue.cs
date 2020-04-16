@@ -83,7 +83,7 @@ namespace Server.Engines.Plants
                 if (info.Hue == hue)
                     return info;
             }
-            return (PlantHueInfo)m_Table[PlantHue.Plain];
+            return m_Table[PlantHue.Plain];
         }
 
         public static PlantHue RandomFirstGeneration()

@@ -73,9 +73,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
-            writer.Write((string)this.m_Dipper);
+            writer.Write(m_Dipper);
         }
 
         public override void Deserialize(GenericReader reader)

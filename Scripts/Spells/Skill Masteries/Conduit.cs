@@ -124,7 +124,7 @@ namespace Server.Spells.SkillMasteries
 
                     if (toAffect != null && callback != null)
                     {
-                        toAffect.ForEach(m => callback(m, (double)conduit.Strength / 100.0));
+                        toAffect.ForEach(m => callback(m, conduit.Strength / 100.0));
                         ColUtility.Free(toAffect);
                         return true;
                     }
@@ -150,7 +150,7 @@ namespace Server.Spells.SkillMasteries
             {
                 base.Serialize(writer);
 
-                writer.Write((int)0); // version
+                writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)

@@ -27,7 +27,7 @@ namespace Server.Engines.Astronomy
         {
             public int Page { get; set; }
 
-            public int Pages { get { return (int)Math.Ceiling((double)AstronomySystem.DiscoveredConstellations.Count / 20.0); } }
+            public int Pages { get { return (int)Math.Ceiling(AstronomySystem.DiscoveredConstellations.Count / 20.0); } }
 
             public ConstellationLedgerGump(PlayerMobile pm)
                 : base(pm, 100, 100)

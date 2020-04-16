@@ -209,10 +209,10 @@ namespace Server.Spells.SkillMasteries
         {
             if (defender == Target && Caster.InRange(defender, 2))
             {
-                double mod = (double)PropertyBonus() / 100.0;
+                double mod = PropertyBonus() / 100.0;
 
-                damage = damage - (int)((double)damage * mod);
-                int casterDamage = damage - (int)((double)damage * (mod - .05));
+                damage = damage - (int)(damage * mod);
+                int casterDamage = damage - (int)(damage * (mod - .05));
 
                 if (type >= DamageType.Spell)
                     casterDamage /= 2;

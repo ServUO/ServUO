@@ -128,7 +128,7 @@ namespace Server.Spells.Mysticism
                 int sec = (int)Caster.Skills[DamageSkill].Value;
 
                 int value = (60 * (prim + sec)) / 240;
-                double duration = ((double)(prim + sec) / 2.0) + 30.0;
+                double duration = ((prim + sec) / 2.0) + 30.0;
                 int malus = 0;
 
                 if (Table == null)

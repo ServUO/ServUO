@@ -172,10 +172,10 @@ namespace Server.Engines.Quests
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.Write((int)m_CurProgress);
-            writer.Write((int)m_Seconds);
+            writer.Write(m_CurProgress);
+            writer.Write(m_Seconds);
         }
 
         public virtual void Deserialize(GenericReader reader)
@@ -327,7 +327,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -465,7 +465,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -635,7 +635,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -703,7 +703,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -830,7 +830,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)1); // version
+            writer.WriteEncodedInt(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -894,7 +894,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write(_CurrentIndex);
 

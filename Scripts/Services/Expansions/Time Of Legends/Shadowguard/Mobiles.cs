@@ -66,7 +66,7 @@ namespace Server.Engines.Shadowguard
             if (!BlockReflect && from != null && dam > 0)
             {
                 BlockReflect = true;
-                AOS.Damage(from, this, Math.Max(1, (int)((double)dam * .37)), 0, 0, 0, 0, 0, 0, 100);
+                AOS.Damage(from, this, Math.Max(1, (int)(dam * .37)), 0, 0, 0, 0, 0, 0, 100);
                 BlockReflect = false;
 
                 from.PlaySound(0x1F1);

@@ -261,8 +261,8 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((bool)m_East);
-            writer.Write((bool)m_IsRewardItem);
+            writer.Write(m_East);
+            writer.Write(m_IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -357,7 +357,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((bool)m_IsRewardItem);
+            writer.Write(m_IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -149,14 +149,14 @@ namespace Server.Engines.BulkOrders
 
             writer.Write((int)m_GemType);
 
-            writer.Write((bool)m_RequireExceptional);
+            writer.Write(m_RequireExceptional);
 
             writer.WriteEncodedInt((int)m_DeedType);
             writer.WriteEncodedInt((int)m_Material);
-            writer.WriteEncodedInt((int)m_AmountMax);
-            writer.WriteEncodedInt((int)m_Price);
+            writer.WriteEncodedInt(m_AmountMax);
+            writer.WriteEncodedInt(m_Price);
 
-            writer.WriteEncodedInt((int)m_Entries.Length);
+            writer.WriteEncodedInt(m_Entries.Length);
 
             for (int i = 0; i < m_Entries.Length; ++i)
                 m_Entries[i].Serialize(writer);

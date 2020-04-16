@@ -1282,7 +1282,7 @@ namespace Server.Items
             writer.Write(_OwnerName);
 
             //Version 8
-            writer.Write((bool)m_IsImbued);
+            writer.Write(m_IsImbued);
 
             // Version 7
             m_SAAbsorptionAttributes.Serialize(writer);
@@ -1304,7 +1304,7 @@ namespace Server.Items
             writer.Write(EnergyNonImbuing);
 
             // Version 6
-            writer.Write((int)m_TimesImbued);
+            writer.Write(m_TimesImbued);
 
             #endregion
 
@@ -1334,31 +1334,31 @@ namespace Server.Items
                 m_SetSkillBonuses.Serialize(writer);
 
             if (GetSaveFlag(sflags, SetFlag.PhysicalBonus))
-                writer.WriteEncodedInt((int)m_SetPhysicalBonus);
+                writer.WriteEncodedInt(m_SetPhysicalBonus);
 
             if (GetSaveFlag(sflags, SetFlag.FireBonus))
-                writer.WriteEncodedInt((int)m_SetFireBonus);
+                writer.WriteEncodedInt(m_SetFireBonus);
 
             if (GetSaveFlag(sflags, SetFlag.ColdBonus))
-                writer.WriteEncodedInt((int)m_SetColdBonus);
+                writer.WriteEncodedInt(m_SetColdBonus);
 
             if (GetSaveFlag(sflags, SetFlag.PoisonBonus))
-                writer.WriteEncodedInt((int)m_SetPoisonBonus);
+                writer.WriteEncodedInt(m_SetPoisonBonus);
 
             if (GetSaveFlag(sflags, SetFlag.EnergyBonus))
-                writer.WriteEncodedInt((int)m_SetEnergyBonus);
+                writer.WriteEncodedInt(m_SetEnergyBonus);
 
             if (GetSaveFlag(sflags, SetFlag.SetHue))
-                writer.WriteEncodedInt((int)m_SetHue);
+                writer.WriteEncodedInt(m_SetHue);
 
             if (GetSaveFlag(sflags, SetFlag.LastEquipped))
-                writer.Write((bool)m_LastEquipped);
+                writer.Write(m_LastEquipped);
 
             if (GetSaveFlag(sflags, SetFlag.SetEquipped))
-                writer.Write((bool)m_SetEquipped);
+                writer.Write(m_SetEquipped);
 
             if (GetSaveFlag(sflags, SetFlag.SetSelfRepair))
-                writer.WriteEncodedInt((int)m_SetSelfRepair);
+                writer.WriteEncodedInt(m_SetSelfRepair);
             #endregion
 
             // Version 5
@@ -1406,19 +1406,19 @@ namespace Server.Items
                 m_AosResistances.Serialize(writer);
 
             if (GetSaveFlag(flags, SaveFlag.MaxHitPoints))
-                writer.WriteEncodedInt((int)m_MaxHitPoints);
+                writer.WriteEncodedInt(m_MaxHitPoints);
 
             if (GetSaveFlag(flags, SaveFlag.HitPoints))
-                writer.WriteEncodedInt((int)m_HitPoints);
+                writer.WriteEncodedInt(m_HitPoints);
 
             if (GetSaveFlag(flags, SaveFlag.Crafter))
-                writer.Write((Mobile)m_Crafter);
+                writer.Write(m_Crafter);
 
             if (GetSaveFlag(flags, SaveFlag.Quality))
                 writer.WriteEncodedInt((int)m_Quality);
 
             if (GetSaveFlag(flags, SaveFlag.StrReq))
-                writer.WriteEncodedInt((int)m_StrReq);
+                writer.WriteEncodedInt(m_StrReq);
         }
 
         public override void Deserialize(GenericReader reader)

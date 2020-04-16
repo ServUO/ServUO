@@ -138,7 +138,7 @@ namespace Server.Engines.NewMagincia
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write(m_Funds);
             writer.Write(m_Expires);

@@ -317,7 +317,7 @@ namespace Server.Engines.HuntsmasterChallenge
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write(m_Active);
             writer.Write(m_SeasonBegins);

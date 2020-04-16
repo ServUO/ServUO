@@ -157,10 +157,10 @@ namespace Server.Engines.Quests.Doom
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((Mobile)m_Chyloth);
-            writer.Write((Mobile)m_Dragon);
+            writer.Write(m_Chyloth);
+            writer.Write(m_Dragon);
         }
 
         public override void Deserialize(GenericReader reader)

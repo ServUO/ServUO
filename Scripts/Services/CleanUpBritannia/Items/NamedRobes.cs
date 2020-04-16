@@ -20,7 +20,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -51,7 +51,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -82,7 +82,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -113,7 +113,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -144,7 +144,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)

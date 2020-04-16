@@ -251,11 +251,11 @@ namespace Server.Engines.Quests.Ambitious
 
         public override void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.Write((bool)this.m_BagOfSending);
-            writer.Write((bool)this.m_PowderOfTranslocation);
-            writer.Write((bool)this.m_Gold);
+            writer.Write(m_BagOfSending);
+            writer.Write(m_PowderOfTranslocation);
+            writer.Write(m_Gold);
         }
     }
 

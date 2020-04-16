@@ -43,7 +43,7 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.WriteEncodedInt((int)1); // version
+            writer.WriteEncodedInt(1); // version
 
             writer.Write(m_Captured);
             writer.Write(m_CapturedCaptain);

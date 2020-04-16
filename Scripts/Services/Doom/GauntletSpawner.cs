@@ -880,7 +880,7 @@ namespace Server.Engines.Doom
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write(m_RegionBounds);
 

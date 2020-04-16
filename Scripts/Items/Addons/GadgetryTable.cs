@@ -197,7 +197,7 @@ namespace Server.Engines.VeteranRewards
 
             writer.Write(NextGolemTime);
             writer.Write((int)Level);
-            writer.Write((bool)IsRewardItem);
+            writer.Write(IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -305,7 +305,7 @@ namespace Server.Engines.VeteranRewards
             base.Serialize(writer);
             writer.Write(0); // Version
 
-            writer.Write((bool)m_IsRewardItem);
+            writer.Write(m_IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -369,7 +369,7 @@ namespace Server.Engines.VeteranRewards
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

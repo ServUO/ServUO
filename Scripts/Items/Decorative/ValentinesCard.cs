@@ -118,10 +118,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
-            writer.Write((int)this.m_LabelNumber);
-            writer.Write((string)this.m_From);
-            writer.Write((string)this.m_To);
+            writer.Write(0); // version
+            writer.Write(m_LabelNumber);
+            writer.Write(m_From);
+            writer.Write(m_To);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -155,7 +155,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -183,7 +183,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

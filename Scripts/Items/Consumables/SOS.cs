@@ -128,7 +128,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)4); // version
+            writer.Write(4); // version
 
             writer.Write(m_Level);
 

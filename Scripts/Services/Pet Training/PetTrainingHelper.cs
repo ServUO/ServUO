@@ -1009,9 +1009,9 @@ namespace Server.Mobiles
             var dex = GetTrainingPoint(PetStat.Dex);
             var intel = GetTrainingPoint(PetStat.Int);
 
-            int v = (int)(Math.Min((double)bc.RawStr * str.Weight, str.GetMax(bc) * str.Weight) +
-                Math.Min((double)bc.RawDex * dex.Weight, dex.GetMax(bc) * dex.Weight) +
-                Math.Min((double)bc.RawInt * intel.Weight, intel.GetMax(bc) * intel.Weight));
+            int v = (int)(Math.Min(bc.RawStr * str.Weight, str.GetMax(bc) * str.Weight) +
+                Math.Min(bc.RawDex * dex.Weight, dex.GetMax(bc) * dex.Weight) +
+                Math.Min(bc.RawInt * intel.Weight, intel.GetMax(bc) * intel.Weight));
 
             return v;
         }
@@ -1022,9 +1022,9 @@ namespace Server.Mobiles
             var stam = GetTrainingPoint(PetStat.Stam);
             var mana = GetTrainingPoint(PetStat.Mana);
 
-            int v = (int)(Math.Min((double)bc.HitsMax * hits.Weight, hits.GetMax(bc) * hits.Weight) +
-                Math.Min((double)bc.StamMax * stam.Weight, stam.GetMax(bc) * stam.Weight) +
-                Math.Min((double)bc.ManaMax * mana.Weight, mana.GetMax(bc) * mana.Weight));
+            int v = (int)(Math.Min(bc.HitsMax * hits.Weight, hits.GetMax(bc) * hits.Weight) +
+                Math.Min(bc.StamMax * stam.Weight, stam.GetMax(bc) * stam.Weight) +
+                Math.Min(bc.ManaMax * mana.Weight, mana.GetMax(bc) * mana.Weight));
 
             return v;
         }
@@ -1037,11 +1037,11 @@ namespace Server.Mobiles
             var pois = GetTrainingPoint(ResistanceType.Poison);
             var nrgy = GetTrainingPoint(ResistanceType.Energy);
 
-            return (int)(((double)bc.PhysicalResistanceSeed * phys.Weight) +
-                   ((double)bc.FireResistSeed * fire.Weight) +
-                   ((double)bc.ColdResistSeed * cold.Weight) +
-                   ((double)bc.PoisonResistSeed * pois.Weight) +
-                   ((double)bc.EnergyResistSeed * nrgy.Weight));
+            return (int)((bc.PhysicalResistanceSeed * phys.Weight) +
+                   (bc.FireResistSeed * fire.Weight) +
+                   (bc.ColdResistSeed * cold.Weight) +
+                   (bc.PoisonResistSeed * pois.Weight) +
+                   (bc.EnergyResistSeed * nrgy.Weight));
         }
 
         public static int GetMaxDamagePerSecond(BaseCreature bc)
@@ -1188,7 +1188,7 @@ namespace Server.Mobiles
 
         public static int GetTotalCost(TrainingPoint tp, BaseCreature bc, int value, int startValue)
         {
-            int cost = (int)((double)value * tp.Weight);
+            int cost = (int)(value * tp.Weight);
 
             if (tp.Requirements != null && tp.Requirements.Length > 0)
             {
@@ -1203,7 +1203,7 @@ namespace Server.Mobiles
 
             if (startValue > 0)
             {
-                cost -= (int)((double)startValue * tp.Weight);
+                cost -= (int)(startValue * tp.Weight);
             }
 
             return cost;

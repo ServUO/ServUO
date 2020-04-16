@@ -258,7 +258,7 @@ namespace Server.Engines.NewMagincia
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_Identifier);
             writer.Write(m_Writ);

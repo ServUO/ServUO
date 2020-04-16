@@ -234,7 +234,7 @@ namespace Server.Engines.Quests
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write(m_HasRecievedBritGal);
 

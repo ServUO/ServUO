@@ -132,7 +132,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.WriteDeltaTime(m_NextWoolTime);
         }

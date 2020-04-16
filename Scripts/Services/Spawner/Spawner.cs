@@ -753,7 +753,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)7); // version
+            writer.Write(7); // version
 
             writer.Write(GuardImmune);
 

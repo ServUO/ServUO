@@ -103,11 +103,11 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((string)this.m_Maker);
+            writer.Write(m_Maker);
 
-            writer.WriteEncodedInt((int)this.m_SoundID);
+            writer.WriteEncodedInt(m_SoundID);
         }
 
         public override void Deserialize(GenericReader reader)

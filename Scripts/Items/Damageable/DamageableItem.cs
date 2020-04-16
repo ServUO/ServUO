@@ -43,7 +43,7 @@ namespace Server.Items
             {
                 m_ItemLevel = value;
 
-                double bonus = (double)(((int)m_ItemLevel * 100.0) * ((int)m_ItemLevel * 5));
+                double bonus = ((int)m_ItemLevel * 100.0) * ((int)m_ItemLevel * 5);
 
                 HitsMax = ((int)(100 + bonus));
                 Hits = ((int)(100 + bonus));
@@ -593,14 +593,14 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((int)m_StartID);
-            writer.Write((int)m_HalfHitsID);
-            writer.Write((int)m_DestroyedID);
+            writer.Write(m_StartID);
+            writer.Write(m_HalfHitsID);
+            writer.Write(m_DestroyedID);
             writer.Write((int)m_ItemLevel);
-            writer.Write((int)m_Hits);
-            writer.Write((int)m_HitsMax);
+            writer.Write(m_Hits);
+            writer.Write(m_HitsMax);
             writer.Write(Destroyed);
 
             writer.Write(ResistBasePhys);
@@ -616,12 +616,12 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            m_StartID = (int)reader.ReadInt();
-            m_HalfHitsID = (int)reader.ReadInt();
-            m_DestroyedID = (int)reader.ReadInt();
+            m_StartID = reader.ReadInt();
+            m_HalfHitsID = reader.ReadInt();
+            m_DestroyedID = reader.ReadInt();
             m_ItemLevel = (ItemLevel)reader.ReadInt();
-            m_Hits = (int)reader.ReadInt();
-            m_HitsMax = (int)reader.ReadInt();
+            m_Hits = reader.ReadInt();
+            m_HitsMax = reader.ReadInt();
             Destroyed = reader.ReadBool();
 
             ResistBasePhys = reader.ReadInt();
@@ -649,7 +649,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -122,7 +122,7 @@ namespace Server.Items
 
                 if (account != null)
                 {
-                    return (int)Math.Min(MaxLuckBonus, 200 + (RewardSystem.GetRewardLevel(account)) * 50);
+                    return Math.Min(MaxLuckBonus, 200 + (RewardSystem.GetRewardLevel(account)) * 50);
                 }
             }
 
@@ -176,7 +176,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

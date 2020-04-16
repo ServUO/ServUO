@@ -195,12 +195,12 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
 
-            writer.Write((int)m_UsesRemaining);
+            writer.Write(m_UsesRemaining);
 
             Poison.Serialize(m_Poison, writer);
-            writer.Write((int)m_PoisonCharges);
+            writer.Write(m_PoisonCharges);
         }
 
         public override void Deserialize(GenericReader reader)

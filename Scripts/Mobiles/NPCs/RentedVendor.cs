@@ -278,14 +278,14 @@ namespace Server.Mobiles
 
             writer.WriteEncodedInt(m_RentalDuration.ID);
 
-            writer.Write((int)m_RentalPrice);
-            writer.Write((bool)m_LandlordRenew);
-            writer.Write((bool)m_RenterRenew);
-            writer.Write((int)m_RenewalPrice);
+            writer.Write(m_RentalPrice);
+            writer.Write(m_LandlordRenew);
+            writer.Write(m_RenterRenew);
+            writer.Write(m_RenewalPrice);
 
-            writer.Write((int)m_RentalGold);
+            writer.Write(m_RentalGold);
 
-            writer.WriteDeltaTime((DateTime)m_RentalExpireTime);
+            writer.WriteDeltaTime(m_RentalExpireTime);
         }
 
         public override void Deserialize(GenericReader reader)
