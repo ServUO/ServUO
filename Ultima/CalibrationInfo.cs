@@ -34,7 +34,7 @@ namespace Ultima
                 return null;
             }
 
-            var buffer = new byte[(line.Length + 2) / 3];
+            byte[] buffer = new byte[(line.Length + 2) / 3];
             int index = 0;
 
             for (int i = 0; (i + 1) < line.Length; i += 3)
@@ -167,14 +167,14 @@ namespace Ultima
 
         public static CalibrationInfo[] GetList()
         {
-            var list = new List<CalibrationInfo>();
+            List<CalibrationInfo> list = new List<CalibrationInfo>();
 
             string path = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
             path = Path.Combine(path, "calibration.cfg");
 
             if (File.Exists(path))
             {
-                using (var ip = new StreamReader(path))
+                using (StreamReader ip = new StreamReader(path))
                 {
                     string line;
 

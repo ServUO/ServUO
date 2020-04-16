@@ -37,9 +37,9 @@ namespace Ultima
 
             if (path != null)
             {
-                using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    using (var bin = new BinaryReader(fs))
+                    using (BinaryReader bin = new BinaryReader(fs))
                     {
                         int start = 4;
                         int strlen = 17;
@@ -57,7 +57,7 @@ namespace Ultima
                         {
                             int strbuild;
                             fs.Seek((start + (i * strlen)), SeekOrigin.Begin);
-                            var builder2 = new StringBuilder(17);
+                            StringBuilder builder2 = new StringBuilder(17);
                             if (unicode)
                             {
                                 while ((strbuild = bin.ReadInt16()) != 0)
@@ -92,9 +92,9 @@ namespace Ultima
         public static void Save(string path)
         {
             string mul = Path.Combine(path, "skillgrp.mul");
-            using (var fs = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
+            using (FileStream fs = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
             {
-                using (var bin = new BinaryWriter(fs))
+                using (BinaryWriter bin = new BinaryWriter(fs))
                 {
                     if (unicode)
                     {

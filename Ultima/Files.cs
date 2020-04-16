@@ -360,10 +360,10 @@ namespace Ultima
             {
                 try
                 {
-                    using (var bin = new BinaryReader(new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read)))
+                    using (BinaryReader bin = new BinaryReader(new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read)))
                     {
                         int length = bin.ReadInt32();
-                        var buffer = new byte[length];
+                        byte[] buffer = new byte[length];
                         bin.Read(buffer, 0, length);
                         string hashold = BitConverter.ToString(buffer).Replace("-", "").ToLower();
                         return CompareMD5(GetFilePath(String.Format("{0}.mul", what)), hashold);

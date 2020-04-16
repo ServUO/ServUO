@@ -50,7 +50,7 @@ namespace Ultima
             {
                 using (Stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    using (var bin = new BinaryReader(Stream))
+                    using (BinaryReader bin = new BinaryReader(Stream))
                     {
                         Patches = new Entry5D[bin.ReadInt32()];
 

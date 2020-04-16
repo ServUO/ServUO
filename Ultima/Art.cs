@@ -191,7 +191,7 @@ namespace Ultima
             stream.Read(Validbuffer, 0, 4);
             fixed (byte* b = Validbuffer)
             {
-                var dat = (short*)b;
+                short* dat = (short*)b;
                 if (*dat++ <= 0 || *dat <= 0)
                 {
                     return false;
@@ -293,7 +293,7 @@ namespace Ultima
             {
                 return null;
             }
-            var buffer = new byte[length];
+            byte[] buffer = new byte[length];
             stream.Read(buffer, 0, length);
             stream.Close();
             return buffer;
@@ -372,7 +372,7 @@ namespace Ultima
             {
                 return null;
             }
-            var buffer = new byte[length];
+            byte[] buffer = new byte[length];
             stream.Read(buffer, 0, length);
             stream.Close();
             return buffer;
@@ -394,7 +394,7 @@ namespace Ultima
             int delta = (bd.Stride >> 1) - bd.Width;
             int lineDelta = bd.Stride >> 1;
 
-            var pBuffer = (ushort*)bd.Scan0;
+            ushort* pBuffer = (ushort*)bd.Scan0;
             ushort* pLineEnd = pBuffer + bd.Width;
             ushort* pEnd = pBuffer + (bd.Height * lineDelta);
 
@@ -463,7 +463,7 @@ namespace Ultima
 
             fixed (byte* data = m_StreamBuffer)
             {
-                var bindata = (ushort*)data;
+                ushort* bindata = (ushort*)data;
                 int count = 2;
                 //bin.ReadInt32();
                 int width = bindata[count++];
@@ -474,7 +474,7 @@ namespace Ultima
                     return null;
                 }
 
-                var lookups = new int[height];
+                int[] lookups = new int[height];
 
                 int start = (height + 4);
 
@@ -487,7 +487,7 @@ namespace Ultima
                 BitmapData bd = bmp.LockBits(
                     new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, Settings.PixelFormat);
 
-                var line = (ushort*)bd.Scan0;
+                ushort* line = (ushort*)bd.Scan0;
                 int delta = bd.Stride >> 1;
 
                 for (int y = 0; y < height; ++y, line += delta)
@@ -524,7 +524,7 @@ namespace Ultima
 
         private static unsafe Bitmap LoadLand(Stream stream, int length)
         {
-            var bmp = new Bitmap(44, 44, Settings.PixelFormat);
+            Bitmap bmp = new Bitmap(44, 44, Settings.PixelFormat);
             BitmapData bd = bmp.LockBits(new Rectangle(0, 0, 44, 44), ImageLockMode.WriteOnly, Settings.PixelFormat);
             if (m_StreamBuffer == null || m_StreamBuffer.Length < length)
             {
@@ -534,11 +534,11 @@ namespace Ultima
             stream.Close();
             fixed (byte* bindata = m_StreamBuffer)
             {
-                var bdata = (ushort*)bindata;
+                ushort* bdata = (ushort*)bindata;
                 int xOffset = 21;
                 int xRun = 2;
 
-                var line = (ushort*)bd.Scan0;
+                ushort* line = (ushort*)bd.Scan0;
                 int delta = bd.Stride >> 1;
 
                 for (int y = 0; y < 22; ++y, --xOffset, xRun += 2, line += delta)
@@ -584,9 +584,9 @@ namespace Ultima
                 FileStream fsidx = new FileStream(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
                            fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
             {
-                var memidx = new MemoryStream();
-                var memmul = new MemoryStream();
-                var sha = new SHA256Managed();
+                MemoryStream memidx = new MemoryStream();
+                MemoryStream memmul = new MemoryStream();
+                SHA256Managed sha = new SHA256Managed();
                 //StreamWriter Tex = new StreamWriter(new FileStream("d:/artlog.txt", FileMode.Create, FileAccess.ReadWrite));
 
                 using (BinaryWriter binidx = new BinaryWriter(memidx), binmul = new BinaryWriter(memmul))
@@ -615,7 +615,7 @@ namespace Ultima
                         }
                         else if (index < 0x4000)
                         {
-                            var ms = new MemoryStream();
+                            MemoryStream ms = new MemoryStream();
                             bmp.Save(ms, ImageFormat.Bmp);
                             byte[] checksum = sha.ComputeHash(ms.ToArray());
                             CheckSums sum;
@@ -631,10 +631,10 @@ namespace Ultima
                             //land
                             BitmapData bd = bmp.LockBits(
                                 new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Settings.PixelFormat);
-                            var line = (ushort*)bd.Scan0;
+                            ushort* line = (ushort*)bd.Scan0;
                             int delta = bd.Stride >> 1;
                             binidx.Write((int)binmul.BaseStream.Position); //lookup
-                            var length = (int)binmul.BaseStream.Position;
+                            int length = (int)binmul.BaseStream.Position;
                             int x = 22;
                             int y = 0;
                             int linewidth = 2;
@@ -665,7 +665,7 @@ namespace Ultima
                             binidx.Write(length);
                             binidx.Write(0);
                             bmp.UnlockBits(bd);
-                            var s = new CheckSums
+                            CheckSums s = new CheckSums
                             {
                                 pos = start,
                                 length = length,
@@ -677,7 +677,7 @@ namespace Ultima
                         }
                         else
                         {
-                            var ms = new MemoryStream();
+                            MemoryStream ms = new MemoryStream();
                             bmp.Save(ms, ImageFormat.Bmp);
                             byte[] checksum = sha.ComputeHash(ms.ToArray());
                             CheckSums sum;
@@ -694,14 +694,14 @@ namespace Ultima
                             // art
                             BitmapData bd = bmp.LockBits(
                                 new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Settings.PixelFormat);
-                            var line = (ushort*)bd.Scan0;
+                            ushort* line = (ushort*)bd.Scan0;
                             int delta = bd.Stride >> 1;
                             binidx.Write((int)binmul.BaseStream.Position); //lookup
-                            var length = (int)binmul.BaseStream.Position;
+                            int length = (int)binmul.BaseStream.Position;
                             binmul.Write(1234); // header
                             binmul.Write((short)bmp.Width);
                             binmul.Write((short)bmp.Height);
-                            var lookup = (int)binmul.BaseStream.Position;
+                            int lookup = (int)binmul.BaseStream.Position;
                             int streamloc = lookup + bmp.Height * 2;
                             int width = 0;
                             for (int i = 0; i < bmp.Height; ++i) // fill lookup
@@ -760,7 +760,7 @@ namespace Ultima
                             binidx.Write(length);
                             binidx.Write(0);
                             bmp.UnlockBits(bd);
-                            var s = new CheckSums
+                            CheckSums s = new CheckSums
                             {
                                 pos = start,
                                 length = length,

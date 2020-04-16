@@ -34,7 +34,7 @@ namespace Ultima
             {
                 return 0;
             }
-            using (var index = new FileStream(idxPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (FileStream index = new FileStream(idxPath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 return (int)(index.Length / 12);
             }
@@ -116,7 +116,7 @@ namespace Ultima
 
             width = (extra & 0xFFFF);
             height = ((extra >> 16) & 0xFFFF);
-            var buffer = new byte[length];
+            byte[] buffer = new byte[length];
             stream.Read(buffer, 0, length);
             stream.Close();
             return buffer;
@@ -157,16 +157,16 @@ namespace Ultima
             }
             stream.Read(m_StreamBuffer, 0, length);
 
-            var bmp = new Bitmap(width, height, Settings.PixelFormat);
+            Bitmap bmp = new Bitmap(width, height, Settings.PixelFormat);
             BitmapData bd = bmp.LockBits(
                 new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, Settings.PixelFormat);
 
-            var line = (ushort*)bd.Scan0;
+            ushort* line = (ushort*)bd.Scan0;
             int delta = bd.Stride >> 1;
 
             fixed (byte* data = m_StreamBuffer)
             {
-                var bindat = (sbyte*)data;
+                sbyte* bindat = (sbyte*)data;
                 for (int y = 0; y < height; ++y, line += delta)
                 {
                     ushort* cur = line;
@@ -220,11 +220,11 @@ namespace Ultima
                         {
                             BitmapData bd = bmp.LockBits(
                                 new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Settings.PixelFormat);
-                            var line = (ushort*)bd.Scan0;
+                            ushort* line = (ushort*)bd.Scan0;
                             int delta = bd.Stride >> 1;
 
                             binidx.Write((int)fsmul.Position); //lookup
-                            var length = (int)fsmul.Position;
+                            int length = (int)fsmul.Position;
 
                             for (int Y = 0; Y < bmp.Height; ++Y, line += delta)
                             {
@@ -232,7 +232,7 @@ namespace Ultima
                                 ushort* end = cur + bmp.Width;
                                 while (cur < end)
                                 {
-                                    var value = (sbyte)(((*cur++ >> 10) & 0xffff) - 0x1f);
+                                    sbyte value = (sbyte)(((*cur++ >> 10) & 0xffff) - 0x1f);
                                     if (value > 0) // wtf? but it works...
                                     {
                                         --value;

@@ -53,7 +53,7 @@ namespace Ultima
             m_StringTable = new Dictionary<int, string>();
             m_EntryTable = new Dictionary<int, StringEntry>();
 
-            using (var bin = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read)))
+            using (BinaryReader bin = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read)))
             {
                 m_Header1 = bin.ReadInt32();
                 m_Header2 = bin.ReadInt16();
@@ -72,7 +72,7 @@ namespace Ultima
                     bin.Read(m_Buffer, 0, length);
                     string text = Encoding.UTF8.GetString(m_Buffer, 0, length);
 
-                    var se = new StringEntry(number, text, flag);
+                    StringEntry se = new StringEntry(number, text, flag);
                     Entries.Add(se);
 
                     m_StringTable[number] = text;
@@ -87,9 +87,9 @@ namespace Ultima
         /// <param name="FileName"></param>
         public void SaveStringList(string FileName)
         {
-            using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
+            using (FileStream fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
             {
-                using (var bin = new BinaryWriter(fs))
+                using (BinaryWriter bin = new BinaryWriter(fs))
                 {
                     bin.Write(m_Header1);
                     bin.Write(m_Header2);
@@ -99,7 +99,7 @@ namespace Ultima
                         bin.Write(entry.Number);
                         bin.Write((byte)entry.Flag);
                         byte[] utf8String = Encoding.UTF8.GetBytes(entry.Text);
-                        var length = (ushort)utf8String.Length;
+                        ushort length = (ushort)utf8String.Length;
                         bin.Write(length);
                         bin.Write(utf8String);
                     }
