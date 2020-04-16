@@ -54,7 +54,7 @@ namespace Server.Spells.SkillMasteries
         {
             if (Caster is BaseCreature && ((BaseCreature)Caster).ControlMaster != null)
             {
-                var master = ((BaseCreature)Caster).ControlMaster;
+                Mobile master = ((BaseCreature)Caster).ControlMaster;
 
                 if (Caster.CanSee(master) && Caster.InRange(master.Location, 8))
                 {

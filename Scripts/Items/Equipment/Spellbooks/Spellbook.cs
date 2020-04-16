@@ -528,7 +528,7 @@ namespace Server.Items
 
         public static List<Spellbook> FindAllSpellbooks(Mobile from)
         {
-            var list = new List<Spellbook>();
+            List<Spellbook> list = new List<Spellbook>();
 
             Item item = from.FindItemOnLayer(Layer.OneHanded);
 

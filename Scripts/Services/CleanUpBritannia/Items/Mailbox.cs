@@ -166,7 +166,7 @@ namespace Server.Items
 
             if (house != null && IsSecure)
             {
-                var secure = house.GetSecureInfoFor(this);
+                SecureInfo secure = house.GetSecureInfoFor(this);
 
                 return secure != null && house.HasSecureAccess(from, secure);
             }
@@ -181,7 +181,7 @@ namespace Server.Items
 
         public virtual void OnItemDropped(Mobile from, Item item, BaseHouse house)
         {
-            var secure = house.GetSecureInfoFor(this);
+            SecureInfo secure = house.GetSecureInfoFor(this);
 
             if (secure != null && !house.HasSecureAccess(from, secure))
             {
@@ -228,9 +228,9 @@ namespace Server.Items
             if (Contents == null)
                 return;
 
-            var remove = Contents.Keys.Where(k => k.Deleted || !Items.Contains(k)).ToList();
+            List<Item> remove = Contents.Keys.Where(k => k.Deleted || !Items.Contains(k)).ToList();
 
-            foreach (var item in remove)
+            foreach (Item item in remove)
             {
                 Contents.Remove(item);
             }
@@ -253,7 +253,7 @@ namespace Server.Items
 
             if (Contents != null)
             {
-                foreach (var kvp in Contents)
+                foreach (KeyValuePair<Item, Mobile> kvp in Contents)
                 {
                     writer.Write(kvp.Key);
                     writer.Write(kvp.Value);

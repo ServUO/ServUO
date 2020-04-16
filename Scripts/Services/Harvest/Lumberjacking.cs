@@ -122,7 +122,7 @@ namespace Server.Engines.Harvest
 
         public override Type MutateType(Type type, Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, HarvestResource resource)
         {
-            var newType = type;
+            Type newType = type;
 
             if (tool is HarvestersAxe && ((HarvestersAxe)tool).Charges > 0)
             {
@@ -161,9 +161,9 @@ namespace Server.Engines.Harvest
                 }
                 else
                 {
-                    foreach (var res in m_Definition.Resources.Where(r => r.Types != null))
+                    foreach (HarvestResource res in m_Definition.Resources.Where(r => r.Types != null))
                     {
-                        foreach (var type in res.Types)
+                        foreach (Type type in res.Types)
                         {
                             if (item.GetType() == type)
                             {

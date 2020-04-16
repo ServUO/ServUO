@@ -85,15 +85,15 @@ namespace Server.Spells.Seventh
                 if (p is Item)
                     p = ((Item)p).GetWorldLocation();
 
-                var targets = AcquireIndirectTargets(p, 2).ToList();
-                var count = Math.Max(1, targets.Count);
+                System.Collections.Generic.List<IDamageable> targets = AcquireIndirectTargets(p, 2).ToList();
+                int count = Math.Max(1, targets.Count);
 
                 if (count > 0)
                 {
                     Effects.PlaySound(p, Caster.Map, 0x160);
                 }
 
-                foreach (var id in targets)
+                foreach (IDamageable id in targets)
                 {
                     Mobile m = id as Mobile;
                     double damage = GetNewAosDamage(51, 1, 5, id is PlayerMobile, id);

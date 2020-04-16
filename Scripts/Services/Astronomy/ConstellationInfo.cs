@@ -49,7 +49,7 @@ namespace Server.Engines.Astronomy
         public static StarPosition[] RandomStarPositions()
         {
             int amount = Utility.RandomMinMax(4, 7);
-            var positions = new StarPosition[amount];
+            StarPosition[] positions = new StarPosition[amount];
 
             for (int i = 0; i < amount; i++)
             {
@@ -85,7 +85,7 @@ namespace Server.Engines.Astronomy
             CoordRA = reader.ReadInt();
             CoordDEC = reader.ReadDouble();
 
-            var count = reader.ReadInt();
+            int count = reader.ReadInt();
             StarPositions = new StarPosition[count];
 
             for (int i = 0; i < count; i++)
@@ -119,7 +119,7 @@ namespace Server.Engines.Astronomy
 
             writer.Write(StarPositions.Length);
 
-            foreach (var pos in StarPositions)
+            foreach (StarPosition pos in StarPositions)
             {
                 writer.Write(pos.ImageID);
                 writer.Write(pos.X);

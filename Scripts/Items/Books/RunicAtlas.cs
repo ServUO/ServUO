@@ -45,7 +45,7 @@ namespace Server.Items
 
         public override bool HasGump(Mobile toCheck)
         {
-            var bookGump = toCheck.FindGump<RunicAtlasGump>();
+            RunicAtlasGump bookGump = toCheck.FindGump<RunicAtlasGump>();
 
             if (bookGump != null && bookGump.Atlas == this)
             {

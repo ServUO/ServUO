@@ -33,9 +33,9 @@ namespace Server.Engines.Quests
                 return false;
             }
 
-            using (var s = new MemoryStream())
+            using (MemoryStream s = new MemoryStream())
             {
-                var length = reader.ReadLong();
+                long length = reader.ReadLong();
 
                 while (s.Length < length)
                 {
@@ -46,7 +46,7 @@ namespace Server.Engines.Quests
                 {
                     s.Position = 0;
 
-                    var r = new BinaryFileReader(new BinaryReader(s));
+                    BinaryFileReader r = new BinaryFileReader(new BinaryReader(s));
 
                     try
                     {
@@ -71,20 +71,20 @@ namespace Server.Engines.Quests
 
         public static List<BaseQuest> Quests(GenericReader reader, PlayerMobile player)
         {
-            var quests = new List<BaseQuest>();
+            List<BaseQuest> quests = new List<BaseQuest>();
 
             if (reader == null)
             {
                 return quests;
             }
 
-            var version = Version(reader);
+            int version = Version(reader);
 
-            var count = reader.ReadInt();
+            int count = reader.ReadInt();
 
-            for (var i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
-                var quest = Construct(reader) as BaseQuest;
+                BaseQuest quest = Construct(reader) as BaseQuest;
 
                 if (quest == null)
                 {
@@ -115,7 +115,7 @@ namespace Server.Engines.Quests
 
         public static Dictionary<QuestChain, BaseChain> Chains(GenericReader reader)
         {
-            var chains = new Dictionary<QuestChain, BaseChain>();
+            Dictionary<QuestChain, BaseChain> chains = new Dictionary<QuestChain, BaseChain>();
 
             if (reader == null)
             {
@@ -124,13 +124,13 @@ namespace Server.Engines.Quests
 
             Version(reader);
 
-            var count = reader.ReadInt();
+            int count = reader.ReadInt();
 
-            for (var i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
-                var chain = reader.ReadInt();
-                var quest = Type(reader);
-                var quester = Type(reader);
+                int chain = reader.ReadInt();
+                Type quest = Type(reader);
+                Type quester = Type(reader);
 
                 if (Enum.IsDefined(typeof(QuestChain), chain) && quest != null && quester != null)
                 {
@@ -150,7 +150,7 @@ namespace Server.Engines.Quests
 
             Version(reader);
 
-            var type = reader.ReadByte();
+            byte type = reader.ReadByte();
 
             switch (type)
             {
@@ -176,7 +176,7 @@ namespace Server.Engines.Quests
                 return null;
             }
 
-            var type = reader.ReadString();
+            string type = reader.ReadString();
 
             if (type != null)
             {
@@ -188,7 +188,7 @@ namespace Server.Engines.Quests
 
         public static object Construct(GenericReader reader)
         {
-            var type = Type(reader);
+            Type type = Type(reader);
 
             try
             {

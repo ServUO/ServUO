@@ -15,7 +15,7 @@ namespace Server.Items
 
         private static void Tick_Callback()
         {
-            foreach (var pickaxe in _Instances.Where(p => p != null && !p.Deleted))
+            foreach (JacobsPickaxe pickaxe in _Instances.Where(p => p != null && !p.Deleted))
             {
                 int charge = pickaxe.UsesRemaining + 10 > 20 ? 20 - pickaxe.UsesRemaining : 10;
 

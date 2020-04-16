@@ -269,9 +269,9 @@ namespace Server.Mobiles
             if (ControlSlots >= ControlSlotsMax || !HasBegunTraining || TrainingProgress >= TrainingProgressMax || Creature.ControlMaster == null)
                 return;
 
-            var ourDif = Creature.BardingDifficulty;
-            var theirDif = bc.BardingDifficulty;
-            var master = Creature.ControlMaster;
+            double ourDif = Creature.BardingDifficulty;
+            double theirDif = bc.BardingDifficulty;
+            Mobile master = Creature.ControlMaster;
 
             if (Utility.Random(100) < 8 - (1 + (ControlSlots - ControlSlotsMin)))
             {
@@ -339,7 +339,7 @@ namespace Server.Mobiles
 
         private double GetAdvance(double difficulty)
         {
-            var advance = difficulty / 64;
+            double advance = difficulty / 64;
 
             if (advance >= 2.5)
                 advance = 2.5;

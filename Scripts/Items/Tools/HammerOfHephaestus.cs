@@ -16,7 +16,7 @@ namespace Server.Items
 
         private static void Tick_Callback()
         {
-            foreach (var hammer in _Instances.Where(h => h != null && !h.Deleted && h.UsesRemaining < 20))
+            foreach (HammerOfHephaestus hammer in _Instances.Where(h => h != null && !h.Deleted && h.UsesRemaining < 20))
             {
                 hammer.UsesRemaining++;
                 hammer.InvalidateProperties();

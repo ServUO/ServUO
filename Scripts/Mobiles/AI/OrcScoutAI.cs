@@ -45,7 +45,7 @@ namespace Server.Mobiles
 
         public override bool DoActionCombat()
         {
-            var c = m_Mobile.Combatant as Mobile;
+            Mobile c = m_Mobile.Combatant as Mobile;
 
             if (c == null || c.Deleted || c.Map != m_Mobile.Map || !c.Alive || c.IsDeadBondedPet)
             {
@@ -164,7 +164,7 @@ namespace Server.Mobiles
 
         public override bool DoActionFlee()
         {
-            var c = m_Mobile.Combatant as Mobile;
+            Mobile c = m_Mobile.Combatant as Mobile;
 
             //            Container pack = m_Mobile.Backpack;
             //            bool hasAmmo = !(pack == null || pack.FindItemByType(typeof(Arrow)) == null);
@@ -198,7 +198,7 @@ namespace Server.Mobiles
         {
             Mobile nearest = null;
 
-            var dist = 9999.0;
+            double dist = 9999.0;
 
             IPooledEnumerable eable = m_Mobile.GetMobilesInRange(m_Mobile.RangePerception);
 
@@ -220,7 +220,7 @@ namespace Server.Mobiles
 
         private void TryToTeleport()
         {
-            var m = FindNearestAggressor();
+            Mobile m = FindNearestAggressor();
 
             if (m == null || m.Map == null || m_Mobile.Map == null)
             {
@@ -232,19 +232,19 @@ namespace Server.Mobiles
                 return;
             }
 
-            var px = m_Mobile.X;
-            var py = m_Mobile.Y;
+            int px = m_Mobile.X;
+            int py = m_Mobile.Y;
 
-            var dx = m_Mobile.X - m.X;
-            var dy = m_Mobile.Y - m.Y;
+            int dx = m_Mobile.X - m.X;
+            int dy = m_Mobile.Y - m.Y;
 
             // get vector's length
 
-            var l = Math.Sqrt((dx * dx + dy * dy));
+            double l = Math.Sqrt((dx * dx + dy * dy));
 
             if (l == 0)
             {
-                var rand = Utility.Random(8) + 1;
+                int rand = Utility.Random(8) + 1;
                 rand *= 2;
                 dx = m_Offsets[rand];
                 dy = m_Offsets[rand + 1];
@@ -252,19 +252,19 @@ namespace Server.Mobiles
             }
 
             // normalize vector
-            var dpx = (dx) / l;
-            var dpy = (dy) / l;
+            double dpx = (dx) / l;
+            double dpy = (dy) / l;
             // move
             px += (int)(dpx * (4 + Utility.Random(3)));
             py += (int)(dpy * (4 + Utility.Random(3)));
 
-            for (var i = 0; i < m_Offsets.Length; i += 2)
+            for (int i = 0; i < m_Offsets.Length; i += 2)
             {
                 int x = m_Offsets[i], y = m_Offsets[i + 1];
 
-                var p = new Point3D(px + x, py + y, 0);
+                Point3D p = new Point3D(px + x, py + y, 0);
 
-                var lt = new LandTarget(p, m_Mobile.Map);
+                LandTarget lt = new LandTarget(p, m_Mobile.Map);
 
                 if (m_Mobile.InLOS(lt) && m_Mobile.Map.CanSpawnMobile(px + x, py + y, lt.Z) &&
                     !SpellHelper.CheckMulti(p, m_Mobile.Map))
@@ -307,7 +307,7 @@ namespace Server.Mobiles
 
             if (!m_Mobile.Hidden)
             {
-                var chance = 0.05;
+                double chance = 0.05;
 
                 if (m_Mobile.Hits < 20)
                 {

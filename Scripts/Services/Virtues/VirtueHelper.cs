@@ -43,9 +43,9 @@ namespace Server.Services.Virtues
 
         public static VirtueLevel GetLevel(Mobile from, VirtueName virtue)
         {
-            var v = from.Virtues.GetValue((int)virtue);
+            int v = from.Virtues.GetValue((int)virtue);
             int vl;
-            var vmax = GetMaxAmount(virtue);
+            int vmax = GetMaxAmount(virtue);
 
             if (v < 4000)
                 vl = 0;
@@ -70,9 +70,9 @@ namespace Server.Services.Virtues
 
         public static bool Award(Mobile from, VirtueName virtue, int amount, ref bool gainedPath)
         {
-            var current = from.Virtues.GetValue((int)virtue);
+            int current = from.Virtues.GetValue((int)virtue);
 
-            var maxAmount = GetMaxAmount(virtue);
+            int maxAmount = GetMaxAmount(virtue);
 
             if (current >= maxAmount)
                 return false;
@@ -83,11 +83,11 @@ namespace Server.Services.Virtues
             if ((current + amount) >= maxAmount)
                 amount = maxAmount - current;
 
-            var oldLevel = GetLevel(from, virtue);
+            VirtueLevel oldLevel = GetLevel(from, virtue);
 
             from.Virtues.SetValue((int)virtue, current + amount);
 
-            var newLevel = GetLevel(from, virtue);
+            VirtueLevel newLevel = GetLevel(from, virtue);
             gainedPath = (newLevel != oldLevel);
 
             if (gainedPath)
@@ -105,7 +105,7 @@ namespace Server.Services.Virtues
 
         public static bool Atrophy(Mobile from, VirtueName virtue, int amount)
         {
-            var current = from.Virtues.GetValue((int)virtue);
+            int current = from.Virtues.GetValue((int)virtue);
 
             if ((current - amount) >= 0)
                 from.Virtues.SetValue((int)virtue, current - amount);

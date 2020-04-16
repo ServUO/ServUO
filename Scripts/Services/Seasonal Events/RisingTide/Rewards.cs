@@ -256,7 +256,7 @@ namespace Server.Items
         {
             if (m.InRange(GetWorldLocation(), 2))
             {
-                var gump = new Gump(50, 50);
+                Gump gump = new Gump(50, 50);
                 gump.AddImage(0, 0, 0x9CE9);
 
                 m.SendGump(gump);
@@ -343,7 +343,7 @@ namespace Server.Items
 
         public void AssignRandomName()
         {
-            var list = BaseBoat.Boats.Where(b => !String.IsNullOrEmpty(b.ShipName)).Select(x => x.ShipName).ToList();
+            System.Collections.Generic.List<string> list = BaseBoat.Boats.Where(b => !String.IsNullOrEmpty(b.ShipName)).Select(x => x.ShipName).ToList();
 
             if (list.Count > 0)
             {

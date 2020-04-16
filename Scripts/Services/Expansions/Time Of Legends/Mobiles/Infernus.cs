@@ -67,7 +67,7 @@ namespace Server.Mobiles
 
                     if (((x == 0 && y == 0) || .5 > Utility.RandomDouble()) && Map.CanSpawnMobile(p.X, p.Y, p.Z))
                     {
-                        var item = new FireItem(this);
+                        FireItem item = new FireItem(this);
                         item.MoveToWorld(new Point3D(p), this.Map);
                     }
                 }

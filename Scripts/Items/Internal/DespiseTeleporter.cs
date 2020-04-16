@@ -50,7 +50,7 @@ namespace Server.Items
 
         public static void TeleportPets(Mobile master, Point3D loc, Map map)
         {
-            var move = new List<Mobile>();
+            List<Mobile> move = new List<Mobile>();
             IPooledEnumerable eable = master.GetMobilesInRange(3);
 
             foreach (Mobile m in eable)
@@ -157,7 +157,7 @@ namespace Server.Items
         {
             if (Teleporters != null)
             {
-                foreach (var tele in Teleporters.Where(t => t != null && !t.Deleted))
+                foreach (InternalTeleporter tele in Teleporters.Where(t => t != null && !t.Deleted))
                 {
                     tele.Delete();
                 }
@@ -171,7 +171,7 @@ namespace Server.Items
             {
                 Direction offset = (Direction)i;
 
-                var tele = new InternalTeleporter(this, _Destination, _DestinationMap);
+                InternalTeleporter tele = new InternalTeleporter(this, _Destination, _DestinationMap);
 
                 int x = this.X;
                 int y = this.Y;
@@ -274,7 +274,7 @@ namespace Server.Items
                 if (Teleporters == null)
                     Teleporters = new List<InternalTeleporter>();
 
-                var tele = reader.ReadItem() as InternalTeleporter;
+                InternalTeleporter tele = reader.ReadItem() as InternalTeleporter;
 
                 if (tele != null)
                 {
@@ -309,7 +309,7 @@ namespace Server.Items
 
                 if (m.Location == Location)
                 {
-                    var eable = Map.GetItemsInRange(oldLocation, 0);
+                    IPooledEnumerable<Item> eable = Map.GetItemsInRange(oldLocation, 0);
 
                     foreach (Item item in eable)
                     {

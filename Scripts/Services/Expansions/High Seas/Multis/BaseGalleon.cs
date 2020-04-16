@@ -106,14 +106,14 @@ namespace Server.Multis
 
         private void AddFixtures(bool fromConstruct)
         {
-            var mcl = MultiData.GetComponents(ItemID);
+            MultiComponentList mcl = MultiData.GetComponents(ItemID);
 
-            foreach (var mte in mcl.List.Where(e => e.m_Flags == TileFlag.None || e.m_Flags == TileFlag.Generic))
+            foreach (MultiTileEntry mte in mcl.List.Where(e => e.m_Flags == TileFlag.None || e.m_Flags == TileFlag.Generic))
             {
-                var itemID = mte.m_ItemID;
-                var x = mte.m_OffsetX;
-                var y = mte.m_OffsetY;
-                var z = mte.m_OffsetZ;
+                ushort itemID = mte.m_ItemID;
+                short x = mte.m_OffsetX;
+                short y = mte.m_OffsetY;
+                short z = mte.m_OffsetZ;
 
                 if (itemID == 0x14F8 || itemID == 0x14FA)
                 {
@@ -155,7 +155,7 @@ namespace Server.Multis
 
         protected void AddMooringLine(int id, int x, int y, int z)
         {
-            var line = new MooringLine(this);
+            MooringLine line = new MooringLine(this);
             AddFixture(line);
 
             line.MoveToWorld(new Point3D(X + x, Y + y, Z + z), Map);
@@ -163,7 +163,7 @@ namespace Server.Multis
 
         protected void AddMainHold(int id, int x, int y, int z)
         {
-            var hold = new GalleonHold(this, id);
+            GalleonHold hold = new GalleonHold(this, id);
             AddFixture(hold);
 
             hold.MoveToWorld(new Point3D(X + x, Y + y, Z + z), Map);
@@ -171,7 +171,7 @@ namespace Server.Multis
 
         protected void AddHoldItem(int id, int x, int y, int z)
         {
-            var hold = new HoldItem(this, id);
+            HoldItem hold = new HoldItem(this, id);
             AddFixture(hold);
 
             hold.MoveToWorld(new Point3D(X + x, Y + y, Z + z), Map);
@@ -179,7 +179,7 @@ namespace Server.Multis
 
         protected void AddWheel(int id, int x, int y, int z)
         {
-            var wheel = new ShipWheel(this, id);
+            ShipWheel wheel = new ShipWheel(this, id);
             AddFixture(wheel);
 
             wheel.MoveToWorld(new Point3D(X + x, Y + y, Z + z), Map);
@@ -187,7 +187,7 @@ namespace Server.Multis
 
         protected void AddWeaponPad(int id, int x, int y, int z)
         {
-            var pad = new WeaponPad(id);
+            WeaponPad pad = new WeaponPad(id);
             AddFixture(pad);
 
             pad.MoveToWorld(new Point3D(X + x, Y + y, Z + z), Map);
@@ -195,7 +195,7 @@ namespace Server.Multis
 
         protected void AddFillerItem(int id, int x, int y, int z)
         {
-            var filler = new DeckItem(id);
+            DeckItem filler = new DeckItem(id);
             AddFixture(filler);
 
             filler.MoveToWorld(new Point3D(X + x, Y + y, Z + z), Map);
@@ -555,7 +555,7 @@ namespace Server.Multis
         {
             bool heavy = Utility.RandomBool();
 
-            foreach (var pad in Fixtures.OfType<WeaponPad>())
+            foreach (WeaponPad pad in Fixtures.OfType<WeaponPad>())
             {
                 if (pad.Map != Map.Internal && !pad.Deleted)
                 {
@@ -683,7 +683,7 @@ namespace Server.Multis
             }
 
             //Now we can check for a valid cannon tile ID
-            foreach (var pad in Fixtures.OfType<WeaponPad>())
+            foreach (WeaponPad pad in Fixtures.OfType<WeaponPad>())
             {
                 if (pad.X == pnt.X && pad.Y == pnt.Y)
                 {
@@ -718,14 +718,14 @@ namespace Server.Multis
         {
             base.OnLocationChange(old);
 
-            foreach (var fixture in Fixtures)
+            foreach (Item fixture in Fixtures)
             {
                 fixture.Location = new Point3D(X + (fixture.X - old.X), Y + (fixture.Y - old.Y), Z + (fixture.Z - old.Z));
             }
 
             if (Addons != null)
             {
-                foreach (var addon in Addons.Keys)
+                foreach (Item addon in Addons.Keys)
                 {
                     addon.Location = new Point3D(X + (addon.X - old.X), Y + (addon.Y - old.Y), Z + (addon.Z - old.Z));
                 }
@@ -733,7 +733,7 @@ namespace Server.Multis
 
             if (Cannons != null)
             {
-                foreach (var cannon in Cannons)
+                foreach (Item cannon in Cannons)
                 {
                     cannon.Location = new Point3D(X + (cannon.X - old.X), Y + (cannon.Y - old.Y), Z + (cannon.Z - old.Z));
                 }
@@ -744,14 +744,14 @@ namespace Server.Multis
         {
             base.OnMapChange();
 
-            foreach (var fixture in Fixtures)
+            foreach (Item fixture in Fixtures)
             {
                 fixture.Map = Map;
             }
 
             if (Addons != null)
             {
-                foreach (var addon in Addons.Keys)
+                foreach (Item addon in Addons.Keys)
                 {
                     addon.Map = Map;
                 }
@@ -759,7 +759,7 @@ namespace Server.Multis
 
             if (Cannons != null)
             {
-                foreach (var cannon in Cannons)
+                foreach (Item cannon in Cannons)
                 {
                     cannon.Map = Map;
                 }
@@ -817,7 +817,7 @@ namespace Server.Multis
         {
             List<Item> list = new List<Item>(Fixtures.Where(f => !f.Deleted));
 
-            foreach (var fixture in list)
+            foreach (Item fixture in list)
             {
                 fixture.Delete();
             }
@@ -826,7 +826,7 @@ namespace Server.Multis
             {
                 list = new List<Item>(Cannons);
 
-                foreach (var cannon in list)
+                foreach (Item cannon in list)
                 {
                     cannon.Delete();
                 }
@@ -838,7 +838,7 @@ namespace Server.Multis
             {
                 list = new List<Item>(Addons.Keys.Where(a => a != null && !a.Deleted));
 
-                foreach (var addon in list)
+                foreach (Item addon in list)
                 {
                     addon.Delete();
                 }
@@ -872,7 +872,7 @@ namespace Server.Multis
 
             if (Cannons != null && Cannons.Count > 0)
             {
-                foreach (var cannon in Cannons.OfType<IShipCannon>())
+                foreach (IShipCannon cannon in Cannons.OfType<IShipCannon>())
                 {
                     if (cannon == null)
                         continue;
@@ -909,11 +909,11 @@ namespace Server.Multis
             if (oldDirection == newDirection && !ignoreLastDirection)
                 return;
 
-            var mcl = MultiData.GetComponents(ItemID);
+            MultiComponentList mcl = MultiData.GetComponents(ItemID);
 
-            foreach (var mte in mcl.List.Where(e => e.m_Flags == TileFlag.None))
+            foreach (MultiTileEntry mte in mcl.List.Where(e => e.m_Flags == TileFlag.None))
             {
-                foreach (var fixture in Fixtures.Where(f => f.X - X == mte.m_OffsetX && f.Y - Y == mte.m_OffsetY && f.Z - Z == mte.m_OffsetZ))
+                foreach (Item fixture in Fixtures.Where(f => f.X - X == mte.m_OffsetX && f.Y - Y == mte.m_OffsetY && f.Z - Z == mte.m_OffsetZ))
                 {
                     fixture.ItemID = mte.m_ItemID;
                 }
@@ -921,9 +921,9 @@ namespace Server.Multis
 
             if (Addons != null)
             {
-                foreach (var addon in Addons.Keys)
+                foreach (Item addon in Addons.Keys)
                 {
-                    var tile = Addons[addon];
+                    DeckItem tile = Addons[addon];
 
                     addon.MoveToWorld(new Point3D(tile.X, tile.Y, tile.Z), Map);
                 }
@@ -945,7 +945,7 @@ namespace Server.Multis
 
         public override IEnumerable<IEntity> GetComponents()
         {
-            foreach (var fixture in Fixtures)
+            foreach (Item fixture in Fixtures)
             {
                 yield return fixture;
             }
@@ -970,7 +970,7 @@ namespace Server.Multis
         {
             if (Cannons != null)
             {
-                foreach (var cannon in Cannons)
+                foreach (Item cannon in Cannons)
                 {
                     UpdateCannonID(cannon);
                 }
@@ -1102,7 +1102,7 @@ namespace Server.Multis
 
         public void PaintComponents()
         {
-            foreach (var fixture in Fixtures.Where(f =>
+            foreach (Item fixture in Fixtures.Where(f =>
                 f.GetType() != typeof(MooringLine) &&
                 f.GetType() != typeof(ShipWheel)))
             {
@@ -1273,7 +1273,7 @@ namespace Server.Multis
 
             IPooledEnumerable eable = Map.GetItemsInRange(p, 0);
 
-            foreach (var item in eable.OfType<DeckItem>())
+            foreach (DeckItem item in eable.OfType<DeckItem>())
             {
                 if (m_ShipAddonTiles.Any(id => id == item.ItemID) && !Addons.ContainsValue(item))
                 {
@@ -1295,7 +1295,7 @@ namespace Server.Multis
 
             IPooledEnumerable eable = Map.GetItemsInRange(addon.Location, 0);
 
-            foreach (var item in eable.OfType<DeckItem>())
+            foreach (DeckItem item in eable.OfType<DeckItem>())
             {
                 if (m_ShipAddonTiles.Any(id => id == item.ItemID))
                 {
@@ -1366,7 +1366,7 @@ namespace Server.Multis
 
             if (_InternalCannon != null)
             {
-                foreach (var kvp in _InternalCannon)
+                foreach (KeyValuePair<Item, Item> kvp in _InternalCannon)
                 {
                     writer.Write(kvp.Key);
                     writer.Write(kvp.Value);
@@ -1399,7 +1399,7 @@ namespace Server.Multis
 
             if (Addons != null)
             {
-                foreach (var kvp in Addons)
+                foreach (KeyValuePair<Item, DeckItem> kvp in Addons)
                 {
                     writer.Write(kvp.Key);
                     writer.WriteItem<DeckItem>(kvp.Value);
@@ -1417,7 +1417,7 @@ namespace Server.Multis
             switch (version)
             {
                 case 7:
-                    var c = reader.ReadInt();
+                    int c = reader.ReadInt();
 
                     if (c > 0)
                     {
@@ -1428,8 +1428,8 @@ namespace Server.Multis
 
                         for (int i = 0; i < c; i++)
                         {
-                            var cannon = reader.ReadItem();
-                            var pad = reader.ReadItem();
+                            Item cannon = reader.ReadItem();
+                            Item pad = reader.ReadItem();
 
                             if (cannon != null && pad != null)
                             {
@@ -1448,7 +1448,7 @@ namespace Server.Multis
                 case 2:
                     if (version == 5)
                     {
-                        var pole = reader.ReadItem();
+                        Item pole = reader.ReadItem();
                         AddFixture(pole);
                     }
 
@@ -1468,8 +1468,8 @@ namespace Server.Multis
                     #region Version 5
                     if (version < 6)
                     {
-                        var wheel = reader.ReadItem();
-                        var hold = reader.ReadItem();
+                        Item wheel = reader.ReadItem();
+                        Item hold = reader.ReadItem();
 
                         AddFixture(wheel);
                         AddFixture(hold);
@@ -1498,11 +1498,11 @@ namespace Server.Multis
                     if (version < 6)
                     {
                         count = reader.ReadInt();
-                        var pads = new List<Item>();
+                        List<Item> pads = new List<Item>();
 
                         for (int i = 0; i < count; i++)
                         {
-                            var weaponPad = reader.ReadItem();
+                            Item weaponPad = reader.ReadItem();
                             pads.Add(weaponPad);
                         }
 
@@ -1522,25 +1522,25 @@ namespace Server.Multis
                     if (version < 6)
                     {
                         count = reader.ReadInt();
-                        var list = new List<Item>();
+                        List<Item> list = new List<Item>();
 
                         for (int i = 0; i < count; i++)
                         {
-                            var filler = reader.ReadItem();
+                            Item filler = reader.ReadItem();
                             list.Add(filler);
                         }
 
                         count = reader.ReadInt();
                         for (int i = 0; i < count; i++)
                         {
-                            var line = reader.ReadItem();
+                            Item line = reader.ReadItem();
                             list.Add(line);
                         }
 
                         count = reader.ReadInt();
                         for (int i = 0; i < count; i++)
                         {
-                            var hItem = reader.ReadItem();
+                            Item hItem = reader.ReadItem();
                             list.Add(hItem);
                         }
 
@@ -1571,8 +1571,8 @@ namespace Server.Multis
 
                         for (int i = 0; i < count; i++)
                         {
-                            var addon = reader.ReadItem();
-                            var tile = reader.ReadItem<DeckItem>();
+                            Item addon = reader.ReadItem();
+                            DeckItem tile = reader.ReadItem<DeckItem>();
 
                             if (addon != null)
                             {
@@ -1585,11 +1585,11 @@ namespace Server.Multis
                     if (version < 6)
                     {
                         count = reader.ReadInt();
-                        var list = new List<Item>();
+                        List<Item> list = new List<Item>();
 
                         for (int i = 0; i < count; i++)
                         {
-                            var atile = reader.ReadItem();
+                            Item atile = reader.ReadItem();
                             list.Add(atile);
                         }
 
@@ -1605,7 +1605,7 @@ namespace Server.Multis
             }
             else
             {
-                foreach (var fixture in Fixtures.OfType<IGalleonFixture>())
+                foreach (IGalleonFixture fixture in Fixtures.OfType<IGalleonFixture>())
                 {
                     fixture.Galleon = this;
                 }

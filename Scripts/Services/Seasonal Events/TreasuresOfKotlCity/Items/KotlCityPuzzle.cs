@@ -24,7 +24,7 @@ namespace Server.Engines.TreasuresOfKotlCity
             get { return _Complete; }
             set
             {
-                foreach (var comp in Components.OfType<KotlCityPuzzleComponent>().Where(c => (value && c.Active) || (!value && !c.Active)))
+                foreach (KotlCityPuzzleComponent comp in Components.OfType<KotlCityPuzzleComponent>().Where(c => (value && c.Active) || (!value && !c.Active)))
                     comp.Active = !value;
 
                 if (_Complete && !value)
@@ -57,7 +57,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         private void RandomizeOrder()
         {
             _Order = new List<int>();
-            var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            List<int> list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             int count = Utility.RandomMinMax(5, 10);
 
             int ran = 0;

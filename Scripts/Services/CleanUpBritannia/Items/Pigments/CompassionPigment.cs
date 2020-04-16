@@ -141,7 +141,7 @@ namespace Server.Items
 
         private static CompassionPigmentType GetRandomType()
         {
-            var values = Enum.GetValues(typeof(CompassionPigmentType));
+            Array values = Enum.GetValues(typeof(CompassionPigmentType));
             return (CompassionPigmentType)values.GetValue(Utility.Random(values.Length));
         }
 

@@ -113,11 +113,11 @@ namespace Server.Mobiles
 
             if (from is PlayerMobile)
             {
-                var pm = from as PlayerMobile;
+                PlayerMobile pm = from as PlayerMobile;
 
                 if (QuestHelper.CheckDoneOnce(pm, typeof(WishesOfTheWispQuest), null, false))
                 {
-                    var q = QuestHelper.GetQuest<WhisperingWithWispsQuest>(pm);
+                    WhisperingWithWispsQuest q = QuestHelper.GetQuest<WhisperingWithWispsQuest>(pm);
 
                     if (q == null)
                     {

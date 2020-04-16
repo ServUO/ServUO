@@ -61,7 +61,7 @@ namespace Server.Spells.Mysticism
                 if (map == null)
                     return;
 
-                foreach (var m in AcquireIndirectTargets(p, 3).OfType<Mobile>())
+                foreach (Mobile m in AcquireIndirectTargets(p, 3).OfType<Mobile>())
                 {
                     double duration = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 20) + 3;
                     duration -= GetResistSkill(m) / 10;

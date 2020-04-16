@@ -73,7 +73,7 @@ namespace Server.Engines.Quests
 
                 Direction = Direction.Left;
 
-                var item = FindItemOnLayer(Layer.Shoes);
+                Item item = FindItemOnLayer(Layer.Shoes);
                 if (item != null)
                     item.Hue = 1819;
             }

@@ -306,7 +306,7 @@ namespace Server.Mobiles
         {
             get
             {
-                var acct = Account as Account;
+                Account acct = Account as Account;
 
                 if (acct != null)
                 {
@@ -317,7 +317,7 @@ namespace Server.Mobiles
             }
             set
             {
-                var acct = Account as Account;
+                Account acct = Account as Account;
 
                 if (acct != null)
                 {
@@ -328,7 +328,7 @@ namespace Server.Mobiles
 
         public bool DepositSovereigns(int amount)
         {
-            var acct = Account as Account;
+            Account acct = Account as Account;
 
             if (acct != null)
             {
@@ -340,7 +340,7 @@ namespace Server.Mobiles
 
         public bool WithdrawSovereigns(int amount)
         {
-            var acct = Account as Account;
+            Account acct = Account as Account;
 
             if (acct != null)
             {
@@ -556,7 +556,7 @@ namespace Server.Mobiles
         {
             if (Alive)
             {
-                foreach (var kvp in m_RecoverableAmmo)
+                foreach (KeyValuePair<Type, int> kvp in m_RecoverableAmmo)
                 {
                     if (kvp.Value > 0)
                     {
@@ -721,7 +721,7 @@ namespace Server.Mobiles
 
                 if (type.IsDefined(typeof(FurnitureAttribute), true) || type.IsDefined(typeof(DynamicFlipingAttribute), true))
                 {
-                    var objs = type.GetCustomAttributes(typeof(FlipableAttribute), true);
+                    object[] objs = type.GetCustomAttributes(typeof(FlipableAttribute), true);
 
                     if (objs != null && objs.Length > 0)
                     {
@@ -729,7 +729,7 @@ namespace Server.Mobiles
 
                         if (fp != null)
                         {
-                            var itemIDs = fp.ItemIDs;
+                            int[] itemIDs = fp.ItemIDs;
 
                             Point3D oldWorldLoc = bi.m_WorldLoc;
                             Point3D newWorldLoc = location;
@@ -931,7 +931,7 @@ namespace Server.Mobiles
 
                 List<Item> worn = new List<Item>(pm.Items);
 
-                foreach (var item in worn)
+                foreach (Item item in worn)
                 {
                     if (e.List.Contains((int)item.Layer))
                     {
@@ -1301,7 +1301,7 @@ namespace Server.Mobiles
                     return;
                 }
 
-                var items = Items;
+                List<Item> items = Items;
 
                 if (items == null)
                 {
@@ -1885,7 +1885,7 @@ namespace Server.Mobiles
             {
                 if (IsPlayer())
                 {
-                    var str = base.Str;
+                    int str = base.Str;
 
                     return Math.Min(base.Str, StrMaxCap);
                 }
@@ -1917,7 +1917,7 @@ namespace Server.Mobiles
             {
                 if (IsPlayer())
                 {
-                    var dex = base.Dex;
+                    int dex = base.Dex;
 
                     return Math.Min(dex, DexMaxCap);
                 }
@@ -2069,7 +2069,7 @@ namespace Server.Mobiles
             {
                 for (int i = Aggressed.Count - 1; i >= 0; i--)
                 {
-                    var info = Aggressed[i];
+                    AggressorInfo info = Aggressed[i];
 
                     if (info.Defender.InRange(Location, Core.GlobalMaxUpdateRange) && info.Defender.DamageEntries.Any(de => de.Damager == this))
                     {
@@ -2084,7 +2084,7 @@ namespace Server.Mobiles
 
                 for (int i = Aggressors.Count - 1; i >= 0; i--)
                 {
-                    var info = Aggressors[i];
+                    AggressorInfo info = Aggressors[i];
 
                     if (info.Attacker.InRange(Location, Core.GlobalMaxUpdateRange) && info.Attacker.DamageEntries.Any(de => de.Damager == this))
                     {
@@ -2266,7 +2266,7 @@ namespace Server.Mobiles
                 #region Void Pool
                 if (VoidPool || Region.IsPartOf<VoidPoolRegion>())
                 {
-                    var controller = Map == Map.Felucca ? VoidPoolController.InstanceFel : VoidPoolController.InstanceTram;
+                    VoidPoolController controller = Map == Map.Felucca ? VoidPoolController.InstanceFel : VoidPoolController.InstanceTram;
 
                     if (controller != null)
                     {
@@ -2479,7 +2479,7 @@ namespace Server.Mobiles
 
         public int GetInsuranceCost(Item item)
         {
-            var imbueWeight = Imbuing.GetTotalWeight(item, -1, false, false);
+            int imbueWeight = Imbuing.GetTotalWeight(item, -1, false, false);
             int cost = 600; // this handles old items, set items, etc
 
             if (item is IVvVItem && ((IVvVItem)item).IsVvVItem)
@@ -2491,7 +2491,7 @@ namespace Server.Mobiles
             else if (item.LootType == LootType.Newbied)
                 cost = 10;
 
-            var negAttrs = RunicReforging.GetNegativeAttributes(item);
+            NegativeAttributes negAttrs = RunicReforging.GetNegativeAttributes(item);
 
             if (negAttrs != null && negAttrs.Prized > 0)
                 cost *= 2;
@@ -3509,7 +3509,7 @@ namespace Server.Mobiles
 
             if (Backpack != null && !Backpack.Deleted)
             {
-                var ilist = Backpack.FindItemsByType<Item>(FindItems_Callback);
+                List<Item> ilist = Backpack.FindItemsByType<Item>(FindItems_Callback);
 
                 for (int i = 0; i < ilist.Count; i++)
                 {
@@ -3771,7 +3771,7 @@ namespace Server.Mobiles
 
             if (m_BuffTable != null)
             {
-                var list = new List<BuffInfo>();
+                List<BuffInfo> list = new List<BuffInfo>();
 
                 foreach (BuffInfo buff in m_BuffTable.Values)
                 {
@@ -4500,7 +4500,7 @@ namespace Server.Mobiles
                     {
                         if (version < 13)
                         {
-                            var payed = reader.ReadStrongItemList();
+                            List<Item> payed = reader.ReadStrongItemList();
 
                             for (int i = 0; i < payed.Count; ++i)
                             {
@@ -4663,7 +4663,7 @@ namespace Server.Mobiles
                 m_ChampionTitles = new ChampionTitleInfo();
             }
 
-            var list = Stabled;
+            List<Mobile> list = Stabled;
 
             for (int i = 0; i < list.Count; ++i)
             {
@@ -4767,7 +4767,7 @@ namespace Server.Mobiles
             {
                 writer.Write(m_Collections.Count);
 
-                foreach (var pair in m_Collections)
+                foreach (KeyValuePair<Collection, int> pair in m_Collections)
                 {
                     writer.Write((int)pair.Key);
                     writer.Write(pair.Value);
@@ -4804,7 +4804,7 @@ namespace Server.Mobiles
             {
                 writer.Write(m_AcquiredRecipes.Count);
 
-                foreach (var kvp in m_AcquiredRecipes)
+                foreach (KeyValuePair<int, bool> kvp in m_AcquiredRecipes)
                 {
                     writer.Write(kvp.Key);
                     writer.Write(kvp.Value);
@@ -6191,7 +6191,7 @@ namespace Server.Mobiles
 
                             if (m_Values.Length != ChampionSpawnInfo.Table.Length)
                             {
-                                var oldValues = m_Values;
+                                TitleInfo[] oldValues = m_Values;
                                 m_Values = new TitleInfo[ChampionSpawnInfo.Table.Length];
 
                                 for (int i = 0; i < m_Values.Length && i < oldValues.Length; i++)

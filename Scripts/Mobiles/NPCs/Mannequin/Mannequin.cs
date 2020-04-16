@@ -164,14 +164,14 @@ namespace Server.Mobiles
 
         public static List<ValuedProperty> FindItemsProperty(List<Item> item)
         {
-            var ll = System.Reflection.Assembly.GetExecutingAssembly().GetTypes()
+            List<Type> ll = System.Reflection.Assembly.GetExecutingAssembly().GetTypes()
               .ToList().Where(r => r.FullName.Contains("MannequinProperty") && r.IsClass == true && r.IsAbstract == false).ToList();
 
             List<ValuedProperty> cat = new List<ValuedProperty>();
 
             ll.ForEach(x =>
             {
-                var CI = Activator.CreateInstance(Type.GetType(x.FullName));
+                object CI = Activator.CreateInstance(Type.GetType(x.FullName));
 
                 if (CI is ValuedProperty)
                 {
@@ -187,14 +187,14 @@ namespace Server.Mobiles
 
         public static List<ValuedProperty> FindItemProperty(Item item, bool visible = false)
         {
-            var ll = System.Reflection.Assembly.GetExecutingAssembly().GetTypes()
+            List<Type> ll = System.Reflection.Assembly.GetExecutingAssembly().GetTypes()
               .ToList().Where(r => r.FullName.Contains("MannequinProperty") && r.IsClass == true && r.IsAbstract == false).ToList();
 
             List<ValuedProperty> cat = new List<ValuedProperty>();
 
             ll.ForEach(x =>
             {
-                var CI = Activator.CreateInstance(Type.GetType(x.FullName));
+                object CI = Activator.CreateInstance(Type.GetType(x.FullName));
 
                 if (CI is ValuedProperty)
                 {
@@ -254,7 +254,7 @@ namespace Server.Mobiles
                     toAdd.AddRange(mobile.Backpack.Items);
                 }
 
-                foreach (var item in toAdd)
+                foreach (Item item in toAdd)
                 {
                     house.DropToMovingCrate(item);
                 }

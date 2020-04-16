@@ -175,9 +175,9 @@ namespace Server.Multis
 
         private static int[] CreateTable(int length)
         {
-            var table = new int[length];
+            int[] table = new int[length];
 
-            for (var i = 0; i < table.Length; ++i)
+            for (int i = 0; i < table.Length; ++i)
             {
                 table[i] = -1;
             }
@@ -197,22 +197,22 @@ namespace Server.Multis
 
         private static void LoadSpreadsheet(int[] table, string path, params string[] tileColumns)
         {
-            var ss = new Spreadsheet(path);
+            Spreadsheet ss = new Spreadsheet(path);
 
-            var tileCIDs = new int[tileColumns.Length];
+            int[] tileCIDs = new int[tileColumns.Length];
 
-            for (var i = 0; i < tileColumns.Length; ++i)
+            for (int i = 0; i < tileColumns.Length; ++i)
             {
                 tileCIDs[i] = ss.GetColumnID(tileColumns[i]);
             }
 
-            var featureCID = ss.GetColumnID("FeatureMask");
+            int featureCID = ss.GetColumnID("FeatureMask");
 
-            foreach (var record in ss.Records)
+            foreach (DataRecord record in ss.Records)
             {
-                var fid = record.GetInt32(featureCID);
+                int fid = record.GetInt32(featureCID);
 
-                foreach (var itemID in tileCIDs.Select(v => record.GetInt32(v)).Where(id => id > 0 && id < table.Length))
+                foreach (int itemID in tileCIDs.Select(v => record.GetInt32(v)).Where(id => id > 0 && id < table.Length))
                 {
                     table[itemID] = fid;
                 }
@@ -227,29 +227,29 @@ namespace Server.Multis
 
         public Spreadsheet(string path)
         {
-            using (var ip = new StreamReader(path))
+            using (StreamReader ip = new StreamReader(path))
             {
-                var types = ReadLine(ip);
-                var names = ReadLine(ip);
+                string[] types = ReadLine(ip);
+                string[] names = ReadLine(ip);
 
                 m_Columns = new ColumnInfo[types.Length];
 
-                for (var i = 0; i < m_Columns.Length; ++i)
+                for (int i = 0; i < m_Columns.Length; ++i)
                 {
                     m_Columns[i] = new ColumnInfo(i, types[i], names[i]);
                 }
 
-                var records = new List<DataRecord>();
+                List<DataRecord> records = new List<DataRecord>();
 
                 string[] values;
 
                 while ((values = ReadLine(ip)) != null)
                 {
-                    var data = new object[m_Columns.Length];
+                    object[] data = new object[m_Columns.Length];
 
-                    for (var i = 0; i < m_Columns.Length; ++i)
+                    for (int i = 0; i < m_Columns.Length; ++i)
                     {
-                        var ci = m_Columns[i];
+                        ColumnInfo ci = m_Columns[i];
 
                         switch (ci.m_Type)
                         {
@@ -273,7 +273,7 @@ namespace Server.Multis
 
         public int GetColumnID(string name)
         {
-            for (var i = 0; i < m_Columns.Length; ++i)
+            for (int i = 0; i < m_Columns.Length; ++i)
             {
                 if (m_Columns[i].m_Name == name)
                 {

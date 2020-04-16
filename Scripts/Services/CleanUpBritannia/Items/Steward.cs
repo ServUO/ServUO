@@ -312,7 +312,7 @@ namespace Server.Mobiles
 
         private static bool ContainsDisallowedSpeech(string text)
         {
-            foreach (var word in ProfanityProtection.Disallowed)
+            foreach (string word in ProfanityProtection.Disallowed)
             {
                 if (text.Contains(word))
                     return true;

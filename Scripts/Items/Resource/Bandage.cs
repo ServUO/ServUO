@@ -381,7 +381,7 @@ namespace Server.Items
                             {
                                 bool found = false;
 
-                                var friends = petPatient.Friends;
+                                List<Mobile> friends = petPatient.Friends;
 
                                 for (int i = 0; friends != null && i < friends.Count; ++i)
                                 {
@@ -648,7 +648,7 @@ namespace Server.Items
                     context.StopHeal();
                 }
 
-                var delay = GetDelay(healer, patient);
+                TimeSpan delay = GetDelay(healer, patient);
 
                 if (patient is PlayerMobile)
                     BuffInfo.AddBuff(healer, new BuffInfo(BuffIcon.Healing, 1002082, 1151400, delay, healer, String.Format("{0}", patient.Name)));
@@ -689,9 +689,9 @@ namespace Server.Items
 
         public static TimeSpan GetDelay(Mobile healer, Mobile patient, bool dead, SkillName skill)
         {
-            var resDelay = dead ? 5.0 : 0.0;
+            double resDelay = dead ? 5.0 : 0.0;
 
-            var dex = healer.Dex;
+            int dex = healer.Dex;
 
             double seconds;
 

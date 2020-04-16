@@ -225,10 +225,10 @@ namespace Server.Items
                 m_InstancedItems = new Dictionary<Item, InstancedItemInfo>();
             }
 
-            var stackables = new List<Item>();
-            var unstackables = new List<Item>();
+            List<Item> stackables = new List<Item>();
+            List<Item> unstackables = new List<Item>();
 
-            foreach (var item in items.Where(i => !m_InstancedItems.ContainsKey(i)))
+            foreach (Item item in items.Where(i => !m_InstancedItems.ContainsKey(i)))
             {
                 if (item.LootType != LootType.Cursed) //Don't have curesd items take up someone's item spot.. (?)
                 {
@@ -243,7 +243,7 @@ namespace Server.Items
                 }
             }
 
-            var attackers = new List<Mobile>(m_Aggressors);
+            List<Mobile> attackers = new List<Mobile>(m_Aggressors);
 
             for (int i = 1; i < attackers.Count - 1; i++) //randomize
             {
@@ -477,7 +477,7 @@ namespace Server.Items
 
             Type t = m.GetType();
 
-            var attrs = t.GetCustomAttributes(typeof(CorpseNameAttribute), true);
+            object[] attrs = t.GetCustomAttributes(typeof(CorpseNameAttribute), true);
 
             if (attrs != null && attrs.Length > 0)
             {
@@ -658,7 +658,7 @@ namespace Server.Items
                     m_Aggressors.Add(master);
                 }
 
-                var rights = bc.GetLootingRights();
+                List<DamageStore> rights = bc.GetLootingRights();
                 for (int i = 0; i < rights.Count; ++i)
                 {
                     DamageStore ds = rights[i];
@@ -717,14 +717,14 @@ namespace Server.Items
 
             writer.WriteDeltaTime(m_TimeOfDeath);
 
-            var list = (m_RestoreTable == null ? null : new List<KeyValuePair<Item, Point3D>>(m_RestoreTable));
+            List<KeyValuePair<Item, Point3D>> list = (m_RestoreTable == null ? null : new List<KeyValuePair<Item, Point3D>>(m_RestoreTable));
             int count = (list == null ? 0 : list.Count);
 
             writer.Write(count);
 
             for (int i = 0; i < count; ++i)
             {
-                var kvp = list[i];
+                KeyValuePair<Item, Point3D> kvp = list[i];
                 Item item = kvp.Key;
                 Point3D loc = kvp.Value;
 
@@ -1022,7 +1022,7 @@ namespace Server.Items
                 return false;
             }
 
-            var canLoot = CanLoot(from, item);
+            bool canLoot = CanLoot(from, item);
 
             if (m_HasLooted == null)
                 m_HasLooted = new List<Item>();
@@ -1213,7 +1213,7 @@ namespace Server.Items
                 {
                     SetFlag(CorpseFlag.SelfLooted, true);
 
-                    var items = new List<Item>(Items);
+                    List<Item> items = new List<Item>(Items);
 
                     bool gathered = false;
 

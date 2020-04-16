@@ -162,7 +162,7 @@ namespace Server.Mobiles
             IPoint3D p = objs[0] as IPoint3D;
             Map map = objs[1] as Map;
 
-            var item = new FreezeItem(Utility.RandomList(6913, 6915, 6917, 6919), this);
+            FreezeItem item = new FreezeItem(Utility.RandomList(6913, 6915, 6917, 6919), this);
             Spells.SpellHelper.GetSurfaceTop(ref p);
 
             item.MoveToWorld(new Point3D(p), Map);

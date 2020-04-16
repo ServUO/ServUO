@@ -26,8 +26,8 @@ namespace Server.Mobiles
                 return base.GetRandomBuffSpell();
             }
 
-            var mana = m_Mobile.Mana;
-            var wep = m_Mobile.Weapon as BaseWeapon;
+            int mana = m_Mobile.Mana;
+            BaseWeapon wep = m_Mobile.Weapon as BaseWeapon;
 
             if (mana >= 50 && !ArcaneEmpowermentSpell.IsUnderEffects(m_Mobile) && 0.5 >= Utility.RandomDouble())
                 return new ArcaneEmpowermentSpell(m_Mobile, null);
@@ -54,8 +54,8 @@ namespace Server.Mobiles
                 return base.GetRandomDamageSpell();
             }
 
-            var mana = m_Mobile.Mana;
-            var select = 1;
+            int mana = m_Mobile.Mana;
+            int select = 1;
 
             if (mana >= 50)
                 select = 4;
@@ -106,7 +106,7 @@ namespace Server.Mobiles
 
         protected override bool ProcessTarget()
         {
-            var t = m_Mobile.Target;
+            Targeting.Target t = m_Mobile.Target;
 
             if (t is WildfireSpell.InternalTarget)
             {

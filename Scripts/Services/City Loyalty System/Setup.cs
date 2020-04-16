@@ -175,7 +175,7 @@ namespace Server.Engines.CityLoyalty
 
                 if (r != null)
                 {
-                    var slim = new SlimTheFence();
+                    SlimTheFence slim = new SlimTheFence();
 
                     if (!HasType(r, slim.GetType()))
                         slim.MoveToWorld(p, Map.Felucca);

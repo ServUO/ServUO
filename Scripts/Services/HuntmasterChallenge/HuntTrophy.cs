@@ -150,7 +150,7 @@ namespace Server.Items
                     m_Measurement = reader.ReadInt();
                     m_DateKilled = reader.ReadString();
                     m_Location = reader.ReadString();
-                    var td = TextDefinition.Deserialize(reader);
+                    TextDefinition td = TextDefinition.Deserialize(reader);
                     reader.ReadInt();
                     reader.ReadInt();
 
@@ -360,7 +360,7 @@ namespace Server.Items
                     m_Measurement = reader.ReadInt();
                     m_DateKilled = reader.ReadString();
                     m_Location = reader.ReadString();
-                    var td = TextDefinition.Deserialize(reader);
+                    TextDefinition td = TextDefinition.Deserialize(reader);
                     reader.ReadInt();
                     reader.ReadInt();
 
@@ -376,7 +376,7 @@ namespace Server.Items
 
         private void Replace()
         {
-            var trophy = new HuntTrophy(m_Owner, Index, m_Measurement, m_DateKilled, m_Location);
+            HuntTrophy trophy = new HuntTrophy(m_Owner, Index, m_Measurement, m_DateKilled, m_Location);
 
             if (Parent is Container)
             {

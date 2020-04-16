@@ -95,7 +95,7 @@ namespace Server.Items
 
                 if (relay != null)
                 {
-                    var text = relay.Text;
+                    string text = relay.Text;
 
                     if (string.IsNullOrEmpty(text))
                     {

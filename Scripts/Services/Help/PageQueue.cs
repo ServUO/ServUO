@@ -217,7 +217,7 @@ namespace Server.Engines.Help
             {
                 List<ResponseEntry> entries = Entries.Where(e => e.Sender == m).ToList();
 
-                foreach (var entry in entries)
+                foreach (ResponseEntry entry in entries)
                 {
                     entry.SendGump();
                 }
@@ -228,9 +228,9 @@ namespace Server.Engines.Help
 
         public static void BeforeSave(BeforeWorldSaveEventArgs args)
         {
-            var list = Entries.Where(e => e.Expired).ToList();
+            List<ResponseEntry> list = Entries.Where(e => e.Expired).ToList();
 
-            foreach (var entry in list)
+            foreach (ResponseEntry entry in list)
             {
                 Entries.Remove(entry);
             }

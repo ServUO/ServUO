@@ -285,7 +285,7 @@ namespace Server.Engines.Quests
             if (m_Creatures == null)
                 return false;
 
-            foreach (var type in m_Creatures)
+            foreach (Type type in m_Creatures)
             {
                 if (type.IsAssignableFrom(mob.GetType()))
                 {

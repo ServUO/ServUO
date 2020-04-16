@@ -26,7 +26,7 @@ namespace Server.Services.TownCryer
             Title = quest.Title;
             Body = quest.Complete;
 
-            var entry = TownCryerSystem.NewsEntries.FirstOrDefault(e => e.QuestType == quest.GetType());
+            TownCryerNewsEntry entry = TownCryerSystem.NewsEntries.FirstOrDefault(e => e.QuestType == quest.GetType());
 
             if (entry != null)
             {

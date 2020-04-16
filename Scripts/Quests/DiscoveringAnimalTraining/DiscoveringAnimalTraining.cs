@@ -42,7 +42,7 @@ namespace Server.Engines.Quests
             if (pm == null)
                 return;
 
-            var quest = QuestHelper.GetQuest(pm, typeof(TamingPetQuest));
+            BaseQuest quest = QuestHelper.GetQuest(pm, typeof(TamingPetQuest));
 
             if (quest != null && !quest.Completed)
             {
@@ -135,7 +135,7 @@ namespace Server.Engines.Quests
             if (pm == null)
                 return;
 
-            var quest = QuestHelper.GetQuest(pm, typeof(UsingAnimalLoreQuest));
+            BaseQuest quest = QuestHelper.GetQuest(pm, typeof(UsingAnimalLoreQuest));
 
             if (quest != null && !quest.Completed)
             {
@@ -231,7 +231,7 @@ namespace Server.Engines.Quests
             if (pm == null)
                 return;
 
-            var quest = QuestHelper.GetQuest(pm, typeof(LeadingIntoBattleQuest));
+            BaseQuest quest = QuestHelper.GetQuest(pm, typeof(LeadingIntoBattleQuest));
 
             if (quest != null && !quest.Completed)
             {
@@ -337,7 +337,7 @@ namespace Server.Engines.Quests
             if (pm == null)
                 return;
 
-            var quest = QuestHelper.GetQuest(pm, typeof(TeachingSomethingNewQuest));
+            BaseQuest quest = QuestHelper.GetQuest(pm, typeof(TeachingSomethingNewQuest));
 
             if (quest != null && !quest.Completed)
             {

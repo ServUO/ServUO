@@ -37,7 +37,7 @@ namespace Server.Items
 
             List<Item> contains = new List<Item>(Items);
 
-            foreach (var i in contains)
+            foreach (Item i in contains)
             {
                 i.Delete();
             }

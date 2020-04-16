@@ -58,7 +58,7 @@ namespace Server.Gumps
             m_Page = page;
             m_List = list;
 
-            var p = (Point3D)prop.GetValue(o, null);
+            Point3D p = (Point3D)prop.GetValue(o, null);
 
             AddPage(0);
 
@@ -70,8 +70,8 @@ namespace Server.Gumps
                 TotalHeight,
                 OffsetGumpID);
 
-            var x = BorderSize + OffsetSize;
-            var y = BorderSize + OffsetSize;
+            int x = BorderSize + OffsetSize;
+            int y = BorderSize + OffsetSize;
 
             AddImageTiled(x, y, EntryWidth, EntryHeight, EntryGumpID);
             AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, TextHue, prop.Name);
@@ -152,9 +152,9 @@ namespace Server.Gumps
                     }
                 case 3: // Use values
                     {
-                        var x = info.GetTextEntry(0);
-                        var y = info.GetTextEntry(1);
-                        var z = info.GetTextEntry(2);
+                        TextRelay x = info.GetTextEntry(0);
+                        TextRelay y = info.GetTextEntry(1);
+                        TextRelay z = info.GetTextEntry(2);
 
                         toSet = new Point3D(
                             x == null ? 0 : Utility.ToInt32(x.Text),
@@ -215,7 +215,7 @@ namespace Server.Gumps
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                var p = targeted as IPoint3D;
+                IPoint3D p = targeted as IPoint3D;
 
                 if (p != null)
                 {

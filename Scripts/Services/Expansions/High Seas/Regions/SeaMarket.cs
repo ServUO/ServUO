@@ -161,7 +161,7 @@ namespace Server.Regions
             if (r == null)
                 return;
 
-            foreach (var player in r.GetEnumeratedMobiles().Where(p => p is PlayerMobile &&
+            foreach (Mobile player in r.GetEnumeratedMobiles().Where(p => p is PlayerMobile &&
                                                                        p.Alive /*&&
                                                                        QuestHelper.GetQuest((PlayerMobile)p, typeof(ProfessionalBountyQuest)) != null*/))
             {

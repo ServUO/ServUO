@@ -86,8 +86,8 @@ namespace Server.Engines.CityLoyalty
             }
             else if (KrampusEncounterActive && (KrampusEncounter.Encounter.Krampus != null || KrampusEncounter.Encounter.KrampusSpawning))
             {
-                var p = KrampusEncounter.Encounter.SpawnLocation;
-                var map = KrampusEncounter.Encounter.SpawnMap;
+                Point3D p = KrampusEncounter.Encounter.SpawnLocation;
+                Map map = KrampusEncounter.Encounter.SpawnMap;
 
                 minister.SayTo(
                     from,
@@ -353,7 +353,7 @@ namespace Server.Engines.CityLoyalty
             List<TradeOrderCrate> crates = new List<TradeOrderCrate>(ActiveTrades.Values);
             List<BaseCreature> toDelete = new List<BaseCreature>();
 
-            foreach (var c in crates)
+            foreach (TradeOrderCrate c in crates)
             {
                 if (c.Expired)
                 {

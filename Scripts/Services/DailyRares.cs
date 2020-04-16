@@ -15,7 +15,7 @@ namespace Server.Items
 
             // rocks
             Map map = Map.Felucca;
-            var p = new Point3D(new Point3D(2684, 2060, 28));
+            Point3D p = new Point3D(new Point3D(2684, 2060, 28));
             if (map.FindItem<DailyRocks>(p) == null)
             {
                 SetItem(new DailyRocks(), p, map);
@@ -108,7 +108,7 @@ namespace Server.Items
             p = new Point3D(5575, 1829, 6);
             if (map.FindItem<CandleLarge>(p) == null)
             {
-                var candle = new CandleLarge();
+                CandleLarge candle = new CandleLarge();
                 candle.Burning = true;
                 SetItem(candle, p, map);
             }
@@ -117,7 +117,7 @@ namespace Server.Items
             p = new Point3D(5575, 1829, 6);
             if (map.FindItem<CandleLarge>(p) == null)
             {
-                var candle = new CandleLarge();
+                CandleLarge candle = new CandleLarge();
                 candle.Burning = true;
                 SetItem(candle, p, map);
             }

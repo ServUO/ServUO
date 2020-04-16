@@ -317,11 +317,11 @@ namespace Server.Mobiles
         {
             Player = pm;
 
-            var context = BulkOrderSystem.GetContext(pm, false);
+            BODContext context = BulkOrderSystem.GetContext(pm, false);
 
             if (context != null)
             {
-                foreach (var kvp in context.Entries)
+                foreach (System.Collections.Generic.KeyValuePair<BODType, BODEntry> kvp in context.Entries)
                 {
                     switch (kvp.Key)
                     {
@@ -508,7 +508,7 @@ namespace Server.Mobiles
 
         public override string ToString()
         {
-            var sys = CityLoyaltySystem.GetCitizenship(Player, false);
+            CityLoyaltySystem sys = CityLoyaltySystem.GetCitizenship(Player, false);
 
             if (sys != null)
             {

@@ -291,14 +291,14 @@ namespace Server.Items
 
             if (c != null)
             {
-                var deed = new DragonHeadAddonDeed();
+                DragonHeadAddonDeed deed = new DragonHeadAddonDeed();
                 c.DropItem(deed);
             }
             else if (Parent == null)
             {
                 Server.Multis.BaseHouse house = Server.Multis.BaseHouse.FindHouseAt(this);
 
-                var deed = new DragonHeadAddonDeed();
+                DragonHeadAddonDeed deed = new DragonHeadAddonDeed();
                 deed.MoveToWorld(Location, Map);
 
                 deed.IsLockedDown = IsLockedDown;

@@ -49,7 +49,7 @@ namespace Server.Items
         {
             if (targeted is Item)
             {
-                var item = (Item)targeted;
+                Item item = (Item)targeted;
 
                 if (item.Parent is Mobile)
                 {

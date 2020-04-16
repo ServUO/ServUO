@@ -192,7 +192,7 @@ namespace Server.Items
 
         private void AssignRandomGem()
         {
-            var ran = Utility.RandomMinMax(1, 9);
+            int ran = Utility.RandomMinMax(1, 9);
             GemType = (GemType)ran;
         }
 

@@ -342,7 +342,7 @@ namespace Server.Items
             if (bc == null)
                 return false;
 
-            var profile = bc.AbilityProfile;
+            AbilityProfile profile = bc.AbilityProfile;
 
             if (profile != null)
             {

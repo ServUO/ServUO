@@ -52,14 +52,14 @@ namespace Server.Spells.Mysticism
                         Caster.CloseGump(typeof(EnchantSpellGump));
                     }
 
-                    var gump = new EnchantSpellGump(Caster, Scroll, wep);
+                    EnchantSpellGump gump = new EnchantSpellGump(Caster, Scroll, wep);
                     int serial = gump.Serial;
 
                     Caster.SendGump(gump);
 
                     Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
                     {
-                        var current = Caster.FindGump(typeof(EnchantSpellGump));
+                        Gump current = Caster.FindGump(typeof(EnchantSpellGump));
 
                         if (current != null && current.Serial == serial)
                         {

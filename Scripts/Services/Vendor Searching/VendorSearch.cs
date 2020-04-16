@@ -137,7 +137,7 @@ namespace Server.Engines.VendorSearching
 
                 if (item is CommodityDeed && ((CommodityDeed)item).Commodity is ICommodity)
                 {
-                    var commodity = (ICommodity)((CommodityDeed)item).Commodity;
+                    ICommodity commodity = (ICommodity)((CommodityDeed)item).Commodity;
 
                     if (!string.IsNullOrEmpty(commodity.Description.String))
                     {
@@ -466,7 +466,7 @@ namespace Server.Engines.VendorSearching
 
             if (item is IResource)
             {
-                var resName = CraftResources.GetName(((IResource)item).Resource);
+                string resName = CraftResources.GetName(((IResource)item).Resource);
 
                 if (resName.ToLower().IndexOf(searchstring.ToLower()) >= 0)
                 {
@@ -476,7 +476,7 @@ namespace Server.Engines.VendorSearching
 
             if (item is ICommodity)
             {
-                var commodity = (ICommodity)item;
+                ICommodity commodity = (ICommodity)item;
 
                 string name = commodity.Description.String;
 
@@ -578,7 +578,7 @@ namespace Server.Engines.VendorSearching
 
                     if (Contexts != null)
                     {
-                        foreach (var kvp in Contexts.Where(kvp => !kvp.Value.IsEmpty))
+                        foreach (KeyValuePair<PlayerMobile, SearchCriteria> kvp in Contexts.Where(kvp => !kvp.Value.IsEmpty))
                         {
                             writer.Write(kvp.Key);
                             kvp.Value.Serialize(writer);
@@ -599,7 +599,7 @@ namespace Server.Engines.VendorSearching
                     for (int i = 0; i < count; i++)
                     {
                         PlayerMobile pm = reader.ReadMobile() as PlayerMobile;
-                        var criteria = new SearchCriteria(reader);
+                        SearchCriteria criteria = new SearchCriteria(reader);
 
                         if (pm != null)
                         {

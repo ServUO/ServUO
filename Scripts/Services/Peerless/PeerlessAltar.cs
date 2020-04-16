@@ -358,7 +358,7 @@ namespace Server.Items
 
             if (party != null)
             {
-                foreach (var m in party.Members.Select(info => info.Mobile))
+                foreach (Mobile m in party.Members.Select(info => info.Mobile))
                 {
                     if (m.InRange(from.Location, 25) && CanEnter(m))
                     {
@@ -403,7 +403,7 @@ namespace Server.Items
                 // teleport party member's pets
                 if (fighter is PlayerMobile)
                 {
-                    foreach (var pet in ((PlayerMobile)fighter).AllFollowers.OfType<BaseCreature>().Where(pet => pet.Alive &&
+                    foreach (BaseCreature pet in ((PlayerMobile)fighter).AllFollowers.OfType<BaseCreature>().Where(pet => pet.Alive &&
                                                                                                                  pet.InRange(fighter.Location, 5) &&
                                                                                                                  !(pet is BaseMount &&
                                                                                                                  ((BaseMount)pet).Rider != null) &&
@@ -501,7 +501,7 @@ namespace Server.Items
             // teleport his pets
             if (fighter is PlayerMobile)
             {
-                foreach (var pet in ((PlayerMobile)fighter).AllFollowers.OfType<BaseCreature>().Where(pet => pet != null &&
+                foreach (BaseCreature pet in ((PlayerMobile)fighter).AllFollowers.OfType<BaseCreature>().Where(pet => pet != null &&
                                                                                                              (pet.Alive || pet.IsBonded) &&
                                                                                                              pet.Map != Map.Internal &&
                                                                                                              MobileIsInBossArea(pet)))

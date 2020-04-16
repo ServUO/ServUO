@@ -28,7 +28,7 @@ namespace Server.Items
             {
                 int baseRange = MaxThrowRange;
 
-                var attacker = Parent as Mobile;
+                Mobile attacker = Parent as Mobile;
 
                 if (attacker != null)
                 {

@@ -262,7 +262,7 @@ namespace Server.Engines.Harvest
             double skillBase = from.Skills[SkillName.Fishing].Base;
             double skillValue = from.Skills[SkillName.Fishing].Value;
 
-            var table = Siege.SiegeShard ? m_SiegeMutateTable : m_MutateTable;
+            MutateEntry[] table = Siege.SiegeShard ? m_SiegeMutateTable : m_MutateTable;
 
             for (int i = 0; i < table.Length; ++i)
             {

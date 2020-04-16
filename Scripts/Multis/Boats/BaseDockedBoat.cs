@@ -167,7 +167,7 @@ namespace Server.Multis
 
                     boat.OnAfterPlacement(false);
 
-                    var addon = LighthouseAddon.GetLighthouse(from);
+                    LighthouseAddon addon = LighthouseAddon.GetLighthouse(from);
 
                     if (addon != null)
                     {

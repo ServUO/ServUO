@@ -43,7 +43,7 @@ namespace Server.Spells.Sixth
                 SpellHelper.Turn(this.Caster, p);
                 SpellHelper.GetSurfaceTop(ref p);
 
-                foreach (var m in AcquireIndirectTargets(p, 2).OfType<Mobile>())
+                foreach (Mobile m in AcquireIndirectTargets(p, 2).OfType<Mobile>())
                 {
                     CurseSpell.DoCurse(this.Caster, m, true);
                 }

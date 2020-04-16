@@ -53,16 +53,16 @@ namespace Server.Spells.Chivalry
                 PlayEffects();
 
                 // TODO: validate formula
-                var seconds = ComputePowerValue(1);
+                int seconds = ComputePowerValue(1);
                 Utility.FixMinMax(ref seconds, 67, 228);
 
-                var delay = TimeSpan.FromSeconds(seconds);
+                TimeSpan delay = TimeSpan.FromSeconds(seconds);
 
-                var timer = Timer.DelayCall(delay, RemoveEffect, Caster);
+                Timer timer = Timer.DelayCall(delay, RemoveEffect, Caster);
 
-                var expire = DateTime.UtcNow + delay;
+                DateTime expire = DateTime.UtcNow + delay;
 
-                var context = new EnemyOfOneContext(Caster, timer, expire);
+                EnemyOfOneContext context = new EnemyOfOneContext(Caster, timer, expire);
                 context.OnCast();
                 m_Table[Caster] = context;
             }
@@ -98,7 +98,7 @@ namespace Server.Spells.Chivalry
         {
             if (m_Table.ContainsKey(m))
             {
-                var context = m_Table[m];
+                EnemyOfOneContext context = m_Table[m];
 
                 m_Table.Remove(m);
 
@@ -223,7 +223,7 @@ namespace Server.Spells.Chivalry
 
         private void UpdateDamage()
         {
-            var chivalry = (int)m_Owner.Skills.Chivalry.Value;
+            int chivalry = (int)m_Owner.Skills.Chivalry.Value;
             m_DamageScalar = 10 + ((chivalry - 40) * 9) / 10;
 
             if (m_PlayerOrPet != null)

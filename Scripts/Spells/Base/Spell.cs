@@ -115,7 +115,7 @@ namespace Server.Spells
 
                 if (DelayDamageFamily != null)
                 {
-                    foreach (var familyType in DelayDamageFamily)
+                    foreach (Type familyType in DelayDamageFamily)
                     {
                         m_ContextTable.Add(familyType, contexts);
                     }
@@ -156,7 +156,7 @@ namespace Server.Spells
 
             if (DelayDamageFamily != null)
             {
-                foreach (var t in DelayDamageFamily)
+                foreach (Type t in DelayDamageFamily)
                 {
                     if (m_ContextTable.TryGetValue(t, out contexts))
                     {
@@ -820,7 +820,7 @@ namespace Server.Spells
 
             Type spellType = GetType();
 
-            var types = spellType.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            Type[] types = spellType.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (types != null)
             {

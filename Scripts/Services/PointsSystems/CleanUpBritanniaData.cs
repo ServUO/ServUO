@@ -732,7 +732,7 @@ namespace Server.Engines.Points
 
                 if (system != null && system.CraftItems != null)
                 {
-                    var type = item.GetType();
+                    Type type = item.GetType();
 
                     if (type == typeof(SilverRing))
                     {
@@ -883,7 +883,7 @@ namespace Server.Engines.Points
 
             if (PointsExchange != null)
             {
-                foreach (var kvp in PointsExchange)
+                foreach (KeyValuePair<string, double> kvp in PointsExchange)
                 {
                     writer.Write(kvp.Key);
                     writer.Write(kvp.Value);

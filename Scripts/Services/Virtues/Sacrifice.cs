@@ -35,7 +35,7 @@ namespace Server.Services.Virtues
 
         public static void CheckAtrophy(Mobile from)
         {
-            var pm = from as PlayerMobile;
+            PlayerMobile pm = from as PlayerMobile;
 
             if (pm == null)
                 return;
@@ -47,7 +47,7 @@ namespace Server.Services.Virtues
                     if (VirtueHelper.Atrophy(from, VirtueName.Sacrifice, LossAmount))
                         from.SendLocalizedMessage(1052041); // You have lost some Sacrifice.
 
-                    var level = VirtueHelper.GetLevel(from, VirtueName.Sacrifice);
+                    VirtueLevel level = VirtueHelper.GetLevel(from, VirtueName.Sacrifice);
 
                     pm.AvailableResurrects = (int)level;
                     pm.LastSacrificeLoss = DateTime.UtcNow;
@@ -62,7 +62,7 @@ namespace Server.Services.Virtues
             if (from.Alive)
                 return;
 
-            var pm = from as PlayerMobile;
+            PlayerMobile pm = from as PlayerMobile;
 
             if (pm == null)
                 return;
@@ -95,12 +95,12 @@ namespace Server.Services.Virtues
             if (!from.CheckAlive())
                 return;
 
-            var pm = from as PlayerMobile;
+            PlayerMobile pm = from as PlayerMobile;
 
             if (pm == null)
                 return;
 
-            var targ = targeted as Mobile;
+            Mobile targ = targeted as Mobile;
 
             if (targ == null)
                 return;
@@ -151,7 +151,7 @@ namespace Server.Services.Virtues
 
                 pm.LastSacrificeGain = DateTime.UtcNow;
 
-                var gainedPath = false;
+                bool gainedPath = false;
 
                 if (VirtueHelper.Award(from, VirtueName.Sacrifice, toGain, ref gainedPath))
                 {

@@ -24,7 +24,7 @@ namespace Server.Services.Virtues
             m_Desc = description;
             m_Page = webPage;
 
-            var value = beholder.Virtues.GetValue((int)virtue);
+            int value = beholder.Virtues.GetValue((int)virtue);
 
             AddPage(0);
 
@@ -37,7 +37,7 @@ namespace Server.Services.Virtues
 
             AddPage(1);
 
-            var maxValue = VirtueHelper.GetMaxAmount(m_Virtue);
+            int maxValue = VirtueHelper.GetMaxAmount(m_Virtue);
 
             int valueDesc;
             int dots;
@@ -51,7 +51,7 @@ namespace Server.Services.Virtues
             else
                 dots = 10;
 
-            for (var i = 0; i < 10; ++i)
+            for (int i = 0; i < 10; ++i)
                 AddImage(95 + (i * 17), 50, i < dots ? 2362 : 2360);
 
             if (value < 1)

@@ -16,7 +16,7 @@ namespace Server.Mobiles
             HairItemID = 0;
             FacialHairItemID = 0;
 
-            var i = Items.Count;
+            int i = Items.Count;
 
             while (--i >= 0)
             {
@@ -44,14 +44,14 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
 
-            var v = reader.ReadInt();
+            int v = reader.ReadInt();
 
             if (v > 0)
             {
                 return;
             }
 
-            var robe = FindItemOnLayer(Layer.OuterTorso) as Robe;
+            Robe robe = FindItemOnLayer(Layer.OuterTorso) as Robe;
 
             if (robe != null)
             {

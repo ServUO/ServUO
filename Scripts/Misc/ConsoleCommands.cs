@@ -108,7 +108,7 @@ namespace Server.Misc
 
             if (input.StartsWith("bc", StringComparison.OrdinalIgnoreCase))
             {
-                var sub = input.Substring(2).Trim();
+                string sub = input.Substring(2).Trim();
 
                 BroadcastMessage(AccessLevel.Player, 0x35, String.Format("[Admin] {0}", sub));
 
@@ -118,7 +118,7 @@ namespace Server.Misc
 
             if (input.StartsWith("sc", StringComparison.OrdinalIgnoreCase))
             {
-                var sub = input.Substring(2).Trim();
+                string sub = input.Substring(2).Trim();
 
                 BroadcastMessage(AccessLevel.Counselor, 0x32, String.Format("[Admin] {0}", sub));
 
@@ -128,9 +128,9 @@ namespace Server.Misc
 
             if (input.StartsWith("ban", StringComparison.OrdinalIgnoreCase))
             {
-                var sub = input.Substring(3).Trim();
+                string sub = input.Substring(3).Trim();
 
-                var states = NetState.Instances;
+                System.Collections.Generic.List<NetState> states = NetState.Instances;
 
                 if (states.Count == 0)
                 {
@@ -138,7 +138,7 @@ namespace Server.Misc
                     return;
                 }
 
-                var ns = states.Find(o => o.Account != null && o.Mobile != null && Insensitive.StartsWith(sub, o.Mobile.RawName));
+                NetState ns = states.Find(o => o.Account != null && o.Mobile != null && Insensitive.StartsWith(sub, o.Mobile.RawName));
 
                 if (ns != null)
                 {
@@ -152,9 +152,9 @@ namespace Server.Misc
 
             if (input.StartsWith("kick", StringComparison.OrdinalIgnoreCase))
             {
-                var sub = input.Substring(4).Trim();
+                string sub = input.Substring(4).Trim();
 
-                var states = NetState.Instances;
+                System.Collections.Generic.List<NetState> states = NetState.Instances;
 
                 if (states.Count == 0)
                 {
@@ -162,7 +162,7 @@ namespace Server.Misc
                     return;
                 }
 
-                var ns = states.Find(o => o.Account != null && o.Mobile != null && Insensitive.StartsWith(sub, o.Mobile.RawName));
+                NetState ns = states.Find(o => o.Account != null && o.Mobile != null && Insensitive.StartsWith(sub, o.Mobile.RawName));
 
                 if (ns != null)
                 {
@@ -205,23 +205,23 @@ namespace Server.Misc
                     break;
                 case "online":
                     {
-                        var states = NetState.Instances;
+                        System.Collections.Generic.List<NetState> states = NetState.Instances;
 
                         if (states.Count == 0)
                         {
                             Console.WriteLine("There are no users online at this time.");
                         }
 
-                        foreach (var t in states)
+                        foreach (NetState t in states)
                         {
-                            var a = t.Account as Account;
+                            Account a = t.Account as Account;
 
                             if (a == null)
                             {
                                 continue;
                             }
 
-                            var m = t.Mobile;
+                            Mobile m = t.Mobile;
 
                             if (m != null)
                             {
@@ -324,7 +324,7 @@ namespace Server.Misc
 
                 const string format = "{0:D3}:\t{1}\t{2}";
 
-                for (var i = 0; i < _Pages.Length; i++)
+                for (int i = 0; i < _Pages.Length; i++)
                 {
                     Console.WriteLine(format, i + 1, _Pages[i].Type, _Pages[i].Sender);
                 }
@@ -348,7 +348,7 @@ namespace Server.Misc
             {
                 if (_Pages != null)
                 {
-                    foreach (var page in _Pages)
+                    foreach (PageEntry page in _Pages)
                     {
                         PageQueue.Remove(page);
                     }
@@ -369,7 +369,7 @@ namespace Server.Misc
             {
                 string[] args;
 
-                var page = FindPage(sub, out args);
+                PageEntry page = FindPage(sub, out args);
 
                 if (page == null)
                 {
@@ -390,7 +390,7 @@ namespace Server.Misc
             {
                 string[] args;
 
-                var page = FindPage(sub, out args);
+                PageEntry page = FindPage(sub, out args);
 
                 if (page == null)
                 {
@@ -424,7 +424,7 @@ namespace Server.Misc
             {
                 string[] args;
 
-                var page = FindPage(sub, out args);
+                PageEntry page = FindPage(sub, out args);
 
                 if (page == null)
                 {
@@ -434,7 +434,7 @@ namespace Server.Misc
                     return;
                 }
 
-                var idx = Array.IndexOf(_Pages, page) + 1;
+                int idx = Array.IndexOf(_Pages, page) + 1;
 
                 Console.WriteLine("[Pages]: {0:D3}:\t{1}\t{2}", idx, page.Type, page.Sender);
 
@@ -455,11 +455,11 @@ namespace Server.Misc
             {
                 string[] args;
 
-                var page = FindPage(sub, out args);
+                PageEntry page = FindPage(sub, out args);
 
                 if (page != null)
                 {
-                    var idx = Array.IndexOf(_Pages, page) + 1;
+                    int idx = Array.IndexOf(_Pages, page) + 1;
 
                     Console.WriteLine("[Pages]: {0:D3}:\t{1}\t{2}", idx, page.Type, page.Sender);
 
@@ -506,7 +506,7 @@ namespace Server.Misc
 
             if (Int32.TryParse(sub, out id) && --id >= 0 && id < _Pages.Length)
             {
-                var page = _Pages[id];
+                PageEntry page = _Pages[id];
 
                 if (PageQueue.List.Contains(page))
                 {

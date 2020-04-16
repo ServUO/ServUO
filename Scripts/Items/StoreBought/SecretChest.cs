@@ -45,7 +45,7 @@ namespace Server.Items
 
         public bool CheckPermission(Mobile from)
         {
-            var p = list.FirstOrDefault(x => x.Mobile == from);
+            SecretChestArray p = list.FirstOrDefault(x => x.Mobile == from);
 
             return LockingPerson.Account == from.Account || p != null && p.Permission;
         }
@@ -54,7 +54,7 @@ namespace Server.Items
         {
             if (Locked && from.AccessLevel < AccessLevel.GameMaster && LockingPerson.Account != from.Account)
             {
-                var l = list.FirstOrDefault(x => x.Mobile == from);
+                SecretChestArray l = list.FirstOrDefault(x => x.Mobile == from);
 
                 if (l == null)
                 {
@@ -330,7 +330,7 @@ namespace Server.Items
                     }
                 case 1:
                     {
-                        var l = Chest.list.FirstOrDefault(x => x.Mobile == from);
+                        SecretChestArray l = Chest.list.FirstOrDefault(x => x.Mobile == from);
 
                         if (l == null)
                             return;

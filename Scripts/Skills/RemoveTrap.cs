@@ -63,7 +63,7 @@ namespace Server.SkillHandlers
                     }
                     else if (targ is TreasureMapChest && TreasureMapInfo.NewSystem)
                     {
-                        var tChest = (TreasureMapChest)targ;
+                        TreasureMapChest tChest = (TreasureMapChest)targ;
 
                         if (tChest.Owner != from)
                         {
@@ -207,7 +207,7 @@ namespace Server.SkillHandlers
         {
             if (_Table != null && _Table.ContainsKey(from))
             {
-                var timer = _Table[from];
+                RemoveTrapTimer timer = _Table[from];
 
                 if (timer != null)
                 {
@@ -319,7 +319,7 @@ namespace Server.SkillHandlers
             {
                 From.RevealingAction();
 
-                var min = Math.Ceiling(From.Skills[SkillName.RemoveTrap].Value * .75);
+                double min = Math.Ceiling(From.Skills[SkillName.RemoveTrap].Value * .75);
 
                 if (From.CheckTargetSkill(SkillName.RemoveTrap, Chest, min, min > 50 ? min + 50 : 100))
                 {

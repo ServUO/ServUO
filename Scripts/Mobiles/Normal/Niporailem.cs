@@ -190,7 +190,7 @@ namespace Server.Mobiles
 
         public void DeleteSpectralArmour(Mobile target)
         {
-            foreach (var m in Helpers.Where(bc => bc != null && !bc.Deleted))
+            foreach (BaseCreature m in Helpers.Where(bc => bc != null && !bc.Deleted))
             {
                 m.Delete();
             }
@@ -213,7 +213,7 @@ namespace Server.Mobiles
 
             Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
             {
-                var treasure = new NiporailemsTreasure(this);
+                NiporailemsTreasure treasure = new NiporailemsTreasure(this);
 
                 m.PlaySound(0x033);
                 m.AddToBackpack(treasure);

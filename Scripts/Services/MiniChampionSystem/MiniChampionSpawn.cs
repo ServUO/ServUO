@@ -19,7 +19,7 @@ namespace Server.Engines.MiniChamps
         [Description("MiniChampion Generator")]
         public static void GenStoneRuins_OnCommand(CommandEventArgs e)
         {
-            foreach (var controller in Controllers)
+            foreach (MiniChamp controller in Controllers)
             {
                 controller.Delete();
             }
@@ -218,7 +218,7 @@ namespace Server.Engines.MiniChamps
 
         public void Despawn()
         {
-            foreach (var toDespawn in Despawns)
+            foreach (Mobile toDespawn in Despawns)
             {
                 toDespawn.Delete();
             }
@@ -234,7 +234,7 @@ namespace Server.Engines.MiniChamps
             bool changed = false;
             bool done = true;
 
-            foreach (var spawn in Spawn)
+            foreach (MiniChampSpawnInfo spawn in Spawn)
             {
                 if (spawn.Slice() && !changed)
                 {
@@ -254,7 +254,7 @@ namespace Server.Engines.MiniChamps
 
             if (m_Active)
             {
-                foreach (var spawn in Spawn)
+                foreach (MiniChampSpawnInfo spawn in Spawn)
                 {
                     if (spawn.Respawn() && !changed)
                     {
@@ -271,9 +271,9 @@ namespace Server.Engines.MiniChamps
 
         public void ClearSpawn()
         {
-            foreach (var spawn in Spawn)
+            foreach (MiniChampSpawnInfo spawn in Spawn)
             {
-                foreach (var creature in spawn.Creatures)
+                foreach (Mobile creature in spawn.Creatures)
                 {
                     Despawns.Add(creature);
                 }
@@ -298,7 +298,7 @@ namespace Server.Engines.MiniChamps
                     MinotaurShouts();
                 }
 
-                foreach (var type in levelInfo.Types)
+                foreach (MiniChampTypeInfo type in levelInfo.Types)
                 {
                     Spawn.Add(new MiniChampSpawnInfo(this, type));
                 }

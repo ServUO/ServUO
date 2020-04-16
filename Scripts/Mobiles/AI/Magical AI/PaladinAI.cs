@@ -33,8 +33,8 @@ namespace Server.Mobiles
 
         public override Spell GetRandomBuffSpell()
         {
-            var mana = m_Mobile.Mana;
-            var select = 1;
+            int mana = m_Mobile.Mana;
+            int select = 1;
 
             if (mana >= 15)
                 select = 3;

@@ -85,7 +85,7 @@ namespace Server.Engines.Quests
 
         public static Item FletcherRunic()
         {
-            var ran = Utility.RandomDouble();
+            double ran = Utility.RandomDouble();
 
             if (ran <= 0.0001)
             {
@@ -176,7 +176,7 @@ namespace Server.Engines.Quests
 
         public static Item CarpenterRunic()
         {
-            var ran = Utility.RandomDouble();
+            double ran = Utility.RandomDouble();
 
             if (ran <= 0.0001)
             {
@@ -230,7 +230,7 @@ namespace Server.Engines.Quests
 
         public static RecipeScroll GetRecipe(Array list)
         {
-            var recipes = new int[list.Length];
+            int[] recipes = new int[list.Length];
 
             int index = 0;
             int mid = -1;
@@ -253,7 +253,7 @@ namespace Server.Engines.Quests
                 return null;
             }
 
-            var ran = Utility.RandomDouble();
+            double ran = Utility.RandomDouble();
 
             if (mid == -1 && ran <= 0.33) // only lesser recipes in list
             {

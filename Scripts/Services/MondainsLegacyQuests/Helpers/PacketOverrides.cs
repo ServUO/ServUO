@@ -71,7 +71,7 @@ namespace Server.Engines.Quests
                 }
                 else if (RaceChangeToken.IsPending(m))
                 {
-                    var race = RaceChangeToken.GetPendingRace(m);
+                    Race race = RaceChangeToken.GetPendingRace(m);
 
                     if (race != null)
                     {

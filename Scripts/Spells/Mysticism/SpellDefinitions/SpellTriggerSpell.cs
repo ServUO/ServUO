@@ -30,14 +30,14 @@ namespace Server.Spells.Mysticism
             if (Caster.HasGump(typeof(SpellTriggerGump)))
                 Caster.CloseGump(typeof(SpellTriggerGump));
 
-            var gump = new SpellTriggerGump(this, Caster);
+            SpellTriggerGump gump = new SpellTriggerGump(this, Caster);
             int serial = gump.Serial;
 
             Caster.SendGump(gump);
 
             Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
                 {
-                    var current = Caster.FindGump(typeof(SpellTriggerGump));
+                    Gump current = Caster.FindGump(typeof(SpellTriggerGump));
 
                     if (current != null && current.Serial == serial)
                     {

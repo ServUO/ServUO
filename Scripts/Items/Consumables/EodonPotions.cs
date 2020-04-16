@@ -243,13 +243,13 @@ namespace Server.Items
                 EndTimer();
             else
             {
-                var dictionary = new Dictionary<Mobile, List<EodonPotionContext>>(Contexts);
+                Dictionary<Mobile, List<EodonPotionContext>> dictionary = new Dictionary<Mobile, List<EodonPotionContext>>(Contexts);
 
-                foreach (var kvp in dictionary)
+                foreach (KeyValuePair<Mobile, List<EodonPotionContext>> kvp in dictionary)
                 {
-                    var contexts = new List<EodonPotionContext>(kvp.Value);
+                    List<EodonPotionContext> contexts = new List<EodonPotionContext>(kvp.Value);
 
-                    foreach (var context in contexts)
+                    foreach (EodonPotionContext context in contexts)
                     {
                         context.OnTick(kvp.Key);
                     }
@@ -517,7 +517,7 @@ namespace Server.Items
 
         public override void OnTick(Mobile m)
         {
-            var context = GetContext(m, this.PotionEffect);
+            EodonPotionContext context = GetContext(m, this.PotionEffect);
 
             if (context != null && context.StartTime + TimeSpan.FromMinutes(10) > DateTime.UtcNow)
             {
@@ -693,7 +693,7 @@ namespace Server.Items
         {
             if (from.InRange(this.Location, 2))
             {
-                var berry = new LavaBerry(1);
+                LavaBerry berry = new LavaBerry(1);
                 from.AddToBackpack(berry);
                 from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1156736, "#1156727", from.NetState);
 
@@ -773,7 +773,7 @@ namespace Server.Items
         {
             if (from.InRange(this.Location, 2))
             {
-                var rm = new RiverMoss(1);
+                RiverMoss rm = new RiverMoss(1);
                 from.AddToBackpack(rm);
                 from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1156736, "#1156731", from.NetState);
 

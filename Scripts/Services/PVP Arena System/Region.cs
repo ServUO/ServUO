@@ -28,7 +28,7 @@ namespace Server.Engines.ArenaSystem
         {
             if (Arena.CurrentDuel != null)
             {
-                var duel = Arena.CurrentDuel;
+                ArenaDuel duel = Arena.CurrentDuel;
 
                 if (o is BasePotion && duel.PotionRules != PotionRules.All)
                 {
@@ -73,7 +73,7 @@ namespace Server.Engines.ArenaSystem
         {
             if (Arena.CurrentDuel != null)
             {
-                var duel = Arena.CurrentDuel;
+                ArenaDuel duel = Arena.CurrentDuel;
 
                 if (duel.InPreFight)
                 {

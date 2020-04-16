@@ -22,13 +22,13 @@ namespace Server.Mobiles
 
         public static bool CheckThinkTrigger(BaseCreature bc)
         {
-            var profile = PetTrainingHelper.GetAbilityProfile(bc);
+            AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(bc);
 
             if (profile != null)
             {
                 AreaEffect effect = null;
 
-                var effects = profile.GetAreaEffects().Where(a => !a.IsInCooldown(bc)).ToArray();
+                AreaEffect[] effects = profile.GetAreaEffects().Where(a => !a.IsInCooldown(bc)).ToArray();
 
                 if (effects != null && effects.Length > 0)
                 {
@@ -80,9 +80,9 @@ namespace Server.Mobiles
             if (creature.Map == null || creature.Map == Map.Internal)
                 return;
 
-            var count = 0;
+            int count = 0;
 
-            foreach (var m in FindValidTargets(creature, EffectRange))
+            foreach (Mobile m in FindValidTargets(creature, EffectRange))
             {
                 count++;
                 DoEffect(creature, m);
@@ -134,7 +134,7 @@ namespace Server.Mobiles
 
         public void AddToCooldown(BaseCreature bc)
         {
-            var cooldown = GetCooldown(bc);
+            TimeSpan cooldown = GetCooldown(bc);
 
             if (cooldown != TimeSpan.MinValue)
             {
@@ -411,7 +411,7 @@ namespace Server.Mobiles
                 EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x36B0, 1, 14, 63, 7, 9915, 0);
 
             Server.Effects.PlaySound(m.Location, m.Map, 0x229);
-            var damage = GetDamage(creature);
+            int damage = GetDamage(creature);
 
             if (damage > 0)
             {
@@ -424,7 +424,7 @@ namespace Server.Mobiles
         {
             if (creature.Controlled)
             {
-                var profile = PetTrainingHelper.GetAbilityProfile(creature);
+                AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(creature);
 
                 if ((profile != null && profile.HasAbility(MagicalAbility.Poisoning)) || 0.2 > Utility.RandomDouble())
                     creature.CheckSkill(SkillName.Poisoning, 0, creature.Skills[SkillName.Poisoning].Cap);
@@ -480,7 +480,7 @@ namespace Server.Mobiles
 
         public override void DoEffect(BaseCreature creature, Mobile m)
         {
-            var def = AuraDefinition.GetDefinition(creature);
+            AuraDefinition def = AuraDefinition.GetDefinition(creature);
 
             if (def.Damage > 0)
             {
@@ -580,7 +580,7 @@ namespace Server.Mobiles
 
             public static AuraDefinition GetDefinition(BaseCreature bc)
             {
-                var def = Definitions.FirstOrDefault(d => d.Uses.Any(t => t == bc.GetType()));
+                AuraDefinition def = Definitions.FirstOrDefault(d => d.Uses.Any(t => t == bc.GetType()));
 
                 if (def == null)
                 {

@@ -247,7 +247,7 @@ namespace Server.Items
                     if (line.Length == 0 || line.StartsWith("#"))
                         continue;
 
-                    var split = line.Split('\t');
+                    string[] split = line.Split('\t');
 
                     int x, y = 0;
 

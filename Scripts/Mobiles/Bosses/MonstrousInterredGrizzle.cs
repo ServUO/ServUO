@@ -255,7 +255,7 @@ namespace Server.Mobiles
 
             if (!Deleted && Map != Map.Internal && Map != null)
             {
-                foreach (var m in SpellHelper.AcquireIndirectTargets(m_Owner, Location, Map, 0).OfType<Mobile>())
+                foreach (Mobile m in SpellHelper.AcquireIndirectTargets(m_Owner, Location, Map, 0).OfType<Mobile>())
                 {
                     OnMoveOver(m);
                 }

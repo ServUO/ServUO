@@ -367,7 +367,7 @@ namespace Server.Mobiles
         {
             if (EconomyItem)
             {
-                foreach (var bii in vendor.GetBuyInfo().OfType<GenericBuyInfo>())
+                foreach (GenericBuyInfo bii in vendor.GetBuyInfo().OfType<GenericBuyInfo>())
                 {
                     if (bii.Type == m_Type || (m_Type == typeof(UncutCloth) && bii.Type == typeof(Cloth)) || (m_Type == typeof(Cloth) && bii.Type == typeof(UncutCloth)))
                     {
@@ -383,7 +383,7 @@ namespace Server.Mobiles
         {
             if (EconomyItem)
             {
-                foreach (var bii in vendor.GetBuyInfo().OfType<GenericBuyInfo>())
+                foreach (GenericBuyInfo bii in vendor.GetBuyInfo().OfType<GenericBuyInfo>())
                 {
                     if (bii.Type == m_Type || (m_Type == typeof(UncutCloth) && bii.Type == typeof(Cloth)) || (m_Type == typeof(Cloth) && bii.Type == typeof(UncutCloth)))
                     {

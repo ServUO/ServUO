@@ -54,7 +54,7 @@ namespace Server.Engines.Astronomy
 
                 for (int i = start; i < AstronomySystem.DiscoveredConstellations.Count && i <= start + 20; i++)
                 {
-                    var info = AstronomySystem.GetConstellation(AstronomySystem.DiscoveredConstellations[i]);
+                    ConstellationInfo info = AstronomySystem.GetConstellation(AstronomySystem.DiscoveredConstellations[i]);
 
                     AddHtml(15, y, 200, 18, Color("#0040FF", info.Name), false, false);
                     AddHtml(240, y, 112, 18, Color("#0040FF", info.DiscoveredBy != null ? info.DiscoveredBy.Name : "Unknown"), false, false);

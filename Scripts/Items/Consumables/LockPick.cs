@@ -155,7 +155,7 @@ namespace Server.Items
 
                 if (item is TreasureMapChest)
                 {
-                    var chest = (TreasureMapChest)item;
+                    TreasureMapChest chest = (TreasureMapChest)item;
 
                     if (TreasureMapInfo.NewSystem)
                     {

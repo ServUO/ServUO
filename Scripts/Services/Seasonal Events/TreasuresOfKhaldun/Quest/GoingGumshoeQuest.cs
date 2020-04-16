@@ -299,7 +299,7 @@ namespace Server.Engines.Khaldun
 
             if (bookcases.Count > 0)
             {
-                var bookcase = bookcases[Utility.Random(bookcases.Count)];
+                Item bookcase = bookcases[Utility.Random(bookcases.Count)];
 
                 ColUtility.Free(bookcases);
 
@@ -314,7 +314,7 @@ namespace Server.Engines.Khaldun
         {
             if (from is PlayerMobile)
             {
-                var quest = QuestHelper.GetQuest<GoingGumshoeQuest3>((PlayerMobile)from);
+                GoingGumshoeQuest3 quest = QuestHelper.GetQuest<GoingGumshoeQuest3>((PlayerMobile)from);
 
                 if (quest != null && !quest.FoundCipherBook)
                 {
@@ -330,7 +330,7 @@ namespace Server.Engines.Khaldun
                         from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x47E, 1158713, from.NetState);
                         // *You find the cipher text hidden among the books! Return to the Cryptologist to tell him where it is!*
 
-                        var region = Region.Find(from.Location, from.Map);
+                        Region region = Region.Find(from.Location, from.Map);
 
                         if (region is QuestRegion)
                         {
@@ -430,11 +430,11 @@ namespace Server.Engines.Khaldun
 
                 if (m is PlayerMobile)
                 {
-                    var quest = QuestHelper.GetQuest<GoingGumshoeQuest3>((PlayerMobile)m);
+                    GoingGumshoeQuest3 quest = QuestHelper.GetQuest<GoingGumshoeQuest3>((PlayerMobile)m);
 
                     if (quest != null && !quest.FoundCipherBook && 0.2 > Utility.RandomDouble())
                     {
-                        var rec = GoingGumshoeQuest3.Bounds.FirstOrDefault(b => b.Contains(m.Location));
+                        Rectangle2D rec = GoingGumshoeQuest3.Bounds.FirstOrDefault(b => b.Contains(m.Location));
 
                         if (rec.Contains(quest.BookCase) && CanGiveMessage(m))
                         {

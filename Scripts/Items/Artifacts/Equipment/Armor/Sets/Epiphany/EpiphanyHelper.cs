@@ -63,7 +63,7 @@ namespace Server.Items
 
         public static void CheckHit(Mobile m, int damage, SurgeType type)
         {
-            var item = m.Items.OfType<IEpiphanyArmor>().FirstOrDefault(i => i.Type == type);
+            IEpiphanyArmor item = m.Items.OfType<IEpiphanyArmor>().FirstOrDefault(i => i.Type == type);
 
             if (item == null)
                 return;
@@ -113,7 +113,7 @@ namespace Server.Items
 
         public static void OnKarmaChange(Mobile m)
         {
-            foreach (var item in m.Items.Where(i => i is IEpiphanyArmor))
+            foreach (Item item in m.Items.Where(i => i is IEpiphanyArmor))
             {
                 item.InvalidateProperties();
             }

@@ -154,11 +154,11 @@ namespace Server.Mobiles
 
         private void Teleport()
         {
-            var toTele = SpellHelper.AcquireIndirectTargets(this, Location, Map, StrikingRange).OfType<PlayerMobile>().ToList();
+            System.Collections.Generic.List<PlayerMobile> toTele = SpellHelper.AcquireIndirectTargets(this, Location, Map, StrikingRange).OfType<PlayerMobile>().ToList();
 
             if (toTele.Count > 0)
             {
-                var from = toTele[Utility.Random(toTele.Count)];
+                PlayerMobile from = toTele[Utility.Random(toTele.Count)];
 
                 if (from != null)
                 {

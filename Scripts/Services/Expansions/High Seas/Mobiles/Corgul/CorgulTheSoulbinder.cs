@@ -143,7 +143,7 @@ namespace Server.Mobiles
 
         public void SpawnHelpers()
         {
-            foreach (var pnt in _SpawnLocs)
+            foreach (Point3D pnt in _SpawnLocs)
             {
                 for (int i = 0; i < _SpawnPerLoc; i++)
                 {

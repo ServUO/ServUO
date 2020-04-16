@@ -122,12 +122,12 @@ namespace Server
         {
             if (obj is Mobile && ((Mobile)obj).Player)
             {
-                var m = (Mobile)obj;
-                var acct = m.Account as Account;
+                Mobile m = (Mobile)obj;
+                Account acct = m.Account as Account;
 
                 if (acct != null)
                 {
-                    var hwInfo = acct.HardwareInfo;
+                    HardwareInfo hwInfo = acct.HardwareInfo;
 
                     if (hwInfo != null)
                     {
@@ -164,7 +164,7 @@ namespace Server
         {
             pvSrc.ReadByte(); // 1: <4.0.1a, 2>=4.0.1a
 
-            var info = new HardwareInfo
+            HardwareInfo info = new HardwareInfo
             {
                 m_InstanceID = pvSrc.ReadInt32(),
                 m_OSMajor = pvSrc.ReadInt32(),
@@ -194,7 +194,7 @@ namespace Server
                 m_TimeReceived = DateTime.UtcNow
             };
 
-            var acct = state.Account as Account;
+            Account acct = state.Account as Account;
 
             if (acct != null)
             {

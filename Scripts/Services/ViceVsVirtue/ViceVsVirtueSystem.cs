@@ -441,7 +441,7 @@ namespace Server.Engines.VvV
                     {
                         if (targeted is PlayerMobile)
                         {
-                            var pm = targeted as PlayerMobile;
+                            PlayerMobile pm = targeted as PlayerMobile;
                             VvVPlayerEntry entry = Instance.GetPlayerEntry<VvVPlayerEntry>(pm);
 
                             if (entry != null && entry.Active)
@@ -580,8 +580,8 @@ namespace Server.Engines.VvV
 
         public static bool IsAllied(Mobile a, Mobile b)
         {
-            var guildA = a.Guild as Guild;
-            var guildB = b.Guild as Guild;
+            Guild guildA = a.Guild as Guild;
+            Guild guildB = b.Guild as Guild;
 
             if (guildA != null && guildB != null && (guildA == guildB || guildA.IsAlly(guildB)))
             {
@@ -593,8 +593,8 @@ namespace Server.Engines.VvV
                 return false;
             }
 
-            var tempA = TempCombatants.FirstOrDefault(c => c.From == a);
-            var tempB = TempCombatants.FirstOrDefault(c => c.From == b);
+            TemporaryCombatant tempA = TempCombatants.FirstOrDefault(c => c.From == a);
+            TemporaryCombatant tempB = TempCombatants.FirstOrDefault(c => c.From == b);
 
             if (tempA != null && (tempA.Friendly == b || (tempA.FriendlyGuild != null && tempA.FriendlyGuild == guildB)))
             {
@@ -684,7 +684,7 @@ namespace Server.Engines.VvV
 
         public static TemporaryCombatant GetTempCombatant(Mobile from, Mobile to)
         {
-            foreach (var combatant in TempCombatants.Where(c => c.From == from))
+            foreach (TemporaryCombatant combatant in TempCombatants.Where(c => c.From == from))
             {
                 if (combatant.Friendly == null && to == null)
                     return combatant;
@@ -704,7 +704,7 @@ namespace Server.Engines.VvV
                 AddTempCombatantTimer();
             }
 
-            var combatant = GetTempCombatant(m, friendlyTo);
+            TemporaryCombatant combatant = GetTempCombatant(m, friendlyTo);
 
             if (combatant == null)
             {
@@ -790,7 +790,7 @@ namespace Server.Engines.VvV
             writer.Write(ShowNewRules == null ? 0 : ShowNewRules.Count);
             if (ShowNewRules != null)
             {
-                foreach (var pm in ShowNewRules)
+                foreach (PlayerMobile pm in ShowNewRules)
                     writer.Write(pm);
             }
 
@@ -834,7 +834,7 @@ namespace Server.Engines.VvV
                     int c = reader.ReadInt();
                     for (int i = 0; i < c; i++)
                     {
-                        var pm = reader.ReadMobile() as PlayerMobile;
+                        PlayerMobile pm = reader.ReadMobile() as PlayerMobile;
 
                         if (pm != null)
                         {
@@ -914,10 +914,10 @@ namespace Server.Engines.VvV
 
         public void FixVvVItems()
         {
-            foreach (var item in VvVItems.Where(i => i is Spellbook))
+            foreach (Item item in VvVItems.Where(i => i is Spellbook))
             {
-                var book = item as Spellbook;
-                var attrs = RunicReforging.GetNegativeAttributes(item);
+                Spellbook book = item as Spellbook;
+                NegativeAttributes attrs = RunicReforging.GetNegativeAttributes(item);
 
                 if (attrs != null)
                 {
@@ -962,9 +962,9 @@ namespace Server.Engines.VvV
 
         public static void DeleteSilverTraders()
         {
-            var list = new List<Mobile>(World.Mobiles.Values.Where(m => m is SilverTrader));
+            List<Mobile> list = new List<Mobile>(World.Mobiles.Values.Where(m => m is SilverTrader));
 
-            foreach (var mob in list)
+            foreach (Mobile mob in list)
             {
                 mob.Delete();
             }
@@ -981,7 +981,7 @@ namespace Server.Engines.VvV
 
             Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
                 {
-                    foreach (var pm in World.Mobiles.Values.OfType<PlayerMobile>().Where(pm => IsVvV(pm)))
+                    foreach (PlayerMobile pm in World.Mobiles.Values.OfType<PlayerMobile>().Where(pm => IsVvV(pm)))
                     {
                         VvVPlayerEntry entry = Instance.GetPlayerEntry<VvVPlayerEntry>(pm);
 
@@ -1081,7 +1081,7 @@ namespace Server.Engines.VvV
                 return;
             }
 
-            var entry = KilledEntry;
+            EnemyKilledEntry entry = KilledEntry;
 
             if (entry == null)
             {

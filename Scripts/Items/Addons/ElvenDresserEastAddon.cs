@@ -115,7 +115,7 @@ namespace Server.Items
                 house.Addons.Remove(this);
                 Delete();
 
-                var addon = new ElvenDresserAddonEast();
+                ElvenDresserAddonEast addon = new ElvenDresserAddonEast();
                 addon.MoveToWorld(p, map);
                 house.Addons[addon] = house.Owner;
             }
@@ -170,14 +170,14 @@ namespace Server.Items
 
             if (c != null)
             {
-                var deed = new ElvenDresserDeedEast();
+                ElvenDresserDeedEast deed = new ElvenDresserDeedEast();
                 c.DropItem(deed);
             }
             else if (this.Parent == null)
             {
                 Server.Multis.BaseHouse house = Server.Multis.BaseHouse.FindHouseAt(this);
 
-                var deed = new ElvenDresserDeedEast();
+                ElvenDresserDeedEast deed = new ElvenDresserDeedEast();
                 deed.MoveToWorld(this.Location, this.Map);
 
                 deed.IsLockedDown = IsLockedDown;

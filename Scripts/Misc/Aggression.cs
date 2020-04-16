@@ -42,14 +42,14 @@ namespace Server.Misc
 
         public static void EventSink_PlayerDeath(PlayerDeathEventArgs e)
         {
-            var killed = e.Mobile;
+            Mobile killed = e.Mobile;
 
-            foreach (var m in killed.Aggressed.Select(m => m.Defender))
+            foreach (Mobile m in killed.Aggressed.Select(m => m.Defender))
             {
                 CheckCombat(m);
             }
 
-            foreach (var m in killed.Aggressors.Select(x => x.Attacker))
+            foreach (Mobile m in killed.Aggressors.Select(x => x.Attacker))
             {
                 CheckCombat(m);
             }
@@ -59,14 +59,14 @@ namespace Server.Misc
 
         public static void EventSink_CreatureDeath(CreatureDeathEventArgs e)
         {
-            var killed = e.Creature;
+            Mobile killed = e.Creature;
 
-            foreach (var m in killed.Aggressed.Select(x => x.Defender))
+            foreach (Mobile m in killed.Aggressed.Select(x => x.Defender))
             {
                 CheckCombat(m);
             }
 
-            foreach (var m in killed.Aggressors.Select(x => x.Attacker))
+            foreach (Mobile m in killed.Aggressors.Select(x => x.Attacker))
             {
                 CheckCombat(m);
             }
@@ -112,12 +112,12 @@ namespace Server.Misc
                 return true;
             }
 
-            var list = m.Aggressed;
+            List<AggressorInfo> list = m.Aggressed;
 
             for (int i = 0; i < list.Count; ++i)
             {
                 AggressorInfo info = list[i];
-                var defender = info.Defender;
+                Mobile defender = info.Defender;
 
                 if ((defender is PlayerMobile || (defender is BaseCreature && !((BaseCreature)defender).IsMonster)) &&
                     (DateTime.UtcNow < info.LastCombatTime + Delay && defender.LastKilled < info.LastCombatTime))
@@ -136,7 +136,7 @@ namespace Server.Misc
             for (int i = 0; i < list.Count; ++i)
             {
                 AggressorInfo info = list[i];
-                var attacker = info.Attacker;
+                Mobile attacker = info.Attacker;
 
                 if ((attacker is PlayerMobile || (attacker is BaseCreature && !((BaseCreature)attacker).IsMonster)) &&
                     (DateTime.UtcNow < info.LastCombatTime + Delay && attacker.LastKilled < info.LastCombatTime))

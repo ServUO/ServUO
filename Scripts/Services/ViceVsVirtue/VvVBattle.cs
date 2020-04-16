@@ -360,7 +360,7 @@ namespace Server.Engines.VvV
 
                     if (g != null)
                     {
-                        var t = GetTeam(g);
+                        BattleTeam t = GetTeam(g);
 
                         if (team == null)
                         {
@@ -406,9 +406,9 @@ namespace Server.Engines.VvV
             if (BattleAggression == null)
                 return;
 
-            var list = new List<Mobile>(BattleAggression.Keys);
+            List<Mobile> list = new List<Mobile>(BattleAggression.Keys);
 
-            foreach (var m in list)
+            foreach (Mobile m in list)
             {
                 if (BattleAggression[m] < DateTime.UtcNow && !m.Region.IsPartOf(Region))
                 {

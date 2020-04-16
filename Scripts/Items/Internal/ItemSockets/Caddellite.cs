@@ -147,7 +147,7 @@ namespace Server.Items
         {
             BaseCreature pet = KhaldunTastyTreat.GetPetUnderEffects(m);
             Caddellite equipped = null;
-            var item = m.FindItemOnLayer(Layer.TwoHanded);
+            Item item = m.FindItemOnLayer(Layer.TwoHanded);
 
             if (item == null)
             {
@@ -172,7 +172,7 @@ namespace Server.Items
 
         public static void OnLogin(LoginEventArgs e)
         {
-            var pm = e.Mobile as PlayerMobile;
+            PlayerMobile pm = e.Mobile as PlayerMobile;
 
             if (pm != null)
             {

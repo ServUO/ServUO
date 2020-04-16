@@ -131,12 +131,12 @@ namespace Server.Engines.Quests
 
         public static void OnBossSlain(Server.Engines.Despise.DespiseBoss boss)
         {
-            foreach (var ds in boss.GetLootingRights())
+            foreach (DamageStore ds in boss.GetLootingRights())
             {
                 if (ds.m_Mobile is PlayerMobile)
                 {
-                    var pm = ds.m_Mobile as PlayerMobile;
-                    var quest = QuestHelper.GetQuest<WhisperingWithWispsQuest>(pm);
+                    PlayerMobile pm = ds.m_Mobile as PlayerMobile;
+                    WhisperingWithWispsQuest quest = QuestHelper.GetQuest<WhisperingWithWispsQuest>(pm);
 
                     if (quest != null && !quest.Completed)
                     {

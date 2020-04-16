@@ -713,7 +713,7 @@ namespace Server.Engines.CannedEvil
 
             if (m_Timer != null && m_Timer.Running && _NextGhostCheck < DateTime.UtcNow)
             {
-                foreach (var ghost in m_Region.GetEnumeratedMobiles().OfType<PlayerMobile>().Where(pm => !pm.Alive && (pm.Corpse == null || pm.Corpse.Deleted)))
+                foreach (PlayerMobile ghost in m_Region.GetEnumeratedMobiles().OfType<PlayerMobile>().Where(pm => !pm.Alive && (pm.Corpse == null || pm.Corpse.Deleted)))
                 {
                     Map map = ghost.Map;
                     Point3D loc = ExorcismSpell.GetNearestShrine(ghost, ref map);
@@ -1575,9 +1575,9 @@ namespace Server.Engines.CannedEvil
             {
                 if (m.Alive && m.Backpack != null)
                 {
-                    var list = new List<Item>(m.Backpack.Items.Where(i => i.LootType == LootType.Cursed));
+                    List<Item> list = new List<Item>(m.Backpack.Items.Where(i => i.LootType == LootType.Cursed));
 
-                    foreach (var item in list)
+                    foreach (Item item in list)
                     {
                         item.MoveToWorld(m.Location, m.Map);
                     }

@@ -16,7 +16,7 @@ namespace Server.Misc
 
         public override void GiveGift(Mobile mob)
         {
-            var bag = new AnniversaryBag21st(mob);
+            AnniversaryBag21st bag = new AnniversaryBag21st(mob);
 
             switch (GiveGift(mob, bag))
             {

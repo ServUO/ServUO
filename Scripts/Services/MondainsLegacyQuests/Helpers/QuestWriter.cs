@@ -29,9 +29,9 @@ namespace Server.Engines.Quests
                 return false;
             }
 
-            using (var s = new MemoryStream())
+            using (MemoryStream s = new MemoryStream())
             {
-                var w = new BinaryFileWriter(s, true);
+                BinaryFileWriter w = new BinaryFileWriter(s, true);
 
                 try
                 {
@@ -81,7 +81,7 @@ namespace Server.Engines.Quests
 
             writer.Write(quests.Count);
 
-            foreach (var quest in quests)
+            foreach (BaseQuest quest in quests)
             {
                 Type(writer, quest.GetType());
 
@@ -106,7 +106,7 @@ namespace Server.Engines.Quests
 
             writer.Write(chains.Count);
 
-            foreach (var pair in chains)
+            foreach (KeyValuePair<QuestChain, BaseChain> pair in chains)
             {
                 writer.Write((int)pair.Key);
 

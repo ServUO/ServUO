@@ -12,8 +12,8 @@ namespace Server.Mobiles
             Name = NameList.RandomName("evil mage");
             Title = "the evil mage";
 
-            var robe = new Robe(Utility.RandomNeutralHue());
-            var sandals = new Sandals();
+            Robe robe = new Robe(Utility.RandomNeutralHue());
+            Sandals sandals = new Sandals();
 
             Body = 124;
 

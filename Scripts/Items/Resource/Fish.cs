@@ -24,7 +24,7 @@ namespace Server.Items
 
         public bool Carve(Mobile from, Item item)
         {
-            var fish = new RawFishSteak();
+            RawFishSteak fish = new RawFishSteak();
 
             if (HasSocket<Caddellite>())
             {

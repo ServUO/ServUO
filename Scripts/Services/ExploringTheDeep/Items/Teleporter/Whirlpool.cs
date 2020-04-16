@@ -252,7 +252,7 @@ namespace Server.Items
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(1.0), () =>
                     {
-                        var spell = QuestHelper.GetQuest<ExploringTheDeepQuest>((PlayerMobile)m);
+                        ExploringTheDeepQuest spell = QuestHelper.GetQuest<ExploringTheDeepQuest>((PlayerMobile)m);
 
                         if (spell != null)
                         {

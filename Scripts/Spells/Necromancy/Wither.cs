@@ -63,7 +63,7 @@ namespace Server.Spells.Necromancy
                     Effects.PlaySound(this.Caster.Location, map, 0x10B);
                     Effects.SendLocationParticles(EffectItem.Create(this.Caster.Location, map, EffectItem.DefaultDuration), 0x37CC, 1, 40, 97, 3, 9917, 0);
 
-                    foreach (var id in AcquireIndirectTargets(Caster.Location, 4))
+                    foreach (IDamageable id in AcquireIndirectTargets(Caster.Location, 4))
                     {
                         Mobile m = id as Mobile;
 

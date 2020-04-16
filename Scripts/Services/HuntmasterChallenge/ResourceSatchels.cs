@@ -54,7 +54,7 @@ namespace Server.Items
         {
             Type type = item.GetType();
 
-            foreach (var t in HoldTypes)
+            foreach (Type t in HoldTypes)
             {
                 if (type == t || type.IsSubclassOf(t))
                 {

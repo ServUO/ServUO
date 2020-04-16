@@ -85,7 +85,7 @@ namespace Server.Mobiles
             FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
 
             IPooledEnumerable eable = Map.GetMobilesInRange(Location, 4);
-            var list = new System.Collections.Generic.List<Mobile>();
+            System.Collections.Generic.List<Mobile> list = new System.Collections.Generic.List<Mobile>();
 
             foreach (Mobile m in eable)
             {
@@ -96,7 +96,7 @@ namespace Server.Mobiles
                 }
             }
 
-            foreach (var m in list)
+            foreach (Mobile m in list)
             {
                 Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(.5), mob =>
                 {

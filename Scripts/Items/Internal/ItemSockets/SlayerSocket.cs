@@ -36,7 +36,7 @@ namespace Server.Items
                 return SlayerName.None;
             }
 
-            var socket = item.GetSocket<SlayerSocket>();
+            SlayerSocket socket = item.GetSocket<SlayerSocket>();
 
             if (socket != null)
             {

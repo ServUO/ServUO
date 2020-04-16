@@ -16,7 +16,7 @@ namespace Server.Engines.Chat
             if (!Directory.Exists("Logs"))
                 Directory.CreateDirectory("Logs");
 
-            var directory = Path.Combine("Logs", "Chat");
+            string directory = Path.Combine("Logs", "Chat");
 
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
@@ -58,7 +58,7 @@ namespace Server.Engines.Chat
                     channelOutput = m_OutputPerChannel[channel];
                 else
                 {
-                    var path = "Logs";
+                    string path = "Logs";
 
                     AppendPath(ref path, "chat");
                     AppendPath(ref path, "channels");

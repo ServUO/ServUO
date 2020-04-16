@@ -106,7 +106,7 @@ namespace Server.Misc
                 {
                     m_IPTable = new Dictionary<IPAddress, Int32>();
 
-                    foreach (var a in Accounts.GetAccounts().OfType<Account>())
+                    foreach (Account a in Accounts.GetAccounts().OfType<Account>())
                     {
                         if (a.LoginIPs.Length > 0)
                         {

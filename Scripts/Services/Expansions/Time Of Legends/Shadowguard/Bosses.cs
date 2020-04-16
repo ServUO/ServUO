@@ -212,7 +212,7 @@ namespace Server.Engines.Shadowguard
         public virtual void Summon()
         {
             int max = MaxSummons;
-            var map = Map;
+            Map map = Map;
 
             ShadowguardEncounter inst = ShadowguardController.GetEncounter(this.Location, this.Map);
 
@@ -960,13 +960,13 @@ namespace Server.Engines.Shadowguard
             SetWearable(new Waraji());
             SetWearable(new BoneArms());
 
-            var scimitar = new Scimitar();
+            Scimitar scimitar = new Scimitar();
             scimitar.Movable = false;
 
             PackItem(scimitar);
             PackItem(new Arrow(25));
 
-            var hiryu = new LesserHiryu();
+            LesserHiryu hiryu = new LesserHiryu();
             hiryu.Rider = this;
 
             SetWeaponAbility(WeaponAbility.Dismount);

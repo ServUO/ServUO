@@ -82,7 +82,7 @@ namespace Server.Spells.Chivalry
                 int dispelSkill = ComputePowerValue(2);
                 double chiv = Caster.Skills.Chivalry.Value;
 
-                foreach (var m in AcquireIndirectTargets(Caster.Location, 8).OfType<Mobile>())
+                foreach (Mobile m in AcquireIndirectTargets(Caster.Location, 8).OfType<Mobile>())
                 {
                     BaseCreature bc = m as BaseCreature;
 

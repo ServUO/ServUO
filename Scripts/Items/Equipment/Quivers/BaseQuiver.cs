@@ -240,7 +240,7 @@ namespace Server.Items
 
         public override void OnAfterDuped(Item newItem)
         {
-            var quiver = newItem as BaseQuiver;
+            BaseQuiver quiver = newItem as BaseQuiver;
 
             if (quiver != null)
             {
@@ -251,7 +251,7 @@ namespace Server.Items
                 quiver.m_SetSkillBonuses = new AosSkillBonuses(newItem, m_SetSkillBonuses);
             }
 
-            var wing = newItem as GargishLeatherWingArmor;
+            GargishLeatherWingArmor wing = newItem as GargishLeatherWingArmor;
 
             if (wing != null)
             {
@@ -1240,7 +1240,7 @@ namespace Server.Items
                 }
 
                 // Otherwise look for secure containers within two tiles
-                var items = m.Map.GetItemsInRange(m.Location, 1);
+                IPooledEnumerable<Item> items = m.Map.GetItemsInRange(m.Location, 1);
                 foreach (Item i in items)
                 {
                     if (!(i is Container))

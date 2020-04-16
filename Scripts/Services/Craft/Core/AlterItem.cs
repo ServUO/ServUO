@@ -31,7 +31,7 @@ namespace Server.Engines.Craft
             if (Inherit)
                 return true;
 
-            var system = CraftContext.Systems.FirstOrDefault(sys => sys.GetType() == CraftSystem);
+            CraftSystem system = CraftContext.Systems.FirstOrDefault(sys => sys.GetType() == CraftSystem);
 
             if (system != null)
             {
@@ -102,7 +102,7 @@ namespace Server.Engines.Craft
             SkillName skill = m_System.MainSkill;
             double value = from.Skills[skill].Value;
 
-            var alterInfo = GetAlterableAttribute(o, false);
+            AlterableAttribute alterInfo = GetAlterableAttribute(o, false);
 
             if (alterInfo == null)
             {
@@ -185,7 +185,7 @@ namespace Server.Engines.Craft
             }
             else if (origItem.HasSocket<SlayerSocket>())
             {
-                var socket = origItem.GetSocket<SlayerSocket>();
+                SlayerSocket socket = origItem.GetSocket<SlayerSocket>();
 
                 if (socket.Slayer == SlayerName.Silver)
                 {
@@ -335,8 +335,8 @@ namespace Server.Engines.Craft
         {
             if (newItem is BaseArmor || newItem is BaseClothing)
             {
-                var newResists = Imbuing.GetBaseResists(newItem);
-                var oldResists = Imbuing.GetBaseResists(oldItem);
+                int[] newResists = Imbuing.GetBaseResists(newItem);
+                int[] oldResists = Imbuing.GetBaseResists(oldItem);
 
                 for (int i = 0; i < newResists.Length; i++)
                 {

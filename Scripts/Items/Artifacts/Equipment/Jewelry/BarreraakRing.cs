@@ -73,7 +73,7 @@ namespace Server.Items
 
             if (Parent is Mobile)
             {
-                var m = (Mobile)Parent;
+                Mobile m = (Mobile)Parent;
 
                 Timer.DelayCall(() =>
                     {

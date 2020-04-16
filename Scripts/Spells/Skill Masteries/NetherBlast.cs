@@ -95,7 +95,7 @@ namespace Server.Spells.SkillMasteries
 
                                   if (canFit)
                                   {
-                                      var item = new InternalItem(Caster, 0x37CC, loc, Caster.Map);
+                                      InternalItem item = new InternalItem(Caster, 0x37CC, loc, Caster.Map);
                                       item.ProcessDelta();
                                       Effects.SendLocationParticles(EffectItem.Create(loc, Caster.Map, EffectItem.DefaultDuration), 0x376A, 9, 10, 5048);
 
@@ -116,9 +116,9 @@ namespace Server.Spells.SkillMasteries
         {
             Dictionary<Mobile, InternalItem> list = new Dictionary<Mobile, InternalItem>();
 
-            foreach (var item in Items.Where(i => !i.Deleted))
+            foreach (InternalItem item in Items.Where(i => !i.Deleted))
             {
-                foreach (var m in AcquireIndirectTargets(item.Location, 1).OfType<Mobile>().Where(m =>
+                foreach (Mobile m in AcquireIndirectTargets(item.Location, 1).OfType<Mobile>().Where(m =>
                      (m.Z + 16) > item.Z &&
                      (item.Z + 12) > m.Z))
                 {
@@ -129,7 +129,7 @@ namespace Server.Spells.SkillMasteries
                 }
             }
 
-            foreach (var kvp in list)
+            foreach (KeyValuePair<Mobile, InternalItem> kvp in list)
             {
                 DoDamage(kvp.Key, kvp.Value);
             }
@@ -140,7 +140,7 @@ namespace Server.Spells.SkillMasteries
 
         public override void OnExpire()
         {
-            foreach (var item in Items)
+            foreach (InternalItem item in Items)
             {
                 item.Delete();
             }

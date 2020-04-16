@@ -151,7 +151,7 @@ namespace Server.Engines.HuntsmasterChallenge
         {
             for (int i = 0; i < HuntingTrophyInfo.Infos.Count; i++)
             {
-                var info = HuntingTrophyInfo.Infos[i];
+                HuntingTrophyInfo info = HuntingTrophyInfo.Infos[i];
 
                 if (info.Species.Number == number)
                 {

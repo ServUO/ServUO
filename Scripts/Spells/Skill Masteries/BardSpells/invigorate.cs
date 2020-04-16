@@ -137,7 +137,7 @@ namespace Server.Spells.SkillMasteries
 
         public static int GetHPBonus(Mobile m)
         {
-            var spell = SkillMasterySpell.GetSpellForParty(m, typeof(InvigorateSpell));
+            SkillMasterySpell spell = SkillMasterySpell.GetSpellForParty(m, typeof(InvigorateSpell));
 
             if (spell != null)
                 return spell.StatBonus();

@@ -476,7 +476,7 @@ namespace Server.Gumps
                         return;
                     }
 
-                    var items = FindTypes((PlayerMobile)from, m_Selected);
+                    List<Item> items = FindTypes((PlayerMobile)from, m_Selected);
 
                     if (items.Count > 0)
                     {
@@ -485,7 +485,7 @@ namespace Server.Gumps
 
                         for (int i = 0; i < items.Count; i++)
                         {
-                            var item = GetActual(items[i]);
+                            Item item = GetActual(items[i]);
 
                             if (item != null && !item.Deleted)
                                 count += item.Amount;
@@ -510,7 +510,7 @@ namespace Server.Gumps
 
                         for (int i = 0; i < items.Count && deleted < amount; i++)
                         {
-                            var item = GetActual(items[i]);
+                            Item item = GetActual(items[i]);
 
                             if (item == null || item.Deleted)
                             {
@@ -584,7 +584,7 @@ namespace Server.Gumps
                 item = ((CommodityDeed)item).Commodity;
             }
 
-            var t = item.GetType();
+            Type t = item.GetType();
 
             if (type == t)
             {
@@ -617,12 +617,12 @@ namespace Server.Gumps
 
         public static int GetTypes(PlayerMobile pm, CollectionItem colItem)
         {
-            var type = colItem.Type;
+            Type type = colItem.Type;
             bool derives = type == typeof(RedScales) || type == typeof(Fish) || type == typeof(Crab) || type == typeof(Lobster);
 
             int count = 0;
 
-            foreach (var item in pm.Backpack.Items)
+            foreach (Item item in pm.Backpack.Items)
             {
                 if (CheckType(item, type, derives) && colItem.Validate(pm, GetActual(item)))
                 {
@@ -642,12 +642,12 @@ namespace Server.Gumps
 
         public static List<Item> FindTypes(PlayerMobile pm, CollectionItem colItem)
         {
-            var type = colItem.Type;
+            Type type = colItem.Type;
             bool derives = type == typeof(RedScales) || type == typeof(Fish) || type == typeof(Crab) || type == typeof(Lobster);
 
-            var list = new List<Item>();
+            List<Item> list = new List<Item>();
 
-            foreach (var item in pm.Backpack.Items)
+            foreach (Item item in pm.Backpack.Items)
             {
                 if (CheckType(item, type, derives) && colItem.Validate(pm, GetActual(item)))
                 {

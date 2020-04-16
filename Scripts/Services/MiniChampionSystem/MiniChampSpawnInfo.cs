@@ -31,7 +31,7 @@ namespace Server.Engines.MiniChamps
         public bool Slice()
         {
             bool killed = false;
-            var list = new List<Mobile>(Creatures);
+            List<Mobile> list = new List<Mobile>(Creatures);
 
             for (int i = 0; i < list.Count; i++)
             {

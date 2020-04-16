@@ -237,9 +237,9 @@ namespace Server.Engines.Harvest
                 from.SendLocalizedMessage(1112233); // You carefully extract a glistening gem from the vein!
             else if (item != null)
             {
-                foreach (var res in OreAndStone.Resources.Where(r => r.Types != null))
+                foreach (HarvestResource res in OreAndStone.Resources.Where(r => r.Types != null))
                 {
-                    foreach (var type in res.Types)
+                    foreach (Type type in res.Types)
                     {
                         if (item.GetType() == type)
                         {

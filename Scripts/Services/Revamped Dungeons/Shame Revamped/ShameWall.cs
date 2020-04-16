@@ -77,13 +77,13 @@ namespace Server.Engines.ShameRevamped
             if (map == null || map == Map.Internal)
                 return;
 
-            foreach (var component in wall.Components)
+            foreach (AddonComponent component in wall.Components)
             {
                 foreach (Point3D[] pnts in _TeleportLocs)
                 {
                     if (component.Location == pnts[0])
                     {
-                        var oldtele = map.FindItem<ConditionTeleporter>(new Point3D(pnts[1]));
+                        ConditionTeleporter oldtele = map.FindItem<ConditionTeleporter>(new Point3D(pnts[1]));
 
                         if (oldtele != null)
                         {
@@ -91,7 +91,7 @@ namespace Server.Engines.ShameRevamped
                             oldtele.Delete();
                         }
 
-                        var teleporter = new ShameWallTeleporter(pnts[2], map);
+                        ShameWallTeleporter teleporter = new ShameWallTeleporter(pnts[2], map);
                         teleporter.MoveToWorld(pnts[1], map);
 
                         WeakEntityCollection.Add("newshame", teleporter);

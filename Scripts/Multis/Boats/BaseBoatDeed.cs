@@ -155,7 +155,7 @@ namespace Server.Multis
                     boat.MoveToWorld(p, map);
                     boat.OnAfterPlacement(true);
 
-                    var addon = LighthouseAddon.GetLighthouse(from);
+                    LighthouseAddon addon = LighthouseAddon.GetLighthouse(from);
 
                     if (addon != null)
                     {

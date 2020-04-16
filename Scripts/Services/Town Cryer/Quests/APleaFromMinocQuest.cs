@@ -319,7 +319,7 @@ namespace Server.Engines.Quests
         {
             if (m is PlayerMobile)
             {
-                var pm = m as PlayerMobile;
+                PlayerMobile pm = m as PlayerMobile;
 
                 if (QuestHelper.CheckDoneOnce(pm, typeof(APleaFromMinocQuest), this, false))
                 {
@@ -380,9 +380,9 @@ namespace Server.Engines.Quests
 
         private bool CheckProgress(PlayerMobile pm)
         {
-            foreach (var t in _Quests)
+            foreach (Type t in _Quests)
             {
-                var quest = QuestHelper.GetQuest(pm, t);
+                BaseQuest quest = QuestHelper.GetQuest(pm, t);
 
                 if (quest != null && !quest.Completed)
                 {

@@ -21,7 +21,7 @@ namespace Server.Services.Virtues
 
         public static bool CheckMapRegion(Mobile first, Mobile second)
         {
-            var map = first.Map;
+            Map map = first.Map;
 
             if (second.Map != map)
                 return false;
@@ -48,7 +48,7 @@ namespace Server.Services.Virtues
             if (!from.CheckAlive())
                 return;
 
-            var protector = from as PlayerMobile;
+            PlayerMobile protector = from as PlayerMobile;
 
             if (protector == null)
                 return;
@@ -78,8 +78,8 @@ namespace Server.Services.Virtues
 
         public static void OnVirtueTargeted(Mobile from, object obj)
         {
-            var protector = from as PlayerMobile;
-            var pm = obj as PlayerMobile;
+            PlayerMobile protector = from as PlayerMobile;
+            PlayerMobile pm = obj as PlayerMobile;
 
             if (protector == null)
                 return;
@@ -140,7 +140,7 @@ namespace Server.Services.Virtues
             {
                 protectee.JusticeProtectors.Add(protector);
 
-                var args = String.Format("{0}\t{1}", protector.Name, protectee.Name);
+                string args = String.Format("{0}\t{1}", protector.Name, protectee.Name);
 
                 protectee.SendLocalizedMessage(1049451, args); // You are now being protected by ~1_NAME~.
                 protector.SendLocalizedMessage(1049452, args); // You are now protecting ~2_NAME~.
@@ -149,7 +149,7 @@ namespace Server.Services.Virtues
 
         public static void OnVirtueRejected(PlayerMobile protector, PlayerMobile protectee)
         {
-            var args = String.Format("{0}\t{1}", protector.Name, protectee.Name);
+            string args = String.Format("{0}\t{1}", protector.Name, protectee.Name);
 
             protectee.SendLocalizedMessage(1049453, args); // You have declined protection from ~1_NAME~.
             protector.SendLocalizedMessage(1049454, args); // ~2_NAME~ has declined your protection.
@@ -166,7 +166,7 @@ namespace Server.Services.Virtues
 
         public static void CheckAtrophy(Mobile from)
         {
-            var pm = from as PlayerMobile;
+            PlayerMobile pm = from as PlayerMobile;
 
             if (pm == null)
                 return;
@@ -245,7 +245,7 @@ namespace Server.Services.Virtues
         {
             if (info.ButtonID == 2)
             {
-                var okay = info.IsSwitched(1);
+                bool okay = info.IsSwitched(1);
 
                 if (okay)
                     JusticeVirtue.OnVirtueAccepted(m_Protector, m_Protectee);

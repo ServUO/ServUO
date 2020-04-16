@@ -117,7 +117,7 @@ namespace Server.Mobiles
 
         public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
         {
-            var damage = base.Damage(amount, from, informMount, checkDisrupt);
+            int damage = base.Damage(amount, from, informMount, checkDisrupt);
 
             if (from != null && from != this && !Controlled && !Summoned && Utility.RandomDouble() <= 0.2)
             {

@@ -136,7 +136,7 @@ namespace Server.Mobiles
                 xml.WriteEndElement();
 
                 xml.WriteStartElement("creaturesname");
-                foreach (var kvp in spawner.SpawnObjects)
+                foreach (SpawnObject kvp in spawner.SpawnObjects)
                 {
                     xml.WriteStartElement("creaturename");
                     xml.WriteString(kvp.SpawnName);

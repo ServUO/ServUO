@@ -61,7 +61,7 @@ namespace Server.Misc
         {
             try
             {
-                var context = _Listener.EndGetContext(result);
+                HttpListenerContext context = _Listener.EndGetContext(result);
 
                 byte[] buffer;
 
@@ -82,7 +82,7 @@ namespace Server.Misc
 
         private static string Encode(string input)
         {
-            var sb = new StringBuilder(input);
+            StringBuilder sb = new StringBuilder(input);
 
             sb.Replace("&", "&amp;");
             sb.Replace("<", "&lt;");
@@ -106,7 +106,7 @@ namespace Server.Misc
                 Directory.CreateDirectory("web");
             }
 
-            using (var op = new StreamWriter("web/status.html"))
+            using (StreamWriter op = new StreamWriter("web/status.html"))
             {
                 op.WriteLine("<!DOCTYPE html>");
                 op.WriteLine("<html>");
@@ -126,13 +126,13 @@ namespace Server.Misc
                 op.WriteLine("      <table cellpadding=\"0\" cellspacing=\"0\">");
                 op.WriteLine("         <tr class=\"ruo-header\"><td>Name</td><td>Location</td><td>Kills</td><td>Karma/Fame</td></tr>");
 
-                var index = 0;
+                int index = 0;
 
-                foreach (var m in NetState.Instances.Where(state => state.Mobile != null).Select(state => state.Mobile))
+                foreach (Mobile m in NetState.Instances.Where(state => state.Mobile != null).Select(state => state.Mobile))
                 {
                     ++index;
 
-                    var g = m.Guild as Guild;
+                    Guild g = m.Guild as Guild;
 
                     op.Write("         <tr class=\"ruo-result " + (index % 2 == 0 ? "even" : "odd") + "\"><td>");
 
@@ -141,7 +141,7 @@ namespace Server.Misc
                         op.Write(Encode(m.Name));
                         op.Write(" [");
 
-                        var title = m.GuildTitle;
+                        string title = m.GuildTitle;
 
                         title = title != null ? title.Trim() : String.Empty;
 

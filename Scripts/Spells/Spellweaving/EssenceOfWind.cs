@@ -87,7 +87,7 @@ namespace Server.Spells.Spellweaving
                 int fcMalus = FocusLevel + 1;
                 int ssiMalus = 2 * (FocusLevel + 1);
 
-                foreach (var m in AcquireIndirectTargets(Caster.Location, 5 + FocusLevel).OfType<Mobile>())
+                foreach (Mobile m in AcquireIndirectTargets(Caster.Location, 5 + FocusLevel).OfType<Mobile>())
                 {
                     Caster.DoHarmful(m);
 

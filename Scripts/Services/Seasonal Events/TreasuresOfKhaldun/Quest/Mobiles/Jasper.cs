@@ -134,7 +134,7 @@ namespace Server.Engines.Khaldun
         {
             if (m is PlayerMobile && InLOS(m) && InRange(m.Location, 3) && !InRange(oldLocation, 3))
             {
-                var quest = QuestHelper.GetQuest<GoingGumshoeQuest>((PlayerMobile)m);
+                GoingGumshoeQuest quest = QuestHelper.GetQuest<GoingGumshoeQuest>((PlayerMobile)m);
 
                 if (quest != null)
                 {
@@ -143,7 +143,7 @@ namespace Server.Engines.Khaldun
                 }
                 else
                 {
-                    var quest2 = QuestHelper.GetQuest<GoingGumshoeQuest4>((PlayerMobile)m);
+                    GoingGumshoeQuest4 quest2 = QuestHelper.GetQuest<GoingGumshoeQuest4>((PlayerMobile)m);
 
                     if (quest2 != null && quest2.IsComplete)
                     {

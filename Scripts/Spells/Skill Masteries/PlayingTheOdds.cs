@@ -82,7 +82,7 @@ namespace Server.Spells.SkillMasteries
 
                 AddToCooldown(TimeSpan.FromSeconds(90));
 
-                foreach (var mob in AcquireIndirectTargets(Caster.Location, 5).OfType<Mobile>())
+                foreach (Mobile mob in AcquireIndirectTargets(Caster.Location, 5).OfType<Mobile>())
                 {
                     if (HitLower.ApplyDefense(mob))
                     {
@@ -120,7 +120,7 @@ namespace Server.Spells.SkillMasteries
         {
             if (PartyList != null)
             {
-                foreach (var m in PartyList)
+                foreach (Mobile m in PartyList)
                 {
                     RemovePartyEffects(m);
                 }

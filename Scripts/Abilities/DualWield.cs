@@ -32,7 +32,7 @@ namespace Server.Items
 
             if (HasRegistry(attacker))
             {
-                var timer = m_Registry[attacker];
+                DualWieldTimer timer = m_Registry[attacker];
 
                 if (timer.DualHitChance < .75)
                 {

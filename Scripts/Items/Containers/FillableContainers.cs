@@ -658,7 +658,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    var barrel = new WaterBarrel();
+                    WaterBarrel barrel = new WaterBarrel();
                     barrel.Movable = false;
                     barrel.MoveToWorld(Location, Map);
 

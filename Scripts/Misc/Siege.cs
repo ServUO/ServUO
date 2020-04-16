@@ -61,12 +61,12 @@ namespace Server
 
             writer.Write(ROTTable.Count);
 
-            foreach (var kvp in ROTTable)
+            foreach (KeyValuePair<PlayerMobile, Dictionary<SkillName, DateTime>> kvp in ROTTable)
             {
                 writer.Write(kvp.Key);
                 writer.Write(kvp.Value.Count);
 
-                foreach (var kvp2 in kvp.Value)
+                foreach (KeyValuePair<SkillName, DateTime> kvp2 in kvp.Value)
                 {
                     writer.Write((int)kvp2.Key);
                     writer.Write(kvp2.Value);
@@ -75,7 +75,7 @@ namespace Server
 
             writer.Write(StatsTable.Count);
 
-            foreach (var kvp in StatsTable)
+            foreach (KeyValuePair<PlayerMobile, int> kvp in StatsTable)
             {
                 writer.Write(kvp.Key);
                 writer.Write(kvp.Value);
@@ -88,19 +88,19 @@ namespace Server
 
             LastReset = reader.ReadDateTime();
 
-            var count = reader.ReadInt();
+            int count = reader.ReadInt();
 
-            for (var i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
-                var pm = reader.ReadMobile<PlayerMobile>();
-                var dict = new Dictionary<SkillName, DateTime>();
+                PlayerMobile pm = reader.ReadMobile<PlayerMobile>();
+                Dictionary<SkillName, DateTime> dict = new Dictionary<SkillName, DateTime>();
 
-                var c = reader.ReadInt();
+                int c = reader.ReadInt();
 
-                for (var j = 0; j < c; j++)
+                for (int j = 0; j < c; j++)
                 {
-                    var sk = (SkillName)reader.ReadInt();
-                    var next = reader.ReadDateTime();
+                    SkillName sk = (SkillName)reader.ReadInt();
+                    DateTime next = reader.ReadDateTime();
 
                     dict[sk] = next;
                 }
@@ -113,10 +113,10 @@ namespace Server
 
             count = reader.ReadInt();
 
-            for (var i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
-                var pm = reader.ReadMobile<PlayerMobile>();
-                var total = reader.ReadInt();
+                PlayerMobile pm = reader.ReadMobile<PlayerMobile>();
+                int total = reader.ReadInt();
 
                 if (pm != null)
                 {
@@ -129,7 +129,7 @@ namespace Server
 
         public static void OnLogin(LoginEventArgs e)
         {
-            var pm = e.Mobile as PlayerMobile;
+            PlayerMobile pm = e.Mobile as PlayerMobile;
 
             if (pm != null && pm.Map == Map.Trammel && pm.AccessLevel == AccessLevel.Player)
             {
@@ -157,11 +157,11 @@ namespace Server
                     AccessLevel.GameMaster,
                     e =>
                     {
-                        foreach (var kvp in ROTTable)
+                        foreach (KeyValuePair<PlayerMobile, Dictionary<SkillName, DateTime>> kvp in ROTTable)
                         {
                             Console.WriteLine("Player: {0}", kvp.Key.Name);
 
-                            var stats = 0;
+                            int stats = 0;
 
                             if (StatsTable.ContainsKey(kvp.Key))
                             {
@@ -172,13 +172,13 @@ namespace Server
 
                             Utility.PushColor(ConsoleColor.Magenta);
 
-                            foreach (var kvp2 in kvp.Value)
+                            foreach (KeyValuePair<SkillName, DateTime> kvp2 in kvp.Value)
                             {
-                                var pergain = MinutesPerGain(kvp.Key, kvp.Key.Skills[kvp2.Key]);
-                                var last = kvp2.Value;
-                                var next = last.AddMinutes(pergain);
+                                int pergain = MinutesPerGain(kvp.Key, kvp.Key.Skills[kvp2.Key]);
+                                DateTime last = kvp2.Value;
+                                DateTime next = last.AddMinutes(pergain);
 
-                                var nextg = next < DateTime.Now
+                                string nextg = next < DateTime.Now
                                     ? "now"
                                     : "in " + ((int)(next - DateTime.Now).TotalMinutes).ToString() + " minutes";
 
@@ -202,16 +202,16 @@ namespace Server
                 Utility.PushColor(ConsoleColor.Red);
                 Console.Write("Initializing Siege Perilous Shard...");
 
-                var tick = Core.TickCount;
+                long tick = Core.TickCount;
 
-                var toReset = new List<XmlSpawner>();
+                List<XmlSpawner> toReset = new List<XmlSpawner>();
 
-                foreach (var item in World.Items.Values.OfType<XmlSpawner>().Where(sp => sp.Map == Map.Trammel && sp.Running))
+                foreach (XmlSpawner item in World.Items.Values.OfType<XmlSpawner>().Where(sp => sp.Map == Map.Trammel && sp.Running))
                 {
                     toReset.Add(item);
                 }
 
-                foreach (var item in toReset)
+                foreach (XmlSpawner item in toReset)
                 {
                     item.DoReset = true;
                 }
@@ -230,9 +230,9 @@ namespace Server
             if (!SiegeShard)
                 return;
 
-            var item = e.Dropped;
-            var from = e.Mobile;
-            var cont = e.Container;
+            Item item = e.Dropped;
+            Mobile from = e.Mobile;
+            Container cont = e.Container;
 
             if (item != null)
             {
@@ -294,11 +294,11 @@ namespace Server
 
         public static void CheckTime()
         {
-            var now = DateTime.Now;
+            DateTime now = DateTime.Now;
 
             if (LastReset.AddHours(24) < now)
             {
-                var reset = new DateTime(now.Year, now.Month, now.Day, 20, 0, 0);
+                DateTime reset = new DateTime(now.Year, now.Month, now.Day, 20, 0, 0);
 
                 if (now < reset)
                 {
@@ -321,13 +321,13 @@ namespace Server
                 return true;
             }
 
-            var sk = skill.SkillName;
+            SkillName sk = skill.SkillName;
 
             if (ROTTable.ContainsKey(pm))
             {
                 if (ROTTable[pm].ContainsKey(sk))
                 {
-                    var lastGain = ROTTable[pm][sk];
+                    DateTime lastGain = ROTTable[pm][sk];
 
                     if (lastGain + TimeSpan.FromMinutes(minutesPerSkill) < DateTime.Now)
                     {
@@ -352,7 +352,7 @@ namespace Server
 
         public static int MinutesPerGain(Mobile m, Skill skill)
         {
-            var value = skill.Base;
+            double value = skill.Base;
 
             if (value < 70.0)
             {
@@ -406,7 +406,7 @@ namespace Server
                 return false;
             }
 
-            foreach (var type in _NoSellList)
+            foreach (Type type in _NoSellList)
             {
                 if (t == type || t.IsSubclassOf(type))
                 {
@@ -426,7 +426,7 @@ namespace Server
 
         public static void TryBlessItem(PlayerMobile pm, object targeted)
         {
-            var item = targeted as Item;
+            Item item = targeted as Item;
 
             if (item != null)
             {
@@ -444,7 +444,7 @@ namespace Server
                     }
                     else if (item.LootType == LootType.Regular && !(item is Container))
                     {
-                        var old = pm.BlessedItem;
+                        Item old = pm.BlessedItem;
 
                         pm.BlessedItem = item;
                         pm.BlessedItem.LootType = LootType.Blessed;
@@ -476,7 +476,7 @@ namespace Server
 
         public static void CheckUsesRemaining(Mobile from, Item item)
         {
-            var uses = item as IUsesRemaining;
+            IUsesRemaining uses = item as IUsesRemaining;
 
             if (uses != null)
             {

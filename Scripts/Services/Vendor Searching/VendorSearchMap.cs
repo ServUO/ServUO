@@ -61,7 +61,7 @@ namespace Server.Items
 
             Width = 300;
             Height = 300;
-            var size = item.Map == Map.Tokuno ? 300 : item.Map == Map.TerMur ? 200 : 600;
+            int size = item.Map == Map.Tokuno ? 300 : item.Map == Map.TerMur ? 200 : 600;
 
             Bounds = new Rectangle2D(p.X - size / 2, p.Y - size / 2, size, size);
             AddWorldPin(p.X, p.Y);

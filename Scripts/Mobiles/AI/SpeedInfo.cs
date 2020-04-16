@@ -14,11 +14,11 @@ namespace Server
 
         public static bool GetSpeeds(BaseCreature bc, ref double activeSpeed, ref double passiveSpeed)
         {
-            var maxDex = GetMaxMovementDex(bc);
-            var dex = Math.Min(maxDex, Math.Max(25, bc.Dex));
+            int maxDex = GetMaxMovementDex(bc);
+            int dex = Math.Min(maxDex, Math.Max(25, bc.Dex));
 
-            var min = bc.IsMonster || InActivePVPCombat(bc) ? MinDelayWild : MinDelay;
-            var max = bc.IsMonster || InActivePVPCombat(bc) ? MaxDelayWild : MaxDelay;
+            double min = bc.IsMonster || InActivePVPCombat(bc) ? MinDelayWild : MinDelay;
+            double max = bc.IsMonster || InActivePVPCombat(bc) ? MaxDelayWild : MaxDelay;
 
             if (bc.IsParagon)
             {
@@ -50,11 +50,11 @@ namespace Server
 
         public static double TransformMoveDelay(BaseCreature bc, double delay)
         {
-            var adjusted = bc.IsMonster ? MaxDelayWild : MaxDelay;
+            double adjusted = bc.IsMonster ? MaxDelayWild : MaxDelay;
 
             if (!bc.IsDeadPet && (bc.ReduceSpeedWithDamage || bc.IsSubdued))
             {
-                var offset = bc.Stam / (double)bc.StamMax;
+                double offset = bc.Stam / (double)bc.StamMax;
 
                 if (offset < 1.0)
                 {

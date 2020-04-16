@@ -67,10 +67,10 @@ namespace Server.Spells.Mysticism
                     }
                 }
 
-                var list = AcquireIndirectTargets(p, 2).ToList();
+                System.Collections.Generic.List<IDamageable> list = AcquireIndirectTargets(p, 2).ToList();
                 int count = list.Count;
 
-                foreach (var id in list)
+                foreach (IDamageable id in list)
                 {
                     if (id.Deleted)
                         continue;

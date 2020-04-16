@@ -83,7 +83,7 @@ namespace Server.Engines.SeasonalEvents
 
         public static bool IsActive(EventType type)
         {
-            var entry = GetEntry(type);
+            SeasonalEventEntry entry = GetEntry(type);
 
             if (entry != null)
             {
@@ -100,7 +100,7 @@ namespace Server.Engines.SeasonalEvents
 
         public static void OnToTDeactivated(Mobile from)
         {
-            var entry = GetEntry(EventType.TreasuresOfTokuno);
+            SeasonalEventEntry entry = GetEntry(EventType.TreasuresOfTokuno);
 
             if (entry != null)
             {
@@ -143,7 +143,7 @@ namespace Server.Engines.SeasonalEvents
 
                     for (int i = 0; i < count; i++)
                     {
-                        var entry = GetEntry((EventType)reader.ReadInt());
+                        SeasonalEventEntry entry = GetEntry((EventType)reader.ReadInt());
                         entry.Deserialize(reader);
                     }
                 });
@@ -164,7 +164,7 @@ namespace Server.Engines.SeasonalEvents
             }
             set
             {
-                var old = _Status;
+                EventStatus old = _Status;
 
                 _Status = value;
 
@@ -237,8 +237,8 @@ namespace Server.Engines.SeasonalEvents
                         if (Duration >= 365)
                             return true;
 
-                        var now = DateTime.Now;
-                        var starts = new DateTime(now.Year, MonthStart, DayStart, 0, 0, 0);
+                        DateTime now = DateTime.Now;
+                        DateTime starts = new DateTime(now.Year, MonthStart, DayStart, 0, 0, 0);
 
                         return now > starts && now < starts + TimeSpan.FromDays(Duration);
                     }

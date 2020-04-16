@@ -181,7 +181,7 @@ namespace Server.Mobiles
                                 int count = reader.ReadInt();
                                 for (int i = 0; i < count; i++)
                                 {
-                                    var entry = new TownCrierEntry(reader);
+                                    TownCrierEntry entry = new TownCrierEntry(reader);
 
                                     if (!entry.Expired)
                                     {
@@ -258,7 +258,7 @@ namespace Server.Mobiles
             writer.Write(0);
 
             writer.Write(Lines.Length);
-            foreach (var str in Lines)
+            foreach (string str in Lines)
             {
                 writer.Write(str);
             }
@@ -730,7 +730,7 @@ namespace Server.Mobiles
 
                         for (int i = 0; i < count; i++)
                         {
-                            var entry = new TownCrierEntry(reader);
+                            TownCrierEntry entry = new TownCrierEntry(reader);
 
                             if (!entry.Expired)
                             {

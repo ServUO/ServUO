@@ -19,7 +19,7 @@ namespace Server.Commands
         [Description("Dupes a targeted item.")]
         private static void Dupe_OnCommand(CommandEventArgs e)
         {
-            var amount = 1;
+            int amount = 1;
 
             if (e.Length > 0)
             {
@@ -34,7 +34,7 @@ namespace Server.Commands
         [Description("Dupes an item at it's current location (count) number of times.")]
         private static void DupeInBag_OnCommand(CommandEventArgs e)
         {
-            var amount = 1;
+            int amount = 1;
 
             if (e.Length > 0)
             {
@@ -59,7 +59,7 @@ namespace Server.Commands
 
             protected override void OnTarget(Mobile m, object targ)
             {
-                var done = false;
+                bool done = false;
 
                 if (!(targ is Item))
                 {
@@ -76,7 +76,7 @@ namespace Server.Commands
                     _InBag,
                     _Amount);
 
-                var item = (Item)targ;
+                Item item = (Item)targ;
 
                 Container pack;
 
@@ -100,9 +100,9 @@ namespace Server.Commands
                     pack = m.Backpack;
                 }
 
-                var t = item.GetType();
+                Type t = item.GetType();
 
-                var a = t.GetCustomAttributes(typeof(ConstructableAttribute), false);
+                object[] a = t.GetCustomAttributes(typeof(ConstructableAttribute), false);
 
                 if (a.OfType<ConstructableAttribute>().Any(ca => ca.AccessLevel > m.AccessLevel))
                 {
@@ -113,9 +113,9 @@ namespace Server.Commands
                 {
                     m.SendMessage("Duping {0}...", _Amount);
 
-                    var noCtor = false;
+                    bool noCtor = false;
 
-                    for (var i = 0; i < _Amount; i++)
+                    for (int i = 0; i < _Amount; i++)
                     {
                         Item o;
 
@@ -202,11 +202,11 @@ namespace Server.Commands
         {
             try
             {
-                var t = item.GetType();
+                Type t = item.GetType();
 
                 if (m != null)
                 {
-                    var a = t.GetCustomAttributes(typeof(ConstructableAttribute), false);
+                    object[] a = t.GetCustomAttributes(typeof(ConstructableAttribute), false);
 
                     if (a.OfType<ConstructableAttribute>().Any(ca => ca.AccessLevel > m.AccessLevel))
                     {
@@ -270,15 +270,15 @@ namespace Server.Commands
 
         public static void DupeChildren(Mobile m, Container src, Container dest)
         {
-            foreach (var item in src.Items)
+            foreach (Item item in src.Items)
             {
                 try
                 {
-                    var t = item.GetType();
+                    Type t = item.GetType();
 
                     if (m != null)
                     {
-                        var a = t.GetCustomAttributes(typeof(ConstructableAttribute), false);
+                        object[] a = t.GetCustomAttributes(typeof(ConstructableAttribute), false);
 
                         if (a.OfType<ConstructableAttribute>().Any(ca => ca.AccessLevel > m.AccessLevel))
                         {
@@ -337,9 +337,9 @@ namespace Server.Commands
 
         public static void CopyProperties(object src, object dest)
         {
-            var props = src.GetType().GetProperties();
+            System.Reflection.PropertyInfo[] props = src.GetType().GetProperties();
 
-            foreach (var p in props)
+            foreach (System.Reflection.PropertyInfo p in props)
             {
                 try
                 {

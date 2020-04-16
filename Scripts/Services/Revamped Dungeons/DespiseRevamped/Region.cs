@@ -163,7 +163,7 @@ namespace Server.Engines.Despise
 
                             if (master != null && master.Map != null && master.Map != Map.Internal && master.Backpack != null)
                             {
-                                var heart = new PutridHeart(Utility.RandomMinMax(dc.Power * 8, dc.Power * 10));
+                                PutridHeart heart = new PutridHeart(Utility.RandomMinMax(dc.Power * 8, dc.Power * 10));
 
                                 if (!master.Backpack.TryDropItem(master, heart, false))
                                 {

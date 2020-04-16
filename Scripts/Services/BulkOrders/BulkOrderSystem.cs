@@ -169,7 +169,7 @@ namespace Server.Engines.BulkOrders
 
             if (context != null && context.Entries.ContainsKey(type))
             {
-                var entry = context.Entries[type];
+                BODEntry entry = context.Entries[type];
 
                 if (entry != null)
                 {
@@ -646,7 +646,7 @@ namespace Server.Engines.BulkOrders
 
         public static void OnTick()
         {
-            foreach (var kvp in Instance.BODPlayerData)
+            foreach (KeyValuePair<PlayerMobile, BODContext> kvp in Instance.BODPlayerData)
             {
                 kvp.Value.CheckCache();
             }
@@ -741,7 +741,7 @@ namespace Server.Engines.BulkOrders
 
         public bool CanClaimRewards()
         {
-            foreach (var kvp in Entries)
+            foreach (KeyValuePair<BODType, BODEntry> kvp in Entries)
             {
                 if (kvp.Value.PendingRewardPoints > 0)
                 {
@@ -804,7 +804,7 @@ namespace Server.Engines.BulkOrders
 
         public void CheckCache()
         {
-            foreach (var kvp in Entries)
+            foreach (KeyValuePair<BODType, BODEntry> kvp in Entries)
             {
                 kvp.Value.CheckCache();
             }

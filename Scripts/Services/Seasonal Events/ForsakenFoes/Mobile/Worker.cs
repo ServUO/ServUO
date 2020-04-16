@@ -41,7 +41,7 @@ namespace Server.Engines.Fellowship
 
                     writer.Write(FellowshipChainList.Count);
 
-                    foreach (var chain in FellowshipChainList)
+                    foreach (KeyValuePair<Mobile, FellowshipChain> chain in FellowshipChainList)
                     {
                         writer.Write(chain.Key);
                         writer.Write((int)chain.Value);

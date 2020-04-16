@@ -285,7 +285,7 @@ namespace Server.Items
         {
             BaseAddon addon = oldItem is AddonComponent ? ((AddonComponent)oldItem).Addon : null;
 
-            var item = new CraftableHouseItem(type);
+            CraftableHouseItem item = new CraftableHouseItem(type);
 
             if (oldItem.Parent is Container)
             {

@@ -51,7 +51,7 @@ namespace Server.Mobiles
 
         public static bool CheckMastery(Mobile tamer, BaseCreature creature)
         {
-            var familiar = (BaseCreature)SummonFamiliarSpell.Table[tamer];
+            BaseCreature familiar = (BaseCreature)SummonFamiliarSpell.Table[tamer];
 
             if (familiar != null && !familiar.Deleted && familiar is DarkWolfFamiliar && ControlTypes.Any(t => t == creature.GetType()))
             {

@@ -90,7 +90,7 @@ namespace Server.Items
 
         private static CargoQuality RandomQuality()
         {
-            var random = Utility.RandomDouble();
+            double random = Utility.RandomDouble();
 
             if (random < 0.05)
             {

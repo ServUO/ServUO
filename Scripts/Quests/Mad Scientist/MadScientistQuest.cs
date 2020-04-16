@@ -34,7 +34,7 @@ namespace Server.Engines.Quests
 
             List<Item> toDelete = new List<Item>(World.Items.Values.Where(i => i is XmlSpawner && (i.Name == "PerfectTimingSpawner" || i.Name == "PerfectTimingSpawner2")));
 
-            foreach (var item in toDelete)
+            foreach (Item item in toDelete)
             {
                 item.Delete();
             }

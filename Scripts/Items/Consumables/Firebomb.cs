@@ -135,9 +135,9 @@ namespace Server.Items
                         }
                         else if (RootParent == null)
                         {
-                            var targets = GetTargets();
+                            IEnumerable<Mobile> targets = GetTargets();
 
-                            foreach (var victim in targets)
+                            foreach (Mobile victim in targets)
                             {
                                 if (m_LitBy != null)
                                     m_LitBy.DoHarmful(victim);

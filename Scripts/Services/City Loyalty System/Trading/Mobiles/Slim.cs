@@ -36,7 +36,7 @@ namespace Server.Engines.CityLoyalty
             EquipItem(new FancyShirt(1932));
             EquipItem(new LongPants(1));
 
-            var boots = new Boots();
+            Boots boots = new Boots();
             boots.Hue = 1;
             EquipItem(boots);
 

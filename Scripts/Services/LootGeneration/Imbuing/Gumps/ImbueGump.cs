@@ -78,7 +78,7 @@ namespace Server.Gumps
             if (maxInt <= 1)
                 currentIntensity = 100;
 
-            var propWeight = (int)Math.Floor((weight / (double)maxInt) * m_Value);
+            int propWeight = (int)Math.Floor((weight / (double)maxInt) * m_Value);
 
             // Maximum allowed Property Weight & Item Mod Count
             m_MaxWeight = Imbuing.GetMaxWeight(m_Item);
@@ -87,9 +87,9 @@ namespace Server.Gumps
             int timesImbued = Imbuing.TimesImbued(m_Item);
 
             // Check Ingredients needed at the current Intensity
-            var gemAmount = Imbuing.GetGemAmount(m_Item, m_ID, m_Value);
-            var primResAmount = Imbuing.GetPrimaryAmount(m_Item, m_ID, m_Value);
-            var specResAmount = Imbuing.GetSpecialAmount(m_Item, m_ID, m_Value);
+            int gemAmount = Imbuing.GetGemAmount(m_Item, m_ID, m_Value);
+            int primResAmount = Imbuing.GetPrimaryAmount(m_Item, m_ID, m_Value);
+            int specResAmount = Imbuing.GetSpecialAmount(m_Item, m_ID, m_Value);
 
             AddPage(0);
             AddBackground(0, 0, 520, 440, 5054);
@@ -114,7 +114,7 @@ namespace Server.Gumps
             }
 
             AddHtmlLocalized(25, 100, 80, 20, 1114271, LabelColor, false, false); // Replaces:
-            var replace = WhatReplacesWhat(m_ID, m_Item);
+            TextDefinition replace = WhatReplacesWhat(m_ID, m_Item);
 
             if (replace != null)
             {
@@ -159,8 +159,8 @@ namespace Server.Gumps
             AddLabel(430, 260, GetColor(timesImbued, 20), String.Format("{0}/20", timesImbued));
 
             // ===== CALCULATE DIFFICULTY =====
-            var truePropWeight = (int)((propWeight / (double)weight) * 100);
-            var trueTotalWeight = Imbuing.GetTotalWeight(m_Item, -1, true, true);
+            int truePropWeight = (int)((propWeight / (double)weight) * 100);
+            int trueTotalWeight = Imbuing.GetTotalWeight(m_Item, -1, true, true);
 
             double suc = Imbuing.GetSuccessChance(User, m_Item, trueTotalWeight, truePropWeight, bonus);
 
@@ -186,7 +186,7 @@ namespace Server.Gumps
 
                     if (m_ID >= 51 && m_ID <= 55)
                     {
-                        var resistances = Imbuing.GetBaseResists(m_Item);
+                        int[] resistances = Imbuing.GetBaseResists(m_Item);
 
                         switch (m_ID)
                         {
@@ -408,8 +408,8 @@ namespace Server.Gumps
 
                 if (id >= 151 && id <= 183)
                 {
-                    var bonuses = jewel.SkillBonuses;
-                    var group = Imbuing.GetSkillGroup((SkillName)ItemPropertyInfo.GetAttribute(id));
+                    AosSkillBonuses bonuses = jewel.SkillBonuses;
+                    SkillName[] group = Imbuing.GetSkillGroup((SkillName)ItemPropertyInfo.GetAttribute(id));
 
                     for (int i = 0; i < 5; i++)
                     {
@@ -493,7 +493,7 @@ namespace Server.Gumps
             if (attribute is AosArmorAttribute && (AosArmorAttribute)attribute == AosArmorAttribute.DurabilityBonus)
                 attribute = AosWeaponAttribute.DurabilityBonus;
 
-            foreach (var info in ItemPropertyInfo.Table.Values)
+            foreach (ItemPropertyInfo info in ItemPropertyInfo.Table.Values)
             {
                 if (attribute is SlayerName && info.Attribute is SlayerName && (SlayerName)attribute == (SlayerName)info.Attribute)
                     return info.AttributeName;

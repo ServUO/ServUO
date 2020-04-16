@@ -16,7 +16,7 @@ namespace Server.Misc
 
             beholder.Send(new DisplayPaperdoll(beheld, Titles.ComputeTitle(beholder, beheld), beheld.AllowEquipFrom(beholder)));
 
-            foreach (var item in beheld.Items)
+            foreach (Item item in beheld.Items)
                 beholder.Send(item.OPLPacket);
 
             // NOTE: OSI sends MobileUpdate when opening your own paperdoll.

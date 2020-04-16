@@ -424,7 +424,7 @@ namespace Server.Items
                 case 0: { m_Addon.Using = false; break; }
                 case 1:
                     {
-                        var tool = m_Addon.Tools.Find(x => x.Skill == m_Skill);
+                        RepairBenchDefinition tool = m_Addon.Tools.Find(x => x.Skill == m_Skill);
 
                         tool.SkillValue = 0;
                         tool.Charges = 0;
@@ -590,7 +590,7 @@ namespace Server.Items
                     }
                     else
                     {
-                        var tool = m_Addon.Tools.Find(x => x.Skill == deed.RepairSkill);
+                        RepairBenchDefinition tool = m_Addon.Tools.Find(x => x.Skill == deed.RepairSkill);
 
                         tool.SkillValue = deed.SkillLevel;
                         tool.Charges++;
@@ -616,7 +616,7 @@ namespace Server.Items
                             }
                             else if (m_Addon.Tools.Any(x => x.Skill == deed.RepairSkill && x.SkillValue == deed.SkillLevel))
                             {
-                                var tool = m_Addon.Tools.Find(x => x.Skill == deed.RepairSkill);
+                                RepairBenchDefinition tool = m_Addon.Tools.Find(x => x.Skill == deed.RepairSkill);
 
                                 tool.SkillValue = deed.SkillLevel;
                                 tool.Charges++;

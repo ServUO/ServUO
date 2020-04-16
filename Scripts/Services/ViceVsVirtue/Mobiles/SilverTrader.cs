@@ -148,7 +148,7 @@ namespace Server.Engines.VvV
                 {
                     if (dropped is IVvVItem && from.Race == Race.Gargoyle)
                     {
-                        foreach (var t in _Table)
+                        foreach (Type[] t in _Table)
                         {
                             if (dropped.GetType() == t[0])
                             {
@@ -156,7 +156,7 @@ namespace Server.Engines.VvV
 
                                 if (dur != null && dur.MaxHitPoints == 255 && dur.HitPoints == 255)
                                 {
-                                    var item = Loot.Construct(t[1]);
+                                    Item item = Loot.Construct(t[1]);
 
                                     if (item != null)
                                     {

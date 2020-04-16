@@ -93,7 +93,7 @@ namespace Server.Engines.CannedEvil
 
         private void FixComponents()
         {
-            foreach (var comp in Components)
+            foreach (AddonComponent comp in Components)
             {
                 comp.Hue = 0x452;
 

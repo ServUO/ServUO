@@ -195,12 +195,12 @@ namespace Server.Multis
 
         public override void OnLocationChange(Point3D old)
         {
-            foreach (var item in m_Items)
+            foreach (Item item in m_Items)
             {
                 item.Location = new Point3D(X + (item.X - old.X), Y + (item.Y - old.Y), Z + (item.Z - old.Z));
             }
 
-            foreach (var m in m_Mobiles)
+            foreach (Mobile m in m_Mobiles)
             {
                 m.Location = new Point3D(X + (m.X - old.X), Y + (m.Y - old.Y), Z + (m.Z - old.Z));
                 SetCreature(m as BaseCreature);
@@ -209,12 +209,12 @@ namespace Server.Multis
 
         public override void OnMapChange()
         {
-            foreach (var item in m_Items)
+            foreach (Item item in m_Items)
             {
                 item.Map = Map;
             }
 
-            foreach (var m in m_Mobiles)
+            foreach (Mobile m in m_Mobiles)
             {
                 m.Map = Map;
             }

@@ -69,7 +69,7 @@ namespace Server.Items
 
             if (parent is SecureTradeContainer && AccountGold.ConvertOnTrade)
             {
-                var trade = (SecureTradeContainer)parent;
+                SecureTradeContainer trade = (SecureTradeContainer)parent;
 
                 if (trade.Trade.From.Container == trade)
                 {
@@ -96,9 +96,9 @@ namespace Server.Items
             {
                 if (owner.NetState != null && !owner.NetState.NewSecureTrading)
                 {
-                    var total = Amount / Math.Max(1.0, Account.CurrencyThreshold);
-                    var plat = (int)Math.Truncate(total);
-                    var gold = (int)((total - plat) * Account.CurrencyThreshold);
+                    double total = Amount / Math.Max(1.0, Account.CurrencyThreshold);
+                    int plat = (int)Math.Truncate(total);
+                    int gold = (int)((total - plat) * Account.CurrencyThreshold);
 
                     tradeInfo.Plat += plat;
                     tradeInfo.Gold += gold;

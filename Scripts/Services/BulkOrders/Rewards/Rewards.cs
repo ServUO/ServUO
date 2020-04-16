@@ -404,7 +404,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CreateSmithHammer(int type)
         {
-            var hammer = new SmithHammer();
+            SmithHammer hammer = new SmithHammer();
             hammer.UsesRemaining = 250;
 
             return hammer;
@@ -732,7 +732,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CreateSewingKit(int type)
         {
-            var kit = new SewingKit();
+            SewingKit kit = new SewingKit();
             kit.UsesRemaining = 250;
 
             return kit;

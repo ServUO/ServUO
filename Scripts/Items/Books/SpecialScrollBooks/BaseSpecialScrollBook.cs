@@ -116,7 +116,7 @@ namespace Server.Items
 
         public virtual void Construct(Mobile m, SkillName sk, double value)
         {
-            var scroll = Items.OfType<SpecialScroll>().FirstOrDefault(s => s.Skill == sk && s.Value == value);
+            SpecialScroll scroll = Items.OfType<SpecialScroll>().FirstOrDefault(s => s.Skill == sk && s.Value == value);
 
             if (scroll != null)
             {
@@ -178,7 +178,7 @@ namespace Server.Items
             Timer.DelayCall(
                 () =>
                 {
-                    foreach (var item in Items.Where(i => i.Movable))
+                    foreach (Item item in Items.Where(i => i.Movable))
                         item.Movable = false;
                 });
         }

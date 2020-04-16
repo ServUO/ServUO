@@ -73,7 +73,7 @@ namespace Server.Engines.Quests
         {
             int offset = 163;
             int page = 1;
-            var slay = Objectives.FirstOrDefault(o => o is SlayObjective) as SlayObjective;
+            SlayObjective slay = Objectives.FirstOrDefault(o => o is SlayObjective) as SlayObjective;
 
             if (offer)
                 gump.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer

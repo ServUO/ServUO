@@ -72,7 +72,7 @@ namespace Server.Items
 
             for (int i = 0; i < ChestLocs.Length; i++)
             {
-                var chest = new HotItemChest(i <= 3 ? 3648 : 3649);
+                HotItemChest chest = new HotItemChest(i <= 3 ? 3648 : 3649);
 
                 chest.MoveToWorld(ChestLocs[i], map);
                 chest.SpawnLoot();
@@ -98,7 +98,7 @@ namespace Server.Items
         {
             List<Item> list = new List<Item>(Items);
 
-            foreach (var item in list)
+            foreach (Item item in list)
                 item.Delete();
 
             ColUtility.Free(list);

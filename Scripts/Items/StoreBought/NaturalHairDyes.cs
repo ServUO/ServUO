@@ -64,7 +64,7 @@ namespace Server.Items
             {
                 m_Type = value;
 
-                var info = m_Table.FirstOrDefault(x => x.Type == m_Type);
+                HairDyeInfo info = m_Table.FirstOrDefault(x => x.Type == m_Type);
 
                 if (info != null)
                 {

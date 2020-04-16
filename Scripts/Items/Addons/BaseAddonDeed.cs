@@ -225,7 +225,7 @@ namespace Server.Items
                     return null;
                 }
 
-                var galleon = BaseGalleon.FindGalleonAt(p, map);
+                BaseGalleon galleon = BaseGalleon.FindGalleonAt(p, map);
 
                 if (galleon != null && galleon.CanAddAddon(p))
                 {

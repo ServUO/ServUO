@@ -68,7 +68,7 @@ namespace Server.Items
                 _Table = new Dictionary<Mobile, Tuple<bool, DateTime, SkillMod>>();
             }
 
-            var mod = new DefaultSkillMod(SkillName.Carpentry, true, 5.0);
+            DefaultSkillMod mod = new DefaultSkillMod(SkillName.Carpentry, true, 5.0);
             mod.ObeyCap = false;
             m.AddSkillMod(mod);
 
@@ -116,7 +116,7 @@ namespace Server.Items
 
             List<Mobile> list = new List<Mobile>(_Table.Keys);
 
-            foreach (var m in list)
+            foreach (Mobile m in list)
             {
                 if (_Table[m].Item2 + TimeSpan.FromMinutes(BonusDuration + Cooldown) < DateTime.UtcNow)
                 {
@@ -125,7 +125,7 @@ namespace Server.Items
                 else if (_Table[m].Item1 && _Table[m].Item2 + TimeSpan.FromMinutes(BonusDuration) < DateTime.UtcNow)
                 {
                     m.RemoveSkillMod(_Table[m].Item3);
-                    var dt = _Table[m].Item2;
+                    DateTime dt = _Table[m].Item2;
 
                     if (m.NetState != null)
                     {

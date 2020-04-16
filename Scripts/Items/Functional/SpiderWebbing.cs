@@ -57,9 +57,9 @@ namespace Server.Items
                 m_Timer = null;
             }
 
-            var list = new List<Mobile>(m_WebVictims);
+            List<Mobile> list = new List<Mobile>(m_WebVictims);
 
-            foreach (var m in list)
+            foreach (Mobile m in list)
             {
                 RemoveEffects(m);
             }

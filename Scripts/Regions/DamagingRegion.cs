@@ -173,7 +173,7 @@ namespace Server.Regions
         {
             base.OnDamage(m);
 
-            var dmg = Utility.Random(2, 3);
+            int dmg = Utility.Random(2, 3);
 
             if (m is PlayerMobile)
             {
@@ -219,7 +219,7 @@ namespace Server.Regions
             m.PlaySound(0x1E1);
             m.LocalOverheadMessage(MessageType.Regular, 0x21, 1074165); // You feel dizzy from a lack of clear air
 
-            var mod = (int)(m.Str * 0.1);
+            int mod = (int)(m.Str * 0.1);
 
             if (mod > 10)
             {
@@ -293,7 +293,7 @@ namespace Server.Regions
                 m.FixedParticles(0x36B0, 1, 14, 0x26BB, 0x3F, 0x7, EffectLayer.Waist);
                 m.PlaySound(0x229);
 
-                var damage = 0;
+                int damage = 0;
 
                 damage += (int)Math.Pow(m.Location.X - 6200, 0.5);
                 damage += (int)Math.Pow(m.Location.Y - 330, 0.5);
@@ -337,7 +337,7 @@ namespace Server.Regions
             m.FixedParticles(0x36B0, 1, 14, 0x26BB, 0x3F, 0x7, EffectLayer.Waist);
             m.PlaySound(0x229);
 
-            var damage = Utility.RandomMinMax(10, 20);
+            int damage = Utility.RandomMinMax(10, 20);
 
             AOS.Damage(m, damage, 0, 0, 0, 100, 0);
         }

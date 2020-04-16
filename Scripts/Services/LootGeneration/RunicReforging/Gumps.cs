@@ -238,7 +238,7 @@ namespace Server.Gumps
         {
             int count = 1;
 
-            foreach (var option in Options)
+            foreach (ReforgingOption option in Options)
             {
                 if ((m_Options & option) != 0)
                     count++;
@@ -585,7 +585,7 @@ namespace Server.Gumps
 
                 if (index >= 0 && index <= 12 && RunicReforging.HasSelection(index, m_ToReforge, m_Tool, m_Options, (int)m_Prefix, (int)m_Suffix))
                 {
-                    var context = ReforgingContext.GetContext(from);
+                    ReforgingContext context = ReforgingContext.GetContext(from);
 
                     if (m_IsPrefix)
                     {

@@ -48,7 +48,7 @@ namespace Server.Mobiles
             writer.Write(0);
 
             writer.Write(SpawnedObjects.Count);
-            foreach (var sp in SpawnedObjects)
+            foreach (ISpawnable sp in SpawnedObjects)
             {
                 if (sp is Item)
                     writer.Write((Item)sp);

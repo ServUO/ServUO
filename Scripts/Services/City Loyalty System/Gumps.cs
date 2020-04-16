@@ -527,7 +527,7 @@ namespace Server.Engines.CityLoyalty
 
                 if (id >= 0 && id < City.Election.Candidates.Count)
                 {
-                    var entry = City.Election.Candidates[id];
+                    BallotEntry entry = City.Election.Candidates[id];
 
                     if (entry.Player != null)
                     {
@@ -621,7 +621,7 @@ namespace Server.Engines.CityLoyalty
 
                 if (id >= 0 && id < Candidates.Count)
                 {
-                    var entry = Candidates[id];
+                    BallotEntry entry = Candidates[id];
 
                     if (entry.Player != null)
                     {

@@ -46,7 +46,7 @@ namespace Server.Items
             writer.Write((int)Suffix);
 
             writer.Write(Contexts.Count);
-            foreach (var kvp in Contexts)
+            foreach (KeyValuePair<BaseTool, ReforgingOption> kvp in Contexts)
             {
                 writer.Write(kvp.Key);
                 writer.Write((int)kvp.Value);
@@ -84,7 +84,7 @@ namespace Server.Items
 
                     writer.Write(ReforgingContexts.Count);
 
-                    foreach (var kvp in ReforgingContexts)
+                    foreach (KeyValuePair<Mobile, ReforgingContext> kvp in ReforgingContexts)
                     {
                         writer.Write(kvp.Key);
                         kvp.Value.Serialize(writer);
@@ -106,7 +106,7 @@ namespace Server.Items
                     for (int i = 0; i < count; i++)
                     {
                         Mobile m = reader.ReadMobile();
-                        var context = new ReforgingContext(reader);
+                        ReforgingContext context = new ReforgingContext(reader);
 
                         if (m != null)
                             ReforgingContexts[m] = context;

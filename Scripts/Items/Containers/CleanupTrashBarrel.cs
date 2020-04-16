@@ -119,7 +119,7 @@ namespace Server.Items
 
                 if (this.m_Cleanup.Any(x => x.mobiles != null))
                 {
-                    foreach (var m in this.m_Cleanup.Select(x => x.mobiles).Distinct())
+                    foreach (Mobile m in this.m_Cleanup.Select(x => x.mobiles).Distinct())
                     {
                         if (this.m_Cleanup.Find(x => x.mobiles == m && x.confirm) != null)
                         {

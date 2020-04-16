@@ -299,11 +299,11 @@ namespace Server.Engines.VoidPool
                 }
             }
 
-            var gate1 = new VoidPoolGate();
+            VoidPoolGate gate1 = new VoidPoolGate();
             gate1.MoveToWorld(StartPoint1, Map);
             Effects.PlaySound(StartPoint1, Map, 0x20E);
 
-            var gate2 = new VoidPoolGate();
+            VoidPoolGate gate2 = new VoidPoolGate();
             gate2.MoveToWorld(StartPoint2, Map);
             Effects.PlaySound(StartPoint2, Map, 0x20E);
 
@@ -429,7 +429,7 @@ namespace Server.Engines.VoidPool
 
                 if (m is PlayerMobile)
                 {
-                    var quest = QuestHelper.GetQuest<AForcedSacraficeQuest>((PlayerMobile)m);
+                    AForcedSacraficeQuest quest = QuestHelper.GetQuest<AForcedSacraficeQuest>((PlayerMobile)m);
 
                     if (quest != null)
                     {
@@ -569,7 +569,7 @@ namespace Server.Engines.VoidPool
 
             int points = 0;
 
-            foreach (var info in Waves.Where(i => i.Credit.Contains(from)))
+            foreach (WaveInfo info in Waves.Where(i => i.Credit.Contains(from)))
             {
                 points += this.Map == Map.Felucca ? Stage * 2 : Stage;
             }
@@ -616,10 +616,10 @@ namespace Server.Engines.VoidPool
                 Timer = null;
             }
 
-            foreach (var wp in WaypointsA.Where(w => w != null && !w.Deleted))
+            foreach (WayPoint wp in WaypointsA.Where(w => w != null && !w.Deleted))
                 wp.Delete();
 
-            foreach (var wp in WaypointsB.Where(w => w != null && !w.Deleted))
+            foreach (WayPoint wp in WaypointsB.Where(w => w != null && !w.Deleted))
                 wp.Delete();
 
             if (Level3Spawner != null)

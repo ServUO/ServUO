@@ -74,7 +74,7 @@ namespace Server.Mobiles
 
                 if (i < Spawner.SpawnObjects.Count)
                 {
-                    var so = Spawner.SpawnObjects[i];
+                    SpawnObject so = Spawner.SpawnObjects[i];
 
                     str = so.SpawnName;
                     max = so.MaxCount;

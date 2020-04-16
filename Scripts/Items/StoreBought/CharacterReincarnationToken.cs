@@ -16,7 +16,7 @@
 
         public override Item CreateItemFor(Mobile from)
         {
-            var bag = new Bag();
+            Bag bag = new Bag();
 
             bag.DropItem(new GenderChangeToken());
             bag.DropItem(new NameChangeToken());

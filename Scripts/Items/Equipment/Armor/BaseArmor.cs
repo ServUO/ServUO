@@ -339,7 +339,7 @@ namespace Server.Items
         {
             int value = 0;
 
-            foreach (var armor in from.Items.OfType<BaseArmor>())
+            foreach (BaseArmor armor in from.Items.OfType<BaseArmor>())
             {
                 switch (attr)
                 {
@@ -358,7 +358,7 @@ namespace Server.Items
         {
             int value = 0;
 
-            foreach (var armor in from.Items.OfType<BaseArmor>())
+            foreach (BaseArmor armor in from.Items.OfType<BaseArmor>())
             {
                 value += armor.RefinedDefenseChance;
             }
@@ -454,7 +454,7 @@ namespace Server.Items
             double toReduce = 0.0;
             int count = 0;
 
-            foreach (var armor in from.Items.OfType<BaseArmor>().OrderBy(arm => -GetArmorRatingReduction(arm)))
+            foreach (BaseArmor armor in from.Items.OfType<BaseArmor>().OrderBy(arm => -GetArmorRatingReduction(arm)))
             {
                 if (count == 5)
                     break;
@@ -567,7 +567,7 @@ namespace Server.Items
         {
             get
             {
-                var list = new int[5];
+                int[] list = new int[5];
 
                 list[0] = BasePhysicalResistance;
                 list[1] = BaseFireResistance;

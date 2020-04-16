@@ -119,7 +119,7 @@ namespace Server.Items
 
         public static void CheckBoss(BaseCreature bc, ref int budget)
         {
-            foreach (var entry in Entries)
+            foreach (BossEntry entry in Entries)
             {
                 if (entry.List.FirstOrDefault(t => t == bc.GetType() || bc.GetType().IsSubclassOf(t)) != null)
                 {

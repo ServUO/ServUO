@@ -118,7 +118,7 @@ namespace Server.Items
                 house.Addons.Remove(this);
                 Delete();
 
-                var addon = new ArcaneBookShelfAddonEast();
+                ArcaneBookShelfAddonEast addon = new ArcaneBookShelfAddonEast();
                 addon.MoveToWorld(new Point3D(p.X, p.Y + 1, p.Z), map);
                 house.Addons[addon] = house.Owner;
             }
@@ -173,14 +173,14 @@ namespace Server.Items
 
             if (c != null)
             {
-                var deed = new ArcaneBookShelfDeedSouth();
+                ArcaneBookShelfDeedSouth deed = new ArcaneBookShelfDeedSouth();
                 c.DropItem(deed);
             }
             else if (this.Parent == null)
             {
                 Server.Multis.BaseHouse house = Server.Multis.BaseHouse.FindHouseAt(this);
 
-                var deed = new ArcaneBookShelfDeedSouth();
+                ArcaneBookShelfDeedSouth deed = new ArcaneBookShelfDeedSouth();
                 deed.MoveToWorld(this.Location, this.Map);
 
                 deed.IsLockedDown = IsLockedDown;

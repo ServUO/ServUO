@@ -168,7 +168,7 @@ namespace Server.Engines.BulkOrders
 
         public void AssignGemNumbers()
         {
-            foreach (var entry in Entries)
+            foreach (LargeBulkEntry entry in Entries)
             {
                 Type jewelType = entry.Details.Type;
 

@@ -23,8 +23,8 @@ namespace Server.Mobiles
                 return base.GetRandomDamageSpell();
             }
 
-            var mana = m_Mobile.Mana;
-            var select = 1;
+            int mana = m_Mobile.Mana;
+            int select = 1;
 
             if (mana >= 29)
                 select = 4;
@@ -55,8 +55,8 @@ namespace Server.Mobiles
                 return base.GetRandomCurseSpell();
             }
 
-            var mana = m_Mobile.Mana;
-            var select = 1;
+            int mana = m_Mobile.Mana;
+            int select = 1;
 
             if (mana >= 17)
                 select = 4;

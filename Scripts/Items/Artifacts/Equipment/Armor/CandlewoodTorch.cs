@@ -39,7 +39,7 @@ namespace Server.Items
                 }
             }
 
-            var parent = Parent as Mobile;
+            Mobile parent = Parent as Mobile;
 
             if (parent == from && Burning)
             {

@@ -158,7 +158,7 @@ namespace Server.Engines.Shadowguard
 
             if (encounter != null)
             {
-                var canal = new ShadowguardCanal();
+                ShadowguardCanal canal = new ShadowguardCanal();
                 canal.MoveToWorld(Location, Map);
                 encounter.AddShadowguardCanal(canal);
             }
@@ -346,31 +346,31 @@ namespace Server.Engines.Shadowguard
             SetSkill(SkillName.Tactics, 125.0);
             SetSkill(SkillName.Lumberjacking, 125.0);
 
-            var helm = new CloseHelm();
+            CloseHelm helm = new CloseHelm();
             helm.Hue = 0x96D;
             AddItem(helm);
 
-            var arms = new PlateArms();
+            PlateArms arms = new PlateArms();
             arms.Hue = 0x96D;
             AddItem(arms);
 
-            var legs = new PlateLegs();
+            PlateLegs legs = new PlateLegs();
             legs.Hue = 0x96D;
             AddItem(legs);
 
-            var tunic = new PlateChest();
+            PlateChest tunic = new PlateChest();
             tunic.Hue = 0x96D;
             AddItem(tunic);
 
-            var gorget = new PlateGorget();
+            PlateGorget gorget = new PlateGorget();
             gorget.Hue = 0x96D;
             AddItem(gorget);
 
-            var golves = new PlateGloves();
+            PlateGloves golves = new PlateGloves();
             golves.Hue = 0x96D;
             AddItem(golves);
 
-            var halberd = new Halberd();
+            Halberd halberd = new Halberd();
             halberd.Hue = 0x96D;
             AddItem(halberd);
 

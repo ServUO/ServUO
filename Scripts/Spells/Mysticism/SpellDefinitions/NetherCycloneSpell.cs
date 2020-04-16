@@ -62,7 +62,7 @@ namespace Server.Spells.Mysticism
                         }
                     }
 
-                    foreach (var d in AcquireIndirectTargets(p, 3))
+                    foreach (IDamageable d in AcquireIndirectTargets(p, 3))
                     {
                         Server.Effects.SendTargetParticles(d, 0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255, 0);
 

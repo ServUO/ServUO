@@ -110,14 +110,14 @@ namespace Server.Engines.Doom
 
         public void DoRoll()
         {
-            var g = GetGary();
-            var d = GetDice();
+            GaryTheDungeonMaster g = GetGary();
+            Sapphired20 d = GetDice();
             int roll = ForceRoll >= 0 && ForceRoll < 20 ? ForceRoll : Utility.Random(20);
 
             g.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1080099); // *Gary rolls the sapphire d20*
 
-            var door1 = GetDoor1();
-            var door2 = GetDoor2();
+            BaseDoor door1 = GetDoor1();
+            BaseDoor door2 = GetDoor2();
 
             door1.Locked = true;
             door2.Locked = true;
@@ -136,7 +136,7 @@ namespace Server.Engines.Doom
                     }
                     else
                     {
-                        foreach (var m in this.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                        foreach (PlayerMobile m in this.GetEnumeratedMobiles().OfType<PlayerMobile>())
                         {
                             m.SendMessage("- {0} -", (roll + 1).ToString());
                         }
@@ -173,7 +173,7 @@ namespace Server.Engines.Doom
 
         public void ChangeStatues()
         {
-            foreach (var statue in GetStatues())
+            foreach (DisplayStatue statue in GetStatues())
             {
                 statue.AssignRandom();
             }
@@ -243,8 +243,8 @@ namespace Server.Engines.Doom
         {
             if (m == Spawn)
             {
-                var door1 = GetDoor1();
-                var door2 = GetDoor2();
+                BaseDoor door1 = GetDoor1();
+                BaseDoor door2 = GetDoor2();
 
                 door1.Locked = false;
                 door2.Locked = false;
@@ -257,7 +257,7 @@ namespace Server.Engines.Doom
 
         public override void OnEnter(Mobile m)
         {
-            var g = GetGary();
+            GaryTheDungeonMaster g = GetGary();
 
             g.SayTo(m, 1080098); // Ah... visitors!
         }
@@ -430,7 +430,7 @@ namespace Server.Engines.Doom
 
             if (!FindObject(typeof(UOBoard), _RulesLoc))
             {
-                var rules = new UOBoard();
+                UOBoard rules = new UOBoard();
                 rules.Movable = false;
                 rules.MoveToWorld(_RulesLoc, Map.Malas);
             }
@@ -439,13 +439,13 @@ namespace Server.Engines.Doom
 
             if (!FindObject(typeof(Static), p))
             {
-                var books = new Static(0x1E22);
+                Static books = new Static(0x1E22);
                 books.MoveToWorld(p, Map.Malas);
             }
 
             if (!FindObject(typeof(ScribesPen), p))
             {
-                var pen = new ScribesPen();
+                ScribesPen pen = new ScribesPen();
                 pen.ItemID = 4032;
                 pen.Movable = false;
                 pen.MoveToWorld(p, Map.Malas);

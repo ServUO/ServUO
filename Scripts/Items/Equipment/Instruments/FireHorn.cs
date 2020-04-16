@@ -62,8 +62,8 @@ namespace Server.Items
             from.PlaySound(0x15F);
             Effects.SendPacket(from, from.Map, new HuedEffect(EffectType.Moving, from.Serial, Serial.Zero, 0x36D4, from.Location, loc, 5, 0, false, true, 0, 0));
 
-            var targets = SpellHelper.AcquireIndirectTargets(from, loc, from.Map, 2).OfType<Mobile>().ToList();
-            var count = targets.Count;
+            System.Collections.Generic.List<Mobile> targets = SpellHelper.AcquireIndirectTargets(from, loc, from.Map, 2).OfType<Mobile>().ToList();
+            int count = targets.Count;
             bool playerVsPlayer = targets.Any(t => t.Player);
 
             if (count > 0)
@@ -95,7 +95,7 @@ namespace Server.Items
                 if (count > 1)
                     damage = (damage * 2) / count;
 
-                foreach (var m in targets)
+                foreach (Mobile m in targets)
                 {
                     double toDeal = damage;
 

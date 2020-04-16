@@ -156,8 +156,8 @@ namespace Server.Engines.Quests.RitualQuest
 
             if (Combatant is Mobile && _NextTeleport < DateTime.UtcNow)
             {
-                var map = Map;
-                var c = (Mobile)Combatant;
+                Map map = Map;
+                Mobile c = (Mobile)Combatant;
 
                 Point3D p;
 
@@ -182,7 +182,7 @@ namespace Server.Engines.Quests.RitualQuest
         {
             if (from is PlayerMobile)
             {
-                var quest = QuestHelper.GetQuest<CatchMeIfYouCanQuest>((PlayerMobile)from);
+                CatchMeIfYouCanQuest quest = QuestHelper.GetQuest<CatchMeIfYouCanQuest>((PlayerMobile)from);
 
                 if (quest != null)
                 {
@@ -200,7 +200,7 @@ namespace Server.Engines.Quests.RitualQuest
 
         public override void Delete()
         {
-            var bex = new BexilPunchingBag();
+            BexilPunchingBag bex = new BexilPunchingBag();
             bex.MoveToWorld(new Point3D(403, 3391, 38), Map.TerMur);
 
             base.Delete();

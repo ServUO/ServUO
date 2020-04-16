@@ -94,7 +94,7 @@ namespace Server.Engines.Chat
 
         public void SendMessage(int number, ChatUser from, string param1, string param2)
         {
-            foreach (var user in m_Users)
+            foreach (ChatUser user in m_Users)
             {
                 if (user.CheckOnline())
                     user.SendMessage(number, from.Mobile, param1, param2);
@@ -108,7 +108,7 @@ namespace Server.Engines.Chat
 
         public void SendCommand(ChatCommand command, ChatUser initiator, string param1 = null, string param2 = null)
         {
-            foreach (var user in m_Users.ToArray())
+            foreach (ChatUser user in m_Users.ToArray())
             {
                 if (user == initiator)
                     continue;
@@ -120,7 +120,7 @@ namespace Server.Engines.Chat
 
         public void SendUsersTo(ChatUser to)
         {
-            foreach (var user in m_Users)
+            foreach (ChatUser user in m_Users)
             {
                 ChatSystem.SendCommandTo(to.Mobile, ChatCommand.AddUserToChannel, user.GetColorCharacter() + user.Username, String.Format("{{{0}}}", m_Name));
             }
@@ -132,7 +132,7 @@ namespace Server.Engines.Chat
 
         public static void SendChannelsTo(ChatUser user)
         {
-            foreach (var channel in m_Channels)
+            foreach (Channel channel in m_Channels)
             {
                 ChatSystem.SendCommandTo(user.Mobile, ChatCommand.AddChannel, channel.Name, "0");
             }
@@ -140,7 +140,7 @@ namespace Server.Engines.Chat
 
         public static Channel AddChannel(string name)
         {
-            var channel = FindChannelByName(name);
+            Channel channel = FindChannelByName(name);
 
             if (channel == null)
             {

@@ -39,7 +39,7 @@ namespace Server.Items
         {
             if (m_DefenseTable.ContainsKey(m))
             {
-                var timer = m_DefenseTable[m];
+                DefenseTimer timer = m_DefenseTable[m];
 
                 if (timer != null)
                 {

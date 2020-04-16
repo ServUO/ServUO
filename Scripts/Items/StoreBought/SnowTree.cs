@@ -13,7 +13,7 @@ namespace Server.Items
 
             if (!trunk)
             {
-                var comp = new LocalizedAddonComponent(0xD9D, 1071103);
+                LocalizedAddonComponent comp = new LocalizedAddonComponent(0xD9D, 1071103);
                 comp.Hue = 1153;
                 AddComponent(comp, 0, 0, 0);
             }

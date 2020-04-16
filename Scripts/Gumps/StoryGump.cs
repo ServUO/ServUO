@@ -67,7 +67,7 @@ namespace Server.Gumps
         public void RenderPage(PageData page)
         {
             AddPage(page.Page);
-            var textDef = page.Text;
+            TextDefinition textDef = page.Text;
 
             if (textDef.Number > 0)
             {
@@ -83,7 +83,7 @@ namespace Server.Gumps
                 for (int i = 0; i < page.Selections.Length; i++)
                 {
                     int y = 300 + (i * 20);
-                    var entry = page.Selections[i];
+                    SelectionEntry entry = page.Selections[i];
 
                     AddButton(115, y, 0x26B0, 0x26B1, 0, GumpButtonType.Page, entry.PageTo);
 

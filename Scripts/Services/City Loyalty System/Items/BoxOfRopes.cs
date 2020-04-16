@@ -31,7 +31,7 @@ namespace Server.Items
             {
                 if (_Cooldown == null || !_Cooldown.ContainsKey(from) || _Cooldown[from] < DateTime.UtcNow)
                 {
-                    var rope = new GuardsmansRope();
+                    GuardsmansRope rope = new GuardsmansRope();
                     from.AddToBackpack(rope);
 
                     from.SendLocalizedMessage(1152263); // You take a rope from the chest. Use it to arrest rioters and subdued raiders.

@@ -78,7 +78,7 @@ namespace Server.Items
 
                 m.Backpack.Items.IterateReverse(i =>
                 {
-                    var socket = i.GetSocket<EnchantedHotItemSocket>();
+                    EnchantedHotItemSocket socket = i.GetSocket<EnchantedHotItemSocket>();
 
                     if (socket != null)
                     {
@@ -96,7 +96,7 @@ namespace Server.Items
 
         public static bool CheckDrop(Mobile from, Container droppedTo, Item dropped)
         {
-            var socket = dropped.GetSocket<EnchantedHotItemSocket>();
+            EnchantedHotItemSocket socket = dropped.GetSocket<EnchantedHotItemSocket>();
 
             if (socket != null)
             {
@@ -124,7 +124,7 @@ namespace Server.Items
 
         public static bool CheckDrop(Mobile from, Item dropped)
         {
-            var socket = dropped.GetSocket<EnchantedHotItemSocket>();
+            EnchantedHotItemSocket socket = dropped.GetSocket<EnchantedHotItemSocket>();
 
             if (socket != null)
             {

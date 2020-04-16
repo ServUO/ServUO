@@ -176,7 +176,7 @@ namespace Server.Engines.Plants
 
                     if (from is PlayerMobile)
                     {
-                        var gump = new SeedBoxGump((PlayerMobile)from, this);
+                        SeedBoxGump gump = new SeedBoxGump((PlayerMobile)from, this);
                         gump.CheckPage(entry);
 
                         BaseGump.SendGump(gump);
@@ -299,12 +299,12 @@ namespace Server.Engines.Plants
         {
             List<Item> toDelete = new List<Item>(this.Items);
 
-            foreach (var item in toDelete.Where(i => i != null && i.Amount == 0))
+            foreach (Item item in toDelete.Where(i => i != null && i.Amount == 0))
                 item.Delete();
 
             List<SeedEntry> entries = new List<SeedEntry>(Entries);
 
-            foreach (var entry in entries.Where(e => e != null && (e.Seed == null || e.Seed.Amount == 0 || e.Seed.Deleted)))
+            foreach (SeedEntry entry in entries.Where(e => e != null && (e.Seed == null || e.Seed.Amount == 0 || e.Seed.Deleted)))
                 Entries.Remove(entry);
 
             ColUtility.Free(entries);
@@ -384,7 +384,7 @@ namespace Server.Engines.Plants
             Timer.DelayCall(
                 () =>
                 {
-                    foreach (var item in Items.Where(i => i.Movable))
+                    foreach (Item item in Items.Where(i => i.Movable))
                         item.Movable = false;
                 });
 
