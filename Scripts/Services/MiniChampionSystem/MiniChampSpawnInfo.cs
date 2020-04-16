@@ -1,12 +1,12 @@
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
-using Server.Mobiles;
 
 namespace Server.Engines.MiniChamps
 {
     public class MiniChampSpawnInfo
     {
-        private MiniChamp Owner;
+        private readonly MiniChamp Owner;
         public List<Mobile> Creatures;
 
         public Type MonsterType { get; set; }
@@ -56,7 +56,7 @@ namespace Server.Engines.MiniChamps
 
             ColUtility.Free(list);
             return killed;
-        }        
+        }
 
         public bool Respawn()
         {
@@ -137,5 +137,5 @@ namespace Server.Engines.MiniChamps
             MonsterType = ScriptCompiler.FindTypeByFullName(reader.ReadString());
             Creatures = reader.ReadStrongMobileList();
         }
-    }   
+    }
 }

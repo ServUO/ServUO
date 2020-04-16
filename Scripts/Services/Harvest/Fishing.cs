@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
 using Server.Engines.Quests;
 using Server.Engines.Quests.Collector;
 using Server.Items;
 using Server.Mobiles;
 using Server.Network;
 using Server.Targeting;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Harvest
 {
@@ -129,31 +129,31 @@ namespace Server.Engines.Harvest
             }
         }
 
-        private static MutateEntry[] m_MutateTable = new MutateEntry[]
-		{
-			new MutateEntry( 80.0,  80.0,  1865.0,  true, typeof( SpecialFishingNet ) ),
-			new MutateEntry( 90.0,  80.0,  1875.0,  true, typeof( TreasureMap ) ),
-			new MutateEntry( 100.0,  80.0,  750.0,  true, typeof( MessageInABottle ) ),			
-			new MutateEntry( 80.0,  80.0,  4080.0,  true, typeof( BigFish ) ),
-			new MutateEntry( 0.0, 125.0, -2375.0, false, typeof( PrizedFish ), typeof( WondrousFish ), typeof( TrulyRareFish ), typeof( PeculiarFish ) ),
-			new MutateEntry( 0.0, 125.0,  -420.0, false, typeof( Boots ), typeof( Shoes ), typeof( Sandals ), typeof( ThighBoots ) ),
+        private static readonly MutateEntry[] m_MutateTable = new MutateEntry[]
+        {
+            new MutateEntry( 80.0,  80.0,  1865.0,  true, typeof( SpecialFishingNet ) ),
+            new MutateEntry( 90.0,  80.0,  1875.0,  true, typeof( TreasureMap ) ),
+            new MutateEntry( 100.0,  80.0,  750.0,  true, typeof( MessageInABottle ) ),
+            new MutateEntry( 80.0,  80.0,  4080.0,  true, typeof( BigFish ) ),
+            new MutateEntry( 0.0, 125.0, -2375.0, false, typeof( PrizedFish ), typeof( WondrousFish ), typeof( TrulyRareFish ), typeof( PeculiarFish ) ),
+            new MutateEntry( 0.0, 125.0,  -420.0, false, typeof( Boots ), typeof( Shoes ), typeof( Sandals ), typeof( ThighBoots ) ),
             new MutateEntry( 80.0,  80.0, 2500.0, false, typeof( MudPuppy ), typeof( RedHerring) ),
-			new MutateEntry( 0.0, 200.0,  -200.0, false, new Type[1]{ null } )
-		};
+            new MutateEntry( 0.0, 200.0,  -200.0, false, new Type[1]{ null } )
+        };
 
-        private static MutateEntry[] m_SiegeMutateTable = new MutateEntry[]
-		{
-			new MutateEntry( 80.0,  80.0,  1865.0,  true, typeof( SpecialFishingNet ) ),
+        private static readonly MutateEntry[] m_SiegeMutateTable = new MutateEntry[]
+        {
+            new MutateEntry( 80.0,  80.0,  1865.0,  true, typeof( SpecialFishingNet ) ),
             new MutateEntry( 0.0, 200.0,  -200.0, false, new Type[1]{ null } ),
-			new MutateEntry( 100.0,  80.0,  1865.0,  true, typeof( MessageInABottle ) ),			
-			new MutateEntry( 80.0,  80.0,  4080.0,  true, typeof( BigFish ) ),
-			new MutateEntry( 0.0, 125.0, -2375.0, false, typeof( PrizedFish ), typeof( WondrousFish ), typeof( TrulyRareFish ), typeof( PeculiarFish ) ),
-			new MutateEntry( 0.0, 105.0,  -420.0, false, typeof( Boots ), typeof( Shoes ), typeof( Sandals ), typeof( ThighBoots ) ),
+            new MutateEntry( 100.0,  80.0,  1865.0,  true, typeof( MessageInABottle ) ),
+            new MutateEntry( 80.0,  80.0,  4080.0,  true, typeof( BigFish ) ),
+            new MutateEntry( 0.0, 125.0, -2375.0, false, typeof( PrizedFish ), typeof( WondrousFish ), typeof( TrulyRareFish ), typeof( PeculiarFish ) ),
+            new MutateEntry( 0.0, 105.0,  -420.0, false, typeof( Boots ), typeof( Shoes ), typeof( Sandals ), typeof( ThighBoots ) ),
             new MutateEntry( 80.0,  80.0, 2500.0, false, typeof( MudPuppy ), typeof( RedHerring) ),
-			new MutateEntry( 0.0, 200.0,  -200.0, false, new Type[1]{ null } )
-		};
+            new MutateEntry( 0.0, 200.0,  -200.0, false, new Type[1]{ null } )
+        };
 
-        private static MutateEntry[] m_LavaMutateTable = new MutateEntry[]
+        private static readonly MutateEntry[] m_LavaMutateTable = new MutateEntry[]
         {
             new MutateEntry( 0.0,  80.0, 333, false, typeof(StoneFootwear)),
             new MutateEntry( 80.0, 80.0, 333, false, typeof(CrackedLavaRockEast), typeof(CrackedLavaRockSouth)),
@@ -257,7 +257,7 @@ namespace Server.Engines.Harvest
                 return type;
 
             bool deepWater = IsDeepWater(loc, map);
-            bool junkproof = HasTypeHook(tool, HookType.JunkProof); 
+            bool junkproof = HasTypeHook(tool, HookType.JunkProof);
 
             double skillBase = from.Skills[SkillName.Fishing].Base;
             double skillValue = from.Skills[SkillName.Fishing].Value;
@@ -446,7 +446,7 @@ namespace Server.Engines.Harvest
                                         preLoot = new ShipwreckedItem(list[Utility.Random(3)], dredge);
                                     break;
                                 }
-                            #endregion
+                                #endregion
                         }
 
                         if (preLoot != null)
@@ -777,12 +777,12 @@ namespace Server.Engines.Harvest
 
         #region HighSeas
         public static int[] LavaTiles { get { return m_LavaTiles; } }
-        private static int[] m_LavaTiles = new int[]
+        private static readonly int[] m_LavaTiles = new int[]
         {
             0x1F4, 0x1F5,
             0x1F6, 0x1F7,
 
-            4846, 4847, 4848, 4849, 4850, 
+            4846, 4847, 4848, 4849, 4850,
             4852, 4853, 4854, 4855, 4856, 4857, 4858, 4859, 4560, 4561, 4562,
             4864, 4865, 4866, 4867, 4868,
             4870, 4871, 4872, 4873, 4874,

@@ -1,8 +1,8 @@
-using System;
 using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Targeting;
+using System;
 
 namespace Server.Spells.Sixth
 {
@@ -157,7 +157,7 @@ namespace Server.Spells.Sixth
 
                 int version = reader.ReadInt();
 
-                switch ( version )
+                switch (version)
                 {
                     case 0:
                         {
@@ -190,13 +190,13 @@ namespace Server.Spells.Sixth
 
                     if (duration < 0.0)
                         duration = 0.0;
-    
+
 
                     m.Paralyze(TimeSpan.FromSeconds(duration));
 
                     m.PlaySound(0x204);
                     m.FixedEffect(0x376A, 10, 16);
-					
+
                     if (m is BaseCreature)
                         ((BaseCreature)m).OnHarmfulSpell(m_Caster);
                 }

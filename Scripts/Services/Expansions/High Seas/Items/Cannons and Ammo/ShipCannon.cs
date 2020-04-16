@@ -1,13 +1,11 @@
-using System.Collections.Generic;
-using System;
-using System.Linq;
-
-using Server;
-using Server.Mobiles;
 using Server.ContextMenus;
 using Server.Gumps;
+using Server.Mobiles;
 using Server.Multis;
 using Server.Network;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -389,7 +387,7 @@ namespace Server.Items
             return _Types.Any(t => t == item.GetType() || item.GetType().IsSubclassOf(t));
         }
 
-        private Type[] _Types =
+        private readonly Type[] _Types =
         {
             typeof(Cannonball), typeof(Grapeshot), typeof(PowderCharge), typeof(FuseCord)
         };
@@ -1090,7 +1088,7 @@ namespace Server.Items
         }
 
         public Dictionary<Mobile, List<int>> Actions { get { return m_Actions; } }
-        private Dictionary<Mobile, List<int>> m_Actions = new Dictionary<Mobile, List<int>>();
+        private readonly Dictionary<Mobile, List<int>> m_Actions = new Dictionary<Mobile, List<int>>();
 
         public void AddAction(Mobile from, int action)
         {

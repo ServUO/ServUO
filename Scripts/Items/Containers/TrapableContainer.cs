@@ -82,7 +82,7 @@ namespace Server.Items
                     return false;
                 }
 
-                switch ( m_TrapType )
+                switch (m_TrapType)
                 {
                     case TrapType.ExplosionTrap:
                         {
@@ -224,7 +224,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 2:
                     {

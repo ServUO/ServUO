@@ -1,13 +1,10 @@
-using System;
-using Server;
-
 namespace Server.Items
 {
     public class ElvenWashBasinEastAddonWithDrawer : BaseAddonContainer
     {
         [Constructable]
         public ElvenWashBasinEastAddonWithDrawer()
-			: base(0x30E0)
+            : base(0x30E0)
         {
             this.AddComponent(new AddonContainerComponent(0x30DF), 0, -1, 0);
         }
@@ -24,27 +21,27 @@ namespace Server.Items
                 return new ElvenWashBasinEastWithDrawerDeed();
             }
         }
-		public override bool RetainDeedHue
-		{
-			get
-			{
-				return true;
-			}
-		}
-		public override int DefaultGumpID
-		{
-			get
-			{
-				return 0x0104;
-			}
-		}
-		public override int DefaultDropSound
-		{
-			get
-			{
-				return 0x0042;
-			}
-		}
+        public override bool RetainDeedHue
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public override int DefaultGumpID
+        {
+            get
+            {
+                return 0x0104;
+            }
+        }
+        public override int DefaultDropSound
+        {
+            get
+            {
+                return 0x0042;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -64,7 +61,7 @@ namespace Server.Items
     {
         [Constructable]
         public ElvenWashBasinEastWithDrawerDeed()
-			: base()
+            : base()
         {
         }
 
@@ -73,13 +70,13 @@ namespace Server.Items
         {
         }
 
-		public override BaseAddonContainer Addon
-		{
-			get
-			{
-				return new ElvenWashBasinEastAddonWithDrawer();
-			}
-		}
+        public override BaseAddonContainer Addon
+        {
+            get
+            {
+                return new ElvenWashBasinEastAddonWithDrawer();
+            }
+        }
 
         public override int LabelNumber
         {

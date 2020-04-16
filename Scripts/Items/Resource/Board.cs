@@ -1,167 +1,165 @@
-using System;
-
 namespace Server.Items
 {
-    [FlipableAttribute( 0x1BD7, 0x1BDA )]
-	public class BaseWoodBoard : Item, ICommodity, IResource
-	{
-		private CraftResource m_Resource;
+    [FlipableAttribute(0x1BD7, 0x1BDA)]
+    public class BaseWoodBoard : Item, ICommodity, IResource
+    {
+        private CraftResource m_Resource;
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public CraftResource Resource
-		{
-			get { return m_Resource; }
-			set { m_Resource = value; InvalidateProperties(); }
-		}
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CraftResource Resource
+        {
+            get { return m_Resource; }
+            set { m_Resource = value; InvalidateProperties(); }
+        }
 
         public override int LabelNumber
         {
             get
             {
-                if ( m_Resource >= CraftResource.OakWood && m_Resource <= CraftResource.YewWood )
-					return 1075052 + ( (int)m_Resource - (int)CraftResource.OakWood );
+                if (m_Resource >= CraftResource.OakWood && m_Resource <= CraftResource.YewWood)
+                    return 1075052 + ((int)m_Resource - (int)CraftResource.OakWood);
 
-				switch ( m_Resource )
-				{
-					case CraftResource.Bloodwood: return 1075055;
-					case CraftResource.Frostwood: return 1075056;
-					case CraftResource.Heartwood: return 1075062;	//WHY Osi.  Why?
-				}
+                switch (m_Resource)
+                {
+                    case CraftResource.Bloodwood: return 1075055;
+                    case CraftResource.Frostwood: return 1075056;
+                    case CraftResource.Heartwood: return 1075062;   //WHY Osi.  Why?
+                }
 
                 return 1015101;
             }
         }
-		
-		TextDefinition ICommodity.Description 
-		{ 
-			get
-			{
-				return LabelNumber;
-			} 
-		}
 
-		bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description
+        {
+            get
+            {
+                return LabelNumber;
+            }
+        }
 
-		[Constructable]
-		public BaseWoodBoard()
-			: this( 1 )
-		{
-		}
+        bool ICommodity.IsDeedable { get { return true; } }
 
-		[Constructable]
-		public BaseWoodBoard( int amount )
-			: this( CraftResource.RegularWood, amount )
-		{
-		}
+        [Constructable]
+        public BaseWoodBoard()
+            : this(1)
+        {
+        }
 
-		public BaseWoodBoard( Serial serial )
-			: base( serial )
-		{
-		}
+        [Constructable]
+        public BaseWoodBoard(int amount)
+            : this(CraftResource.RegularWood, amount)
+        {
+        }
 
-		[Constructable]
-		public BaseWoodBoard( CraftResource resource ) : this( resource, 1 )
-		{
-		}
+        public BaseWoodBoard(Serial serial)
+            : base(serial)
+        {
+        }
 
-		[Constructable]
-		public BaseWoodBoard( CraftResource resource, int amount )
-			: base( 0x1BD7 )
-		{
-			Stackable = true;
-			Amount = amount;
+        [Constructable]
+        public BaseWoodBoard(CraftResource resource) : this(resource, 1)
+        {
+        }
 
-			m_Resource = resource;
-			Hue = CraftResources.GetHue( resource );
-		}
+        [Constructable]
+        public BaseWoodBoard(CraftResource resource, int amount)
+            : base(0x1BD7)
+        {
+            Stackable = true;
+            Amount = amount;
 
-		public override void GetProperties( ObjectPropertyList list )
-		{
-			base.GetProperties( list );
+            m_Resource = resource;
+            Hue = CraftResources.GetHue(resource);
+        }
 
-			if ( !CraftResources.IsStandard( m_Resource ) )
-			{
-				int num = CraftResources.GetLocalizationNumber( m_Resource );
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
 
-				if ( num > 0 )
-					list.Add( num );
-				else
-					list.Add( CraftResources.GetName( m_Resource ) );
-			}
-		}
+            if (!CraftResources.IsStandard(m_Resource))
+            {
+                int num = CraftResources.GetLocalizationNumber(m_Resource);
 
-		
+                if (num > 0)
+                    list.Add(num);
+                else
+                    list.Add(CraftResources.GetName(m_Resource));
+            }
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
 
-			writer.Write( (int) 4 );
 
-			writer.Write( (int)m_Resource );
-		}
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-		public static bool UpdatingBaseClass;
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+            writer.Write((int)4);
 
-			int version = reader.ReadInt();
-			if ( version == 3 )
-				UpdatingBaseClass = true;
-			switch ( version )
-			{
-				case 4:
-				case 3:
-				case 2:
-					{
-						m_Resource = (CraftResource)reader.ReadInt();
-						break;
-					}
-			}
+            writer.Write((int)m_Resource);
+        }
 
-			if ( (version == 0 && Weight == 0.1) || ( version <= 2 && Weight == 2 ) )
-				Weight = -1;
+        public static bool UpdatingBaseClass;
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			if ( version <= 1 )
-				m_Resource = CraftResource.RegularWood;
-		}
-	}
-	
-	public class Board : BaseWoodBoard
-	{
-		[Constructable]
-		public Board()
-			: this(1)
-		{
-		}
+            int version = reader.ReadInt();
+            if (version == 3)
+                UpdatingBaseClass = true;
+            switch (version)
+            {
+                case 4:
+                case 3:
+                case 2:
+                    {
+                        m_Resource = (CraftResource)reader.ReadInt();
+                        break;
+                    }
+            }
 
-		[Constructable]
-		public Board(int amount)
-			: base(CraftResource.RegularWood, amount)
-		{
-		}
+            if ((version == 0 && Weight == 0.1) || (version <= 2 && Weight == 2))
+                Weight = -1;
 
-		public Board(Serial serial)
-			: base(serial)
-		{
-		}
+            if (version <= 1)
+                m_Resource = CraftResource.RegularWood;
+        }
+    }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+    public class Board : BaseWoodBoard
+    {
+        [Constructable]
+        public Board()
+            : this(1)
+        {
+        }
 
-			writer.Write((int)0); // version
-		}
+        [Constructable]
+        public Board(int amount)
+            : base(CraftResource.RegularWood, amount)
+        {
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			if (BaseWoodBoard.UpdatingBaseClass)
-				return;
-			int version = reader.ReadInt();
-		}
-	}
+        public Board(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            if (BaseWoodBoard.UpdatingBaseClass)
+                return;
+            int version = reader.ReadInt();
+        }
+    }
 
     public class HeartwoodBoard : BaseWoodBoard
     {

@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.Craft;
 
 namespace Server.Items
@@ -74,8 +73,8 @@ namespace Server.Items
                 return 95;
             }
         }
-		
-		public override void Serialize(GenericWriter writer)
+
+        public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write((int)0);//version

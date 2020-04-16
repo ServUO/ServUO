@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class ImpressivePlaidQuest : BaseQuest
-    { 
+    {
         public ImpressivePlaidQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(Kilt), "kilts", 10, 0x1537));
-			
+
             this.AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
@@ -70,12 +70,12 @@ namespace Server.Engines.Quests
     }
 
     public class NiceShirtQuest : BaseQuest
-    { 
+    {
         public NiceShirtQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(FancyShirt), "fancy shirt", 10, 0x1EFD));
-			
+
             this.AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
@@ -136,12 +136,12 @@ namespace Server.Engines.Quests
     }
 
     public class LeatherAndLaceQuest : BaseQuest
-    { 
+    {
         public LeatherAndLaceQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(StuddedBustierArms), "studded bustiers", 10, 0x1C0C));
-			
+
             this.AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
@@ -202,12 +202,12 @@ namespace Server.Engines.Quests
     }
 
     public class FeyHeadgearQuest : BaseQuest
-    { 
+    {
         public FeyHeadgearQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(FlowerGarland), "flower garlands", 10, 0x2306));
-			
+
             this.AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
@@ -268,12 +268,12 @@ namespace Server.Engines.Quests
     }
 
     public class NewCloakQuest : BaseQuest
-    { 
+    {
         public NewCloakQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(GrobusFur), "grobu's fur", 1));
-			
+
             this.AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
@@ -340,11 +340,11 @@ namespace Server.Engines.Quests
     }
 
     public class Tallinin : MondainQuester
-    { 
+    {
         [Constructable]
         public Tallinin()
             : base("Tallinin", "the cloth weaver")
-        { 
+        {
         }
 
         public Tallinin(Serial serial)
@@ -353,10 +353,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(ImpressivePlaidQuest),
                     typeof(NiceShirtQuest),
@@ -370,11 +370,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.CantWalk = true;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x876C;
             this.HairItemID = 0x2FC0;
             this.HairHue = 0x26B;

@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class GhostShipAnchor : Item
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public GhostShipAnchor()
             : base(0x14F7)
@@ -44,7 +42,7 @@ namespace Server.Items
                     this.Weight = 2;
                     break;
             }
-            
+
             if (this.ItemID == 0x1F47)
                 this.ItemID = 0x14F7;
         }

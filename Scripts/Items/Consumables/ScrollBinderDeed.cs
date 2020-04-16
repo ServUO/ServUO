@@ -1,8 +1,6 @@
-using Server;
-using System;
-using Server.Targeting;
 using Server.Gumps;
 using Server.Network;
+using Server.Targeting;
 
 namespace Server.Items
 {
@@ -130,7 +128,7 @@ namespace Server.Items
                                 from.SendLocalizedMessage(1113144); // This scroll is already the highest of its type and cannot be bound.
                                 return;
                             }
-                            
+
                             double value = ps.Value;
                             int needed = 0;
 
@@ -188,7 +186,7 @@ namespace Server.Items
                             {
                                 from.SendLocalizedMessage(1113144); //This scroll is already the highest of its type and cannot be bound.
                                 return;
-                            }                                
+                            }
 
                             Skill = sot.Skill;
                             BinderType = BinderType.SOT;
@@ -409,7 +407,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private ScrollBinderDeed m_Binder;
+            private readonly ScrollBinderDeed m_Binder;
 
             public InternalTarget(ScrollBinderDeed binder) : base(-1, false, TargetFlags.None)
             {
@@ -427,8 +425,8 @@ namespace Server.Items
         {
             private readonly double m_Value;
             private readonly int m_Needed;
-            private ScrollOfTranscendence m_Scroll;
-            private ScrollBinderDeed m_Binder;
+            private readonly ScrollOfTranscendence m_Scroll;
+            private readonly ScrollBinderDeed m_Binder;
 
             public BinderWarningGump(double value, ScrollBinderDeed binder, ScrollOfTranscendence scroll, int needed)
                 : base(340, 340)

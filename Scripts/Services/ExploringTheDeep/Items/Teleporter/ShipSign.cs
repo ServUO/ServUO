@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class ShipSign : Item
     {
@@ -15,13 +13,13 @@ namespace Server.Items
         {
             this.ItemID = id;
             this.m_Cliloc = cliloc;
-            this.Movable = false;          
+            this.Movable = false;
         }
 
         public ShipSign(Serial serial)
             : base(serial)
         {
-        } 
+        }
 
         public override void Serialize(GenericWriter writer)
         {

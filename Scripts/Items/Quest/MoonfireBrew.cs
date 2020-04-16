@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Engines.Quests.Hag
 {
     public class MoonfireBrew : Item

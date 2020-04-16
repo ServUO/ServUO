@@ -1,9 +1,6 @@
-using System;
-using Server;
-using Server.Spells;
-using Server.Network;
-using Server.Mobiles;
 using Server.Items;
+using Server.Mobiles;
+using System;
 
 /*When activated the shield user will execute a shield bash on successfully hitting or parrying their opponent 
   causing physical damage and paralyzing their opponent based on parry skill, best weapon skill, and mastery level.*/
@@ -12,7 +9,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class ShieldBashSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Shield Bash", "",
                 -1,
                 9002

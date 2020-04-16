@@ -1,8 +1,8 @@
-using System;
-using Server.Mobiles;
 using Server.ContextMenus;
-using System.Collections.Generic;
 using Server.Gumps;
+using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -106,7 +106,7 @@ namespace Server.Items
                         BottlesRemaining = _Fruit / 4;
                     }
                 }
-                
+
                 if (_Fermented)
                 {
                     if (_BadBatch)
@@ -305,7 +305,7 @@ namespace Server.Items
 
         private FruitType GetFruitType(Type t)
         {
-            for(int i = 0; i < _FruitTypes.Length; i++)
+            for (int i = 0; i < _FruitTypes.Length; i++)
             {
                 foreach (var type in _FruitTypes[i])
                 {
@@ -317,7 +317,7 @@ namespace Server.Items
             return FruitType.None;
         }
 
-        private Type[][] _FruitTypes =
+        private readonly Type[][] _FruitTypes =
         {
             new Type[] { typeof(GrapeBunch), typeof(Grapes) },
             new Type[] { typeof(Apple) },
@@ -400,7 +400,7 @@ namespace Server.Items
             : base(BeverageType.Wine)
         {
             Quantity = MaxQuantity;
-            
+
             _FruitType = type;
             _Vintage = vintage;
             _Maker = maker;

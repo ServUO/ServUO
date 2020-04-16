@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class ChopChopOnTheDoubleQuest : BaseQuest
-    { 
+    {
         public ChopChopOnTheDoubleQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(Log), "log", 60, 0x1BDD));
-						
+
             this.AddReward(new BaseReward(typeof(LumberjacksSatchel), 1074282)); // Craftsman's Satchel
         }
 
@@ -82,7 +82,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Hargrove()
             : base("Hargrove", "the lumberjack")
-        { 
+        {
         }
 
         public Hargrove(Serial serial)
@@ -91,10 +91,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(ChopChopOnTheDoubleQuest)
                 };
@@ -103,11 +103,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.CantWalk = true;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x83FF;
             this.HairItemID = 0x203C;
             this.HairHue = 0x0;
@@ -115,15 +115,15 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());			
+            this.AddItem(new Backpack());
             this.AddItem(new BattleAxe());
             this.AddItem(new Boots(0x901));
             this.AddItem(new StuddedLegs());
             this.AddItem(new Shirt(0x288));
             this.AddItem(new Bandana(0x20));
-			
+
             Item item;
-			
+
             item = new PlateGloves();
             item.Hue = 0x21E;
             this.AddItem(item);
@@ -151,7 +151,7 @@ namespace Server.Engines.Quests
             : base()
         {
             this.Hue = BaseReward.SatchelHue();
-			
+
             this.AddItem(new Gold(15));
             this.AddItem(new Hatchet());
         }

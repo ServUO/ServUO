@@ -23,7 +23,7 @@ namespace Server.Items
 
         public override int BaseMana => 30;
 
-        private static Dictionary<Mobile, Timer> m_Registry = new Dictionary<Mobile, Timer>();
+        private static readonly Dictionary<Mobile, Timer> m_Registry = new Dictionary<Mobile, Timer>();
         public static Dictionary<Mobile, Timer> Registry { get { return m_Registry; } }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
@@ -88,9 +88,9 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private Mobile m_Attacker;
-            private List<Mobile> m_List;
-            private long m_Start;
+            private readonly Mobile m_Attacker;
+            private readonly List<Mobile> m_List;
+            private readonly long m_Start;
 
             public InternalTimer(Mobile attacker, List<Mobile> list)
                 : base(TimeSpan.FromMilliseconds(500), TimeSpan.FromMilliseconds(500))
@@ -133,7 +133,7 @@ namespace Server.Items
                         int skill = m_Attacker is BaseCreature ? (int)m_Attacker.Skills[SkillName.Ninjitsu].Value :
                                                               (int)Math.Max(m_Attacker.Skills[SkillName.Bushido].Value, m_Attacker.Skills[SkillName.Ninjitsu].Value);
 
-                        var baseMin = (int)Math.Max(5, (skill / 50) * 5);
+                        var baseMin = Math.Max(5, (skill / 50) * 5);
                         AOS.Damage(m, m_Attacker, Utility.RandomMinMax(baseMin, (baseMin * 3) + 2), 100, 0, 0, 0, 0);
                     }
                 }

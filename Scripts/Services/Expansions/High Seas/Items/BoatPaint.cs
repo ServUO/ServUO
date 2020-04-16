@@ -1,6 +1,4 @@
-﻿using Server;
-using System;
-using Server.Multis;
+﻿using Server.Multis;
 using Server.Targeting;
 
 namespace Server.Items
@@ -37,8 +35,8 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private BoatPaint m_Paint;
-            private Mobile m_From;
+            private readonly BoatPaint m_Paint;
+            private readonly Mobile m_From;
 
             public InternalTarget(Mobile from, BoatPaint paint) : base(5, false, TargetFlags.None)
             {

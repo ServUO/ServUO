@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Engines.Quests.Matriarch
 {
     public class DontOfferConversation : QuestConversation

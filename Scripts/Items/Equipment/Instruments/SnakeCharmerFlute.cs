@@ -1,11 +1,9 @@
+using Server.Engines.Craft;
+using Server.Mobiles;
+using Server.Network;
+using Server.Targeting;
 using System;
 using System.Linq;
-
-using Server;
-using Server.Network;
-using Server.Mobiles;
-using Server.Targeting;
-using Server.Engines.Craft;
 
 namespace Server.Items
 {
@@ -54,7 +52,7 @@ namespace Server.Items
 
         private class CharmTarget : Target
         {
-            private SnakeCharmerFlute m_Flute;
+            private readonly SnakeCharmerFlute m_Flute;
 
             public CharmTarget(SnakeCharmerFlute flute)
                 : base(12, false, TargetFlags.None)
@@ -86,8 +84,8 @@ namespace Server.Items
 
             private class InternalTarget : Target
             {
-                private BaseCreature m_Snake;
-                private SnakeCharmerFlute m_Flute;
+                private readonly BaseCreature m_Snake;
+                private readonly SnakeCharmerFlute m_Flute;
 
                 public InternalTarget(BaseCreature snake, SnakeCharmerFlute flute)
                     : base(10, true, TargetFlags.None)
@@ -137,7 +135,7 @@ namespace Server.Items
             return m_SnakeTypes.Any(t => t == bc.GetType());
         }
 
-        private static Type[] m_SnakeTypes = new Type[]
+        private static readonly Type[] m_SnakeTypes = new Type[]
         {
             typeof(LavaSnake),    typeof(Snake),
             typeof(CoralSnake),   typeof(GiantSerpent),

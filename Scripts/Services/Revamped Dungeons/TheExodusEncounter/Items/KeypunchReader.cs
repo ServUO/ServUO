@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,12 +8,12 @@ namespace Server.Items
         public override int LabelNumber { get { return 1153868; } } // Keypunch Reader  
 
         [Constructable]
-        public KeypunchReader() 
+        public KeypunchReader()
             : base()
         {
             this.Weight = 0.0;
             this.Hue = 2500;
-            this.Movable = false;       
+            this.Movable = false;
         }
 
         public KeypunchReader(Serial serial) : base(serial)
@@ -82,7 +81,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();            
+            int version = reader.ReadInt();
         }
     }
 }

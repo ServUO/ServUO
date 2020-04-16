@@ -1,13 +1,12 @@
 #region References
-using System;
-using System.Collections.Generic;
-using Server.Gumps;
-using Server.Network;
 using Server.ContextMenus;
 using Server.Engines.Craft;
 using Server.Engines.Plants;
+using Server.Gumps;
 using Server.Mobiles;
+using Server.Network;
 using Server.Targeting;
+using System.Collections.Generic;
 #endregion
 
 namespace Server.Items
@@ -259,8 +258,8 @@ namespace Server.Items
 
     public class TopiaryGump : Gump
     {
-        PlantItem m_plant;
-        Clippers m_clippers;
+        readonly PlantItem m_plant;
+        readonly Clippers m_clippers;
 
         public TopiaryGump(PlantItem plant, Clippers clippers) : base(0, 0)
         {

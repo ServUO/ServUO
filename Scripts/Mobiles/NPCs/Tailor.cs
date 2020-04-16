@@ -1,6 +1,6 @@
+using Server.Engines.BulkOrders;
 using System;
 using System.Collections.Generic;
-using Server.Engines.BulkOrders;
 
 namespace Server.Mobiles
 {
@@ -32,8 +32,8 @@ namespace Server.Mobiles
 
         public override void InitSBInfo()
         {
-            if(!IsStygianVendor)
-            { 
+            if (!IsStygianVendor)
+            {
                 this.m_SBInfos.Add(new SBTailor());
             }
             else

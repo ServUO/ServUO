@@ -1,7 +1,6 @@
-using System;
-using Server;
-using System.Collections.Generic;
 using Server.Items;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.TreasuresOfKotlCity
 {
@@ -22,11 +21,11 @@ namespace Server.Engines.TreasuresOfKotlCity
             LiftOverride = true;
 
             RequiredSkill = 90;
-            LockLevel =  RequiredSkill - Utility.Random(1, 10);
+            LockLevel = RequiredSkill - Utility.Random(1, 10);
             MaxLockLevel = RequiredSkill;
             TrapType = TrapType.MagicTrap;
             TrapPower = 100;
-            
+
             Timer.DelayCall(TimeSpan.FromSeconds(1), Fill);
         }
 
@@ -43,7 +42,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
             ColUtility.Free(contains);
 
-            for(int i = 0; i < Utility.RandomMinMax(6, 12); i++)
+            for (int i = 0; i < Utility.RandomMinMax(6, 12); i++)
                 DropItem(Loot.RandomGem());
 
             DropItem(new Gold(Utility.RandomMinMax(800, 1100)));
@@ -99,18 +98,18 @@ namespace Server.Engines.TreasuresOfKotlCity
                 DropItem(item);
             }
         }
-        
+
         public void Reset()
         {
             EndTimer();
-        
+
             Visible = false;
             Locked = true;
-            
+
             RequiredSkill = 90;
-            LockLevel =  RequiredSkill - Utility.Random(1, 10);
+            LockLevel = RequiredSkill - Utility.Random(1, 10);
             MaxLockLevel = RequiredSkill;
-            
+
             TrapType = TrapType.MagicTrap;
             TrapPower = 100;
         }
@@ -149,20 +148,20 @@ namespace Server.Engines.TreasuresOfKotlCity
             : base(serial)
         {
         }
-        
+
         public void TryDelayedLock()
         {
-            if(Locked || (m_Timer != null && m_Timer.Running))
+            if (Locked || (m_Timer != null && m_Timer.Running))
                 return;
-            
+
             EndTimer();
-            
+
             m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(Utility.RandomMinMax(10, 15)), Fill);
         }
-        
+
         public void EndTimer()
         {
-            if(m_Timer != null)
+            if (m_Timer != null)
             {
                 m_Timer.Stop();
                 m_Timer = null;
@@ -173,7 +172,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         {
             base.Serialize(writer);
             writer.Write(0); // Version
-            
+
             TryDelayedLock();
         }
 

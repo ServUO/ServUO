@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class HumanSignOfChaos : ChaosShield
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public HumanSignOfChaos()
             : base()
@@ -20,9 +18,9 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
-        public override int LabelNumber { get{return 1113535;} }// Sign of Chaos
-        
+
+        public override int LabelNumber { get { return 1113535; } }// Sign of Chaos
+
         public override int BasePhysicalResistance
         {
             get

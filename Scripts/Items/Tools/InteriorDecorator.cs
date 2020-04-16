@@ -1,9 +1,9 @@
-using System;
-using System.Linq;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
 using Server.Targeting;
+using System;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -174,7 +174,7 @@ namespace Server.Items
                 OnTarget(from, targeted);
             }
 
-            private static Type[] m_KingsCollectionTypes = new Type[]
+            private static readonly Type[] m_KingsCollectionTypes = new Type[]
             {
                 typeof(BirdLamp),    typeof(DragonLantern),
                 typeof(KoiLamp),   typeof(TallLamp)

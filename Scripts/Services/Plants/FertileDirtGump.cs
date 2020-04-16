@@ -1,8 +1,5 @@
-using Server;
-using System;
-using Server.Items;
-using Server.Mobiles;
 using Server.Gumps;
+using Server.Items;
 using Server.Network;
 using Server.Targeting;
 
@@ -10,8 +7,8 @@ namespace Server.Engines.Plants
 {
     public class FertileDirtGump : Gump
     {
-        private Seed m_Seed;
-        private object m_AttachTo;
+        private readonly Seed m_Seed;
+        private readonly object m_AttachTo;
 
         private const int LabelColor = 0x7FFF;
         private const int FontColor = 0xFFFFFF;

@@ -1,17 +1,17 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class BlackOrderBadgesQuest : BaseQuest
-    { 
+    {
         public BlackOrderBadgesQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(SerpentFangSectBadge), "serpent fang badges", 5));
             this.AddObjective(new ObtainObjective(typeof(TigerClawSectBadge), "tiger claw badges", 5));
             this.AddObjective(new ObtainObjective(typeof(DragonFlameSectBadge), "dragon flame badges", 5));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -70,12 +70,12 @@ namespace Server.Engines.Quests
     }
 
     public class EvidenceQuest : BaseQuest
-    { 
+    {
         public EvidenceQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(OrdersFromMinax), "orders from minax", 1));
-			
+
             this.AddReward(new BaseReward(typeof(RewardBox), 1072584));
         }
 
@@ -138,7 +138,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Sarakki()
             : base("Sarakki", "the notary")
-        { 
+        {
         }
 
         public Sarakki(Serial serial)
@@ -150,7 +150,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(BlackOrderBadgesQuest),
                     typeof(EvidenceQuest)
@@ -160,10 +160,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x841E;
             this.HairItemID = 0x2049;
             this.HairHue = 0x1BB;

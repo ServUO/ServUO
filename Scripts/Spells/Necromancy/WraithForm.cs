@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Server.Mobiles;
+using System;
 
 namespace Server.Spells.Necromancy
 {

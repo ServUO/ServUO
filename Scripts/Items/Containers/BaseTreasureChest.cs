@@ -31,10 +31,10 @@ namespace Server.Items
 
         public enum TreasureLevel
         {
-            Level1, 
-            Level2, 
-            Level3, 
-            Level4, 
+            Level1,
+            Level2,
+            Level3,
+            Level4,
             Level5,
             Level6,
         }
@@ -86,7 +86,7 @@ namespace Server.Items
                 if (base.Locked != value)
                 {
                     base.Locked = value;
-					
+
                     if (!value)
                         this.StartResetTimer();
                 }
@@ -157,7 +157,7 @@ namespace Server.Items
 
         protected virtual void SetLockLevel()
         {
-            switch( this.m_TreasureLevel )
+            switch (this.m_TreasureLevel)
             {
                 case TreasureLevel.Level1:
                     this.RequiredSkill = this.LockLevel = 5;
@@ -185,7 +185,7 @@ namespace Server.Items
             int MinGold = 1;
             int MaxGold = 2;
 
-            switch( this.m_TreasureLevel )
+            switch (this.m_TreasureLevel)
             {
                 case TreasureLevel.Level1:
                     MinGold = 100;
@@ -241,6 +241,6 @@ namespace Server.Items
                 this.m_Chest.Reset();
             }
         }
-        ; 
+        ;
     }
 }

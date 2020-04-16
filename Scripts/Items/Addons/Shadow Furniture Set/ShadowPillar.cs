@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class ShadowPillarAddon : BaseAddon
@@ -7,7 +5,7 @@ namespace Server.Items
         [Constructable]
         public ShadowPillarAddon()
         {
-            AddComponent(new LocalizedAddonComponent(0x3650, 1076679), 0, 0, 0);            
+            AddComponent(new LocalizedAddonComponent(0x3650, 1076679), 0, 0, 0);
         }
 
         public ShadowPillarAddon(Serial serial)
@@ -50,7 +48,7 @@ namespace Server.Items
 
         public override BaseAddon Addon { get { return new ShadowPillarAddon(); } }
 
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

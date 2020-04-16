@@ -1,5 +1,3 @@
-using System;
-using Server.Mobiles;
 using Server.Engines.Harvest;
 
 namespace Server.Items
@@ -8,7 +6,7 @@ namespace Server.Items
     public class RockHammer : BaseHarvestTool
     {
         public override int LabelNumber { get { return 1124598; } }
-    
+
         [Constructable]
         public RockHammer()
             : this(500)

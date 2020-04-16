@@ -1,21 +1,19 @@
-using System;
-
 namespace Server.Items
 {
     public class BreastplateOfTheBerserker : GargishPlateChest
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113539; } } // Breastplate of the Berserker
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113539; } } // Breastplate of the Berserker
+
         [Constructable]
-        public BreastplateOfTheBerserker() 
-        {	
-            Hue = 1172;	
+        public BreastplateOfTheBerserker()
+        {
+            Hue = 1172;
             Attributes.WeaponSpeed = 10;
-            Attributes.WeaponDamage = 15;		
+            Attributes.WeaponDamage = 15;
             Attributes.LowerManaCost = 4;
-            Attributes.BonusHits = 5;			
-			Attributes.RegenStam = 3;
+            Attributes.BonusHits = 5;
+            Attributes.RegenStam = 3;
         }
 
         public BreastplateOfTheBerserker(Serial serial)

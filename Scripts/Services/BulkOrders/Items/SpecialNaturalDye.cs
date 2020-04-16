@@ -1,7 +1,6 @@
-using System;
-using Server.Engines.Plants;
 using Server.Multis;
 using Server.Targeting;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Items
@@ -189,7 +188,7 @@ namespace Server.Items
                                       item is BaseJewel || item is BaseStatuette ||
                                       item is BaseWeapon || item is Runebook ||
                                       item is BaseTalisman || item is Spellbook ||
-									  item.IsArtifact || BasePigmentsOfTokuno.IsValidItem(item));
+                                      item.IsArtifact || BasePigmentsOfTokuno.IsValidItem(item));
 
                         if (!valid && item is BaseArmor)
                         {

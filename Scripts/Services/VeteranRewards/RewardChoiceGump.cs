@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.Gumps;
 using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.VeteranRewards
 {
@@ -145,7 +145,7 @@ namespace Server.Engines.VeteranRewards
                 if (RewardSystem.HasAccess(this.m_From, entries[j]))
                     i++;
             }
-			
+
             return (int)Math.Ceiling(i / 24.0);
         }
 
@@ -161,7 +161,7 @@ namespace Server.Engines.VeteranRewards
             List<RewardEntry> entries = category.Entries;
 
             int i = 0;
-			
+
             for (int j = 0; j < entries.Count; ++j)
             {
                 RewardEntry entry = entries[j];

@@ -137,7 +137,7 @@ namespace Server.Spells.Bushido
         {
             HonorableExecutionInfo info = (HonorableExecutionInfo)state;
 
-            if(info.m_Mobile != null)
+            if (info.m_Mobile != null)
                 info.m_Mobile.Delta(MobileDelta.WeaponDamage);
 
             RemovePenalty(info.m_Mobile);

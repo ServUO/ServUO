@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
 using Server.Spells.SkillMasteries;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class IndoctrinationOfABattleRouserQuest : BaseQuest
     {
         public IndoctrinationOfABattleRouserQuest() : base()
-        { 
+        {
             AddObjective(new ProvocationObjective());
 
             AddReward(new BaseReward(1115659)); // Recognition for mastery of battle rousing.
@@ -81,7 +81,7 @@ namespace Server.Engines.Quests
 
     public class ProvocationObjective : SimpleObjective
     {
-        private List<string> m_Descr = new List<string>();
+        private readonly List<string> m_Descr = new List<string>();
         public override List<string> Descriptions { get { return m_Descr; } }
 
         public ProvocationObjective()
@@ -143,7 +143,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(IndoctrinationOfABattleRouserQuest),
                 };

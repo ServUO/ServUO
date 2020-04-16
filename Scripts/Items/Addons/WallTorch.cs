@@ -1,4 +1,3 @@
-using System;
 using Server.Network;
 
 namespace Server.Items
@@ -27,7 +26,7 @@ namespace Server.Items
         {
             if (from.InRange(this.Location, 2))
             {
-                switch ( this.ItemID )
+                switch (this.ItemID)
                 {
                     case 0x3D98:
                         this.ItemID = 0x3D9B;

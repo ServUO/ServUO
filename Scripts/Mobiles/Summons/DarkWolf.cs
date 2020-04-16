@@ -1,7 +1,6 @@
+using Server.Spells.Necromancy;
 using System;
 using System.Linq;
-
-using Server.Spells.Necromancy;
 
 namespace Server.Mobiles
 {

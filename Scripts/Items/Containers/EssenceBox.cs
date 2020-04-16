@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class EssenceBox : WoodenBox
@@ -11,7 +9,7 @@ namespace Server.Items
             this.Movable = true;
             this.Hue = 2306;
 
-           this.DropItem(Loot.RandomEssence());                   
+            this.DropItem(Loot.RandomEssence());
         }
 
         public EssenceBox(Serial serial)

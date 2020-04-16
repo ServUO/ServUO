@@ -1,8 +1,5 @@
-﻿using System;
+﻿using Server.Targeting;
 using System.Collections.Generic;
-using System.Linq;
-
-using Server.Targeting;
 
 namespace Server.Items
 {
@@ -66,7 +63,7 @@ namespace Server.Items
                     m.SendLocalizedMessage(1154353); // You can't upgrade this refinement.
                 }
             }
-            else 
+            else
             {
                 if (ToUpgrade.RefinementType != component.RefinementType
                             || ToUpgrade.CraftType != component.CraftType
@@ -133,8 +130,8 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private Mobile m_Mobile;
-            private RefinementAmalgamator m_Amalgamator;
+            private readonly Mobile m_Mobile;
+            private readonly RefinementAmalgamator m_Amalgamator;
 
             public InternalTarget(Mobile m, RefinementAmalgamator amalgamator)
                 : base(-1, true, TargetFlags.None)

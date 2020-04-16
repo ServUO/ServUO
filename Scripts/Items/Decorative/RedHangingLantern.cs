@@ -45,7 +45,7 @@ namespace Server.Items
         {
             this.Light = LightType.Circle300;
 
-            switch ( this.ItemID )
+            switch (this.ItemID)
             {
                 case 0x24C2:
                     this.ItemID = 0x24C4;

@@ -173,7 +173,7 @@ namespace Server
 
                 if (ArmorPierce.IsUnderEffects(m))
                 {
-                    totalDamage += (int)((double)totalDamage * .1);
+                    totalDamage += (int)(totalDamage * .1);
                 }
 
                 if (totalDamage < 1)
@@ -268,7 +268,7 @@ namespace Server
             EpiphanyHelper.OnHit(m, totalDamage);
 
             if (type == DamageType.Spell && m != null && Feint.Registry.ContainsKey(m) && Feint.Registry[m].Enemy == from)
-                totalDamage -= (int)((double)damage * ((double)Feint.Registry[m].DamageReduction / 100));
+                totalDamage -= (int)(damage * ((double)Feint.Registry[m].DamageReduction / 100));
 
             if (m.Hidden && type >= DamageType.Spell)
             {
@@ -1357,7 +1357,7 @@ namespace Server
 
             if (HitLeechHits > 0)
             {
-                double postcap = (double)HitLeechHits / (double)ItemPropertyInfo.GetMaxIntensity(wep, AosWeaponAttribute.HitLeechHits);
+                double postcap = HitLeechHits / (double)ItemPropertyInfo.GetMaxIntensity(wep, AosWeaponAttribute.HitLeechHits);
                 if (postcap < 1.0) postcap = 1.0;
 
                 int newhits = (int)((wep.Speed * 2500 / (100 + weaponSpeed)) * postcap);
@@ -1371,7 +1371,7 @@ namespace Server
 
             if (HitLeechMana > 0)
             {
-                double postcap = (double)HitLeechMana / (double)ItemPropertyInfo.GetMaxIntensity(wep, AosWeaponAttribute.HitLeechMana);
+                double postcap = HitLeechMana / (double)ItemPropertyInfo.GetMaxIntensity(wep, AosWeaponAttribute.HitLeechMana);
                 if (postcap < 1.0) postcap = 1.0;
 
                 int newmana = (int)((wep.Speed * 2500 / (100 + weaponSpeed)) * postcap);
@@ -3220,11 +3220,11 @@ namespace Server
         {
             writer.Write((byte)1); // version;
 
-            writer.Write((uint)m_Names);
-            writer.WriteEncodedInt((int)m_Values.Length);
+            writer.Write(m_Names);
+            writer.WriteEncodedInt(m_Values.Length);
 
             for (int i = 0; i < m_Values.Length; ++i)
-                writer.WriteEncodedInt((int)m_Values[i]);
+                writer.WriteEncodedInt(m_Values[i]);
         }
 
         public int GetValue(int bitmask)

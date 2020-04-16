@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class TappingTheKegQuest : BaseQuest
-    { 
+    {
         public TappingTheKegQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(BarrelTap), "barrel taps", 10, 0x1004));
-			
+
             AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
@@ -71,12 +71,12 @@ namespace Server.Engines.Quests
     }
 
     public class BreezesSongQuest : BaseQuest
-    { 
+    {
         public BreezesSongQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(FancyWindChimes), "fancy wind chimes", 10, 0x2833));
-			
+
             AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
@@ -137,12 +137,12 @@ namespace Server.Engines.Quests
     }
 
     public class WaitingToBeFilledQuest : BaseQuest
-    { 
+    {
         public WaitingToBeFilledQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(Bottle), "empty bottles", 20, 0xF0E));
-			
+
             AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
@@ -208,7 +208,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Dallid()
             : base("Dallid", "the cook")
-        { 
+        {
         }
 
         public Dallid(Serial serial)
@@ -217,10 +217,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(TappingTheKegQuest),
                     typeof(BreezesSongQuest),
@@ -232,11 +232,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = false;
             CantWalk = true;
             Race = Race.Elf;
-			
+
             Hue = 0x8376;
             HairItemID = 0x2FCD;
             HairHue = 0x100;

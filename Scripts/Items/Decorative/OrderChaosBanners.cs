@@ -1,6 +1,4 @@
-﻿using System;
-using Server;
-using Server.Engines.VeteranRewards;
+﻿using Server.Engines.VeteranRewards;
 
 namespace Server.Items
 {

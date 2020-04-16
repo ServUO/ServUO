@@ -1,6 +1,6 @@
-using System;
 using Server.Engines.Harvest;
 using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -20,7 +20,7 @@ namespace Server.Items
         public ProspectorsTool(Serial serial)
             : base(serial)
         {
-        }        
+        }
 
         public override WeaponAbility PrimaryAbility { get { return WeaponAbility.CrushingBlow; } }
         public override WeaponAbility SecondaryAbility { get { return WeaponAbility.ShadowStrike; } }
@@ -124,7 +124,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 2:
                     break;

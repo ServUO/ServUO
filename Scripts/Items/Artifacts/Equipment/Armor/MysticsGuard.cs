@@ -1,12 +1,10 @@
-using System;
-
 namespace Server.Items
 {
     public class MysticsGuard : GargishWoodenShield
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber {get { return 1113536; } }
-		public override int ArtifactRarity{ get { return 5; } }
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113536; } }
+        public override int ArtifactRarity { get { return 5; } }
 
         [Constructable]
         public MysticsGuard()
@@ -16,7 +14,7 @@ namespace Server.Items
             Attributes.SpellChanneling = 1;
             Attributes.DefendChance = 10;
             Attributes.CastRecovery = 2;
-	        Hue = 0x671;
+            Hue = 0x671;
         }
 
         public MysticsGuard(Serial serial)

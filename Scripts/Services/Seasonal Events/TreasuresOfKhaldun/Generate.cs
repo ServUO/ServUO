@@ -1,19 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Server;
 using Server.Engines.CannedEvil;
+using Server.Engines.Points;
 using Server.Items;
 using Server.Mobiles;
-using Server.Gumps;
-using Server.Engines.Points;
-using Server.Engines.Quests;
+using System;
+using System.Linq;
 
 namespace Server.Engines.Khaldun
 {
-	public static class TreasuresOfKhaldunGeneration
-	{
+    public static class TreasuresOfKhaldunGeneration
+    {
         public static void Initialize()
         {
             EventSink.WorldSave += OnWorldSave;
@@ -75,7 +70,7 @@ namespace Server.Engines.Khaldun
                     khaldun.Enabled = true;
                 }
 
-                if(!khaldun.QuestContentGenerated)
+                if (!khaldun.QuestContentGenerated)
                 {
                     GenerateQuestContent();
                     khaldun.QuestContentGenerated = true;

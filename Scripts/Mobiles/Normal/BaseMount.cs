@@ -1,9 +1,8 @@
-using System;
-
 using Server.Items;
-using Server.Network;
-using System.Collections.Generic;
 using Server.Multis;
+using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -20,7 +19,7 @@ namespace Server.Mobiles
 
     public abstract class BaseMount : BaseCreature, IMount
     {
-        private static Dictionary<Mobile, BlockEntry> m_Table = new Dictionary<Mobile, BlockEntry>();
+        private static readonly Dictionary<Mobile, BlockEntry> m_Table = new Dictionary<Mobile, BlockEntry>();
         private Mobile m_Rider;
 
         public BaseMount(string name, int bodyID, int itemID, AIType aiType, FightMode fightMode, int rangePerception, int rangeFight, double activeSpeed, double passiveSpeed)
@@ -229,7 +228,7 @@ namespace Server.Mobiles
 
         public static void SetMountPrevention(Mobile mob, BlockMountType type, TimeSpan duration)
         {
-            SetMountPrevention(mob, null, type, duration);   
+            SetMountPrevention(mob, null, type, duration);
         }
 
         public static void SetMountPrevention(Mobile mob, IMount mount, BlockMountType type, TimeSpan duration)
@@ -353,7 +352,7 @@ namespace Server.Mobiles
 
         public static void ExpireMountPrevention(Mobile m)
         {
-            if(m_Table.ContainsKey(m))
+            if (m_Table.ContainsKey(m))
                 m_Table.Remove(m);
 
             BuffInfo.RemoveBuff(m, BuffIcon.DismountPrevention);
@@ -418,7 +417,7 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {
@@ -686,7 +685,7 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {

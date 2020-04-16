@@ -1,8 +1,6 @@
-using Server;
-using System;
+using Server.Gumps;
 using Server.Items;
 using System.Collections.Generic;
-using Server.Gumps;
 
 namespace Server.Mobiles
 {
@@ -13,8 +11,8 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public RefinementCraftType RefineType { get { return m_RefineType; } set { m_RefineType = value; } }
 
-        private List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos => m_SBInfos; 
+        private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public override void InitSBInfo()
         {
@@ -45,7 +43,7 @@ namespace Server.Mobiles
 
         public override void OnDoubleClick(Mobile from)
         {
-            if(from.InRange(this.Location, 10))
+            if (from.InRange(this.Location, 10))
                 from.SendGump(new RefinementHelpGump(m_RefineType));
         }
 

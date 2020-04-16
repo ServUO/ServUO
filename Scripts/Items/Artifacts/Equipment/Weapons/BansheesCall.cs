@@ -1,22 +1,20 @@
-using System;
-
 namespace Server.Items
 {
     public class BansheesCall : Cyclone
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113529; } } // Banshee's Call
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113529; } } // Banshee's Call
+
         [Constructable]
-        public BansheesCall() 
+        public BansheesCall()
         {
-            Hue = 1266;		
+            Hue = 1266;
             WeaponAttributes.HitHarm = 40;
             Attributes.BonusStr = 5;
             WeaponAttributes.HitLeechHits = 45;
             Attributes.WeaponSpeed = 30;
             Attributes.WeaponDamage = 50;
-            Velocity = 35;		
+            Velocity = 35;
             AosElementDamages.Cold = 100;
         }
 
@@ -39,7 +37,7 @@ namespace Server.Items
                 return 255;
             }
         }
-       
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

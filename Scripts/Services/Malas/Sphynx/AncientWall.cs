@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 using System.Linq;
 
 namespace Server.Items
@@ -60,7 +60,7 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private AncientWall wall;
+            private readonly AncientWall wall;
 
             public InternalTimer(AncientWall m_wall)
                 : base(TimeSpan.FromMinutes(1.0))

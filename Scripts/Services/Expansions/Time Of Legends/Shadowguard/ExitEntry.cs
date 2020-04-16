@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using Server.Mobiles;
 using Server.ContextMenus;
 
 namespace Server.Engines.Shadowguard
 {
     public class ExitEntry : ContextMenuEntry
     {
-        private Mobile _From;
+        private readonly Mobile _From;
 
         public ExitEntry(Mobile from)
             : base(1156287, -1) // Exit Shadowguard
@@ -23,7 +20,7 @@ namespace Server.Engines.Shadowguard
             {
                 ShadowguardEncounter.MovePlayer(_From, ShadowguardController.Instance.KickLocation);
 
-                if(instance.Encounter != null)
+                if (instance.Encounter != null)
                     instance.Encounter.CheckPlayerStatus(_From);
             }
         }

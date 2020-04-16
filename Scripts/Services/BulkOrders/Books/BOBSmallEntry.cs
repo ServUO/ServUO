@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.BulkOrders
 {
@@ -42,7 +42,7 @@ namespace Server.Engines.BulkOrders
         {
             int version = reader.ReadEncodedInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 2:
                     {

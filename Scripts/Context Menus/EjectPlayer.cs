@@ -23,7 +23,7 @@ namespace Server.ContextMenus
 
             if (m_Target is Mobile)
             {
-                m_TargetHouse.Kick(m_From, (Mobile)m_Target);
+                m_TargetHouse.Kick(m_From, m_Target);
             }
         }
     }

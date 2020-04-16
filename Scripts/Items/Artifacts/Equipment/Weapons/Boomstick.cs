@@ -1,15 +1,13 @@
-using System;
-
 namespace Server.Items
 {
     public class Boomstick : WildStaff
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public Boomstick()
             : base()
         {
-            Hue = 0x25;		
+            Hue = 0x25;
             Attributes.SpellChanneling = 1;
             Attributes.RegenMana = 3;
             Attributes.CastSpeed = 1;

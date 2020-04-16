@@ -1,6 +1,4 @@
-﻿using System;
-using Server;
-using Server.Engines.Quests;
+﻿using Server.Engines.Quests;
 
 namespace Server.Items
 {
@@ -48,8 +46,8 @@ namespace Server.Items
 
     public class SutekIngredientInfo
     {
-        private SutekIngredient m_Ingredient;
-        private int m_ItemId, m_TextId, m_Hue;
+        private readonly SutekIngredient m_Ingredient;
+        private readonly int m_ItemId, m_TextId, m_Hue;
         private Point3D m_Location;
 
         public SutekIngredient Ingredient { get { return m_Ingredient; } }

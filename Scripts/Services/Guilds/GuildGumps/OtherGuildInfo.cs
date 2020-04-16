@@ -1,8 +1,7 @@
-using System;
-
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
+using System;
 
 namespace Server.Guilds
 {
@@ -15,7 +14,7 @@ namespace Server.Guilds
             this.m_Other = otherGuild;
 
             g.CheckExpiredWars();
-			
+
             this.PopulateGump();
         }
 
@@ -30,7 +29,7 @@ namespace Server.Guilds
         {
             Guild g = Guild.GetAllianceLeader(this.guild);
             Guild other = Guild.GetAllianceLeader(this.m_Other);
-			
+
             WarDeclaration war = g.FindPendingWar(other);
             WarDeclaration activeWar = g.FindActiveWar(other);
 
@@ -72,7 +71,7 @@ namespace Server.Guilds
             string kills = "0/0";
             string time = "00:00";
             string otherKills = "0/0";
-			
+
             WarDeclaration otherWar;
 
             if (ActiveWar)
@@ -114,7 +113,7 @@ namespace Server.Guilds
             this.AddImageTiled(20, 172, 480, 2, 0x2711);
 
             int number = 1062973;// <div align=center>You are at peace with this guild.</div>
-			
+
             if (PendingWar)
             {
                 if (war.WarRequester)
@@ -199,7 +198,7 @@ namespace Server.Guilds
                 return;
 
             RankDefinition playerRank = pm.GuildRank;
-			
+
             Guild guildLeader = Guild.GetAllianceLeader(this.guild);
             Guild otherGuild = Guild.GetAllianceLeader(this.m_Other);
 
@@ -210,7 +209,7 @@ namespace Server.Guilds
             AllianceInfo alliance = this.guild.Alliance;
             AllianceInfo otherAlliance = otherGuild.Alliance;
 
-            switch( info.ButtonID )
+            switch (info.ButtonID)
             {
                 #region War
                 case 5:	//Accept the war
@@ -298,7 +297,7 @@ namespace Server.Guilds
                                 pm.SendLocalizedMessage(1070707, alliance.Leader.Name); // You need to negotiate via ~1_val~ instead.
                             }
                             else
-                            { 
+                            {
                                 //Dismiss the war
                                 this.guild.PendingWars.Remove(war);
                                 otherGuild.PendingWars.Remove(otherWar);
@@ -333,9 +332,9 @@ namespace Server.Guilds
                                     this.guild.GuildMessage(1070740, ((otherAlliance != null) ? otherAlliance.Name : otherGuild.Name));// You have lost the war with ~1_val~.
                                     this.guild.InvalidateMemberProperties();
                                 }
-	
+
                                 this.guild.AcceptedWars.Remove(activeWar);
-	
+
                                 if (otherAlliance != null && otherAlliance.IsMember(otherGuild))
                                 {
                                     otherAlliance.AllianceMessage(1070739, ((this.guild.Alliance != null) ? this.guild.Alliance.Name : this.guild.Name));// You have won the war against ~1_val~!
@@ -346,7 +345,7 @@ namespace Server.Guilds
                                     otherGuild.GuildMessage(1070739, ((this.guild.Alliance != null) ? this.guild.Alliance.Name : this.guild.Name));// You have won the war against ~1_val~!
                                     otherGuild.InvalidateMemberProperties();
                                 }
-	
+
                                 otherGuild.AcceptedWars.Remove(otherGuild.FindActiveWar(this.guild));
                             }
                         }
@@ -377,7 +376,7 @@ namespace Server.Guilds
                         }
                         break;
                     }
-                    #endregion
+                #endregion
                 case 2:	//Request Alliance
                     {
                         #region New alliance
@@ -467,11 +466,11 @@ namespace Server.Guilds
                         }
                         else if (alliance != null && alliance.IsMember(this.guild))
                         {
-                            this.guild.Alliance = null;	//Calls alliance.Removeguild
-                            //						alliance.RemoveGuild( guild );
-						
+                            this.guild.Alliance = null; //Calls alliance.Removeguild
+                                                        //						alliance.RemoveGuild( guild );
+
                             this.m_Other.InvalidateWarNotoriety();
-						
+
                             this.guild.InvalidateMemberNotoriety();
                         }
                         break;
@@ -489,9 +488,9 @@ namespace Server.Guilds
                         else if (alliance != null && alliance.IsMember(this.guild) && alliance.IsMember(this.m_Other))
                         {
                             this.m_Other.Alliance = null;
-						
+
                             this.m_Other.InvalidateMemberNotoriety();
-						
+
                             this.guild.InvalidateWarNotoriety();
                         }
                         break;
@@ -507,7 +506,7 @@ namespace Server.Guilds
                             pm.SendLocalizedMessage(1063239, String.Format("{0}\t{1}", this.guild.Name, alliance.Name)); // ~1_val~ is not the leader of the ~2_val~ alliance.
                         }
                         else if (alliance != null && alliance.IsMember(this.guild) && alliance.IsMember(this.m_Other))
-                        { 
+                        {
                             pm.SendLocalizedMessage(1063434, String.Format("{0}\t{1}", this.m_Other.Name, alliance.Name)); // ~1_val~ is now the leader of ~2_val~.
 
                             alliance.Leader = this.m_Other;
@@ -562,7 +561,7 @@ namespace Server.Guilds
         }
 
         public void CreateAlliance_Callback(Mobile from, string text)
-        { 
+        {
             PlayerMobile pm = from as PlayerMobile;
 
             AllianceInfo alliance = this.guild.Alliance;
@@ -607,7 +606,7 @@ namespace Server.Guilds
                     pm.SendLocalizedMessage(1070750, this.m_Other.Name); // An invitation to join your alliance has been sent to ~1_val~.
 
                     this.m_Other.GuildMessage(1070780, this.guild.Name); // ~1_val~ has proposed an alliance.
-					
+
                     new AllianceInfo(this.guild, name, this.m_Other);
                 }
             }

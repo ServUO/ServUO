@@ -1,12 +1,10 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x2B12, 0x2B13)]
     public class SacrificeSollerets : BaseClothing
     {
-		public override bool IsArtifact => true; 
-		
+        public override bool IsArtifact => true;
+
         [Constructable]
         public SacrificeSollerets()
             : base(0x2B13, Layer.Shoes)
@@ -14,8 +12,8 @@ namespace Server.Items
             LootType = LootType.Blessed;
             Weight = 1.0;
             Hue = 0x226;
-			
-            SetSelfRepair = 5;			
+
+            SetSelfRepair = 5;
             SetPhysicalBonus = 5;
             SetFireBonus = 5;
             SetColdBonus = 5;
@@ -29,7 +27,7 @@ namespace Server.Items
         }
 
         public override int LabelNumber => 1075194; // Sollerets of Sacrifice (Virtue Armor Set)
-		
+
         public override SetItem SetID => SetItem.Virtue;
         public override int Pieces => 8;
 

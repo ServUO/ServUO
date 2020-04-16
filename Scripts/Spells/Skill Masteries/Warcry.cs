@@ -1,15 +1,12 @@
-using System;
-using Server;
-using System.Collections.Generic;
-using Server.Spells;
-using Server.Network;
 using Server.Mobiles;
+using Server.Network;
+using System;
 
 namespace Server.Spells.SkillMasteries
 {
     public class WarcrySpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
 
             "Warcry", "",
                 -1,

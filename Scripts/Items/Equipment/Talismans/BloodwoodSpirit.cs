@@ -1,13 +1,11 @@
-using System;
-
 namespace Server.Items
 {
     public class BloodwoodSpirit : BaseTalisman
     {
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1075034; } }// Bloodwood Spirit
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1075034; } }// Bloodwood Spirit
         public override bool ForceShowName { get { return true; } }
-		
+
         [Constructable]
         public BloodwoodSpirit()
             : base(0x2F5A)
@@ -25,7 +23,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

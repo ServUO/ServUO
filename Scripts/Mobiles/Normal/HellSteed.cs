@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a hellsteed corpse")]
@@ -7,7 +5,7 @@ namespace Server.Mobiles
     {
         public ElementType ElementType { get { return ElementType.Chaos; } }
 
-        [Constructable] 
+        [Constructable]
         public HellSteed()
             : this("a hellsteed")
         {

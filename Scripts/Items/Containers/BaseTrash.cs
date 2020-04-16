@@ -1,10 +1,8 @@
+using Server.ContextMenus;
 using Server.Engines.Points;
-using System;
+using Server.Mobiles;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Server.ContextMenus;
-using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -19,7 +17,7 @@ namespace Server.Items
 
     public class BaseTrash : Container
     {
-        internal List<CleanupArray> m_Cleanup;        
+        internal List<CleanupArray> m_Cleanup;
 
         public BaseTrash(int itemID)
             : base(itemID)
@@ -94,7 +92,7 @@ namespace Server.Items
                     {
                         m_Cleanup.Add(new CleanupArray { mobiles = from, items = list[i], points = checkbagpoint, serials = list[i].Serial });
 
-                        if(!added)
+                        if (!added)
                             added = true;
                     }
                 }

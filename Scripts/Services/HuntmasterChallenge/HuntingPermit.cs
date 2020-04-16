@@ -1,15 +1,14 @@
-using System;
-using Server;
+using Server.Engines.HuntsmasterChallenge;
 using Server.Mobiles;
 using Server.Targeting;
+using System;
 using System.Collections.Generic;
-using Server.Engines.HuntsmasterChallenge;
 
 namespace Server.Items
 {
     public class HuntingPermit : Item
     {
-        private static List<HuntingPermit> m_Permits = new List<HuntingPermit>();
+        private static readonly List<HuntingPermit> m_Permits = new List<HuntingPermit>();
         public static List<HuntingPermit> Permits { get { return m_Permits; } }
 
         private Mobile m_Owner;
@@ -33,16 +32,16 @@ namespace Server.Items
         public bool CanUseTaxidermyOn { get { return HasDocumentedKill && m_KillEntry.KillIndex < HuntingTrophyInfo.Infos.Count && !m_ProducedTrophy; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool HasSubmitted 
-        { 
+        public bool HasSubmitted
+        {
             get { return m_HasSubmitted; }
-            set 
+            set
             {
-                m_HasSubmitted = value; 
+                m_HasSubmitted = value;
 
-                if(m_HasSubmitted && m_Permits.Contains(this)) 
+                if (m_HasSubmitted && m_Permits.Contains(this))
                     m_Permits.Remove(this);
-            } 
+            }
         }
 
         public override int LabelNumber { get { return 1155704; } } // Hunting Permit
@@ -99,7 +98,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private HuntingPermit m_Permit;
+            private readonly HuntingPermit m_Permit;
 
             public InternalTarget(HuntingPermit Permit)
                 : base(-1, false, TargetFlags.None)

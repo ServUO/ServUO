@@ -1,12 +1,8 @@
-using System;
-using System.Collections;
-using Server.Targeting;
-using Server.Items;
-using Server.Engines.Harvest;
-using System.Collections.Generic;
 using Server.ContextMenus;
-using Server.Misc;
 using Server.Engines.Craft;
+using Server.Engines.Harvest;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -26,7 +22,7 @@ namespace Server.Items
         private AosSkillBonuses m_AosSkillBonuses;
         private CraftResource m_Resource;
         private bool m_PlayerConstructed;
-        
+
         private int m_UsesRemaining;
         private bool m_ShowUsesRemaining;
 
@@ -157,21 +153,21 @@ namespace Server.Items
         public ItemQuality Quality
         {
             get { return m_Quality; }
-            set 
-            { 
+            set
+            {
                 UnscaleUses();
                 m_Quality = value;
                 ScaleUses();
             }
         }
-        
+
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining
         {
             get { return m_UsesRemaining; }
             set { m_UsesRemaining = value; InvalidateProperties(); }
         }
-        
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ShowUsesRemaining
         {
@@ -199,7 +195,7 @@ namespace Server.Items
 
             m_AosAttributes = new AosAttributes(this);
             m_AosSkillBonuses = new AosSkillBonuses(this);
-            
+
             UsesRemaining = 150;
         }
 

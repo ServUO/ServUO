@@ -1,5 +1,3 @@
-using System;
-using Server;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
@@ -8,8 +6,8 @@ namespace Server.Items
 {
     public class RecipeScrollFilterGump : Gump
     {
-        private Mobile m_From;
-        private RecipeBook m_Book;
+        private readonly Mobile m_From;
+        private readonly RecipeBook m_Book;
 
         private const int LabelColor = 0x7FFF;
         private const int TitleLabelColor = 0xFFFFFF;

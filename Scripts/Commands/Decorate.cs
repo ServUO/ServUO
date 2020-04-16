@@ -119,7 +119,7 @@ namespace Server.Commands
 
             for (int j = 0; j < m_List.Count; ++j)
             {
-                DecorationList list = (DecorationList)m_List[j];
+                DecorationList list = m_List[j];
 
                 if (list.ID == id)
                     return list.Constructed;
@@ -588,7 +588,7 @@ namespace Server.Commands
 
                     for (int i = 0; i < comps.Count; ++i)
                     {
-                        AddonComponent comp = (AddonComponent)comps[i];
+                        AddonComponent comp = comps[i];
 
                         if (comp.Offset == Point3D.Zero)
                             comp.ItemID = m_ItemID;

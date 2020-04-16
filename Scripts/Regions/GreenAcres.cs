@@ -1,9 +1,8 @@
-using System;
-using System.Xml;
 using Server.Spells.Chivalry;
 using Server.Spells.Fourth;
 using Server.Spells.Seventh;
 using Server.Spells.Sixth;
+using System.Xml;
 
 namespace Server.Regions
 {
@@ -18,7 +17,7 @@ namespace Server.Regions
         {
             if (from.IsPlayer())
                 return false;
-            
+
             return base.AllowHousing(from, p);
         }
 

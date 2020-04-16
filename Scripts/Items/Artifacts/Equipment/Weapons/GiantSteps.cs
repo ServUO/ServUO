@@ -1,17 +1,15 @@
-using System;
-
 namespace Server.Items
 {
     public class GiantSteps : GargishStoneLegs
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113537; } } // Giant Steps
-	
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113537; } } // Giant Steps
+
         [Constructable]
         public GiantSteps()
             : base()
         {
-            Hue = 656;				
+            Hue = 656;
             Attributes.BonusStr = 5;
             Attributes.BonusDex = 5;
             Attributes.BonusHits = 5;

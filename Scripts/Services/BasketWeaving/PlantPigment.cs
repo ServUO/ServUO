@@ -1,6 +1,6 @@
-using System;
 using Server.Engines.Plants;
 using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -97,7 +97,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     m_Hue = (PlantPigmentHue)reader.ReadInt();
@@ -112,7 +112,7 @@ namespace Server.Items
             else
             {
                 from.SendLocalizedMessage(1112123); // Which plant pigment do you wish to mix this with?
-    
+
                 from.Target = new InternalTarget(this);
             }
         }

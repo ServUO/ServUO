@@ -1,7 +1,7 @@
+using Server.Spells.SkillMasteries;
+using Server.Targeting;
 using System;
 using System.Collections.Generic;
-using Server.Targeting;
-using Server.Spells.SkillMasteries;
 
 namespace Server.Spells.Necromancy
 {
@@ -122,12 +122,12 @@ namespace Server.Spells.Necromancy
             int malus = (int)Math.Min(15, (Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) * 0.075);
 
             ResistanceMod[] mods = new ResistanceMod[4]
-					{
-						new ResistanceMod( ResistanceType.Fire, (int)(-malus * strength) ),
-						new ResistanceMod( ResistanceType.Poison, (int)(-malus * strength) ),
-						new ResistanceMod( ResistanceType.Cold, (int)(+10.0 * strength) ),
-						new ResistanceMod( ResistanceType.Physical, (int)(+10.0 * strength) )
-					};
+                    {
+                        new ResistanceMod( ResistanceType.Fire, (int)(-malus * strength) ),
+                        new ResistanceMod( ResistanceType.Poison, (int)(-malus * strength) ),
+                        new ResistanceMod( ResistanceType.Cold, (int)(+10.0 * strength) ),
+                        new ResistanceMod( ResistanceType.Physical, (int)(+10.0 * strength) )
+                    };
 
             ExpireTimer timer = new ExpireTimer(m, mods, malus, duration);
             timer.Start();
@@ -168,12 +168,12 @@ namespace Server.Spells.Necromancy
                 Stop();
                 BuffInfo.RemoveBuff(m_Mobile, BuffIcon.CorpseSkin);
 
-                if(m_Table.ContainsKey(m_Mobile))
+                if (m_Table.ContainsKey(m_Mobile))
                     m_Table.Remove(m_Mobile);
 
                 m_Mobile.UpdateResistances();
 
-                if(message)
+                if (message)
                     m_Mobile.SendLocalizedMessage(1061688); // Your skin returns to normal.
             }
 

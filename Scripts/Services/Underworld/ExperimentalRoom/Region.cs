@@ -1,8 +1,6 @@
-using Server;
-using System;
+using Server.Items;
 using Server.Mobiles;
 using System.Xml;
-using Server.Items;
 
 namespace Server.Regions
 {
@@ -63,7 +61,7 @@ namespace Server.Regions
             Point3D loc = from.Location;
             Point3D p = new Point3D(x, y, z);
 
-            if(from is PlayerMobile)
+            if (from is PlayerMobile)
                 BaseCreature.TeleportPets(from, p, Map.TerMur);
 
             from.MoveToWorld(p, Map.TerMur);
@@ -72,7 +70,7 @@ namespace Server.Regions
             Effects.SendLocationParticles(EffectItem.Create(p, from.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
         }
 
-        private static Rectangle2D[] m_RoomRecs = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_RoomRecs = new Rectangle2D[]
         {
             new Rectangle2D(977, 1104, 15, 10), //RoomOne
             new Rectangle2D(977, 1092, 15, 9), //RoomTwo

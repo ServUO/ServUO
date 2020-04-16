@@ -32,12 +32,12 @@ namespace Server.Items
 
             if (defender.HitsMax > 0)
             {
-                double hitsPercent = ((double)defender.Hits / (double)defender.HitsMax) * 100.0;
+                double hitsPercent = (defender.Hits / (double)defender.HitsMax) * 100.0;
 
                 double manaPercent = 0;
 
                 if (defender.ManaMax > 0)
-                    manaPercent = ((double)defender.Mana / (double)defender.ManaMax) * 100.0;
+                    manaPercent = (defender.Mana / (double)defender.ManaMax) * 100.0;
 
                 damage += Math.Min((int)(Math.Abs(hitsPercent - manaPercent) / 4), 20);
             }

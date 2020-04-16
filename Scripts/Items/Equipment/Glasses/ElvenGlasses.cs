@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.Craft;
 
 namespace Server.Items
@@ -21,7 +20,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override int BasePhysicalResistance
         {
             get

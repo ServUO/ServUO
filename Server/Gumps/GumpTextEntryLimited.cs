@@ -145,7 +145,7 @@ namespace Server.Gumps
             return String.Format("{{ textentrylimited {0} {1} {2} {3} {4} {5} {6} {7} }}", m_X, m_Y, m_Width, m_Height, m_Hue, m_EntryID, Parent.Intern(m_InitialText), m_Size);
         }
 
-        private static byte[] m_LayoutName = Gump.StringToBuffer("textentrylimited");
+        private static readonly byte[] m_LayoutName = Gump.StringToBuffer("textentrylimited");
 
         public override void AppendTo(IGumpWriter disp)
         {

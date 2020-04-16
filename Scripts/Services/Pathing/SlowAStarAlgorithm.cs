@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 using CalcMoves = Server.Movement.Movement;
 using MoveImpl = Server.Movement.MovementImpl;
 
@@ -161,7 +161,7 @@ namespace Server.PathAlgorithms.SlowAStar
 
                 for (int i = 0; i < 8; ++i)
                 {
-                    switch ( i )
+                    switch (i)
                     {
                         default:
                         case 0:

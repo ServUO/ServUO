@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
 using Server.Engines.CannedEvil;
 using Server.Engines.PartySystem;
 using Server.Guilds;
 using Server.Items;
 using Server.Regions;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Spells.Necromancy
 {

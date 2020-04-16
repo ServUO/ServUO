@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class TheyreBreedingLikeRabbitsQuest : BaseQuest
-    { 
+    {
         public TheyreBreedingLikeRabbitsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Rabbit), "rabbits", 10));
-			
+
             this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
@@ -63,12 +63,12 @@ namespace Server.Engines.Quests
     }
 
     public class TheyllEatAnythingQuest : BaseQuest
-    { 
+    {
         public TheyllEatAnythingQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Pig), "pigs", 10));
-			
+
             this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
@@ -123,12 +123,12 @@ namespace Server.Engines.Quests
     }
 
     public class NoGoodFishStealingQuest : BaseQuest
-    { 
+    {
         public NoGoodFishStealingQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Walrus), "walruses", 10));
-			
+
             this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
@@ -181,12 +181,12 @@ namespace Server.Engines.Quests
     }
 
     public class HeroInTheMakingQuest : BaseQuest
-    { 
+    {
         public HeroInTheMakingQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Mongbat), "mongbats", 10));
-			
+
             this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
@@ -239,12 +239,12 @@ namespace Server.Engines.Quests
     }
 
     public class BullfightingSortOfQuest : BaseQuest
-    { 
+    {
         public BullfightingSortOfQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Bull), "bulls", 10));
-			
+
             this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
@@ -298,12 +298,12 @@ namespace Server.Engines.Quests
     }
 
     public class FineFeastQuest : BaseQuest
-    { 
+    {
         public FineFeastQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Sheep), "sheep", 10));
-			
+
             this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
@@ -356,12 +356,12 @@ namespace Server.Engines.Quests
     }
 
     public class ForcedMigrationQuest : BaseQuest
-    { 
+    {
         public ForcedMigrationQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Bird), "birds", 10));
-			
+
             this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
@@ -414,12 +414,12 @@ namespace Server.Engines.Quests
     }
 
     public class FilthyPestsQuest : BaseQuest
-    { 
+    {
         public FilthyPestsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Sewerrat), "sewer rats", 10));
-			
+
             this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
@@ -473,11 +473,11 @@ namespace Server.Engines.Quests
     }
 
     public class Saril : MondainQuester
-    { 
+    {
         [Constructable]
         public Saril()
             : base("Saril", "the guard")
-        { 
+        {
             this.SetSkill(SkillName.Meditation, 60.0, 83.0);
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -488,10 +488,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(TheyreBreedingLikeRabbitsQuest),
                     typeof(ThinningTheHerdQuest),
@@ -513,10 +513,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x8361;
             this.HairItemID = 0x2FC1;
             this.HairHue = 0x127;

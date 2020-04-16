@@ -28,9 +28,9 @@ namespace Server.Engines.Chat
             AddChannel(name).AlwaysAvailable = true;
         }
 
-        private string m_Name;
+        private readonly string m_Name;
         private bool m_AlwaysAvailable;
-        private List<ChatUser> m_Users;
+        private readonly List<ChatUser> m_Users;
 
         public Channel(string name)
         {
@@ -39,9 +39,9 @@ namespace Server.Engines.Chat
             m_Users = new List<ChatUser>();
         }
 
-        public string Name => m_Name; 
+        public string Name => m_Name;
 
-        public IEnumerable<ChatUser> Users => new ReadOnlyCollection<ChatUser>(m_Users); 
+        public IEnumerable<ChatUser> Users => new ReadOnlyCollection<ChatUser>(m_Users);
 
         public bool Contains(ChatUser user)
         {
@@ -126,9 +126,9 @@ namespace Server.Engines.Chat
             }
         }
 
-        private static List<Channel> m_Channels = new List<Channel>();
+        private static readonly List<Channel> m_Channels = new List<Channel>();
 
-        public static List<Channel> Channels => m_Channels; 
+        public static List<Channel> Channels => m_Channels;
 
         public static void SendChannelsTo(ChatUser user)
         {

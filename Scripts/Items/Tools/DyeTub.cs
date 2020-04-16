@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Multis;
 using Server.Targeting;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -18,7 +17,7 @@ namespace Server.Items
         private int m_DyedHue;
         private SecureLevel m_SecureLevel;
 
-        [Constructable] 
+        [Constructable]
         public DyeTub()
             : base(0xFAB)
         {
@@ -74,7 +73,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write((int)1); // version
-			
+
             writer.Write((int)m_SecureLevel);
             writer.Write((bool)m_Redyable);
             writer.Write((int)m_DyedHue);
@@ -85,7 +84,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {
@@ -217,8 +216,8 @@ namespace Server.Items
                     else if (m_Tub.AllowLeather)
                     {
                         if ((item is BaseArmor && (((BaseArmor)item).MaterialType == ArmorMaterialType.Leather || ((BaseArmor)item).MaterialType == ArmorMaterialType.Studded)) ||
-                            (item is BaseClothing && (((BaseClothing)item).DefaultResource == CraftResource.RegularLeather) || item is WoodlandBelt || item is BarbedWhip 
-							|| item is BladedWhip || item is SpikedWhip))
+                            (item is BaseClothing && (((BaseClothing)item).DefaultResource == CraftResource.RegularLeather) || item is WoodlandBelt || item is BarbedWhip
+                            || item is BladedWhip || item is SpikedWhip))
                         {
                             if (!from.InRange(m_Tub.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
                             {

@@ -1,7 +1,6 @@
-using System;
-using Server;
 using Server.Engines.Craft;
 using Server.Gumps;
+using System;
 
 namespace Server.Items
 {
@@ -66,7 +65,7 @@ namespace Server.Items
                 else if (targeted is BaseArmor)
                 {
                     BaseArmor armor = (BaseArmor)targeted;
-                    if (armor.Layer == Layer.Neck || armor.Layer == Layer.Helm || armor is BaseShield || (armor.RequiredRace == Race.Gargoyle && armor.Layer== Layer.Earrings))
+                    if (armor.Layer == Layer.Neck || armor.Layer == Layer.Helm || armor is BaseShield || (armor.RequiredRace == Race.Gargoyle && armor.Layer == Layer.Earrings))
                     {
                         if (armor.GorgonLenseCharges > 0 && armor.GorgonLenseType != LenseType)
                             from.SendGump(new GorgonLenseWarningGump(this, armor));
@@ -126,7 +125,7 @@ namespace Server.Items
 
         private class InternalTarget : Server.Targeting.Target
         {
-            private GorgonLense m_Lense;
+            private readonly GorgonLense m_Lense;
 
             public InternalTarget(GorgonLense lense) : base(-1, false, Server.Targeting.TargetFlags.None)
             {
@@ -203,8 +202,8 @@ namespace Server.Items
         public override int TitleNumber { get { return 1112597; } } // Replace active Gorgon Lenses
         public override int LabelNumber { get { return 1112598; } } // The remaining charges of the active lenses will be lost. Do you wish to proceed?
 
-        private GorgonLense m_Lense;
-        private Item m_Item;
+        private readonly GorgonLense m_Lense;
+        private readonly Item m_Item;
 
         public GorgonLenseWarningGump(GorgonLense lense, Item item)
         {

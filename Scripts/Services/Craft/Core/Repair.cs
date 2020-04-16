@@ -1,7 +1,7 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
+using System;
 
 namespace Server.Engines.Craft
 {
@@ -553,7 +553,7 @@ namespace Server.Engines.Craft
 
                         if (toDelete)
                             m_Deed.Delete();
-                    }                   
+                    }
                 }
             }
 

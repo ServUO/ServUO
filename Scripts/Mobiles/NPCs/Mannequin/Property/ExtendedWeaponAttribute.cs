@@ -1,5 +1,3 @@
-using System;
-using Server;
 using Server.Items;
 using System.Collections.Generic;
 
@@ -54,7 +52,7 @@ namespace Server.Mobiles.MannequinProperty
         public override int SpriteW { get { return 120; } }
         public override int SpriteH { get { return 210; } }
     }
-    
+
     public class AssassinHonedProperty : ExtendedWeaponAttr
     {
         public override Catalog Catalog { get { return Catalog.HitEffects; } }

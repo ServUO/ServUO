@@ -1,13 +1,13 @@
 using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class MaulBear : MondainQuester
-    { 
+    {
         [Constructable]
         public MaulBear()
             : base("Maul")
-        { 
+        {
         }
 
         public MaulBear(Serial serial)
@@ -19,7 +19,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(SeasonsQuest)
                 };
@@ -28,7 +28,7 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Body = 212;
         }

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class TwistedWealdKey : MasterKey
@@ -48,7 +46,7 @@ namespace Server.Items
         {
             if (from.Region != null && from.Region.IsPartOf("Twisted Weald"))
                 return base.CanOfferConfirmation(from);
-				
+
             return false;
         }
     }

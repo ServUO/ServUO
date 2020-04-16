@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class ChillInTheAirQuest : BaseQuest
-    { 
+    {
         public ChillInTheAirQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(IceElemental), "ice elementals", 15));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -64,12 +64,12 @@ namespace Server.Engines.Quests
     }
 
     public class IndustriousAsAnAntLionQuest : BaseQuest
-    { 
+    {
         public IndustriousAsAnAntLionQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(AntLion), "ant lions", 12));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -123,12 +123,12 @@ namespace Server.Engines.Quests
     }
 
     public class ThePerilsOfFarmingQuest : BaseQuest
-    { 
+    {
         public ThePerilsOfFarmingQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(WhippingVine), "whipping vines", 15));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -182,14 +182,14 @@ namespace Server.Engines.Quests
     }
 
     public class DishBestServedColdQuest : BaseQuest
-    { 
+    {
         public DishBestServedColdQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Orc), "orcs", 10, "Sanctuary"));
             this.AddObjective(new SlayObjective(typeof(OrcBomber), "orc bombers", 5, "Sanctuary"));
             this.AddObjective(new SlayObjective(typeof(OrcBrute), "orc brutes", 3, "Sanctuary"));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -247,12 +247,12 @@ namespace Server.Engines.Quests
     }
 
     public class CommonBrigandsQuest : BaseQuest
-    { 
+    {
         public CommonBrigandsQuest()
             : base()
         {
             this.AddObjective(new SlayObjective("common brigands", 20, typeof(Brigand)));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -306,12 +306,12 @@ namespace Server.Engines.Quests
     }
 
     public class ArchEnemiesQuest : BaseQuest
-    { 
+    {
         public ArchEnemiesQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(RatmanArcher), "ratman archers", 10));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -365,12 +365,12 @@ namespace Server.Engines.Quests
     }
 
     public class VerminQuest : BaseQuest
-    { 
+    {
         public VerminQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Ratman), "ratmen", 12));
-			
+
             this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
@@ -423,11 +423,11 @@ namespace Server.Engines.Quests
     }
 
     public class Tiana : MondainQuester
-    { 
+    {
         [Constructable]
         public Tiana()
             : base("Tiana", "the guard")
-        { 
+        {
         }
 
         public Tiana(Serial serial)
@@ -436,10 +436,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(MaraudersQuest),
                     typeof(ChillInTheAirQuest),
@@ -459,11 +459,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.CantWalk = true;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x824E;
             this.HairItemID = 0x2FCC;
             this.HairHue = 0x385;
@@ -476,9 +476,9 @@ namespace Server.Engines.Quests
             this.AddItem(new HideFemaleChest());
             this.AddItem(new HidePauldrons());
             this.AddItem(new WoodlandBelt(0x657));
-			
+
             Item item;
-			
+
             item = new RavenHelm();
             item.Hue = 0x1BB;
             this.AddItem(item);

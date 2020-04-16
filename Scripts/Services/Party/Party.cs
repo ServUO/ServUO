@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.Commands;
 using Server.Network;
 using Server.Targeting;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.PartySystem
 {
@@ -447,7 +447,7 @@ namespace Server.Engines.PartySystem
         }
 
         private void SendToStaffMessage(Mobile from, string text)
-        { 
+        {
             Packet p = null;
 
             foreach (NetState ns in from.GetClientsInRange(8))
@@ -505,7 +505,7 @@ namespace Server.Engines.PartySystem
                         m_Mobile.Send(new MobileStatusCompact(m.CanBeRenamedBy(m_Mobile), m));
                         m_Mobile.Send(new MobileAttributesN(m));
 
-                        if(m_Mobile.NetState != null && m_Mobile.NetState.IsEnhancedClient)
+                        if (m_Mobile.NetState != null && m_Mobile.NetState.IsEnhancedClient)
                             Waypoints.Create(m_Mobile, m, WaypointType.PartyMember);
                     }
                 }

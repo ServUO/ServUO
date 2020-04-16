@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Server.ContextMenus;
+﻿using Server.ContextMenus;
 using Server.Mobiles;
 using Server.Targeting;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -154,8 +153,8 @@ namespace Server.Items
 
         private class LinkEntry : ContextMenuEntry
         {
-            private Mobile m_From;
-            private EndlessDecanter m_Decanter;
+            private readonly Mobile m_From;
+            private readonly EndlessDecanter m_Decanter;
 
             public LinkEntry(Mobile from, EndlessDecanter decanter) : base(1115891, 0) // Link
             {
@@ -215,8 +214,8 @@ namespace Server.Items
 
         private class UnlinkEntry : ContextMenuEntry
         {
-            private Mobile m_From;
-            private EndlessDecanter m_Decanter;
+            private readonly Mobile m_From;
+            private readonly EndlessDecanter m_Decanter;
 
             public UnlinkEntry(Mobile from, EndlessDecanter decanter) : base(1115930, 0) // Unlink
             {

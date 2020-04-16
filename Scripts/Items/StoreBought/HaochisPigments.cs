@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 
 namespace Server.Items
@@ -97,7 +96,7 @@ namespace Server.Items
         }
 
         public static HoachisPigmentInfo[] Table { get { return m_Table; } }
-        private static HoachisPigmentInfo[] m_Table =
+        private static readonly HoachisPigmentInfo[] m_Table =
         {
             new HoachisPigmentInfo( HaochisPigmentType.None, 0, -1 ),
             new HoachisPigmentInfo( HaochisPigmentType.HeartwoodSienna, 2739, 1157275 ), // Verified

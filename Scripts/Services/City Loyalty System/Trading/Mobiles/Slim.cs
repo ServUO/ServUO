@@ -1,23 +1,19 @@
-using System;
-using Server;
-using Server.Mobiles;
 using Server.ContextMenus;
-using Server.Engines.Points;
-using Server.Targeting;
-using Server.Gumps;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Misc;
+using Server.Mobiles;
+using Server.Targeting;
+using System.Collections.Generic;
 
 namespace Server.Engines.CityLoyalty
 {
-	public class SlimTheFence : BaseCreature
-	{
+    public class SlimTheFence : BaseCreature
+    {
         public override bool IsInvulnerable { get { return true; } }
 
-		[Constructable]
-		public SlimTheFence() : base(AIType.AI_Vendor, FightMode.None, 10, 1, .4, .2)
-		{
+        [Constructable]
+        public SlimTheFence() : base(AIType.AI_Vendor, FightMode.None, 10, 1, .4, .2)
+        {
             Body = 0x190;
             SpeechHue = 0x3B2;
             Blessed = true;
@@ -45,52 +41,52 @@ namespace Server.Engines.CityLoyalty
             EquipItem(boots);
 
             CantWalk = true;
-		}
-		
-		public override void GetContextMenuEntries( Mobile from, List<ContextMenuEntry> list )
-		{
-			base.GetContextMenuEntries( from, list );
-			
-			list.Add(new TurnInEntry(from, this));
-		}
-		
-		private class TurnInEntry : ContextMenuEntry
-		{
-			public SlimTheFence Slim { get; private set; }
-			public Mobile Player { get; private set; }
-			
-			public TurnInEntry(Mobile player, SlimTheFence slim) : base(1151729, 3) // Turn in a trade order
-			{
-				Player = player;
-				Slim = slim;
+        }
+
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+            list.Add(new TurnInEntry(from, this));
+        }
+
+        private class TurnInEntry : ContextMenuEntry
+        {
+            public SlimTheFence Slim { get; private set; }
+            public Mobile Player { get; private set; }
+
+            public TurnInEntry(Mobile player, SlimTheFence slim) : base(1151729, 3) // Turn in a trade order
+            {
+                Player = player;
+                Slim = slim;
 
                 Enabled = CityTradeSystem.HasTrade(Player);
-			}
-			
-			public override void OnClick()
-			{
+            }
+
+            public override void OnClick()
+            {
                 if (CityTradeSystem.HasTrade(Player))
                 {
                     Player.Target = new InternalTarget(Slim);
                     Player.SendLocalizedMessage(1151730); // Target the trade order you wish to turn in.
                 }
-			}
-			
-			private class InternalTarget : Target
-			{
-				public SlimTheFence Slim { get; private set; }
-				
-				public InternalTarget(SlimTheFence slim) : base(-1, false, TargetFlags.None)
-				{
-					Slim = slim;
-				}
-				
-				protected override void OnTarget(Mobile from, object targeted)
-				{
-					TradeOrderCrate order = targeted as TradeOrderCrate;
-					
-					if(order != null)
-					{
+            }
+
+            private class InternalTarget : Target
+            {
+                public SlimTheFence Slim { get; private set; }
+
+                public InternalTarget(SlimTheFence slim) : base(-1, false, TargetFlags.None)
+                {
+                    Slim = slim;
+                }
+
+                protected override void OnTarget(Mobile from, object targeted)
+                {
+                    TradeOrderCrate order = targeted as TradeOrderCrate;
+
+                    if (order != null)
+                    {
                         if (CityLoyaltySystem.CityTrading.TryTurnInToSlim(from, order, Slim))
                         {
                             if (order.Entry != null && order.Entry.Distance > 0)
@@ -101,15 +97,15 @@ namespace Server.Engines.CityLoyalty
 
                             Titles.AwardKarma(from, -100, true);
                         }
-					}
-					else
-					{
-						from.SendLocalizedMessage(1151731); // That is not a valid trade order. Please try again.
-						from.Target = new InternalTarget(Slim);
-					}
-				}
-			}
-		}
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1151731); // That is not a valid trade order. Please try again.
+                        from.Target = new InternalTarget(Slim);
+                    }
+                }
+            }
+        }
 
         private Item GiveAward()
         {
@@ -127,7 +123,7 @@ namespace Server.Engines.CityLoyalty
             switch (Utility.Random(3))
             {
                 default:
-                case 0: 
+                case 0:
                     return new Skeletonkey();
                 case 1:
                     Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(false, false, true);
@@ -144,19 +140,19 @@ namespace Server.Engines.CityLoyalty
 
         public SlimTheFence(Serial serial)
             : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int v = reader.ReadInt();
-		}
-	}
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = reader.ReadInt();
+        }
+    }
 }

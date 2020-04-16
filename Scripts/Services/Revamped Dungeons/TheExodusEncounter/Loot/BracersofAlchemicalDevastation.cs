@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class BracersofAlchemicalDevastation : BoneArms
@@ -19,7 +17,7 @@ namespace Server.Items
         public BracersofAlchemicalDevastation(Serial serial)
             : base(serial)
         {
-        }        
+        }
 
         public override int BasePhysicalResistance { get { return 10; } }
         public override int BaseFireResistance { get { return 8; } }
@@ -40,7 +38,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();          
+            int version = reader.ReadInt();
         }
     }
 }

@@ -1,14 +1,14 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Synaeva : MondainQuester
-    { 
+    {
         [Constructable]
         public Synaeva()
             : base("Synaeva", "the arcanist")
-        { 
+        {
             this.SetSkill(SkillName.Meditation, 60.0, 83.0);
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -28,10 +28,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x8374;
             this.HairItemID = 0x2B71;
             this.HairHue = 0x385;
@@ -44,12 +44,12 @@ namespace Server.Engines.Quests
             this.AddItem(new FemaleLeafChest());
             this.AddItem(new LeafTonlet());
             this.AddItem(new WildStaff());
-			
+
             Item item;
-			
+
             item = new RavenHelm();
-            item.Hue = 0x583;					
-            this.AddItem(item); 
+            item.Hue = 0x583;
+            this.AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

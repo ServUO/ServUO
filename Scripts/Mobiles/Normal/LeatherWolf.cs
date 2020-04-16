@@ -1,7 +1,6 @@
+using Server.Items;
 using System;
 using System.Collections.Generic;
-using Server;
-using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -12,7 +11,7 @@ namespace Server.Mobiles
 
         private const int MaxFellows = 3;
 
-        private List<Mobile> m_Fellows = new List<Mobile>();
+        private readonly List<Mobile> m_Fellows = new List<Mobile>();
         private Timer m_FellowsTimer;
 
         [Constructable]
@@ -60,7 +59,7 @@ namespace Server.Mobiles
             base.OnDeath(c);
 
             if (!Controlled && 0.2 > Utility.RandomDouble())
-                c.DropItem(new LeatherWolfSkin());         
+                c.DropItem(new LeatherWolfSkin());
         }
 
         public override void OnCombatantChange()
@@ -119,7 +118,7 @@ namespace Server.Mobiles
 
         private class InternalTimer : Timer
         {
-            private LeatherWolf m_Owner;
+            private readonly LeatherWolf m_Owner;
 
             public InternalTimer(LeatherWolf owner)
                 : base(TimeSpan.Zero, TimeSpan.FromSeconds(30.0))

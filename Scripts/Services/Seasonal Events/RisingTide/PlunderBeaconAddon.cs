@@ -1,10 +1,7 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-
-using Server;
-using Server.Items;
 using Server.Mobiles;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -310,7 +307,7 @@ namespace Server.Items
             return Spawn.Keys.Where(s => s != null && !s.Deleted).Count();
         }
 
-        private Type[] _SpawnTypes =
+        private readonly Type[] _SpawnTypes =
         {
             typeof(WaterElemental),
             typeof(SeaSerpent),
@@ -358,9 +355,9 @@ namespace Server.Items
             return p.X >= X - 8 && p.X <= X + 8 && p.Y >= Y - 8 && p.Y <= Y + 8;
         }
 
-        public PlunderBeaconAddon( Serial serial ) : base( serial )
-		{
-		}
+        public PlunderBeaconAddon(Serial serial) : base(serial)
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -459,7 +456,7 @@ namespace Server.Items
             addon.AddComponent(ac, xoffset, yoffset, zoffset);
         }
 
-        private static int[,] m_AddOnSimpleComponents = new int[,] {
+        private static readonly int[,] m_AddOnSimpleComponents = new int[,] {
               {16017, -5, -3, 4}, {16011, -2, 4, 4}// 1	 2	 3	 
 			, {16011, -2, -4, 4}, {16020, -5, -5, 4}, {16008, -2, -5, 4}// 4	 5	 6	 
 			, {16014, -4, -3, 4}, {16011, 3, -4, 4}, {16008, -2, 3, 4}// 7	 8	 9	 

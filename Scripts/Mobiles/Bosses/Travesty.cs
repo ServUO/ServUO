@@ -1,6 +1,6 @@
+using Server.Items;
 using System;
 using System.Collections.Generic;
-using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -385,7 +385,7 @@ namespace Server.Mobiles
 
         #endregion
 
-        private Point3D[] _WarpLocs =
+        private readonly Point3D[] _WarpLocs =
         {
             new Point3D(71, 1939, 0),
             new Point3D(71, 1955, 0),

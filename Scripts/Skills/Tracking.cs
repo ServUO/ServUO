@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
 using Server.Gumps;
 using Server.Network;
 using Server.Spells;
 using Server.Spells.Necromancy;
+using System;
+using System.Collections.Generic;
 
 namespace Server.SkillHandlers
 {
@@ -236,7 +236,7 @@ namespace Server.SkillHandlers
             if (!m.Player)
                 return true;
 
-            int tracking = from.Skills[SkillName.Tracking].Fixed;	
+            int tracking = from.Skills[SkillName.Tracking].Fixed;
             int detectHidden = from.Skills[SkillName.DetectHidden].Fixed;
 
             if (m.Race == Race.Elf)

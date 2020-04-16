@@ -1,4 +1,3 @@
-using System;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
@@ -49,7 +48,7 @@ namespace Server.Guilds
             if (pm == null || pm.Guild != null)
                 return;		//Sanity
 
-            switch( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 1:
                     {

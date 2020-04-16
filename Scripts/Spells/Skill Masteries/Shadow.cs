@@ -1,14 +1,10 @@
 using System;
-using Server;
-using Server.Spells;
-using Server.Network;
-using Server.Mobiles;
 
 namespace Server.Spells.SkillMasteries
 {
     public class ShadowSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Shadow", "",
                 -1,
                 9002
@@ -64,7 +60,7 @@ namespace Server.Spells.SkillMasteries
         {
             ShadowSpell spell = GetSpell(m, typeof(ShadowSpell)) as ShadowSpell;
 
-            if(spell != null)
+            if (spell != null)
                 return ((spell.Caster.Skills[spell.CastSkill].Value + spell.Caster.Skills[spell.DamageSkill].Value + (spell.GetMasteryLevel() * 40)) / 3) / 150;
 
             return 0.0;

@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-
-using Server;
-using Server.Items;
-using Server.Mobiles;
-using Server.Commands;
 using Server.Engines.Points;
 using Server.Engines.SeasonalEvents;
+using Server.Items;
+using Server.Mobiles;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.SorcerersDungeon
 {
@@ -20,7 +17,7 @@ namespace Server.Engines.SorcerersDungeon
 
         public bool Enabled { get; set; }
 
-        private TextDefinition m_Name = null;
+        private readonly TextDefinition m_Name = null;
 
         public bool InSeason { get { return SeasonalEventSystem.IsActive(EventType.SorcerersDungeon); } }
 
@@ -48,7 +45,7 @@ namespace Server.Engines.SorcerersDungeon
 
             if (!Enabled || bc.Controlled || bc.Summoned || !damager.Alive)
                 return;
-                
+
             Region r = bc.Region;
 
             if (damager is PlayerMobile && r.IsPartOf("Sorcerer's Dungeon"))

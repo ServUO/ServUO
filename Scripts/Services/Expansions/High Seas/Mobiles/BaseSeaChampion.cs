@@ -1,8 +1,7 @@
-using System;
-using Server;
-using Server.Multis;
-using Server.Items;
 using Server.Engines.CannedEvil;
+using Server.Items;
+using Server.Multis;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Mobiles
@@ -24,7 +23,7 @@ namespace Server.Mobiles
 
         private DateTime m_NextBoatDamage;
         private bool m_InDamageMode;
-        private Mobile m_Fisher;
+        private readonly Mobile m_Fisher;
 
         public virtual bool CanDamageBoats { get { return false; } }
         public virtual TimeSpan BoatDamageCooldown { get { return TimeSpan.MaxValue; } }

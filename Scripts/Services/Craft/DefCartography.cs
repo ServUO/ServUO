@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Engines.Craft
@@ -143,25 +143,25 @@ namespace Server.Engines.Craft
                             }
                             break;
                         case 3:
-                             if (map.CompletedBy == from)
-                             {
+                            if (map.CompletedBy == from)
+                            {
                                 three--;
                                 toConsume.Add(map);
-                             }
+                            }
                             break;
                         case 4:
-                             if (map.CompletedBy == from)
-                             {
+                            if (map.CompletedBy == from)
+                            {
                                 four--;
                                 toConsume.Add(map);
-                             }
+                            }
                             break;
                         case 5:
-                             if (map.CompletedBy == from)
-                             {
+                            if (map.CompletedBy == from)
+                            {
                                 five--;
                                 toConsume.Add(map);
-                             }
+                            }
                             break;
                     }
                 }

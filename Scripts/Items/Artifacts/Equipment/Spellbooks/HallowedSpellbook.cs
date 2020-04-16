@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class HallowedSpellbook : Spellbook
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public HallowedSpellbook()
             : base(0x3FFFFFFFF)

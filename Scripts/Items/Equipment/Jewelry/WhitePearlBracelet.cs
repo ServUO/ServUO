@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class WhitePearlBracelet : GoldBracelet
@@ -9,14 +7,14 @@ namespace Server.Items
             : base()
         {
             this.Weight = 1.0;
-			
+
             this.Attributes.NightSight = 1;
 
             BaseRunicTool.ApplyAttributesTo(this, true, 0, Utility.RandomMinMax(3, 5), 0, 100);
-			
+
             if (Utility.Random(100) < 50)
             {
-                switch ( Utility.Random(3) )
+                switch (Utility.Random(3))
                 {
                     case 0:
                         this.Attributes.CastSpeed += 1;

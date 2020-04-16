@@ -1,7 +1,6 @@
-using Server;
+using Server.Engines.NewMagincia;
 using System;
 using System.Collections.Generic;
-using Server.Engines.NewMagincia;
 
 namespace Server.Engines.Plants
 {
@@ -89,7 +88,7 @@ namespace Server.Engines.Plants
             {
                 if (item is MaginciaPlantItem)
                 {
-                    if(item.Location != p)
+                    if (item.Location != p)
                         plantCount++;
                     else
                     {
@@ -129,7 +128,7 @@ namespace Server.Engines.Plants
         {
             MaginciaPlantSystem system = null;
             Map map = from.Map;
-            
+
             if (map == Map.Trammel)
                 system = TramInstance;
             else if (map == Map.Felucca)
@@ -195,13 +194,13 @@ namespace Server.Engines.Plants
             new Rectangle2D(3731, 2199, 7, 7),
         };
 
-        private static Rectangle2D[] m_NoGrowZones = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_NoGrowZones = new Rectangle2D[]
         {
             new Rectangle2D(3683, 2144, 21, 40),
             new Rectangle2D(3682, 2189, 39, 44),
             new Rectangle2D(3654, 2233, 23, 30),
             new Rectangle2D(3727, 2217, 15, 45),
-            new Rectangle2D(3558, 2134, 8, 8), 
+            new Rectangle2D(3558, 2134, 8, 8),
             new Rectangle2D(3679, 2018, 70, 28)
         };
 

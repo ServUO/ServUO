@@ -47,7 +47,7 @@ namespace Server.Gumps
             return string.Format("{{ tooltip {0} }}", m_Number);
         }
 
-        private static byte[] m_LayoutName = Gump.StringToBuffer("tooltip");
+        private static readonly byte[] m_LayoutName = Gump.StringToBuffer("tooltip");
 
         public override void AppendTo(IGumpWriter disp)
         {

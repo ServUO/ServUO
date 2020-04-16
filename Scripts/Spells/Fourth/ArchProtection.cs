@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.Engines.PartySystem;
 using Server.Targeting;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Spells.Fourth
 {
@@ -72,13 +72,13 @@ namespace Server.Spells.Fourth
                         this.Caster.DoBeneficial(m);
                         Spells.Second.ProtectionSpell.Toggle(this.Caster, m, true);
                     }
-                }            
+                }
             }
 
             this.FinishSequence();
         }
 
-        private static Dictionary<Mobile, Int32> _Table = new Dictionary<Mobile, Int32>();
+        private static readonly Dictionary<Mobile, Int32> _Table = new Dictionary<Mobile, Int32>();
 
         private static void AddEntry(Mobile m, Int32 v)
         {

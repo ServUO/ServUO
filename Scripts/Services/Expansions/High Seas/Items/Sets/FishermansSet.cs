@@ -1,6 +1,3 @@
-using System;
-using Server;
-
 namespace Server.Items
 {
     public interface IFishingAttire
@@ -93,7 +90,7 @@ namespace Server.Items
         public override int BaseFireResistance { get { return FireBonus == 0 ? 20 : base.BaseFireResistance; } }
         public override int BaseColdResistance { get { return ColdBonus == 0 ? 7 : base.BaseColdResistance; } }
         public override int BasePoisonResistance { get { return PoisonBonus == 0 ? 7 : base.BasePoisonResistance; } }
-        public override int BaseEnergyResistance { get { return EnergyBonus == 0 ? 8 : base.BaseEnergyResistance ; } }
+        public override int BaseEnergyResistance { get { return EnergyBonus == 0 ? 8 : base.BaseEnergyResistance; } }
 
         public override int[] BaseResists
         {

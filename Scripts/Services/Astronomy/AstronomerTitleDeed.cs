@@ -1,6 +1,4 @@
-﻿using Server;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class AstronomerTitleDeed : BaseRewardTitleDeed
     {

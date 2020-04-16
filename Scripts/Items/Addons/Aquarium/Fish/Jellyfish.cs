@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class Jellyfish : BaseFish
-    { 
+    {
         [Constructable]
         public Jellyfish()
             : base(0x3B0E)
@@ -12,7 +10,7 @@ namespace Server.Items
 
         public Jellyfish(Serial serial)
             : base(serial)
-        { 
+        {
         }
 
         public override int LabelNumber

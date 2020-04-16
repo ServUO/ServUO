@@ -1,6 +1,3 @@
-using System;
-using Server.Items;
-
 namespace Server.Mobiles
 {
     [CorpseName("a hungry ogre corpse")]
@@ -44,11 +41,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanRummageCorpses => true; 
-		
-        public override int TreasureMapLevel => 1; 
-		
-        public override int Meat => 2; 
+        public override bool CanRummageCorpses => true;
+
+        public override int TreasureMapLevel => 1;
+
+        public override int Meat => 2;
 
         public override void GenerateLoot()
         {

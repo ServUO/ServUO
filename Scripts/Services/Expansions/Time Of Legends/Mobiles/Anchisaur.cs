@@ -1,8 +1,7 @@
-using System;
 using Server.Items;
-using Server.Spells.SkillMasteries;
 using Server.Spells;
-using Server.Network;
+using Server.Spells.SkillMasteries;
+using System;
 
 namespace Server.Mobiles
 {
@@ -75,7 +74,7 @@ namespace Server.Mobiles
                 }
 
                 _NextMastery = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(45, 70));
-            }           
+            }
         }
 
         public override int DragonBlood { get { return 6; } }

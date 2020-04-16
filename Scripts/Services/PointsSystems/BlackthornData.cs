@@ -1,9 +1,7 @@
-using System;
-using Server;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
-using Server.Engines.ResortAndCasino;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Points
 {
@@ -15,7 +13,7 @@ namespace Server.Engines.Points
         public override double MaxPoints { get { return double.MaxValue; } }
         public override bool ShowOnLoyaltyGump { get { return false; } }
 
-        private TextDefinition m_Name = null;
+        private readonly TextDefinition m_Name = null;
 
         public BlackthornData()
         {
@@ -33,7 +31,7 @@ namespace Server.Engines.Points
 
             if (bc == null || bc.Controlled || bc.Summoned || !damager.Alive || damager.Deleted)
                 return;
-        
+
             Region r = bc.Region;
 
             if (damager is PlayerMobile && r.IsPartOf("BlackthornDungeon"))

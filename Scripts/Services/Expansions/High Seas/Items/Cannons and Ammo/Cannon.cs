@@ -1,13 +1,10 @@
-using Server;
-using System;
-using Server.Mobiles;
 using Server.ContextMenus;
-using Server.Targeting;
-using System.Collections.Generic;
 using Server.Gumps;
-using Server.Misc;
+using Server.Mobiles;
 using Server.Multis;
-using Server.Engines.Quests;
+using Server.Targeting;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Server.Items
@@ -1107,7 +1104,7 @@ namespace Server.Items
         }
 
         public Dictionary<Mobile, List<int>> Actions { get { return m_Actions; } }
-        private Dictionary<Mobile, List<int>> m_Actions = new Dictionary<Mobile, List<int>>();
+        private readonly Dictionary<Mobile, List<int>> m_Actions = new Dictionary<Mobile, List<int>>();
 
         public void AddAction(Mobile from, int cliloc)
         {
@@ -1159,8 +1156,8 @@ namespace Server.Items
 
         private class CleanContext : ContextMenuEntry
         {
-            private Mobile m_From;
-            private BaseCannon m_Cannon;
+            private readonly Mobile m_From;
+            private readonly BaseCannon m_Cannon;
 
             public CleanContext(BaseCannon cannon, Mobile from) : base(1149626, 3)
             {
@@ -1177,8 +1174,8 @@ namespace Server.Items
 
         private class ChargeContext : ContextMenuEntry
         {
-            private Mobile m_From;
-            private BaseCannon m_Cannon;
+            private readonly Mobile m_From;
+            private readonly BaseCannon m_Cannon;
 
             public ChargeContext(BaseCannon cannon, Mobile from) : base(1149630, 3)
             {
@@ -1195,8 +1192,8 @@ namespace Server.Items
 
         private class LoadContext : ContextMenuEntry
         {
-            private Mobile m_From;
-            private BaseCannon m_Cannon;
+            private readonly Mobile m_From;
+            private readonly BaseCannon m_Cannon;
 
             public LoadContext(BaseCannon cannon, Mobile from)
                 : base(1149635, 3)
@@ -1213,8 +1210,8 @@ namespace Server.Items
         }
         private class PrimeContext : ContextMenuEntry
         {
-            private Mobile m_From;
-            private BaseCannon m_Cannon;
+            private readonly Mobile m_From;
+            private readonly BaseCannon m_Cannon;
 
             public PrimeContext(BaseCannon cannon, Mobile from) : base(1149637, 3)
             {
@@ -1231,8 +1228,8 @@ namespace Server.Items
 
         private class DismantleContext : ContextMenuEntry
         {
-            private Mobile m_From;
-            private BaseCannon m_Cannon;
+            private readonly Mobile m_From;
+            private readonly BaseCannon m_Cannon;
 
             public DismantleContext(BaseCannon cannon, Mobile from)
                 : base(1116069, 3)
@@ -1266,8 +1263,8 @@ namespace Server.Items
 
         private class RepairContext : ContextMenuEntry
         {
-            private Mobile m_From;
-            private BaseCannon m_Cannon;
+            private readonly Mobile m_From;
+            private readonly BaseCannon m_Cannon;
 
             public RepairContext(BaseCannon cannon, Mobile from)
                 : base(1116602, 3)
@@ -1289,7 +1286,7 @@ namespace Server.Items
 
         private class LoadCannonTarget : Target
         {
-            private BaseCannon m_Cannon;
+            private readonly BaseCannon m_Cannon;
 
             public LoadCannonTarget(BaseCannon cannon) : base(3, false, TargetFlags.None)
             {
@@ -1425,8 +1422,14 @@ namespace Server.Items
 
         public override ShipCannonDeed GetDeed { get { return new LightShipCannonDeed(); } }
 
-        public override Type[] LoadTypes { get { return new Type[] {    typeof(LightCannonball),        typeof(LightGrapeshot),
-                                                                        typeof(LightFlameCannonball),   typeof(LightFrostCannonball) }; } }
+        public override Type[] LoadTypes
+        {
+            get
+            {
+                return new Type[] {    typeof(LightCannonball),        typeof(LightGrapeshot),
+                                                                        typeof(LightFlameCannonball),   typeof(LightFrostCannonball) };
+            }
+        }
 
         public LightShipCannon(BaseGalleon g) : base(g)
         {
@@ -1459,8 +1462,14 @@ namespace Server.Items
 
         public override int LabelNumber { get { return 0; } }
 
-        public override Type[] LoadTypes { get { return new Type[] {    typeof(HeavyCannonball),        typeof(HeavyGrapeshot), 
-                                                                        typeof(HeavyFrostCannonball),   typeof(HeavyFlameCannonball) }; } }
+        public override Type[] LoadTypes
+        {
+            get
+            {
+                return new Type[] {    typeof(HeavyCannonball),        typeof(HeavyGrapeshot),
+                                                                        typeof(HeavyFrostCannonball),   typeof(HeavyFlameCannonball) };
+            }
+        }
 
         public HeavyShipCannon(BaseGalleon g) : base(g)
         {

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class FruitBasket : Food
@@ -7,9 +5,9 @@ namespace Server.Items
         private bool _DailyRare;
 
         public bool DailyRare
-        { 
-            get { return _DailyRare; } 
-            set 
+        {
+            get { return _DailyRare; }
+            set
             {
                 _DailyRare = value;
 
@@ -17,7 +15,7 @@ namespace Server.Items
                 {
                     Movable = false;
                 }
-            } 
+            }
         }
 
         [Constructable]

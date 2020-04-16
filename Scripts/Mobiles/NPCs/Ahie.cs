@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class TheKingOfClothingQuest : BaseQuest
-    { 
+    {
         public TheKingOfClothingQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(Kilt), "kilts", 10, 0x1537));
-			
+
             AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
@@ -71,12 +71,12 @@ namespace Server.Engines.Quests
     }
 
     public class ThePuffyShirtQuest : BaseQuest
-    { 
+    {
         public ThePuffyShirtQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(FancyShirt), "fancy shirts", 10, 0x1EFD));
-			
+
             AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
@@ -139,12 +139,12 @@ namespace Server.Engines.Quests
     }
 
     public class FromTheGaultierCollectionQuest : BaseQuest
-    { 
+    {
         public FromTheGaultierCollectionQuest()
             : base()
         {
             AddObjective(new ObtainObjective(typeof(StuddedBustierArms), "studded bustiers", 10, 0x1C0C));
-			
+
             AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
@@ -207,12 +207,12 @@ namespace Server.Engines.Quests
     }
 
     public class HuteCoutureQuest : BaseQuest
-    { 
+    {
         public HuteCoutureQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(FlowerGarland), "flower garlands", 10, 0x2306));
-			
+
             AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
@@ -278,7 +278,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Ahie()
             : base("Ahie", "the cloth weaver")
-        { 
+        {
             SetSkill(SkillName.Meditation, 60.0, 83.0);
             SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -289,10 +289,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(TheKingOfClothingQuest),
                     typeof(ThePuffyShirtQuest),
@@ -304,10 +304,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = true;
             Race = Race.Elf;
-			
+
             Hue = 0x853F;
             HairItemID = 0x2FCD;
             HairHue = 0x90;

@@ -1,6 +1,6 @@
+using Server.Items;
 using System;
 using System.Collections.Generic;
-using Server.Items;
 
 namespace Server.Engines.Quests
 {
@@ -20,7 +20,7 @@ namespace Server.Engines.Quests
 
         public static List<Neville> Instances { get; set; }
 
-        string[] NevilleSay = new string[]
+        readonly string[] NevilleSay = new string[]
         {
             "Save Us",
             "Murder is being done!",
@@ -94,7 +94,7 @@ namespace Server.Engines.Quests
                 delegate
                 {
                     Spawn();
-                }));            
+                }));
 
             base.OnDelete();
         }

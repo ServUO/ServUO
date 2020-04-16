@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class DivineCountenance : HornedTribalMask
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DivineCountenance()
         {
@@ -89,7 +87,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {

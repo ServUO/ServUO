@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     public class ObsidianEarrings : GargishEarrings
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113820; } } // Obsidian Earrings
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113820; } } // Obsidian Earrings
 
         public override int BasePhysicalResistance { get { return 4; } }
         public override int BaseFireResistance { get { return 10; } }
@@ -15,7 +13,7 @@ namespace Server.Items
 
         [Constructable]
         public ObsidianEarrings()
-        {	
+        {
             Attributes.BonusMana = 8;
             Attributes.RegenMana = 2;
             Attributes.RegenStam = 2;

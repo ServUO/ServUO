@@ -1,6 +1,6 @@
-using System;
-using Server.Targeting;
 using Server.Engines.Craft;
+using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -76,7 +76,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 2:
                     {
@@ -91,7 +91,7 @@ namespace Server.Items
             }
         }
 
-        #if false
+#if false
 		public override void OnDoubleClick( Mobile from )
 		{
 			if ( !Movable )
@@ -99,7 +99,7 @@ namespace Server.Items
 
 			from.Target = new InternalTarget( this );
 		}
-        #endif
+#endif
 
         public static bool IsHeatSource(object targeted)
         {
@@ -169,7 +169,7 @@ namespace Server.Items
                 private readonly IPoint3D m_Point;
                 private readonly Map m_Map;
                 private readonly CookableFood m_CookableFood;
-			
+
                 public InternalTimer(Mobile from, IPoint3D p, Map map, CookableFood cookableFood)
                     : base(TimeSpan.FromSeconds(5.0))
                 {
@@ -680,7 +680,7 @@ namespace Server.Items
         }
     }
 
-    #if false
+#if false
 	// ********** UncookedPizza **********
 	public class UncookedPizza : CookableFood
 	{
@@ -719,7 +719,7 @@ namespace Server.Items
 			return new Pizza();
 		}
 	}
-    #endif
+#endif
 
     // ********** UnbakedQuiche **********
     public class UnbakedQuiche : CookableFood

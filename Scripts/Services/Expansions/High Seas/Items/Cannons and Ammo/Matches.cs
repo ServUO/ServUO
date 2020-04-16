@@ -1,7 +1,6 @@
-using System;
-using Server;
-using Server.Targeting;
 using Server.Mobiles;
+using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -36,7 +35,7 @@ namespace Server.Items
                 {
                     Container pack = from.Backpack;
 
-                    if(pack != null)
+                    if (pack != null)
                     {
                         Matches match = new Matches();
 
@@ -69,7 +68,7 @@ namespace Server.Items
                 }
             }
         }
-            
+
 
         public void BurnOut()
         {
@@ -81,7 +80,7 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private Matches m_Match;
+            private readonly Matches m_Match;
 
             public InternalTimer(Matches match) : base(Matches.LightDuration)
             {
@@ -98,9 +97,9 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private Matches m_Match;
+            private readonly Matches m_Match;
 
-            public InternalTarget(Matches match) : base (3, false, TargetFlags.None)
+            public InternalTarget(Matches match) : base(3, false, TargetFlags.None)
             {
                 m_Match = match;
             }

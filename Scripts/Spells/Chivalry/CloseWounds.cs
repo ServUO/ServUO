@@ -1,7 +1,7 @@
-using System;
 using Server.Mobiles;
 using Server.Network;
 using Server.Targeting;
+using System;
 
 namespace Server.Spells.Chivalry
 {
@@ -51,7 +51,7 @@ namespace Server.Spells.Chivalry
                 return 1060719;
             }
         }// Obsu Vulni
-        
+
         public override bool CheckDisturb(DisturbType type, bool firstCircle, bool resistable)
         {
             return true;

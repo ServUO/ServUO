@@ -1,9 +1,8 @@
-using Server;
-using System;
+using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Services.TownCryer;
-using Server.Gumps;
+using System;
 
 namespace Server.Engines.Quests
 {
@@ -239,10 +238,10 @@ namespace Server.Engines.Quests
             /* Find the location marked on the Treasure Map given to you by the Cartographer and use the supplies the Provisioner 
             * gave you to recover the treasure.*/
 
-            g.AddHtmlLocalized(98, 255, 312, 40, 1158235, BaseQuestGump.LightGreen, false, false); 
+            g.AddHtmlLocalized(98, 255, 312, 40, 1158235, BaseQuestGump.LightGreen, false, false);
             //Expand your experience as a Treasure Hunter to an Expertly Drawn Map.
 
-            g.AddHtmlLocalized(98, 335, 312, 40, 1158236, BaseQuestGump.LightGreen, false, false); 
+            g.AddHtmlLocalized(98, 335, 312, 40, 1158236, BaseQuestGump.LightGreen, false, false);
             // Complete your experience as a Treasure Hunter by discovering the final treasure hoard.
 
             return true;

@@ -1,16 +1,14 @@
-using Server;
-using System;
 using Server.Mobiles;
-using Server.Gumps;
-using System.Linq;
 using Server.Regions;
-using System.Xml;
 using Server.Spells;
+using System;
+using System.Linq;
+using System.Xml;
 
 namespace Server.Engines.Exodus
 {
-	public class VerLorRegCity : DungeonRegion
-	{
+    public class VerLorRegCity : DungeonRegion
+    {
         private static readonly Point3D[] Random_Locations =
         {
             new Point3D(1217, 469, -13),
@@ -32,7 +30,7 @@ namespace Server.Engines.Exodus
         {
             private static TimeSpan m_Delay = TimeSpan.FromMinutes(2);
             private static TimeSpan m_Warning = TimeSpan.FromMinutes(8);
-            VerLorRegCity m_region;
+            readonly VerLorRegCity m_region;
 
             public ExitTimer(VerLorRegCity region) : base(m_Warning)
             {

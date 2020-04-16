@@ -1,11 +1,8 @@
-using System;
-using Server;
-
 namespace Server.Items
 {
     public class WindOfCorruption : Cyclone
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1150358; } } // Wind of Corruption
 
         public override int InitMinHits { get { return 255; } }

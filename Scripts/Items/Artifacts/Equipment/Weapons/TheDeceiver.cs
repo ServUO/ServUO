@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x1443, 0x1442)]
@@ -9,7 +7,7 @@ namespace Server.Items
         public override bool IsArtifact { get { return true; } }
 
         [Constructable]
-        public TheDeceiver() 
+        public TheDeceiver()
         {
             ExtendedWeaponAttributes.HitSparks = 20;
             WeaponAttributes.HitLowerAttack = 20;
@@ -30,7 +28,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
 

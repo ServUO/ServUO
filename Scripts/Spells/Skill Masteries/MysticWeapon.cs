@@ -1,10 +1,5 @@
-using System;
-using Server;
-using Server.Spells;
-using Server.Network;
-using Server.Mobiles;
 using Server.Items;
-using System.Collections.Generic;
+using System;
 
 namespace Server.Spells.SkillMasteries
 {
@@ -12,7 +7,7 @@ namespace Server.Spells.SkillMasteries
     {
         public static string ModName = "MysticWeapon";
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Mystic Weapon", "Vas Ylem Wis",
                 -1,
                 9002,

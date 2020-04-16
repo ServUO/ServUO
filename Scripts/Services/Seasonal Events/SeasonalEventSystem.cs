@@ -1,18 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-
-using Server;
-using Server.Mobiles;
+using Server.Commands;
+using Server.Engines.Fellowship;
+using Server.Engines.Khaldun;
+using Server.Engines.RisingTide;
+using Server.Engines.SorcerersDungeon;
+using Server.Engines.TreasuresOfDoom;
 using Server.Gumps;
 using Server.Misc;
-using Server.Commands;
-using Server.Engines.TreasuresOfDoom;
-using Server.Engines.Khaldun;
-using Server.Engines.SorcerersDungeon;
-using Server.Engines.RisingTide;
-using Server.Engines.Fellowship;
+using Server.Mobiles;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Server.Engines.SeasonalEvents
 {
@@ -42,8 +40,8 @@ namespace Server.Engines.SeasonalEvents
         bool EventActive { get; }
     }
 
-	public class SeasonalEventSystem
-	{
+    public class SeasonalEventSystem
+    {
         public static string FilePath = Path.Combine("Saves/Misc", "SeasonalEvents.bin");
 
         public static List<SeasonalEventEntry> Entries { get; set; }
@@ -62,15 +60,15 @@ namespace Server.Engines.SeasonalEvents
         {
             Entries = new List<SeasonalEventEntry>();
 
-            Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfTokuno,     "Treasures of Tokuno",  EventStatus.Inactive));
-            Entries.Add(new SeasonalEventEntry(EventType.VirtueArtifacts,       "Virtue Artifacts",     EventStatus.Active));
-            Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfKotlCity,   "Treasures of Kotl",    EventStatus.Inactive,   10, 1, 60));
-            Entries.Add(new SeasonalEventEntry(EventType.SorcerersDungeon,      "Sorcerer's Dungeon",   EventStatus.Seasonal,   10, 1, 60));
-            Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfDoom,       "Treasures of Doom",    EventStatus.Seasonal,   10, 1, 60));
-            Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfKhaldun,    "Treasures of Khaldun", EventStatus.Seasonal,   10, 1, 60));
-            Entries.Add(new SeasonalEventEntry(EventType.KrampusEncounter,      "Krampus Encounter",    EventStatus.Seasonal,   12, 1, 60));
-            Entries.Add(new SeasonalEventEntry(EventType.RisingTide,            "Rising Tide",          EventStatus.Active));
-            Entries.Add(new SeasonalEventEntry(EventType.Fellowship,            "Fellowship",           EventStatus.Inactive));
+            Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfTokuno, "Treasures of Tokuno", EventStatus.Inactive));
+            Entries.Add(new SeasonalEventEntry(EventType.VirtueArtifacts, "Virtue Artifacts", EventStatus.Active));
+            Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfKotlCity, "Treasures of Kotl", EventStatus.Inactive, 10, 1, 60));
+            Entries.Add(new SeasonalEventEntry(EventType.SorcerersDungeon, "Sorcerer's Dungeon", EventStatus.Seasonal, 10, 1, 60));
+            Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfDoom, "Treasures of Doom", EventStatus.Seasonal, 10, 1, 60));
+            Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfKhaldun, "Treasures of Khaldun", EventStatus.Seasonal, 10, 1, 60));
+            Entries.Add(new SeasonalEventEntry(EventType.KrampusEncounter, "Krampus Encounter", EventStatus.Seasonal, 12, 1, 60));
+            Entries.Add(new SeasonalEventEntry(EventType.RisingTide, "Rising Tide", EventStatus.Active));
+            Entries.Add(new SeasonalEventEntry(EventType.Fellowship, "Fellowship", EventStatus.Inactive));
         }
 
         [Usage("SeasonSystemGump")]
@@ -125,7 +123,7 @@ namespace Server.Engines.SeasonalEvents
 
                     writer.Write(Entries.Count);
 
-                    for(int i = 0; i < Entries.Count; i++)
+                    for (int i = 0; i < Entries.Count; i++)
                     {
                         writer.Write((int)Entries[i].EventType);
                         Entries[i].Serialize(writer);
@@ -150,7 +148,7 @@ namespace Server.Engines.SeasonalEvents
                     }
                 });
         }
-	}
+    }
 
     [PropertyObject]
     public class SeasonalEventEntry

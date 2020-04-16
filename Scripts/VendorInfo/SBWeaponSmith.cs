@@ -1,15 +1,14 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
+using System.Collections.Generic;
 
-namespace Server.Mobiles 
-{ 
-    public class SBWeaponSmith : SBInfo 
-    { 
+namespace Server.Mobiles
+{
+    public class SBWeaponSmith : SBInfo
+    {
         private readonly List<GenericBuyInfo> m_BuyInfo = new InternalBuyInfo();
         private readonly IShopSellInfo m_SellInfo = new InternalSellInfo();
-        public SBWeaponSmith() 
-        { 
+        public SBWeaponSmith()
+        {
         }
 
         public override IShopSellInfo SellInfo
@@ -27,10 +26,10 @@ namespace Server.Mobiles
             }
         }
 
-        public class InternalBuyInfo : List<GenericBuyInfo> 
-        { 
-            public InternalBuyInfo() 
-            { 
+        public class InternalBuyInfo : List<GenericBuyInfo>
+        {
+            public InternalBuyInfo()
+            {
                 Add(new GenericBuyInfo(typeof(BlackStaff), 22, 20, 0xDF1, 0));
                 Add(new GenericBuyInfo(typeof(Club), 16, 20, 0x13B4, 0));
                 Add(new GenericBuyInfo(typeof(GnarledStaff), 16, 20, 0x13F8, 0));
@@ -51,8 +50,8 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(Hatchet), 27, 20, 0xF43, 0));
                 Add(new GenericBuyInfo(typeof(WarFork), 32, 20, 0x1405, 0));
 
-                switch ( Utility.Random(3)) 
-                { 
+                switch (Utility.Random(3))
+                {
                     case 0:
                         {
                             Add(new GenericBuyInfo(typeof(ExecutionersAxe), 30, 20, 0xF45, 0));
@@ -109,10 +108,10 @@ namespace Server.Mobiles
             }
         }
 
-        public class InternalSellInfo : GenericSellInfo 
-        { 
-            public InternalSellInfo() 
-            { 
+        public class InternalSellInfo : GenericSellInfo
+        {
+            public InternalSellInfo()
+            {
                 Add(typeof(BattleAxe), 13);
                 Add(typeof(DoubleAxe), 26);
                 Add(typeof(ExecutionersAxe), 15);
@@ -139,7 +138,7 @@ namespace Server.Mobiles
 
                 Add(typeof(HeavyCrossbow), 27);
                 Add(typeof(Bow), 17);
-                Add(typeof(Crossbow), 23); 
+                Add(typeof(Crossbow), 23);
 
                 Add(typeof(CompositeBow), 25);
                 Add(typeof(RepeatingCrossbow), 28);

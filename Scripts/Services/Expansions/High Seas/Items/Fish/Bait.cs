@@ -1,7 +1,6 @@
-﻿using System;
-using Server;
+﻿using Server.Prompts;
 using Server.Targeting;
-using Server.Prompts;
+using System;
 
 namespace Server.Items
 {
@@ -110,7 +109,7 @@ namespace Server.Items
 
         private class InternalPrompt : Prompt
         {
-            private Bait m_Bait;
+            private readonly Bait m_Bait;
 
             public InternalPrompt(Bait bait)
             {
@@ -119,7 +118,7 @@ namespace Server.Items
 
             public override void OnResponse(Mobile from, string text)
             {
-                int amount = Utility.ToInt32( text );
+                int amount = Utility.ToInt32(text);
                 m_Bait.TryBeginTarget(from, amount);
             }
 
@@ -131,8 +130,8 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private Bait m_Bait;
-            private int m_Amount;
+            private readonly Bait m_Bait;
+            private readonly int m_Amount;
 
             public InternalTarget(Bait bait, int amount)
                 : base(0, false, TargetFlags.None)

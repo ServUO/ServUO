@@ -1,5 +1,5 @@
-﻿using System;
-using Server.Network;
+﻿using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -8,7 +8,7 @@ namespace Server.Items
         private int m_Lifespan;
         private Timer m_Timer;
         public override int LabelNumber { get { return 1154236; } } // Willem Harte's Hat
-        
+
         [Constructable]
         public WillemHartesHat()
             : base(0x171A)
@@ -22,12 +22,12 @@ namespace Server.Items
                 this.StartTimer();
             }
         }
-		
-		public override void OnDoubleClick(Mobile from)
+
+        public override void OnDoubleClick(Mobile from)
         {
-			base.OnDoubleClick(from);			
-			
-			from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154237); // *The hat emits a sour smelling odor indicative of spending a significant period of time in the belly of a dragon.*
+            base.OnDoubleClick(from);
+
+            from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154237); // *The hat emits a sour smelling odor indicative of spending a significant period of time in the belly of a dragon.*
         }
 
         public virtual int Lifespan { get { return 3600; } }
@@ -70,8 +70,8 @@ namespace Server.Items
                 else
                     list.Add(1072517, this.m_Lifespan.ToString()); // Lifespan: ~1_val~ seconds
             }
-			
-			list.Add(1072351); // Quest Item
+
+            list.Add(1072351); // Quest Item
         }
 
         public virtual void StartTimer()

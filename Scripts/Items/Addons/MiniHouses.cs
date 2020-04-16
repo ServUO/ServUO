@@ -97,11 +97,11 @@ namespace Server.Items
             : base(serial)
         {
         }
-                
+
         public override BaseAddonDeed Deed
         {
             get { return new MiniHouseDeed(m_Type); }
-        }       
+        }
 
         public void Construct()
         {
@@ -202,8 +202,8 @@ namespace Server.Items
         public MiniHouseDeed(Serial serial)
             : base(serial)
         {
-        }       
-        
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);

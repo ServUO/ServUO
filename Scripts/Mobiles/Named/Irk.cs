@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -44,18 +43,18 @@ namespace Server.Mobiles
 
             SetSpecialAbility(SpecialAbility.AngryFire);
         }
-		public override bool CanBeParagon { get { return false; } }
-        public override void OnDeath( Container c )
+        public override bool CanBeParagon { get { return false; } }
+        public override void OnDeath(Container c)
         {
-            base.OnDeath( c );
+            base.OnDeath(c);
 
-            if ( Utility.RandomDouble() < 0.25 )
-            c.DropItem( new IrksBrain() );
+            if (Utility.RandomDouble() < 0.25)
+                c.DropItem(new IrksBrain());
 
-            if ( Utility.RandomDouble() < 0.025 )
-            c.DropItem( new PaladinGloves() );
+            if (Utility.RandomDouble() < 0.025)
+                c.DropItem(new PaladinGloves());
         }
- 
+
         public Irk(Serial serial)
             : base(serial)
         {

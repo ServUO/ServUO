@@ -1,12 +1,10 @@
-using System;
-
 namespace Server.Engines.Quests
 {
     public class QuestionAndAnswerEntry
     {
-        private int m_Question;
-        private object[] m_Answers;
-        private object[] m_WrongAnswers;
+        private readonly int m_Question;
+        private readonly object[] m_Answers;
+        private readonly object[] m_WrongAnswers;
 
         public int Question { get { return m_Question; } }
         public object[] Answers { get { return m_Answers; } }

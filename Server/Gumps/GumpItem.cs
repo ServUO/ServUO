@@ -97,8 +97,8 @@ namespace Server.Gumps
                 return String.Format("{{ tilepichue {0} {1} {2} {3} }}", m_X, m_Y, m_ItemID, m_Hue);
         }
 
-        private static byte[] m_LayoutName = Gump.StringToBuffer("tilepic");
-        private static byte[] m_LayoutNameHue = Gump.StringToBuffer("tilepichue");
+        private static readonly byte[] m_LayoutName = Gump.StringToBuffer("tilepic");
+        private static readonly byte[] m_LayoutNameHue = Gump.StringToBuffer("tilepichue");
 
         public override void AppendTo(IGumpWriter disp)
         {

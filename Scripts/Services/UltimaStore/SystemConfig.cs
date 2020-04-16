@@ -1,5 +1,5 @@
-using System;
 using Server.Engines.Points;
+using System;
 
 namespace Server.Engines.UOStore
 {
@@ -31,7 +31,7 @@ namespace Server.Engines.UOStore
         public static CurrencyType CurrencyImpl { get; set; }
         public static string CurrencyName { get; set; }
         public static bool CurrencyDisplay { get; set; }
-        
+
         public static PointsType PointsImpl { get; set; }
 
         public static double CostMultiplier { get; set; }
@@ -55,7 +55,7 @@ namespace Server.Engines.UOStore
             CostMultiplier = Config.Get("Store.CostMultiplier", 1.0);
             CartCapacity = Config.Get("Store.CartCapacity", 10);
         }
-        
+
         public static int GetCustomCurrency(Mobile m)
         {
             if (ResolveCurrency != null)
@@ -66,7 +66,7 @@ namespace Server.Engines.UOStore
             m.SendMessage(1174, "Currency is not set up for this system. Contact a shard administrator.");
 
             Utility.WriteConsoleColor(ConsoleColor.Red, "[Ultima Store]: No custom currency method has been implemented.");
-            
+
             return 0;
         }
 
@@ -80,7 +80,7 @@ namespace Server.Engines.UOStore
             m.SendMessage(1174, "Currency is not set up for this system. Contact a shard administrator.");
 
             Utility.WriteConsoleColor(ConsoleColor.Red, "[Ultima Store]: No custom currency deduction method has been implemented.");
-            
+
             return 0;
         }
     }

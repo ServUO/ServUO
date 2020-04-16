@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class LuckyNecklace : BaseJewel
-	{
+    {
         public override int LabelNumber { get { return 1075239; } } //Lucky Necklace
 
         [Constructable]
@@ -19,7 +17,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

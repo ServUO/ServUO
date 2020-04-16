@@ -4,7 +4,7 @@ using System.Collections;
 namespace Server.Items
 {
     public class InvisibilityPotion : BasePotion
-    { 
+    {
         private static readonly Hashtable m_Table = new Hashtable();
         [Constructable]
         public InvisibilityPotion()
@@ -29,12 +29,12 @@ namespace Server.Items
         {
             Effects.SendLocationParticles(EffectItem.Create(new Point3D(m.X, m.Y, m.Z + 16), m.Map, EffectItem.DefaultDuration), 0x376A, 10, 15, 5045);
             m.PlaySound(0x3C4);
-			
+
             m.Hidden = true;
-		
+
             BuffInfo.RemoveBuff(m, BuffIcon.HidingAndOrStealth);
-            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Invisibility, 1075825, TimeSpan.FromSeconds(30.0d), m));	//Invisibility/Invisible
-			
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Invisibility, 1075825, TimeSpan.FromSeconds(30.0d), m));  //Invisibility/Invisible
+
             RemoveTimer(m);
 
             m_Table[m] = Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerStateCallback(EndHide_Callback), m);
@@ -65,7 +65,7 @@ namespace Server.Items
         public static void Iterrupt(Mobile m)
         {
             m.SendLocalizedMessage(1073187); // The invisibility effect is interrupted.
-            RemoveTimer(m);			
+            RemoveTimer(m);
         }
 
         public override void Drink(Mobile from)
@@ -75,15 +75,15 @@ namespace Server.Items
                 from.SendLocalizedMessage(1073185); // You are already unseen.
                 return;
             }
-			
+
             if (HasTimer(from))
             {
                 from.SendLocalizedMessage(1073186); // An invisibility potion is already taking effect on your person.
                 return;
             }
-			
+
             this.Consume();
-            Timer.DelayCall(TimeSpan.FromSeconds(2), new TimerStateCallback(Hide_Callback), from);			
+            Timer.DelayCall(TimeSpan.FromSeconds(2), new TimerStateCallback(Hide_Callback), from);
             PlayDrinkEffect(from);
         }
 

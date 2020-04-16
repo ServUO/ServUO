@@ -1,5 +1,5 @@
-using System;
 using Server.Engines.Craft;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,7 +7,7 @@ namespace Server.Items
 {
     public class HammerOfHephaestus : AncientSmithyHammer
     {
-        private static List<HammerOfHephaestus> _Instances = new List<HammerOfHephaestus>();
+        private static readonly List<HammerOfHephaestus> _Instances = new List<HammerOfHephaestus>();
 
         public static void Initialize()
         {
@@ -60,9 +60,9 @@ namespace Server.Items
                 if (UsesRemaining > 0)
                 {
                     CraftSystem system = CraftSystem;
-	
+
                     int num = system.CanCraft(from, this, null);
-	
+
                     if (num > 0)
                     {
                         from.SendLocalizedMessage(num);
@@ -70,7 +70,7 @@ namespace Server.Items
                     else
                     {
                         CraftContext context = system.GetContext(from);
-	
+
                         from.SendGump(new CraftGump(from, system, this, null));
                     }
                 }

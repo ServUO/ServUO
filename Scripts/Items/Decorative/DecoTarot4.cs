@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class DecoTarot4 : Item

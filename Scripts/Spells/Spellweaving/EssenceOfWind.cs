@@ -101,7 +101,7 @@ namespace Server.Spells.Spellweaving
 
                         m.Delta(MobileDelta.WeaponDamage);
                     }
-                }    
+                }
             }
 
             FinishSequence();

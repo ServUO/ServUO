@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Server;
+using Server.ContextMenus;
+using Server.Engines.Astronomy;
+using Server.Gumps;
 using Server.Mobiles;
 using Server.Multis;
-using Server.Gumps;
-using Server.Engines.Astronomy;
-using Server.ContextMenus;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -146,7 +143,7 @@ namespace Server.Items
             }
         }
 
-        private static string[] _Names =
+        private static readonly string[] _Names =
         {
             "Adranath", "Aeluva the Arcanist", "Aesthyron", "Anon", "Balaki", "Clanin", "Dexter", "Doctor Spector", "Dryus Doost",
             "Gilform", "Grizelda the Hag", "Hawkwind", "Heigel of Moonglow", "Intanya", "Juo'Nar", "King Blackthorn", "Koole the Arcanist",

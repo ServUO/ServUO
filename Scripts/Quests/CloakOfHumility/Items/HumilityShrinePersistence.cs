@@ -1,8 +1,5 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
-using System.Collections.Generic;
-using Server.Gumps;
 namespace Server.Engines.Quests
 {
     public class HumilityShrinePersistence : Item
@@ -60,7 +57,7 @@ namespace Server.Engines.Quests
             : base(serial)
         {
         }
- 
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

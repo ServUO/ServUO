@@ -97,8 +97,8 @@ namespace Server.Gumps
                 return String.Format("{{ gumppic {0} {1} {2} hue={3} }}", m_X, m_Y, m_GumpID, m_Hue);
         }
 
-        private static byte[] m_LayoutName = Gump.StringToBuffer("gumppic");
-        private static byte[] m_HueEquals = Gump.StringToBuffer(" hue=");
+        private static readonly byte[] m_LayoutName = Gump.StringToBuffer("gumppic");
+        private static readonly byte[] m_HueEquals = Gump.StringToBuffer(" hue=");
 
         public override void AppendTo(IGumpWriter disp)
         {

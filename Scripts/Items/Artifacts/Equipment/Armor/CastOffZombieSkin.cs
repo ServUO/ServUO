@@ -1,16 +1,14 @@
-using System;
-
 namespace Server.Items
 {
     public class CastOffZombieSkin : GargishLeatherArms
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
-        public CastOffZombieSkin() 
-        {	
-            Hue = 1893;		
-            SkillBonuses.SetValues(0, SkillName.Necromancy, 5.0);	
-            SkillBonuses.SetValues(1, SkillName.SpiritSpeak, 5.0);	
+        public CastOffZombieSkin()
+        {
+            Hue = 1893;
+            SkillBonuses.SetValues(0, SkillName.Necromancy, 5.0);
+            SkillBonuses.SetValues(1, SkillName.SpiritSpeak, 5.0);
             Attributes.LowerManaCost = 5;
             Attributes.LowerRegCost = 8;
             Attributes.IncreasedKarmaLoss = 5;
@@ -20,8 +18,8 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
-        public override int LabelNumber { get{return 1113538;} }// Cast-off Zombie Skin
+
+        public override int LabelNumber { get { return 1113538; } }// Cast-off Zombie Skin
 
         public override int BasePhysicalResistance
         {

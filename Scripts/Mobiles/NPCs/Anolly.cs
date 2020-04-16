@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class StopHarpingOnMeQuest : BaseQuest
-    { 
+    {
         public StopHarpingOnMeQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(LapHarp), "lap harp", 20, 0xEB2));
-			
+
             AddReward(new BaseReward(typeof(CarpentersCraftsmanSatchel), 1074282));
         }
 
@@ -71,12 +71,12 @@ namespace Server.Engines.Quests
     }
 
     public class TheFarEyeQuest : BaseQuest
-    { 
+    {
         public TheFarEyeQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(Spyglass), "spyglasses", 20, 0x14F5));
-			
+
             AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
@@ -137,11 +137,11 @@ namespace Server.Engines.Quests
     }
 
     public class Anolly : MondainQuester
-    { 
+    {
         [Constructable]
         public Anolly()
             : base("Anolly", "the bark weaver")
-        { 
+        {
             SetSkill(SkillName.Meditation, 60.0, 83.0);
             SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -152,10 +152,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(StopHarpingOnMeQuest),
                     typeof(TheFarEyeQuest),
@@ -166,10 +166,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = false;
             Race = Race.Elf;
-			
+
             Hue = 0x8835;
             HairItemID = 0x2FC0;
             HairHue = 0x325;

@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-
-using Server;
-
 namespace Server.Items
 {
     [Flipable(0xA35D, 0xA35E)]
@@ -56,7 +51,7 @@ namespace Server.Items
             _DisplayName = reader.ReadString();
         }
 
-        private static string[] _Names =
+        private static readonly string[] _Names =
         {
             "Trinsic", "Jhelom", "Vesper", "Ocllo", "Yew", "Britain", "Minoc", "Moonglow", "Skara Brae", "Delucia"
         };

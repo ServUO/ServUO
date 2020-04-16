@@ -1,7 +1,5 @@
-using System;
-using Server.Items;
 using Server.Mobiles;
-using Server.Network;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Items
@@ -29,7 +27,7 @@ namespace Server.Items
             Addon.Foil = this;
         }
 
-        public override bool VerifyMove( Mobile from )
+        public override bool VerifyMove(Mobile from)
         {
             if (this.Visible && this.Map != null && this.Map != Map.Internal && Utility.RandomBool())
             {
@@ -160,7 +158,7 @@ namespace Server.Items
             }
         }
 
-        private static Point3D[] _SpawnLocs =
+        private static readonly Point3D[] _SpawnLocs =
         {
             new Point3D(491, 1863, 95),
             new Point3D(496, 1865, 85),

@@ -1,6 +1,5 @@
-using System;
-using System.Collections;
 using Server.Items;
+using System.Collections;
 
 namespace Server.Mobiles
 {
@@ -169,7 +168,7 @@ namespace Server.Mobiles
                 if (attacker is BaseCreature)
                 {
                     Mobile m = ((BaseCreature)attacker).GetMaster();
-					
+
                     if (m != null)
                         target = m;
                 }

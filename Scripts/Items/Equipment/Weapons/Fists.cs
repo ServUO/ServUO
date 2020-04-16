@@ -164,7 +164,7 @@ namespace Server.Items
                 return false;
 
             return m.FindItemOnLayer(Layer.TwoHanded) == null;
-        }        
+        }
 
         private class MoveDelayTimer : Timer
         {

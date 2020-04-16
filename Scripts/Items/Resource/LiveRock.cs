@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class LiveRock : Item, ICommodity
@@ -27,7 +25,7 @@ namespace Server.Items
 
         TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

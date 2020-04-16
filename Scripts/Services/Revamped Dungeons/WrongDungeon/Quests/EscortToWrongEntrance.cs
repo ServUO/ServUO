@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Engines.Quests
@@ -9,7 +8,7 @@ namespace Server.Engines.Quests
             : base()
         {
             this.AddObjective(new EscortObjective("Wrong Entrance"));
-            
+
             this.AddReward(new BaseReward("Compassion"));
             this.AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }

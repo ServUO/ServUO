@@ -1,16 +1,15 @@
+using Server.Commands;
+using Server.Engines.Points;
+using Server.Engines.VendorSearching;
+using Server.Gumps;
+using Server.Items;
+using Server.Mobiles;
+using Server.Multis;
+using Server.Network;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
-using Server.Commands;
-using Server.Mobiles;
-using Server.Items;
-using Server.Engines.VendorSearching;
-using Server.Gumps;
-using Server.Network;
-using Server.Engines.Points;
-using Server.Multis;
 
 namespace Server.Engines.UOStore
 {
@@ -273,7 +272,7 @@ namespace Server.Engines.UOStore
             Register<VanityDeed>(1074027, 1156931, 0, 0x9C9C, 0, 100, cat);
             Register<AppleTrunkDeed>(1076785, 1156927, 0xD98, 0, 0, 100, cat);
             Register<TableWithPurpleClothDeed>(new TextDefinition[] { 1157011, 1157013 }, 1156929, 0x118B, 0, 0, 100, cat);
-            Register<WoodenCoffinDeed>(1076274, 1156928 , 0, 0x9C92, 0, 100, cat);
+            Register<WoodenCoffinDeed>(1076274, 1156928, 0, 0x9C92, 0, 100, cat);
             Register<RaisedGardenDeed>(new TextDefinition[] { 1150359, 1156688 }, 1156680, 0, 0x9C8B, 0, 2000, cat, ConstructRaisedGarden);
             Register<HouseTeleporterTileBag>(new TextDefinition[] { 1156683, 1156826 }, 1156668, 0x40B9, 0, 1201, 1000, cat);
             Register<WoodworkersBenchDeed>(1026641, 1156670, 0x14F0, 0, 0, 600, cat);
@@ -307,7 +306,7 @@ namespace Server.Engines.UOStore
 
             Register<PetBrandingIron>(1157314, 1157372, 0, 0x9CC3, 0, 600, cat);
             Register<ImprovedRockHammer>(1157177, 1157306, 0, 0x9CBB, 0, 1000, cat);
-            Register<PetBondingPotion>(1152921, 1156678, 0, 0x9CBC, 0, 500, cat); 
+            Register<PetBondingPotion>(1152921, 1156678, 0, 0x9CBC, 0, 500, cat);
 
             Register<ForgedMetalOfArtifacts>(new TextDefinition[] { 1149868, 1156686 }, 1156674, 0, 0x9C65, 0, 1000, cat, ConstructForgedMetal);
             Register<ForgedMetalOfArtifacts>(new TextDefinition[] { 1149868, 1156687 }, 1156675, 0, 0x9C65, 0, 600, cat, ConstructForgedMetal);
@@ -406,7 +405,7 @@ namespace Server.Engines.UOStore
         {
             var info = NaturalHairDye.Table.FirstOrDefault(x => x.Localization == entry.Name[1].Number);
 
-            if(info != null)
+            if (info != null)
             {
                 return new NaturalHairDye(info.Type);
             }
@@ -536,7 +535,7 @@ namespace Server.Engines.UOStore
 
         public static Item ConstructMerchantsTrinket(Mobile m, StoreEntry entry)
         {
-            switch(entry.Name[0].Number)
+            switch (entry.Name[0].Number)
             {
                 case 1156827: return new MerchantsTrinket(false);
                 case 1156828: return new MerchantsTrinket(true);
@@ -683,19 +682,19 @@ namespace Server.Engines.UOStore
         {
             switch (sort)
             {
-                case SortBy.Name: 
-                        list.Sort((a, b) => String.CompareOrdinal(GetStringName(a.Name), GetStringName(b.Name)));
+                case SortBy.Name:
+                    list.Sort((a, b) => String.CompareOrdinal(GetStringName(a.Name), GetStringName(b.Name)));
                     break;
                 case SortBy.PriceLower:
-                        list.Sort((a, b) => a.Price.CompareTo(b.Price));
+                    list.Sort((a, b) => a.Price.CompareTo(b.Price));
                     break;
                 case SortBy.PriceHigher:
-                        list.Sort((a, b) => b.Price.CompareTo(a.Price));
+                    list.Sort((a, b) => b.Price.CompareTo(a.Price));
                     break;
                 case SortBy.Newest:
                     break;
                 case SortBy.Oldest:
-                        list.Reverse();
+                    list.Reverse();
                     break;
             }
         }
@@ -734,24 +733,24 @@ namespace Server.Engines.UOStore
             switch (Configuration.CurrencyImpl)
             {
                 case CurrencyType.Sovereigns:
-                {
-                    if (m is PlayerMobile)
                     {
-                        return ((PlayerMobile)m).AccountSovereigns;
+                        if (m is PlayerMobile)
+                        {
+                            return ((PlayerMobile)m).AccountSovereigns;
+                        }
                     }
-                }
                     break;
                 case CurrencyType.Gold:
                     return Banker.GetBalance(m);
                 case CurrencyType.PointsSystem:
-                {
-                    var sys = PointsSystem.GetSystemInstance(Configuration.PointsImpl);
-
-                    if (sys != null)
                     {
-                        return (int)Math.Min(Int32.MaxValue, sys.GetPoints(m));
+                        var sys = PointsSystem.GetSystemInstance(Configuration.PointsImpl);
+
+                        if (sys != null)
+                        {
+                            return (int)Math.Min(Int32.MaxValue, sys.GetPoints(m));
+                        }
                     }
-                }
                     break;
                 case CurrencyType.Custom:
                     return Configuration.GetCustomCurrency(m);
@@ -764,11 +763,11 @@ namespace Server.Engines.UOStore
         {
             var cart = GetCart(m);
             var total = GetSubTotal(cart);
-            
+
             if (cart == null || cart.Count == 0 || total == 0)
             {
                 // Purchase failed due to your cart being empty.
-                m.SendLocalizedMessage(1156842); 
+                m.SendLocalizedMessage(1156842);
             }
             else if (total > GetCurrency(m, true))
             {
@@ -828,7 +827,7 @@ namespace Server.Engines.UOStore
                 if (fail)
                 {
                     // Failed to process one of your items. Please check your cart and try again.
-                    m.SendLocalizedMessage(1156853); 
+                    m.SendLocalizedMessage(1156853);
                 }
             }
         }
@@ -843,30 +842,30 @@ namespace Server.Engines.UOStore
             switch (Configuration.CurrencyImpl)
             {
                 case CurrencyType.Sovereigns:
-                {
-                    if (m is PlayerMobile && ((PlayerMobile)m).WithdrawSovereigns(amount))
                     {
-                        return amount;
+                        if (m is PlayerMobile && ((PlayerMobile)m).WithdrawSovereigns(amount))
+                        {
+                            return amount;
+                        }
                     }
-                }
                     break;
                 case CurrencyType.Gold:
-                {
-                    if (Banker.Withdraw(m, amount, true))
                     {
-                        return amount;
+                        if (Banker.Withdraw(m, amount, true))
+                        {
+                            return amount;
+                        }
                     }
-                }
                     break;
                 case CurrencyType.PointsSystem:
-                {
-                    var sys = PointsSystem.GetSystemInstance(Configuration.PointsImpl);
-
-                    if (sys != null && sys.DeductPoints(m, amount, true))
                     {
-                        return amount;
+                        var sys = PointsSystem.GetSystemInstance(Configuration.PointsImpl);
+
+                        if (sys != null && sys.DeductPoints(m, amount, true))
+                        {
+                            return amount;
+                        }
                     }
-                }
                     break;
                 case CurrencyType.Custom:
                     return Configuration.DeductCustomCurrecy(m, amount);

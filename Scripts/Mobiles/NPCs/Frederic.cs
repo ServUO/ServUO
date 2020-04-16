@@ -1,13 +1,13 @@
 using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Frederic : MondainQuester
     {
         [Constructable]
         public Frederic()
             : base("The Ghost of Frederic Smithson")
-        { 
+        {
         }
 
         public Frederic(Serial serial)
@@ -25,7 +25,7 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Body = 0x1A;
             this.Hue = 0x455;
             this.CantWalk = true;

@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -91,7 +91,7 @@ namespace Server.Mobiles
             PackItem(new MessageInABottle());
 
             PackItem(new Rope());
-			PackItem(new Rope());
+            PackItem(new Rope());
 
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
@@ -101,7 +101,7 @@ namespace Server.Mobiles
         {
         }
 
-        public static Type[] Artifacts => m_Artifacts; 
+        public static Type[] Artifacts => m_Artifacts;
 
         public Mobile Fisher
         {
@@ -139,9 +139,9 @@ namespace Server.Mobiles
             }
         }
 
-        public override double TreasureMapChance => 0.25; 
-		
-        public override int TreasureMapLevel => 5; 
+        public override double TreasureMapChance => 0.25;
+
+        public override int TreasureMapLevel => 5;
 
         public override void OnActionCombat()
         {

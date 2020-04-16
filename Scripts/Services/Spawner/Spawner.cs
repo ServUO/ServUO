@@ -1,14 +1,14 @@
+using Server.Commands;
+using Server.ContextMenus;
+using Server.Gumps;
+using Server.Items;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Linq;
-using Server.Commands;
-using Server.ContextMenus;
-using Server.Items;
 using CPA = Server.CommandPropertyAttribute;
-using Server.Gumps;
 
 namespace Server.Mobiles
 {
@@ -109,7 +109,7 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.Spawner)]
-        public virtual int SpawnObjectCount {  get{ return m_SpawnObjects.Count; } }
+        public virtual int SpawnObjectCount { get { return m_SpawnObjects.Count; } }
 
         [CommandProperty(AccessLevel.Spawner)]
         public WayPoint WayPoint { get { return m_WayPoint; } set { m_WayPoint = value; } }
@@ -139,38 +139,38 @@ namespace Server.Mobiles
         public int WalkingRange { get { return m_WalkingRange; } set { m_WalkingRange = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.Spawner)]
-        public int Team { get { return m_Team;  } set { m_Team = value; InvalidateProperties(); } }
+        public int Team { get { return m_Team; } set { m_Team = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.Spawner)]
-        public TimeSpan MinDelay 
-        { 
-            get { return m_MinDelay; } 
-            set 
+        public TimeSpan MinDelay
+        {
+            get { return m_MinDelay; }
+            set
             {
                 var old = m_MinDelay;
 
                 m_MinDelay = value;
-                
-                if(old != m_MinDelay && m_Running)
-                    DoTimer(); 
-                
+
+                if (old != m_MinDelay && m_Running)
+                    DoTimer();
+
                 InvalidateProperties();
-            } 
+            }
         }
 
         [CommandProperty(AccessLevel.Spawner)]
         public TimeSpan MaxDelay
-        { 
-            get { return m_MaxDelay; } 
-            set 
+        {
+            get { return m_MaxDelay; }
+            set
             {
                 var old = m_MaxDelay;
 
                 m_MaxDelay = value;
 
                 if (old != m_MaxDelay && m_Running)
-                    DoTimer(); 
-                
+                    DoTimer();
+
                 InvalidateProperties();
             }
         }
@@ -381,7 +381,7 @@ namespace Server.Mobiles
 
         public bool AddSpawnObject(SpawnObject so)
         {
-            if(m_SpawnObjects.FirstOrDefault(s => ParseType(s.SpawnName.ToLower()) == ParseType(so.SpawnName.ToLower())) == null
+            if (m_SpawnObjects.FirstOrDefault(s => ParseType(s.SpawnName.ToLower()) == ParseType(so.SpawnName.ToLower())) == null
                 && m_SpawnObjects.Count < SpawnerGump.MaxEntries)
             {
                 SpawnObjects.Add(so);
@@ -590,7 +590,7 @@ namespace Server.Mobiles
             {
                 if (so.CurrentCount < so.MaxCount)
                 {
-                    if(objects == null)
+                    if (objects == null)
                         objects = new List<SpawnObject>();
 
                     objects.Add(so);
@@ -788,7 +788,7 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 7:
                     {

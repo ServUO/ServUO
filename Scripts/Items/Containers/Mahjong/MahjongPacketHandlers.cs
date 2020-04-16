@@ -1,4 +1,3 @@
-using System;
 using Server.Network;
 
 namespace Server.Engines.Mahjong
@@ -220,7 +219,7 @@ namespace Server.Engines.Mahjong
 
         private static MahjongPieceDirection GetDirection(int value)
         {
-            switch ( value )
+            switch (value)
             {
                 case 0:
                     return MahjongPieceDirection.Up;
@@ -235,7 +234,7 @@ namespace Server.Engines.Mahjong
 
         private static MahjongWind GetWind(int value)
         {
-            switch ( value )
+            switch (value)
             {
                 case 0:
                     return MahjongWind.North;

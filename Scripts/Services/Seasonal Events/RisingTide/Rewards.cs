@@ -1,9 +1,7 @@
-using System;
-using System.Linq;
-
-using Server;
 using Server.Gumps;
 using Server.Multis;
+using System;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -360,7 +358,7 @@ namespace Server.Items
             ColUtility.Free(list);
         }
 
-        private static string[] _ShipNames =
+        private static readonly string[] _ShipNames =
         {
             "Adventure Galley",
             "Queen Anne's Revenge",

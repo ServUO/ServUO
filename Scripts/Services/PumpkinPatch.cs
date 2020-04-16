@@ -1,6 +1,6 @@
-using System;
 using Server.Events.Halloween;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Events
 {

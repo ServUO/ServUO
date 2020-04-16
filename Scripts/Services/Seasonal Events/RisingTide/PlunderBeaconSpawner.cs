@@ -1,11 +1,6 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-
-using Server;
-using Server.Items;
-using Server.Mobiles;
 using Server.Multis;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -74,7 +69,7 @@ namespace Server.Items
             Spawner = null;
         }
 
-        private Rectangle2D[] _Zones =
+        private readonly Rectangle2D[] _Zones =
         {
             new Rectangle2D(1574, 3620, 766, 465),
             new Rectangle2D(1574, 3620, 766, 465),
@@ -84,7 +79,7 @@ namespace Server.Items
             new Rectangle2D(1274, 977, 141, 221)
         };
 
-        private int[] _SpawnCount =
+        private readonly int[] _SpawnCount =
         {
             5, 5, 3, 3, 3, 3
         };
@@ -148,7 +143,7 @@ namespace Server.Items
                 var rec = _Zones[(int)zone];
                 Point3D p;
 
-                while(true)
+                while (true)
                 {
                     p = map.GetRandomSpawnPoint(rec); //new Point3D(rec.X + Utility.Random(rec.Width), rec.Y + Utility.RandomMinMax(rec.Start.X, rec.Height), -5);
 

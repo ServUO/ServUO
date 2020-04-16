@@ -205,7 +205,7 @@ namespace Server.Gumps
             }
         }
 
-        private int[] m_Possibles = new int[]
+        private readonly int[] m_Possibles = new int[]
         {
             0,  1,  2,  3,  4,  5,
             6,  7,  8,  9,  10, 11,
@@ -215,7 +215,7 @@ namespace Server.Gumps
             30, 31, 32, 33, 34, 35
         };
 
-        private int[][] Paths9 = new int[][]
+        private readonly int[][] Paths9 = new int[][]
         {
             new int[] { 0, 1, 2, 5, 8 },
             new int[] { 0, 1, 4, 5, 8 },
@@ -228,7 +228,7 @@ namespace Server.Gumps
             new int[] { 0, 3, 6, 7, 4, 1, 2, 5, 8 }
         };
 
-        private int[][] Paths16 = new int[][]
+        private readonly int[][] Paths16 = new int[][]
         {
             new int[] { 0, 1, 2, 3, 7, 11, 15 },
             new int[] { 0, 1, 2, 6, 7, 11, 15 },
@@ -244,7 +244,7 @@ namespace Server.Gumps
             new int[] { 0, 4, 5, 9, 10, 11, 15 },
         };
 
-        private int[][] Paths25 = new int[][]
+        private readonly int[][] Paths25 = new int[][]
         {
             new int[] { 0, 1, 2, 3, 4, 9, 14, 19, 24 },
             new int[] { 0, 1, 2, 7, 8, 9, 14, 13, 12, 11, 10, 15, 20, 21, 22, 23, 24 },
@@ -260,7 +260,7 @@ namespace Server.Gumps
             new int[] { 0, 5, 10, 11, 16, 17, 18, 23, 24 },
         };
 
-        private int[][] Paths36 = new int[][]
+        private readonly int[][] Paths36 = new int[][]
         {
             new int[] { 0, 1, 2, 3, 4, 5, 11, 17, 23, 29, 35 },
             new int[] { 0, 6, 12, 18, 24, 30, 31, 32, 33, 34, 35 },

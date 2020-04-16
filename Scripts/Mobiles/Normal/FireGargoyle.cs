@@ -1,6 +1,3 @@
-using System;
-using Server.Items;
-
 namespace Server.Mobiles
 {
     [CorpseName("a charred corpse")]
@@ -82,7 +79,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.Gems);
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

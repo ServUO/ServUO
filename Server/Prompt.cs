@@ -4,8 +4,8 @@ namespace Server.Prompts
 {
     public abstract class Prompt
     {
-        private IEntity m_Sender;
-        private String m_MessageArgs;
+        private readonly IEntity m_Sender;
+        private readonly String m_MessageArgs;
 
         public IEntity Sender
         {

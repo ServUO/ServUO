@@ -1,5 +1,4 @@
-﻿using System;
-using Server.Network;
+﻿using Server.Network;
 
 namespace Server.Items
 {
@@ -15,21 +14,21 @@ namespace Server.Items
             this.Weight = 2.0;
             this.LootType = LootType.Blessed;
         }
-		
-		public override void OnDoubleClick(Mobile from)
+
+        public override void OnDoubleClick(Mobile from)
         {
-			base.OnDoubleClick(from);			
-			
-			from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154235); // *Finely crafted lenses for use in allowing the wearer to maintain visual acuity while navigating an aquatic environment*
+            base.OnDoubleClick(from);
+
+            from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154235); // *Finely crafted lenses for use in allowing the wearer to maintain visual acuity while navigating an aquatic environment*
         }
-		
-		public override void GetProperties(ObjectPropertyList list)
+
+        public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
             list.Add(1072351); // Quest Item
         }
-		
+
 
         public override int BasePhysicalResistance { get { return 2; } }
         public override int BaseFireResistance { get { return 4; } }
@@ -56,8 +55,8 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
-	
-	public class GargishNictitatingLens : GargishGlasses
+
+    public class GargishNictitatingLens : GargishGlasses
     {
         public override int LabelNumber { get { return 1154234; } } // Nictitating Lens
 
@@ -69,12 +68,12 @@ namespace Server.Items
             this.Weight = 2.0;
             this.LootType = LootType.Blessed;
         }
-		
-		public override void OnDoubleClick(Mobile from)
+
+        public override void OnDoubleClick(Mobile from)
         {
-			base.OnDoubleClick(from);			
-			
-			from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154235); // *Finely crafted lenses for use in allowing the wearer to maintain visual acuity while navigating an aquatic environment*
+            base.OnDoubleClick(from);
+
+            from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154235); // *Finely crafted lenses for use in allowing the wearer to maintain visual acuity while navigating an aquatic environment*
         }
 
         public override int BasePhysicalResistance { get { return 2; } }

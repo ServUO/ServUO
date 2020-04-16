@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.Engines.Craft;
 using Server.Items;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Server.Engines.BulkOrders
@@ -216,7 +216,7 @@ namespace Server.Engines.BulkOrders
             return _NonMaterials.Any(x => x == t || t.IsSubclassOf(x));
         }
 
-        private static Type[] _NonMaterials =
+        private static readonly Type[] _NonMaterials =
         {
             typeof(BaseTool), typeof(SmithyHammer), typeof(BaseJewel)
         };
@@ -253,7 +253,7 @@ namespace Server.Engines.BulkOrders
         /* Tinkering needs conditional check for combining:
         * SpoonLeft/SpoonRight, ForkLeft/ForkRight, KnifeLeft/KnifeRight, ClockRight/ClockLeft
         */
-        private static Type[][] _TinkerTypeTable =
+        private static readonly Type[][] _TinkerTypeTable =
         {
             new Type[] { typeof(Spoon), typeof(SpoonRight), typeof(SpoonLeft) },
             new Type[] { typeof(Fork), typeof(ForkRight), typeof(ForkLeft) },
@@ -389,7 +389,7 @@ namespace Server.Engines.BulkOrders
                 case 2:
                     GemType = (GemType)reader.ReadInt();
                     break;
-                case 1: 
+                case 1:
                     break;
             }
 

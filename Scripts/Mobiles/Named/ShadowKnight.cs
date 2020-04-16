@@ -1,12 +1,12 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
     [CorpseName("a shadow knight corpse")]
     public class ShadowKnight : BaseCreature
     {
-        public override bool CanStealth => true; 
+        public override bool CanStealth => true;
 
         private Timer m_SoundTimer;
         private bool m_HasTeleportedAway;
@@ -60,23 +60,23 @@ namespace Server.Mobiles
         {
         }
 
-		public override void OnDamage(int amount, Mobile from, bool willKill)
-		{
-			RevealingAction();
-			base.OnDamage(amount, from, willKill);
-		}
+        public override void OnDamage(int amount, Mobile from, bool willKill)
+        {
+            RevealingAction();
+            base.OnDamage(amount, from, willKill);
+        }
 
-		public override void OnDamagedBySpell(Mobile from)
-		{
-			RevealingAction();
-			base.OnDamagedBySpell(from);
-		}
+        public override void OnDamagedBySpell(Mobile from)
+        {
+            RevealingAction();
+            base.OnDamagedBySpell(from);
+        }
 
         public override bool IgnoreYoungProtection => true;
 
-        public override bool CanFlee => false; 
-		
-        public override TribeType Tribe => TribeType.Undead; 
+        public override bool CanFlee => false;
+
+        public override TribeType Tribe => TribeType.Undead;
 
         public override bool Unprovokable => true;
 

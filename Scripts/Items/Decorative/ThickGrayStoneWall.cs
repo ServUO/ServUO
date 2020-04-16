@@ -6,8 +6,6 @@
 * CREATED : 10-07.2002                 *
 * **************************************/
 
-using System;
-
 namespace Server.Items
 {
     public enum ThickGrayStoneWallTypes

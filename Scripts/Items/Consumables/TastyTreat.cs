@@ -1,8 +1,7 @@
-﻿using Server;
+﻿using Server.Mobiles;
+using Server.Targeting;
 using System;
 using System.Collections.Generic;
-using Server.Mobiles;
-using Server.Targeting;
 
 namespace Server.Items
 {
@@ -94,25 +93,25 @@ namespace Server.Items
         }
 
         public bool DoEffects(BaseCreature bc)
-		{
-			string modName = Serial.ToString();
+        {
+            string modName = Serial.ToString();
 
             bc.AddStatMod(new StatMod(StatType.Str, bc.Serial + "Str", (int)(bc.RawStr * Bonus), Duration));
             bc.AddStatMod(new StatMod(StatType.Int, bc.Serial + "Int", (int)(bc.RawInt * Bonus), Duration));
             bc.AddStatMod(new StatMod(StatType.Dex, bc.Serial + "Dex", (int)(bc.RawDex * Bonus), Duration));
 
-			bc.PlaySound( 0x1EA );
-			bc.FixedParticles( 0x373A, 10, 15, 5018, EffectLayer.Waist );
+            bc.PlaySound(0x1EA);
+            bc.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
 
             bc.TempDamageBonus = DamageBonus;
             bc.Loyalty = BaseCreature.MaxLoyalty;
 
-			m_Table.Add(bc, DateTime.UtcNow);
+            m_Table.Add(bc, DateTime.UtcNow);
             Timer.DelayCall(Duration + CoolDown, new TimerStateCallback(RemoveInfluence), bc);
 
-			Consume();
+            Consume();
             return true;
-		}
+        }
 
         public static bool UnderInfluence(BaseCreature bc)
         {

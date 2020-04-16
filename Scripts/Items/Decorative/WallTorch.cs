@@ -48,7 +48,7 @@ namespace Server.Items
             else if (this.Light == LightType.NorthBig)
                 this.Light = LightType.WestBig;
 
-            switch ( this.ItemID )
+            switch (this.ItemID)
             {
                 case 0xA05:
                     this.ItemID = 0xA0A;

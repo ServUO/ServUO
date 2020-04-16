@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -35,7 +34,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.Wrestling, 45.1, 55.0);
 
             Fame = 450;
-            Karma = -450;            
+            Karma = -450;
         }
 
         public Skeleton(Serial serial)
@@ -49,44 +48,44 @@ namespace Server.Mobiles
 
         public override bool IsEnemy(Mobile m)
         {
-            if(Region.IsPartOf("Haven Island"))
+            if (Region.IsPartOf("Haven Island"))
             {
                 return false;
             }
-            
+
             return base.IsEnemy(m);
         }
-        
-		public override void GenerateLoot()
+
+        public override void GenerateLoot()
         {
             AddLoot(LootPack.Poor);
         }
-		
-		public override void OnDeath(Container c)
+
+        public override void OnDeath(Container c)
         {
             base.OnDeath(c);
-			
-			if (!Controlled)
-			{
-				switch (Utility.Random(5))
-				{
-					case 0:
-						c.DropItem(new BoneArms());
-						break;
-					case 1:
-						c.DropItem(new BoneChest());
-						break;
-					case 2:
-						c.DropItem(new BoneGloves());
-						break;
-					case 3:
-						c.DropItem(new BoneLegs());
-						break;
-					case 4:
-						c.DropItem(new BoneHelm());
-						break;
-				}
-			}
+
+            if (!Controlled)
+            {
+                switch (Utility.Random(5))
+                {
+                    case 0:
+                        c.DropItem(new BoneArms());
+                        break;
+                    case 1:
+                        c.DropItem(new BoneChest());
+                        break;
+                    case 2:
+                        c.DropItem(new BoneGloves());
+                        break;
+                    case 3:
+                        c.DropItem(new BoneLegs());
+                        break;
+                    case 4:
+                        c.DropItem(new BoneHelm());
+                        break;
+                }
+            }
         }
 
         public override void Serialize(GenericWriter writer)

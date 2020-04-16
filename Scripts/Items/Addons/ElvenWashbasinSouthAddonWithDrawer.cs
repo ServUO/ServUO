@@ -1,12 +1,10 @@
-using System;
-
 namespace Server.Items
 {
     public class ElvenWashBasinSouthAddonWithDrawer : BaseAddonContainer
     {
         [Constructable]
         public ElvenWashBasinSouthAddonWithDrawer()
-			: base(0x30E2)
+            : base(0x30E2)
         {
             this.AddComponent(new AddonContainerComponent(0x30E1), -1, 0, 0);
         }
@@ -23,27 +21,27 @@ namespace Server.Items
                 return new ElvenWashBasinSouthWithDrawerDeed();
             }
         }
-		public override bool RetainDeedHue
-		{
-			get
-			{
-				return true;
-			}
-		}
-		public override int DefaultGumpID
-		{
-			get
-			{
-				return 0x0104;
-			}
-		}
-		public override int DefaultDropSound
-		{
-			get
-			{
-				return 0x0042;
-			}
-		}
+        public override bool RetainDeedHue
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public override int DefaultGumpID
+        {
+            get
+            {
+                return 0x0104;
+            }
+        }
+        public override int DefaultDropSound
+        {
+            get
+            {
+                return 0x0042;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -28,7 +28,7 @@ namespace Server.Gumps
         private int m_X, m_Y;
         private int m_Hue;
         private string m_Text;
-        private int m_TextID;
+        private readonly int m_TextID;
 
         public GumpLabel(int x, int y, int hue, string text)
         {
@@ -99,7 +99,7 @@ namespace Server.Gumps
             return String.Format("{{ text {0} {1} {2} {3} }}", m_X, m_Y, m_Hue, m_Text == null ? m_TextID : Parent.Intern(m_Text));
         }
 
-        private static byte[] m_LayoutName = Gump.StringToBuffer("text");
+        private static readonly byte[] m_LayoutName = Gump.StringToBuffer("text");
 
         public override void AppendTo(IGumpWriter disp)
         {

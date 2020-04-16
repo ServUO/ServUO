@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using Server.ContextMenus;
-using Server.Targeting;
-using Server.Items;
-using Server.Gumps;
-
 namespace Server.Mobiles
 {
     public class MageGuildmaster : BaseGuildmaster
@@ -23,7 +16,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.Meditation, 85.0, 100.0);
             SetSkill(SkillName.Macing, 36.0, 68.0);
         }
-        
+
         public MageGuildmaster(Serial serial)
             : base(serial)
         {

@@ -1,17 +1,16 @@
-using System;
 using Server.Items;
 
-namespace Server.Mobiles 
-{ 
-    public class SpectralArmour : BaseCreature 
-    { 
-        [Constructable] 
+namespace Server.Mobiles
+{
+    public class SpectralArmour : BaseCreature
+    {
+        [Constructable]
         public SpectralArmour()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
-        { 
-            this.Body = 637; 
-            this.Hue = 0x8026; 
-            this.Name = "spectral armour"; 
+        {
+            this.Body = 637;
+            this.Hue = 0x8026;
+            this.Name = "spectral armour";
 
             Buckler buckler = new Buckler();
             ChainCoif coif = new ChainCoif();
@@ -26,8 +25,8 @@ namespace Server.Mobiles
             this.AddItem(coif);
             this.AddItem(gloves);
 
-            this.SetStr(101, 110); 
-            this.SetDex(101, 110); 
+            this.SetStr(101, 110);
+            this.SetDex(101, 110);
             this.SetInt(101, 110);
 
             this.SetHits(178, 201);
@@ -44,17 +43,17 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Poison, 20, 30);
             this.SetResistance(ResistanceType.Energy, 20, 30);
 
-            this.SetSkill(SkillName.Wrestling, 75.1, 100.0); 
-            this.SetSkill(SkillName.Tactics, 90.1, 100.0); 
-            this.SetSkill(SkillName.MagicResist, 90.1, 100); 
+            this.SetSkill(SkillName.Wrestling, 75.1, 100.0);
+            this.SetSkill(SkillName.Tactics, 90.1, 100.0);
+            this.SetSkill(SkillName.MagicResist, 90.1, 100);
 
-            this.Fame = 7000; 
-            this.Karma = -7000;             
+            this.Fame = 7000;
+            this.Karma = -7000;
         }
 
         public SpectralArmour(Serial serial)
             : base(serial)
-        { 
+        {
         }
 
         public override bool DeleteCorpseOnDeath
@@ -93,16 +92,16 @@ namespace Server.Mobiles
             return true;
         }
 
-        public override void Serialize(GenericWriter writer) 
-        { 
-            base.Serialize(writer); 
-            writer.Write((int)0); 
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
         }
 
-        public override void Deserialize(GenericReader reader) 
-        { 
-            base.Deserialize(reader); 
-            int version = reader.ReadInt(); 
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
         }
     }
 }

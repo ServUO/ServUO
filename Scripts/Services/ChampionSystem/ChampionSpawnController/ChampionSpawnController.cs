@@ -1,22 +1,20 @@
-using System;
 using System.Collections;
-using Server.Gumps;
 
 namespace Server.Engines.CannedEvil
 {
-	// This class is only here to remove legacy controller items
+    // This class is only here to remove legacy controller items
     public class ChampionSpawnController : Item
     {
-		public ChampionSpawnController(Serial serial)
-			: base(serial)
-		{ }
+        public ChampionSpawnController(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			// Do nothing
-		}
+        public override void Serialize(GenericWriter writer)
+        {
+            // Do nothing
+        }
 
-		public override void Deserialize(GenericReader reader)
+        public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
@@ -41,8 +39,8 @@ namespace Server.Engines.CannedEvil
                         break;
                     }
             }
-			DeleteAll();
-			Delete();
+            DeleteAll();
+            Delete();
         }
 
         private void DeleteAll()

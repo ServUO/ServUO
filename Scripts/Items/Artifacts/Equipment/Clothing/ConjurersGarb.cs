@@ -1,23 +1,21 @@
-using System;
-
 namespace Server.Items
 {
     [Flipable(0x1F03, 0x1F04)]
     public class ConjureresGarb : BaseOuterTorso
-	{
+    {
         public override bool CanBeWornByGargoyles { get { return true; } }
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber {get {return 1114052;} }// Conjurer's Garb
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1114052; } }// Conjurer's Garb
 
         [Constructable]
         public ConjureresGarb()
             : base(0x1F03, 0x486)
         {
             Hue = 0x4AA;
-			Weight = 3.0;
-			Attributes.DefendChance = 5;
-			Attributes.Luck = 140;
-			Attributes.RegenMana = 2;
+            Weight = 3.0;
+            Attributes.DefendChance = 5;
+            Attributes.Luck = 140;
+            Attributes.RegenMana = 2;
         }
 
         public ConjureresGarb(Serial serial)

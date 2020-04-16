@@ -1,5 +1,3 @@
-using System;
-using Server.Items;
 using Server.Mobiles;
 
 namespace Server.Items
@@ -65,15 +63,15 @@ namespace Server.Items
         }
 
         protected override void OnLocationChange(Point3D oldLocation)
-		{
-			base.OnLocationChange(oldLocation);
+        {
+            base.OnLocationChange(oldLocation);
 
             if (MacawSpawner != null && !InRange(MacawSpawner.Location, 20))
-			{
+            {
                 MacawSpawner.Spawn.Remove(this);
                 MacawSpawner = null;
-			}
-		}
+            }
+        }
 
         public override void OnDeath(Container c)
         {

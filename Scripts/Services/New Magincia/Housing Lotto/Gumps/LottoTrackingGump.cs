@@ -1,17 +1,14 @@
-using System;
-using Server;
-using Server.Items;
-using Server.Mobiles;
 using Server.Gumps;
-using System.Collections.Generic;
 using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.NewMagincia
 {
     public class LottoTrackingGump : Gump
     {
         private readonly int LabelColor = 0xFFFFFF;
-        private List<MaginciaHousingPlot> m_List;
+        private readonly List<MaginciaHousingPlot> m_List;
 
         public LottoTrackingGump() : base(50, 50)
         {
@@ -32,18 +29,18 @@ namespace Server.Engines.NewMagincia
             {
                 MaginciaHousingPlot plot = m_List[i];
 
-                if(plot == null)
+                if (plot == null)
                     continue;
 
                 int bids = 0;
-                foreach(int bid in plot.Participants.Values)
+                foreach (int bid in plot.Participants.Values)
                     bids += bid;
 
                 AddButton(10 + x, y, 4005, 4007, i + 5, GumpButtonType.Reply, 0);
                 AddHtml(45 + x, y, 40, 22, Color(plot.Identifier, LabelColor), false, false);
                 AddHtml(85 + x, y, 60, 22, Color(plot.Map.ToString(), LabelColor), false, false);
 
-                if(plot.LottoOngoing)
+                if (plot.LottoOngoing)
                     AddHtml(145 + x, y, 40, 22, Color(bids.ToString(), LabelColor), false, false);
                 else if (plot.Complete)
                     AddHtml(145 + x, y, 40, 22, Color("Owned", "red"), false, false);

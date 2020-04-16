@@ -1,9 +1,3 @@
-using System;
-using Server;
-using Server.Gumps;
-using Server.Mobiles;
-using Server.Items;
-
 namespace Server.Engines.NewMagincia
 {
     public class MaginciaPlotStone : Item
@@ -13,10 +7,10 @@ namespace Server.Engines.NewMagincia
         private MaginciaHousingPlot m_Plot;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public MaginciaHousingPlot Plot 
-        { 
-            get { return m_Plot; } 
-            set { m_Plot = value; } 
+        public MaginciaHousingPlot Plot
+        {
+            get { return m_Plot; }
+            set { m_Plot = value; }
         }
 
         [Constructable]

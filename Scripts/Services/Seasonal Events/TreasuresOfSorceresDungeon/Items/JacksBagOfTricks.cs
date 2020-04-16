@@ -1,7 +1,5 @@
-using System;
-
-using Server;
 using Server.Events.Halloween;
+using System;
 
 namespace Server.Items
 {
@@ -175,7 +173,7 @@ namespace Server.Items
             list.Add(1157637, _Name); // The Severed Ears of an Elf Named ~1_NAME~
         }
 
-        private string[] _Names =
+        private readonly string[] _Names =
         {
             "Alabaster Snowball", "Pepper Minstix", "Wunorse Openslae", "Sugarplum Mary"
         };

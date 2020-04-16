@@ -1,5 +1,3 @@
-using System;
-using Server;
 using Server.Items;
 using System.Collections.Generic;
 
@@ -146,7 +144,7 @@ namespace Server.Mobiles.MannequinProperty
         public override int Hue { get { return 0x42FF; } }
         public override int SpriteW { get { return 120; } }
         public override int SpriteH { get { return 90; } }
-    }    
+    }
 
     public class FireResonanceProperty : AbsorptionAttr
     {

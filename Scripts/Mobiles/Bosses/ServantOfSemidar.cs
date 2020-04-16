@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     public class ServantOfSemidar : BaseCreature

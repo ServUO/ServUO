@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Server.Gumps;
 using Server.Items;
 using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Craft
 {
@@ -18,7 +18,7 @@ namespace Server.Engines.Craft
         private const int LabelColor = 0x7FFF;
         private const int FontColor = 0xFFFFFF;
 
-        public bool Locked => AutoCraftTimer.HasTimer(m_From); 
+        public bool Locked => AutoCraftTimer.HasTimer(m_From);
 
         private enum CraftPage
         {
@@ -261,19 +261,19 @@ namespace Server.Engines.Craft
             return null;
         }
 
-        private Type[][] m_TypesTable = new Type[][]
+        private readonly Type[][] m_TypesTable = new Type[][]
         {
             new Type[]{ typeof( Log ), typeof( Board ) },
-			new Type[]{ typeof( HeartwoodLog ), typeof( HeartwoodBoard ) },
-			new Type[]{ typeof( BloodwoodLog ), typeof( BloodwoodBoard ) },
-			new Type[]{ typeof( FrostwoodLog ), typeof( FrostwoodBoard ) },
-			new Type[]{ typeof( OakLog ), typeof( OakBoard ) },
-			new Type[]{ typeof( AshLog ), typeof( AshBoard ) },
-			new Type[]{ typeof( YewLog ), typeof( YewBoard ) },
-			new Type[]{ typeof( Leather ), typeof( Hides ) },
-			new Type[]{ typeof( SpinedLeather ), typeof( SpinedHides ) },
-			new Type[]{ typeof( HornedLeather ), typeof( HornedHides ) },
-			new Type[]{ typeof( BarbedLeather ), typeof( BarbedHides ) },
+            new Type[]{ typeof( HeartwoodLog ), typeof( HeartwoodBoard ) },
+            new Type[]{ typeof( BloodwoodLog ), typeof( BloodwoodBoard ) },
+            new Type[]{ typeof( FrostwoodLog ), typeof( FrostwoodBoard ) },
+            new Type[]{ typeof( OakLog ), typeof( OakBoard ) },
+            new Type[]{ typeof( AshLog ), typeof( AshBoard ) },
+            new Type[]{ typeof( YewLog ), typeof( YewBoard ) },
+            new Type[]{ typeof( Leather ), typeof( Hides ) },
+            new Type[]{ typeof( SpinedLeather ), typeof( SpinedHides ) },
+            new Type[]{ typeof( HornedLeather ), typeof( HornedHides ) },
+            new Type[]{ typeof( BarbedLeather ), typeof( BarbedHides ) },
         };
 
         public void CreateResList(bool opt, Mobile from)
@@ -505,17 +505,17 @@ namespace Server.Engines.Craft
             CraftGroupCol groups = system.CraftGroups;
             CraftContext context = system.GetContext(m_From);
 
-			if (Locked)
-			{
-				if (type == 6 && index == 11)
-				{
-					// Cancel Make
-					AutoCraftTimer.EndTimer(m_From);
-				}
-				return;
-			}
+            if (Locked)
+            {
+                if (type == 6 && index == 11)
+                {
+                    // Cancel Make
+                    AutoCraftTimer.EndTimer(m_From);
+                }
+                return;
+            }
 
-            switch ( type )
+            switch (type)
             {
                 case 0: // Show group
                     {
@@ -631,7 +631,7 @@ namespace Server.Engines.Craft
                     }
                 case 6: // Misc. buttons
                     {
-                        switch ( index )
+                        switch (index)
                         {
                             case 0: // Resource selection
                                 {
@@ -694,7 +694,7 @@ namespace Server.Engines.Craft
                                     if (context == null || !system.MarkOption)
                                         break;
 
-                                    switch ( context.MarkOption )
+                                    switch (context.MarkOption)
                                     {
                                         case CraftMarkOption.MarkItem:
                                             context.MarkOption = CraftMarkOption.DoNotMark;
@@ -736,13 +736,13 @@ namespace Server.Engines.Craft
                                         else
                                             m_From.SendLocalizedMessage(1111867); // You must be near a soulforge to alter an item.
                                     }
-									break;
+                                    break;
                                 }
                             case 10: // Quest Item/Non Quest Item toggle
                                 {
                                     //if (context == null || !system.QuestOption)
                                     //break;
-                                    switch ( context.QuestOption )
+                                    switch (context.QuestOption)
                                     {
                                         case CraftQuestOption.QuestItem:
                                             context.QuestOption = CraftQuestOption.NonQuestItem;

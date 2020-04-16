@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 using Server.Items;
 using Server.Mobiles;
 using Server.Spells.Necromancy;
+using System;
+using System.Linq;
 
 namespace Server.Spells.Chivalry
 {
@@ -70,16 +68,16 @@ namespace Server.Spells.Chivalry
         }
         public override void SendCastEffect()
         {
-           Caster.FixedEffect(0x37C4, 10, 7, 4, 3); // At player
+            Caster.FixedEffect(0x37C4, 10, 7, 4, 3); // At player
         }
 
         public override void OnCast()
         {
             if (this.CheckSequence())
             {
-               Caster.PlaySound(0xF5);
-               Caster.PlaySound(0x299);
-               Caster.FixedParticles(0x37C4, 1, 25, 9922, 14, 3, EffectLayer.Head);
+                Caster.PlaySound(0xF5);
+                Caster.PlaySound(0x299);
+                Caster.FixedParticles(0x37C4, 1, 25, 9922, 14, 3, EffectLayer.Head);
 
                 int dispelSkill = ComputePowerValue(2);
                 double chiv = Caster.Skills.Chivalry.Value;
@@ -140,7 +138,7 @@ namespace Server.Spells.Chivalry
                 }
             }
 
-           FinishSequence();
+            FinishSequence();
         }
     }
 }

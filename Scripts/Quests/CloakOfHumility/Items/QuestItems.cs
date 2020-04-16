@@ -1,8 +1,4 @@
-using System;
 using Server.Items;
-using Server.Mobiles;
-using System.Collections.Generic;
-using Server.Gumps;
 namespace Server.Engines.Quests
 {
     public class IronChain : Item
@@ -18,7 +14,7 @@ namespace Server.Engines.Quests
             : base(serial)
         {
         }
- 
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -61,7 +57,7 @@ namespace Server.Engines.Quests
 
             int version = reader.ReadInt();
 
-            if(version == 0)
+            if (version == 0)
                 reader.ReadMobile();
         }
     }

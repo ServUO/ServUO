@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class CodexOfVirtueAddon : BaseAddon
@@ -80,7 +78,7 @@ namespace Server.Items
         }
 
         public override BaseAddon Addon { get { return new CodexOfVirtueAddon(); } }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

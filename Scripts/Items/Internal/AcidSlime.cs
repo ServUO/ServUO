@@ -1,6 +1,6 @@
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
-using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -12,9 +12,9 @@ namespace Server.Items
         private readonly DateTime m_Created;
         private readonly Timer m_Timer;
         private bool m_Drying;
-		
-		public override int LabelNumber {get {return 1018143;} } // slime
-		
+
+        public override int LabelNumber { get { return 1018143; } } // slime
+
         [Constructable]
         public AcidSlime()
             : this(TimeSpan.FromSeconds(10.0), 5, 10)
@@ -38,7 +38,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-       
+
         public override void OnAfterDelete()
         {
             if (this.m_Timer != null)

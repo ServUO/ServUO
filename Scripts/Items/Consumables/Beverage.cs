@@ -1,5 +1,4 @@
-using System;
-using System.Collections;
+using Server.Engines.Craft;
 using Server.Engines.Plants;
 using Server.Engines.Quests;
 using Server.Engines.Quests.Hag;
@@ -7,7 +6,8 @@ using Server.Engines.Quests.Matriarch;
 using Server.Mobiles;
 using Server.Network;
 using Server.Targeting;
-using Server.Engines.Craft;
+using System;
+using System.Collections;
 
 namespace Server.Items
 {
@@ -64,7 +64,7 @@ namespace Server.Items
         {
             if (!IsEmpty)
             {
-                switch( Content )
+                switch (Content)
                 {
                     case BeverageType.Ale:
                         return 0x99F;
@@ -109,7 +109,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch( version )
+            switch (version)
             {
                 case 0:
                     {
@@ -325,7 +325,7 @@ namespace Server.Items
             if (Quantity > 0 && Content == BeverageType.Coffee)
             {
                 from.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, 1155739); // *You sip from the mug*
-                Pour_OnTarget(from, from);                
+                Pour_OnTarget(from, from);
             }
             else
             {
@@ -558,7 +558,7 @@ namespace Server.Items
             if (IsEmpty)
                 return (ItemID >= 0x1F81 && ItemID <= 0x1F84 ? ItemID : 0x1F81);
 
-            switch( Content )
+            switch (Content)
             {
                 case BeverageType.Ale:
                     return (ItemID == 0x9EF ? 0x9EF : 0x9EE);
@@ -608,7 +608,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch( version )
+            switch (version)
             {
                 case 0:
                     {
@@ -683,7 +683,7 @@ namespace Server.Items
                 return 0xFF6;
             }
 
-            switch( Content )
+            switch (Content)
             {
                 case BeverageType.Ale:
                     {
@@ -766,7 +766,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch( version )
+            switch (version)
             {
                 case 0:
                     {
@@ -1411,7 +1411,7 @@ namespace Server.Items
                 {
                     int bac = 0;
 
-                    switch( Content )
+                    switch (Content)
                     {
                         case BeverageType.Ale:
                             bac = 1;
@@ -1445,7 +1445,7 @@ namespace Server.Items
             else if (targ is BaseWaterContainer)
             {
                 BaseWaterContainer bwc = targ as BaseWaterContainer;
-				
+
                 if (Content != BeverageType.Water)
                 {
                     from.SendLocalizedMessage(500842); // Can't pour that in there.
@@ -1455,7 +1455,7 @@ namespace Server.Items
                     from.SendLocalizedMessage(500841); // That has something in it.
                 }
                 else
-                { 
+                {
                     int itNeeds = Math.Min((bwc.MaxQuantity - bwc.Quantity), Quantity);
 
                     if (itNeeds > 0)
@@ -1653,7 +1653,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch( version )
+            switch (version)
             {
                 case 1:
                     {

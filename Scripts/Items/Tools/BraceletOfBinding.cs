@@ -1,12 +1,12 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Mobiles;
+using Server.Multis;
 using Server.Network;
 using Server.Prompts;
 using Server.Spells;
 using Server.Targeting;
-using Server.Multis;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -256,7 +256,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {

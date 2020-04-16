@@ -1,11 +1,10 @@
-using System;
 using Server.Engines.VeteranRewards;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
 
 namespace Server.Items
-{ 
+{
     public class StoneAnkhComponent : AddonComponent
     {
         public StoneAnkhComponent(int itemID)
@@ -24,7 +23,7 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             if (Addon is StoneAnkh && ((StoneAnkh)Addon).IsRewardItem)
                 list.Add(1076221); // 5th Year Veteran Reward
         }
@@ -56,7 +55,7 @@ namespace Server.Items
         [Constructable]
         public StoneAnkh(bool east)
             : base()
-        { 
+        {
             if (east)
             {
                 AddComponent(new StoneAnkhComponent(0x2), 0, 0, 0);
@@ -75,13 +74,13 @@ namespace Server.Items
         }
 
         public override BaseAddonDeed Deed
-        { 
+        {
             get
-            { 
+            {
                 StoneAnkhDeed deed = new StoneAnkhDeed();
                 deed.IsRewardItem = m_IsRewardItem;
 
-                return deed; 
+                return deed;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -106,7 +105,7 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             if (m_IsRewardItem)
                 list.Add(1076221); // 5th Year Veteran Reward
         }
@@ -117,7 +116,7 @@ namespace Server.Items
             {
                 BaseHouse house = BaseHouse.FindHouseAt(this);
                 BaseAddon addon = c.Addon;
-			
+
                 if (house != null && (house.IsOwner(from) || (addon != null && house.Addons.ContainsKey(addon) && house.Addons[addon] == from)))
                 {
                     from.CloseGump(typeof(RewardDemolitionGump));
@@ -135,7 +134,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.WriteEncodedInt(0); // version
-			
+
             writer.Write((bool)m_IsRewardItem);
         }
 
@@ -144,7 +143,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             m_IsRewardItem = reader.ReadBool();
         }
     }
@@ -186,20 +185,20 @@ namespace Server.Items
             }
         }
         public override BaseAddon Addon
-        { 
+        {
             get
-            { 
+            {
                 StoneAnkh addon = new StoneAnkh(m_East);
                 addon.IsRewardItem = m_IsRewardItem;
 
-                return addon; 
+                return addon;
             }
         }
         public override void OnDoubleClick(Mobile from)
         {
             if (m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, null))
                 return;
-			
+
             if (IsChildOf(from.Backpack))
             {
                 from.CloseGump(typeof(InternalGump));
@@ -212,7 +211,7 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             if (m_IsRewardItem)
                 list.Add(1076221); // 5th Year Veteran Reward
         }
@@ -231,7 +230,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             m_IsRewardItem = reader.ReadBool();
         }
 
@@ -246,8 +245,8 @@ namespace Server.Items
             public InternalGump(StoneAnkhDeed deed)
                 : base(150, 50)
             {
-                m_Deed = deed;				
-				
+                m_Deed = deed;
+
                 Closable = true;
                 Disposable = true;
                 Dragable = true;
@@ -276,7 +275,7 @@ namespace Server.Items
             {
                 if (m_Deed == null || m_Deed.Deleted)
                     return;
-					
+
                 if (info.ButtonID != (int)Buttons.Cancel)
                 {
                     m_Deed.m_East = (info.ButtonID == (int)Buttons.East);

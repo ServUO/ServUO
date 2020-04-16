@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using Server.Multis;
 
 namespace Server.Items
 {
@@ -9,7 +7,7 @@ namespace Server.Items
     {
         [Constructable]
         public ShipsStrongbox()
-            : this (Utility.RandomMinMax(1, 3))
+            : this(Utility.RandomMinMax(1, 3))
         {
         }
 

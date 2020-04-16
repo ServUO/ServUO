@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x13bf, 0x13c4)]
     public class ChainChest : BaseArmor
     {
-		public override int BasePhysicalResistance { get { return 4; } }
+        public override int BasePhysicalResistance { get { return 4; } }
         public override int BaseFireResistance { get { return 4; } }
         public override int BaseColdResistance { get { return 4; } }
         public override int BasePoisonResistance { get { return 1; } }
@@ -14,7 +12,7 @@ namespace Server.Items
         public override int InitMaxHits { get { return 60; } }
         public override int StrReq { get { return 60; } }
         public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Chainmail; } }
-		
+
         [Constructable]
         public ChainChest()
             : base(0x13BF)

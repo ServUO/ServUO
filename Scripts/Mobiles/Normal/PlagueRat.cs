@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a plague rat corpse")]
-	
+
     public class PlagueRat : BaseCreature
     {
         [Constructable]
@@ -29,7 +27,7 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Physical, 35, 40);
             this.SetResistance(ResistanceType.Fire, 20, 25);
             this.SetResistance(ResistanceType.Cold, 25, 35);
-            this.SetResistance(ResistanceType.Energy, 35, 40); 
+            this.SetResistance(ResistanceType.Energy, 35, 40);
 
             this.SetSkill(SkillName.MagicResist, 25.1, 30.0);
             this.SetSkill(SkillName.Tactics, 34.5, 40.0);

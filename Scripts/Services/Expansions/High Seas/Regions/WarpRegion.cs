@@ -1,8 +1,6 @@
-﻿using Server;
-using System;
-using Server.Multis;
-using Server.Items;
+﻿using Server.Items;
 using Server.Mobiles;
+using Server.Multis;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,7 +8,7 @@ namespace Server.Regions
 {
     public class CorgulWarpRegion : Region
     {
-        private CorgulAltar m_Pedestal;
+        private readonly CorgulAltar m_Pedestal;
         private Rectangle2D m_Bounds;
         private List<Item> m_Markers;
 

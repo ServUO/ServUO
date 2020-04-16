@@ -1,7 +1,6 @@
-using System;
 using Server.Gumps;
-using Server.Network;
 using Server.Items;
+using Server.Network;
 
 namespace Server.Engines.Plants
 {
@@ -61,14 +60,14 @@ namespace Server.Engines.Plants
                 from.LocalOverheadMessage(MessageType.Regular, 0x3E9, 500446); // That is too far away.
                 return;
             }
-			
+
             if (!m_Plant.IsUsableBy(from))
             {
                 m_Plant.LabelTo(from, 1061856); // You must have the item in your backpack or locked down in order to use it.
                 return;
             }
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 1: // Main menu
                     {
@@ -172,55 +171,55 @@ namespace Server.Engines.Plants
                         break;
                     }
                 case 8: // Gather seeds
-                {
-                    PlantSystem system = m_Plant.PlantSystem;
- 
-                    if ( !m_Plant.IsCrossable )
                     {
-                        m_Plant.LabelTo( from, 1053060 ); // Mutated plants do not produce seeds!
-                    }
-                    else if ( system.AvailableSeeds == 0 )
-                    {
-                        m_Plant.LabelTo( from, 1053061 ); // This plant has no seeds to gather!
-                    }                //Seed of Renewal Edit
-                    else
-                    {
-                        if (Utility.RandomDouble() < 0.05)
+                        PlantSystem system = m_Plant.PlantSystem;
+
+                        if (!m_Plant.IsCrossable)
                         {
-                            Item Rseed = new SeedOfRenewal();
- 
-                            if (from.PlaceInBackpack(Rseed))
-                            {
-                                system.AvailableSeeds--;
-                                m_Plant.LabelTo(from, 1053063); // You gather seeds from the plant.
-                            }
-                            else
-                            {
-                                Rseed.Delete();
-                                m_Plant.LabelTo(from, 1053062); // You attempt to gather as many seeds as you can hold, but your backpack is full.
-                            }
+                            m_Plant.LabelTo(from, 1053060); // Mutated plants do not produce seeds!
                         }
+                        else if (system.AvailableSeeds == 0)
+                        {
+                            m_Plant.LabelTo(from, 1053061); // This plant has no seeds to gather!
+                        }                //Seed of Renewal Edit
                         else
                         {
-                            Seed seed = new Seed(system.SeedType, system.SeedHue, true);
- 
-                            if (from.PlaceInBackpack(seed))
+                            if (Utility.RandomDouble() < 0.05)
                             {
-                                system.AvailableSeeds--;
-                                m_Plant.LabelTo(from, 1053063); // You gather seeds from the plant.
+                                Item Rseed = new SeedOfRenewal();
+
+                                if (from.PlaceInBackpack(Rseed))
+                                {
+                                    system.AvailableSeeds--;
+                                    m_Plant.LabelTo(from, 1053063); // You gather seeds from the plant.
+                                }
+                                else
+                                {
+                                    Rseed.Delete();
+                                    m_Plant.LabelTo(from, 1053062); // You attempt to gather as many seeds as you can hold, but your backpack is full.
+                                }
                             }
                             else
                             {
-                                seed.Delete();
-                                m_Plant.LabelTo(from, 1053062); // You attempt to gather as many seeds as you can hold, but your backpack is full.
+                                Seed seed = new Seed(system.SeedType, system.SeedHue, true);
+
+                                if (from.PlaceInBackpack(seed))
+                                {
+                                    system.AvailableSeeds--;
+                                    m_Plant.LabelTo(from, 1053063); // You gather seeds from the plant.
+                                }
+                                else
+                                {
+                                    seed.Delete();
+                                    m_Plant.LabelTo(from, 1053062); // You attempt to gather as many seeds as you can hold, but your backpack is full.
+                                }
                             }
                         }
+
+                        from.SendGump(new ReproductionGump(m_Plant));
+
+                        break;
                     }
- 
-                    from.SendGump( new ReproductionGump( m_Plant ) );
- 
-                    break;
-                }
             }
         }
 

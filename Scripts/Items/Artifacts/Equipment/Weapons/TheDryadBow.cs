@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class TheDryadBow : Bow
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         private static readonly SkillName[] m_PossibleBonusSkills = new SkillName[]
         {
             SkillName.Archery,

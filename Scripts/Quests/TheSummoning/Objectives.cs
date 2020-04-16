@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
+using System.Collections.Generic;
 
 namespace Server.Engines.Quests.Doom
 {
@@ -18,7 +17,7 @@ namespace Server.Engines.Quests.Doom
                 /* Find 1000 Daemon bones and hand them
                 * to Victoria as you find them.
                 */
-                return 1050026; 
+                return 1050026;
             }
         }
         public override int MaxProgress

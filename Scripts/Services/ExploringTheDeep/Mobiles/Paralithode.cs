@@ -46,7 +46,7 @@ namespace Server.Mobiles
 
             Tamable = true;
             ControlSlots = 4;
-            MinTameSkill = 47.1;            
+            MinTameSkill = 47.1;
 
             PackItem(new FertileDirt(2));
             m_Timer = new HideTimer(this);
@@ -60,7 +60,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-        
+
         public override void OnAfterDelete()
         {
             if (m_Timer != null)
@@ -125,7 +125,7 @@ namespace Server.Mobiles
                 }
             }
         }
-        
+
         public void PerformHide()
         {
             if (Deleted)

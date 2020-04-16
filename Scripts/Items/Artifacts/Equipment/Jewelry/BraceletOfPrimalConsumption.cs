@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class BraceletOfPrimalConsumption : GoldBracelet
-	{
+    {
         public override int LabelNumber { get { return 1157350; } } // bracelet of primal consumption
         public override bool IsArtifact { get { return true; } }
 

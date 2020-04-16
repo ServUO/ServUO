@@ -1,6 +1,5 @@
-using System;
-using Server;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
@@ -154,7 +153,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] { typeof( HonorOfDeBoorsQuest ) };
+                return new Type[] { typeof(HonorOfDeBoorsQuest) };
             }
         }
 

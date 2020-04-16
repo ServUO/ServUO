@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x13B8, 0x13B7)]
@@ -45,7 +43,7 @@ namespace Server.Items
                 return 3.50f;
             }
         }
-        
+
         public override int DefHitSound
         {
             get

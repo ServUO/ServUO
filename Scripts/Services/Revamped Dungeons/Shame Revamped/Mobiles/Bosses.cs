@@ -1,8 +1,7 @@
-using System;
-using Server;
-using Server.Items;
-using Server.Engines.ShameRevamped;
 using Server.Engines.PartySystem;
+using Server.Engines.ShameRevamped;
+using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -14,7 +13,7 @@ namespace Server.Mobiles
         public ShameGuardian(AIType type)
             : base(type, FightMode.Aggressor, 10, 1, .4, .2)
         {
-			Title = "the guardian";
+            Title = "the guardian";
         }
 
         public override void OnDeath(Container c)
@@ -147,8 +146,8 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-		
-		public override int TreasureMapLevel
+
+        public override int TreasureMapLevel
         {
             get
             {

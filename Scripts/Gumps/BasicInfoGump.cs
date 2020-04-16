@@ -39,7 +39,7 @@ namespace Server.Gumps
                 AddImageTiled(10, 10, length - 20, height - 20, 2702);
 
                 if (body.Number > 0)
-                    AddHtmlLocalized(12, 10, 275, height - 25, (int)body, 0xFFFFFF, false, false);
+                    AddHtmlLocalized(12, 10, 275, height - 25, body, 0xFFFFFF, false, false);
                 else if (body.String != null)
                     AddHtml(12, 10, 275, height - 25, String.Format("<BASEFONT COLOR=WHITE>{0}</BASEFONT>", body.String), false, false);
             }

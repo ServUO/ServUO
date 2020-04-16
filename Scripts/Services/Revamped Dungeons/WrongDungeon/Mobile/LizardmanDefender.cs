@@ -1,4 +1,3 @@
-using System;
 using Server.Misc;
 
 namespace Server.Mobiles
@@ -44,17 +43,17 @@ namespace Server.Mobiles
         {
         }
 
-        public override InhumanSpeech SpeechType => InhumanSpeech.Lizardman; 
-		
-        public override bool CanRummageCorpses => true; 
-		
-		public override int TreasureMapLevel => 3; 
-		
-        public override int Meat => 1; 
-		
-        public override int Hides => 12; 
-		
-        public override HideType HideType => HideType.Spined; 
+        public override InhumanSpeech SpeechType => InhumanSpeech.Lizardman;
+
+        public override bool CanRummageCorpses => true;
+
+        public override int TreasureMapLevel => 3;
+
+        public override int Meat => 1;
+
+        public override int Hides => 12;
+
+        public override HideType HideType => HideType.Spined;
 
         public override void GenerateLoot()
         {

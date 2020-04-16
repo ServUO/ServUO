@@ -1,5 +1,5 @@
-using System;
 using Server.Gumps;
+using System;
 
 namespace Server.Mobiles
 {
@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Type CreatureType { get { return typeof(Eowmu); } }
 
         [Constructable]
-        public EowmuStatue() 
+        public EowmuStatue()
             : base(0xA0C0)
         {
             LootType = LootType.Blessed;

@@ -1,30 +1,28 @@
-using System;
-
 namespace Server.Items
 {
     public class BronzedArmorValkyrie : FemaleLeatherChest
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public BronzedArmorValkyrie()
         {
             Attributes.BonusHits = 5;
-			Attributes.BonusStr = 5;
-			Attributes.BonusDex = 5;
-			Attributes.BonusStam = 5;
-			Attributes.RegenStam = 3;
-			Attributes.LowerManaCost = 10;
-			Hue = 1863; // Hue not exact
+            Attributes.BonusStr = 5;
+            Attributes.BonusDex = 5;
+            Attributes.BonusStam = 5;
+            Attributes.RegenStam = 3;
+            Attributes.LowerManaCost = 10;
+            Hue = 1863; // Hue not exact
         }
 
         public BronzedArmorValkyrie(Serial serial)
             : base(serial)
         {
         }
-        
-        public override int LabelNumber { get{return 1149957;} }// Bronzed Armor of the Valkyrie
 
-		public override int BasePhysicalResistance
+        public override int LabelNumber { get { return 1149957; } }// Bronzed Armor of the Valkyrie
+
+        public override int BasePhysicalResistance
         {
             get
             {

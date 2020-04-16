@@ -1,12 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
-
-using System;
-using Server.Engines.Craft;
-using Server.Items;
-using Server.Targeting;
 using Server.Engines.VeteranRewards;
+using Server.Items;
 using Server.SkillHandlers;
+using Server.Targeting;
+using System;
+using System.Linq;
 
 namespace Server.Engines.Craft
 {
@@ -64,7 +61,7 @@ namespace Server.Engines.Craft
     {
         private readonly CraftSystem m_System;
         private readonly ITool m_Tool;
-        private Item m_Contract;
+        private readonly Item m_Contract;
 
         public AlterItemTarget(CraftSystem system, Item contract)
                 : base(2, false, TargetFlags.None)
@@ -85,7 +82,7 @@ namespace Server.Engines.Craft
             Type t = o.GetType();
 
             object[] attrs = t.GetCustomAttributes(typeof(AlterableAttribute), inherit);
-            
+
             if (attrs != null && attrs.Length > 0)
             {
                 AlterableAttribute attr = attrs[0] as AlterableAttribute;
@@ -400,13 +397,13 @@ namespace Server.Engines.Craft
                     return false;
             }
 
-	        if (item is BaseQuiver)
-	        {
-		        BaseQuiver quiver = (BaseQuiver) item;
+            if (item is BaseQuiver)
+            {
+                BaseQuiver quiver = (BaseQuiver)item;
 
-		        if (quiver.SetID != SetItem.None || !quiver.CanAlter)
-			        return false;
-	        }
+                if (quiver.SetID != SetItem.None || !quiver.CanAlter)
+                    return false;
+            }
 
             if (item is IVvVItem && ((IVvVItem)item).IsVvVItem)
                 return false;

@@ -1,8 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
+using System.Collections.Generic;
 
-namespace Server.Mobiles 
+namespace Server.Mobiles
 {
     [CorpseName("a tyball shadow corpse")]
     public class TyballsShadow : BaseCreature
@@ -15,7 +14,7 @@ namespace Server.Mobiles
             Hue = 0x4001;
             Female = false;
             Name = "Tyball's Shadow";
-                            
+
             SetStr(400, 450);
             SetDex(210, 250);
             SetInt(310, 330);
@@ -42,7 +41,7 @@ namespace Server.Mobiles
 
             SetWearable(new ShroudOfTheCondemned(), -1, 0.1);
 
-            Fame = 20000; 
+            Fame = 20000;
             Karma = -20000;
         }
 
@@ -97,16 +96,16 @@ namespace Server.Mobiles
             }
         }
 
-        public override void Serialize(GenericWriter writer) 
-        { 
-            base.Serialize(writer); 
-            writer.Write((int)0);  
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
         }
 
-        public override void Deserialize(GenericReader reader) 
-        { 
-            base.Deserialize(reader); 
-            int version = reader.ReadInt(); 
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
         }
     }
 }

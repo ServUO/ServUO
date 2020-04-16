@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -179,7 +179,7 @@ namespace Server.Mobiles
 
             int expBonus = BardingExceptional ? 1 : 0;
             int resBonus = 0;
-            
+
             switch (type)
             {
                 default:

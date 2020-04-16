@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
@@ -8,7 +8,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Broolol()
             : base("Lorekeeper Broolol", "the keeper of tradition")
-        { 
+        {
             this.SetSkill(SkillName.Meditation, 60.0, 83.0);
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -28,10 +28,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x851D;
             this.HairItemID = 0x2FCF;
             this.HairHue = 0x323;

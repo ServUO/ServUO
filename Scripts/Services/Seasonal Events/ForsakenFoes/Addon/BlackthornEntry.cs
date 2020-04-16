@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class BlackthornBaseAddon : BaseAddon
@@ -46,7 +44,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();            
+            int version = reader.ReadInt();
         }
     }
 
@@ -55,7 +53,7 @@ namespace Server.Items
         public static BlackthornEntry InstanceTram { get; set; }
         public static BlackthornEntry InstanceFel { get; set; }
 
-        private static int[,] m_AddOnSimpleComponents = new int[,]
+        private static readonly int[,] m_AddOnSimpleComponents = new int[,]
         {
               {6923, 7, 3, 0}, {12906, -5, 12, 0}, {12906, -4, 12, 0}// 10	18	19	
 			, {12906, -4, 11, 0}, {12906, -5, 11, 0}, {12906, -6, 11, 0}// 20	21	22	

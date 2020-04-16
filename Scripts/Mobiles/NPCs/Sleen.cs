@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class NecessitysMotherQuest : BaseQuest
-    { 
+    {
         public NecessitysMotherQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(TinkerTools), "tinker's tools", 10, 0x1EB8));
-			
+
             AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
@@ -71,12 +71,12 @@ namespace Server.Engines.Quests
     }
 
     public class TickTockQuest : BaseQuest
-    { 
+    {
         public TickTockQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(Clock), "clock", 10, 0x104B));
-			
+
             AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
@@ -138,10 +138,10 @@ namespace Server.Engines.Quests
     }
 
     public class ReptilianDentistQuest : BaseQuest
-    { 
+    {
         public ReptilianDentistQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(CoilsFang), "coil's fang", 1));
 
             AddReward(new BaseReward(typeof(AlchemistCraftsmanSatchel), 1074282));
@@ -190,7 +190,7 @@ namespace Server.Engines.Quests
             }
         }
         public override bool CanOffer()
-        { 
+        {
             return MondainsLegacy.BlightedGrove;
         }
 
@@ -210,11 +210,11 @@ namespace Server.Engines.Quests
     }
 
     public class Sleen : MondainQuester
-    { 
+    {
         [Constructable]
         public Sleen()
             : base("Sleen", "the trinket weaver")
-        { 
+        {
             SetSkill(SkillName.Meditation, 60.0, 83.0);
             SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -225,10 +225,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(ArchSupportQuest),
                     typeof(StopHarpingOnMeQuest),
@@ -243,10 +243,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = true;
             Race = Race.Elf;
-			
+
             Hue = 0x83E6;
             HairItemID = 0x2FC0;
             HairHue = 0x386;

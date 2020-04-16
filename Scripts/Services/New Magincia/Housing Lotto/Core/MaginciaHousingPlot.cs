@@ -1,21 +1,20 @@
-using Server;
+using Server.Accounting;
 using System;
 using System.Collections.Generic;
-using Server.Accounting;
 
 namespace Server.Engines.NewMagincia
 {
     [PropertyObject]
     public class MaginciaHousingPlot
     {
-        private string m_Identifier;
+        private readonly string m_Identifier;
         private WritOfLease m_Writ;
         private Rectangle2D m_Bounds;
         private MaginciaPlotStone m_Stone;
-        private bool m_IsPrimeSpot;
+        private readonly bool m_IsPrimeSpot;
         private bool m_Complete;
         private Mobile m_Winner;
-        private Map m_Map;
+        private readonly Map m_Map;
         private DateTime m_Expires;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -46,12 +45,12 @@ namespace Server.Engines.NewMagincia
         public DateTime Expires { get { return m_Expires; } set { m_Expires = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D RecallLoc 
-        { 
+        public Point3D RecallLoc
+        {
             get
             {
                 return new Point3D(m_Bounds.X, m_Bounds.Y, m_Map.GetAverageZ(m_Bounds.X, m_Bounds.Y));
-            } 
+            }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -59,7 +58,7 @@ namespace Server.Engines.NewMagincia
 
         #region Lotto Info
         private DateTime m_LottoEnds;
-        private Dictionary<Mobile, int> m_Participants = new Dictionary<Mobile, int>();
+        private readonly Dictionary<Mobile, int> m_Participants = new Dictionary<Mobile, int>();
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime LottoEnds { get { return m_LottoEnds; } set { m_LottoEnds = value; } }
@@ -164,7 +163,7 @@ namespace Server.Engines.NewMagincia
 
             Mobile winner = raffle[Utility.Random(raffle.Count)];
 
-            if(winner != null)
+            if (winner != null)
                 OnLottoComplete(winner);
             else
                 ResetLotto();
@@ -237,7 +236,7 @@ namespace Server.Engines.NewMagincia
             m_Complete = reader.ReadBool();
             m_Winner = reader.ReadMobile();
             m_Expires = reader.ReadDateTime();
-            
+
             int c = reader.ReadInt();
             for (int i = 0; i < c; i++)
             {

@@ -1,4 +1,3 @@
-using System;
 using Server;
 using Server.Items;
 
@@ -8,7 +7,7 @@ public class WinnowingBasket : BaseContainer
     public WinnowingBasket()
         : base(0x1882)
     {
-        Weight = 1.0; 
+        Weight = 1.0;
     }
 
     public WinnowingBasket(Serial serial)

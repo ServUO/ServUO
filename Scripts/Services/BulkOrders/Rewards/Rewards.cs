@@ -1,6 +1,5 @@
-using System;
-using Server.Mobiles;
 using Server.Items;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Engines.BulkOrders
@@ -775,7 +774,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CreateStretchedHide(int type)
         {
-            switch ( Utility.Random(4) )
+            switch (Utility.Random(4))
             {
                 default:
                 case 0:
@@ -791,7 +790,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CreateTapestry(int type)
         {
-            switch ( Utility.Random(4) )
+            switch (Utility.Random(4))
             {
                 default:
                 case 0:
@@ -807,7 +806,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CreateBearRug(int type)
         {
-            switch ( Utility.Random(4) )
+            switch (Utility.Random(4))
             {
                 default:
                 case 0:
@@ -958,7 +957,7 @@ namespace Server.Engines.BulkOrders
         }
     }
     #endregion
-     
+
     #region Tinkering Rewards
     public sealed class TinkeringRewardCalculator : RewardCalculator
     {
@@ -1233,7 +1232,7 @@ namespace Server.Engines.BulkOrders
             switch (material)
             {
                 case BulkMaterialType.None: break;
-                case BulkMaterialType.OakWood: points += 300;  break;
+                case BulkMaterialType.OakWood: points += 300; break;
                 case BulkMaterialType.AshWood: points += 350; break;
                 case BulkMaterialType.YewWood: points += 400; break;
                 case BulkMaterialType.Heartwood: points += 450; break;
@@ -1247,7 +1246,7 @@ namespace Server.Engines.BulkOrders
             return points;
         }
 
-        private RewardType[] m_Types =
+        private readonly RewardType[] m_Types =
         {
             new RewardType(250, typeof(TallCabinet), typeof(ShortCabinet)),
             new RewardType(250, typeof(RedArmoire), typeof(ElegantArmoire), typeof(MapleArmoire), typeof(CherryArmoire)),
@@ -1399,7 +1398,7 @@ namespace Server.Engines.BulkOrders
             return points;
         }
 
-        private RewardType[] m_Types =
+        private readonly RewardType[] m_Types =
         {
             new RewardType(200, typeof(ClumsyScroll), typeof(FeeblemindScroll), typeof(WeakenScroll)),
             new RewardType(300, typeof(CurseScroll), typeof(GreaterHealScroll), typeof(RecallScroll)),
@@ -1532,7 +1531,7 @@ namespace Server.Engines.BulkOrders
             return points;
         }
 
-        private RewardType[] m_Types =
+        private readonly RewardType[] m_Types =
         {
             new RewardType(200, typeof(SweetCocoaButter), typeof(SackFlour), typeof(Dough)),
             new RewardType(250, typeof(UnbakedFruitPie), typeof(UnbakedPeachCobbler), typeof(UnbakedApplePie), typeof(UnbakedPumpkinPie)),
@@ -1681,7 +1680,7 @@ namespace Server.Engines.BulkOrders
             return points;
         }
 
-        private RewardType[] m_Types =
+        private readonly RewardType[] m_Types =
         {
             new RewardType(200, typeof(Arrow), typeof(Bolt)),
             new RewardType(300, typeof(Bow), typeof(CompositeBow), typeof(Yumi)),
@@ -1828,7 +1827,7 @@ namespace Server.Engines.BulkOrders
 
             if (itemCount == 3)
             {
-                if(type == typeof(RefreshPotion) || type == typeof(HealPotion) || type == typeof(CurePotion))
+                if (type == typeof(RefreshPotion) || type == typeof(HealPotion) || type == typeof(CurePotion))
                     points += 250;
                 else
                     points += 300;
@@ -1873,7 +1872,7 @@ namespace Server.Engines.BulkOrders
         public override int ComputeGold(int quantity, bool exceptional, BulkMaterialType material, int itemCount, Type type)
         {
             int gold = 0;
-            
+
             if (itemCount == 1 && BulkOrderSystem.NewSystemEnabled && BulkOrderSystem.ComputeGold(type, quantity, out gold))
             {
                 return gold;

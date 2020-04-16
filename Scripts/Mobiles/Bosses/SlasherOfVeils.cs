@@ -1,7 +1,6 @@
-using System;
-using System.Collections;
 using Server.Items;
 using Server.Spells;
+using System;
 
 namespace Server.Mobiles
 {
@@ -122,7 +121,7 @@ namespace Server.Mobiles
             return 1587;
         }
 
-		public override bool AlwaysMurderer { get { return true; } }
+        public override bool AlwaysMurderer { get { return true; } }
 
         public override void GenerateLoot()
         {

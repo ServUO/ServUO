@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class MakotoCourtesanFish : BaseFish
-    { 
+    {
         [Constructable]
         public MakotoCourtesanFish()
             : base(0x3AFD)
@@ -12,7 +10,7 @@ namespace Server.Items
 
         public MakotoCourtesanFish(Serial serial)
             : base(serial)
-        { 
+        {
         }
 
         public override int LabelNumber

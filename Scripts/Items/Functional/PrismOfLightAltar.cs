@@ -1,6 +1,5 @@
-using System;
-using Server;
 using Server.Mobiles;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Items
@@ -50,7 +49,7 @@ namespace Server.Items
             get { return m_Bounds; }
         }
 
-        private Rectangle2D[] m_Bounds = new Rectangle2D[]
+        private readonly Rectangle2D[] m_Bounds = new Rectangle2D[]
         {
             new Rectangle2D(6500, 111, 45, 35),
         };

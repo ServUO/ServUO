@@ -125,7 +125,7 @@ namespace Server
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)12);
+                    writer.Write(12);
 
                     writer.Write((int)VersionFlag);
 
@@ -1298,7 +1298,7 @@ namespace Server
             return false;
         }
 
-        private static string[] _SpawnerSymbols =
+        private static readonly string[] _SpawnerSymbols =
         {
             "/", "<", ">", ",", "{", "}"
         };

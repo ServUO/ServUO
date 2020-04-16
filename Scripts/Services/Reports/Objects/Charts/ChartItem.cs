@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Engines.Reports
 {
     public class ChartItem : PersistableObject

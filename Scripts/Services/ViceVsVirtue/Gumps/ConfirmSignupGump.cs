@@ -1,9 +1,6 @@
-using System;
-using Server;
-using Server.Items;
-using Server.Mobiles;
-using Server.Gumps;
 using Server.Guilds;
+using Server.Gumps;
+using Server.Mobiles;
 using Server.Network;
 
 namespace Server.Engines.VvV
@@ -19,7 +16,7 @@ namespace Server.Engines.VvV
 
             AddBackground(0, 0, 360, 300, 83);
 
-            AddHtmlLocalized(0, 25, 360, 20, 1154645, "#1155565",0xFFFF, false, false); // Vice vs Virtue Signup
+            AddHtmlLocalized(0, 25, 360, 20, 1154645, "#1155565", 0xFFFF, false, false); // Vice vs Virtue Signup
 
             if (ViceVsVirtueSystem.EnhancedRules)
             {
@@ -45,7 +42,7 @@ namespace Server.Engines.VvV
             AddHtml(285, 268, 100, 20, "<basefont color=#FFFFFF>Cancel", false, false);
         }
 
-        private string _EnhancedRulesMessage =
+        private readonly string _EnhancedRulesMessage =
             "<basefont color=#FFFFFF>Greetings! You are about to join Vice vs Virtue! VvV is an exhilarating Player vs Player" +
             " experience that you can have fun with whether you have hours or only a few minutes to" +
             " jump into the action!  Be forewarned, once you join VvV you will be freely attackable" +

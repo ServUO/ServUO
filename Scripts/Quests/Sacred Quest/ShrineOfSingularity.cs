@@ -1,9 +1,9 @@
-using System;
+using Server.Engines.Quests;
 using Server.Gumps;
 using Server.Mobiles;
-using Server.Engines.Quests;
-using System.Collections.Generic;
 using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -15,7 +15,7 @@ namespace Server.Items
         public ShrineOfSingularity() : base(0x48A8)
         {
             Movable = false;
-            Name = "Shrine Of Singularity";	
+            Name = "Shrine Of Singularity";
         }
 
         public ShrineOfSingularity(Serial serial)
@@ -66,7 +66,7 @@ namespace Server.Items
             return QuestHelper.GetQuest(pm, typeof(QuestOfSingularity)) as QuestOfSingularity;
         }
 
-        private static Dictionary<Mobile, DateTime> m_RestartTable = new Dictionary<Mobile, DateTime>();
+        private static readonly Dictionary<Mobile, DateTime> m_RestartTable = new Dictionary<Mobile, DateTime>();
 
         public static void AddToTable(Mobile from)
         {

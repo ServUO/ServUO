@@ -331,7 +331,7 @@ namespace Server.Engines.Reports
         {
             int[] totals = new int[24];
             int[] counts = new int[24];
-			
+
             DateTime[] dates = new DateTime[24];
 
             DateTime max = DateTime.UtcNow;

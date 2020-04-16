@@ -1,7 +1,6 @@
-using System;
-using Server;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
 {
@@ -67,7 +66,7 @@ namespace Server.Engines.Quests
 
     public class Ortlem : MondainQuester
     {
-        private static Type[] m_Quests = new Type[] { typeof(MysticsJourneyQuest) };
+        private static readonly Type[] m_Quests = new Type[] { typeof(MysticsJourneyQuest) };
         public override Type[] Quests { get { return m_Quests; } }
 
         public override bool IsActiveVendor { get { return true; } }

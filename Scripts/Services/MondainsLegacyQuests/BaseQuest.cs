@@ -1,13 +1,12 @@
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Server.Mobiles;
-
 namespace Server.Engines.Quests
-{ 
+{
     public class BaseQuest
-    { 
+    {
         public virtual bool AllObjectives
         {
             get
@@ -36,7 +35,7 @@ namespace Server.Engines.Quests
                 return false;
             }
         }
-		
+
         public virtual int AcceptSound
         {
             get
@@ -73,7 +72,7 @@ namespace Server.Engines.Quests
                 return 1072273; // You've completed a quest!  Don't forget to collect your reward.
             }
         }
-		
+
         #region Quest Chain
         public virtual QuestChain ChainID
         {
@@ -90,7 +89,7 @@ namespace Server.Engines.Quests
             }
         }
         #endregion
-		
+
         public virtual object Title
         {
             get
@@ -132,8 +131,8 @@ namespace Server.Engines.Quests
         public virtual bool ShowDescription { get { return true; } }
         public virtual bool ShowRewards { get { return true; } }
         public virtual bool CanRefuseReward { get { return false; } }
-		
-        private List<BaseObjective> m_Objectives;		
+
+        private List<BaseObjective> m_Objectives;
         private List<BaseReward> m_Rewards;
         private PlayerMobile m_Owner;
         private object m_Quester;
@@ -147,7 +146,7 @@ namespace Server.Engines.Quests
                 return m_Objectives;
             }
         }
-		
+
         public List<BaseReward> Rewards
         {
             get
@@ -155,7 +154,7 @@ namespace Server.Engines.Quests
                 return m_Rewards;
             }
         }
-		
+
         public PlayerMobile Owner
         {
             get
@@ -167,7 +166,7 @@ namespace Server.Engines.Quests
                 m_Owner = value;
             }
         }
-		
+
         public object Quester
         {
             get
@@ -194,7 +193,7 @@ namespace Server.Engines.Quests
                 m_QuesterType = value;
             }
         }
-		
+
         public BaseQuestItem StartingItem
         {
             get
@@ -202,7 +201,7 @@ namespace Server.Engines.Quests
                 return m_Quester as BaseQuestItem;
             }
         }
-		
+
         public MondainQuester StartingMobile
         {
             get
@@ -210,7 +209,7 @@ namespace Server.Engines.Quests
                 return m_Quester as MondainQuester;
             }
         }
-		
+
         public bool Completed
         {
             get
@@ -225,7 +224,7 @@ namespace Server.Engines.Quests
                 }
             }
         }
-		
+
         public bool Failed
         {
             get
@@ -240,13 +239,13 @@ namespace Server.Engines.Quests
                 }
             }
         }
-		
+
         public BaseQuest()
-        { 
+        {
             m_Objectives = new List<BaseObjective>();
             m_Rewards = new List<BaseReward>();
         }
-		
+
         public void StartTimer()
         {
             if (m_Timer != null)
@@ -254,7 +253,7 @@ namespace Server.Engines.Quests
 
             m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), new TimerCallback(Slice));
         }
-		
+
         public void StopTimer()
         {
             if (m_Timer != null)
@@ -262,10 +261,10 @@ namespace Server.Engines.Quests
 
             m_Timer = null;
         }
-		
+
         public virtual void Slice()
         {
-            for (int i = 0; i < m_Objectives.Count; i ++)
+            for (int i = 0; i < m_Objectives.Count; i++)
             {
                 BaseObjective obj = m_Objectives[i];
 
@@ -276,12 +275,12 @@ namespace Server.Engines.Quests
         public virtual void OnObjectiveUpdate(Item item)
         {
         }
-		
+
         public virtual bool CanOffer()
         {
             return true;
         }
-		
+
         public virtual void UpdateChain()
         {
             if (ChainID != QuestChain.None && StartingMobile != null)
@@ -289,38 +288,38 @@ namespace Server.Engines.Quests
                 if (m_Owner.Chains.ContainsKey(ChainID))
                 {
                     BaseChain chain = m_Owner.Chains[ChainID];
-					
+
                     chain.CurrentQuest = GetType();
                     chain.Quester = StartingMobile.GetType();
                 }
                 else
                 {
-                    m_Owner.Chains.Add(ChainID, new BaseChain(GetType(), StartingMobile.GetType()));		
+                    m_Owner.Chains.Add(ChainID, new BaseChain(GetType(), StartingMobile.GetType()));
                 }
             }
         }
-		
+
         public virtual void OnAccept()
         {
             m_Owner.PlaySound(AcceptSound);
             m_Owner.SendLocalizedMessage(1049019); // You have accepted the Quest.
             m_Owner.Quests.Add(this);
-			
+
             // give items if any		
-            for (int i = 0; i < m_Objectives.Count; i ++)
+            for (int i = 0; i < m_Objectives.Count; i++)
             {
                 BaseObjective objective = m_Objectives[i];
-				
+
                 objective.OnAccept();
             }
-			
+
             if (m_Quester is BaseEscort)
             {
                 BaseEscort escort = (BaseEscort)m_Quester;
-				
+
                 if (escort.SetControlMaster(m_Owner))
                 {
-                    escort.Quest = this;					
+                    escort.Quest = this;
                     escort.LastSeenEscorter = DateTime.UtcNow;
                     escort.StartFollow();
                     escort.AddHash(Owner);
@@ -335,42 +334,42 @@ namespace Server.Engines.Quests
                     m_Owner.LastEscortTime = DateTime.UtcNow;
                 }
             }
-			
+
             // tick tack	
             StartTimer();
         }
-		
+
         public virtual void OnRefuse()
-        { 
+        {
             if (!QuestHelper.FirstChainQuest(this, Quester))
-                UpdateChain();			
+                UpdateChain();
         }
-		
+
         public virtual void OnResign(bool resignChain)
-        { 
-            m_Owner.PlaySound(ResignSound);	
-			
+        {
+            m_Owner.PlaySound(ResignSound);
+
             // update chain
             if (!resignChain && !QuestHelper.FirstChainQuest(this, Quester))
-                UpdateChain();	
-										
+                UpdateChain();
+
             // delete items	that were given on quest start
-            for (int i = 0; i < m_Objectives.Count; i ++)
-            { 
+            for (int i = 0; i < m_Objectives.Count; i++)
+            {
                 if (m_Objectives[i] is ObtainObjective)
                 {
                     ObtainObjective obtain = (ObtainObjective)m_Objectives[i];
-					
+
                     QuestHelper.RemoveStatus(m_Owner, obtain.Obtain);
                 }
                 else if (m_Objectives[i] is DeliverObjective)
                 {
                     DeliverObjective deliver = (DeliverObjective)m_Objectives[i];
-					
+
                     QuestHelper.DeleteItems(m_Owner, deliver.Delivery, deliver.MaxProgress, true);
                 }
             }
-			
+
             // delete escorter
             if (m_Quester is BaseEscort)
             {
@@ -380,34 +379,34 @@ namespace Server.Engines.Quests
                 escort.PlaySound(0x5B3);
                 escort.BeginDelete(m_Owner);
             }
-			
+
             RemoveQuest(resignChain);
         }
-		
+
         public virtual void InProgress()
         {
         }
-		
+
         public virtual void OnCompleted()
-        { 
+        {
             m_Owner.SendLocalizedMessage(CompleteMessage, null, 0x23); // You've completed a quest!  Don't forget to collect your reward.							
             m_Owner.PlaySound(CompleteSound);
         }
-		
+
         public virtual void GiveRewards()
-        { 
+        {
             // give rewards
-            for (int i = 0; i < m_Rewards.Count; i ++)
-            { 
+            for (int i = 0; i < m_Rewards.Count; i++)
+            {
                 Type type = m_Rewards[i].Type;
-				
+
                 m_Rewards[i].GiveReward();
-				
+
                 if (type == null)
                     continue;
-				
+
                 Item reward;
-				
+
                 try
                 {
                     reward = Activator.CreateInstance(type) as Item;
@@ -416,22 +415,22 @@ namespace Server.Engines.Quests
                 {
                     reward = null;
                 }
-				
+
                 if (reward != null)
-                { 
+                {
                     if (reward.Stackable)
                     {
                         reward.Amount = m_Rewards[i].Amount;
                         m_Rewards[i].Amount = 1;
                     }
-					
-                    for (int j = 0; j < m_Rewards[i].Amount; j ++)
+
+                    for (int j = 0; j < m_Rewards[i].Amount; j++)
                     {
                         if (!m_Owner.PlaceInBackpack(reward))
                         {
                             reward.MoveToWorld(m_Owner.Location, m_Owner.Map);
                         }
-						
+
                         if (m_Rewards[i].Name is int)
                             m_Owner.SendLocalizedMessage(1074360, "#" + (int)m_Rewards[i].Name); // You receive a reward: ~1_REWARD~
                         else if (m_Rewards[i].Name is string)
@@ -445,7 +444,7 @@ namespace Server.Engines.Quests
                     }
                 }
             }
-			
+
             // remove quest
             if (NextQuest == null)
                 RemoveQuest(true);
@@ -456,7 +455,7 @@ namespace Server.Engines.Quests
             if (NextQuest != null)
             {
                 BaseQuest quest = QuestHelper.RandomQuest(m_Owner, new Type[] { NextQuest }, StartingMobile);
-					
+
                 if (quest != null && quest.ChainID == ChainID)
                     m_Owner.SendGump(new MondainQuestGump(quest));
             }
@@ -486,53 +485,53 @@ namespace Server.Engines.Quests
                     m_Owner.SendGump(new MondainQuestGump(quest));
             }
         }
-		
+
         public virtual void AddObjective(BaseObjective objective)
         {
             if (m_Objectives == null)
                 m_Objectives = new List<BaseObjective>();
-			
+
             if (objective != null)
             {
                 objective.Quest = this;
                 m_Objectives.Add(objective);
             }
         }
-		
+
         public virtual void AddReward(BaseReward reward)
         {
             if (m_Rewards == null)
                 m_Rewards = new List<BaseReward>();
-				
+
             if (reward != null)
             {
                 reward.Quest = this;
                 m_Rewards.Add(reward);
             }
         }
-		
+
         public virtual void RemoveQuest()
         {
             RemoveQuest(false);
         }
-		
+
         public virtual void RemoveQuest(bool removeChain)
         {
             StopTimer();
-			
+
             if (removeChain)
                 m_Owner.Chains.Remove(ChainID);
-			
+
             if (Completed && (RestartDelay > TimeSpan.Zero || ForceRemember || DoneOnce) && NextQuest == null)
             {
-                Type type = GetType();	
-				
+                Type type = GetType();
+
                 if (ChainID != QuestChain.None)
                     type = QuestHelper.FindFirstChainQuest(this);
 
                 QuestHelper.Delay(Owner, type, RestartDelay);
             }
-			
+
             QuestHelper.RemoveAcceleratedSkillgain(Owner);
 
             if (m_Owner.Quests.Contains(this))
@@ -550,7 +549,7 @@ namespace Server.Engines.Quests
         {
             return false;
         }
-		
+
         public virtual void Serialize(GenericWriter writer)
         {
             writer.WriteEncodedInt((int)1); // version	
@@ -569,15 +568,15 @@ namespace Server.Engines.Quests
                 writer.Write((int)0x2);
                 writer.Write((Item)m_Quester);
             }
-							
-            for (int i = 0; i < m_Objectives.Count; i ++)
+
+            for (int i = 0; i < m_Objectives.Count; i++)
             {
                 BaseObjective objective = m_Objectives[i];
-				
+
                 objective.Serialize(writer);
             }
         }
-		
+
         public virtual void Deserialize(GenericReader reader)
         {
             int version = reader.ReadEncodedInt();
@@ -586,11 +585,11 @@ namespace Server.Engines.Quests
             {
                 string questerType = reader.ReadString();
 
-                if(questerType != null)
+                if (questerType != null)
                     m_QuesterType = ScriptCompiler.FindTypeByName(questerType);
             }
 
-            switch ( reader.ReadInt() )
+            switch (reader.ReadInt())
             {
                 case 0x0:
                     m_Quester = null;
@@ -602,17 +601,17 @@ namespace Server.Engines.Quests
                     m_Quester = reader.ReadItem() as BaseQuestItem;
                     break;
             }
-			
+
             if (m_Quester is BaseEscort)
             {
                 BaseEscort escort = (BaseEscort)m_Quester;
-				
+
                 escort.Quest = this;
             }
             else if (m_Quester is BaseQuestItem)
             {
                 BaseQuestItem item = (BaseQuestItem)m_Quester;
-				
+
                 item.Quest = this;
             }
 
@@ -620,11 +619,11 @@ namespace Server.Engines.Quests
             {
                 m_QuesterType = m_Quester.GetType();
             }
-			
-            for (int i = 0; i < m_Objectives.Count; i ++)
+
+            for (int i = 0; i < m_Objectives.Count; i++)
             {
                 BaseObjective objective = m_Objectives[i];
-				
+
                 objective.Deserialize(reader);
             }
         }

@@ -1,12 +1,10 @@
-using System;
-
 namespace Server.Items
 {
     public class TokenOfHolyFavor : GoldBracelet
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113652; } } // Token of Holy Favor
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113652; } } // Token of Holy Favor
+
         [Constructable]
         public TokenOfHolyFavor()
         {

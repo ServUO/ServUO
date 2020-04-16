@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class BaseHolidayWallArt : BaseLight, IFlipable
@@ -35,7 +33,7 @@ namespace Server.Items
                 ItemID = NorthID;
         }
 
-        private static string[] _Names =
+        private static readonly string[] _Names =
         {
             "Minoc", "Britain", "Heartwood", "Empath Abbey", "The Lycaeum", "New Haven", "New Magincia", "Eodon", "Luna", "Delucia", "Buccaneer's Den", "Trinsic",
             "Wind", "Jhelom", "Zento", "Nujel'm", "Papua", "Moonglow", "Minoc", "Skara Brae"

@@ -1,8 +1,7 @@
+using Server.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Server.Items;
 
 namespace Server.Engines.Craft
 {
@@ -26,7 +25,7 @@ namespace Server.Engines.Craft
         private bool m_CanEnhance;
 
         private bool m_QuestOption;
-		private bool m_CanAlter;
+        private bool m_CanAlter;
 
         private readonly CraftItemCol m_CraftItems;
         private readonly CraftGroupCol m_CraftGroups;
@@ -163,7 +162,7 @@ namespace Server.Engines.Craft
                 m_CanEnhance = value;
             }
         }
-		
+
         public bool QuestOption
         {
             get
@@ -175,8 +174,8 @@ namespace Server.Engines.Craft
                 m_QuestOption = value;
             }
         }
-		
-		public bool CanAlter
+
+        public bool CanAlter
         {
             get
             {
@@ -211,7 +210,7 @@ namespace Server.Engines.Craft
             Systems.Add(system);
         }
 
-        private Type[] _GlobalNoConsume =
+        private readonly Type[] _GlobalNoConsume =
         {
             typeof(CapturedEssence), typeof(EyeOfTheTravesty), typeof(DiseasedBark),  typeof(LardOfParoxysmus), typeof(GrizzledBones), typeof(DreadHornMane),
 
@@ -260,7 +259,7 @@ namespace Server.Engines.Craft
         }
 
         public void CreateItem(Mobile from, Type type, Type typeRes, ITool tool, CraftItem realCraftItem)
-        { 
+        {
             // Verify if the type is in the list of the craftable item
             CraftItem craftItem = m_CraftItems.SearchFor(type);
             if (craftItem != null)
@@ -336,20 +335,20 @@ namespace Server.Engines.Craft
             CraftItem craftItem = m_CraftItems.GetAt(index);
             craftItem.Hits = hits;
         }
-		
+
         public void SetUseAllRes(int index, bool useAll)
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);
             craftItem.UseAllRes = useAll;
         }
 
-		public void SetForceTypeRes(int index, bool value)
-		{
-			CraftItem craftItem = m_CraftItems.GetAt(index);
-			craftItem.ForceTypeRes = value;
-		}
+        public void SetForceTypeRes(int index, bool value)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.ForceTypeRes = value;
+        }
 
-		public void SetNeedHeat(int index, bool needHeat)
+        public void SetNeedHeat(int index, bool needHeat)
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);
             craftItem.NeedHeat = needHeat;

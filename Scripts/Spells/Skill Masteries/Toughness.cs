@@ -1,14 +1,11 @@
-using System;
-using Server;
-using Server.Spells;
-using Server.Network;
 using Server.Mobiles;
+using System;
 
 namespace Server.Spells.SkillMasteries
 {
     public class ToughnessSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Toughness", "",
                 -1,
                 9002

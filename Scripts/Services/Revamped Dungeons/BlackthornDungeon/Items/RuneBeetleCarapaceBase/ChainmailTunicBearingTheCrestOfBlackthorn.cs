@@ -1,6 +1,3 @@
-using Server;
-using System;
-
 namespace Server.Items
 {
     public class ChainmailTunicBearingTheCrestOfBlackthorn : ChainChest
@@ -10,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public ChainmailTunicBearingTheCrestOfBlackthorn()
         {
-            ReforgedSuffix = ReforgedSuffix.Blackthorn;                     
+            ReforgedSuffix = ReforgedSuffix.Blackthorn;
             this.Hue = 1773;
             this.Attributes.BonusMana = 10;
             this.Attributes.RegenMana = 3;

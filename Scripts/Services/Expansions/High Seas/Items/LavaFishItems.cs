@@ -1,7 +1,3 @@
-using Server;
-using System;
-using Server.Mobiles;
-
 namespace Server.Items
 {
     public class StoneFootwear : BaseShoes
@@ -17,7 +13,7 @@ namespace Server.Items
         }
 
         [Constructable]
-        public StoneFootwear(int itemID) 
+        public StoneFootwear(int itemID)
             : base(itemID)
         {
             string name = GetNameInfo(ItemID);
@@ -63,11 +59,11 @@ namespace Server.Items
         {
             if (parent is Mobile)
             {
-                Mobile m = (Mobile)parent as Mobile;                
+                Mobile m = (Mobile)parent as Mobile;
 
                 if (SpiderWebbing.IsTrapped(m))
                 {
-                    SpiderWebbing.RemoveEffects(m);                    
+                    SpiderWebbing.RemoveEffects(m);
                 }
 
                 m.SendLocalizedMessage(1151094, GetNameInfo(ItemID)); // You manage to equip the stone ~1_token~ and find you can no longer move!

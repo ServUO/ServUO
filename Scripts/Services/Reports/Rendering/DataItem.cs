@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Drawing;
 
@@ -12,7 +11,7 @@ namespace Server.Engines.Reports
     // This class represents a data point in a chart
     //
     //*********************************************************************
-    public class DataItem 
+    public class DataItem
     {
         private string _label;
         private string _description;
@@ -34,7 +33,7 @@ namespace Server.Engines.Reports
         {
         }
 
-        public string Label 
+        public string Label
         {
             get
             {
@@ -45,7 +44,7 @@ namespace Server.Engines.Reports
                 this._label = value;
             }
         }
-        public string Description 
+        public string Description
         {
             get
             {
@@ -56,7 +55,7 @@ namespace Server.Engines.Reports
                 this._description = value;
             }
         }
-        public float Value 
+        public float Value
         {
             get
             {
@@ -67,7 +66,7 @@ namespace Server.Engines.Reports
                 this._value = value;
             }
         }
-        public Color ItemColor 
+        public Color ItemColor
         {
             get
             {
@@ -107,9 +106,9 @@ namespace Server.Engines.Reports
     // Custom Collection for ChartItems
     //
     //*********************************************************************
-    public class ChartItemsCollection : CollectionBase 
+    public class ChartItemsCollection : CollectionBase
     {
-        public DataItem this[int index] 
+        public DataItem this[int index]
         {
             get
             {
@@ -120,22 +119,22 @@ namespace Server.Engines.Reports
                 this.List[index] = value;
             }
         }
-        public int Add(DataItem value) 
+        public int Add(DataItem value)
         {
             return this.List.Add(value);
         }
 
-        public int IndexOf(DataItem value) 
+        public int IndexOf(DataItem value)
         {
             return this.List.IndexOf(value);
         }
 
-        public bool Contains(DataItem value) 
+        public bool Contains(DataItem value)
         {
             return this.List.Contains(value);
         }
 
-        public void Remove(DataItem value) 
+        public void Remove(DataItem value)
         {
             this.List.Remove(value);
         }

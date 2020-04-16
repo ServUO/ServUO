@@ -1,4 +1,3 @@
-using System;
 using Server.Gumps;
 
 namespace Server.Items
@@ -40,7 +39,7 @@ namespace Server.Items
                 if (value != m_Quantity)
                 {
                     m_Quantity = (value < 1) ? 0 : (value > MaxQuantity) ? MaxQuantity : value;
-                    
+
                     ItemID = (IsEmpty) ? Item_ID : FullItem_ID;
                 }
             }
@@ -131,7 +130,7 @@ namespace Server.Items
     public class WashBasinDeed : BaseAddonDeed, IRewardOption
     {
         public override int LabelNumber { get { return 1158966; } } // Wash Basin
-        
+
         public override BaseAddon Addon
         {
             get

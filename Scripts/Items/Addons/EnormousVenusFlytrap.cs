@@ -1,8 +1,8 @@
+using Server.ContextMenus;
+using Server.Engines.Points;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Server.ContextMenus;
-using Server.Engines.Points;
 
 namespace Server.Items
 {
@@ -22,7 +22,7 @@ namespace Server.Items
         [Constructable]
         public EnormousVenusFlytrapAddon(int hue)
             : base(0x9967)
-        {            
+        {
             Direction = Direction.South;
             Hue = hue;
             m_Cleanup = new List<CleanupArray>();
@@ -228,7 +228,7 @@ namespace Server.Items
         public override int LabelNumber { get { return 1154462; } } // Enormous Venus Flytrap
 
         public override BaseAddonContainer Addon { get { return new EnormousVenusFlytrapAddon(Hue); } }
-        
+
         [Constructable]
         public EnormousVenusFlytrapAddonDeed()
             : this(Utility.RandomList(26, 33, 233, 1931, 2067))

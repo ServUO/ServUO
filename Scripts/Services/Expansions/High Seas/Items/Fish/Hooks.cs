@@ -1,6 +1,5 @@
-﻿using Server;
+﻿using Server.Targeting;
 using System;
-using Server.Targeting;
 
 namespace Server.Items
 {
@@ -18,10 +17,10 @@ namespace Server.Items
         private int m_Uses;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Uses 
+        public int Uses
         {
-            get { return m_Uses; } 
-            set { m_Uses = value; } 
+            get { return m_Uses; }
+            set { m_Uses = value; }
         }
 
         public virtual HookType HookType { get { return HookType.None; } }
@@ -85,7 +84,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private BaseFishingHook m_Hook;
+            private readonly BaseFishingHook m_Hook;
 
             public InternalTarget(BaseFishingHook hook)
                 : base(-1, false, TargetFlags.None)

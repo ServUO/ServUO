@@ -1,12 +1,11 @@
-﻿using System;
-using Server.Network;
+﻿using Server.Network;
 
 namespace Server.Items
-{    
+{
     public class OrcishSchematics : BaseDecayingItem
     {
         public override int LabelNumber { get { return 1154232; } } // Schematic for an Orcish Drilling Machine
-        
+
         [Constructable]
         public OrcishSchematics() : base(0x2258)
         {
@@ -14,15 +13,15 @@ namespace Server.Items
             this.Weight = 1.0;
             this.LootType = LootType.Blessed;
         }
-		
-		public override void OnDoubleClick(Mobile from)
+
+        public override void OnDoubleClick(Mobile from)
         {
-			base.OnDoubleClick(from);			
-			
-			from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154233); // *It appears to be the crude schematic to a drilling machine of Orcish origin. It is poorly devised and looks as if one were to build it the machine would explode*
+            base.OnDoubleClick(from);
+
+            from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154233); // *It appears to be the crude schematic to a drilling machine of Orcish origin. It is poorly devised and looks as if one were to build it the machine would explode*
         }
-		
-		public override void GetProperties(ObjectPropertyList list)
+
+        public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 

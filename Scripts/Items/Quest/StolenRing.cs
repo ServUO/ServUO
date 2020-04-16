@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class StolenRing : SilverRing
-	{
-		
+    {
+
         [Constructable]
         public StolenRing()
             : base()

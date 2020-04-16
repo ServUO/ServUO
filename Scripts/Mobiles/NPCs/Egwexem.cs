@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class RumorsAboundQuest : BaseQuest
-    { 
+    {
         public RumorsAboundQuest()
             : base()
         {
             AddObjective(new DeliverObjective(typeof(EgwexemWrit), "Egwexem's Writ", 1, typeof(Naxatilor), "Naxatilor"));
 
-            AddReward(new BaseReward(1112731)); 
+            AddReward(new BaseReward(1112731));
         }
 
         public override TimeSpan RestartDelay
@@ -95,10 +95,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(RumorsAboundQuest)
                 };
@@ -107,7 +107,7 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = false;
             CantWalk = true;
             Body = 666;

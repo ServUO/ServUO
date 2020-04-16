@@ -1,7 +1,7 @@
-using System;
-using System.Xml;
 using Server.Mobiles;
 using Server.Regions;
+using System;
+using System.Xml;
 
 namespace Server.Engines.Quests
 {
@@ -22,7 +22,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return this.m_Quest ;
+                return this.m_Quest;
             }
         }
         public Type Objective

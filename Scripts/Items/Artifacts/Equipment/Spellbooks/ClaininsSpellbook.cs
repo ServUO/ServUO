@@ -1,15 +1,13 @@
-using System;
-
 namespace Server.Items
 {
     public class ClaininsSpellbook : Spellbook
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public ClaininsSpellbook()
             : base()
         {
-            Hue = 0x84D;		
+            Hue = 0x84D;
             Attributes.SpellChanneling = 1;
             Attributes.RegenMana = 3;
             Attributes.Luck = 80;
@@ -31,14 +29,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }

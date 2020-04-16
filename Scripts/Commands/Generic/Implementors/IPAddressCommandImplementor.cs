@@ -40,7 +40,7 @@ namespace Server.Commands.Generic
 
                 for (int i = 0; i < states.Count; ++i)
                 {
-                    NetState ns = (NetState)states[i];
+                    NetState ns = states[i];
                     Mobile mob = ns.Mobile;
 
                     if (mob != null && !addresses.Contains(ns.Address) && ext.IsValid(mob))

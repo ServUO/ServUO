@@ -1,4 +1,3 @@
-using System;
 using Server.Mobiles;
 using Server.Network;
 using Server.Targeting;
@@ -27,7 +26,7 @@ namespace Server.Spells.Fourth
                 return SpellCircle.Fourth;
             }
         }
-        
+
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);

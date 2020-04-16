@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Spells.Spellweaving
 {
     public abstract class ArcaneForm : ArcanistSpell, ITransformationSpell

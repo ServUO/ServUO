@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -83,28 +82,28 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-            base.OnDeath(c);		
-			
-            c.DropItem(new HydraScale());				
-			
-            if (Utility.RandomDouble() < 0.2)				
+            base.OnDeath(c);
+
+            c.DropItem(new HydraScale());
+
+            if (Utility.RandomDouble() < 0.2)
                 c.DropItem(new ParrotItem());
-				
-            if (Utility.RandomDouble() < 0.05)				
+
+            if (Utility.RandomDouble() < 0.05)
                 c.DropItem(new ThorvaldsMedallion());
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }

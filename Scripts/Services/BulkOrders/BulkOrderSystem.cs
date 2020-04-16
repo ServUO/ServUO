@@ -1,11 +1,9 @@
+using Server.Items;
+using Server.Mobiles;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
-
-using Server;
-using Server.Mobiles;
-using Server.Items;
 
 namespace Server.Engines.BulkOrders
 {
@@ -262,7 +260,8 @@ namespace Server.Engines.BulkOrders
                     case BODType.Smith:
                         if (doLarge) return new LargeSmithBOD();
                         else return SmallSmithBOD.CreateRandomFor(pm);
-                    case BODType.Tailor: if (doLarge) return new LargeTailorBOD();
+                    case BODType.Tailor:
+                        if (doLarge) return new LargeTailorBOD();
                         else return SmallTailorBOD.CreateRandomFor(pm);
                     case BODType.Alchemy:
                         if (doLarge) return new LargeAlchemyBOD();
@@ -507,7 +506,7 @@ namespace Server.Engines.BulkOrders
                 default: return true;
                 case BODType.Alchemy:
                 case BODType.Inscription: return false;
-                case BODType.Tinkering: 
+                case BODType.Tinkering:
                 case BODType.Cooking:
                 case BODType.Fletching:
                     return !IsInExceptionalExcludeList(bod);
@@ -538,13 +537,13 @@ namespace Server.Engines.BulkOrders
             }
         }
 
-        private static Type[] _ExceptionalExcluded =
+        private static readonly Type[] _ExceptionalExcluded =
         {
             typeof(Arrow), typeof(Bolt), typeof(Kindling), typeof(Shaft),
 
-            typeof(EnchantedApple), typeof(TribalPaint), typeof(GrapesOfWrath), 
+            typeof(EnchantedApple), typeof(TribalPaint), typeof(GrapesOfWrath),
             typeof(EggBomb), typeof(CookedBird), typeof(FishSteak), typeof(FriedEggs),
-            typeof(LambLeg), typeof(Ribs), 
+            typeof(LambLeg), typeof(Ribs),
 
             typeof(Gears), typeof(Axle), typeof(Springs), typeof(AxleGears), typeof(ClockParts),
             typeof(Clock), typeof(PotionKeg), typeof(ClockFrame), typeof(MetalContainerEngraver)

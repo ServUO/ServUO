@@ -1,9 +1,8 @@
-using Server;
-using System;
 using Server.Items;
 using Server.Mobiles;
-using System.Collections.Generic;
 using Server.Spells;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Despise
 {
@@ -212,7 +211,7 @@ namespace Server.Engines.Despise
         public override int StrStart { get { return Utility.RandomMinMax(40, 55); } }
         public override int DexStart { get { return Utility.RandomMinMax(160, 180); } }
         public override int IntStart { get { return Utility.RandomMinMax(110, 120); } }
-        
+
         public override bool RaiseDamage { get { return true; } }
 
         public Sagittarri(Serial serial)

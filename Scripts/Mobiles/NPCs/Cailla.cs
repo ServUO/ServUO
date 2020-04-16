@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class KingOfBearsQuest : BaseQuest
-    { 
+    {
         public KingOfBearsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(GrizzlyBear), "grizzly bears", 10));
-			
+
             this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
@@ -65,13 +65,13 @@ namespace Server.Engines.Quests
     }
 
     public class SpecimensQuest : BaseQuest
-    { 
+    {
         public SpecimensQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(RedSolenWorker), "red solen workers", 12));
             this.AddObjective(new SlayObjective(typeof(BlackSolenWorker), "black solen workers", 12));
-			
+
             this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
@@ -133,13 +133,13 @@ namespace Server.Engines.Quests
     }
 
     public class DeadManWalkingQuest : BaseQuest
-    { 
+    {
         public DeadManWalkingQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Zombie), "zombies", 5));
             this.AddObjective(new SlayObjective(typeof(Skeleton), "skeletons", 5));
-			
+
             this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
@@ -193,14 +193,14 @@ namespace Server.Engines.Quests
     }
 
     public class SpiritsQuest : BaseQuest
-    { 
+    {
         public SpiritsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Spectre), "spectres", 15));
             this.AddObjective(new SlayObjective(typeof(Shade), "shades", 15));
             this.AddObjective(new SlayObjective(typeof(Wraith), "wraiths", 15));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -261,12 +261,12 @@ namespace Server.Engines.Quests
     }
 
     public class RollTheBonesQuest : BaseQuest
-    { 
+    {
         public RollTheBonesQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(PatchworkSkeleton), "patchwork skeletons", 8));
-			
+
             this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
@@ -320,12 +320,12 @@ namespace Server.Engines.Quests
     }
 
     public class ItsGhastlyJobQuest : BaseQuest
-    { 
+    {
         public ItsGhastlyJobQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Ghoul), "ghouls", 12));
-			
+
             this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
@@ -378,12 +378,12 @@ namespace Server.Engines.Quests
     }
 
     public class TroglodytesQuest : BaseQuest
-    { 
+    {
         public TroglodytesQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Troglodyte), "troglodytes", 12));
-			
+
             this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
@@ -442,13 +442,13 @@ namespace Server.Engines.Quests
     }
 
     public class UnholyKnightsQuest : BaseQuest
-    { 
+    {
         public UnholyKnightsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(BoneKnight), "bone knights", 16));
             this.AddObjective(new SlayObjective(typeof(SkeletalKnight), "skeletal knights", 16));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -509,12 +509,12 @@ namespace Server.Engines.Quests
     }
 
     public class FeatherInYerCapQuest : BaseQuest
-    { 
+    {
         public FeatherInYerCapQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(SalivasFeather), "saliva's feather", 1));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -584,12 +584,12 @@ namespace Server.Engines.Quests
     }
 
     public class TaleOfTailQuest : BaseQuest
-    { 
+    {
         public TaleOfTailQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(AbscessTail), "abscess' tail", 1));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -658,13 +658,13 @@ namespace Server.Engines.Quests
     }
 
     public class TrogAndHisDogQuest : BaseQuest
-    { 
+    {
         public TrogAndHisDogQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Lurg), "lurg", 1));
             this.AddObjective(new SlayObjective(typeof(Grobu), "grobu", 1));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -730,11 +730,11 @@ namespace Server.Engines.Quests
     }
 
     public class Cailla : MondainQuester
-    { 
+    {
         [Constructable]
         public Cailla()
             : base("Cailla", "the guard")
-        { 
+        {
             this.SetSkill(SkillName.Meditation, 60.0, 83.0);
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -745,10 +745,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(KingOfBearsQuest),
                     typeof(SpecimensQuest),
@@ -768,10 +768,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x876B;
             this.HairItemID = 0x2FCE;
             this.HairHue = 0x2C8;
@@ -786,12 +786,12 @@ namespace Server.Engines.Quests
             this.AddItem(new HideGloves());
             this.AddItem(new HideFemaleChest());
             this.AddItem(new WoodlandBelt());
-			
+
             Item item;
-			
+
             item = new RavenHelm();
             item.Hue = 0x1BB;
-            this.AddItem(item);			
+            this.AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

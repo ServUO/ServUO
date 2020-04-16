@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Spells.Eighth
 {
@@ -46,7 +46,7 @@ namespace Server.Spells.Eighth
             {
                 TimeSpan duration = TimeSpan.FromSeconds((2 * this.Caster.Skills.Magery.Fixed) / 5);
 
-                 SpellHelper.Summon(new SummonedFireElemental(), this.Caster, 0x217, duration, false, false);
+                SpellHelper.Summon(new SummonedFireElemental(), this.Caster, 0x217, duration, false, false);
             }
 
             this.FinishSequence();

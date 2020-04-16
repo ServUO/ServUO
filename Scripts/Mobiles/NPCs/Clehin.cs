@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class ThinningTheHerdQuest : BaseQuest
-    { 
+    {
         public ThinningTheHerdQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(Goat), "goats", 10));
-			
+
             this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
@@ -69,7 +69,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Clehin()
             : base("Clehin", "the soil nurturer")
-        { 
+        {
             this.SetSkill(SkillName.Meditation, 60.0, 83.0);
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -80,10 +80,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(CreepyCrawliesQuest),
                     typeof(MongbatMenaceQuest),
@@ -95,10 +95,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x8362;
             this.HairItemID = 0x2FC2;
             this.HairHue = 0x324;

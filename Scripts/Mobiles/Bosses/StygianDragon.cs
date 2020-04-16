@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
-
 using Server.Items;
 using Server.Network;
 using Server.Spells;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -58,7 +57,7 @@ namespace Server.Mobiles
         public StygianDragon(Serial serial)
             : base(serial)
         {
-        }        
+        }
 
         public override Type[] UniqueSAList
         {
@@ -126,9 +125,9 @@ namespace Server.Mobiles
             base.OnDeath(c);
 
             c.DropItem(new StygianDragonHead());
-			
-			if ( Paragon.ChestChance > Utility.RandomDouble() )
-            	c.DropItem( new ParagonChest( Name, 5 ) );
+
+            if (Paragon.ChestChance > Utility.RandomDouble())
+                c.DropItem(new ParagonChest(Name, 5));
         }
 
         public override void Serialize(GenericWriter writer)
@@ -154,16 +153,16 @@ namespace Server.Mobiles
 
         public class CrimsonMeteorTimer : Timer
         {
-            private Mobile m_From;
-            private Map m_Map;
+            private readonly Mobile m_From;
+            private readonly Map m_Map;
             private int m_Count;
-            private int m_MaxCount;
+            private readonly int m_MaxCount;
             private bool m_DoneDamage;
             private Point3D m_LastTarget;
             private Rectangle2D m_ShowerArea;
-            private List<Mobile> m_ToDamage;
+            private readonly List<Mobile> m_ToDamage;
 
-            private int m_MinDamage, m_MaxDamage;
+            private readonly int m_MinDamage, m_MaxDamage;
 
             public CrimsonMeteorTimer(Mobile from, Point3D loc, int min, int max)
                 : base(TimeSpan.FromMilliseconds(250.0), TimeSpan.FromMilliseconds(250.0))
@@ -305,9 +304,9 @@ namespace Server.Mobiles
         #region Fire Field
         public class FireField : Item
         {
-            private Mobile m_Owner;
-            private Timer m_Timer;
-            private DateTime m_Destroy;
+            private readonly Mobile m_Owner;
+            private readonly Timer m_Timer;
+            private readonly DateTime m_Destroy;
 
             [Constructable]
             public FireField(Mobile owner, int duration, bool south)
@@ -415,8 +414,8 @@ namespace Server.Mobiles
 
         private class StygianFireballTimer : Timer
         {
-            private StygianDragon m_Dragon;
-            private Mobile m_Combatant;
+            private readonly StygianDragon m_Dragon;
+            private readonly Mobile m_Combatant;
             private int m_Ticks;
 
             public StygianFireballTimer(StygianDragon dragon, Mobile combatant)

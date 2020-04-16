@@ -1,7 +1,6 @@
+using Server.Targeting;
 using System;
 using System.Linq;
-
-using Server.Targeting;
 
 namespace Server.Items
 {
@@ -182,7 +181,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private Lockpick m_Item;
+            private readonly Lockpick m_Item;
 
             public InternalTarget(Lockpick item)
                 : base(1, false, TargetFlags.None)

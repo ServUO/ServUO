@@ -1,6 +1,6 @@
+using Server.Items;
 using System;
 using System.Collections;
-using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -58,10 +58,10 @@ namespace Server.Mobiles
             PackReg(50);
             PackNecroReg(15, 75);
 
-			switch (Utility.Random(3))
+            switch (Utility.Random(3))
             {
                 case 0: PackItem(new VampiricEmbraceScroll()); break;
-			}
+            }
         }
 
         public HarrowerTentacles(Serial serial)
@@ -140,7 +140,7 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
 
             this.m_Harrower = reader.ReadMobile();
-			this.m_Timer = new DrainTimer(this);
+            this.m_Timer = new DrainTimer(this);
             this.m_Timer.Start();
         }
 

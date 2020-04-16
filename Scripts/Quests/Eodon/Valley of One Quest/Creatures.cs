@@ -1,8 +1,7 @@
-using System;
-using Server;
-using Server.Items;
-using System.Collections.Generic;
 using Server.Engines.Quests;
+using Server.Items;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Server.Mobiles
@@ -285,7 +284,7 @@ namespace Server.Mobiles
 
         private int _LastTeleport;
 
-        private Point3D[] _TeleList =
+        private readonly Point3D[] _TeleList =
         {
             new Point3D(874, 1439, 0),
             new Point3D(847, 1425, 0),
@@ -304,13 +303,13 @@ namespace Server.Mobiles
             new Point3D(869, 1404, 20),
         };
 
-        private Point3D[] _PlayerTeleList =
+        private readonly Point3D[] _PlayerTeleList =
         {
             new Point3D(875, 1380, -20),
             new Point3D(855, 1442, -20)
         };
 
-        private int[] _BarrelIDs =
+        private readonly int[] _BarrelIDs =
         {
             3703,   4014,   5453,   7861,
             17650
@@ -382,7 +381,7 @@ namespace Server.Mobiles
             {
                 _NextSpecial = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(45, 60));
 
-                switch(Utility.Random(Teleports ? 3 : 2))
+                switch (Utility.Random(Teleports ? 3 : 2))
                 {
                     case 0:
                         IPooledEnumerable eable = Map.GetMobilesInRange(Location, 10);
@@ -601,7 +600,7 @@ namespace Server.Mobiles
                     quest.Update(this);
 
                 Protector.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x35, 1156501, Protector.NetState); // *You watch as the Tiger Cub safely returns to the Kurak Tribe*
-                
+
                 Timer.DelayCall(TimeSpan.FromSeconds(.25), Delete);
                 Protector = null;
             }
@@ -642,7 +641,7 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
             Protector = reader.ReadMobile();
 
-            if(version == 0)
+            if (version == 0)
             {
                 ControlSlots = 1;
                 MinTameSkill = 0;
@@ -676,7 +675,7 @@ namespace Server.Mobiles
             Karma = -12000;
 
             Timer.DelayCall(TimeSpan.FromMinutes(10), Delete);
-            
+
         }
 
         public override void GenerateLoot()
@@ -759,7 +758,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "a volcano elemental";
-            Body = 15; 
+            Body = 15;
             Hue = 2726;
 
             SetStr(446, 510);

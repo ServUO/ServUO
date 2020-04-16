@@ -1,5 +1,3 @@
-using System;
-using Server.Engines.BulkOrders;
 using Server.Gumps;
 using Server.Mobiles;
 
@@ -16,7 +14,7 @@ namespace Server.Engines.BulkOrders
         {
             BODType = type;
             UsingBanked = points == 0;
-            
+
             var entry = new GumpLabel(230, 65, 0x64, GetPoints(user).ToString("0.000000"));
             entry.Parent = this;
 

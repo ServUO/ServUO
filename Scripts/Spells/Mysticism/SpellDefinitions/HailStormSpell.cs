@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Server;
-using Server.Items;
 using Server.Mobiles;
-using Server.Spells;
 using Server.Targeting;
+using System;
+using System.Linq;
 
 namespace Server.Spells.Mysticism
 {
@@ -16,7 +11,7 @@ namespace Server.Spells.Mysticism
         public override bool DelayedDamage { get { return true; } }
         public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Hail Storm", "Kal Des Ylem",
                 230,
                 9022,
@@ -59,7 +54,7 @@ namespace Server.Spells.Mysticism
                             x >= effectArea.X + effectArea.Width - 1 && y >= effectArea.Y + effectArea.Height - 1 ||
                             y >= effectArea.Y + effectArea.Height - 1 && x == effectArea.X ||
                             y == effectArea.Y && x >= effectArea.X + effectArea.Width - 1)
-                                continue;
+                            continue;
 
                         IPoint3D pnt = new Point3D(x, y, p.Z);
                         SpellHelper.GetSurfaceTop(ref pnt);
@@ -99,7 +94,7 @@ namespace Server.Spells.Mysticism
 
         public class InternalTarget : Target
         {
-            private HailStormSpell m_Owner;
+            private readonly HailStormSpell m_Owner;
 
             public InternalTarget(HailStormSpell owner)
                 : base(10, true, TargetFlags.None)

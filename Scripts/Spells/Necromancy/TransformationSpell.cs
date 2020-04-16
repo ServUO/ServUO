@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Spells.Necromancy
 {
     public abstract class TransformationSpell : NecromancerSpell, ITransformationSpell

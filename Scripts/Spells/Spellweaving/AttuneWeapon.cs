@@ -1,7 +1,6 @@
+using Server.Services.Virtues;
 using System;
 using System.Collections.Generic;
-
-using Server.Services.Virtues;
 
 namespace Server.Spells.Spellweaving
 {
@@ -55,7 +54,7 @@ namespace Server.Spells.Spellweaving
             {
                 StopAbsorbing(defender, true);
             }
-            else if(m_Table.ContainsKey(defender))
+            else if (m_Table.ContainsKey(defender))
             {
                 BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.AttuneWeapon, 1075798, m_Table[defender].Expires - DateTime.UtcNow, defender, defender.MeleeDamageAbsorb.ToString()));
             }

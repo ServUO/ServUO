@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 using System.Collections.Generic;
 
@@ -55,17 +54,17 @@ namespace Server.Mobiles
         {
         }
 
-        public override void OnDeath( Container c )
+        public override void OnDeath(Container c)
         {
-            base.OnDeath( c );
+            base.OnDeath(c);
 
-            c.DropItem( new SpleenOfThePutrefier() );
+            c.DropItem(new SpleenOfThePutrefier());
 
-            if ( Utility.RandomDouble() < 0.6 )
-            c.DropItem( new ParrotItem() );
+            if (Utility.RandomDouble() < 0.6)
+                c.DropItem(new ParrotItem());
 
-            if ( Paragon.ChestChance > Utility.RandomDouble() )
-            c.DropItem( new ParagonChest( Name, 5 ) );
+            if (Paragon.ChestChance > Utility.RandomDouble())
+                c.DropItem(new ParagonChest(Name, 5));
         }
 
         public override bool GivesMLMinorArtifact

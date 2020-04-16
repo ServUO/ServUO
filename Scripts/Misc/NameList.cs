@@ -7,7 +7,7 @@ namespace Server
 {
     public class NameList
     {
-        private static Dictionary<string, NameList> m_Table;
+        private static readonly Dictionary<string, NameList> m_Table;
         private readonly string m_Type;
         private readonly string[] m_List;
         public NameList(string type, XmlElement xml)

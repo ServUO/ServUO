@@ -1,9 +1,8 @@
-using Server;
-using System;
+using Server.Engines.Quests;
 using Server.Items;
 using Server.Multis;
+using System;
 using System.Collections.Generic;
-using Server.Engines.Quests;
 
 namespace Server.Mobiles
 {
@@ -33,7 +32,7 @@ namespace Server.Mobiles
 
         public override bool AlwaysMurderer { get { return true; } }
         public override bool Commandable { get { return false; } }
-        
+
         #region Bounty Quest
         private ProfessionalBountyQuest m_Quest;
         private bool m_IsCaught;
@@ -56,7 +55,7 @@ namespace Server.Mobiles
         {
             PickRandomName();
 
-            if(m_PirateName > 0 && (m_PirateName == 1116679 || m_PirateName == 1116680 || m_PirateName == 1116683))
+            if (m_PirateName > 0 && (m_PirateName == 1116679 || m_PirateName == 1116680 || m_PirateName == 1116683))
                 Female = true;
 
             SpeechHue = Utility.RandomDyedHue();
@@ -145,8 +144,8 @@ namespace Server.Mobiles
         public override void AddNameProperties(ObjectPropertyList list)
         {
             string args;
-            
-            if(m_PirateName > 0)
+
+            if (m_PirateName > 0)
                 args = String.Format("#{0}\t#{1}\t#{2}", m_Adjective, m_Noun, m_PirateName);
             else
                 args = String.Format("#{0}\t#{1}\t{2}", m_Adjective, m_Noun, Name);
@@ -162,9 +161,9 @@ namespace Server.Mobiles
                 return;
 
             IPooledEnumerable eable = this.GetMobilesInRange(7);
-            foreach(Mobile mob in eable)
+            foreach (Mobile mob in eable)
             {
-                if (mob is PlayerMobile) 
+                if (mob is PlayerMobile)
                 {
                     OnTalk();
                     break;

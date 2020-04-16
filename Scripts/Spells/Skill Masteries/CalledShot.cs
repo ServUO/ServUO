@@ -1,13 +1,12 @@
-using System;
-using Server;
-using Server.Network;
 using Server.Mobiles;
+using Server.Network;
+using System;
 
 namespace Server.Spells.SkillMasteries
 {
     public class CalledShotSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Called Shot", "",
                 -1,
                 9002

@@ -1,8 +1,8 @@
+using Server.Network;
+using Server.Targeting;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Server.Network;
-using Server.Targeting;
 
 namespace Server.Items
 {
@@ -66,7 +66,7 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
 
-        private List<Mobile> m_Users = new List<Mobile>();
+        private readonly List<Mobile> m_Users = new List<Mobile>();
 
         public void Explode_Callback(object state)
         {
@@ -128,12 +128,12 @@ namespace Server.Items
                 {
                     List<BasePotion> potions = m.Backpack.FindItemsByType<BasePotion>();
                     potions[Utility.Random(potions.Count)].Consume();
-                }                
+                }
             }
         }
 
         #region Delay
-        private static Hashtable m_Delay = new Hashtable();
+        private static readonly Hashtable m_Delay = new Hashtable();
 
         public static void AddDelay(Mobile m)
         {
@@ -204,5 +204,5 @@ namespace Server.Items
                 }
             }
         }
-    }    
+    }
 }

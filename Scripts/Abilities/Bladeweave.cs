@@ -17,7 +17,7 @@ namespace Server.Items
             }
         }
 
-        private static Dictionary<Mobile, BladeWeaveRedirect> m_NewAttack = new Dictionary<Mobile, BladeWeaveRedirect>();
+        private static readonly Dictionary<Mobile, BladeWeaveRedirect> m_NewAttack = new Dictionary<Mobile, BladeWeaveRedirect>();
 
         public static bool BladeWeaving(Mobile attacker, out WeaponAbility a)
         {
@@ -102,7 +102,7 @@ namespace Server.Items
             }
 
 
-            return ((BladeWeaveRedirect)m_NewAttack[attacker]).NewAbility.OnBeforeSwing(attacker, defender);
+            return m_NewAttack[attacker].NewAbility.OnBeforeSwing(attacker, defender);
         }
 
         public override bool OnBeforeDamage(Mobile attacker, Mobile defender)

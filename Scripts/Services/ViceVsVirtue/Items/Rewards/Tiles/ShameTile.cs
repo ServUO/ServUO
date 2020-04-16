@@ -1,9 +1,5 @@
-using System;
-using Server;
-using System.Collections.Generic;
-using Server.Mobiles;
-using Server.Items;
 using Server.Gumps;
+using Server.Items;
 
 namespace Server.Engines.VvV
 {
@@ -13,7 +9,7 @@ namespace Server.Engines.VvV
 
         public TileType TileType { get; set; }
 
-        private int offset;
+        private readonly int offset;
 
         [Constructable]
         public ShameTileAddon(TileType type)

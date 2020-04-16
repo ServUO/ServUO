@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.Craft;
 
 namespace Server.Items
@@ -7,7 +6,7 @@ namespace Server.Items
     {
         public CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
 
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public EmbroideredOakLeafCloak()
             : base(0x2684)

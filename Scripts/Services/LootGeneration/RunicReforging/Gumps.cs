@@ -1,25 +1,22 @@
-using System;
-using Server;
 using Server.Items;
-using Server.Mobiles;
 using Server.Network;
-using Server.Engines.Quests;
+using System;
 
 namespace Server.Gumps
 {
     [Flags]
     public enum ReforgingOption
     {
-        None                = 0x00000000,
-        Powerful            = 0x00000001,
-        Structural          = 0x00000002,
-        Fortified           = 0x00000004,
-        Fundamental         = 0x00000008,
-        Integral            = 0x00000010,
-        GrandArtifice       = 0x00000020,
-        InspiredArtifice    = 0x00000040,
-        ExaltedArtifice     = 0x00000080,
-        SublimeArtifice     = 0x00000100,
+        None = 0x00000000,
+        Powerful = 0x00000001,
+        Structural = 0x00000002,
+        Fortified = 0x00000004,
+        Fundamental = 0x00000008,
+        Integral = 0x00000010,
+        GrandArtifice = 0x00000020,
+        InspiredArtifice = 0x00000040,
+        ExaltedArtifice = 0x00000080,
+        SublimeArtifice = 0x00000100,
 
         PowerfulAndStructural = Powerful | Structural,
         PowerfulAndFundamental = Powerful | Fundamental,
@@ -29,15 +26,15 @@ namespace Server.Gumps
 
     public class RunicReforgingGump : Gump
     {
-        private BaseRunicTool m_Tool;
-        private Item m_ToReforge;
+        private readonly BaseRunicTool m_Tool;
+        private readonly Item m_ToReforge;
         private ReforgingOption m_Options;
         private ReforgedPrefix m_Prefix;
         private ReforgedSuffix m_Suffix;
 
-        private ReforgingContext m_Context;
+        private readonly ReforgingContext m_Context;
 
-        private ReforgingOption[] Options =
+        private readonly ReforgingOption[] Options =
         {
             ReforgingOption.Powerful,
             ReforgingOption.Structural,
@@ -76,7 +73,7 @@ namespace Server.Gumps
             int y = 40;
             int idx = 0;
 
-            for(int i = 0; i < Options.Length; i++)
+            for (int i = 0; i < Options.Length; i++)
             {
                 ReforgingOption option = Options[i];
 
@@ -107,7 +104,7 @@ namespace Server.Gumps
                     }
                 }
 
-                if(HasMetPrerequisite(option) && CanReforge(from, option))
+                if (HasMetPrerequisite(option) && CanReforge(from, option))
                     AddButton(15, y, buttonID, buttonID, i + 100, GumpButtonType.Reply, 0);
 
                 AddHtmlLocalized(55, y, 250, 20, GetCliloc(option), buttonHue, false, false);
@@ -293,7 +290,7 @@ namespace Server.Gumps
                             if (max > 100) max = 100;
 
                             int budget = GetBudget();
-                            
+
                             ReforgedPrefix prefix = ReforgedPrefix.None;
                             ReforgedSuffix suffix = ReforgedSuffix.None;
 
@@ -482,7 +479,7 @@ namespace Server.Gumps
 
             if (attr != null && (m_Options & ReforgingOption.Structural) != 0)
             {
-                if(neg != null)
+                if (neg != null)
                     neg.Brittle = 1;
 
                 if ((m_Options & ReforgingOption.Fortified) != 0)
@@ -514,16 +511,16 @@ namespace Server.Gumps
 
         public class ItemNameGump : Gump
         {
-            private BaseRunicTool m_Tool;
-            private Item m_ToReforge;
-            private ReforgingOption m_Options;
+            private readonly BaseRunicTool m_Tool;
+            private readonly Item m_ToReforge;
+            private readonly ReforgingOption m_Options;
             private ReforgedPrefix m_Prefix;
             private ReforgedSuffix m_Suffix;
-            private bool m_IsPrefix;
+            private readonly bool m_IsPrefix;
 
-            private static int White = 0x6F7B;
-            private static int Green = 0x4BB2;
-            private static int Yellow = 0x6B55;
+            private static readonly int White = 0x6F7B;
+            private static readonly int Green = 0x4BB2;
+            private static readonly int Yellow = 0x6B55;
 
             public ItemNameGump(Item toreforge, BaseRunicTool tool, ReforgingOption options, ReforgedPrefix prefix, ReforgedSuffix suffix, bool isprefix)
                 : base(100, 100)

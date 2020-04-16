@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class PhoenixGorget : StuddedGorget
@@ -8,7 +6,7 @@ namespace Server.Items
         public PhoenixGorget()
         {
             Hue = 0x8E;
-			LootType = LootType.Blessed;     
+            LootType = LootType.Blessed;
         }
 
         public PhoenixGorget(Serial serial)
@@ -23,7 +21,7 @@ namespace Server.Items
                 return 1041604;
             }
         }// studded gorget of the phoenix
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

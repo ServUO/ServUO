@@ -1,9 +1,6 @@
-﻿using Server;
-using System;
-using Server.Multis;
+﻿using Server.ContextMenus;
 using Server.Mobiles;
-using Server.Network;
-using Server.ContextMenus;
+using Server.Multis;
 using Server.Targeting;
 using System.Collections.Generic;
 
@@ -37,8 +34,8 @@ namespace Server.Items
 
         private class RelocateContainerEntry : ContextMenuEntry
         {
-            private GalleonContainer m_Container;
-            private BaseGalleon m_Galleon;
+            private readonly GalleonContainer m_Container;
+            private readonly BaseGalleon m_Galleon;
 
             public RelocateContainerEntry(GalleonContainer container, BaseGalleon galleon)
                 : base(1061829, 3)
@@ -56,8 +53,8 @@ namespace Server.Items
 
         private class RelocateTarget : Target
         {
-            private GalleonContainer m_Container;
-            private BaseGalleon m_Galleon;
+            private readonly GalleonContainer m_Container;
+            private readonly BaseGalleon m_Galleon;
 
             public RelocateTarget(GalleonContainer container, BaseGalleon galleon)
                 : base(12, false, TargetFlags.None)
@@ -125,7 +122,7 @@ namespace Server.Items
                 base.OnDoubleClick(from);
             else if (!m_Galleon.Contains(from))
             {
-                if(m_Galleon.TillerMan != null)
+                if (m_Galleon.TillerMan != null)
                     m_Galleon.TillerManSay("You must be on the ship to open the container.");
             }
             else if (m_Galleon.Owner is PlayerMobile && !m_Galleon.Scuttled && m_Galleon.GetSecurityLevel(from) < SecurityLevel.Crewman)

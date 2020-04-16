@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -50,7 +50,7 @@ namespace Server.Mobiles
             if (Utility.RandomDouble() < 0.05)
             {
                 PackItem(new Rope());
-            }                       
+            }
         }
 
         public Kraken(Serial serial)

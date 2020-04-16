@@ -1,4 +1,3 @@
-using System;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
@@ -35,7 +34,7 @@ namespace Server.Items
                 {
                     Components.ForEach(x =>
                     {
-                        switch(x.ItemID)
+                        switch (x.ItemID)
                         {
                             case 0x9A4C:
                                 {

@@ -40,7 +40,7 @@ namespace Server.Items
                 g.AddImage(0, 0, GumpID);
 
                 m.SendGump(g);
-            }            
+            }
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -65,7 +65,7 @@ namespace Server.Items
             {1673,"Happy Holidays"},
             {1674,"Merry Christmas"},
             {1675,"Seasons Greetings"},
-            {1676,"Happy Hanukkah"},            
+            {1676,"Happy Hanukkah"},
         };
 
         private class ChangeSignText : ContextMenuEntry

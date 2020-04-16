@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Server;
+﻿using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
     public class BoatPainter : BaseVendor
     {
-        private List<SBInfo> m_SBInfos = new List<SBInfo>();
+        private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
 
         [Constructable]

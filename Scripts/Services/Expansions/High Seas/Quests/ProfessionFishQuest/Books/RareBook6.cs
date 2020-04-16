@@ -1,15 +1,14 @@
-﻿using Server;
-using System;
+﻿using System;
 
 namespace Server.Items
 {
     public class FishingGuideBook6 : BaseBook
     {
         [Constructable]
-		public FishingGuideBook6() : base( Utility.Random( 0xFF1, 2 ), false )
-		{
+        public FishingGuideBook6() : base(Utility.Random(0xFF1, 2), false)
+        {
             Name = "Vplume 6 - Legendary Sea Creatures";
-		}
+        }
 
         public static readonly BookContent Content = new BookContent
         (
@@ -229,7 +228,7 @@ namespace Server.Items
 
                 "The goblins o' the",
                 String.Format("{0} tell o' a", FishInfo.GetFishLocation(typeof(VoidLobster))),
-                "creature that looks like", 
+                "creature that looks like",
                 "a cross between a void",
                 "demon and a lobster. They",
                 "say it lives in the lava",
@@ -237,24 +236,24 @@ namespace Server.Items
             )
         );
 
-        public override BookContent DefaultContent{ get{ return Content; } }
+        public override BookContent DefaultContent { get { return Content; } }
 
-        public FishingGuideBook6( Serial serial ) : base( serial )
-		{
-		}
+        public FishingGuideBook6(Serial serial) : base(serial)
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.WriteEncodedInt( (int)0 ); // version
-		}
+            writer.WriteEncodedInt((int)0); // version
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadEncodedInt();
-		}
+            int version = reader.ReadEncodedInt();
+        }
     }
 }

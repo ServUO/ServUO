@@ -1,11 +1,9 @@
+using Server.Commands;
+using Server.Items;
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Server;
-using Server.Items;
-using Server.Commands;
-using Server.Mobiles;
 
 namespace Server.Gumps
 {
@@ -370,5 +368,5 @@ namespace Server.Gumps
                 y += 20;
             }
         }
-    }   
+    }
 }

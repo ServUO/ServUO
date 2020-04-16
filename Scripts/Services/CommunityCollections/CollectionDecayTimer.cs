@@ -13,8 +13,8 @@ namespace Server
         }
 
         protected override void OnTick()
-        { 
-            if (this.m_Collection != null && this.m_Collection.DailyDecay > 0)		
+        {
+            if (this.m_Collection != null && this.m_Collection.DailyDecay > 0)
                 this.m_Collection.Points -= this.m_Collection.DailyDecay;
         }
     }

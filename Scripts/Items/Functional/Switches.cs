@@ -24,7 +24,7 @@ namespace Server.Items
             {
                 if (item.ItemID == 0x3660 && item.Hue == 1000) //Dark Globe of Sosaria
                 {
-                    Timer m_timerA = new MoveTimer(item, 1); 
+                    Timer m_timerA = new MoveTimer(item, 1);
                     m_timerA.Start();
                 }
             }
@@ -66,7 +66,7 @@ namespace Server.Items
                 }
 
                 this.m_Stage++;
-				
+
                 if (this.m_Cicle == 0)
                     this.item.Z += 1;
                 else if (this.m_Cicle == 1)

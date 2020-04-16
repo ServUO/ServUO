@@ -1,5 +1,3 @@
-using Server;
-using System;
 using Server.Engines.Despise;
 
 namespace Server.Items

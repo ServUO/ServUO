@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class DeliciousFishesQuest : BaseQuest
-    { 
+    {
         public DeliciousFishesQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(Fish), "fish", 5, 0x9CC));
-						
+
             this.AddReward(new BaseReward(typeof(PeppercornFishsteak), 3, 1075557)); // peppercorn fishsteak
         }
 
@@ -89,7 +89,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Norton()
             : base("Norton", "the fisher")
-        { 
+        {
         }
 
         public Norton(Serial serial)
@@ -98,10 +98,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(DeliciousFishesQuest)
                 };
@@ -110,11 +110,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.CantWalk = true;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x83F8;
             this.HairItemID = 0x203B;
             this.HairHue = 0x472;
@@ -122,7 +122,7 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());		
+            this.AddItem(new Backpack());
             this.AddItem(new ThighBoots());
             this.AddItem(new Shirt(0x11D));
             this.AddItem(new LongPants(0x6C2));

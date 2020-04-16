@@ -1,7 +1,6 @@
-using System;
-using Server;
-using Server.Targeting;
 using Server.Mobiles;
+using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -81,7 +80,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            private ScaleCollar m_Collar;
+            private readonly ScaleCollar m_Collar;
 
             public InternalTarget(ScaleCollar collar) : base(-1, false, TargetFlags.None)
             {
@@ -90,17 +89,17 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if(m_Collar != null)
+                if (m_Collar != null)
                     m_Collar.OnTarget(from, targeted);
             }
         }
 
         private class InternalTimer : Timer
         {
-            private ScaleCollar m_Collar;
-            private BattleChickenLizard m_Lizard;
-            private DateTime m_EndTime;
-            private Mobile m_Owner;
+            private readonly ScaleCollar m_Collar;
+            private readonly BattleChickenLizard m_Lizard;
+            private readonly DateTime m_EndTime;
+            private readonly Mobile m_Owner;
 
             public InternalTimer(ScaleCollar collar, BattleChickenLizard lizard, Mobile owner) : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
             {

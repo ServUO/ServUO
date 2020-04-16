@@ -1,6 +1,4 @@
-﻿using System;
-using Server;
-using Server.Gumps;
+﻿using Server.Gumps;
 
 namespace Server.Items
 {
@@ -14,9 +12,9 @@ namespace Server.Items
     {
         public override BaseAddonDeed Deed { get { return new JusticeVirtueTileDeed(); } }
 
-        private JusticeTileType m_JusticeTileType;
+        private readonly JusticeTileType m_JusticeTileType;
 
-        private int offset;
+        private readonly int offset;
 
         [Constructable]
         public JusticeVirtueTileAddon(JusticeTileType type)

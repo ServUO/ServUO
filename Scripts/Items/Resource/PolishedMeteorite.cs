@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     public class PolishedMeteorite : Item
     {
         public override int LabelNumber { get { return 1158693; } } // polished meteorite
-        
+
         [Constructable]
         public PolishedMeteorite()
             : base(41422 + Utility.Random(12))

@@ -1,13 +1,11 @@
-using Server;
-using System;
-using Server.Mobiles;
-using Server.Items;
-using Server.Gumps;
 using Server.Accounting;
-using Server.Targeting;
-using System.Globalization;
+using Server.Gumps;
+using Server.Items;
+using Server.Mobiles;
 using Server.Network;
-using System.Linq;
+using Server.Targeting;
+using System;
+using System.Globalization;
 
 namespace Server.Engines.Auction
 {
@@ -149,7 +147,7 @@ namespace Server.Engines.Auction
             AddHtmlLocalized(15, y, 175, 18, 1114514, "#1156404", Yellow, false, false); // Time Remaining:
 
             if (Auction.HasBegun)
-            {                
+            {
                 TimeSpan left = Auction.EndTime - DateTime.Now;
                 int cliloc;
                 double v;
@@ -177,8 +175,8 @@ namespace Server.Engines.Auction
                     }
 
                     AddHtmlLocalized(200, y, 175, 18, cliloc, ((int)v).ToString(), Gray, false, false);
-                }               
-            } 
+                }
+            }
             else
             {
                 TimeSpan ts = TimeSpan.FromMinutes(Auction.Duration);
@@ -286,8 +284,8 @@ namespace Server.Engines.Auction
 
         private class InternalTarget : Target
         {
-            private Auction Auction;
-            private BaseAuctionGump Gump;
+            private readonly Auction Auction;
+            private readonly BaseAuctionGump Gump;
 
             public InternalTarget(Auction auction, BaseAuctionGump g)
                 : base(-1, false, TargetFlags.None)
@@ -330,7 +328,7 @@ namespace Server.Engines.Auction
                     else
                     {
                         from.Target = new InternalTarget(Auction, Gump);
-                    }                    
+                    }
                 }
                 else
                 {
@@ -373,7 +371,7 @@ namespace Server.Engines.Auction
                                 Auction.AuctionItem = null;
                             }
 
-                            from.Target = new InternalTarget(Auction, this);                           
+                            from.Target = new InternalTarget(Auction, this);
                         }
                         else
                         {
@@ -606,7 +604,7 @@ namespace Server.Engines.Auction
             else
             {
                 AddHtmlLocalized(200, 330, 175, 18, 1114513, "#1156440", Gray, false, false); // Auction Pending                
-            }         
+            }
 
             AddHtmlLocalized(15, 350, 175, 18, 1114514, "#1156436", Yellow, false, false); // Current Platinum Bid:
             AddHtml(200, 350, 175, 18, Color(HGray, Auction.CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), false, false);
@@ -624,7 +622,7 @@ namespace Server.Engines.Auction
 
             AddHtmlLocalized(200, 442, 175, 22, 1156407, Yellow, false, false); // Place Bid
             AddButton(160, 442, 4005, 4007, 1, GumpButtonType.Reply, 0);
-            
+
             if (Auction.Buyout > 0 && (Auction.HighestBid == null || Auction.HighestBid != null && Auction.HighestBid.Mobile != User))
             {
                 AddHtmlLocalized(15, 484, 175, 18, 1114514, "#1156413", Yellow, false, false); // Buy Now Plat Price:

@@ -1,10 +1,10 @@
+using Server.Items;
+using Server.Mobiles;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using Server.Items;
-using Server.Mobiles;
 
 namespace Server.Regions
 {
@@ -16,7 +16,7 @@ namespace Server.Regions
 
         public static SpawnDefinition GetSpawnDefinition(XmlElement xml)
         {
-            switch ( xml.Name )
+            switch (xml.Name)
             {
                 case "object":
                     {

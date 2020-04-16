@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using Server.Mobiles;
-using Server.ContextMenus;
 using Server.Engines.PartySystem;
 using Server.Items;
+using Server.Mobiles;
+using System;
 using System.Linq;
 
 namespace Server.Engines.Shadowguard
@@ -135,7 +133,7 @@ namespace Server.Engines.Shadowguard
             return false;
         }
 
-        private Type[] DeleteList =
+        private readonly Type[] DeleteList =
         {
             typeof(ShadowguardCanal)
         };

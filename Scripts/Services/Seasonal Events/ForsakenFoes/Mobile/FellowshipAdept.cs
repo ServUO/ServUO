@@ -1,9 +1,7 @@
-using Server;
-using System;
-using System.Collections.Generic;
-using Server.Mobiles;
-using Server.Items;
 using Server.ContextMenus;
+using Server.Items;
+using Server.Mobiles;
+using System.Collections.Generic;
 
 namespace Server.Engines.Fellowship
 {
@@ -56,8 +54,8 @@ namespace Server.Engines.Fellowship
                 };
 
                 AddItem(backpack);
-            }    
-        }        
+            }
+        }
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -79,8 +77,8 @@ namespace Server.Engines.Fellowship
 
         private class BrowseShopEntry : ContextMenuEntry
         {
-            private Mobile m_From;
-            private BaseVendor m_Vendor;
+            private readonly Mobile m_From;
+            private readonly BaseVendor m_Vendor;
 
             public BrowseShopEntry(Mobile from, BaseVendor vendor)
                 : base(1159181, 2) // Browse the Fellowship Shop
@@ -126,5 +124,5 @@ namespace Server.Engines.Fellowship
                 InstanceFel = this;
             }
         }
-    }    
+    }
 }

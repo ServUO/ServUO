@@ -1,16 +1,14 @@
-using System;
-using Server;
 using Server.Multis;
-using System.Collections.Generic;
 using Server.Network;
+using System.Collections.Generic;
 
 namespace Server.Gumps
 {
     public class AccessListGump : BaseShipGump
     {
-        private BaseGalleon m_Galleon;
-        private SecurityEntry m_Entry;
-        private List<Mobile> m_UseList;
+        private readonly BaseGalleon m_Galleon;
+        private readonly SecurityEntry m_Entry;
+        private readonly List<Mobile> m_UseList;
 
         public AccessListGump(Mobile from, BaseGalleon galleon)
             : base(galleon)

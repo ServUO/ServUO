@@ -1,16 +1,16 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
     public class AttendantHerald : PersonalAttendant
-    { 
+    {
         private static readonly HeraldEntry[] m_Announcements = new HeraldEntry[]
         {
             new HeraldEntry(1076044, "[OWNER TITLE]", "[OWNER NAME]"), // Attention, attention! All hail the arrival of the ~1_TITLE~ ~2_NAME~!
@@ -149,12 +149,12 @@ namespace Server.Mobiles
             writer.WriteEncodedInt(0); // version
 
             writer.Write(this.m_Announcement != null);
-			
+
             if (this.m_Announcement != null)
                 this.m_Announcement.Serialize(writer);
-			
+
             writer.Write(this.m_Greeting != null);
-			
+
             if (this.m_Greeting != null)
                 this.m_Greeting.Serialize(writer);
         }
@@ -170,7 +170,7 @@ namespace Server.Mobiles
                 this.m_Announcement = new HeraldEntry();
                 this.m_Announcement.Deserialize(reader);
             }
-				
+
             if (reader.ReadBool())
             {
                 this.m_Greeting = new HeraldEntry();
@@ -213,7 +213,7 @@ namespace Server.Mobiles
 
             [CommandProperty(AccessLevel.GameMaster)]
             public TextDefinition Message
-            { 
+            {
                 get
                 {
                     return this.m_Message;
@@ -225,15 +225,15 @@ namespace Server.Mobiles
             }
             [CommandProperty(AccessLevel.GameMaster)]
             public string Arguments
-            { 
+            {
                 get
-                { 
+                {
                     string text = String.Empty;
 
                     foreach (string s in this.m_Arguments)
                         text += '|' + s;
 
-                    return text + '|'; 
+                    return text + '|';
                 }
                 set
                 {
@@ -320,10 +320,10 @@ namespace Server.Mobiles
 
                 Mobile m = herald.ControlMaster;
 
-                switch ( argument )
+                switch (argument)
                 {
                     case "[OWNER TITLE]":
-                        return "Mighty"; 
+                        return "Mighty";
                     case "[OWNER NAME]":
                         return m.Name;
                     case "[OWNER SEX]":
@@ -335,7 +335,7 @@ namespace Server.Mobiles
                     case "[OWNER OPPOSITE SEX P]":
                         return m.Female ? "lords" : "ladies";
                     case "[VISITOR TITLE]":
-                        return visitor != null ? "Mighty" : argument; 
+                        return visitor != null ? "Mighty" : argument;
                     case "[VISITOR NAME]":
                         return visitor != null ? visitor.Name : argument;
                 }
@@ -346,7 +346,7 @@ namespace Server.Mobiles
             public void Serialize(GenericWriter writer)
             {
                 writer.WriteEncodedInt(0); // version
-				
+
                 if (this.m_Message.Number > 0)
                 {
                     writer.Write((byte)0x1);
@@ -374,10 +374,10 @@ namespace Server.Mobiles
             public void Deserialize(GenericReader reader)
             {
                 int version = reader.ReadEncodedInt();
-					
+
                 byte type = reader.ReadByte();
-				
-                switch ( type )
+
+                switch (type)
                 {
                     case 0x1:
                         this.m_Message = reader.ReadInt();
@@ -441,7 +441,7 @@ namespace Server.Mobiles
 
                 Mobile m = sender.Mobile;
 
-                switch ( info.ButtonID )
+                switch (info.ButtonID)
                 {
                     case 3:
                         this.m_Herald.SetAnnouncementText(m);
@@ -449,7 +449,7 @@ namespace Server.Mobiles
                     case 4:
                         this.m_Herald.SetGreetingText(m);
                         break;
-                    case 5: 
+                    case 5:
                         {
                             if (this.m_Herald.ControlOrder == OrderType.Follow)
                             {
@@ -463,7 +463,7 @@ namespace Server.Mobiles
                                 else
                                     m.SendLocalizedMessage(1076140); // You must be in a house you control to put your herald into greeting mode.
                             }
-						
+
                             break;
                         }
                     case 6:
@@ -523,7 +523,7 @@ namespace Server.Mobiles
                             this.AddHtmlLocalized(400, 296, 60, 20, 1011393, 0x7FFF, false, false); // Back
                         }
                     }
-					
+
                     this.AddButton(19, 49 + (i % 5) * 48, 0x845, 0x846, 100 + i, GumpButtonType.Reply, 0);
                     this.Add(entries[i].Construct(herald, 44, 47 + (i % 5) * 48, 460, 40, 0x7FFF));
                 }
@@ -533,8 +533,8 @@ namespace Server.Mobiles
             {
                 if (this.m_Herald == null || this.m_Herald.Deleted)
                     return;
-				
-                int index = info.ButtonID - 100; 
+
+                int index = info.ButtonID - 100;
 
                 if (index >= 0 && index < this.m_Entries.Length)
                 {
@@ -556,7 +556,7 @@ namespace Server.Mobiles
     }
 
     public class AttendantMaleHerald : AttendantHerald
-    { 
+    {
         [Constructable]
         public AttendantMaleHerald()
             : base()
@@ -607,7 +607,7 @@ namespace Server.Mobiles
     }
 
     public class AttendantFemaleHerald : AttendantHerald
-    { 
+    {
         [Constructable]
         public AttendantFemaleHerald()
             : base()

@@ -1,9 +1,6 @@
-using System;
 using Server.Items;
-using Server.Targeting;
 using Server.Mobiles;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 
 namespace Server.Engines.Quests
 {
@@ -196,7 +193,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        private static Type[] m_Quests = new Type[] { typeof(ShearingKnowledgeQuest) };
+        private static readonly Type[] m_Quests = new Type[] { typeof(ShearingKnowledgeQuest) };
         public override Type[] Quests { get { return m_Quests; } }
 
         public override void InitBody()
@@ -239,7 +236,7 @@ namespace Server.Engines.Quests
     public class Dermott : MondainQuester
     {
         public override Type[] Quests { get { return null; } }
-        
+
         [Constructable]
         public Dermott() : base("Dermott", "the Weaver")
         {

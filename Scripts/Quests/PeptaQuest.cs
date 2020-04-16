@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
@@ -79,7 +79,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Pepta()
             : base("Pepta", "The Royal Tastetester")
-        { 
+        {
         }
 
         public Pepta(Serial serial)
@@ -88,44 +88,44 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(PeptaQuest)
                 };
             }
         }
         public override void InitBody()
-        { 
+        {
             this.Female = true;
-            this.Race = Race.Human;		
-			
+            this.Race = Race.Human;
+
             this.Hue = 0x83F4;
             this.HairItemID = 0x2049;
             this.HairHue = 0x46A;
         }
 
         public override void InitOutfit()
-        { 
-            this.AddItem(new Backpack());		
+        {
+            this.AddItem(new Backpack());
             this.AddItem(new Shoes(0x346));
             this.AddItem(new PlainDress(0x27B));
-            this.AddItem(new HalfApron());		
+            this.AddItem(new HalfApron());
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }

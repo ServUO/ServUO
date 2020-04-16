@@ -1,15 +1,13 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-
-using Server;
-using Server.Mobiles;
-using Server.Items;
-using Server.Guilds;
 using Server.Accounting;
-using Server.Engines.PartySystem;
 using Server.ContextMenus;
+using Server.Engines.PartySystem;
+using Server.Guilds;
 using Server.Gumps;
+using Server.Items;
+using Server.Mobiles;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Multis
 {
@@ -379,11 +377,11 @@ namespace Server.Multis
 
         public override bool CheckAddon(Item item)
         {
-            if(Addons == null)
+            if (Addons == null)
             {
                 return false;
             }
-        
+
             if (Addons.ContainsKey(item))
             {
                 return true;
@@ -1015,7 +1013,7 @@ namespace Server.Multis
         }
 
         public static int[][] CannonIDs { get { return m_CannonIDs; } }
-        private static int[][] m_CannonIDs = new int[][]
+        private static readonly int[][] m_CannonIDs = new int[][]
         { 
                       //Light  Heavy, Blunder, Pumpkin
             new int[] { 16918, 16922, 41664, 41979 }, //South
@@ -1524,7 +1522,7 @@ namespace Server.Multis
                     if (version < 6)
                     {
                         count = reader.ReadInt();
-                        var list = new List<Item>(); 
+                        var list = new List<Item>();
 
                         for (int i = 0; i < count; i++)
                         {
@@ -1619,7 +1617,7 @@ namespace Server.Multis
     public class SecurityEntry
     {
         private readonly SecurityLevel DefaultImpliedAccessLevel = SecurityLevel.Passenger;
-        private Dictionary<Mobile, SecurityLevel> m_Manifest;
+        private readonly Dictionary<Mobile, SecurityLevel> m_Manifest;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseGalleon Galleon { get; set; }
@@ -1826,9 +1824,9 @@ namespace Server.Multis
 
     public class ShipAccessEntry : ContextMenuEntry
     {
-        private Mobile m_From;
-        private Mobile m_Clicker;
-        private BaseGalleon m_Galleon;
+        private readonly Mobile m_From;
+        private readonly Mobile m_Clicker;
+        private readonly BaseGalleon m_Galleon;
 
         public ShipAccessEntry(Mobile from, Mobile clicker, BaseGalleon galleon)
             : base(1116566, 15)

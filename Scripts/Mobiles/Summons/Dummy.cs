@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -16,7 +16,7 @@ namespace Server.Mobiles
     /// </summary>
     public class Dummy : BaseCreature
     {
-        public Timer	m_Timer;
+        public Timer m_Timer;
         [Constructable]
         public Dummy(AIType iAI, FightMode iFightMode, int iRangePerception, int iRangeFight, double dActiveSpeed, double dPassiveSpeed)
             : base(iAI, iFightMode, iRangePerception, iRangeFight, dActiveSpeed, dPassiveSpeed)

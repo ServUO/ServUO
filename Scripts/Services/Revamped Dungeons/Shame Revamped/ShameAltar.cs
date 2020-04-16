@@ -1,10 +1,6 @@
-using System;
-using Server;
-using Server.Mobiles;
 using Server.Engines.Points;
-using Server.Items;
-using System.Collections.Generic;
-using System.Linq;
+using Server.Mobiles;
+using System;
 
 namespace Server.Engines.ShameRevamped
 {
@@ -136,13 +132,13 @@ namespace Server.Engines.ShameRevamped
         }
 
         public void StartDeadlineTimer()
-		{
-			if(DeadLineTimer != null)
-				DeadLineTimer.Stop();
-		
-			DeadLineTimer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), CheckDeadLine);
-			DeadLineTimer.Start();
-		}
+        {
+            if (DeadLineTimer != null)
+                DeadLineTimer.Stop();
+
+            DeadLineTimer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), CheckDeadLine);
+            DeadLineTimer.Start();
+        }
 
         public void EndDeadLineTimer()
         {

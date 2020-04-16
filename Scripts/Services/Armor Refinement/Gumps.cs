@@ -1,9 +1,6 @@
-using System;
-using Server;
-using Server.Network;
-using System.Collections.Generic;
-using Server.Targeting;
 using Server.Items;
+using Server.Network;
+using Server.Targeting;
 
 namespace Server.Gumps
 {
@@ -14,9 +11,9 @@ namespace Server.Gumps
         public const int WhiteLabel = 0xFFFFFF;
         public const int Yellow = 0xFFE0;
 
-        private RefinementItem m_Item;
-        private ModEntry m_Entry;
-        private bool m_CanRefine;
+        private readonly RefinementItem m_Item;
+        private readonly ModEntry m_Entry;
+        private readonly bool m_CanRefine;
 
         public RefinementGump(RefinementItem item) : base(50, 50)
         {
@@ -125,8 +122,8 @@ namespace Server.Gumps
 
         private class InternalTarget : Target
         {
-            private RefinementItem m_Item;
-            private ModEntry m_Entry;
+            private readonly RefinementItem m_Item;
+            private readonly ModEntry m_Entry;
 
             public InternalTarget(RefinementItem item) : base(-1, false, TargetFlags.None)
             {
@@ -149,7 +146,7 @@ namespace Server.Gumps
                         from.SendLocalizedMessage(1153986); // You cannot refine this piece of armor! 
                     else if (!RefinementGump.CanApplyToArmor(from, armor, m_Item))
                         from.SendLocalizedMessage(1153987); // The type of armor you have selected is not compatible with this Refinement Tool. 
-                    else if(RefinementItem.CheckForVendor(from, m_Item))
+                    else if (RefinementItem.CheckForVendor(from, m_Item))
                     {
                         //Resets old refinement if it exists
                         armor.RefinedPhysical = 0;
@@ -189,7 +186,7 @@ namespace Server.Gumps
 
         public int GetResistanceLabel(ResistanceType attr, int value)
         {
-            if(value == 0)
+            if (value == 0)
                 return 1062648; // None Selected
 
             switch (attr)
@@ -275,7 +272,7 @@ namespace Server.Gumps
 
             AddHtmlLocalized(130, 45, 270, 16, 1154001, 0xFFFFFF, false, false); // Armor Refinement
 
-            AddButton( 313, 395, 0x2EEC, 0x2EEE, 0, GumpButtonType.Reply, 0 );
+            AddButton(313, 395, 0x2EEC, 0x2EEE, 0, GumpButtonType.Reply, 0);
 
             AddPage(1);
 

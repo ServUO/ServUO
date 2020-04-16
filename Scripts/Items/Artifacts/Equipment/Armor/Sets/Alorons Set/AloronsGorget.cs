@@ -1,7 +1,3 @@
-using Server;
-using System;
-using Server.Mobiles;
-
 namespace Server.Items
 {
     public class AloronsGorget : TigerPeltCollar

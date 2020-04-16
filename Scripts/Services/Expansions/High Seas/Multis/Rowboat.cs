@@ -1,10 +1,5 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-
-using Server;
 using Server.Items;
-using Server.Engines.PartySystem;
+using System.Collections.Generic;
 
 namespace Server.Multis
 {
@@ -93,7 +88,7 @@ namespace Server.Multis
             if (Line != null)
                 Line.Location = new Point3D(X + (Line.X - old.X), Y + (Line.Y - old.Y), Z + (Line.Z - old.Z));
 
-            if(Rudder != null && Rudder.Handle != null)
+            if (Rudder != null && Rudder.Handle != null)
                 Rudder.Handle.Location = new Point3D(X + (Rudder.Handle.X - old.X), Y + (Rudder.Handle.Y - old.Y), Z + (Rudder.Handle.Z - old.Z));
         }
 
@@ -229,18 +224,18 @@ namespace Server.Multis
         {
             switch (dir)
             {
-                case Direction.South: 
+                case Direction.South:
                     ItemID = 16068;
                     break;
-                case Direction.North: 
+                case Direction.North:
                     ItemID = 16062;
                     X--;
                     break;
-                case Direction.West: 
-                    ItemID =  15990;
+                case Direction.West:
+                    ItemID = 15990;
                     break;
-                case Direction.East: 
-                    ItemID =  15971;
+                case Direction.East:
+                    ItemID = 15971;
                     break;
             }
         }
@@ -313,7 +308,7 @@ namespace Server.Multis
                         break;
                     case Direction.West:
                         ItemID = 15991;
-                        MoveToWorld(new Point3D(Rudder.X -1, Rudder.Y + 1, Rudder.Z), Map);
+                        MoveToWorld(new Point3D(Rudder.X - 1, Rudder.Y + 1, Rudder.Z), Map);
                         break;
                     case Direction.East:
                         ItemID = 15970;

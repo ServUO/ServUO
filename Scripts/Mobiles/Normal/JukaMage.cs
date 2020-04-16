@@ -1,14 +1,14 @@
-using System;
 using Server.Items;
 using Server.Spells;
+using System;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a juka corpse")] 
+    [CorpseName("a juka corpse")]
     public class JukaMage : BaseCreature
     {
         private DateTime m_NextAbilityTime;
-		
+
         [Constructable]
         public JukaMage()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -87,9 +87,9 @@ namespace Server.Mobiles
                 return true;
             }
         }
-		
-		public override int TreasureMapLevel { get { return 3; } }
-		
+
+        public override int TreasureMapLevel { get { return 3; } }
+
         public override int Meat
         {
             get

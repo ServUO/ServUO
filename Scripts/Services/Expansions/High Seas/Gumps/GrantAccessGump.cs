@@ -1,5 +1,3 @@
-using System;
-using Server;
 using Server.Multis;
 using Server.Network;
 
@@ -7,9 +5,9 @@ namespace Server.Gumps
 {
     public class GrantAccessGump : BaseShipGump
     {
-        private Mobile m_Player;
-        private BaseGalleon m_Galleon;
-        private SecurityEntry m_Entry;
+        private readonly Mobile m_Player;
+        private readonly BaseGalleon m_Galleon;
+        private readonly SecurityEntry m_Entry;
 
         public GrantAccessGump(Mobile player, BaseGalleon galleon)
             : base(galleon)

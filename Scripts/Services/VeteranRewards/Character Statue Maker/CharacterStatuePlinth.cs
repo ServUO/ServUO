@@ -1,7 +1,7 @@
-using System;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Multis;
+using System;
 
 namespace Server.Items
 {
@@ -134,7 +134,7 @@ namespace Server.Items
 
             public int GetTypeNumber(StatueType type)
             {
-                switch ( type )
+                switch (type)
                 {
                     case StatueType.Marble:
                         return 1076181;

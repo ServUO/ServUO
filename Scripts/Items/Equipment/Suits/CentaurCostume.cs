@@ -1,6 +1,3 @@
-using System;
-using Server;
-
 namespace Server.Items
 {
     public class CentaurCostume : BaseCostume
@@ -12,8 +9,8 @@ namespace Server.Items
         {
             this.CostumeBody = 101;
         }
-		
-		public override int LabelNumber
+
+        public override int LabelNumber
         {
             get
             {

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class Meteorite : Item
@@ -10,10 +8,10 @@ namespace Server.Items
         public bool Polished
         {
             get
-            { 
+            {
                 return _Polished;
-            } 
-            set 
+            }
+            set
             {
                 _Polished = value;
 
@@ -27,7 +25,7 @@ namespace Server.Items
                 }
 
                 InvalidateProperties();
-            } 
+            }
         }
 
 

@@ -1,14 +1,10 @@
+using Server.Accounting;
+using Server.Gumps;
+using Server.Items;
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Server;
-using Server.Items;
-using Server.Mobiles;
-using Server.Commands;
-using Server.Accounting;
-using Server.Multis;
-using Server.Gumps;
 
 namespace Server.Engines.NewMagincia
 {
@@ -22,13 +18,13 @@ namespace Server.Engines.NewMagincia
         private static MaginciaLottoSystem m_Instance;
         public static MaginciaLottoSystem Instance { get { return m_Instance; } set { m_Instance = value; } }
 
-        private static List<MaginciaHousingPlot> m_Plots = new List<MaginciaHousingPlot>();
+        private static readonly List<MaginciaHousingPlot> m_Plots = new List<MaginciaHousingPlot>();
         public static List<MaginciaHousingPlot> Plots { get { return m_Plots; } }
 
         private static Dictionary<Map, List<Rectangle2D>> m_FreeHousingZones;
         public static Dictionary<Map, List<Rectangle2D>> FreeHousingZones { get { return m_FreeHousingZones; } }
 
-        private static Dictionary<Mobile, List<NewMaginciaMessage>> m_MessageQueue = new Dictionary<Mobile, List<NewMaginciaMessage>>();
+        private static readonly Dictionary<Mobile, List<NewMaginciaMessage>> m_MessageQueue = new Dictionary<Mobile, List<NewMaginciaMessage>>();
         public static Dictionary<Mobile, List<NewMaginciaMessage>> MessageQueue { get { return m_MessageQueue; } }
 
         private Timer m_Timer;
@@ -53,7 +49,7 @@ namespace Server.Engines.NewMagincia
                 {
                     foreach (MaginciaHousingPlot plot in m_Plots)
                     {
-                        if(plot.IsAvailable)
+                        if (plot.IsAvailable)
                             plot.LottoEnds = DateTime.UtcNow + m_LottoDuration;
                     }
                 }
@@ -96,7 +92,7 @@ namespace Server.Engines.NewMagincia
             m_FreeHousingZones[Map.Trammel] = new List<Rectangle2D>();
             m_FreeHousingZones[Map.Felucca] = new List<Rectangle2D>();
 
-            if(m_Enabled)
+            if (m_Enabled)
                 StartTimer();
 
             LoadPlots();
@@ -254,7 +250,7 @@ namespace Server.Engines.NewMagincia
         }
 
         public static Rectangle2D[] MagHousingZones { get { return m_MagHousingZones; } }
-        private static Rectangle2D[] m_MagHousingZones = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_MagHousingZones = new Rectangle2D[]
         {
             new Rectangle2D(3686, 2125, 18, 18), // C1
             new Rectangle2D(3686, 2086, 18, 18), // C2 / Prime
@@ -284,7 +280,7 @@ namespace Server.Engines.NewMagincia
             new Rectangle2D(3715, 2090, 18, 18), // E7 / Prime            
         };
 
-        private static Point3D[] m_StoneLocs = new Point3D[]
+        private static readonly Point3D[] m_StoneLocs = new Point3D[]
         {
             new Point3D(3683, 2134, 20),
             new Point3D(3704, 2092, 5),
@@ -314,7 +310,7 @@ namespace Server.Engines.NewMagincia
             new Point3D(3711, 2087, 5)
         };
 
-        private static string[] m_Identifiers = new string[]
+        private static readonly string[] m_Identifiers = new string[]
         {
             "C-1",
             "C-2",
@@ -553,7 +549,7 @@ namespace Server.Engines.NewMagincia
                 m_Plots[i].Serialize(writer);
 
             writer.Write(m_FreeHousingZones[Map.Trammel].Count);
-            foreach(Rectangle2D rec in m_FreeHousingZones[Map.Trammel])
+            foreach (Rectangle2D rec in m_FreeHousingZones[Map.Trammel])
                 writer.Write(rec);
 
             writer.Write(m_FreeHousingZones[Map.Felucca].Count);
@@ -561,12 +557,12 @@ namespace Server.Engines.NewMagincia
                 writer.Write(rec);
 
             writer.Write(m_MessageQueue.Count);
-            foreach(KeyValuePair<Mobile, List<NewMaginciaMessage>> kvp in m_MessageQueue)
+            foreach (KeyValuePair<Mobile, List<NewMaginciaMessage>> kvp in m_MessageQueue)
             {
                 writer.Write(kvp.Key);
 
                 writer.Write(kvp.Value.Count);
-                foreach(NewMaginciaMessage message in kvp.Value)
+                foreach (NewMaginciaMessage message in kvp.Value)
                     message.Serialize(writer);
             }
 
@@ -606,7 +602,7 @@ namespace Server.Engines.NewMagincia
                 List<NewMaginciaMessage> messages = new List<NewMaginciaMessage>();
 
                 int count = reader.ReadInt();
-                for(int j = 0; j < count; j++)
+                for (int j = 0; j < count; j++)
                     messages.Add(new NewMaginciaMessage(reader));
 
                 if (m != null && messages.Count > 0)
@@ -623,7 +619,7 @@ namespace Server.Engines.NewMagincia
 
         public void ValidatePlots()
         {
-            for(int i = 0; i < m_Identifiers.Length; i++)
+            for (int i = 0; i < m_Identifiers.Length; i++)
             {
                 var rec = m_MagHousingZones[i];
                 var id = m_Identifiers[i];

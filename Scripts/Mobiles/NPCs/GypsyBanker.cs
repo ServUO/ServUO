@@ -4,102 +4,102 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-	public class GypsyBanker : Banker
-	{
-		[Constructable]
-		public GypsyBanker()
-		{
-			Title = "the gypsy banker";
-			SetSkill(SkillName.Begging, 64.0, 100.0);
-		}
+    public class GypsyBanker : Banker
+    {
+        [Constructable]
+        public GypsyBanker()
+        {
+            Title = "the gypsy banker";
+            SetSkill(SkillName.Begging, 64.0, 100.0);
+        }
 
-		public GypsyBanker(Serial serial)
-			: base(serial)
-		{ }
+        public GypsyBanker(Serial serial)
+            : base(serial)
+        { }
 
-		public override bool IsActiveVendor { get { return false; } }
-		public override NpcGuild NpcGuild { get { return NpcGuild.None; } }
-		public override bool ClickTitle { get { return false; } }
+        public override bool IsActiveVendor { get { return false; } }
+        public override NpcGuild NpcGuild { get { return NpcGuild.None; } }
+        public override bool ClickTitle { get { return false; } }
 
-		public override void InitOutfit()
-		{
-			base.InitOutfit();
+        public override void InitOutfit()
+        {
+            base.InitOutfit();
 
-			switch (Utility.Random(4))
-			{
-				case 0:
-					AddItem(new JesterHat(Utility.RandomBrightHue()));
-					break;
-				case 1:
-					AddItem(new Bandana(Utility.RandomBrightHue()));
-					break;
-				case 2:
-					AddItem(new SkullCap(Utility.RandomBrightHue()));
-					break;
-			}
+            switch (Utility.Random(4))
+            {
+                case 0:
+                    AddItem(new JesterHat(Utility.RandomBrightHue()));
+                    break;
+                case 1:
+                    AddItem(new Bandana(Utility.RandomBrightHue()));
+                    break;
+                case 2:
+                    AddItem(new SkullCap(Utility.RandomBrightHue()));
+                    break;
+            }
 
-			Item item = FindItemOnLayer(Layer.Pants);
+            Item item = FindItemOnLayer(Layer.Pants);
 
-			if (item != null)
-			{
-				item.Hue = Utility.RandomBrightHue();
-			}
+            if (item != null)
+            {
+                item.Hue = Utility.RandomBrightHue();
+            }
 
-			item = FindItemOnLayer(Layer.Shoes);
+            item = FindItemOnLayer(Layer.Shoes);
 
-			if (item != null)
-			{
-				item.Hue = Utility.RandomBrightHue();
-			}
+            if (item != null)
+            {
+                item.Hue = Utility.RandomBrightHue();
+            }
 
-			item = FindItemOnLayer(Layer.OuterLegs);
+            item = FindItemOnLayer(Layer.OuterLegs);
 
-			if (item != null)
-			{
-				item.Hue = Utility.RandomBrightHue();
-			}
+            if (item != null)
+            {
+                item.Hue = Utility.RandomBrightHue();
+            }
 
-			item = FindItemOnLayer(Layer.InnerLegs);
+            item = FindItemOnLayer(Layer.InnerLegs);
 
-			if (item != null)
-			{
-				item.Hue = Utility.RandomBrightHue();
-			}
+            if (item != null)
+            {
+                item.Hue = Utility.RandomBrightHue();
+            }
 
-			item = FindItemOnLayer(Layer.OuterTorso);
+            item = FindItemOnLayer(Layer.OuterTorso);
 
-			if (item != null)
-			{
-				item.Hue = Utility.RandomBrightHue();
-			}
+            if (item != null)
+            {
+                item.Hue = Utility.RandomBrightHue();
+            }
 
-			item = FindItemOnLayer(Layer.InnerTorso);
+            item = FindItemOnLayer(Layer.InnerTorso);
 
-			if (item != null)
-			{
-				item.Hue = Utility.RandomBrightHue();
-			}
+            if (item != null)
+            {
+                item.Hue = Utility.RandomBrightHue();
+            }
 
-			item = FindItemOnLayer(Layer.Shirt);
+            item = FindItemOnLayer(Layer.Shirt);
 
-			if (item != null)
-			{
-				item.Hue = Utility.RandomBrightHue();
-			}
-		}
+            if (item != null)
+            {
+                item.Hue = Utility.RandomBrightHue();
+            }
+        }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write(0); // version
-		}
+            writer.Write(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadInt();
-		}
-	}
+            int version = reader.ReadInt();
+        }
+    }
 }

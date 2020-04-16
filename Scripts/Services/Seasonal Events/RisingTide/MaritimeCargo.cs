@@ -1,10 +1,5 @@
-using System;
-
-using Server;
-using Server.Items;
-using Server.Mobiles;
 using Server.Engines.CityLoyalty;
-using Server.Engines.RisingTide;
+using System;
 
 namespace Server.Items
 {
@@ -27,8 +22,6 @@ namespace Server.Items
         Reagents = 1156,
         Glassware = 1158,
     }
-
-    // 1158907 You recover maritime trade cargo!
 
     [Flipable(0xA2C4, 0xA2C5)]
     public class MaritimeCargo : Item
@@ -143,7 +136,7 @@ namespace Server.Items
                 case CargoQuality.Grandmaster: amount = Utility.RandomMinMax(100, 200); break;
                 case CargoQuality.Exalted: amount = Utility.RandomMinMax(500, 600); break;
                 case CargoQuality.Legendary: amount = Utility.RandomMinMax(1000, 1100); break;
-                case CargoQuality.Mythical: amount = Utility.RandomMinMax(10000, 15000); break;
+                case CargoQuality.Mythical: amount = Utility.RandomMinMax(10000, 10100); break;
             }
 
             return amount;

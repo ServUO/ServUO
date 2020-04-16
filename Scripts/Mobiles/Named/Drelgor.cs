@@ -1,13 +1,7 @@
 
-using System;
-using Server;
-using System.Collections;
-using System.Collections.Generic;
 using Server.Items;
-using Server.Misc;
-using Server.Regions;
 using Server.Network;
-using Server.Targeting;
+using System;
 
 namespace Server.Mobiles
 {
@@ -15,7 +9,7 @@ namespace Server.Mobiles
     public class Drelgor : BaseCreature
     {
         private bool init = false; //Don't change this.
-        private double msgevery = 1.0; //Recurring message. Change to 0 to disable.
+        private readonly double msgevery = 1.0; //Recurring message. Change to 0 to disable.
         private DateTime m_NextMsgTime;
 
         [Constructable]
@@ -90,7 +84,7 @@ namespace Server.Mobiles
             init = true;
         }
         #endregion
-        
+
         #region Broadcast Message
         public void BroadcastMessage()
         {

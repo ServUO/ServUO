@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class AcidVine : Item
     {
-		public override int LabelNumber { get { return 1111655; } } // magic vines
+        public override int LabelNumber { get { return 1111655; } } // magic vines
         public override bool ForceShowProperties { get { return true; } }
 
         [Constructable]
@@ -19,7 +17,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override void OnDoubleClick(Mobile from)
         {
             if (from.InRange(this.GetWorldLocation(), 1))
@@ -28,11 +26,11 @@ namespace Server.Items
             }
             else if (from.InRange(this.GetWorldLocation(), 4))
             {
-				from.SendLocalizedMessage(1111665); // You notice something odd about the vines covering the wall.
+                from.SendLocalizedMessage(1111665); // You notice something odd about the vines covering the wall.
             }
             else if (!from.InRange(this.GetWorldLocation(), 4))
             {
-				from.SendLocalizedMessage(1019045); // I can't reach that.
+                from.SendLocalizedMessage(1019045); // I can't reach that.
             }
 
             base.OnDoubleClick(from);

@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.VeteranRewards;
 using Server.Gumps;
 using Server.Multis;
@@ -6,7 +5,7 @@ using Server.Network;
 using Server.Targeting;
 
 namespace Server.Items
-{ 
+{
     public class FlamingHead : StoneFaceTrapNoDamage, IAddon, IRewardItem
     {
         private bool m_IsRewardItem;
@@ -41,13 +40,13 @@ namespace Server.Items
         public override bool ForceShowProperties { get { return true; } }
 
         public Item Deed
-        { 
+        {
             get
-            { 
+            {
                 FlamingHeadDeed deed = new FlamingHeadDeed();
                 deed.IsRewardItem = this.m_IsRewardItem;
 
-                return deed;	
+                return deed;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -66,7 +65,7 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             if (this.m_IsRewardItem)
                 list.Add(1076218); // 2nd Year Veteran Reward
         }
@@ -80,8 +79,8 @@ namespace Server.Items
         {
             if (from.InRange(this.Location, 2))
             {
-                BaseHouse house = BaseHouse.FindHouseAt(this);  
-				
+                BaseHouse house = BaseHouse.FindHouseAt(this);
+
                 if (house != null && house.IsOwner(from))
                 {
                     from.CloseGump(typeof(RewardDemolitionGump));
@@ -99,7 +98,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.WriteEncodedInt(0); // version
-			
+
             writer.Write((bool)this.m_IsRewardItem);
         }
 
@@ -108,12 +107,12 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             this.m_IsRewardItem = reader.ReadBool();
         }
 
         public bool CouldFit(IPoint3D p, Map map)
-        { 
+        {
             if (map == null || !map.CanFit(p.X, p.Y, p.Z, this.ItemData.Height))
                 return false;
 
@@ -121,9 +120,9 @@ namespace Server.Items
                 return BaseAddon.IsWall(p.X, p.Y - 1, p.Z, map) && BaseAddon.IsWall(p.X - 1, p.Y, p.Z, map); // north and west wall
             else if (this.Type == StoneFaceTrapType.NorthWall)
                 return BaseAddon.IsWall(p.X, p.Y - 1, p.Z, map); // north wall
-            else if (this.Type == StoneFaceTrapType.WestWall) 
+            else if (this.Type == StoneFaceTrapType.WestWall)
                 return BaseAddon.IsWall(p.X - 1, p.Y, p.Z, map); // west wall
-				
+
             return false;
         }
     }
@@ -134,7 +133,7 @@ namespace Server.Items
         [Constructable]
         public FlamingHeadDeed()
             : base(0x14F0)
-        { 
+        {
             this.LootType = LootType.Blessed;
             this.Weight = 1.0;
         }
@@ -167,18 +166,18 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             if (this.m_IsRewardItem)
                 list.Add(1076218); // 2nd Year Veteran Reward
         }
 
         public override void OnDoubleClick(Mobile from)
-        { 
+        {
             if (this.m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, null))
                 return;
-		
+
             if (this.IsChildOf(from.Backpack))
-            { 
+            {
                 BaseHouse house = BaseHouse.FindHouseAt(from);
 
                 if (house != null && house.IsOwner(from))
@@ -198,7 +197,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.WriteEncodedInt(0); // version
-			
+
             writer.Write((bool)this.m_IsRewardItem);
         }
 
@@ -207,7 +206,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             this.m_IsRewardItem = reader.ReadBool();
         }
 
@@ -224,24 +223,24 @@ namespace Server.Items
             {
                 if (this.m_Head == null || this.m_Head.Deleted)
                     return;
-					
+
                 if (this.m_Head.IsChildOf(from.Backpack))
                 {
                     BaseHouse house = BaseHouse.FindHouseAt(from);
-					
+
                     if (house != null && house.IsOwner(from))
                     {
                         IPoint3D p = targeted as IPoint3D;
                         Map map = from.Map;
-						
+
                         if (p == null || map == null)
                             return;
-							
+
                         Point3D p3d = new Point3D(p);
                         ItemData id = TileData.ItemTable[0x10F5];
-						
+
                         house = BaseHouse.FindHouseAt(p3d, map, id.Height);
-						
+
                         if (house != null && house.IsOwner(from))
                         {
                             if (map.CanFit(p3d, id.Height))
@@ -250,24 +249,24 @@ namespace Server.Items
                                 bool west = BaseAddon.IsWall(p3d.X - 1, p3d.Y, p3d.Z, map);
 
                                 FlamingHead head = null;
-								
+
                                 if (north && west)
                                     head = new FlamingHead(StoneFaceTrapType.NorthWestWall);
                                 else if (north)
                                     head = new FlamingHead(StoneFaceTrapType.NorthWall);
                                 else if (west)
                                     head = new FlamingHead(StoneFaceTrapType.WestWall);
-								
+
                                 if (north || west)
                                 {
-                                    house.Addons[head] = from;	
+                                    house.Addons[head] = from;
 
                                     head.IsRewardItem = this.m_Head.IsRewardItem;
                                     head.MoveToWorld(p3d, map);
 
                                     this.m_Head.Delete();
                                 }
-                                else 
+                                else
                                     from.SendLocalizedMessage(1042266); // The head must be placed next to a wall.
                             }
                             else

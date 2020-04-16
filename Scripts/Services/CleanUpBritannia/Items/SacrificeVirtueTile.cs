@@ -1,6 +1,4 @@
-﻿using System;
-using Server;
-using Server.Gumps;
+﻿using Server.Gumps;
 
 namespace Server.Items
 {
@@ -14,9 +12,9 @@ namespace Server.Items
     {
         public override BaseAddonDeed Deed { get { return new SacrificeVirtueTileDeed(); } }
 
-        private SacrificeTileType m_SacrificeTileType;
+        private readonly SacrificeTileType m_SacrificeTileType;
 
-        private int offset;
+        private readonly int offset;
 
         [Constructable]
         public SacrificeVirtueTileAddon(SacrificeTileType type)

@@ -1,13 +1,13 @@
 using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Szandor : MondainQuester
     {
         [Constructable]
         public Szandor()
             : base("Szandor", "the late architect")
-        { 
+        {
         }
 
         public Szandor(Serial serial)
@@ -25,7 +25,7 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Body = 0x32;
             this.Hue = 0x83F2;
         }

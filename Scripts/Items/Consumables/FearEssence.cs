@@ -1,9 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Server.Network;
 using Server.Spells;
 using Server.Targeting;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -67,7 +67,7 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
 
-        private List<Mobile> m_Users = new List<Mobile>();
+        private readonly List<Mobile> m_Users = new List<Mobile>();
 
         public void Explode_Callback(object state)
         {
@@ -140,7 +140,7 @@ namespace Server.Items
         #endregion
 
         #region Delay
-        private static Hashtable m_Delay = new Hashtable();
+        private static readonly Hashtable m_Delay = new Hashtable();
 
         public static void AddDelay(Mobile m)
         {

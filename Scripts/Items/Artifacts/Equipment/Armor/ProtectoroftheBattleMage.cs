@@ -1,18 +1,16 @@
-using System;
-
 namespace Server.Items
 {
     public class ProtectoroftheBattleMage : LeatherChest
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113761; } } // Protector of the Battle Mage
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113761; } } // Protector of the Battle Mage
+
         [Constructable]
         public ProtectoroftheBattleMage()
             : base()
         {
-            Hue = 1159;		
-            Attributes.LowerManaCost = 8;	
+            Hue = 1159;
+            Attributes.LowerManaCost = 8;
             Attributes.RegenMana = 2;
             Attributes.LowerRegCost = 10;
             Attributes.SpellDamage = 5;

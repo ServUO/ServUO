@@ -1,25 +1,23 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x2B78, 0x316F)]
     public class LeafweaveLegs : HidePants
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public LeafweaveLegs()
             : base()
         {
             this.SetHue = 0x47E;
-			
+
             this.Attributes.RegenMana = 1;
             this.ArmorAttributes.MageArmor = 1;
-			
+
             this.SetAttributes.BonusInt = 10;
             this.SetAttributes.SpellDamage = 15;
-			
+
             this.SetSelfRepair = 3;
-			
+
             this.SetPhysicalBonus = 4;
             this.SetFireBonus = 5;
             this.SetColdBonus = 3;
@@ -91,14 +89,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }

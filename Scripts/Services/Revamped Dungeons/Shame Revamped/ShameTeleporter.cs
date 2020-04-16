@@ -1,33 +1,27 @@
-using Server;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Server.Engines.PartySystem;
-using Server.Mobiles;
 using Server.Items;
 
 namespace Server.Engines.ShameRevamped
 {
-	public class ShameTeleporter : Teleporter
-	{
-		public ShameTeleporter(Point3D dest, Map map) : base(dest, map, true)
-		{
-		}
+    public class ShameTeleporter : Teleporter
+    {
+        public ShameTeleporter(Point3D dest, Map map) : base(dest, map, true)
+        {
+        }
 
-		public ShameTeleporter(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write((int)1);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
+        public ShameTeleporter(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)1);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
 
             if (version == 0)
             {
@@ -38,8 +32,8 @@ namespace Server.Engines.ShameRevamped
                     reader.ReadMobile();
                 }
             }
-		}
-	}
+        }
+    }
 
     public class ShameWallTeleporter : Teleporter
     {
@@ -50,7 +44,7 @@ namespace Server.Engines.ShameRevamped
 
         public override bool CanTeleport(Mobile m)
         {
-            if(Deleted || Map == null || Map == Map.Internal)
+            if (Deleted || Map == null || Map == Map.Internal)
                 return false;
 
             IPooledEnumerable eable = Map.GetItemsInRange(Location, 1);

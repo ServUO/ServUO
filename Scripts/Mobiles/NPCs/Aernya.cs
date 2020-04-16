@@ -1,14 +1,14 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Aernya : MondainQuester
     {
         [Constructable]
         public Aernya()
             : base("Aernya", "the mistress of admissions")
-        { 
+        {
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
@@ -27,10 +27,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x8404;
             this.HairItemID = 0x2047;
             this.HairHue = 0x465;

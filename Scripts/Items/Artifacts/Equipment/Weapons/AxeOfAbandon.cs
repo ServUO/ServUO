@@ -1,24 +1,22 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0xF47, 0xF48)]
     public class AxeOfAbandon : BattleAxe
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113863; } } // Axe of Abandon
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113863; } } // Axe of Abandon
+
         [Constructable]
-        public AxeOfAbandon() 
-        {		
-            Hue = 556;		
+        public AxeOfAbandon()
+        {
+            Hue = 556;
             WeaponAttributes.HitLowerDefend = 40;
-            WeaponAttributes.BattleLust = 1;		
+            WeaponAttributes.BattleLust = 1;
             Attributes.AttackChance = 15;
-            Attributes.DefendChance = 10;	
-            Attributes.CastSpeed = 1;	
+            Attributes.DefendChance = 10;
+            Attributes.CastSpeed = 1;
             Attributes.WeaponSpeed = 30;
-            Attributes.WeaponDamage = 50;		
+            Attributes.WeaponDamage = 50;
         }
 
         public AxeOfAbandon(Serial serial)

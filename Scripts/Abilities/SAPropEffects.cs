@@ -25,10 +25,10 @@ namespace Server.Items
     /// </summary>
     public class PropertyEffect
     {
-        private Mobile m_Mobile;
-        private Mobile m_Victim;
-        private Item m_Owner;
-        private EffectsType m_Effect;
+        private readonly Mobile m_Mobile;
+        private readonly Mobile m_Victim;
+        private readonly Item m_Owner;
+        private readonly EffectsType m_Effect;
         private TimeSpan m_Duration;
         private TimeSpan m_TickDuration;
         private Timer m_Timer;
@@ -41,7 +41,7 @@ namespace Server.Items
         public TimeSpan TickDuration => m_TickDuration;
         public Timer Timer => m_Timer;
 
-        private static List<PropertyEffect> m_Effects = new List<PropertyEffect>();
+        private static readonly List<PropertyEffect> m_Effects = new List<PropertyEffect>();
         public static List<PropertyEffect> Effects => m_Effects;
 
         public PropertyEffect(Mobile from, Mobile victim, Item owner, EffectsType effect, TimeSpan duration, TimeSpan tickduration)
@@ -107,8 +107,8 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private PropertyEffect m_Effect;
-            private DateTime m_Expires;
+            private readonly PropertyEffect m_Effect;
+            private readonly DateTime m_Expires;
 
             public InternalTimer(PropertyEffect effect)
                 : base(effect.TickDuration, effect.TickDuration)
@@ -190,7 +190,7 @@ namespace Server.Items
                 this.Mobile.Mana += (int)Math.Min(this.Mobile.ManaMax, damage * mod);
                 m_Active = false;
 
-                Server.Effects.SendTargetParticles(this.Mobile, 0x375A, 0x1, 0xA, 0x71, 0x2, 0x1AE9, (EffectLayer)0, 0);
+                Server.Effects.SendTargetParticles(this.Mobile, 0x375A, 0x1, 0xA, 0x71, 0x2, 0x1AE9, 0, 0);
 
                 this.Mobile.SendLocalizedMessage(1113636); //The soul charge effect converts some of the damage you received into mana.
             }
@@ -365,12 +365,12 @@ namespace Server.Items
 
             switch (type)
             {
-                case DamageType.Kinetic: return (int)SAAbsorptionAttributes.GetValue(from, SAAbsorptionAttribute.EaterKinetic);
-                case DamageType.Fire: return (int)SAAbsorptionAttributes.GetValue(from, SAAbsorptionAttribute.EaterFire);
-                case DamageType.Cold: return (int)SAAbsorptionAttributes.GetValue(from, SAAbsorptionAttribute.EaterCold);
-                case DamageType.Poison: return (int)SAAbsorptionAttributes.GetValue(from, SAAbsorptionAttribute.EaterPoison);
-                case DamageType.Energy: return (int)SAAbsorptionAttributes.GetValue(from, SAAbsorptionAttribute.EaterEnergy);
-                case DamageType.AllTypes: return (int)SAAbsorptionAttributes.GetValue(from, SAAbsorptionAttribute.EaterDamage);
+                case DamageType.Kinetic: return SAAbsorptionAttributes.GetValue(from, SAAbsorptionAttribute.EaterKinetic);
+                case DamageType.Fire: return SAAbsorptionAttributes.GetValue(from, SAAbsorptionAttribute.EaterFire);
+                case DamageType.Cold: return SAAbsorptionAttributes.GetValue(from, SAAbsorptionAttribute.EaterCold);
+                case DamageType.Poison: return SAAbsorptionAttributes.GetValue(from, SAAbsorptionAttribute.EaterPoison);
+                case DamageType.Energy: return SAAbsorptionAttributes.GetValue(from, SAAbsorptionAttribute.EaterEnergy);
+                case DamageType.AllTypes: return SAAbsorptionAttributes.GetValue(from, SAAbsorptionAttribute.EaterDamage);
             }
             return 0;
         }
@@ -519,7 +519,7 @@ namespace Server.Items
 
         public static int CheckHit(Mobile attacker, Mobile defender)
         {
-            int mana = (int)(30.0 * ((double)(AosAttributes.GetValue(attacker, AosAttribute.LowerManaCost) + BaseArmor.GetInherentLowerManaCost(attacker)) / 100.0));
+            int mana = (int)(30.0 * ((AosAttributes.GetValue(attacker, AosAttribute.LowerManaCost) + BaseArmor.GetInherentLowerManaCost(attacker)) / 100.0));
             int damage = 0;
 
             if (attacker.Mana >= mana)
@@ -586,7 +586,7 @@ namespace Server.Items
     {
         public static Dictionary<Mobile, DateTime> _Immunity;
 
-        private int _ID;
+        private readonly int _ID;
 
         public SwarmContext(Mobile attacker, Mobile defender, Item weapon)
             : base(attacker, defender, weapon, EffectsType.Swarm, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(5))

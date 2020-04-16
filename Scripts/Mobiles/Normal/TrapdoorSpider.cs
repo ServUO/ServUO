@@ -5,7 +5,7 @@ namespace Server.Mobiles
     [CorpseName("a trapdoor spider corpse")]
     public class TrapdoorSpider : BaseCreature
     {
-        public override bool CanStealth { get { return true; } } 
+        public override bool CanStealth { get { return true; } }
 
         [Constructable]
         public TrapdoorSpider()
@@ -13,7 +13,7 @@ namespace Server.Mobiles
         {
             Name = "a trapdoor spider";
             Body = 737;
-            Hidden = true; 
+            Hidden = true;
 
             SetStr(100, 104);
             SetDex(162, 165);

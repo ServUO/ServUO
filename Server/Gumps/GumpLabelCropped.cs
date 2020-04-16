@@ -29,7 +29,7 @@ namespace Server.Gumps
         private int m_Width, m_Height;
         private int m_Hue;
         private string m_Text;
-        private int m_TextID;
+        private readonly int m_TextID;
 
         public int X
         {
@@ -128,7 +128,7 @@ namespace Server.Gumps
             return String.Format("{{ croppedtext {0} {1} {2} {3} {4} {5} }}", m_X, m_Y, m_Width, m_Height, m_Hue, m_Text == null ? m_TextID : Parent.Intern(m_Text));
         }
 
-        private static byte[] m_LayoutName = Gump.StringToBuffer("croppedtext");
+        private static readonly byte[] m_LayoutName = Gump.StringToBuffer("croppedtext");
 
         public override void AppendTo(IGumpWriter disp)
         {

@@ -1,7 +1,7 @@
-using System;
 using Server.Engines.Craft;
 using Server.Mobiles;
 using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -74,9 +74,9 @@ namespace Server.Items
             base.GetProperties(list);
 
             if (this.m_Exceptional && this.m_Crafter != null)
-				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
         }
-        
+
         public override void OnDoubleClick(Mobile from)
         {
             if (this.IsChildOf(from.Backpack))
@@ -146,7 +146,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                 case 0:

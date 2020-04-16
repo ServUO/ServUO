@@ -1,6 +1,3 @@
-using Server;
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a mongbat corpse")]

@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class CutsBothWaysQuest : BaseQuest
-    { 
+    {
         public CutsBothWaysQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(Broadsword), "broadswords", 12, 0xF5E));
-			
+
             this.AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
@@ -70,12 +70,12 @@ namespace Server.Engines.Quests
     }
 
     public class DragonProtectionQuest : BaseQuest
-    { 
+    {
         public DragonProtectionQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(DragonHelm), "dragon helms", 10, 0x2645));
-			
+
             this.AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
@@ -137,12 +137,12 @@ namespace Server.Engines.Quests
     }
 
     public class NothingFancyQuest : BaseQuest
-    { 
+    {
         public NothingFancyQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(Bascinet), "bascinets", 15, 0x140C));
-			
+
             this.AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
@@ -204,12 +204,12 @@ namespace Server.Engines.Quests
     }
 
     public class TheBulwarkQuest : BaseQuest
-    { 
+    {
         public TheBulwarkQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(HeaterShield), "heater shields", 10, 0x1B76));
-			
+
             this.AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
@@ -275,7 +275,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Lohn()
             : base("Lohn", "the metal weaver")
-        { 
+        {
             this.SetSkill(SkillName.Meditation, 60.0, 83.0);
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -286,10 +286,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(CutsBothWaysQuest),
                     typeof(DragonProtectionQuest),
@@ -301,10 +301,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x8385;
             this.HairItemID = 0x2FC2;
             this.HairHue = 0x26B;

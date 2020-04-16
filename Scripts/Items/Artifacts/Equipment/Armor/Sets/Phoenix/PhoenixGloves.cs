@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class PhoenixGloves : RingmailGloves
@@ -8,7 +6,7 @@ namespace Server.Items
         public PhoenixGloves()
         {
             Hue = 0x8E;
-			LootType = LootType.Blessed;     
+            LootType = LootType.Blessed;
         }
 
         public PhoenixGloves(Serial serial)
@@ -23,7 +21,7 @@ namespace Server.Items
                 return 1041605;
             }
         }// ringmail gloves of the phoenix
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

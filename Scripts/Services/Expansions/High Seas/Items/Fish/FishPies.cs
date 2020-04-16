@@ -1,7 +1,6 @@
-using Server;
-using System;
-using Server.Mobiles;
 using Server.Engines.Craft;
+using Server.Mobiles;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Items
@@ -77,7 +76,7 @@ namespace Server.Items
 
         public static void RemoveBuff(Mobile from, FishPieEffect type)
         {
-            if(!m_EffectsList.ContainsKey(from))
+            if (!m_EffectsList.ContainsKey(from))
                 return;
 
             if (m_EffectsList[from] != null && m_EffectsList[from].Contains(type))
@@ -163,8 +162,8 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private Mobile m_From;
-            private FishPieEffect m_EffectType;
+            private readonly Mobile m_From;
+            private readonly FishPieEffect m_EffectType;
 
             public InternalTimer(TimeSpan duration, Mobile from, FishPieEffect type) : base(duration)
             {

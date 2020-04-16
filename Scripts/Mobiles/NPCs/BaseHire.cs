@@ -1,8 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Items;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -67,10 +66,10 @@ namespace Server.Mobiles
 
         private int m_GoldOnDeath = 0;
 
-        public override bool OnBeforeDeath() 
-        { 
+        public override bool OnBeforeDeath()
+        {
             // Stop the pay timer if its running 
-            if (m_PayTimer != null) 
+            if (m_PayTimer != null)
                 m_PayTimer.Stop();
 
             m_PayTimer = null;
@@ -90,8 +89,8 @@ namespace Server.Mobiles
         }
 
         public override void OnDeath(Container c)
-        { 
-            if (m_GoldOnDeath > 0) 
+        {
+            if (m_GoldOnDeath > 0)
                 c.DropItem(new Gold(m_GoldOnDeath));
 
             base.OnDeath(c);
@@ -121,12 +120,12 @@ namespace Server.Mobiles
             if (!Controlled)
                 return null;
             Mobile Owner = ControlMaster;
-	  
+
             m_IsHired = true;
-	  
+
             if (Owner == null)
                 return null;
-	  
+
             if (Owner.Deleted)
             {
                 this.Say(1005653, 0x3B2);// Hmmm.  I seem to have lost my master.
@@ -140,31 +139,31 @@ namespace Server.Mobiles
         #endregion 
 
         #region [ AddHire ] 
-        public virtual bool AddHire(Mobile m) 
-        { 
+        public virtual bool AddHire(Mobile m)
+        {
             Mobile owner = GetOwner();
 
-            if (owner != null) 
-            { 
+            if (owner != null)
+            {
                 m.SendLocalizedMessage(1043283, owner.Name);// I am following ~1_NAME~. 
                 return false;
             }
 
-            if (SetControlMaster(m)) 
-            { 
+            if (SetControlMaster(m))
+            {
                 m_IsHired = true;
 
                 return true;
             }
-	  
+
             return false;
         }
 
         #endregion 
 
         #region [ Payday ] 
-        public virtual bool Payday(BaseHire m) 
-        { 
+        public virtual bool Payday(BaseHire m)
+        {
             m_Pay = (int)m.Skills[SkillName.Anatomy].Value + (int)m.Skills[SkillName.Tactics].Value;
             m_Pay += (int)m.Skills[SkillName.Macing].Value + (int)m.Skills[SkillName.Swords].Value;
             m_Pay += (int)m.Skills[SkillName.Fencing].Value + (int)m.Skills[SkillName.Archery].Value;
@@ -179,18 +178,18 @@ namespace Server.Mobiles
 
         #region [ OnDragDrop ]
         public override bool OnDragDrop(Mobile from, Item item)
-        { 
+        {
             if (m_Pay != 0)
-            { 
+            {
                 // Is the creature already hired
                 if (Controlled == false)
-                { 
+                {
                     // Is the item the payment in gold
                     if (item is Gold)
-                    { 
+                    {
                         // Is the payment in gold sufficient
                         if (item.Amount >= m_Pay)
-                        { 
+                        {
                             if (from.Followers + ControlSlots > from.FollowersMax)
                             {
                                 this.SayTo(from, 500896, 0x3B2); // I see you already have an escort.
@@ -211,22 +210,22 @@ namespace Server.Mobiles
                                 return false;
                             }
                         }
-                        else 
-                        { 
+                        else
+                        {
                             SayHireCost();
                         }
                     }
-                    else 
+                    else
                     {
                         this.SayTo(from, 1043268, 0x3B2);// Tis crass of me, but I want gold
                     }
                 }
-                else 
+                else
                 {
                     this.SayTo(from, 1042495, 0x3B2);// I have already been hired.
                 }
             }
-            else 
+            else
             {
                 this.SayTo(from, 500200, 0x3B2);// I have no need for that.
             }
@@ -237,15 +236,15 @@ namespace Server.Mobiles
         #endregion 
 
         #region [ OnSpeech ] 
-        internal void SayHireCost() 
+        internal void SayHireCost()
         {
             this.Say(1043256, string.Format("{0}", m_Pay), 0x3B2);// "I am available for hire for ~1_AMOUNT~ gold coins a day. If thou dost give me gold, I will work for thee."
         }
 
-        public override void OnSpeech(SpeechEventArgs e) 
-        { 
-            if (!e.Handled && e.Mobile.InRange(this, 6)) 
-            { 
+        public override void OnSpeech(SpeechEventArgs e)
+        {
+            if (!e.Handled && e.Mobile.InRange(this, 6))
+            {
                 int[] keywords = e.Keywords;
                 string speech = e.Speech;
 
@@ -288,33 +287,33 @@ namespace Server.Mobiles
             }
         }
 
-        #endregion 
-	
+        #endregion
+
         #region [ Class PayTimer ] 
-        private class PayTimer : Timer 
-        { 
+        private class PayTimer : Timer
+        {
             private readonly BaseHire m_Hire;
-	  
+
             public PayTimer(BaseHire vend)
                 : base(TimeSpan.FromMinutes(30.0), TimeSpan.FromMinutes(30.0))
-            { 
+            {
                 m_Hire = vend;
                 Priority = TimerPriority.OneMinute;
             }
-	  
-            protected override void OnTick() 
-            { 
+
+            protected override void OnTick()
+            {
                 int m_Pay = m_Hire.m_Pay;
-                if (m_Hire.m_HoldGold <= m_Pay) 
-                { 
+                if (m_Hire.m_HoldGold <= m_Pay)
+                {
                     // Get the current owner, if any (updates HireTable) 
                     Mobile owner = m_Hire.GetOwner();
 
                     m_Hire.Say(503235, 0x3B2);// I regret nothing!postal 
                     m_Hire.Delete();
                 }
-                else 
-                { 
+                else
+                {
                     m_Hire.m_HoldGold -= m_Pay;
                 }
             }
@@ -323,17 +322,17 @@ namespace Server.Mobiles
 
         #region [ Class HireEntry ]
         public class HireEntry : ContextMenuEntry
-        { 
+        {
             private readonly Mobile m_Mobile;
             private readonly BaseHire m_Hire;
 
             public HireEntry(Mobile from, BaseHire hire)
                 : base(6120, 3)
-            { 
+            {
                 m_Hire = hire;
                 m_Mobile = from;
             }
-	  
+
             public override void OnClick()
             {
                 m_Hire.Payday(m_Hire);

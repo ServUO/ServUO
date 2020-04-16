@@ -1,27 +1,24 @@
-using System;
-using Server.Items;
-
 namespace Server.Items
 {
-	public class KnightsNorseHelm : NorseHelm
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber{ get{ return 1080157; } } // Knight's Norse Helm
+    public class KnightsNorseHelm : NorseHelm
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1080157; } } // Knight's Norse Helm
 
-        public override SetItem SetID{ get{ return SetItem.Knights; } }
-		public override int Pieces{ get{ return 6; } }
-		
-		public override int BasePhysicalResistance{ get{ return 7; } }
-		public override int BaseFireResistance{ get{ return 7; } }
-		public override int BaseColdResistance{ get{ return 7; } }
-		public override int BasePoisonResistance{ get{ return 7; } }
-		public override int BaseEnergyResistance{ get{ return 7; } }
-		public override int InitMinHits{ get{ return 255; } }
-		public override int InitMaxHits{ get{ return 255; } }
+        public override SetItem SetID { get { return SetItem.Knights; } }
+        public override int Pieces { get { return 6; } }
 
-		[Constructable]
-		public KnightsNorseHelm() : base()
-		{
+        public override int BasePhysicalResistance { get { return 7; } }
+        public override int BaseFireResistance { get { return 7; } }
+        public override int BaseColdResistance { get { return 7; } }
+        public override int BasePoisonResistance { get { return 7; } }
+        public override int BaseEnergyResistance { get { return 7; } }
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
+
+        [Constructable]
+        public KnightsNorseHelm() : base()
+        {
             this.Hue = 1150;
             this.Weight = 5;
 
@@ -39,24 +36,24 @@ namespace Server.Items
             this.SetColdBonus = 28;
             this.SetPoisonBonus = 28;
             this.SetEnergyBonus = 28;
-		}
+        }
 
-		public KnightsNorseHelm( Serial serial ) : base( serial )
-		{
-		}
-		
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-			
-			writer.Write( (int) 0 ); // version
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize( reader );
-			
-			int version = reader.ReadInt();
-		}
-	}
+        public KnightsNorseHelm(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
 }

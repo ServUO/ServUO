@@ -1,4 +1,3 @@
-using System;
 using Server.Misc;
 
 namespace Server.Items
@@ -50,7 +49,7 @@ namespace Server.Items
                 this.Attributes.BonusDex = 0;
             else
                 this.Attributes.BonusInt = 0;
-			
+
             Titles.AwardKarma(from, -22, true);
 
             return base.OnEquip(from);

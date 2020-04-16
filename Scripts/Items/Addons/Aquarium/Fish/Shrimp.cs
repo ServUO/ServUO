@@ -1,9 +1,7 @@
-using System;
-
 namespace Server.Items
 {
     public class Shrimp : BaseFish
-    { 
+    {
         [Constructable]
         public Shrimp()
             : base(0x3B14)
@@ -12,7 +10,7 @@ namespace Server.Items
 
         public Shrimp(Serial serial)
             : base(serial)
-        { 
+        {
         }
 
         public override int LabelNumber

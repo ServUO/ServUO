@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Items
 {
@@ -40,7 +40,7 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1049607); // You have too many followers to control that creature.
                 return;
-            }            
+            }
 
             Container pack = from.Backpack;
 
@@ -49,7 +49,7 @@ namespace Server.Items
 
             int res = pack.ConsumeTotal(new Type[] { typeof(PowerCrystal), typeof(IronIngot), typeof(BronzeIngot), typeof(Gears) }, new int[] { 1, 50, 50, 5 });
 
-            switch ( res )
+            switch (res)
             {
                 case 0:
                     {

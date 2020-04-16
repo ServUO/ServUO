@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
 using Server.Spells.SkillMasteries;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class WieldingTheSonicBladeQuest : BaseQuest
     {
         public WieldingTheSonicBladeQuest() : base()
-        { 
+        {
             AddObjective(new DiscordObjective());
 
             AddReward(new BaseReward(1115699)); // Recognition for mastery of song wielding.
@@ -81,7 +81,7 @@ namespace Server.Engines.Quests
     {
         private static readonly Type m_Type = typeof(Goat);
 
-        private List<string> m_Descr = new List<string>();
+        private readonly List<string> m_Descr = new List<string>();
         public override List<string> Descriptions { get { return m_Descr; } }
 
         public DiscordObjective()
@@ -143,7 +143,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(WieldingTheSonicBladeQuest),
                 };

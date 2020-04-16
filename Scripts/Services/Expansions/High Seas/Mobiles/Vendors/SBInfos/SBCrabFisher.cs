@@ -1,13 +1,12 @@
-﻿using System;
+﻿using Server.Items;
 using System.Collections.Generic;
-using Server.Items;
 
 namespace Server.Mobiles
 {
     public class SBCrabFisher : SBInfo
     {
-        private List<GenericBuyInfo> m_BuyInfo = new InternalBuyInfo();
-        private IShopSellInfo m_SellInfo = new InternalSellInfo();
+        private readonly List<GenericBuyInfo> m_BuyInfo = new InternalBuyInfo();
+        private readonly IShopSellInfo m_SellInfo = new InternalSellInfo();
 
         public SBCrabFisher()
         {

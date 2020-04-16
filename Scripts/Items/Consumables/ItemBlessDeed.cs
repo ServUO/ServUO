@@ -1,4 +1,3 @@
-using System;
 using Server.Targeting;
 
 namespace Server.Items
@@ -80,7 +79,7 @@ namespace Server.Items
         {
             get
             {
-				return true;
+                return true;
             }
         }
         public override void Serialize(GenericWriter writer)

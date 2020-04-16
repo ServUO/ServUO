@@ -80,7 +80,7 @@ namespace Server.Items
                 return 2.75f;
             }
         }
-        
+
         public override int DefMaxRange
         {
             get

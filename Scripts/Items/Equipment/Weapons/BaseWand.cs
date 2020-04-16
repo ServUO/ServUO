@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
-using Server.Network;
 using Server.Spells;
 using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -151,7 +149,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            switch ( this.m_WandEffect )
+            switch (this.m_WandEffect)
             {
                 case WandEffect.Clumsiness:
                     list.Add(1017326, this.m_Charges.ToString());

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class ObsidianRockAddon : BaseAddon
@@ -50,7 +48,7 @@ namespace Server.Items
 
         public override BaseAddon Addon { get { return new ObsidianRockAddon(); } }
 
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

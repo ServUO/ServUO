@@ -1,6 +1,6 @@
+using Server.Items;
 using System;
 using System.Collections.Generic;
-using Server.Items;
 
 namespace Server.Spells.Chivalry
 {
@@ -11,7 +11,7 @@ namespace Server.Spells.Chivalry
             -1,
             9002);
 
-        private static Dictionary<Mobile, ConsecratedWeaponContext> m_Table = new Dictionary<Mobile, ConsecratedWeaponContext>();
+        private static readonly Dictionary<Mobile, ConsecratedWeaponContext> m_Table = new Dictionary<Mobile, ConsecratedWeaponContext>();
 
         public ConsecrateWeaponSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
@@ -77,7 +77,7 @@ namespace Server.Spells.Chivalry
                 */
                 int itemID, soundID;
 
-                switch ( weapon.Skill )
+                switch (weapon.Skill)
                 {
                     case SkillName.Macing:
                         itemID = 0xFB4;

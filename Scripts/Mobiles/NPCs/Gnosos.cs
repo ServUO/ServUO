@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class GoneNativeQuest : BaseQuest
-    { 
+    {
         public GoneNativeQuest()
             : base()
-        { 
+        {
             AddObjective(new SlayObjective(typeof(MasterTheophilus), "master theophilus", 1));
-			
+
             AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -87,7 +87,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Gnosos()
             : base("Master Gnosos", "the necromancer")
-        { 
+        {
             SetSkill(SkillName.Focus, 60.0, 83.0);
             SetSkill(SkillName.EvalInt, 65.0, 88.0);
             SetSkill(SkillName.Inscribe, 60.0, 83.0);
@@ -106,7 +106,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(CommonBrigandsQuest),
                     typeof(GoneNativeQuest),
@@ -117,10 +117,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = false;
             Race = Race.Human;
-			
+
             Hue = 0x83E8;
             HairItemID = 0x203B;
             FacialHairItemID = 0x2040;

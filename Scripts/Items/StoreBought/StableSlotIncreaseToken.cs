@@ -1,9 +1,8 @@
-﻿using System;
-using Server;
-using Server.Mobiles;
-using Server.Accounting;
+﻿using Server.Accounting;
 using Server.Gumps;
+using Server.Mobiles;
 using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -87,7 +86,7 @@ namespace Server.Items
 
         private class InternalGump : Gump
         {
-            private StableSlotIncreaseToken m_Token;
+            private readonly StableSlotIncreaseToken m_Token;
 
             public InternalGump(StableSlotIncreaseToken token)
                 : base(10, 10)

@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.Engines.Craft;
 using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -94,7 +94,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-       
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -437,7 +437,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 2: goto case 1;
                 case 1:
@@ -718,7 +718,7 @@ namespace Server.Items
         public FlowerGarland(int hue)
             : base(0x2306, hue)
         {
-            
+
         }
 
         public FlowerGarland(Serial serial)
@@ -804,7 +804,7 @@ namespace Server.Items
         public FloppyHat(int hue)
             : base(0x1713, hue)
         {
-            
+
         }
 
         public FloppyHat(Serial serial)
@@ -890,7 +890,7 @@ namespace Server.Items
         public WideBrimHat(int hue)
             : base(0x1714, hue)
         {
-            
+
         }
 
         public WideBrimHat(Serial serial)
@@ -976,7 +976,7 @@ namespace Server.Items
         public Cap(int hue)
             : base(0x1715, hue)
         {
-            
+
         }
 
         public Cap(Serial serial)
@@ -1062,7 +1062,7 @@ namespace Server.Items
         public SkullCap(int hue)
             : base(0x1544, hue)
         {
-            
+
         }
 
         public SkullCap(Serial serial)
@@ -1148,7 +1148,7 @@ namespace Server.Items
         public Bandana(int hue)
             : base(0x1540, hue)
         {
-            
+
         }
 
         public Bandana(Serial serial)
@@ -1515,7 +1515,7 @@ namespace Server.Items
         public TribalMask(int hue)
             : base(0x154B, hue)
         {
-            
+
         }
 
         public override bool Dye(Mobile from, DyeTub sender)
@@ -1607,7 +1607,7 @@ namespace Server.Items
         public TallStrawHat(int hue)
             : base(0x1716, hue)
         {
-            
+
         }
 
         public TallStrawHat(Serial serial)
@@ -1693,7 +1693,7 @@ namespace Server.Items
         public StrawHat(int hue)
             : base(0x1717, hue)
         {
-            
+
         }
 
         public StrawHat(Serial serial)

@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class MisplacedQuest : BaseQuest
-    { 
+    {
         public MisplacedQuest()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(DisintegratingThesisNotes), "disintegrating thesis notes", 5, 0xEF5));
-			
+
             this.AddReward(new BaseReward(typeof(LibrariansKey), 1074347));
         }
 
@@ -82,7 +82,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Cohenn()
             : base("Master Cohenn", "the librarian")
-        { 
+        {
         }
 
         public Cohenn(Serial serial)
@@ -94,7 +94,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(MisplacedQuest)
                 };
@@ -103,10 +103,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x840C;
             this.HairItemID = 0x2045;
             this.HairHue = 0x453;

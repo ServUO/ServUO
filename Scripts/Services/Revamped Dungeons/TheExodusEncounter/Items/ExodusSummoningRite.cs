@@ -1,8 +1,7 @@
-using System;
 using Server.Engines.PartySystem;
+using Server.Mobiles;
 using Server.Targeting;
 using System.Linq;
-using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -51,7 +50,7 @@ namespace Server.Items
 
         public class RiteTarget : Target
         {
-            private Item m_Deed;
+            private readonly Item m_Deed;
 
             public RiteTarget(Item deed) : base(2, true, TargetFlags.None)
             {

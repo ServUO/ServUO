@@ -1,12 +1,11 @@
-﻿using System;
-using Server.Network;
+﻿using Server.Network;
 
 namespace Server.Items
 {
     public class CanvassRobe : Robe
     {
         public override int LabelNumber { get { return 1154238; } } // A Canvass Robe
-		public override bool CanBeWornByGargoyles { get { return true; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
 
         [Constructable]
         public CanvassRobe()
@@ -16,15 +15,15 @@ namespace Server.Items
             this.LootType = LootType.Blessed;
             this.StrRequirement = 10;
         }
-		
-		public override void OnDoubleClick(Mobile from)
+
+        public override void OnDoubleClick(Mobile from)
         {
-			base.OnDoubleClick(from);			
-			
-			from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154239); // *It is a thick canvass robe with specially sewn seals around the wrists and ankles. It appears as though it would protect its wearer from the harsh conditions of a deep aquatic environment.*
+            base.OnDoubleClick(from);
+
+            from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154239); // *It is a thick canvass robe with specially sewn seals around the wrists and ankles. It appears as though it would protect its wearer from the harsh conditions of a deep aquatic environment.*
         }
-		
-		public override void GetProperties(ObjectPropertyList list)
+
+        public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 

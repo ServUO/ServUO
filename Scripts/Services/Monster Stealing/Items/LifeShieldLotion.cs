@@ -1,6 +1,4 @@
-﻿using System;
-using Server.Mobiles;
-using Server;
+﻿using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -24,7 +22,7 @@ namespace Server.Items
         protected override void ApplyEffect(PlayerMobile pm)
         {
             base.ApplyEffect(pm);
-            pm.SendMessage("You applied Life Shield Lotion"); 
+            pm.SendMessage("You applied Life Shield Lotion");
         }
 
         public static double HandleLifeDrain(PlayerMobile pm, double damage)

@@ -1,25 +1,23 @@
-using System;
-
 namespace Server.Items
 {
     public class AssassinGloves : LeatherGloves
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public AssassinGloves()
             : base()
         {
             this.SetHue = 0x455;
-			
+
             this.Attributes.BonusStam = 2;
-            this.Attributes.WeaponSpeed = 5;		
-			
+            this.Attributes.WeaponSpeed = 5;
+
             this.SetSkillBonuses.SetValues(0, SkillName.Stealth, 30);
-			
+
             this.SetSelfRepair = 3;
-			
+
             this.SetAttributes.BonusDex = 12;
-			
+
             this.SetPhysicalBonus = 5;
             this.SetFireBonus = 4;
             this.SetColdBonus = 3;

@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.PartySystem;
 using Server.Network;
 
@@ -60,7 +59,7 @@ namespace Server.Items
         {
             if (from.Region != null && from.Region.IsPartOf("Palace of Paroxysmus"))
                 return base.CanOfferConfirmation(from);
-				
+
             return false;
         }
     }

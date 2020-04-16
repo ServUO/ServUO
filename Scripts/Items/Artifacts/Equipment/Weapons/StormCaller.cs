@@ -1,21 +1,19 @@
-using System;
-
 namespace Server.Items
 {
     public class StormCaller : Boomerang
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113530; } } // Storm Caller
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113530; } } // Storm Caller
+
         [Constructable]
         public StormCaller()
             : base()
-        {	
+        {
             Hue = 456;
             WeaponAttributes.BattleLust = 1;
             Attributes.BonusStr = 5;
             WeaponAttributes.HitLightning = 40;
-            WeaponAttributes.HitLowerDefend = 30;			
+            WeaponAttributes.HitLowerDefend = 30;
             Attributes.WeaponSpeed = 30;
             Attributes.WeaponDamage = 40;
             AosElementDamages.Physical = 20;

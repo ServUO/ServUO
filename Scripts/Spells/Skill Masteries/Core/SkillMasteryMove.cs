@@ -1,11 +1,8 @@
-using System;
-using Server;
-using System.Globalization;
-using Server.Spells;
-using Server.Network;
-using Server.Mobiles;
-using System.Collections.Generic;
 using Server.Items;
+using Server.Network;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace Server.Spells.SkillMasteries
 {
@@ -22,10 +19,10 @@ namespace Server.Spells.SkillMasteries
 
         public override void SendAbilityMessage(Mobile m)
         {
-            if(AbilityMessage.Number > 0)
-                m.PrivateOverheadMessage(MessageType.Regular, 1150, AbilityMessage.Number, m.NetState); 
+            if (AbilityMessage.Number > 0)
+                m.PrivateOverheadMessage(MessageType.Regular, 1150, AbilityMessage.Number, m.NetState);
             else
-                m.PrivateOverheadMessage(MessageType.Regular, 1150, false, AbilityMessage.String, m.NetState); 
+                m.PrivateOverheadMessage(MessageType.Regular, 1150, false, AbilityMessage.String, m.NetState);
         }
 
         public override bool Validate(Mobile from)

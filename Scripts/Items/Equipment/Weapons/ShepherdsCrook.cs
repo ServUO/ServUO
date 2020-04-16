@@ -1,8 +1,8 @@
-using System;
 using Server.Engines.CannedEvil;
 using Server.Mobiles;
 using Server.Network;
 using Server.Targeting;
+using System;
 
 namespace Server.Items
 {
@@ -63,7 +63,7 @@ namespace Server.Items
                 return 2.75f;
             }
         }
-       
+
         public override int InitMinHits
         {
             get
@@ -110,7 +110,7 @@ namespace Server.Items
                 typeof(LesserHiryu), typeof(Hiryu)
             };
 
-            private ShepherdsCrook m_Crook;
+            private readonly ShepherdsCrook m_Crook;
 
             public HerdingTarget(ShepherdsCrook crook)
                 : base(10, false, TargetFlags.None)
@@ -130,7 +130,7 @@ namespace Server.Items
                         {
                             bc.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502467, from.NetState); // That animal looks tame already.
                         }
-                        else 
+                        else
                         {
                             from.SendLocalizedMessage(502475); // Click where you wish the animal to go.
                             from.Target = new InternalTarget(bc, m_Crook);
@@ -178,8 +178,8 @@ namespace Server.Items
 
             private class InternalTarget : Target
             {
-                private BaseCreature m_Creature;
-                private ShepherdsCrook m_Crook;
+                private readonly BaseCreature m_Creature;
+                private readonly ShepherdsCrook m_Crook;
 
                 public InternalTarget(BaseCreature c, ShepherdsCrook crook)
                     : base(10, true, TargetFlags.None)

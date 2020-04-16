@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class Static : Item
@@ -101,7 +99,7 @@ namespace Server.Items
 
             int version = reader.ReadByte();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {

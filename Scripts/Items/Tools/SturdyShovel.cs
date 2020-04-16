@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.Harvest;
 
 namespace Server.Items

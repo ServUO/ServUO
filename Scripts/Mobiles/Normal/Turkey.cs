@@ -1,23 +1,21 @@
 using System;
-using Server.Items;
-using Server.Mobiles;
 
 namespace Server.Mobiles
 {
-	[CorpseName( "an turkey corpse" )]
-	public class Turkey : BaseCreature
-	{
+    [CorpseName("an turkey corpse")]
+    public class Turkey : BaseCreature
+    {
         [Constructable]
         public Turkey() : this(false)
         {
         }
 
-		[Constructable]
-		public Turkey(bool tamable) : base( AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4 )
-		{
-			Name = "a turkey";
-			Body = 95;
-			BaseSoundID = 0x66A;
+        [Constructable]
+        public Turkey(bool tamable) : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+        {
+            Name = "a turkey";
+            Body = 95;
+            BaseSoundID = 0x66A;
 
             SetStr(5);
             SetDex(15);
@@ -44,7 +42,7 @@ namespace Server.Mobiles
             MinTameSkill = -0.9;
 
             m_NextGobble = DateTime.UtcNow;
-		}
+        }
 
         public override int Meat { get { return 1; } }
         public override MeatType MeatType { get { return MeatType.Bird; } }
@@ -86,22 +84,22 @@ namespace Server.Mobiles
             }
         }
 
-		public Turkey(Serial serial) : base(serial)
-		{
-		}
+        public Turkey(Serial serial) : base(serial)
+        {
+        }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write((int) 0);
-		}
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
 
             m_NextGobble = DateTime.UtcNow;
-		}
-	}
+        }
+    }
 }

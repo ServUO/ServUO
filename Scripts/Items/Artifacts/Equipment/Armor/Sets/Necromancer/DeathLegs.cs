@@ -1,25 +1,23 @@
-using System;
-
 namespace Server.Items
 {
     public class DeathLegs : LeatherLegs
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DeathLegs()
             : base()
         {
-            this.SetHue = 0x455;			
-			
+            this.SetHue = 0x455;
+
             this.Attributes.RegenHits = 1;
             this.Attributes.RegenMana = 1;
-			
+
             this.SetAttributes.LowerManaCost = 10;
-			
+
             this.SetSkillBonuses.SetValues(0, SkillName.Necromancy, 10);
-			
+
             this.SetSelfRepair = 3;
-			
+
             this.SetPhysicalBonus = 4;
             this.SetFireBonus = 5;
             this.SetColdBonus = 3;
@@ -91,14 +89,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }

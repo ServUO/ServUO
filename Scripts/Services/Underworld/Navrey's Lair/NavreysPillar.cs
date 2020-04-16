@@ -107,7 +107,7 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            private NavreysPillar m_Pillar;
+            private readonly NavreysPillar m_Pillar;
             private int m_Ticks;
 
             public InternalTimer(NavreysPillar pillar)

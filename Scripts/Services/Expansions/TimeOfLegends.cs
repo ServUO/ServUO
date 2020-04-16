@@ -1,18 +1,16 @@
-using System;
-using Server;
 using Server.Commands;
-using Server.Items;
-using Server.Mobiles;
-using Server.Engines.Quests;
 using Server.Engines.CannedEvil;
 using Server.Engines.Shadowguard;
 using Server.Gumps;
+using Server.Items;
+using Server.Mobiles;
 using Server.Spells;
+using System;
 
 namespace Server
 {
-	public static class TimeOfLegends
-	{
+    public static class TimeOfLegends
+    {
         public static void Initialize()
         {
             CommandSystem.Register("DecorateTOL", AccessLevel.GameMaster, new CommandEventHandler(DecorateTOL_OnCommand));
@@ -23,7 +21,7 @@ namespace Server
             EventSink.CreatureDeath += CheckRecipeDrop;
         }
 
-        private  static readonly DateTime _EndCurrencyWarning = new DateTime(2017, 3, 1, 1, 1, 1);		
+        private static readonly DateTime _EndCurrencyWarning = new DateTime(2017, 3, 1, 1, 1, 1);
 
         public static bool FindItem(int x, int y, int z, Map map, Item test)
         {
@@ -135,18 +133,18 @@ namespace Server
         }
 
         public static Type[] ArmorDropTypes { get { return _ArmorDropTypes; } }
-        private static Type[] _ArmorDropTypes =
+        private static readonly Type[] _ArmorDropTypes =
         {
             typeof(AloronsBustier), typeof(AloronsGorget), typeof(AloronsHelm), typeof(AloronsLegs), typeof(AloronsLongSkirt), typeof(AloronsSkirt), typeof(AloronsTunic),
             typeof(DardensBustier), typeof(DardensHelm), typeof(DardensLegs), typeof(DardensSleeves), typeof(DardensTunic)
         };
 
         public static int[] RecipeTypes { get { return _RecipeTypes; } }
-        private static int[] _RecipeTypes =
+        private static readonly int[] _RecipeTypes =
         {
             560, 561, 562, 563, 564, 565, 566,
             570, 571, 572, 573, 574, 575, 576, 577,
             580, 581, 582, 583, 584
         };
-	}
+    }
 }

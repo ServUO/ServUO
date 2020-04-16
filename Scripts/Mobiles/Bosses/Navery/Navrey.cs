@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Server.Engines.Quests;
 using Server.Items;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -17,8 +17,8 @@ namespace Server.Mobiles
         {
             typeof(NightEyes),
             typeof(Tangle1)
-        };		
-        
+        };
+
         [Constructable]
         public Navrey(NavreysController spawner)
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -71,9 +71,9 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
- 
+
         public override double TeleportChance { get { return 0; } }
-	    public override bool AlwaysMurderer { get { return true; } }
+        public override bool AlwaysMurderer { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Parasitic; } }
         public override Poison HitPoison { get { return Poison.Lethal; } }
         public override int Meat { get { return 1; } }

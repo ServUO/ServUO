@@ -1,6 +1,3 @@
-using Server;
-using System;
-
 namespace Server.Items
 {
     public class GargishEpauletteBearingTheCrestOfBlackthorn1 : Cloak
@@ -19,8 +16,8 @@ namespace Server.Items
             Attributes.BonusHits = 3;
             Attributes.BonusInt = 5;
             Hue = 2075;
-			
-			Layer = Layer.OuterTorso;
+
+            Layer = Layer.OuterTorso;
         }
 
         public GargishEpauletteBearingTheCrestOfBlackthorn1(Serial serial)
@@ -38,8 +35,8 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-			
-			if (version == 0)
+
+            if (version == 0)
             {
                 MaxHitPoints = 0;
                 HitPoints = 0;

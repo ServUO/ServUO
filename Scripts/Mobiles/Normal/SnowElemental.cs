@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -38,8 +37,8 @@ namespace Server.Mobiles
             Fame = 5000;
             Karma = -5000;
 
-			PackItem(new BlackPearl(3));
-			PackItem(new IronOre(3));
+            PackItem(new BlackPearl(3));
+            PackItem(new IronOre(3));
 
             SetAreaEffect(AreaEffect.AuraDamage);
         }

@@ -1,19 +1,17 @@
-using System;
-
 namespace Server.Items
 {
     public class SpinedBloodwormBracers : GargishClothArms
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113865; } } // Spined Bloodworm Bracers
-		
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113865; } } // Spined Bloodworm Bracers
+
         [Constructable]
         public SpinedBloodwormBracers()
         {
-            Hue = 1642;		
+            Hue = 1642;
             Attributes.RegenHits = 2;
             Attributes.RegenStam = 2;
-            Attributes.WeaponDamage = 10;	
+            Attributes.WeaponDamage = 10;
             Attributes.ReflectPhysical = 30;
             SAAbsorptionAttributes.EaterKinetic = 10;
         }

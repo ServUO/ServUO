@@ -1,10 +1,8 @@
-using System;
-using Server;
-using Server.Spells;
-using Server.Network;
-using Server.Mobiles;
 using Server.Items;
+using Server.Mobiles;
+using Server.Network;
 using Server.Spells.Ninjitsu;
+using System;
 
 /*The paladin unleashes a flying fist against a target that does energy damage based on the paladin's chivalry 
  * skill, best weapon skill, and mastery level.  A bonus to damage is provided by high karma as well against undead 
@@ -14,7 +12,7 @@ namespace Server.Spells.SkillMasteries
 {
     public class HolyFistSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Holy Fist", "Kal Vas Grav",
                 -1,
                 9002
@@ -137,7 +135,7 @@ namespace Server.Spells.SkillMasteries
             if (AosAttributes.GetValue(Caster, AosAttribute.LowerRegCost) > Utility.Random(100))
                 requiredTithing = 0;
 
-            if(requiredTithing > 0 && Caster is PlayerMobile)
+            if (requiredTithing > 0 && Caster is PlayerMobile)
                 Caster.TithingPoints -= requiredTithing;
 
             return base.CheckSequence();

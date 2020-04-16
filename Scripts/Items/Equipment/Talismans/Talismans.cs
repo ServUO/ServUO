@@ -1,6 +1,6 @@
-﻿using System;
-using Server.Mobiles;
+﻿using Server.Mobiles;
 using Server.Spells.Ninjitsu;
+using System;
 
 namespace Server.Items
 {
@@ -28,7 +28,7 @@ namespace Server.Items
         }
 
         public virtual TalismanForm Form { get { return TalismanForm.Squirrel; } }
-		
+
         public static bool EntryEnabled(Mobile m, Type type)
         {
             if (type == typeof(Squirrel))
@@ -75,8 +75,8 @@ namespace Server.Items
 
     public class FerretFormTalisman : BaseFormTalisman
     {
-		public override TalismanForm Form { get { return TalismanForm.Ferret; } }
-		
+        public override TalismanForm Form { get { return TalismanForm.Ferret; } }
+
         [Constructable]
         public FerretFormTalisman()
             : base()
@@ -103,8 +103,8 @@ namespace Server.Items
 
     public class SquirrelFormTalisman : BaseFormTalisman
     {
-		public override TalismanForm Form { get { return TalismanForm.Squirrel; } }
-		
+        public override TalismanForm Form { get { return TalismanForm.Squirrel; } }
+
         [Constructable]
         public SquirrelFormTalisman()
             : base()
@@ -115,7 +115,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -131,8 +131,8 @@ namespace Server.Items
 
     public class CuSidheFormTalisman : BaseFormTalisman
     {
-		public override TalismanForm Form { get { return TalismanForm.CuSidhe; } }
-		
+        public override TalismanForm Form { get { return TalismanForm.CuSidhe; } }
+
         [Constructable]
         public CuSidheFormTalisman()
             : base()
@@ -159,8 +159,8 @@ namespace Server.Items
 
     public class ReptalonFormTalisman : BaseFormTalisman
     {
-		public override TalismanForm Form { get { return TalismanForm.Reptalon; } }
-		
+        public override TalismanForm Form { get { return TalismanForm.Reptalon; } }
+
         [Constructable]
         public ReptalonFormTalisman()
             : base()

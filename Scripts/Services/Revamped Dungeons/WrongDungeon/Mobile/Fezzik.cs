@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -20,7 +20,7 @@ namespace Server.Mobiles
             SetStr(1142, 1381);
             SetDex(73, 90);
             SetInt(52, 84);
-            
+
             SetMana(0);
 
             SetDamage(25, 30);
@@ -49,7 +49,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat => 2; 
+        public override int Meat => 2;
 
         public override void AlterDamageScalarFrom(Mobile caster, ref double scalar)
         {
@@ -82,10 +82,10 @@ namespace Server.Mobiles
             if (0.1 > Utility.RandomDouble())
             {
                 c.DropItem(new RecipeScroll(603));
-            } 
+            }
         }
-		
-		public override int TreasureMapLevel => 3; 
+
+        public override int TreasureMapLevel => 3;
 
         public override void GenerateLoot()
         {

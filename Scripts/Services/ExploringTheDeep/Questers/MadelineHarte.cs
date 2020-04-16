@@ -1,10 +1,9 @@
-using System;
 using Server;
-using Server.Gumps;
-using Server.Network;
 using Server.Commands;
-using Server.Items;
 using Server.Engines.Quests;
+using Server.Gumps;
+using Server.Items;
+using Server.Network;
 
 namespace Server.Mobiles
 {
@@ -157,7 +156,7 @@ public class MadelineHarteCompleteGump : Gump
         switch (info.ButtonID)
         {
             case 0:
-                {                    
+                {
                     break;
                 }
         }

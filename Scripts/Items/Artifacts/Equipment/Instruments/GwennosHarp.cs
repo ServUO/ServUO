@@ -1,10 +1,8 @@
-using System;
-
 namespace Server.Items
 {
     public class GwennosHarp : LapHarp
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public GwennosHarp()
         {

@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     [FlipableAttribute(0x9A1A, 0x9A1B)]
@@ -10,14 +8,14 @@ namespace Server.Items
         [Constructable]
         public CrystalSkull()
             : base(0x9A1A)
-        {          
+        {
         }
 
         public CrystalSkull(Serial serial)
             : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

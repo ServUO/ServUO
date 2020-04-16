@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Items
 {
     public class Chessboard : BaseBoard
@@ -43,14 +41,14 @@ namespace Server.Items
 
             this.CreatePiece(new PieceWhiteKnight(this), 216, 30);
             this.CreatePiece(new PieceWhiteKnight(this), 216, 155);
-					
+
             // Bishop
             this.CreatePiece(new PieceBlackBishop(this), 42, 55);
             this.CreatePiece(new PieceBlackBishop(this), 42, 130);
 
             this.CreatePiece(new PieceWhiteBishop(this), 216, 55);
             this.CreatePiece(new PieceWhiteBishop(this), 216, 130);
-			
+
             // Queen
             this.CreatePiece(new PieceBlackQueen(this), 42, 105);
             this.CreatePiece(new PieceWhiteQueen(this), 216, 105);

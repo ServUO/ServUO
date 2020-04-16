@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class ExodusAlterAddon : BaseAddon
     {
@@ -20,7 +18,7 @@ namespace Server.Items
             ac.Hue = 2702;
             this.AddComponent(ac, x, y, z);
         }
-       
+
         public ExodusAlterAddon(Serial serial) : base(serial)
         {
         }

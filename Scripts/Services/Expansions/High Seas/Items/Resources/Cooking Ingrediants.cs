@@ -1,6 +1,4 @@
-﻿using Server;
-using System;
-using Server.Targeting;
+﻿using Server.Targeting;
 
 namespace Server.Items
 {
@@ -129,13 +127,13 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if(IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
                 from.Target = new InternalTarget(this);
         }
 
         private class InternalTarget : Target
         {
-            private FishOilFlask m_Flask;
+            private readonly FishOilFlask m_Flask;
 
             public InternalTarget(FishOilFlask flask) : base(-1, false, TargetFlags.None)
             {

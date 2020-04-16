@@ -1,4 +1,3 @@
-using System;
 using Server.Engines.Quests;
 using Server.Engines.Quests.Hag;
 using Server.Items;
@@ -66,7 +65,7 @@ namespace Server.Engines.Harvest
             {
                 IAxe obj = (IAxe)targeted;
                 Item item = (Item)targeted;
-					
+
                 if (!item.IsChildOf(from.Backpack))
                     from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
                 else if (obj.Axe(from, (BaseAxe)m_Tool))
@@ -86,16 +85,16 @@ namespace Server.Engines.Harvest
             else if (m_System is Lumberjacking && targeted is CrackedLavaRockSouth)
                 ((CrackedLavaRockSouth)targeted).OnCrack(from);
             #endregion
-			else
-			{
-				// If we got here and we're lumberjacking then we didn't target something that can be done from the pack
-				if (m_System is Lumberjacking && m_Tool.Parent != from)
-				{
-					from.SendLocalizedMessage(500487); // The axe must be equipped for any serious wood chopping.
-					return;
-				}
-				m_System.StartHarvesting(from, m_Tool, targeted);
-			}
+            else
+            {
+                // If we got here and we're lumberjacking then we didn't target something that can be done from the pack
+                if (m_System is Lumberjacking && m_Tool.Parent != from)
+                {
+                    from.SendLocalizedMessage(500487); // The axe must be equipped for any serious wood chopping.
+                    return;
+                }
+                m_System.StartHarvesting(from, m_Tool, targeted);
+            }
         }
 
         private void DestroyFurniture(Mobile from, Item item)

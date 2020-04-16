@@ -35,7 +35,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             this.m_Timer = new InternalTimer(this);
             this.m_Timer.Start();
         }

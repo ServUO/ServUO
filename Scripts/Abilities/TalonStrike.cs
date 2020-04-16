@@ -60,7 +60,7 @@ namespace Server.Items
                 : base(TimeSpan.Zero, TimeSpan.FromSeconds(0.25), 12)// 3 seconds at .25 seconds apart = 12.  Confirm delay inbetween of .25 each.
             {
                 m_Defender = defender;
-                m_DamageRemaining = (double)totalDamage;
+                m_DamageRemaining = totalDamage;
                 Priority = TimerPriority.TwentyFiveMS;
 
                 m_Attacker = attacker;

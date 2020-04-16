@@ -1,8 +1,8 @@
-using System;
-using System.Collections;
 using Server.Gumps;
 using Server.Items;
 using Server.Spells.Fifth;
+using System;
+using System.Collections;
 
 namespace Server.Spells.Seventh
 {
@@ -24,7 +24,7 @@ namespace Server.Spells.Seventh
         }
 
         public PolymorphSpell(Mobile caster, Item scroll)
-            : this(caster,scroll,0)
+            : this(caster, scroll, 0)
         {
         }
 
@@ -145,7 +145,7 @@ namespace Server.Spells.Seventh
 
             this.FinishSequence();
         }
-        
+
         private static TextDefinition GetArticleCliloc(int body)
         {
             if (body == 0x11 || body == 0x01)
@@ -188,7 +188,7 @@ namespace Server.Spells.Seventh
 
                 BaseArmor.ValidateMobile(m);
                 BaseClothing.ValidateMobile(m);
-                
+
                 BuffInfo.RemoveBuff(m, BuffIcon.Polymorph);
             }
         }

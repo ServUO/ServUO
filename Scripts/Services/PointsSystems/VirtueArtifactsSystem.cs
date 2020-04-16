@@ -1,15 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using Server;
-using Server.Items;
-using Server.Misc;
-using Server.Mobiles;
-using Server.Network;
-using Server.Engines.CannedEvil;
-using Server.Engines.SeasonalEvents;
 using Server.Engines.Points;
+using Server.Engines.SeasonalEvents;
+using Server.Items;
+using Server.Mobiles;
+using System;
 
 namespace Server.Misc
 {
@@ -17,7 +10,7 @@ namespace Server.Misc
     {
         public static bool Enabled { get { return SeasonalEventSystem.IsActive(EventType.VirtueArtifacts); } }
 
-        private static Type[] m_VirtueArtifacts = new Type[]
+        private static readonly Type[] m_VirtueArtifacts = new Type[]
             {
                 typeof( KatrinasCrook ), typeof( JaanasStaff ), typeof( DragonsEnd ), typeof( AnkhPendant ),
                 typeof( SentinelsGuard ), typeof( LordBlackthornsExemplar ), typeof( MapOfTheKnownWorld ), typeof( TenthAnniversarySculpture ),
@@ -33,7 +26,7 @@ namespace Server.Misc
         public override double MaxPoints { get { return double.MaxValue; } }
         public override bool ShowOnLoyaltyGump { get { return false; } }
 
-        private TextDefinition m_Name = new TextDefinition("Virtue Artifact System");
+        private readonly TextDefinition m_Name = new TextDefinition("Virtue Artifact System");
 
         public VirtueArtifactsSystem()
         {
@@ -43,10 +36,10 @@ namespace Server.Misc
         {
             Region r = m.Region;
 
-	        if (m is BaseCreature && ((BaseCreature)m).IsChampionSpawn)
-		        return false;
-	        
-	        if (r.IsPartOf<Server.Regions.HouseRegion>() || Server.Multis.BaseBoat.FindBoatAt(m, m.Map) != null)
+            if (m is BaseCreature && ((BaseCreature)m).IsChampionSpawn)
+                return false;
+
+            if (r.IsPartOf<Server.Regions.HouseRegion>() || Server.Multis.BaseBoat.FindBoatAt(m, m.Map) != null)
                 return false;
 
             return (r.IsPartOf("Covetous") || r.IsPartOf("Deceit") || r.IsPartOf("Despise") || r.IsPartOf("Destard") ||

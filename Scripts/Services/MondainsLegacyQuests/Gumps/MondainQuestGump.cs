@@ -1,6 +1,6 @@
-using System;
 using Server.Gumps;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
 {
@@ -62,17 +62,17 @@ namespace Server.Engines.Quests
             m_Section = section;
             m_Offer = offer;
             m_Completed = completed;
-			
+
             if (quest != null)
                 m_From = quest.Owner;
             else
                 m_From = owner;
-		
+
             Closable = false;
             Disposable = true;
             Dragable = true;
             Resizable = false;
-			
+
             AddPage(0);
 
             AddImageTiled(50, 20, 400, 460, 0x1404);
@@ -104,13 +104,13 @@ namespace Server.Engines.Quests
                 {
                     AddImage(379, 60, 0x1580);
                 }
-            }                
-						
+            }
+
             AddImage(425, 0, 0x28C9);
             AddImage(90, 33, 0x232D);
             AddImageTiled(130, 65, 175, 1, 0x238D);
-			
-            switch ( m_Section )
+
+            switch (m_Section)
             {
                 case Section.Main:
                     SecMain();
@@ -120,7 +120,7 @@ namespace Server.Engines.Quests
                     break;
                 case Section.Objectives:
                     SecObjectives();
-                    break; 
+                    break;
                 case Section.Rewards:
                     SecRewards();
                     break;
@@ -154,22 +154,22 @@ namespace Server.Engines.Quests
         public virtual void SecMain()
         {
             if (m_From == null)
-                return;			
-		
+                return;
+
             AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log
-				
+
             int offset = 140;
-			
+
             for (int i = m_From.Quests.Count - 1; i >= 0; i--)
             {
                 BaseQuest quest = m_From.Quests[i];
-				
-                AddHtmlObject(98, offset, 270, 21, quest.Title, quest.Failed ? 0x3C00 : White, false, false);					
-                AddButton(368, offset, 0x26B0, 0x26B1, ButtonOffset + i, GumpButtonType.Reply, 0);	
-				
-                offset += 21;			
+
+                AddHtmlObject(98, offset, 270, 21, quest.Title, quest.Failed ? 0x3C00 : White, false, false);
+                AddButton(368, offset, 0x26B0, 0x26B1, ButtonOffset + i, GumpButtonType.Reply, 0);
+
+                offset += 21;
             }
-				
+
             AddButton(313, 455, 0x2EEC, 0x2EEE, (int)Buttons.Close, GumpButtonType.Reply, 0);
         }
 
@@ -456,17 +456,17 @@ namespace Server.Engines.Quests
         {
             if (m_Quest == null)
                 return;
-		
+
             if (m_Offer)
                 AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer
             else
                 AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log	
-			
+
             AddHtmlObject(160, 70, 200, 40, m_Quest.Title, DarkGreen, false, false);
             AddHtmlLocalized(98, 140, 312, 16, 1072201, 0x2710, false, false); // Reward	
-			
+
             int offset = 163;
-			
+
             for (int i = 0; i < m_Quest.Rewards.Count; i++)
             {
                 BaseReward reward = m_Quest.Rewards[i];
@@ -479,7 +479,7 @@ namespace Server.Engines.Quests
                     offset += 16;
                 }
             }
-			
+
             if (m_Completed)
             {
                 AddButton(95, 455, 0x2EE0, 0x2EE2, (int)Buttons.AcceptReward, GumpButtonType.Reply, 0);
@@ -507,14 +507,14 @@ namespace Server.Engines.Quests
         {
             if (m_Quest == null)
                 return;
-		
+
             if (m_Offer)
             {
                 AddHtmlLocalized(130, 45, 270, 16, 3006156, 0xFFFFFF, false, false); // Quest Conversation
                 AddImage(140, 110, 0x4B9);
                 AddHtmlObject(160, 70, 200, 40, m_Quest.Title, DarkGreen, false, false);
                 AddHtmlObject(98, 140, 312, 180, m_Quest.Refuse, LightGreen, false, true);
-				
+
                 AddButton(313, 455, 0x2EE6, 0x2EE8, (int)Buttons.Close, GumpButtonType.Reply, 0);
             }
         }
@@ -523,12 +523,12 @@ namespace Server.Engines.Quests
         {
             if (m_Quest == null)
                 return;
-				
+
             AddHtmlLocalized(130, 45, 270, 16, 3006156, 0xFFFFFF, false, false); // Quest Conversation				
             AddImage(140, 110, 0x4B9);
-            AddHtmlObject(160, 70, 200, 40, m_Quest.Title, DarkGreen, false, false);	
+            AddHtmlObject(160, 70, 200, 40, m_Quest.Title, DarkGreen, false, false);
             AddHtmlObject(98, 140, 312, 180, m_Quest.Uncomplete, LightGreen, false, true);
-							
+
             AddButton(313, 455, 0x2EE6, 0x2EE8, (int)Buttons.Close, GumpButtonType.Reply, 0);
         }
 
@@ -536,7 +536,7 @@ namespace Server.Engines.Quests
         {
             if (m_Quest == null)
                 return;
-				
+
             if (m_Quest.Complete == null)
             {
                 if (QuestHelper.TryDeleteItems(m_Quest))
@@ -549,15 +549,15 @@ namespace Server.Engines.Quests
                     else
                         m_Quest.GiveRewards();
                 }
-					
+
                 return;
             }
-				
+
             AddHtmlLocalized(130, 45, 270, 16, 3006156, 0xFFFFFF, false, false); // Quest Conversation
             AddImage(140, 110, 0x4B9);
-            AddHtmlObject(160, 70, 200, 40, m_Quest.Title, DarkGreen, false, false);	
+            AddHtmlObject(160, 70, 200, 40, m_Quest.Title, DarkGreen, false, false);
             AddHtmlObject(98, 140, 312, 180, m_Quest.Complete, LightGreen, false, true);
-				
+
             AddButton(313, 455, 0x2EE6, 0x2EE8, (int)Buttons.Close, GumpButtonType.Reply, 0);
             AddButton(95, 455, 0x2EE9, 0x2EEB, (int)Buttons.Complete, GumpButtonType.Reply, 0);
         }
@@ -583,13 +583,13 @@ namespace Server.Engines.Quests
         public virtual string FormatSeconds(int seconds)
         {
             int hours = seconds / 3600;
-			
+
             seconds -= hours * 3600;
-			
+
             int minutes = seconds / 60;
-			
+
             seconds -= minutes * 60;
-			
+
             if (hours > 0 && minutes > 0)
                 return hours + ":" + minutes + ":" + seconds;
             else if (minutes > 0)
@@ -602,42 +602,42 @@ namespace Server.Engines.Quests
         {
             if (m_Quest == null)
                 return null;
-				
+
             if (m_Quest.StartingMobile != null)
             {
-                string returnTo = m_Quest.StartingMobile.Name;				
-				
+                string returnTo = m_Quest.StartingMobile.Name;
+
                 if (m_Quest.StartingMobile.Region != null)
                     returnTo = String.Format("{0} ({1})", returnTo, m_Quest.StartingMobile.Region.Name);
                 else
                     returnTo = String.Format("{0}", returnTo);
-					
+
                 return returnTo;
             }
-			
+
             return null;
         }
 
         public override void OnResponse(Server.Network.NetState state, RelayInfo info)
-        { 
+        {
             if (m_From != null)
                 m_From.CloseGump(typeof(MondainQuestGump));
-				
-            switch ( info.ButtonID )
-            { 
+
+            switch (info.ButtonID)
+            {
                 // close quest list
                 case (int)Buttons.Close:
                     break;
-                    // close quest
+                // close quest
                 case (int)Buttons.CloseQuest:
                     m_From.SendGump(new MondainQuestGump(m_From));
                     break;
-                    // accept quest
+                // accept quest
                 case (int)Buttons.AcceptQuest:
                     if (m_Offer)
-                        m_Quest.OnAccept();						
+                        m_Quest.OnAccept();
                     break;
-                    // refuse quest
+                // refuse quest
                 case (int)Buttons.RefuseQuest:
                     if (m_Offer)
                     {
@@ -645,41 +645,41 @@ namespace Server.Engines.Quests
                         m_From.SendGump(new MondainQuestGump(m_Quest, Section.Refuse, true));
                     }
                     break;
-                    // resign quest
+                // resign quest
                 case (int)Buttons.ResignQuest:
                     if (!m_Offer)
                         m_From.SendGump(new MondainResignGump(m_Quest));
                     break;
-                    // accept reward
+                // accept reward
                 case (int)Buttons.AcceptReward:
                     if (!m_Offer && m_Section == Section.Rewards && m_Completed)
                         m_Quest.GiveRewards();
                     break;
-                    // refuse reward
+                // refuse reward
                 case (int)Buttons.RefuseReward:
                     if (!m_Offer && m_Section == Section.Rewards && m_Completed)
                         m_Quest.RefuseRewards();
                     break;
-                    // previous page
+                // previous page
                 case (int)Buttons.PreviousPage:
                     if (m_Section == Section.Objectives || (m_Section == Section.Rewards && !m_Completed))
                     {
                         m_Section = (Section)((int)m_Section - 1);
-                        m_From.SendGump(new MondainQuestGump(m_Quest, m_Section, m_Offer));						
+                        m_From.SendGump(new MondainQuestGump(m_Quest, m_Section, m_Offer));
                     }
                     break;
-                    // next page
+                // next page
                 case (int)Buttons.NextPage:
                     if (m_Section == Section.Description || m_Section == Section.Objectives)
                     {
                         m_Section = (Section)((int)m_Section + 1);
-                        m_From.SendGump(new MondainQuestGump(m_Quest, m_Section, m_Offer));						
+                        m_From.SendGump(new MondainQuestGump(m_Quest, m_Section, m_Offer));
                     }
                     break;
-                    // player complete quest
+                // player complete quest
                 case (int)Buttons.Complete:
                     if (!m_Offer && m_Section == Section.Complete)
-                    { 
+                    {
                         if (!m_Quest.Completed)
                             m_From.SendLocalizedMessage(1074861); // You do not have everything you need!
                         else
@@ -701,17 +701,17 @@ namespace Server.Engines.Quests
                         }
                     }
                     break;
-                    // admin complete quest
+                // admin complete quest
                 case (int)Buttons.CompleteQuest:
                     if ((int)m_From.AccessLevel > (int)AccessLevel.Counselor && m_Quest != null)
                         QuestHelper.CompleteQuest(m_From, m_Quest);
                     break;
-                    // show quest
+                // show quest
                 default:
                     if (m_Section != Section.Main || info.ButtonID >= m_From.Quests.Count + ButtonOffset || info.ButtonID < ButtonOffset)
                         break;
-					
-                    m_From.SendGump(new MondainQuestGump(m_From.Quests[(int)info.ButtonID - ButtonOffset], Section.Description, false));										
+
+                    m_From.SendGump(new MondainQuestGump(m_From.Quests[(int)info.ButtonID - ButtonOffset], Section.Description, false));
                     break;
             }
         }

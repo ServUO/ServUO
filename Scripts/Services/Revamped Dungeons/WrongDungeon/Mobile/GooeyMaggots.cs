@@ -60,7 +60,7 @@ namespace Server.Mobiles
 
         public class InternalSelfDeleteTimer : Timer
         {
-            private GooeyMaggots creature;
+            private readonly GooeyMaggots creature;
 
             public InternalSelfDeleteTimer(Mobile p) : base(TimeSpan.FromMinutes(3))
             {
@@ -137,7 +137,7 @@ namespace Server.Mobiles
 
         public GooeyMaggotSlime(Serial serial)
             : base(serial)
-        {            
+        {
         }
 
         public override void Serialize(GenericWriter writer)

@@ -1,19 +1,18 @@
-using System;
 using Reward = Server.Engines.Quests.BaseReward;
 
 namespace Server.Items
 {
     public class RewardBox : WoodenBox
     {
-        [Constructable]	
+        [Constructable]
         public RewardBox()
             : base()
         {
             this.Hue = Reward.StrongboxHue();
-			
+
             while (this.Items.Count < this.Amount)
-            { 
-                switch ( Utility.Random(4) )
+            {
+                switch (Utility.Random(4))
                 {
                     case 0:
                         this.DropItem(Reward.Armor());
@@ -26,10 +25,10 @@ namespace Server.Items
                         break;
                     case 3:
                         this.DropItem(Reward.Jewlery());
-                        break;	
+                        break;
                 }
             }
-			
+
             if (0.25 > Utility.RandomDouble()) // check
                 this.DropItem(Loot.RandomTalisman());
         }

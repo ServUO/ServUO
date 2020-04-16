@@ -1,6 +1,5 @@
-using System;
 using Server.Items;
-using Server.Spells;
+using System;
 
 namespace Server.Engines.Craft
 {
@@ -88,7 +87,7 @@ namespace Server.Engines.Craft
             return 0;
         }
 
-        private System.Collections.Generic.Dictionary<Type, int> _Buffer = new System.Collections.Generic.Dictionary<Type, int>();
+        private readonly System.Collections.Generic.Dictionary<Type, int> _Buffer = new System.Collections.Generic.Dictionary<Type, int>();
 
         public override void PlayCraftEffect(Mobile from)
         {

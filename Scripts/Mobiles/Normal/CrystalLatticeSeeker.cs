@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -52,15 +51,15 @@ namespace Server.Mobiles
         {
         }
 
-        public override void OnDeath( Container c )
+        public override void OnDeath(Container c)
         {
-            base.OnDeath( c );
+            base.OnDeath(c);
 
-            if ( Utility.RandomDouble() < 0.75 )
-            c.DropItem( new CrystallineFragments() );
+            if (Utility.RandomDouble() < 0.75)
+                c.DropItem(new CrystallineFragments());
 
-            if ( Utility.RandomDouble() < 0.07 )
-            c.DropItem( new PiecesOfCrystal() );
+            if (Utility.RandomDouble() < 0.07)
+                c.DropItem(new PiecesOfCrystal());
         }
 
         public override int Feathers
@@ -80,7 +79,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.FilthyRich, 4);
-            AddLoot( LootPack.Parrot );
+            AddLoot(LootPack.Parrot);
             this.AddLoot(LootPack.Gems);
             this.AddLoot(LootPack.HighScrolls, 2);
         }
@@ -105,7 +104,7 @@ namespace Server.Mobiles
         {
             int toDrain;
 
-            switch ( Utility.Random(3) )
+            switch (Utility.Random(3))
             {
                 case 0:
                     {

@@ -1,25 +1,23 @@
-using System;
-
 namespace Server.Items
 {
     public class DeathGloves : LeatherGloves
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DeathGloves()
             : base()
         {
-            this.SetHue = 0x455;			
-			
+            this.SetHue = 0x455;
+
             this.Attributes.RegenHits = 1;
             this.Attributes.RegenMana = 1;
-			
+
             this.SetAttributes.LowerManaCost = 10;
-			
+
             this.SetSkillBonuses.SetValues(0, SkillName.Necromancy, 10);
-			
+
             this.SetSelfRepair = 3;
-			
+
             this.SetPhysicalBonus = 4;
             this.SetFireBonus = 5;
             this.SetColdBonus = 3;

@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Spells.Eighth
 {
@@ -43,7 +43,7 @@ namespace Server.Spells.Eighth
         public override void OnCast()
         {
             if (this.CheckSequence())
-            { 
+            {
                 TimeSpan duration = TimeSpan.FromSeconds((2 * this.Caster.Skills.Magery.Fixed) / 5);
 
                 BaseCreature m_Daemon = new SummonedDaemon();

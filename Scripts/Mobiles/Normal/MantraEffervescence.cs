@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a mantra effervescence corpse")]
@@ -38,7 +36,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.Meditation, 90.0, 100.0);
 
             SetSkill(SkillName.Spellweaving, 90.0, 96.0);
-			
+
             Fame = 6500;
             Karma = -6500;
 

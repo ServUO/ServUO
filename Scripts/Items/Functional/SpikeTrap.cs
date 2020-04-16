@@ -1,5 +1,5 @@
-using System;
 using Server.Network;
+using System;
 
 namespace Server.Items
 {
@@ -35,7 +35,7 @@ namespace Server.Items
         {
             get
             {
-                switch ( this.ItemID )
+                switch (this.ItemID)
                 {
                     case 4360:
                     case 4361:
@@ -108,7 +108,7 @@ namespace Server.Items
         }
         public static int GetBaseID(SpikeTrapType type)
         {
-            switch ( type )
+            switch (type)
             {
                 case SpikeTrapType.WestWall:
                     return 4360;
@@ -130,7 +130,7 @@ namespace Server.Items
 
         public static int GetExtendedOffset(SpikeTrapType type)
         {
-            switch ( type )
+            switch (type)
             {
                 case SpikeTrapType.WestWall:
                     return 6;

@@ -1,17 +1,17 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class BoundToTheLandQuest : BaseQuest
-    { 
+    {
         public BoundToTheLandQuest()
             : base()
-        { 
-            this.AddObjective(new SlayObjective(typeof(InsaneDryad), "insane dryads", 12));	
-            this.AddObjective(new SlayObjective(typeof(Saliva), "saliva", 1));		
-							
+        {
+            this.AddObjective(new SlayObjective(typeof(InsaneDryad), "insane dryads", 12));
+            this.AddObjective(new SlayObjective(typeof(Saliva), "saliva", 1));
+
             this.AddReward(new BaseReward(typeof(DryadsBlessing), 1074345));
         }
 
@@ -88,11 +88,11 @@ namespace Server.Engines.Quests
     }
 
     public class FrightenedDryad : MondainQuester
-    { 
+    {
         [Constructable]
         public FrightenedDryad()
             : base("The Frightened Dryad")
-        {       
+        {
         }
 
         public FrightenedDryad(Serial serial)
@@ -104,7 +104,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(BoundToTheLandQuest)
                 };

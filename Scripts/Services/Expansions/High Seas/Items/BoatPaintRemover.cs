@@ -1,6 +1,4 @@
-﻿using Server;
-using System;
-using Server.Multis;
+﻿using Server.Multis;
 using Server.Targeting;
 
 namespace Server.Items
@@ -17,13 +15,13 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if(IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
                 from.Target = new InternalTarget(this);
         }
 
         private class InternalTarget : Target
         {
-            private BoatPaintRemover m_PaintRemover;
+            private readonly BoatPaintRemover m_PaintRemover;
 
             public InternalTarget(BoatPaintRemover paintremover)
                 : base(5, false, TargetFlags.None)

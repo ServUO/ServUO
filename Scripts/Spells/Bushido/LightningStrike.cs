@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Spells.Bushido
 {
@@ -55,7 +55,7 @@ namespace Server.Spells.Bushido
             if (isValid)
             {
                 var ThePlayer = from as PlayerMobile;
-                if(ThePlayer != null)
+                if (ThePlayer != null)
                 {
                     ThePlayer.ExecutesLightningStrike = BaseMana;
                 }
@@ -126,7 +126,7 @@ namespace Server.Spells.Bushido
         public override void OnClearMove(Mobile attacker)
         {
             var ThePlayer = attacker as PlayerMobile; // this can be deletet if the PlayerMobile parts are moved to Server.Mobile 
-            if(ThePlayer != null)
+            if (ThePlayer != null)
             {
                 ThePlayer.ExecutesLightningStrike = 0;
             }

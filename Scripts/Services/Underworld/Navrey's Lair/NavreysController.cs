@@ -1,8 +1,7 @@
-﻿using System;
-using Server.Commands;
+﻿using Server.Commands;
 using Server.Mobiles;
 using Server.Network;
-using System.Linq;
+using System;
 
 namespace Server.Items
 {
@@ -230,7 +229,7 @@ namespace Server.Items
 
         private class RockRainTimer : Timer
         {
-            private Navrey m_Navrey;
+            private readonly Navrey m_Navrey;
             private int m_Ticks;
 
             public RockRainTimer(Navrey navrey)

@@ -1,7 +1,4 @@
-﻿using Server;
-using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class SmallSoulForge : BaseAddon
     {
@@ -35,7 +32,7 @@ namespace Server.Items
     public class SmallSoulForgeDeed : BaseAddonDeed
     {
         public override BaseAddon Addon { get { return new SmallSoulForge(); } }
-        public override int LabelNumber { get { return 1149695; } } 
+        public override int LabelNumber { get { return 1149695; } }
 
         [Constructable]
         public SmallSoulForgeDeed()

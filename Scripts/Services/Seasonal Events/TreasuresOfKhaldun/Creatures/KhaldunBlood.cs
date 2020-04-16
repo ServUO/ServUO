@@ -1,5 +1,4 @@
 using Server.Items;
-using System;
 
 namespace Server.Mobiles
 {
@@ -58,9 +57,9 @@ namespace Server.Mobiles
             base.OnBeforeDamage(from, ref totalDamage, type);
         }
 
-        public override Poison PoisonImmune => Poison.Lesser; 
-		
-        public override Poison HitPoison => Poison.Lesser; 
+        public override Poison PoisonImmune => Poison.Lesser;
+
+        public override Poison HitPoison => Poison.Lesser;
 
         public override void GenerateLoot()
         {

@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -114,7 +113,7 @@ namespace Server.Mobiles
 
             int amount = Utility.RandomMinMax(1, 3);
 
-            switch ( res )
+            switch (res)
             {
                 case CraftResource.BlackScales:
                     AddItem(new BlackScales(amount));

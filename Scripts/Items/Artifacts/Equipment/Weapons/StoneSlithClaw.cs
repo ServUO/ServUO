@@ -1,13 +1,11 @@
-using System;
-
 namespace Server.Items
 {
     public class StoneSlithClaw : Cyclone
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public StoneSlithClaw()
-        {	
+        {
             Hue = 1150;
             WeaponAttributes.HitHarm = 40;
             Slayer = SlayerName.DaemonDismissal;
@@ -20,8 +18,8 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
-        public override int LabelNumber { get{return 1112393;} }// Stone Slith Claw
+
+        public override int LabelNumber { get { return 1112393; } }// Stone Slith Claw
 
         public override int InitMinHits
         {
@@ -37,7 +35,7 @@ namespace Server.Items
                 return 255;
             }
         }
-     
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

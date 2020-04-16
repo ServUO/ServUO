@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -49,15 +48,15 @@ namespace Server.Mobiles
             }
         }
 
-        public override void OnDeath( Container c )
+        public override void OnDeath(Container c)
         {
-            base.OnDeath( c );
+            base.OnDeath(c);
 
-            if ( Utility.RandomDouble() < 0.6 )
-            c.DropItem( new BrokenCrystals() );
+            if (Utility.RandomDouble() < 0.6)
+                c.DropItem(new BrokenCrystals());
 
-            if ( Utility.RandomDouble() < 0.1 )
-            c.DropItem( new ParrotItem() );
+            if (Utility.RandomDouble() < 0.1)
+                c.DropItem(new ParrotItem());
         }
 
         public UnfrozenMummy(Serial serial)

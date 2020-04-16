@@ -1,7 +1,6 @@
-using System;
-using System.Collections;
 using Server.Items;
 using Server.Network;
+using System;
 
 namespace Server.Mobiles
 {
@@ -217,8 +216,8 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-			
-            switch( version )
+
+            switch (version)
             {
                 case 1:
                     {
@@ -283,7 +282,7 @@ namespace Server.Mobiles
 
         private class SpawnTimer : Timer
         {
-            private Item m_Item;
+            private readonly Item m_Item;
 
             public SpawnTimer(Item item)
                 : base(TimeSpan.FromSeconds(Utility.RandomMinMax(5, 10)))

@@ -1,11 +1,10 @@
-using System;
 using Server.Targeting;
 
 namespace Server.Items
 {
     public class AmuletOfRighteousness : SilverNecklace, IUsesRemaining
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         private int m_UsesRemaining;
         [Constructable]
         public AmuletOfRighteousness()
@@ -18,8 +17,8 @@ namespace Server.Items
             : base()
         {
             this.LootType = LootType.Blessed;
-            this.Weight = 1.0;	
-			
+            this.Weight = 1.0;
+
             this.m_UsesRemaining = uses;
         }
 
@@ -66,7 +65,7 @@ namespace Server.Items
         public override void OnDoubleClick(Mobile from)
         {
             base.OnDoubleClick(from);
-			
+
             if (this.IsChildOf(from.Backpack))
                 from.Target = new InternalTarget(this);
             else
@@ -76,18 +75,18 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
-			
+
             writer.Write((int)this.m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
-			
+
             this.m_UsesRemaining = reader.ReadInt();
         }
 
@@ -104,18 +103,18 @@ namespace Server.Items
             {
                 if (this.m_Amulet == null || this.m_Amulet.Deleted)
                     return;
-					
+
                 if (targeted is Mobile)
                 {
                     Mobile target = (Mobile)targeted;
-					
+
                     if (this.m_Amulet.UsesRemaining <= 0)
                     {
                         from.SendLocalizedMessage(1042544); // This item is out of charges.
                         return;
                     }
-						
-                    target.BoltEffect(0);				
+
+                    target.BoltEffect(0);
                     this.m_Amulet.UsesRemaining -= 1;
                     this.m_Amulet.InvalidateProperties();
                 }

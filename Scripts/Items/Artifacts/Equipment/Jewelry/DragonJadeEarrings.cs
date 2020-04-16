@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Items
 {
     public class DragonJadeEarrings : GargishEarrings
-	{
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1113720; } } // Dragon Jade Earrings
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113720; } } // Dragon Jade Earrings
 
         public override int BasePhysicalResistance { get { return 9; } }
         public override int BaseFireResistance { get { return 16; } }
@@ -22,7 +20,7 @@ namespace Server.Items
             Attributes.RegenHits = 2;
             Attributes.RegenStam = 3;
             Attributes.LowerManaCost = 5;
-	        AbsorptionAttributes.EaterFire = 10;
+            AbsorptionAttributes.EaterFire = 10;
         }
 
         public DragonJadeEarrings(Serial serial)

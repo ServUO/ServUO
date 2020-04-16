@@ -1,14 +1,12 @@
-using System;
-using System.Collections.Generic;
-
-using Server;
-using Server.Items;
-using Server.Mobiles;
-using Server.Targeting;
-using Server.Engines.Quests.Doom;
 using Server.Accounting;
 using Server.Engines.Craft;
+using Server.Engines.Quests.Doom;
+using Server.Items;
+using Server.Mobiles;
 using Server.SkillHandlers;
+using Server.Targeting;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Engines.Points
 {
@@ -20,7 +18,7 @@ namespace Server.Engines.Points
         public override double MaxPoints { get { return double.MaxValue; } }
         public override bool ShowOnLoyaltyGump { get { return false; } }
 
-        private TextDefinition m_Name = null;
+        private readonly TextDefinition m_Name = null;
 
         public static bool Enabled { get; set; }
 
@@ -53,7 +51,7 @@ namespace Server.Engines.Points
                     points = 2500;
 
                 if (item.Stackable)
-                    points = points * item.Amount;                
+                    points = points * item.Amount;
 
                 return points;
             }
@@ -121,14 +119,14 @@ namespace Server.Engines.Points
                     TreasureMap tmap = (TreasureMap)item;
 
                     switch (tmap.Level)
-                        {
-                            default:
-                            case 0:
-                            case 1: return 50;
-                            case 2: return 250;
-                            case 3: return 750;
-                            case 4: return 1000;
-                        }
+                    {
+                        default:
+                        case 0:
+                        case 1: return 50;
+                        case 2: return 250;
+                        case 3: return 750;
+                        case 4: return 1000;
+                    }
                 }
                 else if (item is MonsterStatuette)
                 {
@@ -203,7 +201,7 @@ namespace Server.Engines.Points
             Entries[typeof(Sapphire)] = 0.30;
             Entries[typeof(StarSapphire)] = 0.30;
             Entries[typeof(Diamond)] = 0.30;
-            Entries[typeof(BlueDiamond)] = 25.0;           
+            Entries[typeof(BlueDiamond)] = 25.0;
             Entries[typeof(FireRuby)] = 25.0;
             Entries[typeof(PerfectEmerald)] = 25.0;
             Entries[typeof(DarkSapphire)] = 25.0;
@@ -583,7 +581,7 @@ namespace Server.Engines.Points
             Entries[typeof(BraceletOfHealth)] = 5500.0;
             Entries[typeof(Aegis)] = 5500.0;
             Entries[typeof(AxeOfTheHeavens)] = 5500.0;
-            Entries[typeof(HelmOfInsight)] = 5500.0;            
+            Entries[typeof(HelmOfInsight)] = 5500.0;
             Entries[typeof(Frostbringer)] = 5500.0;
             Entries[typeof(StaffOfTheMagi)] = 5500.0;
             Entries[typeof(TheDragonSlayer)] = 5500.0;
@@ -916,7 +914,7 @@ namespace Server.Engines.Points
 
     public class AppraiseforCleanupTarget : Target
     {
-        private Mobile m_Mobile;
+        private readonly Mobile m_Mobile;
 
         public AppraiseforCleanupTarget(Mobile from) : base(-1, true, TargetFlags.None)
         {

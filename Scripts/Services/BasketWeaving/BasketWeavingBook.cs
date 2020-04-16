@@ -1,12 +1,11 @@
-using System;
 using Server.Mobiles;
 
 namespace Server.Items
 {
     public class BasketWeavingBook : Item
     {
-		public override int LabelNumber {get {return 1153529;} } // Making valuables with Basket Weaving
-		
+        public override int LabelNumber { get { return 1153529; } } // Making valuables with Basket Weaving
+
         [Constructable]
         public BasketWeavingBook()
             : base(0xFBE)
@@ -18,7 +17,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-       
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -56,7 +55,7 @@ namespace Server.Items
             {
                 pm.BasketWeaving = true;
                 pm.SendLocalizedMessage(1112254); // You have learned to make baskets. You will need gardeners to make reeds out of plants for you to make these items.
-                
+
                 Delete();
             }
         }

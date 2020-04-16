@@ -1,4 +1,3 @@
-using System;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Targeting;
@@ -6,8 +5,8 @@ using Server.Targeting;
 namespace Server.Items
 {
     public class ParrotItem : Item
-    { 
-        private static readonly int[] m_Hues = new int[] 
+    {
+        private static readonly int[] m_Hues = new int[]
         {
             0x3, 0xD, 0x13, 0x1C, 0x21, 0x30, 0x3F, 0x44, 0x59, 0x62, 0x71
         };
@@ -15,7 +14,7 @@ namespace Server.Items
         public ParrotItem()
             : base(0x20EE)
         {
-            this.Weight = 1;								
+            this.Weight = 1;
             this.Hue = Utility.RandomList(m_Hues);
         }
 
@@ -45,14 +44,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
 
@@ -69,23 +68,23 @@ namespace Server.Items
             {
                 if (targeted is AddonComponent)
                 {
-                    AddonComponent component = (AddonComponent)targeted;		
-					
+                    AddonComponent component = (AddonComponent)targeted;
+
                     if (component.Addon is ParrotPerchAddon)
                     {
                         ParrotPerchAddon perch = (ParrotPerchAddon)component.Addon;
-												
+
                         BaseHouse house = BaseHouse.FindHouseAt(perch);
-						
+
                         if (house != null && house.IsCoOwner(from))
                         {
                             if (perch.Parrot == null || perch.Parrot.Deleted)
-                            { 
-                                PetParrot parrot = new PetParrot();				
-                                parrot.Hue = this.m_Parrot.Hue;					
+                            {
+                                PetParrot parrot = new PetParrot();
+                                parrot.Hue = this.m_Parrot.Hue;
                                 parrot.MoveToWorld(perch.Location, perch.Map);
                                 parrot.Z += 12;
-								
+
                                 perch.Parrot = parrot;
                                 this.m_Parrot.Delete();
                             }
@@ -105,7 +104,7 @@ namespace Server.Items
             protected override void OnTargetOutOfRange(Mobile from, object targeted)
             {
                 base.OnTargetOutOfRange(from, targeted);
-				
+
                 from.SendLocalizedMessage(1072613); //You must be closer to the Parrot Perch to place the Parrot upon it.
             }
         }

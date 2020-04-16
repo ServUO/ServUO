@@ -1,16 +1,14 @@
-using System;
-using Server.Items;
-using Server.Mobiles;
 using Server.Gumps;
 using Server.Network;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class HumilityItemQuestGump : Gump
     {
-        private HumilityQuestMobile m_Mobile;
-        private WhosMostHumbleQuest m_Quest;
-        private int m_NPCIndex;
+        private readonly HumilityQuestMobile m_Mobile;
+        private readonly WhosMostHumbleQuest m_Quest;
+        private readonly int m_NPCIndex;
 
         public HumilityItemQuestGump(HumilityQuestMobile mobile, WhosMostHumbleQuest quest, int index) : base(50, 50)
         {

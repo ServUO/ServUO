@@ -1,7 +1,7 @@
-using System;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Targeting;
+using System;
 
 namespace Server.Spells.Third
 {
@@ -135,7 +135,7 @@ namespace Server.Spells.Third
 
                 int version = reader.ReadInt();
 
-                switch ( version )
+                switch (version)
                 {
                     case 1:
                         {

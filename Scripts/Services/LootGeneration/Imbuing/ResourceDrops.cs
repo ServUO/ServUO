@@ -1,17 +1,16 @@
-using Server;
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
-using Server.Mobiles;
 
 namespace Server.Items
 {
     public class IngredientDropEntry
     {
-        private Type m_CreatureType;
-        private bool m_DropMultiples;
-        private string m_Region;
-        private double m_Chance;
-        private Type[] m_Ingredients;
+        private readonly Type m_CreatureType;
+        private readonly bool m_DropMultiples;
+        private readonly string m_Region;
+        private readonly double m_Chance;
+        private readonly Type[] m_Ingredients;
 
         public Type CreatureType { get { return m_CreatureType; } }
         public bool DropMultiples { get { return m_DropMultiples; } }
@@ -241,12 +240,12 @@ namespace Server.Items
             }
         }
 
-        public static Type[] ImbuingGems = 
+        public static Type[] ImbuingGems =
         {
-            typeof(FireRuby), 
-            typeof(WhitePearl), 
-            typeof(BlueDiamond), 
-			typeof(Turquoise)
+            typeof(FireRuby),
+            typeof(WhitePearl),
+            typeof(BlueDiamond),
+            typeof(Turquoise)
         };
     }
 }

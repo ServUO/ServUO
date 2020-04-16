@@ -1,6 +1,3 @@
-using Server;
-using System;
-
 namespace Server.Items
 {
     public class BascinetBearingTheCrestOfBlackthorn1 : Bascinet
@@ -15,7 +12,7 @@ namespace Server.Items
             Attributes.NightSight = 1;
             Attributes.DefendChance = 10;
             Attributes.CastRecovery = 3;
-            Hue = 1233;           
+            Hue = 1233;
         }
 
         public override int BasePhysicalResistance { get { return 10; } }
@@ -24,7 +21,7 @@ namespace Server.Items
         public override int BasePoisonResistance { get { return 10; } }
         public override int BaseEnergyResistance { get { return 10; } }
         public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }        
+        public override int InitMaxHits { get { return 255; } }
 
         public BascinetBearingTheCrestOfBlackthorn1(Serial serial)
             : base(serial)

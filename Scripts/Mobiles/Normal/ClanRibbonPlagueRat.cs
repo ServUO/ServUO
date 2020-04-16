@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a rat corpse")]
@@ -11,7 +9,7 @@ namespace Server.Mobiles
         {
             this.Name = "Clan Ribbon Plague Rat";
             this.Body = 238;
-			this.Hue = 52;
+            this.Hue = 52;
             this.BaseSoundID = 0xCC;
 
             this.SetStr(59);
@@ -30,14 +28,14 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Fire, 20, 30);
             this.SetResistance(ResistanceType.Cold, 30, 40);
             this.SetResistance(ResistanceType.Energy, 30, 40);
-			
+
             this.SetSkill(SkillName.MagicResist, 30.0);
             this.SetSkill(SkillName.Tactics, 34.0);
             this.SetSkill(SkillName.Wrestling, 40.0);
 
             this.Fame = 150;
             this.Karma = -150;
-			
+
             this.Tamable = false;
             this.ControlSlots = 1;
             this.MinTameSkill = -0.9;

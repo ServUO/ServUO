@@ -241,7 +241,7 @@ namespace Server.Engines.BulkOrders
                 return GetEntries("Inscription", "LargeBooks");
             }
         }
-       
+
         public static SmallBulkEntry[] LargeWeapons
         {
             get

@@ -1,11 +1,9 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("an undead horse corpse")]
     public class SkeletalMount : BaseMount
     {
-        [Constructable] 
+        [Constructable]
         public SkeletalMount()
             : this("a skeletal steed")
         {
@@ -71,7 +69,7 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            switch( version )
+            switch (version)
             {
                 case 0:
                     {

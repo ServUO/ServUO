@@ -1,9 +1,7 @@
+using Server.Engines.Points;
+using Server.Multis;
 using System;
 using System.Collections.Generic;
-using Server.Multis;
-using Server.ContextMenus;
-using Server.Mobiles;
-using Server.Engines.Points;
 using System.Linq;
 
 namespace Server.Items
@@ -172,7 +170,7 @@ namespace Server.Items
             }
 
             if (m_Timer != null)
-                m_Timer.Stop();            
+                m_Timer.Stop();
 
             m_Timer = null;
         }

@@ -1,15 +1,15 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class GhostOfCovetousQuest : BaseQuest
-    { 
+    {
         public GhostOfCovetousQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(SpiritBottle), "spirit bottle", 1, typeof(Frederic), "The Ghost of Frederic Smithson"));		
-							
+        {
+            this.AddObjective(new DeliverObjective(typeof(SpiritBottle), "spirit bottle", 1, typeof(Frederic), "The Ghost of Frederic Smithson"));
+
             this.AddReward(new BaseReward(1075284)); // Return the filled Spirit Bottle to Griswolt the Master Necromancer to receive a reward.
         }
 
@@ -94,12 +94,12 @@ namespace Server.Engines.Quests
     }
 
     public class SaveHisDadQuest : BaseQuest
-    { 
+    {
         public SaveHisDadQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(DreadSpiderSilk), "dread spider silk", 1, typeof(Leon), "Leon", 600));		
-							
+        {
+            this.AddObjective(new DeliverObjective(typeof(DreadSpiderSilk), "dread spider silk", 1, typeof(Leon), "Leon", 600));
+
             this.AddReward(new BaseReward(1075339)); // Hurry! You must get the silk to Leon the Alchemist quickly, or it will crumble and become useless!
         }
 
@@ -183,12 +183,12 @@ namespace Server.Engines.Quests
     }
 
     public class FathersGratitudeQuest : BaseQuest
-    { 
+    {
         public FathersGratitudeQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(AlchemistsBandage), "alchemist's bandage", 1, typeof(Andros), "Andros"));		
-							
+        {
+            this.AddObjective(new DeliverObjective(typeof(AlchemistsBandage), "alchemist's bandage", 1, typeof(Andros), "Andros"));
+
             this.AddReward(new BaseReward(typeof(AndrosGratitude), 1075345)); // Andros’ Gratitude
         }
 

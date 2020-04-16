@@ -1,7 +1,3 @@
-using Server;
-using System;
-using System.Collections.Generic;
-using Server.Mobiles;
 using Server.Engines.Craft;
 
 namespace Server.Items
@@ -18,8 +14,8 @@ namespace Server.Items
         public override int BaseColdResistance { get { return 7; } }
         public override int BasePoisonResistance { get { return 17; } }
         public override int BaseEnergyResistance { get { return 6; } }
-		
-		public override bool IsArtifact { get { return true; } }
+
+        public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public PrismaticLenses()
@@ -61,8 +57,8 @@ namespace Server.Items
         public override int BaseColdResistance { get { return 7; } }
         public override int BasePoisonResistance { get { return 17; } }
         public override int BaseEnergyResistance { get { return 6; } }
-		
-		public override bool IsArtifact { get { return true; } }
+
+        public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public GargishPrismaticLenses()

@@ -12,7 +12,7 @@ namespace Server.Gumps
 {
     public class SetColorGump : Gump
     {
-        private Color m_OldColor;
+        private readonly Color m_OldColor;
         private readonly PropertyInfo m_Property;
         private readonly Mobile m_Mobile;
         private readonly object m_Object;

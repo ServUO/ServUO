@@ -1,15 +1,11 @@
-using System;
-using Server;
-using System.Collections.Generic;
-using Server.Mobiles;
-using Server.Items;
 using Server.Gumps;
+using Server.Items;
 
 namespace Server.Engines.VvV
 {
     [FlipableAttribute(39351, 39352)]
     public class CompassionBanner : Item
-	{
+    {
         public override int LabelNumber
         {
             get
@@ -41,19 +37,19 @@ namespace Server.Engines.VvV
 
         public CompassionBanner(Serial serial)
             : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-		}
-	}
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 }

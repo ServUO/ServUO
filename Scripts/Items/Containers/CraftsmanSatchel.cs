@@ -1,4 +1,3 @@
-using System;
 using Reward = Server.Engines.Quests.BaseReward;
 
 namespace Server.Items
@@ -9,27 +8,27 @@ namespace Server.Items
             : base()
         {
             Hue = Reward.SatchelHue();
-			
+
             int count = 1;
-			
+
             if (0.015 > Utility.RandomDouble())
                 count = 2;
-			
+
             bool equipment = false;
             bool jewlery = false;
             bool talisman = false;
-			
+
             while (Items.Count < count)
-            { 
+            {
                 if (0.33 > Utility.RandomDouble() && !talisman)
                 {
                     DropItem(Loot.RandomTalisman());
-                    talisman = true;					
+                    talisman = true;
                 }
                 else if (0.4 > Utility.RandomDouble() && !equipment)
                 {
-                    DropItem(RandomItem());		
-                    equipment = true;		
+                    DropItem(RandomItem());
+                    equipment = true;
                 }
                 else if (0.88 > Utility.RandomDouble() && !jewlery)
                 {

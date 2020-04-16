@@ -1,6 +1,4 @@
 using System;
-using Server;
-using Server.Targeting;
 
 namespace Server.Spells.Mysticism
 {
@@ -13,7 +11,7 @@ namespace Server.Spells.Mysticism
 
         public abstract SpellCircle Circle { get; }
 
-        private static int[] m_ManaTable = new int[] { 4, 6, 9, 11, 14, 20, 40, 50 };
+        private static readonly int[] m_ManaTable = new int[] { 4, 6, 9, 11, 14, 20, 40, 50 };
 
         public override TimeSpan CastDelayBase { get { return TimeSpan.FromMilliseconds(((4 + (int)Circle) * CastDelaySecondsPerTick) * 1000); } }
         public override double CastDelayFastScalar { get { return 1.0; } }
@@ -48,7 +46,7 @@ namespace Server.Spells.Mysticism
 
         public override void SendCastEffect()
         {
-            if(Caster.Player)
+            if (Caster.Player)
                 Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 0x66C, 3);
         }
 

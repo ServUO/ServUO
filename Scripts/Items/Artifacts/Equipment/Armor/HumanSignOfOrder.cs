@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Server.Items
+﻿namespace Server.Items
 {
     public class HumanSignOfOrder : OrderShield
-	{
-		public override bool IsArtifact { get { return true; } }
+    {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public HumanSignOfOrder()
             : base()
@@ -20,8 +18,8 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
-        public override int LabelNumber { get{return 1113534;} }// Sign of Order
+
+        public override int LabelNumber { get { return 1113534; } }// Sign of Order
 
         public override int BasePhysicalResistance
         {

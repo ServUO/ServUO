@@ -1,10 +1,8 @@
-using System;
-using Server;
-using System.Collections.Generic;
-using Server.Spells;
-using System.Linq;
-using Server.Network;
 using Server.Items;
+using Server.Spells;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -159,7 +157,7 @@ namespace Server.Mobiles
         }
 
         public static AreaEffect[] Effects { get { return _Effects; } }
-        private static AreaEffect[] _Effects;
+        private static readonly AreaEffect[] _Effects;
 
         static AreaEffect()
         {
@@ -458,7 +456,7 @@ namespace Server.Mobiles
             return 0;
         }
 
-        private Type[] _DamageCreatures =
+        private readonly Type[] _DamageCreatures =
         {
             typeof(ValoriteElemental), typeof(BronzeElemental), typeof(Dimetrosaur), typeof(ChiefParoxysmus)
         };

@@ -1,16 +1,12 @@
-using System;
-using Server;
-using Server.Items;
-using Server.Mobiles;
 using Server.Gumps;
-using System.Collections.Generic;
 using Server.Network;
+using System;
 
 namespace Server.Engines.NewMagincia
 {
     public class PlotWinnerGump : Gump
     {
-        private MaginciaHousingPlot m_Plot;
+        private readonly MaginciaHousingPlot m_Plot;
 
         private readonly int BlueColor = 0x1E90FF;
         private readonly int GreenColor = 0x7FFFD4;
@@ -25,7 +21,7 @@ namespace Server.Engines.NewMagincia
 
             AddHtmlLocalized(170, 13, 150, 16, 1150484, GreenColor, false, false); // WRIT OF LEASE
 
-            string args = String.Format("{0}\t{1}\t{2}", plot.Identifier, plot.Map, String.Format("{0} {1}", plot.Bounds.X, plot.Bounds.Y)); 
+            string args = String.Format("{0}\t{1}\t{2}", plot.Identifier, plot.Map, String.Format("{0} {1}", plot.Bounds.X, plot.Bounds.Y));
             AddHtmlLocalized(10, 40, 404, 180, 1150499, args, BlueColor, true, true);
 
             AddButton(5, 235, 4005, 4007, 1, GumpButtonType.Reply, 0);

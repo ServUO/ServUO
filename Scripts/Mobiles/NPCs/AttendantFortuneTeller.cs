@@ -1,14 +1,14 @@
-using System;
-using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Items;
 using Server.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
     public class AttendantFortuneTeller : PersonalAttendant
-    { 
+    {
         [Constructable]
         public AttendantFortuneTeller()
             : this(false)
@@ -56,7 +56,7 @@ namespace Server.Mobiles
             this.Female = true;
             this.Race = Race.Human;
             this.Hue = this.Race.RandomSkinHue();
-			
+
             Utility.AssignRandomHair(this, Utility.RandomHairHue());
         }
 
@@ -137,10 +137,10 @@ namespace Server.Mobiles
         }
 
         private class FortuneGump : Gump
-        { 
+        {
             public FortuneGump(string text)
                 : base(200, 200)
-            { 
+            {
                 this.AddPage(0);
 
                 this.AddImage(0, 0, 0x7724);
@@ -151,7 +151,7 @@ namespace Server.Mobiles
                 two = Utility.RandomMinMax(one + 1, 20);
                 three = Utility.RandomMinMax(0, one - 1);
 
-                this.AddImageTiled(28, 140, 115, 180, 0x7725 + one);				
+                this.AddImageTiled(28, 140, 115, 180, 0x7725 + one);
                 this.AddTooltip(this.GetTooltip(one));
                 this.AddHtmlLocalized(28, 115, 125, 20, 1076079, 0x7FFF, false, false); // The Past
                 this.AddImageTiled(171, 140, 115, 180, 0x7725 + two);
@@ -169,7 +169,7 @@ namespace Server.Mobiles
                 if (number > 9)
                     return 1076015 + number - 10;
 
-                switch ( number )
+                switch (number)
                 {
                     case 0:
                         return 1076063;

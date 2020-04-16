@@ -1,6 +1,3 @@
-using System;
-
-using Server;
 using Server.Spells;
 
 namespace Server.Regions
@@ -28,6 +25,6 @@ namespace Server.Regions
             }
 
             return type == TravelCheckType.TeleportTo || type == TravelCheckType.TeleportFrom;
-        } 
+        }
     }
 }

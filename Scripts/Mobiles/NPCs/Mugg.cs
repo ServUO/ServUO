@@ -1,13 +1,13 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Engines.Quests
 {
     public class MoreOrePleaseQuest : BaseQuest
-    { 
+    {
         public MoreOrePleaseQuest()
             : base()
-        { 
+        {
             AddObjective(new ObtainObjective(typeof(IronOre), "iron ore", 5, 0x19B9));
 
             AddReward(new BaseReward(typeof(MinersQuestSatchel), 1074282)); // Craftsman's Satchel
@@ -76,7 +76,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Mugg()
             : base("Mugg", "the miner")
-        { 
+        {
         }
 
         public Mugg(Serial serial)
@@ -85,10 +85,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(MoreOrePleaseQuest)
                 };
@@ -97,11 +97,11 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             InitStats(100, 100, 25);
-			
+
             Female = false;
             CantWalk = true;
             Race = Race.Human;
-			
+
             Hue = 0x840A;
             HairItemID = 0x2047;
             HairHue = 0x0;
@@ -109,16 +109,16 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());			
+            AddItem(new Backpack());
             AddItem(new Pickaxe());
             AddItem(new Boots(0x901));
             AddItem(new ShortPants(0x3B2));
             AddItem(new Shirt(0x22B));
             AddItem(new SkullCap(0x177));
             AddItem(new HalfApron(0x5F1));
-			
+
             Item item;
-			
+
             item = new PlateGloves();
             item.Hue = 0x21E;
             AddItem(item);
@@ -147,7 +147,7 @@ namespace Server.Engines.Quests
             : base()
         {
             Hue = BaseReward.SatchelHue();
-			
+
             AddItem(new Pickaxe());
             AddItem(new Pickaxe());
         }

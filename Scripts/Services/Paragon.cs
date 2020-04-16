@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using System;
 
 namespace Server.Mobiles
 {
@@ -38,11 +38,11 @@ namespace Server.Mobiles
         public static double FameBuff = 1.40;
         public static double KarmaBuff = 1.40;
         public static int DamageBuff = 5;
-		
+
         public static void Convert(BaseCreature bc)
         {
             if (bc.IsParagon ||
-				!bc.CanBeParagon)
+                !bc.CanBeParagon)
                 return;
 
             bc.Hue = Hue;
@@ -60,7 +60,7 @@ namespace Server.Mobiles
 
             for (int i = 0; i < bc.Skills.Length; i++)
             {
-                Skill skill = (Skill)bc.Skills[i];
+                Skill skill = bc.Skills[i];
 
                 if (skill.Base > 0.0)
                     skill.Base *= SkillsBuff;
@@ -110,7 +110,7 @@ namespace Server.Mobiles
 
             for (int i = 0; i < bc.Skills.Length; i++)
             {
-                Skill skill = (Skill)bc.Skills[i];
+                Skill skill = bc.Skills[i];
 
                 if (skill.Base > 0.0)
                     skill.Base /= SkillsBuff;
@@ -154,7 +154,7 @@ namespace Server.Mobiles
 
         public static bool CheckArtifactChance(Mobile m, BaseCreature bc)
         {
-            double fame = (double)bc.Fame;
+            double fame = bc.Fame;
 
             if (fame > 32000)
                 fame = 32000;

@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class DaemonicPrismQuest : BaseQuest
-    { 
+    {
         public DaemonicPrismQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(CrystalDaemon), "crystal daemons", 3, "Prism of Light"));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -78,12 +78,12 @@ namespace Server.Engines.Quests
     }
 
     public class HowManyHeadsQuest : BaseQuest
-    { 
+    {
         public HowManyHeadsQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(CrystalHydra), "crystal hydras", 3, "Prism of Light"));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -151,12 +151,12 @@ namespace Server.Engines.Quests
     }
 
     public class GlassyFoeQuest : BaseQuest
-    { 
+    {
         public GlassyFoeQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(CrystalLatticeSeeker), "crystal lattice seekers", 5, "Prism of Light"));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -224,12 +224,12 @@ namespace Server.Engines.Quests
     }
 
     public class HailstormQuest : BaseQuest
-    { 
+    {
         public HailstormQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(CrystalVortex), "crystal vortices", 8, "Prism of Light"));
-			
+
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
@@ -301,7 +301,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Ryal()
             : base("Lorekeeper Ryal", "the keeper of tradition")
-        { 
+        {
             this.SetSkill(SkillName.Meditation, 60.0, 83.0);
             this.SetSkill(SkillName.Focus, 60.0, 83.0);
         }
@@ -312,10 +312,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
+        {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(DaemonicPrismQuest),
                     typeof(HowManyHeadsQuest),
@@ -327,10 +327,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = false;
             this.Race = Race.Elf;
-			
+
             this.Hue = 0x82FE;
             this.HairItemID = 0x2FC2;
             this.HairHue = 0x324;

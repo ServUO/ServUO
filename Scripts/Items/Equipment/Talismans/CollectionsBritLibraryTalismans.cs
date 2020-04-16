@@ -1,22 +1,22 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Items
-{ 
+{
     public class TreatiseonAlchemyTalisman : BaseTalisman
     {
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1073353; } }// Library Talisman - Treatise on Alchemy
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1073353; } }// Library Talisman - Treatise on Alchemy
         public override bool ForceShowName { get { return true; } }
-		
+
         [Constructable]
         public TreatiseonAlchemyTalisman()
             : base(0x2F58)
-        { 
+        {
             Skill = TalismanSkill.Alchemy;
             SuccessBonus = GetRandomSuccessful();
-            Blessed = GetRandomBlessed();		
-            Attributes.EnhancePotions = 15;			
+            Blessed = GetRandomBlessed();
+            Attributes.EnhancePotions = 15;
             SkillBonuses.SetValues(0, SkillName.Magery, 5.0);
         }
 
@@ -24,7 +24,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -40,18 +40,18 @@ namespace Server.Items
 
     public class PrimerOnArmsTalisman : BaseTalisman
     {
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1073354; } }// Library Talisman - A Primer on Arms
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1073354; } }// Library Talisman - A Primer on Arms
         public override bool ForceShowName { get { return true; } }
-		
+
         [Constructable]
         public PrimerOnArmsTalisman()
             : base(0x2F59)
-        { 
-            Blessed = GetRandomBlessed();			
-            Attributes.BonusStr = 1;			
+        {
+            Blessed = GetRandomBlessed();
+            Attributes.BonusStr = 1;
             Attributes.RegenHits = 2;
-            Attributes.WeaponDamage = 20;						
+            Attributes.WeaponDamage = 20;
             Removal = TalismanRemoval.Damage;
             MaxChargeTime = 1200;
         }
@@ -60,7 +60,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-      
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -76,19 +76,19 @@ namespace Server.Items
 
     public class MyBookTalisman : BaseTalisman
     {
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1073355; } }// Library Talisman - My Book
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1073355; } }// Library Talisman - My Book
         public override bool ForceShowName { get { return true; } }
-		
+
         [Constructable]
         public MyBookTalisman()
             : base(0x2F5A)
-        { 
-            Blessed = GetRandomBlessed();			
+        {
+            Blessed = GetRandomBlessed();
             Skill = TalismanSkill.Inscription;
-            SuccessBonus = GetRandomSuccessful();			
-            ExceptionalBonus = GetRandomExceptional();			
-            Attributes.BonusInt = 5;			
+            SuccessBonus = GetRandomSuccessful();
+            ExceptionalBonus = GetRandomExceptional();
+            Attributes.BonusInt = 5;
             Attributes.BonusMana = 2;
         }
 
@@ -96,7 +96,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -112,17 +112,17 @@ namespace Server.Items
 
     public class TalkingtoWispsTalisman : BaseTalisman
     {
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1073356; } }// Library Talisman - Talking to Wisps
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1073356; } }// Library Talisman - Talking to Wisps
         public override bool ForceShowName { get { return true; } }
-		
+
         [Constructable]
         public TalkingtoWispsTalisman()
             : base(0x2F5B)
-        { 
-            Blessed = GetRandomBlessed();			
+        {
+            Blessed = GetRandomBlessed();
             SkillBonuses.SetValues(0, SkillName.SpiritSpeak, 3.0);
-            SkillBonuses.SetValues(1, SkillName.EvalInt, 5.0);			
+            SkillBonuses.SetValues(1, SkillName.EvalInt, 5.0);
             Removal = TalismanRemoval.Ward;
             MaxChargeTime = 1200;
         }
@@ -131,7 +131,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -147,19 +147,19 @@ namespace Server.Items
 
     public class GrammarOfOrchishTalisman : BaseTalisman
     {
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1073358; } }// Library Talisman - a Grammar of Orchish (Summoner)
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1073358; } }// Library Talisman - a Grammar of Orchish (Summoner)
         public override bool ForceShowName { get { return true; } }
-		
+
         [Constructable]
         public GrammarOfOrchishTalisman()
             : base(0x2F59)
-        { 
-            Blessed = GetRandomBlessed();	
+        {
+            Blessed = GetRandomBlessed();
             Protection = GetRandomProtection();
-            Summoner = new TalismanAttribute(typeof(SummonedOrcBrute), 0, 1072414);		
+            Summoner = new TalismanAttribute(typeof(SummonedOrcBrute), 0, 1072414);
             SkillBonuses.SetValues(0, SkillName.MagicResist, 5.0);
-            SkillBonuses.SetValues(1, SkillName.Anatomy, 7.0);			
+            SkillBonuses.SetValues(1, SkillName.Anatomy, 7.0);
             MaxChargeTime = 1800;
         }
 
@@ -167,7 +167,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -183,26 +183,26 @@ namespace Server.Items
 
     public class BirdsofBritanniaTalisman : BaseTalisman
     {
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1074892; } }// Library Talisman - Birds of Britannia Random Summoner
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1074892; } }// Library Talisman - Birds of Britannia Random Summoner
         public override bool ForceShowName { get { return true; } }
-        public override Type GetSummoner() {  return GetRandomSummonType(); }
-		
+        public override Type GetSummoner() { return GetRandomSummonType(); }
+
         [Constructable]
         public BirdsofBritanniaTalisman()
             : base(0x2F5A)
-        { 
-            Blessed = GetRandomBlessed();	
-            Slayer = TalismanSlayerName.Bird;			
+        {
+            Blessed = GetRandomBlessed();
+            Slayer = TalismanSlayerName.Bird;
             SkillBonuses.SetValues(0, SkillName.AnimalTaming, 5.0);
-            SkillBonuses.SetValues(1, SkillName.AnimalLore, 5.0);		
+            SkillBonuses.SetValues(1, SkillName.AnimalLore, 5.0);
             MaxChargeTime = 1800;
         }
 
         public BirdsofBritanniaTalisman(Serial serial)
             : base(serial)
         {
-        }        
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -219,27 +219,27 @@ namespace Server.Items
 
     public class TheLifeOfTravelingMinstrelTalisman : BaseTalisman
     {
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber { get { return 1073360; } }// Library Talisman - The Life of a Traveling Minstrel
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1073360; } }// Library Talisman - The Life of a Traveling Minstrel
         public override bool ForceShowName { get { return true; } }
-		
+
         [Constructable]
         public TheLifeOfTravelingMinstrelTalisman()
             : base(0x2F5B)
-        { 
-            Blessed = GetRandomBlessed();	
-            Protection = GetRandomProtection();		
+        {
+            Blessed = GetRandomBlessed();
+            Protection = GetRandomProtection();
             SkillBonuses.SetValues(0, SkillName.Provocation, 5.0);
-            SkillBonuses.SetValues(1, SkillName.Musicianship, 5.0);			
+            SkillBonuses.SetValues(1, SkillName.Musicianship, 5.0);
             Removal = TalismanRemoval.Curse;
-            MaxChargeTime = 1200;		
+            MaxChargeTime = 1200;
         }
 
         public TheLifeOfTravelingMinstrelTalisman(Serial serial)
             : base(serial)
         {
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

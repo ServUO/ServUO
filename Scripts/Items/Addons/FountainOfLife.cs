@@ -237,16 +237,16 @@ namespace Server.Items
 
         public void Enhance(Mobile from)
         {
-			EnhancedBandage existing = null;
+            EnhancedBandage existing = null;
 
-			foreach(Item item in Items)
-			{
-				if(item is EnhancedBandage)
-				{
-					existing = item as EnhancedBandage;
-					break;
-				}
-			}
+            foreach (Item item in Items)
+            {
+                if (item is EnhancedBandage)
+                {
+                    existing = item as EnhancedBandage;
+                    break;
+                }
+            }
 
             for (int i = Items.Count - 1; i >= 0 && m_Charges > 0; --i)
             {
@@ -272,14 +272,14 @@ namespace Server.Items
                         bandage.Delete();
                     }
 
-					// try stacking first
-					if (from == null || !TryDropItem(from, enhanced, false))
-					{
-						if (existing != null)
-							existing.StackWith(from, enhanced);
-						else
-							DropItem(enhanced);
-					}
+                    // try stacking first
+                    if (from == null || !TryDropItem(from, enhanced, false))
+                    {
+                        if (existing != null)
+                            existing.StackWith(from, enhanced);
+                        else
+                            DropItem(enhanced);
+                    }
                 }
             }
 

@@ -22,8 +22,8 @@ namespace Server.Gumps
 {
     public class TextRelay
     {
-        private int m_EntryID;
-        private string m_Text;
+        private readonly int m_EntryID;
+        private readonly string m_Text;
 
         public TextRelay(int entryID, string text)
         {
@@ -50,9 +50,9 @@ namespace Server.Gumps
 
     public class RelayInfo
     {
-        private int m_ButtonID;
-        private int[] m_Switches;
-        private TextRelay[] m_TextEntries;
+        private readonly int m_ButtonID;
+        private readonly int[] m_Switches;
+        private readonly TextRelay[] m_TextEntries;
 
         public RelayInfo(int buttonID, int[] switches, TextRelay[] textEntries)
         {

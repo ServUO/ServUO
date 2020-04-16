@@ -158,7 +158,7 @@ namespace Server.Items
             Movable = false;
             Visible = false;
             Bedrolls = new List<WrongBedrollBase>();
-            MysteriousTunnels = new List<MysteriousTunnel>();            
+            MysteriousTunnels = new List<MysteriousTunnel>();
             Timer.DelayCall(TimeSpan.FromSeconds(10), CheckRespawn);
             m_Timer = Timer.DelayCall(RestartDelay, RestartDelay, new TimerCallback(CheckRespawn));
             m_Timer.Start();
@@ -167,7 +167,7 @@ namespace Server.Items
                 Instances = new List<BedrollSpawner>();
 
             Instances.Add(this);
-        }        
+        }
 
         private void CheckRespawn()
         {
@@ -215,7 +215,7 @@ namespace Server.Items
 
                 mt.MoveToWorld(m_OutsideTunnels[i], Map);
                 MysteriousTunnels.Add(mt);
-            }            
+            }
         }
 
         public BedrollSpawner(Serial serial)
@@ -319,7 +319,7 @@ namespace Server.Items
 
             if (version == 0)
             {
-                Timer.DelayCall<Map>(TimeSpan.FromSeconds(5), map => 
+                Timer.DelayCall<Map>(TimeSpan.FromSeconds(5), map =>
                     {
                         EnchantedHotItem.SpawnChests(map);
                         Console.WriteLine("Hot Item chests spawned for {0}.", this.Map);

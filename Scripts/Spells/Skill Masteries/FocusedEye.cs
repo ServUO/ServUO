@@ -1,15 +1,11 @@
-using System;
-using Server;
-using Server.Spells;
 using Server.Network;
-using Server.Mobiles;
-using Server.Items;
+using System;
 
 namespace Server.Spells.SkillMasteries
 {
     public class FocusedEyeSpell : SkillMasterySpell
     {
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Focused Eye", "",
                 -1,
                 9002

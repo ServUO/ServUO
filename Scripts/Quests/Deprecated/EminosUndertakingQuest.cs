@@ -1,5 +1,5 @@
-using System;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests.Ninja
 {
@@ -7,7 +7,7 @@ namespace Server.Engines.Quests.Ninja
     {
         private static readonly Type[] m_TypeReferenceTable = new Type[]
         {
-            
+
         };
 
         public EminosUndertakingQuest(PlayerMobile from)
@@ -30,7 +30,7 @@ namespace Server.Engines.Quests.Ninja
         public override object Name
         {
             get
-            {                
+            {
                 return 1063173; // Emino's Undertaking
             }
         }

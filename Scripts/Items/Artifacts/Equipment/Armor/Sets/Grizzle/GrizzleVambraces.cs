@@ -1,25 +1,23 @@
-using System;
-
 namespace Server.Items
 {
     public class GrizzleVambraces : BoneArms
     {
-		public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public GrizzleVambraces()
             : base()
         {
             this.SetHue = 0x278;
-			
+
             this.ArmorAttributes.MageArmor = 1;
             this.Attributes.BonusHits = 5;
             this.Attributes.NightSight = 1;
-			
+
             this.SetAttributes.DefendChance = 10;
             this.SetAttributes.BonusStr = 12;
-			
+
             this.SetSelfRepair = 3;
-			
+
             this.SetPhysicalBonus = 3;
             this.SetFireBonus = 5;
             this.SetColdBonus = 3;
@@ -91,14 +89,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }

@@ -1,16 +1,16 @@
-using System;
 using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class SomethingToWailAboutQuest : BaseQuest
-    { 
+    {
         public SomethingToWailAboutQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(WailingBanshee), "wailing banshees", 12));
-			
+
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
@@ -63,12 +63,12 @@ namespace Server.Engines.Quests
     }
 
     public class RunawaysQuest : BaseQuest
-    { 
+    {
         public RunawaysQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(FrenziedOstard), "frenzied ostards", 12));
-			
+
             this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
@@ -121,12 +121,12 @@ namespace Server.Engines.Quests
     }
 
     public class ViciousPredatorQuest : BaseQuest
-    { 
+    {
         public ViciousPredatorQuest()
             : base()
-        { 
+        {
             this.AddObjective(new SlayObjective(typeof(DireWolf), "dire wolves ", 10));
-			
+
             this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
@@ -183,7 +183,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public Jelrice()
             : base("Jelrice", "the trader")
-        { 
+        {
         }
 
         public Jelrice(Serial serial)
@@ -195,7 +195,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
                     typeof(SomethingToWailAboutQuest),
                     typeof(RunawaysQuest),
@@ -206,10 +206,10 @@ namespace Server.Engines.Quests
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);
-			
+
             this.Female = true;
             this.Race = Race.Human;
-			
+
             this.Hue = 0x8410;
             this.HairItemID = 0x2047;
             this.HairHue = 0x471;

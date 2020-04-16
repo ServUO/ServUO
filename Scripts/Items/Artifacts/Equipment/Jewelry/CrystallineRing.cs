@@ -1,19 +1,17 @@
-using System;
-
 namespace Server.Items
 {
     public class CrystallineRing : GoldRing
-	{
-		public override int LabelNumber { get { return 1075096; } } // Crystalline Ring
-		public override bool IsArtifact { get { return true; } }
-		
+    {
+        public override int LabelNumber { get { return 1075096; } } // Crystalline Ring
+        public override bool IsArtifact { get { return true; } }
+
         [Constructable]
         public CrystallineRing()
         {
-            Hue = 0x480;		
+            Hue = 0x480;
             Attributes.RegenHits = 5;
             Attributes.RegenMana = 3;
-            Attributes.SpellDamage = 20;		
+            Attributes.SpellDamage = 20;
             SkillBonuses.SetValues(0, SkillName.Magery, 20.0);
             SkillBonuses.SetValues(1, SkillName.Focus, 20.0);
         }

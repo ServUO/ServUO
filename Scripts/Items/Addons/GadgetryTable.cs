@@ -1,11 +1,11 @@
-using System;
+using Server.ContextMenus;
+using Server.Gumps;
+using Server.Items;
+using Server.Mobiles;
 using Server.Multis;
 using Server.Network;
-using Server.Items;
-using Server.Gumps;
-using Server.ContextMenus;
+using System;
 using System.Collections.Generic;
-using Server.Mobiles;
 using System.Linq;
 
 namespace Server.Engines.VeteranRewards
@@ -74,7 +74,7 @@ namespace Server.Engines.VeteranRewards
             switch (type)
             {
                 case DirectionType.South:
-                    AddComponent(new GadgetryTableComponent(20372), 1, 0, 0);  
+                    AddComponent(new GadgetryTableComponent(20372), 1, 0, 0);
                     AddComponent(new GadgetryTableComponent(20362), 0, 0, 0);
                     AddComponent(new GadgetryTableComponent(20352), -1, 0, 0);
                     AddComponent(new GadgetryTableComponent(19687), -1, 1, 0);
@@ -293,7 +293,7 @@ namespace Server.Engines.VeteranRewards
 
             if (!Deleted)
                 base.OnDoubleClick(from);
-        }        
+        }
 
         public GadgetryTableAddonDeed(Serial serial)
             : base(serial)

@@ -1,13 +1,12 @@
-using System;
 using Server.Engines.VeteranRewards;
 
 namespace Server.Items
-{ 
+{
     public class BloodyPentagramComponent : AddonComponent
     {
         public BloodyPentagramComponent(int itemID)
             : base(itemID)
-        { 
+        {
         }
 
         public BloodyPentagramComponent(Serial serial)
@@ -50,7 +49,7 @@ namespace Server.Items
         [Constructable]
         public BloodyPentagramAddon()
             : base()
-        { 
+        {
             this.AddComponent(new BloodyPentagramComponent(0x1CF9), 0, 1, 0);
             this.AddComponent(new BloodyPentagramComponent(0x1CF8), 0, 2, 0);
             this.AddComponent(new BloodyPentagramComponent(0x1CF7), 0, 3, 0);
@@ -98,13 +97,13 @@ namespace Server.Items
         }
 
         public override BaseAddonDeed Deed
-        { 
+        {
             get
-            { 
+            {
                 BloodyPentagramDeed deed = new BloodyPentagramDeed();
                 deed.IsRewardItem = this.m_IsRewardItem;
 
-                return deed; 
+                return deed;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -125,7 +124,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.WriteEncodedInt(0); // version
-			
+
             writer.Write((bool)this.m_IsRewardItem);
         }
 
@@ -134,7 +133,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             this.m_IsRewardItem = reader.ReadBool();
         }
     }
@@ -162,13 +161,13 @@ namespace Server.Items
             }
         }// Bloody Pentagram
         public override BaseAddon Addon
-        { 
+        {
             get
-            { 
+            {
                 BloodyPentagramAddon addon = new BloodyPentagramAddon();
                 addon.IsRewardItem = this.m_IsRewardItem;
 
-                return addon; 
+                return addon;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -195,7 +194,7 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             if (this.m_IsRewardItem)
                 list.Add(1076221); // 5th Year Veteran Reward
         }
@@ -214,7 +213,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             this.m_IsRewardItem = reader.ReadBool();
         }
     }

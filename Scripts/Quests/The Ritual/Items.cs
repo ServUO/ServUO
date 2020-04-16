@@ -1,9 +1,7 @@
-using System;
-
-using Server.Mobiles;
-using Server.Engines.Quests;
-using Server.Spells;
 using Server.Items;
+using Server.Mobiles;
+using Server.Spells;
+using System;
 
 namespace Server.Engines.Quests.RitualQuest
 {
@@ -248,7 +246,7 @@ namespace Server.Engines.Quests.RitualQuest
             }
         }
 
-        private static int[] m_Contents = new int[42];
+        private static readonly int[] m_Contents = new int[42];
 
         public override object Title { get { return 1151164; } } // Chronicle of the Gargoyle Queen Vol. II
         public override object Author { get { return "Queen Zhah"; } }

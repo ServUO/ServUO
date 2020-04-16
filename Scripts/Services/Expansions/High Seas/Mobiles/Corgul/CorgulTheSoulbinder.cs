@@ -1,9 +1,8 @@
-using Server;
-using System;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Misc;
 using Server.Regions;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Server.Mobiles
@@ -15,7 +14,7 @@ namespace Server.Mobiles
         private DateTime m_NextReturn;
         private bool m_HasDone2ndSpawn;
         private CorgulAltar m_Altar;
-        private List<BaseCreature> m_Helpers = new List<BaseCreature>();
+        private readonly List<BaseCreature> m_Helpers = new List<BaseCreature>();
 
         public override bool CanDamageBoats { get { return false; } }
         public override bool TaintedLifeAura { get { return true; } }
@@ -38,7 +37,7 @@ namespace Server.Mobiles
 
         private readonly int _SpawnPerLoc = 15;
 
-        private Point3D[] _SpawnLocs =
+        private readonly Point3D[] _SpawnLocs =
         {
             new Point3D(6447, 1262, 10),
             new Point3D(6424, 1279, 10),
@@ -114,15 +113,15 @@ namespace Server.Mobiles
             {
                 rights.Sort();
 
-                if(rights.Count >= 5)
+                if (rights.Count >= 5)
                     winner = rights[Utility.Random(5)].m_Mobile;
-                else if(rights.Count > 1)
+                else if (rights.Count > 1)
                     winner = rights[Utility.Random(rights.Count)].m_Mobile;
                 else
                     winner = rights[0].m_Mobile;
             }
 
-            if(winner != null)
+            if (winner != null)
                 GiveArtifact(winner, CreateArtifact(UniqueList));
 
             if (IsSoulboundEnemies)
@@ -170,16 +169,16 @@ namespace Server.Mobiles
 
         public void SpawnMobile(BaseCreature bc, Point3D p)
         {
-            if(Map == null || bc == null)
+            if (Map == null || bc == null)
             {
-                if(bc != null)
+                if (bc != null)
                     bc.Delete();
                 return;
             }
 
             int x, y, z = 0;
 
-            for(int i = 0; i < 25; i++)
+            for (int i = 0; i < 25; i++)
             {
                 x = Utility.RandomMinMax(p.X - 4, p.X + 4);
                 y = Utility.RandomMinMax(p.Y - 4, p.Y + 4);
@@ -328,7 +327,7 @@ namespace Server.Mobiles
 
         private class InternalTimer : Timer
         {
-            private CorgulTheSoulBinder m_Mobile;
+            private readonly CorgulTheSoulBinder m_Mobile;
             private int m_Tick;
 
             public InternalTimer(CorgulTheSoulBinder mob, int range)

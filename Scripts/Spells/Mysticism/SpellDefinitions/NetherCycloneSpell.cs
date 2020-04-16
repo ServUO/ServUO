@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Targeting;
+using System;
 
 namespace Server.Spells.Mysticism
 {
@@ -10,7 +9,7 @@ namespace Server.Spells.Mysticism
         public override SpellCircle Circle { get { return SpellCircle.Eighth; } }
         public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
 
-        private static SpellInfo m_Info = new SpellInfo(
+        private static readonly SpellInfo m_Info = new SpellInfo(
                 "Nether Cyclone", "Grav Hur",
                 230,
                 9022,
@@ -63,7 +62,7 @@ namespace Server.Spells.Mysticism
                         }
                     }
 
-                    foreach(var d in AcquireIndirectTargets(p, 3))
+                    foreach (var d in AcquireIndirectTargets(p, 3))
                     {
                         Server.Effects.SendTargetParticles(d, 0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255, 0);
 
@@ -132,7 +131,7 @@ namespace Server.Spells.Mysticism
 
                 if (!from.CanSee(o))
                     from.SendLocalizedMessage(500237); // Target can not be seen.
-                else if(o is IPoint3D)
+                else if (o is IPoint3D)
                 {
                     SpellHelper.Turn(from, o);
                     Owner.OnTarget((IPoint3D)o);
