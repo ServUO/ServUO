@@ -194,9 +194,9 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)2);
+            writer.Write(2);
 
-            writer.Write((bool)m_IsFriend);
+            writer.Write(m_IsFriend);
         }
 
         public override void Deserialize(GenericReader reader)

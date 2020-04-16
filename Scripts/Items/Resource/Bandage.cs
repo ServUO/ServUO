@@ -724,7 +724,7 @@ namespace Server.Items
             m_Stream.Write((short)0x31);
             m_Stream.Write((short)0x01);
 
-            m_Stream.Write((int)0xE21);
+            m_Stream.Write(0xE21);
             m_Stream.Write(duration);
         }
     }

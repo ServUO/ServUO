@@ -523,7 +523,7 @@ namespace Server.Engines.CannedEvil
             PlayerMobile pm = (PlayerMobile)killer;
             for (int j = 0; j < pm.JusticeProtectors.Count; ++j)
             {
-                Mobile prot = (Mobile)pm.JusticeProtectors[j];
+                Mobile prot = pm.JusticeProtectors[j];
 
                 if (prot.Map != killer.Map || prot.Murderer || prot.Criminal || !JusticeVirtue.CheckMapRegion(killer, prot))
                     continue;
@@ -646,12 +646,12 @@ namespace Server.Engines.CannedEvil
                                     if (Utility.RandomDouble() < ChampionSystem.TranscendenceChance)
                                     {
                                         ScrollOfTranscendence SoTF = CreateRandomSoT(true);
-                                        GiveScrollTo(pm, (SpecialScroll)SoTF);
+                                        GiveScrollTo(pm, SoTF);
                                     }
                                     else
                                     {
                                         PowerScroll PS = PowerScroll.CreateRandomNoCraft(5, 5);
-                                        GiveScrollTo(pm, (SpecialScroll)PS);
+                                        GiveScrollTo(pm, PS);
                                     }
                                 }
                             }
@@ -792,7 +792,7 @@ namespace Server.Engines.CannedEvil
 
             int currentLevel = Level;
             int currentRank = Rank;
-            int maxSpawn = (int)((double)MaxKills * 0.5d * SpawnMod);
+            int maxSpawn = (int)(MaxKills * 0.5d * SpawnMod);
             if (currentLevel >= 16)
                 maxSpawn = Math.Min(maxSpawn, MaxKills - m_Kills);
             if (maxSpawn < 3)
@@ -1243,7 +1243,7 @@ namespace Server.Engines.CannedEvil
         {
             base.Serialize(writer);
 
-            writer.Write((int)8); // version
+            writer.Write(8); // version
 
             writer.Write(StartLevel);
 
@@ -1272,7 +1272,7 @@ namespace Server.Engines.CannedEvil
             // writer.Write( m_SpawnRange );
             writer.Write(m_Kills);
 
-            writer.Write((bool)m_Active);
+            writer.Write(m_Active);
             writer.Write((int)m_Type);
             writer.Write(m_Creatures, true);
             writer.Write(m_RedSkulls, true);
@@ -1670,7 +1670,7 @@ namespace Server.Engines.CannedEvil
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(m_Spawn);
         }

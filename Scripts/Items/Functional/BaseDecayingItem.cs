@@ -45,7 +45,7 @@ namespace Server.Items
                 {
                     TimeSpan t = TimeSpan.FromSeconds(TimeLeft);
 
-                    int weeks = (int)t.Days / 7;
+                    int weeks = t.Days / 7;
                     int days = t.Days;
                     int hours = t.Hours;
                     int minutes = t.Minutes;
@@ -123,8 +123,8 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
-            writer.Write((int)m_Lifespan);
+            writer.Write(0); // version
+            writer.Write(m_Lifespan);
         }
 
         public override void Deserialize(GenericReader reader)

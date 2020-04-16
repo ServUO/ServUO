@@ -63,7 +63,7 @@ namespace Server.Engines.VoidPool
                 if (m is CovetousCreature && ((CovetousCreature)m).VoidSpawn)
                 {
                     int wave = ((CovetousCreature)m).Level;
-                    double bump = wave > 10 ? ((double)Math.Min(60, wave - 10) / 1000.0) : 0;
+                    double bump = wave > 10 ? (Math.Min(60, wave - 10) / 1000.0) : 0;
                     double chance = 0.001 + bump;
 
                     if (chance > Utility.RandomDouble())

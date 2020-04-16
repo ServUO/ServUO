@@ -164,9 +164,9 @@ namespace Server.Engines.Quests.Ambitious
 
         public override void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.Write((bool)this.m_RedSolen);
+            writer.Write(m_RedSolen);
         }
 
         public override void Accept()

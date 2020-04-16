@@ -341,7 +341,7 @@ namespace Server.Items
                     User.SendSound(0x4A);
                     break;
                 case 70000: // View Coord
-                    if (Tele.RA > AstronomySystem.MaxRA || Tele.DEC > (double)AstronomySystem.MaxDEC)
+                    if (Tele.RA > AstronomySystem.MaxRA || Tele.DEC > AstronomySystem.MaxDEC)
                     {
                         User.SendLocalizedMessage(1158488); // You have entered invalid coordinates.
                         User.SendSound(81);

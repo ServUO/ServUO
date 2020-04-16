@@ -645,7 +645,7 @@ namespace Server.Engines.BulkOrders
 
             int typeIndex = this.ComputeType(type, itemCount);
             int quanIndex = (quantity == 20 ? 2 : quantity == 15 ? 1 : 0);
-            int mtrlIndex = (material >= BulkMaterialType.DullCopper && material <= BulkMaterialType.Valorite) ? 1 + (int)(material - BulkMaterialType.DullCopper) : 0;
+            int mtrlIndex = (material >= BulkMaterialType.DullCopper && material <= BulkMaterialType.Valorite) ? 1 + (material - BulkMaterialType.DullCopper) : 0;
 
             if (exceptional)
                 typeIndex++;
@@ -1129,7 +1129,7 @@ namespace Server.Engines.BulkOrders
 
             int typeIndex = ((itemCount == 6 ? 3 : itemCount == 5 ? 2 : itemCount == 4 ? 1 : 0) * 2) + (exceptional ? 1 : 0);
             int quanIndex = (quantity == 20 ? 2 : quantity == 15 ? 1 : 0);
-            int mtrlIndex = (material >= BulkMaterialType.DullCopper && material <= BulkMaterialType.Valorite) ? 1 + (int)(material - BulkMaterialType.DullCopper) : 0;
+            int mtrlIndex = (material >= BulkMaterialType.DullCopper && material <= BulkMaterialType.Valorite) ? 1 + (material - BulkMaterialType.DullCopper) : 0;
 
             gold = goldTable[typeIndex][quanIndex][mtrlIndex];
 

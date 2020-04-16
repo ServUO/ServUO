@@ -159,7 +159,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)3); // version
+            writer.Write(3); // version
 
             // version 3
             writer.Write(m_AutoRes);

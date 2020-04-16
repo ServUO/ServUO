@@ -393,7 +393,7 @@ namespace Server.Mobiles
             {
                 for (int i = 0; i < entries.Count; ++i)
                 {
-                    TownCrierEntry tce = (TownCrierEntry)entries[i];
+                    TownCrierEntry tce = entries[i];
 
                     TimeSpan toExpire = tce.ExpireTime - DateTime.UtcNow;
 
@@ -706,7 +706,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write(m_Entries == null ? 0 : m_Entries.Count);
 

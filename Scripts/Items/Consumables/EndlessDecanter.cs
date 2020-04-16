@@ -127,11 +127,11 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((Boolean)m_Linked);
-            writer.Write((Point3D)m_LinkLocation);
-            writer.Write((Map)m_LinkMap);
+            writer.Write(m_Linked);
+            writer.Write(m_LinkLocation);
+            writer.Write(m_LinkMap);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -121,11 +121,11 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer) // Default Serialize method
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((int)m_RequiredSkill);
-            writer.Write((int)m_MaxLockLevel);
-            writer.Write((int)m_LockLevel);
+            writer.Write(m_RequiredSkill);
+            writer.Write(m_MaxLockLevel);
+            writer.Write(m_LockLevel);
         }
 
         public override void Deserialize(GenericReader reader) // Default Deserialize method

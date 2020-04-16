@@ -227,19 +227,19 @@ namespace Server.Engines.Reports
                 Array.Sort(staff);
 
                 objects.Add(this.ReportTotalPages(staff, TimeSpan.FromDays(1.0), "1 Day"));
-                objects.AddRange((PersistableObject[])this.ChartTotalPages(staff, TimeSpan.FromDays(1.0), "1 Day", "graph_daily_pages"));
+                objects.AddRange(this.ChartTotalPages(staff, TimeSpan.FromDays(1.0), "1 Day", "graph_daily_pages"));
 
                 BaseInfo.SortRange = TimeSpan.FromDays(7.0);
                 Array.Sort(staff);
 
                 objects.Add(this.ReportTotalPages(staff, TimeSpan.FromDays(7.0), "1 Week"));
-                objects.AddRange((PersistableObject[])this.ChartTotalPages(staff, TimeSpan.FromDays(7.0), "1 Week", "graph_weekly_pages"));
+                objects.AddRange(this.ChartTotalPages(staff, TimeSpan.FromDays(7.0), "1 Week", "graph_weekly_pages"));
 
                 BaseInfo.SortRange = TimeSpan.FromDays(30.0);
                 Array.Sort(staff);
 
                 objects.Add(this.ReportTotalPages(staff, TimeSpan.FromDays(30.0), "1 Month"));
-                objects.AddRange((PersistableObject[])this.ChartTotalPages(staff, TimeSpan.FromDays(30.0), "1 Month", "graph_monthly_pages"));
+                objects.AddRange(this.ChartTotalPages(staff, TimeSpan.FromDays(30.0), "1 Month", "graph_monthly_pages"));
 
                 for (int i = 0; i < staff.Length; ++i)
                     objects.Add(this.GraphHourlyPages(staff[i]));

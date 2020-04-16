@@ -115,9 +115,9 @@ namespace Server.Engines.Quests.Naturalist
 
         public override void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.Write((Mobile)this.m_Naturalist);
+            writer.Write(m_Naturalist);
         }
 
         public override void Accept()

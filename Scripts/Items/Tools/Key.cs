@@ -205,18 +205,18 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)3); // version
+            writer.Write(3); // version
 
             writer.Write((int)_Resource);
             writer.Write(_Crafter);
             writer.Write((int)_Quality);
 
-            writer.Write((int)m_MaxRange);
+            writer.Write(m_MaxRange);
 
-            writer.Write((Item)m_Link);
+            writer.Write(m_Link);
 
-            writer.Write((string)m_Description);
-            writer.Write((uint)m_KeyVal);
+            writer.Write(m_Description);
+            writer.Write(m_KeyVal);
         }
 
         public override void Deserialize(GenericReader reader)

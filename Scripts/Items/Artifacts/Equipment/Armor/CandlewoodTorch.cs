@@ -43,8 +43,8 @@ namespace Server.Items
 
             if (parent == from && Burning)
             {
-                Mobiles.MeerMage.StopEffect((Mobile)parent, true);
-                SwarmContext.CheckRemove((Mobile)parent);
+                Mobiles.MeerMage.StopEffect(parent, true);
+                SwarmContext.CheckRemove(parent);
             }
         }
 

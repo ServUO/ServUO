@@ -141,7 +141,7 @@ namespace Server.Items
             writer.WriteEncodedInt(this.m_Topic.Length);
 
             for (int i = 0; i < this.m_Topic.Length; i++)
-                writer.Write((string)this.m_Topic[i]);
+                writer.Write(this.m_Topic[i]);
 
             writer.Write(this.m_Yes, true);
             writer.Write(this.m_No, true);

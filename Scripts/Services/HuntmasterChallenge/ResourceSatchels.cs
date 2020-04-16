@@ -32,7 +32,7 @@ namespace Server.Items
             int total = base.GetTotal(type);
 
             if (type == TotalType.Weight)
-                total -= total * (int)((double)_WeightReduction / 100.0);
+                total -= total * (int)(_WeightReduction / 100.0);
 
             return total;
         }

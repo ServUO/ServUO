@@ -45,7 +45,7 @@ namespace Server.Engines.NewMagincia
                     total += entry.Stock * entry.SellPricePer;
             }
 
-            double perc = (double)total * .05;
+            double perc = total * .05;
             return (int)perc;
         }
 
@@ -170,7 +170,7 @@ namespace Server.Engines.NewMagincia
         public int GetBuyCost(Mobile from, CommodityBrokerEntry entry, int amount)
         {
             int totalCost = entry.SellPricePer * amount;
-            int toDeduct = totalCost + (int)((double)totalCost * ((double)ComissionFee / 100.0));
+            int toDeduct = totalCost + (int)(totalCost * (ComissionFee / 100.0));
 
             return toDeduct;
         }
@@ -179,7 +179,7 @@ namespace Server.Engines.NewMagincia
         public void TryBuyCommodity(Mobile from, CommodityBrokerEntry entry, int amount)
         {
             int totalCost = entry.SellPricePer * amount;
-            int toAdd = totalCost + (int)((double)totalCost * ((double)ComissionFee / 100.0));
+            int toAdd = totalCost + (int)(totalCost * (ComissionFee / 100.0));
 
             if (Banker.Withdraw(from, totalCost, true))
             {
@@ -236,7 +236,7 @@ namespace Server.Engines.NewMagincia
                     if (total > 0)
                         TakeCommodities(from.Backpack, type, ref total);
 
-                    BankBalance -= totalCost + (int)((double)totalCost * ((double)ComissionFee / 100.0));
+                    BankBalance -= totalCost + (int)(totalCost * (ComissionFee / 100.0));
                     from.SendLocalizedMessage(1150668, String.Format("{0}\t#{1}", amount.ToString(), entry.Label)); // You have sold ~1_QUANTITY~ units of ~2_COMMODITY~ to the broker. These have been transferred from deeds and/or items in your backpack.
                 }
                 else
@@ -371,7 +371,7 @@ namespace Server.Engines.NewMagincia
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_CommodityEntries.Count);
             foreach (CommodityBrokerEntry entry in m_CommodityEntries)

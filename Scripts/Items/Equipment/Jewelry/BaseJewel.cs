@@ -1025,7 +1025,7 @@ namespace Server.Items
             writer.Write(_OwnerName);
 
             //Version 7
-            writer.Write((bool)m_IsImbued);
+            writer.Write(m_IsImbued);
 
             // Version 6
             m_NegativeAttributes.Serialize(writer);
@@ -1042,15 +1042,15 @@ namespace Server.Items
             writer.Write((int)m_GorgonLenseType);
 
             // Version 4
-            writer.WriteEncodedInt((int)m_TimesImbued);
+            writer.WriteEncodedInt(m_TimesImbued);
 
             m_SAAbsorptionAttributes.Serialize(writer);
             #endregion
 
-            writer.Write((Mobile)m_BlessedBy);
-            writer.Write((bool)m_LastEquipped);
-            writer.Write((bool)m_SetEquipped);
-            writer.WriteEncodedInt((int)m_SetHue);
+            writer.Write(m_BlessedBy);
+            writer.Write(m_LastEquipped);
+            writer.Write(m_SetEquipped);
+            writer.WriteEncodedInt(m_SetHue);
 
             m_SetAttributes.Serialize(writer);
             m_SetSkillBonuses.Serialize(writer);
@@ -1059,8 +1059,8 @@ namespace Server.Items
             writer.Write((int)m_Quality);
 
             // Version 3
-            writer.WriteEncodedInt((int)m_MaxHitPoints);
-            writer.WriteEncodedInt((int)m_HitPoints);
+            writer.WriteEncodedInt(m_MaxHitPoints);
+            writer.WriteEncodedInt(m_HitPoints);
 
             writer.WriteEncodedInt((int)m_Resource);
             writer.WriteEncodedInt((int)m_GemType);

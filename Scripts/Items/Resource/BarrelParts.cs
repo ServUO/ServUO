@@ -56,7 +56,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write((int)_Resource);
             writer.Write((int)_Quality);
@@ -135,7 +135,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write((int)_Resource);
             writer.Write((int)_Quality);
@@ -220,7 +220,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2);
+            writer.Write(2);
 
             writer.Write((int)_Resource);
             writer.Write((int)_Quality);
@@ -302,7 +302,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2);
+            writer.Write(2);
 
             writer.Write((int)_Resource);
             writer.Write((int)_Quality);

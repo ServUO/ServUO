@@ -116,12 +116,12 @@ namespace Server.Spells.Fourth
 
         private static bool IsInnocentTo(Mobile from, Mobile to)
         {
-            return (Notoriety.Compute(from, (Mobile)to) == Notoriety.Innocent);
+            return (Notoriety.Compute(from, to) == Notoriety.Innocent);
         }
 
         private static bool IsAllyTo(Mobile from, Mobile to)
         {
-            return (Notoriety.Compute(from, (Mobile)to) == Notoriety.Ally);
+            return (Notoriety.Compute(from, to) == Notoriety.Ally);
         }
 
         private bool AreaCanTarget(Mobile target, bool feluccaRules)

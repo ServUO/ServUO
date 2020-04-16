@@ -711,7 +711,7 @@ namespace Server.Engines.Quests
                     if (m_Section != Section.Main || info.ButtonID >= m_From.Quests.Count + ButtonOffset || info.ButtonID < ButtonOffset)
                         break;
 
-                    m_From.SendGump(new MondainQuestGump(m_From.Quests[(int)info.ButtonID - ButtonOffset], Section.Description, false));
+                    m_From.SendGump(new MondainQuestGump(m_From.Quests[info.ButtonID - ButtonOffset], Section.Description, false));
                     break;
             }
         }

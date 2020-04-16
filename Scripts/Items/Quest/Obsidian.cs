@@ -172,10 +172,10 @@ namespace Server.Engines.Quests.Collector
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.WriteEncodedInt(this.m_Quantity);
-            writer.Write((string)this.m_StatueName);
+            writer.Write(m_StatueName);
         }
 
         public override void Deserialize(GenericReader reader)

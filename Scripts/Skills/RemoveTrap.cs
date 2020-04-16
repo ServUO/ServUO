@@ -319,7 +319,7 @@ namespace Server.SkillHandlers
             {
                 From.RevealingAction();
 
-                var min = (double)Math.Ceiling(From.Skills[SkillName.RemoveTrap].Value * .75);
+                var min = Math.Ceiling(From.Skills[SkillName.RemoveTrap].Value * .75);
 
                 if (From.CheckTargetSkill(SkillName.RemoveTrap, Chest, min, min > 50 ? min + 50 : 100))
                 {

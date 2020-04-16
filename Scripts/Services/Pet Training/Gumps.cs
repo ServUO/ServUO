@@ -1337,7 +1337,7 @@ namespace Server.Mobiles
 
             if (StartValue > 0)
             {
-                double valueWeight = ((double)Value * weight);
+                double valueWeight = (Value * weight);
                 double maxWeight = max * weight;
                 double nonAdjustedWeight = (Value - StartValue) * weight;
 

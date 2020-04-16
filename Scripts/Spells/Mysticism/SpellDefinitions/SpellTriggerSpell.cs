@@ -263,9 +263,9 @@ namespace Server.Spells.Mysticism
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
 
-            writer.Write((int)m_SpellDef.SpellId);
+            writer.Write(m_SpellDef.SpellId);
         }
 
         public override void Deserialize(GenericReader reader)

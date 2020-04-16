@@ -405,7 +405,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -763,7 +763,7 @@ namespace Server.Gumps
         private readonly Mobile m_Collector;
 
         public ToTRedeemGump(Mobile collector, bool pigments)
-            : base(pigments ? 1070986 : 1070985, pigments ? (ImageTileButtonInfo[])m_PigmentRewards[(int)TreasuresOfTokuno.RewardEra - 1] : (ImageTileButtonInfo[])m_NormalRewards[(int)TreasuresOfTokuno.RewardEra - 1])
+            : base(pigments ? 1070986 : 1070985, pigments ? m_PigmentRewards[(int)TreasuresOfTokuno.RewardEra - 1] : (ImageTileButtonInfo[])m_NormalRewards[(int)TreasuresOfTokuno.RewardEra - 1])
         {
             this.m_Collector = collector;
         }

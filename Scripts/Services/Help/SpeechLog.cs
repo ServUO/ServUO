@@ -101,7 +101,7 @@ namespace Server.Engines.Help
         {
             while (this.m_Queue.Count > 0)
             {
-                SpeechLogEntry entry = (SpeechLogEntry)this.m_Queue.Peek();
+                SpeechLogEntry entry = this.m_Queue.Peek();
 
                 if (DateTime.UtcNow - entry.Created > EntryDuration)
                     this.m_Queue.Dequeue();

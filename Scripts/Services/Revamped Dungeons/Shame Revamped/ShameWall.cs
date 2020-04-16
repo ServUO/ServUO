@@ -124,7 +124,7 @@ namespace Server.Engines.ShameRevamped
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)3);
+            writer.Write(3);
 
             writer.Write(Troll);
             writer.Write(StartSpot);

@@ -538,7 +538,7 @@ namespace Server.Engines.Shadowguard
 
                 int highest;
                 int type = GetHighestDamageType(weapon, out highest);
-                int heal = (int)((double)damage * ((double)highest / 100.0));
+                int heal = (int)(damage * (highest / 100.0));
 
                 switch (this.Form)
                 {

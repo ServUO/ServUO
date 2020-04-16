@@ -101,7 +101,7 @@ namespace Server.Items
             }
             else
             {
-                int damage = (int)(75 / Math.Max(1, tick - 1)) + Utility.RandomMinMax(1, 9);
+                int damage = 75 / Math.Max(1, tick - 1) + Utility.RandomMinMax(1, 9);
 
                 AOS.Damage(m, damage, 0, 0, 0, 0, 100);
 
@@ -200,7 +200,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // ver
+            writer.Write(0); // ver
             writer.Write(m_Key);
         }
 

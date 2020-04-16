@@ -442,18 +442,18 @@ namespace Server.Items
                 writer.Write(DateTime.UtcNow + EvaluationInterval);
 
             // version 0
-            writer.Write((int)this.m_LiveCreatures);
-            writer.Write((int)this.m_VacationLeft);
+            writer.Write(m_LiveCreatures);
+            writer.Write(m_VacationLeft);
 
             this.m_Food.Serialize(writer);
             this.m_Water.Serialize(writer);
 
-            writer.Write((int)this.m_Events.Count);
+            writer.Write(m_Events.Count);
 
             for (int i = 0; i < this.m_Events.Count; i++)
-                writer.Write((int)this.m_Events[i]);
+                writer.Write(this.m_Events[i]);
 
-            writer.Write((bool)this.m_RewardAvailable);
+            writer.Write(m_RewardAvailable);
         }
 
         public override void Deserialize(GenericReader reader)

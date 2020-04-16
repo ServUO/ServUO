@@ -111,7 +111,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(this.m_LifeSpan);
             writer.Write(this.m_CreationTime);

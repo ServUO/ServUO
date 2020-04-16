@@ -170,13 +170,13 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
 
-            writer.Write((string)this.m_WarningString);
-            writer.Write((int)this.m_WarningNumber);
-            writer.Write((int)this.m_Range);
+            writer.Write(m_WarningString);
+            writer.Write(m_WarningNumber);
+            writer.Write(m_Range);
 
-            writer.Write((TimeSpan)this.m_ResetDelay);
+            writer.Write(m_ResetDelay);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -268,10 +268,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
 
-            writer.Write((string)this.m_HintString);
-            writer.Write((int)this.m_HintNumber);
+            writer.Write(m_HintString);
+            writer.Write(m_HintNumber);
         }
 
         public override void Deserialize(GenericReader reader)

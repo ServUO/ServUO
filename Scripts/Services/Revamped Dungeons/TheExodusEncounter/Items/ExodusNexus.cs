@@ -296,8 +296,8 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write(0); // Version
 
-            writer.Write((int)this.m_SideLength);
-            writer.Write((int)this.m_Path.Length);
+            writer.Write(m_SideLength);
+            writer.Write(m_Path.Length);
 
             for (int i = 0; i < this.m_Path.Length; i++)
             {

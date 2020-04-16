@@ -85,13 +85,13 @@ namespace Server.Engines.BulkOrders
         {
             writer.WriteEncodedInt(1); // version
 
-            writer.WriteEncodedInt((int)m_Hue);
+            writer.WriteEncodedInt(m_Hue);
 
             writer.Write(m_ItemType == null ? null : m_ItemType.FullName);
 
-            writer.WriteEncodedInt((int)m_AmountCur);
-            writer.WriteEncodedInt((int)m_Number);
-            writer.WriteEncodedInt((int)m_Graphic);
+            writer.WriteEncodedInt(m_AmountCur);
+            writer.WriteEncodedInt(m_Number);
+            writer.WriteEncodedInt(m_Graphic);
         }
     }
 }

@@ -64,9 +64,9 @@ namespace Server.Engines.CannedEvil
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
-            writer.Write((byte)m_Code);
+            writer.Write(m_Code);
             writer.Write(m_Controller);
         }
 
@@ -326,12 +326,12 @@ namespace Server.Engines.CannedEvil
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
-            writer.Write((PrimevalLichPuzzle)m_Instance);
-            writer.Write((ChampionSpawn)m_Altar);
-            writer.Write((long)m_Key);
-            writer.Write((Mobile)m_Successful);
+            writer.Write(m_Instance);
+            writer.Write(m_Altar);
+            writer.Write(m_Key);
+            writer.Write(m_Successful);
             writer.WriteItemList(m_Levers, true);
         }
 

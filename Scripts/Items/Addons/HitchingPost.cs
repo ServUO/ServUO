@@ -510,13 +510,13 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)4); // version
+            writer.Write(4); // version
 
             writer.Write(m_Replica);
 
             writer.Write((int)m_Level);
-            writer.Write((int)m_UsesRemaining);
-            writer.Write((int)m_Charges);
+            writer.Write(m_UsesRemaining);
+            writer.Write(m_Charges);
         }
 
         public override void Deserialize(GenericReader reader)

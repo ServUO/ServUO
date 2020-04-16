@@ -45,9 +45,9 @@ namespace Server.Engines.Quests.Doom
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((Mobile)this.m_Daemon);
+            writer.Write(m_Daemon);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -112,14 +112,14 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.WriteEncodedInt((int)this.m_MaxElevation);
-            writer.WriteEncodedInt((int)this.m_MoveSound);
-            writer.WriteEncodedInt((int)this.m_StopSound);
-            writer.Write((TimeSpan)this.m_CloseDelay);
+            writer.WriteEncodedInt(m_MaxElevation);
+            writer.WriteEncodedInt(m_MoveSound);
+            writer.WriteEncodedInt(m_StopSound);
+            writer.Write(m_CloseDelay);
 
-            writer.WriteEncodedInt((int)this.m_Elevation);
+            writer.WriteEncodedInt(m_Elevation);
         }
 
         public override void Deserialize(GenericReader reader)

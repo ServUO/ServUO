@@ -120,18 +120,18 @@ namespace Server.Engines.Quests
 
         public virtual void BaseSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)1); // version
+            writer.WriteEncodedInt(1); // version
 
-            writer.Write((bool)this.m_HasBeenRead);
-            writer.WriteEncodedInt((int)this.m_CurProgress);
-            writer.Write((bool)this.m_HasCompleted);
+            writer.Write(m_HasBeenRead);
+            writer.WriteEncodedInt(m_CurProgress);
+            writer.Write(m_HasCompleted);
 
             this.ChildSerialize(writer);
         }
 
         public virtual void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public virtual void Complete()

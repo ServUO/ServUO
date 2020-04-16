@@ -75,7 +75,7 @@ namespace Server.Spells.SkillMasteries
 
                 m.FixedParticles(0x374A, 10, 15, 5028, EffectLayer.Waist);
 
-                int rounds = 5 + (int)((double)BaseSkillBonus * .75);
+                int rounds = 5 + (int)(BaseSkillBonus * .75);
 
                 m_StatMod = (int)((BaseSkillBonus * 2) + CollectiveBonus);
                 m_Damage = (int)((BaseSkillBonus * 4.5) + (CollectiveBonus * 2));
@@ -123,8 +123,8 @@ namespace Server.Spells.SkillMasteries
             if (!Target.Player)
                 damage += AOS.Scale(damage, 50); // pvm = 1.5x
 
-            damage = (int)((double)damage * GetSlayerBonus()); // 3.0x slayer bonus
-            damage -= (int)((double)damage * DamageModifier(Target)); // resist modifier
+            damage = (int)(damage * GetSlayerBonus()); // 3.0x slayer bonus
+            damage -= (int)(damage * DamageModifier(Target)); // resist modifier
 
             AOS.Damage(Target, Caster, damage, 100, 0, 0, 0, 0); // Now only does physical
 

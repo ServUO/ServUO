@@ -90,7 +90,7 @@ namespace Server.Spells.SkillMasteries
             if (SpecialMove.GetCurrentMove(Caster) != null)
                 return;
 
-            damage = damage + (int)((double)damage * ((double)_DamageBonus / 100.0));
+            damage = damage + (int)(damage * (_DamageBonus / 100.0));
 
             if (defender is PlayerMobile && damage > 100)
                 damage = 100;

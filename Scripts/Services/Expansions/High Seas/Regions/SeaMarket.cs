@@ -330,7 +330,7 @@ namespace Server.Regions
 
         public static void Save(GenericWriter writer)
         {
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_RestrictBoats);
         }

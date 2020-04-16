@@ -167,7 +167,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)4);
+            writer.Write(4);
         }
 
         public override void Deserialize(GenericReader reader)

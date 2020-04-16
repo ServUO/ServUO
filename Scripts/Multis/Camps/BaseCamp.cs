@@ -267,7 +267,7 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
             writer.Write(Prisoner);
             writer.Write(Treasure1);

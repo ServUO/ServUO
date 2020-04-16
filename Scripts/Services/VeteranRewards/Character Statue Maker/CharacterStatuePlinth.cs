@@ -70,9 +70,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.Write((Mobile)this.m_Statue);
+            writer.Write(m_Statue);
         }
 
         public override void Deserialize(GenericReader reader)

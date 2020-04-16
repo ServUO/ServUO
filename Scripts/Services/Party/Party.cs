@@ -198,7 +198,7 @@ namespace Server.Engines.PartySystem
 
                 for (int i = 0; i < m_Members.Count; ++i)
                 {
-                    Mobile f = ((PartyMemberInfo)m_Members[i]).Mobile;
+                    Mobile f = m_Members[i].Mobile;
 
                     f.Send(memberList);
 

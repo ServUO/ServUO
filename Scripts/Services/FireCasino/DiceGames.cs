@@ -354,7 +354,7 @@ namespace Server.Engines.ResortAndCasino
                 else if (IsStraight())
                     winnings = TotalBet * 2;
                 else if (IsFullHouse())
-                    winnings = (int)((double)TotalBet * 1.5);
+                    winnings = (int)(TotalBet * 1.5);
                 else if (IsThreeOfAKind())
                     winnings = TotalBet;
 

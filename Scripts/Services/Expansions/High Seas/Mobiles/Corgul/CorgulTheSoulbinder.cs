@@ -257,7 +257,7 @@ namespace Server.Mobiles
             PlaySound(0x2F3);
             for (int i = 0; i < targets.Count; ++i)
             {
-                Mobile m = (Mobile)targets[i];
+                Mobile m = targets[i];
 
                 if (m != null && !m.Deleted && m is PlayerMobile)
                 {
@@ -383,7 +383,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
             writer.Write(m_HasDone2ndSpawn);
             writer.Write(m_Altar);
             writer.Write(m_Helpers.Count);

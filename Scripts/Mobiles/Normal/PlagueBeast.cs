@@ -170,7 +170,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write(m_HasMetalChest);
             writer.Write(m_DevourTotal);
@@ -228,7 +228,7 @@ namespace Server.Mobiles
             if (corpse.Owner.Body.IsHuman)
                 corpse.TurnToBones(); // Not bones yet, and we are a human body therefore we turn to bones.
 
-            IncreaseHits((int)Math.Ceiling((double)corpse.Owner.HitsMax * 0.75));
+            IncreaseHits((int)Math.Ceiling(corpse.Owner.HitsMax * 0.75));
             m_DevourTotal++;
 
             PublicOverheadMessage(MessageType.Emote, 0x3B2, 1053033); // * The plague beast absorbs the fleshy remains of the corpse *

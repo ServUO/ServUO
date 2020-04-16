@@ -115,7 +115,7 @@ namespace Server.Spells.SkillMasteries
 
             Target.FixedParticles(0x373A, 10, 80, 5018, 0, 0, EffectLayer.Waist);
 
-            BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.CombatTraining, 1155933, 1156107, String.Format("{0}\t{1}\t{2}", SpellType.ToString(), Target.Name, ((int)ScaleUpkeep()).ToString())));
+            BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.CombatTraining, 1155933, 1156107, String.Format("{0}\t{1}\t{2}", SpellType.ToString(), Target.Name, ScaleUpkeep().ToString())));
             //You train ~2_NAME~ to use ~1_SKILLNAME~.<br>Mana Upkeep: ~3_COST~
 
             FinishSequence();
@@ -153,7 +153,7 @@ namespace Server.Spells.SkillMasteries
                 if (Target == null || SpellType == TrainingType.AsOne)
                     return 0.0;
 
-                double dam = (double)_DamageTaken / ((double)Target.HitsMax * .66);
+                double dam = _DamageTaken / (Target.HitsMax * .66);
 
                 if (dam > 1.0) dam = 1.0;
 
@@ -207,7 +207,7 @@ namespace Server.Spells.SkillMasteries
 
                             if (spell.Phase > 1)
                             {
-                                damage = damage - (int)((double)damage * spell.DamageMod);
+                                damage = damage - (int)(damage * spell.DamageMod);
                                 defender.FixedParticles(0x376A, 10, 30, 5052, 1261, 7, EffectLayer.LeftFoot, 0);
                             }
                             break;
@@ -270,7 +270,7 @@ namespace Server.Spells.SkillMasteries
                         case TrainingType.Empowerment:
                             if (spell.Phase > 1)
                             {
-                                damage = damage + (int)((double)damage * spell.DamageMod);
+                                damage = damage + (int)(damage * spell.DamageMod);
                                 attacker.FixedParticles(0x376A, 10, 30, 5052, 1261, 7, EffectLayer.LeftFoot, 0);
                             }
                             break;
@@ -298,7 +298,7 @@ namespace Server.Spells.SkillMasteries
                         case TrainingType.Berserk:
                             if (spell.Phase > 1)
                             {
-                                damage = damage + (int)((double)damage * spell.DamageMod);
+                                damage = damage + (int)(damage * spell.DamageMod);
                                 attacker.FixedParticles(0x376A, 10, 30, 5052, 1261, 7, EffectLayer.LeftFoot, 0);
                             }
                             break;

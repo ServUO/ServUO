@@ -144,9 +144,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((bool)m_Active);
+            writer.Write(m_Active);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -1177,7 +1177,7 @@ namespace Server.Items
                 //Distance malas
                 if (attacker.InRange(defender, 1))  //Close Quarters
                 {
-                    chance -= (.12 - (double)Math.Min(12, (attacker.Skills[SkillName.Throwing].Value + (double)attacker.RawDex) / 20) / 10);
+                    chance -= (.12 - Math.Min(12, (attacker.Skills[SkillName.Throwing].Value + attacker.RawDex) / 20) / 10);
                 }
                 else if (attacker.GetDistanceToSqrt(defender) < ((BaseThrown)atkWeapon).MinThrowRange)  //too close
                 {
@@ -2192,19 +2192,19 @@ namespace Server.Items
             }
 
             if (Feint.Registry.ContainsKey(defender) && Feint.Registry[defender].Enemy == attacker)
-                damage -= (int)((double)damage * ((double)Feint.Registry[defender].DamageReduction / 100));
+                damage -= (int)(damage * ((double)Feint.Registry[defender].DamageReduction / 100));
 
             // Skill Masteries
             if (this is Fists)
-                damage += (int)((double)damage * ((double)MasteryInfo.GetKnockoutModifier(attacker, defender is PlayerMobile) / 100.0));
+                damage += (int)(damage * (MasteryInfo.GetKnockoutModifier(attacker, defender is PlayerMobile) / 100.0));
 
             SkillMasterySpell.OnHit(attacker, defender, ref damage);
 
             // Bane
             if (m_ExtendedWeaponAttributes.Bane > 0 && defender.Hits < defender.HitsMax / 2)
             {
-                double inc = Math.Min(350, (double)defender.HitsMax * .3);
-                inc -= (double)((double)defender.Hits / (double)defender.HitsMax) * inc;
+                double inc = Math.Min(350, defender.HitsMax * .3);
+                inc -= defender.Hits / (double)defender.HitsMax * inc;
 
                 Effects.SendTargetEffect(defender, 0x37BE, 1, 4, 0x30, 3);
 
@@ -2253,7 +2253,7 @@ namespace Server.Items
 
             if (CurseWeaponSpell.IsCursed(attacker, this))
             {
-                toHealCursedWeaponSpell += (int)(AOS.Scale(damageGiven, 50)); // Additional 50% life leech for cursed weapons (necro spell)
+                toHealCursedWeaponSpell += AOS.Scale(damageGiven, 50); // Additional 50% life leech for cursed weapons (necro spell)
             }
 
             context = TransformationSpellHelper.GetContext(attacker);
@@ -2357,7 +2357,7 @@ namespace Server.Items
                 int explosChance = (int)(ExtendedWeaponAttributes.GetValue(attacker, ExtendedWeaponAttribute.HitExplosion) * propertyBonus);
 
                 #region Mondains Legacy
-                int velocityChance = this is BaseRanged ? (int)((BaseRanged)this).Velocity : 0;
+                int velocityChance = this is BaseRanged ? ((BaseRanged)this).Velocity : 0;
                 #endregion
 
                 #region Stygian Abyss
@@ -2533,7 +2533,7 @@ namespace Server.Items
             damage = AOS.Scale(damage, 100 + damageBonus);
 
             if (defender != null && Feint.Registry.ContainsKey(defender) && Feint.Registry[defender].Enemy == attacker)
-                damage -= (int)((double)damage * ((double)Feint.Registry[defender].DamageReduction / 100));
+                damage -= (int)(damage * ((double)Feint.Registry[defender].DamageReduction / 100));
 
             // All hit spells use 80 eval
             int evalScale = 30 + ((9 * 800) / 100);
@@ -2798,7 +2798,7 @@ namespace Server.Items
 
                 from.DoHarmful(m, true);
                 m.FixedEffect(0x3779, 1, 15, hue, 0);
-                AOS.Damage(m, from, (int)(damageGiven / 2), phys, fire, cold, pois, nrgy, Server.DamageType.SpellAOE);
+                AOS.Damage(m, from, damageGiven / 2, phys, fire, cold, pois, nrgy, Server.DamageType.SpellAOE);
             }
 
             if (count > 0)
@@ -3310,27 +3310,27 @@ namespace Server.Items
 
             if (GetSaveFlag(sflags, SetFlag.PhysicalBonus))
             {
-                writer.WriteEncodedInt((int)m_SetPhysicalBonus);
+                writer.WriteEncodedInt(m_SetPhysicalBonus);
             }
 
             if (GetSaveFlag(sflags, SetFlag.FireBonus))
             {
-                writer.WriteEncodedInt((int)m_SetFireBonus);
+                writer.WriteEncodedInt(m_SetFireBonus);
             }
 
             if (GetSaveFlag(sflags, SetFlag.ColdBonus))
             {
-                writer.WriteEncodedInt((int)m_SetColdBonus);
+                writer.WriteEncodedInt(m_SetColdBonus);
             }
 
             if (GetSaveFlag(sflags, SetFlag.PoisonBonus))
             {
-                writer.WriteEncodedInt((int)m_SetPoisonBonus);
+                writer.WriteEncodedInt(m_SetPoisonBonus);
             }
 
             if (GetSaveFlag(sflags, SetFlag.EnergyBonus))
             {
-                writer.WriteEncodedInt((int)m_SetEnergyBonus);
+                writer.WriteEncodedInt(m_SetEnergyBonus);
             }
 
             if (GetSaveFlag(sflags, SetFlag.Attributes))
@@ -4670,7 +4670,7 @@ namespace Server.Items
                 list.Add(1112857, prop.ToString()); //splintering weapon ~1_val~%
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitDispel * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitDispel * focusBonus) != 0)
             {
                 list.Add(1060417, ((int)fprop).ToString()); // hit dispel ~1_val~%
             }
@@ -4679,16 +4679,16 @@ namespace Server.Items
                 list.Add(1060417, ((int)(enchantBonus * focusBonus)).ToString()); // hit dispel ~1_val~%
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitFireball * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitFireball * focusBonus) != 0)
             {
                 list.Add(1060420, ((int)fprop).ToString()); // hit fireball ~1_val~%
             }
             else if (bonus == AosWeaponAttribute.HitFireball && enchantBonus != 0)
             {
-                list.Add(1060420, ((int)((double)enchantBonus * focusBonus)).ToString()); // hit fireball ~1_val~%
+                list.Add(1060420, ((int)(enchantBonus * focusBonus)).ToString()); // hit fireball ~1_val~%
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitLightning * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitLightning * focusBonus) != 0)
             {
                 list.Add(1060423, ((int)fprop).ToString()); // hit lightning ~1_val~%
             }
@@ -4697,7 +4697,7 @@ namespace Server.Items
                 list.Add(1060423, ((int)(enchantBonus * focusBonus)).ToString()); // hit lightning ~1_val~%
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitHarm * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitHarm * focusBonus) != 0)
             {
                 list.Add(1060421, ((int)fprop).ToString()); // hit harm ~1_val~%
             }
@@ -4706,7 +4706,7 @@ namespace Server.Items
                 list.Add(1060421, ((int)(enchantBonus * focusBonus)).ToString()); // hit harm ~1_val~%
             }
 
-            if ((fprop = (double)m_ExtendedWeaponAttributes.HitExplosion * focusBonus) != 0)
+            if ((fprop = m_ExtendedWeaponAttributes.HitExplosion * focusBonus) != 0)
             {
                 list.Add(1158922, ((int)fprop).ToString()); // hit explosion ~1_val~%
             }
@@ -4716,7 +4716,7 @@ namespace Server.Items
                 list.Add(1151183); // Searing Weapon
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitMagicArrow * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitMagicArrow * focusBonus) != 0)
             {
                 list.Add(1060426, ((int)fprop).ToString()); // hit magic arrow ~1_val~%
             }
@@ -4725,67 +4725,67 @@ namespace Server.Items
                 list.Add(1060426, ((int)(enchantBonus * focusBonus)).ToString()); // hit magic arrow ~1_val~%
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitPhysicalArea * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitPhysicalArea * focusBonus) != 0)
             {
                 list.Add(1060428, ((int)fprop).ToString()); // hit physical area ~1_val~%
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitFireArea * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitFireArea * focusBonus) != 0)
             {
                 list.Add(1060419, ((int)fprop).ToString()); // hit fire area ~1_val~%
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitColdArea * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitColdArea * focusBonus) != 0)
             {
                 list.Add(1060416, ((int)fprop).ToString()); // hit cold area ~1_val~%
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitPoisonArea * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitPoisonArea * focusBonus) != 0)
             {
                 list.Add(1060429, ((int)fprop).ToString()); // hit poison area ~1_val~%
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitEnergyArea * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitEnergyArea * focusBonus) != 0)
             {
                 list.Add(1060418, ((int)fprop).ToString()); // hit energy area ~1_val~%
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitLeechStam * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitLeechStam * focusBonus) != 0)
             {
                 list.Add(1060430, Math.Min(100, (int)fprop).ToString()); // hit stamina leech ~1_val~%
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitLeechMana * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitLeechMana * focusBonus) != 0)
             {
                 list.Add(1060427, Math.Min(100, (int)fprop).ToString()); // hit mana leech ~1_val~%
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitLeechHits * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitLeechHits * focusBonus) != 0)
             {
                 list.Add(1060422, Math.Min(100, (int)fprop).ToString()); // hit life leech ~1_val~%
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitFatigue * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitFatigue * focusBonus) != 0)
             {
                 list.Add(1113700, ((int)fprop).ToString()); // Hit Fatigue ~1_val~%
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitManaDrain * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitManaDrain * focusBonus) != 0)
             {
                 list.Add(1113699, ((int)fprop).ToString()); // Hit Mana Drain ~1_val~%
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitCurse * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitCurse * focusBonus) != 0)
             {
                 list.Add(1113712, ((int)fprop).ToString()); // Hit Curse ~1_val~%
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitLowerAttack * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitLowerAttack * focusBonus) != 0)
             {
                 list.Add(1060424, ((int)fprop).ToString()); // hit lower attack ~1_val~%
             }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitLowerDefend * focusBonus) != 0)
+            if ((fprop = m_AosWeaponAttributes.HitLowerDefend * focusBonus) != 0)
             {
                 list.Add(1060425, ((int)fprop).ToString()); // hit lower defense ~1_val~%
             }

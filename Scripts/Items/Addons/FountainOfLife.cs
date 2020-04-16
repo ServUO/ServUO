@@ -209,7 +209,7 @@ namespace Server.Items
             writer.WriteEncodedInt(0); //version
 
             writer.Write(m_Charges);
-            writer.Write((DateTime)m_Timer.Next);
+            writer.Write(m_Timer.Next);
         }
 
         public override void Deserialize(GenericReader reader)

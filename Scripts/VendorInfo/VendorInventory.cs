@@ -153,12 +153,12 @@ namespace Server.Mobiles
         {
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((Mobile)m_Owner);
-            writer.Write((string)m_VendorName);
-            writer.Write((string)m_ShopName);
+            writer.Write(m_Owner);
+            writer.Write(m_VendorName);
+            writer.Write(m_ShopName);
 
             writer.Write(m_Items, true);
-            writer.Write((int)m_Gold);
+            writer.Write(m_Gold);
 
             writer.WriteDeltaTime(m_ExpireTime);
         }

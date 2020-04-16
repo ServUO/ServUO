@@ -140,7 +140,7 @@ namespace Server.Mobiles
 
                 for (int i = 0; i < targets.Count; ++i)
                 {
-                    Mobile m = (Mobile)targets[i];
+                    Mobile m = targets[i];
 
                     this.DoHarmful(m);
 
@@ -165,7 +165,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

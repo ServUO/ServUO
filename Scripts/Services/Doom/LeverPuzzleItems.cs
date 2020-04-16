@@ -52,7 +52,7 @@ namespace Server.Engines.Doom
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
             writer.Write(this.m_Controller);
         }
 
@@ -89,7 +89,7 @@ namespace Server.Engines.Doom
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
             writer.Write(this.m_Controller);
         }
 
@@ -150,8 +150,8 @@ namespace Server.Engines.Doom
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
-            writer.Write((ushort)this.m_Code);
+            writer.Write(0); // version
+            writer.Write(m_Code);
             writer.Write(this.m_Controller);
         }
 
@@ -207,7 +207,7 @@ namespace Server.Engines.Doom
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

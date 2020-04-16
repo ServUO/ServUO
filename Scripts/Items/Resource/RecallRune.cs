@@ -135,15 +135,15 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
             writer.Write((int)Type);
-            writer.Write((Item)m_Galleon);
-            writer.Write((Item)m_House);
-            writer.Write((string)m_Description);
-            writer.Write((bool)m_Marked);
-            writer.Write((Point3D)Target);
-            writer.Write((Map)m_TargetMap);
+            writer.Write(m_Galleon);
+            writer.Write(m_House);
+            writer.Write(m_Description);
+            writer.Write(m_Marked);
+            writer.Write(Target);
+            writer.Write(m_TargetMap);
         }
 
         public override void Deserialize(GenericReader reader)

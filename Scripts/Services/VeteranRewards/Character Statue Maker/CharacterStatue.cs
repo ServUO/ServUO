@@ -222,17 +222,17 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
             writer.Write((int)this.m_Type);
             writer.Write((int)this.m_Pose);
             writer.Write((int)this.m_Material);
 
-            writer.Write((Mobile)this.m_SculptedBy);
-            writer.Write((DateTime)this.m_SculptedOn);
+            writer.Write(m_SculptedBy);
+            writer.Write(m_SculptedOn);
 
-            writer.Write((Item)this.m_Plinth);
-            writer.Write((bool)this.m_IsRewardItem);
+            writer.Write(m_Plinth);
+            writer.Write(m_IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -590,12 +590,12 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)1); // version
+            writer.WriteEncodedInt(1); // version
 
             writer.Write((int)this.m_Type);
 
-            writer.Write((Mobile)this.m_Statue);
-            writer.Write((bool)this.m_IsRewardItem);
+            writer.Write(m_Statue);
+            writer.Write(m_IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -245,7 +245,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)5); // version
+            writer.Write(5); // version
 
             writer.Write(Owner);
 
@@ -254,7 +254,7 @@ namespace Server.Items
             // version 3 remove IsAvailable
 
             // version 1
-            writer.Write((bool)(m_Helpers != null));
+            writer.Write(m_Helpers != null);
 
             if (m_Helpers != null)
                 writer.WriteMobileList<BaseCreature>(m_Helpers);

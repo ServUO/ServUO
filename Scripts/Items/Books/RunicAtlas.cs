@@ -116,7 +116,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(Selected);
         }
@@ -125,7 +125,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            
+
             Selected = reader.ReadInt();
         }
     }

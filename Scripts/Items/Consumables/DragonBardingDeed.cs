@@ -133,10 +133,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
-            writer.Write((bool)this.m_Exceptional);
-            writer.Write((Mobile)this.m_Crafter);
+            writer.Write(m_Exceptional);
+            writer.Write(m_Crafter);
             writer.Write((int)this.m_Resource);
         }
 

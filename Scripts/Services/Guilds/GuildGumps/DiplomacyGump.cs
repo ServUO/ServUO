@@ -262,7 +262,7 @@ namespace Server.Guilds
             if (this.guild == o)
                 return new GuildInfoGump(pm, g);
 
-            return new OtherGuildInfo(pm, g, (Guild)o);
+            return new OtherGuildInfo(pm, g, o);
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)

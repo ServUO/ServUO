@@ -120,9 +120,9 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
-            writer.Write((int)GumpID);
+            writer.Write(GumpID);
         }
 
         public override void Deserialize(GenericReader reader)

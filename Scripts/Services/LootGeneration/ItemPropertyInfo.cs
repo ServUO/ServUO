@@ -805,7 +805,7 @@ namespace Server.Items
 
             if (info != null && max > 0)
             {
-                return (int)(((double)info.Weight / (double)max) * (double)value);
+                return (int)((info.Weight / (double)max) * value);
             }
 
             return 0;

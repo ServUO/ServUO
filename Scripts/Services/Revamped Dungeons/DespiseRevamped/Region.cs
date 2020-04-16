@@ -119,7 +119,7 @@ namespace Server.Engines.Despise
                         if (topdam != null && highest > 0)
                         {
                             int mobKarma = Math.Abs(dc.Karma);
-                            int karma = (int)(((double)mobKarma / 10) * (double)highest / (double)dc.HitsMax);
+                            int karma = (int)(((double)mobKarma / 10) * highest / dc.HitsMax);
 
                             if (karma < 1)
                                 karma = 1;

@@ -33,7 +33,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -85,7 +85,7 @@ namespace Server.Items
                 else
                     serial &= 0x7FFFFFFF;
 
-                this.m_Stream.Write((uint)serial);
+                this.m_Stream.Write(serial);
                 this.m_Stream.Write((short)(itemID & TileData.MaxItemValue));
 
                 if (amount != 0)

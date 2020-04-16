@@ -38,9 +38,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
 
-            writer.Write((int)m_LabelNumber);
+            writer.Write(m_LabelNumber);
         }
 
         public override void Deserialize(GenericReader reader)

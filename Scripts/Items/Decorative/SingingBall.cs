@@ -119,10 +119,10 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write((int)Level);
-            writer.Write((bool)m_TurnedOn);
+            writer.Write(m_TurnedOn);
         }
 
         public override void Deserialize(GenericReader reader)

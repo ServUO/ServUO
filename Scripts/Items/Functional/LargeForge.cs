@@ -50,7 +50,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(this.m_Item);
             writer.Write(this.m_Item2);
@@ -107,7 +107,7 @@ namespace Server.Items
             {
                 base.Serialize(writer);
 
-                writer.Write((int)0); // version
+                writer.Write(0); // version
 
                 writer.Write(this.m_Item);
             }
@@ -163,7 +163,7 @@ namespace Server.Items
             {
                 base.Serialize(writer);
 
-                writer.Write((int)0); // version
+                writer.Write(0); // version
 
                 writer.Write(this.m_Item);
             }
@@ -229,7 +229,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(this.m_Item);
             writer.Write(this.m_Item2);
@@ -286,7 +286,7 @@ namespace Server.Items
             {
                 base.Serialize(writer);
 
-                writer.Write((int)0); // version
+                writer.Write(0); // version
 
                 writer.Write(this.m_Item);
             }
@@ -342,7 +342,7 @@ namespace Server.Items
             {
                 base.Serialize(writer);
 
-                writer.Write((int)0); // version
+                writer.Write(0); // version
 
                 writer.Write(this.m_Item);
             }

@@ -531,7 +531,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)3); // version
+            writer.Write(3); // version
 
             writer.WriteEncodedInt((int)this.m_State);
             writer.WriteEncodedInt((int)this.m_ExpireAction);

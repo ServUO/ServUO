@@ -368,7 +368,7 @@ namespace Server.Engines.Doom
 
         public virtual PlayerMobile GetOccupant(int index)
         {
-            LeverPuzzleRegion region = (LeverPuzzleRegion)this.m_Tiles[index];
+            LeverPuzzleRegion region = this.m_Tiles[index];
 
             if (region != null)
             {
@@ -533,7 +533,7 @@ namespace Server.Engines.Doom
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
             writer.WriteItemList(this.m_Levers, true);
             writer.WriteItemList(this.m_Statues, true);
             writer.WriteItemList(this.m_Teles, true);

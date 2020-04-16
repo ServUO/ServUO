@@ -162,7 +162,7 @@ namespace Server.Spells.Fourth
             {
                 base.Serialize(writer);
 
-                writer.Write((int)2); // version
+                writer.Write(2); // version
 
                 writer.Write(m_Damage);
                 writer.Write(m_Caster);

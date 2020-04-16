@@ -77,7 +77,7 @@ namespace Server.Items
                 if (BottlesRemaining <= 0)
                     return 1.0;
 
-                return (double)BottlesRemaining;
+                return BottlesRemaining;
             }
         }
 
@@ -335,7 +335,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write((int)_FruitType);
             writer.Write(_Fruit);
@@ -436,7 +436,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write((int)_FruitType);
             writer.Write(_Vintage);

@@ -9,8 +9,8 @@ namespace Server.Network
 
             this.m_Stream.Write((short)0x17);
             this.m_Stream.Write((byte)1);
-            this.m_Stream.Write((int)topicID);
-            this.m_Stream.Write((bool)display);
+            this.m_Stream.Write(topicID);
+            this.m_Stream.Write(display);
         }
     }
 }

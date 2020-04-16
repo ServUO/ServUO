@@ -61,7 +61,7 @@ namespace Server.Engines.Distillation
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write((int)m_LastGroup);
             writer.Write((int)m_LastLiquor);

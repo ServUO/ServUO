@@ -893,18 +893,18 @@ namespace Server.Items
                 AddComponent(new AddonComponent(m_AddOnSimpleComponents[i, 0]), m_AddOnSimpleComponents[i, 1], m_AddOnSimpleComponents[i, 2], m_AddOnSimpleComponents[i, 3]);
 
 
-            AddComplexComponent((BaseAddon)this, 4840, 9, -20, 0, 32, -1, "", 1);// 1094
-            AddComplexComponent((BaseAddon)this, 4840, -4, -20, 0, 32, -1, "", 1);// 2028
-            AddComplexComponent((BaseAddon)this, 1071, -24, 5, 0, 32, -1, "", 1);// 2183
-            AddComplexComponent((BaseAddon)this, 4833, -20, 9, 0, 32, -1, "", 1);// 2221
-            AddComplexComponent((BaseAddon)this, 1071, -24, 1, 0, 32, -1, "", 1);// 2282
-            AddComplexComponent((BaseAddon)this, 1070, -24, 2, 0, 32, -1, "", 1);// 2335
-            AddComplexComponent((BaseAddon)this, 1070, -24, 6, 0, 32, -1, "", 1);// 2383
-            AddComplexComponent((BaseAddon)this, 1070, -24, -1, 0, 32, -1, "", 1);// 2420
-            AddComplexComponent((BaseAddon)this, 4833, -20, -4, 0, 32, -1, "", 1);// 2468
-            AddComplexComponent((BaseAddon)this, 1070, -24, -4, 0, 32, -1, "", 1);// 2503
-            AddComplexComponent((BaseAddon)this, 1071, -24, -5, 0, 32, -1, "", 1);// 2515
-            AddComplexComponent((BaseAddon)this, 1071, -24, -2, 0, 32, -1, "", 1);// 2550
+            AddComplexComponent(this, 4840, 9, -20, 0, 32, -1, "", 1);// 1094
+            AddComplexComponent(this, 4840, -4, -20, 0, 32, -1, "", 1);// 2028
+            AddComplexComponent(this, 1071, -24, 5, 0, 32, -1, "", 1);// 2183
+            AddComplexComponent(this, 4833, -20, 9, 0, 32, -1, "", 1);// 2221
+            AddComplexComponent(this, 1071, -24, 1, 0, 32, -1, "", 1);// 2282
+            AddComplexComponent(this, 1070, -24, 2, 0, 32, -1, "", 1);// 2335
+            AddComplexComponent(this, 1070, -24, 6, 0, 32, -1, "", 1);// 2383
+            AddComplexComponent(this, 1070, -24, -1, 0, 32, -1, "", 1);// 2420
+            AddComplexComponent(this, 4833, -20, -4, 0, 32, -1, "", 1);// 2468
+            AddComplexComponent(this, 1070, -24, -4, 0, 32, -1, "", 1);// 2503
+            AddComplexComponent(this, 1071, -24, -5, 0, 32, -1, "", 1);// 2515
+            AddComplexComponent(this, 1071, -24, -2, 0, 32, -1, "", 1);// 2550
 
         }
 

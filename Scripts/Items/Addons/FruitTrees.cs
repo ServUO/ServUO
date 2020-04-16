@@ -71,7 +71,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((int)this.m_Fruits);
+            writer.Write(m_Fruits);
         }
 
         public override void Deserialize(GenericReader reader)

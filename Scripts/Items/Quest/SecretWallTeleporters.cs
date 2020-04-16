@@ -87,12 +87,12 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((Point3D)this.m_PointDest);
-            writer.Write((Map)this.m_MapDest);
-            writer.Write((bool)this.m_Locked);
-            writer.Write((bool)this.m_Active);
+            writer.Write(m_PointDest);
+            writer.Write(m_MapDest);
+            writer.Write(m_Locked);
+            writer.Write(m_Active);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -199,10 +199,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((Item)this.m_Wall);
-            writer.Write((bool)this.m_TurnedOn);
+            writer.Write(m_Wall);
+            writer.Write(m_TurnedOn);
         }
 
         public override void Deserialize(GenericReader reader)

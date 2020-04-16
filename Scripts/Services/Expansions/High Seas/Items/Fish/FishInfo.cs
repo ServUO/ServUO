@@ -361,7 +361,7 @@ namespace Server.Items
                     {
                         if (((ISetItem)item).SetEquipped)
                         {
-                            str += ((double)((IFishingAttire)item).SetBonus / 100) / (double)((ISetItem)item).Pieces;
+                            str += ((double)((IFishingAttire)item).SetBonus / 100) / ((ISetItem)item).Pieces;
                         }
                         else
                         {

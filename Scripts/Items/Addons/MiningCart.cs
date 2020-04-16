@@ -406,9 +406,9 @@ namespace Server.Items
             writer.Write((int)m_CartType);
             #endregion
 
-            writer.Write((bool)m_IsRewardItem);
-            writer.Write((int)m_Gems);
-            writer.Write((int)m_Ore);
+            writer.Write(m_IsRewardItem);
+            writer.Write(m_Gems);
+            writer.Write(m_Ore);
             writer.Write(NextResourceCount);
         }
 
@@ -547,9 +547,9 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((bool)m_IsRewardItem);
-            writer.Write((int)m_Gems);
-            writer.Write((int)m_Ore);
+            writer.Write(m_IsRewardItem);
+            writer.Write(m_Gems);
+            writer.Write(m_Ore);
         }
 
         public override void Deserialize(GenericReader reader)

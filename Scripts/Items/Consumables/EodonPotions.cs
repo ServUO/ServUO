@@ -936,7 +936,7 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write(0);
 
-            writer.Write((int)m_Used);
+            writer.Write(m_Used);
         }
 
         public override void Deserialize(GenericReader reader)

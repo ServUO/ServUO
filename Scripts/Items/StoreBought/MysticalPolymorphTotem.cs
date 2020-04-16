@@ -186,11 +186,11 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(CostumeCreatureName);
-            writer.Write((int)CostumeBody);
-            writer.Write((int)CostumeHue);
+            writer.Write(CostumeBody);
+            writer.Write(CostumeHue);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -105,7 +105,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.WriteEncodedInt((int)m_Type);
         }

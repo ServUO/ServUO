@@ -226,7 +226,7 @@ namespace Server.Items
             writer.WriteEncodedInt(1); // version
 
             // Version 1
-            writer.Write((bool)m_ForceDeactivate);
+            writer.Write(m_ForceDeactivate);
 
             // Version 0
             writer.WriteEncodedInt(m_Spawners.Length);

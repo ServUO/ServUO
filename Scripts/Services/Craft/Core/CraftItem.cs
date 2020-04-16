@@ -1334,7 +1334,7 @@ namespace Server.Engines.Craft
         {
             if (ForceSuccessChance > -1)
             {
-                return ((double)ForceSuccessChance / 100.0);
+                return (ForceSuccessChance / 100.0);
             }
 
             double minMainSkill = 0.0;

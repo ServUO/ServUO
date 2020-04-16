@@ -43,8 +43,8 @@ namespace Server.Engines.HuntsmasterChallenge
             HuntingTrophyInfo info1 = HuntingTrophyInfo.Infos[((HuntingKillEntry)o).KillIndex];
             HuntingTrophyInfo info2 = HuntingTrophyInfo.Infos[m_KillIndex];
 
-            double perc1 = (double)((double)((HuntingKillEntry)o).Measurement / info1.MaxMeasurement);
-            double perc2 = (double)((double)m_Measurement / info2.MaxMeasurement);
+            double perc1 = (double)((HuntingKillEntry)o).Measurement / info1.MaxMeasurement;
+            double perc2 = (double)m_Measurement / info2.MaxMeasurement;
 
             return (int)((perc1 * 100) - (perc2 * 100));
         }
@@ -62,7 +62,7 @@ namespace Server.Engines.HuntsmasterChallenge
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_Owner);
             writer.Write(m_Measurement);

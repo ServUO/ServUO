@@ -40,7 +40,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -284,11 +284,11 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.WriteEncodedInt((int)this.m_SideLength);
+            writer.WriteEncodedInt(m_SideLength);
 
-            writer.WriteEncodedInt((int)this.m_Path.Length);
+            writer.WriteEncodedInt(m_Path.Length);
             for (int i = 0; i < this.m_Path.Length; i++)
             {
                 Node cur = this.m_Path[i];

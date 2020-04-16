@@ -84,7 +84,7 @@ namespace Server.Engines.Mahjong
 
         public void Save(GenericWriter writer)
         {
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(this.m_Position);
             writer.Write((int)this.m_Direction);

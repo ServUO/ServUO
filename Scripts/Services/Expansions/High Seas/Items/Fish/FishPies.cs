@@ -97,19 +97,19 @@ namespace Server.Items
             }
 
             if (IsUnderEffects(to, FishPieEffect.PhysicalSoak) && phys > 0)
-                totalDamage -= (int)Math.Min(5.0, totalDamage * ((double)phys / 100.0));
+                totalDamage -= (int)Math.Min(5.0, totalDamage * (phys / 100.0));
 
             if (IsUnderEffects(to, FishPieEffect.FireSoak) && fire > 0)
-                totalDamage -= (int)Math.Min(5.0, totalDamage * ((double)fire / 100.0));
+                totalDamage -= (int)Math.Min(5.0, totalDamage * (fire / 100.0));
 
             if (IsUnderEffects(to, FishPieEffect.ColdSoak) && cold > 0)
-                totalDamage -= (int)Math.Min(5.0, totalDamage * ((double)cold / 100.0));
+                totalDamage -= (int)Math.Min(5.0, totalDamage * (cold / 100.0));
 
             if (IsUnderEffects(to, FishPieEffect.PoisonSoak) && pois > 0)
-                totalDamage -= (int)Math.Min(5.0, totalDamage * ((double)pois / 100.0));
+                totalDamage -= (int)Math.Min(5.0, totalDamage * (pois / 100.0));
 
             if (IsUnderEffects(to, FishPieEffect.EnergySoak) && nrgy > 0)
-                totalDamage -= (int)Math.Min(5.0, totalDamage * ((double)nrgy / 100.0));
+                totalDamage -= (int)Math.Min(5.0, totalDamage * (nrgy / 100.0));
         }
 
         public virtual bool Apply(Mobile from)
@@ -214,7 +214,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write((int)_Quality);
         }
@@ -248,7 +248,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -277,7 +277,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -306,7 +306,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -334,7 +334,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -363,7 +363,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -392,7 +392,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -420,7 +420,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -449,7 +449,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -478,7 +478,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -507,7 +507,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -536,7 +536,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -565,7 +565,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -593,7 +593,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -621,7 +621,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -649,7 +649,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -677,7 +677,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

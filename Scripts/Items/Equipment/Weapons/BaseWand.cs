@@ -130,10 +130,10 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write((int)this.m_WandEffect);
-            writer.Write((int)this.m_Charges);
+            writer.Write(m_Charges);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -142,7 +142,7 @@ namespace Server.Items
             int version = reader.ReadInt();
 
             this.m_WandEffect = (WandEffect)reader.ReadInt();
-            this.m_Charges = (int)reader.ReadInt();
+            this.m_Charges = reader.ReadInt();
         }
 
         public override void GetProperties(ObjectPropertyList list)

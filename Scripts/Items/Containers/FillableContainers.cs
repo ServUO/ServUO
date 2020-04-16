@@ -60,7 +60,7 @@ namespace Server.Items
             int count = 0;
             int fail = 0;
 
-            List<FillableContainer> toCheck = new List<FillableContainer>(World.Items.Values.OfType<FillableContainer>().Where(i => i is FillableContainer && ((FillableContainer)i).ContentType == FillableContentType.None));
+            List<FillableContainer> toCheck = new List<FillableContainer>(World.Items.Values.OfType<FillableContainer>().Where(i => i is FillableContainer && i.ContentType == FillableContentType.None));
 
             foreach (FillableContainer cont in toCheck)
             {
@@ -370,7 +370,7 @@ namespace Server.Items
             if (m_RespawnTimer != null)
             {
                 writer.Write(true);
-                writer.WriteDeltaTime((DateTime)m_NextRespawnTime);
+                writer.WriteDeltaTime(m_NextRespawnTime);
             }
             else
             {
@@ -473,7 +473,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)2); // version
+            writer.WriteEncodedInt(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -514,7 +514,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -544,7 +544,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -574,7 +574,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -603,7 +603,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -699,7 +699,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)2); // version
+            writer.WriteEncodedInt(2); // version
 
             writer.Write(WorldLocation);
             writer.Write(WorldMap);
@@ -757,7 +757,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -789,7 +789,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -821,7 +821,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -292,7 +292,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write(m_Facet);
 
@@ -373,7 +373,7 @@ namespace Server.Items
         {
             public MapDetails(MapItem map) : base(0x90, 19)
             {
-                m_Stream.Write((int)map.Serial);
+                m_Stream.Write(map.Serial);
                 m_Stream.Write((short)0x139D);
                 m_Stream.Write((short)map.Bounds.Start.X);
                 m_Stream.Write((short)map.Bounds.Start.Y);
@@ -388,7 +388,7 @@ namespace Server.Items
         {
             public NewMapDetails(MapItem map) : base(0xF5, 21)
             {
-                m_Stream.Write((int)map.Serial);
+                m_Stream.Write(map.Serial);
                 m_Stream.Write((short)0x139D);
                 m_Stream.Write((short)map.Bounds.Start.X);
                 m_Stream.Write((short)map.Bounds.Start.Y);
@@ -419,7 +419,7 @@ namespace Server.Items
         {
             public MapCommand(MapItem map, int command, int number, int x, int y) : base(0x56, 11)
             {
-                m_Stream.Write((int)map.Serial);
+                m_Stream.Write(map.Serial);
                 m_Stream.Write((byte)command);
                 m_Stream.Write((byte)number);
                 m_Stream.Write((short)x);

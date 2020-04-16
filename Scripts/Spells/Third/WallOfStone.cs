@@ -124,7 +124,7 @@ namespace Server.Spells.Third
             {
                 base.Serialize(writer);
 
-                writer.Write((int)1); // version
+                writer.Write(1); // version
 
                 writer.WriteDeltaTime(m_End);
             }

@@ -32,8 +32,8 @@ namespace Server.Items
             for (int i = 0; i < m_AddOnSimpleComponents.Length / 4; i++)
                 AddComponent(new AddonComponent(m_AddOnSimpleComponents[i, 0]), m_AddOnSimpleComponents[i, 1], m_AddOnSimpleComponents[i, 2], m_AddOnSimpleComponents[i, 3]);
 
-            AddComplexComponent((BaseAddon)this, 2572, 0, 2, 37, 0, 5, "", 1);
-            AddComplexComponent((BaseAddon)this, 2567, 2, 0, 37, 0, 5, "", 1);
+            AddComplexComponent(this, 2572, 0, 2, 37, 0, 5, "", 1);
+            AddComplexComponent(this, 2567, 2, 0, 37, 0, 5, "", 1);
 
             Crew = new List<BaseCreature>();
             Spawn = new Dictionary<BaseCreature, bool>();

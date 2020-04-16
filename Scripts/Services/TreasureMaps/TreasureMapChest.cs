@@ -599,7 +599,7 @@ namespace Server.Items
 
                 for (int i = 0; i < spawn.Skills.Length; i++)
                 {
-                    Skill skill = (Skill)spawn.Skills[i];
+                    Skill skill = spawn.Skills[i];
 
                     if (skill.Base > 0.0)
                         skill.Base *= Paragon.SkillsBuff;
@@ -624,7 +624,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)4); // version
+            writer.Write(4); // version
 
             writer.Write(FailedLockpick);
             writer.Write((int)_Quality);
@@ -635,11 +635,11 @@ namespace Server.Items
             writer.Write(TreasureMap);
 
             writer.Write(Guardians, true);
-            writer.Write((bool)Temporary);
+            writer.Write(Temporary);
 
             writer.Write(Owner);
 
-            writer.Write((int)Level);
+            writer.Write(Level);
             writer.WriteDeltaTime(DeleteTime);
             writer.Write(m_Lifted, true);
         }

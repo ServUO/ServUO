@@ -295,13 +295,13 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((int)this.m_Tracks.Count);
+            writer.Write(m_Tracks.Count);
 
             for (int i = 0; i < this.m_Tracks.Count; i++)
                 writer.Write((int)this.m_Tracks[i]);
 
             writer.Write((int)this.m_Level);
-            writer.Write((int)this.m_ItemID);
+            writer.Write(m_ItemID);
         }
 
         public override void Deserialize(GenericReader reader)

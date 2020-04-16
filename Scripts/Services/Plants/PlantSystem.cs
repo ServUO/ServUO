@@ -634,33 +634,33 @@ namespace Server.Engines.Plants
 
         public void Save(GenericWriter writer)
         {
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
-            writer.Write((bool)FertileDirt);
+            writer.Write(FertileDirt);
 
-            writer.Write((DateTime)NextGrowth);
+            writer.Write(NextGrowth);
             writer.Write((int)GrowthIndicator);
 
-            writer.Write((int)m_Water);
+            writer.Write(m_Water);
 
-            writer.Write((int)m_Hits);
-            writer.Write((int)m_Infestation);
-            writer.Write((int)m_Fungus);
-            writer.Write((int)m_Poison);
-            writer.Write((int)m_Disease);
-            writer.Write((int)m_PoisonPotion);
-            writer.Write((int)m_CurePotion);
-            writer.Write((int)m_HealPotion);
-            writer.Write((int)m_StrengthPotion);
+            writer.Write(m_Hits);
+            writer.Write(m_Infestation);
+            writer.Write(m_Fungus);
+            writer.Write(m_Poison);
+            writer.Write(m_Disease);
+            writer.Write(m_PoisonPotion);
+            writer.Write(m_CurePotion);
+            writer.Write(m_HealPotion);
+            writer.Write(m_StrengthPotion);
 
-            writer.Write((bool)Pollinated);
+            writer.Write(Pollinated);
             writer.Write((int)m_SeedType);
             writer.Write((int)m_SeedHue);
-            writer.Write((int)m_AvailableSeeds);
-            writer.Write((int)m_LeftSeeds);
+            writer.Write(m_AvailableSeeds);
+            writer.Write(m_LeftSeeds);
 
-            writer.Write((int)m_AvailableResources);
-            writer.Write((int)m_LeftResources);
+            writer.Write(m_AvailableResources);
+            writer.Write(m_LeftResources);
         }
 
         public PlantSystem(PlantItem plant, GenericReader reader)

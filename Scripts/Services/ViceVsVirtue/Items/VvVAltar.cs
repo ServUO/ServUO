@@ -176,7 +176,7 @@ namespace Server.Engines.VvV
             {
                 Server.Timer.DelayCall(TimeSpan.FromMilliseconds((i - 2) * 600), o =>
                 {
-                    Server.Misc.Geometry.Circle2D(this.Location, this.Map, (int)o, (pnt, map) =>
+                    Server.Misc.Geometry.Circle2D(this.Location, this.Map, o, (pnt, map) =>
                     {
                         LaunchFireworks(pnt, map);
                     });

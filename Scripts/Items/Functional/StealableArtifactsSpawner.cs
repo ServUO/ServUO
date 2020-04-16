@@ -371,8 +371,8 @@ namespace Server.Items
             {
                 StealableInstance si = this.m_Artifacts[i];
 
-                writer.Write((Item)si.Item);
-                writer.WriteDeltaTime((DateTime)si.NextRespawn);
+                writer.Write(si.Item);
+                writer.WriteDeltaTime(si.NextRespawn);
             }
         }
 

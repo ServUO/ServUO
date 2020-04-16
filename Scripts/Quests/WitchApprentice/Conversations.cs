@@ -263,9 +263,9 @@ namespace Server.Engines.Quests.Hag
 
         public override void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.Write((Point3D)this.m_ImpLocation);
+            writer.Write(m_ImpLocation);
         }
     }
 
@@ -565,10 +565,10 @@ namespace Server.Engines.Quests.Hag
 
         public override void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.Write((bool)this.m_Tricorne);
-            writer.Write((bool)this.m_Drunken);
+            writer.Write(m_Tricorne);
+            writer.Write(m_Drunken);
         }
     }
 
@@ -652,9 +652,9 @@ namespace Server.Engines.Quests.Hag
 
         public override void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.Write((bool)this.m_FirstMet);
+            writer.Write(m_FirstMet);
         }
     }
 

@@ -262,7 +262,7 @@ namespace Server.Items
             }
 
             bool rare = true;
-            double bump = (double)m_Bobs / 100.0;
+            double bump = m_Bobs / 100.0;
 
             Type type = FishInfo.GetSpecialItem(m_Owner, this, this.Location, bump, this is LavaLobsterTrap);
 
@@ -437,7 +437,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             int index = FishInfo.GetIndexFromType(m_BaitType);
             writer.Write(index);

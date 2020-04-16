@@ -572,14 +572,14 @@ namespace Server.Engines.Plants
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
             writer.Write((int)m_Level);
 
             writer.Write((int)m_PlantStatus);
             writer.Write((int)m_PlantType);
             writer.Write((int)m_PlantHue);
-            writer.Write((bool)m_ShowType);
+            writer.Write(m_ShowType);
 
             if (m_PlantStatus < PlantStatus.DecorativePlant)
                 m_PlantSystem.Save(writer);

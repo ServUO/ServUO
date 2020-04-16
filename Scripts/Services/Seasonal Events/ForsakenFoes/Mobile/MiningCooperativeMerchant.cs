@@ -69,14 +69,14 @@ namespace Server.Engines.Quests
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)0);
+                    writer.Write(0);
 
                     writer.Write(PurchaseList.Count);
 
                     PurchaseList.ForEach(s =>
                     {
                         writer.Write(s.Account);
-                        writer.Write((int)s.Purchase);
+                        writer.Write(s.Purchase);
                     });
                 });
         }
@@ -151,7 +151,7 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

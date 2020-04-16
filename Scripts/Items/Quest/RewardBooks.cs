@@ -65,7 +65,7 @@ namespace Server.Items
             {
                 var old = _BookType;
 
-                if (old != value && (int)value >= 0 && (int)value < 36)
+                if (old != value && value >= 0 && (int)value < 36)
                 {
                     _BookType = value;
 

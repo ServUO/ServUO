@@ -391,16 +391,16 @@ namespace Server.Engines.MiniChamps
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(BossSpawnPoint);
-            writer.Write((bool)m_Active);
+            writer.Write(m_Active);
             writer.Write((int)m_Type);
-            writer.Write((int)m_Level);
-            writer.Write((int)m_SpawnRange);
-            writer.Write((TimeSpan)m_RestartDelay);
+            writer.Write(m_Level);
+            writer.Write(m_SpawnRange);
+            writer.Write(m_RestartDelay);
 
-            writer.Write((int)Spawn.Count);
+            writer.Write(Spawn.Count);
 
             for (int i = 0; i < Spawn.Count; i++)
             {

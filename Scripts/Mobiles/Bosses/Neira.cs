@@ -234,7 +234,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
             writer.Write(m_SpeedBoost);
         }
 
@@ -335,9 +335,9 @@ namespace Server.Mobiles
             {
                 base.Serialize(writer);
 
-                writer.Write((int)0); // version
+                writer.Write(0); // version
 
-                writer.Write((Mobile)m_Rider);
+                writer.Write(m_Rider);
             }
 
             public override void Deserialize(GenericReader reader)

@@ -2572,7 +2572,7 @@ namespace Server.Mobiles
 
         public override bool Validate(BaseCreature attacker, Mobile defender)
         {
-            if (defender.Hits < ((double)defender.HitsMax * .33))
+            if (defender.Hits < (defender.HitsMax * .33))
             {
                 return false;
             }

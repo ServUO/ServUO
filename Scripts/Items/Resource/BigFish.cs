@@ -77,10 +77,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)3); // version
+            writer.Write(3); // version
 
             writer.Write(m_DateCaught);
-            writer.Write((Mobile)m_Fisher);
+            writer.Write(m_Fisher);
         }
 
         public override void Deserialize(GenericReader reader)

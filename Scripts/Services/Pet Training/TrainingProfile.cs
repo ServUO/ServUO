@@ -252,8 +252,8 @@ namespace Server.Mobiles
             {
                 case 1: gains = int.MaxValue; break;
                 case 2: gains = int.MaxValue; break;
-                case 3: gains = (int)(((double)MaxTrainingProgress / toGain) / 2.0); break;
-                default: gains = (int)(((double)MaxTrainingProgress / toGain) / 4.0); break;
+                case 3: gains = (int)((MaxTrainingProgress / toGain) / 2.0); break;
+                default: gains = (int)((MaxTrainingProgress / toGain) / 4.0); break;
             }
 
             if (gains < int.MaxValue)

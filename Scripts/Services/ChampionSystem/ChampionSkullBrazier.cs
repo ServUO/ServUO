@@ -149,7 +149,7 @@ namespace Server.Engines.CannedEvil
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write((int)this.m_Type);
             writer.Write(this.m_Platform);

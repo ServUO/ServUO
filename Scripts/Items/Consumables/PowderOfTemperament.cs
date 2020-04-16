@@ -63,8 +63,8 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
-            writer.Write((int)m_UsesRemaining);
+            writer.Write(0);
+            writer.Write(m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)

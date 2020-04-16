@@ -58,8 +58,8 @@ namespace Server.Items.Holiday
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
-            writer.Write((string)this.m_Staffer);
+            writer.Write(1); // version
+            writer.Write(m_Staffer);
         }
 
         public override void Deserialize(GenericReader reader)

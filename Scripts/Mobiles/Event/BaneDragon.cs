@@ -111,7 +111,7 @@ namespace Server.Mobiles
             {
                 DoSpecial(from);
 
-                _NextSpecial = DateTime.UtcNow + TimeSpan.FromSeconds((double)Utility.RandomMinMax(15, 30) * (double)(11.0 - PowerLevel));
+                _NextSpecial = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(15, 30) * (11.0 - PowerLevel));
             }
         }
 
@@ -141,7 +141,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
             writer.Write(PowerLevel);
             writer.Write(PowerDecay);
         }

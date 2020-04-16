@@ -51,16 +51,16 @@ namespace Server.Engines.Quests
 
         public virtual void BaseSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.Write((bool)m_HasBeenRead);
+            writer.Write(m_HasBeenRead);
 
             ChildSerialize(writer);
         }
 
         public virtual void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public virtual void OnRead()

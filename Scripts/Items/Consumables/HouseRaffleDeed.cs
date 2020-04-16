@@ -152,7 +152,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write(this.m_Stone);
             writer.Write(this.m_PlotLocation);

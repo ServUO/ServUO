@@ -204,7 +204,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -390,7 +390,7 @@ namespace Server.Mobiles
 
                     if (trinket != null)
                     {
-                        return perDay - (int)((double)perDay * ((double)trinket.Bonus / 100));
+                        return perDay - (int)(perDay * ((double)trinket.Bonus / 100));
                     }
 
                     return perDay;
@@ -438,26 +438,26 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
-            writer.Write((bool)VendorSearch);
-            writer.Write((bool)BaseHouse.NewVendorSystem);
-            writer.Write((string)m_ShopName);
-            writer.WriteDeltaTime((DateTime)NextPayTime);
-            writer.Write((Item)House);
+            writer.Write(VendorSearch);
+            writer.Write(BaseHouse.NewVendorSystem);
+            writer.Write(m_ShopName);
+            writer.WriteDeltaTime(NextPayTime);
+            writer.Write(House);
 
-            writer.Write((Mobile)Owner);
-            writer.Write((int)BankAccount);
-            writer.Write((int)HoldGold);
+            writer.Write(Owner);
+            writer.Write(BankAccount);
+            writer.Write(HoldGold);
 
-            writer.Write((int)m_SellItems.Count);
+            writer.Write(m_SellItems.Count);
             foreach (VendorItem vi in m_SellItems.Values)
             {
-                writer.Write((Item)vi.Item);
-                writer.Write((int)vi.Price);
-                writer.Write((string)vi.Description);
+                writer.Write(vi.Item);
+                writer.Write(vi.Price);
+                writer.Write(vi.Description);
 
-                writer.Write((DateTime)vi.Created);
+                writer.Write(vi.Created);
             }
         }
 
@@ -1766,9 +1766,9 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.WriteEncodedInt((int)0);
+            writer.WriteEncodedInt(0);
 
-            writer.Write((Mobile)Vendor);
+            writer.Write(Vendor);
         }
 
         public override void Deserialize(GenericReader reader)

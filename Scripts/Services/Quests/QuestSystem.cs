@@ -285,14 +285,14 @@ namespace Server.Engines.Quests
         {
             Type[] referenceTable = this.TypeReferenceTable;
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.WriteEncodedInt((int)this.m_Objectives.Count);
+            writer.WriteEncodedInt(m_Objectives.Count);
 
             for (int i = 0; i < this.m_Objectives.Count; ++i)
                 QuestSerializer.Serialize(referenceTable, (QuestObjective)this.m_Objectives[i], writer);
 
-            writer.WriteEncodedInt((int)this.m_Conversations.Count);
+            writer.WriteEncodedInt(m_Conversations.Count);
 
             for (int i = 0; i < this.m_Conversations.Count; ++i)
                 QuestSerializer.Serialize(referenceTable, (QuestConversation)this.m_Conversations[i], writer);
@@ -302,7 +302,7 @@ namespace Server.Engines.Quests
 
         public virtual void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public bool IsObjectiveInProgress(Type type)

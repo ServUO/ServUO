@@ -792,7 +792,7 @@ namespace Server.Engines.VvV
 
         public int AwardSilver(int amount)
         {
-            return (int)((double)amount * SilverPenalty);
+            return (int)(amount * SilverPenalty);
         }
 
         public void RemovePriests()
@@ -1012,7 +1012,7 @@ namespace Server.Engines.VvV
                 if (ViceVsVirtueSystem.IsVvV(m))
                 {
                     m.CloseGump(typeof(VvVBattleStatusGump));
-                    m.SendGump(new BattleStatsGump((PlayerMobile)m, this));
+                    m.SendGump(new BattleStatsGump(m, this));
                 }
             }
         }

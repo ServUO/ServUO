@@ -245,7 +245,7 @@ namespace Server.Items
 
             writer.Write(m_ResourceCount);
 
-            writer.Write((bool)m_IsRewardItem);
+            writer.Write(m_IsRewardItem);
             writer.Write(NextResourceCount);
             writer.Write((int)RugType);
         }
@@ -407,7 +407,7 @@ namespace Server.Items
 
             writer.Write(m_ResourceCount);
 
-            writer.Write((bool)m_IsRewardItem);
+            writer.Write(m_IsRewardItem);
             writer.Write(NextResourceCount);
             writer.Write((int)RugType);
         }

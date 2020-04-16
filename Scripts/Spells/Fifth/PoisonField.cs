@@ -153,7 +153,7 @@ namespace Server.Spells.Fifth
             {
                 base.Serialize(writer);
 
-                writer.Write((int)1); // version
+                writer.Write(1); // version
 
                 writer.Write(m_Caster);
                 writer.WriteDeltaTime(m_End);

@@ -133,7 +133,7 @@ namespace Server.Items
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             SaveFlag flags = SaveFlag.None;
 

@@ -245,11 +245,11 @@ namespace Server.Engines.Plants
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
             writer.Write((int)m_PlantType);
             writer.Write((int)m_PlantHue);
-            writer.Write((bool)m_ShowType);
+            writer.Write(m_ShowType);
         }
 
         public override void Deserialize(GenericReader reader)
