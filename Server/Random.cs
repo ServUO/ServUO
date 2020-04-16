@@ -156,7 +156,7 @@ namespace Server
 
                 lock (_syncB)
                 {
-                    var b = _Working;
+                    byte[] b = _Working;
                     _Working = _Buffer;
                     _Buffer = b;
                     _Index = 0;
@@ -229,7 +229,7 @@ namespace Server
 
         public unsafe double NextDouble()
         {
-            var b = new byte[8];
+            byte[] b = new byte[8];
 
             if (BitConverter.IsLittleEndian)
             {
@@ -302,7 +302,7 @@ namespace Server
 
                 lock (_syncB)
                 {
-                    var b = _Working;
+                    byte[] b = _Working;
                     _Working = _Buffer;
                     _Buffer = b;
                     _Index = 0;
@@ -373,7 +373,7 @@ namespace Server
 
         public unsafe double NextDouble()
         {
-            var b = new byte[8];
+            byte[] b = new byte[8];
 
             if (BitConverter.IsLittleEndian)
             {
@@ -446,7 +446,7 @@ namespace Server
 
                 lock (_syncB)
                 {
-                    var b = _Working;
+                    byte[] b = _Working;
                     _Working = _Buffer;
                     _Buffer = b;
                     _Index = 0;
@@ -517,7 +517,7 @@ namespace Server
 
         public unsafe double NextDouble()
         {
-            var b = new byte[8];
+            byte[] b = new byte[8];
 
             if (BitConverter.IsLittleEndian)
             {

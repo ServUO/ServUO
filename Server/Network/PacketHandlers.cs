@@ -460,7 +460,7 @@ namespace Server.Network
                     return;
                 }
 
-                var buyList = new List<BuyItemResponse>(msgSize / 7);
+                List<BuyItemResponse> buyList = new List<BuyItemResponse>(msgSize / 7);
                 for (; msgSize > 0; msgSize -= 7)
                 {
                     byte layer = pvSrc.ReadByte();
@@ -504,7 +504,7 @@ namespace Server.Network
             int count = pvSrc.ReadUInt16();
             if (count < 100 && pvSrc.Size == (1 + 2 + 4 + 2 + (count * 6)))
             {
-                var sellList = new List<SellItemResponse>(count);
+                List<SellItemResponse> sellList = new List<SellItemResponse>(count);
 
                 for (int i = 0; i < count; i++)
                 {
@@ -810,7 +810,7 @@ namespace Server.Network
                         {
                             try
                             {
-                                var split = command.Split(' ');
+                                string[] split = command.Split(' ');
 
                                 int x = Utility.ToInt32(split[0]);
                                 int y = Utility.ToInt32(split[1]);
@@ -872,7 +872,7 @@ namespace Server.Network
                     }
                 case 0x27: // Cast spell from book
                     {
-                        var split = command.Split(' ');
+                        string[] split = command.Split(' ');
 
                         if (split.Length > 0)
                         {
@@ -1291,7 +1291,7 @@ namespace Server.Network
                                 }
                                 else
                                 {
-                                    var tiles = map.Tiles.GetStaticTiles(x, y, !t.DisallowMultis);
+                                    StaticTile[] tiles = map.Tiles.GetStaticTiles(x, y, !t.DisallowMultis);
 
                                     bool valid = false;
 
@@ -1361,11 +1361,11 @@ namespace Server.Network
             {
                 if (gump.Serial == serial && gump.TypeID == typeID)
                 {
-                    var buttonExists = buttonID == 0; // 0 is always 'close'
+                    bool buttonExists = buttonID == 0; // 0 is always 'close'
 
                     if (!buttonExists)
                     {
-                        foreach (var e in gump.Entries)
+                        foreach (GumpEntry e in gump.Entries)
                         {
                             if (e is GumpButton && ((GumpButton)e).ButtonID == buttonID)
                             {
@@ -1401,7 +1401,7 @@ namespace Server.Network
                         return;
                     }
 
-                    var switches = new int[switchCount];
+                    int[] switches = new int[switchCount];
 
                     for (int j = 0; j < switches.Length; ++j)
                     {
@@ -1419,7 +1419,7 @@ namespace Server.Network
                         return;
                     }
 
-                    var textEntries = new TextRelay[textCount];
+                    TextRelay[] textEntries = new TextRelay[textCount];
 
                     for (int j = 0; j < textEntries.Length; ++j)
                     {
@@ -2117,7 +2117,7 @@ namespace Server.Network
                 return;
             }
 
-            using (var menu = user.ContextMenu)
+            using (ContextMenu menu = user.ContextMenu)
             {
                 user.ContextMenu = null;
 
@@ -2151,7 +2151,7 @@ namespace Server.Network
 
                         if (index >= 0 && index < menu.Entries.Length)
                         {
-                            using (var e = menu.Entries[index])
+                            using (ContextMenuEntry e = menu.Entries[index])
                             {
                                 int range = e.Range;
 
@@ -2187,7 +2187,7 @@ namespace Server.Network
 
         public static void ContextMenuRequest(NetState state, PacketReader pvSrc)
         {
-            var target = World.FindEntity(pvSrc.ReadInt32());
+            IEntity target = World.FindEntity(pvSrc.ReadInt32());
 
             if (target != null)
             {
@@ -2477,7 +2477,7 @@ namespace Server.Network
 
         public static void DoLogin(NetState state)
         {
-            var m = state.Mobile;
+            Mobile m = state.Mobile;
 
             state.Send(new LoginConfirm(m));
 
@@ -2591,7 +2591,7 @@ namespace Server.Network
                 race = Race.DefaultRace;
             }
 
-            var info = state.CityInfo;
+            CityInfo[] info = state.CityInfo;
             IAccount a = state.Account;
 
             if (info == null || a == null || cityIndex < 0 || cityIndex >= info.Length)
@@ -2732,7 +2732,7 @@ namespace Server.Network
                 race = Race.DefaultRace;
             }
 
-            var info = state.CityInfo;
+            CityInfo[] info = state.CityInfo;
             IAccount a = state.Account;
 
             if (info == null || a == null || cityIndex < 0 || cityIndex >= info.Length)
@@ -2849,7 +2849,7 @@ namespace Server.Network
                 uint oldestID = 0;
                 DateTime oldest = DateTime.MaxValue;
 
-                foreach (var kvp in m_AuthIDWindow)
+                foreach (KeyValuePair<uint, AuthIDPersistence> kvp in m_AuthIDWindow)
                 {
                     if (kvp.Value.Age < oldest)
                     {
@@ -2969,7 +2969,7 @@ namespace Server.Network
         public static void PlayServer(NetState state, PacketReader pvSrc)
         {
             int index = pvSrc.ReadInt16();
-            var info = state.ServerInfo;
+            ServerInfo[] info = state.ServerInfo;
             IAccount a = state.Account;
 
             if (info == null || a == null || index < 0 || index >= info.Length)
@@ -3087,7 +3087,7 @@ namespace Server.Network
             }
             else
             {
-                var info = e.Servers.ToArray();
+                ServerInfo[] info = e.Servers.ToArray();
 
                 state.ServerInfo = info;
 

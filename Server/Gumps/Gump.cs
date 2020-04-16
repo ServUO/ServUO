@@ -460,10 +460,10 @@ namespace Server.Gumps
                 disp.AppendLayout(m_NoResize);
             }
 
-            var count = m_Entries.Count;
+            int count = m_Entries.Count;
             GumpEntry e;
 
-            for (var i = 0; i < count; ++i)
+            for (int i = 0; i < count; ++i)
             {
                 e = m_Entries[i];
 

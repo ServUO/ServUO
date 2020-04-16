@@ -112,7 +112,7 @@ namespace Server.Network
 
             if (ipep.Address.Equals(IPAddress.Any) || ipep.Address.Equals(IPAddress.IPv6Any))
             {
-                var adapters = NetworkInterface.GetAllNetworkInterfaces();
+                NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
                 foreach (NetworkInterface adapter in adapters)
                 {
                     IPInterfaceProperties properties = adapter.GetIPProperties();

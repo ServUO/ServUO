@@ -38,7 +38,7 @@ namespace Server
                             continue;
                         }
 
-                        var split = line.Split('\t');
+                        string[] split = line.Split('\t');
 
                         BodyType type;
                         int bodyID;

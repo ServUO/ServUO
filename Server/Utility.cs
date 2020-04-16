@@ -190,8 +190,8 @@ namespace Server
 
             */
 
-            var bytes = new byte[4];
-            var split = cidr.Split('.');
+            byte[] bytes = new byte[4];
+            string[] split = cidr.Split('.');
             bool cidrBits = false;
             int cidrLength = 0;
 
@@ -341,7 +341,7 @@ namespace Server
                 return true;
             }
 
-            var addr = address.GetAddressBytes();
+            byte[] addr = address.GetAddressBytes();
             if (addr.Length == 16) //sanity 0 - 15 //10 11 //12 13 14 15
             {
                 if (addr[10] != 0xFF || addr[11] != 0xFF)
@@ -357,7 +357,7 @@ namespace Server
                     }
                 }
 
-                var v4Addr = new byte[4];
+                byte[] v4Addr = new byte[4];
 
                 for (int i = 0; i < 4; i++)
                 {
@@ -375,7 +375,7 @@ namespace Server
         {
             valid = true;
 
-            var split = val.Split('.');
+            string[] split = val.Split('.');
 
             for (int i = 0; i < 4; ++i)
             {
@@ -873,7 +873,7 @@ namespace Server
         {
             if (min > max)
             {
-                var copy = min;
+                double copy = min;
                 min = max;
                 max = copy;
             }
@@ -1484,7 +1484,7 @@ namespace Server
 
         public static List<TOutput> SafeConvertList<TInput, TOutput>(List<TInput> list) where TOutput : class
         {
-            var output = new List<TOutput>(list.Capacity);
+            List<TOutput> output = new List<TOutput>(list.Capacity);
 
             for (int i = 0; i < list.Count; i++)
             {
@@ -1652,9 +1652,9 @@ namespace Server
                 return;
             }
 
-            var toList = list.ToList();
+            List<T> toList = list.ToList();
 
-            foreach (var o in toList)
+            foreach (T o in toList)
             {
                 action(o);
             }
@@ -1686,7 +1686,7 @@ namespace Server
             {
                 if (i < list.Count)
                 {
-                    var entity = list[i] as IEntity;
+                    IEntity entity = list[i] as IEntity;
 
                     if (entity != null && !entity.Deleted && (predicate == null || predicate((T)entity)))
                     {

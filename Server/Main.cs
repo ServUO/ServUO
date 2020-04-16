@@ -467,7 +467,7 @@ namespace Server
             };
 
             Version ver = Assembly.GetName().Version;
-            var buildDate = new DateTime(2000, 1, 1).AddDays(ver.Build).AddSeconds(ver.Revision * 2);
+            DateTime buildDate = new DateTime(2000, 1, 1).AddDays(ver.Build).AddSeconds(ver.Revision * 2);
 
             Utility.PushColor(ConsoleColor.Cyan);
 #if DEBUG
@@ -863,7 +863,7 @@ namespace Server
             FileName = file;
 
             using (
-                var writer =
+                StreamWriter writer =
                     new StreamWriter(
                         new FileStream(FileName, append ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.Read)))
             {
@@ -876,7 +876,7 @@ namespace Server
 
         public override void Write(char ch)
         {
-            using (var writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
+            using (StreamWriter writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
             {
                 if (_NewLine)
                 {
@@ -890,7 +890,7 @@ namespace Server
 
         public override void Write(string str)
         {
-            using (var writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
+            using (StreamWriter writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
             {
                 if (_NewLine)
                 {
@@ -904,7 +904,7 @@ namespace Server
 
         public override void WriteLine(string line)
         {
-            using (var writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
+            using (StreamWriter writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
             {
                 if (_NewLine)
                 {
@@ -945,7 +945,7 @@ namespace Server
 
         public override void Write(char ch)
         {
-            foreach (var t in _Streams)
+            foreach (TextWriter t in _Streams)
             {
                 t.Write(ch);
             }
@@ -953,7 +953,7 @@ namespace Server
 
         public override void WriteLine(string line)
         {
-            foreach (var t in _Streams)
+            foreach (TextWriter t in _Streams)
             {
                 t.WriteLine(line);
             }
