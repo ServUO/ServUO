@@ -31,7 +31,7 @@ namespace Server.Items
                 return true;
             }
 
-            var to = Trade.From.Container != this ? Trade.From.Mobile : Trade.To.Mobile;
+            Mobile to = Trade.From.Container != this ? Trade.From.Mobile : Trade.To.Mobile;
 
             return m.CheckTrade(to, item, this, message, checkItems, plusItems, plusWeight);
         }

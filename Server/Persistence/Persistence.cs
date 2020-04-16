@@ -28,9 +28,9 @@ namespace Server
 
             file.Refresh();
 
-            using (var fs = file.OpenWrite())
+            using (FileStream fs = file.OpenWrite())
             {
-                var writer = new BinaryFileWriter(fs, true);
+                BinaryFileWriter writer = new BinaryFileWriter(fs, true);
 
                 try
                 {
@@ -88,9 +88,9 @@ namespace Server
 
             file.Refresh();
 
-            using (var fs = file.OpenRead())
+            using (FileStream fs = file.OpenRead())
             {
-                var reader = new BinaryFileReader(new BinaryReader(fs));
+                BinaryFileReader reader = new BinaryFileReader(new BinaryReader(fs));
 
                 try
                 {

@@ -65,7 +65,7 @@ namespace Server
 
         public static void UOPLoad(string path)
         {
-            var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
             BinaryReader streamReader = new BinaryReader(stream);
 
             // Head Information Start
@@ -76,8 +76,8 @@ namespace Server
                 return;
 
             // Multi ID List Array Start
-            var chunkIds = new Dictionary<ulong, int>();
-            var chunkIds2 = new Dictionary<ulong, int>();
+            Dictionary<ulong, int> chunkIds = new Dictionary<ulong, int>();
+            Dictionary<ulong, int> chunkIds2 = new Dictionary<ulong, int>();
 
             UOPHash.BuildChunkIDs(ref chunkIds, ref chunkIds2);
             // Multi ID List Array End
@@ -156,7 +156,7 @@ namespace Server
                     }
                     // End Decompress Data
 
-                    var tileList = new List<MultiTileEntry>();
+                    List<MultiTileEntry> tileList = new List<MultiTileEntry>();
 
                     using (MemoryStream fs = new MemoryStream(data))
                     {
@@ -228,10 +228,10 @@ namespace Server
 
                 if (File.Exists(idxPath) && File.Exists(mulPath))
                 {
-                    var idx = new FileStream(idxPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    FileStream idx = new FileStream(idxPath, FileMode.Open, FileAccess.Read, FileShare.Read);
                     m_IndexReader = new BinaryReader(idx);
 
-                    var stream = new FileStream(mulPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    FileStream stream = new FileStream(mulPath, FileMode.Open, FileAccess.Read, FileShare.Read);
                     m_StreamReader = new BinaryReader(stream);
 
                     string vdPath = Core.FindDataFile("verdata.mul");
@@ -323,7 +323,7 @@ namespace Server
 
             if (vx >= 0 && vx < m_Width && vy >= 0 && vy < m_Height)
             {
-                var oldTiles = m_Tiles[vx][vy];
+                StaticTile[] oldTiles = m_Tiles[vx][vy];
 
                 for (int i = oldTiles.Length - 1; i >= 0; --i)
                 {
@@ -343,7 +343,7 @@ namespace Server
 
                 oldTiles = m_Tiles[vx][vy];
 
-                var newTiles = new StaticTile[oldTiles.Length + 1];
+                StaticTile[] newTiles = new StaticTile[oldTiles.Length + 1];
 
                 for (int i = 0; i < oldTiles.Length; ++i)
                 {
@@ -354,8 +354,8 @@ namespace Server
 
                 m_Tiles[vx][vy] = newTiles;
 
-                var oldList = m_List;
-                var newList = new MultiTileEntry[oldList.Length + 1];
+                MultiTileEntry[] oldList = m_List;
+                MultiTileEntry[] newList = new MultiTileEntry[oldList.Length + 1];
 
                 for (int i = 0; i < oldList.Length; ++i)
                 {
@@ -395,7 +395,7 @@ namespace Server
 
             if (vx >= 0 && vx < m_Width && vy >= 0 && vy < m_Height)
             {
-                var oldTiles = m_Tiles[vx][vy];
+                StaticTile[] oldTiles = m_Tiles[vx][vy];
 
                 for (int i = 0; i < oldTiles.Length; ++i)
                 {
@@ -403,7 +403,7 @@ namespace Server
 
                     if (tile.Z == z && tile.Height >= minHeight)
                     {
-                        var newTiles = new StaticTile[oldTiles.Length - 1];
+                        StaticTile[] newTiles = new StaticTile[oldTiles.Length - 1];
 
                         for (int j = 0; j < i; ++j)
                         {
@@ -421,7 +421,7 @@ namespace Server
                     }
                 }
 
-                var oldList = m_List;
+                MultiTileEntry[] oldList = m_List;
 
                 for (int i = 0; i < oldList.Length; ++i)
                 {
@@ -430,7 +430,7 @@ namespace Server
                     if (tile.m_OffsetX == (short)x && tile.m_OffsetY == (short)y && tile.m_OffsetZ == (short)z &&
                         TileData.ItemTable[tile.m_ItemID & TileData.MaxItemValue].Height >= minHeight)
                     {
-                        var newList = new MultiTileEntry[oldList.Length - 1];
+                        MultiTileEntry[] newList = new MultiTileEntry[oldList.Length - 1];
 
                         for (int j = 0; j < i; ++j)
                         {
@@ -457,7 +457,7 @@ namespace Server
 
             if (vx >= 0 && vx < m_Width && vy >= 0 && vy < m_Height)
             {
-                var oldTiles = m_Tiles[vx][vy];
+                StaticTile[] oldTiles = m_Tiles[vx][vy];
 
                 for (int i = 0; i < oldTiles.Length; ++i)
                 {
@@ -465,7 +465,7 @@ namespace Server
 
                     if (tile.ID == itemID && tile.Z == z)
                     {
-                        var newTiles = new StaticTile[oldTiles.Length - 1];
+                        StaticTile[] newTiles = new StaticTile[oldTiles.Length - 1];
 
                         for (int j = 0; j < i; ++j)
                         {
@@ -483,7 +483,7 @@ namespace Server
                     }
                 }
 
-                var oldList = m_List;
+                MultiTileEntry[] oldList = m_List;
 
                 for (int i = 0; i < oldList.Length; ++i)
                 {
@@ -492,7 +492,7 @@ namespace Server
                     if (tile.m_ItemID == itemID && tile.m_OffsetX == (short)x && tile.m_OffsetY == (short)y &&
                         tile.m_OffsetZ == (short)z)
                     {
-                        var newList = new MultiTileEntry[oldList.Length - 1];
+                        MultiTileEntry[] newList = new MultiTileEntry[oldList.Length - 1];
 
                         for (int j = 0; j < i; ++j)
                         {
@@ -515,11 +515,11 @@ namespace Server
         public void Resize(int newWidth, int newHeight)
         {
             int oldWidth = m_Width, oldHeight = m_Height;
-            var oldTiles = m_Tiles;
+            StaticTile[][][] oldTiles = m_Tiles;
 
             int totalLength = 0;
 
-            var newTiles = new StaticTile[newWidth][][];
+            StaticTile[][][] newTiles = new StaticTile[newWidth][][];
 
             for (int x = 0; x < newWidth; ++x)
             {
@@ -554,7 +554,7 @@ namespace Server
             {
                 for (int y = 0; y < newHeight; ++y)
                 {
-                    var tiles = newTiles[x][y];
+                    StaticTile[] tiles = newTiles[x][y];
 
                     foreach (StaticTile tile in tiles)
                     {
@@ -658,7 +658,7 @@ namespace Server
 
             int length = reader.ReadInt();
 
-            var allTiles = m_List = new MultiTileEntry[length];
+            MultiTileEntry[] allTiles = m_List = new MultiTileEntry[length];
 
             if (version == 0)
             {
@@ -695,7 +695,7 @@ namespace Server
                 }
             }
 
-            var tiles = new TileList[m_Width][];
+            TileList[][] tiles = new TileList[m_Width][];
             m_Tiles = new StaticTile[m_Width][][];
 
             for (int x = 0; x < m_Width; ++x)
@@ -732,7 +732,7 @@ namespace Server
 
         public MultiComponentList(BinaryReader reader, int count)
         {
-            var allTiles = m_List = new MultiTileEntry[count];
+            MultiTileEntry[] allTiles = m_List = new MultiTileEntry[count];
 
             for (int i = 0; i < count; ++i)
             {
@@ -776,7 +776,7 @@ namespace Server
             m_Width = (m_Max.m_X - m_Min.m_X) + 1;
             m_Height = (m_Max.m_Y - m_Min.m_Y) + 1;
 
-            var tiles = new TileList[m_Width][];
+            TileList[][] tiles = new TileList[m_Width][];
             m_Tiles = new StaticTile[m_Width][][];
 
             for (int x = 0; x < m_Width; ++x)
@@ -813,7 +813,7 @@ namespace Server
 
         public MultiComponentList(List<MultiTileEntry> list)
         {
-            var allTiles = m_List = new MultiTileEntry[list.Count];
+            MultiTileEntry[] allTiles = m_List = new MultiTileEntry[list.Count];
 
             for (int i = 0; i < list.Count; ++i)
             {
@@ -854,7 +854,7 @@ namespace Server
             m_Width = (m_Max.m_X - m_Min.m_X) + 1;
             m_Height = (m_Max.m_Y - m_Min.m_Y) + 1;
 
-            var tiles = new TileList[m_Width][];
+            TileList[][] tiles = new TileList[m_Width][];
             m_Tiles = new StaticTile[m_Width][][];
 
             for (int x = 0; x < m_Width; ++x)

@@ -195,9 +195,9 @@ namespace Server
 
         public static IEnumerable<StaticTile[]> SelectMultiTiles(Sector s, Rectangle2D bounds)
         {
-            foreach (var o in s.Multis.Where(o => o != null && !o.Deleted))
+            foreach (BaseMulti o in s.Multis.Where(o => o != null && !o.Deleted))
             {
-                var c = o.Components;
+                MultiComponentList c = o.Components;
 
                 int x, y, xo, yo;
                 StaticTile[] t, r;
@@ -229,7 +229,7 @@ namespace Server
 
                         r = new StaticTile[t.Length];
 
-                        for (var i = 0; i < t.Length; i++)
+                        for (int i = 0; i < t.Length; i++)
                         {
                             r[i] = t[i];
                             r[i].Z += o.Z;
@@ -287,7 +287,7 @@ namespace Server
 
             Sector s;
 
-            var index = 0;
+            int index = 0;
 
             while (NextSector(map, x1, y1, x2, y2, ref index, ref xSector, ref ySector, out s))
             {
@@ -893,22 +893,22 @@ namespace Server
 
             GetAverageZ(x, y, ref lowZ, ref avgZ, ref topZ);
 
-            var lt = Tiles.GetLandTile(x, y);
+            LandTile lt = Tiles.GetLandTile(x, y);
 
-            var landFlags = TileData.LandTable[lt.ID & TileData.MaxLandValue].Flags;
+            TileFlag landFlags = TileData.LandTable[lt.ID & TileData.MaxLandValue].Flags;
 
             if ((landFlags & TileFlag.Impassable) != 0 && avgZ > z && (z + height) > lowZ)
             {
                 return false;
             }
 
-            var hasSurface = (landFlags & TileFlag.Impassable) == 0 && z == avgZ && !lt.Ignored;
+            bool hasSurface = (landFlags & TileFlag.Impassable) == 0 && z == avgZ && !lt.Ignored;
 
-            var staticTiles = Tiles.GetStaticTiles(x, y, true);
+            StaticTile[] staticTiles = Tiles.GetStaticTiles(x, y, true);
 
             bool surface, impassable;
 
-            foreach (var t in staticTiles)
+            foreach (StaticTile t in staticTiles)
             {
                 ItemData id = TileData.ItemTable[t.ID & TileData.MaxItemValue];
                 surface = id.Surface;
@@ -925,15 +925,15 @@ namespace Server
                 }
             }
 
-            var sector = GetSector(x, y);
-            var items = sector.Items;
-            var mobs = sector.Mobiles;
+            Sector sector = GetSector(x, y);
+            List<Item> items = sector.Items;
+            List<Mobile> mobs = sector.Mobiles;
 
-            foreach (var item in items)
+            foreach (Item item in items)
             {
                 if (!(item is BaseMulti) && item.ItemID <= TileData.MaxItemValue && item.AtWorldPoint(x, y))
                 {
-                    var id = item.ItemData;
+                    ItemData id = item.ItemData;
 
                     surface = id.Surface;
                     impassable = id.Impassable;
@@ -953,7 +953,7 @@ namespace Server
 
             if (checkMobiles)
             {
-                foreach (var m in mobs)
+                foreach (Mobile m in mobs)
                 {
                     if (m.Location.m_X == x && m.Location.m_Y == y && (m.AccessLevel == AccessLevel.Player || !m.Hidden))
                     {
@@ -1122,9 +1122,9 @@ namespace Server
         #region Find Item/Mobile
         public TItem FindItem<TItem>(Point3D p, int range = 0) where TItem : Item
         {
-            var eable = GetItemsInRange(p, range);
+            IPooledEnumerable<Item> eable = GetItemsInRange(p, range);
 
-            foreach (var item in eable)
+            foreach (Item item in eable)
             {
                 if (item.GetType() == typeof(TItem))
                 {
@@ -1139,9 +1139,9 @@ namespace Server
 
         public TMob FindMobile<TMob>(Point3D p, int range = 0) where TMob : Mobile
         {
-            var eable = GetMobilesInRange(p, range);
+            IPooledEnumerable<Mobile> eable = GetMobilesInRange(p, range);
 
-            foreach (var m in eable)
+            foreach (Mobile m in eable)
             {
                 if (m.GetType() == typeof(TMob))
                 {
@@ -1227,7 +1227,7 @@ namespace Server
                 pool = new List<Item>(128); // Arbitrary limit
             }
 
-            var eable = map.GetItemsInRange(new Point3D(x, y, 0), 0);
+            IPooledEnumerable<Item> eable = map.GetItemsInRange(new Point3D(x, y, 0), 0);
 
             pool.AddRange(
                 eable.Where(item => item.ItemID <= TileData.MaxItemValue && !(item is BaseMulti))
@@ -1259,38 +1259,38 @@ namespace Server
 
         public void FixColumn(int x, int y)
         {
-            var landTile = Tiles.GetLandTile(x, y);
-            var tiles = Tiles.GetStaticTiles(x, y, true);
+            LandTile landTile = Tiles.GetLandTile(x, y);
+            StaticTile[] tiles = Tiles.GetStaticTiles(x, y, true);
 
             int landZ = 0, landAvg = 0, landTop = 0;
 
             GetAverageZ(x, y, ref landZ, ref landAvg, ref landTop);
 
-            var items = AcquireFixItems(this, x, y);
+            List<Item> items = AcquireFixItems(this, x, y);
 
-            for (var i = 0; i < items.Count; i++)
+            for (int i = 0; i < items.Count; i++)
             {
-                var toFix = items[i];
+                Item toFix = items[i];
 
                 if (!toFix.Movable)
                 {
                     continue;
                 }
 
-                var z = int.MinValue;
-                var currentZ = toFix.Z;
+                int z = int.MinValue;
+                int currentZ = toFix.Z;
 
                 if (!landTile.Ignored && landAvg <= currentZ)
                 {
                     z = landAvg;
                 }
 
-                foreach (var tile in tiles)
+                foreach (StaticTile tile in tiles)
                 {
-                    var id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
+                    ItemData id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
 
-                    var checkZ = tile.Z;
-                    var checkTop = checkZ + id.CalcHeight;
+                    int checkZ = tile.Z;
+                    int checkTop = checkZ + id.CalcHeight;
 
                     if (checkTop == checkZ && !id.Surface)
                     {
@@ -1303,18 +1303,18 @@ namespace Server
                     }
                 }
 
-                for (var j = 0; j < items.Count; ++j)
+                for (int j = 0; j < items.Count; ++j)
                 {
                     if (j == i)
                     {
                         continue;
                     }
 
-                    var item = items[j];
-                    var id = item.ItemData;
+                    Item item = items[j];
+                    ItemData id = item.ItemData;
 
-                    var checkZ = item.Z;
-                    var checkTop = checkZ + id.CalcHeight;
+                    int checkZ = item.Z;
+                    int checkTop = checkZ + id.CalcHeight;
 
                     if (checkTop == checkZ && !id.Surface)
                     {
@@ -1471,11 +1471,11 @@ namespace Server
                 }
             }
 
-            var staticTiles = Tiles.GetStaticTiles(p.X, p.Y, true);
+            StaticTile[] staticTiles = Tiles.GetStaticTiles(p.X, p.Y, true);
 
-            foreach (var tile in staticTiles)
+            foreach (StaticTile tile in staticTiles)
             {
-                var id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
+                ItemData id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
 
                 if (id.Surface || (id.Flags & TileFlag.Wet) != 0)
                 {
@@ -1494,13 +1494,13 @@ namespace Server
                 }
             }
 
-            var sector = GetSector(p.X, p.Y);
+            Sector sector = GetSector(p.X, p.Y);
 
-            foreach (var item in sector.Items)
+            foreach (Item item in sector.Items)
             {
                 if (!(item is BaseMulti) && item.ItemID <= TileData.MaxItemValue && item.AtWorldPoint(p.X, p.Y) && !item.Movable)
                 {
-                    var id = item.ItemData;
+                    ItemData id = item.ItemData;
 
                     if (id.Surface || (id.Flags & TileFlag.Wet) != 0)
                     {
@@ -1656,7 +1656,7 @@ namespace Server
             {
                 for (int y = cy - SectorActiveRange; y <= cy + SectorActiveRange; ++y)
                 {
-                    var sect = GetRealSector(x, y);
+                    Sector sect = GetRealSector(x, y);
 
                     if (sect != m_InvalidSector)
                     {
@@ -1672,7 +1672,7 @@ namespace Server
             {
                 for (int y = cy - SectorActiveRange; y <= cy + SectorActiveRange; ++y)
                 {
-                    var sect = GetRealSector(x, y);
+                    Sector sect = GetRealSector(x, y);
 
                     if (sect != m_InvalidSector && !PlayersInRange(sect, SectorActiveRange))
                     {
@@ -1688,7 +1688,7 @@ namespace Server
             {
                 for (int y = sect.Y - range; y <= sect.Y + range; ++y)
                 {
-                    var check = GetRealSector(x, y);
+                    Sector check = GetRealSector(x, y);
 
                     if (check != m_InvalidSector && check.Players.Count > 0)
                     {
@@ -1727,11 +1727,11 @@ namespace Server
 
             if (item is BaseMulti)
             {
-                var m = (BaseMulti)item;
-                var mcl = m.Components;
+                BaseMulti m = (BaseMulti)item;
+                MultiComponentList mcl = m.Components;
 
-                var start = GetMultiMinSector(item.Location, mcl);
-                var end = GetMultiMaxSector(item.Location, mcl);
+                Sector start = GetMultiMinSector(item.Location, mcl);
+                Sector end = GetMultiMaxSector(item.Location, mcl);
 
                 AddMulti(m, start, end);
             }
@@ -1756,11 +1756,11 @@ namespace Server
 
             if (item is BaseMulti)
             {
-                var m = (BaseMulti)item;
-                var mcl = m.Components;
+                BaseMulti m = (BaseMulti)item;
+                MultiComponentList mcl = m.Components;
 
-                var start = GetMultiMinSector(item.Location, mcl);
-                var end = GetMultiMaxSector(item.Location, mcl);
+                Sector start = GetMultiMinSector(item.Location, mcl);
+                Sector end = GetMultiMaxSector(item.Location, mcl);
 
                 RemoveMulti(m, start, end);
             }
@@ -1815,8 +1815,8 @@ namespace Server
                 return;
             }
 
-            var oldSector = GetSector(oldLocation);
-            var newSector = GetSector(m.Location);
+            Sector oldSector = GetSector(oldLocation);
+            Sector newSector = GetSector(m.Location);
 
             if (oldSector != newSector)
             {
@@ -1832,8 +1832,8 @@ namespace Server
                 return;
             }
 
-            var oldSector = GetSector(oldLocation);
-            var newSector = GetSector(item.Location);
+            Sector oldSector = GetSector(oldLocation);
+            Sector newSector = GetSector(item.Location);
 
             if (oldSector != newSector)
             {
@@ -1843,14 +1843,14 @@ namespace Server
 
             if (item is BaseMulti)
             {
-                var m = (BaseMulti)item;
-                var mcl = m.Components;
+                BaseMulti m = (BaseMulti)item;
+                MultiComponentList mcl = m.Components;
 
-                var start = GetMultiMinSector(item.Location, mcl);
-                var end = GetMultiMaxSector(item.Location, mcl);
+                Sector start = GetMultiMinSector(item.Location, mcl);
+                Sector end = GetMultiMaxSector(item.Location, mcl);
 
-                var oldStart = GetMultiMinSector(oldLocation, mcl);
-                var oldEnd = GetMultiMaxSector(oldLocation, mcl);
+                Sector oldStart = GetMultiMinSector(oldLocation, mcl);
+                Sector oldEnd = GetMultiMaxSector(oldLocation, mcl);
 
                 if (oldStart != start || oldEnd != end)
                 {
@@ -1967,7 +1967,7 @@ namespace Server
                     }
                 }
 
-                var pool = PooledEnumeration.EnumerateSectors(map, bounds).SelectMany(s => selector(s, bounds));
+                IEnumerable<T> pool = PooledEnumeration.EnumerateSectors(map, bounds).SelectMany(s => selector(s, bounds));
 
                 if (e != null)
                 {
@@ -1989,7 +1989,7 @@ namespace Server
             {
                 get
                 {
-                    var i = _Pool.Count;
+                    int i = _Pool.Count;
 
                     while (--i >= 0)
                     {
@@ -2842,8 +2842,8 @@ namespace Server
             }
             else if (o is StaticTarget)
             {
-                var st = (StaticTarget)o;
-                var id = TileData.ItemTable[st.ItemID & TileData.MaxItemValue];
+                StaticTarget st = (StaticTarget)o;
+                ItemData id = TileData.ItemTable[st.ItemID & TileData.MaxItemValue];
 
                 p = new Point3D(st.X, st.Y, st.Z - id.CalcHeight + (id.Height / 2) + 1);
             }
@@ -2878,11 +2878,11 @@ namespace Server
                 return false;
             }
 
-            var end = dest;
+            Point3D end = dest;
 
             if (org.X > dest.X || (org.X == dest.X && org.Y > dest.Y) || (org.X == dest.X && org.Y == dest.Y && org.Z > dest.Z))
             {
-                var swap = org;
+                Point3D swap = org;
 
                 org = dest;
                 dest = swap;
@@ -2893,11 +2893,11 @@ namespace Server
                 return true;
             }
 
-            var xd = dest.m_X - org.m_X;
-            var yd = dest.m_Y - org.m_Y;
-            var zd = dest.m_Z - org.m_Z;
+            int xd = dest.m_X - org.m_X;
+            int yd = dest.m_Y - org.m_Y;
+            int zd = dest.m_Z - org.m_Z;
 
-            var zslp = Math.Sqrt(xd * xd + yd * yd);
+            double zslp = Math.Sqrt(xd * xd + yd * yd);
 
             double sq3d;
 
@@ -2910,14 +2910,14 @@ namespace Server
                 sq3d = zslp;
             }
 
-            var rise = yd / sq3d;
-            var run = xd / sq3d;
+            double rise = yd / sq3d;
+            double run = xd / sq3d;
 
             zslp = zd / sq3d;
 
-            var x = (double)org.m_X;
-            var y = (double)org.m_Y;
-            var z = (double)org.m_Z;
+            double x = (double)org.m_X;
+            double y = (double)org.m_Y;
+            double z = (double)org.m_Z;
 
             Point3DList path = new Point3DList();
 
@@ -2978,7 +2978,7 @@ namespace Server
             StaticTile[] statics;
             IPooledEnumerable<Item> eable;
 
-            for (var i = 0; i < pathCount; ++i)
+            for (int i = 0; i < pathCount; ++i)
             {
                 point = path[i];
                 pointTop = point.m_Z + 1;
@@ -3009,7 +3009,7 @@ namespace Server
                 {
                     eable = GetItemsInRange(point, 0);
 
-                    foreach (var item in eable)
+                    foreach (Item item in eable)
                     {
                         if (item.Visible)
                         {
@@ -3030,7 +3030,7 @@ namespace Server
                     }
                 }
 
-                foreach (var t in statics)
+                foreach (StaticTile t in statics)
                 {
                     id = TileData.ItemTable[t.ID & TileData.MaxItemValue];
 
@@ -3047,9 +3047,9 @@ namespace Server
                 }
             }
 
-            var rect = new Rectangle2D(pTop.m_X, pTop.m_Y, (pBottom.m_X - pTop.m_X) + 1, (pBottom.m_Y - pTop.m_Y) + 1);
+            Rectangle2D rect = new Rectangle2D(pTop.m_X, pTop.m_Y, (pBottom.m_X - pTop.m_X) + 1, (pBottom.m_Y - pTop.m_Y) + 1);
 
-            var area = GetItemsInBounds(rect);
+            IPooledEnumerable<Item> area = GetItemsInBounds(rect);
 
             try
             {
@@ -3057,7 +3057,7 @@ namespace Server
                 bool found;
                 Point3D loc;
 
-                foreach (var i in area)
+                foreach (Item i in area)
                 {
                     if (!i.Visible)
                     {
@@ -3084,7 +3084,7 @@ namespace Server
 
                     count = path.Count;
 
-                    for (var j = 0; j < count; ++j)
+                    for (int j = 0; j < count; ++j)
                     {
                         point = path[j];
                         pointTop = point.m_Z + 1;

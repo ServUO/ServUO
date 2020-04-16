@@ -50,7 +50,7 @@ namespace Server
             {
                 unchecked
                 {
-                    var hash = -1;
+                    int hash = -1;
 
                     hash = (hash * 397) ^ File.GetHashCode();
                     hash = (hash * 397) ^ Scope.GetHashCode();
@@ -135,7 +135,7 @@ namespace Server
                 return;
             }
 
-            foreach (var path in files)
+            foreach (string path in files)
             {
                 try
                 {
@@ -175,7 +175,7 @@ namespace Server
             {
                 Console.WriteLine();
 
-                foreach (var e in _Entries.Values)
+                foreach (Entry e in _Entries.Values)
                 {
                     Console.WriteLine(e);
                 }
@@ -186,7 +186,7 @@ namespace Server
 
         private static void LoadFile(string path)
         {
-            var info = new FileInfo(path);
+            FileInfo info = new FileInfo(path);
 
             if (!info.Exists)
             {
@@ -195,16 +195,16 @@ namespace Server
 
             path = info.Directory != null ? info.Directory.FullName : String.Empty;
 
-            var io = path.IndexOf(_Path, StringComparison.OrdinalIgnoreCase);
+            int io = path.IndexOf(_Path, StringComparison.OrdinalIgnoreCase);
 
             if (io > -1)
             {
                 path = path.Substring(io + _Path.Length);
             }
 
-            var parts = path.Split(Path.DirectorySeparatorChar);
+            string[] parts = path.Split(Path.DirectorySeparatorChar);
 
-            var scope = String.Join(".", parts.Where(p => !String.IsNullOrWhiteSpace(p)));
+            string scope = String.Join(".", parts.Where(p => !String.IsNullOrWhiteSpace(p)));
 
             if (scope.Length > 0)
             {
@@ -213,13 +213,13 @@ namespace Server
 
             scope += Path.GetFileNameWithoutExtension(info.Name);
 
-            var lines = File.ReadAllLines(info.FullName);
+            string[] lines = File.ReadAllLines(info.FullName);
 
-            var desc = new List<string>(0x10);
+            List<string> desc = new List<string>(0x10);
 
             for (int i = 0, idx = 0; i < lines.Length; i++)
             {
-                var line = lines[i].Trim();
+                string line = lines[i].Trim();
 
                 if (String.IsNullOrWhiteSpace(line))
                 {
@@ -233,7 +233,7 @@ namespace Server
                     continue;
                 }
 
-                var useDef = false;
+                bool useDef = false;
 
                 if (line.StartsWith("@"))
                 {
@@ -248,8 +248,8 @@ namespace Server
                     throw new FormatException(String.Format("Bad format at line {0}", i + 1));
                 }
 
-                var key = line.Substring(0, io);
-                var val = line.Substring(io + 1);
+                string key = line.Substring(0, io);
+                string val = line.Substring(io + 1);
 
                 if (String.IsNullOrWhiteSpace(key))
                 {
@@ -263,7 +263,7 @@ namespace Server
                     val = null;
                 }
 
-                var e = new Entry(info.FullName, idx++, scope, String.Join(String.Empty, desc), key, val, useDef);
+                Entry e = new Entry(info.FullName, idx++, scope, String.Join(String.Empty, desc), key, val, useDef);
 
                 _Entries[String.Format("{0}.{1}", e.Scope, e.Key)] = e;
 
@@ -283,7 +283,7 @@ namespace Server
                 Directory.CreateDirectory(_Path);
             }
 
-            foreach (var g in _Entries.Values.ToLookup(e => e.File))
+            foreach (IGrouping<string, Entry> g in _Entries.Values.ToLookup(e => e.File))
             {
                 try
                 {
@@ -302,10 +302,10 @@ namespace Server
 
         private static void SaveFile(string path, IEnumerable<Entry> entries)
         {
-            var content = new StringBuilder(0x1000);
-            var line = new StringBuilder(0x80);
+            StringBuilder content = new StringBuilder(0x1000);
+            StringBuilder line = new StringBuilder(0x80);
 
-            foreach (var e in entries)
+            foreach (Entry e in entries)
             {
                 content.AppendLine();
 
@@ -313,7 +313,7 @@ namespace Server
                 {
                     line.Clear();
 
-                    foreach (var word in e.Desc.Split(' '))
+                    foreach (string word in e.Desc.Split(' '))
                     {
                         if ((line + word).Length > 100)
                         {
@@ -346,7 +346,7 @@ namespace Server
 
         private static void InternalSet(string key, string value)
         {
-            var e = Find(key);
+            Entry e = Find(key);
 
             if (e != null)
             {
@@ -355,13 +355,13 @@ namespace Server
                 return;
             }
 
-            var parts = key.Split('.');
-            var realKey = parts.Last();
+            string[] parts = key.Split('.');
+            string realKey = parts.Last();
 
             parts = parts.Take(parts.Length - 1).ToArray();
 
-            var file = new FileInfo(Path.Combine(_Path, Path.Combine(parts) + ".cfg"));
-            var idx = _Entries.Values.Where(o => Insensitive.Equals(o.File, file.FullName)).Select(o => o.FileIndex).DefaultIfEmpty().Max();
+            FileInfo file = new FileInfo(Path.Combine(_Path, Path.Combine(parts) + ".cfg"));
+            int idx = _Entries.Values.Where(o => Insensitive.Equals(o.File, file.FullName)).Select(o => o.FileIndex).DefaultIfEmpty().Max();
 
             _Entries[key] = new Entry(file.FullName, idx, String.Join(".", parts), String.Empty, realKey, value, false);
         }
@@ -448,14 +448,14 @@ namespace Server
 
         public static void SetEnum<T>(string key, T value) where T : struct, IConvertible
         {
-            var t = typeof(T);
+            Type t = typeof(T);
 
             if (!t.IsEnum)
             {
                 throw new ArgumentException("T must be an enumerated type");
             }
 
-            var vals = Enum.GetValues(t).Cast<T>();
+            IEnumerable<T> vals = Enum.GetValues(t).Cast<T>();
 
             foreach (T o in vals.Where(o => o.Equals(value)))
             {
@@ -501,8 +501,8 @@ namespace Server
 
         public static sbyte Get(string key, sbyte defaultValue)
         {
-            var ret = defaultValue;
-            var value = InternalGet(key);
+            sbyte ret = defaultValue;
+            string value = InternalGet(key);
 
             if (value == null || sbyte.TryParse(value, NumberStyles.Any, _NumFormatter, out ret))
             {
@@ -516,8 +516,8 @@ namespace Server
 
         public static byte Get(string key, byte defaultValue)
         {
-            var ret = defaultValue;
-            var value = InternalGet(key);
+            byte ret = defaultValue;
+            string value = InternalGet(key);
 
             if (value == null || byte.TryParse(value, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, _NumFormatter, out ret))
             {
@@ -531,8 +531,8 @@ namespace Server
 
         public static short Get(string key, short defaultValue)
         {
-            var ret = defaultValue;
-            var value = InternalGet(key);
+            short ret = defaultValue;
+            string value = InternalGet(key);
 
             if (value == null || short.TryParse(value, NumberStyles.Any, _NumFormatter, out ret))
             {
@@ -546,8 +546,8 @@ namespace Server
 
         public static ushort Get(string key, ushort defaultValue)
         {
-            var ret = defaultValue;
-            var value = InternalGet(key);
+            ushort ret = defaultValue;
+            string value = InternalGet(key);
 
             if (value == null || ushort.TryParse(value, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, _NumFormatter, out ret))
             {
@@ -561,8 +561,8 @@ namespace Server
 
         public static int Get(string key, int defaultValue)
         {
-            var ret = defaultValue;
-            var value = InternalGet(key);
+            int ret = defaultValue;
+            string value = InternalGet(key);
 
             if (value == null || int.TryParse(value, NumberStyles.Any, _NumFormatter, out ret))
             {
@@ -576,8 +576,8 @@ namespace Server
 
         public static uint Get(string key, uint defaultValue)
         {
-            var ret = defaultValue;
-            var value = InternalGet(key);
+            uint ret = defaultValue;
+            string value = InternalGet(key);
 
             if (value == null || uint.TryParse(value, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, _NumFormatter, out ret))
             {
@@ -591,8 +591,8 @@ namespace Server
 
         public static long Get(string key, long defaultValue)
         {
-            var ret = defaultValue;
-            var value = InternalGet(key);
+            long ret = defaultValue;
+            string value = InternalGet(key);
 
             if (value == null || long.TryParse(value, NumberStyles.Any, _NumFormatter, out ret))
             {
@@ -606,8 +606,8 @@ namespace Server
 
         public static ulong Get(string key, ulong defaultValue)
         {
-            var ret = defaultValue;
-            var value = InternalGet(key);
+            ulong ret = defaultValue;
+            string value = InternalGet(key);
 
             if (value == null || ulong.TryParse(value, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, _NumFormatter, out ret))
             {
@@ -621,8 +621,8 @@ namespace Server
 
         public static float Get(string key, float defaultValue)
         {
-            var ret = defaultValue;
-            var value = InternalGet(key);
+            float ret = defaultValue;
+            string value = InternalGet(key);
 
             if (value == null || float.TryParse(value, NumberStyles.Any, _NumFormatter, out ret))
             {
@@ -636,8 +636,8 @@ namespace Server
 
         public static double Get(string key, double defaultValue)
         {
-            var ret = defaultValue;
-            var value = InternalGet(key);
+            double ret = defaultValue;
+            string value = InternalGet(key);
 
             if (value == null || double.TryParse(value, NumberStyles.Any, _NumFormatter, out ret))
             {
@@ -651,8 +651,8 @@ namespace Server
 
         public static decimal Get(string key, decimal defaultValue)
         {
-            var ret = defaultValue;
-            var value = InternalGet(key);
+            decimal ret = defaultValue;
+            string value = InternalGet(key);
 
             if (value == null || decimal.TryParse(value, NumberStyles.Any, _NumFormatter, out ret))
             {
@@ -666,7 +666,7 @@ namespace Server
 
         public static bool Get(string key, bool defaultValue)
         {
-            var value = InternalGet(key);
+            string value = InternalGet(key);
 
             if (value == null)
             {
@@ -690,7 +690,7 @@ namespace Server
 
         public static TimeSpan Get(string key, TimeSpan defaultValue)
         {
-            var value = InternalGet(key);
+            string value = InternalGet(key);
 
             TimeSpan ts;
 
@@ -706,7 +706,7 @@ namespace Server
 
         public static DateTime Get(string key, DateTime defaultValue)
         {
-            var value = InternalGet(key);
+            string value = InternalGet(key);
 
             DateTime dt;
 
@@ -722,9 +722,9 @@ namespace Server
 
         public static Type Get(string key, Type defaultValue)
         {
-            var value = InternalGet(key);
+            string value = InternalGet(key);
 
-            var t = FindType(value);
+            Type t = FindType(value);
 
             if (t != null)
             {
@@ -743,7 +743,7 @@ namespace Server
                 throw new ArgumentException("T must be an enumerated type");
             }
 
-            var value = InternalGet(key);
+            string value = InternalGet(key);
 
             if (value == null)
             {
@@ -752,9 +752,9 @@ namespace Server
 
             value = value.Trim();
 
-            var vals = Enum.GetValues(typeof(T)).Cast<T>();
+            IEnumerable<T> vals = Enum.GetValues(typeof(T)).Cast<T>();
 
-            foreach (var o in vals.Where(o => Insensitive.Equals(value, o.ToString(CultureInfo.InvariantCulture))))
+            foreach (T o in vals.Where(o => Insensitive.Equals(value, o.ToString(CultureInfo.InvariantCulture))))
             {
                 return o;
             }
@@ -771,7 +771,7 @@ namespace Server
                 throw new ArgumentException("T must be a delegate type");
             }
 
-            var value = InternalGet(key);
+            string value = InternalGet(key);
 
             if (value == null)
             {
@@ -780,7 +780,7 @@ namespace Server
 
             value = value.Trim();
 
-            var i = value.LastIndexOf('.');
+            int i = value.LastIndexOf('.');
 
             if (i <= 0)
             {
@@ -791,12 +791,12 @@ namespace Server
 
             try
             {
-                var method = value.Substring(i + 1);
-                var target = FindType(value.Remove(i));
+                string method = value.Substring(i + 1);
+                Type target = FindType(value.Remove(i));
 
                 if (target != null)
                 {
-                    var info = target.GetMethod(method, (BindingFlags)0x38);
+                    MethodInfo info = target.GetMethod(method, (BindingFlags)0x38);
 
                     if (info != null)
                     {
@@ -814,7 +814,7 @@ namespace Server
 
         private static Type FindType(string value)
         {
-            var type = Type.GetType(value, false);
+            Type type = Type.GetType(value, false);
 
             if (type != null)
             {

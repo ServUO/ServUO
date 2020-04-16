@@ -21,11 +21,11 @@ namespace Server
             m_From = new SecureTradeInfo(this, from, new SecureTradeContainer(this));
             m_To = new SecureTradeInfo(this, to, new SecureTradeContainer(this));
 
-            var from6017 = (from.NetState != null && from.NetState.ContainerGridLines);
-            var to6017 = (to.NetState != null && to.NetState.ContainerGridLines);
+            bool from6017 = (from.NetState != null && from.NetState.ContainerGridLines);
+            bool to6017 = (to.NetState != null && to.NetState.ContainerGridLines);
 
-            var from704565 = (from.NetState != null && from.NetState.NewSecureTrading);
-            var to704565 = (to.NetState != null && to.NetState.NewSecureTrading);
+            bool from704565 = (from.NetState != null && from.NetState.NewSecureTrading);
+            bool to704565 = (to.NetState != null && to.NetState.NewSecureTrading);
 
             from.Send(new MobileStatus(from, to));
             from.Send(new UpdateSecureTrade(m_From.Container, false, false));
@@ -75,13 +75,13 @@ namespace Server
                 return;
             }
 
-            var list = m_From.Container.Items;
+            System.Collections.Generic.List<Item> list = m_From.Container.Items;
 
-            for (var i = list.Count - 1; i >= 0; --i)
+            for (int i = list.Count - 1; i >= 0; --i)
             {
                 if (i < list.Count)
                 {
-                    var item = list[i];
+                    Item item = list[i];
 
                     if (item == m_From.VirtualCheck)
                     {
@@ -99,11 +99,11 @@ namespace Server
 
             list = m_To.Container.Items;
 
-            for (var i = list.Count - 1; i >= 0; --i)
+            for (int i = list.Count - 1; i >= 0; --i)
             {
                 if (i < list.Count)
                 {
-                    var item = list[i];
+                    Item item = list[i];
 
                     if (item == m_To.VirtualCheck)
                     {
@@ -134,7 +134,7 @@ namespace Server
 
             m_Valid = false;
 
-            var ns = m_From.Mobile.NetState;
+            NetState ns = m_From.Mobile.NetState;
 
             if (ns != null)
             {
@@ -164,13 +164,13 @@ namespace Server
 
         private static void UpdateCurrency(SecureTradeInfo left, SecureTradeInfo right)
         {
-            var ls = left.Mobile != null ? left.Mobile.NetState : null;
-            var rs = right.Mobile != null ? right.Mobile.NetState : null;
+            NetState ls = left.Mobile != null ? left.Mobile.NetState : null;
+            NetState rs = right.Mobile != null ? right.Mobile.NetState : null;
 
             if (ls != null && ls.NewSecureTrading)
             {
-                var plat = left.Mobile.Account.TotalPlat;
-                var gold = left.Mobile.Account.TotalGold;
+                int plat = left.Mobile.Account.TotalPlat;
+                int gold = left.Mobile.Account.TotalGold;
 
                 ls.Send(new UpdateSecureTrade(left.Container, TradeFlag.UpdateLedger, gold, plat));
             }
@@ -190,15 +190,15 @@ namespace Server
 
             if (!m_From.IsDisposed && m_From.Accepted && !m_To.IsDisposed && m_To.Accepted)
             {
-                var list = m_From.Container.Items;
+                System.Collections.Generic.List<Item> list = m_From.Container.Items;
 
-                var allowed = true;
+                bool allowed = true;
 
-                for (var i = list.Count - 1; allowed && i >= 0; --i)
+                for (int i = list.Count - 1; allowed && i >= 0; --i)
                 {
                     if (i < list.Count)
                     {
-                        var item = list[i];
+                        Item item = list[i];
 
                         if (item == m_From.VirtualCheck)
                         {
@@ -214,11 +214,11 @@ namespace Server
 
                 list = m_To.Container.Items;
 
-                for (var i = list.Count - 1; allowed && i >= 0; --i)
+                for (int i = list.Count - 1; allowed && i >= 0; --i)
                 {
                     if (i < list.Count)
                     {
-                        var item = list[i];
+                        Item item = list[i];
 
                         if (item == m_To.VirtualCheck)
                         {
@@ -236,8 +236,8 @@ namespace Server
                 {
                     if (m_From.Mobile.Account != null)
                     {
-                        var cur = m_From.Mobile.Account.TotalCurrency;
-                        var off = m_From.Plat + (m_From.Gold / Math.Max(1.0, AccountGold.CurrencyThreshold));
+                        double cur = m_From.Mobile.Account.TotalCurrency;
+                        double off = m_From.Plat + (m_From.Gold / Math.Max(1.0, AccountGold.CurrencyThreshold));
 
                         if (off > cur)
                         {
@@ -248,8 +248,8 @@ namespace Server
 
                     if (m_To.Mobile.Account != null)
                     {
-                        var cur = m_To.Mobile.Account.TotalCurrency;
-                        var off = m_To.Plat + (m_To.Gold / Math.Max(1.0, AccountGold.CurrencyThreshold));
+                        double cur = m_To.Mobile.Account.TotalCurrency;
+                        double off = m_To.Plat + (m_To.Gold / Math.Max(1.0, AccountGold.CurrencyThreshold));
 
                         if (off > cur)
                         {
@@ -277,11 +277,11 @@ namespace Server
 
                 list = m_From.Container.Items;
 
-                for (var i = list.Count - 1; i >= 0; --i)
+                for (int i = list.Count - 1; i >= 0; --i)
                 {
                     if (i < list.Count)
                     {
-                        var item = list[i];
+                        Item item = list[i];
 
                         if (item == m_From.VirtualCheck)
                         {
@@ -299,11 +299,11 @@ namespace Server
 
                 list = m_To.Container.Items;
 
-                for (var i = list.Count - 1; i >= 0; --i)
+                for (int i = list.Count - 1; i >= 0; --i)
                 {
                     if (i < list.Count)
                     {
-                        var item = list[i];
+                        Item item = list[i];
 
                         if (item == m_To.VirtualCheck)
                         {

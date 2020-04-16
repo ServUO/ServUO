@@ -211,7 +211,7 @@ namespace Server
         {
             if (m_Mobiles != null)
             {
-                var sandbox = new List<Mobile>(m_Mobiles);
+                List<Mobile> sandbox = new List<Mobile>(m_Mobiles);
 
                 foreach (Mobile mob in sandbox)
                 {

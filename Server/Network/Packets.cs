@@ -433,7 +433,7 @@ namespace Server.Network
         public DisplayEquipmentInfo(Item item, EquipmentInfo info)
             : base(0xBF)
         {
-            var attrs = info.Attributes;
+            EquipInfoAttribute[] attrs = info.Attributes;
 
             EnsureCapacity(
                 17 + (info.Crafter == null ? 0 : 6 + info.Crafter.TitleName == null ? 0 : info.Crafter.TitleName.Length) +
@@ -707,7 +707,7 @@ namespace Server.Network
                 m_Stream.WriteAsciiFixed(question, questionLength);
             }
 
-            var entries = menu.Entries;
+            ItemListEntry[] entries = menu.Entries;
 
             int entriesLength = (byte)entries.Length;
 
@@ -759,7 +759,7 @@ namespace Server.Network
                 m_Stream.WriteAsciiFixed(question, questionLength);
             }
 
-            var answers = menu.Answers;
+            string[] answers = menu.Answers;
 
             int answersLength = (byte)answers.Length;
 
@@ -848,7 +848,7 @@ namespace Server.Network
         public DisplayContextMenu(ContextMenu menu)
             : base(0xBF)
         {
-            var entries = menu.Entries;
+            ContextMenuEntry[] entries = menu.Entries;
 
             int length = (byte)entries.Length;
 
@@ -1759,7 +1759,7 @@ namespace Server.Network
         public ContainerContent(Mobile beholder, Item beheld)
             : base(0x3C)
         {
-            var items = beheld.Items;
+            List<Item> items = beheld.Items;
             int count = items.Count;
 
             EnsureCapacity(5 + (count * 20));
@@ -2273,7 +2273,7 @@ namespace Server.Network
 
         private void WritePacked(PacketWriter src)
         {
-            var buffer = src.UnderlyingStream.GetBuffer();
+            byte[] buffer = src.UnderlyingStream.GetBuffer();
             int length = (int)src.Length;
 
             if (length == 0)
@@ -3244,10 +3244,10 @@ namespace Server.Network
             m_Beheld = beheld;
 
             int m_Version = ++(m_VersionTL.Value);
-            var m_DupedLayers = m_DupedLayersTL.Value;
+            int[] m_DupedLayers = m_DupedLayersTL.Value;
 
-            var eq = beheld.Items;
-            var count = eq.Count;
+            List<Item> eq = beheld.Items;
+            int count = eq.Count;
 
             if (beheld.HairItemID > 0)
             {
@@ -3791,9 +3791,9 @@ namespace Server.Network
 
                 m_Stream.UnderlyingStream.Flush();
 
-                var hashCode = m_MD5Provider.ComputeHash(
+                byte[] hashCode = m_MD5Provider.ComputeHash(
                     m_Stream.UnderlyingStream.GetBuffer(), 0, (int)m_Stream.UnderlyingStream.Length);
-                var buffer = new byte[28];
+                byte[] buffer = new byte[28];
 
                 for (int i = 0; i < count; ++i)
                 {
@@ -4348,7 +4348,7 @@ namespace Server.Network
             }
             else if (length > 0)
             {
-                var old = m_CompiledBuffer;
+                byte[] old = m_CompiledBuffer;
                 m_CompiledLength = length;
 
                 if (length > BufferSize || (m_State & PacketState.Static) != 0)

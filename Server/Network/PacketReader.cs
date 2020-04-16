@@ -29,7 +29,7 @@ namespace Server.Network
             {
                 using (StreamWriter sw = new StreamWriter("Packets.log", true))
                 {
-                    var buffer = m_Data;
+                    byte[] buffer = m_Data;
 
                     if (buffer.Length > 0)
                     {
@@ -258,7 +258,7 @@ namespace Server.Network
 
             index = 0;
 
-            var buffer = new byte[count];
+            byte[] buffer = new byte[count];
             int value = 0;
 
             while (m_Index < bound && (value = m_Data[m_Index++]) != 0)
@@ -312,7 +312,7 @@ namespace Server.Network
 
             index = 0;
 
-            var buffer = new byte[count];
+            byte[] buffer = new byte[count];
             int value = 0;
 
             while (m_Index < m_Size && (value = m_Data[m_Index++]) != 0)
@@ -364,7 +364,7 @@ namespace Server.Network
 
             index = 0;
 
-            var buffer = new byte[count];
+            byte[] buffer = new byte[count];
             int value = 0;
 
             while (m_Index < m_Size && (value = m_Data[m_Index++]) != 0)

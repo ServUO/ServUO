@@ -181,7 +181,7 @@ namespace Server
                 m_StaticTiles[x] = new StaticTile[m_BlockHeight][][][];
             }
 
-            var tiles = m_StaticTiles[x][y];
+            StaticTile[][][] tiles = m_StaticTiles[x][y];
 
             if (tiles == null)
             {
@@ -195,7 +195,7 @@ namespace Server
                         {
                             if (x >= 0 && x < shared.m_BlockWidth && y >= 0 && y < shared.m_BlockHeight)
                             {
-                                var theirTiles = shared.m_StaticTiles[x];
+                                StaticTile[][][][] theirTiles = shared.m_StaticTiles[x];
 
                                 if (theirTiles != null)
                                 {
@@ -204,7 +204,7 @@ namespace Server
 
                                 if (tiles != null)
                                 {
-                                    var theirBits = shared.m_StaticPatches[x];
+                                    int[] theirBits = shared.m_StaticPatches[x];
 
                                     if (theirBits != null && (theirBits[y >> 5] & (1 << (y & 0x1F))) != 0)
                                     {
@@ -229,7 +229,7 @@ namespace Server
 
         public StaticTile[] GetStaticTiles(int x, int y)
         {
-            var tiles = GetStaticBlock(x >> 3, y >> 3);
+            StaticTile[][][] tiles = GetStaticBlock(x >> 3, y >> 3);
 
             return tiles[x & 0x7][y & 0x7];
         }
@@ -239,11 +239,11 @@ namespace Server
         [MethodImpl(MethodImplOptions.Synchronized)]
         public StaticTile[] GetStaticTiles(int x, int y, bool multis)
         {
-            var tiles = GetStaticBlock(x >> 3, y >> 3);
+            StaticTile[][][] tiles = GetStaticBlock(x >> 3, y >> 3);
 
             if (multis)
             {
-                var eable = m_Owner.GetMultiTilesAt(x, y);
+                IPooledEnumerable<StaticTile[]> eable = m_Owner.GetMultiTilesAt(x, y);
 
                 if (eable == Map.NullEnumerable<StaticTile[]>.Instance)
                 {
@@ -252,7 +252,7 @@ namespace Server
 
                 bool any = false;
 
-                foreach (var multiTiles in eable)
+                foreach (StaticTile[] multiTiles in eable)
                 {
                     if (!any)
                     {
@@ -315,7 +315,7 @@ namespace Server
                 m_LandTiles[x] = new LandTile[m_BlockHeight][];
             }
 
-            var tiles = m_LandTiles[x][y];
+            LandTile[] tiles = m_LandTiles[x][y];
 
             if (tiles == null)
             {
@@ -329,7 +329,7 @@ namespace Server
                         {
                             if (x >= 0 && x < shared.m_BlockWidth && y >= 0 && y < shared.m_BlockHeight)
                             {
-                                var theirTiles = shared.m_LandTiles[x];
+                                LandTile[][] theirTiles = shared.m_LandTiles[x];
 
                                 if (theirTiles != null)
                                 {
@@ -338,7 +338,7 @@ namespace Server
 
                                 if (tiles != null)
                                 {
-                                    var theirBits = shared.m_LandPatches[x];
+                                    int[] theirBits = shared.m_LandPatches[x];
 
                                     if (theirBits != null && (theirBits[y >> 5] & (1 << (y & 0x1F))) != 0)
                                     {
@@ -363,7 +363,7 @@ namespace Server
 
         public LandTile GetLandTile(int x, int y)
         {
-            var tiles = GetLandBlock(x >> 3, y >> 3);
+            LandTile[] tiles = GetLandBlock(x >> 3, y >> 3);
 
             return tiles[((y & 0x7) << 3) + (x & 0x7)];
         }
@@ -397,7 +397,7 @@ namespace Server
                         m_TileBuffer = new StaticTile[count];
                     }
 
-                    var staTiles = m_TileBuffer; //new StaticTile[tileCount];
+                    StaticTile[] staTiles = m_TileBuffer; //new StaticTile[tileCount];
 
                     fixed (StaticTile* pTiles = staTiles)
                     {
@@ -418,7 +418,7 @@ namespace Server
                             }
                         }
 
-                        var lists = m_Lists;
+                        TileList[][] lists = m_Lists;
 
                         StaticTile* pCur = pTiles, pEnd = pTiles + count;
 
@@ -429,7 +429,7 @@ namespace Server
                             pCur = pCur + 1;
                         }
 
-                        var tiles = new StaticTile[8][][];
+                        StaticTile[][][] tiles = new StaticTile[8][][];
 
                         for (int i = 0; i < 8; ++i)
                         {
@@ -482,7 +482,7 @@ namespace Server
 
                 m_Map.Seek(offset, SeekOrigin.Begin);
 
-                var tiles = new LandTile[64];
+                LandTile[] tiles = new LandTile[64];
 
                 fixed (LandTile* pTiles = tiles)
                 {
@@ -661,7 +661,7 @@ namespace Server
             m_Reader.ReadInt32();
             int nextTable = m_Reader.ReadInt32();
 
-            var entries = new List<UOPEntry>();
+            List<UOPEntry> entries = new List<UOPEntry>();
 
             do
             {

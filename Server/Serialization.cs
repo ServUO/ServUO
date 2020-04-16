@@ -390,7 +390,7 @@ namespace Server
 
         public override void Write(decimal value)
         {
-            var bits = Decimal.GetBits(value);
+            int[] bits = Decimal.GetBits(value);
 
             for (int i = 0; i < bits.Length; ++i)
             {
@@ -1382,7 +1382,7 @@ namespace Server
 
             if (count > 0)
             {
-                var list = new List<T>(count);
+                List<T> list = new List<T>(count);
 
                 for (int i = 0; i < count; ++i)
                 {
@@ -1413,7 +1413,7 @@ namespace Server
 
             if (count > 0)
             {
-                var set = new HashSet<T>();
+                HashSet<T> set = new HashSet<T>();
 
                 for (int i = 0; i < count; ++i)
                 {
@@ -1444,7 +1444,7 @@ namespace Server
 
             if (count > 0)
             {
-                var list = new List<T>(count);
+                List<T> list = new List<T>(count);
 
                 for (int i = 0; i < count; ++i)
                 {
@@ -1475,7 +1475,7 @@ namespace Server
 
             if (count > 0)
             {
-                var set = new HashSet<T>();
+                HashSet<T> set = new HashSet<T>();
 
                 for (int i = 0; i < count; ++i)
                 {
@@ -1506,7 +1506,7 @@ namespace Server
 
             if (count > 0)
             {
-                var list = new List<T>(count);
+                List<T> list = new List<T>(count);
 
                 for (int i = 0; i < count; ++i)
                 {
@@ -1537,7 +1537,7 @@ namespace Server
 
             if (count > 0)
             {
-                var set = new HashSet<T>();
+                HashSet<T> set = new HashSet<T>();
 
                 for (int i = 0; i < count; ++i)
                 {

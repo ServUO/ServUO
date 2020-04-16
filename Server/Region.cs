@@ -134,7 +134,7 @@ namespace Server
             }
 
             Sector sector = map.GetSector(p);
-            var list = sector.RegionRects;
+            List<RegionRect> list = sector.RegionRects;
 
             for (int i = 0; i < list.Count; ++i)
             {
@@ -170,7 +170,7 @@ namespace Server
 
         public static Rectangle3D[] ConvertTo3D(Rectangle2D[] rects)
         {
-            var ret = new Rectangle3D[rects.Length];
+            Rectangle3D[] ret = new Rectangle3D[rects.Length];
 
             for (int i = 0; i < ret.Length; i++)
             {
@@ -293,7 +293,7 @@ namespace Server
 
             m_Map.RegisterRegion(this);
 
-            var sectors = new List<Sector>();
+            List<Sector> sectors = new List<Sector>();
 
             for (int i = 0; i < m_Area.Length; i++)
             {
@@ -511,7 +511,7 @@ namespace Server
             {
                 foreach (Sector s in Sectors)
                 {
-                    foreach (var o in GetDistinctEnumeration(s.Players, predicate))
+                    foreach (Mobile o in GetDistinctEnumeration(s.Players, predicate))
                     {
                         yield return o;
                     }
@@ -550,7 +550,7 @@ namespace Server
             {
                 foreach (Sector s in Sectors)
                 {
-                    foreach (var o in GetDistinctEnumeration(s.Mobiles, predicate))
+                    foreach (Mobile o in GetDistinctEnumeration(s.Mobiles, predicate))
                     {
                         yield return o;
                     }
@@ -589,7 +589,7 @@ namespace Server
             {
                 foreach (Sector s in Sectors)
                 {
-                    foreach (var o in GetDistinctEnumeration(s.Items, predicate))
+                    foreach (Item o in GetDistinctEnumeration(s.Items, predicate))
                     {
                         yield return o;
                     }
@@ -628,7 +628,7 @@ namespace Server
             {
                 foreach (Sector s in Sectors)
                 {
-                    foreach (var o in GetDistinctEnumeration(s.Multis, predicate))
+                    foreach (BaseMulti o in GetDistinctEnumeration(s.Multis, predicate))
                     {
                         yield return o;
                     }
@@ -657,7 +657,7 @@ namespace Server
         {
             T e;
 
-            var i = list.Count;
+            int i = list.Count;
 
             while (--i >= 0)
             {
@@ -1208,7 +1208,7 @@ namespace Server
         {
             foreach (XmlElement xmlReg in xml.SelectNodes("region"))
             {
-                var expansion = Expansion.None;
+                Expansion expansion = Expansion.None;
 
                 if (ReadEnum(xmlReg, "expansion", ref expansion, false) && expansion > Core.Expansion)
                 {
@@ -1277,10 +1277,10 @@ namespace Server
             ReadInt32(zrange, "min", ref minZ, false);
             ReadInt32(zrange, "max", ref maxZ, false);
 
-            var area = new List<Rectangle3D>();
+            List<Rectangle3D> area = new List<Rectangle3D>();
             foreach (XmlElement xmlRect in xml.SelectNodes("rect"))
             {
-                var expansion = Expansion.None;
+                Expansion expansion = Expansion.None;
 
                 if (ReadEnum(xmlRect, "expansion", ref expansion, false) && expansion > Core.Expansion)
                 {

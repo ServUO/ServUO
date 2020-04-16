@@ -17,7 +17,7 @@ namespace Server
         {
             if ((m_Count + tiles.Length) > m_Tiles.Length)
             {
-                var old = m_Tiles;
+                StaticTile[] old = m_Tiles;
                 m_Tiles = new StaticTile[(m_Count + tiles.Length) * 2];
 
                 for (int i = 0; i < old.Length; ++i)
@@ -36,7 +36,7 @@ namespace Server
         {
             if ((m_Count + 1) > m_Tiles.Length)
             {
-                var old = m_Tiles;
+                StaticTile[] old = m_Tiles;
                 m_Tiles = new StaticTile[old.Length * 2];
 
                 for (int i = 0; i < old.Length; ++i)
@@ -59,7 +59,7 @@ namespace Server
                 return m_EmptyTiles;
             }
 
-            var tiles = new StaticTile[m_Count];
+            StaticTile[] tiles = new StaticTile[m_Count];
 
             for (int i = 0; i < m_Count; ++i)
             {

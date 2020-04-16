@@ -133,8 +133,8 @@ namespace Server.Commands
 
         public static string[] Split(string value)
         {
-            var array = value.ToCharArray();
-            var list = new List<string>();
+            char[] array = value.ToCharArray();
+            List<string> list = new List<string>();
 
             int start = 0, end = 0;
 

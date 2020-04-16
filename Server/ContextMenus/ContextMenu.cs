@@ -50,7 +50,7 @@ namespace Server.ContextMenus
             From = from;
             Target = target;
 
-            var list = new List<ContextMenuEntry>();
+            List<ContextMenuEntry> list = new List<ContextMenuEntry>();
 
             if (target is Mobile)
             {
@@ -63,7 +63,7 @@ namespace Server.ContextMenus
 
             EventSink.InvokeContextMenu(new ContextMenuEventArgs(From, Target, list));
 
-            foreach (var e in list)
+            foreach (ContextMenuEntry e in list)
             {
                 e.Owner = this;
             }
@@ -95,7 +95,7 @@ namespace Server.ContextMenus
 
             if (Entries != null)
             {
-                foreach (var e in Entries.Where(e => e != null))
+                foreach (ContextMenuEntry e in Entries.Where(e => e != null))
                 {
                     e.Dispose();
                 }
@@ -138,7 +138,7 @@ namespace Server.ContextMenus
                 return false;
             }
 
-            var c = new ContextMenu(m, target);
+            ContextMenu c = new ContextMenu(m, target);
 
             if (c.Entries.Length <= 0)
             {
@@ -147,11 +147,11 @@ namespace Server.ContextMenus
 
             if (target is Item)
             {
-                var root = ((Item)target).RootParent;
+                object root = ((Item)target).RootParent;
 
                 if (root is Mobile && root != m && ((Mobile)root).AccessLevel >= m.AccessLevel)
                 {
-                    foreach (var e in c.Entries.Where(e => !e.NonLocalUse))
+                    foreach (ContextMenuEntry e in c.Entries.Where(e => !e.NonLocalUse))
                     {
                         e.Enabled = false;
                     }
