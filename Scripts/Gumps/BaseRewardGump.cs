@@ -147,6 +147,7 @@ namespace Server.Gumps
 
                 if (item != null && item.Points <= points)
                 {
+                    from.CloseGump(typeof(aConfirmRewardGump));
                     from.SendGump(new aConfirmRewardGump(Owner, item, info.ButtonID - 200, OnConfirmed));
                 }
                 else
