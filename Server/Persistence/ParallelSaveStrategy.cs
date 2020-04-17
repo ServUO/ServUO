@@ -24,13 +24,7 @@ namespace Server
             _decayQueue = new Queue<Item>();
         }
 
-        public override string Name
-        {
-            get
-            {
-                return "Parallel";
-            }
-        }
+        public override string Name => "Parallel";
         public override void Save(SaveMetrics mt, bool permitBackgroundWrite)
         {
             metrics = mt;

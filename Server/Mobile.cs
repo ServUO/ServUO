@@ -1519,7 +1519,7 @@ namespace Server
 
         public virtual int DefaultBloodHue => 0;
 
-        public virtual bool HasBlood { get { return Alive && BloodHue >= 0 && !Body.IsGhost && !Body.IsEquipment; } }
+        public virtual bool HasBlood => Alive && BloodHue >= 0 && !Body.IsGhost && !Body.IsEquipment;
 
         private int m_BloodHue = -1;
 
@@ -1824,7 +1824,7 @@ namespace Server
 
         public static bool GlobalRegenThroughPoison { get { return m_GlobalRegenThroughPoison; } set { m_GlobalRegenThroughPoison = value; } }
 
-        public virtual bool RegenThroughPoison { get { return m_GlobalRegenThroughPoison; } }
+        public virtual bool RegenThroughPoison => m_GlobalRegenThroughPoison;
 
         public virtual bool CanRegenHits => Alive && (RegenThroughPoison || !Poisoned);
         public virtual bool CanRegenStam => Alive;
@@ -9139,13 +9139,7 @@ namespace Server
         public string RawName { get { return m_Name; } set { Name = value; } }
 
         [CommandProperty(AccessLevel.Decorator)]
-        public virtual string TitleName
-        {
-            get
-            {
-                return m_Name;
-            }
-        }
+        public virtual string TitleName => m_Name;
 
         [CommandProperty(AccessLevel.Decorator)]
         public string Name
@@ -12329,29 +12323,11 @@ namespace Server
             }
         }
 
-        public Item Talisman
-        {
-            get
-            {
-                return FindItemOnLayer(Layer.Talisman) as Item;
-            }
-        }
+        public Item Talisman => FindItemOnLayer(Layer.Talisman) as Item;
 
-        public Item Ring
-        {
-            get
-            {
-                return FindItemOnLayer(Layer.Ring) as Item;
-            }
-        }
+        public Item Ring => FindItemOnLayer(Layer.Ring) as Item;
 
-        public Item Bracelet
-        {
-            get
-            {
-                return FindItemOnLayer(Layer.Bracelet) as Item;
-            }
-        }
+        public Item Bracelet => FindItemOnLayer(Layer.Bracelet) as Item;
         #endregion
 
         /// <summary>

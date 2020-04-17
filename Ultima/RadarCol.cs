@@ -16,7 +16,7 @@ namespace Ultima
         }
 
         private static short[] m_Colors;
-        public static short[] Colors { get { return m_Colors; } }
+        public static short[] Colors => m_Colors;
 
         public static short GetItemColor(int index)
         {

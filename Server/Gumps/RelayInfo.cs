@@ -31,21 +31,9 @@ namespace Server.Gumps
             m_Text = text;
         }
 
-        public int EntryID
-        {
-            get
-            {
-                return m_EntryID;
-            }
-        }
+        public int EntryID => m_EntryID;
 
-        public string Text
-        {
-            get
-            {
-                return m_Text;
-            }
-        }
+        public string Text => m_Text;
     }
 
     public class RelayInfo
@@ -61,29 +49,11 @@ namespace Server.Gumps
             m_TextEntries = textEntries;
         }
 
-        public int ButtonID
-        {
-            get
-            {
-                return m_ButtonID;
-            }
-        }
+        public int ButtonID => m_ButtonID;
 
-        public int[] Switches
-        {
-            get
-            {
-                return m_Switches;
-            }
-        }
+        public int[] Switches => m_Switches;
 
-        public TextRelay[] TextEntries
-        {
-            get
-            {
-                return m_TextEntries;
-            }
-        }
+        public TextRelay[] TextEntries => m_TextEntries;
 
         public bool IsSwitched(int switchID)
         {

@@ -1946,10 +1946,7 @@ namespace Server
         ///		If true the item should be considered an artifact
         /// </summary>
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual bool IsArtifact
-        {
-            get { return this is IArtifact && ((IArtifact)this).ArtifactRarity > 0; }
-        }
+        public virtual bool IsArtifact => this is IArtifact && ((IArtifact)this).ArtifactRarity > 0;
 
         private static TimeSpan m_DDT = TimeSpan.FromMinutes(Config.Get("General.DefaultItemDecayTime", 60));
 
@@ -1965,22 +1962,10 @@ namespace Server
         public virtual TimeSpan DecayTime => TimeSpan.FromMinutes(m_DDT.TotalMinutes * DecayMultiplier);
 
         [CommandProperty(AccessLevel.Decorator)]
-        public virtual bool Decays
-        {
-            get
-            {
-                return DefaultDecaySetting && Movable && Visible && !HonestyItem;
-            }
-        }
+        public virtual bool Decays => DefaultDecaySetting && Movable && Visible && !HonestyItem;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TimeSpan TimeToDecay
-        {
-            get
-            {
-                return TimeSpan.FromMinutes((DecayTime - (DateTime.UtcNow - LastMoved)).TotalMinutes);
-            }
-        }
+        public TimeSpan TimeToDecay => TimeSpan.FromMinutes((DecayTime - (DateTime.UtcNow - LastMoved)).TotalMinutes);
 
         public virtual bool OnDecay()
         {

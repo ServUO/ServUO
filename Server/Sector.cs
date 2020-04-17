@@ -360,8 +360,8 @@ namespace Server
 
         public Map Owner => m_Owner;
 
-        public int X { get { return m_X; } }
+        public int X => m_X;
 
-        public int Y { get { return m_Y; } }
+        public int Y => m_Y;
     }
 }

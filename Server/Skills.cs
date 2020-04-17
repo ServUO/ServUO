@@ -466,13 +466,7 @@ namespace Server
             }
         }
 
-        public bool IsMastery
-        {
-            get
-            {
-                return m_Info.IsMastery;
-            }
-        }
+        public bool IsMastery => m_Info.IsMastery;
 
         public bool LearnMastery(int volume)
         {
