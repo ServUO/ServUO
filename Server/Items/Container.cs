@@ -303,12 +303,12 @@ namespace Server.Items
 
         public virtual void SendFullItemsMessage(Mobile to, Item item)
         {
-            to.SendMessage("That container cannot hold more items.");
+            to.SendLocalizedMessage(1080017); // That container cannot hold more items.
         }
 
         public virtual void SendFullWeightMessage(Mobile to, Item item)
         {
-            to.SendMessage("That container cannot hold more weight.");
+            to.SendLocalizedMessage(1080016); // That container cannot hold more weight.
         }
 
         public virtual void SendCantStoreMessage(Mobile to, Item item)

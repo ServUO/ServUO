@@ -154,23 +154,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                if (ItemID >= 0x4000)
-                {
-                    ItemID -= 0x4000;
-                }
-            }
         }
     }
 }
