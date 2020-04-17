@@ -13,7 +13,7 @@ namespace Ultima
             m_Tiles = new List<HuedTile>();
         }
 
-        public int Count { get { return m_Tiles.Count; } }
+        public int Count => m_Tiles.Count;
 
         public void Add(ushort id, short hue, sbyte z)
         {
@@ -43,7 +43,7 @@ namespace Ultima
             m_Tiles = new List<Tile>();
         }
 
-        public int Count { get { return m_Tiles.Count; } }
+        public int Count => m_Tiles.Count;
 
         public void Add(ushort id, sbyte z)
         {
@@ -82,7 +82,7 @@ namespace Ultima
             m_Tiles = new List<MTile>();
         }
 
-        public int Count { get { return m_Tiles.Count; } }
+        public int Count => m_Tiles.Count;
 
         public void Add(ushort id, sbyte z)
         {

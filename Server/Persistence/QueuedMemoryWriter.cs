@@ -39,13 +39,7 @@ namespace Server
             this._memStream = this.UnderlyingStream as MemoryStream;
         }
 
-        protected override int BufferSize
-        {
-            get
-            {
-                return 512;
-            }
-        }
+        protected override int BufferSize => 512;
         public void QueueForIndex(ISerializable serializable, int size)
         {
             IndexInfo info;

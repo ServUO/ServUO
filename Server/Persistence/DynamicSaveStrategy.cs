@@ -26,13 +26,7 @@ namespace Server
             _dataThreadWriters = new BlockingCollection<QueuedMemoryWriter>();
         }
 
-        public override string Name
-        {
-            get
-            {
-                return "Dynamic";
-            }
-        }
+        public override string Name => "Dynamic";
         public override void Save(SaveMetrics metrics, bool permitBackgroundWrite)
         {
             _metrics = metrics;

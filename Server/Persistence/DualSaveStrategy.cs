@@ -8,13 +8,7 @@ namespace Server
         {
         }
 
-        public override string Name
-        {
-            get
-            {
-                return "Dual";
-            }
-        }
+        public override string Name => "Dual";
         public override void Save(SaveMetrics metrics, bool permitBackgroundWrite)
         {
             PermitBackgroundWrite = permitBackgroundWrite;

@@ -103,7 +103,7 @@ namespace Ultima
             IsCached_NoStatics_NoPatch = false;
         }
 
-        public bool LoadedMatrix { get { return (m_Tiles != null); } }
+        public bool LoadedMatrix => (m_Tiles != null);
 
         public TileMatrix Tiles
         {
@@ -120,9 +120,9 @@ namespace Ultima
 
         public int Width { get { return m_Width; } set { m_Width = value; } }
 
-        public int Height { get { return m_Height; } }
+        public int Height => m_Height;
 
-        public int FileIndex { get { return m_FileIndex; } }
+        public int FileIndex => m_FileIndex;
 
         /// <summary>
         ///     Returns Bitmap with Statics

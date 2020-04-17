@@ -395,7 +395,7 @@ namespace Ultima
         ///     Whether or not the Client is currently running.
         ///     <seealso cref="ClientHandle" />
         /// </summary>
-        public static bool Running { get { return (!Handle.IsInvalid); } }
+        public static bool Running => (!Handle.IsInvalid);
 
         /// <summary>
         ///     Is Client Iris2

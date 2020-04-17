@@ -19,21 +19,9 @@ namespace Server
             Normal,
             Threaded
         }
-        public override string Name
-        {
-            get
-            {
-                return "Standard";
-            }
-        }
+        public override string Name => "Standard";
         protected bool PermitBackgroundWrite { get; set; }
-        protected bool UseSequentialWriters
-        {
-            get
-            {
-                return (StandardSaveStrategy.SaveType == SaveOption.Normal || !PermitBackgroundWrite);
-            }
-        }
+        protected bool UseSequentialWriters => (StandardSaveStrategy.SaveType == SaveOption.Normal || !PermitBackgroundWrite);
         public override void Save(SaveMetrics metrics, bool permitBackgroundWrite)
         {
             PermitBackgroundWrite = permitBackgroundWrite;

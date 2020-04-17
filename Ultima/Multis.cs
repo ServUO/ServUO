@@ -389,15 +389,15 @@ namespace Ultima
 
         public static readonly MultiComponentList Empty = new MultiComponentList();
 
-        public Point Min { get { return m_Min; } }
-        public Point Max { get { return m_Max; } }
-        public Point Center { get { return m_Center; } }
-        public int Width { get { return m_Width; } }
-        public int Height { get { return m_Height; } }
-        public MTile[][][] Tiles { get { return m_Tiles; } }
-        public int maxHeight { get { return m_maxHeight; } }
-        public MultiTileEntry[] SortedTiles { get { return m_SortedTiles; } }
-        public int Surface { get { return m_Surface; } }
+        public Point Min => m_Min;
+        public Point Max => m_Max;
+        public Point Center => m_Center;
+        public int Width => m_Width;
+        public int Height => m_Height;
+        public MTile[][][] Tiles => m_Tiles;
+        public int maxHeight => m_maxHeight;
+        public MultiTileEntry[] SortedTiles => m_SortedTiles;
+        public int Surface => m_Surface;
 
         public struct MultiTileEntry
         {

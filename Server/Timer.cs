@@ -88,11 +88,7 @@ namespace Server
             }
         }
 
-        public DateTime Next
-        {
-            // Obnoxious
-            get { return DateTime.UtcNow.AddMilliseconds(m_Next - Core.TickCount); }
-        }
+        public DateTime Next => DateTime.UtcNow.AddMilliseconds(m_Next - Core.TickCount);
 
         public TimeSpan Delay
         {

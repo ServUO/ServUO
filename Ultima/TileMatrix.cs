@@ -433,7 +433,7 @@ namespace Ultima
         }
 
         private UOPFile[] UOPFiles { get; set; }
-        private long UOPLength { get { return m_Map.Length; } }
+        private long UOPLength => m_Map.Length;
 
         private void ReadUOPFiles(string pattern)
         {
@@ -731,7 +731,7 @@ namespace Ultima
         internal TileFlag m_Flag;
         internal int m_Solver;
 
-        public ushort ID { get { return m_ID; } }
+        public ushort ID => m_ID;
         public int Z { get { return m_Z; } set { m_Z = (sbyte)value; } }
 
         public TileFlag Flag { get { return m_Flag; } set { m_Flag = value; } }
@@ -825,7 +825,7 @@ namespace Ultima
         internal ushort m_ID;
         internal sbyte m_Z;
 
-        public ushort ID { get { return m_ID; } }
+        public ushort ID => m_ID;
         public int Z { get { return m_Z; } set { m_Z = (sbyte)value; } }
 
         public Tile(ushort id, sbyte z)
