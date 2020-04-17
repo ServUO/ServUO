@@ -21,6 +21,7 @@ namespace Server.Items
         }
 
         public override int LitItemID => 0x19AA;
+		
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
