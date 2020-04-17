@@ -11718,9 +11718,6 @@ namespace Server.Mobiles
                     }
                 case 28:
                     {
-                        if (version < 29)
-                            tmpSpawnListSize = reader.ReadInt();
-
                         tmpPackRange = new List<int>(tmpSpawnListSize);
                         for (int i = 0; i < tmpSpawnListSize; ++i)
                         {
@@ -11733,9 +11730,6 @@ namespace Server.Mobiles
                     }
                 case 27:
                     {
-                        if (version < 28)
-                            tmpSpawnListSize = reader.ReadInt();
-
                         tmpDisableSpawn = new List<bool>(tmpSpawnListSize);
                         for (int i = 0; i < tmpSpawnListSize; ++i)
                         {
@@ -11759,8 +11753,6 @@ namespace Server.Mobiles
                     }
                 case 24:
                     {
-                        if (version < 27)
-                            tmpSpawnListSize = reader.ReadInt();
                         tmpRestrictKillsToSubgroup = new List<bool>(tmpSpawnListSize);
                         tmpClearOnAdvance = new List<bool>(tmpSpawnListSize);
                         tmpMinDelay = new List<double>(tmpSpawnListSize);
@@ -11811,8 +11803,6 @@ namespace Server.Mobiles
                     }
                 case 20:
                     {
-                        if (version < 24)
-                            tmpSpawnListSize = reader.ReadInt();
                         tmpRequireSurface = new List<bool>(tmpSpawnListSize);
                         for (int i = 0; i < tmpSpawnListSize; ++i)
                         {
@@ -11845,11 +11835,6 @@ namespace Server.Mobiles
                     }
                 case 17:
                     {
-                        if (version < 25)
-                        {
-                            // the textentrybooks are deleted on deserialization so no need to track them
-                            reader.ReadItem();
-                        }
                         goto case 16;
                     }
                 case 16:
@@ -11858,10 +11843,7 @@ namespace Server.Mobiles
                         m_SequentialSpawning = reader.ReadInt();
                         TimeSpan seqdelay = reader.ReadTimeSpan();
                         m_SeqEnd = DateTime.UtcNow + seqdelay;
-                        if (version < 20)
-                        {
-                            tmpSpawnListSize = reader.ReadInt();
-                        }
+
                         tmpSubGroup = new List<int>(tmpSpawnListSize);
                         tmpSequentialResetTime = new List<double>(tmpSpawnListSize);
                         tmpSequentialResetTo = new List<int>(tmpSpawnListSize);
@@ -11877,7 +11859,7 @@ namespace Server.Mobiles
                             tmpSequentialResetTo.Add(resetto);
                             tmpKillsNeeded.Add(killsneeded);
                         }
-                        m_RegionName = reader.ReadString(); // 2004.02.08 :: Omega Red
+                        m_RegionName = reader.ReadString(); 
                         goto case 15;
                     }
                 case 15:
