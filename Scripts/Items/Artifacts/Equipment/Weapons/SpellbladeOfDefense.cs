@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class SpellbladeOfDefense : ElvenSpellblade
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public SpellbladeOfDefense()
         {
@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073516;
-            }
-        }// spellblade of defense
+        public override int LabelNumber => 1073516;// spellblade of defense
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

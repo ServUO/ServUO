@@ -54,13 +54,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041079;
-            }
-        }// a special fishing net
+        public override int LabelNumber => 1041079;// a special fishing net
         [CommandProperty(AccessLevel.GameMaster)]
         public bool InUse
         {
@@ -73,13 +67,7 @@ namespace Server.Items
                 m_InUse = value;
             }
         }
-        public virtual bool RequireDeepWater
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool RequireDeepWater => true;
         public static bool FullValidation(Map map, int x, int y)
         {
             bool valid = ValidateDeepWater(map, x, y);
@@ -423,13 +411,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1063451;
-            }
-        }// a fabled fishing net
+        public override int LabelNumber => 1063451;// a fabled fishing net
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

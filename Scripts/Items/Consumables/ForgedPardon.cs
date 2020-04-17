@@ -5,10 +5,10 @@ namespace Server.Items
 {
     public class ForgedPardon : Item
     {
-        public static Dictionary<Mobile, DateTime> Table { get { return m_Table; } }
+        public static Dictionary<Mobile, DateTime> Table => m_Table;
         private static readonly Dictionary<Mobile, DateTime> m_Table = new Dictionary<Mobile, DateTime>();
 
-        public override int LabelNumber { get { return 1116234; } }
+        public override int LabelNumber => 1116234;
 
         [Constructable]
         public ForgedPardon()

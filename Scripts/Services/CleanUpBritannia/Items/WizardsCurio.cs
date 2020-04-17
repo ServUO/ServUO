@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class WizardsCurio : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [Constructable]
         public WizardsCurio()
@@ -20,20 +20,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1154729;
-            }
-        }// Wizard's Curio
-        public override bool ForceShowName
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int LabelNumber => 1154729;// Wizard's Curio
+        public override bool ForceShowName => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

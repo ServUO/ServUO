@@ -2,22 +2,10 @@ namespace Server.Items
 {
     public class LargeGargoyleBedEastAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new LargeGargoyleBedEastDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new LargeGargoyleBedEastDeed();
 
         #region Mondain's Legacy
-        public override bool RetainDeedHue
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool RetainDeedHue => true;
         #endregion
 
         [Constructable]
@@ -59,20 +47,8 @@ namespace Server.Items
 
     public class LargeGargoyleBedEastDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new LargeGargoyleBedEastAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1111762;
-            }
-        }// large gargish bed (east)
+        public override BaseAddon Addon => new LargeGargoyleBedEastAddon();
+        public override int LabelNumber => 1111762;// large gargish bed (east)
 
         [Constructable]
         public LargeGargoyleBedEastDeed()

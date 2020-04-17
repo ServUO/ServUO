@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class RusticBenchSouthAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new RusticBenchSouthDeed(); } }
-        public override bool RetainDeedHue { get { return true; } }
+        public override BaseAddonDeed Deed => new RusticBenchSouthDeed();
+        public override bool RetainDeedHue => true;
 
         [Constructable]
         public RusticBenchSouthAddon()
@@ -32,8 +32,8 @@ namespace Server.Items
 
     public class RusticBenchSouthDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new RusticBenchSouthAddon(); } }
-        public override int LabelNumber { get { return 1150593; } } // rustic bench (south)
+        public override BaseAddon Addon => new RusticBenchSouthAddon();
+        public override int LabelNumber => 1150593;  // rustic bench (south)
 
         [Constructable]
         public RusticBenchSouthDeed()

@@ -70,8 +70,8 @@ namespace Server.Items
 
     public class LoyaltyBookYew : CityBook
     {
-        public override int Title { get { return 1153933; } }
-        public override int Content { get { return 1152698; } }
+        public override int Title => 1153933;
+        public override int Content => 1152698;
 
         [Constructable]
         public LoyaltyBookYew()
@@ -98,8 +98,8 @@ namespace Server.Items
 
     public class LoyaltyBookJhelom : CityBook
     {
-        public override int Title { get { return 1153934; } }
-        public override int Content { get { return 1153436; } }
+        public override int Title => 1153934;
+        public override int Content => 1153436;
 
         [Constructable]
         public LoyaltyBookJhelom()
@@ -126,8 +126,8 @@ namespace Server.Items
 
     public class LoyaltyBookMoonglow : CityBook
     {
-        public override int Title { get { return 1153935; } }
-        public override int Content { get { return 1153437; } }
+        public override int Title => 1153935;
+        public override int Content => 1153437;
 
         [Constructable]
         public LoyaltyBookMoonglow()
@@ -154,8 +154,8 @@ namespace Server.Items
 
     public class LoyaltyBookTrinsic : CityBook
     {
-        public override int Title { get { return 1153727; } }
-        public override int Content { get { return 1151755; } }
+        public override int Title => 1153727;
+        public override int Content => 1151755;
 
         [Constructable]
         public LoyaltyBookTrinsic()
@@ -182,8 +182,8 @@ namespace Server.Items
 
     public class LoyaltyBookMinoc : CityBook
     {
-        public override int Title { get { return 1153728; } }
-        public override int Content { get { return 1152317; } }
+        public override int Title => 1153728;
+        public override int Content => 1152317;
 
         [Constructable]
         public LoyaltyBookMinoc()
@@ -210,8 +210,8 @@ namespace Server.Items
 
     public class LoyaltyBookNewMagincia : CityBook
     {
-        public override int Title { get { return 1153008; } }
-        public override int Content { get { return 1153723; } }
+        public override int Title => 1153008;
+        public override int Content => 1153723;
 
         [Constructable]
         public LoyaltyBookNewMagincia()
@@ -238,8 +238,8 @@ namespace Server.Items
 
     public class LoyaltyBookVesper : CityBook
     {
-        public override int Title { get { return 1153012; } }
-        public override int Content { get { return 1153724; } }
+        public override int Title => 1153012;
+        public override int Content => 1153724;
 
         [Constructable]
         public LoyaltyBookVesper()
@@ -266,8 +266,8 @@ namespace Server.Items
 
     public class LoyaltyBookSkaraBrae : CityBook
     {
-        public override int Title { get { return 0; } }
-        public override int Content { get { return 1153725; } }
+        public override int Title => 0;
+        public override int Content => 1153725;
 
         [Constructable]
         public LoyaltyBookSkaraBrae()
@@ -294,8 +294,8 @@ namespace Server.Items
 
     public class LoyaltyBookBritain : CityBook
     {
-        public override int Title { get { return 1153726; } }
-        public override int Content { get { return 1151754; } }
+        public override int Title => 1153726;
+        public override int Content => 1151754;
 
         [Constructable]
         public LoyaltyBookBritain()

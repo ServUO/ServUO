@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class HealersTouch : LeatherGloves
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public HealersTouch()
         {
@@ -16,48 +16,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1077684;
-            }
-        }// Healer's Touch
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 6;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 6;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override int LabelNumber => 1077684;// Healer's Touch
+        public override int BasePhysicalResistance => 6;
+        public override int BaseFireResistance => 6;
+        public override int BaseColdResistance => 5;
+        public override int BasePoisonResistance => 5;
+        public override int BaseEnergyResistance => 5;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

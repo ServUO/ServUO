@@ -5,7 +5,7 @@ namespace Server.Items
     [TypeAlias("drNO.ThieveItems.LifeShieldLotion")]
     public class LifeShieldLotion : BaseBalmOrLotion
     {
-        public override int LabelNumber { get { return 1094945; } } // Life Shield Lotion
+        public override int LabelNumber => 1094945;  // Life Shield Lotion
 
         [Constructable]
         public LifeShieldLotion()

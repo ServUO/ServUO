@@ -10,7 +10,7 @@ namespace Server.Engines.Shadowguard
     {
         public const int LiquorCount = 10;
 
-        public override Type AddonType { get { return typeof(BarAddon); } }
+        public override Type AddonType => typeof(BarAddon);
 
         public List<Mobile> Pirates { get; set; }
         public int Wave { get; set; }
@@ -210,7 +210,7 @@ namespace Server.Engines.Shadowguard
         public Item Bones { get; set; }
         public ShadowguardApple Apple { get; set; }
 
-        public override Type AddonType { get { return typeof(OrchardAddon); } }
+        public override Type AddonType => typeof(OrchardAddon);
 
         public OrchardEncounter()
             : base(EncounterType.Orchard)
@@ -420,7 +420,7 @@ namespace Server.Engines.Shadowguard
         public List<Item> Items { get; set; }
         public List<BaseCreature> Spawn { get; set; }
 
-        public override Type AddonType { get { return typeof(ArmoryAddon); } }
+        public override Type AddonType => typeof(ArmoryAddon);
 
         public ArmoryEncounter()
             : base(EncounterType.Armory)
@@ -714,7 +714,7 @@ namespace Server.Engines.Shadowguard
 
         public DateTime _NextSpawn;
 
-        public override Type AddonType { get { return typeof(ShadowguardFountainAddon); } }
+        public override Type AddonType => typeof(ShadowguardFountainAddon);
 
         public FountainEncounter()
             : base(EncounterType.Fountain)
@@ -922,7 +922,7 @@ namespace Server.Engines.Shadowguard
             private readonly ShadowguardSpigot _Spigot;
             private ShadowguardDrain _Drain;
 
-            public bool Complete { get { return _Spigot != null && _Drain != null; } }
+            public bool Complete => _Spigot != null && _Drain != null;
 
             public FlowChecker(ShadowguardSpigot start, FountainEncounter encounter)
             {
@@ -1208,7 +1208,7 @@ namespace Server.Engines.Shadowguard
         public ShadowguardGreaterDragon Dragon { get; set; }
         public List<Item> Bells { get; set; }
 
-        public override Type AddonType { get { return typeof(BelfryAddon); } }
+        public override Type AddonType => typeof(BelfryAddon);
 
         public BelfryEncounter()
             : base(EncounterType.Belfry)
@@ -1405,10 +1405,10 @@ namespace Server.Engines.Shadowguard
 
         private readonly Type[] _Bosses = new Type[] { typeof(Anon), typeof(Virtuebane), typeof(Ozymandias), typeof(Juonar) };
 
-        public override TimeSpan EncounterDuration { get { return TimeSpan.MaxValue; } }
-        public override TimeSpan ResetDuration { get { return TimeSpan.FromMinutes(5); } }
+        public override TimeSpan EncounterDuration => TimeSpan.MaxValue;
+        public override TimeSpan ResetDuration => TimeSpan.FromMinutes(5);
 
-        public override Type AddonType { get { return null; } }
+        public override Type AddonType => null;
 
         public override void Setup()
         {

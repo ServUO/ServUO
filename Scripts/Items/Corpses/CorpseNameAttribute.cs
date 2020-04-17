@@ -11,12 +11,6 @@ namespace Server
             this.m_Name = name;
         }
 
-        public string Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
+        public string Name => this.m_Name;
     }
 }

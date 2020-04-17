@@ -6,7 +6,7 @@ namespace Server.Engines.BulkOrders
 {
     public class SmallCookingBOD : SmallBOD
     {
-        public override BODType BODType { get { return BODType.Cooking; } }
+        public override BODType BODType => BODType.Cooking;
 
         [Constructable]
         public SmallCookingBOD()

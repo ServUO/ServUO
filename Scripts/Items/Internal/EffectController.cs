@@ -349,20 +349,8 @@ namespace Server.Items
                 this.m_TriggerRange = value;
             }
         }
-        public override string DefaultName
-        {
-            get
-            {
-                return "Effect Controller";
-            }
-        }
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return (this.m_TriggerType == EffectTriggerType.InRange);
-            }
-        }
+        public override string DefaultName => "Effect Controller";
+        public override bool HandlesOnMovement => (this.m_TriggerType == EffectTriggerType.InRange);
         [CommandProperty(AccessLevel.GameMaster)]
         private bool FixedDirection
         {

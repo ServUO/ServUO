@@ -51,60 +51,27 @@ namespace Server.Mobiles
         {
         }
 
-        public override Type[] UniqueSAList
-        {
-            get { return new Type[] { }; }
-        }
+        public override Type[] UniqueSAList => new Type[] { };
 
-        public override Type[] SharedSAList
-        {
-            get { return new[] { typeof(AnimatedLegsoftheInsaneTinker), typeof(PillarOfStrength), typeof(StormCaller) }; }
-        }
+        public override Type[] SharedSAList => new[] { typeof(AnimatedLegsoftheInsaneTinker), typeof(PillarOfStrength), typeof(StormCaller) };
 
-        public override bool ReacquireOnMovement
-        {
-            get { return true; }
-        }
+        public override bool ReacquireOnMovement => true;
 
-        public override Poison PoisonImmune
-        {
-            get { return Poison.Deadly; }
-        }
+        public override Poison PoisonImmune => Poison.Deadly;
 
-        public override Poison HitPoison
-        {
-            get { return Poison.Deadly; }
-        }
+        public override Poison HitPoison => Poison.Deadly;
 
-        public override bool AutoDispel
-        {
-            get { return true; }
-        }
+        public override bool AutoDispel => true;
 
-        public override bool BardImmune
-        {
-            get { return true; }
-        }
+        public override bool BardImmune => true;
 
-        public override int TreasureMapLevel
-        {
-            get { return 5; }
-        }
+        public override int TreasureMapLevel => 5;
 
-        public override int Meat
-        {
-            get { return 10; }
-        }
+        public override int Meat => 10;
 
-        public override int Hides
-        {
-            get { return 20; }
-        }
+        public override int Hides => 20;
 
-        public override HideType HideType
-        {
-            get { return HideType.Horned; }
-        }
+        public override HideType HideType => HideType.Horned;
 
         public override void GenerateLoot()
         {

@@ -10,21 +10,9 @@ namespace Server.Engines.Craft
 
     public class DefInscription : CraftSystem
     {
-        public override SkillName MainSkill
-        {
-            get
-            {
-                return SkillName.Inscribe;
-            }
-        }
+        public override SkillName MainSkill => SkillName.Inscribe;
 
-        public override int GumpTitleNumber
-        {
-            get
-            {
-                return 1044009;
-            }// <CENTER>INSCRIPTION MENU</CENTER>
-        }
+        public override int GumpTitleNumber => 1044009;
 
         private static CraftSystem m_CraftSystem;
 

@@ -15,20 +15,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074338;
-            }
-        }// Magical Rope	
-        public override int Lifespan
-        {
-            get
-            {
-                return 600;
-            }
-        }
+        public override int LabelNumber => 1074338;// Magical Rope	
+        public override int Lifespan => 600;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

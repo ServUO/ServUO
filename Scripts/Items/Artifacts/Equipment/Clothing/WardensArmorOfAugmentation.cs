@@ -2,8 +2,8 @@
 {
     public class WardensArmorOfAugmentation : GargishLeatherWingArmor
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1115515; } } // Warden's Armor Of Augmentation
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1115515;  // Warden's Armor Of Augmentation
 
         [Constructable]
         public WardensArmorOfAugmentation()

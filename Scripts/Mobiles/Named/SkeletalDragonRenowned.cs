@@ -51,77 +51,17 @@ namespace Server.Mobiles
         {
         }
 
-        public override Type[] UniqueSAList
-        {
-            get
-            {
-                return new Type[] { };
-            }
-        }
-        public override Type[] SharedSAList
-        {
-            get
-            {
-                return new Type[] { typeof(AxeOfAbandon), typeof(DemonBridleRing), typeof(VoidInfusedKilt), typeof(BladeOfBattle) };
-            }
-        }
-        public override bool ReacquireOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override double BonusPetDamageScalar
-        {
-            get
-            {
-                return 3.0;
-            }
-        }
+        public override Type[] UniqueSAList => new Type[] { };
+        public override Type[] SharedSAList => new Type[] { typeof(AxeOfAbandon), typeof(DemonBridleRing), typeof(VoidInfusedKilt), typeof(BladeOfBattle) };
+        public override bool ReacquireOnMovement => true;
+        public override double BonusPetDamageScalar => 3.0;
         // TODO: Undead summoning?
-        public override bool AutoDispel
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 19;
-            }
-        }// where's it hiding these? :)
-        public override int Hides
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Barbed;
-            }
-        }
+        public override bool AutoDispel => true;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override bool BleedImmune => true;
+        public override int Meat => 19;// where's it hiding these? :)
+        public override int Hides => 20;
+        public override HideType HideType => HideType.Barbed;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich, 3);

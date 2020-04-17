@@ -14,27 +14,9 @@ namespace Server.Gumps
             this.Parse(xml);
         }
 
-        public ParentNode Parent
-        {
-            get
-            {
-                return this.m_Parent;
-            }
-        }
-        public string Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
-        public Point3D Location
-        {
-            get
-            {
-                return this.m_Location;
-            }
-        }
+        public ParentNode Parent => this.m_Parent;
+        public string Name => this.m_Name;
+        public Point3D Location => this.m_Location;
         private void Parse(XmlTextReader xml)
         {
             if (xml.MoveToAttribute("name"))

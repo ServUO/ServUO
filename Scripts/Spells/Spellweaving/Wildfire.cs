@@ -19,27 +19,9 @@ namespace Server.Spells.Spellweaving
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(2.5);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 66.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 50;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(2.5);
+        public override double RequiredSkill => 66.0;
+        public override int RequiredMana => 50;
         public override void OnCast()
         {
             Caster.Target = new InternalTarget(this);
@@ -102,7 +84,7 @@ namespace Server.Spells.Spellweaving
         }
 
         private static readonly Dictionary<Mobile, long> m_Table = new Dictionary<Mobile, long>();
-        public static Dictionary<Mobile, long> Table { get { return m_Table; } }
+        public static Dictionary<Mobile, long> Table => m_Table;
 
         public static void DefragTable()
         {

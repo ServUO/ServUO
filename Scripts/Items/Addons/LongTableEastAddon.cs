@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class LongTableEastAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new LongTableEastDeed(); } }
+        public override BaseAddonDeed Deed => new LongTableEastDeed();
 
         [Constructable]
         public LongTableEastAddon()
@@ -31,8 +31,8 @@ namespace Server.Items
 
     public class LongTableEastDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new LongTableEastAddon(); } }
-        public override int LabelNumber { get { return 1111782; } } // long table (east)
+        public override BaseAddon Addon => new LongTableEastAddon();
+        public override int LabelNumber => 1111782;  // long table (east)
 
         [Constructable]
         public LongTableEastDeed()

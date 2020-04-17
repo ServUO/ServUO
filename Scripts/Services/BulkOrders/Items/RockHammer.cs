@@ -5,7 +5,7 @@ namespace Server.Items
     [FlipableAttribute(0x9E7E, 0x9E7F)]
     public class RockHammer : BaseHarvestTool
     {
-        public override int LabelNumber { get { return 1124598; } }
+        public override int LabelNumber => 1124598;
 
         [Constructable]
         public RockHammer()
@@ -25,13 +25,7 @@ namespace Server.Items
         {
         }
 
-        public override HarvestSystem HarvestSystem
-        {
-            get
-            {
-                return Mining.System;
-            }
-        }
+        public override HarvestSystem HarvestSystem => Mining.System;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

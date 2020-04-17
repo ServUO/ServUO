@@ -18,13 +18,7 @@ namespace Server.Items
             this.m_Directions = directions;
         }
 
-        public Direction[] Directions
-        {
-            get
-            {
-                return this.m_Directions;
-            }
-        }
+        public Direction[] Directions => this.m_Directions;
         public virtual void Flip(Mobile from, Item addon)
         {
             if (this.m_Directions != null && this.m_Directions.Length > 1)

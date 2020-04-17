@@ -4,20 +4,8 @@ namespace Server.Items
 {
     public class GargoyleCandelabra : BaseLight, IShipwreckedItem
     {
-        public override int LitItemID
-        {
-            get
-            {
-                return 0x40BE;
-            }
-        }
-        public override int UnlitItemID
-        {
-            get
-            {
-                return 0x4039;
-            }
-        }
+        public override int LitItemID => 0x40BE;
+        public override int UnlitItemID => 0x4039;
 
         [Constructable]
         public GargoyleCandelabra()

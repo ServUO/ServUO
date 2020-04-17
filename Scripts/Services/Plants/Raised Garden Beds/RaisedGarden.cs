@@ -15,7 +15,7 @@ namespace Server.Items
     [TypeAlias("Server.Items.RaisedGardenSmallAddon", "Server.Items.RaisedGardenSouthAddon", "Server.Items.RaisedGardenEastAddon", "Server.Items.RaisedGardenLargeAddon")]
     public class RaisedGardenAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new RaisedGardenDeed(); } }
+        public override BaseAddonDeed Deed => new RaisedGardenDeed();
 
         [Constructable]
         public RaisedGardenAddon(RaisedGardenDirection direction)
@@ -105,8 +105,8 @@ namespace Server.Items
     [TypeAlias("Server.Items.RaisedGardenSmallAddonDeed", "Server.Items.RaisedGardenEastAddonDeed", "Server.Items.RaisedGardenSouthAddonDeed", "Server.Items.RaisedGardenLargeAddonDeed")]
     public class RaisedGardenDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1150359; } } // Raised Garden Bed
-        public override BaseAddon Addon { get { return new RaisedGardenAddon(m_Direction); } }
+        public override int LabelNumber => 1150359;  // Raised Garden Bed
+        public override BaseAddon Addon => new RaisedGardenAddon(m_Direction);
         public RaisedGardenDirection m_Direction;
 
         [Constructable]
@@ -229,7 +229,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber { get { return 1150359; } } // Raised Garden Bed
+        public override int LabelNumber => 1150359;  // Raised Garden Bed
 
         public GardenAddonComponent(int itemID) : base(itemID)
         {

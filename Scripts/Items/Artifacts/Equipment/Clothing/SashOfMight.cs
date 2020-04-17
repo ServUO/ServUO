@@ -4,8 +4,8 @@ namespace Server.Items
     public class SashOfMight : BodySash
     {
 
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1075412; } } // Sash of Might
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1075412;  // Sash of Might
 
         [Constructable]
         public SashOfMight() : base(0x1541)

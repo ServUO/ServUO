@@ -50,41 +50,11 @@ namespace Server.Mobiles
         {
         }
 
-        public bool FieldActive
-        {
-            get
-            {
-                return this.m_FieldActive;
-            }
-        }
-        public bool CanUseField
-        {
-            get
-            {
-                return this.Hits >= this.HitsMax * 9 / 10;
-            }
-        }// TODO: an OSI bug prevents to verify this
-        public override bool IsScaredOfScaryThings
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsScaryToPets
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
+        public bool FieldActive => this.m_FieldActive;
+        public bool CanUseField => this.Hits >= this.HitsMax * 9 / 10;// TODO: an OSI bug prevents to verify this
+        public override bool IsScaredOfScaryThings => false;
+        public override bool IsScaryToPets => true;
+        public override Poison PoisonImmune => Poison.Lethal;
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich);

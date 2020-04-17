@@ -21,34 +21,10 @@ namespace Server.Items
             readonly int[] m_Amounts;
             readonly int[] m_MsgIds;
 
-            public int Slots
-            {
-                get
-                {
-                    return m_Slots;
-                }
-            }
-            public Type[] Types
-            {
-                get
-                {
-                    return m_Types;
-                }
-            }
-            public int[] Amounts
-            {
-                get
-                {
-                    return m_Amounts;
-                }
-            }
-            public int[] MsgIds
-            {
-                get
-                {
-                    return m_MsgIds;
-                }
-            }
+            public int Slots => m_Slots;
+            public Type[] Types => m_Types;
+            public int[] Amounts => m_Amounts;
+            public int[] MsgIds => m_MsgIds;
 
             public GolemInfo(int slots, Type[] types, int[] amounts, int[] msgids)
             {
@@ -94,13 +70,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return (1113031 + (int)m_Type);
-            }
-        }
+        public override int LabelNumber => (1113031 + (int)m_Type);
 
         [Constructable]
         public ModifiedClockworkAssembly()

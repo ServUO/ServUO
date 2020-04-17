@@ -5,9 +5,9 @@ namespace Server.Engines.Quests
 {
     public class ThievesBeAfootQuest : BaseQuest
     {
-        public override object Title { get { return 1094958; } }        // Thieves Be Afoot!
+        public override object Title => 1094958;         // Thieves Be Afoot!
 
-        public override object Description { get { return 1094960; } }  /*Travel into the Underworld and search for the stolen
+        public override object Description => 1094960;   /*Travel into the Underworld and search for the stolen
                                                                          * barrels of barley.  Return them to Quartermaster Flint
                                                                          * for your reward.<br><center>-----</center><br>Hail 
                                                                          * Traveler.  Trying to find the fabled Stygian Abyss are 
@@ -29,23 +29,23 @@ namespace Server.Engines.Quests
                                                                          * stuff in thar, so if'n ye bring back all four, I have 
                                                                          * somethin' special I will share with ye!*/
 
-        public override object Refuse { get { return 1094961; } }       /*Fine then, be on yar way but be warned!  Ol' Flint makes
+        public override object Refuse => 1094961;        /*Fine then, be on yar way but be warned!  Ol' Flint makes
                                                                          * the best refreshin' barley products in tha known world! 
                                                                          * That barley will not profit ye if'n ol' Flint ha' not
                                                                          * prepared it proper!*/
 
-        public override object Uncomplete { get { return 1094962; } }   /*What?  Back so soon and narry a barrel in sight?  Be y
+        public override object Uncomplete => 1094962;    /*What?  Back so soon and narry a barrel in sight?  Be y
                                                                          * e advised that ye are not the only traveler ol' Flint 
                                                                          * has a lookin fer his barrels!  If'n ye are gonna profit
                                                                          * of me potions, ye best be about it!*/
 
-        public override object Complete { get { return 1094965; } }     /*Ah, thar she is!  That's me barrel all right, I knew
+        public override object Complete => 1094965;      /*Ah, thar she is!  That's me barrel all right, I knew
                                                                          * someone had taken it in thar!  Goblins you say? Oy,
                                                                          * they be a nasty bit o' business, ain't they?  Well, a 
                                                                          * deal's a deal, here is yar potion as promised!*/
 
-        public override QuestChain ChainID { get { return QuestChain.FlintTheQuartermaster; } }
-        public override Type NextQuest { get { return typeof(BibliophileQuest); } }
+        public override QuestChain ChainID => QuestChain.FlintTheQuartermaster;
+        public override Type NextQuest => typeof(BibliophileQuest);
 
         public ThievesBeAfootQuest()
         {
@@ -73,9 +73,9 @@ namespace Server.Engines.Quests
 
     public class BibliophileQuest : BaseQuest
     {
-        public override object Title { get { return 1094968; } }        // Bibliophile
+        public override object Title => 1094968;         // Bibliophile
 
-        public override object Description { get { return 1094970; } }  /*Travel into the Underworld and find the Flint's stolen
+        public override object Description => 1094970;   /*Travel into the Underworld and find the Flint's stolen
                                                                          * log book.  Return to Flint with the Log book for your 
                                                                          * reward.<br><center>-----</center><br>Ye will not be 
                                                                          * believin' what misfortune has befallen me now!  No sooner
@@ -88,14 +88,14 @@ namespace Server.Engines.Quests
                                                                          * If'n ye will bring ol' Flint's book back ta 'im, I will
                                                                          * give ye a keg o' me special brew!*/
 
-        public override object Refuse { get { return 1094971; } }       /*'Tis a fine thing to do to a friend in need!  But so be it.
+        public override object Refuse => 1094971;        /*'Tis a fine thing to do to a friend in need!  But so be it.
                                                                          * 'Tis not the first time today ol' Flint has been let 
                                                                          * down. Won't be the last.*/
 
-        public override object Uncomplete { get { return 1094972; } }   /*'Ave ye laid hold to ol' Flint's log book yet?  Oh, I'm sorry, 
+        public override object Uncomplete => 1094972;    /*'Ave ye laid hold to ol' Flint's log book yet?  Oh, I'm sorry, 
                                                                          * I jes' figured ye would have it back by now... Carry on then!*/
 
-        public override object Complete { get { return 1094975; } }     /*'Ave ye laid hold to ol' Flint's log book did ye?  Let me
+        public override object Complete => 1094975;      /*'Ave ye laid hold to ol' Flint's log book did ye?  Let me
                                                                          * 'ave a look here!  Bloomin' savages!  They dog eared one
                                                                          * o' the pages and bent the corner o' me cover! Blast! 
                                                                          * Well, that's not fer you to be worryin' about.  Here be
@@ -105,7 +105,7 @@ namespace Server.Engines.Quests
                                                                          * normal bottles, so I hope ye listened to ol' Flint and 
                                                                          * kept that bottle!*/
 
-        public override QuestChain ChainID { get { return QuestChain.FlintTheQuartermaster; } }
+        public override QuestChain ChainID => QuestChain.FlintTheQuartermaster;
 
         public BibliophileQuest()
         {
@@ -149,16 +149,10 @@ namespace Server.Engines.Quests
             Say(Utility.RandomBool() ? 1094959 : 1094969); // Keep an eye pealed, traveler, thieves be afoot!
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(ThievesBeAfootQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

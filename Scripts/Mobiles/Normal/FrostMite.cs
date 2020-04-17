@@ -68,11 +68,11 @@ namespace Server.Mobiles
             return 0x4E5;
         }
 
-        public override int Meat { get { return 5; } }
-        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
+        public override int Meat => 5;
+        public override FoodType FavoriteFood => FoodType.Meat;
 
-        public override bool CanAngerOnTame { get { return true; } }
-        public override bool StatLossAfterTame { get { return true; } }
+        public override bool CanAngerOnTame => true;
+        public override bool StatLossAfterTame => true;
 
         public void AuraEffect(Mobile m)
         {

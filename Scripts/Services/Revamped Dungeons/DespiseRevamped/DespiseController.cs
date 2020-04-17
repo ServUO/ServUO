@@ -38,10 +38,10 @@ namespace Server.Engines.Despise
         private DespiseRegion m_LowerRegion;
         private DespiseRegion m_StartRegion;
 
-        public Region GoodRegion { get { return m_GoodRegion; } }
-        public Region EvilRegion { get { return m_EvilRegion; } }
-        public Region LowerRegion { get { return m_LowerRegion; } }
-        public Region StartRegion { get { return m_StartRegion; } }
+        public Region GoodRegion => m_GoodRegion;
+        public Region EvilRegion => m_EvilRegion;
+        public Region LowerRegion => m_LowerRegion;
+        public Region StartRegion => m_StartRegion;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Enabled
@@ -62,7 +62,7 @@ namespace Server.Engines.Despise
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Sequencing { get { return m_Sequencing; } }
+        public bool Sequencing => m_Sequencing;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextBossEncounter
@@ -72,35 +72,26 @@ namespace Server.Engines.Despise
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DespiseBoss Boss
-        {
-            get { return m_Boss; }
-        }
+        public DespiseBoss Boss => m_Boss;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime DeadLine
-        {
-            get { return m_DeadLine; }
-        }
+        public DateTime DeadLine => m_DeadLine;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Alignment SequenceAlignment
-        {
-            get { return m_SequenceAlignment; }
-        }
+        public Alignment SequenceAlignment => m_SequenceAlignment;
 
         private readonly List<DespiseCreature> m_EvilArmy = new List<DespiseCreature>();
         private readonly List<DespiseCreature> m_GoodArmy = new List<DespiseCreature>();
 
-        public List<DespiseCreature> EvilArmy { get { return m_EvilArmy; } }
-        public List<DespiseCreature> GoodArmy { get { return m_GoodArmy; } }
+        public List<DespiseCreature> EvilArmy => m_EvilArmy;
+        public List<DespiseCreature> GoodArmy => m_GoodArmy;
 
         private readonly List<Mobile> m_ToTransport = new List<Mobile>();
 
         private readonly TimeSpan EncounterCheckDuration = TimeSpan.FromMinutes(5);
         private readonly TimeSpan DeadLineDuration = TimeSpan.FromMinutes(90);
 
-        public bool IsInSequence { get { return m_SequenceTimer != null || m_CleanupTimer != null; } }
+        public bool IsInSequence => m_SequenceTimer != null || m_CleanupTimer != null;
 
         public DespiseController()
             : base(3806)
@@ -255,10 +246,10 @@ namespace Server.Engines.Despise
         private List<XmlSpawner> m_EvilSpawners;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int GoodSpawnerCount { get { return m_GoodSpawners == null ? 0 : m_GoodSpawners.Count; } }
+        public int GoodSpawnerCount => m_GoodSpawners == null ? 0 : m_GoodSpawners.Count;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int EvilSpawnerCount { get { return m_EvilSpawners == null ? 0 : m_EvilSpawners.Count; } }
+        public int EvilSpawnerCount => m_EvilSpawners == null ? 0 : m_EvilSpawners.Count;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ResetSpawns
@@ -618,19 +609,19 @@ namespace Server.Engines.Despise
 
         #region Location Defs
 
-        public static Rectangle2D[] EvilBounds { get { return m_EvilBounds; } }
+        public static Rectangle2D[] EvilBounds => m_EvilBounds;
         private static readonly Rectangle2D[] m_EvilBounds = new Rectangle2D[]
         {
             new Rectangle2D(5381, 644, 149, 120)
         };
 
-        public static Rectangle2D[] GoodBounds { get { return m_GoodBounds; } }
+        public static Rectangle2D[] GoodBounds => m_GoodBounds;
         private static readonly Rectangle2D[] m_GoodBounds = new Rectangle2D[]
         {
             new Rectangle2D(5380, 515, 134, 121)
         };
 
-        public static Rectangle2D[] LowerLevelBounds { get { return m_LowerLevelBounds; } }
+        public static Rectangle2D[] LowerLevelBounds => m_LowerLevelBounds;
         private static readonly Rectangle2D[] m_LowerLevelBounds = new Rectangle2D[]
         {
             new Rectangle2D(5379, 771, 247, 250)

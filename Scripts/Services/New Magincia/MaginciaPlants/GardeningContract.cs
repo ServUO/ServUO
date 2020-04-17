@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class GardeningContract : Item
     {
-        public override int LabelNumber { get { return 1155764; } } // Gardening Contract
+        public override int LabelNumber => 1155764;  // Gardening Contract
 
         [Constructable]
         public GardeningContract()

@@ -3,19 +3,19 @@ namespace Server.Spells.Mysticism
     public abstract class MysticTransformationSpell : MysticSpell, ITransformationSpell
     {
         public abstract int Body { get; }
-        public virtual int Hue { get { return 0; } }
+        public virtual int Hue => 0;
 
-        public virtual int PhysResistOffset { get { return 0; } }
-        public virtual int FireResistOffset { get { return 0; } }
-        public virtual int ColdResistOffset { get { return 0; } }
-        public virtual int PoisResistOffset { get { return 0; } }
-        public virtual int NrgyResistOffset { get { return 0; } }
+        public virtual int PhysResistOffset => 0;
+        public virtual int FireResistOffset => 0;
+        public virtual int ColdResistOffset => 0;
+        public virtual int PoisResistOffset => 0;
+        public virtual int NrgyResistOffset => 0;
 
         public MysticTransformationSpell(Mobile caster, Item scroll, SpellInfo info) : base(caster, scroll, info)
         {
         }
 
-        public override bool BlockedByHorrificBeast { get { return false; } }
+        public override bool BlockedByHorrificBeast => false;
 
         public override bool CheckCast()
         {
@@ -32,7 +32,7 @@ namespace Server.Spells.Mysticism
             FinishSequence();
         }
 
-        public virtual double TickRate { get { return 1.0; } }
+        public virtual double TickRate => 1.0;
 
         public virtual void OnTick(Mobile m)
         {

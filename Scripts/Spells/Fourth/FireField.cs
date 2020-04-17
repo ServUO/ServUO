@@ -22,13 +22,7 @@ namespace Server.Spells.Fourth
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Fourth;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Fourth;
         public override void OnCast()
         {
             Caster.Target = new InternalTarget(this);
@@ -110,7 +104,7 @@ namespace Server.Spells.Fourth
             private Mobile m_Caster;
             private int m_Damage;
 
-            public Mobile Caster { get { return m_Caster; } }
+            public Mobile Caster => m_Caster;
 
             public FireFieldItem(int itemID, Point3D loc, Mobile caster, Map map, TimeSpan duration)
                 : this(itemID, loc, caster, map, duration, 2)
@@ -143,13 +137,7 @@ namespace Server.Spells.Fourth
             {
             }
 
-            public override bool BlocksFit
-            {
-                get
-                {
-                    return true;
-                }
-            }
+            public override bool BlocksFit => true;
             public override void OnAfterDelete()
             {
                 base.OnAfterDelete();

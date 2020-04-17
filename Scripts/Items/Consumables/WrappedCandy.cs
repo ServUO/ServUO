@@ -20,13 +20,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1096950;
-            }
-        }/* wrapped candy */
+        public override int LabelNumber => 1096950;/* wrapped candy */
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

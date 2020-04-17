@@ -3,7 +3,7 @@ namespace Server.Items
     [FlipableAttribute(0x2B77, 0x316E)]
     public class LeafweavePauldrons : HidePauldrons
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public LeafweavePauldrons()
             : base()
@@ -30,62 +30,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074299;
-            }
-        }// Elven Leafweave
-        public override SetItem SetID
-        {
-            get
-            {
-                return SetItem.Mage;
-            }
-        }
-        public override int Pieces
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 9;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 6;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 8;
-            }
-        }
+        public override int LabelNumber => 1074299;// Elven Leafweave
+        public override SetItem SetID => SetItem.Mage;
+        public override int Pieces => 4;
+        public override int BasePhysicalResistance => 4;
+        public override int BaseFireResistance => 9;
+        public override int BaseColdResistance => 3;
+        public override int BasePoisonResistance => 6;
+        public override int BaseEnergyResistance => 8;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

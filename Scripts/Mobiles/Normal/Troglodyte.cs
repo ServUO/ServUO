@@ -5,7 +5,7 @@ namespace Server.Mobiles
     [CorpseName("a troglodyte corpse")]
     public class Troglodyte : BaseCreature
     {
-        public override double HealChance { get { return 1.0; } }
+        public override double HealChance => 1.0;
 
         [Constructable]
         public Troglodyte()
@@ -54,13 +54,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override int TreasureMapLevel => 2;
 
         public override void GenerateLoot()
         {

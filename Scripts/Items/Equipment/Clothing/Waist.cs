@@ -128,13 +128,7 @@ namespace Server.Items
         {
         }
 
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Elf;
-            }
-        }
+        public override Race RequiredRace => Race.Elf;
         public override bool Dye(Mobile from, DyeTub sender)
         {
             from.SendLocalizedMessage(sender.FailMessage);
@@ -183,20 +177,8 @@ namespace Server.Items
         {
         }
 
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -233,20 +215,8 @@ namespace Server.Items
         {
         }
 
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

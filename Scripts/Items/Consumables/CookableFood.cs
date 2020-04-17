@@ -25,7 +25,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
-        public bool PlayerConstructed { get { return true; } }
+        public bool PlayerConstructed => true;
 
         public CookableFood(int itemID, int cookingLevel)
             : base(itemID)
@@ -38,8 +38,8 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         public override void AddCraftedProperties(ObjectPropertyList list)
         {
@@ -375,13 +375,7 @@ namespace Server.Items
     // ********** UnbakedPeachCobbler **********
     public class UnbakedPeachCobbler : CookableFood
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041335;
-            }
-        }// unbaked peach cobbler
+        public override int LabelNumber => 1041335;// unbaked peach cobbler
 
         [Constructable]
         public UnbakedPeachCobbler()
@@ -418,13 +412,7 @@ namespace Server.Items
     // ********** UnbakedFruitPie **********
     public class UnbakedFruitPie : CookableFood
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041334;
-            }
-        }// unbaked fruit pie
+        public override int LabelNumber => 1041334;// unbaked fruit pie
 
         [Constructable]
         public UnbakedFruitPie()
@@ -461,13 +449,7 @@ namespace Server.Items
     // ********** UnbakedMeatPie **********
     public class UnbakedMeatPie : CookableFood
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041338;
-            }
-        }// unbaked meat pie
+        public override int LabelNumber => 1041338;// unbaked meat pie
 
         [Constructable]
         public UnbakedMeatPie()
@@ -504,13 +486,7 @@ namespace Server.Items
     // ********** UnbakedPumpkinPie **********
     public class UnbakedPumpkinPie : CookableFood
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041342;
-            }
-        }// unbaked pumpkin pie
+        public override int LabelNumber => 1041342;// unbaked pumpkin pie
 
         [Constructable]
         public UnbakedPumpkinPie()
@@ -547,13 +523,7 @@ namespace Server.Items
     // ********** UnbakedApplePie **********
     public class UnbakedApplePie : CookableFood
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041336;
-            }
-        }// unbaked apple pie
+        public override int LabelNumber => 1041336;// unbaked apple pie
 
         [Constructable]
         public UnbakedApplePie()
@@ -591,13 +561,7 @@ namespace Server.Items
     [TypeAlias("Server.Items.UncookedPizza")]
     public class UncookedCheesePizza : CookableFood
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041341;
-            }
-        }// uncooked cheese pizza
+        public override int LabelNumber => 1041341;// uncooked cheese pizza
 
         [Constructable]
         public UncookedCheesePizza()
@@ -640,13 +604,7 @@ namespace Server.Items
     // ********** UncookedSausagePizza **********
     public class UncookedSausagePizza : CookableFood
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041337;
-            }
-        }// uncooked sausage pizza
+        public override int LabelNumber => 1041337;// uncooked sausage pizza
 
         [Constructable]
         public UncookedSausagePizza()
@@ -724,13 +682,7 @@ namespace Server.Items
     // ********** UnbakedQuiche **********
     public class UnbakedQuiche : CookableFood
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041339;
-            }
-        }// unbaked quiche
+        public override int LabelNumber => 1041339;// unbaked quiche
 
         [Constructable]
         public UnbakedQuiche()
@@ -818,13 +770,7 @@ namespace Server.Items
     // ********** BrightlyColoredEggs **********
     public class BrightlyColoredEggs : CookableFood
     {
-        public override string DefaultName
-        {
-            get
-            {
-                return "brightly colored eggs";
-            }
-        }
+        public override string DefaultName => "brightly colored eggs";
 
         [Constructable]
         public BrightlyColoredEggs()
@@ -862,13 +808,7 @@ namespace Server.Items
     // ********** EasterEggs **********
     public class EasterEggs : CookableFood
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1016105;
-            }
-        }// Easter Eggs
+        public override int LabelNumber => 1016105;// Easter Eggs
 
         [Constructable]
         public EasterEggs()
@@ -942,13 +882,7 @@ namespace Server.Items
     // ********** CakeMix **********
     public class CakeMix : CookableFood
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041002;
-            }
-        }// cake mix
+        public override int LabelNumber => 1041002;// cake mix
 
         [Constructable]
         public CakeMix()
@@ -984,13 +918,7 @@ namespace Server.Items
 
     public class RawFishSteak : CookableFood, ICommodity
     {
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 0.1;
-            }
-        }
+        public override double DefaultWeight => 0.1;
 
         [Constructable]
         public RawFishSteak()
@@ -1011,8 +939,8 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         public override Food Cook()
         {

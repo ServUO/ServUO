@@ -57,11 +57,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override int TreasureMapLevel { get { return Utility.RandomList(1, 2); } }
-        public override int Hides { get { return 10; } }
-        public override HideType HideType { get { return HideType.Horned; } }
-        public override int Scales { get { return 8; } }
-        public override ScaleType ScaleType { get { return ScaleType.Blue; } }
+        public override int TreasureMapLevel => Utility.RandomList(1, 2);
+        public override int Hides => 10;
+        public override HideType HideType => HideType.Horned;
+        public override int Scales => 8;
+        public override ScaleType ScaleType => ScaleType.Blue;
 
         public override void GenerateLoot()
         {

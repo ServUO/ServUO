@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class EtherealRetouchingTool : Item, IRewardItem
     {
-        public override int LabelNumber { get { return 1113814; } } // Retouching Tool
+        public override int LabelNumber => 1113814;  // Retouching Tool
 
         public bool IsRewardItem { get; set; }
 

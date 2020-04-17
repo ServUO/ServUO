@@ -16,28 +16,10 @@ namespace Server.Spells.Necromancy
             Reagent.GraveDust,
             Reagent.DaemonBlood);
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(2.25);
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(2.25);
 
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 30.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 17;
-            }
-        }
+        public override double RequiredSkill => 30.0;
+        public override int RequiredMana => 17;
 
         public SummonFamiliarSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
@@ -46,13 +28,7 @@ namespace Server.Spells.Necromancy
 
         private static readonly Hashtable m_Table = new Hashtable();
 
-        public static Hashtable Table
-        {
-            get
-            {
-                return m_Table;
-            }
-        }
+        public static Hashtable Table => m_Table;
 
         public override bool CheckCast()
         {
@@ -87,13 +63,7 @@ namespace Server.Spells.Necromancy
             new SummonFamiliarEntry(typeof(VampireBatFamiliar), 1060144, 100.0, 100.0)// Vampire Bat
         };
 
-        public static SummonFamiliarEntry[] Entries
-        {
-            get
-            {
-                return m_Entries;
-            }
-        }
+        public static SummonFamiliarEntry[] Entries => m_Entries;
     }
 
     public class SummonFamiliarEntry
@@ -103,34 +73,10 @@ namespace Server.Spells.Necromancy
         private readonly double m_ReqNecromancy;
         private readonly double m_ReqSpiritSpeak;
 
-        public Type Type
-        {
-            get
-            {
-                return this.m_Type;
-            }
-        }
-        public object Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
-        public double ReqNecromancy
-        {
-            get
-            {
-                return this.m_ReqNecromancy;
-            }
-        }
-        public double ReqSpiritSpeak
-        {
-            get
-            {
-                return this.m_ReqSpiritSpeak;
-            }
-        }
+        public Type Type => this.m_Type;
+        public object Name => this.m_Name;
+        public double ReqNecromancy => this.m_ReqNecromancy;
+        public double ReqSpiritSpeak => this.m_ReqSpiritSpeak;
 
         public SummonFamiliarEntry(Type type, object name, double reqNecromancy, double reqSpiritSpeak)
         {

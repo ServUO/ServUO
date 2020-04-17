@@ -21,7 +21,7 @@ namespace Server.Mobiles
             : base(serial)
         { }
 
-        public override VendorShoeType ShoeType { get { return Female ? VendorShoeType.ThighBoots : VendorShoeType.Boots; } }
+        public override VendorShoeType ShoeType => Female ? VendorShoeType.ThighBoots : VendorShoeType.Boots;
 
         public override int GetShoeHue()
         {

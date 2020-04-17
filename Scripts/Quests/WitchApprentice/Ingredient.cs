@@ -67,27 +67,9 @@ namespace Server.Engines.Quests.Hag
             this.m_Quantity = quantity;
         }
 
-        public int Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
-        public Type[] Creatures
-        {
-            get
-            {
-                return this.m_Creatures;
-            }
-        }
-        public int Quantity
-        {
-            get
-            {
-                return this.m_Quantity;
-            }
-        }
+        public int Name => this.m_Name;
+        public Type[] Creatures => this.m_Creatures;
+        public int Quantity => this.m_Quantity;
         public static IngredientInfo Get(Ingredient ingredient)
         {
             int index = (int)ingredient;

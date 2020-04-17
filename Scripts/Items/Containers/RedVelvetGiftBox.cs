@@ -35,20 +35,8 @@ namespace Server.Items
         {
         }
 
-        public override int DefaultGumpID
-        {
-            get
-            {
-                return 0x3f;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1077596;
-            }
-        }// A Red Velvet Box
+        public override int DefaultGumpID => 0x3f;
+        public override int LabelNumber => 1077596;// A Red Velvet Box
         public virtual void AddToBox(Item item, Point3D loc)
         {
             this.DropItem(item);

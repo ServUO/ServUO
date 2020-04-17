@@ -17,55 +17,13 @@ namespace Server.Spells.Chivalry
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(0.25);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 35.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int RequiredTithing
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int MantraNumber
-        {
-            get
-            {
-                return 1060721;
-            }
-        }// Dispiro Malas
-        public override bool BlocksMovement
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool DelayedDamage
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(0.25);
+        public override double RequiredSkill => 35.0;
+        public override int RequiredMana => 10;
+        public override int RequiredTithing => 10;
+        public override int MantraNumber => 1060721;// Dispiro Malas
+        public override bool BlocksMovement => false;
+        public override bool DelayedDamage => false;
         public override void SendCastEffect()
         {
             Caster.FixedEffect(0x37C4, 10, 7, 4, 3); // At player

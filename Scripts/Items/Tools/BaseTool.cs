@@ -103,7 +103,7 @@ namespace Server.Items
             set { }
         }
 
-        public virtual bool BreakOnDepletion { get { return true; } }
+        public virtual bool BreakOnDepletion => true;
 
         public abstract CraftSystem CraftSystem { get; }
 

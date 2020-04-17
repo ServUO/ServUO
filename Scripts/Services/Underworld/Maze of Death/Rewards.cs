@@ -123,7 +123,7 @@ namespace Server.Items
 
     public class DustyPillow : Item
     {
-        public override int LabelNumber { get { return 1113638; } } // dusty pillow
+        public override int LabelNumber => 1113638;  // dusty pillow
 
         [Constructable]
         public DustyPillow() : base(Utility.RandomList(5690, 5691))

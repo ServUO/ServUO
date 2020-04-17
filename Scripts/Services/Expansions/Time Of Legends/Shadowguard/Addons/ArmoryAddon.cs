@@ -525,13 +525,7 @@ namespace Server.Items
 			, {39737, -18, -18, 0}// 2173	
 		};
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override BaseAddonDeed Deed => null;
 
         [Constructable]
         public ArmoryAddon()

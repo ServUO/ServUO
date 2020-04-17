@@ -16,13 +16,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075400;
-            }
-        }// Transparent Heart
+        public override int LabelNumber => 1075400;// Transparent Heart
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -5,7 +5,7 @@ namespace Server.Mobiles
 {
     public class Dierdre : HumilityQuestMobile
     {
-        public override int Greeting { get { return 1075744; } }
+        public override int Greeting => 1075744;
 
         [Constructable]
         public Dierdre()

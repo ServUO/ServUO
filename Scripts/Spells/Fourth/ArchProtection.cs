@@ -20,13 +20,7 @@ namespace Server.Spells.Fourth
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Fourth;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Fourth;
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);

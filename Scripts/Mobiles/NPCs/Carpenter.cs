@@ -20,20 +20,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override NpcGuild NpcGuild
-        {
-            get
-            {
-                return NpcGuild.TinkersGuild;
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        public override NpcGuild NpcGuild => NpcGuild.TinkersGuild;
+        protected override List<SBInfo> SBInfos => this.m_SBInfos;
         public override void InitSBInfo()
         {
             this.m_SBInfos.Add(new SBStavesWeapon());
@@ -52,7 +40,7 @@ namespace Server.Mobiles
         }
 
         #region Bulk Orders
-        public override BODType BODType { get { return BODType.Carpentry; } }
+        public override BODType BODType => BODType.Carpentry;
 
         public override bool IsValidBulkOrder(Item item)
         {

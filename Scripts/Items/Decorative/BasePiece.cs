@@ -25,20 +25,8 @@ namespace Server.Items
                 this.m_Board = value;
             }
         }
-        public override bool IsVirtualItem
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool CanTarget
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsVirtualItem => true;
+        public override bool CanTarget => false;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

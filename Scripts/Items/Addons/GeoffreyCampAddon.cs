@@ -26,13 +26,7 @@ namespace Server.Items
 
 
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override BaseAddonDeed Deed => null;
 
         [Constructable]
         public GeoffreyCampAddon()

@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072881;
-            }
-        }// hovering wisp
+        public override int LabelNumber => 1072881;// hovering wisp
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

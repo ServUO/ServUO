@@ -38,10 +38,10 @@ namespace Server.Engines.Blackthorn
         private bool _Sampire;
         private DateTime _NextSpecial;
 
-        public override bool AlwaysMurderer { get { return true; } }
-        public override double HealChance { get { return AI == AIType.AI_Melee || AI == AIType.AI_Paladin ? 1.0 : 0.0; } }
-        public override double WeaponAbilityChance { get { return AI == AIType.AI_Melee || AI == AIType.AI_Paladin ? 0.4 : 0.1; } }
-        public override bool CanStealth { get { return _Specialty == SkillName.Ninjitsu; } }
+        public override bool AlwaysMurderer => true;
+        public override double HealChance => AI == AIType.AI_Melee || AI == AIType.AI_Paladin ? 1.0 : 0.0;
+        public override double WeaponAbilityChance => AI == AIType.AI_Melee || AI == AIType.AI_Paladin ? 0.4 : 0.1;
+        public override bool CanStealth => _Specialty == SkillName.Ninjitsu;
 
         public override WeaponAbility GetWeaponAbility()
         {
@@ -55,15 +55,15 @@ namespace Server.Engines.Blackthorn
             return null;
         }
 
-        public override bool UseSmartAI { get { return true; } }
-        public virtual bool CanDoSpecial { get { return SpellCaster; } }
+        public override bool UseSmartAI => true;
+        public virtual bool CanDoSpecial => SpellCaster;
 
-        public virtual double MinSkill { get { return 100.0; } }
-        public virtual double MaxSkill { get { return 120.0; } }
-        public virtual int MinResist { get { return 10; } }
-        public virtual int MaxResist { get { return 20; } }
+        public virtual double MinSkill => 100.0;
+        public virtual double MaxSkill => 120.0;
+        public virtual int MinResist => 10;
+        public virtual int MaxResist => 20;
 
-        public bool SpellCaster { get { return AI != AIType.AI_Melee && AI != AIType.AI_Ninja && AI != AIType.AI_Samurai && AI != AIType.AI_Paladin; } }
+        public bool SpellCaster => AI != AIType.AI_Melee && AI != AIType.AI_Ninja && AI != AIType.AI_Samurai && AI != AIType.AI_Paladin;
 
         [Constructable]
         public Invader(InvasionType type)
@@ -528,10 +528,10 @@ namespace Server.Engines.Blackthorn
 
     public class InvaderCaptain : Invader
     {
-        public override double MinSkill { get { return 105.0; } }
-        public override double MaxSkill { get { return 130.0; } }
-        public override int MinResist { get { return 20; } }
-        public override int MaxResist { get { return 30; } }
+        public override double MinSkill => 105.0;
+        public override double MaxSkill => 130.0;
+        public override int MinResist => 20;
+        public override int MaxResist => 30;
 
         [Constructable]
         public InvaderCaptain(InvasionType type) : base(type)

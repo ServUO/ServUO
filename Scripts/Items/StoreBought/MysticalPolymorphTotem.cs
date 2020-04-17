@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class MysticalPolymorphTotem : Item
     {
-        public override int LabelNumber { get { return 1158780; } } // Mystical Polymorph Totem
+        public override int LabelNumber => 1158780;  // Mystical Polymorph Totem
 
         private int m_Body = 0;
         private int m_Hue = -1;

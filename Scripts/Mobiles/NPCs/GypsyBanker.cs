@@ -17,9 +17,9 @@ namespace Server.Mobiles
             : base(serial)
         { }
 
-        public override bool IsActiveVendor { get { return false; } }
-        public override NpcGuild NpcGuild { get { return NpcGuild.None; } }
-        public override bool ClickTitle { get { return false; } }
+        public override bool IsActiveVendor => false;
+        public override NpcGuild NpcGuild => NpcGuild.None;
+        public override bool ClickTitle => false;
 
         public override void InitOutfit()
         {

@@ -9,7 +9,7 @@ namespace Server.Items
     public class HuntingPermit : Item
     {
         private static readonly List<HuntingPermit> m_Permits = new List<HuntingPermit>();
-        public static List<HuntingPermit> Permits { get { return m_Permits; } }
+        public static List<HuntingPermit> Permits => m_Permits;
 
         private Mobile m_Owner;
         private bool m_ProducedTrophy;
@@ -26,10 +26,10 @@ namespace Server.Items
         public HuntingKillEntry KillEntry { get { return m_KillEntry; } set { m_KillEntry = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool HasDocumentedKill { get { return m_KillEntry != null; } }
+        public bool HasDocumentedKill => m_KillEntry != null;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool CanUseTaxidermyOn { get { return HasDocumentedKill && m_KillEntry.KillIndex < HuntingTrophyInfo.Infos.Count && !m_ProducedTrophy; } }
+        public bool CanUseTaxidermyOn => HasDocumentedKill && m_KillEntry.KillIndex < HuntingTrophyInfo.Infos.Count && !m_ProducedTrophy;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool HasSubmitted
@@ -44,7 +44,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber { get { return 1155704; } } // Hunting Permit
+        public override int LabelNumber => 1155704;  // Hunting Permit
 
         [Constructable]
         public HuntingPermit(Mobile from)

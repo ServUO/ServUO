@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class DirtySnowballs : SnowPile
     {
-        public override int LabelNumber { get { return 1158833; } } // dirty snowballs
+        public override int LabelNumber => 1158833;  // dirty snowballs
 
         [Constructable]
         public DirtySnowballs()

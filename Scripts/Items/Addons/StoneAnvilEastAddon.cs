@@ -13,20 +13,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new StoneAnvilEastDeed();
-            }
-        }
-        public override bool RetainDeedHue
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override BaseAddonDeed Deed => new StoneAnvilEastDeed();
+        public override bool RetainDeedHue => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -54,20 +42,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new StoneAnvilEastAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073392;
-            }
-        }// stone anvil (east)
+        public override BaseAddon Addon => new StoneAnvilEastAddon();
+        public override int LabelNumber => 1073392;// stone anvil (east)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -56,7 +56,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1154215; } } // A Special Salvage Hook
+        public override int LabelNumber => 1154215;  // A Special Salvage Hook
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool InUse
@@ -65,7 +65,7 @@ namespace Server.Items
             set { this.m_InUse = value; }
         }
 
-        public virtual bool RequireDeepWater { get { return true; } }
+        public virtual bool RequireDeepWater => true;
 
         public override void Serialize(GenericWriter writer)
         {

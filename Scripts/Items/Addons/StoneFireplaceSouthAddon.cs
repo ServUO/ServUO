@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new StoneFireplaceSouthDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new StoneFireplaceSouthDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -48,20 +42,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new StoneFireplaceSouthAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1061849;
-            }
-        }// stone fireplace (south)
+        public override BaseAddon Addon => new StoneFireplaceSouthAddon();
+        public override int LabelNumber => 1061849;// stone fireplace (south)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

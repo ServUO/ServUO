@@ -5,9 +5,9 @@ namespace Server.Spells.Mysticism
 {
     public class HealingStoneSpell : MysticSpell
     {
-        public override SpellCircle Circle { get { return SpellCircle.First; } }
+        public override SpellCircle Circle => SpellCircle.First;
 
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(5); } }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(5);
 
         private static readonly SpellInfo m_Info = new SpellInfo(
                 "Healing Stone", "Kal In Mani",

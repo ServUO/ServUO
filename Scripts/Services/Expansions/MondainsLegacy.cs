@@ -184,13 +184,7 @@ namespace Server
                 m_PublicDonations = value;
             }
         }
-        public static Type[] Artifacts
-        {
-            get
-            {
-                return m_Artifacts;
-            }
-        }
+        public static Type[] Artifacts => m_Artifacts;
         public static void Initialize()
         {
             EventSink.OnKilledBy += OnKilledBy;

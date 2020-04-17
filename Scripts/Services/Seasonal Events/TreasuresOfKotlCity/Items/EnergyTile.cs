@@ -12,7 +12,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextDeactivation { get { return m_NextDeactivation; } set { m_NextDeactivation = value; } }
 
-        public override BaseAddonDeed Deed { get { return null; } }
+        public override BaseAddonDeed Deed => null;
 
         [Constructable]
         public EnergyTileAddon(int count, Direction direction)

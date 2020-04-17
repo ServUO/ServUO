@@ -11,18 +11,18 @@ namespace Server.Engines.Shadowguard
     public abstract class ShadowguardEncounter
     {
         [CommandProperty(AccessLevel.GameMaster)]
-        public ShadowguardController Controller { get { return ShadowguardController.Instance; } }
+        public ShadowguardController Controller => ShadowguardController.Instance;
 
         public Rectangle2D[] Bounds { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ShadowguardRegion Region { get { return Instance.Region; } }
+        public ShadowguardRegion Region => Instance.Region;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D StartLoc { get { return Def.StartLoc; } }
+        public Point3D StartLoc => Def.StartLoc;
 
-        public Point3D[] SpawnPoints { get { return Def.SpawnPoints; } }
-        public Rectangle2D[] SpawnRecs { get { return Def.SpawnRecs; } }
+        public Point3D[] SpawnPoints => Def.SpawnPoints;
+        public Rectangle2D[] SpawnRecs => Def.SpawnRecs;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public EncounterType Encounter { get; set; }
@@ -71,13 +71,13 @@ namespace Server.Engines.Shadowguard
         public BaseAddon Addon { get; set; }
 
         public abstract Type AddonType { get; }
-        public EncounterDef Def { get { return Defs[Encounter]; } }
+        public EncounterDef Def => Defs[Encounter];
 
-        public virtual TimeSpan EncounterDuration { get { return TimeSpan.FromMinutes(30); } }
-        public virtual TimeSpan ResetDuration { get { return TimeSpan.FromSeconds(60); } }
+        public virtual TimeSpan EncounterDuration => TimeSpan.FromMinutes(30);
+        public virtual TimeSpan ResetDuration => TimeSpan.FromSeconds(60);
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Active { get { return Controller != null && Controller.Encounters.Contains(this); } }
+        public bool Active => Controller != null && Controller.Encounters.Contains(this);
 
         public List<PlayerMobile> Participants { get; private set; } = new List<PlayerMobile>();
 

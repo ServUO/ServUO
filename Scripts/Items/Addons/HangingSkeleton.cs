@@ -28,7 +28,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public Item Deed
         {
@@ -141,13 +141,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1049772;
-            }
-        }// deed for a hanging skeleton decoration
+        public override int LabelNumber => 1049772;// deed for a hanging skeleton decoration
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
         {

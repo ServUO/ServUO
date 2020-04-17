@@ -17,7 +17,7 @@ namespace Server.Engines.VoidPool
         public List<SpawnEntry> Spawns { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int EntryCount { get { return Spawns == null ? 0 : Spawns.Count; } }
+        public int EntryCount => Spawns == null ? 0 : Spawns.Count;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
@@ -50,9 +50,9 @@ namespace Server.Engines.VoidPool
         }
 
         #region ISpawner Stuff
-        public bool UnlinkOnTaming { get { return true; } }
-        public Point3D HomeLocation { get { return Point3D.Zero; } }
-        public int HomeRange { get { return 20; } }
+        public bool UnlinkOnTaming => true;
+        public Point3D HomeLocation => Point3D.Zero;
+        public int HomeRange => 20;
 
         public void Remove(ISpawnable spawnable)
         {
@@ -263,7 +263,7 @@ namespace Server.Engines.VoidPool
             public Rectangle2D[] Bounds { get; private set; }
             public int MaxCount { get; private set; }
 
-            public int CurrentCount { get { return Spawn.Count; } }
+            public int CurrentCount => Spawn.Count;
             public VoidType SpawnType { get; set; }
 
             public List<BaseCreature> Spawn { get; set; }

@@ -22,27 +22,9 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113325;
-            }
-        }// essence of achievement
-        TextDefinition ICommodity.Description
-        {
-            get
-            {
-                return this.LabelNumber;
-            }
-        }
-        bool ICommodity.IsDeedable
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int LabelNumber => 1113325;// essence of achievement
+        TextDefinition ICommodity.Description => this.LabelNumber;
+        bool ICommodity.IsDeedable => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

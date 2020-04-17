@@ -11,13 +11,13 @@ namespace Server.Items
         private BaseGalleon m_Galleon;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BaseGalleon Galleon { get { return m_Galleon; } }
+        public BaseGalleon Galleon => m_Galleon;
 
-        public override bool IsDecoContainer { get { return false; } }
+        public override bool IsDecoContainer => false;
 
-        public override string DefaultName { get { return "Ship Container"; } }
+        public override string DefaultName => "Ship Container";
 
-        public override int DefaultMaxWeight { get { return 1250; } }
+        public override int DefaultMaxWeight => 1250;
 
         public GalleonContainer(BaseGalleon galleon)
         {

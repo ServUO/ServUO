@@ -5,7 +5,7 @@ namespace Server.Mobiles
 {
     public class Walton : HumilityQuestMobile
     {
-        public override int Greeting { get { return 1075739; } }
+        public override int Greeting => 1075739;
 
         [Constructable]
         public Walton()

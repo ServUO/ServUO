@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class Lavaliere : GoldNecklace
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1114843; } } // Lavaliere
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1114843;  // Lavaliere
 
         [Constructable]
         public Lavaliere()

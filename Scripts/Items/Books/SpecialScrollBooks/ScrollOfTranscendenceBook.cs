@@ -6,12 +6,12 @@ namespace Server.Items
     [Flipable(0x577E, 0x577F)]
     public class ScrollOfTranscendenceBook : BaseSpecialScrollBook
     {
-        public override Type ScrollType { get { return typeof(ScrollOfTranscendence); } }
-        public override int LabelNumber { get { return 1151679; } } // Scrolls of Transcendence Book
-        public override int BadDropMessage { get { return 1151677; } } // This book only holds Scrolls of Transcendence.
-        public override int DropMessage { get { return 1151674; } }    // You add the scroll to your Scrolls of Transcendence book.
-        public override int RemoveMessage { get { return 1151658; } }  // You remove a Scroll of Transcendence and put it in your pack. 
-        public override int GumpTitle { get { return 1151675; } }  // Scrolls of Transcendence
+        public override Type ScrollType => typeof(ScrollOfTranscendence);
+        public override int LabelNumber => 1151679;  // Scrolls of Transcendence Book
+        public override int BadDropMessage => 1151677;  // This book only holds Scrolls of Transcendence.
+        public override int DropMessage => 1151674;     // You add the scroll to your Scrolls of Transcendence book.
+        public override int RemoveMessage => 1151658;   // You remove a Scroll of Transcendence and put it in your pack. 
+        public override int GumpTitle => 1151675;   // Scrolls of Transcendence
 
         [Constructable]
         public ScrollOfTranscendenceBook()
@@ -39,8 +39,8 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
 
-        public override Dictionary<SkillCat, List<SkillName>> SkillInfo { get { return _SkillInfo; } }
-        public override Dictionary<int, double> ValueInfo { get { return _ValueInfo; } }
+        public override Dictionary<SkillCat, List<SkillName>> SkillInfo => _SkillInfo;
+        public override Dictionary<int, double> ValueInfo => _ValueInfo;
 
         public static Dictionary<SkillCat, List<SkillName>> _SkillInfo;
         public static Dictionary<int, double> _ValueInfo;

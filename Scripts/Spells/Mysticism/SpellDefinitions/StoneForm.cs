@@ -23,16 +23,16 @@ namespace Server.Spells.Mysticism
 
         private int m_ResisMod;
 
-        public override SpellCircle Circle { get { return SpellCircle.Fourth; } }
+        public override SpellCircle Circle => SpellCircle.Fourth;
 
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(2.0); } }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(2.0);
 
-        public override int Body { get { return 705; } }
-        public override int PhysResistOffset { get { return m_ResisMod; } }
-        public override int FireResistOffset { get { return m_ResisMod; } }
-        public override int ColdResistOffset { get { return m_ResisMod; } }
-        public override int PoisResistOffset { get { return m_ResisMod; } }
-        public override int NrgyResistOffset { get { return m_ResisMod; } }
+        public override int Body => 705;
+        public override int PhysResistOffset => m_ResisMod;
+        public override int FireResistOffset => m_ResisMod;
+        public override int ColdResistOffset => m_ResisMod;
+        public override int PoisResistOffset => m_ResisMod;
+        public override int NrgyResistOffset => m_ResisMod;
 
         public StoneFormSpell(Mobile caster, Item scroll) : base(caster, scroll, m_Info)
         {

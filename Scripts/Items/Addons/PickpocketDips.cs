@@ -45,13 +45,7 @@ namespace Server.Items
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Swinging
-        {
-            get
-            {
-                return (this.m_Timer != null);
-            }
-        }
+        public bool Swinging => (this.m_Timer != null);
         public void UpdateItemID()
         {
             int baseItemID = 0x1EC0 + (((this.ItemID - 0x1EC0) / 3) * 3);
@@ -180,13 +174,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new PickpocketDipEastDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new PickpocketDipEastDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -214,20 +202,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new PickpocketDipEastAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044337;
-            }
-        }// pickpocket dip (east)
+        public override BaseAddon Addon => new PickpocketDipEastAddon();
+        public override int LabelNumber => 1044337;// pickpocket dip (east)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -256,13 +232,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new PickpocketDipSouthDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new PickpocketDipSouthDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -290,20 +260,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new PickpocketDipSouthAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044338;
-            }
-        }// pickpocket dip (south)
+        public override BaseAddon Addon => new PickpocketDipSouthAddon();
+        public override int LabelNumber => 1044338;// pickpocket dip (south)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

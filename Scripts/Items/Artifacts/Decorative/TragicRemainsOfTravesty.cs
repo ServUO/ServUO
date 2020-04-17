@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class TragicRemainsOfTravesty : BaseStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         private static readonly int[] m_Sounds = new int[]
         {
             0x314, 0x315, 0x316, 0x317  // TODO check
@@ -20,13 +20,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074500;
-            }
-        }// Tragic Remains of the Travesty
+        public override int LabelNumber => 1074500;// Tragic Remains of the Travesty
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             if (this.TurnedOn && this.IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, this.Location, 2) && !Utility.InRange(oldLocation, this.Location, 2))

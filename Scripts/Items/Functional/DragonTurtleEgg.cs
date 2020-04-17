@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class DragonTurtleEgg : ChickenLizardEgg
     {
-        public override bool CanMutate { get { return false; } }
+        public override bool CanMutate => false;
 
         [Constructable]
         public DragonTurtleEgg()

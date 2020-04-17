@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class PowerCore : BaseDecayingItem
     {
-        public override int LabelNumber { get { return 1154429; } } // Power Core
+        public override int LabelNumber => 1154429;  // Power Core
 
         [Constructable]
         public PowerCore()
@@ -20,7 +20,7 @@ namespace Server.Items
             list.Add(1072351); // Quest Item
         }
 
-        public override int Lifespan { get { return 18000; } }
+        public override int Lifespan => 18000;
 
         public PowerCore(Serial serial)
             : base(serial)

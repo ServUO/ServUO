@@ -18,19 +18,13 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
-        public bool PlayerConstructed { get { return true; } }
+        public bool PlayerConstructed => true;
 
         #region Old Item Serialization Vars
         /* DO NOT USE! Only used in serialization of special scrolls that originally derived from Item */
         private bool m_InheritsItem;
 
-        protected bool InheritsItem
-        {
-            get
-            {
-                return this.m_InheritsItem;
-            }
-        }
+        protected bool InheritsItem => this.m_InheritsItem;
         #endregion
 
         public BaseUtensil(int itemID)

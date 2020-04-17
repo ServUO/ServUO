@@ -69,13 +69,7 @@ namespace Server.Engines.Help
 
         private readonly Queue<SpeechLogEntry> m_Queue;
 
-        public int Count
-        {
-            get
-            {
-                return this.m_Queue.Count;
-            }
-        }
+        public int Count => this.m_Queue.Count;
 
         public SpeechLog()
         {
@@ -139,20 +133,8 @@ namespace Server.Engines.Help
         private readonly string m_Speech;
         private DateTime m_Created;
 
-        public Mobile From
-        {
-            get
-            {
-                return this.m_From;
-            }
-        }
-        public string Speech
-        {
-            get
-            {
-                return this.m_Speech;
-            }
-        }
+        public Mobile From => this.m_From;
+        public string Speech => this.m_Speech;
         public DateTime Created
         {
             get

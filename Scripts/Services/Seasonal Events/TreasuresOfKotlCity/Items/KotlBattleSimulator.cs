@@ -15,7 +15,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public static Type[] SpawnTypes = new Type[] { typeof(SpectralKotlWarrior), typeof(SpectralMyrmidexWarrior) };
 
         public static TimeSpan BattleDuration = TimeSpan.FromMinutes(60);
-        public static TimeSpan NextSpawnDuration { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(2, 25)); } }
+        public static TimeSpan NextSpawnDuration => TimeSpan.FromSeconds(Utility.RandomMinMax(2, 25));
 
         private bool _Active;
 
@@ -36,7 +36,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int SpawnCount { get { return Spawn != null ? Spawn.Count : 0; } }
+        public int SpawnCount => Spawn != null ? Spawn.Count : 0;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Level { get; set; }
@@ -46,12 +46,12 @@ namespace Server.Engines.TreasuresOfKotlCity
 
         public List<ISpawnable> Spawn { get; set; }
 
-        public bool UnlinkOnTaming { get { return true; } }
-        public Point3D HomeLocation { get { return new Point3D(544, 2303, 0); } }
-        public int HomeRange { get { return 30; } }
+        public bool UnlinkOnTaming => true;
+        public Point3D HomeLocation => new Point3D(544, 2303, 0);
+        public int HomeRange => 30;
 
-        public int SpawnPerWave { get { return 10 + (Level * 2); } }
-        public int KillsPerWave { get { return 20 + (Level * 2); } }
+        public int SpawnPerWave => 10 + (Level * 2);
+        public int KillsPerWave => 20 + (Level * 2);
 
         public Timer Timer { get; set; }
 

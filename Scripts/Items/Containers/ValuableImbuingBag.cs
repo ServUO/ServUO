@@ -34,13 +34,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113769; //Valuable Imbuing Bag
-            }
-        }
+        public override int LabelNumber => 1113769; //Valuable Imbuing Bag
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

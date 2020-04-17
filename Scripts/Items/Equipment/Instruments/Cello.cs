@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0x4C3E, 0x4C3F)]
     public class CelloComponent : InstrumentedAddonComponent
     {
-        public override int LabelNumber { get { return 1098390; } } // cello
+        public override int LabelNumber => 1098390;  // cello
 
         public CelloComponent()
             : base(0x4C3E, 0x66D)
@@ -30,7 +30,7 @@ namespace Server.Items
 
     public class CelloDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1098390; } } // cello
+        public override int LabelNumber => 1098390;  // cello
 
         [Constructable]
         public CelloDeed()
@@ -42,7 +42,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon { get { return new CelloAddon(); } }
+        public override BaseAddon Addon => new CelloAddon();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -59,8 +59,8 @@ namespace Server.Items
 
     public class CelloAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new CelloDeed(); } }
-        public override bool RetainDeedHue { get { return true; } }
+        public override BaseAddonDeed Deed => new CelloDeed();
+        public override bool RetainDeedHue => true;
 
         [Constructable]
         public CelloAddon()

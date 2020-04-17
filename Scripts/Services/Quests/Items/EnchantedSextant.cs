@@ -66,13 +66,7 @@ namespace Server.Items
         private const double m_LongDistance = 300.0;
         private const double m_ShortDistance = 5.0;
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1046226;
-            }
-        }// an enchanted sextant
+        public override int LabelNumber => 1046226;// an enchanted sextant
 
         [Constructable]
         public EnchantedSextant()

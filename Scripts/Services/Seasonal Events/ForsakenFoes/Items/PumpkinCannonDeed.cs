@@ -4,8 +4,8 @@ namespace Server.Items
 {
     public class PumpkinDeed : ShipCannonDeed
     {
-        public override CannonPower CannonType { get { return CannonPower.Pumpkin; } }
-        public override int LabelNumber { get { return 1159232; } } // Pumpkin Cannon
+        public override CannonPower CannonType => CannonPower.Pumpkin;
+        public override int LabelNumber => 1159232;  // Pumpkin Cannon
 
         [Constructable]
         public PumpkinDeed()
@@ -33,11 +33,11 @@ namespace Server.Items
 
     public class PumpkinCannon : BaseShipCannon
     {
-        public override int LabelNumber { get { return 1023691; } } // cannon
+        public override int LabelNumber => 1023691;  // cannon
 
-        public override int Range { get { return 10; } }
-        public override ShipCannonDeed GetDeed { get { return new PumpkinDeed(); } }
-        public override CannonPower Power { get { return CannonPower.Pumpkin; } }
+        public override int Range => 10;
+        public override ShipCannonDeed GetDeed => new PumpkinDeed();
+        public override CannonPower Power => CannonPower.Pumpkin;
 
         public PumpkinCannon(BaseGalleon g)
             : base(g)

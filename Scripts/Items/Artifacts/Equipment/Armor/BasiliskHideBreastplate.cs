@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class BasiliskHideBreastplate : DragonChest
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1115444; } } // Basilisk Hide Breastplate
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1115444;  // Basilisk Hide Breastplate
 
         [Constructable]
         public BasiliskHideBreastplate()
@@ -24,55 +24,13 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 12;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 14;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 6;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int BasePhysicalResistance => 12;
+        public override int BaseFireResistance => 14;
+        public override int BaseColdResistance => 6;
+        public override int BasePoisonResistance => 11;
+        public override int BaseEnergyResistance => 5;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

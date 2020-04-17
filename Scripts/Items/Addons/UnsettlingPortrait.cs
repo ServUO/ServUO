@@ -18,13 +18,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074480;
-            }
-        }// Unsettling portrait
+        public override int LabelNumber => 1074480;// Unsettling portrait
         public override void OnDoubleClick(Mobile from)
         {
             if (Utility.InRange(this.Location, from.Location, 2))
@@ -84,13 +78,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new UnsettlingPortraitDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new UnsettlingPortraitDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -120,20 +108,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new UnsettlingPortraitAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074480;
-            }
-        }// Unsettling portrait
+        public override BaseAddon Addon => new UnsettlingPortraitAddon();
+        public override int LabelNumber => 1074480;// Unsettling portrait
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

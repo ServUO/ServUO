@@ -12,13 +12,7 @@ namespace Server.Engines.Reports
             return new SnapshotHistory();
         }
 
-        public override PersistableType TypeID
-        {
-            get
-            {
-                return ThisTypeID;
-            }
-        }
+        public override PersistableType TypeID => ThisTypeID;
         #endregion
 
         private SnapshotCollection m_Snapshots;

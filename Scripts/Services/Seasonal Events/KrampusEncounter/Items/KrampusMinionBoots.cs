@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class KrampusMinionBoots : BaseShoes
     {
-        public override int LabelNumber { get { return 1125637; } } // krampus minion boots
+        public override int LabelNumber => 1125637;  // krampus minion boots
 
         [Constructable]
         public KrampusMinionBoots()

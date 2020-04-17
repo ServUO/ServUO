@@ -28,13 +28,7 @@ namespace Server.Items
         {
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "AI Way Point";
-            }
-        }
+        public override string DefaultName => "AI Way Point";
         [CommandProperty(AccessLevel.GameMaster)]
         public WayPoint NextPoint
         {

@@ -59,27 +59,9 @@ namespace Server.Items
             }
         }
 
-        public Mobile From
-        {
-            get
-            {
-                return this.m_From;
-            }
-        }
-        public IPAddress Address
-        {
-            get
-            {
-                return this.m_Address;
-            }
-        }
-        public DateTime Date
-        {
-            get
-            {
-                return this.m_Date;
-            }
-        }
+        public Mobile From => this.m_From;
+        public IPAddress Address => this.m_Address;
+        public DateTime Date => this.m_Date;
         public void Serialize(GenericWriter writer)
         {
             writer.Write(this.m_From);
@@ -278,27 +260,9 @@ namespace Server.Items
                 this.InvalidateProperties();
             }
         }
-        public List<RaffleEntry> Entries
-        {
-            get
-            {
-                return this.m_Entries;
-            }
-        }
-        public override string DefaultName
-        {
-            get
-            {
-                return "a house raffle stone";
-            }
-        }
-        public override bool DisplayWeight
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public List<RaffleEntry> Entries => this.m_Entries;
+        public override string DefaultName => "a house raffle stone";
+        public override bool DisplayWeight => false;
         public static void CheckEnd_OnTick()
         {
             for (int i = 0; i < m_AllStones.Count; i++)

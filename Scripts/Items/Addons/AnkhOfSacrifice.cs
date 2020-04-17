@@ -20,15 +20,9 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1027772;
-            }
-        }// Ankh of Sacrifice
+        public override int LabelNumber => 1027772;// Ankh of Sacrifice
         public static void Resurrect(PlayerMobile m, AnkhOfSacrificeAddon ankh)
         {
             if (m == null)
@@ -191,13 +185,7 @@ namespace Server.Items
         {
         }
 
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool HandlesOnMovement => true;
         public override BaseAddonDeed Deed
         {
             get
@@ -270,13 +258,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1080397;
-            }
-        }// Deed For An Ankh Of Sacrifice
+        public override int LabelNumber => 1080397;// Deed For An Ankh Of Sacrifice
         public override BaseAddon Addon
         {
             get

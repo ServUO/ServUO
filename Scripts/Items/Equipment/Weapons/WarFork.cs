@@ -18,84 +18,18 @@ namespace Server.Items
         {
         }
 
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.BleedAttack;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.Disarm;
-            }
-        }
-        public override int StrengthReq
-        {
-            get
-            {
-                return 45;
-            }
-        }
-        public override int MinDamage
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 14;
-            }
-        }
-        public override float Speed
-        {
-            get
-            {
-                return 2.50f;
-            }
-        }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.BleedAttack;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.Disarm;
+        public override int StrengthReq => 45;
+        public override int MinDamage => 10;
+        public override int MaxDamage => 14;
+        public override float Speed => 2.50f;
 
-        public override int DefHitSound
-        {
-            get
-            {
-                return 0x236;
-            }
-        }
-        public override int DefMissSound
-        {
-            get
-            {
-                return 0x238;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 31;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 110;
-            }
-        }
-        public override WeaponAnimation DefAnimation
-        {
-            get
-            {
-                return WeaponAnimation.Pierce1H;
-            }
-        }
+        public override int DefHitSound => 0x236;
+        public override int DefMissSound => 0x238;
+        public override int InitMinHits => 31;
+        public override int InitMaxHits => 110;
+        public override WeaponAnimation DefAnimation => WeaponAnimation.Pierce1H;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

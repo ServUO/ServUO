@@ -25,20 +25,8 @@ namespace Server.Engines.Quests
         {
         }
 
-        public virtual Type[] Quests
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public virtual int Lifespan
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual Type[] Quests => null;
+        public virtual int Lifespan => 0;
         public int Duration
         {
             get

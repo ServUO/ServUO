@@ -11,11 +11,11 @@ namespace Server.Mobiles
         public static readonly int DryDockDistance = 300;
         public static readonly int DryDockAmount = 2500;
 
-        public override bool IsActiveVendor { get { return false; } }
-        public override bool IsInvulnerable { get { return true; } }
+        public override bool IsActiveVendor => false;
+        public override bool IsInvulnerable => true;
 
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public override void InitSBInfo()
         {

@@ -6,11 +6,11 @@ namespace Server.Mobiles
 {
     public class CoraTheSorceress : BaseCreature, IElementalCreature, IAuraCreature
     {
-        public ElementType ElementType { get { return ElementType.Chaos; } }
+        public ElementType ElementType => ElementType.Chaos;
 
         public DateTime NextManaDrain { get; set; }
 
-        public TimeSpan ManaDrainInterval { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(15, 120)); } }
+        public TimeSpan ManaDrainInterval => TimeSpan.FromSeconds(Utility.RandomMinMax(15, 120));
 
         [Constructable]
         public CoraTheSorceress() : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.1)
@@ -59,9 +59,9 @@ namespace Server.Mobiles
             SetAreaEffect(AreaEffect.AuraDamage);
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
-        public override bool ClickTitle { get { return false; } }
-        public override bool ShowFameTitle { get { return false; } }
+        public override bool AlwaysMurderer => true;
+        public override bool ClickTitle => false;
+        public override bool ShowFameTitle => false;
 
         public void AuraEffect(Mobile m)
         {
@@ -77,10 +77,10 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool TeleportsTo { get { return true; } }
-        public override TimeSpan TeleportDuration { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60)); } }
-        public override double TeleportProb { get { return 1.0; } }
-        public override bool TeleportsPets { get { return true; } }
+        public override bool TeleportsTo => true;
+        public override TimeSpan TeleportDuration => TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60));
+        public override double TeleportProb => 1.0;
+        public override bool TeleportsPets => true;
 
         public override int GetDeathSound() { return 0x316; }
 

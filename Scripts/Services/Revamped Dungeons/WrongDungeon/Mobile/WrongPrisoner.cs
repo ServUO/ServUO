@@ -29,18 +29,12 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit() { }
 
-        public override bool IsInvulnerable { get { return !this.Controlled; } }
+        public override bool IsInvulnerable => !this.Controlled;
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(EscortToWrongEntrance)
                 };
-            }
-        }
 
         public override void Serialize(GenericWriter writer)
         {

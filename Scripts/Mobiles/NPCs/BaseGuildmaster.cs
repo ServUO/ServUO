@@ -20,62 +20,14 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool IsActiveVendor
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public virtual int JoinCost
-        {
-            get
-            {
-                return 500;
-            }
-        }
-        public virtual TimeSpan JoinAge
-        {
-            get
-            {
-                return TimeSpan.FromDays(0.0);
-            }
-        }
-        public virtual TimeSpan JoinGameAge
-        {
-            get
-            {
-                return TimeSpan.FromDays(2.0);
-            }
-        }
-        public virtual TimeSpan QuitAge
-        {
-            get
-            {
-                return TimeSpan.FromDays(7.0);
-            }
-        }
-        public virtual TimeSpan QuitGameAge
-        {
-            get
-            {
-                return TimeSpan.FromDays(4.0);
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        public override bool IsActiveVendor => false;
+        public override bool ClickTitle => false;
+        public virtual int JoinCost => 500;
+        public virtual TimeSpan JoinAge => TimeSpan.FromDays(0.0);
+        public virtual TimeSpan JoinGameAge => TimeSpan.FromDays(2.0);
+        public virtual TimeSpan QuitAge => TimeSpan.FromDays(7.0);
+        public virtual TimeSpan QuitGameAge => TimeSpan.FromDays(4.0);
+        protected override List<SBInfo> SBInfos => this.m_SBInfos;
         public override void InitSBInfo()
         {
         }

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class LuckyNecklace : BaseJewel
     {
-        public override int LabelNumber { get { return 1075239; } } //Lucky Necklace
+        public override int LabelNumber => 1075239;  //Lucky Necklace
 
         [Constructable]
         public LuckyNecklace()

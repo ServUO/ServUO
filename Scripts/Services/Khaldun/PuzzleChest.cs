@@ -72,13 +72,7 @@ namespace Server.Items
             }
         }
 
-        public PuzzleChestCylinder[] Cylinders
-        {
-            get
-            {
-                return m_Cylinders;
-            }
-        }
+        public PuzzleChestCylinder[] Cylinders => m_Cylinders;
         public PuzzleChestCylinder First
         {
             get
@@ -224,13 +218,7 @@ namespace Server.Items
             m_When = reader.ReadDeltaTime();
         }
 
-        public DateTime When
-        {
-            get
-            {
-                return m_When;
-            }
-        }
+        public DateTime When => m_When;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -249,7 +237,7 @@ namespace Server.Items
         private PuzzleChestSolution m_Solution;
         private PuzzleChestCylinder[] m_Hints = new PuzzleChestCylinder[HintsCount];
 
-        public virtual int Label { get { return 1018309; } } // A Puzzle Lock
+        public virtual int Label => 1018309;  // A Puzzle Lock
 
         public PuzzleChest(int itemID)
             : base(itemID)
@@ -273,13 +261,7 @@ namespace Server.Items
                 InitHints();
             }
         }
-        public PuzzleChestCylinder[] Hints
-        {
-            get
-            {
-                return m_Hints;
-            }
-        }
+        public PuzzleChestCylinder[] Hints => m_Hints;
         public PuzzleChestCylinder FirstHint
         {
             get
@@ -313,13 +295,7 @@ namespace Server.Items
                 m_Hints[2] = value;
             }
         }
-        public override string DefaultName
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override string DefaultName => null;
         public override bool CheckLocked(Mobile from)
         {
             if (Locked)

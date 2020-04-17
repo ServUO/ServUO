@@ -432,13 +432,7 @@ namespace Server.Mobiles
                 this.m_Removed = false;
             }
 
-            public int ID
-            {
-                get
-                {
-                    return this.m_ID;
-                }
-            }
+            public int ID => this.m_ID;
             public Point3D Location
             {
                 get
@@ -450,20 +444,8 @@ namespace Server.Mobiles
                     this.m_Location = value;
                 }
             }
-            public List<GuideVertex> Vertices
-            {
-                get
-                {
-                    return this.m_Vertices;
-                }
-            }
-            public List<int> Shops
-            {
-                get
-                {
-                    return this.m_Shops;
-                }
-            }
+            public List<GuideVertex> Vertices => this.m_Vertices;
+            public List<int> Shops => this.m_Shops;
             public bool Teleporter
             {
                 get
@@ -546,20 +528,8 @@ namespace Server.Mobiles
                 this.m_List = new List<T>();
             }
 
-            public int Count
-            {
-                get
-                {
-                    return this.m_List.Count;
-                }
-            }
-            public T Top
-            {
-                get
-                {
-                    return this.m_List[0];
-                }
-            }
+            public int Count => this.m_List.Count;
+            public T Top => this.m_List[0];
             public bool Contains(T item)
             {
                 return this.m_List.Contains(item);
@@ -687,13 +657,7 @@ namespace Server.Mobiles
         {
         }
 
-        public List<Vertex> Path
-        {
-            get
-            {
-                return this.m_Path;
-            }
-        }
+        public List<Vertex> Path => this.m_Path;
         public override void OnDoubleClick(Mobile from)
         {
             if (from.Alive && this.IsOwner(from))

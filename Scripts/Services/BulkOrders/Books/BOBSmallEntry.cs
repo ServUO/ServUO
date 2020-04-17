@@ -77,76 +77,16 @@ namespace Server.Engines.BulkOrders
             }
         }
 
-        public Type ItemType
-        {
-            get
-            {
-                return m_ItemType;
-            }
-        }
-        public bool RequireExceptional
-        {
-            get
-            {
-                return m_RequireExceptional;
-            }
-        }
-        public BODType DeedType
-        {
-            get
-            {
-                return m_DeedType;
-            }
-        }
-        public BulkMaterialType Material
-        {
-            get
-            {
-                return m_Material;
-            }
-        }
-        public int AmountCur
-        {
-            get
-            {
-                return m_AmountCur;
-            }
-        }
-        public int AmountMax
-        {
-            get
-            {
-                return m_AmountMax;
-            }
-        }
-        public int Number
-        {
-            get
-            {
-                return m_Number;
-            }
-        }
-        public int Graphic
-        {
-            get
-            {
-                return m_Graphic;
-            }
-        }
-        public int Hue
-        {
-            get
-            {
-                return m_Hue;
-            }
-        }
-        public GemType GemType
-        {
-            get
-            {
-                return m_GemType;
-            }
-        }
+        public Type ItemType => m_ItemType;
+        public bool RequireExceptional => m_RequireExceptional;
+        public BODType DeedType => m_DeedType;
+        public BulkMaterialType Material => m_Material;
+        public int AmountCur => m_AmountCur;
+        public int AmountMax => m_AmountMax;
+        public int Number => m_Number;
+        public int Graphic => m_Graphic;
+        public int Hue => m_Hue;
+        public GemType GemType => m_GemType;
         public int Price
         {
             get

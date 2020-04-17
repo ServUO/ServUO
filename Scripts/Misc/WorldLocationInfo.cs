@@ -22,7 +22,7 @@ namespace Server
             m_Bounds = bounds;
         }
 
-        public static WorldLocationInfo[][] Locations { get { return m_Locations; } }
+        public static WorldLocationInfo[][] Locations => m_Locations;
         private static readonly WorldLocationInfo[][] m_Locations = new WorldLocationInfo[][]
         {
             new WorldLocationInfo[] // Felucca

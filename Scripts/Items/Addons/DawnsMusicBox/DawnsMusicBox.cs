@@ -72,20 +72,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075198;
-            }
-        }// Dawn’s Music Box
-        public List<MusicName> Tracks
-        {
-            get
-            {
-                return this.m_Tracks;
-            }
-        }
+        public override int LabelNumber => 1075198;// Dawn’s Music Box
+        public List<MusicName> Tracks => this.m_Tracks;
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level
         {

@@ -48,13 +48,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Deadly;
-            }
-        }
+        public override Poison PoisonImmune => Poison.Deadly;
 
         public override void GenerateLoot()
         {

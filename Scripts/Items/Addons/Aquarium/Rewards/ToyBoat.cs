@@ -14,20 +14,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074363;
-            }
-        }// A toy boat
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public override int LabelNumber => 1074363;// A toy boat
+        public override double DefaultWeight => 1.0;
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);

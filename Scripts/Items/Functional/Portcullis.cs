@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override bool UseChainedFunctionality
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool UseChainedFunctionality => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -48,13 +42,7 @@ namespace Server.Items
         {
         }
 
-        public override bool UseChainedFunctionality
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool UseChainedFunctionality => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

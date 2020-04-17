@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class AnniversaryPlate : Item
     {
-        public override int LabelNumber { get { return 1156149; } } // An Ornately Decorated Commemorative Plate
+        public override int LabelNumber => 1156149;  // An Ornately Decorated Commemorative Plate
 
         [CommandProperty(AccessLevel.GameMaster)]
         public TextDefinition LabelType { get; set; }

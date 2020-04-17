@@ -16,7 +16,7 @@ namespace Server.Engines.SeasonalEvents
     {
         public static string FilePath = Path.Combine("Saves/Misc", "KrampusEncounter.bin");
 
-        public static bool Enabled { get { return SeasonalEventSystem.IsActive(EventType.KrampusEncounter); } }
+        public static bool Enabled => SeasonalEventSystem.IsActive(EventType.KrampusEncounter);
         public static KrampusEncounter Encounter { get; set; }
 
         public static readonly int MinComplete = 20;
@@ -107,7 +107,7 @@ namespace Server.Engines.SeasonalEvents
         public int TotalTradesComplete { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Wave { get { return Math.Max(1, (int)Math.Min(6, TotalTradesComplete / 4.1)); } }
+        public int Wave => Math.Max(1, (int)Math.Min(6, TotalTradesComplete / 4.1));
 
         public Dictionary<PlayerMobile, int> CompleteTable { get; set; } = new Dictionary<PlayerMobile, int>();
 
@@ -118,7 +118,7 @@ namespace Server.Engines.SeasonalEvents
         public Point3D SpawnLocation { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool KrampusSpawning { get { return SpawnMap != null && SpawnLocation != Point3D.Zero; } }
+        public bool KrampusSpawning => SpawnMap != null && SpawnLocation != Point3D.Zero;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Map SpawnMap { get; set; }

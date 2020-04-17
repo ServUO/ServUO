@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076274;
-            }
-        }// Coffin
+        public override int LabelNumber => 1076274;// Coffin
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -62,13 +56,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new WoodenCoffinDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new WoodenCoffinDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -99,20 +87,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new WoodenCoffinAddon(this.m_East);
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076274;
-            }
-        }// Coffin
+        public override BaseAddon Addon => new WoodenCoffinAddon(this.m_East);
+        public override int LabelNumber => 1076274;// Coffin
         public override void OnDoubleClick(Mobile from)
         {
             if (this.IsChildOf(from.Backpack))

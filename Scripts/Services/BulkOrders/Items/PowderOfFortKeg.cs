@@ -7,7 +7,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Charges { get { return _Charges; } set { _Charges = value; InvalidateProperties(); } }
 
-        public override int LabelNumber { get { return 1157221; } } // A specially lined keg for powder of fortification.
+        public override int LabelNumber => 1157221;  // A specially lined keg for powder of fortification.
 
         [Constructable]
         public PowderOfFortKeg()

@@ -3,8 +3,8 @@ namespace Server.Items
     [Flipable(0x1F03, 0x1F04)]
     public class RobeOfTheEclipse : BaseOuterTorso
     {
-        public override bool CanBeWornByGargoyles { get { return true; } }
-        public override bool IsArtifact { get { return true; } }
+        public override bool CanBeWornByGargoyles => true;
+        public override bool IsArtifact => true;
 
         [Constructable]
         public RobeOfTheEclipse()
@@ -19,13 +19,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075082;
-            }
-        }// Robe of the Eclipse
+        public override int LabelNumber => 1075082;// Robe of the Eclipse
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

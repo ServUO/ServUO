@@ -21,27 +21,9 @@ namespace Server.Items
         {
         }
 
-        public override bool NeedsWall
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Point3D WallPosition
-        {
-            get
-            {
-                return this.East ? new Point3D(-1, 0, 0) : new Point3D(0, -1, 0);
-            }
-        }
-        public bool East
-        {
-            get
-            {
-                return this.ItemID == 0x1E2F;
-            }
-        }
+        public override bool NeedsWall => true;
+        public override Point3D WallPosition => this.East ? new Point3D(-1, 0, 0) : new Point3D(0, -1, 0);
+        public bool East => this.ItemID == 0x1E2F;
         public override void OnDoubleClick(Mobile from)
         {
             Direction dir;
@@ -130,13 +112,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new DartBoardEastDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new DartBoardEastDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -164,20 +140,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new DartBoardEastAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044326;
-            }
-        }// dartboard (east)
+        public override BaseAddon Addon => new DartBoardEastAddon();
+        public override int LabelNumber => 1044326;// dartboard (east)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -205,13 +169,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new DartBoardSouthDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new DartBoardSouthDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -239,20 +197,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new DartBoardSouthAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044325;
-            }
-        }// dartboard (south)
+        public override BaseAddon Addon => new DartBoardSouthAddon();
+        public override int LabelNumber => 1044325;// dartboard (south)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

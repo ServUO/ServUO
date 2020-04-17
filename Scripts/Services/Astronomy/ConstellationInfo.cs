@@ -27,7 +27,7 @@ namespace Server.Engines.Astronomy
         public DateTime DiscoveredOn { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool HasBeenDiscovered { get { return DiscoveredOn != DateTime.MinValue; } }
+        public bool HasBeenDiscovered => DiscoveredOn != DateTime.MinValue;
 
         public StarPosition[] StarPositions { get; set; }
 

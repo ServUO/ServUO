@@ -4,7 +4,7 @@ namespace Server.Mobiles
 {
     public class WanderingShaman : WanderingHealer
     {
-        public override bool ChangeRace { get { return false; } }
+        public override bool ChangeRace => false;
 
         [Constructable]
         public WanderingShaman()

@@ -340,7 +340,7 @@ namespace Server.Items
     [Flipable(0x44DD, 0x44E1)]
     public class LargeGrandfatherClock : ClockTime
     {
-        public override int LabelNumber { get { return 1149902; } } // Large Grandfather Clock
+        public override int LabelNumber => 1149902;  // Large Grandfather Clock
 
         [Constructable]
         public LargeGrandfatherClock()
@@ -369,7 +369,7 @@ namespace Server.Items
     [Flipable(0x44D5, 0x44D9)]
     public class SmallGrandfatherClock : ClockTime
     {
-        public override int LabelNumber { get { return 1149901; } } // Small Grandfather Clock
+        public override int LabelNumber => 1149901;  // Small Grandfather Clock
 
         [Constructable]
         public SmallGrandfatherClock()
@@ -398,7 +398,7 @@ namespace Server.Items
     [Flipable(0x48D4, 0x48D8)]
     public class WhiteGrandfatherClock : ClockTime
     {
-        public override int LabelNumber { get { return 1149903; } } // White Grandfather Clock
+        public override int LabelNumber => 1149903;  // White Grandfather Clock
 
         [Constructable]
         public WhiteGrandfatherClock()

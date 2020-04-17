@@ -186,7 +186,7 @@ namespace Server.Engines.Plants
                 TramInstance.OnPlantPlanted(from);
         }
 
-        public static Rectangle2D[] MagGrowBounds { get { return m_MagGrowBounds; } }
+        public static Rectangle2D[] MagGrowBounds => m_MagGrowBounds;
 
         private static readonly Rectangle2D[] m_MagGrowBounds = new Rectangle2D[]
         {

@@ -34,13 +34,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ShareHue
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool ShareHue => false;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

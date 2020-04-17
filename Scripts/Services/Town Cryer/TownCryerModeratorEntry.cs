@@ -11,7 +11,7 @@ namespace Server.Services.TownCryer
         public DateTime Expires { get; set; }
         public string ModeratorName { get; set; }
 
-        public bool Expired { get { return Expires < DateTime.Now; } }
+        public bool Expired => Expires < DateTime.Now;
 
         public TownCryerModeratorEntry(Mobile m, int duration, string title, string body1, string body2 = null, string body3 = null)
         {

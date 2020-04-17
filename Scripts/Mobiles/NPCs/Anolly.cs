@@ -14,47 +14,17 @@ namespace Server.Engines.Quests
         }
 
         /* Stop Harping on Me */
-        public override object Title
-        {
-            get
-            {
-                return 1073881;
-            }
-        }
+        public override object Title => 1073881;
         /* Humans artistry can be a remarkable thing. For instance, I have heard of a wonderful 
         instrument which creates the most melodious of music. A lap harp. I would be ever so 
         grateful if I could examine one in person. */
-        public override object Description
-        {
-            get
-            {
-                return 1074071;
-            }
-        }
+        public override object Description => 1074071;
         /* I will patiently await your reconsideration. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073921;
-            }
-        }
+        public override object Refuse => 1073921;
         /* I will be in your debt if you bring me lap harp. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073927;
-            }
-        }
+        public override object Uncomplete => 1073927;
         /* My thanks for your service. Now, I will show you something of elven carpentry. */
-        public override object Complete
-        {
-            get
-            {
-                return 1073969;
-            }
-        }
+        public override object Complete => 1073969;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -81,46 +51,16 @@ namespace Server.Engines.Quests
         }
 
         /* The Far Eye */
-        public override object Title
-        {
-            get
-            {
-                return 1073908;
-            }
-        }
+        public override object Title => 1073908;
         /* The wonders of human invention! Turning sand and metal into a far-seeing eye! This is 
         something I must experience for myself. Bring me some of these spyglasses friend human. */
-        public override object Description
-        {
-            get
-            {
-                return 1074098;
-            }
-        }
+        public override object Description => 1074098;
         /* I will patiently await your reconsideration. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073921;
-            }
-        }
+        public override object Refuse => 1073921;
         /* I will be in your debt if you bring me spyglasses. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073954;
-            }
-        }
+        public override object Uncomplete => 1073954;
         /* Enjoy my thanks for your service. */
-        public override object Complete
-        {
-            get
-            {
-                return 1073978;
-            }
-        }
+        public override object Complete => 1073978;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -151,18 +91,12 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(StopHarpingOnMeQuest),
                     typeof(TheFarEyeQuest),
                     typeof(NothingFancyQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             InitStats(100, 100, 25);

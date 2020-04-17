@@ -24,27 +24,9 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041064;
-            }
-        }// a trash barrel
-        public override int DefaultMaxWeight
-        {
-            get
-            {
-                return 0;
-            }
-        }// A value of 0 signals unlimited weight
-        public override bool IsDecoContainer
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override int LabelNumber => 1041064;// a trash barrel
+        public override int DefaultMaxWeight => 0;// A value of 0 signals unlimited weight
+        public override bool IsDecoContainer => false;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

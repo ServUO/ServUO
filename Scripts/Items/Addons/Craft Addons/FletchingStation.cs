@@ -4,8 +4,8 @@ namespace Server.Items
 {
     public class FletchingStation : CraftAddon
     {
-        public override BaseAddonDeed Deed { get { return new FletchingStationDeed(Tools.Count > 0 ? Tools[0].UsesRemaining : 0); } }
-        public override CraftSystem CraftSystem { get { return DefBowFletching.CraftSystem; } }
+        public override BaseAddonDeed Deed => new FletchingStationDeed(Tools.Count > 0 ? Tools[0].UsesRemaining : 0);
+        public override CraftSystem CraftSystem => DefBowFletching.CraftSystem;
 
         [Constructable]
         public FletchingStation(bool south, int uses)
@@ -44,8 +44,8 @@ namespace Server.Items
 
     public class FletchingStationDeed : CraftAddonDeed
     {
-        public override int LabelNumber { get { return 1156370; } } // Fletching Station
-        public override BaseAddon Addon { get { return new FletchingStation(_South, UsesRemaining); } }
+        public override int LabelNumber => 1156370;  // Fletching Station
+        public override BaseAddon Addon => new FletchingStation(_South, UsesRemaining);
 
         private bool _South;
 

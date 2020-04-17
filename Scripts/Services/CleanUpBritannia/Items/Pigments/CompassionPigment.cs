@@ -93,13 +93,7 @@ namespace Server.Items
 
     public class CompassionPigment : Item, IUsesRemaining
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return CompassionPigmentInfo.GetInfo(m_Type).LabelNumber;
-            }
-        }
+        public override int LabelNumber => CompassionPigmentInfo.GetInfo(m_Type).LabelNumber;
 
         private CompassionPigmentType m_Type;
         private int m_UsesRemaining;

@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class SherryTheMouseStatue : Item
     {
-        public override int LabelNumber { get { return 1080171; } } // Sherry the Mouse Statue
+        public override int LabelNumber => 1080171;  // Sherry the Mouse Statue
         private Timer m_NewsTimer;
 
         [Constructable]
@@ -17,7 +17,7 @@ namespace Server.Items
             Weight = 1.0;
         }
 
-        public override bool HandlesOnSpeech { get { return true; } }
+        public override bool HandlesOnSpeech => true;
 
         public override void OnSpeech(SpeechEventArgs e)
         {

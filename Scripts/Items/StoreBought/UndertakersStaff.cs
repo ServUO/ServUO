@@ -19,10 +19,10 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool SummonAll { get { return _SummonAll; } set { _SummonAll = value; InvalidateProperties(); } }
 
-        public override int LabelNumber { get { return 1071498; } } // Undertaker's Staff
-        public override bool IsArtifact { get { return true; } }
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int LabelNumber => 1071498;  // Undertaker's Staff
+        public override bool IsArtifact => true;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         [Constructable]
         public UndertakersStaff()

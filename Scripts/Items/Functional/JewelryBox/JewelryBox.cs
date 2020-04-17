@@ -10,16 +10,16 @@ namespace Server.Items
     [FlipableAttribute(0x9F1C, 0x9F1D)]
     public class JewelryBox : Container, IDyable
     {
-        public override int LabelNumber { get { return 1157694; } } // Jewelry Box
+        public override int LabelNumber => 1157694;  // Jewelry Box
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level { get; set; }
 
         public JewelryBoxFilter Filter { get; set; }
 
-        public override int DefaultMaxItems { get { return 500; } }
+        public override int DefaultMaxItems => 500;
 
-        public bool IsFull { get { return DefaultMaxItems <= Items.Count; } }
+        public bool IsFull => DefaultMaxItems <= Items.Count;
 
         [Constructable]
         public JewelryBox()
@@ -132,7 +132,7 @@ namespace Server.Items
             }
         }
 
-        public override bool DisplaysContent { get { return false; } }
+        public override bool DisplaysContent => false;
 
         public override int GetTotal(TotalType type)
         {

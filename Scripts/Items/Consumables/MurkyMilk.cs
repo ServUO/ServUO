@@ -2,9 +2,9 @@
 {
     public class MurkyMilk : Pitcher
     {
-        public override int LabelNumber { get { return 1153874; } } // Murky Milk
-        public override int MaxQuantity { get { return 5; } }
-        public override double DefaultWeight { get { return 1; } }
+        public override int LabelNumber => 1153874;  // Murky Milk
+        public override int MaxQuantity => 5;
+        public override double DefaultWeight => 1;
 
         [Constructable]
         public MurkyMilk()

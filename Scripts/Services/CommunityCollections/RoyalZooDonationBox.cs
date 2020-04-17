@@ -22,34 +22,10 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073436;
-            }
-        }// Donation Box
-        public override Collection CollectionID
-        {
-            get
-            {
-                return Collection.MoonglowZoo;
-            }
-        }
-        public override int MaxTier
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override bool HandlesOnSpeech
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int LabelNumber => 1073436;// Donation Box
+        public override Collection CollectionID => Collection.MoonglowZoo;
+        public override int MaxTier => 10;
+        public override bool HandlesOnSpeech => true;
         public override void Init()
         {
             base.Init();

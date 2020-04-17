@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class BestWaveBoard : Item
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         [Constructable]
         public BestWaveBoard() : base(7774)

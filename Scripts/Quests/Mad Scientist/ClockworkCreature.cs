@@ -17,9 +17,9 @@
         private readonly string m_Name;
         private readonly int m_BodyId;
 
-        public ClockworkCreatureType CreatureType { get { return m_CreatureType; } }
-        public string Name { get { return m_Name; } }
-        public int BodyId { get { return m_BodyId; } }
+        public ClockworkCreatureType CreatureType => m_CreatureType;
+        public string Name => m_Name;
+        public int BodyId => m_BodyId;
 
         public ClockworkCreatureDef(ClockworkCreatureType type, string name, int bodyId)
         {
@@ -31,7 +31,7 @@
 
     public class ClockworkCreature : Mobile
     {
-        public static ClockworkCreatureDef[] Definitions { get { return m_Definitions; } }
+        public static ClockworkCreatureDef[] Definitions => m_Definitions;
 
         private static readonly ClockworkCreatureDef[] m_Definitions = new ClockworkCreatureDef[]
         {

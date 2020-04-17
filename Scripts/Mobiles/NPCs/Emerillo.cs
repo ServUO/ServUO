@@ -15,49 +15,19 @@ namespace Server.Engines.Quests
         }
 
         /* Culinary Crisis */
-        public override object Title
-        {
-            get
-            {
-                return 1074755;
-            }
-        }
+        public override object Title => 1074755;
         /* You have NO idea how impossible this is.  Simply intolerable!  How can one expect an artiste' like me to 
         create masterpieces of culinary delight without the best, fresh ingredients?  Ever since this whositwhatsit 
         started this uproar, my thrice-daily produce deliveries have ended.  I can't survive another hour without 
         produce! */
-        public override object Description
-        {
-            get
-            {
-                return 1074756;
-            }
-        }
+        public override object Description => 1074756;
         /* You have no artistry in your soul. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074757;
-            }
-        }
+        public override object Refuse => 1074757;
         /* I must have fresh produce and cheese at once! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074758;
-            }
-        }
+        public override object Uncomplete => 1074758;
         /* Those dates look bruised!  Oh no, and you fetched a soft cheese.  *deep pained sigh*  Well, even I can only 
         do so much with inferior ingredients.  BAM! */
-        public override object Complete
-        {
-            get
-            {
-                return 1074759;
-            }
-        }
+        public override object Complete => 1074759;
         public override bool CanOffer()
         {
             return MondainsLegacy.Bedlam;
@@ -91,16 +61,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(CulinaryCrisisQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

@@ -53,13 +53,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Hides
-        {
-            get
-            {
-                return 8;
-            }
-        }
+        public override int Hides => 8;
 
         public override int GetAngerSound()
         {

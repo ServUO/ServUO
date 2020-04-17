@@ -5,21 +5,15 @@ namespace Server.Items
 {
     public class BlightedGroveAltar : PeerlessAltar
     {
-        public override int KeyCount { get { return 3; } }
-        public override MasterKey MasterKey { get { return new BlightedGroveKey(); } }
+        public override int KeyCount => 3;
+        public override MasterKey MasterKey => new BlightedGroveKey();
 
-        public override Type[] Keys
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Keys => new Type[]
 {
             typeof( DryadsBlessing )
 };
-            }
-        }
 
-        public override BasePeerless Boss { get { return new LadyMelisande(); } }
+        public override BasePeerless Boss => new LadyMelisande();
 
         [Constructable]
         public BlightedGroveAltar() : base(0x207B)
@@ -29,10 +23,7 @@ namespace Server.Items
             ExitDest = new Point3D(587, 1641, -1);
         }
 
-        public override Rectangle2D[] BossBounds
-        {
-            get { return m_Bounds; }
-        }
+        public override Rectangle2D[] BossBounds => m_Bounds;
 
         private readonly Rectangle2D[] m_Bounds = new Rectangle2D[]
         {

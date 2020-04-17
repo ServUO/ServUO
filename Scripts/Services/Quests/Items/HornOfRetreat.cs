@@ -60,13 +60,7 @@ namespace Server.Engines.Quests
                 this.InvalidateProperties();
             }
         }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1049117;
-            }
-        }// Horn of Retreat
+        public override int LabelNumber => 1049117;// Horn of Retreat
         public virtual bool ValidateUse(Mobile from)
         {
             return true;
@@ -184,13 +178,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1049114;
-            }
-        }// Sanctuary Gate
+        public override int LabelNumber => 1049114;// Sanctuary Gate
         public override void BeginConfirmation(Mobile from)
         {
             this.EndConfirmation(from);

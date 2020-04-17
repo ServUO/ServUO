@@ -58,15 +58,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override int TreasureMapLevel { get { return 3; } }
+        public override int TreasureMapLevel => 3;
 
-        public override bool Uncalmable
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool Uncalmable => true;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich);

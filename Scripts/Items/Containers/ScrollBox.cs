@@ -67,13 +67,7 @@ namespace Server.Items
         {
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "Reward Scroll Box";
-            }
-        }
+        public override string DefaultName => "Reward Scroll Box";
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

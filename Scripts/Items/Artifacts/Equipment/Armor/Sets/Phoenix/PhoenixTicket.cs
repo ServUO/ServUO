@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041234;
-            }
-        }// Ticket for a piece of phoenix armor
+        public override int LabelNumber => 1041234;// Ticket for a piece of phoenix armor
 
         public override void OnDoubleClick(Mobile from)
         {

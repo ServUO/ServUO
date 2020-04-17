@@ -30,34 +30,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool ShowFameTitle
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool Commandable
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool NoHouseRestrictions
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool CanOpenDoors
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool ShowFameTitle => true;
+        public override bool Commandable => false;
+        public override bool NoHouseRestrictions => true;
+        public override bool CanOpenDoors => true;
         [CommandProperty(AccessLevel.GameMaster)]
         public bool BindedToPlayer
         {

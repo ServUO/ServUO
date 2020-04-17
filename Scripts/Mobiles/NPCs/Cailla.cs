@@ -15,40 +15,16 @@ namespace Server.Engines.Quests
         }
 
         /* King of Bears */
-        public override object Title
-        {
-            get
-            {
-                return 1072996;
-            }
-        }
+        public override object Title => 1072996;
         /* A pity really.  With the balance of nature awry, we have no choice but to accept the responsibility 
         of making it all right.  It's all a part of the circle of life, after all. So, yes, the grizzly bears 
         are running rampant. There are far too many in the region.  Will you shoulder your obligations as a 
         higher life form? */
-        public override object Description
-        {
-            get
-            {
-                return 1073030;
-            }
-        }
+        public override object Description => 1073030;
         /* Well, okay. But if you decide you are up for it after all, c'mon back and see me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072270;
-            }
-        }
+        public override object Refuse => 1072270;
         /* You're not quite done yet.  Get back to work! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072271;
-            }
-        }
+        public override object Uncomplete => 1072271;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -75,48 +51,18 @@ namespace Server.Engines.Quests
             this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
-        public override bool AllObjectives
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool AllObjectives => false;
         /* Specimens */
-        public override object Title
-        {
-            get
-            {
-                return 1072999;
-            }
-        }
+        public override object Title => 1072999;
         /* I admire them, you know.  The solen have their place -- regimented, organized.  They're fascinating 
         to watch with their constant strife between red and black.  I can't help but want to stir things up from 
         time to time.  And that's where you come in.  Kill either twelve red or twelve black solen workers and 
         let's see what happens next! */
-        public override object Description
-        {
-            get
-            {
-                return 1073032;
-            }
-        }
+        public override object Description => 1073032;
         /* Well, okay. But if you decide you are up for it after all, c'mon back and see me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072270;
-            }
-        }
+        public override object Refuse => 1072270;
         /* You're not quite done yet.  Get back to work! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072271;
-            }
-        }
+        public override object Uncomplete => 1072271;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -144,39 +90,15 @@ namespace Server.Engines.Quests
         }
 
         /* Dead Man Walking */
-        public override object Title
-        {
-            get
-            {
-                return 1072983;
-            }
-        }
+        public override object Title => 1072983;
         /* Why?  I ask you why?  They walk around after they're put in the ground.  It's just wrong in so many ways.  
         Put them to proper rest, I beg you.  I'll find some way to pay you for the kindness. Just kill five zombies 
         and five skeletons. */
-        public override object Description
-        {
-            get
-            {
-                return 1073009;
-            }
-        }
+        public override object Description => 1073009;
         /* Well, okay. But if you decide you are up for it after all, c'mon back and see me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072270;
-            }
-        }
+        public override object Refuse => 1072270;
         /* You're not quite done yet.  Get back to work! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072271;
-            }
-        }
+        public override object Uncomplete => 1072271;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -204,47 +126,17 @@ namespace Server.Engines.Quests
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
-        public override bool AllObjectives
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool AllObjectives => false;
         /* Spirits */
-        public override object Title
-        {
-            get
-            {
-                return 1073076;
-            }
-        }
+        public override object Title => 1073076;
         /* It is a piteous thing when the dead continue to walk the earth. Restless spirits are known to inhabit these 
         parts, taking the lives of unwary travelers. It is about time a hero put the dead back in their graves. I'm sure 
         such a hero would be justly rewarded. */
-        public override object Description
-        {
-            get
-            {
-                return 1073566;
-            }
-        }
+        public override object Description => 1073566;
         /* I hope you'll reconsider. Until then, farwell. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073580;
-            }
-        }
+        public override object Refuse => 1073580;
         /* The restless spirts still walk -- you must kill 15 of them. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073586;
-            }
-        }
+        public override object Uncomplete => 1073586;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -271,39 +163,15 @@ namespace Server.Engines.Quests
         }
 
         /* Roll the Bones */
-        public override object Title
-        {
-            get
-            {
-                return 1073002;
-            }
-        }
+        public override object Title => 1073002;
         /* Why?  I ask you why?  They walk around after they're put in the ground.  It's just wrong in so many ways.  
         Put them to proper rest, I beg you.  I'll find some way to pay you for the kindness. Just kill eight patchwork 
         skeletons. */
-        public override object Description
-        {
-            get
-            {
-                return 1073011;
-            }
-        }
+        public override object Description => 1073011;
         /* Well, okay. But if you decide you are up for it after all, c'mon back and see me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072270;
-            }
-        }
+        public override object Refuse => 1072270;
         /* You're not quite done yet.  Get back to work! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072271;
-            }
-        }
+        public override object Uncomplete => 1072271;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -330,38 +198,14 @@ namespace Server.Engines.Quests
         }
 
         /* It's a Ghastly Job */
-        public override object Title
-        {
-            get
-            {
-                return 1073008;
-            }
-        }
+        public override object Title => 1073008;
         /* Why?  I ask you why?  They walk around after they're put in the ground.  It's just wrong in so many ways.  
         Put them to proper rest, I beg you.  I'll find some way to pay you for the kindness. Just kill twelve ghouls. */
-        public override object Description
-        {
-            get
-            {
-                return 1073012;
-            }
-        }
+        public override object Description => 1073012;
         /* Well, okay. But if you decide you are up for it after all, c'mon back and see me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072270;
-            }
-        }
+        public override object Refuse => 1072270;
         /* You're not quite done yet.  Get back to work! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072271;
-            }
-        }
+        public override object Uncomplete => 1072271;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -388,39 +232,15 @@ namespace Server.Engines.Quests
         }
 
         /* Troglodytes! */
-        public override object Title
-        {
-            get
-            {
-                return 1074688;
-            }
-        }
+        public override object Title => 1074688;
         /* Oh nevermind, you don't look capable of my task afterall.  Haha! What was I thinking - you could never handle 
         killing troglodytes.  It'd be suicide.  What?  I don't know, I don't want to be responsible ... well okay if 
         you're really sure? */
-        public override object Description
-        {
-            get
-            {
-                return 1074689;
-            }
-        }
+        public override object Description => 1074689;
         /* Probably the wiser course of action. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074690;
-            }
-        }
+        public override object Refuse => 1074690;
         /* You still need to kill those troglodytes, remember? */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074691;
-            }
-        }
+        public override object Uncomplete => 1074691;
         public override bool CanOffer()
         {
             return MondainsLegacy.PaintedCaves;
@@ -452,47 +272,17 @@ namespace Server.Engines.Quests
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
-        public override bool AllObjectives
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool AllObjectives => false;
         /* Unholy Knights */
-        public override object Title
-        {
-            get
-            {
-                return 1073075;
-            }
-        }
+        public override object Title => 1073075;
         /* Please, hear me kind traveler. You know when a knight falls, sometimes they are cursed to roam the earth as 
         undead mockeries of their former glory? That is too grim a fate for even any knight to suffer! Please, put them 
         out of their misery. I will offer you what payment I can if you will end the torment of these undead wretches. */
-        public override object Description
-        {
-            get
-            {
-                return 1073565;
-            }
-        }
+        public override object Description => 1073565;
         /* I hope you'll reconsider. Until then, farwell. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073580;
-            }
-        }
+        public override object Refuse => 1073580;
         /* Your task is not done. Continue putting the Skeleton and Bone Knights to rest. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073585;
-            }
-        }
+        public override object Uncomplete => 1073585;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -519,50 +309,20 @@ namespace Server.Engines.Quests
         }
 
         /* A Feather in Yer Cap */
-        public override object Title
-        {
-            get
-            {
-                return 1074738;
-            }
-        }
+        public override object Title => 1074738;
         /* I've seen how you strut about, as if you were something special. I have some news for you, you don't impress 
         me at all. It's not enough to have a fancy hat you know.  That may impress people in the big city, but not here. 
         If you want a reputation you have to climb a mountain, slay some great beast, and then write about it. Trust me, 
         it's a long process.  The first step is doing a great feat. If I were you, I'd go pluck a feather from the harpy 
         Saliva, that would give you a good start. */
-        public override object Description
-        {
-            get
-            {
-                return 1074737;
-            }
-        }
+        public override object Description => 1074737;
         /* The path to greatness isn't for everyone obviously. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074736;
-            }
-        }
+        public override object Refuse => 1074736;
         /* If you're going to get anywhere in the adventuring game, you have to take some risks.  A harpy, well, it's 
         bad, but it's not a dragon. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074735;
-            }
-        }
+        public override object Uncomplete => 1074735;
         /* The hero returns from the glorious battle and - oh, such a small feather? */
-        public override object Complete
-        {
-            get
-            {
-                return 1074734;
-            }
-        }
+        public override object Complete => 1074734;
         public override bool CanOffer()
         {
             return MondainsLegacy.BlightedGrove;
@@ -594,49 +354,19 @@ namespace Server.Engines.Quests
         }
 
         /* A Tale of Tail */
-        public override object Title
-        {
-            get
-            {
-                return 1074726;
-            }
-        }
+        public override object Title => 1074726;
         /* I've heard of you, adventurer.  Your reputation is impressive, and now I'll put it to the test. This is not 
         something I ask lightly, for this task is fraught with danger, but it is vital.  Seek out the vile hydra Abscess, 
         slay it, and return to me with it's tail. */
-        public override object Description
-        {
-            get
-            {
-                return 1074727;
-            }
-        }
+        public override object Description => 1074727;
         /* Well, the beast will still be there when you are ready I suppose. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074728;
-            }
-        }
+        public override object Refuse => 1074728;
         /* Em, I thought I had explained already.  Abscess, the hydra, you know? Lots of heads but just the one tail.  
         I need the tail. I have my reasons. Go go go. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074729;
-            }
-        }
+        public override object Uncomplete => 1074729;
         /* Ah, the tail.  You did it!  You know the rumours about dried ground hydra tail powder are all true?  
         Thank you so much! */
-        public override object Complete
-        {
-            get
-            {
-                return 1074730;
-            }
-        }
+        public override object Complete => 1074730;
         public override bool CanOffer()
         {
             return MondainsLegacy.BlightedGrove;
@@ -669,46 +399,16 @@ namespace Server.Engines.Quests
         }
 
         /* A Trog and His Dog */
-        public override object Title
-        {
-            get
-            {
-                return 1074681;
-            }
-        }
+        public override object Title => 1074681;
         /* I don't know if you can handle it, but I'll give you a go at it. Troglodyte chief - name of Lurg and his mangy 
         wolf pet need killing. Do the deed and I'll reward you. */
-        public override object Description
-        {
-            get
-            {
-                return 1074680;
-            }
-        }
+        public override object Description => 1074680;
         /* Perhaps I thought too highly of you. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074655;
-            }
-        }
+        public override object Refuse => 1074655;
         /* The trog chief and his mutt should be easy enough to find. Just kill them and report back.  Easy enough. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074682;
-            }
-        }
+        public override object Uncomplete => 1074682;
         /* Not half bad.  Here's your prize. */
-        public override object Complete
-        {
-            get
-            {
-                return 1074683;
-            }
-        }
+        public override object Complete => 1074683;
         public override bool CanOffer()
         {
             return MondainsLegacy.PaintedCaves;
@@ -744,11 +444,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(KingOfBearsQuest),
                     typeof(SpecimensQuest),
@@ -763,8 +459,6 @@ namespace Server.Engines.Quests
                     typeof(TaleOfTailQuest),
                     typeof(TrogAndHisDogQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

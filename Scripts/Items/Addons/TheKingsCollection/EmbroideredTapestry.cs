@@ -34,7 +34,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new EmbroideredTapestryDeed(); } }
+        public override BaseAddonDeed Deed => new EmbroideredTapestryDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -51,7 +51,7 @@ namespace Server.Items
 
     public class EmbroideredTapestryDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1154143; } } // Embroidered Tapestry
+        public override int LabelNumber => 1154143;  // Embroidered Tapestry
 
         private DirectionType _Direction;
 
@@ -94,7 +94,7 @@ namespace Server.Items
                 base.OnDoubleClick(from);
         }
 
-        public override BaseAddon Addon { get { return new EmbroideredTapestryAddon(_Direction); } }
+        public override BaseAddon Addon => new EmbroideredTapestryAddon(_Direction);
 
         public override void Serialize(GenericWriter writer)
         {

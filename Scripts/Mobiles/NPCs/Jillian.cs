@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class ScribingArcaneKnowledgeQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* Scribing Arcane Knowledge */
-        public override object Title
-        {
-            get
-            {
-                return 1077615;
-            }
-        }
+        public override object Title => 1077615;
 
         /* While Here ar the New Haven Magery Library, use scribe's pen and scribe 3rd and 4th circle Magery scrolls that 
         you have in your spellbook. Remeber, you will need blank scrolls aswell. Do this until you have raised your Inscription 
@@ -39,32 +27,14 @@ namespace Server.Engines.Quests
         I suggest you begin scribing any 3rd and 4th circle spells that you know. If you don't possess ant, you can alwayers barter 
         with one of the local mage merchants or a fellow adventurer that is a seasoned Scribe. Come back to me once you feel that 
         you are the worthy rankof Apprentice Scribe and i will reward you with an arcane prize. */
-        public override object Description
-        {
-            get
-            {
-                return 1077616;
-            }
-        }
+        public override object Description => 1077616;
 
         /* I understand. When you are ready, feel free to return to me for Inscription training. Thanks for stopping by! */
-        public override object Refuse
-        {
-            get
-            {
-                return 1077617;
-            }
-        }
+        public override object Refuse => 1077617;
 
         /* You have not achived the rank of Apprentice Scribe. Come back to me once you feel that you are worthy of the rank 
         Apprentice Scribe and i will reward you with a arcane prize. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1077631;
-            }
-        }
+        public override object Uncomplete => 1077631;
 
         /* Scribing is a very fulfilling pursuit. I am please to see you embark on this journey. You sling a pen well! On behalf 
         of the New Haven Mage Council I wish to present you with this spellbook. When equipped, the Hallowed Spellbook greatly 
@@ -72,13 +42,7 @@ namespace Server.Engines.Quests
         you invoke powerful spells and abilities vs Humanoids, such as other humans, orcs, ettins, and trolls. Your offensive 
         spells will diminish in effectiveness. I suggest unequipping the Hallowed Spellbook when battling Humanoids. I hope this 
         spellbook serves you well. */
-        public override object Complete
-        {
-            get
-            {
-                return 1077619;
-            }
-        }
+        public override object Complete => 1077619;
 
         public ScribingArcaneKnowledgeQuest()
             : base()
@@ -128,16 +92,10 @@ namespace Server.Engines.Quests
 
     public class Jillian : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(ScribingArcaneKnowledgeQuest)
                 };
-            }
-        }
 
         [Constructable]
         public Jillian()

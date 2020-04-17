@@ -5,7 +5,7 @@ namespace Server.Mobiles
     [CorpseName("a saber-toothed tiger corpse")]
     public class SabertoothedTiger : BaseCreature
     {
-        public override double HealChance { get { return .167; } }
+        public override double HealChance => .167;
 
         [Constructable]
         public SabertoothedTiger()
@@ -52,14 +52,14 @@ namespace Server.Mobiles
         public override int GetHurtSound() { return 0x672; }
         public override int GetDeathSound() { return 0x671; }
 
-        public override double WeaponAbilityChance { get { return 0.5; } }
+        public override double WeaponAbilityChance => 0.5;
 
-        public override int Hides { get { return 11; } }
-        public override HideType HideType { get { return HideType.Regular; } }
-        public override int Meat { get { return 3; } }
-        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
-        public override bool StatLossAfterTame { get { return true; } }
-        public override bool CanAngerOnTame { get { return true; } }
+        public override int Hides => 11;
+        public override HideType HideType => HideType.Regular;
+        public override int Meat => 3;
+        public override FoodType FavoriteFood => FoodType.Meat;
+        public override bool StatLossAfterTame => true;
+        public override bool CanAngerOnTame => true;
 
         public override void OnAfterTame(Mobile tamer)
         {

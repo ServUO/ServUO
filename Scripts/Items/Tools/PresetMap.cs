@@ -28,7 +28,7 @@ namespace Server.Items
             Bounds = entry.Bounds;
         }
 
-        public override int LabelNumber { get { return (m_LabelNumber == 0 ? base.LabelNumber : m_LabelNumber); } }
+        public override int LabelNumber => (m_LabelNumber == 0 ? base.LabelNumber : m_LabelNumber);
 
         public PresetMap(Serial serial) : base(serial)
         {
@@ -66,10 +66,10 @@ namespace Server.Items
         private readonly int m_Width, m_Height;
         private Rectangle2D m_Bounds;
 
-        public int Name { get { return m_Name; } }
-        public int Width { get { return m_Width; } }
-        public int Height { get { return m_Height; } }
-        public Rectangle2D Bounds { get { return m_Bounds; } }
+        public int Name => m_Name;
+        public int Width => m_Width;
+        public int Height => m_Height;
+        public Rectangle2D Bounds => m_Bounds;
 
         public PresetMapEntry(int name, int width, int height, int xLeft, int yTop, int xRight, int yBottom)
         {
@@ -117,7 +117,7 @@ namespace Server.Items
                 new PresetMapEntry( 0,       200, 200, 5140, 3900, 5330, 4094 ), // Deliucia
 			};
 
-        public static PresetMapEntry[] Table { get { return m_Table; } }
+        public static PresetMapEntry[] Table => m_Table;
     }
 
     public enum PresetMapType

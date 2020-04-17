@@ -268,13 +268,13 @@ namespace Server.Services.Virtues
             Granted
         }
 
-        public PlayerMobile Source { get { return m_Source; } }
+        public PlayerMobile Source => m_Source;
 
-        public Mobile Target { get { return m_Target; } }
+        public Mobile Target => m_Target;
 
-        public int PerfectionDamageBonus { get { return m_Perfection; } }
+        public int PerfectionDamageBonus => m_Perfection;
 
-        public int PerfectionLuckBonus { get { return (m_Perfection * m_Perfection) / 10; } }
+        public int PerfectionLuckBonus => (m_Perfection * m_Perfection) / 10;
 
         public void OnSourceDamaged(Mobile from, int amount)
         {

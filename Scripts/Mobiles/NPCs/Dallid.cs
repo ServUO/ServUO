@@ -14,47 +14,17 @@ namespace Server.Engines.Quests
         }
 
         /* Tapping the Keg */
-        public override object Title
-        {
-            get
-            {
-                return 1074037;
-            }
-        }
+        public override object Title => 1074037;
         /* I have acquired a barrel of human brewed beer. I am loathe to drink it, but how else to prove how 
         inferior it is? I suppose I shall need a barrel tap to drink. Go, bring me a barrel tap quickly, so 
         I might get this over with. */
-        public override object Description
-        {
-            get
-            {
-                return 1074131;
-            }
-        }
+        public override object Description => 1074131;
         /* Fine then, I'm shall find another to run my errands then. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074063;
-            }
-        }
+        public override object Refuse => 1074063;
         /* Hurry up! I don't have all day to wait for you to bring what I desire! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074064;
-            }
-        }
+        public override object Uncomplete => 1074064;
         /* These human made goods are laughable! It offends so -- I must show you what elven skill is capable of! */
-        public override object Complete
-        {
-            get
-            {
-                return 1074065;
-            }
-        }
+        public override object Complete => 1074065;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -81,46 +51,16 @@ namespace Server.Engines.Quests
         }
 
         /* Breeze's Song */
-        public override object Title
-        {
-            get
-            {
-                return 1074052;
-            }
-        }
+        public override object Title => 1074052;
         /* I understand humans cruely enslave the very wind to their selfish whims! Fancy wind chimes, what a monstrous 
         idea! You must bring me proof of this terrible depredation - hurry, bring me wind chimes! */
-        public override object Description
-        {
-            get
-            {
-                return 1074146;
-            }
-        }
+        public override object Description => 1074146;
         /* Fine then, I'm shall find another to run my errands then. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074063;
-            }
-        }
+        public override object Refuse => 1074063;
         /* Hurry up! I don't have all day to wait for you to bring what I desire! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074064;
-            }
-        }
+        public override object Uncomplete => 1074064;
         /* These human made goods are laughable! It offends so -- I must show you what elven skill is capable of! */
-        public override object Complete
-        {
-            get
-            {
-                return 1074065;
-            }
-        }
+        public override object Complete => 1074065;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -147,47 +87,17 @@ namespace Server.Engines.Quests
         }
 
         /* Waiting to be Filled */
-        public override object Title
-        {
-            get
-            {
-                return 1074036;
-            }
-        }
+        public override object Title => 1074036;
         /* The only good thing I can say about human made bottles is that they are empty and may yet still be filled 
         with elven wine. Go now, fetch a number of empty bottles so that I might save them from the fate of carrying 
         human-made wine. */
-        public override object Description
-        {
-            get
-            {
-                return 1074130;
-            }
-        }
+        public override object Description => 1074130;
         /* Fine then, I'm shall find another to run my errands then. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074063;
-            }
-        }
+        public override object Refuse => 1074063;
         /* Hurry up! I don't have all day to wait for you to bring what I desire! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074064;
-            }
-        }
+        public override object Uncomplete => 1074064;
         /* These human made goods are laughable! It offends so -- I must show you what elven skill is capable of! */
-        public override object Complete
-        {
-            get
-            {
-                return 1074065;
-            }
-        }
+        public override object Complete => 1074065;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -216,19 +126,13 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(TappingTheKegQuest),
                     typeof(BreezesSongQuest),
                     typeof(WaitingToBeFilledQuest),
                     typeof(MougGuurMustDieQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             InitStats(100, 100, 25);

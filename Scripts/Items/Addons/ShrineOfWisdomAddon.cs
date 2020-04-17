@@ -46,13 +46,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1062046;
-            }
-        }// Shrine of Wisdom
+        public override int LabelNumber => 1062046;// Shrine of Wisdom
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

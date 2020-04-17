@@ -46,55 +46,13 @@ namespace Server.Engines.Quests
             // Don't morph me!
         }
 
-        public override bool IsActiveVendor
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsInvulnerable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool DisallowAllMoves
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool CanTeach
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public virtual int TalkNumber
-        {
-            get
-            {
-                return 6146;
-            }
-        }// Talk
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        public override bool IsActiveVendor => false;
+        public override bool IsInvulnerable => true;
+        public override bool DisallowAllMoves => true;
+        public override bool ClickTitle => false;
+        public override bool CanTeach => false;
+        public virtual int TalkNumber => 6146;// Talk
+        protected override List<SBInfo> SBInfos => this.m_SBInfos;
         public static Container GetNewContainer()
         {
             Bag bag = new Bag();

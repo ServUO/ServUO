@@ -125,7 +125,7 @@ namespace Server.Engines.VvV
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextReadinessAtrophy { get; set; }
 
-        public override bool DeleteOnRelease { get { return true; } }
+        public override bool DeleteOnRelease => true;
 
         public VvVMount(string name, int id, int itemid, int hue)
             : base(name, id, itemid, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.4, .2)
@@ -241,21 +241,9 @@ namespace Server.Engines.VvV
             return false;
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 3;
-            }
-        }
+        public override int Meat => 3;
 
-        public override int Hides
-        {
-            get
-            {
-                return 10;
-            }
-        }
+        public override int Hides => 10;
 
         public override FoodType FavoriteFood
         {

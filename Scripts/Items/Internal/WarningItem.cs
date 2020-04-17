@@ -93,27 +93,9 @@ namespace Server.Items
                 this.m_ResetDelay = value;
             }
         }
-        public virtual bool OnlyToTriggerer
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public virtual int NeighborRange
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool OnlyToTriggerer => false;
+        public virtual int NeighborRange => 5;
+        public override bool HandlesOnMovement => true;
         public virtual void SendMessage(Mobile triggerer, bool onlyToTriggerer, string messageString, int messageNumber)
         {
             if (onlyToTriggerer)
@@ -252,13 +234,7 @@ namespace Server.Items
                 this.m_HintNumber = value;
             }
         }
-        public override bool OnlyToTriggerer
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool OnlyToTriggerer => true;
         public override void OnDoubleClick(Mobile from)
         {
             this.SendMessage(from, true, this.m_HintString, this.m_HintNumber);

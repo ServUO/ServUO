@@ -9,37 +9,37 @@ namespace Server.Engines.Quests
             AddObjective(new QuestionAndAnswerObjective(4, m_EntryTable));
         }
 
-        public override bool DoneOnce { get { return true; } }
-        public override bool ShowDescription { get { return false; } }
+        public override bool DoneOnce => true;
+        public override bool ShowDescription => false;
 
         //La Insep Om
-        public override object Title { get { return 1112681; } }
+        public override object Title => 1112681;
 
         /*Repeating the mantra, you gradually enter a state of enlightened meditation.<br><br>
          * As you contemplate your worthiness, an image of the Book of Circles comes into focus.<br><br>
          * Perhaps you are ready for La Insep Om?<br>
          */
-        public override object Description { get { return 1112682; } }
+        public override object Description => 1112682;
 
         //You feel as if you should return when you are worthy.
-        public override object Refuse { get { return 1112683; } }
+        public override object Refuse => 1112683;
 
         //Focusing more upon the Book of Circles, you realize that you must now show your mastery of its contents.<br>
-        public override object Uncomplete { get { return 1112684; } }
+        public override object Uncomplete => 1112684;
 
         /*Answering the last question correctly, you feel a strange energy wash over you.<br><br>
          * You don't understand how you know, but you are absolutely certain that the guardians will 
          * no longer bar you from entering the Stygian Abyss.<br><br>It seems you have proven yourself 
          * worthy of La Insep Om.
          */
-        public override object Complete { get { return 1112700; } }
+        public override object Complete => 1112700;
 
         /*
          * You realize that is not the correct answer.<br><br>You vow to study the Book of Circles again 
          * so that you might understand all that is required of you. Perhaps meditating again soon will bring 
          * the wisdom that you seek.<br>
          */
-        public override object FailedMsg { get { return 1112680; } }
+        public override object FailedMsg => 1112680;
 
         public override void OnAccept()
         {
@@ -99,6 +99,6 @@ namespace Server.Engines.Quests
         }
 
         private static readonly QuestionAndAnswerEntry[] m_EntryTable = new QuestionAndAnswerEntry[20];
-        public static QuestionAndAnswerEntry[] EntryTable { get { return m_EntryTable; } }
+        public static QuestionAndAnswerEntry[] EntryTable => m_EntryTable;
     }
 }

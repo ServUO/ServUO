@@ -2,13 +2,13 @@ namespace Server.Items
 {
     public class LanternBrokenShield : BaseLight, IFlipable
     {
-        public override int LabelNumber { get { return 1011221; } } // lantern
+        public override int LabelNumber => 1011221;  // lantern
 
-        public override int LitItemID { get { return ItemID == 0xA469 ? 0xA46A : 0xA46E; } }
-        public override int UnlitItemID { get { return ItemID == 0xA46A ? 0xA469 : 0xA46D; } }
+        public override int LitItemID => ItemID == 0xA469 ? 0xA46A : 0xA46E;
+        public override int UnlitItemID => ItemID == 0xA46A ? 0xA469 : 0xA46D;
 
-        public int NorthID { get { return Burning ? 0xA46A : 0xA469; } }
-        public int WestID { get { return Burning ? 0xA46E : 0xA46D; } }
+        public int NorthID => Burning ? 0xA46A : 0xA469;
+        public int WestID => Burning ? 0xA46E : 0xA46D;
 
         [Constructable]
         public LanternBrokenShield()

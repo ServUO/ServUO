@@ -67,20 +67,8 @@ namespace Server.Mobiles
                 c.DropItem(new ParagonChest(Name, 5));
         }
 
-        public override bool GivesMLMinorArtifact
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Deadly;
-            }
-        }// Becomes Lethal with Paragon bonus   
+        public override bool GivesMLMinorArtifact => true;
+        public override Poison HitPoison => Poison.Deadly;// Becomes Lethal with Paragon bonus   
         public override void OnDamagedBySpell(Mobile attacker)
         {
             base.OnDamagedBySpell(attacker);

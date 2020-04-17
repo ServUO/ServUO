@@ -4,7 +4,7 @@ namespace Server.Engines.Khaldun
 {
     public class RolledParchment : Item
     {
-        public override int LabelNumber { get { return 1158578; } } // rolled parchment
+        public override int LabelNumber => 1158578;  // rolled parchment
 
         public int Page { get; set; }
 

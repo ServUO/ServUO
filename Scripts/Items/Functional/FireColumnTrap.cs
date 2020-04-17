@@ -22,34 +22,10 @@ namespace Server.Items
         {
         }
 
-        public override bool PassivelyTriggered
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override TimeSpan PassiveTriggerDelay
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(2.0);
-            }
-        }
-        public override int PassiveTriggerRange
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override TimeSpan ResetDelay
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(0.5);
-            }
-        }
+        public override bool PassivelyTriggered => true;
+        public override TimeSpan PassiveTriggerDelay => TimeSpan.FromSeconds(2.0);
+        public override int PassiveTriggerRange => 3;
+        public override TimeSpan ResetDelay => TimeSpan.FromSeconds(0.5);
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual int MinDamage
         {

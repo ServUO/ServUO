@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class GoldPuzzleKey : BaseDecayingItem
     {
-        public override int Lifespan { get { return 1800; } }
-        public override int LabelNumber { get { return 1024111; } } // gold key
+        public override int Lifespan => 1800;
+        public override int LabelNumber => 1024111;  // gold key
 
         [Constructable]
         public GoldPuzzleKey() : base(4114)

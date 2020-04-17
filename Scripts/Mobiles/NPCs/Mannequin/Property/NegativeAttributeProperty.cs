@@ -26,41 +26,41 @@ namespace Server.Mobiles.MannequinProperty
 
     public class PrizedProperty : NegativeAttr
     {
-        public override Catalog Catalog { get { return Catalog.None; } }
-        public override int LabelNumber { get { return 1154910; } } // Prized
-        public override bool IsSpriteGraph { get { return true; } }
-        public override int SpriteW { get { return 30; } }
-        public override int SpriteH { get { return 210; } }
-        public override NegativeAttribute Attribute { get { return NegativeAttribute.Prized; } }
+        public override Catalog Catalog => Catalog.None;
+        public override int LabelNumber => 1154910;  // Prized
+        public override bool IsSpriteGraph => true;
+        public override int SpriteW => 30;
+        public override int SpriteH => 210;
+        public override NegativeAttribute Attribute => NegativeAttribute.Prized;
     }
 
     public class AntiqueProperty : NegativeAttr
     {
-        public override Catalog Catalog { get { return Catalog.None; } }
-        public override int LabelNumber { get { return 1152714; } } // Antique
-        public override bool IsSpriteGraph { get { return true; } }
-        public override int SpriteW { get { return 60; } }
-        public override int SpriteH { get { return 240; } }
-        public override NegativeAttribute Attribute { get { return NegativeAttribute.Antique; } }
+        public override Catalog Catalog => Catalog.None;
+        public override int LabelNumber => 1152714;  // Antique
+        public override bool IsSpriteGraph => true;
+        public override int SpriteW => 60;
+        public override int SpriteH => 240;
+        public override NegativeAttribute Attribute => NegativeAttribute.Antique;
     }
 
     public class NegativeBrittleProperty : NegativeAttr
     {
-        public override Catalog Catalog { get { return Catalog.None; } }
-        public override int LabelNumber { get { return 1116209; } } // Brittle
-        public override bool IsSpriteGraph { get { return true; } }
-        public override int SpriteW { get { return 90; } }
-        public override int SpriteH { get { return 240; } }
-        public override NegativeAttribute Attribute { get { return NegativeAttribute.Brittle; } }
+        public override Catalog Catalog => Catalog.None;
+        public override int LabelNumber => 1116209;  // Brittle
+        public override bool IsSpriteGraph => true;
+        public override int SpriteW => 90;
+        public override int SpriteH => 240;
+        public override NegativeAttribute Attribute => NegativeAttribute.Brittle;
     }
 
     public class NotCannotBeRepairedProperty : NegativeAttr
     {
-        public override Catalog Catalog { get { return Catalog.None; } }
-        public override int LabelNumber { get { return 1151782; } } // cannot be repaired
-        public override bool IsSpriteGraph { get { return true; } }
-        public override int SpriteW { get { return 120; } }
-        public override int SpriteH { get { return 240; } }
-        public override NegativeAttribute Attribute { get { return NegativeAttribute.NoRepair; } }
+        public override Catalog Catalog => Catalog.None;
+        public override int LabelNumber => 1151782;  // cannot be repaired
+        public override bool IsSpriteGraph => true;
+        public override int SpriteW => 120;
+        public override int SpriteH => 240;
+        public override NegativeAttribute Attribute => NegativeAttribute.NoRepair;
     }
 }

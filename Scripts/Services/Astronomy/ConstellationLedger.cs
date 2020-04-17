@@ -6,7 +6,7 @@ namespace Server.Engines.Astronomy
 {
     public class ConstellationLedger : Item
     {
-        public override int LabelNumber { get { return 1158520; } } // Constellation Ledger
+        public override int LabelNumber => 1158520;  // Constellation Ledger
 
         [Constructable]
         public ConstellationLedger()
@@ -27,7 +27,7 @@ namespace Server.Engines.Astronomy
         {
             public int Page { get; set; }
 
-            public int Pages { get { return (int)Math.Ceiling(AstronomySystem.DiscoveredConstellations.Count / 20.0); } }
+            public int Pages => (int)Math.Ceiling(AstronomySystem.DiscoveredConstellations.Count / 20.0);
 
             public ConstellationLedgerGump(PlayerMobile pm)
                 : base(pm, 100, 100)

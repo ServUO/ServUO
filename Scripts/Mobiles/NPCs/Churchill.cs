@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class CrushingBonesAndTakingNamesQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* Crushing Bones and Taking Names */
-        public override object Title
-        {
-            get
-            {
-                return 1078070;
-            }
-        }
+        public override object Title => 1078070;
 
         /* Head East out of town and go to Old Haven. While wielding your mace,battle monster there until you have 
         raised your Mace Fighting skill to 50. I see you want to learn a real weapon skill and not that toothpick 
@@ -31,45 +19,21 @@ namespace Server.Engines.Quests
         Head East out of town and go to Old Haven. Undead have plagued the town, so there are plenty of bones for 
         you to smash there.	Come back to me after you have ahcived the rank of Apprentice Armsman, and i will 
         reward you with a real weapon.*/
-        public override object Description
-        {
-            get
-            {
-                return 1078065;
-            }
-        }
+        public override object Description => 1078065;
 
         /* I thought you wanted to be an Armsman and really make something of yourself. You have potential, kid, 
         but if you want to play with toothpicks, run to Jockles and he will teach you how to clean your teeth 
         with a sword. If you change your mind, come back to me, and i will show you how to wield a real weapon. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1078068;
-            }
-        }
+        public override object Refuse => 1078068;
 
         /* Listen kid. There are a lot of undead in Old Haven, and you haven't smashed enough of them yet. So get 
         back there and do some more cleansing. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1078067;
-            }
-        }
+        public override object Uncomplete => 1078067;
 
         /* Now that's what I'm talking about! Well done! Don't you like crushing bones and taking names? As i promised, 
         here is a war mace for you. It hits hard. It swings fast. It hits often. What more do you need? Now get out of 
         here and crush some more enemies! */
-        public override object Complete
-        {
-            get
-            {
-                return 1078069;
-            }
-        }
+        public override object Complete => 1078069;
 
         public CrushingBonesAndTakingNamesQuest()
             : base()
@@ -119,16 +83,10 @@ namespace Server.Engines.Quests
 
     public class Churchill : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(CrushingBonesAndTakingNamesQuest)
                 };
-            }
-        }
 
         [Constructable]
         public Churchill()

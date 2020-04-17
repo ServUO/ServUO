@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class HeroOfTheUnlovedTitleDeed : BaseRewardTitleDeed
     {
-        public override TextDefinition Title { get { return 1157649; } } // Hero of the Unloved
+        public override TextDefinition Title => 1157649;  // Hero of the Unloved
 
         [Constructable]
         public HeroOfTheUnlovedTitleDeed()
@@ -29,7 +29,7 @@ namespace Server.Items
 
     public class SaviorOfTheDementedTitleDeed : BaseRewardTitleDeed
     {
-        public override TextDefinition Title { get { return 1157651; } } // Savior of the Demented
+        public override TextDefinition Title => 1157651;  // Savior of the Demented
 
         [Constructable]
         public SaviorOfTheDementedTitleDeed()
@@ -56,7 +56,7 @@ namespace Server.Items
 
     public class SlayerOfThePumpkinKingTitleDeed : BaseRewardTitleDeed
     {
-        public override TextDefinition Title { get { return 1157650; } } // Slayer of the Pumpkin King
+        public override TextDefinition Title => 1157650;  // Slayer of the Pumpkin King
 
         [Constructable]
         public SlayerOfThePumpkinKingTitleDeed()

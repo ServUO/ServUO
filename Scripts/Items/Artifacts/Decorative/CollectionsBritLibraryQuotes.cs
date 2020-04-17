@@ -5,7 +5,7 @@ namespace Server.Items
     [Flipable(0xFBD, 0xFBE)]
     public class SherryTheMouseQuotes : BaseStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public SherryTheMouseQuotes()
             : base(0xFBD)
@@ -19,13 +19,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073300;
-            }
-        }// Library Friends - Quotes from the pen of Sherry the Mouse
+        public override int LabelNumber => 1073300;// Library Friends - Quotes from the pen of Sherry the Mouse
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             if (this.TurnedOn && this.IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, this.Location, 2) && !Utility.InRange(oldLocation, this.Location, 2))
@@ -59,7 +53,7 @@ namespace Server.Items
     [Flipable(0xFBD, 0xFBE)]
     public class WyrdBeastmasterQuotes : BaseStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public WyrdBeastmasterQuotes()
             : base(0xFBD)
@@ -73,13 +67,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073310;
-            }
-        }// Library Friends - Quotes from the pen of Wyrd Beastmaster
+        public override int LabelNumber => 1073310;// Library Friends - Quotes from the pen of Wyrd Beastmaster
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             if (this.TurnedOn && this.IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, this.Location, 2) && !Utility.InRange(oldLocation, this.Location, 2))
@@ -113,7 +101,7 @@ namespace Server.Items
     [Flipable(0xFBD, 0xFBE)]
     public class MercenaryJustinQuotes : BaseStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public MercenaryJustinQuotes()
             : base(0xFBD)
@@ -127,13 +115,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073317;
-            }
-        }// Library Friends - Quotes from the pen of Mercenary Justin
+        public override int LabelNumber => 1073317;// Library Friends - Quotes from the pen of Mercenary Justin
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             if (this.TurnedOn && this.IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, this.Location, 2) && !Utility.InRange(oldLocation, this.Location, 2))
@@ -167,7 +149,7 @@ namespace Server.Items
     [Flipable(0xFBD, 0xFBE)]
     public class HeigelOfMoonglowQuotes : BaseStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public HeigelOfMoonglowQuotes()
             : base(0xFBD)
@@ -181,13 +163,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073327;
-            }
-        }// Library Friends - Quotes from the pen of Heigel of Moonglow
+        public override int LabelNumber => 1073327;// Library Friends - Quotes from the pen of Heigel of Moonglow
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             if (this.TurnedOn && this.IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, this.Location, 2) && !Utility.InRange(oldLocation, this.Location, 2))
@@ -221,7 +197,7 @@ namespace Server.Items
     [Flipable(0xFBD, 0xFBE)]
     public class TraderHoraceQuotes : BaseStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public TraderHoraceQuotes()
             : base(0xFBD)
@@ -235,13 +211,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073338;
-            }
-        }// Library Friends - Quotes from the pen of Horace, Trader
+        public override int LabelNumber => 1073338;// Library Friends - Quotes from the pen of Horace, Trader
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             if (this.TurnedOn && this.IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, this.Location, 2) && !Utility.InRange(oldLocation, this.Location, 2))

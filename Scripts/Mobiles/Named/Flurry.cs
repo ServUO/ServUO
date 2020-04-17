@@ -46,44 +46,17 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool GivesMLMinorArtifact
-        {
-            get { return true; }
-        }
+        public override bool GivesMLMinorArtifact => true;
 
         public Flurry(Serial serial)
             : base(serial)
         {
         }
 
-        public override double DispelDifficulty
-        {
-            get
-            {
-                return 117.5;
-            }
-        }
-        public override double DispelFocus
-        {
-            get
-            {
-                return 45.0;
-            }
-        }
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override double DispelDifficulty => 117.5;
+        public override double DispelFocus => 45.0;
+        public override bool BleedImmune => true;
+        public override int TreasureMapLevel => 2;
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich, 10);

@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class EnchantedWheelbarrow : Item, IFlipable, ISecurable
     {
-        public override int LabelNumber { get { return 1125214; } } // enchanted wheelbarrow
+        public override int LabelNumber => 1125214;  // enchanted wheelbarrow
 
         private bool m_Harvest;
         [CommandProperty(AccessLevel.GameMaster)]
@@ -173,7 +173,7 @@ namespace Server.Items
 
     public class DecorativePlant : Item
     {
-        public override int LabelNumber { get { return 1125205; } } // decorative plant
+        public override int LabelNumber => 1125205;  // decorative plant
 
         private static readonly int[] DecorativePlants = new[]
         {

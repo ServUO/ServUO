@@ -82,13 +82,7 @@ namespace Server.Items
                 this.m_Maker = value;
             }
         }
-        public override string DefaultName
-        {
-            get
-            {
-                return String.Format("A Holiday Bell From {0}", this.Giver);
-            }
-        }
+        public override string DefaultName => String.Format("A Holiday Bell From {0}", this.Giver);
         public override void OnDoubleClick(Mobile from)
         {
             if (!from.InRange(this.GetWorldLocation(), 2))

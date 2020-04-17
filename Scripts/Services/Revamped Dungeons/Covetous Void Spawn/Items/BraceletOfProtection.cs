@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class BraceletOfProtection : GoldBracelet
     {
-        public override int LabelNumber { get { return 1152730; } } // Bracelet of Protection
-        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber => 1152730;  // Bracelet of Protection
+        public override bool IsArtifact => true;
 
         [Constructable]
         public BraceletOfProtection()

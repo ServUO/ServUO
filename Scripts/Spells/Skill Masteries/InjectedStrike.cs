@@ -13,14 +13,14 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override int RequiredMana { get { return 30; } }
+        public override int RequiredMana => 30;
 
-        public override SkillName CastSkill { get { return SkillName.Poisoning; } }
-        public override SkillName DamageSkill { get { return SkillName.Anatomy; } }
+        public override SkillName CastSkill => SkillName.Poisoning;
+        public override SkillName DamageSkill => SkillName.Anatomy;
 
-        public override bool CancelsWeaponAbility { get { return true; } }
+        public override bool CancelsWeaponAbility => true;
 
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(1.0); } }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(1.0);
 
         public override void GetCastSkills(out double min, out double max)
         {

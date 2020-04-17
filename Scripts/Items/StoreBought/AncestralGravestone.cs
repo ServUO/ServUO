@@ -7,7 +7,7 @@ namespace Server.Items
     [Flipable(0x1173, 0x1174)]
     public class AncestralGravestone : Item
     {
-        public override int LabelNumber { get { return 1071096; } } // Ancestral Gravestone
+        public override int LabelNumber => 1071096;  // Ancestral Gravestone
 
         [Constructable]
         public AncestralGravestone()

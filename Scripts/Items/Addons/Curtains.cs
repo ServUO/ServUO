@@ -5,20 +5,8 @@ namespace Server.Items
 {
     public class CurtainsComponent : AddonComponent, IDyable
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076280;
-            }
-        }// Curtains
-        public override bool DisplayWeight
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override int LabelNumber => 1076280;// Curtains
+        public override bool DisplayWeight => false;
 
         private int m_ClosedID;
 
@@ -103,13 +91,7 @@ namespace Server.Items
 
     public class CurtainsAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new CurtainsDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new CurtainsDeed();
         [Constructable]
         public CurtainsAddon(bool east)
             : base()
@@ -152,20 +134,8 @@ namespace Server.Items
 
     public class CurtainsDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new CurtainsAddon(this.m_East);
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076280;
-            }
-        }// Curtains
+        public override BaseAddon Addon => new CurtainsAddon(this.m_East);
+        public override int LabelNumber => 1076280;// Curtains
 
         private bool m_East;
 

@@ -79,13 +79,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1071023;
-            }
-        }// Talisman
+        public override int LabelNumber => 1071023;// Talisman
 
         public override bool DisplayWeight
         {
@@ -98,15 +92,9 @@ namespace Server.Items
             }
         }
 
-        public virtual bool ForceShowName
-        {
-            get
-            {
-                return false;
-            }
-        }// used to override default summoner/removal name
+        public virtual bool ForceShowName => false;// used to override default summoner/removal name
 
-        public virtual int ArtifactRarity { get { return 0; } }
+        public virtual int ArtifactRarity => 0;
 
         private int m_MaxHitPoints;
         private int m_HitPoints;
@@ -246,24 +234,12 @@ namespace Server.Items
             }
         }
 
-        public virtual int InitMinHits
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int InitMinHits => 0;
 
-        public virtual int InitMaxHits
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int InitMaxHits => 0;
 
-        public virtual bool CanRepair { get { return true; } }
-        public virtual bool CanFortify { get { return NegativeAttributes.Antique < 4; } }
+        public virtual bool CanRepair => true;
+        public virtual bool CanFortify => NegativeAttributes.Antique < 4;
 
         #region Slayer
         private TalismanSlayerName m_Slayer;
@@ -370,10 +346,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SkillName CraftSkill
-        {
-            get { return GetMainSkill(); }
-        }
+        public SkillName CraftSkill => GetMainSkill();
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int SuccessBonus
@@ -1266,7 +1239,7 @@ namespace Server.Items
             return Utility.RandomList(m_ItemIDs);
         }
 
-        public static Type[] Summons { get { return m_Summons; } }
+        public static Type[] Summons => m_Summons;
         private static readonly Type[] m_Summons = new Type[]
         {
             typeof(SummonedAntLion),
@@ -1291,7 +1264,7 @@ namespace Server.Items
             typeof(Bandage),
         };
 
-        public static int[] SummonLabels { get { return m_SummonLabels; } }
+        public static int[] SummonLabels => m_SummonLabels;
         private static readonly int[] m_SummonLabels = new int[]
         {
             1075211, // Ant Lion
@@ -1345,7 +1318,7 @@ namespace Server.Items
             return TalismanRemoval.None;
         }
 
-        public static Type[] Killers { get { return m_Killers; } }
+        public static Type[] Killers => m_Killers;
         private static readonly Type[] m_Killers = new Type[]
         {
             typeof(OrcBomber), typeof(OrcBrute), typeof(Sewerrat), typeof(Rat), typeof(GiantRat),
@@ -1364,7 +1337,7 @@ namespace Server.Items
             // TODO Meraktus, Tormented Minotaur, Minotaur
         };
 
-        public static int[] KillerLabels { get { return m_KillerLabels; } }
+        public static int[] KillerLabels => m_KillerLabels;
         private static readonly int[] m_KillerLabels = new int[]
         {
             1072413, 1072414, 1072418, 1072419, 1072420,
@@ -1412,7 +1385,7 @@ namespace Server.Items
             return new TalismanAttribute(m_Killers[num], m_KillerLabels[num], Utility.RandomMinMax(5, 60));
         }
 
-        public static SkillName[] SkillsOld { get { return m_SkillsOld; } }
+        public static SkillName[] SkillsOld => m_SkillsOld;
         private static readonly SkillName[] m_SkillsOld = new SkillName[]
         {
             SkillName.Alchemy,
@@ -1426,7 +1399,7 @@ namespace Server.Items
             SkillName.Tinkering,
         };
 
-        public static TalismanSkill[] Skills { get { return m_Skills; } }
+        public static TalismanSkill[] Skills => m_Skills;
         private static readonly TalismanSkill[] m_Skills = new TalismanSkill[]
         {
             TalismanSkill.Alchemy,

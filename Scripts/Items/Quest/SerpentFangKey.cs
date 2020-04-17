@@ -16,13 +16,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074341;
-            }
-        }// serpent fang key
+        public override int LabelNumber => 1074341;// serpent fang key
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

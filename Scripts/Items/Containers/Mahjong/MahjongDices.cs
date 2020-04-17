@@ -22,27 +22,9 @@ namespace Server.Engines.Mahjong
             this.m_Second = reader.ReadInt();
         }
 
-        public MahjongGame Game
-        {
-            get
-            {
-                return this.m_Game;
-            }
-        }
-        public int First
-        {
-            get
-            {
-                return this.m_First;
-            }
-        }
-        public int Second
-        {
-            get
-            {
-                return this.m_Second;
-            }
-        }
+        public MahjongGame Game => this.m_Game;
+        public int First => this.m_First;
+        public int Second => this.m_Second;
         public void RollDices(Mobile from)
         {
             this.m_First = Utility.Random(1, 6);

@@ -45,13 +45,7 @@ namespace Server.Engines.Reports
             this.m_Title = title;
         }
 
-        public override bool HasChild
-        {
-            get
-            {
-                return this.m_HasChild;
-            }
-        }
+        public override bool HasChild => this.m_HasChild;
         public override int GetInt32(string key)
         {
             return XmlConvert.ToInt32(this.m_Xml.GetAttribute(key));

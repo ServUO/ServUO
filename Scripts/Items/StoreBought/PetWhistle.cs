@@ -11,7 +11,7 @@ namespace Server.Items
 {
     public class PetWhistle : Item
     {
-        public override int LabelNumber { get { return 1126239; } } // whistle
+        public override int LabelNumber => 1126239;  // whistle
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextLinkedTime { get; set; }
@@ -23,7 +23,7 @@ namespace Server.Items
         public BaseCreature PetLinked { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsUsable { get { return NextLinkedTime < DateTime.UtcNow; } }
+        public bool IsUsable => NextLinkedTime < DateTime.UtcNow;
 
         [Constructable]
         public PetWhistle()

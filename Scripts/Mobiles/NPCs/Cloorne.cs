@@ -15,39 +15,15 @@ namespace Server.Engines.Quests
         }
 
         /* Squishy */
-        public override object Title
-        {
-            get
-            {
-                return 1072998;
-            }
-        }
+        public override object Title => 1072998;
         /* Have you ever seen what a slime can do to good gear?  Well, it's not pretty, let me tell 
         you!  If you take on my task to destroy twelve of them, bear that in mind.  They'll corrode 
         your equipment faster than anything. */
-        public override object Description
-        {
-            get
-            {
-                return 1073031;
-            }
-        }
+        public override object Description => 1073031;
         /* Well, okay. But if you decide you are up for it after all, c'mon back and see me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072270;
-            }
-        }
+        public override object Refuse => 1072270;
         /* You're not quite done yet.  Get back to work! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072271;
-            }
-        }
+        public override object Uncomplete => 1072271;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -75,38 +51,14 @@ namespace Server.Engines.Quests
         }
 
         /* A Big Job */
-        public override object Title
-        {
-            get
-            {
-                return 1072988;
-            }
-        }
+        public override object Title => 1072988;
         /* It's a big job but you look to be just the adventurer to do it! I'm so glad you came by ... 
         I'm paying well for the death of five ogres and five ettins.  Hop to it, if you're so inclined. */
-        public override object Description
-        {
-            get
-            {
-                return 1073017;
-            }
-        }
+        public override object Description => 1073017;
         /* Well, okay. But if you decide you are up for it after all, c'mon back and see me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072270;
-            }
-        }
+        public override object Refuse => 1072270;
         /* You're not quite done yet.  Get back to work! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072271;
-            }
-        }
+        public override object Uncomplete => 1072271;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -133,38 +85,14 @@ namespace Server.Engines.Quests
         }
 
         /* Trolling for Trolls */
-        public override object Title
-        {
-            get
-            {
-                return 1072985;
-            }
-        }
+        public override object Title => 1072985;
         /* They may not be bright, but they're incredibly destructive. Kill off ten trolls and I'll 
         consider it a favor done for me. */
-        public override object Description
-        {
-            get
-            {
-                return 1073014;
-            }
-        }
+        public override object Description => 1073014;
         /* Well, okay. But if you decide you are up for it after all, c'mon back and see me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072270;
-            }
-        }
+        public override object Refuse => 1072270;
         /* You're not quite done yet.  Get back to work! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072271;
-            }
-        }
+        public override object Uncomplete => 1072271;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -192,39 +120,15 @@ namespace Server.Engines.Quests
         }
 
         /* Orc Slaying */
-        public override object Title
-        {
-            get
-            {
-                return 1072986;
-            }
-        }
+        public override object Title => 1072986;
         /* Those green-skinned freaks have run off with more of my livestock.  I want an orc scout 
         killed for each sheep I lost and an orc for each chicken.  So that's four orc scouts and 
         eight orcs I'll pay you to slay. */
-        public override object Description
-        {
-            get
-            {
-                return 1073015;
-            }
-        }
+        public override object Description => 1073015;
         /* Well, okay. But if you decide you are up for it after all, c'mon back and see me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072270;
-            }
-        }
+        public override object Refuse => 1072270;
         /* You're not quite done yet.  Get back to work! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072271;
-            }
-        }
+        public override object Uncomplete => 1072271;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -252,38 +156,14 @@ namespace Server.Engines.Quests
         }
 
         /* Cold Hearted */
-        public override object Title
-        {
-            get
-            {
-                return 1072991;
-            }
-        }
+        public override object Title => 1072991;
         /* It's a big job but you look to be just the adventurer to do it! I'm so glad you came by ... I'm paying 
         well for the death of six giant ice serpents and six frost spiders.  Hop to it, if you're so inclined. */
-        public override object Description
-        {
-            get
-            {
-                return 1073027;
-            }
-        }
+        public override object Description => 1073027;
         /* Well, okay. But if you decide you are up for it after all, c'mon back and see me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072270;
-            }
-        }
+        public override object Refuse => 1072270;
         /* You're not quite done yet.  Get back to work! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072271;
-            }
-        }
+        public override object Uncomplete => 1072271;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -310,38 +190,14 @@ namespace Server.Engines.Quests
         }
 
         /* Forked Tongues */
-        public override object Title
-        {
-            get
-            {
-                return 1072984;
-            }
-        }
+        public override object Title => 1072984;
         /* You can't trust them, you know.  Lizardmen I mean.  They have forked tongues ... and you know 
         what that means.  Exterminate ten of them and I'll reward you. */
-        public override object Description
-        {
-            get
-            {
-                return 1073013;
-            }
-        }
+        public override object Description => 1073013;
         /* Well, okay. But if you decide you are up for it after all, c'mon back and see me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072270;
-            }
-        }
+        public override object Refuse => 1072270;
         /* You're not quite done yet.  Get back to work! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072271;
-            }
-        }
+        public override object Uncomplete => 1072271;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -372,11 +228,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(SquishyQuest),
                     typeof(BigJobQuest),
@@ -386,8 +238,6 @@ namespace Server.Engines.Quests
                     typeof(CreepyCrawliesQuest),
                     typeof(ForkedTonguesQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class CandelabraOfSouls : Item
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public CandelabraOfSouls()
             : base(0xB26)
@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1063478;
-            }
-        }
+        public override int LabelNumber => 1063478;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

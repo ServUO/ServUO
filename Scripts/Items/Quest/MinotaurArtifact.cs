@@ -18,20 +18,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074826;
-            }
-        }// Minotaur Artifact
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 5.0;
-            }
-        }
+        public override int LabelNumber => 1074826;// Minotaur Artifact
+        public override double DefaultWeight => 5.0;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

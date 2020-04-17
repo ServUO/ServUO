@@ -31,16 +31,10 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1062913;
-            }
-        }// Rose of Trinsic
+        public override int LabelNumber => 1062913;// Rose of Trinsic
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level
         {
@@ -198,13 +192,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1062926;
-            }
-        }// Petal of the Rose of Trinsic
+        public override int LabelNumber => 1062926;// Petal of the Rose of Trinsic
         public override void OnDoubleClick(Mobile from)
         {
             if (!this.IsChildOf(from.Backpack))

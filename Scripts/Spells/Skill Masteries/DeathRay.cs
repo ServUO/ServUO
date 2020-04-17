@@ -23,19 +23,19 @@ namespace Server.Spells.SkillMasteries
         private Point3D _Location;
         private ResistanceMod _Mod;
 
-        public override double UpKeep { get { return 35; } }
-        public override int RequiredMana { get { return 50; } }
-        public override int DamageThreshold { get { return 1; } }
-        public override bool DamageCanDisrupt { get { return true; } }
-        public override double TickTime { get { return 3; } }
+        public override double UpKeep => 35;
+        public override int RequiredMana => 50;
+        public override int DamageThreshold => 1;
+        public override bool DamageCanDisrupt => true;
+        public override double TickTime => 3;
 
-        public override int UpkeepCancelMessage { get { return 1155874; } } // You do not have enough mana to keep your death ray active.
-        public override int DisruptMessage { get { return 1155793; } } // This action disturbs the focus necessary to keep your death ray active and it dissipates.
+        public override int UpkeepCancelMessage => 1155874;  // You do not have enough mana to keep your death ray active.
+        public override int DisruptMessage => 1155793;  // This action disturbs the focus necessary to keep your death ray active and it dissipates.
 
-        public override TimeSpan ExpirationPeriod { get { return TimeSpan.FromMinutes(360); } }
+        public override TimeSpan ExpirationPeriod => TimeSpan.FromMinutes(360);
 
-        public override SkillName CastSkill { get { return SkillName.Magery; } }
-        public override SkillName DamageSkill { get { return SkillName.EvalInt; } }
+        public override SkillName CastSkill => SkillName.Magery;
+        public override SkillName DamageSkill => SkillName.EvalInt;
 
         public DeathRaySpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)

@@ -6,7 +6,7 @@ namespace Server.Mobiles
 {
     public class QueenZhah : MondainQuester
     {
-        public override Type[] Quests { get { return new Type[] { typeof(JourneyToTheAthenaeumIsleQuest) }; } }
+        public override Type[] Quests => new Type[] { typeof(JourneyToTheAthenaeumIsleQuest) };
 
         [Constructable]
         public QueenZhah() : base("Zhah", "the Gargoyle Queen")

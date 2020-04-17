@@ -13,13 +13,7 @@
         {
         }
 
-        public override string MaskName
-        {
-            get
-            {
-                return "Daemon Mask";
-            }
-        }
+        public override string MaskName => "Daemon Mask";
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -52,13 +52,7 @@ namespace Server.Items
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Swinging
-        {
-            get
-            {
-                return (this.m_Timer != null);
-            }
-        }
+        public bool Swinging => (this.m_Timer != null);
         public virtual void UpdateItemID()
         {
             int baseItemID = (this.ItemID / 2) * 2;
@@ -191,13 +185,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new TrainingDummyEastDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new TrainingDummyEastDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -225,20 +213,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new TrainingDummyEastAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044335;
-            }
-        }// training dummy (east)
+        public override BaseAddon Addon => new TrainingDummyEastAddon();
+        public override int LabelNumber => 1044335;// training dummy (east)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -267,13 +243,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new TrainingDummySouthDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new TrainingDummySouthDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -301,20 +271,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new TrainingDummySouthAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044336;
-            }
-        }// training dummy (south)
+        public override BaseAddon Addon => new TrainingDummySouthAddon();
+        public override int LabelNumber => 1044336;// training dummy (south)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

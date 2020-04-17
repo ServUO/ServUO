@@ -44,15 +44,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override TribeType Tribe { get { return TribeType.Fey; } }
+        public override TribeType Tribe => TribeType.Fey;
 
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool BleedImmune => true;
 
         public override int GetIdleSound()
         {

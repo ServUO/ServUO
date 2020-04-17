@@ -17,14 +17,14 @@ namespace Server.Engines.Quests
         private readonly Dictionary<int, int> m_HaveFished = new Dictionary<int, int>();
         private readonly Dictionary<int, int> m_TimesFished = new Dictionary<int, int>();
 
-        public Mobile Player { get { return m_Player; } }
+        public Mobile Player => m_Player;
         public double Reputation { get { return m_Reputation; } set { m_Reputation = value; } }
         public bool HasRecievedBritGal { get { return m_HasRecievedBritGal; } set { m_HasRecievedBritGal = value; } }
-        public Dictionary<int, int> HaveFished { get { return m_HaveFished; } }
-        public Dictionary<int, int> TimesFished { get { return m_TimesFished; } }
+        public Dictionary<int, int> HaveFished => m_HaveFished;
+        public Dictionary<int, int> TimesFished => m_TimesFished;
 
         private static readonly Dictionary<Mobile, PlayerFishingEntry> m_FishingEntries = new Dictionary<Mobile, PlayerFishingEntry>();
-        public static Dictionary<Mobile, PlayerFishingEntry> FishingEntries { get { return m_FishingEntries; } }
+        public static Dictionary<Mobile, PlayerFishingEntry> FishingEntries => m_FishingEntries;
 
         public static readonly double RewardAmount = 15000;
 

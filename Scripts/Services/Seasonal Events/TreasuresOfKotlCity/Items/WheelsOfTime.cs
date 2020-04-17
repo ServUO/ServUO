@@ -19,7 +19,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
         public Timer Timer { get; set; }
 
-        public override int LabelNumber { get { return 1157032; } } // Wheels of Time
+        public override int LabelNumber => 1157032;  // Wheels of Time
 
         public WheelsOfTime()
             : base(0x9CEF)

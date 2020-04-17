@@ -55,8 +55,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1149959; } }// A ship's strongbox
-        public override int DefaultMaxWeight { get { return 400; } }
+        public override int LabelNumber => 1149959; // A ship's strongbox
+        public override int DefaultMaxWeight => 400;
 
         public override void Serialize(GenericWriter writer)
         {

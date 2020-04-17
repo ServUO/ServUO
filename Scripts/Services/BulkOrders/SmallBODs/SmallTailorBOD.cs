@@ -6,7 +6,7 @@ namespace Server.Engines.BulkOrders
 {
     public class SmallTailorBOD : SmallBOD
     {
-        public override BODType BODType { get { return BODType.Tailor; } }
+        public override BODType BODType => BODType.Tailor;
 
         public static double[] m_TailoringMaterialChances = new double[]
         {

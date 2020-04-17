@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class LiveRock : Item, ICommodity
     {
-        public override int LabelNumber { get { return 1125985; } } // live rock
+        public override int LabelNumber => 1125985;  // live rock
 
         [Constructable]
         public LiveRock()
@@ -23,8 +23,8 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         public override void Serialize(GenericWriter writer)
         {

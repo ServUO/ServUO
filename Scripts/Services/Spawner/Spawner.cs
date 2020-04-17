@@ -78,10 +78,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool IsVirtualItem { get { return true; } }
+        public override bool IsVirtualItem => true;
 
-        public bool IsFull { get { return (SpawnCount >= m_MaxCount); } }
-        public bool IsEmpty { get { return (SpawnCount == 0); } }
+        public bool IsFull => (SpawnCount >= m_MaxCount);
+        public bool IsEmpty => (SpawnCount == 0);
 
         public List<SpawnObject> SpawnObjects
         {
@@ -109,7 +109,7 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.Spawner)]
-        public virtual int SpawnObjectCount { get { return m_SpawnObjects.Count; } }
+        public virtual int SpawnObjectCount => m_SpawnObjects.Count;
 
         [CommandProperty(AccessLevel.Spawner)]
         public WayPoint WayPoint { get { return m_WayPoint; } set { m_WayPoint = value; } }
@@ -197,9 +197,9 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.Spawner)]
         public bool Group { get { return m_Group; } set { m_Group = value; InvalidateProperties(); } }
 
-        public override string DefaultName { get { return "Spawner"; } }
-        public Point3D HomeLocation { get { return Location; } }
-        bool ISpawner.UnlinkOnTaming { get { return true; } }
+        public override string DefaultName => "Spawner";
+        public Point3D HomeLocation => Location;
+        bool ISpawner.UnlinkOnTaming => true;
 
         [CommandProperty(AccessLevel.Spawner)]
         public int SpawnCount

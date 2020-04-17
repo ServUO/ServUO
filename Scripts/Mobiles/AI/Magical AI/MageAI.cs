@@ -36,10 +36,7 @@ namespace Server.Mobiles
         public Mobile LastTarget { get; set; }
         public Point3D LastTargetLoc { get; set; }
 
-        public virtual bool SmartAI
-        {
-            get { return PetTrainingHelper.GetAbilityProfile(m_Mobile, true).HasAbility(MagicalAbility.MageryMastery); }
-        }
+        public virtual bool SmartAI => PetTrainingHelper.GetAbilityProfile(m_Mobile, true).HasAbility(MagicalAbility.MageryMastery);
 
         public MageAI(BaseCreature m)
             : base(m)

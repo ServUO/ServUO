@@ -49,7 +49,7 @@ namespace Server.Items
 
         private readonly Dictionary<Mobile, Timer> m_DamageTable = new Dictionary<Mobile, Timer>();
 
-        public override bool HandlesOnMovement { get { return true; } }
+        public override bool HandlesOnMovement => true;
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {

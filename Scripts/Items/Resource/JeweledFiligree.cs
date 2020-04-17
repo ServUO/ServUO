@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072894;
-            }
-        }// jeweled filigree
+        public override int LabelNumber => 1072894;// jeweled filigree
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

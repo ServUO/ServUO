@@ -22,13 +22,7 @@ namespace Server.Spells.Seventh
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Seventh;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Seventh;
         public override void OnCast()
         {
             Caster.Target = new InternalTarget(this);
@@ -135,13 +129,7 @@ namespace Server.Spells.Seventh
                 m_Timer.Start();
             }
 
-            public override bool BlocksFit
-            {
-                get
-                {
-                    return true;
-                }
-            }
+            public override bool BlocksFit => true;
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);

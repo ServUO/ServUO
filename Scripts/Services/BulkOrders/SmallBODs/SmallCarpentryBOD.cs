@@ -17,7 +17,7 @@ namespace Server.Engines.BulkOrders
             0.003000000 // Frostwood
         };
 
-        public override BODType BODType { get { return BODType.Carpentry; } }
+        public override BODType BODType => BODType.Carpentry;
 
         [Constructable]
         public SmallCarpentryBOD()

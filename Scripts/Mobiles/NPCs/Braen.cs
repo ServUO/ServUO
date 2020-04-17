@@ -15,47 +15,17 @@ namespace Server.Engines.Quests
         }
 
         /* Unholy Construct */
-        public override object Title
-        {
-            get
-            {
-                return 1073666;
-            }
-        }
+        public override object Title => 1073666;
         /* They're unholy, I say. Golems, a walking mockery of all life, born of 
         blackest magic. They're not truly alive, so destroying them isn't a crime, 
         it's a service. A service I will gladly pay for. */
-        public override object Description
-        {
-            get
-            {
-                return 1073705;
-            }
-        }
+        public override object Description => 1073705;
         /* Perhaps you'll change your mind and return at some point. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073733;
-            }
-        }
+        public override object Refuse => 1073733;
         /* The unholy brutes, the Golems, must be smited! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073746;
-            }
-        }
+        public override object Uncomplete => 1073746;
         /* Reduced those Golems to component parts? Good, then -- you deserve this reward! */
-        public override object Complete
-        {
-            get
-            {
-                return 1073787;
-            }
-        }
+        public override object Complete => 1073787;
     }
 
     public class Braen : MondainQuester
@@ -73,13 +43,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[] { typeof(UnholyConstructQuest) };
-            }
-        }
+        public override Type[] Quests => new Type[] { typeof(UnholyConstructQuest) };
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

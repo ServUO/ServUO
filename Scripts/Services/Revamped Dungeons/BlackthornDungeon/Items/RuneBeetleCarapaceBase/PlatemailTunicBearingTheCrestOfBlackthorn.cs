@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class PlatemailTunicBearingTheCrestOfBlackthorn : PlateChest
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [Constructable]
         public PlatemailTunicBearingTheCrestOfBlackthorn()
@@ -16,55 +16,13 @@ namespace Server.Items
             this.ArmorAttributes.MageArmor = 1;
         }
 
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 14;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 14;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int BasePhysicalResistance => 5;
+        public override int BaseFireResistance => 4;
+        public override int BaseColdResistance => 14;
+        public override int BasePoisonResistance => 3;
+        public override int BaseEnergyResistance => 14;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public PlatemailTunicBearingTheCrestOfBlackthorn(Serial serial)
             : base(serial)

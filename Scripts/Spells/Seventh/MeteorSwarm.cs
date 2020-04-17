@@ -8,7 +8,7 @@ namespace Server.Spells.Seventh
 {
     public class MeteorSwarmSpell : MagerySpell
     {
-        public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
+        public override DamageType SpellDamageType => DamageType.SpellAOE;
         public Item Item { get; set; }
 
         private static readonly SpellInfo m_Info = new SpellInfo(
@@ -40,20 +40,8 @@ namespace Server.Spells.Seventh
             return base.GetMana();
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Seventh;
-            }
-        }
-        public override bool DelayedDamage
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Seventh;
+        public override bool DelayedDamage => true;
         public override void OnCast()
         {
             Caster.Target = new InternalTarget(this, Item);

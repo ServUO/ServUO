@@ -42,27 +42,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int Feathers
-        {
-            get
-            {
-                return 50;
-            }
-        }
-        public override bool CanFly
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int Meat => 1;
+        public override int Feathers => 50;
+        public override bool CanFly => true;
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Average, 2);

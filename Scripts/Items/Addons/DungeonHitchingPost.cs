@@ -11,7 +11,7 @@ namespace Server.Items
     [FlipableAttribute(0x14E7, 0x14E8)]
     public class DungeonHitchingPost : Item
     {
-        public override int LabelNumber { get { return 1025351; } }// hitching post
+        public override int LabelNumber => 1025351; // hitching post
 
         [Constructable]
         public DungeonHitchingPost()
@@ -40,7 +40,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -307,13 +307,7 @@ namespace Server.Items
             }
         }
 
-        public override bool HandlesOnSpeech
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool HandlesOnSpeech => true;
 
         public override void OnSpeech(SpeechEventArgs e)
         {

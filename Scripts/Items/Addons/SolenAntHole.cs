@@ -75,20 +75,8 @@ namespace Server.Items
         {
         }
 
-        public override bool ShareHue
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool ShareHue => false;
+        public override bool HandlesOnMovement => true;
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             if (!m.Player || !m.Alive || m.Hidden || !this.SpawnKilled())

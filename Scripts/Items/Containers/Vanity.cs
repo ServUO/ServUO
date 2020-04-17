@@ -24,34 +24,10 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonContainerDeed Deed
-        {
-            get
-            {
-                return new VanityDeed();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074027;
-            }
-        }// Vanity
-        public override int DefaultGumpID
-        {
-            get
-            {
-                return 0x51;
-            }
-        }
-        public override int DefaultDropSound
-        {
-            get
-            {
-                return 0x42;
-            }
-        }
+        public override BaseAddonContainerDeed Deed => new VanityDeed();
+        public override int LabelNumber => 1074027;// Vanity
+        public override int DefaultGumpID => 0x51;
+        public override int DefaultDropSound => 0x42;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -82,20 +58,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonContainer Addon
-        {
-            get
-            {
-                return new VanityAddon(this.m_East);
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074027;
-            }
-        }// Vanity
+        public override BaseAddonContainer Addon => new VanityAddon(this.m_East);
+        public override int LabelNumber => 1074027;// Vanity
         public override void OnDoubleClick(Mobile from)
         {
             if (this.IsChildOf(from.Backpack))

@@ -22,7 +22,7 @@ namespace Server.Spells.Fourth
         private readonly VendorSearchMap m_SearchMap;
         private readonly AuctionMap m_AuctionMap;
 
-        public bool NoSkillRequirement { get { return (m_Book != null || m_AuctionMap != null || m_SearchMap != null) || TransformationSpellHelper.UnderTransformation(Caster, typeof(WraithFormSpell)); } }
+        public bool NoSkillRequirement => (m_Book != null || m_AuctionMap != null || m_SearchMap != null) || TransformationSpellHelper.UnderTransformation(Caster, typeof(WraithFormSpell));
 
         public RecallSpell(Mobile caster, Item scroll)
             : this(caster, scroll, null, null)
@@ -48,13 +48,7 @@ namespace Server.Spells.Fourth
             m_AuctionMap = map;
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Fourth;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Fourth;
         public override void GetCastSkills(out double min, out double max)
         {
             if (NoSkillRequirement)	//recall using Runebook charge, wraith form or using vendor search map

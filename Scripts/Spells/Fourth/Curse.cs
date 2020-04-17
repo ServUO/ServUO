@@ -22,13 +22,7 @@ namespace Server.Spells.Fourth
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Fourth;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Fourth;
 
         public static void AddEffect(Mobile m, TimeSpan duration, int strOffset, int dexOffset, int intOffset)
         {

@@ -6,15 +6,15 @@ namespace Server.Engines.CityLoyalty
 {
     public class CityBanner : InterchangeableAddon
     {
-        public override BaseAddonDeed Deed { get { return new CityBannerDeed(City); } }
+        public override BaseAddonDeed Deed => new CityBannerDeed(City);
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public City City { get; private set; }
 
-        public override int EastID { get { return SouthID + 9; } }
-        public override int SouthID { get { return BannerInfo[City][0]; } }
+        public override int EastID => SouthID + 9;
+        public override int SouthID => BannerInfo[City][0];
 
         [Constructable]
         public CityBanner(City city)
@@ -63,12 +63,12 @@ namespace Server.Engines.CityLoyalty
 
     public class CityBannerDeed : InterchangeableAddonDeed
     {
-        public override BaseAddon Addon { get { return new CityBanner(City); } }
+        public override BaseAddon Addon => new CityBanner(City);
 
-        public override int LabelNumber { get { return CityBanner.BannerInfo[City][1]; } }
+        public override int LabelNumber => CityBanner.BannerInfo[City][1];
 
-        public override int EastID { get { return SouthID + 9; } }
-        public override int SouthID { get { return CityBanner.BannerInfo[City][0]; } }
+        public override int EastID => SouthID + 9;
+        public override int SouthID => CityBanner.BannerInfo[City][0];
 
         [CommandProperty(AccessLevel.GameMaster)]
         public City City { get; private set; }

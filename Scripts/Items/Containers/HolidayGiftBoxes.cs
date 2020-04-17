@@ -35,20 +35,8 @@
             0x42b,
             0x448
         };
-        public static int RandomGiftBoxHue
-        {
-            get
-            {
-                return m_NormalHues[Utility.Random(m_NormalHues.Length)];
-            }
-        }
-        public static int RandomNeonBoxHue
-        {
-            get
-            {
-                return m_NeonHues[Utility.Random(m_NeonHues.Length)];
-            }
-        }
+        public static int RandomGiftBoxHue => m_NormalHues[Utility.Random(m_NormalHues.Length)];
+        public static int RandomNeonBoxHue => m_NeonHues[Utility.Random(m_NeonHues.Length)];
     }
 
     [FlipableAttribute(0x46A5, 0x46A6)]
@@ -66,13 +54,7 @@
         {
         }
 
-        public override int DefaultGumpID
-        {
-            get
-            {
-                return 0x11E;
-            }
-        }
+        public override int DefaultGumpID => 0x11E;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -100,13 +82,7 @@
         {
         }
 
-        public override int DefaultGumpID
-        {
-            get
-            {
-                return 0x11B;
-            }
-        }
+        public override int DefaultGumpID => 0x11B;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -134,13 +110,7 @@
         {
         }
 
-        public override int DefaultGumpID
-        {
-            get
-            {
-                return 0x11C;
-            }
-        }
+        public override int DefaultGumpID => 0x11C;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -168,13 +138,7 @@
         {
         }
 
-        public override int DefaultGumpID
-        {
-            get
-            {
-                return 0x11D;
-            }
-        }
+        public override int DefaultGumpID => 0x11D;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -202,13 +166,7 @@
         {
         }
 
-        public override int DefaultGumpID
-        {
-            get
-            {
-                return 0x11F;
-            }
-        }
+        public override int DefaultGumpID => 0x11F;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

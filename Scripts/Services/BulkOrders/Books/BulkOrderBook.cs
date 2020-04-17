@@ -59,20 +59,8 @@ namespace Server.Engines.BulkOrders
                 this.m_Level = value;
             }
         }
-        public ArrayList Entries
-        {
-            get
-            {
-                return this.m_Entries;
-            }
-        }
-        public BOBFilter Filter
-        {
-            get
-            {
-                return this.m_Filter;
-            }
-        }
+        public ArrayList Entries => this.m_Entries;
+        public BOBFilter Filter => this.m_Filter;
         public int ItemCount
         {
             get
@@ -329,7 +317,7 @@ namespace Server.Engines.BulkOrders
 
         private class NameBookPrompt : Prompt
         {
-            public override int MessageCliloc { get { return 1062479; } }
+            public override int MessageCliloc => 1062479;
             private readonly BulkOrderBook m_Book;
             public NameBookPrompt(BulkOrderBook book)
             {

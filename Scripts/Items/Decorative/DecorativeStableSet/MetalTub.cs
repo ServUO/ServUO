@@ -29,7 +29,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new MetalTubDeed(); } }
+        public override BaseAddonDeed Deed => new MetalTubDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -46,9 +46,9 @@ namespace Server.Items
 
     public class MetalTubDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1126234; } } // metal tub
+        public override int LabelNumber => 1126234;  // metal tub
 
-        public override BaseAddon Addon { get { return new MetalTubAddon(_Direction); } }
+        public override BaseAddon Addon => new MetalTubAddon(_Direction);
 
         private DirectionType _Direction;
 

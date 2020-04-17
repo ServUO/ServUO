@@ -5,13 +5,7 @@ namespace Server.Items
     #region Reward Clothing
     public class ZooMemberThighBoots : ThighBoots
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073221;
-            }
-        }// Britannia Royal Zoo Member
+        public override int LabelNumber => 1073221;// Britannia Royal Zoo Member
 
         [Constructable]
         public ZooMemberThighBoots()
@@ -151,13 +145,7 @@ namespace Server.Items
     [FlipableAttribute(0x170b, 0x170c)]
     public class Boots : BaseShoes
     {
-        public override CraftResource DefaultResource
-        {
-            get
-            {
-                return CraftResource.RegularLeather;
-            }
-        }
+        public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
         [Constructable]
         public Boots()
@@ -229,13 +217,7 @@ namespace Server.Items
         public int TempHue { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsArcane
-        {
-            get
-            {
-                return m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0;
-            }
-        }
+        public bool IsArcane => m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0;
 
         public override void AddCraftedProperties(ObjectPropertyList list)
         {
@@ -269,13 +251,7 @@ namespace Server.Items
 
         #endregion
 
-        public override CraftResource DefaultResource
-        {
-            get
-            {
-                return CraftResource.RegularLeather;
-            }
-        }
+        public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
         [Constructable]
         public ThighBoots()
@@ -349,13 +325,7 @@ namespace Server.Items
     [FlipableAttribute(0x170f, 0x1710)]
     public class Shoes : BaseShoes
     {
-        public override CraftResource DefaultResource
-        {
-            get
-            {
-                return CraftResource.RegularLeather;
-            }
-        }
+        public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
         [Constructable]
         public Shoes()
@@ -394,13 +364,7 @@ namespace Server.Items
     [FlipableAttribute(0x170d, 0x170e)]
     public class Sandals : BaseShoes
     {
-        public override CraftResource DefaultResource
-        {
-            get
-            {
-                return CraftResource.RegularLeather;
-            }
-        }
+        public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
         [Constructable]
         public Sandals()
@@ -550,21 +514,9 @@ namespace Server.Items
     [FlipableAttribute(0x2FC4, 0x317A)]
     public class ElvenBoots : BaseShoes
     {
-        public override CraftResource DefaultResource
-        {
-            get
-            {
-                return CraftResource.RegularLeather;
-            }
-        }
+        public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Elf;
-            }
-        }
+        public override Race RequiredRace => Race.Elf;
 
         [Constructable]
         public ElvenBoots()
@@ -607,7 +559,7 @@ namespace Server.Items
     [Alterable(typeof(DefTailoring), typeof(LeatherTalons), true)]
     public class JesterShoes : BaseShoes
     {
-        public override int LabelNumber { get { return 1109617; } } // Jester Shoes
+        public override int LabelNumber => 1109617;  // Jester Shoes
 
         [Constructable]
         public JesterShoes()

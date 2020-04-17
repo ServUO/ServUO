@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class EtherealSoulbinder : Item
     {
-        public override int LabelNumber { get { return 1159167; } } // ethereal soulbinder
+        public override int LabelNumber => 1159167;  // ethereal soulbinder
 
         public double MaxSoulPoint { get; set; } = 100;
 

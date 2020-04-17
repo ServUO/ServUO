@@ -13,8 +13,8 @@ namespace Server.Mobiles
     [CorpseName("a horde minion corpse")]
     public class HordeMinionFamiliar : BaseFamiliar
     {
-        public override bool DisplayWeight { get { return true; } }
-        public override bool CanAutoStable { get { return Backpack == null || Backpack.Items.Count == 0; } }
+        public override bool DisplayWeight => true;
+        public override bool CanAutoStable => Backpack == null || Backpack.Items.Count == 0;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public override OrderType ControlOrder

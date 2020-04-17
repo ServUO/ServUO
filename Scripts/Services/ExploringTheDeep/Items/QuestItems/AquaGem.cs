@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class AquaGem : BaseDecayingItem
     {
-        public override int LabelNumber { get { return 1154244; } } // Aqua Gem
+        public override int LabelNumber => 1154244;  // Aqua Gem
 
         [Constructable]
         public AquaGem() : base(0x4B48)
@@ -29,7 +29,7 @@ namespace Server.Items
             list.Add(1072351); // Quest Item
         }
 
-        public override int Lifespan { get { return 3600; } }
+        public override int Lifespan => 3600;
 
         public AquaGem(Serial serial) : base(serial)
         {

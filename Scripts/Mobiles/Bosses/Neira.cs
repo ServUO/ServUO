@@ -68,90 +68,24 @@ namespace Server.Mobiles
         {
         }
 
-        public override ChampionSkullType SkullType
-        {
-            get
-            {
-                return ChampionSkullType.Death;
-            }
-        }
-        public override Type[] UniqueList
-        {
-            get
-            {
-                return new Type[] { typeof(ShroudOfDeceit) };
-            }
-        }
-        public override Type[] SharedList
-        {
-            get
-            {
-                return new Type[]
+        public override ChampionSkullType SkullType => ChampionSkullType.Death;
+        public override Type[] UniqueList => new Type[] { typeof(ShroudOfDeceit) };
+        public override Type[] SharedList => new Type[]
                 {
                     typeof(ANecromancerShroud),
                     typeof(CaptainJohnsHat),
                     typeof(DetectiveBoots)
                 };
-            }
-        }
-        public override Type[] DecorativeList
-        {
-            get
-            {
-                return new Type[] { typeof(WallBlood), typeof(TatteredAncientMummyWrapping) };
-            }
-        }
-        public override MonsterStatuetteType[] StatueTypes
-        {
-            get
-            {
-                return new MonsterStatuetteType[] { };
-            }
-        }
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool Uncalmable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Deadly;
-            }
-        }
-        public override bool ShowFameTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override Type[] DecorativeList => new Type[] { typeof(WallBlood), typeof(TatteredAncientMummyWrapping) };
+        public override MonsterStatuetteType[] StatueTypes => new MonsterStatuetteType[] { };
+        public override bool AlwaysMurderer => true;
+        public override bool Unprovokable => true;
+        public override bool Uncalmable => true;
+        public override Poison PoisonImmune => Poison.Deadly;
+        public override bool ShowFameTitle => false;
+        public override bool ClickTitle => false;
 
-        public override bool ForceStayHome { get { return true; } }
+        public override bool ForceStayHome => true;
 
         public override void GenerateLoot()
         {
@@ -317,20 +251,8 @@ namespace Server.Mobiles
                 m_Mount = new VirtualMount(this);
             }
 
-            public Mobile Rider
-            {
-                get
-                {
-                    return m_Rider;
-                }
-            }
-            public IMount Mount
-            {
-                get
-                {
-                    return m_Mount;
-                }
-            }
+            public Mobile Rider => m_Rider;
+            public IMount Mount => m_Mount;
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);

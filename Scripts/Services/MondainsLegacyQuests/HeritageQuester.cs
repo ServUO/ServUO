@@ -10,20 +10,8 @@ namespace Server.Engines.Quests
         private readonly Type m_Quest;
         private readonly object m_Title;
 
-        public Type Quest
-        {
-            get
-            {
-                return this.m_Quest;
-            }
-        }
-        public object Title
-        {
-            get
-            {
-                return this.m_Title;
-            }
-        }
+        public Type Quest => this.m_Quest;
+        public object Title => this.m_Title;
 
         public HeritageQuestInfo(Type quest, object title)
         {
@@ -60,47 +48,17 @@ namespace Server.Engines.Quests
     {
         #region Vendor stuff		
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
-        public override bool IsActiveVendor
-        {
-            get
-            {
-                return false;
-            }
-        }
+        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        public override bool IsActiveVendor => false;
         public override void InitSBInfo()
         {
         }
 
         #endregion
 
-        public virtual int AutoSpeakRange
-        {
-            get
-            {
-                return 7;
-            }
-        }
-        public virtual object ConfirmMessage
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual object IncompleteMessage
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int AutoSpeakRange => 7;
+        public virtual object ConfirmMessage => 0;
+        public virtual object IncompleteMessage => 0;
 
         private List<HeritageQuestInfo> m_Quests;
         private List<object> m_Objectives;
@@ -108,29 +66,11 @@ namespace Server.Engines.Quests
         private bool m_Busy;
         private int m_Index;
 
-        public List<HeritageQuestInfo> Quests
-        {
-            get
-            {
-                return this.m_Quests;
-            }
-        }
+        public List<HeritageQuestInfo> Quests => this.m_Quests;
 
-        public List<object> Objectives
-        {
-            get
-            {
-                return this.m_Objectives;
-            }
-        }
+        public List<object> Objectives => this.m_Objectives;
 
-        public List<object> Story
-        {
-            get
-            {
-                return this.m_Story;
-            }
-        }
+        public List<object> Story => this.m_Story;
 
         public HeritageQuester()
             : this(null)

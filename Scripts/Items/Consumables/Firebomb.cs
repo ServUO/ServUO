@@ -221,13 +221,7 @@ namespace Server.Items
                 m_Bomb = bomb;
             }
 
-            public Firebomb Bomb
-            {
-                get
-                {
-                    return m_Bomb;
-                }
-            }
+            public Firebomb Bomb => m_Bomb;
             protected override void OnTarget(Mobile from, object targeted)
             {
                 m_Bomb.OnFirebombTarget(from, targeted);

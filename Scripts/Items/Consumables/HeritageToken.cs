@@ -18,13 +18,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076596;
-            }
-        }// A Heritage Token
+        public override int LabelNumber => 1076596;// A Heritage Token
         public override void OnDoubleClick(Mobile from)
         {
             if (this.IsChildOf(from.Backpack))

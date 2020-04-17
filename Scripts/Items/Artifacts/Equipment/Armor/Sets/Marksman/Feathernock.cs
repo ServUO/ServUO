@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class Feathernock : BaseQuiver
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public Feathernock()
             : base()
@@ -23,27 +23,9 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074324;
-            }
-        }// Feathernock (Marksman Set)
-        public override SetItem SetID
-        {
-            get
-            {
-                return SetItem.Marksman;
-            }
-        }
-        public override int Pieces
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override int LabelNumber => 1074324;// Feathernock (Marksman Set)
+        public override SetItem SetID => SetItem.Marksman;
+        public override int Pieces => 2;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

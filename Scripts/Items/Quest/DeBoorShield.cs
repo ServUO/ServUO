@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class DeBoorShield : MetalKiteShield
     {
-        public override int LabelNumber { get { return 1075308; } } // Ancestral Shield
-        public override bool HiddenQuestItemHue { get { return true; } }
+        public override int LabelNumber => 1075308;  // Ancestral Shield
+        public override bool HiddenQuestItemHue => true;
 
         [Constructable]
         public DeBoorShield()

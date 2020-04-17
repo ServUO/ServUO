@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073835;
-            }
-        }// A Makoto Courtesan Fish
+        public override int LabelNumber => 1073835;// A Makoto Courtesan Fish
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

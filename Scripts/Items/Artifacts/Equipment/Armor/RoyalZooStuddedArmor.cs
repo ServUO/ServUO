@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class RoyalZooStuddedLegs : StuddedLegs
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public RoyalZooStuddedLegs()
             : base()
@@ -19,62 +19,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073223;
-            }
-        }// Studded Armor of the Britannia Royal Zoo
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1073223;// Studded Armor of the Britannia Royal Zoo
+        public override int BasePhysicalResistance => 10;
+        public override int BaseFireResistance => 10;
+        public override int BaseColdResistance => 10;
+        public override int BasePoisonResistance => 10;
+        public override int BaseEnergyResistance => 10;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -92,7 +44,7 @@ namespace Server.Items
 
     public class RoyalZooStuddedGloves : StuddedGloves
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public RoyalZooStuddedGloves()
             : base()
@@ -109,62 +61,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073223;
-            }
-        }// Studded Armor of the Britannia Royal Zoo
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1073223;// Studded Armor of the Britannia Royal Zoo
+        public override int BasePhysicalResistance => 10;
+        public override int BaseFireResistance => 10;
+        public override int BaseColdResistance => 10;
+        public override int BasePoisonResistance => 10;
+        public override int BaseEnergyResistance => 10;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -182,7 +86,7 @@ namespace Server.Items
 
     public class RoyalZooStuddedGorget : StuddedGorget
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public RoyalZooStuddedGorget()
             : base()
@@ -199,62 +103,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073223;
-            }
-        }// Studded Armor of the Britannia Royal Zoo
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1073223;// Studded Armor of the Britannia Royal Zoo
+        public override int BasePhysicalResistance => 10;
+        public override int BaseFireResistance => 10;
+        public override int BaseColdResistance => 10;
+        public override int BasePoisonResistance => 10;
+        public override int BaseEnergyResistance => 10;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -272,7 +128,7 @@ namespace Server.Items
 
     public class RoyalZooStuddedArms : StuddedArms
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public RoyalZooStuddedArms()
             : base()
@@ -289,62 +145,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073223;
-            }
-        }// Studded Armor of the Britannia Royal Zoo
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1073223;// Studded Armor of the Britannia Royal Zoo
+        public override int BasePhysicalResistance => 10;
+        public override int BaseFireResistance => 10;
+        public override int BaseColdResistance => 10;
+        public override int BasePoisonResistance => 10;
+        public override int BaseEnergyResistance => 10;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -362,7 +170,7 @@ namespace Server.Items
 
     public class RoyalZooStuddedChest : StuddedChest
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public RoyalZooStuddedChest()
             : base()
@@ -379,62 +187,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073223;
-            }
-        }// Studded Armor of the Britannia Royal Zoo
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1073223;// Studded Armor of the Britannia Royal Zoo
+        public override int BasePhysicalResistance => 10;
+        public override int BaseFireResistance => 10;
+        public override int BaseColdResistance => 10;
+        public override int BasePoisonResistance => 10;
+        public override int BaseEnergyResistance => 10;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -452,7 +212,7 @@ namespace Server.Items
 
     public class RoyalZooStuddedFemaleChest : FemaleStuddedChest
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public RoyalZooStuddedFemaleChest()
             : base()
@@ -469,62 +229,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073223;
-            }
-        }// Studded Armor of the Britannia Royal Zoo
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1073223;// Studded Armor of the Britannia Royal Zoo
+        public override int BasePhysicalResistance => 10;
+        public override int BaseFireResistance => 10;
+        public override int BaseColdResistance => 10;
+        public override int BasePoisonResistance => 10;
+        public override int BaseEnergyResistance => 10;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

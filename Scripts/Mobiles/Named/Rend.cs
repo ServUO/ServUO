@@ -50,8 +50,8 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-        public override bool CanBeParagon { get { return false; } }
-        public override bool GivesMLMinorArtifact { get { return true; } }
+        public override bool CanBeParagon => false;
+        public override bool GivesMLMinorArtifact => true;
 
         public override void OnDeath(Container c)
         {

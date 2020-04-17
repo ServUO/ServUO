@@ -25,27 +25,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override NpcGuild NpcGuild
-        {
-            get
-            {
-                return NpcGuild.ThievesGuild;
-            }
-        }
-        public override TimeSpan JoinAge
-        {
-            get
-            {
-                return Siege.SiegeShard ? TimeSpan.FromDays(0.0) : TimeSpan.FromDays(7.0);
-            }
-        }
-        public override TimeSpan JoinGameAge
-        {
-            get
-            {
-                return Siege.SiegeShard ? TimeSpan.FromDays(0.0) : TimeSpan.FromDays(2.0);
-            }
-        }
+        public override NpcGuild NpcGuild => NpcGuild.ThievesGuild;
+        public override TimeSpan JoinAge => Siege.SiegeShard ? TimeSpan.FromDays(0.0) : TimeSpan.FromDays(7.0);
+        public override TimeSpan JoinGameAge => Siege.SiegeShard ? TimeSpan.FromDays(0.0) : TimeSpan.FromDays(2.0);
         public override void InitOutfit()
         {
             base.InitOutfit();

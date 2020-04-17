@@ -11,9 +11,9 @@ namespace Server.Engines.Quests
     {
         private object m_Title;
 
-        public override object Title { get { return m_Title; } }      //Professional Fisher Quest - Floating Emporium
+        public override object Title => m_Title;       //Professional Fisher Quest - Floating Emporium
 
-        public override object Description { get { return 1116508; } } /*This quest is part of a category of quests where you catch uncommon fish and use your ship to deliver them to ports
+        public override object Description => 1116508;  /*This quest is part of a category of quests where you catch uncommon fish and use your ship to deliver them to ports
                                                                         * to gain rewards and better fishing orders.<br><br>Successful completion of this quest increases your standing with
                                                                         * the fishmonger guild and unlocks bigger orders and greater rewards.  Destroying the crate will forfeit the order and
                                                                         * hurt your standing with the fishmonger guild.<br><br>You must have the High Seas booster pack to do this quest.
@@ -23,11 +23,11 @@ namespace Server.Engines.Quests
                                                                         * catchin' an' deliverin' and I be lookin' for some business partners.  If ye will agree to fill this order an' deliver 
                                                                         * it fer me, I will reward ye with a rare prize as payment.  What say ye?*/
 
-        public override object Refuse { get { return 1116511; } }     //As you wish.  If'n ye change yer mind you know where to find me.
+        public override object Refuse => 1116511;      //As you wish.  If'n ye change yer mind you know where to find me.
 
-        public override object Uncomplete { get { return 1116512; } } //Aye, partner, how goes the fishin?  Me customer be waitin' fer ye and won't be payin' either of us till ye deliver.
+        public override object Uncomplete => 1116512;  //Aye, partner, how goes the fishin?  Me customer be waitin' fer ye and won't be payin' either of us till ye deliver.
 
-        public override object Complete { get { return 1116513; } }   /*Ahoy, sailor! These be a fine batch o' fish and I'll be glad to pay the price.  I will forwarded the money owed to 
+        public override object Complete => 1116513;    /*Ahoy, sailor! These be a fine batch o' fish and I'll be glad to pay the price.  I will forwarded the money owed to 
                                                                        * the fishmonger who brokered this business with me compliments.<br><br>Fer ye I have a rare gift from the Order of 
                                                                        * the Dragonfish that ye can't buy with gold.  Let me jes' tuck it in yer backpack here...  There you go!  Use it 
                                                                        * wisely and it can make ye wealthy!<br><br>If ye are interested in gettin more fishin' business from me, I have some 

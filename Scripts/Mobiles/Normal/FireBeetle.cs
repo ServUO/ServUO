@@ -49,48 +49,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool SubdueBeforeTame
-        {
-            get
-            {
-                return true;
-            }
-        }// Must be beaten into submission
-        public override bool StatLossAfterTame
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public virtual double BoostedSpeed
-        {
-            get
-            {
-                return 0.1;
-            }
-        }
-        public override bool ReduceSpeedWithDamage
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 16;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Meat;
-            }
-        }
+        public override bool SubdueBeforeTame => true;// Must be beaten into submission
+        public override bool StatLossAfterTame => true;
+        public virtual double BoostedSpeed => 0.1;
+        public override bool ReduceSpeedWithDamage => false;
+        public override int Meat => 16;
+        public override FoodType FavoriteFood => FoodType.Meat;
         public override void OnHarmfulSpell(Mobile from)
         {
             if (!Controlled && ControlMaster == null)

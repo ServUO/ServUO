@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class CopperShipReliefAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new CopperShipReliefAddonDeed(DisplayName); } }
+        public override BaseAddonDeed Deed => new CopperShipReliefAddonDeed(DisplayName);
 
         private string _DisplayName;
 
@@ -35,7 +35,7 @@ namespace Server.Items
 
         private class CopperShipReliefComponent : LocalizedAddonComponent
         {
-            public override bool ForceShowProperties { get { return true; } }
+            public override bool ForceShowProperties => true;
 
             public CopperShipReliefComponent(int id)
                 : base(id, 1159148) // Copper Ship Relief
@@ -107,7 +107,7 @@ namespace Server.Items
 
     public class CopperShipReliefAddonDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new CopperShipReliefAddon(Facing, DisplayName); } }
+        public override BaseAddon Addon => new CopperShipReliefAddon(Facing, DisplayName);
 
         private string _DisplayName;
 
@@ -116,7 +116,7 @@ namespace Server.Items
 
         private AddonFacing Facing { get; set; }
 
-        public override int LabelNumber { get { return 1159148; } } // Copper Ship Relief
+        public override int LabelNumber => 1159148;  // Copper Ship Relief
 
         [Constructable]
         public CopperShipReliefAddonDeed()

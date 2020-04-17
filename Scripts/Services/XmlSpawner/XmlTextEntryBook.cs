@@ -119,15 +119,9 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int PagesCount
-        {
-            get { return m_Pages.Length; }
-        }
+        public int PagesCount => m_Pages.Length;
 
-        public BookPageInfo[] Pages
-        {
-            get { return m_Pages; }
-        }
+        public BookPageInfo[] Pages => m_Pages;
 
         [Constructable]
         public BaseEntryBook(int itemID, string title, string author, int pageCount, bool writable) : base(itemID)

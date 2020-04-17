@@ -18,7 +18,7 @@ namespace Server.Engines.ResortAndCasino
 
     public class PurchaseCasinoChipGump : Gump
     {
-        public int Yellow { get { return C32216(0xFFFF00); } }
+        public int Yellow => C32216(0xFFFF00);
         public Section Section { get; set; }
         public int Message { get; set; }
         public int Bought { get; set; }
@@ -259,10 +259,10 @@ namespace Server.Engines.ResortAndCasino
 
     public class BaseCasinoGump : Gump
     {
-        public virtual int Title { get { return 0; } }
+        public virtual int Title => 0;
 
-        public int Yellow { get { return C32216(Yellow32); } }
-        public int Yellow32 { get { return 0xFFFF00; } }
+        public int Yellow => C32216(Yellow32);
+        public int Yellow32 => 0xFFFF00;
 
         public int Width { get; set; }
         public int Height { get; set; }
@@ -389,9 +389,9 @@ namespace Server.Engines.ResortAndCasino
 
     public class ChucklesLuckGump : BaseCasinoGump
     {
-        public override int Title { get { return 1153368; } } // CHUCKLES' LUCK
+        public override int Title => 1153368;  // CHUCKLES' LUCK
 
-        public ChucklesLuck Game { get { return DiceGame as ChucklesLuck; } }
+        public ChucklesLuck Game => DiceGame as ChucklesLuck;
 
         private readonly int _DiceHue = 1931;
 
@@ -517,9 +517,9 @@ namespace Server.Engines.ResortAndCasino
 
     public class HiMiddleLowGump : BaseCasinoGump
     {
-        public override int Title { get { return 1153392; } } // HI-MIDDLE-LO
+        public override int Title => 1153392;  // HI-MIDDLE-LO
 
-        public HiMiddleLow Game { get { return DiceGame as HiMiddleLow; } }
+        public HiMiddleLow Game => DiceGame as HiMiddleLow;
         private readonly int _DiceHue = 1928;
 
         public HiMiddleLowGump(PlayerMobile pm, HiMiddleLow game)
@@ -666,9 +666,9 @@ namespace Server.Engines.ResortAndCasino
 
     public class DiceRiderGump : BaseCasinoGump
     {
-        public override int Title { get { return 1153613; } } // DICE RIDER
+        public override int Title => 1153613;  // DICE RIDER
 
-        public DiceRider Game { get { return DiceGame as DiceRider; } }
+        public DiceRider Game => DiceGame as DiceRider;
 
         private int[] _DiceID = new int[5];
         private readonly int _DiceHue = 1930;

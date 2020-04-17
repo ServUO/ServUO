@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ElixirofVeriteConversion : Item
     {
-        public override int LabelNumber { get { return 1113009; } } // Elixir of Verite Conversion
+        public override int LabelNumber => 1113009;  // Elixir of Verite Conversion
 
         [Constructable]
         public ElixirofVeriteConversion()

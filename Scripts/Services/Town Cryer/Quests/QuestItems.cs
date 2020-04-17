@@ -9,8 +9,8 @@ namespace Server.Engines.Quests
 {
     public class RoyalBritannianGuardOrders : BaseJournal
     {
-        public override TextDefinition Title { get { return 1158159; } } // Royal Britannian Guard Orders
-        public override TextDefinition Body { get { return 1158160; } }
+        public override TextDefinition Title => 1158159;  // Royal Britannian Guard Orders
+        public override TextDefinition Body => 1158160;
         /*ROYAL BRITANNIAN GUARD<br>MINISTRY OF PRISONS DETACHMENT<br><br>ORIGINAL ORDERS<br>ROYAL BRITANNIAN GUARD<br>WRONG PRISON
          * DIVISION<br><br>From: COMMAND, RBG Yew<br>To: Lieutenant Bennet Yardley, RBG Yew<br><br>Subject: Wrong Prison Treasure 
          * Expedition<br><br>1. RBG Intelligence has indicated the presence of highly prized cache of weapons stashed within the 
@@ -20,7 +20,7 @@ namespace Server.Engines.Quests
          * former prison officials indicate weapons under heavy lock and key, suggest specialist assignment of lock picking skills 
          * and tools.<br><br>*The remainder of the document is illegible**/
 
-        public override int LabelNumber { get { return 1158171; } } // orders
+        public override int LabelNumber => 1158171;  // orders
 
         [Constructable]
         public RoyalBritannianGuardOrders()
@@ -66,8 +66,8 @@ namespace Server.Engines.Quests
             }
         }
 
-        public override bool ForceShowProperties { get { return true; } }
-        public override int LabelNumber { get { return 1158168; } }
+        public override bool ForceShowProperties => true;
+        public override int LabelNumber => 1158168;
 
         public CorpseOfBennetYardley()
             : base(Utility.Random(0xECA, 9))
@@ -359,7 +359,7 @@ namespace Server.Engines.Quests
 
     public class TreasureSeekersLockpick : Lockpick
     {
-        public override int LabelNumber { get { return 1158258; } }
+        public override int LabelNumber => 1158258;
 
         public TreasureSeekersLockpick()
         {
@@ -418,7 +418,7 @@ namespace Server.Engines.Quests
 
     public class MysteriousPotion : Item
     {
-        public override int LabelNumber { get { return 1158286; } } // A Mysterious Potion
+        public override int LabelNumber => 1158286;  // A Mysterious Potion
 
         public MysteriousPotion()
             : base(0xF06)
@@ -497,9 +497,9 @@ namespace Server.Engines.Quests
             }
         }
 
-        public override int LabelNumber { get { return 1158135; } } // the remains of a would-be paladin
-        public override bool HandlesOnMovement { get { return true; } }
-        public override bool IsDecoContainer { get { return false; } }
+        public override int LabelNumber => 1158135;  // the remains of a would-be paladin
+        public override bool HandlesOnMovement => true;
+        public override bool IsDecoContainer => false;
 
         public PaladinCorpse()
             : base(0x9F1E)
@@ -544,10 +544,10 @@ namespace Server.Engines.Quests
 
     public class WouldBePaladinChronicles : BaseJournal
     {
-        public override int LabelNumber { get { return 1094837; } } // a journal
+        public override int LabelNumber => 1094837;  // a journal
 
-        public override TextDefinition Title { get { return null; } }
-        public override TextDefinition Body { get { return 1158138; } }
+        public override TextDefinition Title => null;
+        public override TextDefinition Body => 1158138;
         /**the text is mostly a journal chronicling the adventures of a man who wished to join the Paladins of Trinsic.  
          * Of particular note is the final entry...*<br><br>This is the most shameful entry I will write...for I have fallen
          * short of my goal. My only hope is my failures will serve to assist those who come after me with the courage to 

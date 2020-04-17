@@ -25,54 +25,18 @@ namespace Server.Engines.Quests
             AddReward(new BaseReward(typeof(NecklaceofDiligence), 1113137));
         }
 
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* The Arisen */
-        public override object Title
-        {
-            get
-            {
-                return 1112538;
-            }
-        }
+        public override object Title => 1112538;
 
-        public override object Description
-        {
-            get
-            {
-                return 1112539;
-            }
-        }
+        public override object Description => 1112539;
 
-        public override object Refuse
-        {
-            get
-            {
-                return 1112540;
-            }
-        }
+        public override object Refuse => 1112540;
 
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1112517;
-            }
-        }
+        public override object Uncomplete => 1112517;
 
-        public override object Complete
-        {
-            get
-            {
-                return 1112543;
-            }
-        }
+        public override object Complete => 1112543;
 
         public override void OnCompleted()
         {
@@ -109,16 +73,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(TheArisenQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             InitStats(100, 100, 25);

@@ -32,13 +32,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073458;
-            }
-        }// blue diamond ring
+        public override int LabelNumber => 1073458;// blue diamond ring
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class MentoSeasoning : Item
     {
-        public override int LabelNumber { get { return 1116299; } }
+        public override int LabelNumber => 1116299;
 
         [Constructable]
         public MentoSeasoning()
@@ -32,7 +32,7 @@ namespace Server.Items
 
     public class SamuelsSecretSauce : Item
     {
-        public override int LabelNumber { get { return 1116338; } }
+        public override int LabelNumber => 1116338;
 
         [Constructable]
         public SamuelsSecretSauce() : base(2463)
@@ -59,7 +59,7 @@ namespace Server.Items
 
     public class DarkTruffle : Item
     {
-        public override int LabelNumber { get { return 1116300; } }
+        public override int LabelNumber => 1116300;
 
         [Constructable]
         public DarkTruffle()
@@ -88,7 +88,7 @@ namespace Server.Items
 
     public class FreshGinger : Item
     {
-        public override int LabelNumber { get { return 1031235; } }
+        public override int LabelNumber => 1031235;
 
         [Constructable]
         public FreshGinger()
@@ -116,7 +116,7 @@ namespace Server.Items
 
     public class FishOilFlask : Item
     {
-        public override int LabelNumber { get { return 1150863; } }
+        public override int LabelNumber => 1150863;
 
         [Constructable]
         public FishOilFlask()

@@ -8,7 +8,7 @@ namespace Server.Items
 {
     public class TillerMan : Item
     {
-        public virtual bool Babbles { get { return true; } }
+        public virtual bool Babbles => true;
         public BaseBoat Boat { get; private set; }
         private DateTime _NextBabble;
 
@@ -64,7 +64,7 @@ namespace Server.Items
                 base.AddNameProperty(list);
         }
 
-        public Mobile Pilot { get { return Boat != null ? Boat.Pilot : null; } }
+        public Mobile Pilot => Boat != null ? Boat.Pilot : null;
 
         public override void OnDoubleClickDead(Mobile m)
         {

@@ -15,13 +15,7 @@ namespace Server.Commands.Generic
             m_Instance = this;
         }
 
-        public static RangeCommandImplementor Instance
-        {
-            get
-            {
-                return m_Instance;
-            }
-        }
+        public static RangeCommandImplementor Instance => m_Instance;
         public override void Execute(CommandEventArgs e)
         {
             if (e.Length >= 2)

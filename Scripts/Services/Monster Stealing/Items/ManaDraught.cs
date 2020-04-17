@@ -10,7 +10,7 @@ namespace Server.Items
         private static readonly Dictionary<PlayerMobile, DateTime> DaughtUsageList = new Dictionary<PlayerMobile, DateTime>();
         private static TimeSpan Cooldown = TimeSpan.FromMinutes(10);
 
-        public override int LabelNumber { get { return 1094938; } } // Mana Draught
+        public override int LabelNumber => 1094938;  // Mana Draught
 
         [Constructable]
         public ManaDraught()

@@ -12,13 +12,7 @@ namespace Server.Items
     [FlipableAttribute(0x14E7, 0x14E8)]
     public class HitchingPost : Item, ISecurable
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return m_Replica ? 1071127 : 1025351;
-            }
-        }// hitching post (replica)
+        public override int LabelNumber => m_Replica ? 1071127 : 1025351;// hitching post (replica)
 
         private int m_UsesRemaining;
         private int m_Charges;
@@ -111,7 +105,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -473,13 +467,7 @@ namespace Server.Items
             return (house != null && house.HasSecureAccess(m, m_Level));
         }
 
-        public override bool HandlesOnSpeech
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool HandlesOnSpeech => true;
 
         public override void OnSpeech(SpeechEventArgs e)
         {

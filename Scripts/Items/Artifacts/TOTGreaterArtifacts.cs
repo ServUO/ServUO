@@ -26,7 +26,7 @@ namespace Server.Items
 
     public class DarkenedSky : Kama
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public DarkenedSky()
             : base()
@@ -41,27 +41,9 @@ namespace Server.Items
         {
         }
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1070966;
-            }
-        }// Darkened Sky
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
+        public override int LabelNumber => 1070966;// Darkened Sky
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
         {
             phys = fire = pois = chaos = direct = 0;
@@ -85,7 +67,7 @@ namespace Server.Items
 
     public class KasaOfTheRajin : Kasa
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public KasaOfTheRajin()
             : base()
@@ -98,62 +80,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1070969;
-            }
-        }// Kasa of the Raj-in
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 12;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 17;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 21;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 17;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 17;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1070969;// Kasa of the Raj-in
+        public override int BasePhysicalResistance => 12;
+        public override int BaseFireResistance => 17;
+        public override int BaseColdResistance => 21;
+        public override int BasePoisonResistance => 17;
+        public override int BaseEnergyResistance => 17;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -180,7 +114,7 @@ namespace Server.Items
 
     public class RuneBeetleCarapace : PlateDo
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public RuneBeetleCarapace()
             : base()
@@ -197,41 +131,11 @@ namespace Server.Items
         {
         }
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1070968;
-            }
-        }// Rune Beetle Carapace
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 14;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 14;
-            }
-        }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
+        public override int LabelNumber => 1070968;// Rune Beetle Carapace
+        public override int BaseColdResistance => 14;
+        public override int BaseEnergyResistance => 14;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -249,7 +153,7 @@ namespace Server.Items
 
     public class Stormgrip : LeatherNinjaMitts
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public Stormgrip()
             : base()
@@ -264,48 +168,12 @@ namespace Server.Items
         {
         }
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1070970;
-            }
-        }// Stormgrip
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 18;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 18;
-            }
-        }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
+        public override int LabelNumber => 1070970;// Stormgrip
+        public override int BasePhysicalResistance => 10;
+        public override int BaseColdResistance => 18;
+        public override int BaseEnergyResistance => 18;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -323,7 +191,7 @@ namespace Server.Items
 
     public class SwordOfTheStampede : NoDachi
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public SwordOfTheStampede()
             : base()
@@ -338,27 +206,9 @@ namespace Server.Items
         {
         }
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1070964;
-            }
-        }// Sword of the Stampede
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
+        public override int LabelNumber => 1070964;// Sword of the Stampede
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
         {
             phys = fire = pois = nrgy = chaos = direct = 0;
@@ -382,7 +232,7 @@ namespace Server.Items
 
     public class SwordsOfProsperity : Daisho
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public SwordsOfProsperity()
             : base()
@@ -398,27 +248,9 @@ namespace Server.Items
         {
         }
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1070963;
-            }
-        }// Swords of Prosperity
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
+        public override int LabelNumber => 1070963;// Swords of Prosperity
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
         {
             phys = cold = pois = nrgy = chaos = direct = 0;
@@ -442,7 +274,7 @@ namespace Server.Items
 
     public class TheHorselord : Yumi
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public TheHorselord()
             : base()
@@ -461,27 +293,9 @@ namespace Server.Items
         {
         }
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1070967;
-            }
-        }// The Horselord
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
+        public override int LabelNumber => 1070967;// The Horselord
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -499,7 +313,7 @@ namespace Server.Items
 
     public class TomeOfLostKnowledge : Spellbook
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public TomeOfLostKnowledge()
             : base()
@@ -520,13 +334,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1070971;
-            }
-        }// Tome of Lost Knowledge
+        public override int LabelNumber => 1070971;// Tome of Lost Knowledge
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -544,7 +352,7 @@ namespace Server.Items
 
     public class WindsEdge : Tessen
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public WindsEdge()
             : base()
@@ -561,27 +369,9 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1070965;
-            }
-        }// Wind's Edge
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1070965;// Wind's Edge
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
         {
             phys = fire = cold = pois = chaos = direct = 0;
@@ -605,9 +395,9 @@ namespace Server.Items
 
     public class PigmentsOfTokuno : BasePigmentsOfTokuno
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
-        public static int[][] Table { get { return m_Table; } }
+        public static int[][] Table => m_Table;
         private static readonly int[][] m_Table = new int[][]
         {
             // Hue, Label
@@ -683,13 +473,7 @@ namespace Server.Items
                 }
             }
         }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1070933;
-            }
-        }// Pigments of Tokuno
+        public override int LabelNumber => 1070933;// Pigments of Tokuno
         public static int[] GetInfo(PigmentType type)
         {
             int v = (int)type;

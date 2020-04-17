@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class KeypunchReader : OrnateWoodenChest
     {
-        public override int LabelNumber { get { return 1153868; } } // Keypunch Reader  
+        public override int LabelNumber => 1153868;  // Keypunch Reader  
 
         [Constructable]
         public KeypunchReader()

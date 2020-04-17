@@ -15,76 +15,16 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 45;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 60;
-            }
-        }
-        public override int StrReq
-        {
-            get
-            {
-                return 45;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
+        public override int BasePhysicalResistance => 0;
+        public override int BaseFireResistance => 0;
+        public override int BaseColdResistance => 0;
+        public override int BasePoisonResistance => 0;
+        public override int BaseEnergyResistance => 1;
+        public override int InitMinHits => 45;
+        public override int InitMaxHits => 60;
+        public override int StrReq => 45;
+        public override bool CanBeWornByGargoyles => true;
+        public override Race RequiredRace => Race.Gargoyle;
         public bool Dye(Mobile from, DyeTub sender)
         {
             if (this.Deleted)

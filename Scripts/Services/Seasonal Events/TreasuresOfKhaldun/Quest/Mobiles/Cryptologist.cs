@@ -11,8 +11,8 @@ namespace Server.Engines.Khaldun
         public static Cryptologist TramInstance { get; set; }
 
         protected readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
-        public override bool IsActiveVendor { get { return false; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
+        public override bool IsActiveVendor => false;
 
         public override void InitSBInfo()
         {

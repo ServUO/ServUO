@@ -10,7 +10,7 @@ namespace Server.Items
 
     public class HumilityVirtueTileAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new HumilityVirtueTileDeed(); } }
+        public override BaseAddonDeed Deed => new HumilityVirtueTileDeed();
 
         private readonly HumilityTileType m_HumilityTileType;
 
@@ -56,8 +56,8 @@ namespace Server.Items
 
     public class HumilityVirtueTileDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new HumilityVirtueTileAddon(m_HumilityTileType); } }
-        public override int LabelNumber { get { return 1080483; } } // Humility Virtue Tile Deed
+        public override BaseAddon Addon => new HumilityVirtueTileAddon(m_HumilityTileType);
+        public override int LabelNumber => 1080483;  // Humility Virtue Tile Deed
 
         private HumilityTileType m_HumilityTileType;
 

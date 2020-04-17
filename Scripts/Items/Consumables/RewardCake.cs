@@ -19,20 +19,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1049786;
-            }
-        }// Happy Birthday!  ...
-        public override bool DisplayLootType
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int LabelNumber => 1049786;// Happy Birthday!  ...
+        public override bool DisplayLootType => true;
         public override void OnDoubleClick(Mobile from)
         {
             if (!from.InRange(this.GetWorldLocation(), 1))

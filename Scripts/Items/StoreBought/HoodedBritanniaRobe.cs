@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class HoodedBritanniaRobe : BaseOuterTorso
     {
-        public override int LabelNumber { get { return 1125155; } } // Hooded Britannia Robe
+        public override int LabelNumber => 1125155;  // Hooded Britannia Robe
 
         [Constructable]
         public HoodedBritanniaRobe(int id)

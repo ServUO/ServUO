@@ -4,7 +4,7 @@ namespace Server.Engines.BulkOrders
 {
     public class LargeAlchemyBOD : LargeBOD
     {
-        public override BODType BODType { get { return BODType.Alchemy; } }
+        public override BODType BODType => BODType.Alchemy;
 
         [Constructable]
         public LargeAlchemyBOD()

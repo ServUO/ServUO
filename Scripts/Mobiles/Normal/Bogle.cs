@@ -38,22 +38,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
+        public override bool BleedImmune => true;
+        public override Poison PoisonImmune => Poison.Lethal;
 
-        public override TribeType Tribe { get { return TribeType.Undead; } }
+        public override TribeType Tribe => TribeType.Undead;
 
         public override void GenerateLoot()
         {

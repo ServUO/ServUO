@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1016449;
-            }
-        }// a checker board
+        public override int LabelNumber => 1016449;// a checker board
         public override void CreatePieces()
         {
             for (int i = 0; i < 4; i++)

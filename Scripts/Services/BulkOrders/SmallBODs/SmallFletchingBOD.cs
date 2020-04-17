@@ -17,7 +17,7 @@ namespace Server.Engines.BulkOrders
             0.003000000 // Frostwood
         };
 
-        public override BODType BODType { get { return BODType.Fletching; } }
+        public override BODType BODType => BODType.Fletching;
 
         [Constructable]
         public SmallFletchingBOD()

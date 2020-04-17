@@ -18,34 +18,10 @@ namespace Server.Engines.Quests.Doom
         {
         }
 
-        public override int TalkNumber
-        {
-            get
-            {
-                return 6159;
-            }
-        }// Ask about Chyloth
-        public override bool ClickTitle
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool IsActiveVendor
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool DisallowAllMoves
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override int TalkNumber => 6159;// Ask about Chyloth
+        public override bool ClickTitle => true;
+        public override bool IsActiveVendor => true;
+        public override bool DisallowAllMoves => false;
         public SummoningAltar Altar
         {
             get

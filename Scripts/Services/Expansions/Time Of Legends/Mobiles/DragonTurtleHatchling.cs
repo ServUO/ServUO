@@ -69,8 +69,8 @@ namespace Server.Mobiles
             }
         }
 
-        public override int Meat { get { return 4; } }
-        public override FoodType FavoriteFood { get { return FoodType.Fish; } }
+        public override int Meat => 4;
+        public override FoodType FavoriteFood => FoodType.Fish;
 
         public override void OnCarve(Mobile from, Corpse corpse, Item with)
         {

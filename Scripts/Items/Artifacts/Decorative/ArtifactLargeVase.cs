@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ArtifactLargeVase : Item
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public ArtifactLargeVase()
             : base(0x0B47)

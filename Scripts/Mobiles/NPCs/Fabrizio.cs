@@ -15,59 +15,23 @@ namespace Server.Engines.Quests
             this.AddReward(new BaseReward(1075363)); // Misericord
         }
 
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.FromMinutes(3);
-            }
-        }
+        public override TimeSpan RestartDelay => TimeSpan.FromMinutes(3);
         /* Gentle Blade */
-        public override object Title
-        {
-            get
-            {
-                return 1075361;
-            }
-        }
+        public override object Title => 1075361;
         /* I came to this place looking for a cure for my wife. But I’m getting ahead of myself -- my wife was attacked by a 
         werewolf, and survived. Now she has become a werewolf herself. My research has turned up nothing that would cure her 
         affliction. *Sob* She begged me to end her suffering, but I cannot. She has removed herself to a remote part of Ice 
         Island so that she does not endanger others. If I give you the means, will you go there, find her, and give her the 
         mercy of a clean death?  */
-        public override object Description
-        {
-            get
-            {
-                return 1075362;
-            }
-        }
+        public override object Description => 1075362;
         /* I understand. I am no warrior, either. I suppose I shall have to wait here until one comes along. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1075364;
-            }
-        }
+        public override object Refuse => 1075364;
         /* My wife is hiding out in a cave on the north end of Ice Island. You will not be able to harm here, even with the 
         weapon I gave you, until night falls and she transforms into a wolf. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1075365;
-            }
-        }
+        public override object Uncomplete => 1075365;
         /* Thank you my friend . . . I know she is at peace, now. Here, keep the weapon. Most of its power is expended, but 
         it remains somewhat potent against wolf-kind. */
-        public override object Complete
-        {
-            get
-            {
-                return 1075366;
-            }
-        }
+        public override object Complete => 1075366;
         public override void OnAccept()
         {
             this.dagger = new Dagger();
@@ -124,16 +88,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(GentleBladeQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

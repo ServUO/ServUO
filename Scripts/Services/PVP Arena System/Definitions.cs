@@ -48,7 +48,7 @@ namespace Server.Engines.ArenaSystem
         public int MapIndex { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Map Map { get { return Map.Maps[MapIndex]; } }
+        public Map Map => Map.Maps[MapIndex];
 
         public ArenaDefinition(
             string name,
@@ -91,7 +91,7 @@ namespace Server.Engines.ArenaSystem
         public static ArenaDefinition HavenTrammel { get; set; }
         public static ArenaDefinition HavenFelucca { get; set; }
 
-        public static ArenaDefinition[] Definitions { get { return _Definitions; } }
+        public static ArenaDefinition[] Definitions => _Definitions;
         private static readonly ArenaDefinition[] _Definitions = new ArenaDefinition[4];
 
         static ArenaDefinition()

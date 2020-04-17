@@ -4,7 +4,7 @@ namespace Server.Engines.Quests
 {
     public class Bravehorn : BaseEscort
     {
-        public override Type[] Quests { get { return new Type[] { typeof(DefendingTheHerdQuest) }; } }
+        public override Type[] Quests => new Type[] { typeof(DefendingTheHerdQuest) };
 
         [Constructable]
         public Bravehorn()

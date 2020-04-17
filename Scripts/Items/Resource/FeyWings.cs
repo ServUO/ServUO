@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class FeyWings : Item, ICommodity
     {
-        public override int LabelNumber { get { return 1113332; } } // fey wings
-        public override double DefaultWeight { get { return 0.1; } }
+        public override int LabelNumber => 1113332;  // fey wings
+        public override double DefaultWeight => 0.1;
 
         [Constructable]
         public FeyWings()
@@ -24,8 +24,8 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         public override void Serialize(GenericWriter writer)
         {

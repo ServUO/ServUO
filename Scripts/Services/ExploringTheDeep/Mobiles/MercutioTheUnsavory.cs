@@ -68,8 +68,8 @@ namespace Server.Mobiles
             AddItem(item);
         }
 
-        public override bool ClickTitle { get { return false; } }
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool ClickTitle => false;
+        public override bool AlwaysMurderer => true;
 
         public override void OnDeath(Container c)
         {

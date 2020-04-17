@@ -251,7 +251,7 @@ namespace Server.Mobiles
 
         private class InternalItem : Item
         {
-            public override int LabelNumber { get { return 1027025; } }
+            public override int LabelNumber => 1027025;
 
             public InternalItem(int id)
                 : base(id)

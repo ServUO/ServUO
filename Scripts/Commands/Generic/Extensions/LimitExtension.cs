@@ -11,20 +11,8 @@ namespace Server.Commands.Generic
         {
         }
 
-        public override ExtensionInfo Info
-        {
-            get
-            {
-                return ExtInfo;
-            }
-        }
-        public int Limit
-        {
-            get
-            {
-                return this.m_Limit;
-            }
-        }
+        public override ExtensionInfo Info => ExtInfo;
+        public int Limit => this.m_Limit;
         public static void Initialize()
         {
             ExtensionInfo.Register(ExtInfo);

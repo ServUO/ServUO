@@ -11,7 +11,7 @@ namespace Server.Items
 {
     public class Runebook : Item, ISecurable, ICraftable
     {
-        public override int LabelNumber { get { return 1041267; } } // runebook
+        public override int LabelNumber => 1041267;  // runebook
 
         public static readonly TimeSpan UseDelay = TimeSpan.FromSeconds(7.0);
 
@@ -77,7 +77,7 @@ namespace Server.Items
 
         public List<Mobile> Openers { get; set; } = new List<Mobile>();
 
-        public virtual int MaxEntries { get { return 16; } }
+        public virtual int MaxEntries => 16;
 
         [Constructable]
         public Runebook(int maxCharges, int id = 0x22C5)
@@ -104,7 +104,7 @@ namespace Server.Items
         {
         }
 
-        public List<RunebookEntry> Entries { get { return m_Entries; } }
+        public List<RunebookEntry> Entries => m_Entries;
 
         public int DefaultIndex { get; set; }
 
@@ -267,13 +267,7 @@ namespace Server.Items
             m.CloseGump(typeof(RunebookGump));
         }
 
-        public override bool DisplayLootType
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DisplayLootType => true;
 
         public override void GetProperties(ObjectPropertyList list)
         {

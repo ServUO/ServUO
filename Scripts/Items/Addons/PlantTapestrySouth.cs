@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class PlantTapestrySouthAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new PlantTapestrySouthDeed(); } }
-        public override bool RetainDeedHue { get { return true; } }
+        public override BaseAddonDeed Deed => new PlantTapestrySouthDeed();
+        public override bool RetainDeedHue => true;
 
         [Constructable]
         public PlantTapestrySouthAddon()
@@ -32,8 +32,8 @@ namespace Server.Items
 
     public class PlantTapestrySouthDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new PlantTapestrySouthAddon(); } }
-        public override int LabelNumber { get { return 1154146; } } // Plant Tapestry (South)
+        public override BaseAddon Addon => new PlantTapestrySouthAddon();
+        public override int LabelNumber => 1154146;  // Plant Tapestry (South)
 
         [Constructable]
         public PlantTapestrySouthDeed()

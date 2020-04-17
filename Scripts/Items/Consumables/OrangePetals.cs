@@ -27,23 +27,11 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1053122;
-            }
-        }// orange petals
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public override int LabelNumber => 1053122;// orange petals
+        public override double DefaultWeight => 1.0;
         public static void RemoveContext(Mobile m)
         {
             OrangePetalsContext context = GetContext(m);
@@ -153,13 +141,7 @@ namespace Server.Items
                 m_Timer = timer;
             }
 
-            public Timer Timer
-            {
-                get
-                {
-                    return m_Timer;
-                }
-            }
+            public Timer Timer => m_Timer;
         }
     }
 }

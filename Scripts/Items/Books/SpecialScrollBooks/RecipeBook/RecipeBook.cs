@@ -50,7 +50,7 @@ namespace Server.Items
 
     public class RecipeBook : Item, ISecurable
     {
-        public override int LabelNumber { get { return 1125598; } } // recipe book
+        public override int LabelNumber => 1125598;  // recipe book
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string BookName { get; set; }
@@ -475,7 +475,7 @@ namespace Server.Items
 
         private class NameBookPrompt : Prompt
         {
-            public override int MessageCliloc { get { return 1062479; } }
+            public override int MessageCliloc => 1062479;
             private readonly RecipeBook m_Book;
 
             public NameBookPrompt(RecipeBook book)

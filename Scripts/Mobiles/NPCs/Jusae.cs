@@ -18,11 +18,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(LethalDartsQuest),
                     typeof(SimpleBowQuest),
@@ -31,8 +27,6 @@ namespace Server.Engines.Quests
                     typeof(IngeniousArcheryPartThreeQuest),
                     typeof(StopHarpingOnMeQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             InitStats(100, 100, 25);

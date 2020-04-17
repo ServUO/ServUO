@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1112135;
-            }
-        }// color fixative
+        public override int LabelNumber => 1112135;// color fixative
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

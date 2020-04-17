@@ -2,22 +2,10 @@ namespace Server.Items
 {
     public class GargoyleShortTableAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new GargoyleShortTableDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new GargoyleShortTableDeed();
 
         #region Mondain's Legacy
-        public override bool RetainDeedHue
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool RetainDeedHue => true;
         #endregion
 
         [Constructable]
@@ -51,20 +39,8 @@ namespace Server.Items
 
     public class GargoyleShortTableDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new GargoyleShortTableAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1095307;
-            }
-        }// large gargish bed (south)
+        public override BaseAddon Addon => new GargoyleShortTableAddon();
+        public override int LabelNumber => 1095307;// large gargish bed (south)
 
         [Constructable]
         public GargoyleShortTableDeed()

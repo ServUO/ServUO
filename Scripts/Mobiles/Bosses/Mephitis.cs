@@ -51,55 +51,13 @@ namespace Server.Mobiles
         {
         }
 
-        public override ChampionSkullType SkullType
-        {
-            get
-            {
-                return ChampionSkullType.Venom;
-            }
-        }
-        public override Type[] UniqueList
-        {
-            get
-            {
-                return new Type[] { typeof(Calm) };
-            }
-        }
-        public override Type[] SharedList
-        {
-            get
-            {
-                return new Type[] { typeof(OblivionsNeedle), typeof(ANecromancerShroud) };
-            }
-        }
-        public override Type[] DecorativeList
-        {
-            get
-            {
-                return new Type[] { typeof(Web), typeof(MonsterStatuette) };
-            }
-        }
-        public override MonsterStatuetteType[] StatueTypes
-        {
-            get
-            {
-                return new MonsterStatuetteType[] { MonsterStatuetteType.Spider };
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
+        public override ChampionSkullType SkullType => ChampionSkullType.Venom;
+        public override Type[] UniqueList => new Type[] { typeof(Calm) };
+        public override Type[] SharedList => new Type[] { typeof(OblivionsNeedle), typeof(ANecromancerShroud) };
+        public override Type[] DecorativeList => new Type[] { typeof(Web), typeof(MonsterStatuette) };
+        public override MonsterStatuetteType[] StatueTypes => new MonsterStatuetteType[] { MonsterStatuetteType.Spider };
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override Poison HitPoison => Poison.Lethal;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 4);

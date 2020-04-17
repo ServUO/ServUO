@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076285;
-            }
-        }// Large Fish Net
+        public override int LabelNumber => 1076285;// Large Fish Net
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -49,13 +43,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new LargeFishingNetDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new LargeFishingNetDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -85,20 +73,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new LargeFishingNetAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076285;
-            }
-        }// Large Fish Net
+        public override BaseAddon Addon => new LargeFishingNetAddon();
+        public override int LabelNumber => 1076285;// Large Fish Net
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

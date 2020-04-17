@@ -10,7 +10,7 @@ namespace Server.Items
 
     public class HonorVirtueTileAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new HonorVirtueTileDeed(); } }
+        public override BaseAddonDeed Deed => new HonorVirtueTileDeed();
 
         private readonly HonorTileType m_HonorTileType;
 
@@ -56,8 +56,8 @@ namespace Server.Items
 
     public class HonorVirtueTileDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new HonorVirtueTileAddon(m_HonorTileType); } }
-        public override int LabelNumber { get { return 1080485; } } // Honor Virtue Tile Deed
+        public override BaseAddon Addon => new HonorVirtueTileAddon(m_HonorTileType);
+        public override int LabelNumber => 1080485;  // Honor Virtue Tile Deed
 
         private HonorTileType m_HonorTileType;
 

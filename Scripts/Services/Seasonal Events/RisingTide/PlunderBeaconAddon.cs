@@ -16,10 +16,10 @@ namespace Server.Items
         public Dictionary<BaseCreature, bool> Spawn { get; set; }
         public List<MannedCannon> Cannons { get; set; }
 
-        public bool CannonsOperational { get { return Crew.Any(c => c.Alive && !c.Deleted); } }
-        public bool BeaconVulnerable { get { return !CannonsOperational; } }
+        public bool CannonsOperational => Crew.Any(c => c.Alive && !c.Deleted);
+        public bool BeaconVulnerable => !CannonsOperational;
 
-        public override BaseAddonDeed Deed { get { return null; } }
+        public override BaseAddonDeed Deed => null;
 
         public Timer Timer { get; set; }
         public DateTime NextShoot { get; set; }

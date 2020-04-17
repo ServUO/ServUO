@@ -10,13 +10,7 @@ namespace Server.Engines.Reports
             return new ReportColumn();
         }
 
-        public override PersistableType TypeID
-        {
-            get
-            {
-                return ThisTypeID;
-            }
-        }
+        public override PersistableType TypeID => ThisTypeID;
         #endregion
 
         private string m_Width;

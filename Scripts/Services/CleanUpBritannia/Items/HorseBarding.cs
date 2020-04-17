@@ -10,7 +10,7 @@ namespace Server.Items
 
     public class HorseBardingAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new HorseBardingDeed(); } }
+        public override BaseAddonDeed Deed => new HorseBardingDeed();
 
         private readonly HorseBardingType m_HorseBardingType;
 
@@ -55,11 +55,11 @@ namespace Server.Items
 
     public class HorseBardingDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new HorseBardingAddon(m_HorseBardingType); } }
+        public override BaseAddon Addon => new HorseBardingAddon(m_HorseBardingType);
 
         private HorseBardingType m_HorseBardingType;
 
-        public override int LabelNumber { get { return 1080212; } } // Horse Barding
+        public override int LabelNumber => 1080212;  // Horse Barding
 
         [Constructable]
         public HorseBardingDeed()

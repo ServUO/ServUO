@@ -8,7 +8,7 @@ namespace Server.Items
 {
     public class SingingBall : Item, ISecurable
     {
-        public override int LabelNumber { get { return 1041245; } } // Singing Ball
+        public override int LabelNumber => 1041245;  // Singing Ball
 
         private bool m_TurnedOn;
 
@@ -76,7 +76,7 @@ namespace Server.Items
         {
         }
 
-        public override bool HandlesOnMovement { get { return m_TurnedOn && IsLockedDown; } }
+        public override bool HandlesOnMovement => m_TurnedOn && IsLockedDown;
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {

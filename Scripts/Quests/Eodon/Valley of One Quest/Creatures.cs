@@ -52,13 +52,13 @@ namespace Server.Mobiles
             SetSpecialAbility(SpecialAbility.TailSwipe);
         }
 
-        public override bool AutoDispel { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
-        public override bool UseSmartAI { get { return true; } }
-        public override bool ReacquireOnMovement { get { return true; } }
-        public override bool AttacksFocus { get { return true; } }
-        public override bool CanFlee { get { return false; } }
-        public override int TreasureMapLevel { get { return 7; } }
+        public override bool AutoDispel => true;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override bool UseSmartAI => true;
+        public override bool ReacquireOnMovement => true;
+        public override bool AttacksFocus => true;
+        public override bool CanFlee => false;
+        public override int TreasureMapLevel => 7;
 
         // Missing Tail Swipe Ability
 
@@ -360,10 +360,10 @@ namespace Server.Mobiles
             AddLoot(LootPack.SuperBoss, 2);
         }
 
-        public override bool AutoDispel { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
-        public override bool UseSmartAI { get { return true; } }
-        public override int TreasureMapLevel { get { return 7; } }
+        public override bool AutoDispel => true;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override bool UseSmartAI => true;
+        public override int TreasureMapLevel => 7;
 
         public GreatApe(Serial serial)
             : base(serial)
@@ -617,9 +617,9 @@ namespace Server.Mobiles
             return base.Damage(amount, from, informMount, checkfizzle);
         }
 
-        public override int Meat { get { return 1; } }
-        public override FoodType FavoriteFood { get { return FoodType.Meat | FoodType.Fish; } }
-        public override PackInstinct PackInstinct { get { return PackInstinct.Feline; } }
+        public override int Meat => 1;
+        public override FoodType FavoriteFood => FoodType.Meat | FoodType.Fish;
+        public override PackInstinct PackInstinct => PackInstinct.Feline;
 
         public TigerCub(Serial serial)
             : base(serial)

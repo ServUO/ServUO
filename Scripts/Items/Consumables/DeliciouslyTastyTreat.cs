@@ -4,9 +4,9 @@ namespace Server.Items
 {
     public class DeliciouslyTastyTreat : TastyTreat
     {
-        public override double Bonus { get { return 0.10; } }
-        public override TimeSpan Duration { get { return TimeSpan.FromMinutes(10); } }
-        public override TimeSpan CoolDown { get { return TimeSpan.FromMinutes(60); } }
+        public override double Bonus => 0.10;
+        public override TimeSpan Duration => TimeSpan.FromMinutes(10);
+        public override TimeSpan CoolDown => TimeSpan.FromMinutes(60);
 
         [Constructable]
         public DeliciouslyTastyTreat() : this(1)
@@ -25,7 +25,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1113004; } } //Deliciously Tasty Treat
+        public override int LabelNumber => 1113004;  //Deliciously Tasty Treat
 
         public override void Serialize(GenericWriter writer)
         {

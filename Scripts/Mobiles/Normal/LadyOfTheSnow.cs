@@ -53,27 +53,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public override bool BleedImmune => true;
+        public override bool CanRummageCorpses => true;
+        public override int TreasureMapLevel => 4;
         public override int GetDeathSound()
         {
             return 0x370;

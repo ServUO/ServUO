@@ -2,8 +2,8 @@
 {
     public class AntiqueWeddingDress : PlainDress
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1149958; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1149958;
 
         [Constructable]
         public AntiqueWeddingDress()

@@ -2,22 +2,10 @@ namespace Server.Items
 {
     public class GargishCotEastAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new GargishCotEastDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new GargishCotEastDeed();
 
         #region Mondain's Legacy
-        public override bool RetainDeedHue
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool RetainDeedHue => true;
         #endregion
 
         [Constructable]
@@ -49,20 +37,8 @@ namespace Server.Items
 
     public class GargishCotEastDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new GargishCotEastAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1111921;
-            }
-        }// gargish cot (east)
+        public override BaseAddon Addon => new GargishCotEastAddon();
+        public override int LabelNumber => 1111921;// gargish cot (east)
 
         [Constructable]
         public GargishCotEastDeed()

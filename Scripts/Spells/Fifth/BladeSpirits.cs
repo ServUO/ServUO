@@ -19,13 +19,7 @@ namespace Server.Spells.Fifth
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Fifth;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Fifth;
         public override TimeSpan GetCastDelay()
         {
             return TimeSpan.FromTicks(base.GetCastDelay().Ticks * 3);

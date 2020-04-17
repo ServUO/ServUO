@@ -94,13 +94,7 @@ namespace Server.Items
                     sourceAddon.ChangeDest(value);
             }
         }
-        public override string DefaultName
-        {
-            get
-            {
-                return "a hole";
-            }
-        }
+        public override string DefaultName => "a hole";
         public override void OnDoubleClick(Mobile m)
         {
             if (!this.m_Active || this.m_TeleDest == null || this.m_TeleDest.Deleted || this.m_TeleDest.Map == Map.Internal)
@@ -219,48 +213,12 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool External
-        {
-            get
-            {
-                return this.m_External;
-            }
-        }
-        public SHTeleComponent UpTele
-        {
-            get
-            {
-                return this.m_UpTele;
-            }
-        }
-        public SHTeleComponent RightTele
-        {
-            get
-            {
-                return this.m_RightTele;
-            }
-        }
-        public SHTeleComponent DownTele
-        {
-            get
-            {
-                return this.m_DownTele;
-            }
-        }
-        public SHTeleComponent LeftTele
-        {
-            get
-            {
-                return this.m_LeftTele;
-            }
-        }
-        public override bool ShareHue
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool External => this.m_External;
+        public SHTeleComponent UpTele => this.m_UpTele;
+        public SHTeleComponent RightTele => this.m_RightTele;
+        public SHTeleComponent DownTele => this.m_DownTele;
+        public SHTeleComponent LeftTele => this.m_LeftTele;
+        public override bool ShareHue => false;
         public static void Initialize()
         {
             CommandSystem.Register("SHTelGen", AccessLevel.Administrator, new CommandEventHandler(SHTelGen_OnCommand));

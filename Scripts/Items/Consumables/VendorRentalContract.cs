@@ -31,13 +31,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1062332;
-            }
-        }// a vendor rental contract
+        public override int LabelNumber => 1062332;// a vendor rental contract
         public VendorRentalDuration Duration
         {
             get

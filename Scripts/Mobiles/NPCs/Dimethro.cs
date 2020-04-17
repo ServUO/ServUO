@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class TheRudimentsOfSelfDefenseQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* The Rudiments of Self Defense */
-        public override object Title
-        {
-            get
-            {
-                return 1077609;
-            }
-        }
+        public override object Title => 1077609;
 
         /* Head East out of town and go to Old Haven. Battle monster there until you have raised your Wrestling skill to 50.
         Listen up! If you want to learn the rudiments of self-defense, you need toughening up, and there's no better way to 
@@ -29,45 +17,21 @@ namespace Server.Engines.Quests
         combat. Afraid of dying, you say? Well, you should be! Being an adventurer isn't a bed of posies, or roses, or however 
         that saying goes. If you take a dirt nap, go to one of the nearby wandering healers and they'll get you back on your feet.
         Come back to me once you feel that you are worthy of the rank Apprentice Wrestler and i will reward you wit a prize. */
-        public override object Description
-        {
-            get
-            {
-                return 1077610;
-            }
-        }
+        public override object Description => 1077610;
 
         /* Ok, featherweight. come back to me if you want to learn the rudiments of self-defense. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1077611;
-            }
-        }
+        public override object Refuse => 1077611;
 
         /* You have not achived the rank of Apprentice Wrestler. Come back to me once you feel that you are worthy of the rank A
         pprentice Wrestler and i will reward you with something useful. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1077630;
-            }
-        }
+        public override object Uncomplete => 1077630;
 
         /* It's about time! Looks like you managed to make it through your self-defense training. As i promised, here's a little 
         something for you. When worn, these Gloves of Safeguarding will increase your awareness and resistances to most elements 
         except poison. Oh yeah, they also increase your natural health regeneration aswell. Pretty handy gloves, indeed. Oh, if you 
         are wondering if your meditation will be hinered while wearing these gloves, it won't be. Mages can wear cloth and leather 
         items without needing to worry about that. Now get out of here and make something of yourself. */
-        public override object Complete
-        {
-            get
-            {
-                return 1077613;
-            }
-        }
+        public override object Complete => 1077613;
 
         public TheRudimentsOfSelfDefenseQuest()
             : base()
@@ -117,16 +81,10 @@ namespace Server.Engines.Quests
 
     public class Dimethro : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(TheRudimentsOfSelfDefenseQuest)
                 };
-            }
-        }
 
         [Constructable]
         public Dimethro()

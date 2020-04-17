@@ -18,13 +18,7 @@ namespace Server.Engines.Mahjong
             }
         }
 
-        public ArrayList LeftTileTypes
-        {
-            get
-            {
-                return this.m_LeftTileTypes;
-            }
-        }
+        public ArrayList LeftTileTypes => this.m_LeftTileTypes;
         public MahjongTileType Next()
         {
             int random = Utility.Random(this.m_LeftTileTypes.Count);

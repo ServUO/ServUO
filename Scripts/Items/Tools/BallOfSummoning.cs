@@ -73,28 +73,10 @@ namespace Server.Items
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxCharges
-        {
-            get
-            {
-                return 20;
-            }
-        }
+        public int MaxCharges => 20;
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxRecharges
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public string TranslocationItemName
-        {
-            get
-            {
-                return "crystal ball of pet summoning";
-            }
-        }
+        public int MaxRecharges => 255;
+        public string TranslocationItemName => "crystal ball of pet summoning";
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseCreature Pet
         {
@@ -115,13 +97,7 @@ namespace Server.Items
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public string PetName
-        {
-            get
-            {
-                return this.m_PetName;
-            }
-        }
+        public string PetName => this.m_PetName;
         public override void AddNameProperty(ObjectPropertyList list)
         {
             list.Add(1054131, this.m_Charges.ToString() + (this.m_PetName.Length == 0 ? "\t " : "\t" + this.m_PetName)); // a crystal ball of pet summoning: [charges: ~1_charges~] : [linked pet: ~2_petName~]
@@ -403,34 +379,10 @@ namespace Server.Items
                 this.m_Ball = ball;
             }
 
-            public override bool ClearHandsOnCast
-            {
-                get
-                {
-                    return false;
-                }
-            }
-            public override bool RevealOnCast
-            {
-                get
-                {
-                    return true;
-                }
-            }
-            public override double CastDelayFastScalar
-            {
-                get
-                {
-                    return 0;
-                }
-            }
-            public override TimeSpan CastDelayBase
-            {
-                get
-                {
-                    return TimeSpan.FromSeconds(2.0);
-                }
-            }
+            public override bool ClearHandsOnCast => false;
+            public override bool RevealOnCast => true;
+            public override double CastDelayFastScalar => 0;
+            public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(2.0);
             public override TimeSpan GetCastRecovery()
             {
                 return TimeSpan.Zero;

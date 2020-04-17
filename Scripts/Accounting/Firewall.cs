@@ -193,13 +193,7 @@ namespace Server
             }
         }
 
-        public static List<IFirewallEntry> List
-        {
-            get
-            {
-                return m_Blocked;
-            }
-        }
+        public static List<IFirewallEntry> List => m_Blocked;
 
         public static IFirewallEntry ToFirewallEntry(object entry)
         {

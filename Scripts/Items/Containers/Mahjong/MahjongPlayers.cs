@@ -48,34 +48,10 @@ namespace Server.Engines.Mahjong
             this.m_DealerPosition = reader.ReadInt();
         }
 
-        public MahjongGame Game
-        {
-            get
-            {
-                return this.m_Game;
-            }
-        }
-        public int Seats
-        {
-            get
-            {
-                return this.m_Players.Length;
-            }
-        }
-        public Mobile Dealer
-        {
-            get
-            {
-                return this.m_Players[this.m_DealerPosition];
-            }
-        }
-        public int DealerPosition
-        {
-            get
-            {
-                return this.m_DealerPosition;
-            }
-        }
+        public MahjongGame Game => this.m_Game;
+        public int Seats => this.m_Players.Length;
+        public Mobile Dealer => this.m_Players[this.m_DealerPosition];
+        public int DealerPosition => this.m_DealerPosition;
         public Mobile GetPlayer(int index)
         {
             if (index < 0 || index >= this.m_Players.Length)

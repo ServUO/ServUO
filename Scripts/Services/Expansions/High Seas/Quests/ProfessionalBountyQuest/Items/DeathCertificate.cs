@@ -5,12 +5,12 @@ namespace Server.Items
 {
     public class DeathCertificate : Item
     {
-        public override int LabelNumber { get { return 1116716; } }
+        public override int LabelNumber => 1116716;
 
         private string m_Owner;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string Owner { get { return m_Owner; } }
+        public string Owner => m_Owner;
 
         public DeathCertificate(Mobile owner)
             : base(0x14F0)

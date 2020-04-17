@@ -6,15 +6,15 @@ namespace Server.Engines.Quests
 {
     public class HumilityQuestMobile : BaseVendor
     {
-        public virtual int Greeting { get { return 0; } }
+        public virtual int Greeting => 0;
 
-        public override bool IsActiveVendor { get { return false; } }
-        public override bool IsInvulnerable { get { return true; } }
-        public override bool CanTeach { get { return false; } }
-        public override bool PlayerRangeSensitive { get { return false; } }
+        public override bool IsActiveVendor => false;
+        public override bool IsInvulnerable => true;
+        public override bool CanTeach => false;
+        public override bool PlayerRangeSensitive => false;
 
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public override void InitSBInfo()
         {
@@ -32,7 +32,7 @@ namespace Server.Engines.Quests
             m_NextGreet = DateTime.UtcNow;
         }
 
-        public static List<HumilityQuestMobile> Instance { get { return m_Instances; } }
+        public static List<HumilityQuestMobile> Instance => m_Instances;
         private static readonly List<HumilityQuestMobile> m_Instances = new List<HumilityQuestMobile>();
 
         public HumilityQuestMobile(Serial serial) : base(serial)
@@ -147,10 +147,10 @@ namespace Server.Engines.Quests
         private readonly int m_NeedsLoc;
         private readonly int m_GivesLoc;
 
-        public Type Needs { get { return m_Needs; } }
-        public Type Gives { get { return m_Gives; } }
-        public int NeedsLoc { get { return m_NeedsLoc; } }
-        public int GivesLoc { get { return m_GivesLoc; } }
+        public Type Needs => m_Needs;
+        public Type Gives => m_Gives;
+        public int NeedsLoc => m_NeedsLoc;
+        public int GivesLoc => m_GivesLoc;
 
         public HumilityQuestMobileInfo(Type needs, Type gives, int needsLoc, int givesLoc)
         {
@@ -214,7 +214,7 @@ namespace Server.Engines.Quests
             return -1;
         }
 
-        public static Type[] ItemTypes { get { return m_ItemTypes; } }
+        public static Type[] ItemTypes => m_ItemTypes;
         private static readonly Type[] m_ItemTypes = new Type[]
         {
             typeof(BrassRing),
@@ -227,7 +227,7 @@ namespace Server.Engines.Quests
             typeof(IronChain)
         };
 
-        public static int[] ItemLocs { get { return m_ItemLocs; } }
+        public static int[] ItemLocs => m_ItemLocs;
         private static readonly int[] m_ItemLocs = new int[]
         {
             1075778,
@@ -240,7 +240,7 @@ namespace Server.Engines.Quests
             1075788
         };
 
-        public static Type[] MobileTypes { get { return m_MobileTypes; } }
+        public static Type[] MobileTypes => m_MobileTypes;
         private static readonly Type[] m_MobileTypes = new Type[]
         {
             typeof(Maribel),

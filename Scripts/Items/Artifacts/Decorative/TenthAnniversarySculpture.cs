@@ -8,12 +8,12 @@ namespace Server.Items
     [Flipable(0x3BB3, 0x3BB4)]
     public class TenthAnniversarySculpture : Item
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1079532; } } // 10th Anniversary Sculpture
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1079532;  // 10th Anniversary Sculpture
 
         private static readonly Dictionary<Mobile, DateTime> m_LuckTable = new Dictionary<Mobile, DateTime>();
         private Dictionary<Mobile, DateTime> m_RewardCooldown;
-        public Dictionary<Mobile, DateTime> RewardCooldown { get { return m_RewardCooldown; } }
+        public Dictionary<Mobile, DateTime> RewardCooldown => m_RewardCooldown;
         private static readonly List<TenthAnniversarySculpture> m_sculptures = new List<TenthAnniversarySculpture>();
 
         private static Timer m_Timer;

@@ -41,27 +41,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
-            }
-        }
+        public override int Meat => 5;
+        public override int Hides => 8;
+        public override FoodType FavoriteFood => FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
         public override int GetAttackSound()
         {
             return 0x82;

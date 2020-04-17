@@ -80,20 +80,8 @@ namespace Server.Misc
                 this.m_Map = map;
             }
 
-            public Point3D Location
-            {
-                get
-                {
-                    return this.m_Location;
-                }
-            }
-            public Map Map
-            {
-                get
-                {
-                    return this.m_Map;
-                }
-            }
+            public Point3D Location => this.m_Location;
+            public Map Map => this.m_Map;
         }
     }
 }

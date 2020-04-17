@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class OniCostume : BaseCostume
     {
-        public override string CreatureName { get { return "oni"; } }
+        public override string CreatureName => "oni";
 
         [Constructable]
         public OniCostume() : base()
@@ -10,13 +10,7 @@ namespace Server.Items
             this.CostumeBody = 241;
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1114242;
-            }
-        }// oni costume
+        public override int LabelNumber => 1114242;// oni costume
 
         public OniCostume(Serial serial) : base(serial)
         {

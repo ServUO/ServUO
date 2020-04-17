@@ -37,20 +37,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int Feathers
-        {
-            get
-            {
-                return 25;
-            }
-        }
+        public override int Meat => 1;
+        public override int Feathers => 25;
         public override int GetAngerSound()
         {
             return 0x4D9;

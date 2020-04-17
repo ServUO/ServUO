@@ -5,7 +5,7 @@ namespace Server.Engines.VvV
 {
     public class DeceitTileAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new DeceitTileDeed(); } }
+        public override BaseAddonDeed Deed => new DeceitTileDeed();
 
         public TileType TileType { get; set; }
 
@@ -51,8 +51,8 @@ namespace Server.Engines.VvV
 
     public class DeceitTileDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new DeceitTileAddon(TileType); } }
-        public override int LabelNumber { get { return 1155517; } } // Deceit Tile
+        public override BaseAddon Addon => new DeceitTileAddon(TileType);
+        public override int LabelNumber => 1155517;  // Deceit Tile
 
         public TileType TileType { get; set; }
 

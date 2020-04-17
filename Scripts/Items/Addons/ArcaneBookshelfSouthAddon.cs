@@ -4,12 +4,12 @@ namespace Server.Items
 {
     public class ArcaneBookShelfAddonSouth : BaseAddonContainer
     {
-        public override BaseAddonContainerDeed Deed { get { return new ArcaneBookShelfDeedSouth(); } }
-        public override bool RetainDeedHue { get { return true; } }
-        public override int DefaultGumpID { get { return 0x107; } }
-        public override int DefaultDropSound { get { return 0x42; } }
+        public override BaseAddonContainerDeed Deed => new ArcaneBookShelfDeedSouth();
+        public override bool RetainDeedHue => true;
+        public override int DefaultGumpID => 0x107;
+        public override int DefaultDropSound => 0x42;
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         [Constructable]
         public ArcaneBookShelfAddonSouth()
@@ -40,8 +40,8 @@ namespace Server.Items
 
     public class ArcaneBookShelfDeedSouth : BaseAddonContainerDeed
     {
-        public override BaseAddonContainer Addon { get { return new ArcaneBookShelfAddonSouth(); } }
-        public override int LabelNumber { get { return 1072871; } } // arcane bookshelf (south)
+        public override BaseAddonContainer Addon => new ArcaneBookShelfAddonSouth();
+        public override int LabelNumber => 1072871;  // arcane bookshelf (south)
 
         [Constructable]
         public ArcaneBookShelfDeedSouth()
@@ -83,13 +83,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new ArcaneBookshelfSouthDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new ArcaneBookshelfSouthDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -137,20 +131,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new ArcaneBookshelfSouthAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072871;
-            }
-        }// arcane bookshelf (south)
+        public override BaseAddon Addon => new ArcaneBookshelfSouthAddon();
+        public override int LabelNumber => 1072871;// arcane bookshelf (south)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

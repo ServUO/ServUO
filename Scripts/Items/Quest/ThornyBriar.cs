@@ -16,13 +16,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074334;
-            }
-        }// thorny briar
+        public override int LabelNumber => 1074334;// thorny briar
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class DivineCountenance : HornedTribalMask
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public DivineCountenance()
         {
@@ -18,62 +18,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1061289;
-            }
-        }// Divine Countenance
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 6;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 9;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 25;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1061289;// Divine Countenance
+        public override int ArtifactRarity => 11;
+        public override int BasePhysicalResistance => 8;
+        public override int BaseFireResistance => 6;
+        public override int BaseColdResistance => 9;
+        public override int BaseEnergyResistance => 25;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

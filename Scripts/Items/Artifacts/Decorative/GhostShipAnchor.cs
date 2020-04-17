@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class GhostShipAnchor : Item
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public GhostShipAnchor()
             : base(0x14F7)
@@ -16,13 +16,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1070816;
-            }
-        }// Ghost Ship Anchor
+        public override int LabelNumber => 1070816;// Ghost Ship Anchor
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

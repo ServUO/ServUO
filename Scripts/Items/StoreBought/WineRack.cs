@@ -5,16 +5,16 @@ namespace Server.Items
 {
     public class WineRack : LockableContainer, IFlipable, IDyable
     {
-        public override string DefaultName { get { return "Wine Rack"; } }
+        public override string DefaultName => "Wine Rack";
 
-        public override int DefaultGumpID { get { return 0x44; } }
+        public override int DefaultGumpID => 0x44;
 
-        public virtual int SouthID { get { return 0xA568; } }
-        public virtual int SouthEmptyID { get { return 0xA567; } }
-        public virtual int EastID { get { return 0xA56A; } }
-        public virtual int EastEmptyID { get { return 0xA569; } }
+        public virtual int SouthID => 0xA568;
+        public virtual int SouthEmptyID => 0xA567;
+        public virtual int EastID => 0xA56A;
+        public virtual int EastEmptyID => 0xA569;
 
-        public bool IsEmpty { get { return Items.Count == 0; } }
+        public bool IsEmpty => Items.Count == 0;
 
         public bool Dye(Mobile from, DyeTub sender)
         {
@@ -96,7 +96,7 @@ namespace Server.Items
             }
         }
 
-        public override bool DisplaysContent { get { return false; } }
+        public override bool DisplaysContent => false;
 
         public override void GetProperties(ObjectPropertyList list)
         {

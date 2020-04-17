@@ -18,20 +18,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override NpcGuild NpcGuild
-        {
-            get
-            {
-                return NpcGuild.HealersGuild;
-            }
-        }
-        public override VendorShoeType ShoeType
-        {
-            get
-            {
-                return VendorShoeType.Sandals;
-            }
-        }
+        public override NpcGuild NpcGuild => NpcGuild.HealersGuild;
+        public override VendorShoeType ShoeType => VendorShoeType.Sandals;
         public override void InitOutfit()
         {
             base.InitOutfit();

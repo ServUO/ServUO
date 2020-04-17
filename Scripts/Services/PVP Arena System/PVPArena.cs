@@ -30,7 +30,7 @@ namespace Server.Engines.ArenaSystem
         public ArenaDefinition Definition { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool InUse { get { return CurrentDuel != null; } }
+        public bool InUse => CurrentDuel != null;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ArenaDuel CurrentDuel { get; set; }

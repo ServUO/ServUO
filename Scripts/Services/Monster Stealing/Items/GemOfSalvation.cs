@@ -8,7 +8,7 @@ namespace Server.Items
     [TypeAlias("drNO.ThieveItems.GemOfSalvation")]
     public class GemOfSalvation : Item
     {
-        public override int LabelNumber { get { return 1094939; } } // Gem of Salvation
+        public override int LabelNumber => 1094939;  // Gem of Salvation
 
         [Constructable]
         public GemOfSalvation()

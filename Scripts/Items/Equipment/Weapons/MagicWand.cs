@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class MagicWand : BaseBashing, IRepairable
     {
-        public CraftSystem RepairSystem { get { return DefCarpentry.CraftSystem; } }
+        public CraftSystem RepairSystem => DefCarpentry.CraftSystem;
 
         [Constructable]
         public MagicWand()
@@ -18,63 +18,15 @@ namespace Server.Items
         {
         }
 
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.Dismount;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.Disarm;
-            }
-        }
-        public override int StrengthReq
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int MinDamage
-        {
-            get
-            {
-                return 9;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override float Speed
-        {
-            get
-            {
-                return 2.75f;
-            }
-        }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.Dismount;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.Disarm;
+        public override int StrengthReq => 5;
+        public override int MinDamage => 9;
+        public override int MaxDamage => 11;
+        public override float Speed => 2.75f;
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 31;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 110;
-            }
-        }
+        public override int InitMinHits => 31;
+        public override int InitMaxHits => 110;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

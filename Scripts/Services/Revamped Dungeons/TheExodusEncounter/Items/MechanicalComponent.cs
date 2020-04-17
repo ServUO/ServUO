@@ -10,10 +10,10 @@ namespace Server.Items
             this.Weight = 1;
         }
 
-        public override int Lifespan { get { return 259200; } }
-        public override bool UseSeconds { get { return false; } }
+        public override int Lifespan => 259200;
+        public override bool UseSeconds => false;
 
-        public override int LabelNumber { get { return 1153865; } } // Mechanical Component
+        public override int LabelNumber => 1153865;  // Mechanical Component
 
         public MechanicalComponent(Serial serial)
             : base(serial)

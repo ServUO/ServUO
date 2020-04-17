@@ -31,7 +31,7 @@ namespace Server.Items
                 list.Add(1113267); // (Double Click to Lockdown)
         }
 
-        public override bool DisplayWeight { get { return Movable; } }
+        public override bool DisplayWeight => Movable;
 
         public override bool OnDroppedToWorld(Mobile from, Point3D p)
         {

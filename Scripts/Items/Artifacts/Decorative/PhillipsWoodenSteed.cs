@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class PhillipsWoodenSteed : MonsterStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public PhillipsWoodenSteed()
             : base(MonsterStatuetteType.PhillipsWoodenSteed)
@@ -15,7 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public override void Serialize(GenericWriter writer)
         {

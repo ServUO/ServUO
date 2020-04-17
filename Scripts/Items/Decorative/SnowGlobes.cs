@@ -82,13 +82,7 @@ namespace Server.Items
         {
         }
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public override double DefaultWeight => 1.0;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -137,13 +131,7 @@ namespace Server.Items
                 this.InvalidateProperties();
             }
         }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041454 + (int)this.m_Type;
-            }
-        }
+        public override int LabelNumber => 1041454 + (int)this.m_Type;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

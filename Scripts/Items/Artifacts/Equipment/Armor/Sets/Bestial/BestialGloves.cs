@@ -2,21 +2,21 @@ namespace Server.Items
 {
     public class BestialGloves : LeatherGloves
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1151198; } } // Bestial Gloves
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1151198;  // Bestial Gloves
 
         #region ISetItem Members
-        public override SetItem SetID { get { return SetItem.Bestial; } }
-        public override int Pieces { get { return 4; } }
+        public override SetItem SetID => SetItem.Bestial;
+        public override int Pieces => 4;
         #endregion
 
-        public override int BasePhysicalResistance { get { return 4; } }
-        public override int BaseFireResistance { get { return 19; } }
-        public override int BaseColdResistance { get { return 5; } }
-        public override int BasePoisonResistance { get { return 5; } }
-        public override int BaseEnergyResistance { get { return 5; } }
-        public override int InitMinHits { get { return 125; } }
-        public override int InitMaxHits { get { return 125; } }
+        public override int BasePhysicalResistance => 4;
+        public override int BaseFireResistance => 19;
+        public override int BaseColdResistance => 5;
+        public override int BasePoisonResistance => 5;
+        public override int BaseEnergyResistance => 5;
+        public override int InitMinHits => 125;
+        public override int InitMaxHits => 125;
 
         [Constructable]
         public BestialGloves() : base()

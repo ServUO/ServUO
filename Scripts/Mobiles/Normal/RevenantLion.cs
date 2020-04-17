@@ -52,27 +52,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Greater;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Greater;
-            }
-        }
+        public override bool BleedImmune => true;
+        public override Poison PoisonImmune => Poison.Greater;
+        public override Poison HitPoison => Poison.Greater;
 
         public override int GetAngerSound()
         {
@@ -99,7 +81,7 @@ namespace Server.Mobiles
             return 0x515;
         }
 
-        public override int TreasureMapLevel { get { return 3; } }
+        public override int TreasureMapLevel => 3;
 
         public override void GenerateLoot()
         {

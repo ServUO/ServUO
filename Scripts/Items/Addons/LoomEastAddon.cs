@@ -21,13 +21,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new LoomEastDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new LoomEastDeed();
         public int Phase
         {
             get
@@ -77,20 +71,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new LoomEastAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044343;
-            }
-        }// loom (east)
+        public override BaseAddon Addon => new LoomEastAddon();
+        public override int LabelNumber => 1044343;// loom (east)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

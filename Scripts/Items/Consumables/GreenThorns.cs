@@ -28,16 +28,10 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1060837;
-            }
-        }// green thorns
+        public override int LabelNumber => 1060837;// green thorns
         public override void OnDoubleClick(Mobile from)
         {
             if (!this.IsChildOf(from.Backpack))
@@ -269,27 +263,9 @@ namespace Server.Items
             this.Priority = TimerPriority.TwoFiftyMS;
         }
 
-        public Point3D Location
-        {
-            get
-            {
-                return this.m_Location;
-            }
-        }
-        public Map Map
-        {
-            get
-            {
-                return this.m_Map;
-            }
-        }
-        public Mobile From
-        {
-            get
-            {
-                return this.m_From;
-            }
-        }
+        public Point3D Location => this.m_Location;
+        public Map Map => this.m_Map;
+        public Mobile From => this.m_From;
         public static GreenThornsEffect Create(Mobile from, LandTarget land)
         {
             if (!from.Map.CanSpawnMobile(land.Location))
@@ -386,20 +362,8 @@ namespace Server.Items
                 this.m_Effect = effect;
             }
 
-            public int[] Tiles
-            {
-                get
-                {
-                    return this.m_Tiles;
-                }
-            }
-            public Type Effect
-            {
-                get
-                {
-                    return this.m_Effect;
-                }
-            }
+            public int[] Tiles => this.m_Tiles;
+            public Type Effect => this.m_Effect;
         }
     }
 
@@ -720,13 +684,7 @@ namespace Server.Items
             this.Hue = 0x1;
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "a hole";
-            }
-        }
+        public override string DefaultName => "a hole";
         public static void Create(Point3D location, Map map)
         {
             GreenThornsSHTeleporter tele = new GreenThornsSHTeleporter();

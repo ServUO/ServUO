@@ -17,20 +17,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072084;
-            }
-        }// Paroxysmus' Swamp Dragon		
-        public override BaseCreature Summon
-        {
-            get
-            {
-                return new ParoxysmusSwampDragon();
-            }
-        }
+        public override int LabelNumber => 1072084;// Paroxysmus' Swamp Dragon		
+        public override BaseCreature Summon => new ParoxysmusSwampDragon();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

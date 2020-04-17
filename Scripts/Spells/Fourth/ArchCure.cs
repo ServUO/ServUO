@@ -19,21 +19,9 @@ namespace Server.Spells.Fourth
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Fourth;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Fourth;
         // Arch cure is now 1/4th of a second faster
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return base.CastDelayBase - TimeSpan.FromSeconds(0.25);
-            }
-        }
+        public override TimeSpan CastDelayBase => base.CastDelayBase - TimeSpan.FromSeconds(0.25);
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);

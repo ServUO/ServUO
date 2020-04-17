@@ -66,7 +66,7 @@ namespace Server.Engines.Auction
         public DateTime StartTime { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime EndTime { get { return StartTime + TimeSpan.FromMinutes(Duration); } }
+        public DateTime EndTime => StartTime + TimeSpan.FromMinutes(Duration);
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime ClaimPeriod { get; set; }
@@ -78,15 +78,15 @@ namespace Server.Engines.Auction
 
         public BidEntry HighestBid { get; set; }
 
-        public bool HasBegun { get { return StartTime != DateTime.MinValue; } }
-        public bool InClaimPeriod { get { return HasBegun && ClaimPeriod != DateTime.MinValue; } }
-        public bool CanModify { get { return !HasBegun; } }
+        public bool HasBegun => StartTime != DateTime.MinValue;
+        public bool InClaimPeriod => HasBegun && ClaimPeriod != DateTime.MinValue;
+        public bool CanModify => !HasBegun;
 
-        public int CurrentGoldBid { get { return (int)(CurrentBid >= Account.CurrencyThreshold ? CurrentBid - (CurrentPlatBid * Account.CurrencyThreshold) : CurrentBid); } }
-        public int CurrentPlatBid { get { return (int)(CurrentBid >= Account.CurrencyThreshold ? CurrentBid / Account.CurrencyThreshold : 0); } }
+        public int CurrentGoldBid => (int)(CurrentBid >= Account.CurrencyThreshold ? CurrentBid - (CurrentPlatBid * Account.CurrencyThreshold) : CurrentBid);
+        public int CurrentPlatBid => (int)(CurrentBid >= Account.CurrencyThreshold ? CurrentBid / Account.CurrencyThreshold : 0);
 
-        public int BuyoutGold { get { return (int)(Buyout >= Account.CurrencyThreshold ? Buyout - (BuyoutPlat * Account.CurrencyThreshold) : Buyout); } }
-        public int BuyoutPlat { get { return (int)(Buyout >= Account.CurrencyThreshold ? Buyout / Account.CurrencyThreshold : 0); } }
+        public int BuyoutGold => (int)(Buyout >= Account.CurrencyThreshold ? Buyout - (BuyoutPlat * Account.CurrencyThreshold) : Buyout);
+        public int BuyoutPlat => (int)(Buyout >= Account.CurrencyThreshold ? Buyout / Account.CurrencyThreshold : 0);
 
         public List<HistoryEntry> BidHistory { get; set; }
         public List<PlayerMobile> Viewers { get; set; }

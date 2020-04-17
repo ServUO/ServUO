@@ -21,13 +21,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1031701;
-            }
-        }// Primeval Lich Dust
+        public override int LabelNumber => 1031701;// Primeval Lich Dust
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

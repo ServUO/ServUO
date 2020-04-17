@@ -38,7 +38,7 @@ namespace Server.Items
             }
         }
 
-        public override BaseAddonDeed Deed { get { return null; } }
+        public override BaseAddonDeed Deed => null;
 
         [Constructable]
         public CraftAddon()
@@ -176,7 +176,7 @@ namespace Server.Items
 
         public class ToolDropComponent : LocalizedAddonComponent
         {
-            public override bool ForceShowProperties { get { return true; } }
+            public override bool ForceShowProperties => true;
 
             public ToolDropComponent(int id, int cliloc)
                 : base(id, cliloc)

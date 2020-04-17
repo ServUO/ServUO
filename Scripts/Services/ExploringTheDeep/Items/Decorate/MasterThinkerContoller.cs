@@ -63,7 +63,7 @@ namespace Server.Items
 
         public static List<MasterThinkerArray> m_Array;
 
-        public List<MasterThinkerArray> Array { get { return m_Array; } }
+        public List<MasterThinkerArray> Array => m_Array;
 
 
         public MasterThinkerContoller()

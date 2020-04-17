@@ -3156,20 +3156,8 @@ namespace Server
 
         private static readonly int[] m_Empty = new int[0];
 
-        public bool IsEmpty
-        {
-            get
-            {
-                return (m_Names == 0);
-            }
-        }
-        public Item Owner
-        {
-            get
-            {
-                return m_Owner;
-            }
-        }
+        public bool IsEmpty => (m_Names == 0);
+        public Item Owner => m_Owner;
 
         public BaseAttributes(Item owner)
         {

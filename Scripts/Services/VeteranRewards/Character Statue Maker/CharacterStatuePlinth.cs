@@ -21,20 +21,8 @@ namespace Server.Items
         {
         }
 
-        public Item Deed
-        {
-            get
-            {
-                return new CharacterStatueDeed(this.m_Statue);
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076201;
-            }
-        }// Character Statue
+        public Item Deed => new CharacterStatueDeed(this.m_Statue);
+        public override int LabelNumber => 1076201;// Character Statue
         public override void OnAfterDelete()
         {
             base.OnAfterDelete();

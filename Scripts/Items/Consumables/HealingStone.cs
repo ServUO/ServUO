@@ -12,21 +12,21 @@ namespace Server.Items
         private Timer m_Timer;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Caster { get { return m_Caster; } }
+        public Mobile Caster => m_Caster;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int LifeForce { get { return m_LifeForce; } set { m_LifeForce = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxLifeForce { get { return m_MaxLifeForce; } }
+        public int MaxLifeForce => m_MaxLifeForce;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxHeal { get { return m_MaxHeal; } }
+        public int MaxHeal => m_MaxHeal;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxHealTotal { get { return m_MaxHealTotal; } }
+        public int MaxHealTotal => m_MaxHealTotal;
 
-        public override bool Nontransferable { get { return true; } }
+        public override bool Nontransferable => true;
 
         [Constructable]
         public HealingStone(Mobile caster, int amount, int maxHeal) : base(0x4078)

@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class ExplosiveGoo : Item
     {
-        public override int LabelNumber { get { return 1157463; } } // Explosive Goo
+        public override int LabelNumber => 1157463;  // Explosive Goo
 
         private bool m_Drying;
         private readonly DateTime m_Created;

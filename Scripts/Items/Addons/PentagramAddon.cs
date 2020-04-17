@@ -21,13 +21,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new PentagramDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new PentagramDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -55,20 +49,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new PentagramAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044328;
-            }
-        }// pentagram
+        public override BaseAddon Addon => new PentagramAddon();
+        public override int LabelNumber => 1044328;// pentagram
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

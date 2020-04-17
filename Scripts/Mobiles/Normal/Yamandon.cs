@@ -53,41 +53,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool ReacquireOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Utility.RandomBool() ? Poison.Deadly : Poison.Lethal;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 20;
-            }
-        }
+        public override bool ReacquireOnMovement => true;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override Poison HitPoison => Utility.RandomBool() ? Poison.Deadly : Poison.Lethal;
+        public override int TreasureMapLevel => 5;
+        public override int Hides => 20;
 
         public override void GenerateLoot()
         {

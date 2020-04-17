@@ -8,7 +8,7 @@ namespace Server.Items
     {
         private bool m_Cut;
 
-        public override int LabelNumber { get { return 1153760; } } // a plague beast mutation core
+        public override int LabelNumber => 1153760;  // a plague beast mutation core
 
         [Constructable]
         public PlagueBeastMutationCore()

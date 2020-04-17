@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class ProspectorsTool : BaseBashing
     {
-        public override int LabelNumber { get { return 1049065; } } // prospector's tool
+        public override int LabelNumber => 1049065;  // prospector's tool
 
         [Constructable]
         public ProspectorsTool()
@@ -22,14 +22,14 @@ namespace Server.Items
         {
         }
 
-        public override WeaponAbility PrimaryAbility { get { return WeaponAbility.CrushingBlow; } }
-        public override WeaponAbility SecondaryAbility { get { return WeaponAbility.ShadowStrike; } }
-        public override int StrengthReq { get { return 40; } }
-        public override int MinDamage { get { return 13; } }
-        public override int MaxDamage { get { return 15; } }
-        public override float Speed { get { return 3.25f; } }
-        public override int InitMinHits { get { return 31; } }
-        public override int InitMaxHits { get { return 60; } }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.CrushingBlow;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.ShadowStrike;
+        public override int StrengthReq => 40;
+        public override int MinDamage => 13;
+        public override int MaxDamage => 15;
+        public override float Speed => 3.25f;
+        public override int InitMinHits => 31;
+        public override int InitMaxHits => 60;
 
         public override void OnDoubleClick(Mobile from)
         {

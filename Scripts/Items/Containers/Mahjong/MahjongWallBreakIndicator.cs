@@ -19,27 +19,9 @@ namespace Server.Engines.Mahjong
             this.m_Position = reader.ReadPoint2D();
         }
 
-        public MahjongGame Game
-        {
-            get
-            {
-                return this.m_Game;
-            }
-        }
-        public Point2D Position
-        {
-            get
-            {
-                return this.m_Position;
-            }
-        }
-        public MahjongPieceDim Dimensions
-        {
-            get
-            {
-                return GetDimensions(this.m_Position);
-            }
-        }
+        public MahjongGame Game => this.m_Game;
+        public Point2D Position => this.m_Position;
+        public MahjongPieceDim Dimensions => GetDimensions(this.m_Position);
         public static MahjongPieceDim GetDimensions(Point2D position)
         {
             return new MahjongPieceDim(position, 20, 20);

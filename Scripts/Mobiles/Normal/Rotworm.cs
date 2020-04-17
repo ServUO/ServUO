@@ -55,9 +55,9 @@ namespace Server.Mobiles
         public override int GetHurtSound() { return 0x62C; }
         public override int GetDeathSound() { return 0x62B; }
 
-        public override int Meat { get { return 2; } }
-        public override MeatType MeatType { get { return MeatType.Rotworm; } }
-        public override FoodType FavoriteFood { get { return FoodType.Fish; } }
+        public override int Meat => 2;
+        public override MeatType MeatType => MeatType.Rotworm;
+        public override FoodType FavoriteFood => FoodType.Fish;
 
         public override void GenerateLoot()
         {

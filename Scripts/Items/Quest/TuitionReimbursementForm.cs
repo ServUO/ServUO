@@ -16,13 +16,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074610;
-            }
-        }// Tuition Reimbursement Form (in triplicate)
+        public override int LabelNumber => 1074610;// Tuition Reimbursement Form (in triplicate)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

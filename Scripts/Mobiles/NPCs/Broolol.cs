@@ -18,13 +18,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[] { typeof(TheAncientWorldQuest) };
-            }
-        }
+        public override Type[] Quests => new Type[] { typeof(TheAncientWorldQuest) };
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

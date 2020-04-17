@@ -276,18 +276,12 @@ namespace Server.Services.Virtues
 
             private bool _Expiring;
 
-            public ResistanceMod[] GetMod
-            {
-                get
-                {
-                    return new[]
+            public ResistanceMod[] GetMod => new[]
                     {
                         new ResistanceMod(ResistanceType.Physical, -70), new ResistanceMod(ResistanceType.Fire, -70),
                         new ResistanceMod(ResistanceType.Poison, -70), new ResistanceMod(ResistanceType.Cold, -70),
                         new ResistanceMod(ResistanceType.Energy, -70)
                     };
-                }
-            }
 
             public bool Expiring
             {

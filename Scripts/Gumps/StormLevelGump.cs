@@ -15,8 +15,8 @@ namespace Server.Gumps
             this.m_Locations = locations;
         }
 
-        public int Name { get { return this.m_Name; } }
-        public Point3D[] Locations { get { return this.m_Locations; } }
+        public int Name => this.m_Name;
+        public Point3D[] Locations => this.m_Locations;
     }
 
     public class StormLevelGump : Gump

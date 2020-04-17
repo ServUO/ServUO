@@ -17,14 +17,14 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override int RequiredMana { get { return 40; } }
+        public override int RequiredMana => 40;
 
-        public override SkillName CastSkill { get { return SkillName.AnimalTaming; } }
-        public override SkillName DamageSkill { get { return SkillName.AnimalLore; } }
-        public override bool RevealOnTick { get { return false; } }
+        public override SkillName CastSkill => SkillName.AnimalTaming;
+        public override SkillName DamageSkill => SkillName.AnimalLore;
+        public override bool RevealOnTick => false;
 
         private int _EnhancedGainChance;
-        public int EnhancedGainChance { get { return _EnhancedGainChance; } }
+        public int EnhancedGainChance => _EnhancedGainChance;
 
         public WhisperingSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)

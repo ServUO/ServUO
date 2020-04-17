@@ -58,22 +58,10 @@ namespace Server.Items
                 InvalidateProperties();
             }
         }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1112136;
-            }
-        }// natural dye
-        public bool RetainsColorFrom
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int LabelNumber => 1112136;// natural dye
+        public bool RetainsColorFrom => true;
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public override void GetProperties(ObjectPropertyList list)
         {

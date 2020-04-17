@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0xA4E8, 0xA4E9)]
     public class DecorativeWallHook : Item
     {
-        public override int LabelNumber { get { return 1159469; } } // decorative wall hook
+        public override int LabelNumber => 1159469;  // decorative wall hook
 
         [Constructable]
         public DecorativeWallHook()

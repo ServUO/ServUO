@@ -8,7 +8,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public string DisplayName { get { return _DisplayName; } set { _DisplayName = value; InvalidateProperties(); } }
 
-        public override int LabelNumber { get { return 1159146; } } // Copper Wings
+        public override int LabelNumber => 1159146;  // Copper Wings
 
         [Constructable]
         public CopperWings()

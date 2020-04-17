@@ -17,13 +17,7 @@ namespace Server.Mobiles
         {
         }
 
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        protected override List<SBInfo> SBInfos => this.m_SBInfos;
         public override void InitSBInfo()
         {
             this.m_SBInfos.Add(new SBMapmaker());

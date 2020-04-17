@@ -5,8 +5,8 @@ namespace Server.Misc
 {
     public class HolidayGiftBox2018 : GiftGiver
     {
-        public override DateTime Start { get { return new DateTime(2018, 12, 30); } }
-        public override DateTime Finish { get { return new DateTime(2019, 1, 1); } }
+        public override DateTime Start => new DateTime(2018, 12, 30);
+        public override DateTime Finish => new DateTime(2019, 1, 1);
 
         public static void Initialize()
         {

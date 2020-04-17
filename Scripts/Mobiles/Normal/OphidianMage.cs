@@ -57,22 +57,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override int Meat => 1;
+        public override int TreasureMapLevel => 2;
 
-        public override TribeType Tribe { get { return TribeType.Ophidian; } }
+        public override TribeType Tribe => TribeType.Ophidian;
 
         public override void GenerateLoot()
         {

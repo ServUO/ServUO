@@ -11,7 +11,7 @@ namespace Server.Items
     {
         private SecureLevel m_Level;
 
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level

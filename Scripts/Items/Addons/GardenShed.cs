@@ -8,7 +8,7 @@ namespace Server.Items
 {
     public class GardenShedComponent : AddonContainerComponent
     {
-        public override int LabelNumber { get { return 1153492; } } // garden shed
+        public override int LabelNumber => 1153492;  // garden shed
 
         public GardenShedComponent(int itemID)
             : base(itemID)
@@ -44,10 +44,10 @@ namespace Server.Items
 
     public class GardenShedAddon : BaseAddonContainer
     {
-        public override BaseAddonContainerDeed Deed { get { return new GardenShedDeed(); } }
-        public override int LabelNumber { get { return 1153492; } } // garden shed
-        public override int DefaultGumpID { get { return 0x10B; } }
-        public override int DefaultDropSound { get { return 0x42; } }
+        public override BaseAddonContainerDeed Deed => new GardenShedDeed();
+        public override int LabelNumber => 1153492;  // garden shed
+        public override int DefaultGumpID => 0x10B;
+        public override int DefaultDropSound => 0x42;
         public BaseAddonContainer m_SecondContainer;
         private Point3D m_Offset;
 
@@ -182,10 +182,10 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonContainerDeed Deed { get { return m_MainContainer.Deed; } }
-        public override int LabelNumber { get { return 1153492; } } // garden shed
-        public override int DefaultGumpID { get { return 0x3E; } }
-        public override int DefaultDropSound { get { return 0x42; } }
+        public override BaseAddonContainerDeed Deed => m_MainContainer.Deed;
+        public override int LabelNumber => 1153492;  // garden shed
+        public override int DefaultGumpID => 0x3E;
+        public override int DefaultDropSound => 0x42;
 
         public override void OnLocationChange(Point3D old)
         {
@@ -241,8 +241,8 @@ namespace Server.Items
 
     public class GardenShedDeed : BaseAddonContainerDeed, IRewardItem
     {
-        public override BaseAddonContainer Addon { get { return new GardenShedAddon(m_East); } }
-        public override int LabelNumber { get { return 1153491; } } // Garden Shed Deed
+        public override BaseAddonContainer Addon => new GardenShedAddon(m_East);
+        public override int LabelNumber => 1153491;  // Garden Shed Deed
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem { get; set; }

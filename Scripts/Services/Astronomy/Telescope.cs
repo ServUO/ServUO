@@ -39,11 +39,11 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TimeCoordinate TimeCoordinate { get { return AstronomySystem.GetTimeCoordinate(this); } }
+        public TimeCoordinate TimeCoordinate => AstronomySystem.GetTimeCoordinate(this);
 
         public DateTime LastUse { get; set; }
 
-        public override int LabelNumber { get { return 1125284; } }
+        public override int LabelNumber => 1125284;
 
         [Constructable]
         public PersonalTelescope()

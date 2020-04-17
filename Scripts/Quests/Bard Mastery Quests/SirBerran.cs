@@ -16,18 +16,18 @@ namespace Server.Engines.Quests
             AddReward(new BaseReward(typeof(BookOfMasteries), 1028794));
         }
 
-        public override object Title { get { return 1115696; } }       //Wielding the Sonic Blade
+        public override object Title => 1115696;        //Wielding the Sonic Blade
 
-        public override object Description { get { return 1115697; } } /*This quest is the single quest required for a player to unlock the discordance mastery 
+        public override object Description => 1115697;  /*This quest is the single quest required for a player to unlock the discordance mastery 
                                                                         * abilities for bards. This quest can be completed multiple times to reinstate the discordance 
                                                                         * mastery. To prove yourself worthy, you must first be a master of discordance and musicianship. 
                                                                         * You must be willing to distort your notes to bring pain to even the most indifferent ears.*/
 
-        public override object Refuse { get { return 1115700; } }       //You must strive to spread discord.
+        public override object Refuse => 1115700;        //You must strive to spread discord.
 
-        public override object Uncomplete { get { return 1115700; } }   //You must strive to spread discord.
+        public override object Uncomplete => 1115700;    //You must strive to spread discord.
 
-        public override object Complete { get { return 1115701; } }     /* You have proven yourself worthy of wielding your music as a weapon. Rend the ears of your 
+        public override object Complete => 1115701;      /* You have proven yourself worthy of wielding your music as a weapon. Rend the ears of your 
                                                                          * foes with your wails of discord. Let your song be feared as much as any sword.*/
 
         public override bool CanOffer()
@@ -82,7 +82,7 @@ namespace Server.Engines.Quests
         private static readonly Type m_Type = typeof(Goat);
 
         private readonly List<string> m_Descr = new List<string>();
-        public override List<string> Descriptions { get { return m_Descr; } }
+        public override List<string> Descriptions => m_Descr;
 
         public DiscordObjective()
             : base(5, -1)
@@ -139,16 +139,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(WieldingTheSonicBladeQuest),
                 };
-            }
-        }
 
         public override void InitBody()
         {

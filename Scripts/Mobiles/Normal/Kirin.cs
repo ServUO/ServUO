@@ -58,65 +58,17 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool AllowFemaleRider
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool AllowFemaleTamer
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool InitialInnocent
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override TimeSpan MountAbilityDelay
-        {
-            get
-            {
-                return TimeSpan.FromHours(1.0);
-            }
-        }
+        public override bool AllowFemaleRider => false;
+        public override bool AllowFemaleTamer => false;
+        public override bool InitialInnocent => true;
+        public override TimeSpan MountAbilityDelay => TimeSpan.FromHours(1.0);
 
-        public override TribeType Tribe { get { return TribeType.Fey; } }
+        public override TribeType Tribe => TribeType.Fey;
 
-        public override int Meat
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Horned;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
-            }
-        }
+        public override int Meat => 3;
+        public override int Hides => 10;
+        public override HideType HideType => HideType.Horned;
+        public override FoodType FavoriteFood => FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
         public override void OnDisallowedRider(Mobile m)
         {
             m.SendLocalizedMessage(1042319); // The Ki-Rin refuses your attempts to mount it.

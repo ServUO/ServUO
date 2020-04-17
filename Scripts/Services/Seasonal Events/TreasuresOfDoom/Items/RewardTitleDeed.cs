@@ -4,7 +4,7 @@ namespace Server.Items
     {
         private TextDefinition _Title;
 
-        public override TextDefinition Title { get { return _Title; } }
+        public override TextDefinition Title => _Title;
 
         public TreasuresOfDoomRewardDeed(int localization)
         {

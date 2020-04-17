@@ -9,15 +9,15 @@ namespace Server.Engines.Points
 {
     public class KotlCityData : PointsSystem
     {
-        public override PointsType Loyalty { get { return PointsType.TreasuresOfKotlCity; } }
-        public override TextDefinition Name { get { return m_Name; } }
-        public override bool AutoAdd { get { return true; } }
-        public override double MaxPoints { get { return double.MaxValue; } }
-        public override bool ShowOnLoyaltyGump { get { return false; } }
+        public override PointsType Loyalty => PointsType.TreasuresOfKotlCity;
+        public override TextDefinition Name => m_Name;
+        public override bool AutoAdd => true;
+        public override double MaxPoints => double.MaxValue;
+        public override bool ShowOnLoyaltyGump => false;
 
         private readonly TextDefinition m_Name = null;
 
-        public bool Enabled { get { return SeasonalEventSystem.IsActive(EventType.TreasuresOfKotlCity); } }
+        public bool Enabled => SeasonalEventSystem.IsActive(EventType.TreasuresOfKotlCity);
 
         public KotlCityData()
         {

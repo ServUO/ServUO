@@ -3,7 +3,7 @@ namespace Server.Items
     [FlipableAttribute(0x2B08, 0x2B09)]
     public class JusticeBreastplate : BaseArmor
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public JusticeBreastplate()
             : base(0x2B08)
@@ -27,90 +27,18 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075190;
-            }
-        }// Breastplate of Justice (Virtue Armor Set)
-        public override SetItem SetID
-        {
-            get
-            {
-                return SetItem.Virtue;
-            }
-        }
-        public override int Pieces
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 7;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 7;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int StrReq
-        {
-            get
-            {
-                return 65;
-            }
-        }
-        public override ArmorMaterialType MaterialType
-        {
-            get
-            {
-                return ArmorMaterialType.Plate;
-            }
-        }
+        public override int LabelNumber => 1075190;// Breastplate of Justice (Virtue Armor Set)
+        public override SetItem SetID => SetItem.Virtue;
+        public override int Pieces => 8;
+        public override int BasePhysicalResistance => 10;
+        public override int BaseFireResistance => 7;
+        public override int BaseColdResistance => 8;
+        public override int BasePoisonResistance => 7;
+        public override int BaseEnergyResistance => 8;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
+        public override int StrReq => 65;
+        public override ArmorMaterialType MaterialType => ArmorMaterialType.Plate;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

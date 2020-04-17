@@ -13,20 +13,8 @@ namespace Server.Items
         {
         }
 
-        public override int MinDamage
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 40;
-            }
-        }
+        public override int MinDamage => 20;
+        public override int MaxDamage => 40;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

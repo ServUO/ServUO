@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073823;
-            }
-        }// A Purple Frog
+        public override int LabelNumber => 1073823;// A Purple Frog
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

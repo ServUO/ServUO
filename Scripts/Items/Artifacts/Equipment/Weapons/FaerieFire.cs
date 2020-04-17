@@ -2,10 +2,10 @@ namespace Server.Items
 {
     public class FaerieFire : ElvenCompositeLongbow
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1072908; } }// Faerie Fire
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1072908; // Faerie Fire
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         [Constructable]
         public FaerieFire()

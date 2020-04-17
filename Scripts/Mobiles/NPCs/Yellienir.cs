@@ -22,27 +22,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanTeach
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsInvulnerable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return m_SBInfos;
-            }
-        }
+        public override bool CanTeach => false;
+        public override bool IsInvulnerable => true;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
         }

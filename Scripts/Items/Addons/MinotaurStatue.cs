@@ -105,13 +105,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1080409;
-            }
-        }// Minotaur Statue Deed
+        public override int LabelNumber => 1080409;// Minotaur Statue Deed
         public override BaseAddon Addon
         {
             get

@@ -15,47 +15,17 @@ namespace Server.Engines.Quests
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
-        public override bool AllObjectives
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool AllObjectives => false;
         /* Shaking Things Up */
-        public override object Title
-        {
-            get
-            {
-                return 1073083;
-            }
-        }
+        public override object Title => 1073083;
         /* A Solen hive is a fascinating piece of ecology. It's put together like a finely crafted clock. Who knows 
         what happens if you remove something? So let's find out. Exterminate a few of the warriors and I'll make it 
         worth your while. */
-        public override object Description
-        {
-            get
-            {
-                return 1073573;
-            }
-        }
+        public override object Description => 1073573;
         /* I hope you'll reconsider. Until then, farwell. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073580;
-            }
-        }
+        public override object Refuse => 1073580;
         /* I don't think you've gotten their attention yet -- you need to kill at least 10 Solen Warriors. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073593;
-            }
-        }
+        public override object Uncomplete => 1073593;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -82,39 +52,15 @@ namespace Server.Engines.Quests
         }
 
         /* Arachnophobia */
-        public override object Title
-        {
-            get
-            {
-                return 1073079;
-            }
-        }
+        public override object Title => 1073079;
         /* I've seen them hiding in their webs among the woods. Glassy eyes, spindly legs, poisonous fangs. Monsters, 
         I say! Deadly horrors, these black widows. Someone must exterminate the abominations! If only I could find a 
         worthy hero for such a task, then I could give them this considerable reward. */
-        public override object Description
-        {
-            get
-            {
-                return 1073569;
-            }
-        }
+        public override object Description => 1073569;
         /* I hope you'll reconsider. Until then, farwell. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073580;
-            }
-        }
+        public override object Refuse => 1073580;
         /* You've got a good start, but to stop the black-eyed fiends, you need to kill a dozen. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073589;
-            }
-        }
+        public override object Uncomplete => 1073589;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -141,38 +87,14 @@ namespace Server.Engines.Quests
         }
 
         /* Mini Swamp Thing */
-        public override object Title
-        {
-            get
-            {
-                return 1073072;
-            }
-        }
+        public override object Title => 1073072;
         /* Some say killing a boggling brings good luck. I don't place much stock in old wives' tales, but I can say a few 
         dead bogglings would certainly be lucky for me! Help me out and I can reward you for your efforts.  */
-        public override object Description
-        {
-            get
-            {
-                return 1073562;
-            }
-        }
+        public override object Description => 1073562;
         /* I hope you'll reconsider. Until then, farwell. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073580;
-            }
-        }
+        public override object Refuse => 1073580;
         /* Go back and kill all 20 bogglings! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073582;
-            }
-        }
+        public override object Uncomplete => 1073582;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -203,11 +125,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(WarriorCasteQuest),
                     typeof(ShakingThingsUpQuest),
@@ -220,8 +138,6 @@ namespace Server.Engines.Quests
                     typeof(MiniSwampThingQuest),
                     typeof(AnimatedMonstrosityQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

@@ -17,13 +17,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074533;
-            }
-        }// Fragment of a Map
+        public override int LabelNumber => 1074533;// Fragment of a Map
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

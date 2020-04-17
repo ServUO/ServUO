@@ -17,14 +17,14 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override int RequiredMana { get { return 10; } }
+        public override int RequiredMana => 10;
 
-        public override SkillName CastSkill { get { return SkillName.Ninjitsu; } }
-        public override SkillName DamageSkill { get { return SkillName.Stealth; } }
+        public override SkillName CastSkill => SkillName.Ninjitsu;
+        public override SkillName DamageSkill => SkillName.Stealth;
 
-        public override bool BlockedByAnimalForm { get { return false; } }
-        public override bool BlocksMovement { get { return false; } }
-        public override int CastRecoveryBase { get { return (10); } }
+        public override bool BlockedByAnimalForm => false;
+        public override bool BlocksMovement => false;
+        public override int CastRecoveryBase => (10);
 
         public WhiteTigerFormSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)

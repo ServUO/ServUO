@@ -26,12 +26,12 @@ namespace Server.Mobiles
         private int m_Adjective;
         private int m_Noun;
 
-        public int PirateName { get { return m_PirateName; } }
-        public int Adjective { get { return m_Adjective; } }
-        public int Noun { get { return m_Noun; } }
+        public int PirateName => m_PirateName;
+        public int Adjective => m_Adjective;
+        public int Noun => m_Noun;
 
-        public override bool AlwaysMurderer { get { return true; } }
-        public override bool Commandable { get { return false; } }
+        public override bool AlwaysMurderer => true;
+        public override bool Commandable => false;
 
         #region Bounty Quest
         private ProfessionalBountyQuest m_Quest;

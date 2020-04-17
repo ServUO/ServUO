@@ -20,34 +20,10 @@ namespace Server.Spells.Ninjitsu
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(1.5);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 20.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override bool BlockedByAnimalForm
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(1.5);
+        public override double RequiredSkill => 20.0;
+        public override int RequiredMana => 10;
+        public override bool BlockedByAnimalForm => false;
 
         public static bool HasClone(Mobile m)
         {
@@ -231,36 +207,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool DeleteCorpseOnDeath
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool IsDispellable
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool Commandable
-        {
-            get
-            {
-                return false;
-            }
-        }
-        protected override BaseAI ForcedAI
-        {
-            get
-            {
-                return new CloneAI(this);
-            }
-        }
+        public override bool DeleteCorpseOnDeath => true;
+        public override bool IsDispellable => false;
+        public override bool Commandable => false;
+        protected override BaseAI ForcedAI => new CloneAI(this);
 
-        public override bool CanDetectHidden { get { return false; } }
+        public override bool CanDetectHidden => false;
 
         public override bool IsHumanInTown()
         {

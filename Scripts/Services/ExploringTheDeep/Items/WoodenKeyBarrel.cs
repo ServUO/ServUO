@@ -8,7 +8,7 @@ namespace Server.Items
     {
         private Parts m_key;
         private StorageLocker m_StorageLocker;
-        public override int LabelNumber { get { return 1023703; } } // barrel
+        public override int LabelNumber => 1023703;  // barrel
 
         [CommandProperty(AccessLevel.GameMaster)]
         public StorageLocker StorageLocker
@@ -140,7 +140,7 @@ namespace Server.Items
 
     public class WoodenToMetalBarrel : DamageableItem
     {
-        public override int LabelNumber { get { return 1023703; } } // barrel
+        public override int LabelNumber => 1023703;  // barrel
         private StorageLocker m_StorageLocker;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -204,7 +204,7 @@ namespace Server.Items
 
     public class MetalBarrel : Item
     {
-        public override int LabelNumber { get { return 1023703; } } // barrel
+        public override int LabelNumber => 1023703;  // barrel
 
         [Constructable]
         public MetalBarrel()

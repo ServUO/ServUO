@@ -7,7 +7,7 @@ namespace Server.Engines.NewMagincia
         private Mobile m_Owner;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner { get { return m_Owner; } }
+        public Mobile Owner => m_Owner;
 
         public WarehouseContainer(Mobile owner)
         {

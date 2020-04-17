@@ -8,8 +8,8 @@ namespace Server.Items
     {
         private int m_Span;
 
-        public override int LabelNumber { get { return 1024114; } } // magic key
-        public override int Lifespan { get { return m_Span; } }
+        public override int LabelNumber => 1024114;  // magic key
+        public override int Lifespan => m_Span;
 
         [Constructable]
         public MagicKey() : base(4114)

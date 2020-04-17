@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class TombOfKingsSecretDoor : Item
     {
-        public override int LabelNumber { get { return 1020233; } } // secret door
+        public override int LabelNumber => 1020233;  // secret door
 
         private int m_ClosedId;
 

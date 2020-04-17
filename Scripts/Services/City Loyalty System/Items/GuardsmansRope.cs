@@ -5,8 +5,8 @@ namespace Server.Items
 {
     public class GuardsmansRope : BaseDecayingItem
     {
-        public override int LabelNumber { get { return 1152261; } } // guardsman's rope
-        public override int Lifespan { get { return 3600; } }
+        public override int LabelNumber => 1152261;  // guardsman's rope
+        public override int Lifespan => 3600;
 
         public GuardsmansRope() : base(0x14F8)
         {

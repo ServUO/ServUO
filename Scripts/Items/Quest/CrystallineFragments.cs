@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073160;
-            }
-        }// Crystalline Fragments
+        public override int LabelNumber => 1073160;// Crystalline Fragments
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

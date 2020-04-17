@@ -96,7 +96,7 @@ namespace Server.Items
             }
         }
 
-        public virtual bool BreakOnDepletion { get { return true; } }
+        public virtual bool BreakOnDepletion => true;
 
         public abstract HarvestSystem HarvestSystem { get; }
 

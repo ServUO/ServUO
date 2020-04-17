@@ -93,7 +93,7 @@ namespace Server.Engines.Blackthorn
         [CommandProperty(AccessLevel.GameMaster)]
         public int CurrentWave { get; private set; }
 
-        public bool BeaconVulnerable { get { return Beacon != null && (Spawn == null || Spawn.Count == 0); } }
+        public bool BeaconVulnerable => Beacon != null && (Spawn == null || Spawn.Count == 0);
 
         public InvasionController(Map map) : base(3796)
         {

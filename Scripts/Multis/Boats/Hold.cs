@@ -5,12 +5,12 @@ namespace Server.Items
 {
     public class Hold : Container
     {
-        public override int LabelNumber { get { return 1149699; } } // cargo hold
+        public override int LabelNumber => 1149699;  // cargo hold
 
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseBoat Boat { get; private set; }
 
-        public override int DefaultMaxWeight { get { return 400; } }
+        public override int DefaultMaxWeight => 400;
 
         public Hold(BaseBoat boat) : base(0x3EAE)
         {
@@ -87,7 +87,7 @@ namespace Server.Items
                 base.OnDoubleClick(from);
         }
 
-        public override bool IsDecoContainer { get { return false; } }
+        public override bool IsDecoContainer => false;
 
         public override void Serialize(GenericWriter writer)
         {

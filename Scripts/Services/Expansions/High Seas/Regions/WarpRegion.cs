@@ -12,7 +12,7 @@ namespace Server.Regions
         private Rectangle2D m_Bounds;
         private List<Item> m_Markers;
 
-        public Rectangle2D Bounds { get { return m_Bounds; } }
+        public Rectangle2D Bounds => m_Bounds;
 
         public CorgulWarpRegion(CorgulAltar ped, Rectangle2D rec)
             : base("Corgul Warp Region", ped.Map, Region.DefaultPriority, new Rectangle2D[] { rec })

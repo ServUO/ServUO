@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class MiniSoulForge : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new MiniSoulForgeDeed(); } }
+        public override BaseAddonDeed Deed => new MiniSoulForgeDeed();
 
         [Constructable]
         public MiniSoulForge()
@@ -30,7 +30,7 @@ namespace Server.Items
     }
     public class MiniSoulForgeDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new MiniSoulForge(); } }
+        public override BaseAddon Addon => new MiniSoulForge();
 
         [Constructable]
         public MiniSoulForgeDeed()

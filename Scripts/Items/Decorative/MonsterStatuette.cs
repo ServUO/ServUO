@@ -87,7 +87,7 @@ namespace Server.Items
 
     public class MonsterStatuetteInfo
     {
-        public static MonsterStatuetteInfo[] Table { get { return m_Table; } }
+        public static MonsterStatuetteInfo[] Table => m_Table;
 
         private static readonly MonsterStatuetteInfo[] m_Table = new MonsterStatuetteInfo[]
         {
@@ -289,23 +289,11 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return MonsterStatuetteInfo.GetInfo(m_Type).LabelNumber;
-            }
-        }
+        public override int LabelNumber => MonsterStatuetteInfo.GetInfo(m_Type).LabelNumber;
 
-        public override double DefaultWeight { get { return 1.0; } }
+        public override double DefaultWeight => 1.0;
 
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return m_TurnedOn && IsLockedDown;
-            }
-        }
+        public override bool HandlesOnMovement => m_TurnedOn && IsLockedDown;
 
         #region IEngraveable
         private string m_EngravedText = string.Empty;

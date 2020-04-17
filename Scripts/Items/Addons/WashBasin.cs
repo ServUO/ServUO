@@ -10,22 +10,10 @@ namespace Server.Items
         public int MaxQuantity { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual bool IsEmpty
-        {
-            get
-            {
-                return (m_Quantity <= 0);
-            }
-        }
+        public virtual bool IsEmpty => (m_Quantity <= 0);
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual bool IsFull
-        {
-            get
-            {
-                return (m_Quantity >= MaxQuantity);
-            }
-        }
+        public virtual bool IsFull => (m_Quantity >= MaxQuantity);
 
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual int Quantity
@@ -112,7 +100,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new WashBasinDeed(); } }
+        public override BaseAddonDeed Deed => new WashBasinDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -129,7 +117,7 @@ namespace Server.Items
 
     public class WashBasinDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1158966; } } // Wash Basin
+        public override int LabelNumber => 1158966;  // Wash Basin
 
         public override BaseAddon Addon
         {

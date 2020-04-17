@@ -5,8 +5,8 @@ namespace Server.Items
     [Alterable(typeof(DefTailoring), typeof(WardensArmorOfAugmentation))]
     public class RangersCloakOfAugmentation : Cloak
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1115514; } } // Ranger's Cloak Of Augmentation
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1115514;  // Ranger's Cloak Of Augmentation
 
         [Constructable]
         public RangersCloakOfAugmentation()

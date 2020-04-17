@@ -43,9 +43,9 @@ namespace Server.Items
             return false;
         }
 
-        public static TimeSpan FlameRespawn { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(1, 3)); } }
-        public static TimeSpan LavaRespawn { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30)); } }
-        public static TimeSpan LavaAdvance { get { return TimeSpan.FromSeconds(2); } }
+        public static TimeSpan FlameRespawn => TimeSpan.FromSeconds(Utility.RandomMinMax(1, 3));
+        public static TimeSpan LavaRespawn => TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30));
+        public static TimeSpan LavaAdvance => TimeSpan.FromSeconds(2);
 
         public static Volcano Instance { get; set; }
 

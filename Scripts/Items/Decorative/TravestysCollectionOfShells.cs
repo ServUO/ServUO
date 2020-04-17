@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072090;
-            }
-        }// Travesty's Collection of Shells
+        public override int LabelNumber => 1072090;// Travesty's Collection of Shells
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class InquisitorsResolution : PlateGloves
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public InquisitorsResolution()
         {
@@ -17,48 +17,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1060206;
-            }
-        }// The Inquisitor's Resolution
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 22;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 17;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1060206;// The Inquisitor's Resolution
+        public override int ArtifactRarity => 10;
+        public override int BaseColdResistance => 22;
+        public override int BaseEnergyResistance => 17;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

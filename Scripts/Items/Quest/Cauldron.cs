@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class Cauldron : Item
     {
-        public override int LabelNumber { get { return 1153777; } } // a cauldron
+        public override int LabelNumber => 1153777;  // a cauldron
 
         [Constructable]
         public Cauldron()

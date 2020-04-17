@@ -8,13 +8,7 @@ namespace Server.Items
         {
         }
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 0.1;
-            }
-        }
+        public override double DefaultWeight => 0.1;
 
         [Constructable]
         public FertileDirt(int amount)

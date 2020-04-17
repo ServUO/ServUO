@@ -66,14 +66,14 @@ namespace Server.Mobiles
             : base(serial)
         { }
 
-        public override Mobile ConstantFocus { get { return m_Target; } }
-        public override bool NoHouseRestrictions { get { return true; } }
-        public override double DispelDifficulty { get { return 80.0; } }
-        public override double DispelFocus { get { return 20.0; } }
-        public override bool AlwaysMurderer { get { return true; } }
-        public override bool BleedImmune { get { return true; } }
-        public override bool BardImmune { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override Mobile ConstantFocus => m_Target;
+        public override bool NoHouseRestrictions => true;
+        public override double DispelDifficulty => 80.0;
+        public override double DispelFocus => 20.0;
+        public override bool AlwaysMurderer => true;
+        public override bool BleedImmune => true;
+        public override bool BardImmune => true;
+        public override Poison PoisonImmune => Poison.Lethal;
 
         public override void DisplayPaperdollTo(Mobile to)
         {

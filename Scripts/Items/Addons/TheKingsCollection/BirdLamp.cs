@@ -6,13 +6,13 @@ namespace Server.Items
 {
     public class BirdLamp : BaseLight, IFlipable, IAddon
     {
-        public override int LabelNumber { get { return 1154188; } } // Bird Lamp
+        public override int LabelNumber => 1154188;  // Bird Lamp
 
-        public override int LitItemID { get { return ItemID == 0x4C44 ? 0x4C45 : 0x4C47; } }
-        public override int UnlitItemID { get { return ItemID == 0x4C45 ? 0x4C44 : 0x4C46; } }
+        public override int LitItemID => ItemID == 0x4C44 ? 0x4C45 : 0x4C47;
+        public override int UnlitItemID => ItemID == 0x4C45 ? 0x4C44 : 0x4C46;
 
-        public int NorthID { get { return Burning ? 0x4C45 : 0x4C44; } }
-        public int WestID { get { return Burning ? 0x4C47 : 0x4C46; } }
+        public int NorthID => Burning ? 0x4C45 : 0x4C44;
+        public int WestID => Burning ? 0x4C47 : 0x4C46;
 
         [Constructable]
         public BirdLamp()
@@ -25,7 +25,7 @@ namespace Server.Items
             Weight = 0.0;
         }
 
-        public Item Deed { get { return new BirdLampDeed(); } }
+        public Item Deed => new BirdLampDeed();
 
         public bool CouldFit(IPoint3D p, Map map)
         {
@@ -81,7 +81,7 @@ namespace Server.Items
 
     public class BirdLampDeed : Item
     {
-        public override int LabelNumber { get { return 1154188; } } // Bird Lamp
+        public override int LabelNumber => 1154188;  // Bird Lamp
 
         [Constructable]
         public BirdLampDeed()

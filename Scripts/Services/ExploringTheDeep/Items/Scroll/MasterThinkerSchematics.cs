@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class MasterThinkerSchematics : Item
     {
-        public override int LabelNumber { get { return 1023637; } } // scroll
+        public override int LabelNumber => 1023637;  // scroll
 
         [Constructable]
         public MasterThinkerSchematics() : base(0x46AF)

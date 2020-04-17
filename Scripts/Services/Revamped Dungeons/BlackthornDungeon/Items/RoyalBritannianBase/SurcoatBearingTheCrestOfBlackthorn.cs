@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class SurcoatBearingTheCrestOfBlackthorn : Surcoat
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [Constructable]
         public SurcoatBearingTheCrestOfBlackthorn()
@@ -16,20 +16,8 @@ namespace Server.Items
             Hue = 0xe8;
         }
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 150;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 150;
-            }
-        }
+        public override int InitMinHits => 150;
+        public override int InitMaxHits => 150;
 
         public SurcoatBearingTheCrestOfBlackthorn(Serial serial)
             : base(serial)

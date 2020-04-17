@@ -525,48 +525,12 @@ namespace Server.Items
         private readonly CraftResource m_Resource;
         private readonly Type[] m_ResourceTypes;
 
-        public int Hue
-        {
-            get
-            {
-                return this.m_Hue;
-            }
-        }
-        public int Number
-        {
-            get
-            {
-                return this.m_Number;
-            }
-        }
-        public string Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
-        public CraftAttributeInfo AttributeInfo
-        {
-            get
-            {
-                return this.m_AttributeInfo;
-            }
-        }
-        public CraftResource Resource
-        {
-            get
-            {
-                return this.m_Resource;
-            }
-        }
-        public Type[] ResourceTypes
-        {
-            get
-            {
-                return this.m_ResourceTypes;
-            }
-        }
+        public int Hue => this.m_Hue;
+        public int Number => this.m_Number;
+        public string Name => this.m_Name;
+        public CraftAttributeInfo AttributeInfo => this.m_AttributeInfo;
+        public CraftResource Resource => this.m_Resource;
+        public Type[] ResourceTypes => this.m_ResourceTypes;
 
         public CraftResourceInfo(int hue, int number, string name, CraftAttributeInfo attributeInfo, CraftResource resource, params Type[] resourceTypes)
         {
@@ -865,28 +829,10 @@ namespace Server.Items
             this.m_Name = name;
         }
 
-        public int Level
-        {
-            get
-            {
-                return this.m_Level;
-            }
-        }
+        public int Level => this.m_Level;
 
-        public int Hue
-        {
-            get
-            {
-                return this.m_Hue;
-            }
-        }
+        public int Hue => this.m_Hue;
 
-        public string Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
+        public string Name => this.m_Name;
     }
 }

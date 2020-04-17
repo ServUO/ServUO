@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class AnniversaryBag18th : Bag
     {
-        public override int LabelNumber { get { return 1156141; } } // 18th Anniversary Gift Bag
+        public override int LabelNumber => 1156141;  // 18th Anniversary Gift Bag
 
         [Constructable]
         public AnniversaryBag18th()

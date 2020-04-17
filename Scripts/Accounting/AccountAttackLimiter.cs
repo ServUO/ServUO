@@ -138,13 +138,7 @@ namespace Server.Accounting
                 this.m_LastAccessTime = value;
             }
         }
-        public bool HasExpired
-        {
-            get
-            {
-                return (DateTime.UtcNow >= (this.m_LastAccessTime + TimeSpan.FromHours(1.0)));
-            }
-        }
+        public bool HasExpired => (DateTime.UtcNow >= (this.m_LastAccessTime + TimeSpan.FromHours(1.0)));
         public int Counts
         {
             get

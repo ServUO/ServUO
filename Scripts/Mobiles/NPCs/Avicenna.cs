@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class BruisesBandagesAndBloodQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* Bruises, Bandages and Blood */
-        public override object Title
-        {
-            get
-            {
-                return 1077676;
-            }
-        }
+        public override object Title => 1077676;
 
         /* Head East out of town and go to Old Haven. Heal yourself and other players until you have raised your 
         Healing skill to 50.<br><center>------</center><br>Ah, welcome to my humble practice. I am Avicenna, New 
@@ -33,47 +21,23 @@ namespace Server.Engines.Quests
         up wounds is to head east out to Old Haven and either practice binding up your own wounds, or practice on 
         someone else. Surely they'll be grateful for the assistance.<br><br>Make sure to take enough bandages with 
         you! You don't want to run out in the middle of a tough fight. */
-        public override object Description
-        {
-            get
-            {
-                return 1077679;
-            }
-        }
+        public override object Description => 1077679;
 
         /* No? Are you sure? Well, when you feel that you're ready to practice your healing, come back to me. I'll 
         be right here, fixing up adventurers and curing the occasional cold! */
-        public override object Refuse
-        {
-            get
-            {
-                return 1077680;
-            }
-        }
+        public override object Refuse => 1077680;
 
         /*Hail! 'Tis good to see you again. Unfortunately, you're not quite ready to call yourself an Apprentice 
         Healer quite yet. Head back out to Old Haven, due east from here, and bandage up some wounds. Yours or 
         someone else's, it doesn't much matter.*/
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1077681;
-            }
-        }
+        public override object Uncomplete => 1077681;
 
         /*Hello there, friend. I see you've returned in one piece, and you're an Apprentice Healer to boot! You 
         should be proud of your accomplishment, as not everyone has "the touch" when it comes to healing.<br><br>
         I can't stand to see such good work go unrewarded, so I have something I'd like you to have. It's not much, 
         but it'll help you heal just a little faster, and maybe keep you alive.<br><br>Good luck out there, friend,
         and don't forget to help your fellow adventurer whenever possible!*/
-        public override object Complete
-        {
-            get
-            {
-                return 1077683;
-            }
-        }
+        public override object Complete => 1077683;
 
         public BruisesBandagesAndBloodQuest()
             : base()
@@ -123,16 +87,10 @@ namespace Server.Engines.Quests
 
     public class Avicenna : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(BruisesBandagesAndBloodQuest)
                 };
-            }
-        }
 
         [Constructable]
         public Avicenna()

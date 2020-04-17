@@ -15,49 +15,19 @@ namespace Server.Engines.Quests
         }
 
         /* Scale Armor */
-        public override object Title
-        {
-            get
-            {
-                return 1074711;
-            }
-        }
+        public override object Title => 1074711;
         /* Here's what I need ... there are some creatures called hydra, fearsome beasts, whose scales are especially 
         suitable for a new sort of armor that I'm developing.  I need a few such pieces and then some supple alligator 
         skin for the backing.  I'm going to need a really large piece that's shaped just right ... the tail I think 
         would do nicely.  I appreciate your help. */
-        public override object Description
-        {
-            get
-            {
-                return 1074712;
-            }
-        }
+        public override object Description => 1074712;
         /* I hope you'll reconsider. Until then, farwell. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073580;
-            }
-        }
+        public override object Refuse => 1073580;
         /* Hydras have been spotted in the Blighted Grove.  You won't get those scales without getting your feet wet, 
         I'm afraid. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074724;
-            }
-        }
+        public override object Uncomplete => 1074724;
         /* I can't wait to get to work now that you've returned with my scales. */
-        public override object Complete
-        {
-            get
-            {
-                return 1074725;
-            }
-        }
+        public override object Complete => 1074725;
         public override bool CanOffer()
         {
             return MondainsLegacy.BlightedGrove;
@@ -93,19 +63,13 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(ScaleArmorQuest),
                     typeof(ThePuffyShirtQuest),
                     typeof(FromTheGaultierCollectionQuest),
                     typeof(HuteCoutureQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             InitStats(100, 100, 25);

@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class CursedOilstone : Item
     {
-        public override int LabelNumber { get { return 1151810; } } // Cursed Oilstone
+        public override int LabelNumber => 1151810;  // Cursed Oilstone
 
         [Constructable]
         public CursedOilstone()

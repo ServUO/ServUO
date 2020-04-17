@@ -15,66 +15,18 @@ namespace Server.Items
         {
         }
 
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.BleedAttack;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.InfectiousStrike;
-            }
-        }
-        public override int StrengthReq
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int MinDamage
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 14;
-            }
-        }
-        public override float Speed
-        {
-            get
-            {
-                return 2.50f;
-            }
-        }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.BleedAttack;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.InfectiousStrike;
+        public override int StrengthReq => 10;
+        public override int MinDamage => 10;
+        public override int MaxDamage => 14;
+        public override float Speed => 2.50f;
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 31;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 50;
-            }
-        }
+        public override int InitMinHits => 31;
+        public override int InitMaxHits => 50;
 
-        public override Race RequiredRace { get { return Race.Gargoyle; } }
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
 
         public override void Serialize(GenericWriter writer)
         {

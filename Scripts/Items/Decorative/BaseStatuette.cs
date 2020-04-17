@@ -19,13 +19,7 @@ namespace Server.Items
         {
         }
 
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return this.m_TurnedOn && this.IsLockedDown;
-            }
-        }
+        public override bool HandlesOnMovement => this.m_TurnedOn && this.IsLockedDown;
         [CommandProperty(AccessLevel.GameMaster)]
         public bool TurnedOn
         {
@@ -39,13 +33,7 @@ namespace Server.Items
                 this.InvalidateProperties();
             }
         }
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public override double DefaultWeight => 1.0;
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             if (this.m_TurnedOn && this.IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, this.Location, 2) && !Utility.InRange(oldLocation, this.Location, 2))

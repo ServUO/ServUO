@@ -88,20 +88,8 @@ namespace Server.Mobiles
                 m_InstantFlag = value;
             }
         }
-        public override string DefaultName
-        {
-            get
-            {
-                return "Proximity Spawner";
-            }
-        }
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override string DefaultName => "Proximity Spawner";
+        public override bool HandlesOnMovement => true;
         public override void DoTimer(TimeSpan delay)
         {
             if (!Running)

@@ -5,15 +5,9 @@ namespace Server.Items
 {
     public class PetTrainingGate : Item
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "Pet Training Gate - You Must Start Pet Training Before Bringing Your Pet Through The Gate!";
-            }
-        }
+        public override string DefaultName => "Pet Training Gate - You Must Start Pet Training Before Bringing Your Pet Through The Gate!";
 
         [Constructable]
         public PetTrainingGate()
@@ -71,15 +65,9 @@ namespace Server.Items
 
     public class PetBondRemoveGate : Item
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "Pet Bond Timer Remover";
-            }
-        }
+        public override string DefaultName => "Pet Bond Timer Remover";
 
         [Constructable]
         public PetBondRemoveGate()
@@ -127,15 +115,9 @@ namespace Server.Items
 
     public class PowerScrollGiver : Item
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "+20 Power Scrolls";
-            }
-        }
+        public override string DefaultName => "+20 Power Scrolls";
 
         [Constructable]
         public PowerScrollGiver()

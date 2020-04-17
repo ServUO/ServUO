@@ -6,7 +6,7 @@ namespace Server.Items
     {
         public Container Container { get; set; }
 
-        public override TimeSpan TickDuration { get { return TimeSpan.FromSeconds(3); } }
+        public override TimeSpan TickDuration => TimeSpan.FromSeconds(3);
 
         public EnchantedHotItemSocket()
         {

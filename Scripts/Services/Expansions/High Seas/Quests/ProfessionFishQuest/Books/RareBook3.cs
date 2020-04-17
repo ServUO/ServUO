@@ -143,7 +143,7 @@
             )
         );
 
-        public override BookContent DefaultContent { get { return Content; } }
+        public override BookContent DefaultContent => Content;
 
         public FishingGuideBook3(Serial serial) : base(serial)
         {

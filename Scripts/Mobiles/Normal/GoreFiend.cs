@@ -41,13 +41,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool BleedImmune => true;
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Average);

@@ -233,8 +233,8 @@ namespace Server.Commands
                 //				m_Writer = Docs.GetWriter( "docs/types/", m_FileName );
             }
 
-            public string FileName { get { return m_FileName; } }
-            public string TypeName { get { return m_TypeName; } }
+            public string FileName => m_FileName;
+            public string TypeName => m_TypeName;
 
             public string LinkName(string dirRoot)
             {
@@ -1795,8 +1795,8 @@ namespace Server.Commands
             private readonly int m_Index;
             private readonly List<string> m_Strings;
 
-            public int Index { get { return m_Index; } }
-            public List<string> Strings { get { return m_Strings; } }
+            public int Index => m_Index;
+            public List<string> Strings => m_Strings;
 
             public SpeechEntry(int index)
             {
@@ -1879,11 +1879,11 @@ namespace Server.Commands
             private readonly string m_Usage;
             private readonly string m_Description;
 
-            public AccessLevel AccessLevel { get { return m_AccessLevel; } }
-            public string Name { get { return m_Name; } }
-            public string[] Aliases { get { return m_CmdAliases; } }
-            public string Usage { get { return m_Usage; } }
-            public string Description { get { return m_Description; } }
+            public AccessLevel AccessLevel => m_AccessLevel;
+            public string Name => m_Name;
+            public string[] Aliases => m_CmdAliases;
+            public string Usage => m_Usage;
+            public string Description => m_Description;
 
             public DocCommandEntry(AccessLevel accessLevel, string name, string[] aliases, string usage, string description)
             {

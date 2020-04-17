@@ -10,7 +10,7 @@ namespace Server.Items
     [FlipableAttribute(0x2D21, 0x2D2D)]
     public class ExodusSacrificalDagger : BaseKnife
     {
-        public override int LabelNumber { get { return 1153500; } } // exodus sacrificial dagger
+        public override int LabelNumber => 1153500;  // exodus sacrificial dagger
         private int m_Lifespan;
         private Timer m_Timer;
 
@@ -28,14 +28,14 @@ namespace Server.Items
             }
         }
 
-        public override int InitMinHits { get { return 60; } }
-        public override int InitMaxHits { get { return 60; } }
-        public override int StrengthReq { get { return 15; } }
-        public override SkillName DefSkill { get { return SkillName.Fencing; } }
-        public override float Speed { get { return 2.00f; } }
-        public override int MinDamage { get { return 10; } }
-        public override int MaxDamage { get { return 12; } }
-        public override int PhysicalResistance { get { return 12; } }
+        public override int InitMinHits => 60;
+        public override int InitMaxHits => 60;
+        public override int StrengthReq => 15;
+        public override SkillName DefSkill => SkillName.Fencing;
+        public override float Speed => 2.00f;
+        public override int MinDamage => 10;
+        public override int MaxDamage => 12;
+        public override int PhysicalResistance => 12;
 
         public override void OnDoubleClick(Mobile from)
         {
@@ -113,7 +113,7 @@ namespace Server.Items
         {
         }
 
-        public virtual int Lifespan { get { return 604800; } }
+        public virtual int Lifespan => 604800;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimeLeft
@@ -231,8 +231,8 @@ namespace Server.Items
             Weight = 4.0;
         }
 
-        public override Race RequiredRace { get { return Race.Gargoyle; } }
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
 
         public ExodusSacrificalGargishDagger(Serial serial) : base(serial)
         {

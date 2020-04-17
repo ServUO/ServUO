@@ -8,7 +8,7 @@ namespace Server.Mobiles
     [CorpseName("an anchisaur corpse")]
     public class Anchisaur : BaseCreature
     {
-        public override bool AttacksFocus { get { return true; } }
+        public override bool AttacksFocus => true;
         private DateTime _NextMastery;
 
         [Constructable]
@@ -77,10 +77,10 @@ namespace Server.Mobiles
             }
         }
 
-        public override int DragonBlood { get { return 6; } }
-        public override int Meat { get { return 6; } }
-        public override int Hides { get { return 11; } }
-        public override int TreasureMapLevel { get { return 1; } }
+        public override int DragonBlood => 6;
+        public override int Meat => 6;
+        public override int Hides => 11;
+        public override int TreasureMapLevel => 1;
 
         public Anchisaur(Serial serial)
             : base(serial)

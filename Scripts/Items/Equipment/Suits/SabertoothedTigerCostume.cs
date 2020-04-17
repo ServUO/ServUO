@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class SabertoothedTigerCostume : BaseCostume
     {
-        public override string CreatureName { get { return "saber-toothed tiger"; } }
+        public override string CreatureName => "saber-toothed tiger";
 
         [Constructable]
         public SabertoothedTigerCostume() : base()
@@ -10,13 +10,7 @@ namespace Server.Items
             CostumeBody = 0x588;
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "a saber-toothed tiger costume";
-            }
-        }
+        public override string DefaultName => "a saber-toothed tiger costume";
 
         public SabertoothedTigerCostume(Serial serial) : base(serial)
         {

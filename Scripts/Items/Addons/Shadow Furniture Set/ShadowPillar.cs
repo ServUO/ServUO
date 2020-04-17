@@ -13,7 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new ShadowPillarDeed(); } }
+        public override BaseAddonDeed Deed => new ShadowPillarDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -30,9 +30,9 @@ namespace Server.Items
 
     public class ShadowPillarDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1076679; } } // Shadow Pillar
+        public override int LabelNumber => 1076679;  // Shadow Pillar
 
-        public override bool ExcludeDeedHue { get { return true; } }
+        public override bool ExcludeDeedHue => true;
 
         [Constructable]
         public ShadowPillarDeed()
@@ -46,7 +46,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon { get { return new ShadowPillarAddon(); } }
+        public override BaseAddon Addon => new ShadowPillarAddon();
 
 
         public override void Serialize(GenericWriter writer)

@@ -57,41 +57,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool DeleteCorpseOnDeath
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Mobile ConstantFocus
-        {
-            get
-            {
-                return this.m_Target;
-            }
-        }
-        public override bool AlwaysAttackable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
+        public override bool DeleteCorpseOnDeath => true;
+        public override Mobile ConstantFocus => this.m_Target;
+        public override bool AlwaysAttackable => true;
+        public override bool BardImmune => true;
+        public override Poison PoisonImmune => Poison.Lethal;
         public static void Initialize()
         {
             EventSink.PlayerDeath += new PlayerDeathEventHandler(EventSink_PlayerDeath);

@@ -5,7 +5,7 @@ namespace Server.Engines.BulkOrders
     [TypeAlias("Scripts.Engines.BulkOrders.LargeSmithBOD")]
     public class LargeSmithBOD : LargeBOD
     {
-        public override BODType BODType { get { return BODType.Smith; } }
+        public override BODType BODType => BODType.Smith;
 
         public static double[] m_BlacksmithMaterialChances = new double[]
         {

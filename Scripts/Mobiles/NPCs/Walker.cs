@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class EyesOfRangerQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* Eyes of a Ranger */
-        public override object Title
-        {
-            get
-            {
-                return 1078211;
-            }
-        }
+        public override object Title => 1078211;
 
         /* Track animals, monsters, and people on Haven Island until you have raised your Tracking skill to 50.	Hello Friend. I am 
         Walker, Grandmaster Ranger. An adventurer need to keep alive in the wilderness. Being able to track those around you is 
@@ -31,43 +19,19 @@ namespace Server.Engines.Quests
         any tracks in the ground or sounds in the air that can help you find your mark. You can do it, friend. I have faith in you.
         Come back to me once you have achibed the rank of Apprentice Ranger (for Tracking), and i will give you something that may 
         help in your travels. Take Care, friend. */
-        public override object Description
-        {
-            get
-            {
-                return 1078217;
-            }
-        }
+        public override object Description => 1078217;
 
         /* Farewell, friend. Be careful out here. If you change your mind and want to learn Tracking come back and talk to me.*/
-        public override object Refuse
-        {
-            get
-            {
-                return 1078218;
-            }
-        }
+        public override object Refuse => 1078218;
 
         /* So far so good, kid. You are still alive, and you are getting the hang of Tracking. There are many more animals, monsters, 
         and people to track. Come back to me once you have tracked them. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1078219;
-            }
-        }
+        public override object Uncomplete => 1078219;
 
         /* I knew you could do it! You have become a fine Ranger. Just keep practicing and one day you will bceome a Grandmaster 
         Ranger. Just like me. I have a little something for you that will hopefully aid you in your journeys. These leggings offer 
         some resistances that will hopefully protect you from harm. I hope these server you well. Farewell, friend. */
-        public override object Complete
-        {
-            get
-            {
-                return 1078221;
-            }
-        }
+        public override object Complete => 1078221;
 
         public EyesOfRangerQuest()
             : base()
@@ -117,16 +81,10 @@ namespace Server.Engines.Quests
 
     public class Walker : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(EyesOfRangerQuest)
                 };
-            }
-        }
 
         [Constructable]
         public Walker()

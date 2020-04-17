@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class PowerCrystal : Item
     {
-        public override int LabelNumber { get { return 1112811; } } // power crystal
+        public override int LabelNumber => 1112811;  // power crystal
 
         [Constructable]
         public PowerCrystal()

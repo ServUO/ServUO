@@ -16,20 +16,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074481;
-            }
-        }// Creepy portrait
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int LabelNumber => 1074481;// Creepy portrait
+        public override bool HandlesOnMovement => true;
         public override void OnDoubleClick(Mobile from)
         {
             if (Utility.InRange(this.Location, from.Location, 2))
@@ -103,13 +91,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new CreepyPortraitDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new CreepyPortraitDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -139,20 +121,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new CreepyPortraitAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074481;
-            }
-        }// Creepy portrait
+        public override BaseAddon Addon => new CreepyPortraitAddon();
+        public override int LabelNumber => 1074481;// Creepy portrait
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

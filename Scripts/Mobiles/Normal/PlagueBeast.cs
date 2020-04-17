@@ -38,13 +38,7 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool HasMetalChest
-        {
-            get
-            {
-                return m_HasMetalChest;
-            }
-        }
+        public bool HasMetalChest => m_HasMetalChest;
 
         [Constructable]
         public PlagueBeast()
@@ -111,20 +105,8 @@ namespace Server.Mobiles
             base.OnDamagedBySpell(caster);
         }
 
-        public override bool AutoDispel
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
+        public override bool AutoDispel => true;
+        public override Poison PoisonImmune => Poison.Lethal;
 
         public override void OnGotMeleeAttack(Mobile attacker)
         {

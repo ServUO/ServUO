@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class SilverSaplingReplica : Item
     {
-        public override int LabelNumber { get { return ItemID == 17095 ? 1095967 : 1095968; } } // silver sapling replica - potted silver sapling replica
+        public override int LabelNumber => ItemID == 17095 ? 1095967 : 1095968;  // silver sapling replica - potted silver sapling replica
 
         [Constructable]
         public SilverSaplingReplica(int id)
@@ -34,7 +34,7 @@ namespace Server.Items
 
     public class SilverSaplingReplicaDeed : Item
     {
-        public override int LabelNumber { get { return 1113934; } } // Silver Sapling Deed
+        public override int LabelNumber => 1113934;  // Silver Sapling Deed
 
         [Constructable]
         public SilverSaplingReplicaDeed()

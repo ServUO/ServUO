@@ -28,13 +28,7 @@ namespace Server.Multis
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1061690;
-            }
-        }// Packing Crate
+        public override int LabelNumber => 1061690;// Packing Crate
         public BaseHouse House
         {
             get
@@ -46,27 +40,9 @@ namespace Server.Multis
                 this.m_House = value;
             }
         }
-        public override int DefaultMaxItems
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int DefaultMaxWeight
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override bool IsDecoContainer
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override int DefaultMaxItems => 0;
+        public override int DefaultMaxWeight => 0;
+        public override bool IsDecoContainer => false;
         /*
         public override void AddNameProperties( ObjectPropertyList list )
         {
@@ -306,48 +282,12 @@ namespace Server.Multis
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1061690;
-            }
-        }// Packing Crate
-        public override int DefaultGumpID
-        {
-            get
-            {
-                return 0x4B;
-            }
-        }
-        public override int DefaultDropSound
-        {
-            get
-            {
-                return 0x42;
-            }
-        }
-        public override Rectangle2D Bounds
-        {
-            get
-            {
-                return new Rectangle2D(16, 51, 168, 73);
-            }
-        }
-        public override int DefaultMaxItems
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int DefaultMaxWeight
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public override int LabelNumber => 1061690;// Packing Crate
+        public override int DefaultGumpID => 0x4B;
+        public override int DefaultDropSound => 0x42;
+        public override Rectangle2D Bounds => new Rectangle2D(16, 51, 168, 73);
+        public override int DefaultMaxItems => 0;
+        public override int DefaultMaxWeight => 0;
         public override void SendCantStoreMessage(Mobile to, Item item)
         {
             to.SendLocalizedMessage(1061145); // You cannot place items into a house moving crate.

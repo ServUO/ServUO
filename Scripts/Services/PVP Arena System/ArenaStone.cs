@@ -8,8 +8,8 @@ namespace Server.Engines.ArenaSystem
     [DeleteConfirm("Are you sure you want to delete this? Deleting this stone will remove this arena from the system.")]
     public class ArenaStone : Item
     {
-        public override bool ForceShowProperties { get { return true; } }
-        public override int LabelNumber { get { return 1115878; } }
+        public override bool ForceShowProperties => true;
+        public override int LabelNumber => 1115878;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public PVPArena Arena { get; set; }

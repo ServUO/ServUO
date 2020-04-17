@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class TheDragonSlayer : Lance
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public TheDragonSlayer()
         {
@@ -19,34 +19,10 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1061248;
-            }
-        }// The Dragon Slayer
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1061248;// The Dragon Slayer
+        public override int ArtifactRarity => 11;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
         {
             phys = fire = cold = pois = chaos = direct = 0;

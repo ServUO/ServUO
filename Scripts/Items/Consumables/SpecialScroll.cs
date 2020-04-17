@@ -13,23 +13,11 @@ namespace Server.Items
         /* DO NOT USE! Only used in serialization of special scrolls that originally derived from Item */
         private bool m_InheritsItem;
 
-        protected bool InheritsItem
-        {
-            get
-            {
-                return m_InheritsItem;
-            }
-        }
+        protected bool InheritsItem => m_InheritsItem;
         #endregion
 
         public abstract int Message { get; }
-        public virtual int Title
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int Title => 0;
         public abstract string DefaultTitle { get; }
 
         public SpecialScroll(SkillName skill, double value)

@@ -6,13 +6,7 @@ namespace Server.Engines.VvV
     [FlipableAttribute(39355, 39356)]
     public class HonorBanner : Item
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1123379;
-            }
-        }
+        public override int LabelNumber => 1123379;
 
         [Constructable]
         public HonorBanner() : base(39355)

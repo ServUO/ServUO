@@ -10,28 +10,10 @@ namespace Server.Spells.Spellweaving
             "Gift of Renewal", "Olorisstra",
             -1);
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(3.0);
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(3.0);
 
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 0.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 24;
-            }
-        }
+        public override double RequiredSkill => 0.0;
+        public override int RequiredMana => 24;
 
         public GiftOfRenewalSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)

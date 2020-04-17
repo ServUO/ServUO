@@ -4,7 +4,7 @@ namespace Server.Items
     {
         private int m_Uses;
 
-        public override int LabelNumber { get { return 1080542; } } // Pepta's Satiety Cure
+        public override int LabelNumber => 1080542;  // Pepta's Satiety Cure
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Uses

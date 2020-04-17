@@ -32,20 +32,8 @@ namespace Server.Items
         {
         }
 
-        public virtual bool IsCuttable
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public List<PlagueBeastComponent> Components
-        {
-            get
-            {
-                return this.m_Components;
-            }
-        }
+        public virtual bool IsCuttable => false;
+        public List<PlagueBeastComponent> Components => this.m_Components;
         public int BrainHue
         {
             get
@@ -212,13 +200,7 @@ namespace Server.Items
         {
         }
 
-        public override bool IsCuttable
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool IsCuttable => true;
 
         public override bool Carve(Mobile from, Item with)
         {
@@ -393,13 +375,7 @@ namespace Server.Items
         {
         }
 
-        public override bool IsCuttable
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool IsCuttable => true;
         public override void Initialize()
         {
             this.AddComponent(new PlagueBeastComponent(0x1B1B, 0x42), 16, 39);
@@ -514,13 +490,7 @@ namespace Server.Items
         {
         }
 
-        public bool Complete
-        {
-            get
-            {
-                return this.m_Brains >= 4;
-            }
-        }
+        public bool Complete => this.m_Brains >= 4;
         public override void Initialize()
         {
             // receptacles

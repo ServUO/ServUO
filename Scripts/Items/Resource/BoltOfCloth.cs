@@ -23,20 +23,8 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description
-        {
-            get
-            {
-                return this.LabelNumber;
-            }
-        }
-        bool ICommodity.IsDeedable
-        {
-            get
-            {
-                return true;
-            }
-        }
+        TextDefinition ICommodity.Description => this.LabelNumber;
+        bool ICommodity.IsDeedable => true;
         public bool Dye(Mobile from, DyeTub sender)
         {
             if (this.Deleted)

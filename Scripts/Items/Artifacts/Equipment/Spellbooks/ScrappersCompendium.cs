@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class ScrappersCompendium : Spellbook
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public ScrappersCompendium()
             : base()
@@ -22,13 +22,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072940;
-            }
-        }// scrappers compendium
+        public override int LabelNumber => 1072940;// scrappers compendium
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

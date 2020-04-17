@@ -93,34 +93,10 @@ namespace Server.Mobiles
                 c.DropItem(new CrystallineRing());
         }
 
-        public override bool AutoDispel
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override bool HasFireRing
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override double FireRingChance
-        {
-            get
-            {
-                return 0.1;
-            }
-        }
+        public override bool AutoDispel => true;
+        public override int TreasureMapLevel => 5;
+        public override bool HasFireRing => true;
+        public override double FireRingChance => 0.1;
 
         public override int GetIdleSound()
         {
@@ -143,27 +119,9 @@ namespace Server.Mobiles
         }
 
         #region Helpers
-        public override bool CanSpawnHelpers
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int MaxHelpersWaves
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override double SpawnHelpersChance
-        {
-            get
-            {
-                return 0.1;
-            }
-        }
+        public override bool CanSpawnHelpers => true;
+        public override int MaxHelpersWaves => 4;
+        public override double SpawnHelpersChance => 0.1;
 
         public override void SpawnHelpers()
         {

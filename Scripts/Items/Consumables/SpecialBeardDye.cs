@@ -18,13 +18,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041087;
-            }
-        }// Special Beard Dye
+        public override int LabelNumber => 1041087;// Special Beard Dye
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -160,27 +154,9 @@ namespace Server.Items
                 this.m_HueCount = hueCount;
             }
 
-            public string Name
-            {
-                get
-                {
-                    return this.m_Name;
-                }
-            }
-            public int HueStart
-            {
-                get
-                {
-                    return this.m_HueStart;
-                }
-            }
-            public int HueCount
-            {
-                get
-                {
-                    return this.m_HueCount;
-                }
-            }
+            public string Name => this.m_Name;
+            public int HueStart => this.m_HueStart;
+            public int HueCount => this.m_HueCount;
         }
     }
 }

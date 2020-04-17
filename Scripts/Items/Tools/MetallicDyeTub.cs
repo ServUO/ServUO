@@ -15,12 +15,12 @@ namespace Server.Items
         {
         }
 
-        public override bool AllowDyables { get { return false; } }
-        public override bool AllowMetal { get { return true; } }
-        public override int TargetMessage { get { return 1080393; } } // Select the metal item to dye.
-        public override int FailMessage { get { return 1080394; } } // You can only dye metal with this tub.
-        public override int LabelNumber { get { return 1150067; } } // Metallic Dye Tub
-        public override CustomHuePicker CustomHuePicker { get { return CustomHuePicker.MetallicDyeTub; } }
+        public override bool AllowDyables => false;
+        public override bool AllowMetal => true;
+        public override int TargetMessage => 1080393;  // Select the metal item to dye.
+        public override int FailMessage => 1080394;  // You can only dye metal with this tub.
+        public override int LabelNumber => 1150067;  // Metallic Dye Tub
+        public override CustomHuePicker CustomHuePicker => CustomHuePicker.MetallicDyeTub;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem

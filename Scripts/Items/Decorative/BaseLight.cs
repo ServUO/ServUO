@@ -48,41 +48,11 @@ namespace Server.Items
         }
 
         public abstract int LitItemID { get; }
-        public virtual int UnlitItemID
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int BurntOutItemID
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int LitSound
-        {
-            get
-            {
-                return 0x47;
-            }
-        }
-        public virtual int UnlitSound
-        {
-            get
-            {
-                return 0x3be;
-            }
-        }
-        public virtual int BurntOutSound
-        {
-            get
-            {
-                return 0x4b8;
-            }
-        }
+        public virtual int UnlitItemID => 0;
+        public virtual int BurntOutItemID => 0;
+        public virtual int LitSound => 0x47;
+        public virtual int UnlitSound => 0x3be;
+        public virtual int BurntOutSound => 0x4b8;
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Burning
         {

@@ -25,7 +25,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
@@ -80,13 +80,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1080407;
-            }
-        }// Potted Cactus Deed
+        public override int LabelNumber => 1080407;// Potted Cactus Deed
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
         {

@@ -3,7 +3,7 @@ namespace Server.Items
     [FlipableAttribute(0x497D, 0x497E)]
     public class OstardTopiary : Item
     {
-        public override int LabelNumber { get { return 1070878; } } // a decorative topiary
+        public override int LabelNumber => 1070878;  // a decorative topiary
 
         [Constructable]
         public OstardTopiary() : base(0x497D)

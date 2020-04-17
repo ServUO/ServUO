@@ -25,13 +25,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new HearthOfHomeFireDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new HearthOfHomeFireDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -68,20 +62,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new HearthOfHomeFire(this.m_East);
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1062919;
-            }
-        }// Hearth of the Home Fire
+        public override BaseAddon Addon => new HearthOfHomeFire(this.m_East);
+        public override int LabelNumber => 1062919;// Hearth of the Home Fire
         public override void OnDoubleClick(Mobile from)
         {
             if (this.IsChildOf(from.Backpack))

@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class IceWyrmScale : BaseDecayingItem
     {
-        public override int LabelNumber { get { return 1154224; } } // Ice Wyrm Scale
+        public override int LabelNumber => 1154224;  // Ice Wyrm Scale
 
         [Constructable]
         public IceWyrmScale()
@@ -29,7 +29,7 @@ namespace Server.Items
             list.Add(1072351); // Quest Item
         }
 
-        public override int Lifespan { get { return 3600; } }
+        public override int Lifespan => 3600;
 
         public IceWyrmScale(Serial serial)
             : base(serial)

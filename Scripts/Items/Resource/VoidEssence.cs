@@ -21,16 +21,10 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1112327;
-            }
-        }// void essence
+        public override int LabelNumber => 1112327;// void essence
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

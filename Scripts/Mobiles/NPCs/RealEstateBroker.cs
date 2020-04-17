@@ -22,13 +22,7 @@ namespace Server.Mobiles
         {
         }
 
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        protected override List<SBInfo> SBInfos => this.m_SBInfos;
         public override bool HandlesOnSpeech(Mobile from)
         {
             if (from.Alive && from.InRange(this, 3))

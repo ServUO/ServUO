@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class GlassblowingBook : Item
     {
-        public override int LabelNumber { get { return 1153528; } } // Crafting glass with Glassblowing
+        public override int LabelNumber => 1153528;  // Crafting glass with Glassblowing
 
         [Constructable]
         public GlassblowingBook()

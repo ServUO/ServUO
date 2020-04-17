@@ -67,13 +67,7 @@ namespace Server.Items
         public int TempHue { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsArcane
-        {
-            get
-            {
-                return (m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0);
-            }
-        }
+        public bool IsArcane => (m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0);
 
         public void Update()
         {

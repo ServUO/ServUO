@@ -16,7 +16,7 @@ namespace Server.Items
 {
     public class TreasureMap : MapItem
     {
-        public static bool NewSystem { get { return false; } }
+        public static bool NewSystem => false;
 
         public static double LootChance = Config.Get("TreasureMaps.LootChance", .01);
         private static TimeSpan ResetTime = TimeSpan.FromDays(Config.Get("TreasureMaps.ResetTime", 30.0));
@@ -45,7 +45,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TreasureFacet TreasureFacet { get { return TreasureMapInfo.GetFacet(ChestLocation, Facet); } }
+        public TreasureFacet TreasureFacet => TreasureMapInfo.GetFacet(ChestLocation, Facet);
 
         protected void AssignRandomPackage()
         {

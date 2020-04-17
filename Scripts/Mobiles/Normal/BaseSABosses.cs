@@ -7,7 +7,7 @@ namespace Server.Mobiles
     [TypeAlias("Server.Mobiles.BaseSABosses")]
     public abstract class BaseSABoss : BasePeerless
     {
-        public override bool GiveMLSpecial { get { return false; } }
+        public override bool GiveMLSpecial => false;
 
         Dictionary<Mobile, int> m_DamageEntries;
         public BaseSABoss(AIType aiType, FightMode fightMode, int rangePerception, int rangeFight, double activeSpeed, double passiveSpeed)
@@ -23,15 +23,9 @@ namespace Server.Mobiles
         public abstract Type[] UniqueSAList { get; }
         public abstract Type[] SharedSAList { get; }
 
-        public virtual bool NoGoodies
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool NoGoodies => false;
 
-        public override bool DropPrimer { get { return false; } }
+        public override bool DropPrimer => false;
 
         public override void Serialize(GenericWriter writer)
         {

@@ -20,10 +20,10 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override int RequiredMana { get { return 20; } }
-        public override int DamageThreshold { get { return 1; } }
+        public override int RequiredMana => 20;
+        public override int DamageThreshold => 1;
 
-        public override SkillName CastSkill { get { return SkillName.Wrestling; } }
+        public override SkillName CastSkill => SkillName.Wrestling;
 
         public RampageSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)

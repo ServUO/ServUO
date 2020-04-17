@@ -3,8 +3,8 @@ namespace Server.Items
     [TypeAlias("Server.Items.TongueoftheBeast")]
     public class TongueOfTheBeast : WoodenKiteShield
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1112405; } } // Tongue of the Beast [Replica]
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1112405;  // Tongue of the Beast [Replica]
 
         [Constructable]
         public TongueOfTheBeast()
@@ -19,41 +19,11 @@ namespace Server.Items
             : base(serial)
         {
         }
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 150;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 150;
-            }
-        }
-        public override bool CanFortify
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override int BasePhysicalResistance => 10;
+        public override int BaseEnergyResistance => 5;
+        public override int InitMinHits => 150;
+        public override int InitMaxHits => 150;
+        public override bool CanFortify => false;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

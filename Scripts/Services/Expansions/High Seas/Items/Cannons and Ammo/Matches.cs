@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class Matches : Item, ICommodity
     {
-        public override int LabelNumber { get { return 1116112; } }
+        public override int LabelNumber => 1116112;
 
         private static readonly TimeSpan LightDuration = TimeSpan.FromMinutes(60);
 
@@ -124,8 +124,8 @@ namespace Server.Items
 
         public Matches(Serial serial) : base(serial) { }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         public override void Serialize(GenericWriter writer)
         {

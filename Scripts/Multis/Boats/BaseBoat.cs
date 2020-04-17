@@ -54,8 +54,8 @@ namespace Server.Multis
             return null;
         }
 
-        public virtual int ZSurface { get { return 0; } }
-        public virtual int RuneOffset { get { return 0; } }
+        public virtual int ZSurface => 0;
+        public virtual int RuneOffset => 0;
 
         private int m_ClientSpeed;
 
@@ -126,7 +126,7 @@ namespace Server.Multis
         public int Hits { get { return m_Hits; } set { m_Hits = value; ComputeDamage(); InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double Durability { get { return m_Hits / (double)MaxHits * 100.0; } }
+        public double Durability => m_Hits / (double)MaxHits * 100.0;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Hold Hold { get; set; }
@@ -157,15 +157,15 @@ namespace Server.Multis
         private Timer m_MoveTimer;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsMoving { get { return (m_MoveTimer != null); } }
+        public bool IsMoving => (m_MoveTimer != null);
 
         private Timer m_TurnTimer;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsTurning { get { return m_TurnTimer != null; } }
+        public bool IsTurning => m_TurnTimer != null;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsPiloted { get { return Pilot != null; } }
+        public bool IsPiloted => Pilot != null;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Speed { get; set; }
@@ -266,29 +266,29 @@ namespace Server.Multis
             }
         }
 
-        public virtual int NorthID { get { return 0; } }
-        public virtual int EastID { get { return 0; } }
-        public virtual int SouthID { get { return 0; } }
-        public virtual int WestID { get { return 0; } }
+        public virtual int NorthID => 0;
+        public virtual int EastID => 0;
+        public virtual int SouthID => 0;
+        public virtual int WestID => 0;
 
-        public virtual int HoldDistance { get { return 0; } }
-        public virtual int TillerManDistance { get { return 0; } }
-        public virtual Point2D StarboardOffset { get { return Point2D.Zero; } }
-        public virtual Point2D PortOffset { get { return Point2D.Zero; } }
-        public virtual Point3D MarkOffset { get { return Point3D.Zero; } }
+        public virtual int HoldDistance => 0;
+        public virtual int TillerManDistance => 0;
+        public virtual Point2D StarboardOffset => Point2D.Zero;
+        public virtual Point2D PortOffset => Point2D.Zero;
+        public virtual Point3D MarkOffset => Point3D.Zero;
 
         #region High Seas
-        public virtual bool IsClassicBoat { get { return true; } }
-        public virtual bool IsRowBoat { get { return false; } }
-        public virtual double TurnDelay { get { return 0.5; } }
-        public virtual int MaxHits { get { return 25000; } }
-        public virtual double ScuttleLevel { get { return 25.0; } }
+        public virtual bool IsClassicBoat => true;
+        public virtual bool IsRowBoat => false;
+        public virtual double TurnDelay => 0.5;
+        public virtual int MaxHits => 25000;
+        public virtual double ScuttleLevel => 25.0;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual bool Scuttled { get { return !IsUnderEmergencyRepairs() && Durability < ScuttleLevel; } }
+        public virtual bool Scuttled => !IsUnderEmergencyRepairs() && Durability < ScuttleLevel;
 
-        public virtual TimeSpan BoatDecayDelay { get { return TimeSpan.FromDays(13); } }
-        public virtual bool CanLinkToLighthouse { get { return true; } }
+        public virtual TimeSpan BoatDecayDelay => TimeSpan.FromDays(13);
+        public virtual bool CanLinkToLighthouse => true;
 
         #region IMount Members
         public Mobile Rider { get { return Pilot; } set { Pilot = value; } }
@@ -299,11 +299,11 @@ namespace Server.Multis
         #endregion
         #endregion
 
-        public virtual BaseDockedBoat DockedBoat { get { return null; } }
+        public virtual BaseDockedBoat DockedBoat => null;
 
         private static readonly List<BaseBoat> m_Instances = new List<BaseBoat>();
 
-        public static List<BaseBoat> Boats { get { return m_Instances; } }
+        public static List<BaseBoat> Boats => m_Instances;
 
         public BaseBoat(Direction direction)
             : this(direction, false)
@@ -355,7 +355,7 @@ namespace Server.Multis
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -699,7 +699,7 @@ namespace Server.Multis
             return value;
         }
 
-        public override bool AllowsRelativeDrop { get { return true; } }
+        public override bool AllowsRelativeDrop => true;
 
         public override void OnAfterDelete()
         {
@@ -875,12 +875,12 @@ namespace Server.Multis
         [CommandProperty(AccessLevel.GameMaster)]
         public int SlowInterval { get; set; } = 1000;
 
-        public TimeSpan FastInt { get { return TimeSpan.FromMilliseconds(FastInterval); } }
-        public TimeSpan NormalInt { get { return TimeSpan.FromMilliseconds(NormalInterval); } }
-        public TimeSpan SlowInt { get { return TimeSpan.FromMilliseconds(SlowInterval); } }
+        public TimeSpan FastInt => TimeSpan.FromMilliseconds(FastInterval);
+        public TimeSpan NormalInt => TimeSpan.FromMilliseconds(NormalInterval);
+        public TimeSpan SlowInt => TimeSpan.FromMilliseconds(SlowInterval);
 
-        public TimeSpan FastDriftInterval { get { return NormalInt; } }
-        public TimeSpan SlowDriftInterval { get { return SlowInt; } }
+        public TimeSpan FastDriftInterval => NormalInt;
+        public TimeSpan SlowDriftInterval => SlowInt;
 
         private static readonly Direction Forward = Direction.North;
         private static readonly Direction ForwardLeft = Direction.Up;
@@ -1706,7 +1706,7 @@ namespace Server.Multis
             return true;
         }
 
-        public override bool HandlesOnSpeech { get { return true; } }
+        public override bool HandlesOnSpeech => true;
 
         public override void OnSpeech(SpeechEventArgs e)
         {
@@ -3220,7 +3220,7 @@ namespace Server.Multis
     public class BoatCourse
     {
         private readonly List<Point2D> m_Waypoints = new List<Point2D>();
-        public List<Point2D> Waypoints { get { return m_Waypoints; } }
+        public List<Point2D> Waypoints => m_Waypoints;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseBoat Boat { get; set; }
@@ -3229,7 +3229,7 @@ namespace Server.Multis
         public Map Map { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int NumWaypoints { get { return m_Waypoints.Count; } }
+        public int NumWaypoints => m_Waypoints.Count;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool GivenMap { get; set; }

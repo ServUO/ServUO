@@ -4,7 +4,7 @@ namespace Server.Engines.BulkOrders
 {
     public class LargeCookingBOD : LargeBOD
     {
-        public override BODType BODType { get { return BODType.Cooking; } }
+        public override BODType BODType => BODType.Cooking;
 
         [Constructable]
         public LargeCookingBOD()

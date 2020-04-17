@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class PoppiesDust : Item, IUsesRemaining
     {
-        public override int LabelNumber { get { return 1095223; } } // poppies dust
+        public override int LabelNumber => 1095223;  // poppies dust
 
         private int m_UsesRemaining;
 

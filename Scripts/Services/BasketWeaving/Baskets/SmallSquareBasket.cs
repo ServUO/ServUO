@@ -15,13 +15,7 @@ public class SmallSquareBasket : BaseContainer
     {
     }
 
-    public override int LabelNumber
-    {
-        get
-        {
-            return 1112296;
-        }
-    }// small square basket
+    public override int LabelNumber => 1112296;// small square basket
 
     public override void Serialize(GenericWriter writer)
     {

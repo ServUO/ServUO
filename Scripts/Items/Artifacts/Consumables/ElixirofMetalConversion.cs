@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ElixirofMetalConversion : Item
     {
-        public override int LabelNumber { get { return 1113011; } } // Elixir of Metal Conversion
+        public override int LabelNumber => 1113011;  // Elixir of Metal Conversion
 
         [Constructable]
         public ElixirofMetalConversion()

@@ -17,20 +17,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1111647;
-            }
-        }
-        public override int Lifespan
-        {
-            get
-            {
-                return 21600;
-            }
-        }
+        public override int LabelNumber => 1111647;
+        public override int Lifespan => 21600;
         public override void OnDoubleClick(Mobile m)
         {
             Item a = m.Backpack.FindItemByType(typeof(YellowKey1));

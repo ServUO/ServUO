@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class MacawSpawner : Item
     {
-        public override int LabelNumber { get { return 1124032; } } // foil sheet
+        public override int LabelNumber => 1124032;  // foil sheet
 
         public List<BaseCreature> Spawn { get; set; }
 

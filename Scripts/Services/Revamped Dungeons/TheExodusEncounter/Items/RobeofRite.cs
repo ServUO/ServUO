@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class RobeofRite : Robe
     {
-        public override int LabelNumber { get { return 1153510; } } // robe of rite
+        public override int LabelNumber => 1153510;  // robe of rite
 
         private int m_Lifespan;
         private Timer m_Timer;
@@ -27,7 +27,7 @@ namespace Server.Items
         {
         }
 
-        public virtual int Lifespan { get { return 604800; } }
+        public virtual int Lifespan => 604800;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimeLeft

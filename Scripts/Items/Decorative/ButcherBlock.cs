@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ButcherBlock : Item
     {
-        public override int LabelNumber { get { return 1125659; } } // butcher block
+        public override int LabelNumber => 1125659;  // butcher block
 
         [Constructable]
         public ButcherBlock()

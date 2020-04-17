@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class LeggingsOfEmbers : PlateLegs
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public LeggingsOfEmbers()
         {
@@ -18,62 +18,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1062911;
-            }
-        }// Royal Leggings of Embers
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 25;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1062911;// Royal Leggings of Embers
+        public override int BasePhysicalResistance => 15;
+        public override int BaseFireResistance => 25;
+        public override int BaseColdResistance => 0;
+        public override int BasePoisonResistance => 15;
+        public override int BaseEnergyResistance => 15;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -86,52 +86,52 @@ namespace Server.Engines.Despise
             }
         }
 
-        public virtual int TightLeashLength { get { return 1; } }
-        public virtual int ShortLeashLength { get { return 1; } }
-        public virtual int LongLeashLength { get { return 10; } }
+        public virtual int TightLeashLength => 1;
+        public virtual int ShortLeashLength => 1;
+        public virtual int LongLeashLength => 10;
 
-        public virtual int StatRatio { get { return Utility.RandomMinMax(35, 60); } }
+        public virtual int StatRatio => Utility.RandomMinMax(35, 60);
 
-        public virtual double SkillStart { get { return Utility.RandomMinMax(80.0, 130.0); } }
-        public virtual double SkillMax { get { return m_MaxPower == 15 ? 130.0 : 110.0; } }
+        public virtual double SkillStart => Utility.RandomMinMax(80.0, 130.0);
+        public virtual double SkillMax => m_MaxPower == 15 ? 130.0 : 110.0;
 
-        public virtual int StrStart { get { return Utility.RandomMinMax(91, 100); } }
-        public virtual int DexStart { get { return Utility.RandomMinMax(91, 100); } }
-        public virtual int IntStart { get { return Utility.RandomMinMax(91, 100); } }
+        public virtual int StrStart => Utility.RandomMinMax(91, 100);
+        public virtual int DexStart => Utility.RandomMinMax(91, 100);
+        public virtual int IntStart => Utility.RandomMinMax(91, 100);
 
-        public virtual int StrMax { get { return 600; } }
-        public virtual int DexMax { get { return 150; } }
-        public virtual int IntMax { get { return 450; } }
+        public virtual int StrMax => 600;
+        public virtual int DexMax => 150;
+        public virtual int IntMax => 450;
 
-        public virtual int HitsStart { get { return StrStart + (int)(StrStart * (StatRatio / 100.0)); } }
-        public virtual int StamStart { get { return DexStart + (int)(DexStart * (StatRatio / 100.0)); } }
-        public virtual int ManaStart { get { return IntStart + (int)(IntStart * (StatRatio / 100.0)); } }
+        public virtual int HitsStart => StrStart + (int)(StrStart * (StatRatio / 100.0));
+        public virtual int StamStart => DexStart + (int)(DexStart * (StatRatio / 100.0));
+        public virtual int ManaStart => IntStart + (int)(IntStart * (StatRatio / 100.0));
 
-        public virtual int MaxHits { get { return 1000; } }
-        public virtual int MaxStam { get { return 1000; } }
-        public virtual int MaxMana { get { return 1500; } }
+        public virtual int MaxHits => 1000;
+        public virtual int MaxStam => 1000;
+        public virtual int MaxMana => 1500;
 
-        public virtual int MinDamStart { get { return 8; } }
-        public virtual int MaxDamStart { get { return 13; } }
+        public virtual int MinDamStart => 8;
+        public virtual int MaxDamStart => 13;
 
-        public virtual int MinDamMax { get { return 12; } }
-        public virtual int MaxDamMax { get { return 17; } }
+        public virtual int MinDamMax => 12;
+        public virtual int MaxDamMax => 17;
 
-        public virtual bool RaiseDamage { get { return false; } }
-        public virtual double RaiseDamageFactor { get { return 0.33; } }
+        public virtual bool RaiseDamage => false;
+        public virtual double RaiseDamageFactor => 0.33;
 
-        public virtual int GetFame { get { return m_Power * 500; } }
-        public virtual int GetKarmaGood { get { return m_Power * 500; } }
-        public virtual int GetKarmaEvil { get { return m_Power * -500; } }
+        public virtual int GetFame => m_Power * 500;
+        public virtual int GetKarmaGood => m_Power * 500;
+        public virtual int GetKarmaEvil => m_Power * -500;
 
-        public override bool Commandable { get { return false; } }
+        public override bool Commandable => false;
 
-        public override bool InitialInnocent { get { return Alignment < Alignment.Evil; } }
-        public override bool AlwaysMurderer { get { return Alignment == Alignment.Evil; } }
-        public override bool ForceNotoriety { get { return true; } }
-        public override bool IsBondable { get { return false; } }
-        public override bool GivesFameAndKarmaAward { get { return false; } }
-        public override bool CanAutoStable { get { return false; } }
+        public override bool InitialInnocent => Alignment < Alignment.Evil;
+        public override bool AlwaysMurderer => Alignment == Alignment.Evil;
+        public override bool ForceNotoriety => true;
+        public override bool IsBondable => false;
+        public override bool GivesFameAndKarmaAward => false;
+        public override bool CanAutoStable => false;
 
         public override Poison GetHitPoison()
         {

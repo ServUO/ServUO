@@ -15,7 +15,7 @@ namespace Server.Items
         private bool m_Enhanced;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Type BaitType { get { return m_BaitType; } }
+        public Type BaitType => m_BaitType;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining { get { return m_UsesRemaining; } set { m_UsesRemaining = value; InvalidateProperties(); } }

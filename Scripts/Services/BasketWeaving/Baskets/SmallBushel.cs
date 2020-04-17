@@ -15,13 +15,7 @@ public class SmallBushel : BaseContainer
     {
     }
 
-    public override int LabelNumber
-    {
-        get
-        {
-            return 1112337;
-        }
-    }// small bushel
+    public override int LabelNumber => 1112337;// small bushel
 
     public override void Serialize(GenericWriter writer)
     {

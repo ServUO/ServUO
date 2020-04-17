@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class OrcishBow : Bow
     {
-        public override int LabelNumber { get { return 1153778; } } // an orcish bow
+        public override int LabelNumber => 1153778;  // an orcish bow
 
         [Constructable]
         public OrcishBow()

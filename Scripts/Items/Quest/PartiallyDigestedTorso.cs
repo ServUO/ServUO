@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074326;
-            }
-        }// partially digested torso
+        public override int LabelNumber => 1074326;// partially digested torso
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

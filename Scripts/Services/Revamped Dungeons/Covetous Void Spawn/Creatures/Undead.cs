@@ -148,7 +148,7 @@ namespace Server.Mobiles
     [CorpseName("a revenant corpse")]
     public class CovetousRevenant : CovetousCreature
     {
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool AlwaysMurderer => true;
 
         [Constructable]
         public CovetousRevenant() : base(AIType.AI_Mage)

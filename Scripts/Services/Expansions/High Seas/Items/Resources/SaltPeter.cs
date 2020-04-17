@@ -2,10 +2,10 @@ namespace Server.Items
 {
     public class Saltpeter : Item, ICommodity
     {
-        public override int LabelNumber { get { return 1116302; } } // saltpeter
+        public override int LabelNumber => 1116302;  // saltpeter
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         [Constructable]
         public Saltpeter()

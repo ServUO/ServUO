@@ -20,9 +20,9 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Range { get { return m_Range; } set { m_Range = value; } }
 
-        public virtual Type QuestType { get { return null; } }
-        public virtual Type QuestItemType { get { return null; } }
-        public virtual int DefaultRange { get { return 8; } }
+        public virtual Type QuestType => null;
+        public virtual Type QuestItemType => null;
+        public virtual int DefaultRange => 8;
 
         [Constructable]
         public QuestHintItem(int num)
@@ -50,7 +50,7 @@ namespace Server.Items
 
         private readonly Dictionary<Mobile, DateTime> m_Table = new Dictionary<Mobile, DateTime>();
 
-        public override bool HandlesOnMovement { get { return true; } }
+        public override bool HandlesOnMovement => true;
 
         public override void OnMovement(Mobile from, Point3D oldLocation)
         {

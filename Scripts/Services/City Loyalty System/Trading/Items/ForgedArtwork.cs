@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ForgedArtwork : Item
     {
-        public override int LabelNumber { get { return 1151750; } } // Forged Artwork from King Blackthorn's Collection
+        public override int LabelNumber => 1151750;  // Forged Artwork from King Blackthorn's Collection
 
         [Constructable]
         public ForgedArtwork() : base(Utility.Random(0x1224, 5))

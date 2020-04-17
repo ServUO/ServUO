@@ -43,8 +43,8 @@ namespace Server.Mobiles
             Karma = -2500;
         }
 
-        public override Poison HitPoison { get { return Poison.Lesser; } }
-        public override Poison PoisonImmune { get { return Poison.Lesser; } }
+        public override Poison HitPoison => Poison.Lesser;
+        public override Poison PoisonImmune => Poison.Lesser;
 
         public DescicatedMyrmidexLarvae(Serial serial)
             : base(serial)

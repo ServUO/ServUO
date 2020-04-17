@@ -18,13 +18,7 @@ namespace Server.Spells.Fifth
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Fifth;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Fifth;
         public static void EndReflect(Mobile m)
         {
             if (m_Table.Contains(m))

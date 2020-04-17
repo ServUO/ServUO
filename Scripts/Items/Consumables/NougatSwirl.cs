@@ -21,13 +21,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1096936;
-            }
-        }/* nougat swirl */
+        public override int LabelNumber => 1096936;/* nougat swirl */
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

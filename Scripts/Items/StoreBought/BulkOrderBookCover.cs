@@ -248,7 +248,7 @@ namespace Server.Items
 
     public class BagOfBulkOrderCovers : Bag
     {
-        public override int LabelNumber { get { return 1071116; } } // Bag of bulk order covers
+        public override int LabelNumber => 1071116;  // Bag of bulk order covers
 
         public BagOfBulkOrderCovers(int start, int end)
         {

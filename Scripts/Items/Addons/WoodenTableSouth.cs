@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class WoodenTableSouthAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new WoodenTableSouthDeed(); } }
-        public override bool RetainDeedHue { get { return true; } }
+        public override BaseAddonDeed Deed => new WoodenTableSouthDeed();
+        public override bool RetainDeedHue => true;
 
         [Constructable]
         public WoodenTableSouthAddon()
@@ -32,8 +32,8 @@ namespace Server.Items
 
     public class WoodenTableSouthDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new WoodenTableSouthAddon(); } }
-        public override int LabelNumber { get { return 1154156; } } // Wooden Table (South)
+        public override BaseAddon Addon => new WoodenTableSouthAddon();
+        public override int LabelNumber => 1154156;  // Wooden Table (South)
 
         [Constructable]
         public WoodenTableSouthDeed()

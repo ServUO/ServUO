@@ -13,8 +13,8 @@ namespace Server.Engines.MiniChamps
         public int Killed { get; set; }
         public int Spawned { get; set; }
         public int Required { get; set; }
-        public int MaxSpawned { get { return (Required * 2) - 1; } }
-        public bool Done { get { return Killed >= Required; } }
+        public int MaxSpawned => (Required * 2) - 1;
+        public bool Done => Killed >= Required;
 
         public MiniChampSpawnInfo(MiniChamp controller, MiniChampTypeInfo typeInfo)
         {

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class EcruCitrineRing : GoldRing
     {
-        public override int LabelNumber { get { return 1073457; } }// ecru citrine ring
+        public override int LabelNumber => 1073457; // ecru citrine ring
 
         [Constructable]
         public EcruCitrineRing()

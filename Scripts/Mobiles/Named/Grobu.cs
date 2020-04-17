@@ -52,7 +52,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-        public override bool CanBeParagon { get { return false; } }
+        public override bool CanBeParagon => false;
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);

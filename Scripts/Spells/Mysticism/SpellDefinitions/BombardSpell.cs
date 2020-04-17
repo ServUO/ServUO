@@ -5,9 +5,9 @@ namespace Server.Spells.Mysticism
 {
     public class BombardSpell : MysticSpell
     {
-        public override SpellCircle Circle { get { return SpellCircle.Sixth; } }
-        public override bool DelayedDamage { get { return true; } }
-        public override bool DelayedDamageStacking { get { return false; } }
+        public override SpellCircle Circle => SpellCircle.Sixth;
+        public override bool DelayedDamage => true;
+        public override bool DelayedDamageStacking => false;
 
         private static readonly SpellInfo m_Info = new SpellInfo(
                 "Bombard", "Corp Por Ylem",

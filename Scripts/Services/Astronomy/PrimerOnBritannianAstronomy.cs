@@ -5,7 +5,7 @@ namespace Server.Engines.Astronomy
 {
     public class PrimerOnBritannianAstronomy : Item
     {
-        public override int LabelNumber { get { return 1158515; } } // Looking to the Heavens: A Primer on Britannian Astronomy
+        public override int LabelNumber => 1158515;  // Looking to the Heavens: A Primer on Britannian Astronomy
 
         [Constructable]
         public PrimerOnBritannianAstronomy()

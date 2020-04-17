@@ -89,13 +89,7 @@ namespace Server.Regions
             this.m_Init = false;
         }
 
-        public Type Type
-        {
-            get
-            {
-                return this.m_Type;
-            }
-        }
+        public Type Type => this.m_Type;
         public abstract int Height { get; }
         public abstract bool Land { get; }
         public abstract bool Water { get; }
@@ -149,13 +143,7 @@ namespace Server.Regions
         {
         }
 
-        public override int Height
-        {
-            get
-            {
-                return 16;
-            }
-        }
+        public override int Height => 16;
         public override bool Land
         {
             get
@@ -240,20 +228,8 @@ namespace Server.Regions
                 return this.m_Height;
             }
         }
-        public override bool Land
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool Water
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool Land => true;
+        public override bool Water => false;
         public static SpawnItem Get(Type type)
         {
             SpawnItem si = (SpawnItem)m_Table[type];
@@ -304,20 +280,8 @@ namespace Server.Regions
             this.m_Level = level;
         }
 
-        public int ItemID
-        {
-            get
-            {
-                return this.m_ItemID;
-            }
-        }
-        public BaseTreasureChest.TreasureLevel Level
-        {
-            get
-            {
-                return this.m_Level;
-            }
-        }
+        public int ItemID => this.m_ItemID;
+        public BaseTreasureChest.TreasureLevel Level => this.m_Level;
         protected override void Init()
         {
             this.m_Height = TileData.ItemTable[this.m_ItemID & TileData.MaxItemValue].Height;
@@ -339,20 +303,8 @@ namespace Server.Regions
             this.m_Weight = weight;
         }
 
-        public SpawnDefinition SpawnDefinition
-        {
-            get
-            {
-                return this.m_SpawnDefinition;
-            }
-        }
-        public int Weight
-        {
-            get
-            {
-                return this.m_Weight;
-            }
-        }
+        public SpawnDefinition SpawnDefinition => this.m_SpawnDefinition;
+        public int Weight => this.m_Weight;
     }
 
     public class SpawnGroup : SpawnDefinition
@@ -422,27 +374,9 @@ namespace Server.Regions
             }
         }
 
-        public static Hashtable Table
-        {
-            get
-            {
-                return m_Table;
-            }
-        }
-        public string Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
-        public SpawnGroupElement[] Elements
-        {
-            get
-            {
-                return this.m_Elements;
-            }
-        }
+        public static Hashtable Table => m_Table;
+        public string Name => this.m_Name;
+        public SpawnGroupElement[] Elements => this.m_Elements;
         public static void Register(SpawnGroup group)
         {
             if (m_Table.Contains(group.Name))

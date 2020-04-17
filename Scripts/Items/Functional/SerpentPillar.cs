@@ -69,13 +69,7 @@ namespace Server.Items
                 this.m_Destination = value;
             }
         }
-        public override bool HandlesOnSpeech
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool HandlesOnSpeech => true;
         public override void OnSpeech(SpeechEventArgs e)
         {
             Mobile from = e.Mobile;

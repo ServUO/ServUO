@@ -22,7 +22,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Focus { get; set; }
 
-        public int SpawnCount { get { return Utility.RandomMinMax(6, 9); } }
+        public int SpawnCount => Utility.RandomMinMax(6, 9);
 
         public int HasSpawned { get; set; }
 
@@ -36,7 +36,7 @@ namespace Server.Items
             Spawn = new List<BaseCreature>();
         }
 
-        public override bool HandlesOnMovement { get { return NextSpawn < DateTime.UtcNow; } }
+        public override bool HandlesOnMovement => NextSpawn < DateTime.UtcNow;
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             if (m.InRange(this.Location, 7) && m.AccessLevel == AccessLevel.Player &&
@@ -204,7 +204,7 @@ namespace Server.Items
 
         public int MaxSpawns { get; private set; }
         public EodonTribe Tribe { get; set; }
-        public int Spawns { get { return this.GetItemCount(i => i is MyrmidexHill); } }
+        public int Spawns => this.GetItemCount(i => i is MyrmidexHill);
 
         public EodonTribeRegion(EodonTribe tribe, Rectangle2D[] rec, int maxSpawns)
             : base(tribe.ToString() + " tribe", Map.TerMur, Region.DefaultPriority, rec)

@@ -57,13 +57,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool NoHouseRestrictions
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool NoHouseRestrictions => true;
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime Birth
         {
@@ -76,13 +70,7 @@ namespace Server.Mobiles
                 m_Birth = value;
             }
         }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.FruitsAndVegies;
-            }
-        }
+        public override FoodType FavoriteFood => FoodType.FruitsAndVegies;
         public static int GetWeeks(DateTime birth)
         {
             TimeSpan span = DateTime.UtcNow - birth;

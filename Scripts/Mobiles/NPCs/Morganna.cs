@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class ChannelingTheSupernaturalQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* Channeling the Supernatural */
-        public override object Title
-        {
-            get
-            {
-                return 1078044;
-            }
-        }
+        public override object Title => 1078044;
 
         /* Head East out of town and go to Old Haven. Use Spirit Speak and channel energy from either yourself or nearby corpses 
         there. You can also cast Necromancy spells as well to raise Spirit Speak. Do these activities until you have raised your 
@@ -32,42 +20,18 @@ namespace Server.Engines.Quests
         Undead currently reside there. Use Spirit Speak and channel energy from either yourself or nearby corpses. You can also 
         cast Necromancy spells as well to raise Spirit Speak.<br><br>Come back to me once you feel that you are worthy of the 
         rank of Apprentice Medium and I will reward you with something useful. */
-        public override object Description
-        {
-            get
-            {
-                return 1078047;
-            }
-        }
+        public override object Description => 1078047;
 
         /* Channeling the supernatural isn't for everyone. It is a dark art. See me if you ever wish to pursue the life of a Medium. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1078048;
-            }
-        }
+        public override object Refuse => 1078048;
 
         /* Back so soon? You have not achieved the rank of Apprentice Medium. Come back to me once you feel that you are worthy of 
         the rank of Apprentice Medium and I will reward you with something useful. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1078049;
-            }
-        }
+        public override object Uncomplete => 1078049;
 
         /* Well done! Channeling the supernatural is taxing, indeed. As promised, I will reward you with this bag of Necromancer 
         reagents. You will need these if you wish to also pursue the dark magic of Necromancy. Good journey to you. */
-        public override object Complete
-        {
-            get
-            {
-                return 1078051;
-            }
-        }
+        public override object Complete => 1078051;
 
         public ChannelingTheSupernaturalQuest()
             : base()
@@ -117,16 +81,10 @@ namespace Server.Engines.Quests
 
     public class Morganna : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(ChannelingTheSupernaturalQuest)
                 };
-            }
-        }
 
         public override void InitSBInfo()
         {

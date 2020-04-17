@@ -72,35 +72,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override Type[] UniqueSAList
-        {
-            get
-            {
-                return new Type[] { typeof(ClawsOfTheBerserker), typeof(Lavaliere), typeof(Mangler), typeof(HumanSignOfChaos), typeof(GargishSignOfChaos), typeof(StandardOfChaosG), typeof(StandardOfChaos) };
-            }
-        }
-        public override Type[] SharedSAList
-        {
-            get
-            {
-                return new Type[] { typeof(AxesOfFury), typeof(BladeOfBattle), typeof(DemonBridleRing), typeof(PetrifiedSnake), typeof(PillarOfStrength), typeof(SwordOfShatteredHopes), typeof(SummonersKilt) };
-            }
-        }
+        public override Type[] UniqueSAList => new Type[] { typeof(ClawsOfTheBerserker), typeof(Lavaliere), typeof(Mangler), typeof(HumanSignOfChaos), typeof(GargishSignOfChaos), typeof(StandardOfChaosG), typeof(StandardOfChaos) };
+        public override Type[] SharedSAList => new Type[] { typeof(AxesOfFury), typeof(BladeOfBattle), typeof(DemonBridleRing), typeof(PetrifiedSnake), typeof(PillarOfStrength), typeof(SwordOfShatteredHopes), typeof(SummonersKilt) };
 
-        public override bool Unprovokable
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool Unprovokable => false;
+        public override bool BardImmune => false;
         public override int GetIdleSound()
         {
             return 1589;
@@ -121,7 +97,7 @@ namespace Server.Mobiles
             return 1587;
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool AlwaysMurderer => true;
 
         public override void GenerateLoot()
         {

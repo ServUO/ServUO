@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class KrampusMinionEarrings : BaseArmor
     {
-        public override int LabelNumber { get { return 1125645; } } // krampus minion earrings        
+        public override int LabelNumber => 1125645;  // krampus minion earrings        
 
         [Constructable]
         public KrampusMinionEarrings()
@@ -16,20 +16,20 @@ namespace Server.Items
         {
         }
 
-        public override Race RequiredRace { get { return Race.Gargoyle; } }
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
 
-        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Chainmail; } }
-        public override ArmorMeditationAllowance DefMedAllowance { get { return ArmorMeditationAllowance.All; } }
+        public override ArmorMaterialType MaterialType => ArmorMaterialType.Chainmail;
+        public override ArmorMeditationAllowance DefMedAllowance => ArmorMeditationAllowance.All;
 
-        public override int BasePhysicalResistance { get { return 1; } }
-        public override int BaseFireResistance { get { return 2; } }
-        public override int BaseColdResistance { get { return 2; } }
-        public override int BasePoisonResistance { get { return 2; } }
-        public override int BaseEnergyResistance { get { return 3; } }
+        public override int BasePhysicalResistance => 1;
+        public override int BaseFireResistance => 2;
+        public override int BaseColdResistance => 2;
+        public override int BasePoisonResistance => 2;
+        public override int BaseEnergyResistance => 3;
 
-        public override int InitMinHits { get { return 30; } }
-        public override int InitMaxHits { get { return 50; } }
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 50;
 
         public override void Serialize(GenericWriter writer)
         {

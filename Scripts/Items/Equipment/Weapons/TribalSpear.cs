@@ -3,7 +3,7 @@ namespace Server.Items
     [FlipableAttribute(0xF62, 0xF63)]
     public class TribalSpear : BaseSpear
     {
-        public override int LabelNumber { get { return 1062474; } } // Tribal Spear
+        public override int LabelNumber => 1062474;  // Tribal Spear
 
         [Constructable]
         public TribalSpear()
@@ -20,63 +20,15 @@ namespace Server.Items
         {
         }
 
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.ArmorIgnore;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.ParalyzingBlow;
-            }
-        }
-        public override int StrengthReq
-        {
-            get
-            {
-                return 50;
-            }
-        }
-        public override int MinDamage
-        {
-            get
-            {
-                return 13;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override float Speed
-        {
-            get
-            {
-                return 2.75f;
-            }
-        }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.ArmorIgnore;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.ParalyzingBlow;
+        public override int StrengthReq => 50;
+        public override int MinDamage => 13;
+        public override int MaxDamage => 15;
+        public override float Speed => 2.75f;
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 31;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 80;
-            }
-        }
+        public override int InitMinHits => 31;
+        public override int InitMaxHits => 80;
 
         public override void Serialize(GenericWriter writer)
         {

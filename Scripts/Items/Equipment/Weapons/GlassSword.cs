@@ -15,80 +15,20 @@ namespace Server.Items
         {
         }
 
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.BleedAttack;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.MortalStrike;
-            }
-        }
-        public override int StrengthReq
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override int MinDamage
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override float Speed
-        {
-            get
-            {
-                return 2.75f;
-            }
-        }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.BleedAttack;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.MortalStrike;
+        public override int StrengthReq => 20;
+        public override int MinDamage => 11;
+        public override int MaxDamage => 15;
+        public override float Speed => 2.75f;
 
-        public override int DefHitSound
-        {
-            get
-            {
-                return 0x23B;
-            }
-        }
-        public override int DefMissSound
-        {
-            get
-            {
-                return 0x23A;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 31;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 90;
-            }
-        }
+        public override int DefHitSound => 0x23B;
+        public override int DefMissSound => 0x23A;
+        public override int InitMinHits => 31;
+        public override int InitMaxHits => 90;
 
-        public override Race RequiredRace { get { return Race.Gargoyle; } }
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
 
         public override void Serialize(GenericWriter writer)
         {

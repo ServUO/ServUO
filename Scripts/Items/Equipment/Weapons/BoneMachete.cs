@@ -2,9 +2,9 @@ namespace Server.Items
 {
     public class BoneMachete : ElvenMachete
     {
-        public override int InitMinHits { get { return 1; } }
-        public override int InitMaxHits { get { return 3; } }
-        public override int LabelNumber { get { return 1020526; } }// bone machete
+        public override int InitMinHits => 1;
+        public override int InitMaxHits => 3;
+        public override int LabelNumber => 1020526; // bone machete
 
         [Constructable]
         public BoneMachete()

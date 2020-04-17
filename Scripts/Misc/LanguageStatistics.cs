@@ -282,41 +282,11 @@ namespace Server.Misc
                 this.m_HasLocalInfo = true;
             }
 
-            public string Code
-            {
-                get
-                {
-                    return this.m_Code;
-                }
-            }
-            public string Language
-            {
-                get
-                {
-                    return this.m_Language;
-                }
-            }
-            public string Country
-            {
-                get
-                {
-                    return this.m_Country;
-                }
-            }
-            public string Language_LocalName
-            {
-                get
-                {
-                    return this.m_Language_LocalName;
-                }
-            }
-            public string Country_LocalName
-            {
-                get
-                {
-                    return this.m_Country_LocalName;
-                }
-            }
+            public string Code => this.m_Code;
+            public string Language => this.m_Language;
+            public string Country => this.m_Country;
+            public string Language_LocalName => this.m_Language_LocalName;
+            public string Country_LocalName => this.m_Country_LocalName;
             public string GetName()
             {
                 string s;
@@ -347,20 +317,8 @@ namespace Server.Misc
                 this.m_Count = 1;
             }
 
-            public string Code
-            {
-                get
-                {
-                    return this.m_Code;
-                }
-            }
-            public int Count
-            {
-                get
-                {
-                    return this.m_Count;
-                }
-            }
+            public string Code => this.m_Code;
+            public int Count => this.m_Count;
             public void Increase()
             {
                 this.m_Count++;

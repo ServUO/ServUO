@@ -1116,7 +1116,7 @@ namespace Server.Items
         private static readonly Dictionary<Type, CraftSystem> m_AllowableTable = new Dictionary<Type, CraftSystem>();
         private static readonly Dictionary<int, NamedInfoCol[][]> m_PrefixSuffixInfo = new Dictionary<int, NamedInfoCol[][]>();
 
-        public static Dictionary<int, NamedInfoCol[][]> PrefixSuffixInfo { get { return m_PrefixSuffixInfo; } }
+        public static Dictionary<int, NamedInfoCol[][]> PrefixSuffixInfo => m_PrefixSuffixInfo;
 
         public static void Initialize()
         {
@@ -1702,7 +1702,7 @@ namespace Server.Items
             return NameTable[(int)suffix - 1][1];
         }
 
-        public static int[][] NameTable { get { return _NameTable; } }
+        public static int[][] NameTable => _NameTable;
         private static readonly int[][] _NameTable = new int[][]
         {
             new int[] { 1151682, 1151683 }, // Might

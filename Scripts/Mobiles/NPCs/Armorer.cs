@@ -21,20 +21,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override VendorShoeType ShoeType
-        {
-            get
-            {
-                return VendorShoeType.Boots;
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return m_SBInfos;
-            }
-        }
+        public override VendorShoeType ShoeType => VendorShoeType.Boots;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
             switch (Utility.Random(4))
@@ -82,7 +70,7 @@ namespace Server.Mobiles
         }
 
         #region Bulk Orders
-        public override BODType BODType { get { return BODType.Smith; } }
+        public override BODType BODType => BODType.Smith;
 
         public override Item CreateBulkOrder(Mobile from, bool fromContextMenu)
         {

@@ -16,20 +16,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041113;
-            }
-        }// a holiday timepiece
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public override int LabelNumber => 1041113;// a holiday timepiece
+        public override double DefaultWeight => 1.0;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

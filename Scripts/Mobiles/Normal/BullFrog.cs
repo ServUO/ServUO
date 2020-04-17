@@ -42,27 +42,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Fish | FoodType.Meat;
-            }
-        }
+        public override int Meat => 1;
+        public override int Hides => 4;
+        public override FoodType FavoriteFood => FoodType.Fish | FoodType.Meat;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Poor);

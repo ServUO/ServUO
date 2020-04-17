@@ -54,10 +54,10 @@ namespace Server.Mobiles
             AddLoot(LootPack.MedScrolls, 2);
         }
 
-        public override int TreasureMapLevel { get { return Utility.RandomMinMax(1, 3); } }
-        public override bool BleedImmune { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
-        public override bool Unprovokable { get { return true; } }
+        public override int TreasureMapLevel => Utility.RandomMinMax(1, 3);
+        public override bool BleedImmune => true;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override bool Unprovokable => true;
 
         public override void Serialize(GenericWriter writer)
         {

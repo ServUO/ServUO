@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class SoldiersMedal : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [Constructable]
         public SoldiersMedal()
@@ -20,20 +20,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1154726;
-            }
-        }// Soldier's Medal
-        public override bool ForceShowName
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int LabelNumber => 1154726;// Soldier's Medal
+        public override bool ForceShowName => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

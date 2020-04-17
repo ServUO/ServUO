@@ -25,76 +25,16 @@ namespace Server.Items
         {
         }
 
-        public override CraftResource DefaultResource
-        {
-            get
-            {
-                return CraftResource.RegularLeather;
-            }
-        }
-        public virtual int WrongAmmoMessage
-        {
-            get
-            {
-                return 1063301;
-            }
-        }//You can only place shuriken in a ninja belt.
-        public virtual int NoFreeHandMessage
-        {
-            get
-            {
-                return 1063299;
-            }
-        }//You must have a free hand to throw shuriken.
-        public virtual int EmptyWeaponMessage
-        {
-            get
-            {
-                return 1063297;
-            }
-        }//You have no shuriken in your ninja belt!
-        public virtual int RecentlyUsedMessage
-        {
-            get
-            {
-                return 1063298;
-            }
-        }//You cannot throw another shuriken yet.
-        public virtual int FullWeaponMessage
-        {
-            get
-            {
-                return 1063302;
-            }
-        }//You cannot add any more shuriken.
-        public virtual int WeaponMinRange
-        {
-            get
-            {
-                return 2;
-            }
-        }
-        public virtual int WeaponMaxRange
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public virtual int WeaponDamage
-        {
-            get
-            {
-                return Utility.RandomMinMax(3, 5);
-            }
-        }
-        public virtual Type AmmoType
-        {
-            get
-            {
-                return typeof(Shuriken);
-            }
-        }
+        public override CraftResource DefaultResource => CraftResource.RegularLeather;
+        public virtual int WrongAmmoMessage => 1063301;//You can only place shuriken in a ninja belt.
+        public virtual int NoFreeHandMessage => 1063299;//You must have a free hand to throw shuriken.
+        public virtual int EmptyWeaponMessage => 1063297;//You have no shuriken in your ninja belt!
+        public virtual int RecentlyUsedMessage => 1063298;//You cannot throw another shuriken yet.
+        public virtual int FullWeaponMessage => 1063302;//You cannot add any more shuriken.
+        public virtual int WeaponMinRange => 2;
+        public virtual int WeaponMaxRange => 10;
+        public virtual int WeaponDamage => Utility.RandomMinMax(3, 5);
+        public virtual Type AmmoType => typeof(Shuriken);
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining
         {

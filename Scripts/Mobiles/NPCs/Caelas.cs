@@ -15,39 +15,15 @@ namespace Server.Engines.Quests
         }
 
         /* Warrior Caste */
-        public override object Title
-        {
-            get
-            {
-                return 1073078;
-            }
-        }
+        public override object Title => 1073078;
         /* The Terathan are an aggressive species. Left unchecked, they will swarm across our lands. 
         And where will that leave us? Compost in the hive, that's what! Stop them, stop them cold my 
         friend. Kill their warriors and you'll check their movement, that is certain. */
-        public override object Description
-        {
-            get
-            {
-                return 1073568;
-            }
-        }
+        public override object Description => 1073568;
         /* I hope you'll reconsider. Until then, farwell. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073580;
-            }
-        }
+        public override object Refuse => 1073580;
         /* Unless you kill at least 10 Terathan Warriors, you won't have any impact on their hive. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073588;
-            }
-        }
+        public override object Uncomplete => 1073588;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -74,39 +50,15 @@ namespace Server.Engines.Quests
         }
 
         /* Big Worms */
-        public override object Title
-        {
-            get
-            {
-                return 1073088;
-            }
-        }
+        public override object Title => 1073088;
         /* It makes no sense! Cold blooded serpents cannot live in the ice! It's a biological impossibility! 
         They are an abomination against reason! Please, I beg you - kill them! Make them disappear for me! Do 
         this and I will reward you. */
-        public override object Description
-        {
-            get
-            {
-                return 1073578;
-            }
-        }
+        public override object Description => 1073578;
         /* I hope you'll reconsider. Until then, farwell. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073580;
-            }
-        }
+        public override object Refuse => 1073580;
         /* You wouldn't try and just pretend you murdered 10 Giant Ice Worms, would you? */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073598;
-            }
-        }
+        public override object Uncomplete => 1073598;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -134,39 +86,15 @@ namespace Server.Engines.Quests
         }
 
         /* Orcish Elite */
-        public override object Title
-        {
-            get
-            {
-                return 1073081;
-            }
-        }
+        public override object Title => 1073081;
         /* Foul brutes! No one loves an orc, but some of them are worse than the rest. Their Captains and their 
         Bombers, for instance, they're the worst of the lot. Kill a few of those, and the rest are just a rabble. 
         Exterminate a few of them and you'll make the world a sunnier place, don't you know. */
-        public override object Description
-        {
-            get
-            {
-                return 1073571;
-            }
-        }
+        public override object Description => 1073571;
         /* I hope you'll reconsider. Until then, farwell. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073580;
-            }
-        }
+        public override object Refuse => 1073580;
         /* The only good orc is a dead orc - and 4 dead Captains and 6 dead Bombers is even better! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073591;
-            }
-        }
+        public override object Uncomplete => 1073591;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -197,19 +125,13 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(WarriorCasteQuest),
                     typeof(BigWormsQuest),
                     typeof(ItsElementalQuest),
                     typeof(OrcishEliteQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

@@ -262,7 +262,7 @@ namespace Server.Gumps
 
         private class InternalPrompt : Prompt
         {
-            public override int MessageCliloc { get { return 502414; } } // Please enter a title for the runebook:
+            public override int MessageCliloc => 502414;  // Please enter a title for the runebook:
             private readonly Runebook m_Book;
 
             public InternalPrompt(Runebook book)

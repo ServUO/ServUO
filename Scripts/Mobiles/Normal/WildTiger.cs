@@ -5,8 +5,8 @@ namespace Server.Mobiles
     [CorpseName("a tiger corpse")]
     public class WildTiger : BaseMount
     {
-        public override double HealChance { get { return .167; } }
-        public virtual Item GetPelt { get { return new TigerPelt(4); } }
+        public override double HealChance => .167;
+        public virtual Item GetPelt => new TigerPelt(4);
 
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual bool CanRide { get; set; }
@@ -81,11 +81,11 @@ namespace Server.Mobiles
         public override int GetHurtSound() { return 0x672; }
         public override int GetDeathSound() { return 0x671; }
 
-        public override double WeaponAbilityChance { get { return 0.5; } }
+        public override double WeaponAbilityChance => 0.5;
 
-        public override int Meat { get { return 2; } }
-        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
-        public override int TreasureMapLevel { get { return 1; } }
+        public override int Meat => 2;
+        public override FoodType FavoriteFood => FoodType.Meat;
+        public override int TreasureMapLevel => 1;
 
         public override void GenerateLoot()
         {
@@ -138,7 +138,7 @@ namespace Server.Mobiles
     [CorpseName("a tiger corpse")]
     public class WildWhiteTiger : WildTiger
     {
-        public override Item GetPelt { get { return new WhiteTigerPelt(4); } }
+        public override Item GetPelt => new WhiteTigerPelt(4);
 
         [Constructable]
         public WildWhiteTiger()
@@ -168,7 +168,7 @@ namespace Server.Mobiles
     [CorpseName("a tiger corpse")]
     public class WildBlackTiger : WildTiger
     {
-        public override Item GetPelt { get { return new BlackTigerPelt(4); } }
+        public override Item GetPelt => new BlackTigerPelt(4);
 
         [Constructable]
         public WildBlackTiger()

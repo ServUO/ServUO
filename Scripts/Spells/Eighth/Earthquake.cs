@@ -4,7 +4,7 @@ namespace Server.Spells.Eighth
 {
     public class EarthquakeSpell : MagerySpell
     {
-        public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
+        public override DamageType SpellDamageType => DamageType.SpellAOE;
 
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Earthquake", "In Vas Por",
@@ -21,20 +21,8 @@ namespace Server.Spells.Eighth
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Eighth;
-            }
-        }
-        public override bool DelayedDamage
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Eighth;
+        public override bool DelayedDamage => false;
         public override void OnCast()
         {
             if (SpellHelper.CheckTown(Caster, Caster) && CheckSequence())

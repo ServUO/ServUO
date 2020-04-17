@@ -22,13 +22,7 @@ namespace Server.Items
         }
 
         // Do not display (x items, y stones)
-        public override bool DisplaysContent
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool DisplaysContent => false;
         public void BeginDecay(TimeSpan delay)
         {
             if (this.m_DecayTimer != null)

@@ -68,20 +68,8 @@ namespace Server.Mobiles
                 m_Name = name;
         }
 
-        public virtual int ControlSlots
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual bool CanCacheDisplay
-        {
-            get
-            {
-                return false;
-            }
-        }//return ( m_Args == null || m_Args.Length == 0 ); } 
+        public virtual int ControlSlots => 0;
+        public virtual bool CanCacheDisplay => false;//return ( m_Args == null || m_Args.Length == 0 ); } 
         public Type Type
         {
             get
@@ -104,13 +92,7 @@ namespace Server.Mobiles
                 m_Name = value;
             }
         }
-        public int DefaultPrice
-        {
-            get
-            {
-                return m_PriceScalar;
-            }
-        }
+        public int DefaultPrice => m_PriceScalar;
         public int PriceScalar
         {
             get
@@ -141,7 +123,7 @@ namespace Server.Mobiles
             set { m_Stackable = value; }
         }
 
-        public bool EconomyItem { get { return BaseVendor.UseVendorEconomy && m_Stackable; } }
+        public bool EconomyItem => BaseVendor.UseVendorEconomy && m_Stackable;
 
         public int Price
         {
@@ -409,8 +391,8 @@ namespace Server.Mobiles
             private Dictionary<Type, IEntity> m_Table;
             private List<Mobile> m_Mobiles;
 
-            public List<Mobile> Mobiles { get { return m_Mobiles; } }
-            public Dictionary<Type, IEntity> Table { get { return m_Table; } }
+            public List<Mobile> Mobiles => m_Mobiles;
+            public Dictionary<Type, IEntity> Table => m_Table;
 
             public DisplayCache()
                 : base(0)

@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class WhetstoneOfEnervation : Item
     {
-        public override int LabelNumber { get { return 1151811; } } // Whetstone of Enervation
+        public override int LabelNumber => 1151811;  // Whetstone of Enervation
 
         [Constructable]
         public WhetstoneOfEnervation()

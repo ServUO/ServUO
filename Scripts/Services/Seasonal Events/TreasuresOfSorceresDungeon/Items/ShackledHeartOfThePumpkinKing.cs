@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class ShackledHeartOfThePumpkinKing : Item
     {
-        public override int LabelNumber { get { return 1157653; } } // Shackled Heart of the Pumpkin King
+        public override int LabelNumber => 1157653;  // Shackled Heart of the Pumpkin King
 
         private Timer Timer { get; set; }
 

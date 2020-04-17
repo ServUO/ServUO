@@ -2,21 +2,21 @@ namespace Server.Items
 {
     public class BestialEarrings : GargishEarrings, ISetItem
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1151543; } } // Bestial Earrings
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1151543;  // Bestial Earrings
 
         #region ISetItem Members
-        public override SetItem SetID { get { return SetItem.Bestial; } }
-        public override int Pieces { get { return 4; } }
-        #endregion        
+        public override SetItem SetID => SetItem.Bestial;
+        public override int Pieces => 4;
+        #endregion
 
-        public override int BasePhysicalResistance { get { return 3; } }
-        public override int BaseFireResistance { get { return 4; } }
-        public override int BaseColdResistance { get { return 4; } }
-        public override int BasePoisonResistance { get { return 4; } }
-        public override int BaseEnergyResistance { get { return 17; } }
-        public override int InitMinHits { get { return 125; } }
-        public override int InitMaxHits { get { return 125; } }
+        public override int BasePhysicalResistance => 3;
+        public override int BaseFireResistance => 4;
+        public override int BaseColdResistance => 4;
+        public override int BasePoisonResistance => 4;
+        public override int BaseEnergyResistance => 17;
+        public override int InitMinHits => 125;
+        public override int InitMaxHits => 125;
 
         [Constructable]
         public BestialEarrings()

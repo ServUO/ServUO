@@ -14,7 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new SpikePostDeed(); } }
+        public override BaseAddonDeed Deed => new SpikePostDeed();
 
         public virtual void Flip(Mobile from, Direction direction)
         {
@@ -44,9 +44,9 @@ namespace Server.Items
 
     public class SpikePostDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1076676; } } // Spike Post
+        public override int LabelNumber => 1076676;  // Spike Post
 
-        public override bool ExcludeDeedHue { get { return true; } }
+        public override bool ExcludeDeedHue => true;
 
         [Constructable]
         public SpikePostDeed()
@@ -60,7 +60,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon { get { return new SpikePostAddon(); } }
+        public override BaseAddon Addon => new SpikePostAddon();
 
 
         public override void Serialize(GenericWriter writer)

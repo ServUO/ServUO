@@ -24,7 +24,7 @@ namespace Server.Items
         public override int BaseMana => 30;
 
         private static readonly Dictionary<Mobile, Timer> m_Registry = new Dictionary<Mobile, Timer>();
-        public static Dictionary<Mobile, Timer> Registry { get { return m_Registry; } }
+        public static Dictionary<Mobile, Timer> Registry => m_Registry;
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {

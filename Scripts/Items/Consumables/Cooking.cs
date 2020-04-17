@@ -31,7 +31,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
-        public bool PlayerConstructed { get { return true; } }
+        public bool PlayerConstructed => true;
 
         [Constructable]
         public Dough()
@@ -168,13 +168,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041340;
-            }
-        }// sweet dough
+        public override int LabelNumber => 1041340;// sweet dough
 
         [Constructable]
         public SweetDough()
@@ -436,7 +430,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
-        public bool PlayerConstructed { get { return true; } }
+        public bool PlayerConstructed => true;
 
         [Constructable]
         public SackFlour()
@@ -533,7 +527,7 @@ namespace Server.Items
     // ********** SackFlourOpen **********
     public class SackFlourOpen : Item
     {
-        public override int LabelNumber { get { return 1024166; } } // open sack of flour
+        public override int LabelNumber => 1024166;  // open sack of flour
 
         [Constructable]
         public SackFlourOpen() : base(0x103A)

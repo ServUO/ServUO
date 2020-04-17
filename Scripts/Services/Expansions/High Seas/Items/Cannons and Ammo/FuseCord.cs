@@ -3,10 +3,10 @@ namespace Server.Items
     [TypeAlias("Server.Items.Fusecord")]
     public class FuseCord : Item, ICommodity
     {
-        public override int LabelNumber { get { return 1116305; } } // fuse cord
+        public override int LabelNumber => 1116305;  // fuse cord
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         [Constructable]
         public FuseCord()

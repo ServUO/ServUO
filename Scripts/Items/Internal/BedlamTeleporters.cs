@@ -18,23 +18,11 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074161;
-            }
-        }// Access to Bedlam by invitation only
+        public override int LabelNumber => 1074161;// Access to Bedlam by invitation only
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
-        public virtual Type Quest
-        {
-            get
-            {
-                return typeof(MistakenIdentityQuest);
-            }
-        }
+        public virtual Type Quest => typeof(MistakenIdentityQuest);
         public override void OnDoubleClick(Mobile from)
         {
             if (!MondainsLegacy.Bedlam && (int)from.AccessLevel < (int)AccessLevel.GameMaster)

@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class VesperCollectionStatuette : BaseStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         public VesperCollectionStatuette(int itemID)
             : base(itemID)
         {
@@ -61,13 +61,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073242;
-            }
-        }// G'Thunk the Troll - Museum of Vesper Replica
+        public override int LabelNumber => 1073242;// G'Thunk the Troll - Museum of Vesper Replica
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -96,13 +90,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073244;
-            }
-        }// Nystul's Crystal Ball - Museum of Vesper Replica
+        public override int LabelNumber => 1073244;// Nystul's Crystal Ball - Museum of Vesper Replica
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -131,13 +119,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073245;
-            }
-        }// Dangerous Creatures Replica: Devourer of Souls - Museum of Vesper
+        public override int LabelNumber => 1073245;// Dangerous Creatures Replica: Devourer of Souls - Museum of Vesper
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -166,13 +148,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075016;
-            }
-        }// Dangerous Creatures Replica: Lady of the Snow - Museum of Vesper
+        public override int LabelNumber => 1075016;// Dangerous Creatures Replica: Lady of the Snow - Museum of Vesper
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -201,13 +177,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075017;
-            }
-        }// Dangerous Creatures Replica: Golem - Museum of Vesper
+        public override int LabelNumber => 1075017;// Dangerous Creatures Replica: Golem - Museum of Vesper
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -236,13 +206,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075018;
-            }
-        }// Dangerous Creatures Replica: Exodus Overseer - Museum of Vesper
+        public override int LabelNumber => 1075018;// Dangerous Creatures Replica: Exodus Overseer - Museum of Vesper
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -271,13 +235,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075019;
-            }
-        }// Dangerous Creatures Replica: Juka Lord- Museum of Vesper
+        public override int LabelNumber => 1075019;// Dangerous Creatures Replica: Juka Lord- Museum of Vesper
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -306,13 +264,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075020;
-            }
-        }// Dangerous Creatures Replica: Meer Captain - Museum of Vesper
+        public override int LabelNumber => 1075020;// Dangerous Creatures Replica: Meer Captain - Museum of Vesper
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -341,13 +293,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075021;
-            }
-        }// Dangerous Creatures Replica: Meer Eternal - Museum of Vesper
+        public override int LabelNumber => 1075021;// Dangerous Creatures Replica: Meer Eternal - Museum of Vesper
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -376,13 +322,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075022;
-            }
-        }// Dangerous Creatures Replica: Solen Queen - Museum of Vesper
+        public override int LabelNumber => 1075022;// Dangerous Creatures Replica: Solen Queen - Museum of Vesper
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -411,13 +351,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073265;
-            }
-        }// Museum of Vesper Special Achievement Replica
+        public override int LabelNumber => 1073265;// Museum of Vesper Special Achievement Replica
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

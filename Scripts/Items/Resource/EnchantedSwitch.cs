@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072893;
-            }
-        }// enchanted switch
+        public override int LabelNumber => 1072893;// enchanted switch
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

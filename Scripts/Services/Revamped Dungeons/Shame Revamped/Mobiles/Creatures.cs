@@ -135,13 +135,7 @@ namespace Server.Mobiles
                 c.DropItem(new ShameCrystal());
         }
 
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override int TreasureMapLevel => 2;
 
         public override void GenerateLoot()
         {
@@ -223,8 +217,8 @@ namespace Server.Mobiles
             SetWeaponAbility(WeaponAbility.ArmorIgnore);
         }
 
-        public override MeatType MeatType { get { return MeatType.Ribs; } }
-        public override int Meat { get { return 2; } }
+        public override MeatType MeatType => MeatType.Ribs;
+        public override int Meat => 2;
 
         public override void OnDeath(Container c)
         {
@@ -237,13 +231,7 @@ namespace Server.Mobiles
                 c.DropItem(new ShameCrystal());
         }
 
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override int TreasureMapLevel => 1;
 
         public override void GenerateLoot()
         {
@@ -651,13 +639,7 @@ namespace Server.Mobiles
                 c.DropItem(new ShameCrystal());
         }
 
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override int TreasureMapLevel => 2;
 
         public override void GenerateLoot()
         {
@@ -786,8 +768,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.EvalInt, 120, 130);
         }
 
-        public override MeatType MeatType { get { return MeatType.Ribs; } }
-        public override int Meat { get { return 1; } }
+        public override MeatType MeatType => MeatType.Ribs;
+        public override int Meat => 1;
 
         public override void AlterSpellDamageFrom(Mobile from, ref int damage)
         {
@@ -883,8 +865,8 @@ namespace Server.Mobiles
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
-        public override bool CanRummageCorpses { get { return true; } }
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool CanRummageCorpses => true;
+        public override bool AlwaysMurderer => true;
 
         public override void OnDeath(Container c)
         {
@@ -1029,8 +1011,8 @@ namespace Server.Mobiles
             Karma = -15000;
         }
 
-        public override bool CanRummageCorpses { get { return true; } }
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool CanRummageCorpses => true;
+        public override bool AlwaysMurderer => true;
 
         public override void OnDamagedBySpell(Mobile from)
         {
@@ -1165,8 +1147,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.Meditation, 100, 110);
         }
 
-        public override bool CanRummageCorpses { get { return true; } }
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool CanRummageCorpses => true;
+        public override bool AlwaysMurderer => true;
 
         public override void OnDamagedBySpell(Mobile from)
         {
@@ -1244,13 +1226,7 @@ namespace Server.Mobiles
                 c.DropItem(new ShameCrystal(3));
         }
 
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override int TreasureMapLevel => 2;
 
         public override void GenerateLoot()
         {
@@ -1387,9 +1363,9 @@ namespace Server.Mobiles
             return 0x28;
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
-        public override bool BleedImmune { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override bool AlwaysMurderer => true;
+        public override bool BleedImmune => true;
+        public override Poison PoisonImmune => Poison.Lethal;
 
         private DateTime NextTeleport { get; set; }
 
@@ -1517,9 +1493,9 @@ namespace Server.Mobiles
             Karma = -22500;
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
-        public override bool BleedImmune { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override bool AlwaysMurderer => true;
+        public override bool BleedImmune => true;
+        public override Poison PoisonImmune => Poison.Lethal;
 
         public override int GetAngerSound()
         {
@@ -1674,12 +1650,12 @@ namespace Server.Mobiles
             SetSpecialAbility(SpecialAbility.LifeLeech);
         }
 
-        public override bool AutoDispel { get { return true; } }
-        public override double AutoDispelChance { get { return 1.0; } }
-        public override int TreasureMapLevel { get { return 5; } }
-        public override double TreasureMapChance { get { return 1.0; } }
-        public override Poison HitPoison { get { return Poison.Lethal; } }
-        public override Poison PoisonImmune { get { return Poison.Parasitic; } }
+        public override bool AutoDispel => true;
+        public override double AutoDispelChance => 1.0;
+        public override int TreasureMapLevel => 5;
+        public override double TreasureMapChance => 1.0;
+        public override Poison HitPoison => Poison.Lethal;
+        public override Poison PoisonImmune => Poison.Parasitic;
 
         public override void OnDeath(Container c)
         {

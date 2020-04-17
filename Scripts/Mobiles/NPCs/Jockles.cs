@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class TheWayOfTheBladeQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* The way of The Blade */
-        public override object Title
-        {
-            get
-            {
-                return 1077658;
-            }
-        }
+        public override object Title => 1077658;
 
         /* Head East out of town and go to Old Haven. While wielding your sword, battle monster there until you have raised your 
         Swordsmanship skill to 50. *as you approach, you notice Jockles sizing you up with a skeptical look on his face* i can see 
@@ -33,47 +21,23 @@ namespace Server.Engines.Quests
         no fun to travel all the way down there just to find out you forgot your blade! When you feel that you've cut down enough 
         of those foul smelling things to learn how to handle a blade without hurting yourself, come back to me. If i think you've 
         improved enough, I'll give you something suited for a real warrior. */
-        public override object Description
-        {
-            get
-            {
-                return 1077661;
-            }
-        }
+        public override object Description => 1077661;
 
         /* Ha! I had a feeling you were a lily-livered pansy. You might have potential, but you're scared by a few smelly undead, 
         maybe it's better that you stay away from sharp objects. After all, you wouldn't want to hurt yourself swinging a sword. 
         If you change your mind, I might give you another chance...maybe. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1077662;
-            }
-        }
+        public override object Refuse => 1077662;
 
         /* *Jockles looks you up and down* Come on! You've got to work harder than that to get better. Now get out of here, go 
         kill some more of those undead to the east in Old Haven, and don't come back till you've got real skill. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1077663;
-            }
-        }
+        public override object Uncomplete => 1077663;
 
         /* Well, well, look at what we have here! You managed to do it after all. I have to say, I'm a little surprised that you 
         came back in one piece, but since you did. I've got a little something for you. This is a fine blade that served me well 
         in my younger days. Of course I've got much better swords at my disposal now, so I'll let you go ahead and use it under 
         one condition. Take goodcare of it and treat it with the respect that a fine sword deserves. You're one of the quickers 
         learners I've seen, but you still have a long way to go. Keep at it, and you'll get there someday. Happy hunting, kid. */
-        public override object Complete
-        {
-            get
-            {
-                return 1077665;
-            }
-        }
+        public override object Complete => 1077665;
 
         public TheWayOfTheBladeQuest()
             : base()
@@ -123,16 +87,10 @@ namespace Server.Engines.Quests
 
     public class Jockles : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(TheWayOfTheBladeQuest)
                 };
-            }
-        }
 
         [Constructable]
         public Jockles()

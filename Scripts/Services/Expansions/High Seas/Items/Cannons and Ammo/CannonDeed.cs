@@ -88,8 +88,8 @@ namespace Server.Items
 
     public class CulverinDeed : ShipCannonDeed
     {
-        public override CannonPower CannonType { get { return CannonPower.Light; } }
-        public override int LabelNumber { get { return 1095793; } }
+        public override CannonPower CannonType => CannonPower.Light;
+        public override int LabelNumber => 1095793;
 
         [Constructable]
         public CulverinDeed()
@@ -114,8 +114,8 @@ namespace Server.Items
 
     public class CarronadeDeed : ShipCannonDeed
     {
-        public override CannonPower CannonType { get { return CannonPower.Heavy; } }
-        public override int LabelNumber { get { return 1095794; } }
+        public override CannonPower CannonType => CannonPower.Heavy;
+        public override int LabelNumber => 1095794;
 
         [Constructable]
         public CarronadeDeed()
@@ -140,8 +140,8 @@ namespace Server.Items
 
     public class BlundercannonDeed : ShipCannonDeed
     {
-        public override CannonPower CannonType { get { return CannonPower.Massive; } }
-        public override int LabelNumber { get { return 1095794; } }
+        public override CannonPower CannonType => CannonPower.Massive;
+        public override int LabelNumber => 1095794;
 
         [Constructable]
         public BlundercannonDeed()
@@ -166,8 +166,8 @@ namespace Server.Items
 
     public class LightShipCannonDeed : ShipCannonDeed
     {
-        public override CannonPower CannonType { get { return CannonPower.Light; } }
-        public override int LabelNumber { get { return 1095793; } }
+        public override CannonPower CannonType => CannonPower.Light;
+        public override int LabelNumber => 1095793;
 
         [Constructable]
         public LightShipCannonDeed()
@@ -192,8 +192,8 @@ namespace Server.Items
 
     public class HeavyShipCannonDeed : ShipCannonDeed
     {
-        public override CannonPower CannonType { get { return CannonPower.Heavy; } }
-        public override int LabelNumber { get { return 1095794; } }
+        public override CannonPower CannonType => CannonPower.Heavy;
+        public override int LabelNumber => 1095794;
 
         [Constructable]
         public HeavyShipCannonDeed()

@@ -13,7 +13,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Volume { get; set; }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         [Constructable]
         public SkillMasteryPrimer(SkillName skill, int volume) : base(7714)

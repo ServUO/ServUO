@@ -9,8 +9,8 @@ namespace Server.Items
         private Dictionary<Mobile, DateTime> m_ResCooldown;
         private Dictionary<Mobile, DateTime> m_RewardCooldown;
 
-        public Dictionary<Mobile, DateTime> ResCooldown { get { return m_ResCooldown; } }
-        public Dictionary<Mobile, DateTime> RewardCooldown { get { return m_RewardCooldown; } }
+        public Dictionary<Mobile, DateTime> ResCooldown => m_ResCooldown;
+        public Dictionary<Mobile, DateTime> RewardCooldown => m_RewardCooldown;
 
         private static readonly int LuckBonus = 400;
 
@@ -20,8 +20,8 @@ namespace Server.Items
         private static readonly Dictionary<Mobile, DateTime> m_SpecialProtection = new Dictionary<Mobile, DateTime>();
         private static readonly Dictionary<Mobile, DateTime> m_BalmBoost = new Dictionary<Mobile, DateTime>();
 
-        public static Dictionary<Mobile, DateTime> SpecialProtection { get { return m_SpecialProtection; } }
-        public static Dictionary<Mobile, DateTime> BalmBoost { get { return m_BalmBoost; } }
+        public static Dictionary<Mobile, DateTime> SpecialProtection => m_SpecialProtection;
+        public static Dictionary<Mobile, DateTime> BalmBoost => m_BalmBoost;
 
         private static Timer m_Timer;
 
@@ -170,7 +170,7 @@ namespace Server.Items
             return false;
         }
 
-        public override bool HandlesOnMovement { get { return true; } }
+        public override bool HandlesOnMovement => true;
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {

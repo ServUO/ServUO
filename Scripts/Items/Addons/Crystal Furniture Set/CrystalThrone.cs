@@ -23,7 +23,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new CrystalThroneDeed(); } }
+        public override BaseAddonDeed Deed => new CrystalThroneDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -40,11 +40,11 @@ namespace Server.Items
 
     public class CrystalThroneDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1076666; } } // Crystal Throne
+        public override int LabelNumber => 1076666;  // Crystal Throne
 
-        public override bool ExcludeDeedHue { get { return true; } }
+        public override bool ExcludeDeedHue => true;
 
-        public override BaseAddon Addon { get { return new CrystalThroneAddon(_Direction); } }
+        public override BaseAddon Addon => new CrystalThroneAddon(_Direction);
 
         private DirectionType _Direction;
 

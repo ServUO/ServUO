@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class MasonryBook : Item
     {
-        public override int LabelNumber { get { return 1153527; } } // Making valuables with Stonecrafting
+        public override int LabelNumber => 1153527;  // Making valuables with Stonecrafting
 
         [Constructable]
         public MasonryBook()

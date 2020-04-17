@@ -41,55 +41,13 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool DeleteCorpseOnDeath
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool IsHouseSummonable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override double DispelDifficulty
-        {
-            get
-            {
-                return 125.0;
-            }
-        }
-        public override double DispelFocus
-        {
-            get
-            {
-                return 90.0;
-            }
-        }
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DeleteCorpseOnDeath => true;
+        public override bool IsHouseSummonable => true;
+        public override double DispelDifficulty => 125.0;
+        public override double DispelFocus => 90.0;
+        public override bool BleedImmune => true;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override bool AlwaysMurderer => true;
         public override void MoveToWorld(Point3D loc, Map map)
         {
             base.MoveToWorld(loc, map);

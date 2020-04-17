@@ -5,13 +5,7 @@ namespace Server.Mobiles
     [CorpseName("a pixie corpse")]
     public class SAPixie : BaseCreature
     {
-        public override bool InitialInnocent
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool InitialInnocent => true;
 
         [Constructable]
         public SAPixie()
@@ -65,27 +59,9 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.Gems, 2);
         }
 
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Spined;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override HideType HideType => HideType.Spined;
+        public override int Hides => 5;
+        public override int Meat => 1;
 
         public SAPixie(Serial serial)
             : base(serial)

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class RubyMace : DiamondMace
     {
-        public override int LabelNumber { get { return 1073529; } }// ruby mace
+        public override int LabelNumber => 1073529; // ruby mace
 
         [Constructable]
         public RubyMace()

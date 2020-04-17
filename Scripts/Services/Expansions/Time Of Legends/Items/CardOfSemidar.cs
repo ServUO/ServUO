@@ -16,13 +16,7 @@ namespace Server.Items
             Krampus
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1156395;
-            }
-        }
+        public override int LabelNumber => 1156395;
 
         private CardType _Type;
 

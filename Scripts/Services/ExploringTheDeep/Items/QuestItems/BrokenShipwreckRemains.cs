@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class BrokenShipwreckRemains : BaseDecayingItem
     {
-        public override int LabelNumber { get { return 1154216; } } // Broken Remains of a Shipwreck
+        public override int LabelNumber => 1154216;  // Broken Remains of a Shipwreck
 
         [Constructable]
         public BrokenShipwreckRemains() : this(1)
@@ -27,7 +27,7 @@ namespace Server.Items
             list.Add(1072351); // Quest Item
         }
 
-        public override int Lifespan { get { return 3600; } }
+        public override int Lifespan => 3600;
 
         public override void OnDoubleClick(Mobile from)
         {

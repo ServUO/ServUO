@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class PotionOfGloriousFortune : Item
     {
-        public override int LabelNumber { get { return 1158688; } } // Potion of Glorious Fortune
+        public override int LabelNumber => 1158688;  // Potion of Glorious Fortune
 
         public static int Bonus = 400;
 

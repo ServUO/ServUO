@@ -28,7 +28,7 @@ namespace Server.Items
 			1114828, // "True Love"
 		};
 
-        public override int LabelNumber { get { return m_Title; } }
+        public override int LabelNumber => m_Title;
 
         private int m_Title, m_Label;
 

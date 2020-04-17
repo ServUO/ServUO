@@ -126,27 +126,9 @@ namespace Server.Gumps
             }
         }
 
-        protected ImageTileButtonInfo[] Buttons
-        {
-            get
-            {
-                return this.m_Buttons;
-            }
-        }
-        protected virtual int XItems
-        {
-            get
-            {
-                return 2;
-            }
-        }
-        protected virtual int YItems
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        protected ImageTileButtonInfo[] Buttons => this.m_Buttons;
+        protected virtual int XItems => 2;
+        protected virtual int YItems => 5;
         public override void OnResponse(NetState sender, RelayInfo info)
         {
             int adjustedID = info.ButtonID - 100;

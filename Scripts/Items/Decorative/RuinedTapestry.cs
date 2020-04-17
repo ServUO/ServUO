@@ -2,7 +2,7 @@
 {
     public class RuinedTapestry : Item
     {
-        public override int LabelNumber { get { return 1096945; } } // ruined tapestry
+        public override int LabelNumber => 1096945;  // ruined tapestry
 
         [Constructable]
         public RuinedTapestry()

@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class TheScholarsHalo : Bandana
     {
-        public override int LabelNumber { get { return 1157354; } } // the scholar's halo
-        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber => 1157354;  // the scholar's halo
+        public override bool IsArtifact => true;
 
         [Constructable]
         public TheScholarsHalo()
@@ -20,13 +20,13 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance { get { return 15; } }
-        public override int BaseFireResistance { get { return 15; } }
-        public override int BaseColdResistance { get { return 15; } }
-        public override int BasePoisonResistance { get { return 15; } }
-        public override int BaseEnergyResistance { get { return 15; } }
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int BasePhysicalResistance => 15;
+        public override int BaseFireResistance => 15;
+        public override int BaseColdResistance => 15;
+        public override int BasePoisonResistance => 15;
+        public override int BaseEnergyResistance => 15;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public override void Serialize(GenericWriter writer)
         {

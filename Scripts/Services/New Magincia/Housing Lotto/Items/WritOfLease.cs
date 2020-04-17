@@ -5,7 +5,7 @@ namespace Server.Engines.NewMagincia
 {
     public class WritOfLease : Item
     {
-        public override int LabelNumber { get { return 1150489; } } // a writ of lease
+        public override int LabelNumber => 1150489;  // a writ of lease
 
         private MaginciaHousingPlot m_Plot;
         private DateTime m_Expires;
@@ -18,19 +18,19 @@ namespace Server.Engines.NewMagincia
         public MaginciaHousingPlot Plot { get { return m_Plot; } set { m_Plot = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime Expires { get { return m_Expires; } }
+        public DateTime Expires => m_Expires;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Expired { get { return m_Expired; } }
+        public bool Expired => m_Expired;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Map Facet { get { return m_Facet; } }
+        public Map Facet => m_Facet;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string Identifier { get { return m_Identifier; } }
+        public string Identifier => m_Identifier;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D RecallLoc { get { return m_RecallLoc; } }
+        public Point3D RecallLoc => m_RecallLoc;
 
         public WritOfLease(MaginciaHousingPlot plot)
             : base(5358)

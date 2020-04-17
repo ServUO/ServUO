@@ -10,7 +10,7 @@ namespace Server.Items
 {
     public class StrangeContraptionComponent : AddonComponent
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public StrangeContraptionComponent(int id, int hue = 0)
             : base(id)

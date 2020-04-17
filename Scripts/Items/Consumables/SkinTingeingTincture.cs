@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class SkinTingeingTincture : Item
     {
-        public override int LabelNumber { get { return 1114770; } } //Skin Tingeing Tincture
+        public override int LabelNumber => 1114770;  //Skin Tingeing Tincture
 
         [Constructable]
         public SkinTingeingTincture()

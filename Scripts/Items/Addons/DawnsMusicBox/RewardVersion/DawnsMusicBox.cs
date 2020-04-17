@@ -35,28 +35,10 @@ namespace Server.Items.MusicBox
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075198;
-            }
-        }// Dawn’s Music Box
+        public override int LabelNumber => 1075198;// Dawn’s Music Box
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Developer)]
-        public bool IsPlaying
-        {
-            get
-            {
-                return this.m_PlayingTimer != null;
-            }
-        }
-        public List<MusicName> Tracks
-        {
-            get
-            {
-                return this.m_Tracks;
-            }
-        }
+        public bool IsPlaying => this.m_PlayingTimer != null;
+        public List<MusicName> Tracks => this.m_Tracks;
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Developer)]
         public MusicName ActualSong
         {

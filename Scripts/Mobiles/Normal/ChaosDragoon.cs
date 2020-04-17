@@ -145,34 +145,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool AutoDispel
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool ShowFameTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool AutoDispel => true;
+        public override bool CanRummageCorpses => true;
+        public override bool AlwaysMurderer => true;
+        public override bool ShowFameTitle => false;
         public override int GetIdleSound()
         {
             return 0x2CE;

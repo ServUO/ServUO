@@ -10,7 +10,7 @@ namespace Server.Items
             Visible = false;
         }
 
-        public override bool HandlesOnMovement { get { return true; } }
+        public override bool HandlesOnMovement => true;
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {

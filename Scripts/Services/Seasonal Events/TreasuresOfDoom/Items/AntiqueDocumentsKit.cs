@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class AntiqueDocumentsKit : Item
     {
-        public override int LabelNumber { get { return 1155630; } } // Antique Documents Kit
+        public override int LabelNumber => 1155630;  // Antique Documents Kit
 
         [Constructable]
         public AntiqueDocumentsKit()

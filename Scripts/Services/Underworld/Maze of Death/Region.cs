@@ -199,7 +199,7 @@ namespace Server.Regions
         private static Rectangle2D m_TrapBounds = new Rectangle2D(1057, 990, 7, 71);
 
         private static List<Point3D> m_Path;
-        public static List<Point3D> Path { get { return m_Path; } }
+        public static List<Point3D> Path => m_Path;
 
         private static Rectangle2D m_Entrance = new Rectangle2D(1057, 1062, 7, 5);
 

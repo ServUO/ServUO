@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041607;
-            }
-        }// ringmail sleeves of the phoenix
+        public override int LabelNumber => 1041607;// ringmail sleeves of the phoenix
 
         public override void Serialize(GenericWriter writer)
         {

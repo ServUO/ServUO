@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class SpinedBloodwormBracers : GargishClothArms
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1113865; } } // Spined Bloodworm Bracers
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113865;  // Spined Bloodworm Bracers
 
         [Constructable]
         public SpinedBloodwormBracers()
@@ -21,55 +21,13 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int BasePhysicalResistance => 11;
+        public override int BaseFireResistance => 10;
+        public override int BaseColdResistance => 15;
+        public override int BasePoisonResistance => 15;
+        public override int BaseEnergyResistance => 10;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

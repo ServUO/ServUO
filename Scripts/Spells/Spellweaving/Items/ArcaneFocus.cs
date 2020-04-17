@@ -29,13 +29,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1032629;
-            }
-        }// Arcane Focus
+        public override int LabelNumber => 1032629;// Arcane Focus
         [CommandProperty(AccessLevel.GameMaster)]
         public int StrengthBonus
         {
@@ -48,20 +42,8 @@ namespace Server.Items
                 this.m_StrengthBonus = value;
             }
         }
-        public override TextDefinition InvalidTransferMessage
-        {
-            get
-            {
-                return 1073480;
-            }
-        }// Your arcane focus disappears.
-        public override bool Nontransferable
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override TextDefinition InvalidTransferMessage => 1073480;// Your arcane focus disappears.
+        public override bool Nontransferable => true;
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);

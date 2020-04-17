@@ -972,9 +972,9 @@ namespace Server.Engines.UOStore
     {
         private static readonly List<Item> _DisplayItems = new List<Item>();
 
-        public override bool Decays { get { return false; } }
+        public override bool Decays => false;
 
-        public override string DefaultName { get { return "Ultima Store Display Container"; } }
+        public override string DefaultName => "Ultima Store Display Container";
 
         public UltimaStoreContainer()
             : base(0) // No Draw

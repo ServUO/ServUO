@@ -16,20 +16,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override VendorShoeType ShoeType
-        {
-            get
-            {
-                return Utility.RandomBool() ? VendorShoeType.Sandals : VendorShoeType.Shoes;
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        public override VendorShoeType ShoeType => Utility.RandomBool() ? VendorShoeType.Sandals : VendorShoeType.Shoes;
+        protected override List<SBInfo> SBInfos => this.m_SBInfos;
         public override void InitSBInfo()
         {
             this.m_SBInfos.Add(new SBInnKeeper());

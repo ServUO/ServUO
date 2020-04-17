@@ -25,13 +25,7 @@ namespace Server.Items
         {
         }
 
-        public override CraftSystem CraftSystem
-        {
-            get
-            {
-                return DefTinkering.CraftSystem;
-            }
-        }
+        public override CraftSystem CraftSystem => DefTinkering.CraftSystem;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -102,13 +96,7 @@ namespace Server.Items
         {
         }
 
-        public override CraftSystem CraftSystem
-        {
-            get
-            {
-                return DefTinkering.CraftSystem;
-            }
-        }
+        public override CraftSystem CraftSystem => DefTinkering.CraftSystem;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

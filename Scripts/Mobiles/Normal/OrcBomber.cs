@@ -61,22 +61,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override InhumanSpeech SpeechType
-        {
-            get
-            {
-                return InhumanSpeech.Orc;
-            }
-        }
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override InhumanSpeech SpeechType => InhumanSpeech.Orc;
+        public override bool CanRummageCorpses => true;
 
-        public override TribeType Tribe { get { return TribeType.Orc; } }
+        public override TribeType Tribe => TribeType.Orc;
 
         public override void GenerateLoot()
         {

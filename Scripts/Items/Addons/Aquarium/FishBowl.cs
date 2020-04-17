@@ -19,21 +19,9 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074499;
-            }
-        }// A fish bowl
+        public override int LabelNumber => 1074499;// A fish bowl
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Empty
-        {
-            get
-            {
-                return (this.Items.Count == 0);
-            }
-        }
+        public bool Empty => (this.Items.Count == 0);
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseFish Fish
         {
@@ -48,13 +36,7 @@ namespace Server.Items
                 return null;
             }
         }
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 2.0;
-            }
-        }
+        public override double DefaultWeight => 2.0;
         public override void OnDoubleClick(Mobile from)
         {
         }

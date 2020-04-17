@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class PlumTreeAddon : BaseFruitTreeAddon
     {
-        public override BaseAddonDeed Deed { get { return new PlumTreeAddonDeed(); } }
+        public override BaseAddonDeed Deed => new PlumTreeAddonDeed();
 
         [Constructable]
         public PlumTreeAddon()
@@ -11,13 +11,7 @@ namespace Server.Items
             AddComponent(new LocalizedAddonComponent(0x9E39, 1029965), 0, 0, 0);
         }
 
-        public override Item Fruit
-        {
-            get
-            {
-                return new Plum();
-            }
-        }
+        public override Item Fruit => new Plum();
 
         public PlumTreeAddon(Serial serial)
             : base(serial)
@@ -41,8 +35,8 @@ namespace Server.Items
 
     public class PlumTreeAddonDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1157312; } } // Plum Tree
-        public override BaseAddon Addon { get { return new PlumTreeAddon(); } }
+        public override int LabelNumber => 1157312;  // Plum Tree
+        public override BaseAddon Addon => new PlumTreeAddon();
 
         [Constructable]
         public PlumTreeAddonDeed()

@@ -22,7 +22,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -53,20 +53,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041114;
-            }
-        }// A deed for a potted plant.
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public override int LabelNumber => 1041114;// A deed for a potted plant.
+        public override double DefaultWeight => 1.0;
         public override void OnDoubleClick(Mobile from)
         {
             if (this.IsChildOf(from.Backpack))

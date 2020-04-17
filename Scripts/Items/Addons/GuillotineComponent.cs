@@ -17,13 +17,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1024656;
-            }
-        }// Guillotine
+        public override int LabelNumber => 1024656;// Guillotine
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -53,13 +47,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new GuillotineDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new GuillotineDeed();
         public override void OnComponentUsed(AddonComponent c, Mobile from)
         {
             if (from.InRange(this.Location, 2))
@@ -170,20 +158,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new GuillotineAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1024656;
-            }
-        }// Guillotine
+        public override BaseAddon Addon => new GuillotineAddon();
+        public override int LabelNumber => 1024656;// Guillotine
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

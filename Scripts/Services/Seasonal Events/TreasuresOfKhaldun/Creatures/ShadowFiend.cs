@@ -68,20 +68,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool DeleteCorpseOnDeath
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DeleteCorpseOnDeath => true;
+        public override bool CanRummageCorpses => true;
         public override int GetIdleSound()
         {
             return 0x37A;

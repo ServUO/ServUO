@@ -13,13 +13,7 @@ namespace Server.Spells
         }
 
         public abstract SpellCircle Circle { get; }
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromMilliseconds(((4 + (int)Circle) * CastDelaySecondsPerTick) * 1000);
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromMilliseconds(((4 + (int)Circle) * CastDelaySecondsPerTick) * 1000);
         public override bool ConsumeReagents()
         {
             if (base.ConsumeReagents())

@@ -11,9 +11,9 @@ namespace Server.Items
             GiftGiving.Register(new HolidayGiftGiver2019());
         }
 
-        public override DateTime Start { get { return new DateTime(2019, 12, 03); } }
-        public override DateTime Finish { get { return new DateTime(2020, 01, 03); } }
-        public override TimeSpan MinimumAge { get { return TimeSpan.FromDays(30); } }
+        public override DateTime Start => new DateTime(2019, 12, 03);
+        public override DateTime Finish => new DateTime(2020, 01, 03);
+        public override TimeSpan MinimumAge => TimeSpan.FromDays(30);
 
         public override void GiveGift(Mobile mob)
         {
@@ -41,7 +41,7 @@ namespace Server.Items
 
     public class HolidayGiftToken2019 : Item, IRewardOption
     {
-        public override int LabelNumber { get { return 1159257; } } // 2019 Holiday Gift Token
+        public override int LabelNumber => 1159257;  // 2019 Holiday Gift Token
 
         public HolidayGift2019 Gift { get; set; }
 

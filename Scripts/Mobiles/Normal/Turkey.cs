@@ -44,10 +44,10 @@ namespace Server.Mobiles
             m_NextGobble = DateTime.UtcNow;
         }
 
-        public override int Meat { get { return 1; } }
-        public override MeatType MeatType { get { return MeatType.Bird; } }
-        public override FoodType FavoriteFood { get { return FoodType.GrainsAndHay; } }
-        public override int Feathers { get { return 25; } }
+        public override int Meat => 1;
+        public override MeatType MeatType => MeatType.Bird;
+        public override FoodType FavoriteFood => FoodType.GrainsAndHay;
+        public override int Feathers => 25;
 
         public override int GetIdleSound()
         {

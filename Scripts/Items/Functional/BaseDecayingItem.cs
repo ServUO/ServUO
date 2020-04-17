@@ -7,8 +7,8 @@ namespace Server.Items
         private int m_Lifespan;
         private Timer m_Timer;
 
-        public virtual int Lifespan { get { return 0; } }
-        public virtual bool UseSeconds { get { return true; } }
+        public virtual int Lifespan => 0;
+        public virtual bool UseSeconds => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimeLeft

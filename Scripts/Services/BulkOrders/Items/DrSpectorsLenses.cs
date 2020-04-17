@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class DrSpectorsLenses : Glasses
     {
-        public override int LabelNumber { get { return 1156991; } } // Dr. Spector's lenses
-        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber => 1156991;  // Dr. Spector's lenses
+        public override bool IsArtifact => true;
 
         [Constructable]
         public DrSpectorsLenses()
@@ -15,13 +15,13 @@ namespace Server.Items
             Attributes.LowerRegCost = 10;
         }
 
-        public override int BasePhysicalResistance { get { return 5; } }
-        public override int BaseFireResistance { get { return 10; } }
-        public override int BaseColdResistance { get { return 14; } }
-        public override int BasePoisonResistance { get { return 20; } }
-        public override int BaseEnergyResistance { get { return 20; } }
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int BasePhysicalResistance => 5;
+        public override int BaseFireResistance => 10;
+        public override int BaseColdResistance => 14;
+        public override int BasePoisonResistance => 20;
+        public override int BaseEnergyResistance => 20;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public DrSpectorsLenses(Serial serial)
             : base(serial)

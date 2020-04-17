@@ -44,7 +44,7 @@ namespace Server.Items
             SetSecureLevelEntry.AddTo(from, this, list);
         }
 
-        public override int LabelNumber { get { return 1157654; } } // Serpent's Jawbone
+        public override int LabelNumber => 1157654;  // Serpent's Jawbone
 
         [Constructable]
         public SerpentsJawbone()
@@ -52,7 +52,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public override void OnDoubleClick(Mobile from)
         {

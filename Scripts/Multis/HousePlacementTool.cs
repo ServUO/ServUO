@@ -575,99 +575,21 @@ namespace Server.Items
             FillTable(m_CustomHouseContest);
         }
 
-        public static HousePlacementEntry[] HousesEJ
-        {
-            get
-            {
-                return m_HousesEJ;
-            }
-        }
+        public static HousePlacementEntry[] HousesEJ => m_HousesEJ;
 
-        public static HousePlacementEntry[] ClassicHouses
-        {
-            get
-            {
-                return m_ClassicHouses;
-            }
-        }
-        public static HousePlacementEntry[] TwoStoryFoundations
-        {
-            get
-            {
-                return m_TwoStoryFoundations;
-            }
-        }
-        public static HousePlacementEntry[] ThreeStoryFoundations
-        {
-            get
-            {
-                return m_ThreeStoryFoundations;
-            }
-        }
-        public static HousePlacementEntry[] CustomHouseContest
-        {
-            get
-            {
-                return m_CustomHouseContest;
-            }
-        }
+        public static HousePlacementEntry[] ClassicHouses => m_ClassicHouses;
+        public static HousePlacementEntry[] TwoStoryFoundations => m_TwoStoryFoundations;
+        public static HousePlacementEntry[] ThreeStoryFoundations => m_ThreeStoryFoundations;
+        public static HousePlacementEntry[] CustomHouseContest => m_CustomHouseContest;
 
-        public Type Type
-        {
-            get
-            {
-                return m_Type;
-            }
-        }
-        public int Description
-        {
-            get
-            {
-                return m_Description;
-            }
-        }
-        public int Storage
-        {
-            get
-            {
-                return BaseHouse.NewVendorSystem ? m_NewStorage : m_Storage;
-            }
-        }
-        public int Lockdowns
-        {
-            get
-            {
-                return BaseHouse.NewVendorSystem ? m_NewLockdowns : m_Lockdowns;
-            }
-        }
-        public int Vendors
-        {
-            get
-            {
-                return m_Vendors;
-            }
-        }
-        public int Cost
-        {
-            get
-            {
-                return m_Cost;
-            }
-        }
-        public int MultiID
-        {
-            get
-            {
-                return m_MultiID;
-            }
-        }
-        public Point3D Offset
-        {
-            get
-            {
-                return m_Offset;
-            }
-        }
+        public Type Type => m_Type;
+        public int Description => m_Description;
+        public int Storage => BaseHouse.NewVendorSystem ? m_NewStorage : m_Storage;
+        public int Lockdowns => BaseHouse.NewVendorSystem ? m_NewLockdowns : m_Lockdowns;
+        public int Vendors => m_Vendors;
+        public int Cost => m_Cost;
+        public int MultiID => m_MultiID;
+        public Point3D Offset => m_Offset;
         public static HousePlacementEntry Find(BaseHouse house)
         {
             object obj = m_Table[house.GetType()];

@@ -8,29 +8,29 @@ namespace Server.Engines.Quests
         private readonly object _Title = 1158197;
 
         /* A Visit to Castle Blackthorn */
-        public override object Title { get { return _Title; } }
+        public override object Title => _Title;
 
         /*It seems that Castle Blackthorn has some secrets that are worth investigating. Your history on how Blackthorn even became 
          * king is a little fuzzy. You decide a visit to Castle Blackthorn would be worthwhile.*/
-        public override object Description { get { return 1158198; } }
+        public override object Description => 1158198;
 
         /* You decide against accepting the quest. */
-        public override object Refuse { get { return 1158130; } }
+        public override object Refuse => 1158130;
 
         /* Visit Castle Blackthorn in Northern Britain. */
-        public override object Uncomplete { get { return 1158199; } }
+        public override object Uncomplete => 1158199;
 
         /* As you cross the bridge Blackthorn's massive castle towers up from the terrain it sits atop.  The jet-black stone of her walls
          * are foreboding, yet invite your curiosity. Your eyes scan the courtyard and fixate on an incredibly handsome man. You've never 
          * seen such beauty and style! Their exquisitely apportioned jester suit perfectly toes the line between comedic expression and 
          * fashion. His hat is masterfully crafted with golden bells matching radiant jewelry that jingles as he swigs from a bottle. 
          * You decide to follow the jester, who is no doubt headed for the castle bar. */
-        public override object Complete { get { return 1158203; } }
+        public override object Complete => 1158203;
 
-        public override int CompleteMessage { get { return 1156585; } } // You've completed a quest!
+        public override int CompleteMessage => 1156585;  // You've completed a quest!
 
-        public override int AcceptSound { get { return 0x2E8; } }
-        public override bool DoneOnce { get { return true; } }
+        public override int AcceptSound => 0x2E8;
+        public override bool DoneOnce => true;
 
         public AVisitToCastleBlackthornQuest()
         {
@@ -55,7 +55,7 @@ namespace Server.Engines.Quests
 
         private class InternalObjective : BaseObjective
         {
-            public override object ObjectiveDescription { get { return Quest.Uncomplete; } }
+            public override object ObjectiveDescription => Quest.Uncomplete;
 
             public InternalObjective()
                 : base(1)

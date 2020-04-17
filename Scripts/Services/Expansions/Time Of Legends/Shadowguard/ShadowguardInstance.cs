@@ -24,10 +24,10 @@ namespace Server.Engines.Shadowguard
         public ShadowguardController Controller { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool InUse { get { return Encounter != null; } }
+        public bool InUse => Encounter != null;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsRoof { get { return Index >= 13; } }
+        public bool IsRoof => Index >= 13;
 
         public override string ToString()
         {

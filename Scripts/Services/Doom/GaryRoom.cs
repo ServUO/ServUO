@@ -67,13 +67,7 @@ namespace Server.Engines.Doom
             typeof(SkeletalDragon), typeof(VampireBat), typeof(WailingBanshee), typeof(WandererOfTheVoid)
         };
 
-        public TimeSpan RollDelay
-        {
-            get
-            {
-                return TimeSpan.FromMinutes(Utility.RandomMinMax(12, 15));
-            }
-        }
+        public TimeSpan RollDelay => TimeSpan.FromMinutes(Utility.RandomMinMax(12, 15));
 
         public GaryRegion()
             : base("Gary Region", Map.Malas, Region.Find(_GaryLoc, Map.Malas), _Bounds)
@@ -489,7 +483,7 @@ namespace Server.Engines.Doom
 
     public class Sapphired20 : Item
     {
-        public override int LabelNumber { get { return 1080096; } } // Star Sapphire d20
+        public override int LabelNumber => 1080096;  // Star Sapphire d20
 
         [Constructable]
         public Sapphired20()
@@ -627,7 +621,7 @@ namespace Server.Engines.Doom
             }
         }
 
-        public override int LabelNumber { get { return 1080085; } } // The Rulebook
+        public override int LabelNumber => 1080085;  // The Rulebook
 
         [Constructable]
         public UOBoard() : base(0xFAA)

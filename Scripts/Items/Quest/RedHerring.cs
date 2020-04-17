@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class RedHerring : BigFish
     {
-        public override int LabelNumber { get { return 1095046; } } // Britain Crown Fish
+        public override int LabelNumber => 1095046;  // Britain Crown Fish
 
         [Constructable]
         public RedHerring()

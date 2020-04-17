@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class AcidPopper : Item
     {
-        public override int LabelNumber { get { return 1095058; } } // Acid Popper
+        public override int LabelNumber => 1095058;  // Acid Popper
 
         [Constructable]
         public AcidPopper()

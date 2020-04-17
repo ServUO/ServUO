@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class WolfSpiderCostume : BaseCostume
     {
-        public override string CreatureName { get { return "wolf spider"; } }
+        public override string CreatureName => "wolf spider";
 
         [Constructable]
         public WolfSpiderCostume() : base()
@@ -10,13 +10,7 @@ namespace Server.Items
             CostumeBody = 736;
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1114232;
-            }
-        }// wolf spider costume
+        public override int LabelNumber => 1114232;// wolf spider costume
 
         public WolfSpiderCostume(Serial serial) : base(serial)
         {

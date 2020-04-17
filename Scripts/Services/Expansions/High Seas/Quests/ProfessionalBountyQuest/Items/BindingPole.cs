@@ -20,7 +20,7 @@ namespace Server.Items
             set { m_Galleon = value; }
         }
 
-        public override int LabelNumber { get { return 1116718; } }
+        public override int LabelNumber => 1116718;
 
         public override void Delete()
         {

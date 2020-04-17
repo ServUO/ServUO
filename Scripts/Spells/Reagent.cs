@@ -212,12 +212,6 @@ namespace Server.Spells
                 m_Types[16] = value;
             }
         }
-        public Type[] Types
-        {
-            get
-            {
-                return m_Types;
-            }
-        }
+        public Type[] Types => m_Types;
     }
 }

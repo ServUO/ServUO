@@ -3,9 +3,9 @@ namespace Server.Items
     [Flipable(0x1F03, 0x1F04)]
     public class ConjureresGarb : BaseOuterTorso
     {
-        public override bool CanBeWornByGargoyles { get { return true; } }
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1114052; } }// Conjurer's Garb
+        public override bool CanBeWornByGargoyles => true;
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1114052; // Conjurer's Garb
 
         [Constructable]
         public ConjureresGarb()

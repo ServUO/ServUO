@@ -4,11 +4,11 @@ namespace Server.Items
 {
     public class ElvenDresserAddonSouth : BaseAddonContainer
     {
-        public override BaseAddonContainerDeed Deed { get { return new ElvenDresserDeedSouth(); } }
+        public override BaseAddonContainerDeed Deed => new ElvenDresserDeedSouth();
 
-        public override int DefaultGumpID { get { return 0x51; } }
-        public override int DefaultDropSound { get { return 0x42; } }
-        public override bool RetainDeedHue { get { return true; } }
+        public override int DefaultGumpID => 0x51;
+        public override int DefaultDropSound => 0x42;
+        public override bool RetainDeedHue => true;
 
         [Constructable]
         public ElvenDresserAddonSouth()
@@ -39,8 +39,8 @@ namespace Server.Items
 
     public class ElvenDresserDeedSouth : BaseAddonContainerDeed
     {
-        public override BaseAddonContainer Addon { get { return new ElvenDresserAddonSouth(); } }
-        public override int LabelNumber { get { return 1072864; } }
+        public override BaseAddonContainer Addon => new ElvenDresserAddonSouth();
+        public override int LabelNumber => 1072864;
 
         [Constructable]
         public ElvenDresserDeedSouth()
@@ -81,13 +81,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new ElvenDresserSouthDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new ElvenDresserSouthDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -135,20 +129,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new ElvenDresserSouthAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072864;
-            }
-        }// elven dresser (south)
+        public override BaseAddon Addon => new ElvenDresserSouthAddon();
+        public override int LabelNumber => 1072864;// elven dresser (south)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

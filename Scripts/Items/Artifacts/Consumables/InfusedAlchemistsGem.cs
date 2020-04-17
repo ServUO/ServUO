@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class InfusedAlchemistsGem : Item
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public InfusedAlchemistsGem()
             : base(0x1EA7)
@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113006;
-            }
-        }
+        public override int LabelNumber => 1113006;
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);

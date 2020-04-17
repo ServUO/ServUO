@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class SwiftAsAnArrowQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* Swift as an Arrow */
-        public override object Title
-        {
-            get
-            {
-                return 1078201;
-            }
-        }
+        public override object Title => 1078201;
 
         /* Head East out of town and go to Old Haven. While wielding your bow or crossbow, battle monster there until you have 
         raised your Archery skill to 50. Well met, friend. Imagine yourself in a distant grove of trees, You raise your bow, 
@@ -33,42 +21,18 @@ namespace Server.Engines.Quests
         Archery shop in town. You can also make your own arrows with the Bowcraft/Fletching skill. You will need fletcher's 
         tools, wood to turn into sharft's, and feathers to make arrows or bolts. Come back to me after you have achived the 
         rank of Apprentice Archer, and i will reward you with a fine Archery weapon. */
-        public override object Description
-        {
-            get
-            {
-                return 1078205;
-            }
-        }
+        public override object Description => 1078205;
 
         /* I understand that Archery may not be for you. Feel free to visit me in the future if you change your mind. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1078206;
-            }
-        }
+        public override object Refuse => 1078206;
 
         /* You're doing great as an Archer! however, you need more practice. Head East out of town and go to Old Haven. come 
         back to me after you have acived the rank of Apprentice Archer. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1078207;
-            }
-        }
+        public override object Uncomplete => 1078207;
 
         /* Congratulation! I want to reward you for your accomplishment. Take this composite bow. It is called " Heartseeker". 
         With it, you will shoot with swiftness, precision, and power. I hope "Heartseeker" serves you well. */
-        public override object Complete
-        {
-            get
-            {
-                return 1078209;
-            }
-        }
+        public override object Complete => 1078209;
 
         public SwiftAsAnArrowQuest()
             : base()
@@ -118,16 +82,10 @@ namespace Server.Engines.Quests
 
     public class Robyn : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(SwiftAsAnArrowQuest)
                 };
-            }
-        }
 
         public override void InitSBInfo()
         {

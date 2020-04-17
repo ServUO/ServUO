@@ -7,7 +7,7 @@ namespace Server.Engines.Quests
     public class MysticsJourneyQuest : BaseQuest
     {
         /* A Mystic's Journey */
-        public override object Title { get { return 1112561; } }
+        public override object Title => 1112561;
 
         /* Obtain the following Mysticism reagents: Dragon's Blood and Daemon Bone - and give
 		 * them to Ortlem for your reward.<br><center>------</center><br>I am called Ortlem.
@@ -17,21 +17,21 @@ namespace Server.Engines.Quests
 		 * Dragon's Blood and Daemon Bones in Ter-Mur. Dragon's Blood is gathered by skinning
 		 * reptilian creatures. Daemon Bones will appear on the corpse of any void demons
 		 * that you slay.<BR><BR>Return to me with these reagents, and I will reward you. */
-        public override object Description { get { return 1112563; } }
+        public override object Description => 1112563;
 
         /* I understand your fear. I wish you no harm. If I must, I am willing to find
 		 * another to help us. */
-        public override object Refuse { get { return 1112564; } }
+        public override object Refuse => 1112564;
 
         /* Good to see you, again. I am glad no harm has come to you in collecting the four
 		 * rare reagents of Mysticism. Please obtain them soon. They are important to the
 		 * protection of Ter-Mur. */
-        public override object Uncomplete { get { return 1112565; } }
+        public override object Uncomplete => 1112565;
 
         /* I appreciate your work in collecting these reagents. I am glad to be able to
 		 * count on you. Be assured that these reagents will help continue the protection
 		 * of Ter-Mur. As promised, here is your reward. */
-        public override object Complete { get { return 1112566; } }
+        public override object Complete => 1112566;
 
         public MysticsJourneyQuest()
         {
@@ -67,9 +67,9 @@ namespace Server.Engines.Quests
     public class Ortlem : MondainQuester
     {
         private static readonly Type[] m_Quests = new Type[] { typeof(MysticsJourneyQuest) };
-        public override Type[] Quests { get { return m_Quests; } }
+        public override Type[] Quests => m_Quests;
 
-        public override bool IsActiveVendor { get { return true; } }
+        public override bool IsActiveVendor => true;
 
         public override void InitSBInfo()
         {

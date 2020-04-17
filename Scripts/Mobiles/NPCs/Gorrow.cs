@@ -14,47 +14,17 @@ namespace Server.Engines.Quests
         }
 
         /* Pointy Ears */
-        public override object Title
-        {
-            get
-            {
-                return 1074640;
-            }
-        }
+        public override object Title => 1074640;
         /* I've heard ... there's some that will pay a good bounty for pointed ears, much like we used to pay for each 
         wolf skin.  I've got nothing personal against these elves.  It's just business.  You want in on this?  I'm not 
         fussy who I work with. */
-        public override object Description
-        {
-            get
-            {
-                return 1074641;
-            }
-        }
+        public override object Description => 1074641;
         /* Suit yourself. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074642;
-            }
-        }
+        public override object Refuse => 1074642;
         /* I can't pay a bounty if you don't bring bag the ears. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074643;
-            }
-        }
+        public override object Uncomplete => 1074643;
         /* Here to collect on a bounty? */
-        public override object Complete
-        {
-            get
-            {
-                return 1074644;
-            }
-        }
+        public override object Complete => 1074644;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -84,18 +54,12 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(CommonBrigandsQuest),
                     typeof(ForkedTongueQuest),
                     typeof(PointyEarsQuest),
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

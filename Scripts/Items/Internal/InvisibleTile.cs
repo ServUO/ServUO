@@ -4,10 +4,7 @@ namespace Server.Items
 {
     public class InvisibleTile : Item
     {
-        public override string DefaultName
-        {
-            get { return "Invisible Tile"; }
-        }
+        public override string DefaultName => "Invisible Tile";
 
         [Constructable]
         public InvisibleTile()

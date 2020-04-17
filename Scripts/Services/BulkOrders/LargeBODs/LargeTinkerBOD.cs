@@ -6,7 +6,7 @@ namespace Server.Engines.BulkOrders
 {
     public class LargeTinkerBOD : LargeBOD
     {
-        public override BODType BODType { get { return BODType.Tinkering; } }
+        public override BODType BODType => BODType.Tinkering;
 
         private GemType _GemType;
 

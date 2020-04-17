@@ -56,7 +56,7 @@ namespace Server.Items
         public Map TargetMap { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsMinerMap { get { return _Resource >= CraftResource.Iron && _Resource <= CraftResource.Valorite; } }
+        public bool IsMinerMap => _Resource >= CraftResource.Iron && _Resource <= CraftResource.Valorite;
 
         [Constructable]
         public HarvestMap(CraftResource resource)

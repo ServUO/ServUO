@@ -28,13 +28,7 @@ namespace Server.Items
         {
         }
 
-        public override CraftSystem CraftSystem
-        {
-            get
-            {
-                return DefBlacksmithy.CraftSystem;
-            }
-        }
+        public override CraftSystem CraftSystem => DefBlacksmithy.CraftSystem;
         public override int LabelNumber
         {
             get

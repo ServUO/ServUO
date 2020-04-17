@@ -22,7 +22,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new FluffySpongeDeed(); } }
+        public override BaseAddonDeed Deed => new FluffySpongeDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -39,7 +39,7 @@ namespace Server.Items
 
     public class FluffySpongeDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1098377; } } // Fluffy Sponge
+        public override int LabelNumber => 1098377;  // Fluffy Sponge
 
         [Constructable]
         public FluffySpongeDeed()
@@ -52,7 +52,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon { get { return new FluffySpongeAddon(); } }
+        public override BaseAddon Addon => new FluffySpongeAddon();
 
         public override void Serialize(GenericWriter writer)
         {

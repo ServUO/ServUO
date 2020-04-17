@@ -61,35 +61,26 @@ namespace Server.Items
             return false;
         }
 
-        public override Race RequiredRace { get { return Race.Gargoyle; } }
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
 
         public GargishClothArmsArmor(Serial serial)
             : base(serial)
         {
         }
 
-        public override int BasePhysicalResistance { get { return 5; } }
-        public override int BaseFireResistance { get { return 7; } }
-        public override int BaseColdResistance { get { return 6; } }
-        public override int BasePoisonResistance { get { return 6; } }
-        public override int BaseEnergyResistance { get { return 6; } }
-        public override int InitMinHits { get { return 40; } }
-        public override int InitMaxHits { get { return 50; } }
-        public override int StrReq { get { return 20; } }
+        public override int BasePhysicalResistance => 5;
+        public override int BaseFireResistance => 7;
+        public override int BaseColdResistance => 6;
+        public override int BasePoisonResistance => 6;
+        public override int BaseEnergyResistance => 6;
+        public override int InitMinHits => 40;
+        public override int InitMaxHits => 50;
+        public override int StrReq => 20;
 
-        public override ArmorMaterialType MaterialType
-        {
-            get { return ArmorMaterialType.Leather; }
-        }
-        public override CraftResource DefaultResource
-        {
-            get { return CraftResource.None; }
-        }
-        public override ArmorMeditationAllowance DefMedAllowance
-        {
-            get { return ArmorMeditationAllowance.All; }
-        }
+        public override ArmorMaterialType MaterialType => ArmorMaterialType.Leather;
+        public override CraftResource DefaultResource => CraftResource.None;
+        public override ArmorMeditationAllowance DefMedAllowance => ArmorMeditationAllowance.All;
 
         public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
@@ -201,26 +192,26 @@ namespace Server.Items
             return false;
         }
 
-        public override Race RequiredRace { get { return Race.Gargoyle; } }
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
 
         public GargishClothChestArmor(Serial serial)
             : base(serial)
         {
         }
 
-        public override int BasePhysicalResistance { get { return 5; } }
-        public override int BaseFireResistance { get { return 7; } }
-        public override int BaseColdResistance { get { return 6; } }
-        public override int BasePoisonResistance { get { return 6; } }
-        public override int BaseEnergyResistance { get { return 6; } }
-        public override int InitMinHits { get { return 40; } }
-        public override int InitMaxHits { get { return 50; } }
-        public override int StrReq { get { return 25; } }
+        public override int BasePhysicalResistance => 5;
+        public override int BaseFireResistance => 7;
+        public override int BaseColdResistance => 6;
+        public override int BasePoisonResistance => 6;
+        public override int BaseEnergyResistance => 6;
+        public override int InitMinHits => 40;
+        public override int InitMaxHits => 50;
+        public override int StrReq => 25;
 
-        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Leather; } }
-        public override CraftResource DefaultResource { get { return CraftResource.None; } }
-        public override ArmorMeditationAllowance DefMedAllowance { get { return ArmorMeditationAllowance.All; } }
+        public override ArmorMaterialType MaterialType => ArmorMaterialType.Leather;
+        public override CraftResource DefaultResource => CraftResource.None;
+        public override ArmorMeditationAllowance DefMedAllowance => ArmorMeditationAllowance.All;
 
         public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
@@ -333,26 +324,26 @@ namespace Server.Items
             return false;
         }
 
-        public override Race RequiredRace { get { return Race.Gargoyle; } }
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
 
         public GargishClothLegsArmor(Serial serial)
             : base(serial)
         {
         }
 
-        public override int BasePhysicalResistance { get { return 5; } }
-        public override int BaseFireResistance { get { return 7; } }
-        public override int BaseColdResistance { get { return 6; } }
-        public override int BasePoisonResistance { get { return 6; } }
-        public override int BaseEnergyResistance { get { return 6; } }
-        public override int InitMinHits { get { return 40; } }
-        public override int InitMaxHits { get { return 50; } }
-        public override int StrReq { get { return 20; } }
+        public override int BasePhysicalResistance => 5;
+        public override int BaseFireResistance => 7;
+        public override int BaseColdResistance => 6;
+        public override int BasePoisonResistance => 6;
+        public override int BaseEnergyResistance => 6;
+        public override int InitMinHits => 40;
+        public override int InitMaxHits => 50;
+        public override int StrReq => 20;
 
-        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Leather; } }
-        public override CraftResource DefaultResource { get { return CraftResource.None; } }
-        public override ArmorMeditationAllowance DefMedAllowance { get { return ArmorMeditationAllowance.All; } }
+        public override ArmorMaterialType MaterialType => ArmorMaterialType.Leather;
+        public override CraftResource DefaultResource => CraftResource.None;
+        public override ArmorMeditationAllowance DefMedAllowance => ArmorMeditationAllowance.All;
 
         public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
@@ -465,8 +456,8 @@ namespace Server.Items
             return false;
         }
 
-        public override Race RequiredRace { get { return Race.Gargoyle; } }
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
 
         public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
@@ -478,18 +469,18 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance { get { return 5; } }
-        public override int BaseFireResistance { get { return 7; } }
-        public override int BaseColdResistance { get { return 6; } }
-        public override int BasePoisonResistance { get { return 6; } }
-        public override int BaseEnergyResistance { get { return 6; } }
-        public override int InitMinHits { get { return 40; } }
-        public override int InitMaxHits { get { return 50; } }
-        public override int StrReq { get { return 20; } }
+        public override int BasePhysicalResistance => 5;
+        public override int BaseFireResistance => 7;
+        public override int BaseColdResistance => 6;
+        public override int BasePoisonResistance => 6;
+        public override int BaseEnergyResistance => 6;
+        public override int InitMinHits => 40;
+        public override int InitMaxHits => 50;
+        public override int StrReq => 20;
 
-        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Leather; } }
-        public override CraftResource DefaultResource { get { return CraftResource.None; } }
-        public override ArmorMeditationAllowance DefMedAllowance { get { return ArmorMeditationAllowance.All; } }
+        public override ArmorMaterialType MaterialType => ArmorMaterialType.Leather;
+        public override CraftResource DefaultResource => CraftResource.None;
+        public override ArmorMeditationAllowance DefMedAllowance => ArmorMeditationAllowance.All;
 
         public override void Serialize(GenericWriter writer)
         {

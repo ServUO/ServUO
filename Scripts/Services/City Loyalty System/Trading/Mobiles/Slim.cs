@@ -9,7 +9,7 @@ namespace Server.Engines.CityLoyalty
 {
     public class SlimTheFence : BaseCreature
     {
-        public override bool IsInvulnerable { get { return true; } }
+        public override bool IsInvulnerable => true;
 
         [Constructable]
         public SlimTheFence() : base(AIType.AI_Vendor, FightMode.None, 10, 1, .4, .2)

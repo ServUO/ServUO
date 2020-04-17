@@ -244,7 +244,7 @@ namespace Server.Items
             public bool ShowNext { get; set; }
             public PlayerMobile User { get; set; }
 
-            public List<int> Path { get { return Door != null && !Door.Deleted ? Door.Path : null; } }
+            public List<int> Path => Door != null && !Door.Deleted ? Door.Path : null;
             public List<int> Progress { get; set; }
 
             public LockingMechanismGump(PlayerMobile pm, EnclosureDoor door)

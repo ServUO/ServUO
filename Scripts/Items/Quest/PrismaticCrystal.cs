@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074269;
-            }
-        }// prismatic crystal
+        public override int LabelNumber => 1074269;// prismatic crystal
         public override void OnDoubleClick(Mobile from)
         {
             if (from.Backpack == null)

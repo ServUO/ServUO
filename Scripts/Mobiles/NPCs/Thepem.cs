@@ -8,7 +8,7 @@ namespace Server.Engines.Quests
 {
     public class Thepem : MondainQuester, ITierQuester
     {
-        public TierQuestInfo TierInfo { get { return TierQuestInfo.Thepem; } }
+        public TierQuestInfo TierInfo => TierQuestInfo.Thepem;
 
         [Constructable]
         public Thepem()
@@ -23,16 +23,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[] { };
-            }
-        }
+        public override Type[] Quests => new Type[] { };
 
         #region Bulk Orders
-        public override BODType BODType { get { return BODType.Alchemy; } }
+        public override BODType BODType => BODType.Alchemy;
 
         public override bool IsValidBulkOrder(Item item)
         {
@@ -52,9 +46,9 @@ namespace Server.Engines.Quests
 
         #endregion
 
-        public override bool IsActiveVendor { get { return true; } }
+        public override bool IsActiveVendor => true;
 
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public override void InitSBInfo()
         {

@@ -35,7 +35,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime DeleteTime { get; set; }
 
-        public int TimeRemaining { get { return DeleteTime <= DateTime.UtcNow ? 0 : (int)(DeleteTime - DateTime.UtcNow).TotalMinutes; } }
+        public int TimeRemaining => DeleteTime <= DateTime.UtcNow ? 0 : (int)(DeleteTime - DateTime.UtcNow).TotalMinutes;
 
         public VendorSearchMap(Item item, bool auction)
             : base(item.Map)

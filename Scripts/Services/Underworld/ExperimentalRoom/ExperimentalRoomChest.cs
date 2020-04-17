@@ -8,10 +8,10 @@ namespace Server.Items
     {
         private Dictionary<Item, Mobile> m_Instancing;
 
-        public override bool DisplayWeight { get { return false; } }
-        public override bool DisplaysContent { get { return false; } }
-        public override bool Decays { get { return true; } }
-        public override TimeSpan DecayTime { get { return TimeSpan.FromMinutes(10.0); } }
+        public override bool DisplayWeight => false;
+        public override bool DisplaysContent => false;
+        public override bool Decays => true;
+        public override TimeSpan DecayTime => TimeSpan.FromMinutes(10.0);
 
         [Constructable]
         public ExperimentalRoomChest()

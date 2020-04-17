@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class LifeSyphon : BloodBlade
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1113524; } } // Life Syphon
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113524;  // Life Syphon
 
         [Constructable]
         public LifeSyphon()
@@ -23,20 +23,8 @@ namespace Server.Items
         {
         }
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

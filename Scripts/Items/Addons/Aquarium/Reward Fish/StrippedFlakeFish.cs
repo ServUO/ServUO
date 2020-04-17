@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074595;
-            }
-        }// Stripped Flake Fish
+        public override int LabelNumber => 1074595;// Stripped Flake Fish
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0x4C3C, 0x4C3D)]
     public class TrumpetComponent : InstrumentedAddonComponent
     {
-        public override int LabelNumber { get { return 1098388; } } // trumpet
+        public override int LabelNumber => 1098388;  // trumpet
 
         public TrumpetComponent()
             : base(0x4C3C, 0x66F)
@@ -30,7 +30,7 @@ namespace Server.Items
 
     public class TrumpetDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1098388; } } // trumpet
+        public override int LabelNumber => 1098388;  // trumpet
 
         [Constructable]
         public TrumpetDeed()
@@ -42,7 +42,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon { get { return new TrumpetAddon(); } }
+        public override BaseAddon Addon => new TrumpetAddon();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -59,8 +59,8 @@ namespace Server.Items
 
     public class TrumpetAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new TrumpetDeed(); } }
-        public override bool RetainDeedHue { get { return true; } }
+        public override BaseAddonDeed Deed => new TrumpetDeed();
+        public override bool RetainDeedHue => true;
 
         [Constructable]
         public TrumpetAddon()

@@ -14,48 +14,18 @@ namespace Server.Engines.Quests
         }
 
         /* Split Ends */
-        public override object Title
-        {
-            get
-            {
-                return 1075506;
-            }
-        }
+        public override object Title => 1075506;
         /* *sighs* I think bowcrafting is a might beyond my talents. Say there, you look a bit more confident with tools. 
         Can I persuade thee to make a few arrows? You could have my satchel in return... 'tis useless to me! You'll need a 
         fletching kit to start, some feathers, and a few arrow shafts. Just use the fletching kit while you have the other 
         things, and I'm sure you'll figure out the rest. */
-        public override object Description
-        {
-            get
-            {
-                return 1075507;
-            }
-        }
+        public override object Description => 1075507;
         /* Oh. Well. I'll just keep trying alone, I suppose... */
-        public override object Refuse
-        {
-            get
-            {
-                return 1075508;
-            }
-        }
+        public override object Refuse => 1075508;
         /* You're not quite done yet.  Get back to work! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072271;
-            }
-        }
+        public override object Uncomplete => 1072271;
         /* Thanks for helping me out.  Here's the reward I promised you. */
-        public override object Complete
-        {
-            get
-            {
-                return 1072272;
-            }
-        }
+        public override object Complete => 1072272;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -85,16 +55,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(SplitEndsQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

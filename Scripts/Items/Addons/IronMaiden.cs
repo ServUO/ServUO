@@ -17,13 +17,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new IronMaidenDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new IronMaidenDeed();
         public override void OnComponentUsed(AddonComponent c, Mobile from)
         {
             if (from.InRange(this.Location, 2))
@@ -124,20 +118,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new IronMaidenAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076288;
-            }
-        }// Iron Maiden
+        public override BaseAddon Addon => new IronMaidenAddon();
+        public override int LabelNumber => 1076288;// Iron Maiden
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

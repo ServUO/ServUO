@@ -14,7 +14,7 @@ namespace Server.Items
 {
     public class CorruptedCrystalPortal : Item, ISecurable
     {
-        public override int LabelNumber { get { return 1150074; } } // Corrupted Crystal Portal
+        public override int LabelNumber => 1150074;  // Corrupted Crystal Portal
 
         private SecureLevel m_Level;
 
@@ -25,7 +25,7 @@ namespace Server.Items
             set { m_Level = value; }
         }
 
-        public override bool HandlesOnSpeech { get { return true; } }
+        public override bool HandlesOnSpeech => true;
 
         [Constructable]
         public CorruptedCrystalPortal()

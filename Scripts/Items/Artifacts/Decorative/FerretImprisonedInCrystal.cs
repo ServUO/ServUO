@@ -17,13 +17,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseCreature Summon
-        {
-            get
-            {
-                return new ShimmeringFerret();
-            }
-        }
+        public override BaseCreature Summon => new ShimmeringFerret();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -58,13 +52,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool DeleteOnRelease
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DeleteOnRelease => true;
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);

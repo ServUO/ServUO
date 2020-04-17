@@ -103,11 +103,11 @@ namespace Server.Mobiles
             AddItem(item);
         }
 
-        public override Poison PoisonImmune { get { return Poison.Deadly; } }
-        public override bool AlwaysMurderer { get { return true; } }
-        public override bool ReacquireOnMovement { get { return true; } }
-        public override bool AcquireOnApproach { get { return true; } }
-        public override int AcquireOnApproachRange { get { return 8; } }
+        public override Poison PoisonImmune => Poison.Deadly;
+        public override bool AlwaysMurderer => true;
+        public override bool ReacquireOnMovement => true;
+        public override bool AcquireOnApproach => true;
+        public override int AcquireOnApproachRange => 8;
 
         public override WeaponAbility GetWeaponAbility()
         {

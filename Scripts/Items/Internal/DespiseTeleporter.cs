@@ -300,7 +300,7 @@ namespace Server.Items
                 return true;
             }
 
-            public override bool HandlesOnMovement { get { return Master != null && Utility.InRange(Master.Location, Location, 1) && this.Map == Master.Map; } }
+            public override bool HandlesOnMovement => Master != null && Utility.InRange(Master.Location, Location, 1) && this.Map == Master.Map;
 
             public override void OnMovement(Mobile m, Point3D oldLocation)
             {

@@ -39,20 +39,8 @@ namespace Server
             }
         }
 
-        public string Type
-        {
-            get
-            {
-                return this.m_Type;
-            }
-        }
-        public string[] List
-        {
-            get
-            {
-                return this.m_List;
-            }
-        }
+        public string Type => this.m_Type;
+        public string[] List => this.m_List;
         public static NameList GetNameList(string type)
         {
             NameList n = null;

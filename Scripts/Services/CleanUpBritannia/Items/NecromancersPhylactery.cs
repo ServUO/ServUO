@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class NecromancersPhylactery : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [Constructable]
         public NecromancersPhylactery()
@@ -20,20 +20,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1154728;
-            }
-        }// Necromancer's Phylactery
-        public override bool ForceShowName
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int LabelNumber => 1154728;// Necromancer's Phylactery
+        public override bool ForceShowName => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

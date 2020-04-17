@@ -14,13 +14,7 @@ namespace Server.Items
         private int m_LiveCreatures;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int LiveCreatures
-        {
-            get
-            {
-                return this.m_LiveCreatures;
-            }
-        }
+        public int LiveCreatures => this.m_LiveCreatures;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int DeadCreatures
@@ -60,13 +54,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsFull
-        {
-            get
-            {
-                return (this.Items.Count >= this.MaxItems);
-            }
-        }
+        public bool IsFull => (this.Items.Count >= this.MaxItems);
 
         // vacation info
         private int m_VacationLeft;
@@ -118,26 +106,14 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool OptimalState
-        {
-            get
-            {
-                return (this.m_Food.State == (int)FoodState.Full && this.m_Water.State == (int)WaterState.Strong);
-            }
-        }
+        public bool OptimalState => (this.m_Food.State == (int)FoodState.Full && this.m_Water.State == (int)WaterState.Strong);
 
         // events
         private List<int> m_Events;
         private bool m_RewardAvailable;
         private bool m_EvaluateDay;
 
-        public List<int> Events
-        {
-            get
-            {
-                return this.m_Events;
-            }
-        }
+        public List<int> Events => this.m_Events;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool RewardAvailable
@@ -167,13 +143,7 @@ namespace Server.Items
             }
         }
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 10.0;
-            }
-        }
+        public override double DefaultWeight => 10.0;
 
         public Aquarium(int itemID)
             : base(itemID)
@@ -967,13 +937,7 @@ namespace Server.Items
             0x1C2, 0x1C3, 0x2A3, 0x47E, 0x51D
         };
 
-        public static int[] FishHues
-        {
-            get
-            {
-                return m_FishHues;
-            }
-        }
+        public static int[] FishHues => m_FishHues;
         #endregion
 
         #region Context entries
@@ -1165,20 +1129,8 @@ namespace Server.Items
 
     public class AquariumEastDeed : BaseAddonContainerDeed
     {
-        public override BaseAddonContainer Addon
-        {
-            get
-            {
-                return new Aquarium(0x3062);
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074501;
-            }
-        }// Large Aquarium (east)
+        public override BaseAddonContainer Addon => new Aquarium(0x3062);
+        public override int LabelNumber => 1074501;// Large Aquarium (east)
 
         [Constructable]
         public AquariumEastDeed()
@@ -1208,20 +1160,8 @@ namespace Server.Items
 
     public class AquariumNorthDeed : BaseAddonContainerDeed
     {
-        public override BaseAddonContainer Addon
-        {
-            get
-            {
-                return new Aquarium(0x3060);
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074497;
-            }
-        }// Large Aquarium (north)
+        public override BaseAddonContainer Addon => new Aquarium(0x3060);
+        public override int LabelNumber => 1074497;// Large Aquarium (north)
 
         [Constructable]
         public AquariumNorthDeed()

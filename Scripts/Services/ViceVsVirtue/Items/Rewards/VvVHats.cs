@@ -4,14 +4,14 @@ namespace Server.Engines.VvV
 {
     public class VvVWizardsHat : WizardsHat
     {
-        public override int BasePhysicalResistance { get { return 6; } }
-        public override int BaseFireResistance { get { return 6; } }
-        public override int BaseColdResistance { get { return 6; } }
-        public override int BasePoisonResistance { get { return 6; } }
-        public override int BaseEnergyResistance { get { return 25; } }
+        public override int BasePhysicalResistance => 6;
+        public override int BaseFireResistance => 6;
+        public override int BaseColdResistance => 6;
+        public override int BasePoisonResistance => 6;
+        public override int BaseEnergyResistance => 25;
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public VvVWizardsHat()
         {
@@ -45,14 +45,14 @@ namespace Server.Engines.VvV
 
     public class VvVGargishEarrings : GargishEarrings
     {
-        public override int BasePhysicalResistance { get { return 6; } }
-        public override int BaseFireResistance { get { return 6; } }
-        public override int BaseColdResistance { get { return 6; } }
-        public override int BasePoisonResistance { get { return 6; } }
-        public override int BaseEnergyResistance { get { return 25; } }
+        public override int BasePhysicalResistance => 6;
+        public override int BaseFireResistance => 6;
+        public override int BaseColdResistance => 6;
+        public override int BasePoisonResistance => 6;
+        public override int BaseEnergyResistance => 25;
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public VvVGargishEarrings()
         {

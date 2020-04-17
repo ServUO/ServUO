@@ -15,13 +15,7 @@
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1026868;
-            }
-        }// nest with eggs
+        public override int LabelNumber => 1026868;// nest with eggs
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

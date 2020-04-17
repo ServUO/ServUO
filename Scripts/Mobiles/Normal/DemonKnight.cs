@@ -65,50 +65,14 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanFlee { get { return false; } }
+        public override bool CanFlee => false;
 
-        public override bool IgnoreYoungProtection
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AreaPeaceImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override bool IgnoreYoungProtection => true;
+        public override bool BardImmune => false;
+        public override bool Unprovokable => true;
+        public override bool AreaPeaceImmune => true;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override int TreasureMapLevel => 5;
 
         public override void OnDeath(Container c)
         {
@@ -155,7 +119,7 @@ namespace Server.Mobiles
             return null;
         }
 
-        public override bool TeleportsTo { get { return true; } }
+        public override bool TeleportsTo => true;
 
         public override void GenerateLoot()
         {

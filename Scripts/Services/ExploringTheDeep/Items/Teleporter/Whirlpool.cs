@@ -8,7 +8,7 @@ namespace Server.Items
 {
     public class Whirlpool : Item
     {
-        public override int LabelNumber { get { return 1033459; } } // whirlpool
+        public override int LabelNumber => 1033459;  // whirlpool
 
         private bool m_Active, m_Creatures, m_CombatCheck, m_CriminalCheck;
         private Point3D m_PointDest;

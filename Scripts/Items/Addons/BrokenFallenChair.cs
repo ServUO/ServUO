@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076264;
-            }
-        }// Broken Fallen Chair
+        public override int LabelNumber => 1076264;// Broken Fallen Chair
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -52,13 +46,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new BrokenFallenChairDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new BrokenFallenChairDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -88,20 +76,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new BrokenFallenChairAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076264;
-            }
-        }// Broken Fallen Chair
+        public override BaseAddon Addon => new BrokenFallenChairAddon();
+        public override int LabelNumber => 1076264;// Broken Fallen Chair
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

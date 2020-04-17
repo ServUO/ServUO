@@ -21,20 +21,8 @@ namespace Server.Misc
             m_Instance = this;
         }
 
-        public static TreasuresOfTokunoPersistence Instance
-        {
-            get
-            {
-                return m_Instance;
-            }
-        }
-        public override string DefaultName
-        {
-            get
-            {
-                return "TreasuresOfTokuno Persistance - Internal";
-            }
-        }
+        public static TreasuresOfTokunoPersistence Instance => m_Instance;
+        public override string DefaultName => "TreasuresOfTokuno Persistance - Internal";
         public static void Initialize()
         {
             if (m_Instance == null)

@@ -2,9 +2,9 @@ namespace Server.Items
 {
     public class StretchedDinosaurHide : BaseDecorationArtifact
     {
-        public override int ArtifactRarity { get { return 11; } }
-        public override bool ShowArtifactRarity { get { return false; } }
-        public override bool DisplayWeight { get { return false; } }
+        public override int ArtifactRarity => 11;
+        public override bool ShowArtifactRarity => false;
+        public override bool DisplayWeight => false;
 
         [Constructable]
         public StretchedDinosaurHide() : base(4202)
@@ -34,9 +34,9 @@ namespace Server.Items
 
     public class CarvedMyrmydexGlyph : BaseDecorationArtifact // Barrab
     {
-        public override int ArtifactRarity { get { return 11; } }
-        public override bool ShowArtifactRarity { get { return false; } }
-        public override bool DisplayWeight { get { return false; } }
+        public override int ArtifactRarity => 11;
+        public override bool ShowArtifactRarity => false;
+        public override bool DisplayWeight => false;
 
         [Constructable]
         public CarvedMyrmydexGlyph() : base(4676)
@@ -66,9 +66,9 @@ namespace Server.Items
 
     public class WakuOnASpit : BaseDecorationArtifact // Barako
     {
-        public override int ArtifactRarity { get { return 11; } }
-        public override bool ShowArtifactRarity { get { return false; } }
-        public override bool DisplayWeight { get { return false; } }
+        public override int ArtifactRarity => 11;
+        public override bool ShowArtifactRarity => false;
+        public override bool DisplayWeight => false;
 
         [Constructable]
         public WakuOnASpit() : base(7832)
@@ -97,9 +97,9 @@ namespace Server.Items
 
     public class SacredLavaRock : BaseDecorationArtifact // Jukari
     {
-        public override int ArtifactRarity { get { return 11; } }
-        public override bool ShowArtifactRarity { get { return false; } }
-        public override bool DisplayWeight { get { return false; } }
+        public override int ArtifactRarity => 11;
+        public override bool ShowArtifactRarity => false;
+        public override bool DisplayWeight => false;
 
         [Constructable]
         public SacredLavaRock() : base(4962)
@@ -129,9 +129,9 @@ namespace Server.Items
 
     public class WhiteTigerFigurine : BaseDecorationArtifact // Kurak
     {
-        public override int ArtifactRarity { get { return 11; } }
-        public override bool ShowArtifactRarity { get { return false; } }
-        public override bool DisplayWeight { get { return false; } }
+        public override int ArtifactRarity => 11;
+        public override bool ShowArtifactRarity => false;
+        public override bool DisplayWeight => false;
 
         [Constructable]
         public WhiteTigerFigurine() : base(38980)
@@ -161,9 +161,9 @@ namespace Server.Items
 
     public class DragonTurtleHatchlingNet : BaseDecorationArtifact // Urali
     {
-        public override int ArtifactRarity { get { return 11; } }
-        public override bool ShowArtifactRarity { get { return false; } }
-        public override bool DisplayWeight { get { return false; } }
+        public override int ArtifactRarity => 11;
+        public override bool ShowArtifactRarity => false;
+        public override bool DisplayWeight => false;
 
         [Constructable]
         public DragonTurtleHatchlingNet() : base(3574)

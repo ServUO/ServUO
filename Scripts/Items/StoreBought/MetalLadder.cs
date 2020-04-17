@@ -16,7 +16,7 @@ namespace Server.Items
 
     public class MetalLadderAddon : BaseAddon, IDyable
     {
-        public override BaseAddonDeed Deed { get { return new MetalLadderDeed(); } }
+        public override BaseAddonDeed Deed => new MetalLadderDeed();
 
         [Constructable]
         public MetalLadderAddon(MetalLadderType type)
@@ -87,8 +87,8 @@ namespace Server.Items
 
     public class MetalLadderDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new MetalLadderAddon(_Direction); } }
-        public override int LabelNumber { get { return 1159445; } } // metal ladder
+        public override BaseAddon Addon => new MetalLadderAddon(_Direction);
+        public override int LabelNumber => 1159445;  // metal ladder
 
         private MetalLadderType _Direction;
 

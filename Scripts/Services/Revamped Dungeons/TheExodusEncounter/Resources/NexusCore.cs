@@ -12,7 +12,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1153501; } } // nexus core 
+        public override int LabelNumber => 1153501;  // nexus core 
 
         public override void Serialize(GenericWriter writer)
         {

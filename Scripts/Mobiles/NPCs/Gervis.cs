@@ -14,49 +14,19 @@ namespace Server.Engines.Quests
         }
 
         /* Battered Bucklers */
-        public override object Title
-        {
-            get
-            {
-                return 1075511;
-            }
-        }
+        public override object Title => 1075511;
         /* Hey there! Yeah... you! Ya' any good with a hammer? Tell ya what, if yer thinking about tryin' some metal work, 
         and have a bit of skill, I can show ya how to bend it into shape. Just get some of those ingots there, and grab a 
         hammer and use it over here at this forge. I need a few more bucklers hammered out to fill this here order with...  
         hmmm about ten more. that'll give some taste of how to work the metal. */
-        public override object Description
-        {
-            get
-            {
-                return 1075512;
-            }
-        }
+        public override object Description => 1075512;
         /* Not enough muscle on yer bones to use it? hmph, probably afraid of the sparks markin' up yer loverly skin... to 
         good for some honest labor... ha!... off with ya! */
-        public override object Refuse
-        {
-            get
-            {
-                return 1075514;
-            }
-        }
+        public override object Refuse => 1075514;
         /* Come On! Whats that... a bucket? We need ten bucklers... not spitoons. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1075515;
-            }
-        }
+        public override object Uncomplete => 1075515;
         /* Thanks for the help. Here's something for ya to remember me by. */
-        public override object Complete
-        {
-            get
-            {
-                return 1075516;
-            }
-        }
+        public override object Complete => 1075516;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -86,16 +56,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(BatteredBucklersQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             InitStats(100, 100, 25);

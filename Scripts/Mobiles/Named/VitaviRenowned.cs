@@ -52,47 +52,20 @@ namespace Server.Mobiles
         {
         }
 
-        public override Type[] UniqueSAList
-        {
-            get { return new Type[] { }; }
-        }
+        public override Type[] UniqueSAList => new Type[] { };
 
-        public override Type[] SharedSAList
-        {
-            get { return new[] { typeof(AxeOfAbandon), typeof(DemonBridleRing), typeof(VoidInfusedKilt) }; }
-        }
+        public override Type[] SharedSAList => new[] { typeof(AxeOfAbandon), typeof(DemonBridleRing), typeof(VoidInfusedKilt) };
 
-        public override InhumanSpeech SpeechType
-        {
-            get { return InhumanSpeech.Ratman; }
-        }
-        public override bool AllureImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override InhumanSpeech SpeechType => InhumanSpeech.Ratman;
+        public override bool AllureImmune => true;
 
-        public override bool CanRummageCorpses
-        {
-            get { return true; }
-        }
+        public override bool CanRummageCorpses => true;
 
-        public override int Meat
-        {
-            get { return 1; }
-        }
+        public override int Meat => 1;
 
-        public override int Hides
-        {
-            get { return 8; }
-        }
+        public override int Hides => 8;
 
-        public override HideType HideType
-        {
-            get { return HideType.Spined; }
-        }
+        public override HideType HideType => HideType.Spined;
 
         public override void GenerateLoot()
         {

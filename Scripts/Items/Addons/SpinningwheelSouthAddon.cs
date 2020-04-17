@@ -16,20 +16,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new SpinningwheelSouthDeed();
-            }
-        }
-        public bool Spinning
-        {
-            get
-            {
-                return m_Timer != null;
-            }
-        }
+        public override BaseAddonDeed Deed => new SpinningwheelSouthDeed();
+        public bool Spinning => m_Timer != null;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -135,20 +123,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new SpinningwheelSouthAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044342;
-            }
-        }// spining wheel (south)
+        public override BaseAddon Addon => new SpinningwheelSouthAddon();
+        public override int LabelNumber => 1044342;// spining wheel (south)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

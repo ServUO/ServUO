@@ -16,27 +16,9 @@ namespace Server.Spells.Bushido
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(0.25);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 60.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 10;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(0.25);
+        public override double RequiredSkill => 60.0;
+        public override int RequiredMana => 10;
         public static bool VerifyCast(Mobile Caster, bool messages)
         {
             if (Caster == null) // Sanity

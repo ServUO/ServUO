@@ -17,13 +17,7 @@ namespace Server.Spells.Third
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Third;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Third;
         public override bool CheckCast()
         {
             if (Server.Misc.WeightOverloading.IsOverloaded(this.Caster))

@@ -27,34 +27,10 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041006;
-            }
-        }// a ballot box
-        public string[] Topic
-        {
-            get
-            {
-                return this.m_Topic;
-            }
-        }
-        public List<Mobile> Yes
-        {
-            get
-            {
-                return this.m_Yes;
-            }
-        }
-        public List<Mobile> No
-        {
-            get
-            {
-                return this.m_No;
-            }
-        }
+        public override int LabelNumber => 1041006;// a ballot box
+        public string[] Topic => this.m_Topic;
+        public List<Mobile> Yes => this.m_Yes;
+        public List<Mobile> No => this.m_No;
         public void ClearTopic()
         {
             this.m_Topic = new string[0];
@@ -377,13 +353,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new BallotBoxDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new BallotBoxDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -411,20 +381,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new BallotBoxAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044327;
-            }
-        }// ballot box
+        public override BaseAddon Addon => new BallotBoxAddon();
+        public override int LabelNumber => 1044327;// ballot box
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

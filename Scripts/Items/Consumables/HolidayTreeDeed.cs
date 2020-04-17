@@ -22,13 +22,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041116;
-            }
-        }// a deed for a holiday tree
+        public override int LabelNumber => 1041116;// a deed for a holiday tree
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

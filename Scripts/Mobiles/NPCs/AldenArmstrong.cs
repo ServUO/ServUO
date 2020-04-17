@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class TheArtOfWarQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* The Art of War */
-        public override object Title
-        {
-            get
-            {
-                return 1077667;
-            }
-        }
+        public override object Title => 1077667;
 
         /* Head East out of town to Old Haven. Battle monsters there until you have raised your Tactics skill 
         to 50.<br><center>------</center><br>Knowing how to hold a weapon is only half of the battle. The other 
@@ -32,33 +20,15 @@ namespace Server.Engines.Quests
         There are some undead that need cleaning out in Old Haven towards the east. Why don't you head on over 
         there and practice killing things?<br><br>When you feel like you've got the basics down, come back to me 
         and I'll see if I can scrounge up an item to help you in your adventures later on. */
-        public override object Description
-        {
-            get
-            {
-                return 1077670;
-            }
-        }
+        public override object Description => 1077670;
 
         /* That's too bad. I really thought you had it in you. Well, I'm sure those undead will still be there 
         later, so if you change your mind, feel free to stop on by and I'll help you the best I can. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1077671;
-            }
-        }
+        public override object Refuse => 1077671;
 
         /* You're making some progress, that i can tell, but you're not quite good enough to last for very long 
         out there by yourself. Head back to Old Haven, to the east, and kill some more undead. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1077672;
-            }
-        }
+        public override object Uncomplete => 1077672;
 
         /* Hey, good job killing those undead! Hopefully someone will come along and clean up the mess. All that 
         blood and guts tends to stink after a few days, and when the wind blows in from the east, it can raise a 
@@ -66,13 +36,7 @@ namespace Server.Engines.Quests
         a few too many harvests to be running around out there myself, so you might as well take it.<br><br>There 
         is a lot left for you to learn, but I think you'll do fine. Remember to keep your elbows in and stick'em 
         where it hurts the most! */
-        public override object Complete
-        {
-            get
-            {
-                return 1077674;
-            }
-        }
+        public override object Complete => 1077674;
 
         public TheArtOfWarQuest()
             : base()
@@ -122,16 +86,10 @@ namespace Server.Engines.Quests
 
     public class AldenArmstrong : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(TheArtOfWarQuest)
                 };
-            }
-        }
 
         [Constructable]
         public AldenArmstrong()

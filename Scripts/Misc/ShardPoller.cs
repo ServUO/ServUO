@@ -139,13 +139,7 @@ namespace Server.Misc
                 }
             }
         }
-        public override string DefaultName
-        {
-            get
-            {
-                return "shard poller";
-            }
-        }
+        public override string DefaultName => "shard poller";
         public static void Initialize()
         {
             EventSink.Login += new LoginEventHandler(EventSink_Login);
@@ -355,20 +349,8 @@ namespace Server.Misc
                 this.m_LineBreaks = this.GetBreaks(this.m_Title);
             }
         }
-        public int LineBreaks
-        {
-            get
-            {
-                return this.m_LineBreaks;
-            }
-        }
-        public int Votes
-        {
-            get
-            {
-                return this.m_Voters.Length;
-            }
-        }
+        public int LineBreaks => this.m_LineBreaks;
+        public int Votes => this.m_Voters.Length;
         public IPAddress[] Voters
         {
             get
@@ -551,13 +533,7 @@ namespace Server.Misc
             this.AddButton(314, height - 47, 242, 241, 0, GumpButtonType.Reply, 0);
         }
 
-        public bool Editing
-        {
-            get
-            {
-                return this.m_Editing;
-            }
-        }
+        public bool Editing => this.m_Editing;
         public void QueuePoll(ShardPoller poller)
         {
             if (this.m_Polls == null)

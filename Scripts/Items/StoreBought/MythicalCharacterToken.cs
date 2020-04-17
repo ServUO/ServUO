@@ -7,10 +7,10 @@ namespace Server.Items
 {
     public class MythicCharacterToken : Item, IPromotionalToken
     {
-        public override int LabelNumber { get { return 1070997; } } // a promotional token
-        public TextDefinition ItemName { get { return 1152353; } } // Mythic Character Token
+        public override int LabelNumber => 1070997;  // a promotional token
+        public TextDefinition ItemName => 1152353;  // Mythic Character Token
 
-        public Type GumpType { get { return typeof(MythicCharacterToken.InternalGump); } }
+        public Type GumpType => typeof(MythicCharacterToken.InternalGump);
 
         [Constructable]
         public MythicCharacterToken()
@@ -74,12 +74,12 @@ namespace Server.Items
             public static readonly int Width = 500;
             public static readonly int Height = 510;
 
-            public static int Green { get { return C32216(0x32CD32); } }
-            public static int LightGreen { get { return C32216(0x90EE90); } }
-            public static int Yellow { get { return C32216(0xFFE4C4); } }
-            public static int Beige { get { return C32216(0xF5F5DC); } }
-            public static int Gray { get { return C32216(0x696969); } }
-            public static int White { get { return 0x7FFF; } }
+            public static int Green => C32216(0x32CD32);
+            public static int LightGreen => C32216(0x90EE90);
+            public static int Yellow => C32216(0xFFE4C4);
+            public static int Beige => C32216(0xF5F5DC);
+            public static int Gray => C32216(0x696969);
+            public static int White => 0x7FFF;
 
             public bool HasAllFive
             {

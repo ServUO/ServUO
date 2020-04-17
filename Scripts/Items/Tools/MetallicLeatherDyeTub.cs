@@ -15,12 +15,12 @@ namespace Server.Items
         {
         }
 
-        public override bool AllowDyables { get { return false; } }
-        public override bool AllowLeather { get { return true; } }
-        public override int TargetMessage { get { return 1042416; } } // Select the leather item to dye.
-        public override int FailMessage { get { return 1042418; } } // You can only dye leather with this tub.
-        public override int LabelNumber { get { return 1153495; } } // Metallic Leather Dye Tub
-        public override CustomHuePicker CustomHuePicker { get { return CustomHuePicker.MetallicDyeTub; } }
+        public override bool AllowDyables => false;
+        public override bool AllowLeather => true;
+        public override int TargetMessage => 1042416;  // Select the leather item to dye.
+        public override int FailMessage => 1042418;  // You can only dye leather with this tub.
+        public override int LabelNumber => 1153495;  // Metallic Leather Dye Tub
+        public override CustomHuePicker CustomHuePicker => CustomHuePicker.MetallicDyeTub;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem

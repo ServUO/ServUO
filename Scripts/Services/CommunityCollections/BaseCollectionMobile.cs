@@ -10,21 +10,9 @@ namespace Server.Mobiles
     public abstract class BaseCollectionMobile : BaseVendor, IComunityCollection
     {
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return m_SBInfos;
-            }
-        }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
-        public override bool IsActiveVendor
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsActiveVendor => false;
 
         #region IComunityCollection
         public abstract Collection CollectionID { get; }
@@ -33,21 +21,9 @@ namespace Server.Mobiles
         private List<CollectionItem> m_Donations;
         private List<CollectionItem> m_Rewards;
 
-        public List<CollectionItem> Donations
-        {
-            get
-            {
-                return m_Donations;
-            }
-        }
+        public List<CollectionItem> Donations => m_Donations;
 
-        public List<CollectionItem> Rewards
-        {
-            get
-            {
-                return m_Rewards;
-            }
-        }
+        public List<CollectionItem> Rewards => m_Rewards;
 
         private long m_Points;
         private long m_StartTier;
@@ -153,25 +129,13 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Tier
-        {
-            get
-            {
-                return m_Tier;
-            }
-        }
+        public int Tier => m_Tier;
         #endregion
 
         private List<List<object>> m_Tiers;
         private object m_DonationTitle;
 
-        public List<List<object>> Tiers
-        {
-            get
-            {
-                return m_Tiers;
-            }
-        }
+        public List<List<object>> Tiers => m_Tiers;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int DonationLabel

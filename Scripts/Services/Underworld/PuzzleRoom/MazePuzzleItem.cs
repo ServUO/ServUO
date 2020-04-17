@@ -11,16 +11,16 @@ namespace Server.Items
 
         public List<int> Path { get; set; }
         public List<int> Progress { get; set; }
-        public CircuitCount Count { get { return CircuitCount.ThirtySix; } }
-        public int GumpTitle { get { return 1153747; } } // <center>GENERATOR CONTROL PANEL</center>
-        public int GumpDescription { get { return 1153749; } } // // <center>Close the Grid Circuit</center>
-        public bool CanDecipher { get { return true; } }
+        public CircuitCount Count => CircuitCount.ThirtySix;
+        public int GumpTitle => 1153747;  // <center>GENERATOR CONTROL PANEL</center>
+        public int GumpDescription => 1153749;  // // <center>Close the Grid Circuit</center>
+        public bool CanDecipher => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public MagicKey Key { get { return m_Key; } set { m_Key = value; } }
 
-        public override int LabelNumber { get { return 1113379; } } // Puzzle Board
-        public override int Lifespan { get { return 600; } }
+        public override int LabelNumber => 1113379;  // Puzzle Board
+        public override int Lifespan => 600;
 
         [Constructable]
         public MazePuzzleItem(MagicKey key) : base(0x2AAA)

@@ -42,20 +42,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool DeathAdderCharmable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override bool DeathAdderCharmable => true;
+        public override int Meat => 1;
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);

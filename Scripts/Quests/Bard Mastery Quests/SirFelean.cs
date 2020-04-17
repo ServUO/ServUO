@@ -16,19 +16,19 @@ namespace Server.Engines.Quests
             AddReward(new BaseReward(typeof(BookOfMasteries), 1028794));
         }
 
-        public override object Title { get { return 1115677; } }       //The Beacon of Harmony
+        public override object Title => 1115677;        //The Beacon of Harmony
 
-        public override object Description { get { return 1115676; } } /* This quest is the single quest required for a player to unlock the peacemaking 
+        public override object Description => 1115676;  /* This quest is the single quest required for a player to unlock the peacemaking 
                                                                         * mastery abilities for bards. This quest can be completed multiple times to reinstate
                                                                         * the peacemaking mastery. To prove yourself worthy, you must first be a master of 
                                                                         * peacemaking and musicianship. You must be able to calm even the most vicious beast
                                                                         * into tranquility.*/
 
-        public override object Refuse { get { return 1115680; } }       //To deliver peace you must persevere. 
+        public override object Refuse => 1115680;        //To deliver peace you must persevere. 
 
-        public override object Uncomplete { get { return 1115680; } }   //To deliver peace you must persevere. 
+        public override object Uncomplete => 1115680;    //To deliver peace you must persevere. 
 
-        public override object Complete { get { return 1115681; } }     /* You have proven yourself a beacon of peace and a bringer of harmony. Only 
+        public override object Complete => 1115681;      /* You have proven yourself a beacon of peace and a bringer of harmony. Only 
                                                                          * a warrior may choose the peaceful solution, all others are condemned to it. 
                                                                          * May your message of peace flow into the world and shelter you from harm.*/
 
@@ -84,7 +84,7 @@ namespace Server.Engines.Quests
         private static readonly Type m_Type = typeof(Mongbat);
 
         private readonly List<string> m_Descr = new List<string>();
-        public override List<string> Descriptions { get { return m_Descr; } }
+        public override List<string> Descriptions => m_Descr;
 
         public PeacemakingObjective()
             : base(5, -1)
@@ -141,16 +141,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(TheBeaconOfHarmonyQuest),
                 };
-            }
-        }
 
         public override void InitBody()
         {

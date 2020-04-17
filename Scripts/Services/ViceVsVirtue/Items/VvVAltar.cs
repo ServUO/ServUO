@@ -15,7 +15,7 @@ namespace Server.Engines.VvV
         public List<Item> Braziers { get; set; }
         public List<Item> Torches { get; set; }
 
-        public override bool HandlesOnMovement { get { return IsActive; } }
+        public override bool HandlesOnMovement => IsActive;
 
         public OccupyTimer OccupationTimer { get; set; }
         public Timer CheckTimer { get; set; }

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class MaleKimonoBearingTheCrestOfBlackthorn7 : MaleKimono
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [Constructable]
         public MaleKimonoBearingTheCrestOfBlackthorn7()

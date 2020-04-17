@@ -163,20 +163,8 @@ namespace Server.Items
         {
         }
 
-        public int CurrentRange
-        {
-            get
-            {
-                return this.Visible ? 3 : 2;
-            }
-        }
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public int CurrentRange => this.Visible ? 3 : 2;
+        public override bool HandlesOnMovement => true;
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             if (Utility.InRange(m.Location, this.Location, this.CurrentRange) || Utility.InRange(oldLocation, this.Location, this.CurrentRange))

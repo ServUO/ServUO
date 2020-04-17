@@ -22,13 +22,7 @@ namespace Server.Engines.Harvest
 
         private readonly HarvestDefinition m_Definition;
 
-        public HarvestDefinition Definition
-        {
-            get
-            {
-                return this.m_Definition;
-            }
-        }
+        public HarvestDefinition Definition => this.m_Definition;
 
         private Lumberjacking()
         {

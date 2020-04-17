@@ -21,9 +21,9 @@ namespace Server.Items
     {
         public List<SecretChestArray> list = new List<SecretChestArray>();
 
-        public override int LabelNumber { get { return 1151583; } } // Secret Chest
+        public override int LabelNumber => 1151583;  // Secret Chest
 
-        public override int DefaultGumpID { get { return 0x58E; } }
+        public override int DefaultGumpID => 0x58E;
 
         public int[] SecretKey { get; set; } = { 0, 0, 0, 0, 0 };
 
@@ -159,7 +159,7 @@ namespace Server.Items
             }
         }
 
-        public override bool DisplaysContent { get { return false; } }
+        public override bool DisplaysContent => false;
 
         public override void GetProperties(ObjectPropertyList list)
         {

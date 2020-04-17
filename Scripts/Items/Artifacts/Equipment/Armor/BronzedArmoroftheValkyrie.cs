@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class BronzedArmorValkyrie : FemaleLeatherChest
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public BronzedArmorValkyrie()
         {
@@ -20,57 +20,15 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1149957; } }// Bronzed Armor of the Valkyrie
+        public override int LabelNumber => 1149957; // Bronzed Armor of the Valkyrie
 
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 14;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int BasePhysicalResistance => 11;
+        public override int BaseFireResistance => 14;
+        public override int BaseColdResistance => 8;
+        public override int BasePoisonResistance => 11;
+        public override int BaseEnergyResistance => 8;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

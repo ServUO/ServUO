@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class StoneMiningBook : Item
     {
-        public override int LabelNumber { get { return 1153530; } } // Mining For Quality Stone
+        public override int LabelNumber => 1153530;  // Mining For Quality Stone
 
         [Constructable]
         public StoneMiningBook()

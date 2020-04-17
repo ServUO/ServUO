@@ -16,13 +16,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075304;
-            }
-        }// Mirror of Purification
+        public override int LabelNumber => 1075304;// Mirror of Purification
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -24,13 +24,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074560;
-            }
-        }// recipe scroll
+        public override int LabelNumber => 1074560;// recipe scroll
         [CommandProperty(AccessLevel.GameMaster)]
         public int RecipeID
         {

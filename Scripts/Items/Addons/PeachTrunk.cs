@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new PeachTrunkDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new PeachTrunkDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -50,20 +44,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new PeachTrunkAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076786;
-            }
-        }// Peach Trunk
+        public override BaseAddon Addon => new PeachTrunkAddon();
+        public override int LabelNumber => 1076786;// Peach Trunk
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

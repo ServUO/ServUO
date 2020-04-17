@@ -2,7 +2,7 @@
 {
     public class BearingAssembly : BaseDecayingItem
     {
-        public override int LabelNumber { get { return 1154430; } } // Bearing Assembly
+        public override int LabelNumber => 1154430;  // Bearing Assembly
 
         [Constructable]
         public BearingAssembly()
@@ -19,7 +19,7 @@
             list.Add(1072351); // Quest Item
         }
 
-        public override int Lifespan { get { return 18000; } }
+        public override int Lifespan => 18000;
 
         public BearingAssembly(Serial serial)
             : base(serial)

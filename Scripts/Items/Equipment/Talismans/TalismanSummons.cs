@@ -33,8 +33,8 @@ namespace Server.Mobiles
             : base(serial)
         { }
 
-        public override bool Commandable { get { return false; } }
-        public override bool InitialInnocent { get { return true; } }
+        public override bool Commandable => false;
+        public override bool InitialInnocent => true;
 
         public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
         {

@@ -10,7 +10,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseBoat Boat { get; private set; }
 
-        public override int LabelNumber { get { return Boat.IsRowBoat ? 1020935 : 1149697; } } // rope || mooring line
+        public override int LabelNumber => Boat.IsRowBoat ? 1020935 : 1149697;  // rope || mooring line
 
         public MooringLine(BaseBoat boat)
             : base(5368)

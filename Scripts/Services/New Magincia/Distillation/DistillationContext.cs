@@ -15,7 +15,7 @@ namespace Server.Engines.Distillation
 
         public Group LastGroup { get { return m_LastGroup; } set { m_LastGroup = value; } }
         public Liquor LastLiquor { get { return m_LastLiquor; } set { m_LastLiquor = value; } }
-        public Yeast[] SelectedYeast { get { return m_SelectedYeast; } }
+        public Yeast[] SelectedYeast => m_SelectedYeast;
         public bool MakeStrong { get { return m_MakeStrong; } set { m_MakeStrong = value; } }
         public bool Mark { get { return m_Mark; } set { m_Mark = value; } }
         public string Label { get { return m_Label; } set { m_Label = value; } }

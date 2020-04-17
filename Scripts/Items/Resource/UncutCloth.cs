@@ -22,27 +22,9 @@ namespace Server.Items
         {
         }
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 0.1;
-            }
-        }
-        TextDefinition ICommodity.Description
-        {
-            get
-            {
-                return this.LabelNumber;
-            }
-        }
-        bool ICommodity.IsDeedable
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override double DefaultWeight => 0.1;
+        TextDefinition ICommodity.Description => this.LabelNumber;
+        bool ICommodity.IsDeedable => true;
         public bool Dye(Mobile from, DyeTub sender)
         {
             if (this.Deleted)

@@ -25,13 +25,7 @@ namespace Server.Engines.CannedEvil
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ChampionSkullPlatform Platform
-        {
-            get
-            {
-                return this.m_Platform;
-            }
-        }
+        public ChampionSkullPlatform Platform => this.m_Platform;
         [CommandProperty(AccessLevel.GameMaster)]
         public ChampionSkullType Type
         {
@@ -59,13 +53,7 @@ namespace Server.Engines.CannedEvil
                     this.m_Platform.Validate();
             }
         }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1049489 + (int)this.m_Type;
-            }
-        }
+        public override int LabelNumber => 1049489 + (int)this.m_Type;
         public override void OnDoubleClick(Mobile from)
         {
             if (this.m_Platform != null)

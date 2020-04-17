@@ -6,12 +6,12 @@ namespace Server.Items
     [Flipable(0x9A95, 0x9AA7)]
     public class PowerScrollBook : BaseSpecialScrollBook
     {
-        public override Type ScrollType { get { return typeof(PowerScroll); } }
-        public override int LabelNumber { get { return 1155684; } } // Power Scroll Book
-        public override int BadDropMessage { get { return 1155691; } } // This book only holds Power Scrolls.
-        public override int DropMessage { get { return 1155692; } }    // You add the scroll to your Power Scroll book.
-        public override int RemoveMessage { get { return 1155690; } }  // You remove a Power Scroll and put it in your pack.
-        public override int GumpTitle { get { return 1155689; } }  // Power Scrolls
+        public override Type ScrollType => typeof(PowerScroll);
+        public override int LabelNumber => 1155684;  // Power Scroll Book
+        public override int BadDropMessage => 1155691;  // This book only holds Power Scrolls.
+        public override int DropMessage => 1155692;     // You add the scroll to your Power Scroll book.
+        public override int RemoveMessage => 1155690;   // You remove a Power Scroll and put it in your pack.
+        public override int GumpTitle => 1155689;   // Power Scrolls
 
         [Constructable]
         public PowerScrollBook()
@@ -39,8 +39,8 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
 
-        public override Dictionary<SkillCat, List<SkillName>> SkillInfo { get { return _SkillInfo; } }
-        public override Dictionary<int, double> ValueInfo { get { return _ValueInfo; } }
+        public override Dictionary<SkillCat, List<SkillName>> SkillInfo => _SkillInfo;
+        public override Dictionary<int, double> ValueInfo => _ValueInfo;
 
         public static Dictionary<SkillCat, List<SkillName>> _SkillInfo;
         public static Dictionary<int, double> _ValueInfo;

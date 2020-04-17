@@ -4,10 +4,10 @@ namespace Server.Mobiles
 {
     public class Kevin : HumilityQuestMobile
     {
-        public override int Greeting { get { return 1075759; } }
+        public override int Greeting => 1075759;
 
-        public override bool IsActiveVendor { get { return true; } }
-        public override bool CanTeach { get { return true; } }
+        public override bool IsActiveVendor => true;
+        public override bool CanTeach => true;
 
         [Constructable]
         public Kevin()

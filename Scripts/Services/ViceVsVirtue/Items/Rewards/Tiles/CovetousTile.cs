@@ -5,7 +5,7 @@ namespace Server.Engines.VvV
 {
     public class CovetousTileAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new CovetousTileDeed(); } }
+        public override BaseAddonDeed Deed => new CovetousTileDeed();
 
         public TileType TileType { get; set; }
 
@@ -51,8 +51,8 @@ namespace Server.Engines.VvV
 
     public class CovetousTileDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new CovetousTileAddon(TileType); } }
-        public override int LabelNumber { get { return 1155516; } } // Covetous Tile
+        public override BaseAddon Addon => new CovetousTileAddon(TileType);
+        public override int LabelNumber => 1155516;  // Covetous Tile
 
         public TileType TileType { get; set; }
 

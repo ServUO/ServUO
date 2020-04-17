@@ -21,27 +21,9 @@ namespace Server.Items
         {
         }
 
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override CraftResource DefaultResource
-        {
-            get
-            {
-                return CraftResource.Iron;
-            }
-        }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
+        public override CraftResource DefaultResource => CraftResource.Iron;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

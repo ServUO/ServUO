@@ -24,21 +24,9 @@ namespace Server.Engines.Craft
 
     public class DefCooking : CraftSystem
     {
-        public override SkillName MainSkill
-        {
-            get
-            {
-                return SkillName.Cooking;
-            }
-        }
+        public override SkillName MainSkill => SkillName.Cooking;
 
-        public override int GumpTitleNumber
-        {
-            get
-            {
-                return 1044003;
-            }// <CENTER>COOKING MENU</CENTER>
-        }
+        public override int GumpTitleNumber => 1044003;
 
         private static CraftSystem m_CraftSystem;
 
@@ -53,13 +41,7 @@ namespace Server.Engines.Craft
             }
         }
 
-        public override CraftECA ECA
-        {
-            get
-            {
-                return CraftECA.ChanceMinusSixtyToFourtyFive;
-            }
-        }
+        public override CraftECA ECA => CraftECA.ChanceMinusSixtyToFourtyFive;
 
         public override double GetChanceAtMin(CraftItem item)
         {

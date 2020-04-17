@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class WindSpirit : Item
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public WindSpirit()
             : base(0x1F1F)
@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1094925;
-            }
-        }// Wind Spirit [Replica]
+        public override int LabelNumber => 1094925;// Wind Spirit [Replica]
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

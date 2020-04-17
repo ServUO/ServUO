@@ -15,63 +15,21 @@ namespace Server.Engines.Quests
             this.AddReward(new BaseReward(1074874)); // The opportunity to prove yourself worthy of learning to Summon Fey. (Sufficient spellweaving skill is required to cast the spell)
         }
 
-        public override QuestChain ChainID
-        {
-            get
-            {
-                return QuestChain.SummonFey;
-            }
-        }
-        public override Type NextQuest
-        {
-            get
-            {
-                return typeof(TokenOfFriendshipQuest);
-            }
-        }
+        public override QuestChain ChainID => QuestChain.SummonFey;
+        public override Type NextQuest => typeof(TokenOfFriendshipQuest);
         /* Friend of the Fey */
-        public override object Title
-        {
-            get
-            {
-                return 1074284;
-            }
-        }
+        public override object Title => 1074284;
         /* The children of Sosaria understand the dedication and committment of an 
         arcanist -- and will, from time to time offer their friendship. If you would 
         forge such a bond, first seek out a goodwill offering to present.  Pixies 
         enjoy sweets and pretty things. */
-        public override object Description
-        {
-            get
-            {
-                return 1074286;
-            }
-        }
+        public override object Description => 1074286;
         /* There's always time to make new friends. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074288;
-            }
-        }
+        public override object Refuse => 1074288;
         /* I think honey and some sparkly beads would please a pixie. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074290;
-            }
-        }
+        public override object Uncomplete => 1074290;
         /* What have we here? Oh yes, gifts for a pixie. */
-        public override object Complete
-        {
-            get
-            {
-                return 1074292;
-            }
-        }
+        public override object Complete => 1074292;
         public override bool CanOffer()
         {
             return MondainsLegacy.Spellweaving;
@@ -102,62 +60,20 @@ namespace Server.Engines.Quests
             this.AddReward(new BaseReward(1074874)); // The opportunity to prove yourself worthy of learning to Summon Fey. (Sufficient spellweaving skill is required to cast the spell)
         }
 
-        public override QuestChain ChainID
-        {
-            get
-            {
-                return QuestChain.SummonFey;
-            }
-        }
-        public override Type NextQuest
-        {
-            get
-            {
-                return typeof(AllianceQuest);
-            }
-        }
+        public override QuestChain ChainID => QuestChain.SummonFey;
+        public override Type NextQuest => typeof(AllianceQuest);
         /* Token of Friendship */
-        public override object Title
-        {
-            get
-            {
-                return 1074293;
-            }
-        }
+        public override object Title => 1074293;
         /* I've wrapped your gift suitably to present to a pixie of discriminating 
         taste.  Seek out Arielle and give her your offering. */
-        public override object Description
-        {
-            get
-            {
-                return 1074297;
-            }
-        }
+        public override object Description => 1074297;
         /* I'll hold onto this gift in case you change your mind. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074310;
-            }
-        }
+        public override object Refuse => 1074310;
         /* Arielle wanders quite a bit, so I'm not sure exactly where to find her.  
         I'm sure she's going to love your gift. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074315;
-            }
-        }
+        public override object Uncomplete => 1074315;
         /* *giggle*  Oooh!  For me? */
-        public override object Complete
-        {
-            get
-            {
-                return 1074319;
-            }
-        }
+        public override object Complete => 1074319;
         public override bool CanOffer()
         {
             return MondainsLegacy.Spellweaving;
@@ -188,55 +104,19 @@ namespace Server.Engines.Quests
             this.AddReward(new BaseReward(typeof(SummonFeyScroll), 1071032)); // Summon Fey
         }
 
-        public override QuestChain ChainID
-        {
-            get
-            {
-                return QuestChain.SummonFey;
-            }
-        }
+        public override QuestChain ChainID => QuestChain.SummonFey;
         /* Alliance */
-        public override object Title
-        {
-            get
-            {
-                return 1074294;
-            }
-        }
+        public override object Title => 1074294;
         /* *giggle* Mean reapers make pixies unhappy. *light-hearted giggle*  You 
         could fix them! */
-        public override object Description
-        {
-            get
-            {
-                return 1074298;
-            }
-        }
+        public override object Description => 1074298;
         /* *giggle* Okies! */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074311;
-            }
-        }
+        public override object Refuse => 1074311;
         /* Mean reapers are all around trees!  *giggle*  You fix them up, please. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074316;
-            }
-        }
+        public override object Uncomplete => 1074316;
         /* *giggle* Mean reapers got fixed!  Pixie friend now! *giggle* When mean 
         thingies bother you, a brave pixie will help. */
-        public override object Complete
-        {
-            get
-            {
-                return 1074320;
-            }
-        }
+        public override object Complete => 1074320;
         public override bool CanOffer()
         {
             return MondainsLegacy.Spellweaving;

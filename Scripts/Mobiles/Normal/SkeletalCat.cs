@@ -5,9 +5,9 @@ namespace Server.Mobiles
 {
     public class SkeletalCatStatue : Item, ICreatureStatuette
     {
-        public override int LabelNumber { get { return 1158462; } } // Skeletal Cat
+        public override int LabelNumber => 1158462;  // Skeletal Cat
 
-        public Type CreatureType { get { return typeof(SkeletalCat); } }
+        public Type CreatureType => typeof(SkeletalCat);
 
         [Constructable]
         public SkeletalCatStatue()
@@ -90,9 +90,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat { get { return 3; } }
-        public override int Hides { get { return 10; } }
-        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
+        public override int Meat => 3;
+        public override int Hides => 10;
+        public override FoodType FavoriteFood => FoodType.Meat;
 
         public override void Serialize(GenericWriter writer)
         {

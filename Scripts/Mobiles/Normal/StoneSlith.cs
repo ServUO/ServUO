@@ -48,22 +48,13 @@ namespace Server.Mobiles
         {
         }
 
-        public override int DragonBlood { get { return 6; } }
+        public override int DragonBlood => 6;
 
-        public override int Meat
-        {
-            get { return 1; }
-        }
+        public override int Meat => 1;
 
-        public override int Hides
-        {
-            get { return 12; }
-        }
+        public override int Hides => 12;
 
-        public override HideType HideType
-        {
-            get { return HideType.Spined; }
-        }
+        public override HideType HideType => HideType.Spined;
 
         public override void GenerateLoot()
         {

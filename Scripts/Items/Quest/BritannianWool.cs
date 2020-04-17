@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class BritannianWool : Wool
     {
-        public override int LabelNumber { get { return 1113242; } } // Britannian wool
+        public override int LabelNumber => 1113242;  // Britannian wool
 
         [Constructable]
         public BritannianWool() : this(1)

@@ -43,27 +43,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override double DispelDifficulty
-        {
-            get
-            {
-                return 70.0;
-            }
-        }
-        public override double DispelFocus
-        {
-            get
-            {
-                return 20.0;
-            }
-        }
-        public override bool InitialInnocent
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override double DispelDifficulty => 70.0;
+        public override double DispelFocus => 20.0;
+        public override bool InitialInnocent => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

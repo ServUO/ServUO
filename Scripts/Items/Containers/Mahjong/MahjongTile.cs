@@ -34,69 +34,15 @@ namespace Server.Engines.Mahjong
             this.m_Flipped = reader.ReadBool();
         }
 
-        public MahjongGame Game
-        {
-            get
-            {
-                return this.m_Game;
-            }
-        }
-        public int Number
-        {
-            get
-            {
-                return this.m_Number;
-            }
-        }
-        public MahjongTileType Value
-        {
-            get
-            {
-                return this.m_Value;
-            }
-        }
-        public Point2D Position
-        {
-            get
-            {
-                return this.m_Position;
-            }
-        }
-        public int StackLevel
-        {
-            get
-            {
-                return this.m_StackLevel;
-            }
-        }
-        public MahjongPieceDirection Direction
-        {
-            get
-            {
-                return this.m_Direction;
-            }
-        }
-        public bool Flipped
-        {
-            get
-            {
-                return this.m_Flipped;
-            }
-        }
-        public MahjongPieceDim Dimensions
-        {
-            get
-            {
-                return GetDimensions(this.m_Position, this.m_Direction);
-            }
-        }
-        public bool IsMovable
-        {
-            get
-            {
-                return this.m_Game.GetStackLevel(this.Dimensions) <= this.m_StackLevel;
-            }
-        }
+        public MahjongGame Game => this.m_Game;
+        public int Number => this.m_Number;
+        public MahjongTileType Value => this.m_Value;
+        public Point2D Position => this.m_Position;
+        public int StackLevel => this.m_StackLevel;
+        public MahjongPieceDirection Direction => this.m_Direction;
+        public bool Flipped => this.m_Flipped;
+        public MahjongPieceDim Dimensions => GetDimensions(this.m_Position, this.m_Direction);
+        public bool IsMovable => this.m_Game.GetStackLevel(this.Dimensions) <= this.m_StackLevel;
         public static MahjongPieceDim GetDimensions(Point2D position, MahjongPieceDirection direction)
         {
             if (direction == MahjongPieceDirection.Up || direction == MahjongPieceDirection.Down)

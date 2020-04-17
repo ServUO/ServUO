@@ -17,7 +17,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public PuzzleType PuzzleType { get { return m_PuzzleType; } set { m_PuzzleType = value; } }
 
-        public override int LabelNumber { get { return 1113486; } } // a puzzle box
+        public override int LabelNumber => 1113486;  // a puzzle box
 
         [Constructable]
         public PuzzleBox(PuzzleType type) : base(2472)

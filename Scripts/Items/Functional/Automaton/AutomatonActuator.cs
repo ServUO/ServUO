@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class AutomatonActuator : Item
     {
-        public override int LabelNumber { get { return 1156997; } } // Automaton Actuator
+        public override int LabelNumber => 1156997;  // Automaton Actuator
 
         [Constructable]
         public AutomatonActuator()

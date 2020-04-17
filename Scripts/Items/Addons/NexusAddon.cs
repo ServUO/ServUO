@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class NexusComponent : AddonComponent
     {
-        public override int LabelNumber { get { return 1152442; } } // Nexus
+        public override int LabelNumber => 1152442;  // Nexus
 
         public NexusComponent(int itemID)
             : base(itemID)
@@ -29,7 +29,7 @@ namespace Server.Items
 
     public class NexusAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new NexusAddonDeed(); } }
+        public override BaseAddonDeed Deed => new NexusAddonDeed();
 
         [Constructable]
         public NexusAddon()
@@ -68,7 +68,7 @@ namespace Server.Items
 
     public class NexusAddonDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new NexusAddon(); } }
+        public override BaseAddon Addon => new NexusAddon();
 
         [Constructable]
         public NexusAddonDeed()

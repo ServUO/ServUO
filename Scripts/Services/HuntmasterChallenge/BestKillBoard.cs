@@ -7,7 +7,7 @@ namespace Server.Items
 {
     public class BestKillBoard : Item
     {
-        public override string DefaultName { get { return "Top 10 Kill Board"; } }
+        public override string DefaultName => "Top 10 Kill Board";
 
         [Constructable]
         public BestKillBoard() : base(7775)

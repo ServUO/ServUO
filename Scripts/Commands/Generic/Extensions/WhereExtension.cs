@@ -10,20 +10,8 @@ namespace Server.Commands.Generic
         {
         }
 
-        public override ExtensionInfo Info
-        {
-            get
-            {
-                return ExtInfo;
-            }
-        }
-        public ObjectConditional Conditional
-        {
-            get
-            {
-                return this.m_Conditional;
-            }
-        }
+        public override ExtensionInfo Info => ExtInfo;
+        public ObjectConditional Conditional => this.m_Conditional;
         public static void Initialize()
         {
             ExtensionInfo.Register(ExtInfo);

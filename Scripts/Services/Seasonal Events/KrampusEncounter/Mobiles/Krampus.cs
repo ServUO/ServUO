@@ -10,7 +10,7 @@ namespace Server.Mobiles
     [CorpseName("the corpse of krampus")]
     public class Krampus : BaseCreature
     {
-        public override bool TeleportsTo { get { return true; } }
+        public override bool TeleportsTo => true;
 
         public List<BaseCreature> SummonedHelpers { get; set; }
         public List<BaseCreature> InitialSpawn { get; set; }
@@ -23,7 +23,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D SpawnLocation { get; set; }
 
-        public bool IsKrampusEncounter { get { return KrampusEncounter.Encounter != null && KrampusEncounter.Encounter.Krampus == this; } }
+        public bool IsKrampusEncounter => KrampusEncounter.Encounter != null && KrampusEncounter.Encounter.Krampus == this;
 
         [Constructable]
         public Krampus()

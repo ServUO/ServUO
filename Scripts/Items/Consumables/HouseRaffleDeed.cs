@@ -90,27 +90,9 @@ namespace Server.Items
             }
         }
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Seer)]
-        public bool IsExpired
-        {
-            get
-            {
-                return (this.m_Stone == null || this.m_Stone.Deleted || this.m_Stone.IsExpired);
-            }
-        }
-        public override string DefaultName
-        {
-            get
-            {
-                return "a writ of lease";
-            }
-        }
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public bool IsExpired => (this.m_Stone == null || this.m_Stone.Deleted || this.m_Stone.IsExpired);
+        public override string DefaultName => "a writ of lease";
+        public override double DefaultWeight => 1.0;
         public bool ValidLocation()
         {
             return (this.m_PlotLocation != Point3D.Zero && this.m_Facet != null && this.m_Facet != Map.Internal);

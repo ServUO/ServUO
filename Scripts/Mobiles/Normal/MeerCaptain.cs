@@ -96,20 +96,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool InitialInnocent
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool CanRummageCorpses => true;
+        public override bool InitialInnocent => true;
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);

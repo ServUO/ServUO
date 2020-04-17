@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1030288;
-            }
-        }// origami paper
+        public override int LabelNumber => 1030288;// origami paper
 
         public override void OnDoubleClick(Mobile from)
         {
@@ -81,13 +75,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1030296;
-            }
-        }// a delicate origami butterfly
+        public override int LabelNumber => 1030296;// a delicate origami butterfly
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -117,13 +105,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1030297;
-            }
-        }// a delicate origami swan
+        public override int LabelNumber => 1030297;// a delicate origami swan
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -153,13 +135,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1030298;
-            }
-        }// a delicate origami frog
+        public override int LabelNumber => 1030298;// a delicate origami frog
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -189,13 +165,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1030299;
-            }
-        }// an intricate geometric origami shape
+        public override int LabelNumber => 1030299;// an intricate geometric origami shape
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -225,13 +195,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1030300;
-            }
-        }// a delicate origami songbird
+        public override int LabelNumber => 1030300;// a delicate origami songbird
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -261,13 +225,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1030301;
-            }
-        }// a delicate origami fish
+        public override int LabelNumber => 1030301;// a delicate origami fish
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

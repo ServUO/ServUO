@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class KnowThineEnemyQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* Knowing Thine Enemy */
-        public override object Title
-        {
-            get
-            {
-                return 1077685;
-            }
-        }
+        public override object Title => 1077685;
 
         /* Head East out of town to Old Haven. Battle monsters there, or heal yourself and other players, until you 
         have raised your Anatomy skill to 50.<br><center>------</center><br>Hail and well met. You must be here to 
@@ -33,45 +21,21 @@ namespace Server.Engines.Quests
         more, I'd advise you to head out to Old Haven, just to the east, and jump into the fray. You'll learn best by 
         engaging in combat while keeping you and your fellow adventurers healed, or you can even try sizing up your 
         opponents.<br><br>While you're gone, I'll dig up something you may find useful. */
-        public override object Description
-        {
-            get
-            {
-                return 1077688;
-            }
-        }
+        public override object Description => 1077688;
 
         /* It's your choice, but I wouldn't head out there without knowing what makes those things tick inside! If you 
         change your mind, you can find me right here dissecting frogs, cats or even the occasional unlucky adventurer. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1077689;
-            }
-        }
+        public override object Refuse => 1077689;
 
         /* I'm surprised to see you back so soon. You've still got a ways to go if you want to really understand the 
         science of Anatomy. Head out to Old Haven and practice combat and healing yourself or other adventurers. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1077690;
-            }
-        }
+        public override object Uncomplete => 1077690;
 
         /* By the Virtues, you've done it! Congratulations mate! You still have quite a ways to go if you want to perfect 
         your knowledge of Anatomy, but I know you'll get there someday. Just keep at it.<br><br>In the meantime, here's a 
         piece of armor that you might find useful. It's not fancy, but it'll serve you well if you choose to wear it.<br>
         <br>Happy adventuring, and remember to keep your cranium separate from your clavicle! */
-        public override object Complete
-        {
-            get
-            {
-                return 1077692;
-            }
-        }
+        public override object Complete => 1077692;
 
         public KnowThineEnemyQuest()
             : base()
@@ -121,16 +85,10 @@ namespace Server.Engines.Quests
 
     public class AndreasVesalius : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(KnowThineEnemyQuest)
                 };
-            }
-        }
 
         [Constructable]
         public AndreasVesalius()

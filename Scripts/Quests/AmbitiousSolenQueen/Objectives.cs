@@ -9,21 +9,10 @@ namespace Server.Engines.Quests.Ambitious
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 // Kill 5 red/black solen queens.
-                return ((AmbitiousQueenQuest)this.System).RedSolen ? 1054062 : 1054063;
-            }
-        }
-        public override int MaxProgress
-        {
-            get
-            {
-                return 5;
-            }
-        }
+                ((AmbitiousQueenQuest)this.System).RedSolen ? 1054062 : 1054063;
+        public override int MaxProgress => 5;
         public override void RenderProgress(BaseQuestGump gump)
         {
             if (!this.Completed)
@@ -81,16 +70,11 @@ namespace Server.Engines.Quests.Ambitious
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* You've completed your task of slaying solen queens. Return to
-                * the ambitious queen who asked for your help.
-                */
-                return 1054067;
-            }
-        }
+* the ambitious queen who asked for your help.
+*/
+                1054067;
         public override void OnComplete()
         {
             this.System.AddConversation(new GatherFungiConversation());
@@ -103,16 +87,11 @@ namespace Server.Engines.Quests.Ambitious
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* Gather zoogi fungus until you have 50 of them, then give them
-                * to the ambitious queen you are helping.
-                */
-                return 1054069;
-            }
-        }
+* to the ambitious queen you are helping.
+*/
+                1054069;
         public override void OnComplete()
         {
             this.System.AddConversation(new EndConversation());
@@ -135,14 +114,9 @@ namespace Server.Engines.Quests.Ambitious
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 // Return to the ambitious solen queen for your reward.
-                return 1054148;
-            }
-        }
+                1054148;
         public bool BagOfSending
         {
             get

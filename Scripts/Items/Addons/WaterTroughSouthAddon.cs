@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new WaterTroughSouthDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new WaterTroughSouthDeed();
         public int Quantity
         {
             get
@@ -58,20 +52,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new WaterTroughSouthAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044350;
-            }
-        }// water trough (south)
+        public override BaseAddon Addon => new WaterTroughSouthAddon();
+        public override int LabelNumber => 1044350;// water trough (south)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

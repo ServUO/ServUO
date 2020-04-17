@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074230;
-            }
-        }// Thrasher's Tail
+        public override int LabelNumber => 1074230;// Thrasher's Tail
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

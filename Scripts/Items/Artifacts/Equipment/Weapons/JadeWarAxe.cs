@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class JadeWarAxe : WarAxe
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1115445; } } // Jade War Axe
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1115445;  // Jade War Axe
 
         [Constructable]
         public JadeWarAxe()
@@ -22,20 +22,8 @@ namespace Server.Items
         {
         }
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

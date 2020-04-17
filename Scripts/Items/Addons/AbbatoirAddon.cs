@@ -21,13 +21,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new AbbatoirDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new AbbatoirDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -55,20 +49,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new AbbatoirAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044329;
-            }
-        }// abbatoir
+        public override BaseAddon Addon => new AbbatoirAddon();
+        public override int LabelNumber => 1044329;// abbatoir
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

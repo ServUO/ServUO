@@ -777,7 +777,7 @@ namespace Server.Items
 
     public class Plum : Food
     {
-        public override int LabelNumber { get { return 1157208; } } // plum
+        public override int LabelNumber => 1157208;  // plum
 
         [Constructable]
         public Plum()

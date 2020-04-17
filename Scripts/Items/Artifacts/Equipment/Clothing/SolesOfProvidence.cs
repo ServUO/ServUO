@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class SolesOfProvidence : Sandals
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1113376; } } // Soles of Providence
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113376;  // Soles of Providence
 
         [Constructable]
         public SolesOfProvidence()

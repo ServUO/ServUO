@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class BlightGrippedLongbow : ElvenCompositeLongbow
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public BlightGrippedLongbow()
         {
@@ -19,13 +19,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072907;
-            }
-        }// Blight Gripped Longbow
+        public override int LabelNumber => 1072907;// Blight Gripped Longbow
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

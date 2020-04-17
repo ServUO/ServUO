@@ -32,13 +32,7 @@ namespace Server.Engines.Reports
                 this.m_FileName = value;
             }
         }
-        public ChartItemCollection Items
-        {
-            get
-            {
-                return this.m_Items;
-            }
-        }
+        public ChartItemCollection Items => this.m_Items;
         public override void SerializeAttributes(PersistenceWriter op)
         {
             op.SetString("n", this.m_Name);

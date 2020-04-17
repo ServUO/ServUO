@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class ProtectoroftheBattleMage : LeatherChest
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1113761; } } // Protector of the Battle Mage
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113761;  // Protector of the Battle Mage
 
         [Constructable]
         public ProtectoroftheBattleMage()
@@ -22,55 +22,13 @@ namespace Server.Items
         {
         }
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 16;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 8;
-            }
-        }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
+        public override int BasePhysicalResistance => 10;
+        public override int BaseFireResistance => 16;
+        public override int BaseColdResistance => 10;
+        public override int BasePoisonResistance => 8;
+        public override int BaseEnergyResistance => 8;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -12,20 +12,8 @@ namespace Server.Items
             this.m_Chance = chance;
         }
 
-        public Poison Poison
-        {
-            get
-            {
-                return this.m_Poison;
-            }
-        }
-        public double Chance
-        {
-            get
-            {
-                return this.m_Chance;
-            }
-        }
+        public Poison Poison => this.m_Poison;
+        public double Chance => this.m_Chance;
     }
 
     public abstract class BaseCurePotion : BasePotion

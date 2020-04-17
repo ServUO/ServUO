@@ -44,11 +44,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool AutoDispel { get { return true; } }
-        public override bool BleedImmune { get { return true; } }
-        public override int TreasureMapLevel { get { return 1; } }
-        public override Poison PoisonImmune { get { return Poison.Deadly; } }
-        public override bool BreathImmune { get { return true; } }
+        public override bool AutoDispel => true;
+        public override bool BleedImmune => true;
+        public override int TreasureMapLevel => 1;
+        public override Poison PoisonImmune => Poison.Deadly;
+        public override bool BreathImmune => true;
 
         public override void GenerateLoot()
         {

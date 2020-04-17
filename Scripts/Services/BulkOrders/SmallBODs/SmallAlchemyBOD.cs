@@ -11,7 +11,7 @@ namespace Server.Engines.BulkOrders
     // tink 1109
     public class SmallAlchemyBOD : SmallBOD
     {
-        public override BODType BODType { get { return BODType.Alchemy; } }
+        public override BODType BODType => BODType.Alchemy;
 
         [Constructable]
         public SmallAlchemyBOD()

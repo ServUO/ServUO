@@ -37,13 +37,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override Poison HitPoison
-        {
-            get
-            {
-                return (0.8 >= Utility.RandomDouble() ? Poison.Greater : Poison.Deadly);
-            }
-        }
+        public override Poison HitPoison => (0.8 >= Utility.RandomDouble() ? Poison.Greater : Poison.Deadly);
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

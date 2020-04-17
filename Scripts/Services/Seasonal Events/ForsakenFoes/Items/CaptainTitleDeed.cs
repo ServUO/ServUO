@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class CaptainTitleDeed : BaseRewardTitleDeed
     {
-        public override TextDefinition Title { get { return new TextDefinition(1159216); } } // Captain
+        public override TextDefinition Title => new TextDefinition(1159216);  // Captain
 
         [Constructable]
         public CaptainTitleDeed()

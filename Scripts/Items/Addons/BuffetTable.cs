@@ -41,7 +41,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new BuffetTableDeed(); } }
+        public override BaseAddonDeed Deed => new BuffetTableDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -58,9 +58,9 @@ namespace Server.Items
 
     public class BuffetTableDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1157068; } } // Buffet Table
+        public override int LabelNumber => 1157068;  // Buffet Table
 
-        public override BaseAddon Addon { get { return new BuffetTableAddon(_Direction); } }
+        public override BaseAddon Addon => new BuffetTableAddon(_Direction);
 
         private DirectionType _Direction;
 

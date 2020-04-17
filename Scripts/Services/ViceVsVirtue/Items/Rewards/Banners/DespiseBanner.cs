@@ -6,13 +6,7 @@ namespace Server.Engines.VvV
     [FlipableAttribute(39339, 39340)]
     public class DespiseBanner : Item
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1123363;
-            }
-        }
+        public override int LabelNumber => 1123363;
 
         [Constructable]
         public DespiseBanner()

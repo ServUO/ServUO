@@ -16,41 +16,11 @@ namespace Server.Spells.Chivalry
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(1.5);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 0.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int RequiredTithing
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int MantraNumber
-        {
-            get
-            {
-                return 1060719;
-            }
-        }// Obsu Vulni
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(1.5);
+        public override double RequiredSkill => 0.0;
+        public override int RequiredMana => 10;
+        public override int RequiredTithing => 10;
+        public override int MantraNumber => 1060719;// Obsu Vulni
 
         public override bool CheckDisturb(DisturbType type, bool firstCircle, bool resistable)
         {

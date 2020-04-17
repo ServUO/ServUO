@@ -45,7 +45,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override int TreasureMapLevel { get { return 4; } }
+        public override int TreasureMapLevel => 4;
 
         public override void GenerateLoot()
         {

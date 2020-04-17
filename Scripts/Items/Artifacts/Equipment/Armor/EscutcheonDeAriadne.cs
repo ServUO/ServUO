@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class EscutcheonDeAriadne : MetalKiteShield
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public EscutcheonDeAriadne()
         {
@@ -18,34 +18,10 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1077694;
-            }
-        }// Escutcheon de Ariadne
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int StrReq
-        {
-            get
-            {
-                return 14;
-            }
-        }
+        public override int LabelNumber => 1077694;// Escutcheon de Ariadne
+        public override int BasePhysicalResistance => 5;
+        public override int BaseEnergyResistance => 1;
+        public override int StrReq => 14;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -26,24 +26,13 @@ namespace Server.Engines.Quests.Hag
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* To the west of the Hag's house lies the road between Skara Brae
-                * and Yew.  Follow it carefully toward Yew's graveyard, and search for
-                * any sign of the Hag's apprentice along the road.
-                */
-                return 1055014;
-            }
-        }
-        public Corpse Corpse
-        {
-            get
-            {
-                return this.m_Corpse;
-            }
-        }
+* and Yew.  Follow it carefully toward Yew's graveyard, and search for
+* any sign of the Hag's apprentice along the road.
+*/
+                1055014;
+        public Corpse Corpse => this.m_Corpse;
         public override void CheckProgress()
         {
             PlayerMobile player = this.System.From;
@@ -132,17 +121,12 @@ namespace Server.Engines.Quests.Hag
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* Return to the Hag to tell her of the vile imp Zeefzorpul's role
-                * in the murder of her Apprentice, and the subsequent theft of a mysterious
-                * scrap of parchment from the corpse.
-                */
-                return 1055015;
-            }
-        }
+* in the murder of her Apprentice, and the subsequent theft of a mysterious
+* scrap of parchment from the corpse.
+*/
+                1055015;
         public override void OnComplete()
         {
             this.System.AddConversation(new MurderConversation());
@@ -162,24 +146,13 @@ namespace Server.Engines.Quests.Hag
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* Search the realm for any imps you can find, and slash, bash, mash,
-                * or fry them with magics until one of them gives up the secret hiding
-                * place of the imp Zeefzorpul.
-                */
-                return 1055016;
-            }
-        }
-        public override int MaxProgress
-        {
-            get
-            {
-                return this.m_MaxProgress;
-            }
-        }
+* or fry them with magics until one of them gives up the secret hiding
+* place of the imp Zeefzorpul.
+*/
+                1055016;
+        public override int MaxProgress => this.m_MaxProgress;
         public override bool IgnoreYoungProtection(Mobile from)
         {
             if (!this.Completed && from is Imp)
@@ -239,24 +212,13 @@ namespace Server.Engines.Quests.Hag
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* Find the location shown in the map that the imp gave you. When you
-                * have arrived at the location, play the magic flute he provided,
-                * and the imp Zeefzorpul will be drawn to your presence.
-                */
-                return 1055017;
-            }
-        }
-        public Point3D ImpLocation
-        {
-            get
-            {
-                return this.m_ImpLocation;
-            }
-        }
+* have arrived at the location, play the magic flute he provided,
+* and the imp Zeefzorpul will be drawn to your presence.
+*/
+                1055017;
+        public Point3D ImpLocation => this.m_ImpLocation;
         public override void OnComplete()
         {
             Mobile from = this.System.From;
@@ -311,16 +273,11 @@ namespace Server.Engines.Quests.Hag
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* Return to the old Hag and tell her you have recovered her Magic
-                * Brew Recipe from the bizarre imp named Zeefzorpul.
-                */
-                return 1055018;
-            }
-        }
+* Brew Recipe from the bizarre imp named Zeefzorpul.
+*/
+                1055018;
         public override void OnComplete()
         {
             this.System.AddConversation(new RecipeConversation());
@@ -407,34 +364,10 @@ namespace Server.Engines.Quests.Hag
                 return info.Quantity;
             }
         }
-        public Ingredient[] Ingredients
-        {
-            get
-            {
-                return this.m_Ingredients;
-            }
-        }
-        public Ingredient Ingredient
-        {
-            get
-            {
-                return this.m_Ingredients[this.m_Ingredients.Length - 1];
-            }
-        }
-        public int Step
-        {
-            get
-            {
-                return this.m_Ingredients.Length;
-            }
-        }
-        public bool BlackheartMet
-        {
-            get
-            {
-                return this.m_BlackheartMet;
-            }
-        }
+        public Ingredient[] Ingredients => this.m_Ingredients;
+        public Ingredient Ingredient => this.m_Ingredients[this.m_Ingredients.Length - 1];
+        public int Step => this.m_Ingredients.Length;
+        public bool BlackheartMet => this.m_BlackheartMet;
         public override void RenderProgress(BaseQuestGump gump)
         {
             if (!this.Completed)
@@ -535,16 +468,11 @@ namespace Server.Engines.Quests.Hag
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* You have gathered all the ingredients listed in the Hag's Magic Brew
-                * Recipe.  Return to the Hag and tell her you have completed her task.
-                */
-                return 1055050;
-            }
-        }
+* Recipe.  Return to the Hag and tell her you have completed her task.
+*/
+                1055050;
         public override void OnComplete()
         {
             this.System.AddConversation(new EndConversation());

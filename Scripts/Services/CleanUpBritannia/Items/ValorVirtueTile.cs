@@ -10,7 +10,7 @@ namespace Server.Items
 
     public class ValorVirtueTileAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new ValorVirtueTileDeed(); } }
+        public override BaseAddonDeed Deed => new ValorVirtueTileDeed();
 
         private readonly ValorTileType m_ValorTileType;
 
@@ -56,8 +56,8 @@ namespace Server.Items
 
     public class ValorVirtueTileDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new ValorVirtueTileAddon(m_ValorTileType); } }
-        public override int LabelNumber { get { return 1080486; } } // Valor Virtue Tile Deed
+        public override BaseAddon Addon => new ValorVirtueTileAddon(m_ValorTileType);
+        public override int LabelNumber => 1080486;  // Valor Virtue Tile Deed
 
         private ValorTileType m_ValorTileType;
 

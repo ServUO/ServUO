@@ -16,7 +16,7 @@ namespace Server.Items
 
     public class MiningCart : BaseAddon, IRewardItem
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public override BaseAddonDeed Deed
         {
@@ -49,13 +49,7 @@ namespace Server.Items
         private MiningCartType m_CartType;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public MiningCartType CartType
-        {
-            get
-            {
-                return m_CartType;
-            }
-        }
+        public MiningCartType CartType => m_CartType;
 
         private int m_Gems;
 
@@ -436,13 +430,7 @@ namespace Server.Items
 
     public class MiningCartDeed : BaseAddonDeed, IRewardItem, IRewardOption
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1080385;
-            }
-        }// deed for a mining cart decoration
+        public override int LabelNumber => 1080385;// deed for a mining cart decoration
 
         public override BaseAddon Addon
         {

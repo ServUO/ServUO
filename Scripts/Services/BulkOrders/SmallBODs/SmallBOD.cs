@@ -149,20 +149,8 @@ namespace Server.Engines.BulkOrders
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Complete
-        {
-            get
-            {
-                return (m_AmountCur == m_AmountMax);
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1045151;
-            }
-        }// a bulk order deed
+        public bool Complete => (m_AmountCur == m_AmountMax);
+        public override int LabelNumber => 1045151;// a bulk order deed
         public static BulkMaterialType GetRandomMaterial(BulkMaterialType start, double[] chances)
         {
             double random = Utility.RandomDouble();

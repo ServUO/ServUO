@@ -75,7 +75,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new ClawFootTubDeed(); } }
+        public override BaseAddonDeed Deed => new ClawFootTubDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -92,9 +92,9 @@ namespace Server.Items
 
     public class ClawFootTubDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1154632; } } // Claw Foot Tub
+        public override int LabelNumber => 1154632;  // Claw Foot Tub
 
-        public override BaseAddon Addon { get { return new ClawFootTubAddon(_Direction); } }
+        public override BaseAddon Addon => new ClawFootTubAddon(_Direction);
 
         private DirectionType _Direction;
 

@@ -195,13 +195,13 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public string TipMessage { get { return m_TipMessage; } set { m_TipMessage = value; } }
 
-        public override bool IsActiveBuyer { get { return false; } }
-        public override bool IsActiveSeller { get { return (m_SBInfos.Count > 0); } }
-        public override bool DisallowAllMoves { get { return true; } }
-        public override bool NoHouseRestrictions { get { return true; } }
-        public BarkeeperRumor[] Rumors { get { return m_Rumors; } }
-        public override VendorShoeType ShoeType { get { return Utility.RandomBool() ? VendorShoeType.ThighBoots : VendorShoeType.Boots; } }
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
+        public override bool IsActiveBuyer => false;
+        public override bool IsActiveSeller => (m_SBInfos.Count > 0);
+        public override bool DisallowAllMoves => true;
+        public override bool NoHouseRestrictions => true;
+        public BarkeeperRumor[] Rumors => m_Rumors;
+        public override VendorShoeType ShoeType => Utility.RandomBool() ? VendorShoeType.ThighBoots : VendorShoeType.Boots;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public override bool GetGender()
         {

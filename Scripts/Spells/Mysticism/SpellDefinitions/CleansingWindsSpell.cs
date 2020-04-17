@@ -11,7 +11,7 @@ namespace Server.Spells.Mysticism
 {
     public class CleansingWindsSpell : MysticSpell
     {
-        public override SpellCircle Circle { get { return SpellCircle.Sixth; } }
+        public override SpellCircle Circle => SpellCircle.Sixth;
 
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Cleansing Winds", "In Vas Mani Hur",

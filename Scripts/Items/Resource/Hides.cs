@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public abstract class BaseHides : Item, ICommodity
     {
-        protected virtual CraftResource DefaultResource { get { return CraftResource.RegularLeather; } }
+        protected virtual CraftResource DefaultResource => CraftResource.RegularLeather;
 
         private CraftResource m_Resource;
         public BaseHides(CraftResource resource)
@@ -49,20 +49,8 @@ namespace Server.Items
                 return 1047023;
             }
         }
-        TextDefinition ICommodity.Description
-        {
-            get
-            {
-                return this.LabelNumber;
-            }
-        }
-        bool ICommodity.IsDeedable
-        {
-            get
-            {
-                return true;
-            }
-        }
+        TextDefinition ICommodity.Description => this.LabelNumber;
+        bool ICommodity.IsDeedable => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -176,7 +164,7 @@ namespace Server.Items
     [FlipableAttribute(0x1079, 0x1078)]
     public class SpinedHides : BaseHides, IScissorable
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.SpinedLeather; } }
+        protected override CraftResource DefaultResource => CraftResource.SpinedLeather;
 
         [Constructable]
         public SpinedHides()
@@ -229,7 +217,7 @@ namespace Server.Items
     [FlipableAttribute(0x1079, 0x1078)]
     public class HornedHides : BaseHides, IScissorable
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.HornedLeather; } }
+        protected override CraftResource DefaultResource => CraftResource.HornedLeather;
 
         [Constructable]
         public HornedHides()
@@ -282,7 +270,7 @@ namespace Server.Items
     [FlipableAttribute(0x1079, 0x1078)]
     public class BarbedHides : BaseHides, IScissorable
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.BarbedLeather; } }
+        protected override CraftResource DefaultResource => CraftResource.BarbedLeather;
 
         [Constructable]
         public BarbedHides()

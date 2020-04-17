@@ -18,43 +18,37 @@ namespace Server.Engines.NewMagincia
         private DateTime m_Expires;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string Identifier { get { return m_Identifier; } }
+        public string Identifier => m_Identifier;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public WritOfLease Writ { get { return m_Writ; } set { m_Writ = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Rectangle2D Bounds { get { return m_Bounds; } }
+        public Rectangle2D Bounds => m_Bounds;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public MaginciaPlotStone Stone { get { return m_Stone; } set { m_Stone = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsPrimeSpot { get { return m_IsPrimeSpot; } }
+        public bool IsPrimeSpot => m_IsPrimeSpot;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Complete { get { return m_Complete; } }
+        public bool Complete => m_Complete;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Winner { get { return m_Winner; } set { m_Winner = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Map Map { get { return m_Map; } }
+        public Map Map => m_Map;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime Expires { get { return m_Expires; } set { m_Expires = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D RecallLoc
-        {
-            get
-            {
-                return new Point3D(m_Bounds.X, m_Bounds.Y, m_Map.GetAverageZ(m_Bounds.X, m_Bounds.Y));
-            }
-        }
+        public Point3D RecallLoc => new Point3D(m_Bounds.X, m_Bounds.Y, m_Map.GetAverageZ(m_Bounds.X, m_Bounds.Y));
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsAvailable { get { return !m_Complete; } }
+        public bool IsAvailable => !m_Complete;
 
         #region Lotto Info
         private DateTime m_LottoEnds;
@@ -63,13 +57,13 @@ namespace Server.Engines.NewMagincia
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime LottoEnds { get { return m_LottoEnds; } set { m_LottoEnds = value; } }
 
-        public Dictionary<Mobile, int> Participants { get { return m_Participants; } }
+        public Dictionary<Mobile, int> Participants => m_Participants;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int LottoPrice { get { return m_IsPrimeSpot ? 10000 : 2000; } }
+        public int LottoPrice => m_IsPrimeSpot ? 10000 : 2000;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool LottoOngoing { get { return IsAvailable && m_LottoEnds > DateTime.UtcNow && m_LottoEnds != DateTime.MinValue; } }
+        public bool LottoOngoing => IsAvailable && m_LottoEnds > DateTime.UtcNow && m_LottoEnds != DateTime.MinValue;
         #endregion
 
         public MaginciaHousingPlot(string identifier, Rectangle2D bounds, bool prime, Map map)

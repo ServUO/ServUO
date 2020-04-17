@@ -7,9 +7,9 @@ namespace Server.Mobiles
 {
     public class PaladinAI : MageAI
     {
-        public override SkillName CastSkill { get { return SkillName.Chivalry; } }
-        public override bool UsesMagery { get { return false; } }
-        public override double HealChance { get { return .1; } }
+        public override SkillName CastSkill => SkillName.Chivalry;
+        public override bool UsesMagery => false;
+        public override double HealChance => .1;
 
         public PaladinAI(BaseCreature m)
             : base(m)

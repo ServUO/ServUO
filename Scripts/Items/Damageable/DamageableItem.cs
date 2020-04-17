@@ -196,20 +196,20 @@ namespace Server.Items
 
         public Dictionary<Mobile, int> DamageStore { get; set; }
 
-        public virtual int HitEffect { get { return -1; } }
-        public virtual int DestroySound { get { return 0x3B3; } }
-        public virtual double IDChange { get { return 0.5; } }
-        public virtual bool DeleteOnDestroy { get { return true; } }
-        public virtual bool Alive { get { return !Destroyed; } }
-        public virtual bool CanDamage { get { return true; } }
+        public virtual int HitEffect => -1;
+        public virtual int DestroySound => 0x3B3;
+        public virtual double IDChange => 0.5;
+        public virtual bool DeleteOnDestroy => true;
+        public virtual bool Alive => !Destroyed;
+        public virtual bool CanDamage => true;
 
-        public override int PhysicalResistance { get { return ResistBasePhys; } }
-        public override int FireResistance { get { return ResistBaseFire; } }
-        public override int ColdResistance { get { return ResistBaseCold; } }
-        public override int PoisonResistance { get { return ResistBasePoison; } }
-        public override int EnergyResistance { get { return ResistBaseEnergy; } }
+        public override int PhysicalResistance => ResistBasePhys;
+        public override int FireResistance => ResistBaseFire;
+        public override int ColdResistance => ResistBaseCold;
+        public override int PoisonResistance => ResistBasePoison;
+        public override int EnergyResistance => ResistBaseEnergy;
 
-        public override bool ForceShowProperties { get { return false; } }
+        public override bool ForceShowProperties => false;
 
         [Constructable]
         public DamageableItem(int startID)

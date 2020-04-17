@@ -16,13 +16,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072896;
-            }
-        }// runed switch
+        public override int LabelNumber => 1072896;// runed switch
         public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack))

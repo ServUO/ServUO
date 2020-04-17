@@ -9,7 +9,7 @@ namespace Server.Mobiles
 {
     public class MadelineHarte : Mobile
     {
-        public virtual bool IsInvulnerable { get { return true; } }
+        public virtual bool IsInvulnerable => true;
 
         [Constructable]
         public MadelineHarte()

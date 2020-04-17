@@ -9,7 +9,7 @@ namespace Server.Items
     [Flipable(0x9A97, 0x9A98)]
     public class Grinder : Item, ISecurable
     {
-        public override int LabelNumber { get { return 1123599; } } // Grinder
+        public override int LabelNumber => 1123599;  // Grinder
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level { get; set; }

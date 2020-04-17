@@ -50,7 +50,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1015082; } } // Wooden Throne
+        public override int LabelNumber => 1015082;  // Wooden Throne
 
         public override void Serialize(GenericWriter writer)
         {

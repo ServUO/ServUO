@@ -7,23 +7,17 @@ namespace Server.Items
     public class PrismOfLightAltar : PeerlessAltar
     {
         private int m_ID;
-        public override int KeyCount { get { return 3; } }
-        public override MasterKey MasterKey { get { return new PrismOfLightKey(); } }
+        public override int KeyCount => 3;
+        public override MasterKey MasterKey => new PrismOfLightKey();
         public List<Item> Pedestals = new List<Item>();
 
-        public override Type[] Keys
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Keys => new Type[]
                 {
                     typeof(JaggedCrystals), typeof(BrokenCrystals), typeof(PiecesOfCrystal),
                     typeof(CrushedCrystals), typeof(ScatteredCrystals), typeof(ShatteredCrystals)
                 };
-            }
-        }
 
-        public override BasePeerless Boss { get { return new ShimmeringEffusion(); } }
+        public override BasePeerless Boss => new ShimmeringEffusion();
 
         [Constructable]
         public PrismOfLightAltar() : base(0x2206)
@@ -44,10 +38,7 @@ namespace Server.Items
             Pedestals.ForEach(x => x.Hue = ((PrismOfLightPillar)x).OrgHue);
         }
 
-        public override Rectangle2D[] BossBounds
-        {
-            get { return m_Bounds; }
-        }
+        public override Rectangle2D[] BossBounds => m_Bounds;
 
         private readonly Rectangle2D[] m_Bounds = new Rectangle2D[]
         {
@@ -98,7 +89,7 @@ namespace Server.Items
 
     public class PrismOfLightPillar : Container
     {
-        public override int LabelNumber { get { return 1024643; } } // pedestal
+        public override int LabelNumber => 1024643;  // pedestal
 
         private PrismOfLightAltar m_Altar;
         private int m_OrgHue;

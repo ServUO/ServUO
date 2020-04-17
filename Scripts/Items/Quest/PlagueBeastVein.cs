@@ -18,13 +18,7 @@ namespace Server.Items
         {
         }
 
-        public bool Cut
-        {
-            get
-            {
-                return this.m_Cut;
-            }
-        }
+        public bool Cut => this.m_Cut;
         public override bool Scissor(Mobile from, Scissors scissors)
         {
             if (this.IsAccessibleTo(from))

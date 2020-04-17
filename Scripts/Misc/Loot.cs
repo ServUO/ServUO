@@ -16,11 +16,11 @@ namespace Server
             typeof(StoneWarSword), typeof(DualShortAxes), typeof(GlassSword), typeof(GargishDagger)
         };
 
-        public static Type[] SAWeaponTypes { get { return m_SAWeaponTypes; } }
+        public static Type[] SAWeaponTypes => m_SAWeaponTypes;
 
         private static readonly Type[] m_SARangedWeaponTypes = new[] { typeof(Boomerang), typeof(Cyclone), typeof(SoulGlaive), };
 
-        public static Type[] SARangedWeaponTypes { get { return m_SARangedWeaponTypes; } }
+        public static Type[] SARangedWeaponTypes => m_SARangedWeaponTypes;
 
         private static readonly Type[] m_SAArmorTypes = new[]
         {
@@ -30,14 +30,14 @@ namespace Server
             typeof(GargishPlateKilt), typeof(GargishNecklace), typeof( GargishEarrings )
         };
 
-        public static Type[] SAArmorTypes { get { return m_SAArmorTypes; } }
+        public static Type[] SAArmorTypes => m_SAArmorTypes;
 
         private static readonly Type[] m_SAClothingTypes = new[]
         {
             typeof(GargishClothChestArmor), typeof(GargishClothArmsArmor), typeof(GargishClothKiltArmor), typeof(GargishClothLegsArmor),
         };
 
-        public static Type[] SAClothingTypes { get { return m_SAClothingTypes; } }
+        public static Type[] SAClothingTypes => m_SAClothingTypes;
         #endregion
 
         #region Mondain's Legacy
@@ -47,11 +47,11 @@ namespace Server
             typeof(OrnateAxe), typeof(RadiantScimitar), typeof(RuneBlade), typeof(WarCleaver), typeof(WildStaff)
         };
 
-        public static Type[] MLWeaponTypes { get { return m_MLWeaponTypes; } }
+        public static Type[] MLWeaponTypes => m_MLWeaponTypes;
 
         private static readonly Type[] m_MLRangedWeaponTypes = new[] { typeof(ElvenCompositeLongbow), typeof(MagicalShortbow) };
 
-        public static Type[] MLRangedWeaponTypes { get { return m_MLRangedWeaponTypes; } }
+        public static Type[] MLRangedWeaponTypes => m_MLRangedWeaponTypes;
 
         private static readonly Type[] m_MLArmorTypes = new[]
         {
@@ -62,7 +62,7 @@ namespace Server
             typeof(HidePauldrons)
         };
 
-        public static Type[] MLArmorTypes { get { return m_MLArmorTypes; } }
+        public static Type[] MLArmorTypes => m_MLArmorTypes;
 
         private static readonly Type[] m_MLClothingTypes = new[]
         {
@@ -70,7 +70,7 @@ namespace Server
             typeof(ElvenBoots), typeof(VultureHelm), typeof(WoodlandBelt)
         };
 
-        public static Type[] MLClothingTypes { get { return m_MLClothingTypes; } }
+        public static Type[] MLClothingTypes => m_MLClothingTypes;
         #endregion
 
         private static readonly Type[] m_SEWeaponTypes = new[]
@@ -79,7 +79,7 @@ namespace Server
             typeof(Tekagi), typeof(Tessen), typeof(Tetsubo), typeof(Wakizashi)
         };
 
-        public static Type[] SEWeaponTypes { get { return m_SEWeaponTypes; } }
+        public static Type[] SEWeaponTypes => m_SEWeaponTypes;
 
         private static readonly Type[] m_AosWeaponTypes = new[]
         {
@@ -87,7 +87,7 @@ namespace Server
             typeof(Lance), typeof(CrescentBlade), typeof(SmithyHammer), typeof(SledgeHammerWeapon)
         };
 
-        public static Type[] AosWeaponTypes { get { return m_AosWeaponTypes; } }
+        public static Type[] AosWeaponTypes => m_AosWeaponTypes;
 
         private static readonly Type[] m_WeaponTypes = new[]
         {
@@ -99,19 +99,19 @@ namespace Server
             typeof(ButcherKnife), typeof(Cleaver), typeof(Dagger), typeof(SkinningKnife), typeof(ShepherdsCrook)
         };
 
-        public static Type[] WeaponTypes { get { return m_WeaponTypes; } }
+        public static Type[] WeaponTypes => m_WeaponTypes;
 
         private static readonly Type[] m_SERangedWeaponTypes = new[] { typeof(Yumi) };
 
-        public static Type[] SERangedWeaponTypes { get { return m_SERangedWeaponTypes; } }
+        public static Type[] SERangedWeaponTypes => m_SERangedWeaponTypes;
 
         private static readonly Type[] m_AosRangedWeaponTypes = new[] { typeof(CompositeBow), typeof(RepeatingCrossbow) };
 
-        public static Type[] AosRangedWeaponTypes { get { return m_AosRangedWeaponTypes; } }
+        public static Type[] AosRangedWeaponTypes => m_AosRangedWeaponTypes;
 
         private static readonly Type[] m_RangedWeaponTypes = new[] { typeof(Bow), typeof(Crossbow), typeof(HeavyCrossbow) };
 
-        public static Type[] RangedWeaponTypes { get { return m_RangedWeaponTypes; } }
+        public static Type[] RangedWeaponTypes => m_RangedWeaponTypes;
 
         private static readonly Type[] m_SEArmorTypes = new[]
         {
@@ -124,7 +124,7 @@ namespace Server
             , typeof(StuddedSuneate)
         };
 
-        public static Type[] SEArmorTypes { get { return m_SEArmorTypes; } }
+        public static Type[] SEArmorTypes => m_SEArmorTypes;
 
         private static readonly Type[] m_ArmorTypes = new[]
         {
@@ -138,11 +138,11 @@ namespace Server
             typeof(StuddedBustierArms), typeof(StuddedChest), typeof(StuddedGloves), typeof(StuddedGorget), typeof(StuddedLegs)
         };
 
-        public static Type[] ArmorTypes { get { return m_ArmorTypes; } }
+        public static Type[] ArmorTypes => m_ArmorTypes;
 
         private static readonly Type[] m_AosShieldTypes = new[] { typeof(ChaosShield), typeof(OrderShield) };
 
-        public static Type[] AosShieldTypes { get { return m_AosShieldTypes; } }
+        public static Type[] AosShieldTypes => m_AosShieldTypes;
 
         private static readonly Type[] m_ShieldTypes = new[]
         {
@@ -150,14 +150,14 @@ namespace Server
             typeof(WoodenKiteShield), typeof(WoodenShield)
         };
 
-        public static Type[] ShieldTypes { get { return m_ShieldTypes; } }
+        public static Type[] ShieldTypes => m_ShieldTypes;
 
         public static readonly Type[] m_SAShieldTypes = new[] {
             typeof(GargishChaosShield), typeof(GargishKiteShield), typeof(GargishOrderShield), typeof(GargishWoodenShield),
             typeof(LargeStoneShield)
         };
 
-        public static Type[] SAShieldTypes { get { return m_SAShieldTypes; } }
+        public static Type[] SAShieldTypes => m_SAShieldTypes;
 
         private static readonly Type[] m_GemTypes = new[]
         {
@@ -165,14 +165,14 @@ namespace Server
             typeof(StarSapphire), typeof(Tourmaline)
         };
 
-        public static Type[] GemTypes { get { return m_GemTypes; } }
+        public static Type[] GemTypes => m_GemTypes;
 
         private static readonly Type[] m_RareGemTypes =
         {
             typeof(BlueDiamond), typeof(DarkSapphire), typeof(EcruCitrine), typeof(FireRuby), typeof(PerfectEmerald), typeof(Turquoise), typeof(WhitePearl), typeof(BrilliantAmber)
         };
 
-        public static Type[] RareGemTypes { get { return m_RareGemTypes; } }
+        public static Type[] RareGemTypes => m_RareGemTypes;
 
         private static readonly Type[] m_MLResources =
 {
@@ -180,33 +180,33 @@ namespace Server
             typeof(LuminescentFungi), typeof(BarkFragment), typeof(SwitchItem), typeof(ParasiticPlant),
         };
 
-        public static Type[] MLResources { get { return m_MLResources; } }
+        public static Type[] MLResources => m_MLResources;
 
         private static readonly Type[] m_JewelryTypes = new[]
         {
             typeof(GoldRing), typeof(GoldBracelet), typeof(SilverRing), typeof(SilverBracelet),
         };
 
-        public static Type[] JewelryTypes { get { return m_JewelryTypes; } }
+        public static Type[] JewelryTypes => m_JewelryTypes;
 
         private static readonly Type[] m_SAJewelryTypes = new[]
         {
             typeof(GargishRing), typeof(GargishBracelet)
         };
 
-        public static Type[] SAJewelryTypes { get { return m_SAJewelryTypes; } }
+        public static Type[] SAJewelryTypes => m_SAJewelryTypes;
 
-        public static Type[] RegTypes { get { return m_RegTypes; } }
+        public static Type[] RegTypes => m_RegTypes;
         private static readonly Type[] m_RegTypes = new[]
         {
             typeof(BlackPearl), typeof(Bloodmoss), typeof(Garlic), typeof(Ginseng), typeof(MandrakeRoot), typeof(Nightshade),
             typeof(SulfurousAsh), typeof(SpidersSilk)
         };
 
-        public static Type[] NecroRegTypes { get { return m_NecroRegTypes; } }
+        public static Type[] NecroRegTypes => m_NecroRegTypes;
         private static readonly Type[] m_NecroRegTypes = new[] { typeof(BatWing), typeof(GraveDust), typeof(DaemonBlood), typeof(NoxCrystal), typeof(PigIron) };
 
-        public static Type[] MysticRegTypes { get { return m_MysticRegTypes; } }
+        public static Type[] MysticRegTypes => m_MysticRegTypes;
         private static readonly Type[] m_MysticRegTypes = new[] { typeof(Bone), typeof(DragonBlood), typeof(FertileDirt), typeof(DaemonBone) };
 
         private static readonly Type[] m_PotionTypes = new[]
@@ -215,7 +215,7 @@ namespace Server
             typeof(LesserHealPotion), typeof(LesserPoisonPotion)
         };
 
-        public static Type[] PotionTypes { get { return m_PotionTypes; } }
+        public static Type[] PotionTypes => m_PotionTypes;
 
         private static readonly Type[] m_ImbuingEssenceIngreds = new[]
         {
@@ -224,15 +224,15 @@ namespace Server
             typeof(EssenceSingularity)
         };
 
-        public static Type[] ImbuingEssenceIngreds { get { return m_ImbuingEssenceIngreds; } }
+        public static Type[] ImbuingEssenceIngreds => m_ImbuingEssenceIngreds;
 
         private static readonly Type[] m_SEInstrumentTypes = new[] { typeof(BambooFlute) };
 
-        public static Type[] SEInstrumentTypes { get { return m_SEInstrumentTypes; } }
+        public static Type[] SEInstrumentTypes => m_SEInstrumentTypes;
 
         private static readonly Type[] m_InstrumentTypes = new[] { typeof(Drums), typeof(Harp), typeof(LapHarp), typeof(Lute), typeof(Tambourine), typeof(TambourineTassel) };
 
-        public static Type[] InstrumentTypes { get { return m_InstrumentTypes; } }
+        public static Type[] InstrumentTypes => m_InstrumentTypes;
 
         private static readonly Type[] m_StatueTypes = new[]
         {
@@ -240,7 +240,7 @@ namespace Server
             typeof(StatueEast2), typeof(StatueSouthEast), typeof(BustSouth), typeof(BustEast)
         };
 
-        public static Type[] StatueTypes { get { return m_StatueTypes; } }
+        public static Type[] StatueTypes => m_StatueTypes;
 
         private static readonly Type[] m_RegularScrollTypes = new[]
         {
@@ -288,7 +288,7 @@ namespace Server
             typeof( SpellTriggerScroll ),   typeof( MassSleepScroll ),      typeof( CleansingWindsScroll ),     typeof( BombardScroll ),
             typeof( SpellPlagueScroll ),    typeof( HailStormScroll ),      typeof( NetherCycloneScroll ),      typeof( RisingColossusScroll )
         };
-        public static Type[] MysticScrollTypes { get { return m_MysticScrollTypes; } }
+        public static Type[] MysticScrollTypes => m_MysticScrollTypes;
 
         #region Mondain's Legacy
         private static readonly Type[] m_ArcanistScrollTypes = new[]
@@ -310,14 +310,14 @@ namespace Server
         };
         #endregion
 
-        public static Type[] RegularScrollTypes { get { return m_RegularScrollTypes; } }
-        public static Type[] NecromancyScrollTypes { get { return m_NecromancyScrollTypes; } }
-        public static Type[] SENecromancyScrollTypes { get { return m_SENecromancyScrollTypes; } }
-        public static Type[] PaladinScrollTypes { get { return m_PaladinScrollTypes; } }
-        public static Type[] MysticismScrollTypes { get { return m_MysticismScrollTypes; } }
+        public static Type[] RegularScrollTypes => m_RegularScrollTypes;
+        public static Type[] NecromancyScrollTypes => m_NecromancyScrollTypes;
+        public static Type[] SENecromancyScrollTypes => m_SENecromancyScrollTypes;
+        public static Type[] PaladinScrollTypes => m_PaladinScrollTypes;
+        public static Type[] MysticismScrollTypes => m_MysticismScrollTypes;
 
         #region Mondain's Legacy
-        public static Type[] ArcanistScrollTypes { get { return m_ArcanistScrollTypes; } }
+        public static Type[] ArcanistScrollTypes => m_ArcanistScrollTypes;
         #endregion
 
         private static readonly Type[] m_GrimmochJournalTypes = new[]
@@ -327,7 +327,7 @@ namespace Server
             typeof(GrimmochJournal23)
         };
 
-        public static Type[] GrimmochJournalTypes { get { return m_GrimmochJournalTypes; } }
+        public static Type[] GrimmochJournalTypes => m_GrimmochJournalTypes;
 
         private static readonly Type[] m_LysanderNotebookTypes = new[]
         {
@@ -335,7 +335,7 @@ namespace Server
             typeof(LysanderNotebook8), typeof(LysanderNotebook11)
         };
 
-        public static Type[] LysanderNotebookTypes { get { return m_LysanderNotebookTypes; } }
+        public static Type[] LysanderNotebookTypes => m_LysanderNotebookTypes;
 
         private static readonly Type[] m_TavarasJournalTypes = new[]
         {
@@ -345,7 +345,7 @@ namespace Server
             typeof(TavarasJournal19)
         };
 
-        public static Type[] TavarasJournalTypes { get { return m_TavarasJournalTypes; } }
+        public static Type[] TavarasJournalTypes => m_TavarasJournalTypes;
 
         private static readonly Type[] m_NewWandTypes = new[]
         {
@@ -353,14 +353,14 @@ namespace Server
             typeof(HealWand)
         };
 
-        public static Type[] NewWandTypes { get { return m_NewWandTypes; } }
+        public static Type[] NewWandTypes => m_NewWandTypes;
 
         private static readonly Type[] m_WandTypes = new[] { typeof(ClumsyWand), typeof(FeebleWand), typeof(ManaDrainWand), typeof(WeaknessWand) };
 
-        public static Type[] WandTypes { get { return m_WandTypes; } }
+        public static Type[] WandTypes => m_WandTypes;
 
         private static readonly Type[] m_OldWandTypes = new[] { typeof(IDWand) };
-        public static Type[] OldWandTypes { get { return m_OldWandTypes; } }
+        public static Type[] OldWandTypes => m_OldWandTypes;
 
         private static readonly Type[] m_SEClothingTypes = new[]
         {
@@ -369,7 +369,7 @@ namespace Server
             typeof(Waraji)
         };
 
-        public static Type[] SEClothingTypes { get { return m_SEClothingTypes; } }
+        public static Type[] SEClothingTypes => m_SEClothingTypes;
 
         private static readonly Type[] m_AosClothingTypes = new[]
         {
@@ -377,7 +377,7 @@ namespace Server
             ,
         };
 
-        public static Type[] AosClothingTypes { get { return m_AosClothingTypes; } }
+        public static Type[] AosClothingTypes => m_AosClothingTypes;
 
         private static readonly Type[] m_ClothingTypes = new[]
         {
@@ -389,18 +389,18 @@ namespace Server
             typeof(HalfApron)
         };
 
-        public static Type[] ClothingTypes { get { return m_ClothingTypes; } }
+        public static Type[] ClothingTypes => m_ClothingTypes;
 
         private static readonly Type[] m_SEHatTypes = new[] { typeof(ClothNinjaHood), typeof(Kasa) };
 
-        public static Type[] SEHatTypes { get { return m_SEHatTypes; } }
+        public static Type[] SEHatTypes => m_SEHatTypes;
 
         private static readonly Type[] m_AosHatTypes = new[]
         {
             typeof(FlowerGarland), typeof(BearMask), typeof(DeerMask) //Are Bear& Deer mask inside the Pre-AoS loottables too?
 		};
 
-        public static Type[] AosHatTypes { get { return m_AosHatTypes; } }
+        public static Type[] AosHatTypes => m_AosHatTypes;
 
         private static readonly Type[] m_HatTypes = new[]
         {
@@ -409,7 +409,7 @@ namespace Server
             typeof(JesterHat), typeof(OrcMask), typeof(TribalMask)
         };
 
-        public static Type[] HatTypes { get { return m_HatTypes; } }
+        public static Type[] HatTypes => m_HatTypes;
 
         private static readonly Type[] m_LibraryBookTypes = new[]
         {
@@ -422,7 +422,7 @@ namespace Server
             typeof(WildGirlOfTheForest), typeof(TreatiseOnAlchemy), typeof(VirtueBook)
         };
 
-        public static Type[] LibraryBookTypes { get { return m_LibraryBookTypes; } }
+        public static Type[] LibraryBookTypes => m_LibraryBookTypes;
         #endregion
 
         public static Item RandomEssence()

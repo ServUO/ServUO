@@ -9,7 +9,7 @@ namespace Server.Items
     [Flipable(0xA513, 0xA514)]
     public class ChickenStatue : Item, ISecurable
     {
-        public override int LabelNumber { get { return 1126283; } } // chicken
+        public override int LabelNumber => 1126283;  // chicken
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextResourceCount { get; set; }

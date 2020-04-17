@@ -2,7 +2,7 @@
 {
     public class EarringBoxSet : RedVelvetGiftBox
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public EarringBoxSet()
             : base()
@@ -61,20 +61,8 @@
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual AosElementAttribute Attribute
-        {
-            get
-            {
-                return m_Attribute;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return GetItemData(m_Attribute, true);
-            }
-        }
+        public virtual AosElementAttribute Attribute => m_Attribute;
+        public override int LabelNumber => GetItemData(m_Attribute, true);
         public static AosElementAttribute RandomType()
         {
             return GetTypes(Utility.Random(5));

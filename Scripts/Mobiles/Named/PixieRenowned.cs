@@ -52,48 +52,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override Type[] UniqueSAList
-        {
-            get
-            {
-                return new Type[] { typeof(DemonHuntersStandard), typeof(DragonJadeEarrings) };
-            }
-        }
-        public override Type[] SharedSAList
-        {
-            get
-            {
-                return new Type[] { typeof(PillarOfStrength), typeof(SwordOfShatteredHopes) };
-            }
-        }
-        public override bool InitialInnocent
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Spined;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override Type[] UniqueSAList => new Type[] { typeof(DemonHuntersStandard), typeof(DragonJadeEarrings) };
+        public override Type[] SharedSAList => new Type[] { typeof(PillarOfStrength), typeof(SwordOfShatteredHopes) };
+        public override bool InitialInnocent => true;
+        public override HideType HideType => HideType.Spined;
+        public override int Hides => 5;
+        public override int Meat => 1;
 
         public override void GenerateLoot()
         {

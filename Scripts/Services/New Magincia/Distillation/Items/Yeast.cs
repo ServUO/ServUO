@@ -19,7 +19,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber { get { return 1150453; } } // yeast
+        public override int LabelNumber => 1150453;  // yeast
 
         [Constructable]
         public Yeast() : base(3624)

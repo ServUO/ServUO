@@ -23,28 +23,10 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113350;
-            }
-        }// abyssal cloth
+        public override int LabelNumber => 1113350;// abyssal cloth
 
-        TextDefinition ICommodity.Description
-        {
-            get
-            {
-                return LabelNumber;
-            }
-        }
-        bool ICommodity.IsDeedable
-        {
-            get
-            {
-                return true;
-            }
-        }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         public override void Serialize(GenericWriter writer)
         {

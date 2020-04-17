@@ -28,34 +28,10 @@ namespace Server.Items
         {
         }
 
-        public virtual MagicalFood FoodID
-        {
-            get
-            {
-                return MagicalFood.None;
-            }
-        }
-        public virtual TimeSpan Cooldown
-        {
-            get
-            {
-                return TimeSpan.Zero;
-            }
-        }
-        public virtual TimeSpan Duration
-        {
-            get
-            {
-                return TimeSpan.Zero;
-            }
-        }
-        public virtual int EatMessage
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual MagicalFood FoodID => MagicalFood.None;
+        public virtual TimeSpan Cooldown => TimeSpan.Zero;
+        public virtual TimeSpan Duration => TimeSpan.Zero;
+        public virtual int EatMessage => 0;
         public static bool IsUnderInfluence(Mobile mob, MagicalFood id)
         {
             if (m_Table != null && m_Table[mob] != null && ((int)m_Table[mob] & (int)id) > 0)

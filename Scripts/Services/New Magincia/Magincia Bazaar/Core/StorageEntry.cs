@@ -12,9 +12,9 @@ namespace Server.Engines.NewMagincia
         private readonly List<BaseCreature> m_Creatures = new List<BaseCreature>();
 
         public int Funds { get { return m_Funds; } set { m_Funds = value; } }
-        public DateTime Expires { get { return m_Expires; } }
-        public Dictionary<Type, int> CommodityTypes { get { return m_CommodityTypes; } }
-        public List<BaseCreature> Creatures { get { return m_Creatures; } }
+        public DateTime Expires => m_Expires;
+        public Dictionary<Type, int> CommodityTypes => m_CommodityTypes;
+        public List<BaseCreature> Creatures => m_Creatures;
 
         public StorageEntry(Mobile m, BaseBazaarBroker broker)
         {

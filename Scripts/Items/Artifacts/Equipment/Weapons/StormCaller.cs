@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class StormCaller : Boomerang
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1113530; } } // Storm Caller
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113530;  // Storm Caller
 
         [Constructable]
         public StormCaller()
@@ -28,20 +28,8 @@ namespace Server.Items
         {
         }
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -22,34 +22,10 @@ namespace Server.Engines.Quests
             ReadInt32(questEl, "message", ref this.m_Message, false);
         }
 
-        public Type Quest
-        {
-            get
-            {
-                return this.m_Quest;
-            }
-        }
-        public Type MinObjective
-        {
-            get
-            {
-                return this.m_MinObjective;
-            }
-        }
-        public Type MaxObjective
-        {
-            get
-            {
-                return this.m_MaxObjective;
-            }
-        }
-        public int Message
-        {
-            get
-            {
-                return this.m_Message;
-            }
-        }
+        public Type Quest => this.m_Quest;
+        public Type MinObjective => this.m_MinObjective;
+        public Type MaxObjective => this.m_MaxObjective;
+        public int Message => this.m_Message;
         public override bool OnMoveInto(Mobile m, Direction d, Point3D newLocation, Point3D oldLocation)
         {
             if (!base.OnMoveInto(m, d, newLocation, oldLocation))

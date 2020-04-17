@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class WallMountedBellSouthDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1154162; } } // Wall Mounted Bell (South)
+        public override int LabelNumber => 1154162;  // Wall Mounted Bell (South)
 
         [Constructable]
         public WallMountedBellSouthDeed()
@@ -14,7 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon { get { return new WallMountedBellSouthAddon(); } }
+        public override BaseAddon Addon => new WallMountedBellSouthAddon();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -31,8 +31,8 @@ namespace Server.Items
 
     public class WallMountedBellSouthAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new WallMountedBellSouthDeed(); } }
-        public override bool RetainDeedHue { get { return true; } }
+        public override BaseAddonDeed Deed => new WallMountedBellSouthDeed();
+        public override bool RetainDeedHue => true;
 
         [Constructable]
         public WallMountedBellSouthAddon()
@@ -60,7 +60,7 @@ namespace Server.Items
 
     public class WallMountedBellEastDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1154163; } } // Wall Mounted Bell (East)
+        public override int LabelNumber => 1154163;  // Wall Mounted Bell (East)
 
         [Constructable]
         public WallMountedBellEastDeed()
@@ -72,7 +72,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon { get { return new WallMountedBellEastAddon(); } }
+        public override BaseAddon Addon => new WallMountedBellEastAddon();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -89,8 +89,8 @@ namespace Server.Items
 
     public class WallMountedBellEastAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new WallMountedBellEastDeed(); } }
-        public override bool RetainDeedHue { get { return true; } }
+        public override BaseAddonDeed Deed => new WallMountedBellEastDeed();
+        public override bool RetainDeedHue => true;
 
         [Constructable]
         public WallMountedBellEastAddon()

@@ -4,8 +4,8 @@ namespace Server.Engines.VvV
 {
     public class VvVWand1 : BaseWand, IArcaneEquip
     {
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         #region Arcane Impl
         private int m_MaxArcaneCharges, m_CurArcaneCharges;
@@ -41,13 +41,7 @@ namespace Server.Engines.VvV
         public int TempHue { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsArcane
-        {
-            get
-            {
-                return m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0;
-            }
-        }
+        public bool IsArcane => m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0;
 
         public override void AddCraftedProperties(ObjectPropertyList list)
         {
@@ -58,13 +52,7 @@ namespace Server.Engines.VvV
         }
         #endregion
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1023570; // Wand
-            }
-        }
+        public override int LabelNumber => 1023570; // Wand
 
         public VvVWand1()
             : base(WandEffect.None, 0, 0)
@@ -138,8 +126,8 @@ namespace Server.Engines.VvV
 
     public class VvVWand2 : BaseWand, IArcaneEquip
     {
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         #region Arcane Impl
         private int m_MaxArcaneCharges, m_CurArcaneCharges;
@@ -169,13 +157,7 @@ namespace Server.Engines.VvV
         public int TempHue { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsArcane
-        {
-            get
-            {
-                return m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0;
-            }
-        }
+        public bool IsArcane => m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0;
 
         public override void AddCraftedProperties(ObjectPropertyList list)
         {
@@ -186,13 +168,7 @@ namespace Server.Engines.VvV
         }
         #endregion
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1023570; // Wand
-            }
-        }
+        public override int LabelNumber => 1023570; // Wand
 
         public VvVWand2()
             : base(WandEffect.None, 0, 0)

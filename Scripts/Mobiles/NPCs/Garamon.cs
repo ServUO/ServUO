@@ -32,13 +32,7 @@ namespace Server.Mobiles
         {
         }
 
-        public virtual bool IsInvulnerable
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool IsInvulnerable => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

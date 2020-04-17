@@ -34,13 +34,7 @@ namespace Server.Spells.Fifth
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Fifth;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Fifth;
         public static bool StopTimer(Mobile m)
         {
             Timer t = (Timer)m_Timers[m];

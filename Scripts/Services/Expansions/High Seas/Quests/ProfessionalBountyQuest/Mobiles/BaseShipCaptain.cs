@@ -24,16 +24,16 @@ namespace Server.Mobiles
         private readonly List<Mobile> m_Crew = new List<Mobile>();
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BaseGalleon Galleon { get { return m_Galleon; } }
+        public BaseGalleon Galleon => m_Galleon;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool OnCourse { get { return m_OnCourse; } }
+        public bool OnCourse => m_OnCourse;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime NextCannonShot { get { return m_NextCannonShot; } }
+        public DateTime NextCannonShot => m_NextCannonShot;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime NextMoveCheck { get { return m_NextMoveCheck; } }
+        public DateTime NextMoveCheck => m_NextMoveCheck;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextCrewCheck { get { return m_NextCrewCheck; } set { m_NextCrewCheck = value; } }
@@ -44,24 +44,18 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Blockade { get { return m_Blockade; } set { m_Blockade = value; } }
 
-        public List<Mobile> Crew { get { return m_Crew; } }
+        public List<Mobile> Crew => m_Crew;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual bool Aggressive { get { return true; } }
+        public virtual bool Aggressive => true;
 
-        public override bool PlayerRangeSensitive { get { return false; } }
+        public override bool PlayerRangeSensitive => false;
 
-        public override double TreasureMapChance { get { return 0.05; } }
-        public override int TreasureMapLevel { get { return 7; } }
+        public override double TreasureMapChance => 0.05;
+        public override int TreasureMapLevel => 7;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual TimeSpan ShootFrequency
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(Math.Min(20, 20.0 - (m_Crew.Count * 2.5)));
-            }
-        }
+        public virtual TimeSpan ShootFrequency => TimeSpan.FromSeconds(Math.Min(20, 20.0 - (m_Crew.Count * 2.5)));
 
         [Constructable]
         public BaseShipCaptain() : this(null) { }

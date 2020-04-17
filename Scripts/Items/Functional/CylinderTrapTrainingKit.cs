@@ -4,8 +4,8 @@ namespace Server.Items
 {
     public class CylinderTrapTrainingKit : PuzzleChest, IRemoveTrapTrainingKit
     {
-        public override int LabelNumber { get { return 1159015; } } // Cylinder Trap Training Kit
-        public int Title { get { return 1159017; } } // A Cylinder Trap
+        public override int LabelNumber => 1159015;  // Cylinder Trap Training Kit
+        public int Title => 1159017;  // A Cylinder Trap
 
         [Constructable]
         public CylinderTrapTrainingKit()

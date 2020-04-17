@@ -37,13 +37,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime Created
-        {
-            get
-            {
-                return this.m_Created;
-            }
-        }
+        public DateTime Created => this.m_Created;
         [CommandProperty(AccessLevel.GameMaster)]
         public CampfireStatus Status
         {
@@ -193,34 +187,10 @@ namespace Server.Items
             this.m_Safe = false;
         }
 
-        public PlayerMobile Player
-        {
-            get
-            {
-                return this.m_Player;
-            }
-        }
-        public Campfire Fire
-        {
-            get
-            {
-                return this.m_Fire;
-            }
-        }
-        public DateTime Start
-        {
-            get
-            {
-                return this.m_Start;
-            }
-        }
-        public bool Valid
-        {
-            get
-            {
-                return !this.Fire.Deleted && this.Fire.Status != CampfireStatus.Off && this.Player.Map == this.Fire.Map && this.Player.InRange(this.Fire, Campfire.SecureRange);
-            }
-        }
+        public PlayerMobile Player => this.m_Player;
+        public Campfire Fire => this.m_Fire;
+        public DateTime Start => this.m_Start;
+        public bool Valid => !this.Fire.Deleted && this.Fire.Status != CampfireStatus.Off && this.Player.Map == this.Fire.Map && this.Player.InRange(this.Fire, Campfire.SecureRange);
         public bool Safe
         {
             get

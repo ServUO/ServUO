@@ -23,13 +23,7 @@ namespace Server.Items
         {
         }
 
-        public override bool HandlesOnSpeech
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool HandlesOnSpeech => true;
         public override void OnSpeech(SpeechEventArgs e)
         {
             PlayerMobile pm = e.Mobile as PlayerMobile;

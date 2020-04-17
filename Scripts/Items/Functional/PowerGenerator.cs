@@ -29,13 +29,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ShareHue
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool ShareHue => false;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -109,20 +103,8 @@ namespace Server.Items
                 }
             }
         }
-        public Node[] Path
-        {
-            get
-            {
-                return this.m_Path;
-            }
-        }
-        public override string DefaultName
-        {
-            get
-            {
-                return "a control panel";
-            }
-        }
+        public Node[] Path => this.m_Path;
+        public override string DefaultName => "a control panel";
         public void InitPath()
         {
             // Depth-First Search algorithm

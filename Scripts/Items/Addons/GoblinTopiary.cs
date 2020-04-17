@@ -4,7 +4,7 @@ namespace Server.Items
     public class GoblinTopiary : Item
     {
 
-        public override int LabelNumber { get { return 1070878; } } // a decorative topiary
+        public override int LabelNumber => 1070878;  // a decorative topiary
 
         [Constructable]
         public GoblinTopiary() : base(0x4919)

@@ -82,8 +82,8 @@ namespace Server.Items
         private CraftableItemType _Type;
         private CraftResource _Resource;
 
-        public int NorthID { get { return 0; } }
-        public int WestID { get { return 0; } }
+        public int NorthID => 0;
+        public int WestID => 0;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool CanFlip
@@ -123,7 +123,7 @@ namespace Server.Items
             }
         }
 
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         public CraftableHouseItem()
             : base(1)
@@ -370,7 +370,7 @@ namespace Server.Items
     public class CraftableHouseAddon : BaseAddon
     {
         public CraftableItemType ItemType { get; set; }
-        public override BaseAddonDeed Deed { get { return null; } }
+        public override BaseAddonDeed Deed => null;
 
         public CraftableHouseAddon()
         {
@@ -401,7 +401,7 @@ namespace Server.Items
     public class CraftableHouseAddonDeed : BaseAddonDeed
     {
         public CraftableItemType ItemType { get; set; }
-        public override BaseAddon Addon { get { return null; } }
+        public override BaseAddon Addon => null;
 
         public CraftableHouseAddonDeed()
         {

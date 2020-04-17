@@ -28,27 +28,9 @@ namespace Server.Gumps
             }
         }
 
-        public Dictionary<Mobile, ParentNode> LastBranch
-        {
-            get
-            {
-                return this.m_LastBranch;
-            }
-        }
-        public Map Map
-        {
-            get
-            {
-                return this.m_Map;
-            }
-        }
-        public ParentNode Root
-        {
-            get
-            {
-                return this.m_Root;
-            }
-        }
+        public Dictionary<Mobile, ParentNode> LastBranch => this.m_LastBranch;
+        public Map Map => this.m_Map;
+        public ParentNode Root => this.m_Root;
         private ParentNode Parse(XmlTextReader xml)
         {
             xml.Read();

@@ -8,7 +8,7 @@ namespace Server.Items
 {
     public class TreeStump : BaseAddon, IRewardItem
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         private bool m_IsRewardItem;
         private int m_Logs;
@@ -234,13 +234,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1080406;
-            }
-        }// a deed for a tree stump decoration
+        public override int LabelNumber => 1080406;// a deed for a tree stump decoration
         public override BaseAddon Addon
         {
             get

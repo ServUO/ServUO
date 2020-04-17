@@ -22,27 +22,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanTeach
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }// Do not display title in OnSingleClick
+        public override bool CanTeach => true;
+        public override bool AlwaysMurderer => true;
+        public override bool ClickTitle => false;// Do not display title in OnSingleClick
         public override bool CheckTeach(SkillName skill, Mobile from)
         {
             if (!base.CheckTeach(skill, from))

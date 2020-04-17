@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class BlackrockMoonstone : Item
     {
-        public override int LabelNumber { get { return 1156993; } } // Black Moonstone
+        public override int LabelNumber => 1156993;  // Black Moonstone
 
         [Constructable]
         public BlackrockMoonstone()

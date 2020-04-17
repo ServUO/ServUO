@@ -3,7 +3,7 @@ namespace Server.Items
     [Furniture]
     public class Countertop : Item
     {
-        public override int LabelNumber { get { return 1125714; } } // countertop
+        public override int LabelNumber => 1125714;  // countertop
 
         [Constructable]
         public Countertop()

@@ -17,91 +17,19 @@ namespace Server.Items
         {
         }
 
-        public override int EffectID
-        {
-            get
-            {
-                return 0xF42;
-            }
-        }
-        public override Type AmmoType
-        {
-            get
-            {
-                return typeof(Arrow);
-            }
-        }
-        public override Item Ammo
-        {
-            get
-            {
-                return new Arrow();
-            }
-        }
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.LightningArrow;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.PsychicAttack;
-            }
-        }
-        public override int StrengthReq
-        {
-            get
-            {
-                return 45;
-            }
-        }
-        public override int MinDamage
-        {
-            get
-            {
-                return 12;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 16;
-            }
-        }
-        public override float Speed
-        {
-            get
-            {
-                return 3.00f;
-            }
-        }
+        public override int EffectID => 0xF42;
+        public override Type AmmoType => typeof(Arrow);
+        public override Item Ammo => new Arrow();
+        public override WeaponAbility PrimaryAbility => WeaponAbility.LightningArrow;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.PsychicAttack;
+        public override int StrengthReq => 45;
+        public override int MinDamage => 12;
+        public override int MaxDamage => 16;
+        public override float Speed => 3.00f;
 
-        public override int DefMaxRange
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 41;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 90;
-            }
-        }
+        public override int DefMaxRange => 10;
+        public override int InitMinHits => 41;
+        public override int InitMaxHits => 90;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -7,21 +7,9 @@ namespace Server.Mobiles
     public class Blacksmith : BaseVendor
     {
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return m_SBInfos;
-            }
-        }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
-        public override NpcGuild NpcGuild
-        {
-            get
-            {
-                return NpcGuild.BlacksmithsGuild;
-            }
-        }
+        public override NpcGuild NpcGuild => NpcGuild.BlacksmithsGuild;
 
         [Constructable]
         public Blacksmith()
@@ -70,13 +58,7 @@ namespace Server.Mobiles
             }
         }
 
-        public override VendorShoeType ShoeType
-        {
-            get
-            {
-                return Utility.RandomBool() ? VendorShoeType.Sandals : VendorShoeType.Shoes;
-            }
-        }
+        public override VendorShoeType ShoeType => Utility.RandomBool() ? VendorShoeType.Sandals : VendorShoeType.Shoes;
 
         public override void InitOutfit()
         {
@@ -98,7 +80,7 @@ namespace Server.Mobiles
         }
 
         #region Bulk Orders
-        public override BODType BODType { get { return BODType.Smith; } }
+        public override BODType BODType => BODType.Smith;
 
         public override Item CreateBulkOrder(Mobile from, bool fromContextMenu)
         {

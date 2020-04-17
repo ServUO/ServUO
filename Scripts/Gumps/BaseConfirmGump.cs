@@ -58,23 +58,11 @@ namespace Server.Gumps
             Break,
             Confirm
         }
-        public virtual int TitleNumber
-        {
-            get
-            {
-                return 1075083;
-            }
-        }// <center>Warning!</center>
-        public virtual int LabelNumber
-        {
-            get
-            {
-                return 1074975;
-            }
-        }// Are you sure you wish to select this?
+        public virtual int TitleNumber => 1075083;// <center>Warning!</center>
+        public virtual int LabelNumber => 1074975;// Are you sure you wish to select this?
 
-        public virtual string TitleString { get { return null; } }
-        public virtual string LabelString { get { return null; } }
+        public virtual string TitleString => null;
+        public virtual string LabelString => null;
 
         public override void OnResponse(Server.Network.NetState state, RelayInfo info)
         {

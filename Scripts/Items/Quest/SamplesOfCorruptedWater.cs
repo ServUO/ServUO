@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074999;
-            }
-        }// samples of corrupted water
+        public override int LabelNumber => 1074999;// samples of corrupted water
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

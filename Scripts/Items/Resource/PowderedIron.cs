@@ -21,13 +21,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113353;
-            }
-        }// powdered iron
+        public override int LabelNumber => 1113353;// powdered iron
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

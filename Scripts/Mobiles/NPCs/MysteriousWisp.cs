@@ -403,7 +403,7 @@ namespace Server.Mobiles
                 Weight = 1.0;
             }
 
-            public override int DefaultMaxWeight { get { return 0; } }
+            public override int DefaultMaxWeight => 0;
 
             public override bool IsAccessibleTo(Mobile m)
             {

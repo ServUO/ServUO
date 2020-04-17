@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class LongMetalTableSouthAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new LongMetalTableSouthDeed(); } }
-        public override bool RetainDeedHue { get { return true; } }
+        public override BaseAddonDeed Deed => new LongMetalTableSouthDeed();
+        public override bool RetainDeedHue => true;
 
         [Constructable]
         public LongMetalTableSouthAddon()
@@ -36,8 +36,8 @@ namespace Server.Items
 
     public class LongMetalTableSouthDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new LongMetalTableSouthAddon(); } }
-        public override int LabelNumber { get { return 1154164; } } // Long Metal Table (South)
+        public override BaseAddon Addon => new LongMetalTableSouthAddon();
+        public override int LabelNumber => 1154164;  // Long Metal Table (South)
 
         [Constructable]
         public LongMetalTableSouthDeed()

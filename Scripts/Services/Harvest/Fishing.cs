@@ -26,13 +26,7 @@ namespace Server.Engines.Harvest
 
         private readonly HarvestDefinition m_Definition;
 
-        public HarvestDefinition Definition
-        {
-            get
-            {
-                return this.m_Definition;
-            }
-        }
+        public HarvestDefinition Definition => this.m_Definition;
 
         private Fishing()
         {
@@ -776,7 +770,7 @@ namespace Server.Engines.Harvest
         };
 
         #region HighSeas
-        public static int[] LavaTiles { get { return m_LavaTiles; } }
+        public static int[] LavaTiles => m_LavaTiles;
         private static readonly int[] m_LavaTiles = new int[]
         {
             0x1F4, 0x1F5,

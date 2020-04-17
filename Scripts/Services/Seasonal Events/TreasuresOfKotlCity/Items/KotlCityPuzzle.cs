@@ -8,10 +8,10 @@ namespace Server.Engines.TreasuresOfKotlCity
     public class KotlCityPuzzle : BaseAddon
     {
         public static KotlCityPuzzle Puzzle { get; set; }
-        public override BaseAddonDeed Deed { get { return null; } }
+        public override BaseAddonDeed Deed => null;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Next { get { return _Order == null || _Order.Count == 0 ? -1 : _Order[0]; } }
+        public int Next => _Order == null || _Order.Count == 0 ? -1 : _Order[0];
 
         private List<int> _Order;
         private int _Index;
@@ -187,7 +187,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
     public class KotlCityPuzzleComponent : AddonComponent
     {
-        public override int LabelNumber { get { return 1124182; } }
+        public override int LabelNumber => 1124182;
 
         public bool _Active;
 

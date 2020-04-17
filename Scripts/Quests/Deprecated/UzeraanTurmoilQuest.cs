@@ -20,47 +20,11 @@ namespace Server.Engines.Quests.Haven
         {
         }
 
-        public override Type[] TypeReferenceTable
-        {
-            get
-            {
-                return m_TypeReferenceTable;
-            }
-        }
-        public override object Name
-        {
-            get
-            {
-                return 1049007; // "Uzeraan's Turmoil"
-            }
-        }
-        public override object OfferMessage
-        {
-            get
-            {
-                return 1049008;
-            }
-        }
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.MaxValue;
-            }
-        }
-        public override bool IsTutorial
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int Picture
-        {
-            get
-            {
-                return 0x15C9; // warrior
-            }
-        }
+        public override Type[] TypeReferenceTable => m_TypeReferenceTable;
+        public override object Name => 1049007; // "Uzeraan's Turmoil"
+        public override object OfferMessage => 1049008;
+        public override TimeSpan RestartDelay => TimeSpan.MaxValue;
+        public override bool IsTutorial => true;
+        public override int Picture => 0x15C9; // warrior
     }
 }

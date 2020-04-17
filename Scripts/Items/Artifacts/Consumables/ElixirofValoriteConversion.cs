@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ElixirofValoriteConversion : Item
     {
-        public override int LabelNumber { get { return 1113010; } } // Elixir of Valorite Conversion
+        public override int LabelNumber => 1113010;  // Elixir of Valorite Conversion
 
         [Constructable]
         public ElixirofValoriteConversion()

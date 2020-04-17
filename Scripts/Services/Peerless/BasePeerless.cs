@@ -21,24 +21,12 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool CanBeParagon { get { return false; } }
-        public virtual bool DropPrimer { get { return true; } }
-        public virtual bool GiveMLSpecial { get { return true; } }
+        public override bool CanBeParagon => false;
+        public virtual bool DropPrimer => true;
+        public virtual bool GiveMLSpecial => true;
 
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public virtual double ChangeCombatant
-        {
-            get
-            {
-                return 0.3;
-            }
-        }
+        public override bool Unprovokable => true;
+        public virtual double ChangeCombatant => 0.3;
 
         public BasePeerless(Serial serial)
             : base(serial)
@@ -163,27 +151,9 @@ namespace Server.Mobiles
         }
 
         #region Helpers		
-        public virtual bool CanSpawnHelpers
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public virtual int MaxHelpersWaves
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual double SpawnHelpersChance
-        {
-            get
-            {
-                return 0.05;
-            }
-        }
+        public virtual bool CanSpawnHelpers => false;
+        public virtual int MaxHelpersWaves => 0;
+        public virtual double SpawnHelpersChance => 0.05;
 
         private int m_CurrentWave;
 
@@ -312,20 +282,8 @@ namespace Server.Mobiles
             2, 0
         };
 
-        public virtual bool HasFireRing
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public virtual double FireRingChance
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public virtual bool HasFireRing => false;
+        public virtual double FireRingChance => 1.0;
 
         private long m_NextFireRing = Core.TickCount;
 

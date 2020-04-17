@@ -10,7 +10,7 @@ namespace Server.Items
     {
         public const int Duration = 1; // hours
 
-        public override int LabelNumber { get { return 1158680; } } // khaldun tasty treat
+        public override int LabelNumber => 1158680;  // khaldun tasty treat
 
         [Constructable]
         public KhaldunTastyTreat()

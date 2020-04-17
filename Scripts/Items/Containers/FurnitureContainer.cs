@@ -10,13 +10,7 @@ namespace Server.Items
         /* DO NOT USE! Only used in serialization of old furniture that originally derived from BaseContainer */
         private bool m_InheritsItem;
 
-        protected bool InheritsItem
-        {
-            get
-            {
-                return m_InheritsItem;
-            }
-        }
+        protected bool InheritsItem => m_InheritsItem;
         #endregion
 
         private Mobile m_Crafter;
@@ -609,8 +603,8 @@ namespace Server.Items
     [Furniture]
     public class ChinaCabinet : FurnitureContainer, IFlipable
     {
-        public override int LabelNumber { get { return 1158974; } } // China Cabinet
-        public override int DefaultGumpID { get { return 0x4F; } }
+        public override int LabelNumber => 1158974;  // China Cabinet
+        public override int DefaultGumpID => 0x4F;
 
         [Constructable]
         public ChinaCabinet()
@@ -671,8 +665,8 @@ namespace Server.Items
     [Furniture]
     public class PieSafe : FurnitureContainer, IFlipable
     {
-        public override int LabelNumber { get { return 1158973; } } // Pie Safe
-        public override int DefaultGumpID { get { return 0x4F; } }
+        public override int LabelNumber => 1158973;  // Pie Safe
+        public override int DefaultGumpID => 0x4F;
 
         [Constructable]
         public PieSafe()

@@ -42,9 +42,9 @@ namespace Server.Mobiles
             Karma = -5000;
         }
 
-        public override int Meat { get { return 1; } }
-        public override int Hides { get { return 7; } }
-        public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
+        public override int Meat => 1;
+        public override int Hides => 7;
+        public override FoodType FavoriteFood => FoodType.FruitsAndVegies;
 
         private DateTime _NextBanana;
         private int _Thrown;

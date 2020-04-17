@@ -16,16 +16,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(Missing)
                 };
-            }
-        }
 
         public override void InitBody()
         {

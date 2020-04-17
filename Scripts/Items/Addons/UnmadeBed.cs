@@ -30,13 +30,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new UnmadeBedDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new UnmadeBedDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -67,20 +61,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new UnmadeBedAddon(this.m_East);
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076279;
-            }
-        }// Unmade Bed
+        public override BaseAddon Addon => new UnmadeBedAddon(this.m_East);
+        public override int LabelNumber => 1076279;// Unmade Bed
         public override void OnDoubleClick(Mobile from)
         {
             if (this.IsChildOf(from.Backpack))

@@ -3,7 +3,7 @@ namespace Server.Items
     public abstract class BaseArtifactLight : BaseLight, IArtifact
     {
         public abstract int ArtifactRarity { get; }
-        public virtual bool ShowArtifactRarity { get { return true; } }
+        public virtual bool ShowArtifactRarity => true;
 
         public BaseArtifactLight(int itemID)
             : base(itemID)

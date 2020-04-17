@@ -16,13 +16,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new LargeForgeEastDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new LargeForgeEastDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -50,20 +44,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new LargeForgeEastAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044331;
-            }
-        }// large forge (east)
+        public override BaseAddon Addon => new LargeForgeEastAddon();
+        public override int LabelNumber => 1044331;// large forge (east)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

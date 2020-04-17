@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class DistilleryEastAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new DistilleryEastAddonDeed(); } }
+        public override BaseAddonDeed Deed => new DistilleryEastAddonDeed();
 
         [Constructable]
         public DistilleryEastAddon()
@@ -44,8 +44,8 @@ namespace Server.Items
 
     public class DistilleryEastAddonDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new DistilleryEastAddon(); } }
-        public override int LabelNumber { get { return 1150664; } } // distillery (east)
+        public override BaseAddon Addon => new DistilleryEastAddon();
+        public override int LabelNumber => 1150664;  // distillery (east)
 
         [Constructable]
         public DistilleryEastAddonDeed()
@@ -74,7 +74,7 @@ namespace Server.Items
 
     public class DistillerySouthAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new DistillerySouthAddonDeed(); } }
+        public override BaseAddonDeed Deed => new DistillerySouthAddonDeed();
 
         [Constructable]
         public DistillerySouthAddon()
@@ -113,8 +113,8 @@ namespace Server.Items
 
     public class DistillerySouthAddonDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new DistillerySouthAddon(); } }
-        public override int LabelNumber { get { return 1150663; } } // distillery (south)
+        public override BaseAddon Addon => new DistillerySouthAddon();
+        public override int LabelNumber => 1150663;  // distillery (south)
 
         [Constructable]
         public DistillerySouthAddonDeed()

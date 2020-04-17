@@ -19,47 +19,11 @@ namespace Server.Engines.Quests.Necro
         {
         }
 
-        public override Type[] TypeReferenceTable
-        {
-            get
-            {
-                return m_TypeReferenceTable;
-            }
-        }
-        public override object Name
-        {
-            get
-            {
-                return 1060095; // Dark Tides
-            }
-        }
-        public override object OfferMessage
-        {
-            get
-            {
-                return 1060094;
-            }
-        }
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.MaxValue;
-            }
-        }
-        public override bool IsTutorial
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int Picture
-        {
-            get
-            {
-                return 0x15B5;
-            }
-        }
+        public override Type[] TypeReferenceTable => m_TypeReferenceTable;
+        public override object Name => 1060095; // Dark Tides
+        public override object OfferMessage => 1060094;
+        public override TimeSpan RestartDelay => TimeSpan.MaxValue;
+        public override bool IsTutorial => true;
+        public override int Picture => 0x15B5;
     }
 }

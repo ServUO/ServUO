@@ -4,10 +4,10 @@ namespace Server.Items
     [Flipable(0x0A9D, 0x0A9E)]
     public class WoodenBookcase : BaseContainer
     {
-        public override int LabelNumber { get { return 1071102; } } // Wooden Bookcase
-        public override int DefaultGumpID { get { return 0x4D; } }
+        public override int LabelNumber => 1071102;  // Wooden Bookcase
+        public override int DefaultGumpID => 0x4D;
 
-        public bool IsEmpty { get { return Items.Count == 0; } }
+        public bool IsEmpty => Items.Count == 0;
 
         [CommandProperty(AccessLevel.Decorator)]
         public override int ItemID

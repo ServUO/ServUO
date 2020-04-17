@@ -5,7 +5,7 @@ namespace Server.Engines.VvV
 {
     public class PrideTileAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new PrideTileDeed(); } }
+        public override BaseAddonDeed Deed => new PrideTileDeed();
 
         public TileType TileType { get; set; }
 
@@ -51,8 +51,8 @@ namespace Server.Engines.VvV
 
     public class PrideTileDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new PrideTileAddon(TileType); } }
-        public override int LabelNumber { get { return 1155521; } } // Pride Tile
+        public override BaseAddon Addon => new PrideTileAddon(TileType);
+        public override int LabelNumber => 1155521;  // Pride Tile
 
         public TileType TileType { get; set; }
 

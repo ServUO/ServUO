@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class WizardsGlasses : ElvenGlasses
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public WizardsGlasses()
         {
@@ -17,62 +17,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073374;
-            }
-        }//Wizard's Crystal Reading Glasses
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1073374;//Wizard's Crystal Reading Glasses
+        public override int BasePhysicalResistance => 5;
+        public override int BaseFireResistance => 5;
+        public override int BaseColdResistance => 5;
+        public override int BasePoisonResistance => 5;
+        public override int BaseEnergyResistance => 5;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

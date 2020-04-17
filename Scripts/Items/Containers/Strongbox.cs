@@ -23,20 +23,8 @@ namespace Server.Items
         {
         }
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 100;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1023712;
-            }
-        }
+        public override double DefaultWeight => 100;
+        public override int LabelNumber => 1023712;
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Owner
         {
@@ -50,13 +38,7 @@ namespace Server.Items
                 this.InvalidateProperties();
             }
         }
-        public override int DefaultMaxWeight
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public override int DefaultMaxWeight => 0;
         public override bool Decays
         {
             get
@@ -67,13 +49,7 @@ namespace Server.Items
                     return true;
             }
         }
-        public override TimeSpan DecayTime
-        {
-            get
-            {
-                return TimeSpan.FromMinutes(30.0);
-            }
-        }
+        public override TimeSpan DecayTime => TimeSpan.FromMinutes(30.0);
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

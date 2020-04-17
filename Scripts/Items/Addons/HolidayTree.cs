@@ -111,20 +111,8 @@ namespace Server.Items
                 this.m_Placer = value;
             }
         }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041117;
-            }
-        }// a tree for the holidays
-        Item IAddon.Deed
-        {
-            get
-            {
-                return new HolidayTreeDeed();
-            }
-        }
+        public override int LabelNumber => 1041117;// a tree for the holidays
+        Item IAddon.Deed => new HolidayTreeDeed();
         public override void OnAfterDelete()
         {
             for (int i = 0; i < this.m_Components.Count; ++i)
@@ -257,13 +245,7 @@ namespace Server.Items
             {
             }
 
-            public override int LabelNumber
-            {
-                get
-                {
-                    return 1041118;
-                }
-            }// a tree ornament
+            public override int LabelNumber => 1041118;// a tree ornament
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
@@ -296,13 +278,7 @@ namespace Server.Items
             {
             }
 
-            public override int LabelNumber
-            {
-                get
-                {
-                    return 1041117;
-                }
-            }// a tree for the holidays
+            public override int LabelNumber => 1041117;// a tree for the holidays
             public override void OnDoubleClick(Mobile from)
             {
                 if (this.m_Tree != null && !this.m_Tree.Deleted)

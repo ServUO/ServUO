@@ -53,41 +53,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override double HitPoisonChance
-        {
-            get
-            {
-                return 0.75;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override bool BleedImmune => true;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override Poison HitPoison => Poison.Lethal;
+        public override double HitPoisonChance => 0.75;
+        public override int TreasureMapLevel => 2;
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich);

@@ -24,7 +24,7 @@ namespace Server.Targets
             m_Mobile = ai.m_Mobile;
         }
 
-        public OrderType Order { get { return m_Order; } }
+        public OrderType Order => m_Order;
 
         public void AddAI(BaseAI ai)
         {

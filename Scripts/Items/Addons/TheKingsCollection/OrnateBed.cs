@@ -42,7 +42,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new OrnateBedDeed(); } }
+        public override BaseAddonDeed Deed => new OrnateBedDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -59,7 +59,7 @@ namespace Server.Items
 
     public class OrnateBedDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1154133; } } // Ornate Bed
+        public override int LabelNumber => 1154133;  // Ornate Bed
 
         private DirectionType _Direction;
 
@@ -102,7 +102,7 @@ namespace Server.Items
                 base.OnDoubleClick(from);
         }
 
-        public override BaseAddon Addon { get { return new OrnateBedAddon(_Direction); } }
+        public override BaseAddon Addon => new OrnateBedAddon(_Direction);
 
         public override void Serialize(GenericWriter writer)
         {

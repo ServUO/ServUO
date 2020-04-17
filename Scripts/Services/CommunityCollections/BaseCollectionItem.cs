@@ -16,21 +16,9 @@ namespace Server.Items
         private List<CollectionItem> m_Donations;
         private List<CollectionItem> m_Rewards;
 
-        public List<CollectionItem> Donations
-        {
-            get
-            {
-                return m_Donations;
-            }
-        }
+        public List<CollectionItem> Donations => m_Donations;
 
-        public List<CollectionItem> Rewards
-        {
-            get
-            {
-                return m_Rewards;
-            }
-        }
+        public List<CollectionItem> Rewards => m_Rewards;
 
         private long m_Points;
         private long m_StartTier;
@@ -136,24 +124,12 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Tier
-        {
-            get
-            {
-                return m_Tier;
-            }
-        }
+        public int Tier => m_Tier;
         #endregion
 
         private List<List<object>> m_Tiers;
 
-        public List<List<object>> Tiers
-        {
-            get
-            {
-                return m_Tiers;
-            }
-        }
+        public List<List<object>> Tiers => m_Tiers;
 
         public BaseCollectionItem(int itemID)
             : base(itemID)

@@ -9,12 +9,12 @@ namespace Server.Items
     {
         public static Dictionary<BaseCreature, DateTime> m_Table = new Dictionary<BaseCreature, DateTime>();
 
-        public override int LabelNumber { get { return 1112774; } }
+        public override int LabelNumber => 1112774;
 
-        public virtual double Bonus { get { return 0.05; } }
-        public virtual TimeSpan Duration { get { return TimeSpan.FromMinutes(20); } }
-        public virtual TimeSpan CoolDown { get { return TimeSpan.FromMinutes(2); } }
-        public virtual int DamageBonus { get { return 0; } }
+        public virtual double Bonus => 0.05;
+        public virtual TimeSpan Duration => TimeSpan.FromMinutes(20);
+        public virtual TimeSpan CoolDown => TimeSpan.FromMinutes(2);
+        public virtual int DamageBonus => 0;
 
         [Constructable]
         public TastyTreat()
@@ -156,13 +156,7 @@ namespace Server.Items
         /* DO NOT USE! Only used in serialization of tasty treats that originally derived from Item */
         private bool m_InheritsItem;
 
-        protected bool InheritsItem
-        {
-            get
-            {
-                return this.m_InheritsItem;
-            }
-        }
+        protected bool InheritsItem => this.m_InheritsItem;
         #endregion
     }
 }

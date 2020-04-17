@@ -77,7 +77,7 @@ namespace Server.Items
             }
         }
 
-        public virtual bool RetainDeedHue { get { return Hue != 0 && CraftResources.GetHue(Resource) != Hue; } }
+        public virtual bool RetainDeedHue => Hue != 0 && CraftResources.GetHue(Resource) != Hue;
 
         public virtual void OnChop(Mobile from)
         {
@@ -134,7 +134,7 @@ namespace Server.Items
             }
         }
 
-        public virtual BaseAddonDeed Deed { get { return null; } }
+        public virtual BaseAddonDeed Deed => null;
 
         public virtual BaseAddonDeed GetDeed()
         {
@@ -148,9 +148,9 @@ namespace Server.Items
             return deed;
         }
 
-        Item IAddon.Deed { get { return GetDeed(); } }
+        Item IAddon.Deed => GetDeed();
 
-        public List<AddonComponent> Components { get { return m_Components; } }
+        public List<AddonComponent> Components => m_Components;
 
         public BaseAddon(Serial serial)
             : base(serial)
@@ -272,7 +272,7 @@ namespace Server.Items
                 c.Delete();
         }
 
-        public virtual bool ShareHue { get { return true; } }
+        public virtual bool ShareHue => true;
 
         [Hue, CommandProperty(AccessLevel.Decorator)]
         public override int Hue

@@ -29,15 +29,9 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041266;
-            }
-        }// Flaming Head
+        public override int LabelNumber => 1041266;// Flaming Head
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public Item Deed
         {
@@ -143,13 +137,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041050;
-            }
-        }// a flaming head deed
+        public override int LabelNumber => 1041050;// a flaming head deed
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
         {

@@ -53,8 +53,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanTeach { get { return false; } }
-        public override bool ClickTitle { get { return false; } }
+        public override bool CanTeach => false;
+        public override bool ClickTitle => false;
 
         public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
         {

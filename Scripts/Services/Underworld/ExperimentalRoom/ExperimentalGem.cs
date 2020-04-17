@@ -46,10 +46,10 @@ namespace Server.Items
         private Mobile m_Owner;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Active { get { return m_Active; } }
+        public bool Active => m_Active;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsExtremeHue { get { return m_IsExtremeHue; } }
+        public bool IsExtremeHue => m_IsExtremeHue;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Complete { get { return m_Complete; } set { m_Complete = value; } }
@@ -64,15 +64,15 @@ namespace Server.Items
         public double ToComplete { get { return m_ToComplete; } set { m_ToComplete = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int CurrentHue { get { return m_CurrentHue; } }
+        public int CurrentHue => m_CurrentHue;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int LastIndex { get { return m_LastIndex; } }
+        public int LastIndex => m_LastIndex;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Owner { get { return m_Owner; } set { m_Owner = value; } }
 
-        public override int Lifespan { get { return m_Span; } }
+        public override int Lifespan => m_Span;
 
         public override int LabelNumber
         {

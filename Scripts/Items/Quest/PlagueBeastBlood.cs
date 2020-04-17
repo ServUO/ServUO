@@ -17,20 +17,8 @@ namespace Server.Items
         {
         }
 
-        public bool Patched
-        {
-            get
-            {
-                return this.ItemID == 0x1765;
-            }
-        }
-        public bool Starting
-        {
-            get
-            {
-                return this.ItemID == 0x122C;
-            }
-        }
+        public bool Patched => this.ItemID == 0x1765;
+        public bool Starting => this.ItemID == 0x122C;
         public override void OnAfterDelete()
         {
             if (this.m_Timer != null && this.m_Timer.Running)

@@ -1786,34 +1786,10 @@ namespace Server.Spells
         private readonly Type m_Type;
         private readonly ITransformationSpell m_Spell;
 
-        public Timer Timer
-        {
-            get
-            {
-                return m_Timer;
-            }
-        }
-        public List<ResistanceMod> Mods
-        {
-            get
-            {
-                return m_Mods;
-            }
-        }
-        public Type Type
-        {
-            get
-            {
-                return m_Type;
-            }
-        }
-        public ITransformationSpell Spell
-        {
-            get
-            {
-                return m_Spell;
-            }
-        }
+        public Timer Timer => m_Timer;
+        public List<ResistanceMod> Mods => m_Mods;
+        public Type Type => m_Type;
+        public ITransformationSpell Spell => m_Spell;
 
         public TransformContext(Timer timer, List<ResistanceMod> mods, Type type, ITransformationSpell spell)
         {

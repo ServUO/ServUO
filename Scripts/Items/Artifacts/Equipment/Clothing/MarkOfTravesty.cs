@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class MarkOfTravesty : SavageMask
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public MarkOfTravesty()
             : base()
@@ -82,62 +82,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074493;
-            }
-        }// Mark of Travesty
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1074493;// Mark of Travesty
+        public override int BasePhysicalResistance => 8;
+        public override int BaseFireResistance => 5;
+        public override int BaseColdResistance => 11;
+        public override int BasePoisonResistance => 20;
+        public override int BaseEnergyResistance => 15;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

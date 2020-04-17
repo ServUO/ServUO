@@ -23,7 +23,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new CrystalSupplicantStatueDeed(); } }
+        public override BaseAddonDeed Deed => new CrystalSupplicantStatueDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -40,11 +40,11 @@ namespace Server.Items
 
     public class CrystalSupplicantStatueDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1076669; } } // Crystal Supplicant Statue
+        public override int LabelNumber => 1076669;  // Crystal Supplicant Statue
 
-        public override bool ExcludeDeedHue { get { return true; } }
+        public override bool ExcludeDeedHue => true;
 
-        public override BaseAddon Addon { get { return new CrystalSupplicantStatueAddon(_Direction); } }
+        public override BaseAddon Addon => new CrystalSupplicantStatueAddon(_Direction);
 
         private DirectionType _Direction;
 

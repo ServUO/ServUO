@@ -2,20 +2,20 @@ namespace Server.Items
 {
     public class VirtuososArmbands : GargishPlateArms
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1151558; } } // Virtuoso's Armbands
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1151558;  // Virtuoso's Armbands
 
-        public override SetItem SetID { get { return SetItem.Virtuoso; } }
-        public override int Pieces { get { return 4; } }
-        public override bool BardMasteryBonus { get { return true; } }
+        public override SetItem SetID => SetItem.Virtuoso;
+        public override int Pieces => 4;
+        public override bool BardMasteryBonus => true;
 
-        public override int BasePhysicalResistance { get { return 24; } }
-        public override int BaseFireResistance { get { return 10; } }
-        public override int BaseColdResistance { get { return 9; } }
-        public override int BasePoisonResistance { get { return 10; } }
-        public override int BaseEnergyResistance { get { return 9; } }
-        public override int InitMinHits { get { return 125; } }
-        public override int InitMaxHits { get { return 125; } }
+        public override int BasePhysicalResistance => 24;
+        public override int BaseFireResistance => 10;
+        public override int BaseColdResistance => 9;
+        public override int BasePoisonResistance => 10;
+        public override int BaseEnergyResistance => 9;
+        public override int InitMinHits => 125;
+        public override int InitMaxHits => 125;
 
         [Constructable]
         public VirtuososArmbands() : base()

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ClimbingVine : Item
     {
-        public override int LabelNumber { get { return 1023307; } } // vines
+        public override int LabelNumber => 1023307;  // vines
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D ClimbLocation { get; set; }

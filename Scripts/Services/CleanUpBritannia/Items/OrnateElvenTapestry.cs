@@ -10,13 +10,7 @@
             this.Weight = 1;
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1031633;
-            }
-        }// ornate elven tapestry
+        public override int LabelNumber => 1031633;// ornate elven tapestry
 
         public OrnateElvenTapestry(Serial serial)
             : base(serial)

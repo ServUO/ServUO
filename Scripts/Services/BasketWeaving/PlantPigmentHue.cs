@@ -125,34 +125,10 @@ namespace Server.Engines.Plants
             this.m_PlantPigmentHue = pigmentHue;
         }
 
-        public PlantHue PlantHue
-        {
-            get
-            {
-                return this.m_PlantHue;
-            }
-        }
-        public int Hue
-        {
-            get
-            {
-                return this.m_Hue;
-            }
-        }
-        public int Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
-        public PlantPigmentHue PlantPigmentHue
-        {
-            get
-            {
-                return this.m_PlantPigmentHue;
-            }
-        }
+        public PlantHue PlantHue => this.m_PlantHue;
+        public int Hue => this.m_Hue;
+        public int Name => this.m_Name;
+        public PlantPigmentHue PlantPigmentHue => this.m_PlantPigmentHue;
         public static PlantPigmentHue HueFromPlantHue(PlantHue hue)
         {
             if (hue == PlantHue.None || hue == PlantHue.Plain)

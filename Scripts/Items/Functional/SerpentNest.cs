@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class SerpentNest : Item
     {
-        public override int LabelNumber { get { return 1112582; } } // a serpent's nest
+        public override int LabelNumber => 1112582;  // a serpent's nest
 
         [Constructable]
         public SerpentNest()

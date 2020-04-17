@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class MysteriousTunnel : Item
     {
-        public override int LabelNumber { get { return 1152265; } } // mysterious tunnel       
+        public override int LabelNumber => 1152265;  // mysterious tunnel       
         private Point3D m_PointDest;
 
         [CommandProperty(AccessLevel.GameMaster)]

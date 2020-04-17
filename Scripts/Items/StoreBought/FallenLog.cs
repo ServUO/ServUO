@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class FallenLogAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new FallenLogDeed(); } }
+        public override BaseAddonDeed Deed => new FallenLogDeed();
 
         [Constructable]
         public FallenLogAddon()
@@ -51,8 +51,8 @@ namespace Server.Items
 
     public class FallenLogDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1071088; } } // Fallen Log
-        public override BaseAddon Addon { get { return new FallenLogAddon(m_East); } }
+        public override int LabelNumber => 1071088;  // Fallen Log
+        public override BaseAddon Addon => new FallenLogAddon(m_East);
 
         private bool m_East;
 

@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0xA48B, 0xA48C)]
     public class PaintingSword : Item
     {
-        public override int LabelNumber { get { return 1023744; } } // painting
+        public override int LabelNumber => 1023744;  // painting
 
         [Constructable]
         public PaintingSword()

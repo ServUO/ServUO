@@ -16,11 +16,11 @@ namespace Server.Items
 
     public abstract class PeerlessAltar : Container
     {
-        public override bool IsPublicContainer { get { return true; } }
-        public override bool IsDecoContainer { get { return false; } }
+        public override bool IsPublicContainer => true;
+        public override bool IsDecoContainer => false;
 
-        public virtual TimeSpan TimeToSlay { get { return TimeSpan.FromMinutes(90); } }
-        public virtual TimeSpan DelayAfterBossSlain { get { return TimeSpan.FromMinutes(15); } }
+        public virtual TimeSpan TimeToSlay => TimeSpan.FromMinutes(90);
+        public virtual TimeSpan DelayAfterBossSlain => TimeSpan.FromMinutes(15);
 
         public abstract int KeyCount { get; }
         public abstract MasterKey MasterKey { get; }
@@ -55,10 +55,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int FighterCount
-        {
-            get { return Fighters != null ? Fighters.Count : 0; }
-        }
+        public int FighterCount => Fighters != null ? Fighters.Count : 0;
 
         public List<Mobile> Fighters { get; set; }
 
@@ -683,10 +680,7 @@ namespace Server.Items
         #region Helpers
         private List<BaseCreature> m_Helpers = new List<BaseCreature>();
 
-        public List<BaseCreature> Helpers
-        {
-            get { return m_Helpers; }
-        }
+        public List<BaseCreature> Helpers => m_Helpers;
 
         public void AddHelper(BaseCreature helper)
         {

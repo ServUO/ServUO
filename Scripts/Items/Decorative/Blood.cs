@@ -8,11 +8,11 @@ namespace Server.Items
     {
         public static int[] BloodIDs = { 0x1645, 0x122A, 0x122B, 0x122C, 0x122D, 0x122E, 0x122F };
 
-        public static int RandomID { get { return Utility.RandomList(BloodIDs); } }
+        public static int RandomID => Utility.RandomList(BloodIDs);
 
         public static TimeSpan Decay = TimeSpan.FromSeconds(3.0);
 
-        public override TimeSpan DecayTime { get { return Decay; } }
+        public override TimeSpan DecayTime => Decay;
 
         [Constructable]
         public Blood()

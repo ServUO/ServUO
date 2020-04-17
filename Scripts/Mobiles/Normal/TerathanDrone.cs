@@ -46,15 +46,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public override int Meat => 4;
 
-        public override TribeType Tribe { get { return TribeType.Terathan; } }
+        public override TribeType Tribe => TribeType.Terathan;
 
         public override void GenerateLoot()
         {

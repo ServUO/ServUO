@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public abstract class BaseRewardTitleDeed : Item
     {
-        public override int LabelNumber { get { return 1155604; } } // A Deed for a Reward Title
+        public override int LabelNumber => 1155604;  // A Deed for a Reward Title
         public abstract TextDefinition Title { get; }
 
         public BaseRewardTitleDeed()

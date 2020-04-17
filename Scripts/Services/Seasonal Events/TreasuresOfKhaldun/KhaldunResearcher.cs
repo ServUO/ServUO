@@ -6,10 +6,10 @@ namespace Server.Engines.Khaldun
 {
     public class KhaldunResearcher : BaseTurnInMobile
     {
-        public override int TitleLocalization { get { return 1158744; } } // Artifacts of the Cult
-        public override int CancelLocalization { get { return 1158675; } }	// Bring me items of the Cult and I will reward you with valuable items.   
-        public override int TurnInLocalization { get { return 1157652; } } // Turn In Artifacts of The Cult	
-        public override int ClaimLocalization { get { return 1155593; } } // Claim Rewards
+        public override int TitleLocalization => 1158744;  // Artifacts of the Cult
+        public override int CancelLocalization => 1158675; 	// Bring me items of the Cult and I will reward you with valuable items.   
+        public override int TurnInLocalization => 1157652;  // Turn In Artifacts of The Cult	
+        public override int ClaimLocalization => 1155593;  // Claim Rewards
 
         public static KhaldunResearcher InstanceTram { get; set; }
         public static KhaldunResearcher InstanceFel { get; set; }

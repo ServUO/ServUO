@@ -2,16 +2,16 @@ namespace Server.Items
 {
     public class KrampusMinionHat : BaseHat
     {
-        public override int LabelNumber { get { return 1125639; } } // krampus minion hat
+        public override int LabelNumber => 1125639;  // krampus minion hat
 
-        public override int BasePhysicalResistance { get { return 0; } }
-        public override int BaseFireResistance { get { return 5; } }
-        public override int BaseColdResistance { get { return 9; } }
-        public override int BasePoisonResistance { get { return 5; } }
-        public override int BaseEnergyResistance { get { return 5; } }
+        public override int BasePhysicalResistance => 0;
+        public override int BaseFireResistance => 5;
+        public override int BaseColdResistance => 9;
+        public override int BasePoisonResistance => 5;
+        public override int BaseEnergyResistance => 5;
 
-        public override int InitMinHits { get { return 20; } }
-        public override int InitMaxHits { get { return 30; } }
+        public override int InitMinHits => 20;
+        public override int InitMaxHits => 30;
 
         [Constructable]
         public KrampusMinionHat()

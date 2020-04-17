@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class WoundingAssassinSpike : AssassinSpike
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public WoundingAssassinSpike()
         {
@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073520;
-            }
-        }// wounding assassin spike
+        public override int LabelNumber => 1073520;// wounding assassin spike
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

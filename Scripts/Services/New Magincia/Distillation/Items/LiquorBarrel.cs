@@ -23,7 +23,7 @@ namespace Server.Items
         public DateTime MaturationBegin { get { return m_MaturationBegin; } set { m_MaturationBegin = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TimeSpan MutrationDuration { get { return m_MaturationDuration; } }
+        public TimeSpan MutrationDuration => m_MaturationDuration;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string Label { get { return m_Label; } set { m_Label = value; InvalidateProperties(); } }
@@ -44,14 +44,14 @@ namespace Server.Items
         public Mobile Distiller { get { return m_Distiller; } set { m_Distiller = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual bool IsMature { get { return m_Liquor != Liquor.None && (m_MaturationDuration == TimeSpan.MinValue || m_MaturationBegin + m_MaturationDuration < DateTime.UtcNow); } }
+        public virtual bool IsMature => m_Liquor != Liquor.None && (m_MaturationDuration == TimeSpan.MinValue || m_MaturationBegin + m_MaturationDuration < DateTime.UtcNow);
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsEmpty { get { return m_Liquor == Liquor.None; } }
+        public bool IsEmpty => m_Liquor == Liquor.None;
 
-        public override int LabelNumber { get { return m_UsesRemaining == 0 || m_Liquor == Liquor.None ? 1150816 : 1150807; } } // liquor barrel
+        public override int LabelNumber => m_UsesRemaining == 0 || m_Liquor == Liquor.None ? 1150816 : 1150807;  // liquor barrel
 
-        public override double DefaultWeight { get { return 5.0; } }
+        public override double DefaultWeight => 5.0;
 
         [Constructable]
         public LiquorBarrel()

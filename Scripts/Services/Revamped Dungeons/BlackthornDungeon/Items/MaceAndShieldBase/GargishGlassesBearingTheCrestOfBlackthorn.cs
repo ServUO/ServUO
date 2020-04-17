@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class GargishGlassesBearingTheCrestOfBlackthorn2 : GargishGlasses
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [Constructable]
         public GargishGlassesBearingTheCrestOfBlackthorn2()
@@ -16,13 +16,13 @@ namespace Server.Items
             Hue = 66;
         }
 
-        public override int BasePhysicalResistance { get { return 25; } }
-        public override int BaseFireResistance { get { return 10; } }
-        public override int BaseColdResistance { get { return 10; } }
-        public override int BasePoisonResistance { get { return 10; } }
-        public override int BaseEnergyResistance { get { return 10; } }
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int BasePhysicalResistance => 25;
+        public override int BaseFireResistance => 10;
+        public override int BaseColdResistance => 10;
+        public override int BasePoisonResistance => 10;
+        public override int BaseEnergyResistance => 10;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public GargishGlassesBearingTheCrestOfBlackthorn2(Serial serial)
             : base(serial)

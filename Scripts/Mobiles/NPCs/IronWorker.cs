@@ -27,8 +27,8 @@ namespace Server.Mobiles
             : base(serial)
         { }
 
-        public override VendorShoeType ShoeType { get { return VendorShoeType.None; } }
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
+        public override VendorShoeType ShoeType => VendorShoeType.None;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public override void InitSBInfo()
         {

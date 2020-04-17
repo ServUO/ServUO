@@ -66,41 +66,11 @@ namespace Server
                 m_OverrideAlgorithm = value;
             }
         }
-        public Map Map
-        {
-            get
-            {
-                return this.m_Map;
-            }
-        }
-        public Point3D Start
-        {
-            get
-            {
-                return this.m_Start;
-            }
-        }
-        public Point3D Goal
-        {
-            get
-            {
-                return this.m_Goal;
-            }
-        }
-        public Direction[] Directions
-        {
-            get
-            {
-                return this.m_Directions;
-            }
-        }
-        public bool Success
-        {
-            get
-            {
-                return (this.m_Directions != null && this.m_Directions.Length > 0);
-            }
-        }
+        public Map Map => this.m_Map;
+        public Point3D Start => this.m_Start;
+        public Point3D Goal => this.m_Goal;
+        public Direction[] Directions => this.m_Directions;
+        public bool Success => (this.m_Directions != null && this.m_Directions.Length > 0);
         public static void Initialize()
         {
             CommandSystem.Register("Path", AccessLevel.GameMaster, new CommandEventHandler(Path_OnCommand));

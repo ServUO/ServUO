@@ -12,15 +12,15 @@ namespace Server.Engines.ArenaSystem
     public class PVPArenaSystem : PointsSystem
     {
         public static PVPArenaSystem Instance { get; set; }
-        public static bool Enabled { get { return true; } }
-        public static bool BlockSameIP { get { return true; } }
+        public static bool Enabled => true;
+        public static bool BlockSameIP => true;
 
-        public override PointsType Loyalty { get { return PointsType.PVPArena; } }
-        public override TextDefinition Name { get { return m_Name; } }
-        public override bool AutoAdd { get { return true; } }
-        public override double MaxPoints { get { return double.MaxValue; } }
+        public override PointsType Loyalty => PointsType.PVPArena;
+        public override TextDefinition Name => m_Name;
+        public override bool AutoAdd => true;
+        public override double MaxPoints => double.MaxValue;
 
-        public override bool ShowOnLoyaltyGump { get { return false; } }
+        public override bool ShowOnLoyaltyGump => false;
         private readonly TextDefinition m_Name = new TextDefinition("Arena Stats");
 
         public static List<PVPArena> Arenas { get; set; }
@@ -434,7 +434,7 @@ namespace Server.Engines.ArenaSystem
         public bool IgnoreInvites { get; set; }
         public bool OpenStats { get; set; }
 
-        public int TotalDuels { get { return SurvivalWins + SurvivalLosses + SurvivalDraws + TeamWins + TeamLosses + TeamDraws; } }
+        public int TotalDuels => SurvivalWins + SurvivalLosses + SurvivalDraws + TeamWins + TeamLosses + TeamDraws;
 
         public List<DuelRecord> Record { get; set; }
 

@@ -101,25 +101,10 @@ namespace Server.Engines.Quests
                 m_Timed = value;
             }
         }
-        public bool Completed
-        {
-            get
-            {
-                return CurProgress >= MaxProgress;
-            }
-        }
-        public bool Failed
-        {
-            get
-            {
-                return CurProgress == -1;
-            }
-        }
+        public bool Completed => CurProgress >= MaxProgress;
+        public bool Failed => CurProgress == -1;
 
-        public virtual object ObjectiveDescription
-        {
-            get { return null; }
-        }
+        public virtual object ObjectiveDescription => null;
 
         public virtual void Complete()
         {
@@ -848,7 +833,7 @@ namespace Server.Engines.Quests
         private readonly List<int> m_Done = new List<int>();
         private readonly QuestionAndAnswerEntry[] m_EntryTable;
 
-        public virtual QuestionAndAnswerEntry[] EntryTable { get { return m_EntryTable; } }
+        public virtual QuestionAndAnswerEntry[] EntryTable => m_EntryTable;
 
         public QuestionAndAnswerObjective(int count, QuestionAndAnswerEntry[] table)
             : base(count)

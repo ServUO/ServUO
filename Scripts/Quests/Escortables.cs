@@ -15,38 +15,14 @@ namespace Server.Engines.Quests
         }
 
         /* An escort to Yew */
-        public override object Title
-        {
-            get
-            {
-                return 1072275;
-            }
-        }
+        public override object Title => 1072275;
         /* I seek a worthy escort.  I can offer some small pay to any able bodied adventurer who can assist me.  
         * It is imperative that I reach my destination. */
-        public override object Description
-        {
-            get
-            {
-                return 1072287;
-            }
-        }
+        public override object Description => 1072287;
         /* I wish you would reconsider my offer.  I'll be waiting right here for someone brave enough to assist me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072288;
-            }
-        }
+        public override object Refuse => 1072288;
         /* We have not yet arrived in Yew.  Let's keep going. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072289;
-            }
-        }
+        public override object Uncomplete => 1072289;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -72,38 +48,14 @@ namespace Server.Engines.Quests
         }
 
         /* An escort to Vesper */
-        public override object Title
-        {
-            get
-            {
-                return 1072276;
-            }
-        }
+        public override object Title => 1072276;
         /* I seek a worthy escort.  I can offer some small pay to any able bodied adventurer who can assist me.  
         * It is imperative that I reach my destination. */
-        public override object Description
-        {
-            get
-            {
-                return 1072287;
-            }
-        }
+        public override object Description => 1072287;
         /* I wish you would reconsider my offer.  I'll be waiting right here for someone brave enough to assist me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072288;
-            }
-        }
+        public override object Refuse => 1072288;
         /* We have not yet arrived in Vesper.  Let's keep going. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072290;
-            }
-        }
+        public override object Uncomplete => 1072290;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -129,38 +81,14 @@ namespace Server.Engines.Quests
         }
 
         /* An escort to Trinsic */
-        public override object Title
-        {
-            get
-            {
-                return 1072277;
-            }
-        }
+        public override object Title => 1072277;
         /* I seek a worthy escort.  I can offer some small pay to any able bodied adventurer who can assist me.  
         * It is imperative that I reach my destination. */
-        public override object Description
-        {
-            get
-            {
-                return 1072287;
-            }
-        }
+        public override object Description => 1072287;
         /* I wish you would reconsider my offer.  I'll be waiting right here for someone brave enough to assist me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072288;
-            }
-        }
+        public override object Refuse => 1072288;
         /* We have not yet arrived in Trinsic.  Let's keep going. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072291;
-            }
-        }
+        public override object Uncomplete => 1072291;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -186,38 +114,14 @@ namespace Server.Engines.Quests
         }
 
         /* An escort to Skara */
-        public override object Title
-        {
-            get
-            {
-                return 1072278;
-            }
-        }
+        public override object Title => 1072278;
         /* I seek a worthy escort.  I can offer some small pay to any able bodied adventurer who can assist me.  
         * It is imperative that I reach my destination. */
-        public override object Description
-        {
-            get
-            {
-                return 1072287;
-            }
-        }
+        public override object Description => 1072287;
         /* I wish you would reconsider my offer.  I'll be waiting right here for someone brave enough to assist me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072288;
-            }
-        }
+        public override object Refuse => 1072288;
         /* We have not yet arrived in Skara.  Let's keep going. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072292;
-            }
-        }
+        public override object Uncomplete => 1072292;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -243,38 +147,14 @@ namespace Server.Engines.Quests
         }
 
         /* An escort to Serpent's Hold */
-        public override object Title
-        {
-            get
-            {
-                return 1072279;
-            }
-        }
+        public override object Title => 1072279;
         /* I seek a worthy escort.  I can offer some small pay to any able bodied adventurer who can assist me.  
         * It is imperative that I reach my destination. */
-        public override object Description
-        {
-            get
-            {
-                return 1072287;
-            }
-        }
+        public override object Description => 1072287;
         /* I wish you would reconsider my offer.  I'll be waiting right here for someone brave enough to assist me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072288;
-            }
-        }
+        public override object Refuse => 1072288;
         /* We have not yet arrived in Serpent's Hold.  Let's keep going. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072293;
-            }
-        }
+        public override object Uncomplete => 1072293;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -300,38 +180,14 @@ namespace Server.Engines.Quests
         }
 
         /* An escort to Nujel'm */
-        public override object Title
-        {
-            get
-            {
-                return 1072280;
-            }
-        }
+        public override object Title => 1072280;
         /* I seek a worthy escort.  I can offer some small pay to any able bodied adventurer who can assist me.  
         * It is imperative that I reach my destination. */
-        public override object Description
-        {
-            get
-            {
-                return 1072287;
-            }
-        }
+        public override object Description => 1072287;
         /* I wish you would reconsider my offer.  I'll be waiting right here for someone brave enough to assist me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072288;
-            }
-        }
+        public override object Refuse => 1072288;
         /* We have not yet arrived in Nujel'm.  Let's keep going. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072294;
-            }
-        }
+        public override object Uncomplete => 1072294;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -357,38 +213,14 @@ namespace Server.Engines.Quests
         }
 
         /* An escort to Moonglow */
-        public override object Title
-        {
-            get
-            {
-                return 1072281;
-            }
-        }
+        public override object Title => 1072281;
         /* I seek a worthy escort.  I can offer some small pay to any able bodied adventurer who can assist me.  
         * It is imperative that I reach my destination. */
-        public override object Description
-        {
-            get
-            {
-                return 1072287;
-            }
-        }
+        public override object Description => 1072287;
         /* I wish you would reconsider my offer.  I'll be waiting right here for someone brave enough to assist me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072288;
-            }
-        }
+        public override object Refuse => 1072288;
         /* We have not yet arrived in Moonglow.  Let's keep going. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072295;
-            }
-        }
+        public override object Uncomplete => 1072295;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -414,38 +246,14 @@ namespace Server.Engines.Quests
         }
 
         /* An escort to Minoc */
-        public override object Title
-        {
-            get
-            {
-                return 1072282;
-            }
-        }
+        public override object Title => 1072282;
         /* I seek a worthy escort.  I can offer some small pay to any able bodied adventurer who can assist me.  
         * It is imperative that I reach my destination. */
-        public override object Description
-        {
-            get
-            {
-                return 1072287;
-            }
-        }
+        public override object Description => 1072287;
         /* I wish you would reconsider my offer.  I'll be waiting right here for someone brave enough to assist me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072288;
-            }
-        }
+        public override object Refuse => 1072288;
         /* We have not yet arrived in Minoc.  Let's keep going. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072296;
-            }
-        }
+        public override object Uncomplete => 1072296;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -471,38 +279,14 @@ namespace Server.Engines.Quests
         }
 
         /* An escort to Magincia */
-        public override object Title
-        {
-            get
-            {
-                return 1072283;
-            }
-        }
+        public override object Title => 1072283;
         /* I seek a worthy escort.  I can offer some small pay to any able bodied adventurer who can assist me.  
         * It is imperative that I reach my destination. */
-        public override object Description
-        {
-            get
-            {
-                return 1072287;
-            }
-        }
+        public override object Description => 1072287;
         /* I wish you would reconsider my offer.  I'll be waiting right here for someone brave enough to assist me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072288;
-            }
-        }
+        public override object Refuse => 1072288;
         /* We have not yet arrived in Magincia.  Let's keep going. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072297;
-            }
-        }
+        public override object Uncomplete => 1072297;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -528,38 +312,14 @@ namespace Server.Engines.Quests
         }
 
         /* An escort to Jhelom */
-        public override object Title
-        {
-            get
-            {
-                return 1072284;
-            }
-        }
+        public override object Title => 1072284;
         /* I seek a worthy escort.  I can offer some small pay to any able bodied adventurer who can assist me.  
         * It is imperative that I reach my destination. */
-        public override object Description
-        {
-            get
-            {
-                return 1072287;
-            }
-        }
+        public override object Description => 1072287;
         /* I wish you would reconsider my offer.  I'll be waiting right here for someone brave enough to assist me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072288;
-            }
-        }
+        public override object Refuse => 1072288;
         /* We have not yet arrived in Jhelom.  Let's keep going. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072298;
-            }
-        }
+        public override object Uncomplete => 1072298;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -585,38 +345,14 @@ namespace Server.Engines.Quests
         }
 
         /* An escort to Cove */
-        public override object Title
-        {
-            get
-            {
-                return 1072285;
-            }
-        }
+        public override object Title => 1072285;
         /* I seek a worthy escort.  I can offer some small pay to any able bodied adventurer who can assist me.  
         * It is imperative that I reach my destination. */
-        public override object Description
-        {
-            get
-            {
-                return 1072287;
-            }
-        }
+        public override object Description => 1072287;
         /* I wish you would reconsider my offer.  I'll be waiting right here for someone brave enough to assist me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072288;
-            }
-        }
+        public override object Refuse => 1072288;
         /* We have not yet arrived in Cove.  Let's keep going. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072299;
-            }
-        }
+        public override object Uncomplete => 1072299;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -642,38 +378,14 @@ namespace Server.Engines.Quests
         }
 
         /* An escort to Britain */
-        public override object Title
-        {
-            get
-            {
-                return 1072286;
-            }
-        }
+        public override object Title => 1072286;
         /* I seek a worthy escort.  I can offer some small pay to any able bodied adventurer who can assist me.  
         * It is imperative that I reach my destination. */
-        public override object Description
-        {
-            get
-            {
-                return 1072287;
-            }
-        }
+        public override object Description => 1072287;
         /* I wish you would reconsider my offer.  I'll be waiting right here for someone brave enough to assist me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072288;
-            }
-        }
+        public override object Refuse => 1072288;
         /* We have not yet arrived in Britain.  Let's keep going. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072300;
-            }
-        }
+        public override object Uncomplete => 1072300;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -759,13 +471,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[] { m_Quests[m_Quest] };
-            }
-        }
+        public override Type[] Quests => new Type[] { m_Quests[m_Quest] };
         public override void Advertise()
         {
             Say(Utility.RandomMinMax(1072301, 1072303));
@@ -868,20 +574,8 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override bool CanTeach
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool CanTeach => true;
+        public override bool ClickTitle => false;
         public override void InitOutfit()
         {
             AddItem(new Robe(GetRandomHue()));
@@ -926,13 +620,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool ClickTitle => false;
         public override void InitOutfit()
         {
             if (Female)
@@ -996,13 +684,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool ClickTitle => false;
         public override void InitOutfit()
         {
             if (Female)
@@ -1061,20 +743,8 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override bool CanTeach
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool CanTeach => true;
+        public override bool ClickTitle => false;
         public override void InitOutfit()
         {
             if (Female)
@@ -1133,13 +803,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool ClickTitle => false;
         public override void InitOutfit()
         {
             if (Female)
@@ -1194,13 +858,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool ClickTitle => false;
         public override void InitOutfit()
         {
             if (Female)
@@ -1292,27 +950,9 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool CanTeach
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public virtual bool HealsYoungPlayers
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool ClickTitle => false;
+        public override bool CanTeach => true;
+        public virtual bool HealsYoungPlayers => true;
         public override bool CheckTeach(SkillName skill, Mobile from)
         {
             if (!base.CheckTeach(skill, from))

@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073131;
-            }
-        }// Friends of the Library Application
+        public override int LabelNumber => 1073131;// Friends of the Library Application
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

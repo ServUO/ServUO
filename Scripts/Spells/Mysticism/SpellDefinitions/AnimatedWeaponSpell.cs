@@ -6,7 +6,7 @@ namespace Server.Spells.Mysticism
 {
     public class AnimatedWeaponSpell : MysticSpell
     {
-        public override SpellCircle Circle { get { return SpellCircle.Fourth; } }
+        public override SpellCircle Circle => SpellCircle.Fourth;
 
         private static readonly SpellInfo m_Info = new SpellInfo(
                 "Animated Weapon", "In Jux Por Ylem",

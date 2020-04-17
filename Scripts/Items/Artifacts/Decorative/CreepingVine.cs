@@ -2,8 +2,8 @@
 {
     public class CreepingVine : Item
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1112401; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1112401;
 
         [Constructable]
         public CreepingVine()

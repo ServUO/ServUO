@@ -10,8 +10,8 @@ namespace Server.Engines.Auction
         public long CurrentBid { get; set; }
 
         //Converts to gold/plat
-        public int TotalGoldBid { get { return (int)(CurrentBid >= Account.CurrencyThreshold ? CurrentBid - (TotalPlatBid * Account.CurrencyThreshold) : CurrentBid); } }
-        public int TotalPlatBid { get { return (int)(CurrentBid >= Account.CurrencyThreshold ? CurrentBid / Account.CurrencyThreshold : 0); } }
+        public int TotalGoldBid => (int)(CurrentBid >= Account.CurrencyThreshold ? CurrentBid - (TotalPlatBid * Account.CurrencyThreshold) : CurrentBid);
+        public int TotalPlatBid => (int)(CurrentBid >= Account.CurrencyThreshold ? CurrentBid / Account.CurrencyThreshold : 0);
 
         public BidEntry(PlayerMobile m, long bid = 0)
         {

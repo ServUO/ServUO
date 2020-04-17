@@ -16,20 +16,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override VendorShoeType ShoeType
-        {
-            get
-            {
-                return VendorShoeType.Boots;
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        public override VendorShoeType ShoeType => VendorShoeType.Boots;
+        protected override List<SBInfo> SBInfos => this.m_SBInfos;
         public override void InitSBInfo()
         {
             this.m_SBInfos.Add(new SBBeekeeper());

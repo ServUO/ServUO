@@ -54,19 +54,19 @@ namespace Server.Engines.Plants
             set { m_Level = value; }
         }
 
-        public PlantSystem PlantSystem { get { return m_PlantSystem; } }
+        public PlantSystem PlantSystem => m_PlantSystem;
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         #region Magincia/Raised Garden Plant Support
-        public virtual bool RequiresUpkeep { get { return true; } }
-        public virtual bool MaginciaPlant { get { return false; } }
-        public virtual int BowlOfDirtID { get { return 0x1602; } }
-        public virtual int GreenBowlID { get { return 0x1600; } }
+        public virtual bool RequiresUpkeep => true;
+        public virtual bool MaginciaPlant => false;
+        public virtual int BowlOfDirtID => 0x1602;
+        public virtual int GreenBowlID => 0x1600;
 
-        public virtual int ContainerLocalization { get { return 1150435; } }
-        public virtual int OnPlantLocalization { get { return 1061922; } }
-        public virtual int CantUseLocalization { get { return 1061921; } }
+        public virtual int ContainerLocalization => 1150435;
+        public virtual int OnPlantLocalization => 1061922;
+        public virtual int CantUseLocalization => 1061921;
         #endregion
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -165,26 +165,17 @@ namespace Server.Engines.Plants
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsGrowable
-        {
-            get { return m_PlantStatus >= PlantStatus.BowlOfDirt && m_PlantStatus <= PlantStatus.Stage9; }
-        }
+        public bool IsGrowable => m_PlantStatus >= PlantStatus.BowlOfDirt && m_PlantStatus <= PlantStatus.Stage9;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsCrossable
-        {
-            get { return PlantHueInfo.IsCrossable(this.PlantHue) && PlantTypeInfo.IsCrossable(this.PlantType); }
-        }
+        public bool IsCrossable => PlantHueInfo.IsCrossable(this.PlantHue) && PlantTypeInfo.IsCrossable(this.PlantType);
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Reproduces
-        {
-            get { return PlantHueInfo.CanReproduce(this.PlantHue) && PlantTypeInfo.CanReproduce(this.PlantType); }
-        }
+        public bool Reproduces => PlantHueInfo.CanReproduce(this.PlantHue) && PlantTypeInfo.CanReproduce(this.PlantType);
 
         private static readonly ArrayList m_Instances = new ArrayList();
 
-        public static ArrayList Plants { get { return m_Instances; } }
+        public static ArrayList Plants => m_Instances;
 
         [Constructable]
         public PlantItem() : this(0x1602, false)

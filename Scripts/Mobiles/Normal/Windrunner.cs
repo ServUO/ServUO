@@ -5,9 +5,9 @@ namespace Server.Mobiles
 {
     public class WindrunnerStatue : Item, ICreatureStatuette
     {
-        public override int LabelNumber { get { return 1124685; } } // Windrunner
+        public override int LabelNumber => 1124685;  // Windrunner
 
-        public Type CreatureType { get { return typeof(Windrunner); } }
+        public Type CreatureType => typeof(Windrunner);
 
         [Constructable]
         public WindrunnerStatue()
@@ -89,9 +89,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat { get { return 3; } }
-        public override int Hides { get { return 10; } }
-        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
+        public override int Meat => 3;
+        public override int Hides => 10;
+        public override FoodType FavoriteFood => FoodType.Meat;
 
         public override void Serialize(GenericWriter writer)
         {

@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class GlassKilnAddon : CraftAddon
     {
-        public override CraftSystem CraftSystem { get { return DefGlassblowing.CraftSystem; } }
+        public override CraftSystem CraftSystem => DefGlassblowing.CraftSystem;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem { get; set; }
@@ -64,7 +64,7 @@ namespace Server.Items
 
     public class GlassKilnDeed : CraftAddonDeed, IRewardItem, IRewardOption
     {
-        public override int LabelNumber { get { return 1159420; } } // Glass Kiln
+        public override int LabelNumber => 1159420;  // Glass Kiln
 
         public override BaseAddon Addon
         {

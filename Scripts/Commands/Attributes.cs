@@ -10,13 +10,7 @@ namespace Server
             this.m_Usage = usage;
         }
 
-        public string Usage
-        {
-            get
-            {
-                return this.m_Usage;
-            }
-        }
+        public string Usage => this.m_Usage;
     }
 
     public class DescriptionAttribute : Attribute
@@ -27,13 +21,7 @@ namespace Server
             this.m_Description = description;
         }
 
-        public string Description
-        {
-            get
-            {
-                return this.m_Description;
-            }
-        }
+        public string Description => this.m_Description;
     }
 
     public class AliasesAttribute : Attribute
@@ -44,12 +32,6 @@ namespace Server
             this.m_Aliases = aliases;
         }
 
-        public string[] Aliases
-        {
-            get
-            {
-                return this.m_Aliases;
-            }
-        }
+        public string[] Aliases => this.m_Aliases;
     }
 }

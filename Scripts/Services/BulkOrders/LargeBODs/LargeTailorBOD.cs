@@ -4,7 +4,7 @@ namespace Server.Engines.BulkOrders
 {
     public class LargeTailorBOD : LargeBOD
     {
-        public override BODType BODType { get { return BODType.Tailor; } }
+        public override BODType BODType => BODType.Tailor;
 
         public static double[] m_TailoringMaterialChances = new double[]
         {

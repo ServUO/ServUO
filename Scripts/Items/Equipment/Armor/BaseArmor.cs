@@ -302,13 +302,7 @@ namespace Server.Items
             }
         }
 
-        public double ArmorRatingScaled
-        {
-            get
-            {
-                return (ArmorRating * ArmorScalar);
-            }
-        }
+        public double ArmorRatingScaled => (ArmorRating * ArmorScalar);
 
         #region Publish 81 Armor Refinement
         private int m_RefinedPhysical;
@@ -333,7 +327,7 @@ namespace Server.Items
         public int RefinedEnergy { get { return m_RefinedEnergy; } set { m_RefinedEnergy = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int RefinedDefenseChance { get { return -(m_RefinedPhysical + m_RefinedFire + m_RefinedCold + m_RefinedPoison + m_RefinedEnergy); } }
+        public int RefinedDefenseChance => -(m_RefinedPhysical + m_RefinedFire + m_RefinedCold + m_RefinedPoison + m_RefinedEnergy);
 
         public static int GetRefinedResist(Mobile from, ResistanceType attr)
         {

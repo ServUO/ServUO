@@ -43,37 +43,13 @@ namespace Server.Commands.Generic
         private object m_Value;
         private FieldInfo m_Field;
 
-        public Type Type
-        {
-            get
-            {
-                return this.m_Type;
-            }
-        }
+        public Type Type => this.m_Type;
 
-        public object Value
-        {
-            get
-            {
-                return this.m_Value;
-            }
-        }
+        public object Value => this.m_Value;
 
-        public FieldInfo Field
-        {
-            get
-            {
-                return this.m_Field;
-            }
-        }
+        public FieldInfo Field => this.m_Field;
 
-        public bool HasField
-        {
-            get
-            {
-                return (this.m_Field != null);
-            }
-        }
+        public bool HasField => (this.m_Field != null);
 
         public PropertyValue(Type type, object value)
         {

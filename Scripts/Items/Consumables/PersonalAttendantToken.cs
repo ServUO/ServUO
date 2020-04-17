@@ -19,13 +19,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1070997;
-            }
-        }// A promotional token
+        public override int LabelNumber => 1070997;// A promotional token
         public override void OnDoubleClick(Mobile from)
         {
             if (this.IsChildOf(from.Backpack))

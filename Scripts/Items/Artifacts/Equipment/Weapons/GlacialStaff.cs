@@ -17,13 +17,7 @@ namespace Server.Items
         }
 
         //TODO: Pre-AoS stuff
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1017413;
-            }
-        }// Glacial Staff
+        public override int LabelNumber => 1017413;// Glacial Staff
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -21,13 +21,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1060456;
-            }
-        }// fire horn
+        public override int LabelNumber => 1060456;// fire horn
         public override void OnDoubleClick(Mobile from)
         {
             if (this.CheckUse(from))

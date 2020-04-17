@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class DefyingTheArcaneQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* Defying the Arcane */
-        public override object Title
-        {
-            get
-            {
-                return 1077621;
-            }
-        }
+        public override object Title => 1077621;
 
         /* Head East out of town and go to Old Haven. Battle spell casting monsters there until you have raised your 
         Resisting Spells skill to 50.<br><center>------</center><br>Hail and well met! To become a true master of 
@@ -41,46 +29,22 @@ namespace Server.Engines.Quests
         influence. Old Haven is located east of here. Battle the undead spell casters that inhabit there.<BR><BR>Come
         back to me once you feel that you are worthy of the rank of Apprentice Mage and I will reward you with an 
         arcane prize. */
-        public override object Description
-        {
-            get
-            {
-                return 1077623;
-            }
-        }
+        public override object Description => 1077623;
 
         /* The ability to resist powerful spells is a taxing experience. I understand your resistance in wanting to 
         pursue it. If you wish to reconsider, feel free to return to me for Resisting Spells training. Good journey 
         to you! */
-        public override object Refuse
-        {
-            get
-            {
-                return 1077624;
-            }
-        }
+        public override object Refuse => 1077624;
 
         /* You have not achieved the rank of Apprentice Mage. Come back to me once you feel that you are worthy of the 
         rank of Apprentice Mage and I will reward you with an arcane prize. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1077632;
-            }
-        }
+        public override object Uncomplete => 1077632;
 
         /* You have successfully begun your journey in becoming a true master of Magery. On behalf of the New Haven Mage 
         Council I wish to present you with this bracelet. When worn, the Bracelet of Resilience will enhance your resistances 
         vs. the elements, physical, and poison harm. The Bracelet of Resilience also magically enhances your ability fend 
         off ranged and melee attacks. I hope it serves you well.*/
-        public override object Complete
-        {
-            get
-            {
-                return 1077626;
-            }
-        }
+        public override object Complete => 1077626;
 
         public DefyingTheArcaneQuest()
             : base()
@@ -130,16 +94,10 @@ namespace Server.Engines.Quests
 
     public class Alefian : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(DefyingTheArcaneQuest)
                 };
-            }
-        }
 
         [Constructable]
         public Alefian()
